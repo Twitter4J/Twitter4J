@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="ProjectName" default="all" basedir=".">
+  <property file="build.properties"/>
+
+  <path id="project.class.path">
+    <fileset dir="${lib}">
+      <include name="**/*.jar"/>
+      <include name="**/*.zip"/>
+    </fileset>
+    <pathelement path="${build}/classes"/>
+    <pathelement path="${build}/testclasses"/>
+    <pathelement path="${java.class.path}"/>
+  </path>
+
+  <target name="prepare">
+    <mkdir dir="classes"/>
+    <delete includeEmptyDirs="true">
+      <fileset dir="classes/" includes="**/*"/>
+    </delete>
+    <mkdir dir="${build}"/>
+    <delete includeEmptyDirs="true">
+      <fileset dir="${build}/" includes="**/*"/>
+    </delete>
+    <mkdir dir="${build}/classes"/>
+    <mkdir dir="${build}/testclasses"/>
+    <mkdir dir="${doc}"/>
+    <mkdir dir="${reports}"/>
+    <delete includeEmptyDirs="true">
+      <fileset dir="${reports}/" includes="**/*"/>
+    </delete>
+  </target>
+
+  <target name="compile" depends="prepare">
+    <javac fork="true" srcdir="${src}" destdir="${build}/classes" deprecation="true" debug="true" target="jsr14" source="1.5">
+      <include name="**/*.java"/>
+      <classpath refid="project.class.path"/>
+    </javac>
+    <javac srcdir="${test}" destdir="${build}/testclasses" deprecation="true" debug="true" target="jsr14" source="1.5">
+      <include name="**/*.java"/>
+      <classpath refid="project.class.path"/>
+    </javac>
+    <!--native2ascii encoding="Shift_JIS" src="${src}" dest="${build}/classes"
+        includes="**/*.properties"/-->
+    <copy todir="${build}/classes">
+      <fileset dir="${src}">
+        <exclude name="**/*.java"/>
+        <exclude name="**/*.class"/>
+        <!--exclude name="**/*.properties"/-->
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="test" depends="compile">
+    <antcall target="testOne"/>
+    <antcall target="testSuite"/>
+  </target>
+
+  <target if="testclass" name="testOne">
+    <junit fork="no" printsummary="yes" haltonfailure="no"
+        failureProperty="failTest" errorProperty="failTest">
+      <formatter type="xml"/>
+      <classpath refid="project.class.path"/>
+      <test name="${testclass}" todir="${reports}"/>
+    </junit>
+    <junitreport todir="${reports}">
+      <fileset dir="${reports}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${reports}"/>
+    </junitreport>
+  </target>
+
+  <target unless="testclass" name="testSuite">
+    <junit fork="no" printsummary="yes" haltonfailure="no"
+        failureProperty="failTest" errorProperty="failTest">
+      <classpath refid="project.class.path"/>
+      <formatter type="xml"/>
+      <batchtest fork="yes" todir="${reports}">
+        <fileset dir="${src}">
+          <include name="**/*TestSuite.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+    <junitreport todir="${reports}">
+      <fileset dir="${reports}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${reports}"/>
+    </junitreport>
+  </target>
+
+  <target name="javadoc">
+    <javadoc packagenames="*.*"
+        sourcepath="${src}"
+        destdir="${doc}"
+        windowtitle="${projectName}"
+        author="true"
+        docencoding="UTF-8"
+        version="true">
+    </javadoc>
+  </target>
+
+
+
+  <target name="jar" if="jarName">
+    <jar jarfile="${jarName}" basedir="${build}/classes">
+      <zipfileset src="${lib}/commons-codec-1.3.jar"/>
+    </jar>
+
+    <!--signjar jar="${jarName}"
+        storepass="hogehoge"
+        keystore="mykeystore"
+        alias="myself"/-->
+  </target>
+
+  <target name="finish" depends="test" unless="failTest">
+    <copy todir="${classes}">
+      <fileset dir="${build}/classes"/>
+    </copy>
+  </target>
+  <target name="all" depends="prepare,compile,test,jar,javadoc,finish"/>
+</project>
