@@ -9,6 +9,42 @@ public class UserWithStatus extends User {
     public UserWithStatus(Element elem,Twitter twitter) throws TwitterException{
         super(elem,twitter);
     }
+    public String getProfileBackgroundColor() {
+        return getChildText("profile_background_color");
+    }
+
+    public String getProfileTextColor() {
+        return getChildText("profile_text_color");
+    }
+
+    public String getProfileLinkColor() {
+        return getChildText("profile_link_color");
+    }
+
+    public String getProfileSidebarFillColor() {
+        return getChildText("profile_sidebar_fill_color");
+    }
+
+    public String getProfileSidebarBorderColor() {
+        return getChildText("profile_sidebar_border_color");
+    }
+
+    public int getFriendsCount() {
+        return getChildInt("friends_count");
+    }
+
+    public int getFollowersCount() {
+        return getChildInt("followers_count");
+    }
+
+    public int getFavouritesCount() {
+        return getChildInt("favourites_count");
+    }
+
+    public int getStatusesCount() {
+        return getChildInt("statuses_count");
+    }
+
 
     public String getStatusCreatedAt() {
         return getChildText("created_at");

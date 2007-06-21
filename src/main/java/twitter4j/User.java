@@ -57,44 +57,9 @@ public class User extends TwitterResponse implements java.io.Serializable {
         return "true".equalsIgnoreCase(getChildText("protected"));
     }
 
-    public String getProfileBackgroundColor() {
-        return getChildText("profile_background_color");
-    }
-
-    public String getProfileTextColor() {
-        return getChildText("profile_text_color");
-    }
-
-    public String getProfileLinkColor() {
-        return getChildText("profile_link_color");
-    }
-
-    public String getProfileSidebarFillColor() {
-        return getChildText("profile_sidebar_fill_color");
-    }
-
-    public String getProfileSidebarBorderColor() {
-        return getChildText("profile_sidebar_border_color");
-    }
-
-    public int getFriendsCount() {
-        return getChildInt("friends_count");
-    }
 
     public DirectMessage sendDirectMessage(String text) throws TwitterException {
         return twitter.sendDirectMessage(this.getName(), text);
-    }
-
-    public int getFollowersCount() {
-        return getChildInt("followers_count");
-    }
-
-    public int getFavouritesCount() {
-        return getChildInt("favourites_count");
-    }
-
-    public int getStatusesCount() {
-        return getChildInt("statuses_count");
     }
 
     public static List<User> constructUsers(Document doc, Twitter twitter)throws TwitterException {
