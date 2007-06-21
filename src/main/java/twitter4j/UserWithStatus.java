@@ -8,13 +8,20 @@ import org.w3c.dom.Element;
 public class UserWithStatus extends User {
     public UserWithStatus(Element elem,Twitter twitter) throws TwitterException{
         super(elem,twitter);
-        this.status = new Status((Element)elem.getElementsByTagName("status").item(0),twitter);
     }
 
-    private Status status = null;
-    public Status getStatus(){
-        return status;
+    public String getStatusCreatedAt() {
+        return getChildText("created_at");
     }
+
+    public int getStatusId() {
+        return Integer.valueOf(((Element)elem.getElementsByTagName("status").item(0)).getElementsByTagName("id").item(0).getTextContent());
+    }
+
+    public String getStatusText() {
+        return getChildText("text");
+    }
+
     /*<?xml version="1.0" encoding="UTF-8"?>
     <user>
       <id>4933401</id>
