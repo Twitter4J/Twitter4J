@@ -6,10 +6,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.codec.binary.Base64;
 import twitter4j.TwitterException;
-import java.util.*;
-import twitter4j.Status;
 
 /**
  * A utility class to handle HTTP request/response.
