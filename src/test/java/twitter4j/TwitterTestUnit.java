@@ -144,7 +144,6 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(actualReturn.size() > 9);
     }
 
-
     public void testGetDirectMessages() throws Exception{
         String expectedReturn = new Date()+":directmessage test";
         twitterAPI2.sendDirectMessage(id1,expectedReturn);
@@ -157,6 +156,11 @@ public class TwitterTestUnit extends TestCase {
         Thread.sleep(5000);
         actualReturn = twitterAPI2.getDirectMessages(new Date(System.currentTimeMillis()-(1000*60*100)));
         assertEquals("", expectedReturn, actualReturn.get(0).getText());
+
+        //test for TFJ-4
+        //http://yusuke.homeip.net/jira/browse/TFJ-4
+        actualReturn = twitterAPI1.getDirectMessages(new Date());
+        assertEquals(0,actualReturn.size());
     }
     public void testCreateDestroyFriend() throws Exception{
         User user;

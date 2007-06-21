@@ -41,16 +41,21 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         if (null == doc) {
             return new ArrayList<Status> (0);
         } else {
-            ensureRootNodeNameIs("statuses",doc.getDocumentElement());
-            NodeList list = doc.getDocumentElement().getElementsByTagName(
-                "status");
-            int size = list.getLength();
-            List<Status> statuses = new ArrayList<Status> (size);
-            for (int i = 0; i < size; i++) {
-                Element status = (Element) list.item(i);
-                statuses.add(new Status(status, twitter));
+            try {
+                ensureRootNodeNameIs("statuses", doc.getDocumentElement());
+                NodeList list = doc.getDocumentElement().getElementsByTagName(
+                        "status");
+                int size = list.getLength();
+                List<Status> statuses = new ArrayList<Status>(size);
+                for (int i = 0; i < size; i++) {
+                    Element status = (Element) list.item(i);
+                    statuses.add(new Status(status, twitter));
+                }
+                return statuses;
+            } catch (TwitterException te) {
+                ensureRootNodeNameIs("nil-classes", doc.getDocumentElement());
+                return new ArrayList<Status>(0);
             }
-            return statuses;
         }
     }
 
