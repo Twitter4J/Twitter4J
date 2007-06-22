@@ -47,10 +47,8 @@ public class Response implements java.io.Serializable {
         } catch (SAXException ignore) {
             //twitter returned non-XML response
         } catch (NullPointerException ignore) {
-            System.out.println(responseString);
-            ignore.printStackTrace();
-            throw new IOException(ignore.getMessage());
             //twitter returned non-XML response
+            throw new IOException(ignore.getMessage());
         }
     }
 
