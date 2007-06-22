@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.w3c.dom.Document;
 import twitter4j.http.HttpClient;
 import twitter4j.http.PostParameter;
 
@@ -46,7 +45,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the 20 most recent statuses from non-protected users who have set a custom user icon.
      * @return List<Status> List of statuses of the Public Timeline
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
 
     public final synchronized List<Status> getPublicTimeline() throws
@@ -60,7 +59,7 @@ public class Twitter implements java.io.Serializable {
      * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
      * @param sinceID String
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getPublicTimeline(String sinceID) throws
         TwitterException {
@@ -74,7 +73,7 @@ public class Twitter implements java.io.Serializable {
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user and that user's friends.
      *  It's also possible to request another user's friends_timeline via the id parameter below.
      * @return List<Status> List of the Friends Timeline
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
 
     public final synchronized List<Status> getFriendsTimeline() throws
@@ -88,7 +87,7 @@ public class Twitter implements java.io.Serializable {
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
      * @param id String user ID
      * @return List<Status> List of the Friends Timeline
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
 
     public final synchronized List<Status> getFriendsTimeline(String id) throws
@@ -102,7 +101,7 @@ public class Twitter implements java.io.Serializable {
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      * @param since Date
      * @return List<Status> List of the Friends Timeline
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getFriendsTimeline(Date since) throws
         TwitterException {
@@ -117,7 +116,7 @@ public class Twitter implements java.io.Serializable {
      * @param id String user ID
      * @param since Date
      * @return List<Status> List of the Friends Timeline
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getFriendsTimeline(String id,
         Date since) throws TwitterException {
@@ -134,7 +133,7 @@ public class Twitter implements java.io.Serializable {
      * @param count int
      * @param since Date
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline(String id, int count,
         Date since) throws TwitterException {
@@ -150,7 +149,7 @@ public class Twitter implements java.io.Serializable {
      * @param id String
      * @param since Date
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline(String id,
         Date since) throws TwitterException {
@@ -166,7 +165,7 @@ public class Twitter implements java.io.Serializable {
      * @param id String
      * @param count int
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline(String id, int count) throws
         TwitterException {
@@ -181,7 +180,7 @@ public class Twitter implements java.io.Serializable {
      * @param count int
      * @param since Date
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline(int count,
         Date since) throws TwitterException {
@@ -195,7 +194,7 @@ public class Twitter implements java.io.Serializable {
      * Returns the most recent statuses posted in the last 24 hours from the specified user id.
      * @param id String
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline(String id) throws
         TwitterException {
@@ -207,7 +206,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline() throws
         TwitterException {
@@ -220,7 +219,7 @@ public class Twitter implements java.io.Serializable {
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
      * @param id int
      * @return User
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
 
     public final synchronized Status show(int id) throws TwitterException {
@@ -233,7 +232,7 @@ public class Twitter implements java.io.Serializable {
      * The text will be trimed if the length of the text is exceeding 160 characters.
      * @param status String
      * @return Status
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public Status update(String status) throws TwitterException {
         if (status.length() > 160) {
@@ -249,18 +248,18 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getReplies() throws TwitterException {
         return Status.constructStatuses(http.get(baseURL +
-                                                 "statuses/replies..xml", true).
+                                                 "statuses/replies.xml", true).
                                         asDocument(), this);
     }
 
     /**
      * Returns the specified user's friends, each with current status inline.
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<User> getFriends() throws TwitterException {
         return User.constructUsers(http.get(baseURL + "statuses/friends.xml", true).
@@ -271,7 +270,7 @@ public class Twitter implements java.io.Serializable {
      * Returns the user's friends, each with current status inline.
      * @param id String
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<User> getFriends(String id) throws
         TwitterException {
@@ -283,7 +282,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the authenticating user's followers, each with current status inline.
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<User> getFollowers() throws TwitterException {
         return User.constructUsers(http.get(baseURL + "statuses/followers.xml", true).
@@ -293,7 +292,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns a list of the users currently featured on the site with their current statuses inline.
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<User> getFeatured() throws TwitterException {
         return User.constructUsers(http.get(baseURL + "statuses/featured.xml", true).
@@ -304,7 +303,7 @@ public class Twitter implements java.io.Serializable {
      * Returns extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
      * @param id String
      * @return User
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized UserWithStatus getUserDetail(String id) throws
         TwitterException {
@@ -316,7 +315,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns a list of the direct messages sent to the authenticating user.
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<DirectMessage> getDirectMessages() throws
         TwitterException {
@@ -328,7 +327,7 @@ public class Twitter implements java.io.Serializable {
      * Returns a list of the direct messages sent to the authenticating user.
      * @param since Date
      * @return List
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<DirectMessage> getDirectMessages(Date since) throws
         TwitterException {
@@ -342,7 +341,7 @@ public class Twitter implements java.io.Serializable {
      * @param id String
      * @param text String
      * @return DirectMessage
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
 
     public final synchronized DirectMessage sendDirectMessage(String id,
@@ -360,9 +359,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      * @param id String
-     * @param text String
      * @return DirectMessage
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
 
     public final synchronized User create(String id) throws TwitterException {
@@ -373,9 +371,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      * @param id String
-     * @param text String
      * @return DirectMessage
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized User destroy(String id) throws TwitterException {
         return new User(http.get(baseURL + "friendships/destroy/" + id + ".xml", true).

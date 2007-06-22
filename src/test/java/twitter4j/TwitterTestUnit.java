@@ -98,9 +98,9 @@ public class TwitterTestUnit extends TestCase {
     public void testGetUserTimeline_Show() throws Exception{
         List<Status> statuses;
         statuses = twitterAPI2.getUserTimeline(id1);
-        assertTrue("size", 5 < statuses.size());
+        assertTrue("size", 1 < statuses.size());
         statuses = twitterAPI2.getUserTimeline(id1, 10);
-        assertTrue("size", 5 < statuses.size());
+        assertTrue("size", 1 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(15, new Date(0));
         assertTrue("size", 1 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(id1, new Date(0));
@@ -190,5 +190,12 @@ public class TwitterTestUnit extends TestCase {
             assertEquals(403, te.getStatusCode());
         }
 
+    }
+    public void testGetReplies() throws Exception{
+        twitterAPI2.update("@"+id1+" reply to id1");
+        List<Status> statuses = twitterAPI1.getReplies();
+        assertTrue(statuses.size() > 0);
+        assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
+        
     }
 }
