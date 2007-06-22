@@ -1,6 +1,13 @@
 package twitter4j;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Document;
+
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
 
 /**
  * Super class of Twitter Response objects.
@@ -18,12 +25,22 @@ public class TwitterResponse implements java.io.Serializable {
     }
     protected void ensureRootNodeNameIs(String rootName) throws TwitterException{
         if(!rootName.equals(elem.getNodeName())){
-            throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.");
+            throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.\n"+toString(elem));
         }
     }
     protected static void ensureRootNodeNameIs(String rootName,Element elem) throws TwitterException{
         if(!rootName.equals(elem.getNodeName())){
-            throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.");
+            throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.\n"+toString(elem));
+        }
+    }
+
+    private static String toString(Element doc) {
+        try{
+        StringWriter output = new StringWriter();
+        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult(output));
+        return output.toString();
+        }catch(TransformerException tfe){
+            return "";
         }
     }
 
