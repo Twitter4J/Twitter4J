@@ -185,7 +185,7 @@ public class AsyncTwitter extends Twitter {
      *
      * Updates the user's status asynchronously
      * @param status String
-     * @param TwittterListener<Status>
+     * @param listener TwittterListener
 
      */
     public void updateAsync(String status, TwitterListener listener) {
@@ -199,8 +199,6 @@ public class AsyncTwitter extends Twitter {
      *
      * Updates the user's status asynchronously
      * @param status String
-     * @param TwittterListener<Status>
-
      */
     public void updateAsync(String status) {
         dispatcher.invokeLater(new AsyncTask(UPDATE,  new TwitterAdapter(), new String[] {status}) {
@@ -312,6 +310,18 @@ public class AsyncTwitter extends Twitter {
         dispatcher.invokeLater(new AsyncTask(SEND_DIRECT_MESSAGE, null, new String[] {id, text}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.sentDirectMessage(sendDirectMessage( (String) args[0], (String) args[1]));
+            }
+        });
+    }
+
+    /**
+     * Delete specified direct message
+     * @param id int
+     */
+    public final synchronized void deleteDirectMessageAsync(int id, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {id}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.deletedDirectMessage(deleteDirectMessage( ((Integer) args[0]).intValue()));
             }
         });
     }

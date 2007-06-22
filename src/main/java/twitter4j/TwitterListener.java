@@ -19,6 +19,7 @@ public interface TwitterListener{
     public void gotUserDetail(UserWithStatus userWithStatus);
     public void gotDirectMessages(List<DirectMessage> messages);
     public void sentDirectMessage(DirectMessage message);
+    public void deletedDirectMessage(DirectMessage message);
     public void created(User user);
     public void destroyed(User user);
     /**

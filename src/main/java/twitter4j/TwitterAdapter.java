@@ -34,6 +34,8 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void sentDirectMessage(DirectMessage message){
     }
+    public void deletedDirectMessage(DirectMessage message){
+    }
     public void created(User user){
     }
     public void destroyed(User user){

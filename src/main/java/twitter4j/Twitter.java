@@ -356,6 +356,19 @@ public class Twitter implements java.io.Serializable {
                                  asDocument().getDocumentElement(), this);
     }
 
+
+    /**
+     * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
+     * @param id
+     * @return DirectMessage
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized DirectMessage deleteDirectMessage(int id) throws
+        TwitterException {
+        return new DirectMessage(http.get(baseURL +
+            "direct_messages/destroy/"+id+".xml", true).asDocument().getDocumentElement(), this);
+    }
+
     /**
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      * @param id String

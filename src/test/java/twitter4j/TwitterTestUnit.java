@@ -161,6 +161,12 @@ public class TwitterTestUnit extends TestCase {
         //http://yusuke.homeip.net/jira/browse/TFJ-4
         actualReturn = twitterAPI1.getDirectMessages(new Date());
         assertEquals(0,actualReturn.size());
+
+        actualReturn = twitterAPI1.getDirectMessages();
+        int size = actualReturn.size();
+        message = twitterAPI1.deleteDirectMessage(actualReturn.get(0).getId());
+        assertEquals(message.getId(),actualReturn.get(0).getId());
+        assertEquals(size - 1, twitterAPI1.getDirectMessages().size());
     }
     public void testCreateDestroyFriend() throws Exception{
         User user;
