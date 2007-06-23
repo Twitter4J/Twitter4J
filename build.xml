@@ -29,7 +29,6 @@
         </delete>
     </target>
 
-
     <target name="prepare">
         <mkdir dir="${classes}"/>
         <mkdir dir="${build}"/>
@@ -106,15 +105,56 @@
     </target>
 
     <target name="jar" if="jarName">
-        <jar jarfile="${jarName}" basedir="${build}/classes">
+        <jar jarfile="${version}.jar" basedir="${build}/${classes}">
             <zipfileset src="${lib}/commons-codec-1.3.jar"/>
         </jar>
     </target>
 
     <target name="finish" depends="test" unless="failTest">
         <copy todir="${classes}">
-            <fileset dir="${build}/classes"/>
+            <fileset dir="${build}/${classes}"/>
         </copy>
     </target>
+
+    <target name="release" depends="jar">
+        <mkdir dir="${version}"/>
+        <mkdir dir="${version}/${src}"/>
+        <mkdir dir="${version}/${test}"/>
+        <mkdir dir="${version}/bin"/>
+        <mkdir dir="${version}/${classes}"/>
+        <mkdir dir="${version}/${lib}"/>
+
+        <copy todir="${version}/${src}">
+            <fileset dir="${src}"/>
+        </copy>
+        <copy todir="${version}/${test}">
+            <fileset dir="${test}"/>
+        </copy>
+        <copy todir="${version}/bin">
+            <fileset dir="bin"/>
+        </copy>
+        <copy todir="${version}/${classes}">
+            <fileset dir="${classes}"/>
+        </copy>
+        <copy todir="${version}/${lib}">
+            <fileset dir="${lib}"/>
+        </copy>
+        <copy todir="${version}">
+            <fileset file="${version}.jar"/>
+        </copy>
+        <copy todir="${version}">
+            <fileset file="LICENSE.txt"/>
+        </copy>
+        <copy todir="${version}">
+            <fileset file="build.properties"/>
+        </copy>
+        <copy todir="${version}">
+            <fileset file="build.xml"/>
+        </copy>
+        <copy todir="${version}">
+            <fileset file="pom.xml"/>
+        </copy>
+    </target>
+
     <target name="all" depends="prepare,compile,test,jar,javadoc,finish"/>
 </project>
