@@ -12,10 +12,6 @@
         <pathelement path="${java.class.path}"/>
     </path>
     <target name="clean">
-        <echo file="${classes}"/>
-        <echo message="${build}"/>
-        <echo message="${doc}"/>
-        <echo message="${reports}"/>
         <delete includeEmptyDirs="true">
             <fileset dir="${classes}" includes="*/**"/>
             <fileset dir="${build}" includes="*/**"/>
