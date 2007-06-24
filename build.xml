@@ -104,6 +104,7 @@
                  destdir="${doc}"
                  windowtitle="${projectName}"
                  author="true"
+                Locale="en_US"
                  docencoding="UTF-8"
                  version="true">
         </javadoc>
