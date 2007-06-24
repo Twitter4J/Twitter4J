@@ -12,16 +12,25 @@
         <pathelement path="${java.class.path}"/>
     </path>
     <target name="clean">
+        <mkdir dir="${classes}"/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build}/classes"/>
+        <mkdir dir="${build}/testclasses"/>
+        <mkdir dir="${doc}"/>
+        <mkdir dir="${reports}"/>
+        <mkdir dir="${version}"/>
         <delete includeEmptyDirs="true">
             <fileset dir="${classes}" includes="*/**"/>
             <fileset dir="${build}" includes="*/**"/>
             <fileset dir="${doc}" includes="*/**"/>
             <fileset dir="${reports}" includes="*/**"/>
+            <fileset dir="${version}" includes="*/**"/>
 
             <fileset dir="./" includes="${classes}"/>
             <fileset dir="./" includes="${build}"/>
             <fileset dir="./" includes="${doc}"/>
             <fileset dir="./" includes="${reports}"/>
+            <fileset dir="./" includes="${version}"/>
         </delete>
     </target>
 
@@ -100,13 +109,13 @@
         </javadoc>
     </target>
 
-    <target name="jar" if="jarName">
+    <target name="jar" if="version">
         <jar jarfile="${version}.jar" basedir="${build}/${classes}">
             <zipfileset src="${lib}/commons-codec-1.3.jar"/>
         </jar>
     </target>
 
-    <target name="finish" depends="test" unless="failTest">
+    <target name="finish">
         <copy todir="${classes}">
             <fileset dir="${build}/${classes}"/>
         </copy>
@@ -116,6 +125,7 @@
         <mkdir dir="${version}"/>
         <mkdir dir="${version}/${src}"/>
         <mkdir dir="${version}/${test}"/>
+        <mkdir dir="${version}/${doc}"/>
         <mkdir dir="${version}/bin"/>
         <mkdir dir="${version}/${classes}"/>
         <mkdir dir="${version}/${lib}"/>
@@ -125,6 +135,9 @@
         </copy>
         <copy todir="${version}/${test}">
             <fileset dir="${test}"/>
+        </copy>
+        <copy todir="${version}/${doc}">
+            <fileset dir="${doc}"/>
         </copy>
         <copy todir="${version}/bin">
             <fileset dir="bin"/>
