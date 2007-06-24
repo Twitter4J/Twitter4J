@@ -1,0 +1,152 @@
+@charset
+"UTF-8"
+;
+body {
+    text-align: center;
+    font-family: Verdana, Arial, sans-serif;
+    margin: 3px;
+    padding: 0px;
+    background-image: url( ../images/background.gif );
+    background-attachment: fixed;
+}
+
+.logo {
+    width: 800px;
+    height: 71px;
+    background-image: url( ../images/logo2.jpg );
+    cursor: pointer;
+}
+
+h1, h2, h3 {
+    color: #43A;
+}
+
+.center {
+    width: 800px;
+    margin: 10px auto 30px auto;
+    position: relative;
+    font-size: 90%;
+    color: #314;
+    background-color: #FFF;
+    text-align: left;
+}
+
+.transparent {
+    position: fixed;
+    position: expression( "absolute" );
+    top: expression( 0 +( ignoreMe = document . body . scrollTop ) + 'px' );
+    width: 200px;
+    height: 200px;
+    background-color: #FFF;
+    filter: alpha( opacity = 70 );
+    -moz-opacity: 0.70;
+    opacity: 0.70;
+}
+
+.options th {
+    font-size: 90%;
+    background-color: #ABF;
+}
+
+.options td {
+    background-color: #CDF;
+}
+
+.left {
+    z-index: 2;
+    text-align: left;
+    position: fixed;
+    position: expression( "absolute" );
+    top: 12px;
+    top: expression( 10 +( ignoreMe = document . body . scrollTop ) + 'px' );
+    width: 200px;
+    font-size: 90%;
+}
+
+.left ul {
+    list-style: none;
+}
+
+.left ol {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 1 5;
+}
+
+.content {
+    position: relative;
+    width: 600px;
+    left: 200px;
+    top: 0px;
+    text-align: left;
+}
+
+ul {
+    list-style: disc;
+    margin: 10px 0;
+    padding: 0 0 5px;
+}
+
+li {
+    margin-bottom: 6px;
+    padding-left: 12px;
+}
+
+.numberedlist {
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+
+.numberedlist a {
+    color: #314;
+}
+
+.download {
+    border: solid 1px;
+    border-color: #FFF;
+}
+
+.download:hover {
+    color: #04D;
+}
+
+a {
+    text-decoration: none;
+    color: #049;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #049;
+}
+
+a:hover {
+    color: #04D;
+    text-decoration: underline;
+}
+
+img {
+    border: 0px;
+}
+
+.codeSample {
+    padding: 3px;
+    border: 1px solid #AA9;
+    width: 97%;
+    overflow: auto;
+    overflow-y: hidden;
+    _overflow-x: scroll;
+    background-color: #FFD;
+}
+
+.screenshot {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 90%;
+}
+
+.screenshot img {
+    padding: 2px;
+    background: #aaa;
+    border: 1px solid #999;
+}
