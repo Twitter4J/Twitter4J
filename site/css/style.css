@@ -20,6 +20,14 @@ body {
 h1, h2, h3 {
     color: #43A;
 }
+.history h2{
+    font-size:100%;
+    color: #314;
+}
+.history ul{
+    list-style: none;
+
+}
 
 .center {
     width: 800px;
