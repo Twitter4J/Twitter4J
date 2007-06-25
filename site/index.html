@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ $[ja:<head xml:lang="ja" lang="ja">]$[en:<head xml:lang="en" lang="en">]
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Language" content="$[ja:ja]$[en:en]">
+  <link rel="shortcut icon" href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/favicon.ico" type="image/x-icon">
+  <title>Twitter4J</title>
+  <link rel="stylesheet" href="css/style.css" type="text/css" >
+  <link rel="stylesheet" href="lightbox/lightbox.css" type="text/css" >
+  <script type="text/javascript" src="lightbox/spica.js"></script>
+  <script type="text/javascript" src="lightbox/lightbox_plus.js"></script>
+  <script type="text/javascript" src="js/gracefulscroll.js"></script>
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://yusuke.homeip.net/twitter4j/rss.xml">
+</head>
+  <body>
+
+<div class="center" id="center">
+<a name="top"><div onclick="location.href='./index.html'" class="logo"><div class="transparent"></div></div></a>
+<div class="left" id="left">
+	<div style="text-align:center">$[ja:<a href="../en/index.html">English</a> | Japanese]$[en:English | <a href="../ja/index.html">Japanese</a>]</div>
+
+<ul>
+<li><a href="#introduction" onclick="return scrollGracefully(this.href)">$[ja:トップ]$[en:Introduction]</a></li>
+<li><a href="#systemRequirements" onclick="return scrollGracefully(this.href)">$[ja:システム要件]$[en:System Requirements]</a></li>
+<li><a href="#howToUse" onclick="return scrollGracefully(this.href)">$[ja:使い方]$[en:How To Use]</a></li>
+<li><a href="#codeSamples" onclick="return scrollGracefully(this.href)">$[ja:コードサンプル]$[en:Code Samples]</a></li>
+ <ol>
+  <li><a href="#updatingStatus" onclick="return scrollGracefully(this.href)">$[ja:スタテータスの更新]$[en:Updating status]</a></li>
+  <li><a href="#gettingTimeline" onclick="return scrollGracefully(this.href)">$[ja:タイムラインの取得]$[en:Getting Timeline]</a></li>
+  <li><a href="#directMessage" onclick="return scrollGracefully(this.href)">$[ja:ダイレクトメッセージ]$[en:Direct Messages]</a></li>
+  <li><a href="#asyncAPI" onclick="return scrollGracefully(this.href)">$[ja:非同期API]$[en:Asyn API]</a></li>
+ </ol>
+<li><a href="./javadoc/index.html">JavaDoc</a></li>
+<li><a href="#mailingList" onclick="return scrollGracefully(this.href)">$[ja:メーリングリスト]$[en:Mailing list]</a></li>
+<li><a href="#license" onclick="return scrollGracefully(this.href)">$[ja:ライセンス]$[en:License]</a></li>
+<li><a href="#versionHistory" onclick="return scrollGracefully(this.href)">$[ja:変更履歴]$[en:Version History]</a></li>
+</ul>
+<center>
+<a name="download"><h3>$[ja:ダウンロード]$[en:Download]</h3></a>
+<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.1.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
+    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.1.zip">twitter4j-1.0.1.zip</a>
+    <br><br>
+<include>paypal.html</include>
+<include>adsense200x200.html</include>
+</center>
+<!--script src="http://images.del.icio.us/static/js/blogbadge.js"></script>
+<script type="text/javascript">
+//digg_url = document.location.href;
+digg_url = "http://yusuke.homeip.net/komuso/ja/";
+digg_bgcolor = '#ff9900';
+digg_skin = 'compact';
+</script>
+<script src="http://digg.com/tools/diggthis.js" type="text/javascript"></script-->
+
+</div>
+
+
+<div class="content" id="content">
+    <a name="introduction"><h2>$[ja:Twitter4Jとは？]$[en:Introduction]</h2></a>
+    <p>$[ja:Twitter4J は <a href="http://groups.google.com/group/twitter-development-talk/web/api-documentation">TwitterAPI</a> の Java ラッパです。<br>
+    Twitter4J を使うと XML や HTTP に詳しくなくても容易に Twitter とインタラクトするアプリケーションを書くことが出来ます。]
+$[en:Twitter4J is a Java library for <a href="http://groups.google.com/group/twitter-development-talk/web/api-documentation">TwitterAPI</a>.<br>
+    With Twitter4J, you can easily integrate your application with the Twitter service.]</p>
+<center><include>adsense468x60.html</include></center>
+    <a name="systemRequirements"><h2>$[ja:システム要件]$[en:System Requirements]</h2></a>
+    <p>$[ja:OS: Java をサポートする Windows または Unix 系 OS<br>
+JVM: JDK1.4.2 以降]
+$[en:OS: Windows or any flavor of Unix that supports Java.<br>
+JVM: JDK1.4.2 or later]</p>
+</ul>
+
+    <a name="howToUse"><h2>$[ja:使い方]$[en:How To Use]</h2></a>
+    <p>$[ja:twitter4j-1.0.1.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
+    Java が分かっていれば <a href="./javadoc/index.html">JavaDoc</a> を見るのが早いです。<br>
+    twitter4j.<a href="javadoc/twitter4j/Twitter.html">Twitter</a> クラスが最初に見るべきクラスです。]
+    $[en:It's as simple as adding twitter4j-1.0.1.jar to your classpath.<br>
+    If you are familiar with Java language, the <a href="./javadoc/index.html">JavaDoc</a> should be <a href="http://obvious.com/">Obvious</a>ly the shortest way for you to understand Twitter4J.<br>
+    <a href="javadoc/twitter4j/Twitter.html">twitter4j.Twitter</a> class is the one you may want to look first.]</p>
+
+    <a name="codeSamples"><h2>$[ja:コードサンプル]$[en:Code Samples]</h2></a>
+    <p>$[ja:サンプルコードは src/twitter4j/examples/ 以下に配置されています。<br>
+    それぞれ bin/<i>className</i>.cmd|sh で実行できます。]
+    $[en:Sample codes are located at src/twitter4j/examples/ and you can run each classs using bin/<i>className</i>.cmd|sh.]
+    </p>
+    <ol class="main">
+<li class="numberedlist"><a name="updatingStatus">$[ja:スタテータスの更新]$[en:Updating status]</a></li>
+<p>$[ja:Twitter.<a href="javadoc/twitter4j/Twitter.html#update(java.lang.String)">update()</a> メソッドで&quot;今なにをしているか&quot;を更新することができます。<br>
+詳しくは twitter4j.examples.<a href="javadoc/twitter4j/examples/Update.html">Update</a>.java をご覧ください。]
+$[en:You can update &quot;What are you doing?&quot; via Twitter.<a href="javadoc/twitter4j/Twitter.html#update(java.lang.String)">update()</a> method.<br>
+See also twitter4j.examples.<a href="javadoc/twitter4j/examples/Update.html">Update</a>.java for detail.]
+<pre class="codeSample">
+    Twitter twitter = new Twitter(twitterID,twitterPassword);
+    Status status = twitter.update(latestStatus);
+    System.out.println("Successfully updated the status to [" + status.getText() + "].");
+</pre>
+</p>
+<li class="numberedlist"><a name="gettingTimeline">$[ja:タイムラインの取得]$[en:Getting Timeline]</a></li>
+<p>$[ja:Twitter.<a href="javadoc/twitter4j/Twitter.html#getPublicTimeline()">get****Timeline()</a> メソッドで友達、パブリック、または指定ユーザの最近のタイムラインを返します。<br>
+詳しくは twitter4j.examples.<a href="javadoc/twitter4j/examples/GetTimelines.html">GetTimelines</a>.java をご覧ください。]
+$[en:Twitter.<a href="javadoc/twitter4j/Twitter.html#getPublicTimeline()">get****Timeline()</a> returns a List of public, friends or specified user's timeline.<br>
+See also twitter4j.examples.<a href="javadoc/twitter4j/examples/GetTimelines.html">GetTimelines</a>.java for detail.]
+<pre class="codeSample">
+    Twitter twitter = new Twitter(twitterID,twitterPassword);
+    statuses = twitter.getFriendsTimeline();
+    System.out.println("Showing friends timeline.");
+    for (Status status : statuses) {
+        System.out.println(status.getUser().getName() + ":" +
+                           status.getText());
+    }
+</pre>
+</p>
+
+<li class="numberedlist"><a name="directMessage">$[ja:ダイレクトメッセージの送受信]$[en:Sending / Receiving Direct Messages]</a></li>
+<p>$[ja:Twitter.<a href="javadoc/twitter4j/Twitter.html#sendDirectMessage()">sendDirectMessage()</a> / Twitter.<a href="javadoc/twitter4j/Twitter.html#getDirectMessages()">getDirectMessages()</a> メソッドでダイレクトメッセージの送受信ができます。<br>
+このメッセージは送信した相手にしか見えません。<br>
+詳しくは twitter4j.examples.<a href="javadoc/twitter4j/examples/GetDirectMessages.html">Get</a>/<a href="javadoc/twitter4j/examples/SendDirectMessage.html">SendDirectMessage</a>(s).java をご覧ください。]
+$[en:You can send and receive direct messages via Twitter.<a href="javadoc/twitter4j/Twitter.html#sendDirectMessage()">sendDirectMessage()</a> / Twitter.<a href="javadoc/twitter4j/Twitter.html#getDirectMessages()">getDirectMessages()</a>.<br>
+See also twitter4j.examples.<a href="javadoc/twitter4j/examples/GetDirectMessages.html">Get</a>/<a href="javadoc/twitter4j/examples/SendDirectMessage.html">SendDirectMessage</a>(s).java for detail.]
+<pre class="codeSample">
+    Twitter twitter = new Twitter(senderID,senderPassword);
+    sender.sendDirectMessage(recipientId,message);
+    Twitter receiver = new Twitter(recipientId,recipientPassword);
+    List<DirectMessage> messages = receiver.getDirectMessages();
+    for (DireceMessage message : messages) {
+        System.out.println("Sender:" + message.getSenderScreenName());
+        System.out.println("Text:" + message.getText() + "\n");
+    }
+</pre>
+</p>
+
+<li class="numberedlist"><a name="asyncAPI">$[ja:非同期API]$[en:Asynchronous API]</a></li>
+<p>$[ja:非同期APIを使うと実際のメソッドコールの終了を待たずして処理を続行することができます。<br>
+実際のメソッドコールは別のスレッドで行われ、処理の結果は TwitterListener インターフェースにて受信できます。<br>
+非同期 API を使うには <a href="javadoc/twitter4j/Twitter.html">Twitter</a> クラスの替わりに twitter4j.<a href="javadoc/twitter4j/AsyncTwitter.html">AsyncTwitter</a> クラスを使い、***Async() メソッドを twitter4j.<a href="javadoc/twitter4j/TwitterListener.html">TwitterListener</a> のインスタンスと共に呼び出します。<br>
+詳しくは twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html">AsyncUpdate</a>.java をご覧ください。]
+$[en:It is possible to call those time consuming TwitterAPI asynchronously using twitter4j.<a href="javadoc/twitter4j/AsyncTwitter.html">AsyncTwitter</a> class along with <a href="javadoc/twitter4j/TwitterListener.html">TwitterListener</a>.<br>
+Actual method calls will be done in a separate thread and you can get the responses through <a href="javadoc/twitter4j/TwitterListener.html">TwitterListener</a> interface.<br>
+See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html">AsyncUpdate</a>.java for detail.]
+<pre class="codeSample">
+    AsyncTwitter twitter = new AsyncTwitter(senderId,senderPassword);
+    twitter.updateAsync(args[2], new TwitterAdapter() {
+        @Override public void updated(Status status) {
+        System.out.println("Successfully updated the status to [" +
+                   status.getText() + "].");
+        synchronized (lock) {
+            lock.notify();
+        }
+        }
+
+        @Override public void onException(TwitterException e, int method) {
+        if (method == UPDATE) {
+            e.printStackTrace();
+            synchronized (lock) {
+            lock.notify();
+            }
+        } else {
+            synchronized (lock) {
+            lock.notify();
+            }
+            throw new AssertionError("Should not happen");
+        }
+        }
+    }
+    );
+</pre>
+</p>
+
+
+
+
+</ol>
+    <a name="mailingList"><h2>$[ja:メーリングリスト]$[en:Mailing list]</h2></a>
+    <p>$[ja:Twitter4J に関する質問、バグレポート、リクエストなどありましたら以下のメーリングリストにお気軽にどうぞ。<br>
+<table border=0 style="background-color: #fff; padding: 5px;" cellspacing=0>
+  <tr><td>
+    <img src="http://groups.google.com/groups/img/3/groups_bar_ja.gif"
+         height=26 width=132 alt="Google グループ">
+  </td></tr>
+  <tr><td style="padding-left: 5px"> <b>Twitter4J Jに参加</b> </td></tr>
+  <form action="http://groups.google.com/group/twitter4j-j/boxsubscribe">
+  <tr><td style="padding-left: 5px;"> メール アドレス: <input type=text name=email>
+           <input type=submit name="sub" value="登録">
+  </td></tr>
+</form>
+<tr><td align=right> <a href="http://groups.google.com/group/twitter4j-j">このグループにアクセス</a> </td></tr>
+</table>
+バグ、ロードマップなどについては Jira に登録してあります。<br>
+    <a href="http://yusuke.homeip.net/jira/browse/TFJ">Jira へ</a>
+    ]
+    $[en:Any comment, bug report, feature request or patch is highly welcomed.<br>
+    Feel free to post your comments to the mailing list.<br>
+<table border=0 style="background-color: #fff; padding: 5px;" cellspacing=0>
+  <tr><td>
+    <img src="http://groups.google.com/groups/img/3/groups_bar.gif"
+         height=26 width=132 alt="Google Groups">
+  </td></tr>
+  <tr><td style="padding-left: 5px">
+    <b>Subscribe to Twitter4J</b>
+  </td></tr>
+  <form action="http://groups.google.com/group/twitter4j/boxsubscribe">
+  <tr><td style="padding-left: 5px;">
+    Email: <input type=text name=email>
+           <input type=submit name="sub" value="Subscribe">
+  </td></tr>
+</form>
+<tr><td align=right>
+  <a href="http://groups.google.com/group/twitter4j">Visit this group</a>
+</td></tr>
+</table>
+<br>
+Known bugs and feature requests will be filed to the Jira site.<br>
+    <a href="http://yusuke.homeip.net/jira/browse/TFJ">Go to Jira</a>
+    ]
+    </p>
+
+    <a name="license"><h2>$[ja:ライセンス]$[en:License]</h2></a>
+$[ja:Twitter4J は BSD ライセンスに基づいてリリースされています。<br>
+Twitter4J にバンドルされている <a href="http://jakarta.apache.org/commons/codec/">Apache Commons Codec</a> は <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache Software License</a> に基づいています。]
+$[en:Twitter4J is released under the BSD license.<br>
+Twitter4J bundles <a href="http://jakarta.apache.org/commons/codec/">Apache Commons Codec</a> which is released under the <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache Software License</a> .]
+<hr/>
+<pre class="codeSample">
+Copyright (c) 2007, Yusuke Yamamoto
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Yusuke Yamamoto nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY Yusuke Yamamoto ``AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL Yusuke Yamamoto BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre>
+
+    <a name="pricing"><h2>$[ja:価格]$[en:Pricing]</h2></a>
+$[ja:Twitter4J はどなたでも商標、非商用にかかわらず無償でご利用いただけます。<br>
+もし Twitter4J があなたの生活を豊かにしてくれると感じたならば、以下の PayPal バッジから寄付していただくことも可能です。<br>
+<br>
+]$[en:Twitter4J is an opensourced software and free of charge.<br>
+You can use Twitter4J freely for any commercial or non-commercial project.<br>
+If you feel Twitter4J makes your life easier, please do consider making a donation!<br><br>]
+<include>paypal.html</include>
+    
+
+<div class="history">
+    <a name="versionHistory"><h2>$[ja:変更履歴]$[en:Vesion History] <a href="./rss.xml"><img src="images/rss.png" width="36" height="20"/></a></h2></a>
+    <ul>
+<!--
+<li>2.0.</li>
+$[ja:]$[en:]
+-->
+<li>$[ja:バージョン ]$[en:Version ]1.0.1 <font color="red">new!</font></li>
+    <h2>        $[ja:修正されたバグ]$[en:Resolved Issues]
+    </h2>
+    <ul>
+    <li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-2'>TFJ-2</a>] -         $[ja:Twitter#getUserDetail() で NullPointerException が発生する]$[en:Twitter#getUserDetail() throws NullPointerException]
+    </li>
+    <li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-3'>TFJ-3</a>] -         $[ja:Twitter#getFriends() で取得したUserインスタンスのうちいくつかのメソッドで NullPointerException が発生する]$[en:some methods of User instance retrieved from Twitter#getFriends() throw NullPointerException]
+    </li>
+    <li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-4'>TFJ-4</a>] -         $[ja:getDirectMessages() で取得したダイレクトメッセージの件数が０件だと TwitterException が発生する]$[en]getDirectMessages() throws TwitterException when response contains no messages]
+    </li>
+    <li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-5'>TFJ-5</a>] -         $[ja:Twitter#getReplies() で TwitterException が発生する]$[en:Twitter#getReplies() throws TwitterException]
+    </li>
+    <li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-6'>TFJ-6</a>] -         $[ja:Twitterサービスのメンテナンス時に NullPointerException が発生する]$[en:NullPointerException throwed during Twitter service maintenance]
+    </li>
+    </ul>
+
+    <h2>       $[ja:新機能]$[en:New Feature]
+    </h2>
+    <ul>
+    <li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-1'>TFJ-1</a>] -         $[ja:ダイレクトメッセージ削除APIのサポート]$[en:need support for destroying directmessage]
+    </li>
+    </ul>
+
+<li>$[ja:バージョン ]$[en:Version ]1.0.0</li>
+$[ja:初期バージョンリリース]$[en:Released Initial Version]
+    <!--a name="todo"><h2>$[ja:Todo]$[en:Todo]</h2></a>
+ <ul>
+   <li>$[ja:もうすこしキレイなロゴ]$[en:fancy logo]</li>
+ </ul-->
+</ul>
+</div>
+<center><include>adsense468x60.html</include></center>
+</div>
+</div>
+<include>urchin.html</include>
+  </body>
+</html>
