@@ -9,7 +9,6 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.Base64;
 import twitter4j.TwitterException;
 
 /**
@@ -29,7 +28,7 @@ public class HttpClient implements java.io.Serializable {
     private int retryIntervalMillis = 10000;
     public HttpClient(String userId, String password) {
         this.basic = "Basic " +
-            new String(Base64.encodeBase64( (userId + ":" + password).getBytes()));
+            new String(new sun.misc.BASE64Encoder().encode((userId + ":" + password).getBytes()));
     }
 
     public HttpClient() {

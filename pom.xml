@@ -5,7 +5,7 @@
     <groupId>twitter4j</groupId>
     <artifactId>twitter4j</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>twitter4j</name>
     <url>http://yusuke.homeip.net/twitter4j/</url>
     <dependencies>
@@ -19,12 +19,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>nlog4j</artifactId>
             <version>1.2.25</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

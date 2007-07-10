@@ -111,9 +111,7 @@
     </target>
 
     <target name="jar" if="version">
-        <jar jarfile="${version}.jar" basedir="${build}/${classes}">
-            <zipfileset src="${lib}/commons-codec-1.3.jar"/>
-        </jar>
+        <jar jarfile="${version}.jar" basedir="${build}/${classes}"/>
     </target>
 
     <target name="finish">
