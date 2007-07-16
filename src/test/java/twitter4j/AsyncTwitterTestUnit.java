@@ -65,6 +65,9 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void gotDirectMessages(List<DirectMessage> messages) {
         this.messages = messages;
     }
+    public void gotSentDirectMessages(List<DirectMessage> messages) {
+        this.messages = messages;
+    }
 
     public void sentDirectMessage(DirectMessage message) {
         this.message = message;

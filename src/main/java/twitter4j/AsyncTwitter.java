@@ -298,6 +298,51 @@ public class AsyncTwitter extends Twitter {
             }
         });
     }
+    /**
+     * Returns a list of the direct messages sent to the authenticating user.
+     * @param sinceId int
+     */
+    public final synchronized void getDirectMessagesAsync(int sinceId, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {sinceId}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotDirectMessages(getDirectMessages( (Integer) args[0]));
+            }
+        });
+    }
+    /**
+     * Returns a list of the direct messages sent by the authenticating user.
+     */
+    public final synchronized void getSentDirectMessagesAsync(TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(DIRECT_MESSAGES, listener,null) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotSentDirectMessages(getSentDirectMessages());
+            }
+        });
+    }
+
+    /**
+     * Returns a list of the direct messages sent by the authenticating user.
+     * @param since Date
+     */
+    public final synchronized void getSentDirectMessagesAsync(Date since, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {since}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotSentDirectMessages(getSentDirectMessages( (Date) args[0]));
+            }
+        });
+    }
+    /**
+     * Returns a list of the direct messages sent by the authenticating user.
+     * @param sinceId Date
+     */
+    public final synchronized void getSentDirectMessagesAsync(int sinceId, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {sinceId}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotSentDirectMessages(getSentDirectMessages( (Integer) args[0]));
+            }
+        });
+    }
+
 
     public synchronized void sendDirectMessageAsync(String id, String text, TwitterListener listener) {
         dispatcher.invokeLater(new AsyncTask(SEND_DIRECT_MESSAGE, listener, new String[] {id, text}) {

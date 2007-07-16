@@ -325,6 +325,17 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * Returns a list of the direct messages sent to the authenticating user.
+     * @param sinceId int
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<DirectMessage> getDirectMessages(int sinceId) throws
+        TwitterException {
+        return DirectMessage.constructDirectMessages(http.get(baseURL +
+            "direct_messages.xml?since=" + sinceId, true).asDocument(), this);
+    }
+    /**
+     * Returns a list of the direct messages sent to the authenticating user.
      * @param since Date
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
@@ -335,6 +346,39 @@ public class Twitter implements java.io.Serializable {
             "direct_messages.xml?since=" + formatDate(since), true).asDocument(), this);
     }
 
+    /**
+     * Returns a list of the direct messages sent by the authenticating user.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<DirectMessage> getSentDirectMessages() throws
+        TwitterException {
+        return DirectMessage.constructDirectMessages(http.get(baseURL +
+            "direct_messages/sent.xml", true).asDocument(), this);
+    }
+
+    /**
+     * Returns a list of the direct messages sent by the authenticating user.
+     * @param since Date
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<DirectMessage> getSentDirectMessages(Date since) throws
+        TwitterException {
+        return DirectMessage.constructDirectMessages(http.get(baseURL +
+            "direct_messages/sent.xml?since=" + formatDate(since), true).asDocument(), this);
+    }
+    /**
+     * Returns a list of the direct messages sent by the authenticating user.
+     * @param sinceId int
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<DirectMessage> getSentDirectMessages(int sinceId) throws
+        TwitterException {
+        return DirectMessage.constructDirectMessages(http.get(baseURL +
+            "direct_messages/sent.xml?since_id=" + sinceId, true).asDocument(), this);
+    }
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimed if the length of the text is exceeding 140 characters.

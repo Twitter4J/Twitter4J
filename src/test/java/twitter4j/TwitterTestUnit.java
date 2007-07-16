@@ -169,6 +169,11 @@ public class TwitterTestUnit extends TestCase {
         message = twitterAPI1.deleteDirectMessage(actualReturn.get(0).getId());
         assertEquals(message.getId(),actualReturn.get(0).getId());
         assertTrue(10< twitterAPI1.getDirectMessages().size());
+
+        actualReturn = twitterAPI1.getSentDirectMessages();
+        assertTrue(5 < actualReturn.size());
+        assertEquals(id1 , actualReturn.get(0).getSender().getName());
+        assertEquals(id2 , actualReturn.get(0).getRecipient().getName());
     }
     public void testCreateDestroyFriend() throws Exception{
         User user;

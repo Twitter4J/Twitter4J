@@ -32,6 +32,8 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotDirectMessages(List<DirectMessage> messages){
     }
+    public void gotSentDirectMessages(List<DirectMessage> messages){
+    }
     public void sentDirectMessage(DirectMessage message){
     }
     public void deletedDirectMessage(DirectMessage message){
