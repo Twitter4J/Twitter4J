@@ -23,7 +23,7 @@ public class Twitter implements java.io.Serializable {
         setRequestHeader("X-Twitter-Client", "Twitter4J");
         setRequestHeader("X-Twitter-Client-Version", "1.0.2");
         setRequestHeader("X-Twitter-Client-URL",
-                              "http://yusuke.homeip.net/twitter4j/en/twitter4j.xml");
+                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.2.xml");
         source = "Twitter4J";
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
@@ -38,7 +38,7 @@ public class Twitter implements java.io.Serializable {
         http.setRequestHeader("X-Twitter-Client", "Twitter4J");
         http.setRequestHeader("X-Twitter-Client-Version", "1.0.2");
         http.setRequestHeader("X-Twitter-Client-URL",
-                              "http://yusuke.homeip.net/twitter4j/en/twitter4j.xml");
+                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.2.xml");
         source = "Twitter4J";
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
