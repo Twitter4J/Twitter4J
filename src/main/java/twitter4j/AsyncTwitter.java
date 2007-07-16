@@ -69,6 +69,18 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
+     * @param page int
+     */
+    public final synchronized void getFriendsTimelineByPageAsync(int page, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimelineByPage( (Integer) args[0]));
+            }
+        });
+    }
+
+    /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
      * @param id String user ID
      */
@@ -76,6 +88,19 @@ public class AsyncTwitter extends Twitter {
         dispatcher.invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriendsTimeline(getFriendsTimeline( (String) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
+     * @param id String user ID
+     * @param page int
+     */
+    public final synchronized void getFriendsTimelineByPageAsync(String id,int page, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id,page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimelineByPage( (String) args[0],(Integer)args[1]));
             }
         });
     }
@@ -230,6 +255,17 @@ public class AsyncTwitter extends Twitter {
             }
         });
     }
+    /**
+     * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     * @param page int
+     */
+    public final synchronized void getRepliesByPageAsync(int page,TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(REPLIES, listener, new Object[]{page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotReplies(getRepliesByPage((Integer)args[0]));
+            }
+        });
+    }
 
     /**
      * Returns the specified user's friends, each with current status inline.
@@ -299,6 +335,17 @@ public class AsyncTwitter extends Twitter {
         });
     }
 
+    /**
+     * Returns a list of the direct messages sent to the authenticating user.
+     * @param page int
+     */
+    public final synchronized void getDirectMessagesByPageAsync(int page, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotDirectMessages(getDirectMessagesByPage( (Integer) args[0]));
+            }
+        });
+    }
     /**
      * Returns a list of the direct messages sent to the authenticating user.
      * @param since Date

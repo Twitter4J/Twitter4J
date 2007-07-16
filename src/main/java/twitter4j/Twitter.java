@@ -98,6 +98,23 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
+     * @param page int
+     * @return List<Status> List of the Friends Timeline
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<Status> getFriendsTimelineByPage(int page) throws
+        TwitterException {
+        if(page < 1){
+            throw new IllegalArgumentException("page should be positive integer. passed:"+page);
+        }
+        return Status.constructStatuses(http.get(baseURL +
+                                                 "statuses/friends_timeline.xml?page=" +
+                                                 page, true).
+                                        asDocument(), this);
+    }
+
+    /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
      * @param id String user ID
      * @return List<Status> List of the Friends Timeline
@@ -109,6 +126,24 @@ public class Twitter implements java.io.Serializable {
         return Status.constructStatuses(http.get(baseURL +
                                                  "statuses/friends_timeline/" +
                                                  id + ".xml", true).asDocument(), this);
+    }
+
+    /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
+     * @param id String user ID
+     * @param page int
+     * @return List<Status> List of the Friends Timeline
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+
+    public final synchronized List<Status> getFriendsTimelineByPage(String id,int page) throws
+        TwitterException {
+        if(page < 1){
+            throw new IllegalArgumentException("page should be positive integer. passed:"+page);
+        }
+        return Status.constructStatuses(http.get(baseURL +
+                                                 "statuses/friends_timeline/" +
+                                                 id + ".xml?page="+page, true).asDocument(), this);
     }
 
     /**
@@ -269,6 +304,20 @@ public class Twitter implements java.io.Serializable {
                                                  "statuses/replies.xml", true).
                                         asDocument(), this);
     }
+    /**
+     * Returns the most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     * @param page int
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<Status> getRepliesByPage(int page) throws TwitterException {
+        if(page < 1){
+            throw new IllegalArgumentException("page should be positive integer. passed:"+page);
+        }
+        return Status.constructStatuses(http.get(baseURL +
+                                                 "statuses/replies.xml?page="+page, true).
+                                        asDocument(), this);
+    }
 
     /**
      * Returns the specified user's friends, each with current status inline.
@@ -337,6 +386,20 @@ public class Twitter implements java.io.Serializable {
             "direct_messages.xml", true).asDocument(), this);
     }
 
+    /**
+     * Returns a list of the direct messages sent to the authenticating user.
+     * @param page int
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<DirectMessage> getDirectMessagesByPage(int page) throws
+        TwitterException {
+        if(page < 1){
+            throw new IllegalArgumentException("page should be positive integer. passed:"+page);
+        }
+        return DirectMessage.constructDirectMessages(http.get(baseURL +
+            "direct_messages.xml?page=" + page, true).asDocument(), this);
+    }
     /**
      * Returns a list of the direct messages sent to the authenticating user.
      * @param sinceId int

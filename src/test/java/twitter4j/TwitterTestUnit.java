@@ -45,6 +45,7 @@ public class TwitterTestUnit extends TestCase {
         assertTrue("size", 5 < statuses.size());
         statuses = twitterAPI1.getPublicTimeline("12345");
         assertTrue("size", 5 < statuses.size());
+
     }
 
     public void testGetFriendsTimeline()throws Exception {
@@ -76,6 +77,8 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFriendsTimeline(id2, new Date());
         assertTrue(actualReturn.size() == 0);
+        actualReturn = twitterAPI1.getFriendsTimelineByPage(1);
+        assertTrue(actualReturn.size() > 0);
 
 
     }
@@ -174,6 +177,10 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(5 < actualReturn.size());
         assertEquals(id1 , actualReturn.get(0).getSender().getName());
         assertEquals(id2 , actualReturn.get(0).getRecipient().getName());
+
+        actualReturn = twitterAPI1.getDirectMessagesByPage(1);
+        assertTrue(10< twitterAPI1.getDirectMessages().size());
+
     }
     public void testCreateDestroyFriend() throws Exception{
         User user;
@@ -210,5 +217,8 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(statuses.size() > 0);
         assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
         
+        statuses = twitterAPI1.getRepliesByPage(1);
+        assertTrue(statuses.size() > 0);
+        assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
     }
 }
