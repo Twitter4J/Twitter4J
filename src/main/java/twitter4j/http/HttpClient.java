@@ -170,7 +170,7 @@ public class HttpClient implements java.io.Serializable {
 
     private Map<String, String> requestHeaders = new HashMap<String, String> ();
 
-    public void addRequestHeader(String name, String value) {
+    public void setRequestHeader(String name, String value) {
         requestHeaders.put(name, value);
     }
 

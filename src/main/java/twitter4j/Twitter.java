@@ -17,13 +17,14 @@ import twitter4j.http.PostParameter;
 public class Twitter implements java.io.Serializable {
     HttpClient http = null;
     private String baseURL = "http://twitter.com/";
+    private String source;
     public Twitter() {
         http = new HttpClient();
-        http.addRequestHeader("X-Twitter-Client", "Twitter4J");
-        http.addRequestHeader("X-Twitter-Client-Version", "1.0.2");
-        http.addRequestHeader("X-Twitter-Client-URL",
+        setRequestHeader("X-Twitter-Client", "Twitter4J");
+        setRequestHeader("X-Twitter-Client-Version", "1.0.2");
+        setRequestHeader("X-Twitter-Client-URL",
                               "http://yusuke.homeip.net/twitter4j/en/twitter4j.xml");
-
+        source = "Twitter4J";
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
@@ -34,12 +35,35 @@ public class Twitter implements java.io.Serializable {
 
     public Twitter(String id, String password) {
         http = new HttpClient(id, password);
+        http.setRequestHeader("X-Twitter-Client", "Twitter4J");
+        http.setRequestHeader("X-Twitter-Client-Version", "1.0.2");
+        http.setRequestHeader("X-Twitter-Client-URL",
+                              "http://yusuke.homeip.net/twitter4j/en/twitter4j.xml");
+        source = "Twitter4J";
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     public Twitter(String id, String password, String baseURL) {
         this(id, password);
         this.baseURL = baseURL;
+    }
+
+    /**
+     * sets the source parameter that will be passed by updating methods
+     * @param source String
+     */
+    public void setSource(String source){
+        this.source = source;
+    }
+    /**
+     * sets the request header name/value combination
+     * see Twitter Fan Wiki for detail.
+     * http://twitter.pbwiki.com/API-Docs#RequestHeaders
+     * @param name String
+     * @param value String
+     */
+    public void setRequestHeader(String name,String value){
+        http.setRequestHeader(name,value);
     }
 
     /**
@@ -290,7 +314,7 @@ public class Twitter implements java.io.Serializable {
         return new Status(http.post(baseURL + "statuses/update.xml",
                                     new
                                     PostParameter[] {new PostParameter("status",
-            status), new PostParameter("source", "Twitter4J")}, true).
+            status), new PostParameter("source", source)}, true).
                           asDocument().getDocumentElement(), this);
     }
 
