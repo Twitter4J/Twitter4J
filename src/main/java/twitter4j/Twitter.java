@@ -60,8 +60,22 @@ public class Twitter implements java.io.Serializable {
      * @param sinceID String
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated argument should be always numeric. Use getPublicTimeline(int sinceID) instead
      */
     public final synchronized List<Status> getPublicTimeline(String sinceID) throws
+        TwitterException {
+        return Status.constructStatuses(http.get(baseURL +
+                                                 "statuses/public_timeline.xml?since_id=" +
+                                                 sinceID, false).
+                                        asDocument(), this);
+    }
+    /**
+     * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
+     * @param sinceID int
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<Status> getPublicTimeline(int sinceID) throws
         TwitterException {
         return Status.constructStatuses(http.get(baseURL +
                                                  "statuses/public_timeline.xml?since_id=" +
@@ -403,7 +417,7 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
-     * @param id
+     * @param id int
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
      */

@@ -34,11 +34,23 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
      * @param sinceID String
+     * @deprecated argument should be always numeric. Use getPublicTimelineAsync(int sinceID, TwitterListener listener) instead
      */
     public void getPublicTimelineAsync(String sinceID, TwitterListener listener) {
         dispatcher.invokeLater(new AsyncTask(PUBLIC_TIMELINE, listener, new String[] {sinceID}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotPublicTimeline(getPublicTimeline( (String) args[0]));
+            }
+        });
+    }
+    /**
+     * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
+     * @param sinceID String
+     */
+    public void getPublicTimelineAsync(int sinceID, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(PUBLIC_TIMELINE, listener, new Integer[] {sinceID}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotPublicTimeline(getPublicTimeline( (Integer) args[0]));
             }
         });
     }
