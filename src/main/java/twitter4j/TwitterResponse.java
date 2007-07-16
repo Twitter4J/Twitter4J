@@ -28,6 +28,22 @@ public class TwitterResponse implements java.io.Serializable {
             throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.\n"+toString(elem));
         }
     }
+    protected void ensureRootNodeNameIs(String[] rootNames) throws TwitterException{
+        String actualRootName = elem.getNodeName();
+        for (String rootName : rootNames) {
+            if (rootName.equals(actualRootName)) {
+                return;
+            }
+        }
+        String expected = "";
+        for (int i = 0; i < rootNames.length; i++) {
+            if (i != 0) {
+                expected += " or ";
+            }
+            expected += rootNames[i];
+        }
+        throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + expected + ". Check Twitter service availability.\n" + toString(elem));
+    }
     protected static void ensureRootNodeNameIs(String rootName,Element elem) throws TwitterException{
         if(!rootName.equals(elem.getNodeName())){
             throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.\n"+toString(elem));

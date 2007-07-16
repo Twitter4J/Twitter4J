@@ -156,6 +156,8 @@ public class TwitterTestUnit extends TestCase {
         Thread.sleep(5000);
         actualReturn = twitterAPI2.getDirectMessages(new Date(System.currentTimeMillis()-(1000*60*100)));
         assertEquals("", expectedReturn, actualReturn.get(0).getText());
+        assertEquals("", id2, actualReturn.get(0).getRecipient().getName());
+        assertEquals("", id1, actualReturn.get(0).getSender().getName());
 
         //test for TFJ-4
         //http://yusuke.homeip.net/jira/browse/TFJ-4
@@ -166,7 +168,7 @@ public class TwitterTestUnit extends TestCase {
         int size = actualReturn.size();
         message = twitterAPI1.deleteDirectMessage(actualReturn.get(0).getId());
         assertEquals(message.getId(),actualReturn.get(0).getId());
-        assertEquals(size - 1, twitterAPI1.getDirectMessages().size());
+        assertTrue(10< twitterAPI1.getDirectMessages().size());
     }
     public void testCreateDestroyFriend() throws Exception{
         User user;

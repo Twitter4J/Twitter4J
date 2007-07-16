@@ -14,6 +14,10 @@ public class DirectMessage extends TwitterResponse implements java.io.
     /*package*/DirectMessage(Element elem, Twitter twitter)throws TwitterException {
         super(elem, twitter);
         ensureRootNodeNameIs("direct_message");
+        sender = new User( (Element) elem.getElementsByTagName("sender").item(0),
+                        twitter);
+        recipient = new User( (Element) elem.getElementsByTagName("recipient").item(0),
+                        twitter);
     }
 
     public int getId() {
@@ -44,6 +48,15 @@ public class DirectMessage extends TwitterResponse implements java.io.
         return getChildText("recipient_screen_name");
     }
 
+    private User sender;
+    public User getSender(){
+        return sender;
+    }
+    private User recipient;
+    public User getRecipient(){
+        return recipient;
+    }
+
     /*package*/ static List<DirectMessage> constructDirectMessages(Document doc,
         Twitter twitter) throws TwitterException{
         if (null == doc) {
@@ -69,26 +82,35 @@ public class DirectMessage extends TwitterResponse implements java.io.
 
     /*
      <?xml version="1.0" encoding="UTF-8"?>
-        <direct-messages>
-          <direct_message>
-            <id>3255402</id>
-            <text>Wed May 30 21:55:58 JST 2007:directmessage test</text>
-            <sender_id>6377362</sender_id>
-            <recipient_id>4933401</recipient_id>
-            <created_at>Wed May 30 12:55:59 +0000 2007</created_at>
-            <sender_screen_name>twit4j2</sender_screen_name>
-            <recipient_screen_name>yusukey</recipient_screen_name>
-          </direct_message>
-          <direct_message>
-            <id>3255322</id>
-            <text>Wed May 30 21:54:43 JST 2007:directmessage test</text>
-            <sender_id>6377362</sender_id>
-            <recipient_id>4933401</recipient_id>
-            <created_at>Wed May 30 12:54:44 +0000 2007</created_at>
-            <sender_screen_name>twit4j2</sender_screen_name>
-            <recipient_screen_name>yusukey</recipient_screen_name>
-          </direct_message>
-        </direct-messages>
+  <direct_message>
+    <id>3611242</id>
+    <text>test</text>
+    <sender_id>4933401</sender_id>
+    <recipient_id>6459452</recipient_id>
+    <created_at>Thu Jun 07 06:36:21 +0000 2007</created_at>
+    <sender_screen_name>yusukey</sender_screen_name>
+    <recipient_screen_name>fast_ts</recipient_screen_name>
+    <sender>
+      <id>4933401</id>
+      <name>Yusuke Yamamoto</name>
+      <screen_name>yusukey</screen_name>
+      <location>Tokyo</location>
+      <description>http://yusuke.homeip.net/diary/</description>
+      <profile_image_url>http://assets3.twitter.com/system/user/profile_image/4933401/normal/1023824_2048059614.jpg?1176769649</profile_image_url>
+      <url>http://yusuke.homeip.net/diary/</url>
+      <protected>false</protected>
+    </sender>
+    <recipient>
+      <id>6459452</id>
+      <name>fast_ts</name>
+      <screen_name>fast_ts</screen_name>
+      <location></location>
+      <description></description>
+      <profile_image_url>http://assets1.twitter.com/system/user/profile_image/6459452/normal/_____-1.gif?1180974738</profile_image_url>
+      <url></url>
+      <protected>true</protected>
+    </recipient>
+  </direct_message>
      */
     @Override public int hashCode() {
         return elem.hashCode();

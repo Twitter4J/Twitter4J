@@ -20,7 +20,7 @@ public class Twitter implements java.io.Serializable {
     public Twitter() {
         http = new HttpClient();
         http.addRequestHeader("X-Twitter-Client", "Twitter4J");
-        http.addRequestHeader("X-Twitter-Client-Version", "1.0");
+        http.addRequestHeader("X-Twitter-Client-Version", "1.0.2");
         http.addRequestHeader("X-Twitter-Client-URL",
                               "http://yusuke.homeip.net/twitter4j/en/twitter4j.xml");
 
