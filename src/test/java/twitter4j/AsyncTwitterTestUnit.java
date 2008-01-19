@@ -83,6 +83,9 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void destroyed(User user) {
         this.user = user;
     }
+    public void gotArchive(List<Status> statuses) {
+        this.statuses = statuses;
+    }
 
     public void followed(User user) {
         this.user = user;

@@ -501,6 +501,27 @@ public class AsyncTwitter extends Twitter {
         });
 
     }
+    /**
+     * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting.  Use this method to rapidly export your archive of statuses.
+     */
+    public final synchronized void archiveAsync( TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(ARCHIVE, listener, new Object[] {}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotArchive(archive());
+            }
+        });
+    }
+    /**
+     * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting.  Use this method to rapidly export your archive of statuses.
+     * @param page
+     */
+    public final synchronized void archiveAsync(int page, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(ARCHIVE, listener, new Object[] {page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotArchive(archive(((Integer)args[0]).intValue()));
+            }
+        });
+    }
 
     /**
      * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
@@ -596,4 +617,5 @@ public class AsyncTwitter extends Twitter {
     public final static int DESTORY = 13;
     public final static int FOLLOW = 14;
     public final static int LEAVE = 15;
+    public final static int ARCHIVE = 16;
 }

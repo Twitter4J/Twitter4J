@@ -136,6 +136,12 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(found);
         assertEquals(100,twitterAPI2.getFriends("akr",2).size());
     }
+    public void testAccountMethods() throws Exception{
+        assertTrue(twitterAPI1.verifyCredentials());
+        assertFalse(new Twitter("doesnotexist","foobar").verifyCredentials());
+        assertTrue(twitterAPI2.archive().size() > 20);
+
+    }
     public void testFollowers() throws Exception{
         List<User> actualReturn = twitterAPI1.getFollowers();
         assertTrue(actualReturn.size() > 0);

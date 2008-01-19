@@ -563,6 +563,40 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * Returns true if authentication was successful.  Use this method to test if supplied user credentials are valid with minimal overhead.
+     * @return success
+     */
+    public final synchronized boolean verifyCredentials() {
+        try{
+        return http.get(baseURL + "account/verify_credentials.xml", true).asString().contains("true");
+        }catch(TwitterException te){
+            return false;
+        }
+    }
+
+    /**
+     * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting. Use this method to rapidly export your archive of statuses.
+     * @return List<Status>
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<Status> archive() throws TwitterException {
+        return Status.constructStatuses(http.get(baseURL + "account/archive.xml", true).
+                        asDocument(), this);
+    }
+
+    /**
+     * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting. Use this method to rapidly export your archive of statuses.
+     * @param page
+     * @return List<Status>
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<Status> archive(int page) throws TwitterException {
+        return Status.constructStatuses(http.get(baseURL + "account/archive.xml?page="+page, true).
+                        asDocument(), this);
+    }
+
+
+    /**
      * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
      * @param id String
      * @return User
