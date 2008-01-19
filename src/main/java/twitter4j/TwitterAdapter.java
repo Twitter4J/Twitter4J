@@ -44,6 +44,12 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotArchive(List<Status> statuses){
     }
+    public void gotFavorites(List<Status> statuses){
+    }
+    public void createdFavorite(Status status){
+    }
+    public void destroyedFavorite(Status status){
+    }
     public void followed(User user){
     }
     public void left(User user){

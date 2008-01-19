@@ -140,7 +140,12 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(twitterAPI1.verifyCredentials());
         assertFalse(new Twitter("doesnotexist","foobar").verifyCredentials());
         assertTrue(twitterAPI2.archive().size() > 20);
-
+    }
+    public void testFavoriteMethods() throws Exception{
+        Status status = twitterAPI1.update("test");
+        twitterAPI2.createFavorite(status.getId());
+        assertTrue(twitterAPI2.favorites().size() >0);
+        twitterAPI2.destroyFavorite(status.getId());
     }
     public void testFollowers() throws Exception{
         List<User> actualReturn = twitterAPI1.getFollowers();

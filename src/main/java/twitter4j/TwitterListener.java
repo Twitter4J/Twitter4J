@@ -24,6 +24,9 @@ public interface TwitterListener{
     public void created(User user);
     public void destroyed(User user);
     public void gotArchive(List<Status> statuses);
+    public void gotFavorites(List<Status> statuses);
+    public void createdFavorite(Status status);
+    public void destroyedFavorite(Status status);
     public void followed(User user);
     public void left(User user);
     /**

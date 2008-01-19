@@ -594,7 +594,65 @@ public class Twitter implements java.io.Serializable {
         return Status.constructStatuses(http.get(baseURL + "account/archive.xml?page="+page, true).
                         asDocument(), this);
     }
+    /**
+     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+     * @return List<Status>
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<Status> favorites() throws TwitterException {
+        return Status.constructStatuses(http.get(baseURL + "favorites.xml", true).
+                        asDocument(), this);
+    }
+    /**
+     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+     * @param page
+     * @return List<Status>
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<Status> favorites(int page) throws TwitterException {
+        return Status.constructStatuses(http.get(baseURL + "favorites.xml?page="+page, true).
+                        asDocument(), this);
+    }
+    /**
+     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+     * @return List<Status>
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<Status> favorites(String id) throws TwitterException {
+        return Status.constructStatuses(http.get(baseURL + "favorites/"+id+".xml", true).
+                        asDocument(), this);
+    }
+    /**
+     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+     * @param page
+     * @return List<Status>
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<Status> favorites(String id,int page) throws TwitterException {
+        return Status.constructStatuses(http.get(baseURL + "favorites/"+id+".xml?page="+page, true).
+                        asDocument(), this);
+    }
 
+    /**
+     * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
+     * @param id
+     * @return Status
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized Status createFavorite(int id) throws TwitterException {
+        return new Status(http.get(baseURL + "favorites/create/"+id+".xml", true).
+                        asDocument().getDocumentElement(), this);
+    }
+    /**
+     * Un-favorites the status specified in the ID parameter as the authenticating user.  Returns the un-favorited status in the requested format when successful.
+     * @param id
+     * @return Status
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized Status destroyFavorite(int id) throws TwitterException {
+        return new Status(http.get(baseURL + "favorites/destroy/"+id+".xml", true).
+                        asDocument().getDocumentElement(), this);
+    }
 
     /**
      * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
