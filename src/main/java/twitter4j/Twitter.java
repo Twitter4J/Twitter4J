@@ -21,9 +21,9 @@ public class Twitter implements java.io.Serializable {
     public Twitter() {
         http = new HttpClient();
         setRequestHeader("X-Twitter-Client", "Twitter4J");
-        setRequestHeader("X-Twitter-Client-Version", "1.0.2");
+        setRequestHeader("X-Twitter-Client-Version", "1.0.3");
         setRequestHeader("X-Twitter-Client-URL",
-                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.2.xml");
+                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.3.xml");
         source = "Twitter4J";
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
@@ -36,9 +36,9 @@ public class Twitter implements java.io.Serializable {
     public Twitter(String id, String password) {
         http = new HttpClient(id, password);
         http.setRequestHeader("X-Twitter-Client", "Twitter4J");
-        http.setRequestHeader("X-Twitter-Client-Version", "1.0.2");
+        http.setRequestHeader("X-Twitter-Client-Version", "1.0.3");
         http.setRequestHeader("X-Twitter-Client-URL",
-                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.2.xml");
+                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.3.xml");
         source = "Twitter4J";
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
@@ -517,7 +517,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      * @param id String
-     * @return DirectMessage
+     * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      */
 
@@ -529,13 +529,36 @@ public class Twitter implements java.io.Serializable {
     /**
      * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      * @param id String
-     * @return DirectMessage
+     * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized User destroy(String id) throws TwitterException {
         return new User(http.get(baseURL + "friendships/destroy/" + id + ".xml", true).
                         asDocument().getDocumentElement(), this);
     }
+
+    /**
+     * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * @param id String
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized User follow(String id) throws TwitterException {
+        return new User(http.get(baseURL + "notifications/follow/" + id + ".xml", true).
+                        asDocument().getDocumentElement(), this);
+    }
+
+    /**
+     * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * @param id String
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized User leave(String id) throws TwitterException {
+        return new User(http.get(baseURL + "notifications/leave/" + id + ".xml", true).
+                        asDocument().getDocumentElement(), this);
+    }
+
 
     private SimpleDateFormat format = new SimpleDateFormat(
         "EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH);

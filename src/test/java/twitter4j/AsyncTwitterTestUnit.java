@@ -84,6 +84,14 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         this.user = user;
     }
 
+    public void followed(User user) {
+        this.user = user;
+    }
+
+    public void left(User user) {
+        this.user = user;
+    }
+
     /**
      *
      * @param te TwitterException
@@ -91,7 +99,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
      */
 
     public void onException(TwitterException te, int method) {
-        System.out.println(te.getMessage());
+        System.out.println("Got exception:"+te.getMessage());
         this.te = te;
     }
 
@@ -276,6 +284,21 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI2.createAsync("doesnotexist", this);
         Thread.sleep(3000);
         assertEquals(403, te.getStatusCode());
+
+    }
+    public void testFollowLeave() throws Exception {
+        try{
+            twitterAPI2.create(id1);
+        }catch(TwitterException te){}
+        try{
+            twitterAPI2.follow(id1);
+        }catch(TwitterException te){}
+        twitterAPI2.leaveAsync(id1, this);
+        Thread.sleep(3000);
+        assertEquals(id1,user.getName());
+        twitterAPI2.followAsync(id2, this);
+        Thread.sleep(3000);
+        assertEquals(id1,user.getName());
 
     }
 }

@@ -216,9 +216,31 @@ public class TwitterTestUnit extends TestCase {
         List<Status> statuses = twitterAPI1.getReplies();
         assertTrue(statuses.size() > 0);
         assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
-        
+
         statuses = twitterAPI1.getRepliesByPage(1);
         assertTrue(statuses.size() > 0);
         assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
+    }
+
+    public void testNotification() throws Exception {
+        try {
+            twitterAPI2.follow(id1);
+        } catch (TwitterException te) {
+
+        }
+        twitterAPI2.leave(id1);
+        try {
+            twitterAPI2.leave(id1);
+            fail("should fail");
+        } catch (TwitterException te) {
+
+        }
+        twitterAPI2.follow(id1);
+        try {
+            twitterAPI2.follow(id1);
+            fail("should fail");
+        } catch (TwitterException te) {
+
+        }
     }
 }

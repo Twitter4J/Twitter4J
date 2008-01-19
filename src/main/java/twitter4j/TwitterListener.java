@@ -23,6 +23,8 @@ public interface TwitterListener{
     public void deletedDirectMessage(DirectMessage message);
     public void created(User user);
     public void destroyed(User user);
+    public void followed(User user);
+    public void left(User user);
     /**
      *
      * @param te TwitterException

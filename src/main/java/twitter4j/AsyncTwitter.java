@@ -478,6 +478,62 @@ public class AsyncTwitter extends Twitter {
 
     }
 
+    /**
+     * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * @param id String
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized void followAsync(String id,TwitterListener listener) throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(FOLLOW, listener, new String[] {id}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.followed(follow( (String) args[0]));
+            }
+        });
+    }
+    /**
+     * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * @param id String
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized void followAsync(String id) throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(FOLLOW, new TwitterAdapter(), new String[] {id}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.followed(follow( (String) args[0]));
+            }
+        });
+    }
+    /**
+     * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * @param id String
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized void leaveAsync(String id,TwitterListener listener) throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(LEAVE, listener, new String[] {id}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.left(leave( (String) args[0]));
+            }
+        });
+    }
+
+
+    /**
+     * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * @param id String
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized void leaveAsync(String id) throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(LEAVE, new TwitterAdapter(), new String[] {id}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.left(leave( (String) args[0]));
+            }
+        });
+    }
+
+
     abstract class AsyncTask implements Runnable {
         TwitterListener listener;
         Object[] args;
@@ -514,4 +570,6 @@ public class AsyncTwitter extends Twitter {
     public final static int SEND_DIRECT_MESSAGE = 11;
     public final static int CREATE = 12;
     public final static int DESTORY = 13;
+    public final static int FOLLOW = 14;
+    public final static int LEAVE = 15;
 }

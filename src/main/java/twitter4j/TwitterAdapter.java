@@ -42,6 +42,10 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void destroyed(User user){
     }
+    public void followed(User user){
+    }
+    public void left(User user){
+    }
     /**
      * @param ex TwitterException
      * @param method int
