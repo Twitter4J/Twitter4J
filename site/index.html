@@ -29,7 +29,7 @@
   <li><a href="#updatingStatus" onclick="return scrollGracefully(this.href)">$[ja:スタテータスの更新]$[en:Updating status]</a></li>
   <li><a href="#gettingTimeline" onclick="return scrollGracefully(this.href)">$[ja:タイムラインの取得]$[en:Getting Timeline]</a></li>
   <li><a href="#directMessage" onclick="return scrollGracefully(this.href)">$[ja:ダイレクトメッセージ]$[en:Direct Messages]</a></li>
-  <li><a href="#asyncAPI" onclick="return scrollGracefully(this.href)">$[ja:非同期API]$[en:Asyn API]</a></li>
+  <li><a href="#asyncAPI" onclick="return scrollGracefully(this.href)">$[ja:非同期API]$[en:Async API]</a></li>
  </ol>
 <li><a href="./javadoc/index.html">JavaDoc</a></li>
 <li><a href="#sourceCode" onclick="return scrollGracefully(this.href)">$[ja:ソースコード]$[en:Source Code]</a></li>
@@ -39,8 +39,8 @@
 </ul>
 <center>
 <a name="download"><h3>$[ja:ダウンロード]$[en:Download]</h3></a>
-<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.2.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
-    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.2.zip">twitter4j-1.0.2.zip</a>
+<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.3.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
+    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.3.zip">twitter4j-1.0.3.zip</a>
     <br><br>
 <include>paypal.html</include>
 <include>adsense200x200.html</include>
@@ -72,10 +72,10 @@ JVM: JDK1.4.2 or later]</p>
 </ul>
 
     <a name="howToUse"><h2>$[ja:使い方]$[en:How To Use]</h2></a>
-    <p>$[ja:twitter4j-1.0.2.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
+    <p>$[ja:twitter4j-1.0.3.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
     Java が分かっていれば <a href="./javadoc/index.html">JavaDoc</a> を見るのが早いです。<br>
     twitter4j.<a href="javadoc/twitter4j/Twitter.html">Twitter</a> クラスが最初に見るべきクラスです。]
-    $[en:It's as simple as adding twitter4j-1.0.2.jar to your classpath.<br>
+    $[en:It's as simple as adding twitter4j-1.0.3.jar to your classpath.<br>
     If you are familiar with Java language, the <a href="./javadoc/index.html">JavaDoc</a> should be <a href="http://obvious.com/">Obvious</a>ly the shortest way for you to understand Twitter4J.<br>
     <a href="javadoc/twitter4j/Twitter.html">twitter4j.Twitter</a> class is the one you may want to look first.]</p>
 
@@ -277,7 +277,23 @@ If you feel Twitter4J makes your life easier, please do consider making a donati
 <li>2.0.</li>
 $[ja:]$[en:]
 -->
-        <li>$[ja:バージョン ]$[en:Version ]1.0.2 <font color="red">new!</font></li>
+        <li>$[ja:バージョン ]$[en:Version ]1.0.3 <font color="red">new!</font></li>
+
+<h2>        $[ja:新機能]$[en:New Feature]
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-16'>TFJ-16</a>] -  $[ja:follow / leave メソッドのサポート] $[en:support for follow / leave methods]
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-17'>TFJ-17</a>] -  $[ja:getFriends()メソッドでページ番号を指定できるように]$[en:ability to specify &quot;page&quot; to getFriends() method]
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-18'>TFJ-18</a>] -  $[ja:アカウントメソッドのサポート] $[en:support for Account Methods]
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-19'>TFJ-19</a>] -  $[ja:お気に入りメソッドのサポート]$[en:support for favorite methods]
+</li>
+</ul>
+
+
+        <li>$[ja:バージョン ]$[en:Version ]1.0.2</li>
    <h2>        $[ja:修正されたバグ]$[en:Resolved Bugs]
    </h2>
 <ul>
