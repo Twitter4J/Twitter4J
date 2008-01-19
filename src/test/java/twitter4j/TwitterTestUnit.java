@@ -134,6 +134,7 @@ public class TwitterTestUnit extends TestCase {
             found = found || user.getName().equals(id1);
         }
         assertTrue(found);
+        assertEquals(100,twitterAPI2.getFriends("akr",2).size());
     }
     public void testFollowers() throws Exception{
         List<User> actualReturn = twitterAPI1.getFollowers();

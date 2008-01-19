@@ -279,6 +279,17 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns the specified user's friends, each with current status inline.
+     * @param page
+     */
+    public final synchronized void getFriendsAsync(int page,TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(FRIENDS, listener, new Object[]{page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriends(getFriends(((Integer)args[0]).intValue()));
+            }
+        });
+    }
+    /**
      * Returns the user's friends, each with current status inline.
      * @param id String
      */
@@ -289,6 +300,19 @@ public class AsyncTwitter extends Twitter {
             }
         });
     }
+
+    /**
+     * Returns the user's friends, each with current status inline.
+     * @param id String
+     */
+    public final synchronized void getFriendsAsync(String id,int page, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(FRIENDS, listener, new Object[] {id,page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriends(getFriends( (String) args[0],((Integer)args[1]).intValue()));
+            }
+        });
+    }
+
 
     /**
      * Returns the authenticating user's followers, each with current status inline.

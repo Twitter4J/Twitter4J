@@ -352,6 +352,17 @@ public class Twitter implements java.io.Serializable {
         return User.constructUsers(http.get(baseURL + "statuses/friends.xml", true).
                                    asDocument(), this);
     }
+    /**
+     *
+     * Returns the specified user's friends, each with current status inline.
+     * @param page
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<User> getFriends(int page) throws TwitterException {
+        return User.constructUsers(http.get(baseURL + "statuses/friends.xml?page="+page, true).
+                                   asDocument(), this);
+    }
 
     /**
      * Returns the user's friends, each with current status inline.
@@ -363,6 +374,20 @@ public class Twitter implements java.io.Serializable {
         TwitterException {
         return User.constructUsers(http.get(baseURL +
                                             "statuses/friends.xml?id=" + id, true).
+                                   asDocument(), this);
+    }
+
+    /**
+     * Returns the user's friends, each with current status inline.
+     * @param id String
+     * @param page
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public final synchronized List<User> getFriends(String id,int page) throws
+        TwitterException {
+        return User.constructUsers(http.get(baseURL +
+                                            "statuses/friends.xml?id=" + id+"&page="+page, true).
                                    asDocument(), this);
     }
 
