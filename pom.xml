@@ -2,12 +2,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>twitter4j</groupId>
+    <groupId>yusuke.homeip.net</groupId>
     <artifactId>twitter4j</artifactId>
     <packaging>jar</packaging>
     <version>1.0.3</version>
     <name>twitter4j</name>
     <url>http://yusuke.homeip.net/twitter4j/</url>
+    <repositories>
+        <repository>
+            <id>yusuke.homeip.net</id>
+            <name>yusuke.homeip.net Repository</name>
+            <url>http://yusuke.homeip.net/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
