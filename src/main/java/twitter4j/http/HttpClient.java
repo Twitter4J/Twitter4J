@@ -86,9 +86,17 @@ public class HttpClient implements java.io.Serializable {
         return httpRequest(url, PostParameters, authenticated);
     }
 
+    public Response post(String url, boolean authenticated) throws TwitterException {
+        return httpRequest(url, new PostParameter[0], authenticated);
+    }
+
     public Response post(String url, PostParameter[] PostParameters) throws
         TwitterException {
         return httpRequest(url, PostParameters, false);
+    }
+    public Response post(String url) throws
+        TwitterException {
+        return httpRequest(url, new PostParameter[0], false);
     }
 
     public Response get(String url, boolean authenticated) throws
