@@ -5,7 +5,7 @@
     <groupId>yusuke.homeip.net</groupId>
     <artifactId>twitter4j</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <name>twitter4j</name>
     <url>http://yusuke.homeip.net/twitter4j/</url>
     <repositories>
@@ -42,15 +42,28 @@
         </dependency>
     </dependencies>
     <build>
+        <defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <encoding>UTF-8</encoding>
                     <source>1.5</source>
                     <target>jsr14</target>
                 </configuration>
             </plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
         </plugins>
     </build>
 </project>
