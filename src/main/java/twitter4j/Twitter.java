@@ -35,13 +35,9 @@ public class Twitter implements java.io.Serializable {
     }
 
     public Twitter(String id, String password) {
-        http = new HttpClient(id, password);
-        http.setRequestHeader("X-Twitter-Client", "Twitter4J");
-        http.setRequestHeader("X-Twitter-Client-Version", "1.0.4");
-        http.setRequestHeader("X-Twitter-Client-URL",
-                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.4.xml");
-        source = "Twitter4J";
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        this();
+        setUserId(id);
+        setPassword(password);
     }
 
     public Twitter(String id, String password, String baseURL) {
@@ -128,12 +124,11 @@ public class Twitter implements java.io.Serializable {
      * @param forceUsePost
      */
     public void forceUsePost(boolean forceUsePost){
-        this.usePostForcibly = usePostForcibly;
+        this.usePostForcibly = forceUsePost;
     }
 
     /**
      * @return true if POST is used forcibly
-
      */
     public boolean isUsePostForced(){
         return this.usePostForcibly;
