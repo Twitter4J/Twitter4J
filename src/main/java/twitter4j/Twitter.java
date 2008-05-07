@@ -21,9 +21,9 @@ public class Twitter implements java.io.Serializable {
     public Twitter() {
         http = new HttpClient();
         setRequestHeader("X-Twitter-Client", "Twitter4J");
-        setRequestHeader("X-Twitter-Client-Version", "1.0.3");
+        setRequestHeader("X-Twitter-Client-Version", "1.0.4");
         setRequestHeader("X-Twitter-Client-URL",
-                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.3.xml");
+                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.4.xml");
         source = "Twitter4J";
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
@@ -36,9 +36,9 @@ public class Twitter implements java.io.Serializable {
     public Twitter(String id, String password) {
         http = new HttpClient(id, password);
         http.setRequestHeader("X-Twitter-Client", "Twitter4J");
-        http.setRequestHeader("X-Twitter-Client-Version", "1.0.3");
+        http.setRequestHeader("X-Twitter-Client-Version", "1.0.4");
         http.setRequestHeader("X-Twitter-Client-URL",
-                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.3.xml");
+                              "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.4.xml");
         source = "Twitter4J";
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
@@ -46,6 +46,30 @@ public class Twitter implements java.io.Serializable {
     public Twitter(String id, String password, String baseURL) {
         this(id, password);
         this.baseURL = baseURL;
+    }
+
+    /**
+     * sets the user id
+     * @param userId String
+     */
+    public void setUserId(String userId){
+        http.setUserId(userId);
+    }
+
+    /**
+     * sets the password
+     * @param password String
+     */
+    public void setPassword(String password){
+        http.setPassword(password);
+    }
+
+    public String getUserId(){
+        return http.getUserId();
+    }
+
+    public String getPassword(){
+        return http.getPassword();
     }
 
     /**

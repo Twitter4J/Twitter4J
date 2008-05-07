@@ -26,13 +26,38 @@ public class HttpClient implements java.io.Serializable {
     private String basic;
     private int retryCount = 0;
     private int retryIntervalMillis = 10000;
+    private String userId = null;
+    private String password = null;
     public HttpClient(String userId, String password) {
-        this.basic = "Basic " +
-            new String(new sun.misc.BASE64Encoder().encode((userId + ":" + password).getBytes()));
+        setUserId(userId);
+        setPassword(password);
     }
 
     public HttpClient() {
         this.basic = null;
+    }
+
+    public void setUserId(String userId){
+        this.userId = userId;
+        encodeBasicAuthenticationString();
+    }
+    public void setPassword(String password){
+        this.password = password;
+        encodeBasicAuthenticationString();
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+    public String getPassword() {
+        return password;
+    }
+
+    private void encodeBasicAuthenticationString(){
+        if(null != userId && null != password){
+        this.basic = "Basic " +
+            new String(new sun.misc.BASE64Encoder().encode((userId + ":" + password).getBytes()));
+        }
     }
 
     public void setRetryCount(int retryCount) {
