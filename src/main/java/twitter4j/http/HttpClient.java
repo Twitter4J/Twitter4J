@@ -130,11 +130,14 @@ public class HttpClient implements java.io.Serializable {
                     con.setDoInput(true);
                     setHeaders(con, authenticated);
                     if (null != postParams) {
+                        log("POST ", url);
                         con.setRequestMethod("POST");
                         con.setRequestProperty("Content-Type",
                                                "application/x-www-form-urlencoded");
                         con.setDoOutput(true);
-                        byte[] bytes = encodeParameters(postParams).getBytes("UTF-8");
+                        String postParam = encodeParameters(postParams);
+                        log("Post Params: ", postParam);
+                        byte[] bytes = postParam.getBytes("UTF-8");
 
                         con.setRequestProperty("Content-Length",
                                                Integer.toString(bytes.length));
@@ -143,11 +146,14 @@ public class HttpClient implements java.io.Serializable {
                         osw.flush();
                         osw.close();
                     } else {
+                        log("GET "+url);
                         con.setRequestMethod("GET");
                     }
                     responseCode = con.getResponseCode();
+                    log("Response code: ", String.valueOf(responseCode));
                     is = con.getInputStream(); // this will throw IOException in case response code is 4xx 5xx
                     res = new Response(con.getResponseCode(), is);
+                    log("Response: ", res.toString());
                     break;
                 } finally {
                     try {
@@ -237,6 +243,17 @@ public class HttpClient implements java.io.Serializable {
                 && this.requestHeaders.equals(that.requestHeaders);
         }
         return false;
+    }
+
+    private void log(String message){
+        if(DEBUG){
+            System.out.println("[" + new java.util.Date() + "]" + message);
+        }
+    }
+    private void log(String message,String message2){
+        if(DEBUG){
+            log(message+message2);
+        }
     }
 
 }
