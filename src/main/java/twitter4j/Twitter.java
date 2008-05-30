@@ -152,6 +152,18 @@ public class Twitter implements java.io.Serializable {
      * issues an HTTP GET request. POST method will be used instead in case forceUsePost is set true.
      * @param url - the request url
      * @param authenticate - if true, the request will be sent with BASIC authentication header
+     * @return the response
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+
+    private Response get(String url, boolean authenticate) throws TwitterException {
+        return get(url, null, authenticate);
+    }
+
+    /**
+     * issues an HTTP GET request. POST method will be used instead in case forceUsePost is set true.
+     * @param url - the request url
+     * @param authenticate - if true, the request will be sent with BASIC authentication header
      * @param name1 - the name of the first parameter
      * @param value1 - the value of the first parameter
      * @return the response
@@ -189,7 +201,11 @@ public class Twitter implements java.io.Serializable {
 
     private Response get(String url, PostParameter[] params, boolean authenticate) throws TwitterException {
         if (usePostForcibly) {
-            return http.post(url, params, authenticate);
+            if (null == params) {
+                return http.post(url, new PostParameter[0], authenticate);
+            } else {
+                return http.post(url, params, authenticate);
+            }
         } else {
             if (null != params && params.length > 0) {
                 url += "?" + HttpClient.encodeParameters(params);
@@ -208,7 +224,7 @@ public class Twitter implements java.io.Serializable {
     public final synchronized List<Status> getPublicTimeline() throws
             TwitterException {
         return Status.constructStatuses(get(baseURL +
-                "statuses/public_timeline.xml", new PostParameter[0], false).
+                "statuses/public_timeline.xml", false).
                 asDocument(), this);
     }
 
@@ -252,7 +268,7 @@ public class Twitter implements java.io.Serializable {
     public final synchronized List<Status> getFriendsTimeline() throws
             TwitterException {
         return Status.constructStatuses(get(baseURL +
-                "statuses/friends_timeline.xml", new PostParameter[0], true).
+                "statuses/friends_timeline.xml", true).
                 asDocument(), this);
     }
 
@@ -283,7 +299,7 @@ public class Twitter implements java.io.Serializable {
 
     public final synchronized List<Status> getFriendsTimeline(String id) throws
             TwitterException {
-        return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml", new PostParameter[0],
+        return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml",
                 true).asDocument(), this);
     }
 
@@ -404,7 +420,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline(String id) throws TwitterException {
-        return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml", new PostParameter[0], true).asDocument(), this);
+        return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml", true).asDocument(), this);
     }
 
     /**
@@ -415,7 +431,7 @@ public class Twitter implements java.io.Serializable {
      */
     public final synchronized List<Status> getUserTimeline() throws
             TwitterException {
-        return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml", new PostParameter[0], true).
+        return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml", true).
                 asDocument(), this);
     }
 
@@ -428,7 +444,7 @@ public class Twitter implements java.io.Serializable {
      */
 
     public final synchronized Status show(int id) throws TwitterException {
-        return new Status(get(baseURL + "statuses/show/" + id + ".xml", new PostParameter[0], true).asDocument().getDocumentElement(), this);
+        return new Status(get(baseURL + "statuses/show/" + id + ".xml", true).asDocument().getDocumentElement(), this);
     }
 
     /**
@@ -454,7 +470,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getReplies() throws TwitterException {
-        return Status.constructStatuses(get(baseURL + "statuses/replies.xml", new PostParameter[0], true).asDocument(), this);
+        return Status.constructStatuses(get(baseURL + "statuses/replies.xml", true).asDocument(), this);
     }
 
     /**
@@ -479,7 +495,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<User> getFriends() throws TwitterException {
-        return User.constructUsers(get(baseURL + "statuses/friends.xml", new PostParameter[0], true).asDocument(), this);
+        return User.constructUsers(get(baseURL + "statuses/friends.xml", true).asDocument(), this);
     }
 
     /**
@@ -526,7 +542,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<User> getFollowers() throws TwitterException {
-        return User.constructUsers(get(baseURL + "statuses/followers.xml", new PostParameter[0], true).asDocument(), this);
+        return User.constructUsers(get(baseURL + "statuses/followers.xml", true).asDocument(), this);
     }
 
     /**
@@ -536,7 +552,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<User> getFeatured() throws TwitterException {
-        return User.constructUsers(get(baseURL + "statuses/featured.xml", new PostParameter[0], true).asDocument(), this);
+        return User.constructUsers(get(baseURL + "statuses/featured.xml", true).asDocument(), this);
     }
 
     /**
@@ -547,7 +563,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized UserWithStatus getUserDetail(String id) throws TwitterException {
-        return new UserWithStatus(get(baseURL + "users/show/" + id + ".xml", new PostParameter[0], true).asDocument().getDocumentElement(), this);
+        return new UserWithStatus(get(baseURL + "users/show/" + id + ".xml", true).asDocument().getDocumentElement(), this);
     }
 
     /**
@@ -557,7 +573,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<DirectMessage> getDirectMessages() throws TwitterException {
-        return DirectMessage.constructDirectMessages(get(baseURL + "direct_messages.xml", new PostParameter[0], true).asDocument(), this);
+        return DirectMessage.constructDirectMessages(get(baseURL + "direct_messages.xml", true).asDocument(), this);
     }
 
     /**
@@ -706,7 +722,7 @@ public class Twitter implements java.io.Serializable {
      */
     public final synchronized boolean verifyCredentials() {
         try {
-            return get(baseURL + "account/verify_credentials.xml", new PostParameter[0],true).asString().contains("true");
+            return get(baseURL + "account/verify_credentials.xml",true).asString().contains("true");
         } catch (TwitterException te) {
             return false;
         }
@@ -804,7 +820,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized Status createFavorite(int id) throws TwitterException {
-        return new Status(get(baseURL + "favorites/create/" + id + ".xml",new PostParameter[0], true).
+        return new Status(get(baseURL + "favorites/create/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -816,7 +832,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized Status destroyFavorite(int id) throws TwitterException {
-        return new Status(get(baseURL + "favorites/destroy/" + id + ".xml", new PostParameter[0],true).
+        return new Status(get(baseURL + "favorites/destroy/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -828,7 +844,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized User follow(String id) throws TwitterException {
-        return new User(get(baseURL + "notifications/follow/" + id + ".xml",new PostParameter[0], true).
+        return new User(get(baseURL + "notifications/follow/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -840,7 +856,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized User leave(String id) throws TwitterException {
-        return new User(get(baseURL + "notifications/leave/" + id + ".xml",new PostParameter[0], true).
+        return new User(get(baseURL + "notifications/leave/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
