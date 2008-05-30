@@ -12,6 +12,12 @@ public class PostParameter implements java.io.Serializable {
         this.name = name;
         this.value = value;
     }
+    public String getName(){
+        return name;
+    }
+    public String getValue(){
+        return value;
+    }
 
     @Override public int hashCode() {
         return name.hashCode() + value.hashCode();

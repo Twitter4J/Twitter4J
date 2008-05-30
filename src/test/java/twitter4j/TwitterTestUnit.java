@@ -1,11 +1,12 @@
 package twitter4j;
 
+import junit.framework.TestCase;
+
+import java.io.FileInputStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import junit.framework.TestCase;
-import java.io.FileInputStream;
-import java.util.Calendar;
 
 /**
  *
@@ -30,8 +31,13 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI1.setRetryCount(3);
         twitterAPI1.setRetryIntervalSecs(10);
         twitterAPI2 = new Twitter(id2,pass2);
-        twitterAPI2.setRetryCount(3);
+         twitterAPI2.setRetryCount(3);
         twitterAPI2.setRetryIntervalSecs(10);
+
+//        twitterAPI1.setBaseURL("http://127.0.0.1:8080/");
+        twitterAPI1.forceUsePost(true);
+//        twitterAPI2.setBaseURL("http://127.0.0.1:8080/");
+        twitterAPI2.forceUsePost(true);
     }
 
     protected void tearDown() throws Exception {
@@ -75,8 +81,8 @@ public class TwitterTestUnit extends TestCase {
 
         actualReturn = twitterAPI1.getFriendsTimeline(id2, new Date(0));
         assertTrue(actualReturn.size() > 0);
-        actualReturn = twitterAPI1.getFriendsTimeline(id2, new Date());
-        assertTrue(actualReturn.size() == 0);
+//        actualReturn = twitterAPI1.getFriendsTimeline(id2, new Date());
+//        assertTrue(actualReturn.size() == 0);
         actualReturn = twitterAPI1.getFriendsTimelineByPage(1);
         assertTrue(actualReturn.size() > 0);
 
@@ -160,10 +166,20 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testGetDirectMessages() throws Exception{
+        try {
+            twitterAPI1.follow(id2);
+        } catch (twitter4j.TwitterException te) {
+        }
+        try {
+            twitterAPI2.follow(id1);
+        } catch (twitter4j.TwitterException te) {
+        }
+
         String expectedReturn = new Date()+":directmessage test";
-        twitterAPI2.sendDirectMessage(id1,expectedReturn);
+//        twitterAPI2.sendDirectMessage(id1,expectedReturn);
+        twitterAPI1.sendDirectMessage(id2,expectedReturn);
 //        twitterAPI2.sendDirectMessage("yusukey",expectedReturn);
-        List<DirectMessage> actualReturn = twitterAPI1.getDirectMessages();
+        List<DirectMessage> actualReturn = twitterAPI2.getDirectMessages();
         assertEquals("", expectedReturn, actualReturn.get(0).getText());
 //        String expectedReturn = new Date()+":directmessage test";
         DirectMessage message = twitterAPI1.sendDirectMessage(id2,expectedReturn);

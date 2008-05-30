@@ -1,5 +1,7 @@
 package twitter4j.http;
 
+import twitter4j.TwitterException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,8 +11,6 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import twitter4j.TwitterException;
-
 /**
  * A utility class to handle HTTP request/response.
  */
@@ -19,6 +19,8 @@ public class HttpClient implements java.io.Serializable {
     private final int NOT_MODIFIED = 304;
     private final int UNAUTHORIZED = 401;
     private final int FORBIDDEN = 403;
+
+    private final boolean DEBUG = Boolean.getBoolean("twitter4j.debug");
 
     private final int INTERNAL_SERVER_ERROR = 500;
     private String userAgent =
@@ -132,15 +134,8 @@ public class HttpClient implements java.io.Serializable {
                         con.setRequestProperty("Content-Type",
                                                "application/x-www-form-urlencoded");
                         con.setDoOutput(true);
-                        StringBuffer buf = new StringBuffer();
-                        for (int j = 0; j < postParams.length; j++) {
-                            if (j != 0) {
-                                buf.append("&");
-                            }
-                            buf.append(postParams[j].name).append("=").append(
-                                URLEncoder.encode(postParams[j].value, "UTF-8"));
-                        }
-                        byte[] bytes = buf.toString().getBytes("UTF-8");
+                        byte[] bytes = encodeParameters(postParams).getBytes("UTF-8");
+
                         con.setRequestProperty("Content-Length",
                                                Integer.toString(bytes.length));
                         osw = con.getOutputStream();
@@ -181,6 +176,21 @@ public class HttpClient implements java.io.Serializable {
             }
         }
         return res;
+    }
+
+    public static String encodeParameters(PostParameter[] postParams){
+        StringBuffer buf = new StringBuffer();
+        for (int j = 0; j < postParams.length; j++) {
+            if (j != 0) {
+                buf.append("&");
+            }
+            try{
+            buf.append(postParams[j].name).append("=").append(
+                URLEncoder.encode(postParams[j].value, "UTF-8"));
+            }catch(java.io.UnsupportedEncodingException neverHappen){}
+        }
+        return buf.toString();
+
     }
 
     /**
