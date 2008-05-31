@@ -35,9 +35,9 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2.setRetryIntervalSecs(10);
 
 //        twitterAPI1.setBaseURL("http://127.0.0.1:8080/");
-        twitterAPI1.forceUsePost(true);
+//        twitterAPI1.forceUsePost(true);
 //        twitterAPI2.setBaseURL("http://127.0.0.1:8080/");
-        twitterAPI2.forceUsePost(true);
+//        twitterAPI2.forceUsePost(true);
     }
 
     protected void tearDown() throws Exception {
@@ -50,6 +50,8 @@ public class TwitterTestUnit extends TestCase {
         statuses = twitterAPI1.getPublicTimeline();
         assertTrue("size", 5 < statuses.size());
         statuses = twitterAPI1.getPublicTimeline("12345");
+        assertTrue("size", 5 < statuses.size());
+        statuses = twitterAPI1.getPublicTimeline(12345);
         assertTrue("size", 5 < statuses.size());
 
     }
@@ -107,15 +109,15 @@ public class TwitterTestUnit extends TestCase {
     public void testGetUserTimeline_Show() throws Exception{
         List<Status> statuses;
         statuses = twitterAPI2.getUserTimeline(id1);
-        assertTrue("size", 1 < statuses.size());
+        assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI2.getUserTimeline(id1, 10);
-        assertTrue("size", 1 < statuses.size());
+        assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(15, new Date(0));
-        assertTrue("size", 1 < statuses.size());
+        assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(id1, new Date(0));
-        assertTrue("size", 1 < statuses.size());
+        assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(id1, 20, new Date(0));
-        assertTrue("size", 1 < statuses.size());
+        assertTrue("size", 0 < statuses.size());
     }
     public void testShow() throws Exception{
         Status status = twitterAPI2.show(1000);
@@ -146,6 +148,11 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(twitterAPI1.verifyCredentials());
         assertFalse(new Twitter("doesnotexist","foobar").verifyCredentials());
         assertTrue(twitterAPI2.archive().size() > 20);
+        String location = "location:"+new Date().toString();
+        User user = twitterAPI1.updateLocation(location);
+        assertEquals(location,user.getLocation());
+
+        twitterAPI1.updateDeliverlyDevice(Twitter.SMS);
     }
     public void testFavoriteMethods() throws Exception{
         Status status = twitterAPI1.update("test");
@@ -270,5 +277,15 @@ public class TwitterTestUnit extends TestCase {
         } catch (TwitterException te) {
 
         }
+    }
+    public void testBlock() throws Exception {
+        twitterAPI2.block(id1);
+        twitterAPI2.unblock(id1);
+    }
+    public void testTest() throws Exception {
+        assertTrue(twitterAPI2.test());
+    }
+    public void testDowntimeSchedule() throws Exception {
+        twitterAPI2.getDowntimeSchedule();
     }
 }

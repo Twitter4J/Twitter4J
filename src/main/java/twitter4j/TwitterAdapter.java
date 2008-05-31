@@ -58,6 +58,14 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void left(User user){
     }
+    public void blocked(User user){
+    }
+    public void unblocked(User user){
+    }
+    public void tested(boolean test){
+    }
+    public void gotDowntimeSchedule(String schedule){
+    }
     /**
      * @param ex TwitterException
      * @param method int

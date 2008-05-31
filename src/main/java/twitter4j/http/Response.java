@@ -30,6 +30,8 @@ public class Response implements java.io.Serializable {
     private Document response = null;
     private String responseString = null;
     private InputStream is;
+    private static final long serialVersionUID = 6190279542077827227L;
+
     public Response(int statusCode, InputStream is) throws IOException {
         this.statusCode = statusCode;
         BufferedReader br = null;

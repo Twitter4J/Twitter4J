@@ -20,6 +20,8 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     private Status status = null;
     private User user = null;
     private UserWithStatus userWithStatus = null;
+    private boolean test;
+    private String schedule;
     private DirectMessage message = null;
     private TwitterException te = null;
     public void gotPublicTimeline(List<Status> statuses) {
@@ -86,6 +88,12 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void gotArchive(List<Status> statuses) {
         this.statuses = statuses;
     }
+    public void updatedLocation(User user){
+        this.user = user;
+    }
+    public void updatedDeliverlyDevice(User user){
+        this.user = user;
+    }
     public void gotFavorites(List<Status> statuses){
         this.statuses = statuses;
     }
@@ -101,6 +109,18 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
 
     public void left(User user) {
         this.user = user;
+    }
+    public void blocked(User user){
+        this.user = user;
+    }
+    public void unblocked(User user){
+        this.user = user;
+    }
+    public void tested(boolean test){
+        this.test = test;
+    }
+    public void gotDowntimeSchedule(String schedule){
+        this.schedule = schedule;
     }
 
     /**

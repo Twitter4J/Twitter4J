@@ -885,6 +885,74 @@ public class Twitter implements java.io.Serializable {
                 asDocument().getDocumentElement(), this);
     }
 
+    /* Block Methods */
+    
+    /**
+     * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
+     *
+     * @param id - the ID or screen_name of the user to block
+     * @return the blocked user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized User block(String id) throws TwitterException {
+        return new User(get(baseURL + "blocks/create/" + id + ".xml", true).
+                asDocument().getDocumentElement(), this);
+    }
+
+
+    /**
+     * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
+     *
+     * @param id - the ID or screen_name of the user to block
+     * @return the unblocked user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized User unblock(String id) throws TwitterException {
+        return new User(get(baseURL + "blocks/destroy/" + id + ".xml", true).
+                asDocument().getDocumentElement(), this);
+    }
+
+    /* Help Methods */
+/*
+test  New as of April 29th, 2008!
+
+Returns the string "ok" in the requested format with a 200 OK HTTP status code.
+URL:http://twitter.com/help/test.format
+Formats: xml, json
+*/
+
+    /**
+     * Returns the string "ok" in the requested format with a 200 OK HTTP status code.
+     *
+     * @return true if the API is working
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized boolean test() throws TwitterException {
+        return -1 != get(baseURL + "help/test.xml", false).
+                asString().indexOf("ok");
+    }
+
+/*
+downtime_schedule  New as of April 29th, 2008!
+
+Returns the same text displayed on http://twitter.com/home when a maintenance window is scheduled, in the requested format.
+URL:http://twitter.com/help/downtime_schedule.format
+Formats: xml, json
+*/
+
+    /**
+     * Returns the same text displayed on http://twitter.com/home when a maintenance window is scheduled, in the requested format.
+     *
+     * @return the schedule
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized String getDowntimeSchedule() throws TwitterException {
+        return get(baseURL + "help/downtime_schedule.xml", false).asString();
+    }
 
     private SimpleDateFormat format = new SimpleDateFormat(
             "EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH);

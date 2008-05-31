@@ -634,7 +634,7 @@ public class AsyncTwitter extends Twitter {
     }
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * @param id 
+     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void favoritesAsync(String id,TwitterListener listener) {
@@ -646,8 +646,8 @@ public class AsyncTwitter extends Twitter {
     }
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * @param id
-     * @param page
+     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses.
+     * @param page - retrieves the 20 next most recent favorite statuses.
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void favoritesAsync(String id,int page, TwitterListener listener) {
@@ -660,7 +660,7 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
-     * @param id
+     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses.
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void createFavoriteAsync(int id, TwitterListener listener) {
@@ -673,7 +673,7 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
-     * @param id
+     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses.
      */
     public final synchronized void createFavoriteAsync(int id) {
         dispatcher.invokeLater(new AsyncTask(FAVORITES, new TwitterAdapter(), new Object[] {id}) {
@@ -684,7 +684,7 @@ public class AsyncTwitter extends Twitter {
     }
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
-     * @param id
+     * @param id - the ID or screen name of the user for whom to request a list of un-favorite statuses.
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void destroyFavoriteAsync(int id, TwitterListener listener) {
@@ -696,7 +696,7 @@ public class AsyncTwitter extends Twitter {
     }
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
-     * @param id
+     * @param id - the ID or screen name of the user for whom to request a list of un-favorite statuses.
      */
     public final synchronized void destroyFavoriteAsync(int id) {
         dispatcher.invokeLater(new AsyncTask(FAVORITES,  new TwitterAdapter(), new Object[] {id}) {
@@ -760,6 +760,70 @@ public class AsyncTwitter extends Twitter {
     }
 
 
+    /* Block Methods */
+
+    /**
+     * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
+     *
+     * @param id - the ID or screen_name of the user to block
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized void blockAsync(String id) throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(BLOCK, new TwitterAdapter(), new String[] {id}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.blocked(block( (String) args[0]));
+            }
+        });
+    }
+
+
+    /**
+     * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
+     *
+     * @param id - the ID or screen_name of the user to block
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized void unblockAsync(String id) throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(UNBLOCK, new TwitterAdapter(), new String[] {id}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.unblocked(unblock( (String) args[0]));
+            }
+        });
+    }
+
+    /* Help Methods */
+
+    /**
+     * Returns the string "ok" in the requested format with a 200 OK HTTP status code.
+     *
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized void testAsync() throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(TEST, new TwitterAdapter(), new Object[] {}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.tested(test());
+            }
+        });
+    }
+
+    /**
+     * Returns the same text displayed on http://twitter.com/home when a maintenance window is scheduled, in the requested format.
+     *
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized void getDowntimeScheduleAsync() throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(GET_DOWNTIME_SCHEDULE, new TwitterAdapter(), new Object[] {}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotDowntimeSchedule(getDowntimeSchedule());
+            }
+        });
+    }
+
+
     abstract class AsyncTask implements Runnable {
         TwitterListener listener;
         Object[] args;
@@ -804,4 +868,8 @@ public class AsyncTwitter extends Twitter {
     public final static int DESTROY_FAVORITE = 19;
     public final static int UPDATE_LOCATION = 20;
     public final static int UPDATE_DELIVERLY_DEVICE = 21;
+    public final static int BLOCK = 22;
+    public final static int UNBLOCK = 23;
+    public final static int TEST = 24;
+    public final static int GET_DOWNTIME_SCHEDULE = 25;
 }

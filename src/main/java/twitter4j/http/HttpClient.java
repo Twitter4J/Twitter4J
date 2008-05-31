@@ -30,6 +30,8 @@ public class HttpClient implements java.io.Serializable {
     private int retryIntervalMillis = 10000;
     private String userId = null;
     private String password = null;
+    private static final long serialVersionUID = 4552412554266867060L;
+
     public HttpClient(String userId, String password) {
         setUserId(userId);
         setPassword(password);
@@ -169,6 +171,9 @@ public class HttpClient implements java.io.Serializable {
             } catch (IOException ioe) {
                 if (responseCode == UNAUTHORIZED || responseCode == FORBIDDEN) {
                     //throw TwitterException without reply since this request won't success
+                    if(DEBUG){
+                        ioe.printStackTrace();
+                    }
                     throw new TwitterException(ioe.getMessage(), responseCode);
                 }
                 if (retriedCount == retryCount) {

@@ -1,13 +1,13 @@
 package twitter4j.http;
 
-import twitter4j.User;
-
 /**
  * A data class representing HTTP Post parameter
  */
 public class PostParameter implements java.io.Serializable {
     String name;
     String value;
+    private static final long serialVersionUID = -8708108746980739212L;
+
     public PostParameter(String name, String value) {
         this.name = name;
         this.value = value;
