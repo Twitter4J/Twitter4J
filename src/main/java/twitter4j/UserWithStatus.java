@@ -6,6 +6,8 @@ import org.w3c.dom.Element;
  * A data class representing Twitter User with status
  */
 public class UserWithStatus extends User {
+    private static final long serialVersionUID = 6927173212299113606L;
+
     public UserWithStatus(Element elem,Twitter twitter) throws TwitterException{
         super(elem,twitter);
     }

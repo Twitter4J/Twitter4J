@@ -1,16 +1,16 @@
 package twitter4j;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.Document;
 
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 
 /**
  * Super class of Twitter Response objects.
+ *
  * @see twitter4j.DirectMessage
  * @see twitter4j.Status
  * @see twitter4j.User
@@ -65,7 +65,16 @@ public class TwitterResponse implements java.io.Serializable {
     }
 
     protected int getChildInt(String str) {
-        return Integer.valueOf(elem.getElementsByTagName(str).item(0).
+        String str2 = elem.getElementsByTagName(str).item(0).
+                getTextContent();
+        if (null == str2 || "".equals(str2)) {
+            return -1;
+        } else {
+            return Integer.valueOf(str2);
+        }
+    }
+    protected boolean getChildBoolean(String str) {
+        return Boolean.valueOf(elem.getElementsByTagName(str).item(0).
                                getTextContent());
     }
 

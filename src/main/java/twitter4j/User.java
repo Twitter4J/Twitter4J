@@ -1,43 +1,76 @@
 package twitter4j;
 
-import org.w3c.dom.Element;
-import java.net.URL;
-import java.net.MalformedURLException;
 import org.w3c.dom.Document;
-import java.util.List;
-import java.util.ArrayList;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A data class representing Twitter User
  */
 public class User extends TwitterResponse implements java.io.Serializable {
     static final String[] POSSIBLE_ROOT_NAMES = new String[]{"user","sender","recipient"};
+    private static final long serialVersionUID = 9043136917164367181L;
+
     /*package*/User(Element elem, Twitter twitter) throws TwitterException{
         super(elem, twitter);
         ensureRootNodeNameIs(POSSIBLE_ROOT_NAMES);
     }
 
+    /**
+     * Returns the id of the user
+     *
+     * @return the id of the user
+     */
     public int getId() {
         return getChildInt("id");
     }
 
+    /**
+     * Returns the name of the user
+     *
+     * @return the name of the user
+     */
     public String getName() {
         return getChildText("name");
     }
 
+    /**
+     * Returns the screen name of the user
+     *
+     * @return the screen name of the user
+     */
     public String getScreenName() {
         return getChildText("screen_name");
     }
 
+    /**
+     * Returns the location of the user
+     *
+     * @return the location of the user
+     */
     public String getLocation() {
         return getChildText("location");
     }
 
+    /**
+     * Returns the description of the user
+     *
+     * @return the description of the user
+     */
     public String getDescription() {
         return getChildText("description");
     }
 
+    /**
+     * Returns the profile image url of the user
+     *
+     * @return the profile image url of the user
+     */
     public URL getProfileImageURL() {
         try {
             return new URL(getChildText("profile_image_url"));
@@ -46,6 +79,11 @@ public class User extends TwitterResponse implements java.io.Serializable {
         }
     }
 
+    /**
+     * Returns the url of the user
+     *
+     * @return the url of the user
+     */
     public URL getURL() {
         try {
             return new URL(getChildText("url"));
@@ -54,10 +92,25 @@ public class User extends TwitterResponse implements java.io.Serializable {
         }
     }
 
+    /**
+     * Test if the user status is protected
+     *
+     * @return true if the user status is protected
+     */
     public boolean isProtected() {
-        return "true".equalsIgnoreCase(getChildText("protected"));
+        return getChildBoolean("protected");
     }
 
+
+    /**
+     * Returns the number of followers
+     *
+     * @since twitter4j 1.0.4
+     * @return the number of followers
+     */
+    public int getFollowersCount() {
+        return getChildInt("followers_count");
+    }
 
     public DirectMessage sendDirectMessage(String text) throws TwitterException {
         return twitter.sendDirectMessage(this.getName(), text);
@@ -94,6 +147,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
       <profile_image_url>http://assets1.twitter.com/system/user/profile_image/3516311/normal/NEC_0045.jpg?1182343831</profile_image_url>
       <url>http://www.coins.tsukuba.ac.jp/~i021179/blog/</url>
       <protected>false</protected>
+      <followsers_count>274</followers_count>
     </user>
      */
     @Override public int hashCode() {

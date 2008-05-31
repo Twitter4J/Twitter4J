@@ -258,7 +258,7 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user and that user's friends.
+     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating1 user and that user's friends.
      * It's also possible to request another user's friends_timeline via the id parameter below.
      *
      * @return list of the Friends Timeline

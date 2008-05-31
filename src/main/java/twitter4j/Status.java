@@ -1,37 +1,112 @@
 package twitter4j;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A data class representing one single status of a user.
  */
 public class Status extends TwitterResponse implements java.io.Serializable {
+    private static final long serialVersionUID = 4261125762955745621L;
 
     /*package*/Status(Element elem, Twitter twitter) throws TwitterException{
         super(elem, twitter);
         ensureRootNodeNameIs("status");
         user = new User( (Element) elem.getElementsByTagName("user").item(0),
                         twitter);
-}
+    }
+
+    /**
+     * Return the created_at
+     *
+     * @return created_at
+     */
 
     public String getCreatedAt() {
         return getChildText("created_at");
     }
 
+    /**
+     * Returns the id of the status
+     *
+     * @return the id
+     */
     public int getId() {
         return getChildInt("id");
     }
 
+    /**
+     * Returns the text of the status
+     *
+     * @return the text
+     */
     public String getText() {
         return getChildText("text");
     }
 
+    /**
+     * Returns the source
+     *
+     * @since twitter4j 1.0.4
+     * @return the source
+     */
+    public String getSource() {
+        return getChildText("source");
+    }
+
+
+    /**
+     * Test if the status is truncated
+     *
+     * @since twitter4j 1.0.4
+     * @return true if truncated
+     */
+    public boolean isTruncated() {
+        return getChildBoolean("truncated");
+    }
+
+    /**
+     * Returns the in_reply_tostatus_id
+     *
+     * @since twitter4j 1.0.4
+     * @return the in_reply_tostatus_id
+     */
+    public int getInReplyToStatusId() {
+        return getChildInt("in_reply_to_status_id");
+    }
+
+    /**
+     * Returns the in_reply_user_id
+     *
+     * @since twitter4j 1.0.4
+     * @return the in_reply_tostatus_id
+     */
+    public int getInReplyToUserId() {
+        return getChildInt("in_reply_to_user_id");
+    }
+
+    /**
+     * Test if the status is favorited
+     *
+     * @since twitter4j 1.0.4
+     * @return true if favorited
+     */
+    public boolean isFavorited() {
+        return getChildBoolean("favorited");
+    }
+
+
+
     private User user = null;
+
+    /**
+     * Return the user
+     * @return the user
+     */
     public User getUser() {
         return user;
     }
@@ -59,21 +134,28 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         }
     }
 
-    /*        <status>
-                    <created_at>Sun May 27 13:58:44 +0000 2007</created_at>
-                    <id>80430442</id>
-                    <text>&#12469;&#12508;&#12486;&#12531;&#12289;&#36890;&#36009;&#12391;&#36023;&#12387;&#12383;&#12290;&#21021;&#12469;&#12508;&#12486;&#12531;&#12290;</text>
-                    <user>
-                      <id>6106852</id>
-                      <name>iseki</name>
-                      <screen_name>iseki</screen_name>
-                      <location></location>
-                      <description></description>
-                      <profile_image_url>http://assets1.twitter.com/system/user/profile_image/6106852/normal/1.jpg?1179407975</profile_image_url>
-                      <url></url>
-                      <protected>false</protected>
-                    </user>
-          </status>    */
+    /*
+  <status>
+    <created_at>Fri May 30 17:04:22 +0000 2008</created_at>
+    <id>823477057</id>
+    <text>double double at in n out on Magnolia</text>
+    <source>web</source>
+    <truncated>false</truncated>
+    <in_reply_to_status_id></in_reply_to_status_id>
+    <in_reply_to_user_id></in_reply_to_user_id>
+    <favorited>false</favorited>
+    <user>
+      <id>14500444</id>
+      <name>arenson</name>
+      <screen_name>arenson</screen_name>
+      <location>Texas</location>
+      <description>I like girls, Mexican Food, and laughter. </description>
+      <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/54044033/s7958437_39956964_9393_normal.jpg</profile_image_url>
+      <url></url>
+      <protected>false</protected>
+      <followers_count>12</followers_count>
+    </user>
+  </status>*/
     @Override public int hashCode() {
         return elem.hashCode();
     }
