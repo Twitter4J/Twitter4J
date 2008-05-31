@@ -11,6 +11,8 @@ import org.w3c.dom.NodeList;
  */
 public class DirectMessage extends TwitterResponse implements java.io.
     Serializable {
+    private static final long serialVersionUID = 5671964289909162445L;
+
     /*package*/DirectMessage(Element elem, Twitter twitter)throws TwitterException {
         super(elem, twitter);
         ensureRootNodeNameIs("direct_message");

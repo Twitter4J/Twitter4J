@@ -19,6 +19,8 @@ import java.io.StringWriter;
 public class TwitterResponse implements java.io.Serializable {
     protected final Element elem;
     protected Twitter twitter;
+    private static final long serialVersionUID = 351190117061895609L;
+
     public TwitterResponse(Element elem, Twitter twitter) {
         this.elem = elem;
         this.twitter = twitter;

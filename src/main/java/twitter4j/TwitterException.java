@@ -6,6 +6,8 @@ package twitter4j;
  */
 public class TwitterException extends Exception {
     private int statusCode = -1;
+    private static final long serialVersionUID = -2623309261327598087L;
+
     public TwitterException(String msg) {
         super(msg);
     }

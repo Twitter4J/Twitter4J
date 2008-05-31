@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class AsyncTwitter extends Twitter {
     private Dispatcher dispatcher = new Dispatcher("Twitter4J Async Dispatcher");
+    private static final long serialVersionUID = 3400480876549514356L;
 
     public AsyncTwitter(String id, String password) {
         super(id, password);
@@ -563,8 +564,9 @@ public class AsyncTwitter extends Twitter {
     }
     /**
      * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting.  Use this method to rapidly export your archive of statuses.
+     *
      * @param page number of the page to retrieve archive
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener - a listener object that receives the response
      */
     public final synchronized void archiveAsync(int page, TwitterListener listener) {
         dispatcher.invokeLater(new AsyncTask(ARCHIVE, listener, new Object[] {page}) {
@@ -574,6 +576,38 @@ public class AsyncTwitter extends Twitter {
         });
     }
 
+    /**
+     * Update the location
+     *
+     * @param location - the current location of the user
+     * @param listener - a listener object that receives the response
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized void updateLocationAsync(String location,TwitterListener listener) throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[] {location}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.updatedLocation(updateLocation((String)args[0]));
+            }
+        });
+    }
+
+
+    /**
+     * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
+     *
+     * @param device - new Delivery device. Must be one of: IM, SMS, NONE.
+     * @param listener - a listener object that receives the response
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized void updateDeliverlyDeviceAsync(Device device,TwitterListener listener) throws TwitterException {
+        dispatcher.invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[] {device}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.updatedDeliverlyDevice(updateDeliverlyDevice((Device)args[0]));
+            }
+        });
+    }
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * @param listener TwitterListener a listener object that receives the response
@@ -768,4 +802,6 @@ public class AsyncTwitter extends Twitter {
     public final static int FAVORITES = 17;
     public final static int CREATE_FAVORITE = 18;
     public final static int DESTROY_FAVORITE = 19;
+    public final static int UPDATE_LOCATION = 20;
+    public final static int UPDATE_DELIVERLY_DEVICE = 21;
 }

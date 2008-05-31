@@ -21,7 +21,7 @@ public class Twitter implements java.io.Serializable {
     private String source = "Twitter4J";
 
     private boolean usePostForcibly = false;
-    private static final long serialVersionUID = -6467460325090609263L;
+    private static final long serialVersionUID = 4346156413282535531L;
 
     public Twitter() {
         http = new HttpClient();
@@ -757,9 +757,34 @@ public class Twitter implements java.io.Serializable {
      * @param location - the current location of the user
      * @return the updated user
      * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
      */
     public final synchronized User updateLocation(String location) throws TwitterException {
         return new User(get(baseURL + "account/update_location.xml","location",location, true).
+                asDocument().getDocumentElement(), this);
+    }
+
+    public final static Device IM = new Device("im");
+    public final static Device SMS = new Device("sms");
+    public final static Device NONE = new Device("none");
+
+    static class Device {
+        final String DEVICE;
+        public Device(String device){
+            DEVICE = device;
+        }
+    }
+
+    /**
+     * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
+     *
+     * @param device - new Delivery device. Must be one of: IM, SMS, NONE.
+     * @return the updated user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.0.4
+     */
+    public final synchronized User updateDeliverlyDevice(Device device) throws TwitterException {
+        return new User(get(baseURL + "account/update_delivery_device","device",device.DEVICE, true).
                 asDocument().getDocumentElement(), this);
     }
 
