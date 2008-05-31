@@ -69,7 +69,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Sets the userid
      *
-     * @param userId - new userid
+     * @param userId new userid
      */
     public void setUserId(String userId) {
         http.setUserId(userId);
@@ -87,7 +87,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Sets the password
      *
-     * @param password - new password
+     * @param password new password
      */
     public void setPassword(String password) {
         http.setPassword(password);
@@ -105,7 +105,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Sets the source parameter that will be passed by updating methods
      *
-     * @param source - the new source
+     * @param source the new source
      */
     public void setSource(String source) {
         this.source = source;
@@ -125,8 +125,8 @@ public class Twitter implements java.io.Serializable {
      * see Twitter Fan Wiki for detail.
      * http://twitter.pbwiki.com/API-Docs#RequestHeaders
      *
-     * @param name - the name of the request header
-     * @param value - the value of the request header
+     * @param name the name of the request header
+     * @param value the value of the request header
      */
     public void setRequestHeader(String name, String value) {
         http.setRequestHeader(name, value);
@@ -135,7 +135,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * set true to force using POST method communicating to the server
      *
-     * @param forceUsePost - if true POST method will be used forcibly
+     * @param forceUsePost if true POST method will be used forcibly
      */
     public void forceUsePost(boolean forceUsePost) {
         this.usePostForcibly = forceUsePost;
@@ -150,8 +150,8 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * issues an HTTP GET request. POST method will be used instead in case forceUsePost is set true.
-     * @param url - the request url
-     * @param authenticate - if true, the request will be sent with BASIC authentication header
+     * @param url the request url
+     * @param authenticate if true, the request will be sent with BASIC authentication header
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -162,10 +162,10 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * issues an HTTP GET request. POST method will be used instead in case forceUsePost is set true.
-     * @param url - the request url
-     * @param authenticate - if true, the request will be sent with BASIC authentication header
-     * @param name1 - the name of the first parameter
-     * @param value1 - the value of the first parameter
+     * @param url the request url
+     * @param authenticate if true, the request will be sent with BASIC authentication header
+     * @param name1 the name of the first parameter
+     * @param value1 the value of the first parameter
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -175,12 +175,12 @@ public class Twitter implements java.io.Serializable {
     }
     /**
      * issues an HTTP GET request. POST method will be used instead in case forceUsePost is set true.
-     * @param url - the request url
-     * @param name1 - the name of the first parameter
-     * @param value1 - the value of the first parameter
-     * @param name2 - the name of the second parameter
-     * @param value2 - the value of the second parameter
-     * @param authenticate - if true, the request will be sent with BASIC authentication header
+     * @param url the request url
+     * @param name1 the name of the first parameter
+     * @param value1 the value of the first parameter
+     * @param name2 the name of the second parameter
+     * @param value2 the value of the second parameter
+     * @param authenticate if true, the request will be sent with BASIC authentication header
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -192,9 +192,9 @@ public class Twitter implements java.io.Serializable {
     /**
      * issues an HTTP GET request. POST method will be used instead in case forceUsePost is set true.
      *
-     * @param url - the request url
-     * @param params - the request parameters
-     * @param authenticate - if true, the request will be sent with BASIC authentication header
+     * @param url the request url
+     * @param params the request parameters
+     * @param authenticate if true, the request will be sent with BASIC authentication header
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -231,7 +231,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
      *
-     * @param sinceID - returns only public statuses with an ID greater than (that is, more recent than) the specified ID
+     * @param sinceID returns only public statuses with an ID greater than (that is, more recent than) the specified ID
      * @return the 20 most recent statuses
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated argument should be always numeric. Use getPublicTimeline(int sinceID) instead
@@ -246,7 +246,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
      *
-     * @param sinceID - returns only public statuses with an ID greater than (that is, more recent than) the specified ID
+     * @param sinceID returns only public statuses with an ID greater than (that is, more recent than) the specified ID
      * @return the 20 most recent statuses
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -275,7 +275,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      *
-     * @param page - the number of page
+     * @param page the number of page
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -292,7 +292,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
      *
-     * @param id - specifies the ID or screen name of the user for whom to return the friends_timeline
+     * @param id specifies the ID or screen name of the user for whom to return the friends_timeline
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -306,8 +306,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
      *
-     * @param id - specifies the ID or screen name of the user for whom to return the friends_timeline
-     * @param page - the number of page
+     * @param id specifies the ID or screen name of the user for whom to return the friends_timeline
+     * @param page the number of page
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -324,7 +324,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      *
-     * @param since - narrows the returned results to just those statuses created after the specified HTTP-formatted date
+     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -337,8 +337,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
      *
-     * @param id - specifies the ID or screen name of the user for whom to return the friends_timeline
-     * @param since - narrows the returned results to just those statuses created after the specified HTTP-formatted date
+     * @param id specifies the ID or screen name of the user for whom to return the friends_timeline
+     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -351,9 +351,9 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
      *
-     * @param id - specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param count - specifies the number of statuses to retrieve.  May not be greater than 20 for performance purposes
-     * @param since - narrows the returned results to just those statuses created after the specified HTTP-formatted date
+     * @param id specifies the ID or screen name of the user for whom to return the user_timeline
+     * @param count specifies the number of statuses to retrieve.  May not be greater than 20 for performance purposes
+     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
      * @return list of the user Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -369,8 +369,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
      *
-     * @param id - specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param since - narrows the returned results to just those statuses created after the specified HTTP-formatted date
+     * @param id specifies the ID or screen name of the user for whom to return the user_timeline
+     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -382,8 +382,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
      *
-     * @param id - specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param count - specifies the number of statuses to retrieve.  May not be greater than 20 for performance purposes
+     * @param id specifies the ID or screen name of the user for whom to return the user_timeline
+     * @param count specifies the number of statuses to retrieve.  May not be greater than 20 for performance purposes
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -399,8 +399,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
      *
-     * @param count - specifies the number of statuses to retrieve.  May not be greater than 20 for performance purposes
-     * @param since - narrows the returned results to just those statuses created after the specified HTTP-formatted date
+     * @param count specifies the number of statuses to retrieve.  May not be greater than 20 for performance purposes
+     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -415,7 +415,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
      *
-     * @param id - specifies the ID or screen name of the user for whom to return the user_timeline
+     * @param id specifies the ID or screen name of the user for whom to return the user_timeline
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -438,7 +438,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
      *
-     * @param id - the numerical ID of the status you're trying to retrieve
+     * @param id the numerical ID of the status you're trying to retrieve
      * @return a single status
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -451,7 +451,7 @@ public class Twitter implements java.io.Serializable {
      * Updates the user's status.
      * The text will be trimed if the length of the text is exceeding 160 characters.
      *
-     * @param status - the text of your status update
+     * @param status the text of your status update
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -476,7 +476,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      *
-     * @param page - the number of page
+     * @param page the number of page
      * @return the 20 most recent replies
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -501,7 +501,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the specified user's friends, each with current status inline.
      *
-     * @param page - number of page
+     * @param page number of page
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -513,7 +513,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the user's friends, each with current status inline.
      *
-     * @param id - the ID or screen name of the user for whom to request a list of friends
+     * @param id the ID or screen name of the user for whom to request a list of friends
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -525,8 +525,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the user's friends, each with current status inline.
      *
-     * @param id - the ID or screen name of the user for whom to request a list of friends
-     * @param page - the number of page
+     * @param id the ID or screen name of the user for whom to request a list of friends
+     * @param page the number of page
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -558,7 +558,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
      *
-     * @param id - the ID or screen name of the user for whom to request the detail
+     * @param id the ID or screen name of the user for whom to request the detail
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -579,7 +579,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns a list of the direct messages sent to the authenticating user.
      *
-     * @param page - the number of page
+     * @param page the number of page
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -607,7 +607,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns a list of the direct messages sent to the authenticating user.
      *
-     * @param since - narrows the resulting list of direct messages to just those sent after the specified HTTP-formatted date
+     * @param since narrows the resulting list of direct messages to just those sent after the specified HTTP-formatted date
      * @return list of direct messages
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -632,7 +632,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns a list of the direct messages sent by the authenticating user.
      *
-     * @param since - narrows the resulting list of direct messages to just those sent after the specified HTTP-formatted date
+     * @param since narrows the resulting list of direct messages to just those sent after the specified HTTP-formatted date
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -645,7 +645,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns a list of the direct messages sent by the authenticating user.
      *
-     * @param sinceId - returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
+     * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -659,7 +659,7 @@ public class Twitter implements java.io.Serializable {
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimed if the length of the text is exceeding 140 characters.
      *
-     * @param id - the ID or screen name of the user to whom send the direct message
+     * @param id the ID or screen name of the user to whom send the direct message
      * @param text String
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
@@ -680,7 +680,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
      *
-     * @param id - the ID of the direct message to destroy
+     * @param id the ID of the direct message to destroy
      * @return the deleted direct message
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -693,7 +693,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      *
-     * @param id - the ID or screen name of the user to be befriended
+     * @param id the ID or screen name of the user to be befriended
      * @return the befriended user
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -706,7 +706,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      *
-     * @param id - the ID or screen name of the user for whom to request a list of friends
+     * @param id the ID or screen name of the user for whom to request a list of friends
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -742,7 +742,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting. Use this method to rapidly export your archive of statuses.
      *
-     * @param page - the number of page
+     * @param page the number of page
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -754,7 +754,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Update the location
      *
-     * @param location - the current location of the user
+     * @param location the current location of the user
      * @return the updated user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
@@ -778,7 +778,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
      *
-     * @param device - new Delivery device. Must be one of: IM, SMS, NONE.
+     * @param device new Delivery device. Must be one of: IM, SMS, NONE.
      * @return the updated user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
@@ -803,7 +803,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      *
-     * @param page - the number of page
+     * @param page the number of page
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -815,7 +815,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      *
-     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses
+     * @param id the ID or screen name of the user for whom to request a list of favorite statuses
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -827,8 +827,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      *
-     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses
-     * @param page - the number of page
+     * @param id the ID or screen name of the user for whom to request a list of favorite statuses
+     * @param page the number of page
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -840,7 +840,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
      *
-     * @param id - the ID of the status to favorite
+     * @param id the ID of the status to favorite
      * @return Status
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -852,7 +852,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Un-favorites the status specified in the ID parameter as the authenticating user.  Returns the un-favorited status in the requested format when successful.
      *
-     * @param id - the ID of the status to un-favorite
+     * @param id the ID of the status to un-favorite
      * @return Status
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -890,7 +890,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
      *
-     * @param id - the ID or screen_name of the user to block
+     * @param id the ID or screen_name of the user to block
      * @return the blocked user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
@@ -904,7 +904,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
      *
-     * @param id - the ID or screen_name of the user to block
+     * @param id the ID or screen_name of the user to block
      * @return the unblocked user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4

@@ -566,7 +566,7 @@ public class AsyncTwitter extends Twitter {
      * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting.  Use this method to rapidly export your archive of statuses.
      *
      * @param page number of the page to retrieve archive
-     * @param listener - a listener object that receives the response
+     * @param listener a listener object that receives the response
      */
     public final synchronized void archiveAsync(int page, TwitterListener listener) {
         dispatcher.invokeLater(new AsyncTask(ARCHIVE, listener, new Object[] {page}) {
@@ -579,8 +579,8 @@ public class AsyncTwitter extends Twitter {
     /**
      * Update the location
      *
-     * @param location - the current location of the user
-     * @param listener - a listener object that receives the response
+     * @param location the current location of the user
+     * @param listener a listener object that receives the response
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
@@ -596,8 +596,8 @@ public class AsyncTwitter extends Twitter {
     /**
      * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
      *
-     * @param device - new Delivery device. Must be one of: IM, SMS, NONE.
-     * @param listener - a listener object that receives the response
+     * @param device new Delivery device. Must be one of: IM, SMS, NONE.
+     * @param listener a listener object that receives the response
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
@@ -634,7 +634,7 @@ public class AsyncTwitter extends Twitter {
     }
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses
+     * @param id the ID or screen name of the user for whom to request a list of favorite statuses
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void favoritesAsync(String id,TwitterListener listener) {
@@ -646,8 +646,8 @@ public class AsyncTwitter extends Twitter {
     }
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses.
-     * @param page - retrieves the 20 next most recent favorite statuses.
+     * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
+     * @param page retrieves the 20 next most recent favorite statuses.
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void favoritesAsync(String id,int page, TwitterListener listener) {
@@ -660,7 +660,7 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
-     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses.
+     * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void createFavoriteAsync(int id, TwitterListener listener) {
@@ -673,7 +673,7 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
-     * @param id - the ID or screen name of the user for whom to request a list of favorite statuses.
+     * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
      */
     public final synchronized void createFavoriteAsync(int id) {
         dispatcher.invokeLater(new AsyncTask(FAVORITES, new TwitterAdapter(), new Object[] {id}) {
@@ -684,7 +684,7 @@ public class AsyncTwitter extends Twitter {
     }
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
-     * @param id - the ID or screen name of the user for whom to request a list of un-favorite statuses.
+     * @param id the ID or screen name of the user for whom to request a list of un-favorite statuses.
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void destroyFavoriteAsync(int id, TwitterListener listener) {
@@ -696,7 +696,7 @@ public class AsyncTwitter extends Twitter {
     }
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
-     * @param id - the ID or screen name of the user for whom to request a list of un-favorite statuses.
+     * @param id the ID or screen name of the user for whom to request a list of un-favorite statuses.
      */
     public final synchronized void destroyFavoriteAsync(int id) {
         dispatcher.invokeLater(new AsyncTask(FAVORITES,  new TwitterAdapter(), new Object[] {id}) {
@@ -765,7 +765,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
      *
-     * @param id - the ID or screen_name of the user to block
+     * @param id the ID or screen_name of the user to block
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
@@ -781,7 +781,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
      *
-     * @param id - the ID or screen_name of the user to block
+     * @param id the ID or screen_name of the user to block
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
