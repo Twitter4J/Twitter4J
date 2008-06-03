@@ -2,25 +2,46 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>yusuke.homeip.net</groupId>
+    <groupId>net.homeip.yusuke</groupId>
     <artifactId>twitter4j</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.4</version>
     <name>twitter4j</name>
+    <version>1.0.4</version>
     <url>http://yusuke.homeip.net/twitter4j/</url>
-    <repositories>
-        <repository>
-            <id>yusuke.homeip.net</id>
-            <name>yusuke.homeip.net Repository</name>
-            <url>http://yusuke.homeip.net/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <licenses>
+        <license>
+            <name>BSD style</name>
+            <url>http://yusuke.homeip.net/twitter4j/en/LICENSE.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <description>A Java library for the Twitter API</description>
+    <issueManagement>
+      <system>Jira</system>
+      <url>http://yusuke.homeip.net/jira/browse/TFJ</url>
+    </issueManagement>
+    <scm>
+        <connection>scm:svn:http://yusuke.homeip.net/svn/twitter4j/</connection>
+        <url>
+            http://yusuke.homeip.net/svnwebclient/directoryContent.jsp?url=twitter4j
+        </url>
+    </scm>
+    <mailingLists>
+        <mailingList>
+            <name>Twitter4J</name>
+            <subscribe>twitter4j-subscribe@googlegroups.com</subscribe>
+            <unsubscribe>twitter4j-unsubscribe@googlegroups.com</unsubscribe>
+            <post>twitter4j@googlegroups.com</post>
+            <archive>http://groups.google.com/group/twitter4j</archive>
+        </mailingList>
+        <mailingList>
+            <name>Twitter4J-J</name>
+            <subscribe>twitter4j-j-subscribe@googlegroups.com</subscribe>
+            <unsubscribe>twitter4j-j-unsubscribe@googlegroups.com</unsubscribe>
+            <post>twitter4j-j@googlegroups.com</post>
+            <archive>http://groups.google.com/group/twitter4j-j</archive>
+        </mailingList>
+    </mailingLists>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -53,17 +74,17 @@
                     <target>jsr14</target>
                 </configuration>
             </plugin>
-			<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
