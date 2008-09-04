@@ -32,16 +32,14 @@
   <li><a href="#asyncAPI" onclick="return scrollGracefully(this.href)">$[ja:非同期API]$[en:Async API]</a></li>
  </ol>
 <li><a href="./javadoc/index.html">JavaDoc</a></li>
+<li><a href="#download" onclick="return scrollGracefully(this.href)">$[ja:ダウンロード]$[en:Download]</a></li>
 <li><a href="#sourceCode" onclick="return scrollGracefully(this.href)">$[ja:ソースコード]$[en:Source Code]</a></li>
+<li><a href="#maven" onclick="return scrollGracefully(this.href)">$[ja:Maven 統合]$[en:Maven Integration]</a></li>
 <li><a href="#mailingList" onclick="return scrollGracefully(this.href)">$[ja:メーリングリスト]$[en:Mailing list]</a></li>
 <li><a href="#license" onclick="return scrollGracefully(this.href)">$[ja:ライセンス]$[en:License]</a></li>
 <li><a href="#versionHistory" onclick="return scrollGracefully(this.href)">$[ja:変更履歴]$[en:Version History]</a></li>
 </ul>
 <center>
-<a name="download"><h3>$[ja:ダウンロード]$[en:Download]</h3></a>
-<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.3.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
-    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.3.zip">twitter4j-1.0.3.zip</a>
-    <br><br>
 <include>paypal.html</include>
 <include>adsense200x200.html</include>
 </center>
@@ -72,10 +70,10 @@ JVM: JDK1.4.2 or later]</p>
 </ul>
 
     <a name="howToUse"><h2>$[ja:使い方]$[en:How To Use]</h2></a>
-    <p>$[ja:twitter4j-1.0.3.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
+    <p>$[ja:twitter4j-1.0.4.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
     Java が分かっていれば <a href="./javadoc/index.html">JavaDoc</a> を見るのが早いです。<br>
     twitter4j.<a href="javadoc/twitter4j/Twitter.html">Twitter</a> クラスが最初に見るべきクラスです。]
-    $[en:It's as simple as adding twitter4j-1.0.3.jar to your classpath.<br>
+    $[en:It's as simple as adding twitter4j-1.0.4.jar to your classpath.<br>
     If you are familiar with Java language, the <a href="./javadoc/index.html">JavaDoc</a> should be <a href="http://obvious.com/">Obvious</a>ly the shortest way for you to understand Twitter4J.<br>
     <a href="javadoc/twitter4j/Twitter.html">twitter4j.Twitter</a> class is the one you may want to look first.]</p>
 
@@ -123,7 +121,7 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/GetDirectMessage
     sender.sendDirectMessage(recipientId,message);
     Twitter receiver = new Twitter(recipientId,recipientPassword);
     List<DirectMessage> messages = receiver.getDirectMessages();
-    for (DireceMessage message : messages) {
+    for (DirectMessage message : messages) {
         System.out.println("Sender:" + message.getSenderScreenName());
         System.out.println("Text:" + message.getText() + "\n");
     }
@@ -172,6 +170,11 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html
 
 </ol>
 
+<a name="download"><h2>$[ja:ダウンロード]$[en:Download]</h2></a>
+<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.4.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
+    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.4.zip">twitter4j-1.0.4.zip</a>
+
+
     <a name="sourceCode"><h2>$[ja:ソースコード]$[en:Source Code]</h2></a>
     <p>$[ja:アーカイブにはソースコードが含まれています。<br>
     プロジェクトのリポジトリには以下の URL からアクセスできます。<br><a href="http://yusuke.homeip.net/svnwebclient/directoryContent.jsp?url=twitter4j">http://yusuke.homeip.net/svnwebclient/directoryContent.jsp?url=twitter4j</a><br>
@@ -182,6 +185,11 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html
     <pre class="codeSample">svn checkout http://yusuke.homeip.net/svn/twitter4j/trunk twitter4j
 </pre></p>
 
+    <a name="maven"><h2>$[ja:Maven 統合]$[en:Maven Integration]</h2></a>
+<p>$[ja:Maven を使っている場合、pom.xml に以下のように記載すればご自身のプロジェクトに twitter4j を簡単に統合できます。]
+$[en:You can integrate Twitter4j easily by including following lines into your pom.xml.]
+<pre class="codeSample">   &lt;dependencies&gt;<br/>       &lt;dependency&gt;<br/>           &lt;groupId&gt;net.homeip.yusuke&lt;/groupId&gt;<br/>           &lt;artifactId&gt;twitter4j&lt;/artifactId&gt;<br/>           &lt;version&gt;1.0.4&lt;/version&gt;<br/>       &lt;/dependency&gt;<br/>       ...<br/>   &lt;/dependencies&gt;<br/></pre>
+</p>
 
 
     <a name="mailingList"><h2>$[ja:メーリングリスト]$[en:Mailing list]</h2></a>
@@ -229,13 +237,11 @@ Known bugs and feature requests will be filed to the Jira site.<br>
     </p>
 
     <a name="license"><h2>$[ja:ライセンス]$[en:License]</h2></a>
-$[ja:Twitter4J は BSD ライセンスに基づいてリリースされています。<br>
-Twitter4J にバンドルされている <a href="http://jakarta.apache.org/commons/codec/">Apache Commons Codec</a> は <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache Software License</a> に基づいています。]
-$[en:Twitter4J is released under the BSD license.<br>
-Twitter4J bundles <a href="http://jakarta.apache.org/commons/codec/">Apache Commons Codec</a> which is released under the <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache Software License</a> .]
+$[ja:Twitter4J は BSD スタイルライセンスに基づいてリリースされています。<br>]
+$[en:Twitter4J is released under a BSD-style license.<br>]
 <hr/>
 <pre class="codeSample">
-Copyright (c) 2007, Yusuke Yamamoto
+Copyright (c) 2007-2008, Yusuke Yamamoto
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -277,7 +283,32 @@ If you feel Twitter4J makes your life easier, please do consider making a donati
 <li>2.0.</li>
 $[ja:]$[en:]
 -->
-        <li>$[ja:バージョン ]$[en:Version ]1.0.3 <font color="red">new!</font></li>
+
+        <li>$[ja:バージョン ]$[en:Version ]1.0.4 <font color="red">new!</font></li>
+
+<h2>       $[ja:改善]$[en:Improvement]
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-22'>TFJ-22</a>] -  $[ja:pom.xml が source jar を生成しない]$[en:pom.xml does not produce source jar file]
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-27'>TFJ-27</a>] -  $[ja:&quot;source&quot;, &quot;truncated&quot;, &quot;in_reply_to_status_id&quot;, &quot;in_reply_to_user_id&quot;, &quot;favorited&quot; を Status に, &quot;followers_count&quot; を User に追加]$[en:add &quot;source&quot;, &quot;truncated&quot;, &quot;in_reply_to_status_id&quot;, &quot;in_reply_to_user_id&quot;, &quot;favorited&quot; to Status, &quot;followers_count&quot; to User]
+</li>
+</ul>
+    
+<h2>       $[ja:新機能]$[en:New Feature]
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-21'>TFJ-21</a>] -   $[ja:POST メソッドを強制する機能]$[en:ability to force using POST method]
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-24'>TFJ-24</a>] -  $[ja:2008/4/29に導入された新APIのサポート]$[en:support new APIs introduced on April 29th, 2008]
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-25'>TFJ-25</a>] -  $[ja:ユーザIDとパスワードを変更する機能]$[en:ability to change user id and password]
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-26'>TFJ-26</a>] -  $[ja:リクエスト、レスポンスをダンプする機能]$[en:ability to dump request and response]
+</li>
+</ul>
+
+        <li>$[ja:バージョン ]$[en:Version ]1.0.3</li>
 
 <h2>        $[ja:新機能]$[en:New Feature]
 </h2>
