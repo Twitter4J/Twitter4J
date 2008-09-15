@@ -153,9 +153,17 @@ public class HttpClient implements java.io.Serializable {
                     }
                     responseCode = con.getResponseCode();
                     log("Response code: ", String.valueOf(responseCode));
-                    is = con.getInputStream(); // this will throw IOException in case response code is 4xx 5xx
+                    if (responseCode == UNAUTHORIZED || responseCode == FORBIDDEN) {
+                        is = con.getErrorStream();
+                    }else{
+                        is = con.getInputStream(); // this will throw IOException in case response code is 4xx 5xx
+                    }
                     res = new Response(con.getResponseCode(), is);
                     log("Response: ", res.toString());
+                    if (responseCode == UNAUTHORIZED || responseCode == FORBIDDEN) {
+                        throw new TwitterException(res.toString(), responseCode);
+                    }
+
                     break;
                 } finally {
                     try {

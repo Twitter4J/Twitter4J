@@ -26,9 +26,9 @@ public class Twitter implements java.io.Serializable {
     public Twitter() {
         http = new HttpClient();
         setRequestHeader("X-Twitter-Client", "Twitter4J");
-        setRequestHeader("X-Twitter-Client-Version", "1.0.4");
+        setRequestHeader("X-Twitter-Client-Version", "1.0.5");
         setRequestHeader("X-Twitter-Client-URL",
-                "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.4.xml");
+                "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.5.xml");
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
@@ -686,7 +686,7 @@ public class Twitter implements java.io.Serializable {
      */
     public final synchronized DirectMessage deleteDirectMessage(int id) throws
             TwitterException {
-        return new DirectMessage(get(baseURL +
+        return new DirectMessage(http.post(baseURL +
                 "direct_messages/destroy/" + id + ".xml",new PostParameter[0], true).asDocument().getDocumentElement(), this);
     }
 
@@ -699,7 +699,7 @@ public class Twitter implements java.io.Serializable {
      */
 
     public final synchronized User create(String id) throws TwitterException {
-        return new User(get(baseURL + "friendships/create/" + id + ".xml",new PostParameter[0], true).
+        return new User(http.post(baseURL + "friendships/create/" + id + ".xml",new PostParameter[0], true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -711,7 +711,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized User destroy(String id) throws TwitterException {
-        return new User(get(baseURL + "friendships/destroy/" + id + ".xml",new PostParameter[0], true).
+        return new User(http.post(baseURL + "friendships/destroy/" + id + ".xml",new PostParameter[0], true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -733,6 +733,7 @@ public class Twitter implements java.io.Serializable {
      *
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated This method is no longer supported.
      */
     public final synchronized List<Status> archive() throws TwitterException {
         return Status.constructStatuses(get(baseURL + "account/archive.xml",new PostParameter[0], true).
@@ -760,7 +761,7 @@ public class Twitter implements java.io.Serializable {
      * @since twitter4j 1.0.4
      */
     public final synchronized User updateLocation(String location) throws TwitterException {
-        return new User(get(baseURL + "account/update_location.xml","location",location, true).
+        return new User(http.post(baseURL + "account/update_location.xml",new PostParameter[]{new PostParameter("location",location)}, true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -784,7 +785,7 @@ public class Twitter implements java.io.Serializable {
      * @since twitter4j 1.0.4
      */
     public final synchronized User updateDeliverlyDevice(Device device) throws TwitterException {
-        return new User(get(baseURL + "account/update_delivery_device","device",device.DEVICE, true).
+        return new User(http.post(baseURL + "account/update_delivery_device",new PostParameter[]{new PostParameter("device",device.DEVICE)}, true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -845,7 +846,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized Status createFavorite(int id) throws TwitterException {
-        return new Status(get(baseURL + "favorites/create/" + id + ".xml", true).
+        return new Status(http.post(baseURL + "favorites/create/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -857,7 +858,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized Status destroyFavorite(int id) throws TwitterException {
-        return new Status(get(baseURL + "favorites/destroy/" + id + ".xml", true).
+        return new Status(http.post(baseURL + "favorites/destroy/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -869,7 +870,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized User follow(String id) throws TwitterException {
-        return new User(get(baseURL + "notifications/follow/" + id + ".xml", true).
+        return new User(http.post(baseURL + "notifications/follow/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -881,7 +882,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized User leave(String id) throws TwitterException {
-        return new User(get(baseURL + "notifications/leave/" + id + ".xml", true).
+        return new User(http.post(baseURL + "notifications/leave/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -896,7 +897,7 @@ public class Twitter implements java.io.Serializable {
      * @since twitter4j 1.0.4
      */
     public final synchronized User block(String id) throws TwitterException {
-        return new User(get(baseURL + "blocks/create/" + id + ".xml", true).
+        return new User(http.post(baseURL + "blocks/create/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
@@ -910,7 +911,7 @@ public class Twitter implements java.io.Serializable {
      * @since twitter4j 1.0.4
      */
     public final synchronized User unblock(String id) throws TwitterException {
-        return new User(get(baseURL + "blocks/destroy/" + id + ".xml", true).
+        return new User(http.post(baseURL + "blocks/destroy/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
 
