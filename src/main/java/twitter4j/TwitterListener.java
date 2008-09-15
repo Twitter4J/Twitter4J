@@ -13,6 +13,7 @@ public interface TwitterListener{
     public void gotShow(Status status);
     public void updated(Status status);
     public void gotReplies(List<Status> statuses);
+    public void destroyedStatus(Status destroyedStatus);
     public void gotFriends(List<User> users);
     public void gotFollowers(List<User> users);
     public void gotFeatured(List<User> users);

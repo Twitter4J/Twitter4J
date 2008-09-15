@@ -128,6 +128,12 @@ public class TwitterTestUnit extends TestCase {
         Status status = twitterAPI1.update(date);
         assertEquals("",date, status.getText());
     }
+    public void testDestoryStatus() throws Exception{
+        String date = new java.util.Date().toString()+"test";
+        Status status = twitterAPI1.update(date);
+        assertEquals("",date, status.getText());
+        twitterAPI1.destroyStatus(status.getId());
+    }
     public void testGetFriends() throws Exception{
         List<User> actualReturn = twitterAPI1.getFriends(id2);
         boolean found = false;

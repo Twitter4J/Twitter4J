@@ -287,6 +287,19 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     *
+     * Destroys the status specified by the required ID parameter. asynchronously
+     * @param statusId String
+     */
+    public void destoryStatusAsync(int statusId) {
+        dispatcher.invokeLater(new AsyncTask(DESTROY_STATUS,  new TwitterAdapter(), new Integer[] {statusId}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.destroyedStatus(destroyStatus( ((Integer) args[0])));
+            }
+        });
+    }
+
+    /**
      * Returns the specified user's friends, each with current status inline.
      * @param listener TwitterListener a listener object that receives the response
      */
@@ -872,4 +885,5 @@ public class AsyncTwitter extends Twitter {
     public final static int UNBLOCK = 23;
     public final static int TEST = 24;
     public final static int GET_DOWNTIME_SCHEDULE = 25;
+    public final static int DESTROY_STATUS = 26;
 }

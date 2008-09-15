@@ -214,6 +214,8 @@ public class Twitter implements java.io.Serializable {
         }
     }
 
+    /* Status Methods */
+
     /**
      * Returns the 20 most recent statuses from non-protected users who have set a custom user icon.
      *
@@ -489,6 +491,20 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * Destroys the status specified by the required ID parameter.  The authenticating user must be the author of the specified status.
+     *
+     * @param statusId The ID of the status to destroy.
+     * @return the deleted status
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public Status destroyStatus(int statusId) throws TwitterException {
+        return new Status(http.post(baseURL + "statuses/destroy/"+statusId+".xml",
+                new PostParameter[0], true).asDocument().getDocumentElement(), this);
+    }
+
+    /* User Methods */
+
+    /**
      * Returns the specified user's friends, each with current status inline.
      *
      * @return the list of friends
@@ -746,6 +762,7 @@ public class Twitter implements java.io.Serializable {
      * @param page the number of page
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated This method is no longer supported.
      */
     public final synchronized List<Status> archive(int page) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "account/archive.xml","page",String.valueOf(page), true).
