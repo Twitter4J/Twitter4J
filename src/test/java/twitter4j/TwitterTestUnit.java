@@ -75,6 +75,7 @@ public class TwitterTestUnit extends TestCase {
         actualReturn = twitterAPI1.getFriendsTimeline();
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFriendsTimeline(new Date(0));
+        System.out.println("size:"+actualReturn.size());
         assertTrue(actualReturn.size() > 0);
 
         actualReturn = twitterAPI2.getFriendsTimeline(id1);
@@ -173,11 +174,13 @@ public class TwitterTestUnit extends TestCase {
 
     public void testGetDirectMessages() throws Exception{
         try {
+            twitterAPI1.create(id2);
             twitterAPI1.follow(id2);
         } catch (twitter4j.TwitterException te) {
             te.printStackTrace();
         }
         try {
+            twitterAPI2.create(id1);
             twitterAPI2.follow(id1);
         } catch (twitter4j.TwitterException te) {
             te.printStackTrace();
@@ -261,6 +264,11 @@ public class TwitterTestUnit extends TestCase {
 
     public void testNotification() throws Exception {
         try {
+            twitterAPI2.create(id1);
+        } catch (TwitterException te) {
+
+        }
+        try {
             twitterAPI2.follow(id1);
         } catch (TwitterException te) {
 
@@ -272,7 +280,16 @@ public class TwitterTestUnit extends TestCase {
         } catch (TwitterException te) {
 
         }
-        twitterAPI2.follow(id1);
+        try {
+            twitterAPI2.create(id1);
+        } catch (TwitterException te) {
+
+        }
+        try {
+            twitterAPI2.follow(id1);
+        } catch (TwitterException te) {
+
+        }
         try {
             twitterAPI2.follow(id1);
             fail("should fail");
@@ -288,6 +305,6 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(twitterAPI2.test());
     }
     public void testDowntimeSchedule() throws Exception {
-        twitterAPI2.getDowntimeSchedule();
+        System.out.println(twitterAPI2.getDowntimeSchedule());
     }
 }

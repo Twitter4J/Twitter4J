@@ -131,8 +131,11 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 }
                 return users;
             } catch (TwitterException te) {
-                ensureRootNodeNameIs("nil-classes", doc.getDocumentElement());
-                return new ArrayList<User>(0);
+                if(isRootNodeNilClasses(doc)){
+                    return new ArrayList<User>(0);
+                }else{
+                    throw te;
+                }
             }
         }
     }

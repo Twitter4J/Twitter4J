@@ -1,5 +1,6 @@
 package twitter4j;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.transform.TransformerException;
@@ -50,6 +51,10 @@ public class TwitterResponse implements java.io.Serializable {
         if(!rootName.equals(elem.getNodeName())){
             throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.\n"+toString(elem));
         }
+    }
+    protected static boolean isRootNodeNilClasses(Document doc){
+        String root = doc.getDocumentElement().getNodeName();
+        return "nil-classes".equals(root) || "nilclasses".equals(root);
     }
 
     private static String toString(Element doc) {

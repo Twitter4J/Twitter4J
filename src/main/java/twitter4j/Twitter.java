@@ -26,9 +26,9 @@ public class Twitter implements java.io.Serializable {
     public Twitter() {
         http = new HttpClient();
         setRequestHeader("X-Twitter-Client", "Twitter4J");
-        setRequestHeader("X-Twitter-Client-Version", "1.0.5");
+        setRequestHeader("X-Twitter-Client-Version", "1.0.6");
         setRequestHeader("X-Twitter-Client-URL",
-                "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.5.xml");
+                "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.6.xml");
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
@@ -496,6 +496,7 @@ public class Twitter implements java.io.Serializable {
      * @param statusId The ID of the status to destroy.
      * @return the deleted status
      * @throws TwitterException when Twitter service or network is unavailable
+     * @since 1.0.5
      */
     public Status destroyStatus(int statusId) throws TwitterException {
         return new Status(http.post(baseURL + "statuses/destroy/"+statusId+".xml",

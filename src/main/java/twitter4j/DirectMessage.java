@@ -1,10 +1,11 @@
 package twitter4j;
 
-import org.w3c.dom.Element;
 import org.w3c.dom.Document;
-import java.util.List;
-import java.util.ArrayList;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A data class representing sent/received direct message.
@@ -76,8 +77,11 @@ public class DirectMessage extends TwitterResponse implements java.io.
                 }
                 return messages;
             } catch (TwitterException te) {
-                ensureRootNodeNameIs("nil-classes", doc.getDocumentElement());
-                return new ArrayList<DirectMessage>(0);
+                if(isRootNodeNilClasses(doc)){
+                    return new ArrayList<DirectMessage>(0);
+                }else{
+                    throw te;
+                }
             }
         }
     }

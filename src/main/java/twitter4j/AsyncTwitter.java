@@ -290,9 +290,24 @@ public class AsyncTwitter extends Twitter {
      *
      * Destroys the status specified by the required ID parameter. asynchronously
      * @param statusId String
+     * @since 1.0.5
      */
     public void destoryStatusAsync(int statusId) {
         dispatcher.invokeLater(new AsyncTask(DESTROY_STATUS,  new TwitterAdapter(), new Integer[] {statusId}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.destroyedStatus(destroyStatus( ((Integer) args[0])));
+            }
+        });
+    }
+    /**
+     *
+     * Destroys the status specified by the required ID parameter. asynchronously
+     * @param statusId String
+     * @param listener TwitterListener a listener object that receives the response
+     * @since 1.0.6
+     */
+    public void destoryStatusAsync(int statusId, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(DESTROY_STATUS,  listener, new Integer[] {statusId}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.destroyedStatus(destroyStatus( ((Integer) args[0])));
             }
