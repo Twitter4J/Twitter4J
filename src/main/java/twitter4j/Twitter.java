@@ -618,7 +618,7 @@ public class Twitter implements java.io.Serializable {
     public final synchronized List<DirectMessage> getDirectMessages(int sinceId) throws
             TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL +
-                "direct_messages.xml", "since", String.valueOf(sinceId), true).asDocument(), this);
+                "direct_messages.xml", "since_id", String.valueOf(sinceId), true).asDocument(), this);
     }
 
     /**

@@ -62,11 +62,11 @@ public class DirectMessage extends TwitterResponse implements java.io.
 
     /*package*/ static List<DirectMessage> constructDirectMessages(Document doc,
         Twitter twitter) throws TwitterException{
-        if (null == doc) {
+        if (isRootNodeNilClasses(doc)) {
             return new ArrayList<DirectMessage> (0);
         } else {
             try {
-                ensureRootNodeNameIs("direct-messages", doc.getDocumentElement());
+                ensureRootNodeNameIs("direct-messages", doc);
                 NodeList list = doc.getDocumentElement().getElementsByTagName(
                         "direct_message");
                 int size = list.getLength();

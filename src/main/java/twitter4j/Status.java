@@ -113,11 +113,11 @@ public class Status extends TwitterResponse implements java.io.Serializable {
 
     /*package*/ static List<Status> constructStatuses(Document doc,
         Twitter twitter) throws TwitterException{
-        if (null == doc) {
+        if (isRootNodeNilClasses(doc)) {
             return new ArrayList<Status> (0);
         } else {
             try {
-                ensureRootNodeNameIs("statuses", doc.getDocumentElement());
+                ensureRootNodeNameIs("statuses", doc);
                 NodeList list = doc.getDocumentElement().getElementsByTagName(
                         "status");
                 int size = list.getLength();
@@ -128,7 +128,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
                 }
                 return statuses;
             } catch (TwitterException te) {
-                ensureRootNodeNameIs("nil-classes", doc.getDocumentElement());
+                ensureRootNodeNameIs("nil-classes", doc);
                 return new ArrayList<Status>(0);
             }
         }

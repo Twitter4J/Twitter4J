@@ -117,11 +117,11 @@ public class User extends TwitterResponse implements java.io.Serializable {
     }
 
     public static List<User> constructUsers(Document doc, Twitter twitter)throws TwitterException {
-        if (null == doc) {
+        if (isRootNodeNilClasses(doc)) {
             return new ArrayList<User> (0);
         } else {
             try {
-                ensureRootNodeNameIs("users", doc.getDocumentElement());
+                ensureRootNodeNameIs("users", doc);
                 NodeList list = doc.getDocumentElement().getElementsByTagName(
                         "user");
                 int size = list.getLength();
