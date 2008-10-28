@@ -22,6 +22,7 @@ public class Twitter implements java.io.Serializable {
 
     private boolean usePostForcibly = false;
     private static final long serialVersionUID = 4346156413282535531L;
+    private static final int MAX_COUNT = 200;
 
     public Twitter() {
         http = new HttpClient();
@@ -354,15 +355,15 @@ public class Twitter implements java.io.Serializable {
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
      *
      * @param id specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param count specifies the number of statuses to retrieve.  May not be greater than 20 for performance purposes
+     * @param count specifies the number of statuses to retrieve.  May not be greater than 200 for performance purposes
      * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
      * @return list of the user Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline(String id, int count,
                                                            Date since) throws TwitterException {
-        if(20 < count){
-            throw new IllegalArgumentException("count may not be greater than 20 for performance purposes.");
+        if(MAX_COUNT < count){
+            throw new IllegalArgumentException("count may not be greater than "+ MAX_COUNT + " for performance purposes.");
         }
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml",
                 "since", formatDate(since),"count", String.valueOf(count), true).asDocument(), this);
@@ -385,14 +386,14 @@ public class Twitter implements java.io.Serializable {
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
      *
      * @param id specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param count specifies the number of statuses to retrieve.  May not be greater than 20 for performance purposes
+     * @param count specifies the number of statuses to retrieve.  May not be greater than 200 for performance purposes
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline(String id, int count) throws
             TwitterException {
-        if(20 < count){
-            throw new IllegalArgumentException("count may not be greater than 20 for performance purposes.");
+        if(MAX_COUNT < count){
+            throw new IllegalArgumentException("count may not be greater than " + MAX_COUNT + " for performance purposes.");
         }
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml",
                 "count", String.valueOf(count), true).asDocument(), this);
@@ -401,14 +402,14 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
      *
-     * @param count specifies the number of statuses to retrieve.  May not be greater than 20 for performance purposes
+     * @param count specifies the number of statuses to retrieve.  May not be greater than 200 for performance purposes
      * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getUserTimeline(int count, Date since) throws TwitterException {
-        if(20 < count){
-            throw new IllegalArgumentException("count may not be greater than 20 for performance purposes.");
+        if(MAX_COUNT < count){
+            throw new IllegalArgumentException("count may not be greater than " + MAX_COUNT + " for performance purposes.");
         }
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml",
                 "since", formatDate(since),"count", String.valueOf(count), true).asDocument(), this);
