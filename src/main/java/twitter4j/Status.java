@@ -35,7 +35,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      *
      * @return the id
      */
-    public int getId() {
+    public long getId() {
         return getChildInt("id");
     }
 

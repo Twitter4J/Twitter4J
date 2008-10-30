@@ -82,6 +82,15 @@ public class TwitterResponse implements java.io.Serializable {
             return Integer.valueOf(str2);
         }
     }
+    protected long getChildLong(String str) {
+        String str2 = elem.getElementsByTagName(str).item(0).
+                getTextContent();
+        if (null == str2 || "".equals(str2)) {
+            return -1;
+        } else {
+            return Long.valueOf(str2);
+        }
+    }
     protected boolean getChildBoolean(String str) {
         return Boolean.valueOf(elem.getElementsByTagName(str).item(0).
                                getTextContent());

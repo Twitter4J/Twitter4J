@@ -27,9 +27,9 @@ public class Twitter implements java.io.Serializable {
     public Twitter() {
         http = new HttpClient();
         setRequestHeader("X-Twitter-Client", "Twitter4J");
-        setRequestHeader("X-Twitter-Client-Version", "1.0.6");
+        setRequestHeader("X-Twitter-Client-Version", "1.1.0");
         setRequestHeader("X-Twitter-Client-URL",
-                "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.0.6.xml");
+                "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.1.0.xml");
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
@@ -499,7 +499,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since 1.0.5
      */
-    public Status destroyStatus(int statusId) throws TwitterException {
+    public Status destroyStatus(long statusId) throws TwitterException {
         return new Status(http.post(baseURL + "statuses/destroy/"+statusId+".xml",
                 new PostParameter[0], true).asDocument().getDocumentElement(), this);
     }
@@ -864,7 +864,7 @@ public class Twitter implements java.io.Serializable {
      * @return Status
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public final synchronized Status createFavorite(int id) throws TwitterException {
+    public final synchronized Status createFavorite(long id) throws TwitterException {
         return new Status(http.post(baseURL + "favorites/create/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
@@ -876,7 +876,7 @@ public class Twitter implements java.io.Serializable {
      * @return Status
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public final synchronized Status destroyFavorite(int id) throws TwitterException {
+    public final synchronized Status destroyFavorite(long id) throws TwitterException {
         return new Status(http.post(baseURL + "favorites/destroy/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
