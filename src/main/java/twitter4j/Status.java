@@ -4,18 +4,32 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * A data class representing one single status of a user.
  */
 public class Status extends TwitterResponse implements java.io.Serializable {
     private static final long serialVersionUID = 4261125762955745621L;
+    private Date createdAt;
 
     /*package*/Status(Element elem, Twitter twitter) throws TwitterException{
         super(elem, twitter);
         ensureRootNodeNameIs("status");
+        SimpleDateFormat format = new SimpleDateFormat(
+                "EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH);
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        try {
+            createdAt = format.parse(getChildText("created_at"));
+        } catch (ParseException pe) {
+            throw new TwitterException("Unexpected format(created_at) returned from twitter.com:" + getChildText("created_at"));
+        }
         user = new User( (Element) elem.getElementsByTagName("user").item(0),
                         twitter);
     }
@@ -26,8 +40,8 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * @return created_at
      */
 
-    public String getCreatedAt() {
-        return getChildText("created_at");
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     /**
