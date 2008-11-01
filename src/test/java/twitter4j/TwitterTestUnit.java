@@ -49,8 +49,6 @@ public class TwitterTestUnit extends TestCase {
         List<Status> statuses;
         statuses = twitterAPI1.getPublicTimeline();
         assertTrue("size", 5 < statuses.size());
-        statuses = twitterAPI1.getPublicTimeline("12345");
-        assertTrue("size", 5 < statuses.size());
         statuses = twitterAPI1.getPublicTimeline(12345);
         assertTrue("size", 5 < statuses.size());
 
@@ -147,7 +145,6 @@ public class TwitterTestUnit extends TestCase {
     public void testAccountMethods() throws Exception{
         assertTrue(twitterAPI1.verifyCredentials());
         assertFalse(new Twitter("doesnotexist","foobar").verifyCredentials());
-//        assertTrue(twitterAPI2.archive().size() > 20);
         String location = "location:"+new Date().toString();
         User user = twitterAPI1.updateLocation(location);
         assertEquals(location,user.getLocation());

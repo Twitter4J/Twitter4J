@@ -88,9 +88,6 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void destroyed(User user) {
         this.user = user;
     }
-    public void gotArchive(List<Status> statuses) {
-        this.statuses = statuses;
-    }
     public void updatedLocation(User user){
         this.user = user;
     }
@@ -177,9 +174,6 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
 
     public void testGetPublicTimeline() throws Exception {
         twitterAPI1.getPublicTimelineAsync(this);
-        Thread.sleep(5000);
-        assertTrue("size", 5 < statuses.size());
-        twitterAPI1.getPublicTimelineAsync("12345", this);
         Thread.sleep(5000);
         assertTrue("size", 5 < statuses.size());
     }

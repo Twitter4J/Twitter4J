@@ -237,21 +237,6 @@ public class Twitter implements java.io.Serializable {
      * @param sinceID returns only public statuses with an ID greater than (that is, more recent than) the specified ID
      * @return the 20 most recent statuses
      * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated argument should be always numeric. Use getPublicTimeline(int sinceID) instead
-     */
-    public final synchronized List<Status> getPublicTimeline(String sinceID) throws
-            TwitterException {
-        return Status.constructStatuses(get(baseURL +
-                "statuses/public_timeline.xml", "since_id", sinceID, false).
-                asDocument(), this);
-    }
-
-    /**
-     * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
-     *
-     * @param sinceID returns only public statuses with an ID greater than (that is, more recent than) the specified ID
-     * @return the 20 most recent statuses
-     * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<Status> getPublicTimeline(int sinceID) throws
             TwitterException {
@@ -744,31 +729,6 @@ public class Twitter implements java.io.Serializable {
         } catch (TwitterException te) {
             return false;
         }
-    }
-
-    /**
-     * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting. Use this method to rapidly export your archive of statuses.
-     *
-     * @return List<Status>
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated This method is no longer supported.
-     */
-    public final synchronized List<Status> archive() throws TwitterException {
-        return Status.constructStatuses(get(baseURL + "account/archive.xml",new PostParameter[0], true).
-                asDocument(), this);
-    }
-
-    /**
-     * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting. Use this method to rapidly export your archive of statuses.
-     *
-     * @param page the number of page
-     * @return List<Status>
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated This method is no longer supported.
-     */
-    public final synchronized List<Status> archive(int page) throws TwitterException {
-        return Status.constructStatuses(get(baseURL + "account/archive.xml","page",String.valueOf(page), true).
-                asDocument(), this);
     }
 
     /**

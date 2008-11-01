@@ -37,19 +37,6 @@ public class AsyncTwitter extends Twitter {
      * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
      * @param sinceID String
      * @param listener TwitterListener a listener object that receives the response
-     * @deprecated argument should be always numeric. Use getPublicTimelineAsync(int sinceID, TwitterListener listener) instead
-     */
-    public void getPublicTimelineAsync(String sinceID, TwitterListener listener) {
-        dispatcher.invokeLater(new AsyncTask(PUBLIC_TIMELINE, listener, new String[] {sinceID}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotPublicTimeline(getPublicTimeline( (String) args[0]));
-            }
-        });
-    }
-    /**
-     * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
-     * @param sinceID String
-     * @param listener TwitterListener a listener object that receives the response
      */
     public void getPublicTimelineAsync(int sinceID, TwitterListener listener) {
         dispatcher.invokeLater(new AsyncTask(PUBLIC_TIMELINE, listener, new Integer[] {sinceID}) {
@@ -579,30 +566,6 @@ public class AsyncTwitter extends Twitter {
         });
 
     }
-    /**
-     * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting.  Use this method to rapidly export your archive of statuses.
-     * @param listener TwitterListener a listener object that receives the response
-     */
-    public final synchronized void archiveAsync(TwitterListener listener) {
-        dispatcher.invokeLater(new AsyncTask(ARCHIVE, listener, new Object[] {}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotArchive(archive());
-            }
-        });
-    }
-    /**
-     * Returns 80 statuses per page for the authenticating user, ordered by descending date of posting.  Use this method to rapidly export your archive of statuses.
-     *
-     * @param page number of the page to retrieve archive
-     * @param listener a listener object that receives the response
-     */
-    public final synchronized void archiveAsync(int page, TwitterListener listener) {
-        dispatcher.invokeLater(new AsyncTask(ARCHIVE, listener, new Object[] {page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotArchive(archive((Integer)args[0]));
-            }
-        });
-    }
 
     /**
      * Update the location
@@ -890,7 +853,6 @@ public class AsyncTwitter extends Twitter {
     public final static int DESTORY = 13;
     public final static int FOLLOW = 14;
     public final static int LEAVE = 15;
-    public final static int ARCHIVE = 16;
     public final static int FAVORITES = 17;
     public final static int CREATE_FAVORITE = 18;
     public final static int DESTROY_FAVORITE = 19;
