@@ -57,7 +57,6 @@ public class TwitterResponse implements java.io.Serializable {
         throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + expected + ". Check Twitter service availability.\n" + toString(elem));
     }
     protected static void ensureRootNodeNameIs(String rootName,Document doc) throws TwitterException{
-        System.out.println(doc);
         Element elem = doc.getDocumentElement();
         if(!rootName.equals(elem.getNodeName())){
             throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.\n"+toString(elem));
