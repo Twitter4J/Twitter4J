@@ -13,12 +13,32 @@ import java.util.List;
  * A data class representing Twitter User
  */
 public class User extends TwitterResponse implements java.io.Serializable {
-    static final String[] POSSIBLE_ROOT_NAMES = new String[]{"user","sender","recipient"};
-    private static final long serialVersionUID = 9043136917164367181L;
+    static final String[] POSSIBLE_ROOT_NAMES = new String[]{"user", "sender", "recipient"};
+    private Twitter twitter;
+    private int id;
+    private String name;
+    private String screenName;
+    private String location;
+    private String description;
+    private String profileImageUrl;
+    private String url;
+    private boolean isProtected;
+    private int followersCount;
+    private static final long serialVersionUID = 3037057798600246529L;
 
-    /*package*/User(Element elem, Twitter twitter) throws TwitterException{
-        super(elem, twitter);
-        ensureRootNodeNameIs(POSSIBLE_ROOT_NAMES);
+    /*package*/User(Element elem, Twitter twitter) throws TwitterException {
+        super();
+        this.twitter = twitter;
+        ensureRootNodeNameIs(POSSIBLE_ROOT_NAMES, elem);
+        id = getChildInt("id", elem);
+        name = getChildText("name", elem);
+        screenName = getChildText("screen_name", elem);
+        location = getChildText("location", elem);
+        description = getChildText("description", elem);
+        profileImageUrl = getChildText("profile_image_url", elem);
+        url = getChildText("url", elem);
+        isProtected = getChildBoolean("protected", elem);
+        followersCount = getChildInt("followers_count", elem);
     }
 
     /**
@@ -27,7 +47,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
      * @return the id of the user
      */
     public int getId() {
-        return getChildInt("id");
+        return id;
     }
 
     /**
@@ -36,7 +56,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
      * @return the name of the user
      */
     public String getName() {
-        return getChildText("name");
+        return name;
     }
 
     /**
@@ -45,7 +65,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
      * @return the screen name of the user
      */
     public String getScreenName() {
-        return getChildText("screen_name");
+        return screenName;
     }
 
     /**
@@ -54,7 +74,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
      * @return the location of the user
      */
     public String getLocation() {
-        return getChildText("location");
+        return location;
     }
 
     /**
@@ -63,7 +83,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
      * @return the description of the user
      */
     public String getDescription() {
-        return getChildText("description");
+        return description;
     }
 
     /**
@@ -73,7 +93,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
      */
     public URL getProfileImageURL() {
         try {
-            return new URL(getChildText("profile_image_url"));
+            return new URL(profileImageUrl);
         } catch (MalformedURLException ex) {
             return null;
         }
@@ -86,7 +106,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
      */
     public URL getURL() {
         try {
-            return new URL(getChildText("url"));
+            return new URL(url);
         } catch (MalformedURLException ex) {
             return null;
         }
@@ -98,27 +118,27 @@ public class User extends TwitterResponse implements java.io.Serializable {
      * @return true if the user status is protected
      */
     public boolean isProtected() {
-        return getChildBoolean("protected");
+        return isProtected;
     }
 
 
     /**
      * Returns the number of followers
      *
-     * @since twitter4j 1.0.4
      * @return the number of followers
+     * @since twitter4j 1.0.4
      */
     public int getFollowersCount() {
-        return getChildInt("followers_count");
+        return followersCount;
     }
 
     public DirectMessage sendDirectMessage(String text) throws TwitterException {
         return twitter.sendDirectMessage(this.getName(), text);
     }
 
-    public static List<User> constructUsers(Document doc, Twitter twitter)throws TwitterException {
+    public static List<User> constructUsers(Document doc, Twitter twitter) throws TwitterException {
         if (isRootNodeNilClasses(doc)) {
-            return new ArrayList<User> (0);
+            return new ArrayList<User>(0);
         } else {
             try {
                 ensureRootNodeNameIs("users", doc);
@@ -131,9 +151,9 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 }
                 return users;
             } catch (TwitterException te) {
-                if(isRootNodeNilClasses(doc)){
+                if (isRootNodeNilClasses(doc)) {
                     return new ArrayList<User>(0);
-                }else{
+                } else {
                     throw te;
                 }
             }
@@ -153,11 +173,13 @@ public class User extends TwitterResponse implements java.io.Serializable {
       <followsers_count>274</followers_count>
     </user>
      */
-    @Override public int hashCode() {
-        return elem.hashCode();
+    @Override
+    public int hashCode() {
+        return id;
     }
 
-    @Override public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
         if (null == obj) {
             return false;
         }
@@ -165,7 +187,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
             return true;
         }
         if (obj instanceof User) {
-            ( (User) obj).elem.equals(this.elem);
+            return ((User) obj).id == this.id;
         }
         return false;
     }

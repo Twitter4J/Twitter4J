@@ -8,6 +8,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Super class of Twitter Response objects.
@@ -18,20 +23,24 @@ import java.io.StringWriter;
  * @see twitter4j.UserWithStatus
  */
 public class TwitterResponse implements java.io.Serializable {
-    protected final Element elem;
-    protected Twitter twitter;
+//    protected final Element elem;
     private static final long serialVersionUID = 351190117061895609L;
+    private static SimpleDateFormat format = new SimpleDateFormat(
+            "EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH);
 
-    public TwitterResponse(Element elem, Twitter twitter) {
-        this.elem = elem;
-        this.twitter = twitter;
+    static {
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
-    protected void ensureRootNodeNameIs(String rootName) throws TwitterException{
+
+    public TwitterResponse() {
+//        this.elem = elem;
+    }
+    protected void ensureRootNodeNameIs(String rootName,Element elem) throws TwitterException{
         if(!rootName.equals(elem.getNodeName())){
             throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.\n"+toString(elem));
         }
     }
-    protected void ensureRootNodeNameIs(String[] rootNames) throws TwitterException{
+    protected void ensureRootNodeNameIs(String[] rootNames,Element elem) throws TwitterException{
         String actualRootName = elem.getNodeName();
         for (String rootName : rootNames) {
             if (rootName.equals(actualRootName)) {
@@ -69,11 +78,11 @@ public class TwitterResponse implements java.io.Serializable {
         }
     }
 
-    protected String getChildText(String str) {
+    protected String getChildText(String str,Element elem) {
         return elem.getElementsByTagName(str).item(0).getTextContent();
     }
 
-    protected int getChildInt(String str) {
+    protected int getChildInt(String str,Element elem) {
         String str2 = elem.getElementsByTagName(str).item(0).
                 getTextContent();
         if (null == str2 || "".equals(str2)) {
@@ -82,7 +91,7 @@ public class TwitterResponse implements java.io.Serializable {
             return Integer.valueOf(str2);
         }
     }
-    protected long getChildLong(String str) {
+    protected long getChildLong(String str,Element elem) {
         String str2 = elem.getElementsByTagName(str).item(0).
                 getTextContent();
         if (null == str2 || "".equals(str2)) {
@@ -91,25 +100,18 @@ public class TwitterResponse implements java.io.Serializable {
             return Long.valueOf(str2);
         }
     }
-    protected boolean getChildBoolean(String str) {
+    protected boolean getChildBoolean(String str,Element elem) {
         return Boolean.valueOf(elem.getElementsByTagName(str).item(0).
                                getTextContent());
     }
+    protected Date getChildDate(String str, Element elem) throws TwitterException{
+        String dateStr = getChildText(str, elem);
+        try {
+            return format.parse(dateStr);
+        } catch (ParseException pe) {
+            throw new TwitterException("Unexpected format(" + str + ") returned from twitter.com:" + dateStr);
+        }
 
-    @Override public int hashCode() {
-        return elem.hashCode();
     }
 
-    @Override public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof TwitterResponse) {
-            ( (TwitterResponse) obj).elem.equals(this.elem);
-        }
-        return false;
-    }
 }

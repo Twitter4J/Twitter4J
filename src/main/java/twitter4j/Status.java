@@ -4,34 +4,37 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * A data class representing one single status of a user.
  */
 public class Status extends TwitterResponse implements java.io.Serializable {
-    private static final long serialVersionUID = 4261125762955745621L;
     private Date createdAt;
+    private long id;
+    private String text;
+    private String source;
+    private boolean isTruncated;
+    private long inReplyToStatusId;
+    private int inReplyToUserId;
+    private boolean isFavorited;
+    private static final long serialVersionUID = 1608000492860584608L;
 
     /*package*/Status(Element elem, Twitter twitter) throws TwitterException{
-        super(elem, twitter);
-        ensureRootNodeNameIs("status");
-        SimpleDateFormat format = new SimpleDateFormat(
-                "EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH);
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
-        try {
-            createdAt = format.parse(getChildText("created_at"));
-        } catch (ParseException pe) {
-            throw new TwitterException("Unexpected format(created_at) returned from twitter.com:" + getChildText("created_at"));
-        }
+        super();
+        ensureRootNodeNameIs("status", elem);
         user = new User( (Element) elem.getElementsByTagName("user").item(0),
                         twitter);
+        id = getChildLong("id", elem);
+        text = getChildText("text", elem);
+        source = getChildText("source", elem);
+            createdAt = getChildDate("created_at", elem);
+        isTruncated = getChildBoolean("truncated", elem);
+        inReplyToStatusId = getChildInt("in_reply_to_status_id",elem);
+        inReplyToUserId= getChildInt("in_reply_to_user_id",elem);
+        isFavorited=getChildBoolean("favorited",elem);
     }
 
     /**
@@ -41,7 +44,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      */
 
     public Date getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     /**
@@ -50,7 +53,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * @return the id
      */
     public long getId() {
-        return getChildInt("id");
+        return this.id;
     }
 
     /**
@@ -59,7 +62,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * @return the text
      */
     public String getText() {
-        return getChildText("text");
+        return this.text;
     }
 
     /**
@@ -69,7 +72,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * @return the source
      */
     public String getSource() {
-        return getChildText("source");
+        return this.source;
     }
 
 
@@ -80,7 +83,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * @return true if truncated
      */
     public boolean isTruncated() {
-        return getChildBoolean("truncated");
+        return isTruncated;
     }
 
     /**
@@ -89,8 +92,8 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * @since twitter4j 1.0.4
      * @return the in_reply_tostatus_id
      */
-    public int getInReplyToStatusId() {
-        return getChildInt("in_reply_to_status_id");
+    public long getInReplyToStatusId() {
+        return inReplyToStatusId;
     }
 
     /**
@@ -100,7 +103,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * @return the in_reply_tostatus_id
      */
     public int getInReplyToUserId() {
-        return getChildInt("in_reply_to_user_id");
+        return inReplyToUserId;
     }
 
     /**
@@ -110,7 +113,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * @return true if favorited
      */
     public boolean isFavorited() {
-        return getChildBoolean("favorited");
+        return isFavorited;
     }
 
 
@@ -171,7 +174,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     </user>
   </status>*/
     @Override public int hashCode() {
-        return elem.hashCode();
+        return (int)id;
     }
 
     @Override public boolean equals(Object obj) {
@@ -182,7 +185,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
             return true;
         }
         if (obj instanceof Status) {
-            ( (Status) obj).elem.equals(this.elem);
+            return ((Status) obj).id == this.id;
         }
         return false;
     }

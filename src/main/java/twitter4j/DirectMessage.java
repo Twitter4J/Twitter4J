@@ -5,65 +5,82 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * A data class representing sent/received direct message.
  */
-public class DirectMessage extends TwitterResponse implements java.io.
-    Serializable {
-    private static final long serialVersionUID = 5671964289909162445L;
+public class DirectMessage extends TwitterResponse implements java.io.Serializable {
+    private int id;
+    private String text;
+    private int sender_id;
+    private int recipient_id;
+    private Date created_at;
+    private String sender_screen_name;
+    private String recipient_screen_name;
 
-    /*package*/DirectMessage(Element elem, Twitter twitter)throws TwitterException {
-        super(elem, twitter);
-        ensureRootNodeNameIs("direct_message");
-        sender = new User( (Element) elem.getElementsByTagName("sender").item(0),
-                        twitter);
-        recipient = new User( (Element) elem.getElementsByTagName("recipient").item(0),
-                        twitter);
+    /*package*/DirectMessage(Element elem, Twitter twitter) throws TwitterException {
+        super();
+        ensureRootNodeNameIs("direct_message", elem);
+        sender = new User((Element) elem.getElementsByTagName("sender").item(0),
+                twitter);
+        recipient = new User((Element) elem.getElementsByTagName("recipient").item(0),
+                twitter);
+        id = getChildInt("id", elem);
+        text = getChildText("text", elem);
+        sender_id = getChildInt("sender_id", elem);
+        recipient_id = getChildInt("recipient_id", elem);
+        created_at = getChildDate("created_at", elem);
+        sender_screen_name = getChildText("sender_screen_name", elem);
+        recipient_screen_name = getChildText("recipient_screen_name", elem);
     }
 
     public int getId() {
-        return getChildInt("id");
+        return id;
     }
 
     public String getText() {
-        return getChildText("text");
+        return text;
     }
 
     public int getSenderId() {
-        return getChildInt("sender_id");
+        return sender_id;
     }
 
     public int getRecipientId() {
-        return getChildInt("recipient_id");
+        return recipient_id;
     }
 
-    public String getCreatedAt() {
-        return getChildText("created_at");
+    public Date getCreatedAt() {
+        return created_at;
     }
 
     public String getSenderScreenName() {
-        return getChildText("sender_screen_name");
+        return sender_screen_name;
     }
 
     public String getRecipientScreenName() {
-        return getChildText("recipient_screen_name");
+        return recipient_screen_name;
     }
 
     private User sender;
-    public User getSender(){
+
+    public User getSender() {
         return sender;
     }
+
     private User recipient;
-    public User getRecipient(){
+
+    public User getRecipient() {
         return recipient;
     }
 
-    /*package*/ static List<DirectMessage> constructDirectMessages(Document doc,
-        Twitter twitter) throws TwitterException{
+    /*package*/
+    static List<DirectMessage> constructDirectMessages(Document doc,
+                                                       Twitter twitter) throws TwitterException {
         if (isRootNodeNilClasses(doc)) {
-            return new ArrayList<DirectMessage> (0);
+            return new ArrayList<DirectMessage>(0);
         } else {
             try {
                 ensureRootNodeNameIs("direct-messages", doc);
@@ -77,9 +94,9 @@ public class DirectMessage extends TwitterResponse implements java.io.
                 }
                 return messages;
             } catch (TwitterException te) {
-                if(isRootNodeNilClasses(doc)){
+                if (isRootNodeNilClasses(doc)) {
                     return new ArrayList<DirectMessage>(0);
-                }else{
+                } else {
                     throw te;
                 }
             }
@@ -118,11 +135,13 @@ public class DirectMessage extends TwitterResponse implements java.io.
     </recipient>
   </direct_message>
      */
-    @Override public int hashCode() {
-        return elem.hashCode();
+    @Override
+    public int hashCode() {
+        return id;
     }
 
-    @Override public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
         if (null == obj) {
             return false;
         }
@@ -130,7 +149,7 @@ public class DirectMessage extends TwitterResponse implements java.io.
             return true;
         }
         if (obj instanceof DirectMessage) {
-            ( (DirectMessage) obj).elem.equals(this.elem);
+            return ((DirectMessage) obj).id == this.id;
         }
         return false;
     }

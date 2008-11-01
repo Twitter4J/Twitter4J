@@ -2,62 +2,88 @@ package twitter4j;
 
 import org.w3c.dom.Element;
 
+import java.util.Date;
+
 /**
  * A data class representing Twitter User with status
  */
 public class UserWithStatus extends User {
-    private static final long serialVersionUID = 6927173212299113606L;
+    private String profileBackgroundColor;
+    private String profileTextColor;
+    private String profileLinkColor;
+    private String profileSidebarFillColor;
+    private String profileSidebarBorderColor;
+    private int friendsCount;
+    private int followersCount;
+    private int favouritesCount;
+    private int statusesCount;
+    private Date createdAt;
+    private String text;
+    private long statusId;
 
-    public UserWithStatus(Element elem,Twitter twitter) throws TwitterException{
-        super(elem,twitter);
+    public UserWithStatus(Element elem, Twitter twitter) throws TwitterException {
+        super(elem, twitter);
+        profileBackgroundColor = getChildText("profile_background_color", elem);
+        profileTextColor = getChildText("profile_text_color", elem);
+        profileLinkColor = getChildText("profile_link_color", elem);
+        profileSidebarFillColor = getChildText("profile_sidebar_fill_color", elem);
+        profileSidebarBorderColor = getChildText("profile_sidebar_border_color", elem);
+        friendsCount = getChildInt("friends_count", elem);
+        followersCount = getChildInt("followers_count", elem);
+        favouritesCount = getChildInt("favourites_count", elem);
+        statusesCount = getChildInt("statuses_count", elem);
+        createdAt = getChildDate("created_at", elem);
+        text = getChildText("text", elem);
+        statusId = Long.valueOf(((Element) elem.getElementsByTagName("status").item(0)).getElementsByTagName("id").item(0).getTextContent());
     }
+
     public String getProfileBackgroundColor() {
-        return getChildText("profile_background_color");
+        return profileBackgroundColor;
     }
 
     public String getProfileTextColor() {
-        return getChildText("profile_text_color");
+        return profileTextColor;
     }
 
     public String getProfileLinkColor() {
-        return getChildText("profile_link_color");
+        return profileLinkColor;
     }
 
     public String getProfileSidebarFillColor() {
-        return getChildText("profile_sidebar_fill_color");
+        return profileSidebarFillColor;
     }
 
     public String getProfileSidebarBorderColor() {
-        return getChildText("profile_sidebar_border_color");
+        return profileSidebarBorderColor;
     }
 
     public int getFriendsCount() {
-        return getChildInt("friends_count");
+        return friendsCount;
     }
 
     public int getFollowersCount() {
-        return getChildInt("followers_count");
+        return followersCount;
     }
 
     public int getFavouritesCount() {
-        return getChildInt("favourites_count");
+        return favouritesCount;
     }
 
     public int getStatusesCount() {
-        return getChildInt("statuses_count");
+        return statusesCount;
     }
 
 
-    public String getStatusCreatedAt() {
-        return getChildText("created_at");
+    public Date getStatusCreatedAt() {
+        return createdAt;
     }
 
-    public int getStatusId() {
-        return Integer.valueOf(((Element)elem.getElementsByTagName("status").item(0)).getElementsByTagName("id").item(0).getTextContent());
+    public long getStatusId() {
+        return statusId;
     }
 
     public String getStatusText() {
-        return getChildText("text");
+        return text;
     }
 
     /*<?xml version="1.0" encoding="UTF-8"?>
@@ -86,4 +112,22 @@ public class UserWithStatus extends User {
       </status>
     </user>
 */
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (null == obj) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof User) {
+            return ((User) obj).getId() == this.getId();
+        }
+        return false;
+    }
 }
