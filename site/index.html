@@ -64,16 +64,16 @@ $[en:Twitter4J is a Java library for <a href="http://groups.google.com/group/twi
 <center><include>adsense468x60.html</include></center>
     <a name="systemRequirements"><h2>$[ja:システム要件]$[en:System Requirements]</h2></a>
     <p>$[ja:OS: Java をサポートする Windows または Unix 系 OS<br>
-JVM: JDK1.4.2 以降]
+JVM: Java5 以降]
 $[en:OS: Windows or any flavor of Unix that supports Java.<br>
-JVM: JDK1.4.2 or later]</p>
+JVM: Java5 or later]</p>
 </ul>
 
     <a name="howToUse"><h2>$[ja:使い方]$[en:How To Use]</h2></a>
-    <p>$[ja:twitter4j-1.0.6.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
+    <p>$[ja:twitter4j-1.1.0.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
     Java が分かっていれば <a href="./javadoc/index.html">JavaDoc</a> を見るのが早いです。<br>
     twitter4j.<a href="javadoc/twitter4j/Twitter.html">Twitter</a> クラスが最初に見るべきクラスです。]
-    $[en:It's as simple as adding twitter4j-1.0.6.jar to your classpath.<br>
+    $[en:It's as simple as adding twitter4j-1.1.0.jar to your classpath.<br>
     If you are familiar with Java language, the <a href="./javadoc/index.html">JavaDoc</a> should be <a href="http://obvious.com/">Obvious</a>ly the shortest way for you to understand Twitter4J.<br>
     <a href="javadoc/twitter4j/Twitter.html">twitter4j.Twitter</a> class is the one you may want to look first.]</p>
 
@@ -171,8 +171,8 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html
 </ol>
 
 <a name="download"><h2>$[ja:ダウンロード]$[en:Download]</h2></a>
-<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.6.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
-    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.0.6.zip">twitter4j-1.0.6.zip</a>
+<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.0.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
+    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.0.zip">twitter4j-1.1.0.zip</a>
 
 
     <a name="sourceCode"><h2>$[ja:ソースコード]$[en:Source Code]</h2></a>
@@ -188,7 +188,7 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html
     <a name="maven"><h2>$[ja:Maven 統合]$[en:Maven Integration]</h2></a>
 <p>$[ja:Maven を使っている場合、pom.xml に以下のように記載すればご自身のプロジェクトに twitter4j を簡単に統合できます。]
 $[en:You can integrate Twitter4j easily by including following lines into your pom.xml.]
-<pre class="codeSample">   &lt;dependencies&gt;<br/>       &lt;dependency&gt;<br/>           &lt;groupId&gt;net.homeip.yusuke&lt;/groupId&gt;<br/>           &lt;artifactId&gt;twitter4j&lt;/artifactId&gt;<br/>           &lt;version&gt;1.0.6&lt;/version&gt;<br/>       &lt;/dependency&gt;<br/>       ...<br/>   &lt;/dependencies&gt;<br/></pre>
+<pre class="codeSample">   &lt;dependencies&gt;<br/>       &lt;dependency&gt;<br/>           &lt;groupId&gt;net.homeip.yusuke&lt;/groupId&gt;<br/>           &lt;artifactId&gt;twitter4j&lt;/artifactId&gt;<br/>           &lt;version&gt;1.1.0&lt;/version&gt;<br/>       &lt;/dependency&gt;<br/>       ...<br/>   &lt;/dependencies&gt;<br/></pre>
 </p>
 
 
@@ -283,7 +283,38 @@ If you feel Twitter4J makes your life easier, please do consider making a donati
 <li>2.0.</li>
 $[ja:]$[en:]
 -->
-        <li>$[ja:バージョン ]$[en:Version ]1.0.6 <font color="red">new!</font></li>
+
+        <li>$[ja:バージョン ]$[en:Version ]1.1.0 <font color="red">new!</font></li>
+    
+<h2>        $[ja:修正されたバグ]$[en:Resolved Bugs]
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-44'>TFJ-44</a>] -         #document: null] is unnecessarily printed to the System.out
+</li>
+</ul>
+    
+<h2>       $[ja:改善]$[en:Improvement]
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-31'>TFJ-31</a>] -         dereference DOM objects to reduce memory footprint
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-34'>TFJ-34</a>] -         Status#getCreatedAt(), UserWithStatus.getCreatedAt() and DirectMessage.getCreatedAt() should return java.util.Date
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-41'>TFJ-41</a>] -         Status.getId(), UserWithStatus.getStatusId() should return long instead of int
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-43'>TFJ-43</a>] -         remove unsupported methods
+</li>
+</ul>
+    
+<h2>        $[ja:新機能]$[en:New Feature]
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-45'>TFJ-45</a>] -         getFollowers() should accept id and/or page parameter 
+</li>
+</ul>
+    
+
+        <li>$[ja:バージョン ]$[en:Version ]1.0.6</li>
 
 
 <h2>        $[ja:修正されたバグ]$[en:Resolved Bugs]
