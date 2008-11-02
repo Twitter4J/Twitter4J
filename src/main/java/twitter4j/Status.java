@@ -41,6 +41,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * Return the created_at
      *
      * @return created_at
+     * @since twitter4j 1.1.0
      */
 
     public Date getCreatedAt() {

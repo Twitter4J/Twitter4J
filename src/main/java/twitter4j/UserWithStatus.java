@@ -20,6 +20,7 @@ public class UserWithStatus extends User {
     private Date createdAt;
     private String text;
     private long statusId;
+    private static final long serialVersionUID = -1186848883283901709L;
 
     public UserWithStatus(Element elem, Twitter twitter) throws TwitterException {
         super(elem, twitter);
@@ -73,7 +74,9 @@ public class UserWithStatus extends User {
         return statusesCount;
     }
 
-
+    /**
+     * @since twitter4j 1.1.0
+     */
     public Date getStatusCreatedAt() {
         return createdAt;
     }

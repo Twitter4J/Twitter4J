@@ -19,6 +19,7 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
     private Date created_at;
     private String sender_screen_name;
     private String recipient_screen_name;
+    private static final long serialVersionUID = -3253021825891789737L;
 
     /*package*/DirectMessage(Element elem, Twitter twitter) throws TwitterException {
         super();
@@ -52,6 +53,9 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
         return recipient_id;
     }
 
+    /**
+     * @since twitter4j 1.1.0
+     */
     public Date getCreatedAt() {
         return created_at;
     }
