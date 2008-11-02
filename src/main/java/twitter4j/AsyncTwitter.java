@@ -354,13 +354,57 @@ public class AsyncTwitter extends Twitter {
 
 
     /**
-     * Returns the authenticating user's followers, each with current status inline.
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void getFollowersAsync(TwitterListener listener) {
         dispatcher.invokeLater(new AsyncTask(FOLLOWERS, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFollowers(getFollowers());
+            }
+        });
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * @param page Retrieves the next 100 followers.
+     * @param listener TwitterListener a listener object that receives the response
+     * @since twitter4j 1.1.0
+     */
+    public final synchronized void getFollowersAsync(int page, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{page}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowers(getFollowers((Integer) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     *
+     * @param id       The ID or screen name of the user for whom to request a list of followers.
+     * @param listener TwitterListener a listener object that receives the response
+     * @since twitter4j 1.1.0
+     */
+    public final synchronized void getFollowersAsync(String id, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowers(getFollowers((String) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * @param id The ID or screen name of the user for whom to request a list of followers.
+     * @param page Retrieves the next 100 followers.
+     * @param listener TwitterListener a listener object that receives the response
+     * @since twitter4j 1.1.0
+     */
+    public final synchronized void getFollowersAsync(String id, int page, TwitterListener listener) {
+        dispatcher.invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id, page}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowers(getFollowers((String) args[0], (Integer) args[1]));
             }
         });
     }

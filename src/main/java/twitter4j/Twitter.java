@@ -539,13 +539,50 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
-     * Returns the authenticating user's followers, each with current status inline.
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      *
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public final synchronized List<User> getFollowers() throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers.xml", true).asDocument(), this);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     *
+     * @param page Retrieves the next 100 followers.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.1.0
+     */
+    public final synchronized List<User> getFollowers(int page) throws TwitterException {
+        return User.constructUsers(get(baseURL + "statuses/followers.xml", "page", String.valueOf(page), true).asDocument(), this);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     *
+     * @param id The ID or screen name of the user for whom to request a list of followers.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.1.0
+     */
+    public final synchronized List<User> getFollowers(String id) throws TwitterException {
+        return User.constructUsers(get(baseURL + "statuses/followers/" + id + ".xml", true).asDocument(), this);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     *
+     * @param id The ID or screen name of the user for whom to request a list of followers.
+     * @param page Retrieves the next 100 followers.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.1.0
+     */
+    public final synchronized List<User> getFollowers(String id, int page) throws TwitterException {
+        return User.constructUsers(get(baseURL + "statuses/followers/" + id + ".xml", "page", String.valueOf(page), true).asDocument(), this);
     }
 
     /**

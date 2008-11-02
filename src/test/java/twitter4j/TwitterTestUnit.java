@@ -33,11 +33,6 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2 = new Twitter(id2,pass2);
          twitterAPI2.setRetryCount(3);
         twitterAPI2.setRetryIntervalSecs(10);
-
-//        twitterAPI1.setBaseURL("http://127.0.0.1:8080/");
-//        twitterAPI1.forceUsePost(true);
-//        twitterAPI2.setBaseURL("http://127.0.0.1:8080/");
-//        twitterAPI2.forceUsePost(true);
     }
 
     protected void tearDown() throws Exception {
@@ -160,9 +155,17 @@ public class TwitterTestUnit extends TestCase {
     public void testFollowers() throws Exception{
         List<User> actualReturn = twitterAPI1.getFollowers();
         assertTrue(actualReturn.size() > 0);
+        actualReturn = twitterAPI1.getFollowers(1);
+        assertTrue(actualReturn.size() > 0);
+        actualReturn = twitterAPI1.getFollowers(2);
+        assertTrue(actualReturn.size() == 0);
 
         actualReturn = twitterAPI2.getFollowers();
         assertTrue(actualReturn.size() > 0);
+        actualReturn = twitterAPI2.getFollowers("yusukey");
+        assertTrue(actualReturn.size() > 90);
+        actualReturn = twitterAPI2.getFollowers("yusukey",2);
+        assertTrue(actualReturn.size() > 10);
     }
     public void testFeatured() throws Exception{
         List<User> actualReturn = twitterAPI1.getFeatured();
