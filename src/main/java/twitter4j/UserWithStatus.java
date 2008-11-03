@@ -75,6 +75,7 @@ public class UserWithStatus extends User {
     }
 
     /**
+     * @return created_at
      * @since twitter4j 1.1.0
      */
     public Date getStatusCreatedAt() {
@@ -128,9 +129,24 @@ public class UserWithStatus extends User {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof User) {
-            return ((User) obj).getId() == this.getId();
-        }
-        return false;
+        return obj instanceof User && ((User) obj).getId() == this.getId();
+    }
+
+    @Override
+    public String toString() {
+        return "UserWithStatus{" +
+                "profileBackgroundColor='" + profileBackgroundColor + '\'' +
+                ", profileTextColor='" + profileTextColor + '\'' +
+                ", profileLinkColor='" + profileLinkColor + '\'' +
+                ", profileSidebarFillColor='" + profileSidebarFillColor + '\'' +
+                ", profileSidebarBorderColor='" + profileSidebarBorderColor + '\'' +
+                ", friendsCount=" + friendsCount +
+                ", followersCount=" + followersCount +
+                ", favouritesCount=" + favouritesCount +
+                ", statusesCount=" + statusesCount +
+                ", createdAt=" + createdAt +
+                ", text='" + text + '\'' +
+                ", statusId=" + statusId +
+                '}';
     }
 }

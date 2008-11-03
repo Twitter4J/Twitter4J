@@ -54,6 +54,7 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
     }
 
     /**
+     * @return created_at
      * @since twitter4j 1.1.0
      */
     public Date getCreatedAt() {
@@ -152,9 +153,21 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
         if (this == obj) {
             return true;
         }
-        if (obj instanceof DirectMessage) {
-            return ((DirectMessage) obj).id == this.id;
-        }
-        return false;
+        return obj instanceof DirectMessage && ((DirectMessage) obj).id == this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "DirectMessage{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", sender_id=" + sender_id +
+                ", recipient_id=" + recipient_id +
+                ", created_at=" + created_at +
+                ", sender_screen_name='" + sender_screen_name + '\'' +
+                ", recipient_screen_name='" + recipient_screen_name + '\'' +
+                ", sender=" + sender +
+                ", recipient=" + recipient +
+                '}';
     }
 }

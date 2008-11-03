@@ -23,7 +23,6 @@ import java.util.TimeZone;
  * @see twitter4j.UserWithStatus
  */
 public class TwitterResponse implements java.io.Serializable {
-//    protected final Element elem;
     private static final long serialVersionUID = 351190117061895609L;
     private static SimpleDateFormat format = new SimpleDateFormat(
             "EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH);
@@ -33,14 +32,15 @@ public class TwitterResponse implements java.io.Serializable {
     }
 
     public TwitterResponse() {
-//        this.elem = elem;
     }
-    protected void ensureRootNodeNameIs(String rootName,Element elem) throws TwitterException{
-        if(!rootName.equals(elem.getNodeName())){
-            throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.\n"+toString(elem));
+
+    protected void ensureRootNodeNameIs(String rootName, Element elem) throws TwitterException {
+        if (!rootName.equals(elem.getNodeName())) {
+            throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check Twitter service availability.\n" + toString(elem));
         }
     }
-    protected void ensureRootNodeNameIs(String[] rootNames,Element elem) throws TwitterException{
+
+    protected void ensureRootNodeNameIs(String[] rootNames, Element elem) throws TwitterException {
         String actualRootName = elem.getNodeName();
         for (String rootName : rootNames) {
             if (rootName.equals(actualRootName)) {
@@ -56,32 +56,34 @@ public class TwitterResponse implements java.io.Serializable {
         }
         throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + expected + ". Check Twitter service availability.\n" + toString(elem));
     }
-    protected static void ensureRootNodeNameIs(String rootName,Document doc) throws TwitterException{
+
+    protected static void ensureRootNodeNameIs(String rootName, Document doc) throws TwitterException {
         Element elem = doc.getDocumentElement();
-        if(!rootName.equals(elem.getNodeName())){
-            throw new TwitterException("Unexpected root node name:"+elem.getNodeName()+". Expected:"+rootName+". Check Twitter service availability.\n"+toString(elem));
+        if (!rootName.equals(elem.getNodeName())) {
+            throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check Twitter service availability.\n" + toString(elem));
         }
     }
-    protected static boolean isRootNodeNilClasses(Document doc){
+
+    protected static boolean isRootNodeNilClasses(Document doc) {
         String root = doc.getDocumentElement().getNodeName();
         return "nil-classes".equals(root) || "nilclasses".equals(root);
     }
 
     private static String toString(Element doc) {
-        try{
-        StringWriter output = new StringWriter();
-        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult(output));
-        return output.toString();
-        }catch(TransformerException tfe){
+        try {
+            StringWriter output = new StringWriter();
+            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult(output));
+            return output.toString();
+        } catch (TransformerException tfe) {
             return "";
         }
     }
 
-    protected String getChildText(String str,Element elem) {
+    protected String getChildText(String str, Element elem) {
         return elem.getElementsByTagName(str).item(0).getTextContent();
     }
 
-    protected int getChildInt(String str,Element elem) {
+    protected int getChildInt(String str, Element elem) {
         String str2 = elem.getElementsByTagName(str).item(0).
                 getTextContent();
         if (null == str2 || "".equals(str2)) {
@@ -90,7 +92,8 @@ public class TwitterResponse implements java.io.Serializable {
             return Integer.valueOf(str2);
         }
     }
-    protected long getChildLong(String str,Element elem) {
+
+    protected long getChildLong(String str, Element elem) {
         String str2 = elem.getElementsByTagName(str).item(0).
                 getTextContent();
         if (null == str2 || "".equals(str2)) {
@@ -99,11 +102,13 @@ public class TwitterResponse implements java.io.Serializable {
             return Long.valueOf(str2);
         }
     }
-    protected boolean getChildBoolean(String str,Element elem) {
+
+    protected boolean getChildBoolean(String str, Element elem) {
         return Boolean.valueOf(elem.getElementsByTagName(str).item(0).
-                               getTextContent());
+                getTextContent());
     }
-    protected Date getChildDate(String str, Element elem) throws TwitterException{
+
+    protected Date getChildDate(String str, Element elem) throws TwitterException {
         String dateStr = getChildText(str, elem);
         try {
             return format.parse(dateStr);

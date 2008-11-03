@@ -22,19 +22,19 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     private boolean isFavorited;
     private static final long serialVersionUID = 1608000492860584608L;
 
-    /*package*/Status(Element elem, Twitter twitter) throws TwitterException{
+    /*package*/Status(Element elem, Twitter twitter) throws TwitterException {
         super();
         ensureRootNodeNameIs("status", elem);
-        user = new User( (Element) elem.getElementsByTagName("user").item(0),
-                        twitter);
+        user = new User((Element) elem.getElementsByTagName("user").item(0),
+                twitter);
         id = getChildLong("id", elem);
         text = getChildText("text", elem);
         source = getChildText("source", elem);
-            createdAt = getChildDate("created_at", elem);
+        createdAt = getChildDate("created_at", elem);
         isTruncated = getChildBoolean("truncated", elem);
-        inReplyToStatusId = getChildInt("in_reply_to_status_id",elem);
-        inReplyToUserId= getChildInt("in_reply_to_user_id",elem);
-        isFavorited=getChildBoolean("favorited",elem);
+        inReplyToStatusId = getChildInt("in_reply_to_status_id", elem);
+        inReplyToUserId = getChildInt("in_reply_to_user_id", elem);
+        isFavorited = getChildBoolean("favorited", elem);
     }
 
     /**
@@ -69,8 +69,8 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     /**
      * Returns the source
      *
-     * @since twitter4j 1.0.4
      * @return the source
+     * @since twitter4j 1.0.4
      */
     public String getSource() {
         return this.source;
@@ -80,8 +80,8 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     /**
      * Test if the status is truncated
      *
-     * @since twitter4j 1.0.4
      * @return true if truncated
+     * @since twitter4j 1.0.4
      */
     public boolean isTruncated() {
         return isTruncated;
@@ -90,8 +90,8 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     /**
      * Returns the in_reply_tostatus_id
      *
-     * @since twitter4j 1.0.4
      * @return the in_reply_tostatus_id
+     * @since twitter4j 1.0.4
      */
     public long getInReplyToStatusId() {
         return inReplyToStatusId;
@@ -100,8 +100,8 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     /**
      * Returns the in_reply_user_id
      *
-     * @since twitter4j 1.0.4
      * @return the in_reply_tostatus_id
+     * @since twitter4j 1.0.4
      */
     public int getInReplyToUserId() {
         return inReplyToUserId;
@@ -110,29 +110,30 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     /**
      * Test if the status is favorited
      *
-     * @since twitter4j 1.0.4
      * @return true if favorited
+     * @since twitter4j 1.0.4
      */
     public boolean isFavorited() {
         return isFavorited;
     }
 
 
-
     private User user = null;
 
     /**
      * Return the user
+     *
      * @return the user
      */
     public User getUser() {
         return user;
     }
 
-    /*package*/ static List<Status> constructStatuses(Document doc,
-        Twitter twitter) throws TwitterException{
+    /*package*/
+    static List<Status> constructStatuses(Document doc,
+                                          Twitter twitter) throws TwitterException {
         if (isRootNodeNilClasses(doc)) {
-            return new ArrayList<Status> (0);
+            return new ArrayList<Status>(0);
         } else {
             try {
                 ensureRootNodeNameIs("statuses", doc);
@@ -174,20 +175,34 @@ public class Status extends TwitterResponse implements java.io.Serializable {
       <followers_count>12</followers_count>
     </user>
   </status>*/
-    @Override public int hashCode() {
-        return (int)id;
+    @Override
+    public int hashCode() {
+        return (int) id;
     }
 
-    @Override public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
         if (null == obj) {
             return false;
         }
         if (this == obj) {
             return true;
         }
-        if (obj instanceof Status) {
-            return ((Status) obj).id == this.id;
-        }
-        return false;
+        return obj instanceof Status && ((Status) obj).id == this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "Status{" +
+                "createdAt=" + createdAt +
+                ", id=" + id +
+                ", text='" + text + '\'' +
+                ", source='" + source + '\'' +
+                ", isTruncated=" + isTruncated +
+                ", inReplyToStatusId=" + inReplyToStatusId +
+                ", inReplyToUserId=" + inReplyToUserId +
+                ", isFavorited=" + isFavorited +
+                ", user=" + user +
+                '}';
     }
 }

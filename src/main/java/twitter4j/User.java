@@ -186,9 +186,22 @@ public class User extends TwitterResponse implements java.io.Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof User) {
-            return ((User) obj).id == this.id;
-        }
-        return false;
+        return obj instanceof User && ((User) obj).id == this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "twitter=" + twitter +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", screenName='" + screenName + '\'' +
+                ", location='" + location + '\'' +
+                ", description='" + description + '\'' +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
+                ", url='" + url + '\'' +
+                ", isProtected=" + isProtected +
+                ", followersCount=" + followersCount +
+                '}';
     }
 }
