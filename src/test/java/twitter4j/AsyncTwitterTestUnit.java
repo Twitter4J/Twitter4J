@@ -1,11 +1,15 @@
 package twitter4j;
 
 import junit.framework.TestCase;
-import java.util.Properties;
+
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.util.Date;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * <p>Title: Twitter4J</p>
@@ -176,6 +180,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI1.getPublicTimelineAsync(this);
         Thread.sleep(5000);
         assertTrue("size", 5 < statuses.size());
+        trySerializable(statuses);
     }
 
     public void testGetFriendsTimeline() throws Exception {
@@ -208,6 +213,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI1.getFriendsTimelineAsync(id2, new Date(0), this);
         Thread.sleep(3000);
         assertTrue("size" , 5<  statuses.size());
+        trySerializable(statuses);
     }
 
     public void testGetUserTimeline_Show() throws Exception {
@@ -227,12 +233,14 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI1.getUserTimelineAsync(id1, 20, new Date(0), this);
         Thread.sleep(3000);
         assertTrue("size", 5 < statuses.size());
+        trySerializable(statuses);
     }
 
     public void testShow() throws Exception {
         twitterAPI2.showAsync(1000, this);
         Thread.sleep(3000);
         assertEquals(52, status.getUser().getId());
+        trySerializable(status);
     }
 
     public void testUpdate() throws Exception {
@@ -240,6 +248,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI1.updateAsync(date, this);
         Thread.sleep(3000);
         assertEquals("", date, status.getText());
+        trySerializable(status);
     }
 
     public void testGetFriends() throws Exception {
@@ -258,6 +267,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
             found = found || user.getName().equals(id1);
         }
         assertTrue(found);
+        trySerializable(users);
     }
 
     public void testFollowers() throws Exception {
@@ -268,12 +278,14 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI2.getFollowersAsync(this);
         Thread.sleep(3000);
         assertTrue(users.size() > 0);
+        trySerializable(users);
     }
 
     public void testFeatured() throws Exception {
         twitterAPI1.getFeaturedAsync(this);
         Thread.sleep(3000);
         assertTrue(users.size() > 9);
+        trySerializable(users);
     }
 
     public void testGetDirectMessages() throws Exception {
@@ -291,6 +303,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI2.getDirectMessagesAsync(new Date(System.currentTimeMillis() - (1000 * 60 * 100)), this);
         Thread.sleep(5000);
         assertEquals("", expectedReturn, messages.get(0).getText());
+        trySerializable(messages);
     }
 
     public void testCreateDestroyFriend() throws Exception {
@@ -327,6 +340,11 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI2.followAsync(id2, this);
         Thread.sleep(3000);
         assertEquals(id1,user.getName());
+        trySerializable(user);
 
+    }
+    private void trySerializable(Object obj) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new ByteArrayOutputStream());
+        oos.writeObject(obj);
     }
 }
