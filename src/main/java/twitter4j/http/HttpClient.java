@@ -24,7 +24,7 @@ public class HttpClient implements java.io.Serializable {
 
     private final int INTERNAL_SERVER_ERROR = 500;
     private String userAgent =
-        "twitter4j http://yusuke.homeip.net/twitter4j/ /1.0";
+        "twitter4j http://yusuke.homeip.net/twitter4j/ /1.1.1";
     private String basic;
     private int retryCount = 0;
     private int retryIntervalMillis = 10000;
