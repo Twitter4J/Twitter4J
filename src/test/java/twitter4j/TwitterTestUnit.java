@@ -14,6 +14,7 @@ import java.util.Properties;
 public class TwitterTestUnit extends TestCase {
     private Twitter twitterAPI1 = null;
     private Twitter twitterAPI2 = null;
+    private Twitter unauthenticated = null;
 
     public TwitterTestUnit(String name) {
         super(name);
@@ -33,6 +34,7 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2 = new Twitter(id2,pass2);
          twitterAPI2.setRetryCount(3);
         twitterAPI2.setRetryIntervalSecs(10);
+        unauthenticated = new Twitter();
     }
 
     protected void tearDown() throws Exception {
@@ -119,7 +121,9 @@ public class TwitterTestUnit extends TestCase {
         assertTrue("size", 0 < statuses.size());
     }
     public void testShow() throws Exception{
-        Status status = twitterAPI2.show(1000);
+        Status status = twitterAPI2.show(1000l);
+        assertEquals(52,status.getUser().getId());
+        Status status2 = unauthenticated.show(1000l);
         assertEquals(52,status.getUser().getId());
     }
     public void testUpdate() throws Exception{

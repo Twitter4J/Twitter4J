@@ -212,8 +212,23 @@ public class AsyncTwitter extends Twitter {
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
      * @param id int
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated Use showAsync(long id) instead.
      */
     public final synchronized void showAsync(int id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(SHOW, listener, new Object[] {id}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotShow(show( (Integer) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns a single status, specified by the id parameter. The status's author will be returned inline.
+     * @param id int
+     * @param listener TwitterListener a listener object that receives the response
+     * @since 1.1.1
+     */
+    public final synchronized void showAsync(long id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(SHOW, listener, new Object[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotShow(show( (Integer) args[0]));

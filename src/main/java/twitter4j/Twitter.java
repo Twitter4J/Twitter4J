@@ -434,10 +434,23 @@ public class Twitter implements java.io.Serializable {
      * @param id the numerical ID of the status you're trying to retrieve
      * @return a single status
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated Use show(long id) instead.
      */
 
     public final synchronized Status show(int id) throws TwitterException {
-        return new Status(get(baseURL + "statuses/show/" + id + ".xml", true).asDocument().getDocumentElement(), this);
+        return new Status(get(baseURL + "statuses/show/" + id + ".xml", false).asDocument().getDocumentElement(), this);
+    }
+    /**
+     * Returns a single status, specified by the id parameter. The status's author will be returned inline.
+     *
+     * @param id the numerical ID of the status you're trying to retrieve
+     * @return a single status
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since 1.1.1
+     */
+
+    public final synchronized Status show(long id) throws TwitterException {
+        return new Status(get(baseURL + "statuses/show/" + id + ".xml", false).asDocument().getDocumentElement(), this);
     }
 
     /**
