@@ -105,6 +105,9 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * Sets the source parameter that will be passed by updating methods
+     * See below for details.
+     * Twitter API Wiki > How do I get “from [my_application]” appended to updates sent from my API application?
+     * http://apiwiki.twitter.com/REST+API+Documentation
      *
      * @param source the new source
      */
