@@ -8,7 +8,7 @@
             <include name="**/*.zip"/>
         </fileset>
         <pathelement path="${build}/classes"/>
-        <pathelement path="${build}/testclasses"/>
+        <pathelement path="${build}/test-classes"/>
         <pathelement path="${java.class.path}"/>
     </path>
     <target name="clean">
@@ -38,7 +38,7 @@
         <mkdir dir="${classes}"/>
         <mkdir dir="${build}"/>
         <mkdir dir="${build}/classes"/>
-        <mkdir dir="${build}/testclasses"/>
+        <mkdir dir="${build}/test^classes"/>
         <mkdir dir="${doc}"/>
         <mkdir dir="${reports}"/>
     </target>

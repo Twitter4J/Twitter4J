@@ -6,7 +6,7 @@
     <artifactId>twitter4j</artifactId>
     <packaging>jar</packaging>
     <name>twitter4j</name>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <url>http://yusuke.homeip.net/twitter4j/</url>
     <licenses>
         <license>
@@ -23,7 +23,7 @@
     <scm>
         <connection>scm:svn:http://yusuke.homeip.net/svn/twitter4j/</connection>
         <url>
-            http://yusuke.homeip.net/svnwebclient/directoryContent.jsp?url=twitter4j
+            http://yusuke.homeip.net/fisheye/browse/svn/twitter4j
         </url>
     </scm>
     <mailingLists>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>rome</groupId>
             <artifactId>rome</artifactId>
-            <version>0.8</version>
+            <version>0.9</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
