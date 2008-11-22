@@ -4,8 +4,6 @@ import twitter4j.http.HttpClient;
 import twitter4j.http.PostParameter;
 import twitter4j.http.Response;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -326,7 +324,7 @@ public class Twitter implements java.io.Serializable {
     public final synchronized List<Status> getFriendsTimeline(Date since) throws
             TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/friends_timeline.xml",
-                "since", formatDate(since), true).asDocument(), this);
+                "since", format.format(since), true).asDocument(), this);
     }
 
     /**
@@ -340,7 +338,7 @@ public class Twitter implements java.io.Serializable {
     public final synchronized List<Status> getFriendsTimeline(String id,
                                                               Date since) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml",
-                "since", formatDate(since), true).asDocument(), this);
+                "since", format.format(since), true).asDocument(), this);
     }
 
     /**
@@ -358,7 +356,7 @@ public class Twitter implements java.io.Serializable {
             throw new IllegalArgumentException("count may not be greater than " + MAX_COUNT + " for performance purposes.");
         }
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml",
-                "since", formatDate(since), "count", String.valueOf(count), true).asDocument(), this);
+                "since", format.format(since), "count", String.valueOf(count), true).asDocument(), this);
     }
 
     /**
@@ -371,7 +369,7 @@ public class Twitter implements java.io.Serializable {
      */
     public final synchronized List<Status> getUserTimeline(String id, Date since) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml",
-                "since", formatDate(since), true).asDocument(), this);
+                "since", format.format(since), true).asDocument(), this);
     }
 
     /**
@@ -404,7 +402,7 @@ public class Twitter implements java.io.Serializable {
             throw new IllegalArgumentException("count may not be greater than " + MAX_COUNT + " for performance purposes.");
         }
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml",
-                "since", formatDate(since), "count", String.valueOf(count), true).asDocument(), this);
+                "since", format.format(since), "count", String.valueOf(count), true).asDocument(), this);
     }
 
     /**
@@ -661,7 +659,7 @@ public class Twitter implements java.io.Serializable {
     public final synchronized List<DirectMessage> getDirectMessages(Date since) throws
             TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL +
-                "direct_messages.xml", "since", formatDate(since), true).asDocument(), this);
+                "direct_messages.xml", "since", format.format(since), true).asDocument(), this);
     }
 
     /**
@@ -686,7 +684,7 @@ public class Twitter implements java.io.Serializable {
     public final synchronized List<DirectMessage> getSentDirectMessages(Date since) throws
             TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL +
-                "direct_messages/sent.xml", "since", formatDate(since), true).asDocument(), this);
+                "direct_messages/sent.xml", "since", format.format(since), true).asDocument(), this);
     }
 
     /**
@@ -981,14 +979,6 @@ Formats: xml, json
 
     private SimpleDateFormat format = new SimpleDateFormat(
             "EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH);
-
-    private String formatDate(Date date) {
-        try {
-            return URLEncoder.encode(format.format(date), "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            return URLEncoder.encode(format.format(date));
-        }
-    }
 
     public void setRetryCount(int retryCount) {
         http.setRetryCount(retryCount);
