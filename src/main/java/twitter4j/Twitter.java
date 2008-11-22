@@ -1000,7 +1000,7 @@ Formats: xml, json
 
     @Override
     public int hashCode() {
-        return http.hashCode() + this.baseURL.hashCode();
+        return http.hashCode() + this.baseURL.hashCode() + http.hashCode();
     }
 
     @Override
@@ -1014,7 +1014,8 @@ Formats: xml, json
         if (obj instanceof Twitter) {
             Twitter that = (Twitter) obj;
             return this.http.equals(that.http)
-                    && this.baseURL.equals(that.baseURL);
+                    && this.baseURL.equals(that.baseURL)
+                    && this.http.equals(that.http);
         }
         return false;
     }
