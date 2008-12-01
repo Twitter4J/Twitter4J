@@ -650,7 +650,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      */
     public final synchronized void destroyAsync(String id, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(DESTORY, listener, new String[] {id}) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY, listener, new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.destroyed(destroy( (String) args[0]));
             }
@@ -662,7 +662,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      */
     public final synchronized void destroyAsync(String id) {
-        getDispatcher().invokeLater(new AsyncTask(DESTORY, new TwitterAdapter(), new String[] {id}) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY, new TwitterAdapter(), new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.destroyed(destroy( (String) args[0]));
             }
@@ -1010,7 +1010,11 @@ public class AsyncTwitter extends Twitter {
     public final static int DIRECT_MESSAGES = 10;
     public final static int SEND_DIRECT_MESSAGE = 11;
     public final static int CREATE = 12;
+    /**
+     * @deprecated use DESTROY instead.
+     */
     public final static int DESTORY = 13;
+    public final static int DESTROY = 13;
     public final static int FOLLOW = 14;
     public final static int LEAVE = 15;
     public final static int FAVORITES = 17;
