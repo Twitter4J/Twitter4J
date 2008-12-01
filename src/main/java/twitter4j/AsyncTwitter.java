@@ -215,11 +215,7 @@ public class AsyncTwitter extends Twitter {
      * @deprecated Use showAsync(long id) instead.
      */
     public final synchronized void showAsync(int id, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(SHOW, listener, new Object[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotShow(show( (Integer) args[0]));
-            }
-        });
+        showAsync((long) id, listener);
     }
 
     /**
@@ -231,7 +227,7 @@ public class AsyncTwitter extends Twitter {
     public final synchronized void showAsync(long id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(SHOW, listener, new Object[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotShow(show( (Integer) args[0]));
+                listener.gotShow(show( (Long) args[0]));
             }
         });
     }
