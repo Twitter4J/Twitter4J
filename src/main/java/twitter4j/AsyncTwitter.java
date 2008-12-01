@@ -292,11 +292,33 @@ public class AsyncTwitter extends Twitter {
      * Destroys the status specified by the required ID parameter. asynchronously
      * @param statusId String
      * @since 1.0.5
+     * @deprecated use destroyStatusAsync(long statuId) instead.
      */
     public void destoryStatusAsync(int statusId) {
-        getDispatcher().invokeLater(new AsyncTask(DESTROY_STATUS,  new TwitterAdapter(), new Integer[] {statusId}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.destroyedStatus(destroyStatus( ((Integer) args[0])));
+        destroyStatusAsync((long) statusId);
+    }
+
+    /**
+     *
+     * Destroys the status specified by the required ID parameter. asynchronously
+     * @param statusId String
+     * @since 1.1.2
+     * @deprecated use destroyStatusAsync(long statuId) instead.
+     */
+    public void destroyStatusAsync(int statusId) {
+        destroyStatusAsync((long) statusId);
+    }
+
+    /**
+     * Destroys the status specified by the required ID parameter. asynchronously
+     *
+     * @param statusId String
+     * @since 1.1.2
+     */
+    public void destroyStatusAsync(long statusId) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY_STATUS, new TwitterAdapter(), new Long[]{statusId}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.destroyedStatus(destroyStatus(((Long) args[0])));
             }
         });
     }
@@ -306,11 +328,34 @@ public class AsyncTwitter extends Twitter {
      * @param statusId String
      * @param listener TwitterListener a listener object that receives the response
      * @since 1.0.6
+     * @deprecated use destroyStatusAsync(long statuId) instead.
      */
     public void destoryStatusAsync(int statusId, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(DESTROY_STATUS,  listener, new Integer[] {statusId}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.destroyedStatus(destroyStatus( ((Integer) args[0])));
+        destroyStatusAsync((long) statusId, listener);
+    }
+    /**
+     *
+     * Destroys the status specified by the required ID parameter. asynchronously
+     * @param statusId String
+     * @param listener TwitterListener a listener object that receives the response
+     * @since 1.1.2
+     * @deprecated use destroyStatusAsync(long statuId) instead.
+     */
+    public void destroyStatusAsync(int statusId, TwitterListener listener) {
+        destroyStatusAsync((long) statusId, listener);
+    }
+
+    /**
+     * Destroys the status specified by the required ID parameter. asynchronously
+     *
+     * @param statusId String
+     * @param listener TwitterListener a listener object that receives the response
+     * @since 1.1.2
+     */
+    public void destroyStatusAsync(long statusId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY_STATUS, listener, new Long[]{statusId}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.destroyedStatus(destroyStatus(((Long) args[0])));
             }
         });
     }
@@ -711,11 +756,23 @@ public class AsyncTwitter extends Twitter {
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use createFavoriteAsync(long id, TwitterListener listener) instead.
      */
     public final synchronized void createFavoriteAsync(int id, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, new Object[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.createdFavorite(createFavorite((Integer)args[0]));
+        createFavoriteAsync((long) id, listener);
+    }
+
+    /**
+     * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
+     *
+     * @param id       the ID or screen name of the user for whom to request a list of favorite statuses.
+     * @param listener TwitterListener a listener object that receives the response
+     * @since 1.1.2
+     */
+    public final synchronized void createFavoriteAsync(long id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, new Object[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.createdFavorite(createFavorite((Long) args[0]));
             }
         });
     }
@@ -723,34 +780,70 @@ public class AsyncTwitter extends Twitter {
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
+     * @deprecated use createFavoriteAsync(long id, TwitterListener listener) instead.
      */
     public final synchronized void createFavoriteAsync(int id) {
-        getDispatcher().invokeLater(new AsyncTask(FAVORITES, new TwitterAdapter(), new Object[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.createdFavorite(createFavorite((Integer)args[0]));
+        createFavoriteAsync((long) id);
+    }
+
+    /**
+     * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
+     *
+     * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
+     * @since 1.1.2
+     */
+    public final synchronized void createFavoriteAsync(long id) {
+        getDispatcher().invokeLater(new AsyncTask(FAVORITES, new TwitterAdapter(), new Object[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.createdFavorite(createFavorite((Long) args[0]));
             }
         });
     }
+
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
      * @param id the ID or screen name of the user for whom to request a list of un-favorite statuses.
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use destroyFavoriteAsync(long id, TwitterListener listener) instead.
      */
     public final synchronized void destroyFavoriteAsync(int id, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, new Object[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.destroyedFavorite(destroyFavorite((Integer)args[0]));
+        destroyFavoriteAsync((long) id, listener);
+    }
+
+    /**
+     * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
+     *
+     * @param id       the ID or screen name of the user for whom to request a list of un-favorite statuses.
+     * @param listener TwitterListener a listener object that receives the response
+     * @since 1.1.2
+     */
+    public final synchronized void destroyFavoriteAsync(long id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, new Object[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.destroyedFavorite(destroyFavorite((Long) args[0]));
             }
         });
     }
+
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
      * @param id the ID or screen name of the user for whom to request a list of un-favorite statuses.
+     * @deprecated use destroyFavoriteAsync(long id) instead.
      */
     public final synchronized void destroyFavoriteAsync(int id) {
-        getDispatcher().invokeLater(new AsyncTask(FAVORITES,  new TwitterAdapter(), new Object[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.destroyedFavorite(destroyFavorite((Integer)args[0]));
+        destroyFavoriteAsync((long) id);
+    }
+
+    /**
+     * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
+     *
+     * @param id the ID or screen name of the user for whom to request a list of un-favorite statuses.
+     * @since 1.1.2
+     */
+    public final synchronized void destroyFavoriteAsync(long id) {
+        getDispatcher().invokeLater(new AsyncTask(FAVORITES, new TwitterAdapter(), new Object[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.destroyedFavorite(destroyFavorite((Long) args[0]));
             }
         });
     }

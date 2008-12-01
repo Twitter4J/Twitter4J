@@ -236,8 +236,19 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         trySerializable(statuses);
     }
 
+    public void testFavorite() throws Exception {
+        Status status = twitterAPI1.update(new Date().toString());
+        twitterAPI2.createFavoriteAsync(status.getId(),this);
+        Thread.sleep(3000);
+        assertEquals(status,this.status);
+        this.status = null;
+        twitterAPI2.destroyFavoriteAsync(status.getId(),this);
+        Thread.sleep(3000);
+        assertEquals(status,this.status);
+    }
+
     public void testShow() throws Exception {
-        twitterAPI2.showAsync(1000, this);
+        twitterAPI2.showAsync(1000l, this);
         Thread.sleep(3000);
         assertEquals(52, status.getUser().getId());
         trySerializable(status);
@@ -246,6 +257,11 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void testUpdate() throws Exception {
         String date = new java.util.Date().toString() + "test";
         twitterAPI1.updateAsync(date, this);
+        Thread.sleep(3000);
+        assertEquals("", date, status.getText());
+        long id = status.getId();
+        this.status = null;
+        twitterAPI1.destroyStatusAsync(id, this);
         Thread.sleep(3000);
         assertEquals("", date, status.getText());
         trySerializable(status);
