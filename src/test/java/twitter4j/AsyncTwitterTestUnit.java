@@ -13,9 +13,8 @@ import java.util.Properties;
 
 /**
  * <p>Title: Twitter4J</p>
- *
+ * <p/>
  * <p>Description: </p>
- *
  */
 public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     private List<Status> statuses = null;
@@ -28,6 +27,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     private String schedule;
     private DirectMessage message = null;
     private TwitterException te = null;
+
     public void gotPublicTimeline(List<Status> statuses) {
         this.statuses = statuses;
     }
@@ -51,6 +51,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void gotReplies(List<Status> statuses) {
         this.statuses = statuses;
     }
+
     public void destroyedStatus(Status destroyedStatus) {
         this.status = destroyedStatus;
     }
@@ -74,6 +75,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void gotDirectMessages(List<DirectMessage> messages) {
         this.messages = messages;
     }
+
     public void gotSentDirectMessages(List<DirectMessage> messages) {
         this.messages = messages;
     }
@@ -81,6 +83,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void sentDirectMessage(DirectMessage message) {
         this.message = message;
     }
+
     public void deletedDirectMessage(DirectMessage message) {
         this.message = message;
     }
@@ -92,21 +95,27 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void destroyed(User user) {
         this.user = user;
     }
-    public void updatedLocation(User user){
+
+    public void updatedLocation(User user) {
         this.user = user;
     }
-    public void updatedDeliverlyDevice(User user){
+
+    public void updatedDeliverlyDevice(User user) {
         this.user = user;
     }
-    public void gotFavorites(List<Status> statuses){
+
+    public void gotFavorites(List<Status> statuses) {
         this.statuses = statuses;
     }
-    public void createdFavorite(Status status){
+
+    public void createdFavorite(Status status) {
         this.status = status;
     }
-    public void destroyedFavorite(Status status){
+
+    public void destroyedFavorite(Status status) {
         this.status = status;
     }
+
     public void followed(User user) {
         this.user = user;
     }
@@ -114,27 +123,30 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void left(User user) {
         this.user = user;
     }
-    public void blocked(User user){
+
+    public void blocked(User user) {
         this.user = user;
     }
-    public void unblocked(User user){
+
+    public void unblocked(User user) {
         this.user = user;
     }
-    public void tested(boolean test){
+
+    public void tested(boolean test) {
         this.test = test;
     }
-    public void gotDowntimeSchedule(String schedule){
+
+    public void gotDowntimeSchedule(String schedule) {
         this.schedule = schedule;
     }
 
     /**
-     *
-     * @param te TwitterException
+     * @param te     TwitterException
      * @param method int
      */
 
     public void onException(TwitterException te, int method) {
-        System.out.println("Got exception:"+te.getMessage());
+        System.out.println("Got exception:" + te.getMessage());
         this.te = te;
     }
 
@@ -146,6 +158,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     }
 
     String id1, id2, pass1, pass2;
+
     protected void setUp() throws Exception {
         super.setUp();
         Properties p = new Properties();
@@ -212,7 +225,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
 
         twitterAPI1.getFriendsTimelineAsync(id2, new Date(0), this);
         Thread.sleep(3000);
-        assertTrue("size" , 5<  statuses.size());
+        assertTrue("size", 5 < statuses.size());
         trySerializable(statuses);
     }
 
@@ -238,13 +251,13 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
 
     public void testFavorite() throws Exception {
         Status status = twitterAPI1.update(new Date().toString());
-        twitterAPI2.createFavoriteAsync(status.getId(),this);
+        twitterAPI2.createFavoriteAsync(status.getId(), this);
         Thread.sleep(3000);
-        assertEquals(status,this.status);
+        assertEquals(status, this.status);
         this.status = null;
-        twitterAPI2.destroyFavoriteAsync(status.getId(),this);
+        twitterAPI2.destroyFavoriteAsync(status.getId(), this);
         Thread.sleep(3000);
-        assertEquals(status,this.status);
+        assertEquals(status, this.status);
     }
 
     public void testShow() throws Exception {
@@ -268,7 +281,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     }
 
     public void testGetFriends() throws Exception {
-        twitterAPI1.getFriendsAsync(id2,this);
+        twitterAPI1.getFriendsAsync(id2, this);
         Thread.sleep(3000);
         boolean found = false;
         for (User user : users) {
@@ -305,9 +318,18 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     }
 
     public void testGetDirectMessages() throws Exception {
+        try {
+            twitterAPI2.create(id1);
+        } catch (TwitterException ignore) {
+        }
+        try {
+            twitterAPI1.create(id2);
+        } catch (TwitterException ignore) {
+        }
+
         String expectedReturn = new Date() + ":directmessage test";
         twitterAPI2.sendDirectMessageAsync(id1, expectedReturn, this);
-        Thread.sleep(3000);
+        Thread.sleep(10000);
 //        twitterAPI2.sendDirectMessage("yusukey",expectedReturn);
         twitterAPI1.getDirectMessagesAsync(this);
         Thread.sleep(3000);
@@ -343,22 +365,26 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         assertEquals(403, te.getStatusCode());
 
     }
+
     public void testFollowLeave() throws Exception {
-        try{
+        try {
             twitterAPI2.create(id1);
-        }catch(TwitterException te){}
-        try{
+        } catch (TwitterException te) {
+        }
+        try {
             twitterAPI2.follow(id1);
-        }catch(TwitterException te){}
+        } catch (TwitterException te) {
+        }
         twitterAPI2.leaveAsync(id1, this);
         Thread.sleep(3000);
-        assertEquals(id1,user.getName());
+        assertEquals(id1, user.getName());
         twitterAPI2.followAsync(id2, this);
         Thread.sleep(3000);
-        assertEquals(id1,user.getName());
+        assertEquals(id1, user.getName());
         trySerializable(user);
 
     }
+
     private void trySerializable(Object obj) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new ByteArrayOutputStream());
         oos.writeObject(obj);
