@@ -70,10 +70,10 @@ JVM: Java5 or later]</p>
 </ul>
 
     <a name="howToUse"><h2>$[ja:使い方]$[en:How To Use]</h2></a>
-    <p>$[ja:twitter4j-1.1.0.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
+    <p>$[ja:twitter4j-1.1.2.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
     Java が分かっていれば <a href="./javadoc/index.html">JavaDoc</a> を見るのが早いです。<br>
     twitter4j.<a href="javadoc/twitter4j/Twitter.html">Twitter</a> クラスが最初に見るべきクラスです。]
-    $[en:It's as simple as adding twitter4j-1.1.0.jar to your classpath.<br>
+    $[en:It's as simple as adding twitter4j-1.1.2.jar to your classpath.<br>
     If you are familiar with Java language, the <a href="./javadoc/index.html">JavaDoc</a> should be <a href="http://obvious.com/">Obvious</a>ly the shortest way for you to understand Twitter4J.<br>
     <a href="javadoc/twitter4j/Twitter.html">twitter4j.Twitter</a> class is the one you may want to look first.]</p>
 
@@ -171,8 +171,8 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html
 </ol>
 
 <a name="download"><h2>$[ja:ダウンロード]$[en:Download]</h2></a>
-<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.0.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
-    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.0.zip">twitter4j-1.1.0.zip</a>
+<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.2.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
+    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.2.zip">twitter4j-1.1.2.zip</a>
 
 
     <a name="sourceCode"><h2>$[ja:ソースコード]$[en:Source Code]</h2></a>
@@ -180,7 +180,7 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html
     プロジェクトのリポジトリには以下の URL からアクセスできます。<br><a href="http://yusuke.homeip.net/fisheye/browse/svn/twitter4j/trunk">http://yusuke.homeip.net/fisheye/browse/svn/twitter4j/trunk</a><br>
     または以下のように subversion クライアントを使って最新のソースコードをチェックアウトすることもできます。]
     $[en:The archive contains jar file along with source code.<br>
-    You can access the project repository via <a href="http://yusuke.homeip.net/fisheye/browse/svn/twitter4j/trunk">http://yusuke.homeip.net/fisheye/browse/svn/twitter4j/trunk</a><br>
+    You can browse the project repository at <a href="http://yusuke.homeip.net/fisheye/browse/svn/twitter4j/trunk">http://yusuke.homeip.net/fisheye/browse/svn/twitter4j/trunk</a><br>
     Or you can check out the latest source code anonymously with a subversion client as follows:]
     <pre class="codeSample">svn checkout http://yusuke.homeip.net/svn/twitter4j/trunk twitter4j
 </pre></p>
@@ -188,7 +188,7 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html
     <a name="maven"><h2>$[ja:Maven 統合]$[en:Maven Integration]</h2></a>
 <p>$[ja:Maven を使っている場合、pom.xml に以下のように記載すればご自身のプロジェクトに twitter4j を簡単に統合できます。]
 $[en:You can integrate Twitter4j easily by including following lines into your pom.xml.]
-<pre class="codeSample">   &lt;dependencies&gt;<br/>       &lt;dependency&gt;<br/>           &lt;groupId&gt;net.homeip.yusuke&lt;/groupId&gt;<br/>           &lt;artifactId&gt;twitter4j&lt;/artifactId&gt;<br/>           &lt;version&gt;1.1.0&lt;/version&gt;<br/>       &lt;/dependency&gt;<br/>       ...<br/>   &lt;/dependencies&gt;<br/></pre>
+<pre class="codeSample">   &lt;dependencies&gt;<br/>       &lt;dependency&gt;<br/>           &lt;groupId&gt;net.homeip.yusuke&lt;/groupId&gt;<br/>           &lt;artifactId&gt;twitter4j&lt;/artifactId&gt;<br/>           &lt;version&gt;[1.1,)&lt;/version&gt;<br/>       &lt;/dependency&gt;<br/>       ...<br/>   &lt;/dependencies&gt;<br/></pre>
 </p>
 
 
@@ -277,14 +277,57 @@ If you feel Twitter4J makes your life easier, please do consider making a donati
     
 
 <div class="history">
-    <a name="versionHistory"><h2>$[ja:変更履歴]$[en:Vesion History] <a href="./rss.xml"><img src="images/rss.png" width="36" height="20"/></a></h2></a>
+    <a name="versionHistory"><h2>$[ja:変更履歴]$[en:Vesion History]</h2></a>
     <ul>
 <!--
 <li>2.0.</li>
 $[ja:]$[en:]
 -->
 
-        <li>$[ja:バージョン ]$[en:Version ]1.1.0 <font color="red">new!</font></li>
+
+        <l>Release Notes - Twitter4J - Version 1.1.2 <font color="red">new! 12/2/2008</font></li>
+    
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-61'>TFJ-61</a>] -         AsyncTwitter#createFavoriteAsync(), destoryStatusAsync(), destroyFavoriteAsync() should take long instead of int
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-64'>TFJ-64</a>] -         AsyncTwitter#show(long) fails with ClassCastException
+</li>
+</ul>
+    
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-63'>TFJ-63</a>] -         typo: detroy -&gt; destory
+</li>
+</ul>
+
+       <li>Release Notes - Twitter4J - Version 1.1.1 </li>
+    
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-54'>TFJ-54</a>] -         Show method should take long instead of int
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-55'>TFJ-55</a>] -         Show method shouldn't require userid and password
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-56'>TFJ-56</a>] -         TwitterResponse from AsyncTwitter is not Serializable
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-57'>TFJ-57</a>] -         Date is encoded twice, and therefore &quot;since&quot; doesn't work
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-60'>TFJ-60</a>] -         hashCode and equals are not properly implemented
+</li>
+</ul>
+    
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-47'>TFJ-47</a>] -         implement toString()
+</li>
+</ul>
+        
+        <li>$[ja:バージョン ]$[en:Version ]1.1.0</li>
     
 <h2>        $[ja:修正されたバグ]$[en:Resolved Bugs]
 </h2>
