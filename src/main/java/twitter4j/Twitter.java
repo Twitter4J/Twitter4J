@@ -971,6 +971,22 @@ Formats: xml, json
                 asString().indexOf("ok");
     }
 
+    /**
+     * Returns extended information of the authenticated user.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.<br>
+     * The call Twitter.getAuthenticatedUser() is equivalent to the call:<br>
+     * twitter.getUserDetail(twitter.getUserId());
+     *
+     * @return UserWithStatus
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.1.3
+     */
+    public synchronized UserWithStatus getAuthenticatedUser() throws TwitterException {
+        if(null == getUserId()){
+            throw new IllegalStateException("User Id not specified.");
+        }
+        return getUserDetail(getUserId());
+    }
+
 /*
 downtime_schedule  New as of April 29th, 2008!
 

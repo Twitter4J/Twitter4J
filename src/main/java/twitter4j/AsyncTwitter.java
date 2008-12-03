@@ -477,7 +477,7 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
-     * Returns extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
+     * Retrieves extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
      * @param id String
      * @param listener TwitterListener a listener object that receives the response
      */
@@ -968,6 +968,21 @@ public class AsyncTwitter extends Twitter {
                 listener.gotDowntimeSchedule(getDowntimeSchedule());
             }
         });
+    }
+
+    /**
+     * Retrieves extended information of the authenticated user.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.<br>
+     * The call Twitter.getAuthenticatedUser() is equivalent to the call:<br>
+     * twitter.getUserDetailAsync(twitter.getUserId(), listener);
+     *
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.1.3
+     */
+    public synchronized void getAuthenticatedUserAsync(TwitterListener listener) throws TwitterException {
+        if (null == getUserId()) {
+            throw new IllegalStateException("User Id not specified.");
+        }
+        getUserDetailAsync(getUserId(), listener);
     }
 
 

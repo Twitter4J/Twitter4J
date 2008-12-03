@@ -229,6 +229,38 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         trySerializable(statuses);
     }
 
+    public void testGetUserDetail() throws Exception{
+        twitterAPI1.getUserDetailAsync(id1,this);
+        Thread.sleep(3000);
+        UserWithStatus uws = this.userWithStatus;
+        assertEquals(id1, uws.getName());
+        assertTrue(0 <= uws.getFavouritesCount());
+        assertTrue(0 <= uws.getFollowersCount());
+        assertTrue(0 <= uws.getFriendsCount());
+        assertTrue(0 <= uws.getStatusesCount());
+        assertNotNull(uws.getProfileBackgroundColor());
+        assertNotNull(uws.getProfileTextColor());
+        assertNotNull(uws.getProfileLinkColor());
+        assertNotNull(uws.getProfileSidebarBorderColor());
+        assertNotNull(uws.getProfileSidebarFillColor());
+        assertNotNull(uws.getProfileTextColor());
+
+        this.userWithStatus = null;
+        twitterAPI1.getAuthenticatedUserAsync(this);
+        Thread.sleep(3000);
+        assertEquals(id1, uws.getName());
+        assertTrue(0 <= uws.getFavouritesCount());
+        assertTrue(0 <= uws.getFollowersCount());
+        assertTrue(0 <= uws.getFriendsCount());
+        assertTrue(0 <= uws.getStatusesCount());
+        assertNotNull(uws.getProfileBackgroundColor());
+        assertNotNull(uws.getProfileTextColor());
+        assertNotNull(uws.getProfileLinkColor());
+        assertNotNull(uws.getProfileSidebarBorderColor());
+        assertNotNull(uws.getProfileSidebarFillColor());
+        assertNotNull(uws.getProfileTextColor());
+    }
+
     public void testGetUserTimeline_Show() throws Exception {
         twitterAPI2.getUserTimelineAsync(id1, this);
         Thread.sleep(3000);
