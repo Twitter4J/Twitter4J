@@ -51,7 +51,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      */
 
-    public final synchronized void getFriendsTimelineAsync(TwitterListener listener) {
+    public synchronized void getFriendsTimelineAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener,null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriendsTimeline(getFriendsTimeline());
@@ -64,7 +64,7 @@ public class AsyncTwitter extends Twitter {
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFriendsTimelineByPageAsync(int page, TwitterListener listener) {
+    public synchronized void getFriendsTimelineByPageAsync(int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriendsTimeline(getFriendsTimelineByPage( (Integer) args[0]));
@@ -77,7 +77,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String user ID
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFriendsTimelineAsync(String id, TwitterListener listener) {
+    public synchronized void getFriendsTimelineAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriendsTimeline(getFriendsTimeline( (String) args[0]));
@@ -91,7 +91,7 @@ public class AsyncTwitter extends Twitter {
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFriendsTimelineByPageAsync(String id,int page, TwitterListener listener) {
+    public synchronized void getFriendsTimelineByPageAsync(String id,int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id,page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriendsTimeline(getFriendsTimelineByPage( (String) args[0],(Integer)args[1]));
@@ -104,7 +104,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFriendsTimelineAsync(Date since, TwitterListener listener) {
+    public synchronized void getFriendsTimelineAsync(Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {since}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriendsTimeline(getFriendsTimeline( (Date) args[0]));
@@ -118,7 +118,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFriendsTimelineAsync(String id, Date since, TwitterListener listener) {
+    public synchronized void getFriendsTimelineAsync(String id, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id, since}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriendsTimeline(getFriendsTimeline( (String) args[0], (Date) args[1]));
@@ -133,7 +133,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getUserTimelineAsync(String id, int count, Date since, TwitterListener listener) {
+    public synchronized void getUserTimelineAsync(String id, int count, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id, count, since}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotUserTimeline(getUserTimeline( (String) args[0], (Integer) args[1], (Date) args[2]));
@@ -147,7 +147,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getUserTimelineAsync(String id, Date since, TwitterListener listener) {
+    public synchronized void getUserTimelineAsync(String id, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id, since}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotUserTimeline(getUserTimeline( (String) args[0], (Date) args[1]));
@@ -161,7 +161,7 @@ public class AsyncTwitter extends Twitter {
      * @param count int
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getUserTimelineAsync(String id, int count, TwitterListener listener) {
+    public synchronized void getUserTimelineAsync(String id, int count, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id, count}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotUserTimeline(getUserTimeline( (String) args[0], (Integer) args[1]));
@@ -175,7 +175,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getUserTimelineAsync(int count, Date since, TwitterListener listener) {
+    public synchronized void getUserTimelineAsync(int count, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {count, since}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotUserTimeline(getUserTimeline( (Integer) args[0], (Date) args[1]));
@@ -188,7 +188,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getUserTimelineAsync(String id, TwitterListener listener) {
+    public synchronized void getUserTimelineAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotUserTimeline(getUserTimeline( (String) args[0]));
@@ -200,7 +200,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getUserTimelineAsync(TwitterListener listener) {
+    public synchronized void getUserTimelineAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotUserTimeline(getUserTimeline());
@@ -214,7 +214,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @deprecated Use showAsync(long id) instead.
      */
-    public final synchronized void showAsync(int id, TwitterListener listener) {
+    public synchronized void showAsync(int id, TwitterListener listener) {
         showAsync((long) id, listener);
     }
 
@@ -224,7 +224,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @since 1.1.1
      */
-    public final synchronized void showAsync(long id, TwitterListener listener) {
+    public synchronized void showAsync(long id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(SHOW, listener, new Object[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotShow(show( (Long) args[0]));
@@ -263,7 +263,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getRepliesAsync(TwitterListener listener) {
+    public synchronized void getRepliesAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotReplies(getReplies());
@@ -275,7 +275,7 @@ public class AsyncTwitter extends Twitter {
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getRepliesByPageAsync(int page,TwitterListener listener) {
+    public synchronized void getRepliesByPageAsync(int page,TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, new Object[]{page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotReplies(getRepliesByPage((Integer)args[0]));
@@ -360,7 +360,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the specified user's friends, each with current status inline.
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFriendsAsync(TwitterListener listener) {
+    public synchronized void getFriendsAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriends(getFriends());
@@ -373,7 +373,7 @@ public class AsyncTwitter extends Twitter {
      * @param page number of the page to retrieve friends
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFriendsAsync(int page,TwitterListener listener) {
+    public synchronized void getFriendsAsync(int page,TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[]{page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriends(getFriends((Integer)args[0]));
@@ -385,7 +385,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFriendsAsync(String id, TwitterListener listener) {
+    public synchronized void getFriendsAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriends(getFriends( (String) args[0]));
@@ -399,7 +399,7 @@ public class AsyncTwitter extends Twitter {
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFriendsAsync(String id,int page, TwitterListener listener) {
+    public synchronized void getFriendsAsync(String id,int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[] {id,page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriends(getFriends( (String) args[0],(Integer)args[1]));
@@ -412,7 +412,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFollowersAsync(TwitterListener listener) {
+    public synchronized void getFollowersAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFollowers(getFollowers());
@@ -426,7 +426,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @since twitter4j 1.1.0
      */
-    public final synchronized void getFollowersAsync(int page, TwitterListener listener) {
+    public synchronized void getFollowersAsync(int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{page}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.gotFollowers(getFollowers((Integer) args[0]));
@@ -441,7 +441,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @since twitter4j 1.1.0
      */
-    public final synchronized void getFollowersAsync(String id, TwitterListener listener) {
+    public synchronized void getFollowersAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.gotFollowers(getFollowers((String) args[0]));
@@ -456,7 +456,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @since twitter4j 1.1.0
      */
-    public final synchronized void getFollowersAsync(String id, int page, TwitterListener listener) {
+    public synchronized void getFollowersAsync(String id, int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id, page}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.gotFollowers(getFollowers((String) args[0], (Integer) args[1]));
@@ -468,7 +468,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the users currently featured on the site with their current statuses inline.
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getFeaturedAsync(TwitterListener listener) {
+    public synchronized void getFeaturedAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FEATURED, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFeatured(getFeatured());
@@ -481,7 +481,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getUserDetailAsync(String id, TwitterListener listener) {
+    public synchronized void getUserDetailAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_DETAIL, listener, new Object[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotUserDetail(getUserDetail( (String) args[0]));
@@ -493,7 +493,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent to the authenticating user.
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getDirectMessagesAsync(TwitterListener listener) {
+    public synchronized void getDirectMessagesAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener,null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotDirectMessages(getDirectMessages());
@@ -506,7 +506,7 @@ public class AsyncTwitter extends Twitter {
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getDirectMessagesByPageAsync(int page, TwitterListener listener) {
+    public synchronized void getDirectMessagesByPageAsync(int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotDirectMessages(getDirectMessagesByPage( (Integer) args[0]));
@@ -518,7 +518,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getDirectMessagesAsync(Date since, TwitterListener listener) {
+    public synchronized void getDirectMessagesAsync(Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {since}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotDirectMessages(getDirectMessages( (Date) args[0]));
@@ -530,7 +530,7 @@ public class AsyncTwitter extends Twitter {
      * @param sinceId int
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getDirectMessagesAsync(int sinceId, TwitterListener listener) {
+    public synchronized void getDirectMessagesAsync(int sinceId, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {sinceId}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotDirectMessages(getDirectMessages( (Integer) args[0]));
@@ -541,7 +541,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent by the authenticating user.
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getSentDirectMessagesAsync(TwitterListener listener) {
+    public synchronized void getSentDirectMessagesAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener,null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotSentDirectMessages(getSentDirectMessages());
@@ -554,7 +554,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getSentDirectMessagesAsync(Date since, TwitterListener listener) {
+    public synchronized void getSentDirectMessagesAsync(Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {since}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotSentDirectMessages(getSentDirectMessages( (Date) args[0]));
@@ -566,7 +566,7 @@ public class AsyncTwitter extends Twitter {
      * @param sinceId Date
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void getSentDirectMessagesAsync(int sinceId, TwitterListener listener) {
+    public synchronized void getSentDirectMessagesAsync(int sinceId, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {sinceId}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotSentDirectMessages(getSentDirectMessages( (Integer) args[0]));
@@ -608,7 +608,7 @@ public class AsyncTwitter extends Twitter {
      * @param id int
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void deleteDirectMessageAsync(int id, TwitterListener listener) {
+    public synchronized void deleteDirectMessageAsync(int id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.deletedDirectMessage(deleteDirectMessage((Integer) args[0]));
@@ -621,7 +621,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void createAsync(String id, TwitterListener listener) {
+    public synchronized void createAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(CREATE, listener, new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.created(create( (String) args[0]));
@@ -632,7 +632,7 @@ public class AsyncTwitter extends Twitter {
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.
      * @param id String
      */
-    public final synchronized void createAsync(String id) {
+    public synchronized void createAsync(String id) {
         getDispatcher().invokeLater(new AsyncTask(CREATE,  new TwitterAdapter(), new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.created(create( (String) args[0]));
@@ -645,7 +645,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void destroyAsync(String id, TwitterListener listener) {
+    public synchronized void destroyAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY, listener, new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.destroyed(destroy( (String) args[0]));
@@ -657,7 +657,7 @@ public class AsyncTwitter extends Twitter {
      * Discontinues friendship with the specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.
      * @param id String
      */
-    public final synchronized void destroyAsync(String id) {
+    public synchronized void destroyAsync(String id) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY, new TwitterAdapter(), new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.destroyed(destroy( (String) args[0]));
@@ -674,7 +674,7 @@ public class AsyncTwitter extends Twitter {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public final synchronized void updateLocationAsync(String location,TwitterListener listener) throws TwitterException {
+    public synchronized void updateLocationAsync(String location,TwitterListener listener) throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[] {location}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.updatedLocation(updateLocation((String)args[0]));
@@ -691,7 +691,7 @@ public class AsyncTwitter extends Twitter {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public final synchronized void updateDeliverlyDeviceAsync(Device device,TwitterListener listener) throws TwitterException {
+    public synchronized void updateDeliverlyDeviceAsync(Device device,TwitterListener listener) throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[] {device}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.updatedDeliverlyDevice(updateDeliverlyDevice((Device)args[0]));
@@ -702,7 +702,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void favoritesAsync(TwitterListener listener) {
+    public synchronized void favoritesAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFavorites(favorites());
@@ -715,7 +715,7 @@ public class AsyncTwitter extends Twitter {
      * @param page number of page to retrieve favorites
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void favoritesAsync(int page, TwitterListener listener) {
+    public synchronized void favoritesAsync(int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, new Object[] {page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFavorites(favorites((Integer)args[0]));
@@ -727,7 +727,7 @@ public class AsyncTwitter extends Twitter {
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void favoritesAsync(String id,TwitterListener listener) {
+    public synchronized void favoritesAsync(String id,TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, new Object[]{id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFavorites(favorites((String)args[0]));
@@ -740,7 +740,7 @@ public class AsyncTwitter extends Twitter {
      * @param page retrieves the 20 next most recent favorite statuses.
      * @param listener TwitterListener a listener object that receives the response
      */
-    public final synchronized void favoritesAsync(String id,int page, TwitterListener listener) {
+    public synchronized void favoritesAsync(String id,int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, new Object[] {id,page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFavorites(favorites((String)args[0],(Integer)args[1]));
@@ -754,7 +754,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @deprecated use createFavoriteAsync(long id, TwitterListener listener) instead.
      */
-    public final synchronized void createFavoriteAsync(int id, TwitterListener listener) {
+    public synchronized void createFavoriteAsync(int id, TwitterListener listener) {
         createFavoriteAsync((long) id, listener);
     }
 
@@ -765,7 +765,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @since 1.1.2
      */
-    public final synchronized void createFavoriteAsync(long id, TwitterListener listener) {
+    public synchronized void createFavoriteAsync(long id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, new Object[]{id}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.createdFavorite(createFavorite((Long) args[0]));
@@ -778,7 +778,7 @@ public class AsyncTwitter extends Twitter {
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
      * @deprecated use createFavoriteAsync(long id, TwitterListener listener) instead.
      */
-    public final synchronized void createFavoriteAsync(int id) {
+    public synchronized void createFavoriteAsync(int id) {
         createFavoriteAsync((long) id);
     }
 
@@ -788,7 +788,7 @@ public class AsyncTwitter extends Twitter {
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
      * @since 1.1.2
      */
-    public final synchronized void createFavoriteAsync(long id) {
+    public synchronized void createFavoriteAsync(long id) {
         getDispatcher().invokeLater(new AsyncTask(FAVORITES, new TwitterAdapter(), new Object[]{id}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.createdFavorite(createFavorite((Long) args[0]));
@@ -802,7 +802,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @deprecated use destroyFavoriteAsync(long id, TwitterListener listener) instead.
      */
-    public final synchronized void destroyFavoriteAsync(int id, TwitterListener listener) {
+    public synchronized void destroyFavoriteAsync(int id, TwitterListener listener) {
         destroyFavoriteAsync((long) id, listener);
     }
 
@@ -813,7 +813,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @since 1.1.2
      */
-    public final synchronized void destroyFavoriteAsync(long id, TwitterListener listener) {
+    public synchronized void destroyFavoriteAsync(long id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FAVORITES, listener, new Object[]{id}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.destroyedFavorite(destroyFavorite((Long) args[0]));
@@ -826,7 +826,7 @@ public class AsyncTwitter extends Twitter {
      * @param id the ID or screen name of the user for whom to request a list of un-favorite statuses.
      * @deprecated use destroyFavoriteAsync(long id) instead.
      */
-    public final synchronized void destroyFavoriteAsync(int id) {
+    public synchronized void destroyFavoriteAsync(int id) {
         destroyFavoriteAsync((long) id);
     }
 
@@ -836,7 +836,7 @@ public class AsyncTwitter extends Twitter {
      * @param id the ID or screen name of the user for whom to request a list of un-favorite statuses.
      * @since 1.1.2
      */
-    public final synchronized void destroyFavoriteAsync(long id) {
+    public synchronized void destroyFavoriteAsync(long id) {
         getDispatcher().invokeLater(new AsyncTask(FAVORITES, new TwitterAdapter(), new Object[]{id}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.destroyedFavorite(destroyFavorite((Long) args[0]));
@@ -850,7 +850,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public final synchronized void followAsync(String id,TwitterListener listener) throws TwitterException {
+    public synchronized void followAsync(String id,TwitterListener listener) throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(FOLLOW, listener, new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.followed(follow( (String) args[0]));
@@ -862,7 +862,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public final synchronized void followAsync(String id) throws TwitterException {
+    public synchronized void followAsync(String id) throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(FOLLOW, new TwitterAdapter(), new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.followed(follow( (String) args[0]));
@@ -875,7 +875,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public final synchronized void leaveAsync(String id,TwitterListener listener) throws TwitterException {
+    public synchronized void leaveAsync(String id,TwitterListener listener) throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(LEAVE, listener, new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.left(leave( (String) args[0]));
@@ -889,7 +889,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public final synchronized void leaveAsync(String id) throws TwitterException {
+    public synchronized void leaveAsync(String id) throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(LEAVE, new TwitterAdapter(), new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.left(leave( (String) args[0]));
@@ -907,7 +907,7 @@ public class AsyncTwitter extends Twitter {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public final synchronized void blockAsync(String id) throws TwitterException {
+    public synchronized void blockAsync(String id) throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(BLOCK, new TwitterAdapter(), new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.blocked(block( (String) args[0]));
@@ -923,7 +923,7 @@ public class AsyncTwitter extends Twitter {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public final synchronized void unblockAsync(String id) throws TwitterException {
+    public synchronized void unblockAsync(String id) throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(UNBLOCK, new TwitterAdapter(), new String[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.unblocked(unblock( (String) args[0]));
@@ -939,7 +939,7 @@ public class AsyncTwitter extends Twitter {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public final synchronized void testAsync() throws TwitterException {
+    public synchronized void testAsync() throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(TEST, new TwitterAdapter(), new Object[] {}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.tested(test());
@@ -962,7 +962,7 @@ public class AsyncTwitter extends Twitter {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public final synchronized void getDowntimeScheduleAsync() throws TwitterException {
+    public synchronized void getDowntimeScheduleAsync() throws TwitterException {
         getDispatcher().invokeLater(new AsyncTask(GET_DOWNTIME_SCHEDULE, new TwitterAdapter(), new Object[] {}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotDowntimeSchedule(getDowntimeSchedule());
