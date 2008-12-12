@@ -780,7 +780,7 @@ public class Twitter implements java.io.Serializable {
      */
     public synchronized boolean verifyCredentials() {
         try {
-            return get(baseURL + "account/verify_credentials.xml", true).asString().contains("true");
+            return get(baseURL + "account/verify_credentials.xml", true).getStatusCode() == 200;
         } catch (TwitterException te) {
             return false;
         }
