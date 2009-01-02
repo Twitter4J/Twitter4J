@@ -24,6 +24,7 @@ public interface TwitterListener{
     public void deletedDirectMessage(DirectMessage message);
     public void created(User user);
     public void destroyed(User user);
+    public void gotExists(boolean exists);
     public void updatedLocation(User user);
     public void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
     public void updatedDeliverlyDevice(User user);

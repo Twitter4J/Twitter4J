@@ -44,6 +44,8 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void destroyed(User user){
     }
+    public void gotExists(boolean exists) {
+    }
     public void updatedLocation(User user){
     }
     public void gotRateLimitStatus(RateLimitStatus status){

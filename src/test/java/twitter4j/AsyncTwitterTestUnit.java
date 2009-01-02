@@ -28,6 +28,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     private DirectMessage message = null;
     private TwitterException te = null;
     private RateLimitStatus rateLimitStatus;
+    private boolean exists;
 
     public void gotPublicTimeline(List<Status> statuses) {
         this.statuses = statuses;
@@ -95,6 +96,10 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
 
     public void destroyed(User user) {
         this.user = user;
+    }
+
+    public void gotExists(boolean exists) {
+        this.exists = exists;
     }
 
     public void updatedLocation(User user) {
@@ -294,6 +299,23 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI2.destroyFavoriteAsync(status.getId(), this);
         Thread.sleep(3000);
         assertEquals(status, this.status);
+    }
+    public void testAccountMethods() throws Exception{
+        try {
+            twitterAPI1.createAsync(id2);
+            twitterAPI1.followAsync(id2);
+        } catch (twitter4j.TwitterException te) {
+            te.printStackTrace();
+        }
+        try {
+            twitterAPI2.createAsync(id1);
+            twitterAPI2.followAsync(id1);
+        } catch (twitter4j.TwitterException te) {
+            te.printStackTrace();
+        }
+        twitterAPI1.existsAsync(id1,id2,this);
+        Thread.sleep(3000);
+        assertTrue(exists);
     }
 
     public void testShow() throws Exception {

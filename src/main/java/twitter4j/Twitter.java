@@ -14,7 +14,7 @@ import java.util.TimeZone;
  * A java reporesentation of the <a href="http://twitter.com/help/api">Twitter API</a>
  */
 public class Twitter implements java.io.Serializable {
-    HttpClient http = null;
+    protected HttpClient http = null;
     private String baseURL = "http://twitter.com/";
     private String source = "Twitter4J";
 
@@ -174,7 +174,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
 
-    private Response get(String url, String name1, String value1, boolean authenticate) throws TwitterException {
+    protected Response get(String url, String name1, String value1, boolean authenticate) throws TwitterException {
         return get(url, new PostParameter[]{new PostParameter(name1, value1)}, authenticate);
     }
 
@@ -191,7 +191,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
 
-    private Response get(String url, String name1, String value1, String name2, String value2, boolean authenticate) throws TwitterException {
+    protected Response get(String url, String name1, String value1, String name2, String value2, boolean authenticate) throws TwitterException {
         return get(url, new PostParameter[]{new PostParameter(name1, value1), new PostParameter(name2, value2)}, authenticate);
     }
 
@@ -204,8 +204,7 @@ public class Twitter implements java.io.Serializable {
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
-
-    private Response get(String url, PostParameter[] params, boolean authenticate) throws TwitterException {
+    protected Response get(String url, PostParameter[] params, boolean authenticate) throws TwitterException {
         if (usePostForcibly) {
             if (null == params) {
                 return http.post(url, new PostParameter[0], authenticate);
@@ -228,7 +227,6 @@ public class Twitter implements java.io.Serializable {
      * @return list of statuses of the Public Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      */
-
     public synchronized List<Status> getPublicTimeline() throws
             TwitterException {
         return Status.constructStatuses(get(baseURL +
@@ -771,6 +769,18 @@ public class Twitter implements java.io.Serializable {
     public synchronized User destroy(String id) throws TwitterException {
         return new User(http.post(baseURL + "friendships/destroy/" + id + ".xml", new PostParameter[0], true).
                 asDocument().getDocumentElement(), this);
+    }
+
+    /**
+     * Tests if a friendship exists between two users.
+     * @param user_a The ID or screen_name of the first user to test friendship for.
+     * @param user_b The ID or screen_name of the second user to test friendship for.
+     * @return if a friendship exists between two users.
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    public synchronized boolean exists(String user_a, String user_b) throws TwitterException {
+        return get(baseURL + "friendships/exists.xml", "user_a", user_a, "user_b", user_b, true).
+                asString().contains("true");
     }
 
     /**

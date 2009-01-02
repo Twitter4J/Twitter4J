@@ -167,6 +167,19 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(location,user.getLocation());
 
         twitterAPI1.updateDeliverlyDevice(Twitter.SMS);
+        try {
+            twitterAPI1.create(id2);
+            twitterAPI1.follow(id2);
+        } catch (twitter4j.TwitterException te) {
+            te.printStackTrace();
+        }
+        try {
+            twitterAPI2.create(id1);
+            twitterAPI2.follow(id1);
+        } catch (twitter4j.TwitterException te) {
+            te.printStackTrace();
+        }
+        assertTrue(twitterAPI1.exists(id1,id2));
     }
     public void testFavoriteMethods() throws Exception{
         Status status = twitterAPI1.update("test");

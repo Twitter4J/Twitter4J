@@ -667,6 +667,20 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Tests if a friendship exists between two users.
+     *
+     * @param user_a The ID or screen_name of the first user to test friendship for.
+     * @param user_b The ID or screen_name of the second user to test friendship for.
+     */
+    public synchronized void existsAsync(String user_a, String user_b, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(EXISTS, listener, new String[]{user_a, user_b}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotExists(exists((String) args[0], (String) args[1]));
+            }
+        });
+    }
+
+    /**
      * Update the location
      *
      * @param location the current location of the user
@@ -1040,6 +1054,7 @@ public class AsyncTwitter extends Twitter {
      */
     public final static int DESTORY = 13;
     public final static int DESTROY = 13;
+    public final static int EXISTS = 28;
     public final static int FOLLOW = 14;
     public final static int LEAVE = 15;
     public final static int FAVORITES = 17;
