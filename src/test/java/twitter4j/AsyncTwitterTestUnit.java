@@ -301,18 +301,10 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         assertEquals(status, this.status);
     }
     public void testAccountMethods() throws Exception{
-        try {
-            twitterAPI1.createAsync(id2);
-            twitterAPI1.followAsync(id2);
-        } catch (twitter4j.TwitterException te) {
-            te.printStackTrace();
-        }
-        try {
-            twitterAPI2.createAsync(id1);
-            twitterAPI2.followAsync(id1);
-        } catch (twitter4j.TwitterException te) {
-            te.printStackTrace();
-        }
+        twitterAPI1.createAsync(id2);
+        twitterAPI1.followAsync(id2);
+        twitterAPI2.createAsync(id1);
+        twitterAPI2.followAsync(id1);
         twitterAPI1.existsAsync(id1,id2,this);
         Thread.sleep(3000);
         assertTrue(exists);

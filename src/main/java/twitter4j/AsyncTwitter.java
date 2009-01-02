@@ -685,13 +685,12 @@ public class AsyncTwitter extends Twitter {
      *
      * @param location the current location of the user
      * @param listener a listener object that receives the response
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public synchronized void updateLocationAsync(String location,TwitterListener listener) throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[] {location}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.updatedLocation(updateLocation((String)args[0]));
+    public synchronized void updateLocationAsync(String location, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[]{location}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.updatedLocation(updateLocation((String) args[0]));
             }
         });
     }
@@ -714,18 +713,18 @@ public class AsyncTwitter extends Twitter {
     /**
      * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
      *
-     * @param device new Delivery device. Must be one of: IM, SMS, NONE.
+     * @param device   new Delivery device. Must be one of: IM, SMS, NONE.
      * @param listener a listener object that receives the response
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public synchronized void updateDeliverlyDeviceAsync(Device device,TwitterListener listener) throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[] {device}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.updatedDeliverlyDevice(updateDeliverlyDevice((Device)args[0]));
+    public synchronized void updateDeliverlyDeviceAsync(Device device, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[]{device}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.updatedDeliverlyDevice(updateDeliverlyDevice((Device) args[0]));
             }
         });
     }
+
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * @param listener TwitterListener a listener object that receives the response
@@ -874,39 +873,41 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
-     * @param id String
+     *
+     * @param id       String
      * @param listener TwitterListener a listener object that receives the response
-     * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized void followAsync(String id,TwitterListener listener) throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOW, listener, new String[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.followed(follow( (String) args[0]));
+    public synchronized void followAsync(String id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOW, listener, new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.followed(follow((String) args[0]));
             }
         });
     }
+
     /**
      * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     *
      * @param id String
-     * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized void followAsync(String id) throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOW, new TwitterAdapter(), new String[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.followed(follow( (String) args[0]));
+    public synchronized void followAsync(String id) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOW, new TwitterAdapter(), new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.followed(follow((String) args[0]));
             }
         });
     }
+
     /**
      * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
-     * @param id String
+     *
+     * @param id       String
      * @param listener TwitterListener a listener object that receives the response
-     * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized void leaveAsync(String id,TwitterListener listener) throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(LEAVE, listener, new String[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.left(leave( (String) args[0]));
+    public synchronized void leaveAsync(String id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(LEAVE, listener, new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.left(leave((String) args[0]));
             }
         });
     }
@@ -914,13 +915,13 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     *
      * @param id String
-     * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized void leaveAsync(String id) throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(LEAVE, new TwitterAdapter(), new String[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.left(leave( (String) args[0]));
+    public synchronized void leaveAsync(String id) {
+        getDispatcher().invokeLater(new AsyncTask(LEAVE, new TwitterAdapter(), new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.left(leave((String) args[0]));
             }
         });
     }
@@ -932,13 +933,12 @@ public class AsyncTwitter extends Twitter {
      * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
      *
      * @param id the ID or screen_name of the user to block
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public synchronized void blockAsync(String id) throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(BLOCK, new TwitterAdapter(), new String[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.blocked(block( (String) args[0]));
+    public synchronized void blockAsync(String id) {
+        getDispatcher().invokeLater(new AsyncTask(BLOCK, new TwitterAdapter(), new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.blocked(block((String) args[0]));
             }
         });
     }
@@ -948,13 +948,12 @@ public class AsyncTwitter extends Twitter {
      * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
      *
      * @param id the ID or screen_name of the user to block
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public synchronized void unblockAsync(String id) throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(UNBLOCK, new TwitterAdapter(), new String[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.unblocked(unblock( (String) args[0]));
+    public synchronized void unblockAsync(String id) {
+        getDispatcher().invokeLater(new AsyncTask(UNBLOCK, new TwitterAdapter(), new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.unblocked(unblock((String) args[0]));
             }
         });
     }
@@ -964,12 +963,11 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the string "ok" in the requested format with a 200 OK HTTP status code.
      *
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public synchronized void testAsync() throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(TEST, new TwitterAdapter(), new Object[] {}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+    public synchronized void testAsync() {
+        getDispatcher().invokeLater(new AsyncTask(TEST, new TwitterAdapter(), new Object[]{}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.tested(test());
             }
         });
@@ -987,12 +985,11 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the same text displayed on http://twitter.com/home when a maintenance window is scheduled, in the requested format.
      *
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.0.4
      */
-    public synchronized void getDowntimeScheduleAsync() throws TwitterException {
-        getDispatcher().invokeLater(new AsyncTask(GET_DOWNTIME_SCHEDULE, new TwitterAdapter(), new Object[] {}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+    public synchronized void getDowntimeScheduleAsync() {
+        getDispatcher().invokeLater(new AsyncTask(GET_DOWNTIME_SCHEDULE, new TwitterAdapter(), new Object[]{}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.gotDowntimeSchedule(getDowntimeSchedule());
             }
         });
@@ -1003,10 +1000,9 @@ public class AsyncTwitter extends Twitter {
      * The call Twitter.getAuthenticatedUser() is equivalent to the call:<br>
      * twitter.getUserDetailAsync(twitter.getUserId(), listener);
      *
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.1.3
      */
-    public synchronized void getAuthenticatedUserAsync(TwitterListener listener) throws TwitterException {
+    public synchronized void getAuthenticatedUserAsync(TwitterListener listener) {
         if (null == getUserId()) {
             throw new IllegalStateException("User Id not specified.");
         }
