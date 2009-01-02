@@ -799,6 +799,19 @@ public class Twitter implements java.io.Serializable {
                 asDocument().getDocumentElement(), this);
     }
 
+    /**
+     * Returns the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.<br>
+     * See <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#ratelimitstatus">Twitter REST API Documentation &gt; Account Methods &gt; rate_limit_status</a> for detail.
+     *
+     * @return the rate limit status
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since twitter4j 1.1.4
+     */
+    public synchronized RateLimitStatus rateLimitStatus() throws TwitterException {
+        return new RateLimitStatus(http.get(baseURL + "account/rate_limit_status.xml", null != getUserId() && null != getPassword()).
+                asDocument().getDocumentElement());
+    }
+
     public final static Device IM = new Device("im");
     public final static Device SMS = new Device("sms");
     public final static Device NONE = new Device("none");

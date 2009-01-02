@@ -326,6 +326,12 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2.block(id1);
         twitterAPI2.unblock(id1);
     }
+
+    public void testRateLimitStatus() throws Exception{
+        RateLimitStatus status = twitterAPI1.rateLimitStatus();
+        assertTrue(10 < status.getHourlyLimit());
+        assertTrue(10 < status.getRemainingHits());
+    }
     public void testTest() throws Exception {
         assertTrue(twitterAPI2.test());
     }

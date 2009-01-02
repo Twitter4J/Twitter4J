@@ -27,6 +27,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     private String schedule;
     private DirectMessage message = null;
     private TwitterException te = null;
+    private RateLimitStatus rateLimitStatus;
 
     public void gotPublicTimeline(List<Status> statuses) {
         this.statuses = statuses;
@@ -98,6 +99,9 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
 
     public void updatedLocation(User user) {
         this.user = user;
+    }
+    public void gotRateLimitStatus(RateLimitStatus status){
+        this.rateLimitStatus = status;
     }
 
     public void updatedDeliverlyDevice(User user) {
@@ -396,6 +400,13 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         Thread.sleep(3000);
         assertEquals(403, te.getStatusCode());
 
+    }
+
+    public void testRateLimitStatus() throws Exception{
+        twitterAPI1.rateLimitStatusAsync(this);
+        Thread.sleep(3000);
+        assertTrue(10 < rateLimitStatus.getHourlyLimit());
+        assertTrue(10 < rateLimitStatus.getRemainingHits());
     }
 
     public void testFollowLeave() throws Exception {

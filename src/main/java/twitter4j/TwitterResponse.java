@@ -11,7 +11,9 @@ import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -23,13 +25,8 @@ import java.util.TimeZone;
  * @see twitter4j.UserWithStatus
  */
 public class TwitterResponse implements java.io.Serializable {
-    private static final long serialVersionUID = 351190117061895609L;
-    private static SimpleDateFormat format = new SimpleDateFormat(
-            "EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH);
-
-    static {
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
+    private Map<String,SimpleDateFormat> formatMap = new HashMap<String,SimpleDateFormat>();
+    private static final long serialVersionUID = 3519962197957449562L;
 
     public TwitterResponse() {
     }
@@ -109,13 +106,22 @@ public class TwitterResponse implements java.io.Serializable {
     }
 
     protected Date getChildDate(String str, Element elem) throws TwitterException {
+        return getChildDate(str, elem, "EEE MMM d HH:mm:ss z yyyy");
+    }
+
+    protected Date getChildDate(String str, Element elem, String format) throws TwitterException {
+        SimpleDateFormat sdf = formatMap.get(format);
+        if (null == sdf) {
+            sdf = new SimpleDateFormat(format, Locale.ENGLISH);
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            formatMap.put(format, sdf);
+        }
         String dateStr = getChildText(str, elem);
         try {
-            return format.parse(dateStr);
+            return sdf.parse(dateStr);
         } catch (ParseException pe) {
             throw new TwitterException("Unexpected format(" + str + ") returned from twitter.com:" + dateStr);
         }
-
     }
 
 }

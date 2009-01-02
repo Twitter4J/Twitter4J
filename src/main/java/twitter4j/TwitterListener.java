@@ -25,6 +25,7 @@ public interface TwitterListener{
     public void created(User user);
     public void destroyed(User user);
     public void updatedLocation(User user);
+    public void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
     public void updatedDeliverlyDevice(User user);
     public void gotFavorites(List<Status> statuses);
     public void createdFavorite(Status status);
@@ -41,4 +42,5 @@ public interface TwitterListener{
      * @param method int
      */
     void onException(TwitterException te,int method);
+
 }

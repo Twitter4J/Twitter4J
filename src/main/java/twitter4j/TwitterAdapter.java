@@ -46,6 +46,8 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void updatedLocation(User user){
     }
+    public void gotRateLimitStatus(RateLimitStatus status){
+    }
     public void updatedDeliverlyDevice(User user){
     }
     public void gotFavorites(List<Status> statuses){

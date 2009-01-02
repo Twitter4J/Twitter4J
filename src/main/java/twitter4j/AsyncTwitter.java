@@ -684,6 +684,20 @@ public class AsyncTwitter extends Twitter {
 
 
     /**
+     * Gets the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.
+     * See <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#ratelimitstatus">Twitter REST API Documentation &gt; Account Methods &gt; rate_limit_status</a> for detail.
+     *
+     * @since twitter4j 1.1.4
+     */
+    public synchronized void rateLimitStatusAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(RATE_LIMIT_STATUS, listener, new Object[]{}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotRateLimitStatus(rateLimitStatus());
+            }
+        });
+    }
+
+    /**
      * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
      *
      * @param device new Delivery device. Must be one of: IM, SMS, NONE.
@@ -1032,6 +1046,7 @@ public class AsyncTwitter extends Twitter {
     public final static int CREATE_FAVORITE = 18;
     public final static int DESTROY_FAVORITE = 19;
     public final static int UPDATE_LOCATION = 20;
+    public final static int RATE_LIMIT_STATUS = 27;
     public final static int UPDATE_DELIVERLY_DEVICE = 21;
     public final static int BLOCK = 22;
     public final static int UNBLOCK = 23;
