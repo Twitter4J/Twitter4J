@@ -833,7 +833,7 @@ public class Twitter implements java.io.Serializable {
      * @since twitter4j 1.0.4
      */
     public synchronized User updateDeliverlyDevice(Device device) throws TwitterException {
-        return new User(http.post(baseURL + "account/update_delivery_device", new PostParameter[]{new PostParameter("device", device.DEVICE)}, true).
+        return new User(http.post(baseURL + "account/update_delivery_device.xml", new PostParameter[]{new PostParameter("device", device.DEVICE)}, true).
                 asDocument().getDocumentElement(), this);
     }
 
