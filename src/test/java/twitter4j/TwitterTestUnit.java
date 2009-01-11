@@ -94,6 +94,13 @@ public class TwitterTestUnit extends TestCase {
     public void testGetUserDetail() throws Exception{
         UserWithStatus uws = twitterAPI1.getUserDetail(id1);
         assertEquals(id1, uws.getName());
+        assertEquals(id1,uws.getScreenName());
+        assertNotNull(uws.getLocation());
+        assertNotNull(uws.getDescription());
+        assertNotNull(uws.getProfileImageURL());
+        assertNull(uws.getURL());
+        assertFalse(uws.isProtected());
+
         assertTrue(0 <= uws.getFavouritesCount());
         assertTrue(0 <= uws.getFollowersCount());
         assertTrue(0 <= uws.getFriendsCount());
@@ -104,6 +111,18 @@ public class TwitterTestUnit extends TestCase {
         assertNotNull(uws.getProfileSidebarBorderColor());
         assertNotNull(uws.getProfileSidebarFillColor());
         assertNotNull(uws.getProfileTextColor());
+
+        assertEquals(2,uws.getFollowersCount());
+        assertNotNull(uws.getStatusCreatedAt());
+        assertNotNull(uws.getStatusText());
+        assertNotNull(uws.getStatusSource());
+        assertFalse(uws.isStatusFavorited());
+        assertEquals(-1,uws.getStatusInReplyToStatusId());
+        assertEquals(-1,uws.getStatusInReplyToUserId());
+        assertFalse(uws.isStatusFavorited());
+        assertNull(uws.getStatusInReplyToScreenName());
+
+
 
         uws = twitterAPI1.getAuthenticatedUser();
         assertEquals(id1, uws.getName());
@@ -117,6 +136,25 @@ public class TwitterTestUnit extends TestCase {
         assertNotNull(uws.getProfileSidebarBorderColor());
         assertNotNull(uws.getProfileSidebarFillColor());
         assertNotNull(uws.getProfileTextColor());
+
+        uws = twitterAPI1.getUserDetail("6459452");
+        assertEquals(6459452,uws.getId());
+        assertEquals("fast_ts",uws.getName());
+        assertEquals("fast_ts",uws.getScreenName());
+        assertEquals("",uws.getLocation());
+        assertEquals("",uws.getDescription());
+        assertTrue(uws.getProfileImageURL().toString().contains("/25787342/_____-1_normal.gif"));
+        assertNull(uws.getURL());
+        assertEquals(true,uws.isProtected());
+        assertEquals(2,uws.getFollowersCount());
+        assertNull(uws.getStatusCreatedAt());
+        assertNull(uws.getStatusText());
+        assertNull(uws.getStatusSource());
+        assertFalse(uws.isStatusFavorited());
+        assertEquals(-1,uws.getStatusInReplyToStatusId());
+        assertEquals(-1,uws.getStatusInReplyToUserId());
+        assertFalse(uws.isStatusFavorited());
+        assertNull(uws.getStatusInReplyToScreenName());
     }
 
 

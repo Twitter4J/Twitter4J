@@ -14,13 +14,18 @@ public class UserWithStatus extends User {
     private String profileSidebarFillColor;
     private String profileSidebarBorderColor;
     private int friendsCount;
-    private int followersCount;
     private int favouritesCount;
     private int statusesCount;
-    private Date createdAt;
-    private String text;
-    private long statusId;
-    private static final long serialVersionUID = -1186848883283901709L;
+    private Date statusCreatedAt;
+    private long statusId = -1;
+    private String statusText = null;
+    private String statusSource = null;
+    private boolean statusTruncated = false;
+    private long statusInReplyToStatusId = -1;
+    private int statusInReplyToUserId = -1;
+    private boolean statusFavorited = false;
+    private String statusInReplyToScreenName = null;
+    private static final long serialVersionUID = -3338496376247577523L;
 
     public UserWithStatus(Element elem, Twitter twitter) throws TwitterException {
         super(elem, twitter);
@@ -30,12 +35,20 @@ public class UserWithStatus extends User {
         profileSidebarFillColor = getChildText("profile_sidebar_fill_color", elem);
         profileSidebarBorderColor = getChildText("profile_sidebar_border_color", elem);
         friendsCount = getChildInt("friends_count", elem);
-        followersCount = getChildInt("followers_count", elem);
         favouritesCount = getChildInt("favourites_count", elem);
         statusesCount = getChildInt("statuses_count", elem);
-        createdAt = getChildDate("created_at", elem);
-        text = getChildText("text", elem);
-        statusId = Long.valueOf(((Element) elem.getElementsByTagName("status").item(0)).getElementsByTagName("id").item(0).getTextContent());
+        if (!isProtected()) {
+            Element status = (Element) elem.getElementsByTagName("status").item(0);
+            statusCreatedAt = getChildDate("created_at", status);
+            statusId = Long.valueOf(status.getElementsByTagName("id").item(0).getTextContent());
+            statusText = getChildText("text", status);
+            statusSource = getChildText("source", status);
+            statusTruncated = getChildBoolean("truncated", status);
+            statusInReplyToStatusId = getChildLong("in_reply_to_status_id", status);
+            statusInReplyToUserId = getChildInt("in_reply_to_user_id", status);
+            statusFavorited = getChildBoolean("favorited", status);
+            statusInReplyToScreenName = getChildText("in_reply_to_screen_name", status);
+        }
     }
 
     public String getProfileBackgroundColor() {
@@ -62,10 +75,6 @@ public class UserWithStatus extends User {
         return friendsCount;
     }
 
-    public int getFollowersCount() {
-        return followersCount;
-    }
-
     public int getFavouritesCount() {
         return favouritesCount;
     }
@@ -75,47 +84,84 @@ public class UserWithStatus extends User {
     }
 
     /**
-     * @return created_at
+     * @return created_at or null if the user is protected
      * @since twitter4j 1.1.0
      */
     public Date getStatusCreatedAt() {
-        return createdAt;
+        return statusCreatedAt;
     }
 
+    /**
+     *
+     * @return status id or -1 if the user is protected
+     */
     public long getStatusId() {
         return statusId;
     }
 
+    /**
+     *
+     * @return status text or null if the user is protected
+     */
     public String getStatusText() {
-        return text;
+        return statusText;
     }
 
-    /*<?xml version="1.0" encoding="UTF-8"?>
-    <user>
-      <id>4933401</id>
-      <name>Yusuke Yamamoto</name>
-      <screen_name>yusukey</screen_name>
-      <location>Tokyo</location>
-      <description>log4twitter!  http://yusuke.homeip.net/log4twitter/ja/index.html</description>
-      <profile_image_url>http://assets3.twitter.com/system/user/profile_image/4933401/normal/1023824_2048059614.jpg?1176769649</profile_image_url>
-      <url>http://yusuke.homeip.net/diary/</url>
-      <protected>false</protected>
-      <profile_background_color>9ae4e8</profile_background_color>
-      <profile_text_color>000000</profile_text_color>
-      <profile_link_color>0000ff</profile_link_color>
-      <profile_sidebar_fill_color>e0ff92</profile_sidebar_fill_color>
-      <profile_sidebar_border_color>87bc44</profile_sidebar_border_color>
-      <friends_count>12</friends_count>
-      <followers_count>12</followers_count>
-      <favourites_count>3</favourites_count>
-      <statuses_count>186</statuses_count>
-      <status>
-        <created_at>Wed May 30 13:06:11 +0000 2007</created_at>
-        <id>83978352</id>
-        <text>&#12358;&#12435;&#12358;&#12435;&#12290;Preview &#24555;&#36969;&#12377;&#12366;&#65281; &#38598;&#20013;&#12375;&#12390;&#35501;&#12416;&#12392;&#12365;&#12399; PDFView! http://pdfview.sourceforge.net/</text>
-      </status>
-    </user>
-*/
+    /**
+     *
+     * @return source or null if the user is protected
+     * @since 1.1.4
+     */
+    public String getStatusSource() {
+        return statusSource;
+    }
+
+    /**
+     *
+     * @return truncated or false if the user is protected
+     * @since 1.1.4
+     */
+    public boolean isStatusTruncated() {
+        return statusTruncated;
+    }
+
+    /**
+     *
+     * @return in_reply_to_status_id or -1 if the user is protected
+     * @since 1.1.4
+     */
+    public long getStatusInReplyToStatusId() {
+        return statusInReplyToStatusId;
+    }
+
+    /**
+     *
+     * @return in_reply_to_user_id or -1 if the user is protected
+     * @since 1.1.4
+     */
+    public int getStatusInReplyToUserId() {
+        return statusInReplyToUserId;
+    }
+
+    /**
+     *
+     * @return favorited or false if the user is protected
+     * @since 1.1.4
+     */
+    public boolean isStatusFavorited() {
+        return statusFavorited;
+    }
+
+    /**
+     *
+     * @return in_reply_to_screen_name or null if the user is protected
+     * @since 1.1.4
+     */
+
+    public String getStatusInReplyToScreenName() {
+        return -1 != statusInReplyToUserId ? statusInReplyToScreenName : null;
+    }
+
     @Override
     public int hashCode() {
         return getId();
@@ -133,7 +179,7 @@ public class UserWithStatus extends User {
     }
 
     @Override
-    public String toString() {
+     public String toString() {
         return "UserWithStatus{" +
                 "profileBackgroundColor='" + profileBackgroundColor + '\'' +
                 ", profileTextColor='" + profileTextColor + '\'' +
@@ -141,12 +187,17 @@ public class UserWithStatus extends User {
                 ", profileSidebarFillColor='" + profileSidebarFillColor + '\'' +
                 ", profileSidebarBorderColor='" + profileSidebarBorderColor + '\'' +
                 ", friendsCount=" + friendsCount +
-                ", followersCount=" + followersCount +
                 ", favouritesCount=" + favouritesCount +
                 ", statusesCount=" + statusesCount +
-                ", createdAt=" + createdAt +
-                ", text='" + text + '\'' +
+                ", statusCreatedAt=" + statusCreatedAt +
                 ", statusId=" + statusId +
+                ", statusText='" + statusText + '\'' +
+                ", statusSource='" + statusSource + '\'' +
+                ", statusTruncated=" + statusTruncated +
+                ", statusInReplyToStatusId=" + statusInReplyToStatusId +
+                ", statusInReplyToUserId=" + statusInReplyToUserId +
+                ", statusFavorited=" + statusFavorited +
+                ", statusInReplyToScreenName='" + statusInReplyToScreenName + '\'' +
                 '}';
     }
 }
