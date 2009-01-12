@@ -112,7 +112,7 @@ public class TwitterTestUnit extends TestCase {
         assertNotNull(uws.getProfileSidebarFillColor());
         assertNotNull(uws.getProfileTextColor());
 
-        assertEquals(2,uws.getFollowersCount());
+        assertTrue(1 < uws.getFollowersCount());
         assertNotNull(uws.getStatusCreatedAt());
         assertNotNull(uws.getStatusText());
         assertNotNull(uws.getStatusSource());

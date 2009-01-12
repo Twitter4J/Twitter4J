@@ -2,6 +2,7 @@ package twitter4j.http;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import twitter4j.TwitterException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,6 +32,7 @@ public class Response implements java.io.Serializable {
     private String responseString = null;
     private InputStream is;
     private static final long serialVersionUID = 6190279542077827227L;
+    private SAXException saxe = null;
 
     public Response(int statusCode, InputStream is) throws IOException {
         this.statusCode = statusCode;
@@ -44,12 +46,7 @@ public class Response implements java.io.Serializable {
             }
             this.responseString = buf.toString();
             this.is = new ByteArrayInputStream(responseString.getBytes("UTF-8"));
-            this.response = builder.parse(new ByteArrayInputStream(
-                responseString.getBytes("UTF-8")));
-        } catch (SAXException ignore) {
-            //twitter returned non-XML response
         } catch (NullPointerException ignore) {
-            //twitter returned non-XML response
             throw new IOException(ignore.getMessage());
         }
     }
@@ -66,7 +63,21 @@ public class Response implements java.io.Serializable {
         return is;
     }
 
-    public Document asDocument() {
+    public Document asDocument() throws TwitterException{
+        if(null == saxe && null == response){
+            try {
+                this.response = builder.parse(new ByteArrayInputStream(
+                        responseString.getBytes("UTF-8")));
+            } catch (SAXException saxe) {
+                this.saxe = saxe;
+            } catch (IOException ioe) {
+                //should never reach here
+                throw new TwitterException("Twitter returned a non-XML response", ioe);
+            }
+        }
+        if(null != saxe){
+            throw new TwitterException("Twitter returned a non-XML response", saxe);
+        }
         return response;
     }
 
