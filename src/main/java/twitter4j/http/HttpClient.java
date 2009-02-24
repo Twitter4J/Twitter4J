@@ -60,7 +60,7 @@ public class HttpClient implements java.io.Serializable {
     private void encodeBasicAuthenticationString(){
         if(null != userId && null != password){
         this.basic = "Basic " +
-            new String(new sun.misc.BASE64Encoder().encode((userId + ":" + password).getBytes()));
+            new String(new BASE64Encoder().encode((userId + ":" + password).getBytes()));
         }
     }
 
