@@ -70,10 +70,10 @@ JVM: Java5 or later]</p>
 </ul>
 
     <a name="howToUse"><h2>$[ja:使い方]$[en:How To Use]</h2></a>
-    <p>$[ja:twitter4j-1.1.2.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
+    <p>$[ja:twitter4j-1.1.5.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
     Java が分かっていれば <a href="./javadoc/index.html">JavaDoc</a> を見るのが早いです。<br>
     twitter4j.<a href="javadoc/twitter4j/Twitter.html">Twitter</a> クラスが最初に見るべきクラスです。]
-    $[en:It's as simple as adding twitter4j-1.1.2.jar to your classpath.<br>
+    $[en:It's as simple as adding twitter4j-1.1.5.jar to your classpath.<br>
     If you are familiar with Java language, the <a href="./javadoc/index.html">JavaDoc</a> should be <a href="http://obvious.com/">Obvious</a>ly the shortest way for you to understand Twitter4J.<br>
     <a href="javadoc/twitter4j/Twitter.html">twitter4j.Twitter</a> class is the one you may want to look first.]</p>
 
@@ -171,8 +171,8 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html
 </ol>
 
 <a name="download"><h2>$[ja:ダウンロード]$[en:Download]</h2></a>
-<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.2.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
-    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.2.zip">twitter4j-1.1.2.zip</a>
+<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.5.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
+    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.5.zip">twitter4j-1.1.5.zip</a>
 
 
     <a name="sourceCode"><h2>$[ja:ソースコード]$[en:Source Code]</h2></a>
@@ -284,8 +284,79 @@ If you feel Twitter4J makes your life easier, please do consider making a donati
 $[ja:]$[en:]
 -->
 
+        <l>Release Notes - Twitter4J - Version 1.1.5 <font color="red">new! 2/25/2009</font></li>
+    
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-76'>TFJ-76</a>] -         remove sun.misc.BASE64Encoder dependency
+</li>
+</ul>
+    
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-74'>TFJ-74</a>] -         twitter4j.http.Response ignores SAXException, makes it difficult to troubleshoot
+</li>
+</ul>
+    
+        <l>Release Notes - Twitter4J - Version 1.1.4</li>
+    
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-70'>TFJ-70</a>] -         getting a protected user profile causes a NullPointerException
+</li>
+</ul>
+    
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-69'>TFJ-69</a>] -         some async methods are declared to throw TwitterException mistakenly
+</li>
+</ul>
+    
+<h2>        New Feature
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-48'>TFJ-48</a>] -         support update_delivery_device method
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-49'>TFJ-49</a>] -         support update_profile_colors method
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-50'>TFJ-50</a>] -         support update_profile_image method
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-51'>TFJ-51</a>] -         support update_profile_background_image method
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-52'>TFJ-52</a>] -         support exists method
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-53'>TFJ-53</a>] -         support rate_limit_status method
+</li>
 
-        <l>Release Notes - Twitter4J - Version 1.1.2 <font color="red">new! 12/2/2008</font></li>
+        <l>Release Notes - Twitter4J - Version 1.1.3</li>
+    
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-67'>TFJ-67</a>] -         verifyCredentials() returns always false since 10/12/2008
+</li>
+</ul>
+        
+<h2>        New Feature
+	</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-33'>TFJ-33</a>] -         ability to get the authenticated user
+</li>
+</ul>
+    
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-65'>TFJ-65</a>] -         methods don't have to be final
+</li>
+</ul>
+
+
+        <l>Release Notes - Twitter4J - Version 1.1.2</li>
     
 <h2>        Bug
 </h2>
