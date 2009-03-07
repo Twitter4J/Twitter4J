@@ -180,7 +180,11 @@ public class TwitterTestUnit extends TestCase {
     public void testUpdate() throws Exception{
         String date = new java.util.Date().toString()+"test";
         Status status = twitterAPI1.update(date);
-        assertEquals("",date, status.getText());
+        assertEquals(date, status.getText());
+        Status status2 = twitterAPI2.update(date,status.getId());
+        assertEquals(date, status2.getText());
+        assertEquals(status.getId(), status2.getInReplyToStatusId());
+        assertEquals(twitterAPI1.getAuthenticatedUser().getId(), status2.getInReplyToUserId());
     }
     public void testDestoryStatus() throws Exception{
         String date = new java.util.Date().toString()+"test";
@@ -199,8 +203,8 @@ public class TwitterTestUnit extends TestCase {
     }
     public void testAccountMethods() throws Exception{
         assertTrue(twitterAPI1.verifyCredentials());
-        assertFalse(new Twitter("doesnotexist","foobar").verifyCredentials());
-        String location = "location:"+new Date().toString();
+        assertFalse(new Twitter("doesnotexist--","foobar").verifyCredentials());
+        String location = "location:"+Math.random();
         User user = twitterAPI1.updateLocation(location);
         assertEquals(location,user.getLocation());
 
@@ -320,7 +324,7 @@ public class TwitterTestUnit extends TestCase {
             assertEquals(403, te.getStatusCode());
         }
         try {
-            user = twitterAPI2.create("doesnotexist");
+            user = twitterAPI2.create("doesnotexist--");
             fail("non-existing user");
         } catch (TwitterException te) {
             assertEquals(403, te.getStatusCode());
@@ -331,6 +335,7 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2.update("@"+id1+" reply to id1");
         List<Status> statuses = twitterAPI1.getReplies();
         assertTrue(statuses.size() > 0);
+        System.out.println(statuses.get(0).getText());
         assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
 
         statuses = twitterAPI1.getRepliesByPage(1);
@@ -376,6 +381,11 @@ public class TwitterTestUnit extends TestCase {
     public void testBlock() throws Exception {
         twitterAPI2.block(id1);
         twitterAPI2.unblock(id1);
+    }
+
+    public void testSearch() throws Exception {
+//        Query query = new Query();
+//        twitterAPI2.block(id1);
     }
 
     public void testRateLimitStatus() throws Exception{

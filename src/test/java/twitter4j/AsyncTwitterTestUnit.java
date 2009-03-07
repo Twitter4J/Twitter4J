@@ -322,9 +322,19 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         twitterAPI1.updateAsync(date, this);
         Thread.sleep(3000);
         assertEquals("", date, status.getText());
+
         long id = status.getId();
+
+        twitterAPI2.updateAsync(date,id, this);
+        Thread.sleep(3000);
+        assertEquals("", date, status.getText());
+        assertEquals("", id, status.getInReplyToStatusId());
+        assertEquals(twitterAPI1.getAuthenticatedUser().getId(), status.getInReplyToUserId());
+
+
+        id = status.getId();
         this.status = null;
-        twitterAPI1.destroyStatusAsync(id, this);
+        twitterAPI2.destroyStatusAsync(id, this);
         Thread.sleep(3000);
         assertEquals("", date, status.getText());
         trySerializable(status);
@@ -410,7 +420,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         Thread.sleep(3000);
         assertEquals(403, te.getStatusCode());
         te = null;
-        twitterAPI2.createAsync("doesnotexist", this);
+        twitterAPI2.createAsync("doesnotexist--", this);
         Thread.sleep(3000);
         assertEquals(403, te.getStatusCode());
 

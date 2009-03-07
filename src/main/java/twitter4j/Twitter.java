@@ -458,6 +458,7 @@ public class Twitter implements java.io.Serializable {
      * @param status the text of your status update
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#update">Twitter API &gt; Status Methods &gt; update</a>
      */
     public Status update(String status) throws TwitterException {
         if (status.length() > 160) {
@@ -465,6 +466,23 @@ public class Twitter implements java.io.Serializable {
         }
         return new Status(http.post(baseURL + "statuses/update.xml",
                 new PostParameter[]{new PostParameter("status", status), new PostParameter("source", source)}, true).asDocument().getDocumentElement(), this);
+    }
+    /**
+     * Updates the user's status.
+     * The text will be trimed if the length of the text is exceeding 160 characters.
+     *
+     * @param status the text of your status update
+     * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
+     * @return the latest status
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#update">Twitter API &gt; Status Methods &gt; update</a>
+     */
+    public Status update(String status, long inReplyToStatusId) throws TwitterException {
+        if (status.length() > 160) {
+            status = status.substring(0, 160);
+        }
+        return new Status(http.post(baseURL + "statuses/update.xml",
+                new PostParameter[]{new PostParameter("status", status), new PostParameter("in_reply_to_status_id", String.valueOf(inReplyToStatusId)), new PostParameter("source", source)}, true).asDocument().getDocumentElement(), this);
     }
 
     /**
