@@ -1,4 +1,4 @@
-Copyright (c) 2007-2008, Yusuke Yamamoto
+Copyright (c) 2007-2009, Yusuke Yamamoto
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
