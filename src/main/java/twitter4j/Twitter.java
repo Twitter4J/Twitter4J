@@ -101,6 +101,45 @@ public class Twitter implements java.io.Serializable {
         return http.getPassword();
     }
 
+
+    /**
+     * Enables use of HTTP proxy
+     *
+     * @param proxyHost
+     * @param proxyPort
+     */
+    public void setHttpProxy(String proxyHost, int proxyPort) {
+        http.setProxyHost(proxyHost);
+        http.setProxyPort(proxyPort);
+    }
+
+    /**
+     * Adds authentication on HTTP proxy
+     *
+     * @param proxyUser
+     * @param proxyPass
+     */
+    public void setHttpProxyAuth(String proxyUser, String proxyPass) {
+        http.setProxyAuthUser(proxyUser);
+        http.setProxyAuthPassword(proxyPass);
+    }
+
+    /**
+     * Sets a specified timeout value, in milliseconds, to be used when opening a communications link to the Twitter API.
+     * @param connectionTimeout - an int that specifies the connect timeout value in milliseconds
+     */
+    public void setHttpConnectionTimeout(int connectionTimeout) {
+        http.setConnectionTimeout(connectionTimeout);
+    }
+
+    /**
+     * Sets the read timeout to a specified timeout, in milliseconds.
+     * @param readTimeout - an int that specifies the timeout value to be used in milliseconds
+     */
+    public void setHttpReadTimeout(int readTimeout) {
+        http.setReadTimeout(readTimeout);
+    }
+
     /**
      * Sets the source parameter that will be passed by updating methods
      * See below for details.
