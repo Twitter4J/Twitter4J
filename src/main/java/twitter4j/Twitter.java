@@ -107,6 +107,7 @@ public class Twitter implements java.io.Serializable {
      *
      * @param proxyHost
      * @param proxyPort
+     * @since twitter4j 1.1.6
      */
     public void setHttpProxy(String proxyHost, int proxyPort) {
         http.setProxyHost(proxyHost);
@@ -118,6 +119,7 @@ public class Twitter implements java.io.Serializable {
      *
      * @param proxyUser
      * @param proxyPass
+     * @since twitter4j 1.1.6
      */
     public void setHttpProxyAuth(String proxyUser, String proxyPass) {
         http.setProxyAuthUser(proxyUser);
@@ -127,6 +129,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Sets a specified timeout value, in milliseconds, to be used when opening a communications link to the Twitter API.
      * @param connectionTimeout - an int that specifies the connect timeout value in milliseconds
+     * @since twitter4j 1.1.6
      */
     public void setHttpConnectionTimeout(int connectionTimeout) {
         http.setConnectionTimeout(connectionTimeout);
@@ -135,6 +138,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Sets the read timeout to a specified timeout, in milliseconds.
      * @param readTimeout - an int that specifies the timeout value to be used in milliseconds
+     * @since twitter4j 1.1.6
      */
     public void setHttpReadTimeout(int readTimeout) {
         http.setReadTimeout(readTimeout);

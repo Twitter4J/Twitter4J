@@ -271,6 +271,7 @@ public class AsyncTwitter extends Twitter {
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#update">Twitter API &gt; Status Methods &gt; update</a>
+     * @since twitter4j 1.1.6
      */
     public void updateAsync(String status, long inReplyToStatusId, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE, listener, new Object[]{status, inReplyToStatusId}) {
@@ -287,6 +288,7 @@ public class AsyncTwitter extends Twitter {
      * @param status String
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#update">Twitter API &gt; Status Methods &gt; update</a>
+     * @since twitter4j 1.1.6
      */
     public void updateAsync(String status, long inReplyToStatusId) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE, new TwitterAdapter(), new Object[]{status, inReplyToStatusId}) {
