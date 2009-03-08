@@ -27,9 +27,9 @@ public class Twitter implements java.io.Serializable {
     public Twitter() {
         http = new HttpClient();
         setRequestHeader("X-Twitter-Client", "Twitter4J");
-        setRequestHeader("X-Twitter-Client-Version", "1.1.6");
+        setRequestHeader("X-Twitter-Client-Version", "1.1.7");
         setRequestHeader("X-Twitter-Client-URL",
-                "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.1.6.xml");
+                "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.1.7.xml");
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
