@@ -1048,6 +1048,22 @@ public class AsyncTwitter extends Twitter {
         getUserDetailAsync(getUserId(), listener);
     }
 
+    /**
+     * @param query - the search condition
+     * @return the result
+     * @throws TwitterException
+     * @since twitter4j 1.1.7
+     * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
+     * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
+     */
+    public synchronized void searchAcync(Query query, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(SEARCH, listener, new Object[]{query}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.searched(search((Query) args[0]));
+            }
+        });
+    }
+
 
     abstract class AsyncTask implements Runnable {
         TwitterListener listener;
@@ -1103,4 +1119,5 @@ public class AsyncTwitter extends Twitter {
     public final static int TEST = 24;
     public final static int GET_DOWNTIME_SCHEDULE = 25;
     public final static int DESTROY_STATUS = 26;
+    public final static int SEARCH = 27;
 }

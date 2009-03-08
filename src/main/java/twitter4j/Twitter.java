@@ -12,15 +12,17 @@ import java.util.TimeZone;
 
 /**
  * A java reporesentation of the <a href="http://twitter.com/help/api">Twitter API</a>
+ * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Twitter implements java.io.Serializable {
     protected HttpClient http = null;
     private String baseURL = "http://twitter.com/";
+    private String searchBaseURL = "http://search.twitter.com/";
     private String source = "Twitter4J";
 
     private boolean usePostForcibly = false;
-    private static final long serialVersionUID = 4346156413282535531L;
     private static final int MAX_COUNT = 200;
+    private static final long serialVersionUID = -7550633067620779906L;
 
     public Twitter() {
         http = new HttpClient();
@@ -63,6 +65,25 @@ public class Twitter implements java.io.Serializable {
      */
     public String getBaseURL() {
         return this.baseURL;
+    }
+
+    /**
+     * Sets the search base URL
+     *
+     * @param searchBaseURL - the search base URL
+     * @since twitter4j 1.1.7
+     */
+    public void setSearchBaseURL(String searchBaseURL) {
+        this.searchBaseURL = searchBaseURL;
+    }
+
+    /**
+     * returns the search base url
+     * @return search base url
+     * @since twitter4j 1.1.7
+     */
+    public String getSearchBaseURL(){
+        return this.searchBaseURL;
     }
 
     /**
@@ -128,6 +149,7 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * Sets a specified timeout value, in milliseconds, to be used when opening a communications link to the Twitter API.
+     *
      * @param connectionTimeout - an int that specifies the connect timeout value in milliseconds
      * @since twitter4j 1.1.6
      */
@@ -137,6 +159,7 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * Sets the read timeout to a specified timeout, in milliseconds.
+     *
      * @param readTimeout - an int that specifies the timeout value to be used in milliseconds
      * @since twitter4j 1.1.6
      */
@@ -146,11 +169,10 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * Sets the source parameter that will be passed by updating methods
-     * See below for details.
-     * Twitter API Wiki > How do I get “from [my_application]” appended to updates sent from my API application?
-     * http://apiwiki.twitter.com/REST+API+Documentation
      *
      * @param source the new source
+     * @see <a href='http://apiwiki.twitter.com/FAQ#HowdoIget“fromMyApp”appendedtoupdatessentfrommyAPIapplication'>How do I get "from [MyApp]" appended to updates sent from my API application?</a>
+     * @see <a href="http://twitter.com/help/request_source">Twitter - Request a link to your application</a>
      */
     public void setSource(String source) {
         this.source = source;
@@ -377,7 +399,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public synchronized List<Status> getFriendsTimeline(String id,
-                                                              Date since) throws TwitterException {
+                                                        Date since) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml",
                 "since", format.format(since), true).asDocument(), this);
     }
@@ -392,7 +414,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public synchronized List<Status> getUserTimeline(String id, int count,
-                                                           Date since) throws TwitterException {
+                                                     Date since) throws TwitterException {
         if (MAX_COUNT < count) {
             throw new IllegalArgumentException("count may not be greater than " + MAX_COUNT + " for performance purposes.");
         }
@@ -481,6 +503,7 @@ public class Twitter implements java.io.Serializable {
     public synchronized Status show(int id) throws TwitterException {
         return new Status(get(baseURL + "statuses/show/" + id + ".xml", false).asDocument().getDocumentElement(), this);
     }
+
     /**
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
      *
@@ -510,11 +533,12 @@ public class Twitter implements java.io.Serializable {
         return new Status(http.post(baseURL + "statuses/update.xml",
                 new PostParameter[]{new PostParameter("status", status), new PostParameter("source", source)}, true).asDocument().getDocumentElement(), this);
     }
+
     /**
      * Updates the user's status.
      * The text will be trimed if the length of the text is exceeding 160 characters.
      *
-     * @param status the text of your status update
+     * @param status            the text of your status update
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
@@ -783,7 +807,7 @@ public class Twitter implements java.io.Serializable {
      */
 
     public synchronized DirectMessage sendDirectMessage(String id,
-                                                              String text) throws TwitterException {
+                                                        String text) throws TwitterException {
         if (text.length() > 160) {
             text = text.substring(0, 160);
         }
@@ -834,6 +858,7 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * Tests if a friendship exists between two users.
+     *
      * @param user_a The ID or screen_name of the first user to test friendship for.
      * @param user_b The ID or screen_name of the second user to test friendship for.
      * @return if a friendship exists between two users.
@@ -1065,7 +1090,7 @@ Formats: xml, json
      * @since twitter4j 1.1.3
      */
     public synchronized UserWithStatus getAuthenticatedUser() throws TwitterException {
-        if(null == getUserId()){
+        if (null == getUserId()) {
             throw new IllegalStateException("User Id not specified.");
         }
         return getUserDetail(getUserId());
@@ -1089,7 +1114,19 @@ Formats: xml, json
     public synchronized String getDowntimeSchedule() throws TwitterException {
         return get(baseURL + "help/downtime_schedule.xml", false).asString();
     }
-    
+
+    /**
+     * @param query - the search condition
+     * @return the result
+     * @throws TwitterException
+     * @since twitter4j 1.1.7
+     * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
+     * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
+     */
+
+    public synchronized QueryResult search(Query query) throws TwitterException {
+        return new QueryResult(get(searchBaseURL + "search.json", query.asPostParameters(), false).asJSONObject(), this);
+    }
 
     private SimpleDateFormat format = new SimpleDateFormat(
             "EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH);
@@ -1103,25 +1140,31 @@ Formats: xml, json
     }
 
     @Override
-    public int hashCode() {
-        return http.hashCode() + this.baseURL.hashCode() + http.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Twitter twitter = (Twitter) o;
+
+        if (usePostForcibly != twitter.usePostForcibly) return false;
+        if (!baseURL.equals(twitter.baseURL)) return false;
+        if (!format.equals(twitter.format)) return false;
+        if (!http.equals(twitter.http)) return false;
+        if (!searchBaseURL.equals(twitter.searchBaseURL)) return false;
+        if (!source.equals(twitter.source)) return false;
+
+        return true;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof Twitter) {
-            Twitter that = (Twitter) obj;
-            return this.http.equals(that.http)
-                    && this.baseURL.equals(that.baseURL)
-                    && this.http.equals(that.http);
-        }
-        return false;
+    public int hashCode() {
+        int result = http.hashCode();
+        result = 31 * result + baseURL.hashCode();
+        result = 31 * result + searchBaseURL.hashCode();
+        result = 31 * result + source.hashCode();
+        result = 31 * result + (usePostForcibly ? 1 : 0);
+        result = 31 * result + format.hashCode();
+        return result;
     }
 
     @Override
@@ -1129,6 +1172,7 @@ Formats: xml, json
         return "Twitter{" +
                 "http=" + http +
                 ", baseURL='" + baseURL + '\'' +
+                ", searchBaseURL='" + searchBaseURL + '\'' +
                 ", source='" + source + '\'' +
                 ", usePostForcibly=" + usePostForcibly +
                 ", format=" + format +

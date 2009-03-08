@@ -70,6 +70,8 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotDowntimeSchedule(String schedule){
     }
+    public void searched(QueryResult result){
+    }
     /**
      * @param ex TwitterException
      * @param method int

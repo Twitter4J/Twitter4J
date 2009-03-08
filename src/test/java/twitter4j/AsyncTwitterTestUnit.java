@@ -29,6 +29,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     private TwitterException te = null;
     private RateLimitStatus rateLimitStatus;
     private boolean exists;
+    private QueryResult queryResult;
 
     public void gotPublicTimeline(List<Status> statuses) {
         this.statuses = statuses;
@@ -147,6 +148,9 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
 
     public void gotDowntimeSchedule(String schedule) {
         this.schedule = schedule;
+    }
+    public void searched(QueryResult result) {
+        this.queryResult = result;
     }
 
     /**
@@ -449,6 +453,34 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         Thread.sleep(3000);
         assertEquals(id1, user.getName());
         trySerializable(user);
+
+    }
+    public void testSearchAsync() throws Exception {
+        Query query = new Query("source:twitter4j yusukey");
+        twitterAPI1.searchAcync(query, this);
+        Thread.sleep(3000);
+        assertTrue(1265204000 < queryResult.getSinceId());
+        assertTrue(1265204883 < queryResult.getMaxId());
+        assertTrue(queryResult.getRefreshUrl().contains("q=source"));
+        assertEquals(15, queryResult.getResultsPerPage());
+        assertEquals(1, queryResult.getTotal());
+        assertTrue(queryResult.getWarning().contains("adjusted"));
+        assertTrue(1 > queryResult.getCompletedIn());
+        assertEquals(1, queryResult.getPage());
+        assertEquals("source%3Atwitter4j+yusukey", queryResult.getQuery());
+
+        List<Tweet> tweets = queryResult.getTweets();
+        assertEquals(1, tweets.size());
+        assertEquals("test", tweets.get(0).getText());
+        assertNull(tweets.get(0).getToUser());
+        assertEquals(-1, tweets.get(0).getToUserId());
+        assertNotNull(tweets.get(0).getCreatedAt());
+        assertEquals("yusukey", tweets.get(0).getFromUser());
+        assertEquals(10248, tweets.get(0).getFromUserId());
+        assertEquals(1283504696, tweets.get(0).getId());
+        assertNull(tweets.get(0).getIsoLanguageCode());
+        assertTrue(tweets.get(0).getProfileImageUrl().contains(".jpg"));
+        assertTrue(tweets.get(0).getSource().contains("twitter"));
 
     }
 

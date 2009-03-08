@@ -110,17 +110,19 @@ public class TwitterResponse implements java.io.Serializable {
     }
 
     protected Date getChildDate(String str, Element elem, String format) throws TwitterException {
+        return encodeDate(getChildText(str, elem),format);
+    }
+    protected Date encodeDate(String str, String format) throws TwitterException{
         SimpleDateFormat sdf = formatMap.get(format);
         if (null == sdf) {
             sdf = new SimpleDateFormat(format, Locale.ENGLISH);
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             formatMap.put(format, sdf);
         }
-        String dateStr = getChildText(str, elem);
         try {
-            return sdf.parse(dateStr);
+            return sdf.parse(str);
         } catch (ParseException pe) {
-            throw new TwitterException("Unexpected format(" + str + ") returned from twitter.com:" + dateStr);
+            throw new TwitterException("Unexpected format(" + str + ") returned from twitter.com");
         }
     }
 

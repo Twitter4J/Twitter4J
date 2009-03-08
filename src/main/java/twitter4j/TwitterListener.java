@@ -1,47 +1,80 @@
 package twitter4j;
 
 import java.util.List;
+
 /**
  * A listner for receiving asynchronous responses from Twitter Async APIs.
+ *
  * @see twitter4j.AsyncTwitter
  * @see twitter4j.TwitterAdapter
  */
-public interface TwitterListener{
-    public void gotPublicTimeline(List<Status> statuses);
-    public void gotFriendsTimeline(List<Status> statuses);
-    public void gotUserTimeline(List<Status> statuses);
-    public void gotShow(Status status);
-    public void updated(Status status);
-    public void gotReplies(List<Status> statuses);
-    public void destroyedStatus(Status destroyedStatus);
-    public void gotFriends(List<User> users);
-    public void gotFollowers(List<User> users);
-    public void gotFeatured(List<User> users);
-    public void gotUserDetail(UserWithStatus userWithStatus);
-    public void gotDirectMessages(List<DirectMessage> messages);
-    public void gotSentDirectMessages(List<DirectMessage> messages);
-    public void sentDirectMessage(DirectMessage message);
-    public void deletedDirectMessage(DirectMessage message);
-    public void created(User user);
-    public void destroyed(User user);
-    public void gotExists(boolean exists);
-    public void updatedLocation(User user);
-    public void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
-    public void updatedDeliverlyDevice(User user);
-    public void gotFavorites(List<Status> statuses);
-    public void createdFavorite(Status status);
-    public void destroyedFavorite(Status status);
-    public void followed(User user);
-    public void left(User user);
-    public void blocked(User user);
-    public void unblocked(User user);
-    public void tested(boolean test);
-    public void gotDowntimeSchedule(String schedule);
+public interface TwitterListener {
+    void gotPublicTimeline(List<Status> statuses);
+
+    void gotFriendsTimeline(List<Status> statuses);
+
+    void gotUserTimeline(List<Status> statuses);
+
+    void gotShow(Status status);
+
+    void updated(Status status);
+
+    void gotReplies(List<Status> statuses);
+
+    void destroyedStatus(Status destroyedStatus);
+
+    void gotFriends(List<User> users);
+
+    void gotFollowers(List<User> users);
+
+    void gotFeatured(List<User> users);
+
+    void gotUserDetail(UserWithStatus userWithStatus);
+
+    void gotDirectMessages(List<DirectMessage> messages);
+
+    void gotSentDirectMessages(List<DirectMessage> messages);
+
+    void sentDirectMessage(DirectMessage message);
+
+    void deletedDirectMessage(DirectMessage message);
+
+    void created(User user);
+
+    void destroyed(User user);
+
+    void gotExists(boolean exists);
+
+    void updatedLocation(User user);
+
+    void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
+
+    void updatedDeliverlyDevice(User user);
+
+    void gotFavorites(List<Status> statuses);
+
+    void createdFavorite(Status status);
+
+    void destroyedFavorite(Status status);
+
+    void followed(User user);
+
+    void left(User user);
+
+    void blocked(User user);
+
+    void unblocked(User user);
+
+    void tested(boolean test);
+
+    void gotDowntimeSchedule(String schedule);
+
+    void searched(QueryResult queryResult);
+
     /**
-     *
-     * @param te TwitterException
+     * @param te     TwitterException
      * @param method int
      */
-    void onException(TwitterException te,int method);
+    void onException(TwitterException te, int method);
 
 }

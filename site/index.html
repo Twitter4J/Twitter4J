@@ -29,6 +29,7 @@
   <li><a href="#updatingStatus" onclick="return scrollGracefully(this.href)">$[ja:スタテータスの更新]$[en:Updating status]</a></li>
   <li><a href="#gettingTimeline" onclick="return scrollGracefully(this.href)">$[ja:タイムラインの取得]$[en:Getting Timeline]</a></li>
   <li><a href="#directMessage" onclick="return scrollGracefully(this.href)">$[ja:ダイレクトメッセージ]$[en:Direct Messages]</a></li>
+  <li><a href="#search" onclick="return scrollGracefully(this.href)">$[ja:検索]$[en:Search]</a></li>
   <li><a href="#asyncAPI" onclick="return scrollGracefully(this.href)">$[ja:非同期API]$[en:Async API]</a></li>
  </ol>
 <li><a href="./javadoc/index.html">JavaDoc</a></li>
@@ -124,6 +125,20 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/GetDirectMessage
     for (DirectMessage message : messages) {
         System.out.println("Sender:" + message.getSenderScreenName());
         System.out.println("Text:" + message.getText() + "\n");
+    }
+</pre>
+</p>
+
+<li class="numberedlist"><a name="search">$[ja:Tweetの検索$[en:Search for Tweets]</a></li>
+<p>$[ja:<a href="javadoc/twitter4j/Query.html">Query</a> クラスと Twitter.<a href="javadoc/twitter4j/Twitter.html#search()">search()</a> メソッドで検索を行えます。]
+$[en:You can search for Tweets using <a href="javadoc/twitter4j/Query.html">Query</a> class and Twitter.<a href="javadoc/twitter4j/Twitter.html#search()">search()</a> method as following:]
+<pre class="codeSample">
+    Twitter twitter = new Twitter();
+    Query query = new Query("source:twitter4j yusukey");
+    QueryResult result = twitter.search(query);
+    System.out.println("hits:" + result.getTotal());
+    for (Tweet tweet : result.getTweets()) {
+        System.out.println(tweet.getFromUser() + ":" + tweet.getText());
     }
 </pre>
 </p>

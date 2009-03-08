@@ -383,11 +383,6 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2.unblock(id1);
     }
 
-    public void testSearch() throws Exception {
-//        Query query = new Query();
-//        twitterAPI2.block(id1);
-    }
-
     public void testRateLimitStatus() throws Exception{
         RateLimitStatus status = twitterAPI1.rateLimitStatus();
         assertTrue(10 < status.getHourlyLimit());
@@ -399,4 +394,47 @@ public class TwitterTestUnit extends TestCase {
     public void testDowntimeSchedule() throws Exception {
         System.out.println(twitterAPI2.getDowntimeSchedule());
     }
+    public void testSearch() throws Exception {
+        Query query = new Query("source:twitter4j yusukey");
+        QueryResult result = unauthenticated.search(query);
+        assertTrue(1265204000 < result.getSinceId());
+        assertTrue(1265204883 < result.getMaxId());
+        assertTrue(result.getRefreshUrl().contains("q=source"));
+        assertEquals(15, result.getResultsPerPage());
+        assertEquals(1, result.getTotal());
+        assertTrue(result.getWarning().contains("adjusted"));
+        assertTrue(1 > result.getCompletedIn());
+        assertEquals(1, result.getPage());
+        assertEquals("source%3Atwitter4j+yusukey", result.getQuery());
+
+        List<Tweet> tweets = result.getTweets();
+        assertEquals(1, tweets.size());
+        assertEquals("test", tweets.get(0).getText());
+        assertNull(tweets.get(0).getToUser());
+        assertEquals(-1, tweets.get(0).getToUserId());
+        assertNotNull(tweets.get(0).getCreatedAt());
+        assertEquals("yusukey", tweets.get(0).getFromUser());
+        assertEquals(10248, tweets.get(0).getFromUserId());
+        assertEquals(1283504696, tweets.get(0).getId());
+        assertNull(tweets.get(0).getIsoLanguageCode());
+        assertTrue(tweets.get(0).getProfileImageUrl().contains(".jpg"));
+        assertTrue(tweets.get(0).getSource().contains("twitter"));
+
+
+        query = new Query("source:twitter4j doesnothit");
+        result = unauthenticated.search(query);
+        assertEquals(0,result.getSinceId());
+        assertEquals(-1, result.getMaxId());
+        assertNull(result.getRefreshUrl());
+        assertEquals(15, result.getResultsPerPage());
+        assertEquals(0, result.getTotal());
+        assertNull(result.getWarning());
+        assertTrue(1 > result.getCompletedIn());
+        assertEquals(1, result.getPage());
+        assertEquals("source%3Atwitter4j+doesnothit", result.getQuery());
+
+
+    }
+
+
 }

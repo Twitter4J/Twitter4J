@@ -3,6 +3,8 @@ package twitter4j.http;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import twitter4j.TwitterException;
+import twitter4j.org.json.JSONObject;
+import twitter4j.org.json.JSONException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -79,6 +81,14 @@ public class Response implements java.io.Serializable {
             throw new TwitterException("Twitter returned a non-XML response", saxe);
         }
         return response;
+    }
+
+    public JSONObject asJSONObject() throws TwitterException {
+        try {
+            return new JSONObject(this.responseString);
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone.getMessage() + ":" + this.responseString);
+        }
     }
 
     public InputStreamReader asReader() {
