@@ -42,6 +42,7 @@ public class HttpClient implements java.io.Serializable {
     private int connectionTimeout = 0;
     private int readTimeout = 0;
     private static final long serialVersionUID = 808018030183407996L;
+    private boolean isJDK14orEarlier = false;
 
     public HttpClient(String userId, String password) {
         this();
@@ -63,6 +64,11 @@ public class HttpClient implements java.io.Serializable {
             readTimeout = Integer.parseInt(System.getProperty("twitter4j.http.readTimeout","30000"));
         } catch (NumberFormatException ignore) {
         }
+        String versionStr = System.getProperty("java.specification.version");
+        if (null != versionStr) {
+            isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
+        }
+
     }
 
     public void setUserId(String userId) {
@@ -354,10 +360,10 @@ public class HttpClient implements java.io.Serializable {
         } else {
             con = (HttpURLConnection) new URL(url).openConnection();
         }
-        if (connectionTimeout > 0) {
+        if (connectionTimeout > 0 && !isJDK14orEarlier) {
             con.setConnectTimeout(connectionTimeout);
         }
-        if (readTimeout > 0) {
+        if (readTimeout > 0 && !isJDK14orEarlier) {
             con.setReadTimeout(readTimeout);
         }
         return con;
