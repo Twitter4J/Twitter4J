@@ -18,18 +18,19 @@ public class Twitter implements java.io.Serializable {
     protected HttpClient http = null;
     private String baseURL = "http://twitter.com/";
     private String searchBaseURL = "http://search.twitter.com/";
-    private String source = "Twitter4J";
+    private String source;
 
     private boolean usePostForcibly = false;
     private static final int MAX_COUNT = 200;
     private static final long serialVersionUID = -7550633067620779906L;
+    /*package*/ static final String VERSION = "1.1.8";
 
     public Twitter() {
         http = new HttpClient();
-        setRequestHeader("X-Twitter-Client", "Twitter4J");
-        setRequestHeader("X-Twitter-Client-Version", "1.1.7");
-        setRequestHeader("X-Twitter-Client-URL",
-                "http://yusuke.homeip.net/twitter4j/en/twitter4j-1.1.7.xml");
+        setUserAgent("twitter4j http://yusuke.homeip.net/twitter4j/ /" + VERSION);
+        setSource("Twitter4J");
+        setClientVersion(VERSION);
+        setClientURL("http://yusuke.homeip.net/twitter4j/en/twitter4j-" + VERSION + ".xml");
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
@@ -45,8 +46,64 @@ public class Twitter implements java.io.Serializable {
     }
 
     public Twitter(String id, String password, String baseURL) {
-        this(id, password);
+        this();
+        setUserId(id);
+        setPassword(password);
         this.baseURL = baseURL;
+    }
+
+    /**
+     * sets the User-Agent header. System property -Dtwitter4j.http.userAgent overrides this attribute.
+     * @param userAgent UserAgent
+     * @since twitter4j 1.1.8
+     */
+    public void setUserAgent(String userAgent){
+        http.setUserAgent(System.getProperty("twitter4j.http.userAgent", userAgent));
+    }
+
+    /**
+     *
+     * @return UserAgent
+     * @since twitter4j 1.1.8
+     */
+    public String getUserAgent(){
+        return http.getUserAgent();
+    }
+
+    /**
+     * sets the X-Twitter-Client-Version header. System property -Dtwitter4j.clientVersion overrides this attribute.
+     * @param version client version
+     * @since twitter4j 1.1.8
+     */
+    public void setClientVersion(String version){
+        setRequestHeader("X-Twitter-Client-Version", System.getProperty("twitter4j.clientVersion", version));
+    }
+
+    /**
+     *
+     * @return client version
+     * @since twitter4j 1.1.8
+     */
+    public String getClientVersion(){
+        return http.getRequestHeader("X-Twitter-Client-Version");
+    }
+
+    /**
+     * sets the X-Twitter-Client-URL header. System property -Dtwitter4j.clientURL overrides this attribute.
+     * @param clientURL client URL
+     * @since twitter4j 1.1.8
+     */
+    public void setClientURL(String clientURL){
+        setRequestHeader("X-Twitter-Client-URL",System.getProperty("twitter4j.clientURL", clientURL));
+    }
+
+    /**
+     *
+     * @return client URL
+     * @since twitter4j 1.1.8
+     */
+    public String getClientURL(){
+        return http.getRequestHeader("X-Twitter-Client-URL");
     }
 
     /**
@@ -70,7 +127,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Sets the search base URL
      *
-     * @param searchBaseURL - the search base URL
+     * @param searchBaseURL the search base URL
      * @since twitter4j 1.1.7
      */
     public void setSearchBaseURL(String searchBaseURL) {
@@ -126,8 +183,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Enables use of HTTP proxy
      *
-     * @param proxyHost
-     * @param proxyPort
+     * @param proxyHost proxy host, can be overridden system property -Dtwitter4j.http.proxyHost , -Dhttp.proxyHost
+     * @param proxyPort proxy port, can be overridden system property -Dtwitter4j.http.proxyPort , -Dhttp.proxyPort
      * @since twitter4j 1.1.6
      */
     public void setHttpProxy(String proxyHost, int proxyPort) {
@@ -138,8 +195,8 @@ public class Twitter implements java.io.Serializable {
     /**
      * Adds authentication on HTTP proxy
      *
-     * @param proxyUser
-     * @param proxyPass
+     * @param proxyUser proxy user, can be overridden system property -Dtwitter4j.http.proxyUser
+     * @param proxyPass proxy password, can be overridden system property -Dtwitter4j.http.proxyPassword
      * @since twitter4j 1.1.6
      */
     public void setHttpProxyAuth(String proxyUser, String proxyPass) {
@@ -149,8 +206,9 @@ public class Twitter implements java.io.Serializable {
 
     /**
      * Sets a specified timeout value, in milliseconds, to be used when opening a communications link to the Twitter API.
+     * System property -Dtwitter4j.http.connectionTimeout overrides this attribute.
      *
-     * @param connectionTimeout - an int that specifies the connect timeout value in milliseconds
+     * @param connectionTimeout an int that specifies the connect timeout value in milliseconds
      * @since twitter4j 1.1.6
      */
     public void setHttpConnectionTimeout(int connectionTimeout) {
@@ -160,7 +218,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Sets the read timeout to a specified timeout, in milliseconds.
      *
-     * @param readTimeout - an int that specifies the timeout value to be used in milliseconds
+     * @param readTimeout an int that specifies the timeout value to be used in milliseconds
      * @since twitter4j 1.1.6
      */
     public void setHttpReadTimeout(int readTimeout) {
@@ -168,14 +226,16 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
-     * Sets the source parameter that will be passed by updating methods
+     * Sets X-Twitter-Client http header and the source parameter that will be passed by updating methods. System property -Dtwitter4j.source overrides this attribute.
+     * System property -Dtwitter4j.source overrides this attribute.
      *
      * @param source the new source
      * @see <a href='http://apiwiki.twitter.com/FAQ#HowdoIget“fromMyApp”appendedtoupdatessentfrommyAPIapplication'>How do I get "from [MyApp]" appended to updates sent from my API application?</a>
      * @see <a href="http://twitter.com/help/request_source">Twitter - Request a link to your application</a>
      */
     public void setSource(String source) {
-        this.source = source;
+        this.source = System.getProperty("twitter4j.source", source);
+        setRequestHeader("X-Twitter-Client", this.source);
     }
 
     /**
@@ -1118,7 +1178,7 @@ Formats: xml, json
     /**
      * @param query - the search condition
      * @return the result
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      * @since twitter4j 1.1.7
      * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>

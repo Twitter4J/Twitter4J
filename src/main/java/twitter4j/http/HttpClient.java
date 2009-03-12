@@ -28,21 +28,20 @@ public class HttpClient implements java.io.Serializable {
     private final boolean DEBUG = Boolean.getBoolean("twitter4j.debug");
 
     private final int INTERNAL_SERVER_ERROR = 500;
-    private String userAgent =
-            "twitter4j http://yusuke.homeip.net/twitter4j/ /1.1.7";
     private String basic;
     private int retryCount = 0;
     private int retryIntervalMillis = 10000;
     private String userId = null;
     private String password = null;
-    private String proxyHost = System.getProperty("twitter4j.http.proxyHost",System.getProperty("http.proxyHost"));
+    private String proxyHost = null;
     private int proxyPort = 0;
-    private String proxyAuthUser = System.getProperty("twitter4j.http.proxyUser");
-    private String proxyAuthPassword = System.getProperty("twitter4j.http.proxyPassword");
+    private String proxyAuthUser = null;
+    private String proxyAuthPassword = null;
     private int connectionTimeout = 0;
     private int readTimeout = 0;
     private static final long serialVersionUID = 808018030183407996L;
     private boolean isJDK14orEarlier = false;
+    private Map<String, String> requestHeaders = new HashMap<String, String>();
 
     public HttpClient(String userId, String password) {
         this();
@@ -52,18 +51,14 @@ public class HttpClient implements java.io.Serializable {
 
     public HttpClient() {
         this.basic = null;
-        try {
-            proxyPort = Integer.parseInt(System.getProperty("twitter4j.http.proxyPort", System.getProperty("http.proxyPort")));
-        } catch (NumberFormatException ignore) {
-        }
-        try {
-            connectionTimeout = Integer.parseInt(System.getProperty("twitter4j.http.connectionTimeout","10000"));
-        } catch (NumberFormatException ignore) {
-        }
-        try {
-            readTimeout = Integer.parseInt(System.getProperty("twitter4j.http.readTimeout","30000"));
-        } catch (NumberFormatException ignore) {
-        }
+        //forcibly read system properties
+        setProxyPort(0);
+        setProxyHost(null);
+        setConnectionTimeout(10000);
+        setReadTimeout(30000);
+        setProxyAuthUser(null);
+        setProxyAuthPassword(null);
+
         String versionStr = System.getProperty("java.specification.version");
         if (null != versionStr) {
             isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
@@ -93,32 +88,55 @@ public class HttpClient implements java.io.Serializable {
         return proxyHost;
     }
 
+    /**
+     * Sets proxy host.
+     * System property -Dtwitter4j.http.proxyHost or http.proxyHost overrides this attribute.
+     * @param proxyHost
+     */
     public void setProxyHost(String proxyHost) {
-        this.proxyHost = proxyHost;
+        this.proxyHost = System.getProperty("twitter4j.http.proxyHost", System.getProperty("http.proxyHost", proxyHost));
     }
 
     public int getProxyPort() {
         return proxyPort;
     }
 
+    /**
+     * Sets proxy port.
+     * System property -Dtwitter4j.http.proxyPort or -Dhttp.proxyPort overrides this attribute.
+     * @param proxyPort
+     */
     public void setProxyPort(int proxyPort) {
-        this.proxyPort = proxyPort;
+        try {
+            this.proxyPort = Integer.parseInt(System.getProperty("twitter4j.http.proxyPort", System.getProperty("http.proxyPort", String.valueOf(proxyPort))));
+        } catch (NumberFormatException ignore) {
+        }
     }
 
     public String getProxyAuthUser() {
         return proxyAuthUser;
     }
 
+    /**
+     * Sets proxy authentication user.
+     * System property -Dtwitter4j.http.proxyUser overrides this attribute.
+     * @param proxyAuthUser
+     */
     public void setProxyAuthUser(String proxyAuthUser) {
-        this.proxyAuthUser = proxyAuthUser;
+        this.proxyAuthUser = System.getProperty("twitter4j.http.proxyUser", proxyAuthUser);
     }
 
     public String getProxyAuthPassword() {
         return proxyAuthPassword;
     }
 
+    /**
+     * Sets proxy authentication password.
+     * System property -Dtwitter4j.http.proxyPassword overrides this attribute.
+     * @param proxyAuthPassword
+     */
     public void setProxyAuthPassword(String proxyAuthPassword) {
-        this.proxyAuthPassword = proxyAuthPassword;
+        this.proxyAuthPassword = System.getProperty("twitter4j.http.proxyPassword", proxyAuthPassword);
     }
 
     public int getConnectionTimeout() {
@@ -127,21 +145,29 @@ public class HttpClient implements java.io.Serializable {
 
     /**
      * Sets a specified timeout value, in milliseconds, to be used when opening a communications link to the resource referenced by this URLConnection.
+     * System property -Dtwitter4j.http.connectionTimeout overrides this attribute.
      * @param connectionTimeout - an int that specifies the connect timeout value in milliseconds
      */
     public void setConnectionTimeout(int connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+        try {
+            this.connectionTimeout = Integer.parseInt(System.getProperty("twitter4j.http.connectionTimeout",String.valueOf(connectionTimeout)));
+        } catch (NumberFormatException ignore) {
+        }
+
     }
     public int getReadTimeout() {
         return readTimeout;
     }
 
     /**
-     * Sets the read timeout to a specified timeout, in milliseconds.
+     * Sets the read timeout to a specified timeout, in milliseconds. System property -Dtwitter4j.http.readTimeout overrides this attribute.
      * @param readTimeout - an int that specifies the timeout value to be used in milliseconds
      */
     public void setReadTimeout(int readTimeout) {
-        this.readTimeout = readTimeout;
+        try {
+            this.readTimeout = Integer.parseInt(System.getProperty("twitter4j.http.readTimeout",String.valueOf(readTimeout)));
+        } catch (NumberFormatException ignore) {
+        }
     }
 
     private void encodeBasicAuthenticationString() {
@@ -160,7 +186,10 @@ public class HttpClient implements java.io.Serializable {
     }
 
     public void setUserAgent(String ua) {
-        this.userAgent = ua;
+        setRequestHeader("User-Agent", ua);
+    }
+    public String getUserAgent(){
+        return getRequestHeader("User-Agent");
     }
 
     public void setRetryIntervalSecs(int retryIntervalSecs) {
@@ -324,10 +353,12 @@ public class HttpClient implements java.io.Serializable {
         }
     }
 
-    private Map<String, String> requestHeaders = new HashMap<String, String>();
-
     public void setRequestHeader(String name, String value) {
         requestHeaders.put(name, value);
+    }
+
+    public String getRequestHeader(String name) {
+        return requestHeaders.get(name);
     }
 
     private HttpURLConnection getConnection(String url) throws IOException {
