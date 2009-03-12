@@ -1,3 +1,29 @@
+/*
+Copyright (c) 2007-2009, Yusuke Yamamoto
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Yusuke Yamamoto nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY Yusuke Yamamoto ``AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL Yusuke Yamamoto BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 package twitter4j;
 
 import twitter4j.http.HttpClient;
@@ -55,7 +81,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * sets the User-Agent header. System property -Dtwitter4j.http.userAgent overrides this attribute.
      * @param userAgent UserAgent
-     * @since twitter4j 1.1.8
+     * @since Twitter4J 1.1.8
      */
     public void setUserAgent(String userAgent){
         http.setUserAgent(System.getProperty("twitter4j.http.userAgent", userAgent));
@@ -64,7 +90,7 @@ public class Twitter implements java.io.Serializable {
     /**
      *
      * @return UserAgent
-     * @since twitter4j 1.1.8
+     * @since Twitter4J 1.1.8
      */
     public String getUserAgent(){
         return http.getUserAgent();
@@ -73,7 +99,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * sets the X-Twitter-Client-Version header. System property -Dtwitter4j.clientVersion overrides this attribute.
      * @param version client version
-     * @since twitter4j 1.1.8
+     * @since Twitter4J 1.1.8
      */
     public void setClientVersion(String version){
         setRequestHeader("X-Twitter-Client-Version", System.getProperty("twitter4j.clientVersion", version));
@@ -82,7 +108,7 @@ public class Twitter implements java.io.Serializable {
     /**
      *
      * @return client version
-     * @since twitter4j 1.1.8
+     * @since Twitter4J 1.1.8
      */
     public String getClientVersion(){
         return http.getRequestHeader("X-Twitter-Client-Version");
@@ -91,7 +117,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * sets the X-Twitter-Client-URL header. System property -Dtwitter4j.clientURL overrides this attribute.
      * @param clientURL client URL
-     * @since twitter4j 1.1.8
+     * @since Twitter4J 1.1.8
      */
     public void setClientURL(String clientURL){
         setRequestHeader("X-Twitter-Client-URL",System.getProperty("twitter4j.clientURL", clientURL));
@@ -100,7 +126,7 @@ public class Twitter implements java.io.Serializable {
     /**
      *
      * @return client URL
-     * @since twitter4j 1.1.8
+     * @since Twitter4J 1.1.8
      */
     public String getClientURL(){
         return http.getRequestHeader("X-Twitter-Client-URL");
@@ -128,7 +154,7 @@ public class Twitter implements java.io.Serializable {
      * Sets the search base URL
      *
      * @param searchBaseURL the search base URL
-     * @since twitter4j 1.1.7
+     * @since Twitter4J 1.1.7
      */
     public void setSearchBaseURL(String searchBaseURL) {
         this.searchBaseURL = searchBaseURL;
@@ -137,7 +163,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * returns the search base url
      * @return search base url
-     * @since twitter4j 1.1.7
+     * @since Twitter4J 1.1.7
      */
     public String getSearchBaseURL(){
         return this.searchBaseURL;
@@ -185,7 +211,7 @@ public class Twitter implements java.io.Serializable {
      *
      * @param proxyHost proxy host, can be overridden system property -Dtwitter4j.http.proxyHost , -Dhttp.proxyHost
      * @param proxyPort proxy port, can be overridden system property -Dtwitter4j.http.proxyPort , -Dhttp.proxyPort
-     * @since twitter4j 1.1.6
+     * @since Twitter4J 1.1.6
      */
     public void setHttpProxy(String proxyHost, int proxyPort) {
         http.setProxyHost(proxyHost);
@@ -197,7 +223,7 @@ public class Twitter implements java.io.Serializable {
      *
      * @param proxyUser proxy user, can be overridden system property -Dtwitter4j.http.proxyUser
      * @param proxyPass proxy password, can be overridden system property -Dtwitter4j.http.proxyPassword
-     * @since twitter4j 1.1.6
+     * @since Twitter4J 1.1.6
      */
     public void setHttpProxyAuth(String proxyUser, String proxyPass) {
         http.setProxyAuthUser(proxyUser);
@@ -209,7 +235,7 @@ public class Twitter implements java.io.Serializable {
      * System property -Dtwitter4j.http.connectionTimeout overrides this attribute.
      *
      * @param connectionTimeout an int that specifies the connect timeout value in milliseconds
-     * @since twitter4j 1.1.6
+     * @since Twitter4J 1.1.6
      */
     public void setHttpConnectionTimeout(int connectionTimeout) {
         http.setConnectionTimeout(connectionTimeout);
@@ -219,7 +245,7 @@ public class Twitter implements java.io.Serializable {
      * Sets the read timeout to a specified timeout, in milliseconds.
      *
      * @param readTimeout an int that specifies the timeout value to be used in milliseconds
-     * @since twitter4j 1.1.6
+     * @since Twitter4J 1.1.6
      */
     public void setHttpReadTimeout(int readTimeout) {
         http.setReadTimeout(readTimeout);
@@ -715,7 +741,7 @@ public class Twitter implements java.io.Serializable {
      * @param page Retrieves the next 100 followers.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.1.0
+     * @since Twitter4J 1.1.0
      */
     public synchronized List<User> getFollowers(int page) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers.xml", "page", String.valueOf(page), true).asDocument(), this);
@@ -727,7 +753,7 @@ public class Twitter implements java.io.Serializable {
      * @param id The ID or screen name of the user for whom to request a list of followers.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.1.0
+     * @since Twitter4J 1.1.0
      */
     public synchronized List<User> getFollowers(String id) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers/" + id + ".xml", true).asDocument(), this);
@@ -740,7 +766,7 @@ public class Twitter implements java.io.Serializable {
      * @param page Retrieves the next 100 followers.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.1.0
+     * @since Twitter4J 1.1.0
      */
     public synchronized List<User> getFollowers(String id, int page) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers/" + id + ".xml", "page", String.valueOf(page), true).asDocument(), this);
@@ -948,7 +974,7 @@ public class Twitter implements java.io.Serializable {
      * @param location the current location of the user
      * @return the updated user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized User updateLocation(String location) throws TwitterException {
         return new User(http.post(baseURL + "account/update_location.xml", new PostParameter[]{new PostParameter("location", location)}, true).
@@ -961,7 +987,7 @@ public class Twitter implements java.io.Serializable {
      *
      * @return the rate limit status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.1.4
+     * @since Twitter4J 1.1.4
      */
     public synchronized RateLimitStatus rateLimitStatus() throws TwitterException {
         return new RateLimitStatus(http.get(baseURL + "account/rate_limit_status.xml", null != getUserId() && null != getPassword()).
@@ -986,7 +1012,7 @@ public class Twitter implements java.io.Serializable {
      * @param device new Delivery device. Must be one of: IM, SMS, NONE.
      * @return the updated user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized User updateDeliverlyDevice(Device device) throws TwitterException {
         return new User(http.post(baseURL + "account/update_delivery_device.xml", new PostParameter[]{new PostParameter("device", device.DEVICE)}, true).
@@ -1098,7 +1124,7 @@ public class Twitter implements java.io.Serializable {
      * @param id the ID or screen_name of the user to block
      * @return the blocked user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized User block(String id) throws TwitterException {
         return new User(http.post(baseURL + "blocks/create/" + id + ".xml", true).
@@ -1112,7 +1138,7 @@ public class Twitter implements java.io.Serializable {
      * @param id the ID or screen_name of the user to block
      * @return the unblocked user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized User unblock(String id) throws TwitterException {
         return new User(http.post(baseURL + "blocks/destroy/" + id + ".xml", true).
@@ -1133,7 +1159,7 @@ Formats: xml, json
      *
      * @return true if the API is working
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized boolean test() throws TwitterException {
         return -1 != get(baseURL + "help/test.xml", false).
@@ -1147,7 +1173,7 @@ Formats: xml, json
      *
      * @return UserWithStatus
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.1.3
+     * @since Twitter4J 1.1.3
      */
     public synchronized UserWithStatus getAuthenticatedUser() throws TwitterException {
         if (null == getUserId()) {
@@ -1169,7 +1195,7 @@ Formats: xml, json
      *
      * @return the schedule
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized String getDowntimeSchedule() throws TwitterException {
         return get(baseURL + "help/downtime_schedule.xml", false).asString();
@@ -1179,7 +1205,7 @@ Formats: xml, json
      * @param query - the search condition
      * @return the result
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since twitter4j 1.1.7
+     * @since Twitter4J 1.1.7
      * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      */

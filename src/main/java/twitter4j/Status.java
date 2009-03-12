@@ -1,3 +1,29 @@
+/*
+Copyright (c) 2007-2009, Yusuke Yamamoto
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Yusuke Yamamoto nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY Yusuke Yamamoto ``AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL Yusuke Yamamoto BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 package twitter4j;
 
 import org.w3c.dom.Document;
@@ -10,6 +36,7 @@ import java.util.List;
 
 /**
  * A data class representing one single status of a user.
+ * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Status extends TwitterResponse implements java.io.Serializable {
     private Date createdAt;
@@ -41,7 +68,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * Return the created_at
      *
      * @return created_at
-     * @since twitter4j 1.1.0
+     * @since Twitter4J 1.1.0
      */
 
     public Date getCreatedAt() {
@@ -70,7 +97,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * Returns the source
      *
      * @return the source
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public String getSource() {
         return this.source;
@@ -81,7 +108,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * Test if the status is truncated
      *
      * @return true if truncated
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public boolean isTruncated() {
         return isTruncated;
@@ -91,7 +118,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * Returns the in_reply_tostatus_id
      *
      * @return the in_reply_tostatus_id
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public long getInReplyToStatusId() {
         return inReplyToStatusId;
@@ -101,7 +128,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * Returns the in_reply_user_id
      *
      * @return the in_reply_tostatus_id
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public int getInReplyToUserId() {
         return inReplyToUserId;
@@ -111,7 +138,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * Test if the status is favorited
      *
      * @return true if favorited
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public boolean isFavorited() {
         return isFavorited;

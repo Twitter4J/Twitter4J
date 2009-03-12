@@ -1,3 +1,29 @@
+/*
+Copyright (c) 2007-2009, Yusuke Yamamoto
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Yusuke Yamamoto nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY Yusuke Yamamoto ``AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL Yusuke Yamamoto BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 package twitter4j;
 
 import java.util.Date;
@@ -7,6 +33,7 @@ import java.util.Date;
  * With this class, you can call TwitterAPI acynchronously.<br>
  * @see twitter4j.AsyncTwitter
  * @see twitter4j.TwitterListener
+ * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class AsyncTwitter extends Twitter {
     private static final long serialVersionUID = -2008667933225051907L;
@@ -271,7 +298,7 @@ public class AsyncTwitter extends Twitter {
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#update">Twitter API &gt; Status Methods &gt; update</a>
-     * @since twitter4j 1.1.6
+     * @since Twitter4J 1.1.6
      */
     public void updateAsync(String status, long inReplyToStatusId, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE, listener, new Object[]{status, inReplyToStatusId}) {
@@ -288,7 +315,7 @@ public class AsyncTwitter extends Twitter {
      * @param status String
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#update">Twitter API &gt; Status Methods &gt; update</a>
-     * @since twitter4j 1.1.6
+     * @since Twitter4J 1.1.6
      */
     public void updateAsync(String status, long inReplyToStatusId) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE, new TwitterAdapter(), new Object[]{status, inReplyToStatusId}) {
@@ -463,7 +490,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * @param page Retrieves the next 100 followers.
      * @param listener TwitterListener a listener object that receives the response
-     * @since twitter4j 1.1.0
+     * @since Twitter4J 1.1.0
      */
     public synchronized void getFollowersAsync(int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{page}) {
@@ -478,7 +505,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param id       The ID or screen name of the user for whom to request a list of followers.
      * @param listener TwitterListener a listener object that receives the response
-     * @since twitter4j 1.1.0
+     * @since Twitter4J 1.1.0
      */
     public synchronized void getFollowersAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id}) {
@@ -493,7 +520,7 @@ public class AsyncTwitter extends Twitter {
      * @param id The ID or screen name of the user for whom to request a list of followers.
      * @param page Retrieves the next 100 followers.
      * @param listener TwitterListener a listener object that receives the response
-     * @since twitter4j 1.1.0
+     * @since Twitter4J 1.1.0
      */
     public synchronized void getFollowersAsync(String id, int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id, page}) {
@@ -724,7 +751,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param location the current location of the user
      * @param listener a listener object that receives the response
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized void updateLocationAsync(String location, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[]{location}) {
@@ -739,7 +766,7 @@ public class AsyncTwitter extends Twitter {
      * Gets the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.
      * See <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#ratelimitstatus">Twitter REST API Documentation &gt; Account Methods &gt; rate_limit_status</a> for detail.
      *
-     * @since twitter4j 1.1.4
+     * @since Twitter4J 1.1.4
      */
     public synchronized void rateLimitStatusAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(RATE_LIMIT_STATUS, listener, new Object[]{}) {
@@ -754,7 +781,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param device   new Delivery device. Must be one of: IM, SMS, NONE.
      * @param listener a listener object that receives the response
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized void updateDeliverlyDeviceAsync(Device device, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[]{device}) {
@@ -972,7 +999,7 @@ public class AsyncTwitter extends Twitter {
      * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
      *
      * @param id the ID or screen_name of the user to block
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized void blockAsync(String id) {
         getDispatcher().invokeLater(new AsyncTask(BLOCK, new TwitterAdapter(), new String[]{id}) {
@@ -987,7 +1014,7 @@ public class AsyncTwitter extends Twitter {
      * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
      *
      * @param id the ID or screen_name of the user to block
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized void unblockAsync(String id) {
         getDispatcher().invokeLater(new AsyncTask(UNBLOCK, new TwitterAdapter(), new String[]{id}) {
@@ -1002,7 +1029,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the string "ok" in the requested format with a 200 OK HTTP status code.
      *
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized void testAsync() {
         getDispatcher().invokeLater(new AsyncTask(TEST, new TwitterAdapter(), new Object[]{}) {
@@ -1024,7 +1051,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the same text displayed on http://twitter.com/home when a maintenance window is scheduled, in the requested format.
      *
-     * @since twitter4j 1.0.4
+     * @since Twitter4J 1.0.4
      */
     public synchronized void getDowntimeScheduleAsync() {
         getDispatcher().invokeLater(new AsyncTask(GET_DOWNTIME_SCHEDULE, new TwitterAdapter(), new Object[]{}) {
@@ -1039,7 +1066,7 @@ public class AsyncTwitter extends Twitter {
      * The call Twitter.getAuthenticatedUser() is equivalent to the call:<br>
      * twitter.getUserDetailAsync(twitter.getUserId(), listener);
      *
-     * @since twitter4j 1.1.3
+     * @since Twitter4J 1.1.3
      */
     public synchronized void getAuthenticatedUserAsync(TwitterListener listener) {
         if (null == getUserId()) {
@@ -1052,7 +1079,7 @@ public class AsyncTwitter extends Twitter {
      * @param query - the search condition
      * @return the result
      * @throws TwitterException
-     * @since twitter4j 1.1.7
+     * @since Twitter4J 1.1.7
      * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      */
