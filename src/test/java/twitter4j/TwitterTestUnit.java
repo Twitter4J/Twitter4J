@@ -181,6 +181,10 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(-1,uws.getStatusInReplyToUserId());
         assertFalse(uws.isStatusFavorited());
         assertNull(uws.getStatusInReplyToScreenName());
+
+        //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
+        //http://yusuke.homeip.net/jira/browse/TFJ-91
+        twitterAPI1.getUserDetail("twit4jnoupdate");
     }
 
 

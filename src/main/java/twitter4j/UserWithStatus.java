@@ -64,7 +64,7 @@ public class UserWithStatus extends User {
         friendsCount = getChildInt("friends_count", elem);
         favouritesCount = getChildInt("favourites_count", elem);
         statusesCount = getChildInt("statuses_count", elem);
-        if (!isProtected()) {
+        if (statusesCount != 0 && !isProtected()) {
             Element status = (Element) elem.getElementsByTagName("status").item(0);
             statusCreatedAt = getChildDate("created_at", status);
             statusId = Long.valueOf(status.getElementsByTagName("id").item(0).getTextContent());
