@@ -53,6 +53,8 @@ public class Twitter implements java.io.Serializable {
 
     public Twitter() {
         http = new HttpClient();
+        setUserId(null);
+        setPassword(null);
         setUserAgent("twitter4j http://yusuke.homeip.net/twitter4j/ /" + VERSION);
         setSource("Twitter4J");
         setClientVersion(VERSION);
@@ -175,7 +177,7 @@ public class Twitter implements java.io.Serializable {
      * @param userId new userid
      */
     public void setUserId(String userId) {
-        http.setUserId(userId);
+        http.setUserId(System.getProperty("twitter4j.user", userId));
     }
 
     /**
@@ -193,7 +195,7 @@ public class Twitter implements java.io.Serializable {
      * @param password new password
      */
     public void setPassword(String password) {
-        http.setPassword(password);
+        http.setPassword(System.getProperty("twitter4j.password", password));
     }
 
     /**
