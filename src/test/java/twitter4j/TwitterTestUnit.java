@@ -45,15 +45,17 @@ public class TwitterTestUnit extends TestCase {
     public TwitterTestUnit(String name) {
         super(name);
     }
-    String id1,id2,pass1,pass2;
+    String id1,id2,id3,pass1,pass2,pass3;
     protected void setUp() throws Exception {
         super.setUp();
         Properties p = new Properties();
         p.load(new FileInputStream("test.properties"));
         id1 = p.getProperty("id1");
         id2 = p.getProperty("id2");
+        id3 = p.getProperty("id3");
         pass1 = p.getProperty("pass1");
         pass2 = p.getProperty("pass2");
+        pass3 = p.getProperty("pass3");
         twitterAPI1 = new Twitter(id1,pass1);
         twitterAPI1.setRetryCount(3);
         twitterAPI1.setRetryIntervalSecs(10);
@@ -185,6 +187,11 @@ public class TwitterTestUnit extends TestCase {
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
         twitterAPI1.getUserDetail("twit4jnoupdate");
+    }
+
+    public void testGetAuthenticatedUser() throws Exception {
+        assertEquals(id1, twitterAPI1.getAuthenticatedUser().getScreenName());
+        assertEquals(id1, new Twitter(id3, pass3).getAuthenticatedUser().getId());
     }
 
 
