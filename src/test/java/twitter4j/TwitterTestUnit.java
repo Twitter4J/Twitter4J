@@ -100,10 +100,14 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFriendsTimeline(new Date(0));
         assertTrue(actualReturn.size() > 0);
+        actualReturn = twitterAPI1.getFriendsTimeline(1l);
+        assertTrue(actualReturn.size() > 0);
         //this is necessary because the twitter server's clock tends to delay
         cal.add(Calendar.MINUTE,-20);
         Date twentyMinutesBefore = cal.getTime();
         actualReturn = twitterAPI1.getFriendsTimeline(twentyMinutesBefore);
+        assertTrue(actualReturn.size() > 0);
+        actualReturn = twitterAPI1.getFriendsTimeline(1000l);
         assertTrue(actualReturn.size() > 0);
 
         actualReturn = twitterAPI2.getFriendsTimeline(id1);
@@ -112,9 +116,15 @@ public class TwitterTestUnit extends TestCase {
 
         actualReturn = twitterAPI1.getFriendsTimeline(id2, new Date(0));
         assertTrue(actualReturn.size() > 0);
+        actualReturn = twitterAPI1.getFriendsTimeline(id2, 1l);
+        assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFriendsTimeline(id2, new Date());
         assertTrue(actualReturn.size() == 0);
+        actualReturn = twitterAPI1.getFriendsTimeline(id2, status2.getId());
+        assertTrue(actualReturn.size() == 0);
         actualReturn = twitterAPI1.getFriendsTimelineByPage(1);
+        assertTrue(actualReturn.size() > 0);
+        actualReturn = twitterAPI1.getFriendsTimeline(1);
         assertTrue(actualReturn.size() > 0);
 
 
@@ -192,6 +202,7 @@ public class TwitterTestUnit extends TestCase {
     public void testGetAuthenticatedUser() throws Exception {
         assertEquals(id1, twitterAPI1.getAuthenticatedUser().getScreenName());
         assertEquals(id1, new Twitter(id3, pass3).getAuthenticatedUser().getId());
+        assertTrue(new Twitter(id3, pass3).verifyCredentials());
     }
 
 

@@ -76,6 +76,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user and that user's friends.
      *  It's also possible to request another user's friends_timeline via the id parameter below.
      * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
 
     public synchronized void getFriendsTimelineAsync(TwitterListener listener) {
@@ -90,6 +91,8 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use getFriendsTimelineAsync(int page, TwitterListener listener instead
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
     public synchronized void getFriendsTimelineByPageAsync(int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {page}) {
@@ -98,11 +101,43 @@ public class AsyncTwitter extends Twitter {
             }
         });
     }
+    /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
+     * @param page int
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 1.1.8
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     */
+    public synchronized void getFriendsTimelineAsync(int page, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimeline( (Integer) args[0]));
+            }
+        });
+    }
+
+
+    /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
+     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
+     * @param page int
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 1.1.8
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     */
+    public synchronized void getFriendsTimelineAsync(long sinceId, int page, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {sinceId, page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimeline((Long)args[0], (Integer) args[1]));
+            }
+        });
+    }
 
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
      * @param id String user ID
      * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
     public synchronized void getFriendsTimelineAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new String[] {id}) {
@@ -117,8 +152,10 @@ public class AsyncTwitter extends Twitter {
      * @param id String user ID
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use getFriendsTimelineAsync(String id, int page, TwitterListener listener instead
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
-    public synchronized void getFriendsTimelineByPageAsync(String id,int page, TwitterListener listener) {
+    public synchronized void getFriendsTimelineByPageAsync(String id, int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id,page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFriendsTimeline(getFriendsTimelineByPage( (String) args[0],(Integer)args[1]));
@@ -126,10 +163,46 @@ public class AsyncTwitter extends Twitter {
         });
     }
 
+
+    /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
+     * @param id String user ID
+     * @param page int
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 1.1.8
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     */
+    public synchronized void getFriendsTimelineAsync(String id, int page, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id,page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimeline( (String) args[0],(Integer)args[1]));
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
+     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
+     * @param id   specifies the ID or screen name of the user for whom to return the friends_timeline
+     * @param page the number of page
+     * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     */
+    public synchronized void getFriendsTimelineAsync(long sinceId, String id, int page, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {sinceId, id, page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimeline((Long) args[0], (String) args[1], (Integer) args[2]));
+            }
+        });
+    }
+
+
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @deprecated use getFriendsTimelineAsync(long sinceId, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineAsync(Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {since}) {
@@ -139,11 +212,28 @@ public class AsyncTwitter extends Twitter {
         });
     }
 
+
+    /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
+     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
+     * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     */
+    public synchronized void getFriendsTimelineAsync(long sinceId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {sinceId}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimeline( (Long) args[0]));
+            }
+        });
+    }
+
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified user id.
      * @param id String user ID
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use getFriendsTimelineAsync(String id, long sinceId, TwitterListener listner) instead
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
     public synchronized void getFriendsTimelineAsync(String id, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id, since}) {
@@ -155,10 +245,26 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified user id.
+     * @param id String user ID
+     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
+     * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     */
+    public synchronized void getFriendsTimelineAsync(String id, long sinceId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id, sinceId}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimeline( (String) args[0], (Long) args[1]));
+            }
+        });
+    }
+
+    /**
+     * Returns the most recent statuses posted in the last 24 hours from the specified user id.
      * @param id String
      * @param count int
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      */
     public synchronized void getUserTimelineAsync(String id, int count, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id, count, since}) {
@@ -173,6 +279,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      */
     public synchronized void getUserTimelineAsync(String id, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id, since}) {
@@ -187,6 +294,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param count int
      * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      */
     public synchronized void getUserTimelineAsync(String id, int count, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id, count}) {
@@ -201,6 +309,7 @@ public class AsyncTwitter extends Twitter {
      * @param count int
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      */
     public synchronized void getUserTimelineAsync(int count, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {count, since}) {
@@ -214,6 +323,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the most recent statuses posted in the last 24 hours from the specified user id.
      * @param id String
      * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      */
     public synchronized void getUserTimelineAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id}) {
@@ -226,6 +336,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
      * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      */
     public synchronized void getUserTimelineAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, null) {
@@ -240,6 +351,7 @@ public class AsyncTwitter extends Twitter {
      * @param id int
      * @param listener TwitterListener a listener object that receives the response
      * @deprecated Use showAsync(long id) instead.
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/show">Twitter API Wiki / REST API Documentation - statuses/show</a>
      */
     public synchronized void showAsync(int id, TwitterListener listener) {
         showAsync((long) id, listener);
@@ -250,6 +362,7 @@ public class AsyncTwitter extends Twitter {
      * @param id int
      * @param listener TwitterListener a listener object that receives the response
      * @since 1.1.1
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/show">Twitter API Wiki / REST API Documentation - statuses/show</a>
      */
     public synchronized void showAsync(long id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(SHOW, listener, new Object[] {id}) {
