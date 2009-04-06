@@ -201,7 +201,7 @@ public class TwitterTestUnit extends TestCase {
 
     public void testGetAuthenticatedUser() throws Exception {
         assertEquals(id1, twitterAPI1.getAuthenticatedUser().getScreenName());
-        assertEquals(id1, new Twitter(id3, pass3).getAuthenticatedUser().getId());
+        assertEquals(id1, new Twitter(id3, pass3).getAuthenticatedUser().getName());
         assertTrue(new Twitter(id3, pass3).verifyCredentials());
     }
 

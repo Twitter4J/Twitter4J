@@ -1368,6 +1368,9 @@ Formats: xml, json
         if (null == getUserId()) {
             throw new IllegalStateException("User Id not specified.");
         }
+        if(getUserId().contains("@")){
+            return getUserDetail(new User(get(baseURL + "account/verify_credentials.xml", true).asDocument().getDocumentElement(),this).getName());
+        }
         return getUserDetail(getUserId());
     }
 
