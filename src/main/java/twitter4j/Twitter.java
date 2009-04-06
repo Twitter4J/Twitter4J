@@ -789,17 +789,66 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     *
+     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
+     * @return the 20 most recent replies
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 1.1.8
+
+     */
+    public synchronized List<Status> getReplies(long sinceId) throws TwitterException {
+        return Status.constructStatuses(get(baseURL + "statuses/replies.xml",
+                "since_id", String.valueOf(sinceId), true).asDocument(), this);
+    }
+
+    /**
      * Returns the most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      *
      * @param page the number of page
      * @return the 20 most recent replies
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated use getReplies(int page) instead
      */
     public synchronized List<Status> getRepliesByPage(int page) throws TwitterException {
         if (page < 1) {
             throw new IllegalArgumentException("page should be positive integer. passed:" + page);
         }
         return Status.constructStatuses(get(baseURL + "statuses/replies.xml",
+                "page", String.valueOf(page), true).asDocument(), this);
+    }
+
+    /**
+     * Returns the most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     *
+     * @param page the number of page
+     * @return the 20 most recent replies
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 1.1.8
+     */
+    public synchronized List<Status> getReplies(int page) throws TwitterException {
+        if (page < 1) {
+            throw new IllegalArgumentException("page should be positive integer. passed:" + page);
+        }
+        return Status.constructStatuses(get(baseURL + "statuses/replies.xml",
+                "page", String.valueOf(page), true).asDocument(), this);
+    }
+
+    /**
+     * Returns the most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     *
+     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
+     * @param page the number of page
+     * @return the 20 most recent replies
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 1.1.8
+     */
+    public synchronized List<Status> getReplies(long sinceId, int page) throws TwitterException {
+        if (page < 1) {
+            throw new IllegalArgumentException("page should be positive integer. passed:" + page);
+        }
+        return Status.constructStatuses(get(baseURL + "statuses/replies.xml",
+                "since_id", String.valueOf(sinceId),
                 "page", String.valueOf(page), true).asDocument(), this);
     }
 

@@ -449,15 +449,60 @@ public class AsyncTwitter extends Twitter {
             }
         });
     }
+
+    /**
+     * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 1.1.8
+     */
+    public synchronized void getRepliesAsync(long sinceId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, new Object[]{sinceId}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotReplies(getReplies((Long)args[0]));
+            }
+        });
+    }
+
     /**
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use getRepliesAsync(int page, TwitterListener listener) instead
      */
-    public synchronized void getRepliesByPageAsync(int page,TwitterListener listener) {
+    public synchronized void getRepliesByPageAsync(int page, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, new Object[]{page}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotReplies(getRepliesByPage((Integer)args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     * @param page int
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 1.1.8
+     */
+    public synchronized void getRepliesAsync(int page,TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, new Object[]{page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotReplies(getReplies((Integer)args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
+     * @param page int
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 1.1.8
+     */
+    public synchronized void getRepliesAsync(long sinceId, int page, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, new Object[]{sinceId, page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotReplies(getReplies((Long)args[0], (Integer)args[1]));
             }
         });
     }

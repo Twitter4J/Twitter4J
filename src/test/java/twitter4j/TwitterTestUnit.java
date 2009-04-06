@@ -388,6 +388,12 @@ public class TwitterTestUnit extends TestCase {
 
         statuses = twitterAPI1.getRepliesByPage(1);
         assertTrue(statuses.size() > 0);
+        statuses = twitterAPI1.getReplies(1);
+        assertTrue(statuses.size() > 0);
+        statuses = twitterAPI1.getReplies(1l,1);
+        assertTrue(statuses.size() > 0);
+        statuses = twitterAPI1.getReplies(1l);
+        assertTrue(statuses.size() > 0);
         assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
     }
 
