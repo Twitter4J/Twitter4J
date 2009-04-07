@@ -103,13 +103,12 @@ public class TwitterResponse implements java.io.Serializable {
         }
     }
 
-    protected String getChildText(String str, Element elem) {
-        return elem.getElementsByTagName(str).item(0).getTextContent();
+    protected String getChildText( String str, Element elem ) {
+        return elem.getElementsByTagName(str).getLength() > 0 ? elem.getElementsByTagName(str).item(0).getTextContent() : "";
     }
 
     protected int getChildInt(String str, Element elem) {
-        String str2 = elem.getElementsByTagName(str).item(0).
-                getTextContent();
+        String str2 = elem.getElementsByTagName(str).getLength() > 0 ? elem.getElementsByTagName(str).item(0).getTextContent() : null;
         if (null == str2 || "".equals(str2)) {
             return -1;
         } else {
@@ -118,8 +117,7 @@ public class TwitterResponse implements java.io.Serializable {
     }
 
     protected long getChildLong(String str, Element elem) {
-        String str2 = elem.getElementsByTagName(str).item(0).
-                getTextContent();
+        String str2 = elem.getElementsByTagName(str).getLength() > 0 ? elem.getElementsByTagName(str).item(0).getTextContent() : null;        
         if (null == str2 || "".equals(str2)) {
             return -1;
         } else {
@@ -128,10 +126,8 @@ public class TwitterResponse implements java.io.Serializable {
     }
 
     protected boolean getChildBoolean(String str, Element elem) {
-        return Boolean.valueOf(elem.getElementsByTagName(str).item(0).
-                getTextContent());
+        return elem.getElementsByTagName(str).getLength() > 0 ? Boolean.valueOf(elem.getElementsByTagName(str).item(0).getTextContent()) : false;
     }
-
     protected Date getChildDate(String str, Element elem) throws TwitterException {
         return getChildDate(str, elem, "EEE MMM d HH:mm:ss z yyyy");
     }
