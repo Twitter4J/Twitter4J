@@ -57,7 +57,7 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotFeatured(List<User> users){
     }
-    public void gotUserDetail(UserWithStatus userWithStatus){
+    public void gotUserDetail(ExtendedUser extendedUser){
     }
     public void gotDirectMessages(List<DirectMessage> messages){
     }

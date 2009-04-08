@@ -142,6 +142,13 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(0 <= uws.getFavouritesCount());
         assertTrue(0 <= uws.getFollowersCount());
         assertTrue(0 <= uws.getFriendsCount());
+        assertNotNull(uws.getCreatedAt());
+        assertNotNull(uws.getTimeZone());
+        assertNotNull(uws.getProfileBackgroundImageUrl());
+        assertNotNull(uws.getProfileBackgroundTile());
+        assertFalse(uws.isFollowing());
+        assertFalse(uws.isNotifications());
+
         assertTrue(0 <= uws.getStatusesCount());
         assertNotNull(uws.getProfileBackgroundColor());
         assertNotNull(uws.getProfileTextColor());

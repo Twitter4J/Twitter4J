@@ -49,7 +49,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     private List<DirectMessage> messages = null;
     private Status status = null;
     private User user = null;
-    private UserWithStatus userWithStatus = null;
+    private ExtendedUser extendedUser = null;
     private boolean test;
     private String schedule;
     private DirectMessage message = null;
@@ -98,8 +98,8 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         this.users = users;
     }
 
-    public void gotUserDetail(UserWithStatus userWithStatus) {
-        this.userWithStatus = userWithStatus;
+    public void gotUserDetail(ExtendedUser extendedUser) {
+        this.extendedUser = extendedUser;
     }
 
     public void gotDirectMessages(List<DirectMessage> messages) {
@@ -218,7 +218,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         messages = null;
         status = null;
         user = null;
-        userWithStatus = null;
+        extendedUser = null;
         message = null;
         te = null;
 
@@ -272,7 +272,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     public void testGetUserDetail() throws Exception{
         twitterAPI1.getUserDetailAsync(id1,this);
         Thread.sleep(3000);
-        UserWithStatus uws = this.userWithStatus;
+        UserWithStatus uws = this.extendedUser;
         assertEquals(id1, uws.getName());
         assertTrue(0 <= uws.getFavouritesCount());
         assertTrue(0 <= uws.getFollowersCount());
@@ -285,7 +285,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
         assertNotNull(uws.getProfileSidebarFillColor());
         assertNotNull(uws.getProfileTextColor());
 
-        this.userWithStatus = null;
+        this.extendedUser = null;
         twitterAPI1.getAuthenticatedUserAsync(this);
         Thread.sleep(3000);
         assertEquals(id1, uws.getName());

@@ -34,12 +34,37 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 /**
- * A data class representing Twitter User
+ * A data class representing Basic user information element
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
 public class User extends TwitterResponse implements java.io.Serializable {
+/*
+<user>
+  id
+  name
+  screen_name
+  location
+  description
+  profile_image_url
+  url
+  protected
+  followers_count
+  <status>
+    created_at
+    id
+    text
+    source
+    truncated
+    in_reply_to_status_id
+    in_reply_to_user_id
+    favorited
+    in_reply_to_screen_name
+ */
+
     static final String[] POSSIBLE_ROOT_NAMES = new String[]{"user", "sender", "recipient"};
     private Twitter twitter;
     private int id;
@@ -51,6 +76,17 @@ public class User extends TwitterResponse implements java.io.Serializable {
     private String url;
     private boolean isProtected;
     private int followersCount;
+
+    private Date statusCreatedAt;
+    private long statusId = -1;
+    private String statusText = null;
+    private String statusSource = null;
+    private boolean statusTruncated = false;
+    private long statusInReplyToStatusId = -1;
+    private int statusInReplyToUserId = -1;
+    private boolean statusFavorited = false;
+    private String statusInReplyToScreenName = null;
+
     private static final long serialVersionUID = 3037057798600246529L;
 
     /*package*/User(Element elem, Twitter twitter) throws TwitterException {
@@ -66,6 +102,20 @@ public class User extends TwitterResponse implements java.io.Serializable {
         url = getChildText("url", elem);
         isProtected = getChildBoolean("protected", elem);
         followersCount = getChildInt("followers_count", elem);
+
+        NodeList statuses = elem.getElementsByTagName("status");
+        if (statuses.getLength() != 0) {
+            Element status = (Element) statuses.item(0);
+            statusCreatedAt = getChildDate("created_at", status);
+            statusId = Long.valueOf(status.getElementsByTagName("id").item(0).getTextContent());
+            statusText = getChildText("text", status);
+            statusSource = getChildText("source", status);
+            statusTruncated = getChildBoolean("truncated", status);
+            statusInReplyToStatusId = getChildLong("in_reply_to_status_id", status);
+            statusInReplyToUserId = getChildInt("in_reply_to_user_id", status);
+            statusFavorited = getChildBoolean("favorited", status);
+            statusInReplyToScreenName = getChildText("in_reply_to_screen_name", status);
+        }
     }
 
     /**
@@ -187,19 +237,85 @@ public class User extends TwitterResponse implements java.io.Serializable {
         }
     }
 
-    /*<?xml version="1.0" encoding="UTF-8"?>
-    <user>
-      <id>3516311</id>
-      <name>&#12383;&#12384;&#12375;</name>
-      <screen_name>_tad_</screen_name>
-      <location>&#12388;&#12367;&#12400;&#24066;</location>
-      <description>&#12360;&#12379;{hacker,Rubyist,&#27598;&#26085;&#12487;&#12470;&#12452;&#12531;&#32771;&#23519;&#20013;,&#12403;&#12424;&#12426;&#12377;&#12392;,&#32207;&#35676;&#12414;&#12395;&#12354;,&#12521;&#12531;&#12490;&#12540;,&#12407;&#12425;&#12368;&#12414;&#12385;&#12377;&#12392;} + &#12426;&#12354;&#12427;&#12395;&#12502;&#12524;&#12540;&#12461;&#22730;&#12428;&#12390;&#12427;&#20154;</description>
-      <profile_image_url>http://assets1.twitter.com/system/user/profile_image/3516311/normal/NEC_0045.jpg?1182343831</profile_image_url>
-      <url>http://www.coins.tsukuba.ac.jp/~i021179/blog/</url>
-      <protected>false</protected>
-      <followsers_count>274</followers_count>
-    </user>
+    /**
+     * @return created_at or null if the user is protected
+     * @since Twitter4J 1.1.0
      */
+    public Date getStatusCreatedAt() {
+        return statusCreatedAt;
+    }
+
+    /**
+     *
+     * @return status id or -1 if the user is protected
+     */
+    public long getStatusId() {
+        return statusId;
+    }
+
+    /**
+     *
+     * @return status text or null if the user is protected
+     */
+    public String getStatusText() {
+        return statusText;
+    }
+
+    /**
+     *
+     * @return source or null if the user is protected
+     * @since 1.1.4
+     */
+    public String getStatusSource() {
+        return statusSource;
+    }
+
+    /**
+     *
+     * @return truncated or false if the user is protected
+     * @since 1.1.4
+     */
+    public boolean isStatusTruncated() {
+        return statusTruncated;
+    }
+
+    /**
+     *
+     * @return in_reply_to_status_id or -1 if the user is protected
+     * @since 1.1.4
+     */
+    public long getStatusInReplyToStatusId() {
+        return statusInReplyToStatusId;
+    }
+
+    /**
+     *
+     * @return in_reply_to_user_id or -1 if the user is protected
+     * @since 1.1.4
+     */
+    public int getStatusInReplyToUserId() {
+        return statusInReplyToUserId;
+    }
+
+    /**
+     *
+     * @return favorited or false if the user is protected
+     * @since 1.1.4
+     */
+    public boolean isStatusFavorited() {
+        return statusFavorited;
+    }
+
+    /**
+     *
+     * @return in_reply_to_screen_name or null if the user is protected
+     * @since 1.1.4
+     */
+
+    public String getStatusInReplyToScreenName() {
+        return -1 != statusInReplyToUserId ? statusInReplyToScreenName : null;
+    }
+
     @Override
     public int hashCode() {
         return id;
@@ -229,6 +345,15 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 ", url='" + url + '\'' +
                 ", isProtected=" + isProtected +
                 ", followersCount=" + followersCount +
+                ", statusCreatedAt=" + statusCreatedAt +
+                ", statusId=" + statusId +
+                ", statusText='" + statusText + '\'' +
+                ", statusSource='" + statusSource + '\'' +
+                ", statusTruncated=" + statusTruncated +
+                ", statusInReplyToStatusId=" + statusInReplyToStatusId +
+                ", statusInReplyToUserId=" + statusInReplyToUserId +
+                ", statusFavorited=" + statusFavorited +
+                ", statusInReplyToScreenName='" + statusInReplyToScreenName + '\'' +
                 '}';
     }
 }

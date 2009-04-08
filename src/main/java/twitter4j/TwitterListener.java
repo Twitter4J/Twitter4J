@@ -56,7 +56,7 @@ public interface TwitterListener {
 
     void gotFeatured(List<User> users);
 
-    void gotUserDetail(UserWithStatus userWithStatus);
+    void gotUserDetail(ExtendedUser extendedUser);
 
     void gotDirectMessages(List<DirectMessage> messages);
 

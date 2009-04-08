@@ -750,7 +750,7 @@ public class Twitter implements java.io.Serializable {
      * @param status the text of your status update
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#update">Twitter API &gt; Status Methods &gt; update</a>
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/update">Twitter API &gt; Status Methods &gt; update</a>
      */
     public Status update(String status) throws TwitterException {
         if (status.length() > 160) {
@@ -768,7 +768,7 @@ public class Twitter implements java.io.Serializable {
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#update">Twitter API &gt; Status Methods &gt; update</a>
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/update">Twitter API &gt; Status Methods &gt; update</a>
      */
     public Status update(String status, long inReplyToStatusId) throws TwitterException {
         if (status.length() > 160) {
@@ -978,8 +978,8 @@ public class Twitter implements java.io.Serializable {
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized UserWithStatus getUserDetail(String id) throws TwitterException {
-        return new UserWithStatus(get(baseURL + "users/show/" + id + ".xml", true).asDocument().getDocumentElement(), this);
+    public synchronized ExtendedUser getUserDetail(String id) throws TwitterException {
+        return new ExtendedUser(get(baseURL + "users/show/" + id + ".xml", true).asDocument().getDocumentElement(), this);
     }
 
     /**
