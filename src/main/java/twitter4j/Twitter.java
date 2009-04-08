@@ -49,7 +49,7 @@ public class Twitter implements java.io.Serializable {
     private boolean usePostForcibly = false;
     private static final int MAX_COUNT = 200;
     private static final long serialVersionUID = -7550633067620779906L;
-    /*package*/ static final String VERSION = "1.1.8";
+    /*package*/ static final String VERSION = "1.1.9";
 
     public Twitter() {
         http = new HttpClient();
@@ -897,8 +897,8 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public synchronized List<User> getFriends(String id) throws TwitterException {
-        return User.constructUsers(get(baseURL + "statuses/friends.xml",
-                "id", id, true).asDocument(), this);
+        return User.constructUsers(get(baseURL + "statuses/friends/" + id + ".xml"
+                , true).asDocument(), this);
     }
 
     /**
@@ -910,8 +910,8 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public synchronized List<User> getFriends(String id, int page) throws TwitterException {
-        return User.constructUsers(get(baseURL + "statuses/friends.xml",
-                "id", id, "page", String.valueOf(page), true).asDocument(), this);
+        return User.constructUsers(get(baseURL + "statuses/friends/" + id + ".xml"
+                , "page", String.valueOf(page), true).asDocument(), this);
     }
 
     /**
