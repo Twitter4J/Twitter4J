@@ -38,17 +38,17 @@ import java.util.Properties;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class TwitterTestUnit extends TestCase {
-    private Twitter twitterAPI1 = null;
-    private Twitter twitterAPI2 = null;
-    private Twitter unauthenticated = null;
+    protected Twitter twitterAPI1 = null;
+    protected Twitter twitterAPI2 = null;
+    protected Twitter unauthenticated = null;
+    protected Properties p = new Properties();
 
     public TwitterTestUnit(String name) {
         super(name);
     }
-    String id1,id2,id3,pass1,pass2,pass3;
+    protected String id1,id2,id3,pass1,pass2,pass3;
     protected void setUp() throws Exception {
         super.setUp();
-        Properties p = new Properties();
         p.load(new FileInputStream("test.properties"));
         id1 = p.getProperty("id1");
         id2 = p.getProperty("id2");
@@ -56,17 +56,9 @@ public class TwitterTestUnit extends TestCase {
         pass1 = p.getProperty("pass1");
         pass2 = p.getProperty("pass2");
         pass3 = p.getProperty("pass3");
-        twitterAPI1 = new Twitter(id1,pass1);
-        twitterAPI1.setRetryCount(3);
-        twitterAPI1.setRetryIntervalSecs(10);
-        twitterAPI2 = new Twitter(id2,pass2);
-         twitterAPI2.setRetryCount(3);
-        twitterAPI2.setRetryIntervalSecs(10);
-        unauthenticated = new Twitter();
     }
 
     protected void tearDown() throws Exception {
-        twitterAPI1 = null;
         super.tearDown();
     }
 

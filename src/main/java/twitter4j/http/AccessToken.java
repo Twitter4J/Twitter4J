@@ -26,55 +26,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-/**
- * A data class representing HTTP Post parameter
- * @author Yusuke Yamamoto - yusuke at mac.com
- */
-public class PostParameter implements java.io.Serializable, Comparable {
-    String name;
-    String value;
-    private static final long serialVersionUID = -8708108746980739212L;
+public class AccessToken extends OAuthToken {
+    private static final long serialVersionUID = -8344528374458826291L;
 
-    public PostParameter(String name, String value) {
-        this.name = name;
-        this.value = value;
-    }
-    public String getName(){
-        return name;
-    }
-    public String getValue(){
-        return value;
+    AccessToken(Response res) {
+        super(res);
     }
 
-    @Override
-    public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + value.hashCode();
-        return result;
+    public AccessToken(String token, String tokenSecret) {
+        super(token, tokenSecret);
     }
 
-    @Override public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof PostParameter) {
-            PostParameter that = (PostParameter) obj;
-            return this.name.equals(that.name) &&
-                this.value.equals(that.value);
-        }
-        return false;
-    }
-
-    public int compareTo(Object o) {
-        int compared;
-        PostParameter that = (PostParameter) o;
-        compared = name.compareTo(that.name);
-        if (0 == compared) {
-            compared = value.compareTo(that.value);
-        }
-        return compared;
-    }
 }

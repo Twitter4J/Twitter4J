@@ -69,6 +69,11 @@ public class HttpClient implements java.io.Serializable {
     private static final long serialVersionUID = 808018030183407996L;
     private boolean isJDK14orEarlier = false;
     private Map<String, String> requestHeaders = new HashMap<String, String>();
+    private OAuth oauth = null;
+    private String requestTokenURL = "http://twitter.com/oauth/request_token";
+    private String authorizationURL = "http://twitter.com/oauth/authorize";
+    private String accessTokenURL = "http://twitter.com/oauth/access_token";
+    private OAuthToken oauthToken = null;
 
     public HttpClient(String userId, String password) {
         this();
@@ -85,12 +90,14 @@ public class HttpClient implements java.io.Serializable {
         setReadTimeout(30000);
         setProxyAuthUser(null);
         setProxyAuthPassword(null);
+        setUserId(null);
+        setPassword(null);
+        setOAuthConsumer(null, null);
 
         String versionStr = System.getProperty("java.specification.version");
         if (null != versionStr) {
             isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
         }
-
     }
 
     public void setUserId(String userId) {
@@ -109,6 +116,90 @@ public class HttpClient implements java.io.Serializable {
 
     public String getPassword() {
         return password;
+    }
+    
+    public boolean isAuthenticationEnabled(){
+        return null != basic || null != oauth;
+    }
+
+    /**
+     * Sets the consumer key and consumer secret.<br>
+     * System property -Dtwitter4j.oauth.consumerKey and -Dhttp.oauth.consumerSecret override this attribute.
+     * @param consumerKey Consumer Key
+     * @param consumerSecret Consumer Secret
+     * @since Twitter4J 1.1.9
+     * @see <a href="http://twitter.com/oauth_clients">Applications Using Twitter</a>
+     */
+    public void setOAuthConsumer(String consumerKey, String consumerSecret) {
+        consumerKey = System.getProperty("twitter4j.oauth.consumerKey", consumerKey);
+        consumerSecret = System.getProperty("twitter4j.oauth.consumerSecret", consumerSecret);
+        if (null != consumerKey && null != consumerSecret
+                && 0 != consumerKey.length() && 0 != consumerSecret.length()) {
+            this.oauth = new OAuth(consumerKey, consumerSecret);
+        }
+    }
+
+    /**
+     *
+     * @return request token
+     * @throws TwitterException tw
+     * @since Twitter4J 1.1.9
+     */
+    public RequestToken getRequestToken() throws TwitterException {
+        this.oauthToken = new RequestToken(httpRequest(requestTokenURL, new PostParameter[0], true), this);
+        return (RequestToken)this.oauthToken;
+    }
+
+    /**
+     *
+     * @param token request token
+     * @return access token
+     * @throws TwitterException
+     * @since Twitter4J 1.1.9
+     */
+    public AccessToken getAccessToken(RequestToken token) throws TwitterException {
+        try {
+            this.oauthToken = token;
+            this.oauthToken = new AccessToken(httpRequest(accessTokenURL, new PostParameter[0], true));
+        } catch (TwitterException te) {
+            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+        }
+        return (AccessToken) this.oauthToken;
+    }
+
+    /**
+     *
+     * @param token
+     * @since Twitter4J 1.1.9
+     */
+
+    public void setAccessToken(AccessToken token){
+        this.oauthToken = token;
+    }
+
+    public void setRequestTokenURL(String requestTokenURL) {
+        this.requestTokenURL = requestTokenURL;
+    }
+
+    public String getRequestTokenURL() {
+        return requestTokenURL;
+    }
+
+
+    public void setAuthorizationURL(String authorizationURL) {
+        this.authorizationURL = authorizationURL;
+    }
+
+    public String getAuthorizationURL() {
+        return authorizationURL;
+    }
+
+    public void setAccessTokenURL(String accessTokenURL) {
+        this.accessTokenURL = accessTokenURL;
+    }
+
+    public String getAccessTokenURL() {
+        return accessTokenURL;
     }
 
     public String getProxyHost() {
@@ -228,9 +319,9 @@ public class HttpClient implements java.io.Serializable {
         }
     }
 
-    public Response post(String url, PostParameter[] PostParameters,
+    public Response post(String url, PostParameter[] postParameters,
                          boolean authenticated) throws TwitterException {
-        return httpRequest(url, PostParameters, authenticated);
+        return httpRequest(url, postParameters, authenticated);
     }
 
     public Response post(String url, boolean authenticated) throws TwitterException {
@@ -260,7 +351,7 @@ public class HttpClient implements java.io.Serializable {
     /*package*/ int retriedCount = 0;
     /*package*/ String lastURL;
 
-    private Response httpRequest(String url, PostParameter[] postParams,
+    protected Response httpRequest(String url, PostParameter[] postParams,
                                  boolean authenticated) throws TwitterException {
         int retry = retryCount + 1;
         Response res = null;
@@ -275,7 +366,7 @@ public class HttpClient implements java.io.Serializable {
                 try {
                     con = getConnection(url);
                     con.setDoInput(true);
-                    setHeaders(con, authenticated);
+                    setHeaders(url, postParams, con, authenticated);
                     if (null != postParams) {
                         log("POST ", url);
                         con.setRequestMethod("POST");
@@ -367,16 +458,29 @@ public class HttpClient implements java.io.Serializable {
      * @param connection    HttpURLConnection
      * @param authenticated boolean
      */
-    private void setHeaders(HttpURLConnection connection, boolean authenticated) {
+    private void setHeaders(String url, PostParameter[] params, HttpURLConnection connection, boolean authenticated) {
+        log("Request Headers: ");
+
         if (authenticated) {
-            if (basic == null) {
-                throw new IllegalStateException(
-                        "user ID/password combination not supplied");
+            if (basic == null && oauth == null) {
             }
-            connection.addRequestProperty("Authorization", this.basic);
+            String authorization = null;
+            if (null != oauth) {
+                // use OAuth
+                authorization = oauth.generateAuthorizationHeader(params != null ? "POST" : "GET", url, params, oauthToken);
+            } else if (null != basic) {
+                // use Basic Auth
+                authorization = this.basic;
+            } else {
+                throw new IllegalStateException(
+                        "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
+            }
+            connection.addRequestProperty("Authorization", authorization);
+            log("Authorization: " + authorization);
         }
         for (String key : requestHeaders.keySet()) {
             connection.addRequestProperty(key, requestHeaders.get(key));
+            log(key + ": " + requestHeaders.get(key));
         }
     }
 
@@ -429,8 +533,28 @@ public class HttpClient implements java.io.Serializable {
 
     @Override
     public int hashCode() {
-        return this.retryCount + this.retryIntervalMillis + this.basic.hashCode()
-                + requestHeaders.hashCode();
+        int result = OK;
+        result = 31 * result + NOT_MODIFIED;
+        result = 31 * result + UNAUTHORIZED;
+        result = 31 * result + FORBIDDEN;
+        result = 31 * result + (DEBUG ? 1 : 0);
+        result = 31 * result + INTERNAL_SERVER_ERROR;
+        result = 31 * result + (basic != null ? basic.hashCode() : 0);
+        result = 31 * result + retryCount;
+        result = 31 * result + retryIntervalMillis;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (proxyHost != null ? proxyHost.hashCode() : 0);
+        result = 31 * result + proxyPort;
+        result = 31 * result + (proxyAuthUser != null ? proxyAuthUser.hashCode() : 0);
+        result = 31 * result + (proxyAuthPassword != null ? proxyAuthPassword.hashCode() : 0);
+        result = 31 * result + connectionTimeout;
+        result = 31 * result + readTimeout;
+        result = 31 * result + (isJDK14orEarlier ? 1 : 0);
+        result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
+        result = 31 * result + retriedCount;
+        result = 31 * result + (lastURL != null ? lastURL.hashCode() : 0);
+        return result;
     }
 
     @Override

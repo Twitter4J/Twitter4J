@@ -39,6 +39,28 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Status extends TwitterResponse implements java.io.Serializable {
+/*
+<status>
+  created_at
+  id
+  text
+  source
+  truncated
+  in_reply_to_status_id
+  in_reply_to_user_id
+  favorited
+  <user>
+    id
+    name
+    screen_name
+    description
+    location
+    profile_image_url
+    url
+    protected
+    followers_count 
+ */
+
     private Date createdAt;
     private long id;
     private String text;
@@ -180,28 +202,6 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         }
     }
 
-    /*
-  <status>
-    <created_at>Fri May 30 17:04:22 +0000 2008</created_at>
-    <id>823477057</id>
-    <text>double double at in n out on Magnolia</text>
-    <source>web</source>
-    <truncated>false</truncated>
-    <in_reply_to_status_id></in_reply_to_status_id>
-    <in_reply_to_user_id></in_reply_to_user_id>
-    <favorited>false</favorited>
-    <user>
-      <id>14500444</id>
-      <name>arenson</name>
-      <screen_name>arenson</screen_name>
-      <location>Texas</location>
-      <description>I like girls, Mexican Food, and laughter. </description>
-      <profile_image_url>http://s3.amazonaws.com/twitter_production/profile_images/54044033/s7958437_39956964_9393_normal.jpg</profile_image_url>
-      <url></url>
-      <protected>false</protected>
-      <followers_count>12</followers_count>
-    </user>
-  </status>*/
     @Override
     public int hashCode() {
         return (int) id;

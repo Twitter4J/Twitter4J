@@ -26,55 +26,47 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-/**
- * A data class representing HTTP Post parameter
- * @author Yusuke Yamamoto - yusuke at mac.com
- */
-public class PostParameter implements java.io.Serializable, Comparable {
-    String name;
-    String value;
-    private static final long serialVersionUID = -8708108746980739212L;
+import twitter4j.TwitterException;
 
-    public PostParameter(String name, String value) {
-        this.name = name;
-        this.value = value;
+public class RequestToken extends OAuthToken {
+    private HttpClient httpClient;
+    private static final long serialVersionUID = -8214365845469757952L;
+
+    RequestToken(Response res, HttpClient httpClient) {
+        super(res);
+        this.httpClient = httpClient;
     }
-    public String getName(){
-        return name;
+
+    public RequestToken(String token, String tokenSecret) {
+        super(token, tokenSecret);
     }
-    public String getValue(){
-        return value;
+
+    public String getAuthorizationURL() {
+        return httpClient.getAuthorizationURL() + "?oauth_token=" + getToken();
+    }
+
+    public AccessToken getAccessToken() throws TwitterException {
+        return httpClient.getAccessToken(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        RequestToken that = (RequestToken) o;
+
+        if (httpClient != null ? !httpClient.equals(that.httpClient) : that.httpClient != null)
+            return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + value.hashCode();
+        int result = super.hashCode();
+        result = 31 * result + (httpClient != null ? httpClient.hashCode() : 0);
         return result;
-    }
-
-    @Override public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof PostParameter) {
-            PostParameter that = (PostParameter) obj;
-            return this.name.equals(that.name) &&
-                this.value.equals(that.value);
-        }
-        return false;
-    }
-
-    public int compareTo(Object o) {
-        int compared;
-        PostParameter that = (PostParameter) o;
-        compared = name.compareTo(that.name);
-        if (0 == compared) {
-            compared = value.compareTo(that.value);
-        }
-        return compared;
     }
 }

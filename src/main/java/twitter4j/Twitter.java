@@ -26,8 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.http.AccessToken;
 import twitter4j.http.HttpClient;
 import twitter4j.http.PostParameter;
+import twitter4j.http.RequestToken;
 import twitter4j.http.Response;
 
 import java.text.SimpleDateFormat;
@@ -53,13 +55,15 @@ public class Twitter implements java.io.Serializable {
 
     public Twitter() {
         http = new HttpClient();
-        setUserId(null);
-        setPassword(null);
         setUserAgent("twitter4j http://yusuke.homeip.net/twitter4j/ /" + VERSION);
         setSource("Twitter4J");
         setClientVersion(VERSION);
         setClientURL("http://yusuke.homeip.net/twitter4j/en/twitter4j-" + VERSION + ".xml");
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        http.setRequestTokenURL("http://twitter.com/oauth/request_token");
+        http.setAuthorizationURL("http://twitter.com/oauth/authorize");
+        http.setAccessTokenURL("http://twitter.com/oauth/access_token");
     }
 
     public Twitter(String baseURL) {
@@ -207,6 +211,45 @@ public class Twitter implements java.io.Serializable {
         return http.getPassword();
     }
 
+    /**
+     *
+     * @param consumerKey
+     * @param consumerSecret
+     * @since Twitter 1.1.9
+     */
+    public void setOAuthConsumer(String consumerKey, String consumerSecret){
+        this.http.setOAuthConsumer(consumerKey, consumerSecret);
+    }
+
+    /**
+     *
+     * @return
+     * @throws TwitterException
+     * @since Twitter 1.1.9
+     */
+    public RequestToken getRequestToken() throws TwitterException {
+        return http.getRequestToken();
+    }
+
+    /**
+     *
+     * @param token
+     * @return
+     * @throws TwitterException
+     * @since Twitter 1.1.9
+     */
+    public AccessToken getAccessToken(RequestToken token) throws TwitterException {
+        return http.getAccessToken(token);
+    }
+
+    /**
+     *
+     * @param token
+     */
+    public void setAccessToken(AccessToken token){
+        this.http.setAccessToken(token);
+    }
+
 
     /**
      * Enables use of HTTP proxy
@@ -291,6 +334,7 @@ public class Twitter implements java.io.Serializable {
      * set true to force using POST method communicating to the server
      *
      * @param forceUsePost if true POST method will be used forcibly
+     * @deprecated some methods don't accept POST method anymore
      */
     public void forceUsePost(boolean forceUsePost) {
         this.usePostForcibly = forceUsePost;
@@ -964,7 +1008,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns a list of the users currently featured on the site with their current statuses inline.
      *
-     * @return List
+     * @return List of User
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public synchronized List<User> getFeatured() throws TwitterException {
@@ -975,7 +1019,7 @@ public class Twitter implements java.io.Serializable {
      * Returns extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
      *
      * @param id the ID or screen name of the user for whom to request the detail
-     * @return User
+     * @return ExtendedUser
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public synchronized ExtendedUser getUserDetail(String id) throws TwitterException {
@@ -1364,14 +1408,16 @@ Formats: xml, json
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.3
      */
-    public synchronized UserWithStatus getAuthenticatedUser() throws TwitterException {
-        if (null == getUserId()) {
-            throw new IllegalStateException("User Id not specified.");
-        }
-        if(getUserId().contains("@")){
-            return getUserDetail(new User(get(baseURL + "account/verify_credentials.xml", true).asDocument().getDocumentElement(),this).getName());
-        }
-        return getUserDetail(getUserId());
+    public synchronized ExtendedUser getAuthenticatedUser() throws TwitterException {
+        return new ExtendedUser(get(baseURL + "account/verify_credentials.xml", true).asDocument().getDocumentElement(),this);
+//
+//        if (!http.isAuthenticationEnabled()) {
+//            throw new IllegalStateException("Neither user ID/password combination nor OAuth consumer key/secret combination supplied.");
+//        }
+//        if(getUserId().contains("@")){
+//            return getUserDetail(new User(get(baseURL + "account/verify_credentials.xml", true).asDocument().getDocumentElement(),this).getName());
+//        }
+//        return getUserDetail(getUserId());
     }
 
 /*
