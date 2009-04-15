@@ -230,7 +230,13 @@ public class TwitterTestUnit extends TestCase {
         Status status = twitterAPI2.show(1000l);
         assertEquals(52,status.getUser().getId());
         Status status2 = unauthenticated.show(1000l);
-        assertEquals(52,status.getUser().getId());
+        assertEquals(52,status2.getUser().getId());
+
+        status2 = unauthenticated.show(999383469l);
+        assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3",status2.getText());
+
+
+
     }
     public void testUpdate() throws Exception{
         String date = new java.util.Date().toString()+"test";
@@ -466,7 +472,7 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(result.getWarning().contains("adjusted"));
         assertTrue(3 > result.getCompletedIn());
         assertEquals(1, result.getPage());
-        assertEquals("source%3Aweb+thisisarondomstringforatestcase", result.getQuery());
+        assertEquals("source:web thisisarondomstringforatestcase", result.getQuery());
 
         List<Tweet> tweets = result.getTweets();
         assertEquals(1, tweets.size());
@@ -492,7 +498,7 @@ public class TwitterTestUnit extends TestCase {
         assertNull(result.getWarning());
         assertTrue(1 > result.getCompletedIn());
         assertEquals(1, result.getPage());
-        assertEquals("source%3Atwitter4j+doesnothit", result.getQuery());
+        assertEquals("source:twitter4j doesnothit", result.getQuery());
     }
 
     public void testProperties() throws Exception{
