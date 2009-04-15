@@ -213,8 +213,8 @@ public class Twitter implements java.io.Serializable {
 
     /**
      *
-     * @param consumerKey
-     * @param consumerSecret
+     * @param consumerKey OAuth consumer key
+     * @param consumerSecret OAuth consumer secret
      * @since Twitter 1.1.9
      */
     public void setOAuthConsumer(String consumerKey, String consumerSecret){
@@ -222,32 +222,47 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
-     *
-     * @return
-     * @throws TwitterException
+     * retrieves a request token
+     * @return generated request token.
+     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter 1.1.9
+     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ">Twitter API Wiki - OAuth FAQ</a>
+     * @see <a href="http://oauth.net/core/1.0/#auth_step1">OAuth Core 1.0 - 6.1.  Obtaining an Unauthorized Request Token</a>
      */
     public RequestToken getRequestToken() throws TwitterException {
         return http.getRequestToken();
     }
 
     /**
-     *
-     * @param token
-     * @return
-     * @throws TwitterException
+     * retrieves an access token assosiated with the supplied request token.
+     * @param requestToken the request token
+     * @return access token associsted with the supplied request token.
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
+     * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 1.1.9
      */
-    public AccessToken getAccessToken(RequestToken token) throws TwitterException {
-        return http.getAccessToken(token);
+    public AccessToken getAccessToken(RequestToken requestToken) throws TwitterException {
+        return http.getAccessToken(requestToken);
     }
 
     /**
-     *
-     * @param token
+     * sets the access token
+     * @param accessToken accessToken
+     * @since Twitter 1.1.9
      */
-    public void setAccessToken(AccessToken token){
-        this.http.setAccessToken(token);
+    public void setAccessToken(AccessToken accessToken){
+        this.http.setAccessToken(accessToken);
+    }
+
+    /**
+     * sets the access token
+     * @param token token
+     * @param tokenSecret token secret
+     * @since Twitter 1.1.9
+     */
+    public void setAccessToken(String token, String tokenSecret) {
+        setAccessToken(new AccessToken(token, tokenSecret));
     }
 
 

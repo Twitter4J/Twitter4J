@@ -40,6 +40,7 @@ import java.util.List;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
  */
 public class OAuth {
     private static final String HMAC_SHA1 = "HmacSHA1";
@@ -52,13 +53,13 @@ public class OAuth {
         setConsumerSecret(consumerSecret);
     }
 
-    public String generateAuthorizationHeader(String method, String url, PostParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
-        if(null == params){
+    /*package*/ String generateAuthorizationHeader(String method, String url, PostParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
+        if (null == params) {
             params = new PostParameter[0];
         }
         List<PostParameter> oauthHeaderParams = new ArrayList<PostParameter>(5);
         oauthHeaderParams.add(new PostParameter("oauth_consumer_key", consumerKey));
-        oauthHeaderParams.add(new PostParameter("oauth_signature_method", "HMAC-SHA1"));
+        oauthHeaderParams.add(new PostParameter("oauth_signature_method", HMAC_SHA1));
         oauthHeaderParams.add(new PostParameter("oauth_timestamp", timestamp));
         oauthHeaderParams.add(new PostParameter("oauth_nonce", nonce));
         oauthHeaderParams.add(new PostParameter("oauth_version", "1.0"));
@@ -107,7 +108,7 @@ public class OAuth {
      * @return
      * @see <a href="http://oauth.net/core/1.0#rfc.section.5.4.1">OAuth Core - 5.4.1.  Authorization Header</a>
      */
-    public String generateAuthorizationHeader(String method, String url, PostParameter[] params, OAuthToken token) {
+    /*package*/ String generateAuthorizationHeader(String method, String url, PostParameter[] params, OAuthToken token) {
         long nonce = System.currentTimeMillis();
         long timestamp = nonce / 1000;
         return generateAuthorizationHeader(method, url, params, String.valueOf(nonce), String.valueOf(timestamp), token);
