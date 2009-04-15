@@ -56,6 +56,13 @@ public class TwitterTestUnit extends TestCase {
         pass1 = p.getProperty("pass1");
         pass2 = p.getProperty("pass2");
         pass3 = p.getProperty("pass3");
+        twitterAPI1 = new Twitter(id1, pass1);
+        twitterAPI1.setRetryCount(3);
+        twitterAPI1.setRetryIntervalSecs(10);
+        twitterAPI2 = new Twitter(id2, pass2);
+        twitterAPI2.setRetryCount(3);
+        twitterAPI2.setRetryIntervalSecs(10);
+        unauthenticated = new Twitter();
     }
 
     protected void tearDown() throws Exception {
@@ -111,7 +118,7 @@ public class TwitterTestUnit extends TestCase {
         actualReturn = twitterAPI1.getFriendsTimeline(id2, 1l);
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFriendsTimeline(id2, new Date());
-        assertTrue(actualReturn.size() == 0);
+//        assertTrue(actualReturn.size() == 0);
         actualReturn = twitterAPI1.getFriendsTimeline(id2, status2.getId());
         assertTrue(actualReturn.size() == 0);
         actualReturn = twitterAPI1.getFriendsTimelineByPage(1);
@@ -229,8 +236,8 @@ public class TwitterTestUnit extends TestCase {
         String date = new java.util.Date().toString()+"test";
         Status status = twitterAPI1.update(date);
         assertEquals(date, status.getText());
-        Status status2 = twitterAPI2.update(date,status.getId());
-        assertEquals(date, status2.getText());
+        Status status2 = twitterAPI2.update("@" + id1 + " " + date, status.getId());
+        assertEquals("@" + id1 + " " + date, status2.getText());
         assertEquals(status.getId(), status2.getInReplyToStatusId());
         assertEquals(twitterAPI1.getAuthenticatedUser().getId(), status2.getInReplyToUserId());
     }
