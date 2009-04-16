@@ -72,13 +72,7 @@ public class OAuthTestUnit extends TwitterTestUnit {
         super.tearDown();
 
     }
-//    public void testUpdate() throws Exception{
-//        Twitter twitter = new Twitter();
-//        twitter.setOAuthConsumer(consumerKey,consumerSecret);
-//        twitter.setAccessToken(new AccessToken(token,tokenSecret));
-//        twitter.update("OAuth test");
-//        twitter.getUserDetail("twit4j");
-//    }
+
     public void testGetToken() throws Exception{
         RequestToken rt = httpClient.getRequestToken();
         try {
@@ -104,7 +98,7 @@ public class OAuthTestUnit extends TwitterTestUnit {
         params[0] = new PostParameter("file","vacation.jpg");
         params[1] = new PostParameter("size","original");
         OAuth oauth = new OAuth("dpf43f3p2l4k3l03","kd94hf93k423kf44");
-        String expected = "oauth_consumer_key=\"dpf43f3p2l4k3l03\",oauth_token=\"nnch734d00sl2jdk\",oauth_nonce=\"kllo9940pd9333jh\",oauth_timestamp=\"1191242096\",oauth_signature_method=\"HMAC-SHA1\",oauth_signature=\"tR3%2BTy81lMeYAr%2FFid0kMTYa%2FWM%3D\"";
+        String expected = "OAuth oauth_consumer_key=\"dpf43f3p2l4k3l03\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"1191242096\",oauth_nonce=\"kllo9940pd9333jh\",oauth_version=\"1.0\",oauth_token=\"nnch734d00sl2jdk\",oauth_signature=\"tR3%2BTy81lMeYAr%2FFid0kMTYa%2FWM%3D\"";
         assertEquals(expected,oauth.generateAuthorizationHeader("GET","http://photos.example.net/photos",params,"kllo9940pd9333jh","1191242096",new RequestToken("nnch734d00sl2jdk","pfkkdhi9sl3r4s00")));
 
     }

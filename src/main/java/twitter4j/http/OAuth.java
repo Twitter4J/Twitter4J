@@ -44,6 +44,8 @@ import java.util.List;
  */
 public class OAuth {
     private static final String HMAC_SHA1 = "HmacSHA1";
+    private static final PostParameter OAUTH_SIGNATURE_METHOD = new PostParameter("oauth_signature_method", "HMAC-SHA1");
+    private final boolean DEBUG = Boolean.getBoolean("twitter4j.debug");
 
     private String consumerKey = "";
     private String consumerSecret;
@@ -59,7 +61,7 @@ public class OAuth {
         }
         List<PostParameter> oauthHeaderParams = new ArrayList<PostParameter>(5);
         oauthHeaderParams.add(new PostParameter("oauth_consumer_key", consumerKey));
-        oauthHeaderParams.add(new PostParameter("oauth_signature_method", HMAC_SHA1));
+        oauthHeaderParams.add(OAUTH_SIGNATURE_METHOD);
         oauthHeaderParams.add(new PostParameter("oauth_timestamp", timestamp));
         oauthHeaderParams.add(new PostParameter("oauth_nonce", nonce));
         oauthHeaderParams.add(new PostParameter("oauth_version", "1.0"));
@@ -73,7 +75,10 @@ public class OAuth {
         StringBuffer base = new StringBuffer(method).append("&")
                 .append(encode(constructRequestURL(url))).append("&");
         base.append(encode(normalizeRequestParameters(signatureBaseParams)));
-        String signature = generateSignature(base.toString(), otoken);
+        String oauthBaseString = base.toString();
+        log("OAuth base string:", oauthBaseString);
+        String signature = generateSignature(oauthBaseString, otoken);
+        log("OAuth signature:", signature);
 
         oauthHeaderParams.add(new PostParameter("oauth_signature", signature));
         return "OAuth " + encodeParameters(oauthHeaderParams, ",", true);
@@ -287,5 +292,17 @@ public class OAuth {
 
     public void setConsumerSecret(String consumerSecret) {
         this.consumerSecret = null != consumerSecret ? consumerSecret : "";
+    }
+
+    private void log(String message) {
+        if (DEBUG) {
+            System.out.println("[" + new java.util.Date() + "]" + message);
+        }
+    }
+
+    private void log(String message, String message2) {
+        if (DEBUG) {
+            log(message + message2);
+        }
     }
 }
