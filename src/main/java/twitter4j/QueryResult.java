@@ -26,12 +26,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.org.json.JSONObject;
 import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
 
-import java.util.List;
+import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.List;
+import java.io.UnsupportedEncodingException;
+
 /**
  * A data class representing search API response
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -43,7 +46,7 @@ public class QueryResult extends TwitterResponse {
     private long maxId;
     private String refreshUrl;
     private int resultsPerPage;
-    private int total = 0;
+    private int total = -1;
     private String warning;
     private double completedIn;
     private int page;
@@ -62,18 +65,17 @@ public class QueryResult extends TwitterResponse {
             }
             resultsPerPage = json.getInt("results_per_page");
             try {
-                total = json.getInt("total");
-            } catch (JSONException ignore) {
-                // total could be missing
-            }
-            try {
                 warning = json.getString("warning");
             } catch (JSONException ignore) {
                 // warning could be missing
             }
             completedIn = json.getDouble("completed_in");
             page = json.getInt("page");
-            query = json.getString("query");
+            try {
+                query = URLDecoder.decode(json.getString("query"),"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                query = json.getString("query");
+            }
             JSONArray array = json.getJSONArray("results");
             tweets = new ArrayList<Tweet>(array.length());
             for (int i = 0; i < array.length(); i++) {
@@ -104,8 +106,9 @@ public class QueryResult extends TwitterResponse {
     /**
      * returns the number of hits
      * @return number of hits
+     * @deprecated The Twitter API doesn't return total anymore
+     * @see <a href="http://yusuke.homeip.net/jira/browse/TFJ-108">TRJ-108 deprecate QueryResult#getTotal()</a>
      */
-
     public int getTotal() {
         return total;
     }
