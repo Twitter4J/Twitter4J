@@ -33,14 +33,15 @@ import twitter4j.TwitterTestUnit;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class OAuthTestUnit extends TwitterTestUnit {
+public class OAuthTest extends TwitterTestUnit {
     private String consumerSecret;
     private String consumerKey;
     private HttpClient httpClient;
 
-    public OAuthTestUnit(String name) {
+    public OAuthTest(String name) {
         super(name);
     }
+
     @Override
     protected void setUp() throws Exception{
         super.setUp();

@@ -43,7 +43,7 @@ import java.util.Properties;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
+public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private List<Status> statuses = null;
     private List<User> users = null;
     private List<DirectMessage> messages = null;
@@ -193,7 +193,7 @@ public class AsyncTwitterTestUnit extends TestCase implements TwitterListener {
     private AsyncTwitter twitterAPI1 = null;
     private AsyncTwitter twitterAPI2 = null;
 
-    public AsyncTwitterTestUnit(String name) {
+    public AsyncTwitterTest(String name) {
         super(name);
     }
 

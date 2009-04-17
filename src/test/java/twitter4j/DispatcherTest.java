@@ -31,10 +31,10 @@ import junit.framework.TestCase;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class DispatcherTestUnit extends TestCase {
+public class DispatcherTest extends TestCase {
     private Dispatcher dispatcher = null;
 
-    public DispatcherTestUnit(String name) {
+    public DispatcherTest(String name) {
         super(name);
     }
 

@@ -44,9 +44,9 @@ import java.util.List;
  * @version 0.9
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class ResponseTestUnit extends TestCase {
+public class ResponseTest extends TestCase {
 
-    public ResponseTestUnit(String name) {
+    public ResponseTest(String name) {
         super(name);
     }
 

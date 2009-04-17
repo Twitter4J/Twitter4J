@@ -30,8 +30,8 @@ import junit.framework.TestCase;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class BASE64EncoderTestUnit extends TestCase {
-    public BASE64EncoderTestUnit(String name) {
+public class BASE64EncoderTest extends TestCase {
+    public BASE64EncoderTest(String name) {
         super(name);
     }
 
