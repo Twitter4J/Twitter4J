@@ -356,9 +356,9 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
         long id = status.getId();
 
-        twitterAPI2.updateAsync("@" + id1 + date, id, this);
+        twitterAPI2.updateAsync("@" + id1 + " " + date, id, this);
         Thread.sleep(3000);
-        assertEquals("", "@" + id1 + date, status.getText());
+        assertEquals("", "@" + id1 + " " + date, status.getText());
         assertEquals("", id, status.getInReplyToStatusId());
         assertEquals(twitterAPI1.getAuthenticatedUser().getId(), status.getInReplyToUserId());
 
@@ -367,7 +367,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         this.status = null;
         twitterAPI2.destroyStatusAsync(id, this);
         Thread.sleep(3000);
-        assertEquals("", date, status.getText());
+        assertEquals("", "@" + id1 + " " + date, status.getText());
         trySerializable(status);
     }
 
@@ -483,7 +483,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     }
     public void testSearchAsync() throws Exception {
-        Query query = new Query("source:twitter4j yusukey");
+        Query query = new Query("source:web thisisarondomstringforatestcase");
         twitterAPI1.searchAcync(query, this);
         Thread.sleep(3000);
         assertTrue(1265204000 < queryResult.getSinceId());
@@ -494,19 +494,18 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertTrue(queryResult.getWarning().contains("adjusted"));
         assertTrue(1 > queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
-        assertEquals("source:twitter4j yusukey", queryResult.getQuery());
+        assertEquals("source:web thisisarondomstringforatestcase", queryResult.getQuery());
 
         List<Tweet> tweets = queryResult.getTweets();
         assertEquals(1, tweets.size());
-        assertEquals("test", tweets.get(0).getText());
         assertNull(tweets.get(0).getToUser());
         assertEquals(-1, tweets.get(0).getToUserId());
         assertNotNull(tweets.get(0).getCreatedAt());
-        assertEquals("yusukey", tweets.get(0).getFromUser());
-        assertEquals(10248, tweets.get(0).getFromUserId());
-        assertEquals(1283504696, tweets.get(0).getId());
-        assertNull(tweets.get(0).getIsoLanguageCode());
-        assertTrue(tweets.get(0).getProfileImageUrl().contains(".jpg"));
+        assertEquals("twit4j", tweets.get(0).getFromUser());
+        assertEquals(1620730, tweets.get(0).getFromUserId());
+        assertEquals(1525853472, tweets.get(0).getId());
+        assertNotNull(tweets.get(0).getIsoLanguageCode());
+        assertTrue(tweets.get(0).getProfileImageUrl().contains(".jpg") ||tweets.get(0).getProfileImageUrl().contains(".png") );
         assertTrue(tweets.get(0).getSource().contains("twitter"));
 
     }
