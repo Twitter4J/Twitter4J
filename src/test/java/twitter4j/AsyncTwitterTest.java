@@ -356,9 +356,9 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
         long id = status.getId();
 
-        twitterAPI2.updateAsync(date,id, this);
+        twitterAPI2.updateAsync("@" + id1 + date, id, this);
         Thread.sleep(3000);
-        assertEquals("", date, status.getText());
+        assertEquals("", "@" + id1 + date, status.getText());
         assertEquals("", id, status.getInReplyToStatusId());
         assertEquals(twitterAPI1.getAuthenticatedUser().getId(), status.getInReplyToUserId());
 
@@ -490,11 +490,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertTrue(1265204883 < queryResult.getMaxId());
         assertTrue(queryResult.getRefreshUrl().contains("q=source"));
         assertEquals(15, queryResult.getResultsPerPage());
-        assertEquals(1, queryResult.getTotal());
+        assertEquals(-1, queryResult.getTotal());
         assertTrue(queryResult.getWarning().contains("adjusted"));
         assertTrue(1 > queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
-        assertEquals("source%3Atwitter4j+yusukey", queryResult.getQuery());
+        assertEquals("source:twitter4j yusukey", queryResult.getQuery());
 
         List<Tweet> tweets = queryResult.getTweets();
         assertEquals(1, tweets.size());
