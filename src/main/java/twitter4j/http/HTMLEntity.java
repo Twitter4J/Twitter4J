@@ -62,18 +62,18 @@ public class HTMLEntity {
         String escaped;
         String entity;
         while (index < original.length()) {
-            index = original.indexOf("&");
+            index = original.indexOf("&", index);
             if (-1 == index) {
                 break;
             }
             semicolonIndex = original.indexOf(";", index);
-            if (-1 != semicolonIndex) {
+            if (-1 != semicolonIndex && 10 > (semicolonIndex - index)) {
                 escaped = original.substring(index, semicolonIndex + 1);
                 entity = escapeEntityMap.get(escaped);
                 if (null != entity) {
                     original.replace(index, semicolonIndex + 1, entity);
                 }
-                index = semicolonIndex + 1;
+                index++;
             } else {
                 break;
             }
@@ -85,7 +85,7 @@ public class HTMLEntity {
 
     static {
         String[][] entities =
-                {{"nbsp;", "&#160;"/* no-break space = non-breaking space */, "\u00A0"}
+                {{"&nbsp;", "&#160;"/* no-break space = non-breaking space */, "\u00A0"}
                         , {"&iexcl;", "&#161;"/* inverted exclamation mark */, "\u00A1"}
                         , {"&cent;", "&#162;"/* cent sign */, "\u00A2"}
                         , {"&pound;", "&#163;"/* pound sign */, "\u00A3"}

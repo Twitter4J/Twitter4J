@@ -47,11 +47,26 @@ public class HTMLEntityTest extends TestCase {
         assertEquals(expected, buf.toString());
     }
     public void testUnescape(){
-        String original = "&lt;=% !&gt;";
-        String expected = "<=% !>";
+        String original = "&lt;&lt;=% !&nbsp;&gt;";
+        String expected = "<<=% !\u00A0>";
         assertEquals(expected, HTMLEntity.unescape(original));
         StringBuffer buf = new StringBuffer(original);
         HTMLEntity.unescape(buf);
         assertEquals(expected, buf.toString());
+
+        original = "&asd&gt;";
+        expected = "&asd>";
+        assertEquals(expected, HTMLEntity.unescape(original));
+        buf = new StringBuffer(original);
+        HTMLEntity.unescape(buf);
+        assertEquals(expected, buf.toString());
+
+        original = ";&;asd&;gt;";
+        expected = ";&;asd&;gt;";
+        assertEquals(expected, HTMLEntity.unescape(original));
+        buf = new StringBuffer(original);
+        HTMLEntity.unescape(buf);
+        assertEquals(expected, buf.toString());
+
     }
 }
