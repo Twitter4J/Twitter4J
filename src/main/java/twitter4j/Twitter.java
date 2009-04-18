@@ -674,7 +674,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getFriendsTimeline(String id, int count, long sinceId) instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
-     * @deprecated useing long sinceId is suggested.
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized List<Status> getUserTimeline(String id, int count,
                                                      Date since) throws TwitterException {
@@ -713,7 +713,7 @@ public class Twitter implements java.io.Serializable {
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
-     * @deprecated useing long sinceId is suggested.
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized List<Status> getUserTimeline(String id, Date since) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml",
@@ -746,7 +746,7 @@ public class Twitter implements java.io.Serializable {
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
-     * @deprecated useing long sinceId is suggested.
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized List<Status> getUserTimeline(int count, Date since) throws TwitterException {
         if (MAX_COUNT < count) {
@@ -1124,7 +1124,26 @@ public class Twitter implements java.io.Serializable {
     /**
      * Returns a list of the direct messages sent to the authenticating user.
      *
-     * @param sinceId int
+     * @param page    the number of page
+     * @param sinceId Returns only direct messages with an ID greater than (that is, more recent than) the specified ID.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized List<DirectMessage> getDirectMessages(int page
+            , int sinceId) throws TwitterException {
+        if (page < 1) {
+            throw new IllegalArgumentException("page should be positive integer. passed:" + page);
+        }
+        return DirectMessage.constructDirectMessages(get(baseURL +
+                "direct_messages.xml", "page", String.valueOf(page), "since_id",
+                String.valueOf(sinceId), true).asDocument(), this);
+    }
+
+    /**
+     * Returns a list of the direct messages sent to the authenticating user.
+     *
+     * @param sinceId Returns only direct messages with an ID greater than (that is, more recent than) the specified ID.
      * @return list of direct messages
      * @throws TwitterException when Twitter service or network is unavailable
      */
@@ -1140,6 +1159,7 @@ public class Twitter implements java.io.Serializable {
      * @param since narrows the resulting list of direct messages to just those sent after the specified HTTP-formatted date
      * @return list of direct messages
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized List<DirectMessage> getDirectMessages(Date since) throws
             TwitterException {
@@ -1165,6 +1185,7 @@ public class Twitter implements java.io.Serializable {
      * @param since narrows the resulting list of direct messages to just those sent after the specified HTTP-formatted date
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized List<DirectMessage> getSentDirectMessages(Date since) throws
             TwitterException {
@@ -1183,6 +1204,22 @@ public class Twitter implements java.io.Serializable {
             TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL +
                 "direct_messages/sent.xml", "since_id", String.valueOf(sinceId), true).asDocument(), this);
+    }
+
+    /**
+     * Returns a list of the direct messages sent by the authenticating user.
+     *
+     * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
+     * @param page Retrieves the 20 next most recent direct messages.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized List<DirectMessage> getSentDirectMessages(int page
+            , int sinceId) throws TwitterException {
+        return DirectMessage.constructDirectMessages(get(baseURL +
+                "direct_messages/sent.xml", "page", String.valueOf(page)
+                , "since_id", String.valueOf(sinceId), true).asDocument(), this);
     }
 
     /**

@@ -265,7 +265,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
-     * @deprecated useing long sinceId is suggested.
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized void getUserTimelineAsync(String id, int count, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id, count, since}) {
@@ -304,7 +304,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
-     * @deprecated useing long sinceId is suggested.
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized void getUserTimelineAsync(String id, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id, since}) {
@@ -335,7 +335,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
-     * @deprecated useing long sinceId is suggested.
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized void getUserTimelineAsync(int count, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {count, since}) {
@@ -816,10 +816,31 @@ public class AsyncTwitter extends Twitter {
             }
         });
     }
+
+    /**
+     * Returns a list of the direct messages sent to the authenticating user.
+     * @param page int
+     * @param sinceId Returns only direct messages with an ID greater than (that is, more recent than) the specified ID.
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized void getDirectMessagesByPageAsync(int page
+            , int sinceId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener
+                , new Object[]{page, sinceId}) {
+            public void invoke(TwitterListener listener, Object[] args)
+                    throws TwitterException {
+                listener.gotDirectMessages(getDirectMessages(
+                        (Integer) args[0], (Integer) args[1]));
+            }
+        });
+    }
+
     /**
      * Returns a list of the direct messages sent to the authenticating user.
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized void getDirectMessagesAsync(Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {since}) {
@@ -856,6 +877,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent by the authenticating user.
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated using long sinceId is suggested.
      */
     public synchronized void getSentDirectMessagesAsync(Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {since}) {
@@ -864,15 +886,32 @@ public class AsyncTwitter extends Twitter {
             }
         });
     }
+
     /**
      * Returns a list of the direct messages sent by the authenticating user.
-     * @param sinceId Date
+     * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
      * @param listener TwitterListener a listener object that receives the response
      */
     public synchronized void getSentDirectMessagesAsync(int sinceId, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {sinceId}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotSentDirectMessages(getSentDirectMessages( (Integer) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns a list of the direct messages sent by the authenticating user.
+     * @param page Retrieves the 20 next most recent direct messages.
+     * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized void getSentDirectMessagesAsync(int page
+            , int sinceId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[]{page,sinceId}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotSentDirectMessages(getSentDirectMessages((Integer) args[0],(Integer) args[1]));
             }
         });
     }

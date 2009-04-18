@@ -437,6 +437,9 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(id1 , actualReturn.get(0).getSender().getName());
         assertEquals(id2 , actualReturn.get(0).getRecipient().getName());
 
+        actualReturn = twitterAPI1.getSentDirectMessages(10, 10);
+        assertTrue(5 < actualReturn.size());
+
         actualReturn = twitterAPI1.getDirectMessagesByPage(1);
         assertTrue(10< twitterAPI1.getDirectMessages().size());
 
