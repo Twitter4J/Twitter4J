@@ -45,7 +45,6 @@ public class OAuthTest extends TwitterTestUnit {
     @Override
     protected void setUp() throws Exception{
         super.setUp();
-        System.out.println("setting up");
         consumerSecret = p.getProperty("consumerSecret");
         consumerKey = p.getProperty("consumerKey");
         httpClient = new HttpClient();

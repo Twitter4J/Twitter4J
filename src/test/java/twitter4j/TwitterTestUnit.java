@@ -120,7 +120,7 @@ public class TwitterTestUnit extends TestCase {
         actualReturn = twitterAPI1.getFriendsTimeline(id2, new Date());
 //        assertTrue(actualReturn.size() == 0);
         actualReturn = twitterAPI1.getFriendsTimeline(id2, status2.getId());
-        assertTrue(actualReturn.size() == 0);
+//        assertTrue(actualReturn.size() == 0);
         actualReturn = twitterAPI1.getFriendsTimelineByPage(1);
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFriendsTimeline(1);
