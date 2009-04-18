@@ -215,15 +215,26 @@ public class TwitterTestUnit extends TestCase {
 
     public void testGetUserTimeline_Show() throws Exception{
         List<Status> statuses;
+        statuses = twitterAPI1.getUserTimeline();
+        assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI2.getUserTimeline(id1);
+        assertTrue("size", 0 < statuses.size());
+        statuses = twitterAPI1.getUserTimeline(999383469l);
         assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI2.getUserTimeline(id1, 10);
         assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(15, new Date(0));
         assertTrue("size", 0 < statuses.size());
+        statuses = twitterAPI1.getUserTimeline(15, 999383469l);
+        assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(id1, new Date(0));
         assertTrue("size", 0 < statuses.size());
+        statuses = twitterAPI1.getUserTimeline(id1, 999383469l);
+        assertTrue("size", 0 < statuses.size());
+
         statuses = twitterAPI1.getUserTimeline(id1, 20, new Date(0));
+        assertTrue("size", 0 < statuses.size());
+        statuses = twitterAPI1.getUserTimeline(id1, 20, 999383469l);
         assertTrue("size", 0 < statuses.size());
     }
     public void testShow() throws Exception{

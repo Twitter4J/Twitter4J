@@ -362,15 +362,29 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void testGetUserTimeline_Show() throws Exception {
+        twitterAPI2.getUserTimelineAsync(this);
+        waitForResponse();
+        assertTrue("size", 10 < statuses.size());
+        twitterAPI2.getUserTimelineAsync(999383469l,this);
+        waitForResponse();
+        assertTrue("size", 10 < statuses.size());
         twitterAPI2.getUserTimelineAsync(id1, this);
+        waitForResponse();
+        assertTrue("size", 10 < statuses.size());
+        twitterAPI2.getUserTimelineAsync(id1,999383469l, this);
         waitForResponse();
         assertTrue("size", 10 < statuses.size());
         twitterAPI2.getUserTimelineAsync(id1, 10, this);
         waitForResponse();
         assertEquals("size", 10, statuses.size());
+        twitterAPI2.getUserTimelineAsync(id1, 10,999383469l, this);
+        waitForResponse();
+        assertEquals("size", 10, statuses.size());
         twitterAPI1.getUserTimelineAsync(15, new Date(0), this);
         waitForResponse();
-        //        System.out.println("lastURL:"+twitterAPI1.lastURL);
+        assertTrue("size", 5 < statuses.size());
+        twitterAPI1.getUserTimelineAsync(15, 999383469l, this);
+        waitForResponse();
         assertTrue("size", 5 < statuses.size());
         twitterAPI1.getUserTimelineAsync(id1, new Date(0), this);
         waitForResponse();
@@ -378,7 +392,9 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         twitterAPI1.getUserTimelineAsync(id1, 20, new Date(0), this);
         waitForResponse();
         assertTrue("size", 5 < statuses.size());
+
         trySerializable(statuses);
+
     }
 
     public void testFavorite() throws Exception {

@@ -674,6 +674,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getFriendsTimeline(String id, int count, long sinceId) instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
+     * @deprecated useing long sinceId is suggested.
      */
     public synchronized List<Status> getUserTimeline(String id, int count,
                                                      Date since) throws TwitterException {
@@ -712,6 +713,7 @@ public class Twitter implements java.io.Serializable {
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
+     * @deprecated useing long sinceId is suggested.
      */
     public synchronized List<Status> getUserTimeline(String id, Date since) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml",
@@ -744,6 +746,7 @@ public class Twitter implements java.io.Serializable {
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
+     * @deprecated useing long sinceId is suggested.
      */
     public synchronized List<Status> getUserTimeline(int count, Date since) throws TwitterException {
         if (MAX_COUNT < count) {
@@ -751,6 +754,24 @@ public class Twitter implements java.io.Serializable {
         }
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml",
                 "since", format.format(since), "count", String.valueOf(count), true).asDocument(), this);
+    }
+
+    /**
+     * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
+     *
+     * @param count specifies the number of statuses to retrieve.  May not be greater than 200 for performance purposes
+     * @param sinceId returns only statuses with an ID greater than (that is, more recent than) the specified ID.
+     * @return the 20 most recent statuses posted in the last 24 hours from the user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized List<Status> getUserTimeline(int count, long sinceId) throws TwitterException {
+        if (MAX_COUNT < count) {
+            throw new IllegalArgumentException("count may not be greater than " + MAX_COUNT + " for performance purposes.");
+        }
+        return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml",
+                "sinceId", String.valueOf(sinceId), "count", String.valueOf(count), true).asDocument(), this);
     }
 
     /**
@@ -766,6 +787,20 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
+     *
+     * @param id specifies the ID or screen name of the user for whom to return the user_timeline
+     * @param sinceId returns only statuses with an ID greater than (that is, more recent than) the specified ID.
+     * @return the 20 most recent statuses posted in the last 24 hours from the user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized List<Status> getUserTimeline(String id, long sinceId) throws TwitterException {
+        return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml?since_id=" + sinceId, true).asDocument(), this);
+    }
+
+    /**
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
      *
      * @return the 20 most recent statuses posted in the last 24 hours from the user
@@ -775,6 +810,21 @@ public class Twitter implements java.io.Serializable {
     public synchronized List<Status> getUserTimeline() throws
             TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml", true).
+                asDocument(), this);
+    }
+
+    /**
+     * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
+     *
+     * @param sinceId returns only statuses with an ID greater than (that is, more recent than) the specified ID.
+     * @return the 20 most recent statuses posted in the last 24 hours from the user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized List<Status> getUserTimeline(long sinceId) throws
+            TwitterException {
+        return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml?since_id=" + sinceId, true).
                 asDocument(), this);
     }
 
