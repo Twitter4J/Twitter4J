@@ -232,8 +232,8 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ">Twitter API Wiki - OAuth FAQ</a>
      * @see <a href="http://oauth.net/core/1.0/#auth_step1">OAuth Core 1.0 - 6.1.  Obtaining an Unauthorized Request Token</a>
      */
-    public RequestToken getRequestToken() throws TwitterException {
-        return http.getRequestToken();
+    public RequestToken getOAuthRequestToken() throws TwitterException {
+        return http.getOAuthRequestToken();
     }
 
     /**
@@ -245,8 +245,8 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 1.1.9
      */
-    public AccessToken getAccessToken(RequestToken requestToken) throws TwitterException {
-        return http.getAccessToken(requestToken);
+    public AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
+        return http.getOAuthAccessToken(requestToken);
     }
 
     /**
@@ -254,8 +254,8 @@ public class Twitter implements java.io.Serializable {
      * @param accessToken accessToken
      * @since Twitter 1.1.9
      */
-    public void setAccessToken(AccessToken accessToken){
-        this.http.setAccessToken(accessToken);
+    public void setOAuthAccessToken(AccessToken accessToken){
+        this.http.setOAuthAccessToken(accessToken);
     }
 
     /**
@@ -264,8 +264,8 @@ public class Twitter implements java.io.Serializable {
      * @param tokenSecret token secret
      * @since Twitter 1.1.9
      */
-    public void setAccessToken(String token, String tokenSecret) {
-        setAccessToken(new AccessToken(token, tokenSecret));
+    public void setOAuthAccessToken(String token, String tokenSecret) {
+        setOAuthAccessToken(new AccessToken(token, tokenSecret));
     }
 
 
@@ -1428,23 +1428,7 @@ Formats: xml, json
      */
     public synchronized ExtendedUser getAuthenticatedUser() throws TwitterException {
         return new ExtendedUser(get(baseURL + "account/verify_credentials.xml", true).asDocument().getDocumentElement(),this);
-//
-//        if (!http.isAuthenticationEnabled()) {
-//            throw new IllegalStateException("Neither user ID/password combination nor OAuth consumer key/secret combination supplied.");
-//        }
-//        if(getUserId().contains("@")){
-//            return getUserDetail(new User(get(baseURL + "account/verify_credentials.xml", true).asDocument().getDocumentElement(),this).getName());
-//        }
-//        return getUserDetail(getUserId());
     }
-
-/*
-downtime_schedule  New as of April 29th, 2008!
-
-Returns the same text displayed on http://twitter.com/home when a maintenance window is scheduled, in the requested format.
-URL:http://twitter.com/help/downtime_schedule.format
-Formats: xml, json
-*/
 
     /**
      * Returns the same text displayed on http://twitter.com/home when a maintenance window is scheduled, in the requested format.
