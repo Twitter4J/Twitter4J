@@ -55,7 +55,7 @@ public class OAuthTest extends TwitterTestUnit {
         twitterAPI1.setOAuthConsumer(consumerKey, consumerSecret);
         String id1token = p.getProperty("id1.oauth_token");
         String id1tokenSecret = p.getProperty("id1.oauth_token_secret");
-        twitterAPI1.setAccessToken(new AccessToken(id1token,id1tokenSecret));
+        twitterAPI1.setOAuthAccessToken(new AccessToken(id1token,id1tokenSecret));
         twitterAPI1.setRetryCount(3);
         twitterAPI1.setRetryIntervalSecs(10);
 
@@ -63,7 +63,7 @@ public class OAuthTest extends TwitterTestUnit {
         twitterAPI2.setOAuthConsumer(consumerKey, consumerSecret);
         String id2token = p.getProperty("id2.oauth_token");
         String id2tokenSecret = p.getProperty("id2.oauth_token_secret");
-        twitterAPI2.setAccessToken(new AccessToken(id2token,id2tokenSecret));
+        twitterAPI2.setOAuthAccessToken(new AccessToken(id2token,id2tokenSecret));
 
          twitterAPI2.setRetryCount(3);
         twitterAPI2.setRetryIntervalSecs(10);
@@ -75,7 +75,7 @@ public class OAuthTest extends TwitterTestUnit {
     }
 
     public void testGetToken() throws Exception{
-        RequestToken rt = httpClient.getRequestToken();
+        RequestToken rt = httpClient.getOAuthRequestToken();
         try {
             rt.getAccessToken();
             fail();

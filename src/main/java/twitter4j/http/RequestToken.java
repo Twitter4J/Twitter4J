@@ -37,7 +37,7 @@ public class RequestToken extends OAuthToken {
         this.httpClient = httpClient;
     }
 
-    public RequestToken(String token, String tokenSecret) {
+    RequestToken(String token, String tokenSecret) {
         super(token, tokenSecret);
     }
 
@@ -46,7 +46,7 @@ public class RequestToken extends OAuthToken {
     }
 
     public AccessToken getAccessToken() throws TwitterException {
-        return httpClient.getAccessToken(this);
+        return httpClient.getOAuthAccessToken(this);
     }
 
     @Override

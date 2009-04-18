@@ -145,7 +145,7 @@ public class HttpClient implements java.io.Serializable {
      * @throws TwitterException tw
      * @since Twitter4J 1.1.9
      */
-    public RequestToken getRequestToken() throws TwitterException {
+    public RequestToken getOAuthRequestToken() throws TwitterException {
         this.oauthToken = new RequestToken(httpRequest(requestTokenURL, new PostParameter[0], true), this);
         return (RequestToken)this.oauthToken;
     }
@@ -157,7 +157,7 @@ public class HttpClient implements java.io.Serializable {
      * @throws TwitterException
      * @since Twitter4J 1.1.9
      */
-    public AccessToken getAccessToken(RequestToken token) throws TwitterException {
+    public AccessToken getOAuthAccessToken(RequestToken token) throws TwitterException {
         try {
             this.oauthToken = token;
             this.oauthToken = new AccessToken(httpRequest(accessTokenURL, new PostParameter[0], true));
@@ -173,7 +173,7 @@ public class HttpClient implements java.io.Serializable {
      * @since Twitter4J 1.1.9
      */
 
-    public void setAccessToken(AccessToken token){
+    public void setOAuthAccessToken(AccessToken token){
         this.oauthToken = token;
     }
 

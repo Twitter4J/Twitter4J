@@ -50,7 +50,7 @@ public class OAuthUpdate {
     public static void main(String[] args) {
         try {
             Twitter twitter = new Twitter();
-            RequestToken requestToken = twitter.getRequestToken();
+            RequestToken requestToken = twitter.getOAuthRequestToken();
             System.out.println("Got request token.");
             System.out.println("Request token: "+ requestToken.getToken());
             System.out.println("Request token secret: "+ requestToken.getTokenSecret());
