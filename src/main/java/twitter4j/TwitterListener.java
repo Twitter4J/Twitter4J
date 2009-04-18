@@ -78,6 +78,8 @@ public interface TwitterListener {
 
     void updatedLocation(User user);
 
+    void updatedProfileColors(ExtendedUser user);
+
     void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
 
     void updatedDeliverlyDevice(User user);

@@ -80,6 +80,8 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void updatedLocation(User user){
     }
+    public void updatedProfileColors(ExtendedUser user){
+    }
     public void gotRateLimitStatus(RateLimitStatus status){
     }
     public void updatedDeliverlyDevice(User user){

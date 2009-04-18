@@ -163,6 +163,12 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         this.user = user;
         notifyResponse();
     }
+
+    public void updatedProfileColors(ExtendedUser extendedUser){
+        this.extendedUser = extendedUser;
+        notifyResponse();
+    }
+
     public void gotRateLimitStatus(RateLimitStatus status){
         this.rateLimitStatus = status;
         notifyResponse();
@@ -229,6 +235,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     public void onException(TwitterException te, int method) {
         this.te = te;
+        te.printStackTrace();
         notifyResponse();
     }
 
@@ -425,6 +432,49 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         twitterAPI1.existsAsync(id1,id2,this);
         waitForResponse();
         assertTrue(exists);
+
+        twitterAPI1.updateProfileColorsAsync("f00", "f0f", "0ff", "0f0", "f0f", this);
+        waitForResponse();
+        assertEquals("f00", extendedUser.getProfileBackgroundColor());
+        assertEquals("f0f", extendedUser.getProfileTextColor());
+        assertEquals("0ff", extendedUser.getProfileLinkColor());
+        assertEquals("0f0", extendedUser.getProfileSidebarFillColor());
+        assertEquals("f0f", extendedUser.getProfileSidebarBorderColor());
+        twitterAPI1.updateProfileColorsAsync("f0f", "f00", "f0f", "0ff", "0f0", this);
+        waitForResponse();
+        assertEquals("f0f", extendedUser.getProfileBackgroundColor());
+        assertEquals("f00", extendedUser.getProfileTextColor());
+        assertEquals("f0f", extendedUser.getProfileLinkColor());
+        assertEquals("0ff", extendedUser.getProfileSidebarFillColor());
+        assertEquals("0f0", extendedUser.getProfileSidebarBorderColor());
+        twitterAPI1.updateProfileColorsAsync("87bc44", "9ae4e8", "000000", "0000ff", "e0ff92", this);
+        waitForResponse();
+        assertEquals("87bc44", extendedUser.getProfileBackgroundColor());
+        assertEquals("9ae4e8", extendedUser.getProfileTextColor());
+        assertEquals("000000", extendedUser.getProfileLinkColor());
+        assertEquals("0000ff", extendedUser.getProfileSidebarFillColor());
+        assertEquals("e0ff92", extendedUser.getProfileSidebarBorderColor());
+        twitterAPI1.updateProfileColorsAsync("f0f", null, "f0f", null, "0f0", this);
+        waitForResponse();
+        assertEquals("f0f", extendedUser.getProfileBackgroundColor());
+        assertEquals("9ae4e8", extendedUser.getProfileTextColor());
+        assertEquals("f0f", extendedUser.getProfileLinkColor());
+        assertEquals("0000ff", extendedUser.getProfileSidebarFillColor());
+        assertEquals("0f0", extendedUser.getProfileSidebarBorderColor());
+        twitterAPI1.updateProfileColorsAsync(null, "f00", null, "0ff", null, this);
+        waitForResponse();
+        assertEquals("f0f", extendedUser.getProfileBackgroundColor());
+        assertEquals("f00", extendedUser.getProfileTextColor());
+        assertEquals("f0f", extendedUser.getProfileLinkColor());
+        assertEquals("0ff", extendedUser.getProfileSidebarFillColor());
+        assertEquals("0f0", extendedUser.getProfileSidebarBorderColor());
+        twitterAPI1.updateProfileColorsAsync("9ae4e8", "000000", "0000ff", "e0ff92", "87bc44", this);
+        waitForResponse();
+        assertEquals("9ae4e8", extendedUser.getProfileBackgroundColor());
+        assertEquals("000000", extendedUser.getProfileTextColor());
+        assertEquals("0000ff", extendedUser.getProfileLinkColor());
+        assertEquals("e0ff92", extendedUser.getProfileSidebarFillColor());
+        assertEquals("87bc44", extendedUser.getProfileSidebarBorderColor());
     }
 
     public void testShow() throws Exception {

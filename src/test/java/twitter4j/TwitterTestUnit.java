@@ -312,6 +312,44 @@ public class TwitterTestUnit extends TestCase {
             te.printStackTrace();
         }
         assertTrue(twitterAPI1.exists(id1,id2));
+
+        ExtendedUser eu;
+        eu = twitterAPI1.updateProfileColors("f00", "f0f", "0ff", "0f0", "f0f");
+        assertEquals("f00", eu.getProfileBackgroundColor());
+        assertEquals("f0f", eu.getProfileTextColor());
+        assertEquals("0ff", eu.getProfileLinkColor());
+        assertEquals("0f0", eu.getProfileSidebarFillColor());
+        assertEquals("f0f", eu.getProfileSidebarBorderColor());
+        eu = twitterAPI1.updateProfileColors("f0f", "f00", "f0f", "0ff", "0f0");
+        assertEquals("f0f", eu.getProfileBackgroundColor());
+        assertEquals("f00", eu.getProfileTextColor());
+        assertEquals("f0f", eu.getProfileLinkColor());
+        assertEquals("0ff", eu.getProfileSidebarFillColor());
+        assertEquals("0f0", eu.getProfileSidebarBorderColor());
+        eu = twitterAPI1.updateProfileColors("87bc44", "9ae4e8", "000000", "0000ff", "e0ff92");
+        assertEquals("87bc44", eu.getProfileBackgroundColor());
+        assertEquals("9ae4e8", eu.getProfileTextColor());
+        assertEquals("000000", eu.getProfileLinkColor());
+        assertEquals("0000ff", eu.getProfileSidebarFillColor());
+        assertEquals("e0ff92", eu.getProfileSidebarBorderColor());
+        eu = twitterAPI1.updateProfileColors("f0f", null, "f0f", null, "0f0");
+        assertEquals("f0f", eu.getProfileBackgroundColor());
+        assertEquals("9ae4e8", eu.getProfileTextColor());
+        assertEquals("f0f", eu.getProfileLinkColor());
+        assertEquals("0000ff", eu.getProfileSidebarFillColor());
+        assertEquals("0f0", eu.getProfileSidebarBorderColor());
+        eu = twitterAPI1.updateProfileColors(null, "f00", null, "0ff", null);
+        assertEquals("f0f", eu.getProfileBackgroundColor());
+        assertEquals("f00", eu.getProfileTextColor());
+        assertEquals("f0f", eu.getProfileLinkColor());
+        assertEquals("0ff", eu.getProfileSidebarFillColor());
+        assertEquals("0f0", eu.getProfileSidebarBorderColor());
+        eu = twitterAPI1.updateProfileColors("9ae4e8", "000000", "0000ff", "e0ff92", "87bc44");
+        assertEquals("9ae4e8", eu.getProfileBackgroundColor());
+        assertEquals("000000", eu.getProfileTextColor());
+        assertEquals("0000ff", eu.getProfileLinkColor());
+        assertEquals("e0ff92", eu.getProfileSidebarFillColor());
+        assertEquals("87bc44", eu.getProfileSidebarBorderColor());
     }
     public void testFavoriteMethods() throws Exception{
         Status status = twitterAPI1.update("test");
@@ -479,6 +517,7 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2.block(id1);
         twitterAPI2.unblock(id1);
     }
+
 
     public void testRateLimitStatus() throws Exception{
         RateLimitStatus status = twitterAPI1.rateLimitStatus();

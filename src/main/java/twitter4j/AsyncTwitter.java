@@ -1013,6 +1013,53 @@ public class AsyncTwitter extends Twitter {
         });
     }
 
+    /**
+     * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.  These values are also returned in the getUserDetail() method.
+     * @param profileBackgroundColor optional, can be null
+     * @param profileTextColor optional, can be null
+     * @param profileLinkColor optional, can be null
+     * @param profileSidebarFillColor optional, can be null
+     * @param profileSidebarBorderColor optional, can be null
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#account/updatelocation">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
+     */
+    public synchronized void updateProfileColorsAsync(
+            String profileBackgroundColor, String profileTextColor,
+            String profileLinkColor, String profileSidebarFillColor,
+            String profileSidebarBorderColor) {
+        updateProfileColorsAsync(profileBackgroundColor, profileTextColor,
+                profileLinkColor, profileSidebarFillColor,
+                profileSidebarBorderColor, null);
+    }
+
+    /**
+     * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.  These values are also returned in the getUserDetail() method.
+     * @param profileBackgroundColor optional, can be null
+     * @param profileTextColor optional, can be null
+     * @param profileLinkColor optional, can be null
+     * @param profileSidebarFillColor optional, can be null
+     * @param profileSidebarBorderColor optional, can be null
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#account/updatelocation">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
+     */
+    public synchronized void updateProfileColorsAsync(
+            String profileBackgroundColor, String profileTextColor,
+            String profileLinkColor, String profileSidebarFillColor,
+            String profileSidebarBorderColor, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE_COLORS,
+                listener, new Object[]{profileBackgroundColor, profileTextColor,
+                        profileLinkColor, profileSidebarFillColor,
+                        profileSidebarBorderColor}) {
+            public void invoke(TwitterListener listener, Object[] args)
+                    throws TwitterException {
+                listener.updatedProfileColors(updateProfileColors(
+                        (String) args[0], (String) args[1], (String) args[2],
+                        (String) args[3], (String) args[4]));
+            }
+        });
+    }
+
 
     /**
      * Gets the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.
@@ -1393,6 +1440,7 @@ public class AsyncTwitter extends Twitter {
     public final static int CREATE_FAVORITE = 18;
     public final static int DESTROY_FAVORITE = 19;
     public final static int UPDATE_LOCATION = 20;
+    public final static int UPDATE_PROFILE_COLORS = 31;
     public final static int RATE_LIMIT_STATUS = 28;
     public final static int UPDATE_DELIVERLY_DEVICE = 21;
     public final static int BLOCK = 22;

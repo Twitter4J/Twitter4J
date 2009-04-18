@@ -33,6 +33,7 @@ import twitter4j.http.RequestToken;
 import twitter4j.http.Response;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -1039,6 +1040,7 @@ public class Twitter implements java.io.Serializable {
      * @param id the ID or screen name of the user for whom to request the detail
      * @return ExtendedUser
      * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#users/show">Twitter API &gt; User Methods &gt; users/show</a>
      */
     public synchronized ExtendedUser getUserDetail(String id) throws TwitterException {
         return new ExtendedUser(get(baseURL + "users/show/" + id + ".xml", true).asDocument().getDocumentElement(), this);
@@ -1296,6 +1298,7 @@ public class Twitter implements java.io.Serializable {
      * @return the updated user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.0.4
+     * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#account/updatelocation">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
      */
     public synchronized User updateLocation(String location) throws TwitterException {
         return new User(http.post(baseURL + "account/update_location.xml", new PostParameter[]{new PostParameter("location", location)}, true).
@@ -1303,12 +1306,55 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.  These values are also returned in the getUserDetail() method.
+     * @param profileBackgroundColor optional, can be null
+     * @param profileTextColor optional, can be null
+     * @param profileLinkColor optional, can be null
+     * @param profileSidebarFillColor optional, can be null
+     * @param profileSidebarBorderColor optional, can be null
+     * @return the updated user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#account/updatelocation">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
+     */
+    public synchronized ExtendedUser updateProfileColors(
+            String profileBackgroundColor,
+            String profileTextColor,
+            String profileLinkColor,
+            String profileSidebarFillColor,
+            String profileSidebarBorderColor)
+            throws TwitterException {
+        List<PostParameter> colors = new ArrayList<PostParameter>(5);
+        addColor(colors, "profile_background_color"
+                , profileBackgroundColor);
+        addColor(colors, "profile_text_color"
+                , profileTextColor);
+        addColor(colors, "profile_link_color"
+                , profileLinkColor);
+        addColor(colors, "profile_sidebar_fill_color"
+                , profileSidebarFillColor);
+        addColor(colors, "profile_sidebar_border_color"
+                , profileSidebarBorderColor);
+        return new ExtendedUser(http.post(baseURL +
+                "account/update_profile_colors.xml",
+                colors.toArray(new PostParameter[colors.size()]), true).
+                asDocument().getDocumentElement(), this);
+    }
+
+    private void addColor(List<PostParameter> colors,
+                                      String paramName, String color) {
+        if(null != color){
+            colors.add(new PostParameter(paramName,color));
+        }
+    }
+
+    /**
      * Returns the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.<br>
-     * See <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#ratelimitstatus">Twitter REST API Documentation &gt; Account Methods &gt; rate_limit_status</a> for detail.
      *
      * @return the rate limit status
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.4
+     * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#ratelimitstatus">Twitter REST API Documentation &gt; Account Methods &gt; rate_limit_status</a>
      */
     public synchronized RateLimitStatus rateLimitStatus() throws TwitterException {
         return new RateLimitStatus(http.get(baseURL + "account/rate_limit_status.xml", null != getUserId() && null != getPassword()).
