@@ -52,7 +52,7 @@ public class Twitter implements java.io.Serializable {
     private boolean usePostForcibly = false;
     private static final int MAX_COUNT = 200;
     private static final long serialVersionUID = -7550633067620779906L;
-    /*package*/ static final String VERSION = "1.1.9";
+    /*package*/ static final String VERSION = "2.0.0";
 
     public Twitter() {
         http = new HttpClient();
@@ -219,7 +219,7 @@ public class Twitter implements java.io.Serializable {
      *
      * @param consumerKey OAuth consumer key
      * @param consumerSecret OAuth consumer secret
-     * @since Twitter 1.1.9
+     * @since Twitter 2.0.0
      */
     public void setOAuthConsumer(String consumerKey, String consumerSecret){
         this.http.setOAuthConsumer(consumerKey, consumerSecret);
@@ -229,7 +229,7 @@ public class Twitter implements java.io.Serializable {
      * retrieves a request token
      * @return generated request token.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter 1.1.9
+     * @since Twitter 2.0.0
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ">Twitter API Wiki - OAuth FAQ</a>
      * @see <a href="http://oauth.net/core/1.0/#auth_step1">OAuth Core 1.0 - 6.1.  Obtaining an Unauthorized Request Token</a>
      */
@@ -244,7 +244,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
-     * @since Twitter 1.1.9
+     * @since Twitter 2.0.0
      */
     public AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
         return http.getOAuthAccessToken(requestToken);
@@ -253,7 +253,7 @@ public class Twitter implements java.io.Serializable {
     /**
      * sets the access token
      * @param accessToken accessToken
-     * @since Twitter 1.1.9
+     * @since Twitter 2.0.0
      */
     public void setOAuthAccessToken(AccessToken accessToken){
         this.http.setOAuthAccessToken(accessToken);
@@ -263,7 +263,7 @@ public class Twitter implements java.io.Serializable {
      * sets the access token
      * @param token token
      * @param tokenSecret token secret
-     * @since Twitter 1.1.9
+     * @since Twitter 2.0.0
      */
     public void setOAuthAccessToken(String token, String tokenSecret) {
         setOAuthAccessToken(new AccessToken(token, tokenSecret));

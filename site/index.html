@@ -71,10 +71,10 @@ JVM: Java 1.4.2 or later]</p>
 </ul>
 
     <a name="howToUse"><h2>$[ja:使い方]$[en:How To Use]</h2></a>
-    <p>$[ja:twitter4j-1.1.8.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
+    <p>$[ja:twitter4j-2.0.0.jar をクラスパスに通して、好きなメソッドを呼び出してください。<br>
     Java が分かっていれば <a href="./javadoc/index.html">JavaDoc</a> を見るのが早いです。<br>
     twitter4j.<a href="javadoc/twitter4j/Twitter.html">Twitter</a> クラスが最初に見るべきクラスです。]
-    $[en:It's as simple as adding twitter4j-1.1.8.jar to your classpath.<br>
+    $[en:It's as simple as adding twitter4j-2.0.0.jar to your classpath.<br>
     If you are familiar with Java language, the <a href="./javadoc/index.html">JavaDoc</a> should be <a href="http://obvious.com/">Obvious</a>ly the shortest way for you to understand Twitter4J.<br>
     <a href="javadoc/twitter4j/Twitter.html">twitter4j.Twitter</a> class is the one you may want to look first.]</p>
 
@@ -121,7 +121,7 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/GetDirectMessage
     Twitter twitter = new Twitter(senderID,senderPassword);
     sender.sendDirectMessage(recipientId,message);
     Twitter receiver = new Twitter(recipientId,recipientPassword);
-    List<DirectMessage> messages = receiver.getDirectMessages();
+    List&lt;DirectMessage&gt; messages = receiver.getDirectMessages();
     for (DirectMessage message : messages) {
         System.out.println("Sender:" + message.getSenderScreenName());
         System.out.println("Text:" + message.getText() + "\n");
@@ -186,8 +186,8 @@ See also twitter4j.examples.<a href="javadoc/twitter4j/examples/AsyncUpdate.html
 </ol>
 
 <a name="download"><h2>$[ja:ダウンロード]$[en:Download]</h2></a>
-<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.8.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
-    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-1.1.8.zip">twitter4j-1.1.8.zip</a>
+<a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-2.0.0.zip"><img alt="$[ja:ダウンロード]$[en:Download]" title="$[ja:ダウンロード]$[en:Download]" class="download" src="./images/download.jpg"></a><br>
+    <a href="http://yusuke.homeip.net/twitter4j/$[ja:ja]$[en:en]/twitter4j-2.0.0.zip">twitter4j-2.0.0.zip</a>
 
 
     <a name="sourceCode"><h2>$[ja:ソースコード]$[en:Source Code]</h2></a>
@@ -300,8 +300,45 @@ If you feel Twitter4J makes your life easier, please do consider making a donati
 <li>2.0.</li>
 $[ja:]$[en:]
 -->
+<li>Release Notes - Twitter4J - Version 2.0.0 <font color="red">new! 4/19/2009</font></li>
 
-        <l>Release Notes - Twitter4J - Version 1.1.8 <font color="red">new! 4/7/2009</font></li>
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-95'>TFJ-95</a>] -         getFriends(String id) and getFriends(String id, int page) return authenticating user's friends' timeline instead
+</li>
+</ul>
+
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-103'>TFJ-103</a>] -         User element is out of sync
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-104'>TFJ-104</a>] -         UserWithStatus element is out of sync
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-105'>TFJ-105</a>] -         show method should return ExtendedUser instead of Status
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-106'>TFJ-106</a>] -         unescape HTML entities
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-108'>TFJ-108</a>] -         deprecate QueryResult#getTotal()
+</li>
+</ul>
+
+<h2>        New Feature
+</h2>
+<ul>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-49'>TFJ-49</a>] -         support update_profile_colors method
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-75'>TFJ-75</a>] -         support social graph methods
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-83'>TFJ-83</a>] -         OAuth support
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-96'>TFJ-96</a>] -         support since_id with getUserTimeline
+</li>
+<li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-97'>TFJ-97</a>] -         support since_id with getDirectMessages and getSentDirectMessages
+</li>
+
+        <li>Release Notes - Twitter4J - Version 1.1.8</li>
     
 <h2>        Bug
 </h2>
@@ -341,14 +378,14 @@ $[ja:]$[en:]
 </li>
 </ul>
 
-        <l>Release Notes - Twitter4J - Version 1.1.7</li>
+        <li>Release Notes - Twitter4J - Version 1.1.7</li>
             
 <h2>        New Feature
 </h2>
 <ul>
 <li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-40'>TFJ-40</a>] -         Search API support
 </li>
-        <l>Release Notes - Twitter4J - Version 1.1.6</li>
+        <li>Release Notes - Twitter4J - Version 1.1.6</li>
     
 <h2>        Bug
 </h2>
@@ -369,7 +406,7 @@ $[ja:]$[en:]
 </ul>
 
 
-        <l>Release Notes - Twitter4J - Version 1.1.5</li>
+        <li>Release Notes - Twitter4J - Version 1.1.5</li>
     
 <h2>        Bug
 </h2>
@@ -385,7 +422,7 @@ $[ja:]$[en:]
 </li>
 </ul>
     
-        <l>Release Notes - Twitter4J - Version 1.1.4</li>
+        <li>Release Notes - Twitter4J - Version 1.1.4</li>
     
 <h2>        Bug
 </h2>
@@ -417,7 +454,7 @@ $[ja:]$[en:]
 <li>[<a href='http://yusuke.homeip.net/jira/browse/TFJ-53'>TFJ-53</a>] -         support rate_limit_status method
 </li>
 
-        <l>Release Notes - Twitter4J - Version 1.1.3</li>
+        <li>Release Notes - Twitter4J - Version 1.1.3</li>
     
 <h2>        Bug
 </h2>
@@ -441,7 +478,7 @@ $[ja:]$[en:]
 </ul>
 
 
-        <l>Release Notes - Twitter4J - Version 1.1.2</li>
+        <li>Release Notes - Twitter4J - Version 1.1.2</li>
     
 <h2>        Bug
 </h2>
@@ -656,6 +693,8 @@ $[ja:初期バージョンリリース]$[en:Released Initial Version]
    <li>$[ja:もうすこしキレイなロゴ]$[en:fancy logo]</li>
  </ul-->
 </ul>
+
+
 </div>
 <center><include>adsense468x60.html</include></center>
 </div>

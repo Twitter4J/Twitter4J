@@ -127,7 +127,7 @@ public class HttpClient implements java.io.Serializable {
      * System property -Dtwitter4j.oauth.consumerKey and -Dhttp.oauth.consumerSecret override this attribute.
      * @param consumerKey Consumer Key
      * @param consumerSecret Consumer Secret
-     * @since Twitter4J 1.1.9
+     * @since Twitter4J 2.0.0
      * @see <a href="http://twitter.com/oauth_clients">Applications Using Twitter</a>
      */
     public void setOAuthConsumer(String consumerKey, String consumerSecret) {
@@ -143,7 +143,7 @@ public class HttpClient implements java.io.Serializable {
      *
      * @return request token
      * @throws TwitterException tw
-     * @since Twitter4J 1.1.9
+     * @since Twitter4J 2.0.0
      */
     public RequestToken getOAuthRequestToken() throws TwitterException {
         this.oauthToken = new RequestToken(httpRequest(requestTokenURL, new PostParameter[0], true), this);
@@ -155,7 +155,7 @@ public class HttpClient implements java.io.Serializable {
      * @param token request token
      * @return access token
      * @throws TwitterException
-     * @since Twitter4J 1.1.9
+     * @since Twitter4J 2.0.0
      */
     public AccessToken getOAuthAccessToken(RequestToken token) throws TwitterException {
         try {
@@ -168,9 +168,9 @@ public class HttpClient implements java.io.Serializable {
     }
 
     /**
-     *
-     * @param token
-     * @since Twitter4J 1.1.9
+     * Sets the authorized access token
+     * @param token authorized access token
+     * @since Twitter4J 2.0.0
      */
 
     public void setOAuthAccessToken(AccessToken token){

@@ -28,6 +28,10 @@ package twitter4j.http;
 
 import twitter4j.TwitterException;
 
+/**
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * representing unauthorized Request Token which is passed to the service provider when acquiring the authorized Access Token
+ */
 public class RequestToken extends OAuthToken {
     private HttpClient httpClient;
     private static final long serialVersionUID = -8214365845469757952L;

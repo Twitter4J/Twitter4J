@@ -32,7 +32,7 @@ import java.io.Serializable;
 abstract class OAuthToken implements Serializable {
     private String token;
     private String tokenSecret;
-    private SecretKeySpec secretKeySpec;
+    private transient SecretKeySpec secretKeySpec;
 
     public OAuthToken(String token, String tokenSecret) {
         this.token = token;
