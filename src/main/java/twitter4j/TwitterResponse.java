@@ -28,6 +28,7 @@ package twitter4j;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import twitter4j.http.HTMLEntity;
 
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -104,7 +105,7 @@ public class TwitterResponse implements java.io.Serializable {
     }
 
     protected String getChildText( String str, Element elem ) {
-        return elem.getElementsByTagName(str).getLength() > 0 ? elem.getElementsByTagName(str).item(0).getTextContent() : "";
+        return HTMLEntity.unescape(elem.getElementsByTagName(str).getLength() > 0 ? elem.getElementsByTagName(str).item(0).getTextContent() : "");
     }
 
     protected int getChildInt(String str, Element elem) {
