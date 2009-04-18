@@ -64,6 +64,9 @@ public class Twitter implements java.io.Serializable {
         http.setRequestTokenURL("http://twitter.com/oauth/request_token");
         http.setAuthorizationURL("http://twitter.com/oauth/authorize");
         http.setAccessTokenURL("http://twitter.com/oauth/access_token");
+        // ensure userid and password are initialized with system properties
+        setUserId(null);
+        setPassword(null);
     }
 
     public Twitter(String baseURL) {
