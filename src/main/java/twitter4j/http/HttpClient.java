@@ -421,10 +421,10 @@ public class HttpClient implements java.io.Serializable {
                     if (DEBUG) {
                         ioe.printStackTrace();
                     }
-                    throw new TwitterException(ioe.getMessage(), responseCode);
+                    throw new TwitterException(ioe.getMessage(), ioe, responseCode);
                 }
                 if (retriedCount == retryCount) {
-                    throw new TwitterException(ioe.getMessage(), responseCode);
+                    throw new TwitterException(ioe.getMessage(), ioe, responseCode);
                 }
             }
             try {
