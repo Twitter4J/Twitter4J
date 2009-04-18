@@ -209,7 +209,7 @@ public class TwitterTestUnit extends TestCase {
     public void testGetAuthenticatedUser() throws Exception {
         assertEquals(id1, twitterAPI1.getAuthenticatedUser().getScreenName());
         assertEquals(id1, new Twitter(id3, pass3).getAuthenticatedUser().getName());
-        assertTrue(new Twitter(id3, pass3).verifyCredentials());
+        assertEquals(id3,new Twitter(id3, pass3).verifyCredentials().getName());
     }
 
 
@@ -303,8 +303,13 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testAccountMethods() throws Exception{
-        assertTrue(twitterAPI1.verifyCredentials());
-        assertFalse(new Twitter("doesnotexist--","foobar").verifyCredentials());
+        twitterAPI1.verifyCredentials();
+        try {
+            new Twitter("doesnotexist--", "foobar").verifyCredentials();
+            fail("should throw TwitterException");
+        } catch (TwitterException te) {
+
+        }
         String location = "location:"+Math.random();
         User user = twitterAPI1.updateLocation(location);
         assertEquals(location,user.getLocation());

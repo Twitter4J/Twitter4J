@@ -1366,16 +1366,15 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
-     * Returns true if authentication was successful.  Use this method to test if supplied user credentials are valid with minimal overhead.
+     * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not.  Use this method to test if supplied user credentials are valid.
      *
-     * @return success
+     * @return extended user
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#account/verifycredentials">Twitter API Wiki / REST API Documentation - Account Methods - account/verify_credentials</a>
      */
-    public synchronized boolean verifyCredentials() {
-        try {
-            return get(baseURL + "account/verify_credentials.xml", true).getStatusCode() == 200;
-        } catch (TwitterException te) {
-            return false;
-        }
+    public synchronized ExtendedUser verifyCredentials() throws TwitterException {
+        return new ExtendedUser(get(baseURL + "account/verify_credentials.xml"
+                , true).asDocument().getDocumentElement(), this);
     }
 
     /**
@@ -1628,6 +1627,7 @@ Formats: xml, json
      * @return UserWithStatus
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.3
+     * @deprecated since Twitter4J 2.0.0 use verifyCredentials() instead
      */
     public synchronized ExtendedUser getAuthenticatedUser() throws TwitterException {
         return new ExtendedUser(get(baseURL + "account/verify_credentials.xml", true).asDocument().getDocumentElement(),this);
