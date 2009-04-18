@@ -66,6 +66,10 @@ public interface TwitterListener {
 
     void deletedDirectMessage(DirectMessage message);
 
+    void gotFriendsIDs(IDs ids);
+
+    void gotFollowersIDs(IDs ids);
+
     void created(User user);
 
     void destroyed(User user);

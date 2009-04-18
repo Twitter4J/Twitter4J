@@ -67,6 +67,11 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void deletedDirectMessage(DirectMessage message){
     }
+    public void gotFriendsIDs(IDs ids){
+    }
+    public void gotFollowersIDs(IDs ids){
+
+    }
     public void created(User user){
     }
     public void destroyed(User user){

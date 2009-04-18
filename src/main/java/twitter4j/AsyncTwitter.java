@@ -905,6 +905,100 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns an array of numeric IDs for every user the authenticating user is following.
+     *
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized void getFriendsIDsAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listener, null) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFriendsIDs(getFriendsIDs());
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     *
+     * @param userId   Specfies the ID of the user for whom to return the friends list.
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized void getFriendsIDsAsync(int userId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listener, new Integer[]{userId}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFriendsIDs(getFriendsIDs((Integer) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     *
+     * @param screenName Specfies the screen name of the user for whom to return the friends list.
+     * @param listener   a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized void getFriendsIDsAsync(String screenName, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listener, new String[]{screenName}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFriendsIDs(getFriendsIDs((String) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     *
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#followers/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - followers/ids</a>
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized void getFollowersIDsAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listener, null) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowersIDs(getFollowersIDs());
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     *
+     * @param userId   Specfies the ID of the user for whom to return the followers list.
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#followers/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - followers/ids</a>
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized void getFollowersIDsAsync(int userId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listener, new Integer[]{userId}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowersIDs(getFollowersIDs((Integer) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     *
+     * @param screenName Specfies the screen name of the user for whom to return the followers list.
+     * @param listener   a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#followers/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - followers/ids</a>
+     * @since Twitter4J 2.0.0
+     */
+    public synchronized void getFollowersIDsAsync(String screenName, TwitterListener listener) throws TwitterException {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listener, new String[]{screenName}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowersIDs(getFollowersIDs((String) args[0]));
+            }
+        });
+    }
+
+    /**
      * Update the location
      *
      * @param location the current location of the user
@@ -1294,10 +1388,12 @@ public class AsyncTwitter extends Twitter {
     public final static int FOLLOW = 14;
     public final static int LEAVE = 15;
     public final static int FAVORITES = 17;
+    public final static int FRIENDS_IDS = 29;
+    public final static int FOLLOWERS_IDS = 30;
     public final static int CREATE_FAVORITE = 18;
     public final static int DESTROY_FAVORITE = 19;
     public final static int UPDATE_LOCATION = 20;
-    public final static int RATE_LIMIT_STATUS = 27;
+    public final static int RATE_LIMIT_STATUS = 28;
     public final static int UPDATE_DELIVERLY_DEVICE = 21;
     public final static int BLOCK = 22;
     public final static int UNBLOCK = 23;

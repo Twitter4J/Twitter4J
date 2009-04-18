@@ -262,6 +262,35 @@ public class TwitterTestUnit extends TestCase {
         assertFalse(found);
         assertTrue(90 < twitterAPI2.getFriends("akr",2).size());
     }
+
+    public void testSocialGraphMethods() throws Exception {
+        IDs ids;
+        ids = twitterAPI1.getFriendsIDs();
+        assertIDExsits(ids, 4933401);
+        ids = twitterAPI1.getFriendsIDs(4933401);
+        assertIDExsits(ids, 6358482);
+        ids = twitterAPI1.getFriendsIDs("yusukey");
+        assertIDExsits(ids, 6358482);
+
+        ids = twitterAPI1.getFollowersIDs();
+        assertIDExsits(ids, 4933401);
+        ids = twitterAPI1.getFollowersIDs(4933401);
+        assertIDExsits(ids, 6358482);
+        ids = twitterAPI1.getFollowersIDs("yusukey");
+        assertIDExsits(ids, 6358482);
+    }
+
+    private void assertIDExsits(IDs ids, int idToFind){
+        boolean found = false;
+        for(int id : ids.getIDs()){
+            if(id == idToFind){
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
+    }
+
     public void testAccountMethods() throws Exception{
         assertTrue(twitterAPI1.verifyCredentials());
         assertFalse(new Twitter("doesnotexist--","foobar").verifyCredentials());

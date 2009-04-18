@@ -1207,6 +1207,76 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * Returns an array of numeric IDs for every user the authenticating user is following.
+     * @return an array of numeric IDs for every user the authenticating user is following
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     */
+    public synchronized IDs getFriendsIDs() throws TwitterException {
+        return new IDs(get(baseURL + "friends/ids.xml", true).asDocument().getDocumentElement());
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     * @param userId Specfies the ID of the user for whom to return the friends list.
+     * @return an array of numeric IDs for every user the specified user is following
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     */
+    public synchronized IDs getFriendsIDs(int userId) throws TwitterException {
+        return new IDs(get(baseURL + "friends/ids.xml?user_id=" + userId, true).asDocument().getDocumentElement());
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     * @param screenName Specfies the screen name of the user for whom to return the friends list.
+     * @return an array of numeric IDs for every user the specified user is following
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     */
+    public synchronized IDs getFriendsIDs(String screenName) throws TwitterException {
+        return new IDs(get(baseURL + "friends/ids.xml?screen_name=" + screenName, true).asDocument().getDocumentElement());
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * @return The ID or screen_name of the user to retrieve the friends ID list for.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#followers/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - followers/ids</a>
+     */
+    public synchronized IDs getFollowersIDs() throws TwitterException {
+        return new IDs(get(baseURL + "followers/ids.xml", true).asDocument().getDocumentElement());
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * @param userId Specfies the ID of the user for whom to return the followers list.
+     * @return The ID or screen_name of the user to retrieve the friends ID list for.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#followers/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - followers/ids</a>
+     */
+    public synchronized IDs getFollowersIDs(int userId) throws TwitterException {
+        return new IDs(get(baseURL + "followers/ids.xml?user_id=" + userId, true).asDocument().getDocumentElement());
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * @param screenName Specfies the screen name of the user for whom to return the followers list.
+     * @return The ID or screen_name of the user to retrieve the friends ID list for.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.0
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#followers/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - followers/ids</a>
+     */
+    public synchronized IDs getFollowersIDs(String screenName) throws TwitterException {
+        return new IDs(get(baseURL + "followers/ids.xml?screen_name=" + screenName, true).asDocument().getDocumentElement());
+    }
+
+    /**
      * Returns true if authentication was successful.  Use this method to test if supplied user credentials are valid with minimal overhead.
      *
      * @return success
