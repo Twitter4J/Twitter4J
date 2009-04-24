@@ -605,7 +605,9 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         te = null;
         twitterAPI2.createAsync("doesnotexist--", this);
         waitForResponse();
-        assertEquals(403, te.getStatusCode());
+        //now befriending with non-existing user returns 404
+        //http://groups.google.com/group/twitter-development-talk/browse_thread/thread/bd2a912b181bc39f
+        assertEquals(404, te.getStatusCode());
 
     }
 
@@ -635,18 +637,20 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     }
     public void testSearchAsync() throws Exception {
-        Query query = new Query("source:web thisisarondomstringforatestcase");
+        String queryStr = "thisisarondomstringforatestcase from:twit4j";
+        Query query = new Query(queryStr);
         twitterAPI1.searchAcync(query, this);
         waitForResponse();
-        assertTrue(1265204000 < queryResult.getSinceId());
+        assertEquals(0, queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
-        assertTrue(queryResult.getRefreshUrl().contains("q=source"));
+        assertTrue(queryResult.getRefreshUrl().contains(queryStr));
         assertEquals(15, queryResult.getResultsPerPage());
         assertEquals(-1, queryResult.getTotal());
-        assertTrue(queryResult.getWarning().contains("adjusted"));
+        //warning is not included in the response anymore - 4/24/2009
+//        assertTrue(queryResult.getWarning().contains("adjusted"));
         assertTrue(1 > queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
-        assertEquals("source:web thisisarondomstringforatestcase", queryResult.getQuery());
+        assertEquals(queryStr, queryResult.getQuery());
 
         List<Tweet> tweets = queryResult.getTweets();
         assertEquals(1, tweets.size());

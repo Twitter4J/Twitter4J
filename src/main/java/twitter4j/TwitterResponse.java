@@ -29,12 +29,15 @@ package twitter4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import twitter4j.http.HTMLEntity;
+import twitter4j.org.json.JSONObject;
+import twitter4j.org.json.JSONException;
 
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,6 +45,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.net.URLDecoder;
 
 /**
  * Super class of Twitter Response objects.
@@ -124,6 +128,20 @@ public class TwitterResponse implements java.io.Serializable {
         } else {
             return Long.valueOf(str2);
         }
+    }
+
+    protected String getString(String name, JSONObject json){
+        String returnValue = null;
+        try {
+            try {
+                returnValue = URLDecoder.decode(json.getString(name), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                returnValue = json.getString(name);
+            }
+        } catch (JSONException ignore) {
+            // refresh_url could be missing
+        }
+        return returnValue;
     }
 
     protected boolean getChildBoolean(String str, Element elem) {

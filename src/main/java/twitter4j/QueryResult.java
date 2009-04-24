@@ -30,10 +30,8 @@ import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.UnsupportedEncodingException;
 
 /**
  * A data class representing search API response
@@ -58,24 +56,13 @@ public class QueryResult extends TwitterResponse {
         try {
             sinceId = json.getLong("since_id");
             maxId = json.getLong("max_id");
-            try {
-                refreshUrl = json.getString("refresh_url");
-            } catch (JSONException ignore) {
-                // refresh_url could be missing
-            }
+            refreshUrl = getString("refresh_url", json);
+
             resultsPerPage = json.getInt("results_per_page");
-            try {
-                warning = json.getString("warning");
-            } catch (JSONException ignore) {
-                // warning could be missing
-            }
+            warning = getString("warning", json);
             completedIn = json.getDouble("completed_in");
             page = json.getInt("page");
-            try {
-                query = URLDecoder.decode(json.getString("query"),"UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                query = json.getString("query");
-            }
+            query = getString("query", json);
             JSONArray array = json.getJSONArray("results");
             tweets = new ArrayList<Tweet>(array.length());
             for (int i = 0; i < array.length(); i++) {

@@ -51,7 +51,7 @@ public class Tweet extends TwitterResponse{
     /*package*/Tweet(JSONObject tweet, Twitter twitter) throws TwitterException {
         super();
         try {
-            text = tweet.getString("text");
+            text = getString("text", tweet);
             try{
                 toUserId = tweet.getInt("to_user_id");
                 toUser = tweet.getString("to_user");
@@ -67,8 +67,8 @@ public class Tweet extends TwitterResponse{
             }catch(JSONException ignore){
                 // iso_language_code can be missing
             }
-            source = tweet.getString("source");
-            profileImageUrl = tweet.getString("profile_image_url");
+            source = getString("source", tweet);
+            profileImageUrl = getString("profile_image_url", tweet);
             createdAt = encodeDate(tweet.getString("created_at"), "EEE, dd MMM yyyy HH:mm:ss z");
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage());

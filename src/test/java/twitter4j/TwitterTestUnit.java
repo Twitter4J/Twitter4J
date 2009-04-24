@@ -474,7 +474,9 @@ public class TwitterTestUnit extends TestCase {
             user = twitterAPI2.create("doesnotexist--");
             fail("non-existing user");
         } catch (TwitterException te) {
-            assertEquals(403, te.getStatusCode());
+            //now befriending with non-existing user returns 404
+            //http://groups.google.com/group/twitter-development-talk/browse_thread/thread/bd2a912b181bc39f
+            assertEquals(404, te.getStatusCode());
         }
 
     }
@@ -550,19 +552,22 @@ public class TwitterTestUnit extends TestCase {
         System.out.println(twitterAPI2.getDowntimeSchedule());
     }
     public void testSearch() throws Exception {
-        Query query = new Query("source:web thisisarondomstringforatestcase");
-        QueryResult result = unauthenticated.search(query);
-        assertTrue(1265204000 < result.getSinceId());
-        assertTrue(1265204883 < result.getMaxId());
-        assertTrue(result.getRefreshUrl().contains("q=source"));
-        assertEquals(15, result.getResultsPerPage());
-        assertEquals(-1, result.getTotal());
-        assertTrue(result.getWarning().contains("adjusted"));
-        assertTrue(3 > result.getCompletedIn());
-        assertEquals(1, result.getPage());
-        assertEquals("source:web thisisarondomstringforatestcase", result.getQuery());
+        String queryStr = "thisisarondomstringforatestcase from:twit4j";
+        Query query = new Query(queryStr);
+        QueryResult queryResult = unauthenticated.search(query);
+        assertEquals(0, queryResult.getSinceId());
+        assertTrue(1265204883 < queryResult.getMaxId());
+        System.out.println(queryResult.getRefreshUrl());
+        assertTrue(queryResult.getRefreshUrl().contains(queryStr));
+        assertEquals(15, queryResult.getResultsPerPage());
+        assertEquals(-1, queryResult.getTotal());
+        //warning is not included in the response anymore - 4/24/2009
+//        assertTrue(result.getWarning().contains("adjusted"));
+        assertTrue(3 > queryResult.getCompletedIn());
+        assertEquals(1, queryResult.getPage());
+        assertEquals(queryStr, queryResult.getQuery());
 
-        List<Tweet> tweets = result.getTweets();
+        List<Tweet> tweets = queryResult.getTweets();
         assertEquals(1, tweets.size());
         assertNotNull(tweets.get(0).getText());
         assertNull(tweets.get(0).getToUser());
@@ -576,17 +581,17 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(tweets.get(0).getSource().contains("twitter"));
 
 
-        query = new Query("source:twitter4j doesnothit");
-        result = unauthenticated.search(query);
-        assertEquals(0,result.getSinceId());
-        assertEquals(-1, result.getMaxId());
-        assertNull(result.getRefreshUrl());
-        assertEquals(15, result.getResultsPerPage());
-        assertEquals(-1, result.getTotal());
-        assertNull(result.getWarning());
-        assertTrue(1 > result.getCompletedIn());
-        assertEquals(1, result.getPage());
-        assertEquals("source:twitter4j doesnothit", result.getQuery());
+        query = new Query("from:twit4j doesnothit");
+        queryResult = unauthenticated.search(query);
+        assertEquals(0, queryResult.getSinceId());
+        assertEquals(-1, queryResult.getMaxId());
+        assertNull(queryResult.getRefreshUrl());
+        assertEquals(15, queryResult.getResultsPerPage());
+        assertEquals(-1, queryResult.getTotal());
+        assertNull(queryResult.getWarning());
+        assertTrue(1 > queryResult.getCompletedIn());
+        assertEquals(1, queryResult.getPage());
+        assertEquals("from:twit4j doesnothit", queryResult.getQuery());
     }
 
     public void testProperties() throws Exception{
