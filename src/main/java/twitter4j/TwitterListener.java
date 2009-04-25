@@ -70,11 +70,35 @@ public interface TwitterListener {
 
     void gotFollowersIDs(IDs ids);
 
+    /**
+     * @deprecated use createdFriendship instead
+     */
     void created(User user);
 
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void createdFriendship(User user);
+
+    /**
+     * @deprecated use destroyedFriendship instead
+     */
     void destroyed(User user);
 
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void destroyedFriendship(User user);
+
+    /**
+     * @deprecated use gotExistsFriendship instead
+     */
     void gotExists(boolean exists);
+
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void gotExistsFriendship(boolean exists);
 
     void updatedLocation(User user);
 
@@ -90,9 +114,23 @@ public interface TwitterListener {
 
     void destroyedFavorite(Status status);
 
+    /**
+     * @deprecated use enabledNotification instead
+     */
     void followed(User user);
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void enabledNotification(User user);
 
+    /**
+     * @deprecated use disabledNotification instead
+     */
     void left(User user);
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void disabledNotification(User user);
 
     void blocked(User user);
 

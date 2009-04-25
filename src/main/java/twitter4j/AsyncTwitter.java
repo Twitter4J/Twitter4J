@@ -962,6 +962,7 @@ public class AsyncTwitter extends Twitter {
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.
      * @param id String
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use createFriendshipAsync(String id, TwitterListener listener) instead
      */
     public synchronized void createAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(CREATE, listener, new String[] {id}) {
@@ -970,9 +971,26 @@ public class AsyncTwitter extends Twitter {
             }
         });
     }
+
+    /**
+     * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.
+     *
+     * @param id       String
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void createFriendshipAsync(String id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_FRIENDSHIP, listener, new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.createdFriendship(createFriendship((String) args[0]));
+            }
+        });
+    }
+
     /**
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.
      * @param id String
+     * @deprecated use createFriendshipAsync(String id) instead
      */
     public synchronized void createAsync(String id) {
         getDispatcher().invokeLater(new AsyncTask(CREATE,  new TwitterAdapter(), new String[] {id}) {
@@ -983,9 +1001,20 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.
+     *
+     * @param id String
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void createFriendshipAsync(String id) {
+        createFriendshipAsync(id, new TwitterAdapter());
+    }
+
+    /**
      * Discontinues friendship with the specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.
      * @param id String
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use destroyFriendshipAsync(String id, TwitterListener listener) instead
      */
     public synchronized void destroyAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY, listener, new String[] {id}) {
@@ -995,9 +1024,25 @@ public class AsyncTwitter extends Twitter {
         });
 
     }
+
     /**
      * Discontinues friendship with the specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.
      * @param id String
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void destroyFriendshipAsync(String id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY_FRIENDSHIP, listener, new String[] {id}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.destroyedFriendship(destroyFriendship((String) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Discontinues friendship with the specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.
+     * @param id String
+     * @deprecated use destroyFriendshipAsync(String id) instead
      */
     public synchronized void destroyAsync(String id) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY, new TwitterAdapter(), new String[] {id}) {
@@ -1009,15 +1054,41 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Discontinues friendship with the specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.
+     *
+     * @param id String
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void destroyFriendshipAsync(String id) {
+        destroyFriendshipAsync(id, new TwitterAdapter());
+    }
+
+    /**
      * Tests if a friendship exists between two users.
      *
      * @param user_a The ID or screen_name of the first user to test friendship for.
      * @param user_b The ID or screen_name of the second user to test friendship for.
+     * @deprecated existsFriendshipAsync(String user_a, String user_b, TwitterListener listener)
      */
     public synchronized void existsAsync(String user_a, String user_b, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(EXISTS, listener, new String[]{user_a, user_b}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.gotExists(exists((String) args[0], (String) args[1]));
+            }
+        });
+    }
+
+    /**
+     * Tests if a friendship exists between two users.
+     *
+     * @param user_a The ID or screen_name of the first user to test friendship for.
+     * @param user_b The ID or screen_name of the second user to test friendship for.
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void existsFriendshipAsync(String user_a, String user_b, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(EXISTS_FRIENDSHIP, listener, new String[]{user_a, user_b}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotExistsFriendship(existsFriendship((String) args[0], (String) args[1]));
             }
         });
     }
@@ -1359,6 +1430,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param id       String
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use enableNotificationAsync(String id, TwitterListener listener) instead
      */
     public synchronized void followAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOW, listener, new String[]{id}) {
@@ -1371,7 +1443,23 @@ public class AsyncTwitter extends Twitter {
     /**
      * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
      *
+     * @param id       String
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void enableNotificationAsync(String id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(ENABLE_NOTIFICATION, listener, new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.enabledNotification((enableNotification((String) args[0])));
+            }
+        });
+    }
+
+    /**
+     * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     *
      * @param id String
+     * @deprecated use enableNotificationAsync(String id) instead
      */
     public synchronized void followAsync(String id) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOW, new TwitterAdapter(), new String[]{id}) {
@@ -1382,10 +1470,21 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     *
+     * @param id       String
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void enableNotificationAsync(String id) {
+        enableNotificationAsync(id, new TwitterAdapter());
+    }
+
+    /**
      * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
      *
      * @param id       String
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use disableNotificationAsync(String id, TwitterListener listener) instead
      */
     public synchronized void leaveAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(LEAVE, listener, new String[]{id}) {
@@ -1395,6 +1494,20 @@ public class AsyncTwitter extends Twitter {
         });
     }
 
+    /**
+     * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     *
+     * @param id       String
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void disableNotificationAsync(String id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DISABLE_NOTIFICATION, listener, new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.disabledNotification(disableNotification((String) args[0]));
+            }
+        });
+    }
 
     /**
      * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
@@ -1407,6 +1520,16 @@ public class AsyncTwitter extends Twitter {
                 listener.left(leave((String) args[0]));
             }
         });
+    }
+
+    /**
+     * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     *
+     * @param id       String
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void disableNotificationAsync(String id) {
+        disableNotificationAsync(id, new TwitterAdapter());
     }
 
 
@@ -1544,14 +1667,31 @@ public class AsyncTwitter extends Twitter {
     public final static int DIRECT_MESSAGES = 10;
     public final static int SEND_DIRECT_MESSAGE = 11;
     public final static int CREATE = 12;
+    public final static int CREATE_FRIENDSHIP = 32;
     /**
-     * @deprecated use DESTROY instead.
+     * @deprecated use DESTROY_FRIENDSHIP instead.
      */
     public final static int DESTORY = 13;
+    /**
+     * @deprecated use DESTROY_FRIENDSHIP instead.
+     */
     public final static int DESTROY = 13;
+    public final static int DESTROY_FRIENDSHIP = 33;
+    /**
+     * @deprecated use EXISTS_FRIENDSHIP instead.
+     */
     public final static int EXISTS = 28;
+    public final static int EXISTS_FRIENDSHIP = 34;
+    /**
+     * @deprecated use ENABLE_NOTIFICATION instead.
+     */
     public final static int FOLLOW = 14;
+    public final static int ENABLE_NOTIFICATION = 35;
+    /**
+     * @deprecated use DISABLE_NOTIFICATION instead.
+     */
     public final static int LEAVE = 15;
+    public final static int DISABLE_NOTIFICATION = 36;
     public final static int FAVORITES = 17;
     public final static int FRIENDS_IDS = 29;
     public final static int FOLLOWERS_IDS = 30;

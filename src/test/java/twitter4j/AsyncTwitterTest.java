@@ -149,12 +149,27 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    public void createdFriendship(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
     public void destroyed(User user) {
         this.user = user;
         notifyResponse();
     }
 
+    public void destroyedFriendship(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
     public void gotExists(boolean exists) {
+        this.exists = exists;
+        notifyResponse();
+    }
+
+    public void gotExistsFriendship(boolean exists) {
         this.exists = exists;
         notifyResponse();
     }
@@ -199,7 +214,17 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    public void enabledNotification(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
     public void left(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
+    public void disabledNotification(User user) {
         this.user = user;
         notifyResponse();
     }

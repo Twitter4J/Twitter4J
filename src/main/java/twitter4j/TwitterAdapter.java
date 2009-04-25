@@ -74,9 +74,15 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void created(User user){
     }
+    public void createdFriendship(User user){
+    }
     public void destroyed(User user){
     }
+    public void destroyedFriendship(User user){
+    }
     public void gotExists(boolean exists) {
+    }
+    public void gotExistsFriendship(boolean exists) {
     }
     public void updatedLocation(User user){
     }
@@ -94,7 +100,11 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void followed(User user){
     }
+    public void enabledNotification(User user){
+    }
     public void left(User user){
+    }
+    public void disabledNotification(User user){
     }
     public void blocked(User user){
     }

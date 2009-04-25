@@ -1263,9 +1263,22 @@ public class Twitter implements java.io.Serializable {
      * @param id the ID or screen name of the user to be befriended
      * @return the befriended user
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated use createFriendship(String id) instead
      */
 
     public synchronized User create(String id) throws TwitterException {
+        return createFriendship(id);
+    }
+
+    /**
+     * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     *
+     * @param id the ID or screen name of the user to be befriended
+     * @return the befriended user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized User createFriendship(String id) throws TwitterException {
         return new User(http.post(baseURL + "friendships/create/" + id + ".xml", new PostParameter[0], true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1276,8 +1289,21 @@ public class Twitter implements java.io.Serializable {
      * @param id the ID or screen name of the user for whom to request a list of friends
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated use destroyFriendship(String id) instead
      */
     public synchronized User destroy(String id) throws TwitterException {
+        return destroyFriendship(id);
+    }
+
+    /**
+     * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     *
+     * @param id the ID or screen name of the user for whom to request a list of friends
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized User destroyFriendship(String id) throws TwitterException {
         return new User(http.post(baseURL + "friendships/destroy/" + id + ".xml", new PostParameter[0], true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1285,13 +1311,26 @@ public class Twitter implements java.io.Serializable {
     /**
      * Tests if a friendship exists between two users.
      *
-     * @param user_a The ID or screen_name of the first user to test friendship for.
-     * @param user_b The ID or screen_name of the second user to test friendship for.
+     * @param userA The ID or screen_name of the first user to test friendship for.
+     * @param userB The ID or screen_name of the second user to test friendship for.
      * @return if a friendship exists between two users.
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated use friendshipExists(String userA, String userB)
      */
-    public synchronized boolean exists(String user_a, String user_b) throws TwitterException {
-        return get(baseURL + "friendships/exists.xml", "user_a", user_a, "user_b", user_b, true).
+    public synchronized boolean exists(String userA, String userB) throws TwitterException {
+        return existsFriendship(userA, userB);
+    }
+    /**
+     * Tests if a friendship exists between two users.
+     *
+     * @param userA The ID or screen_name of the first user to test friendship for.
+     * @param userB The ID or screen_name of the second user to test friendship for.
+     * @return if a friendship exists between two users.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized boolean existsFriendship(String userA, String userB) throws TwitterException {
+        return get(baseURL + "friendships/exists.xml", "user_a", userA, "user_b", userB, true).
                 asString().contains("true");
     }
 
@@ -1551,8 +1590,21 @@ public class Twitter implements java.io.Serializable {
      * @param id String
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated use enableNotification(String id) instead
      */
     public synchronized User follow(String id) throws TwitterException {
+        return enableNotification(id);
+    }
+
+    /**
+     * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     *
+     * @param id String
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized User enableNotification(String id) throws TwitterException {
         return new User(http.post(baseURL + "notifications/follow/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1563,8 +1615,21 @@ public class Twitter implements java.io.Serializable {
      * @param id String
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated use disableNotification(String id) instead
      */
     public synchronized User leave(String id) throws TwitterException {
+        return disableNotification(id);
+    }
+
+    /**
+     * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     *
+     * @param id String
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized User disableNotification(String id) throws TwitterException {
         return new User(http.post(baseURL + "notifications/leave/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
