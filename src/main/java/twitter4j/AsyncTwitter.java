@@ -1143,6 +1143,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Discontinues friendship with the specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.
      * @param id String
+>>>>>>> ab5411a88db762b8623825e30f92d1b7edd06464:src/main/java/twitter4j/AsyncTwitter.java
      * @deprecated use destroyFriendshipAsync(String id) instead
      */
     public synchronized void destroyAsync(String id) {
