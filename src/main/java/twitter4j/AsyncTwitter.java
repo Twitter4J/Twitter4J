@@ -1683,8 +1683,14 @@ public class AsyncTwitter extends Twitter {
     private static transient Dispatcher dispatcher;
 
     private Dispatcher getDispatcher(){
-        if(null == dispatcher){
-            dispatcher = new Dispatcher("Twitter4J Async Dispatcher");
+        if (null == dispatcher) {
+            int numThreads = 1;
+            try {
+                numThreads = Integer.parseInt(System.getProperty("twitter4j.async.numThreads"));
+            } catch (NumberFormatException nfe) {
+
+            }
+            dispatcher = new Dispatcher("Twitter4J Async Dispatcher", numThreads);
         }
         return dispatcher;
     }

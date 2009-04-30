@@ -52,7 +52,7 @@ public class Twitter implements java.io.Serializable {
     private boolean usePostForcibly = false;
     private static final int MAX_COUNT = 200;
     private static final long serialVersionUID = -7550633067620779906L;
-    /*package*/ static final String VERSION = "2.0.0";
+    /*package*/ static final String VERSION = "2.0.1";
 
     public Twitter() {
         http = new HttpClient();
