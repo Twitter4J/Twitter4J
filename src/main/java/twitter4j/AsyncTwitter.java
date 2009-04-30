@@ -1681,7 +1681,7 @@ public class AsyncTwitter extends Twitter {
         });
     }
 
-    private transient Dispatcher dispatcher;
+    private static transient Dispatcher dispatcher;
 
     private Dispatcher getDispatcher(){
         if(null == dispatcher){
