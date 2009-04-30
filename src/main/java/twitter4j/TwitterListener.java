@@ -46,7 +46,16 @@ public interface TwitterListener {
 
     void updated(Status status);
 
+    /**
+     * @deprecated use gotMentions instead
+     */
     void gotReplies(List<Status> statuses);
+
+    /**
+     * @since Twitter4J 2.0.1
+     */
+
+    void gotMentions(List<Status> statuses);
 
     void destroyedStatus(Status destroyedStatus);
 

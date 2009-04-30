@@ -89,6 +89,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    public void gotMentions(List<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
+
     public void destroyedStatus(Status destroyedStatus) {
         this.status = destroyedStatus;
         notifyResponse();
@@ -404,7 +409,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertEquals("size", 10, statuses.size());
         twitterAPI2.getUserTimelineAsync(id1, 10,999383469l, this);
         waitForResponse();
-        assertEquals("size", 10, statuses.size());
+        assertEquals("size", 20, statuses.size());
         twitterAPI1.getUserTimelineAsync(15, new Date(0), this);
         waitForResponse();
         assertTrue("size", 5 < statuses.size());

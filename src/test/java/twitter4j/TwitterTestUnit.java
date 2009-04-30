@@ -379,7 +379,7 @@ public class TwitterTestUnit extends TestCase {
         actualReturn = twitterAPI1.getFollowers(1);
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFollowers(2);
-        assertTrue(actualReturn.size() == 0);
+        assertEquals(0,actualReturn.size());
 
         actualReturn = twitterAPI2.getFollowers();
         assertTrue(actualReturn.size() > 0);

@@ -88,18 +88,31 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user and that user's friends.
+     *  It's also possible to request another user's friends_timeline via the id parameter below.
+     * @param paging controls pagination
+     * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @since Twitter4J 2.0.1
+     */
+
+    public synchronized void getFriendsTimelineAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener,new Object[]{paging}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimeline((Paging)args[0]));
+            }
+        });
+    }
+
+    /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
-     * @deprecated use getFriendsTimelineAsync(int page, TwitterListener listener instead
+     * @deprecated use getFriendsTimelineAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
     public synchronized void getFriendsTimelineByPageAsync(int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimelineByPage( (Integer) args[0]));
-            }
-        });
+        getFriendsTimelineAsync(new Paging(page),listener);
     }
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
@@ -107,13 +120,10 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @deprecated use getFriendsTimelineAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineAsync(int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimeline( (Integer) args[0]));
-            }
-        });
+        getFriendsTimelineAsync(new Paging(page),listener);
     }
 
 
@@ -124,13 +134,10 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @deprecated use getFriendsTimelineAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineAsync(long sinceId, int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {sinceId, page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimeline((Long)args[0], (Integer) args[1]));
-            }
-        });
+        getFriendsTimelineAsync(new Paging(page,sinceId),listener);
     }
 
     /**
@@ -150,17 +157,30 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
      * @param id String user ID
+     * @param paging controls pagination
+     * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[]{id, paging}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFriendsTimeline(getFriendsTimeline((String) args[0], (Paging) args[1]));
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
+     * @param id String user ID
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
      * @deprecated use getFriendsTimelineAsync(String id, int page, TwitterListener listener instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @deprecated use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineByPageAsync(String id, int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id,page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimelineByPage( (String) args[0],(Integer)args[1]));
-            }
-        });
+        getFriendsTimelineAsync(id, new Paging(page), listener);
     }
 
 
@@ -171,13 +191,10 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @deprecated use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineAsync(String id, int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id,page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimeline( (String) args[0],(Integer)args[1]));
-            }
-        });
+        getFriendsTimelineAsync(id, new Paging(page), listener);
     }
 
     /**
@@ -187,13 +204,10 @@ public class AsyncTwitter extends Twitter {
      * @param page the number of page
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @deprecated use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineAsync(long sinceId, String id, int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {sinceId, id, page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimeline((Long) args[0], (String) args[1], (Integer) args[2]));
-            }
-        });
+        getFriendsTimelineAsync(id, new Paging(page, sinceId), listener);
     }
 
 
@@ -202,7 +216,7 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
-     * @deprecated use getFriendsTimelineAsync(long sinceId, TwitterListener listener) instead
+     * @deprecated use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineAsync(Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {since}) {
@@ -218,13 +232,10 @@ public class AsyncTwitter extends Twitter {
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @deprecated use getFriendsTimelineAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineAsync(long sinceId, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {sinceId}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimeline( (Long) args[0]));
-            }
-        });
+        getFriendsTimelineAsync(new Paging(sinceId), listener);
     }
 
     /**
@@ -232,8 +243,8 @@ public class AsyncTwitter extends Twitter {
      * @param id String user ID
      * @param since Date
      * @param listener TwitterListener a listener object that receives the response
-     * @deprecated use getFriendsTimelineAsync(String id, long sinceId, TwitterListener listner) instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @deprecated use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineAsync(String id, Date since, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id, since}) {
@@ -249,13 +260,10 @@ public class AsyncTwitter extends Twitter {
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
+     * @deprecated use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFriendsTimelineAsync(String id, long sinceId, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id, sinceId}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimeline( (String) args[0], (Long) args[1]));
-            }
-        });
+        getFriendsTimelineAsync(id, new Paging(sinceId), listener);
     }
 
     /**
@@ -278,24 +286,39 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified user id.
      *
+     * @param id Specifies the ID or screen name of the user for whom to return the user_timeline.
+     * @param paging controls pagination
+     * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void getUserTimelineAsync(String id, Paging paging,
+                                                  TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener,
+                new Object[]{id, paging}) {
+            public void invoke(TwitterListener listener, Object[] args)
+                    throws TwitterException {
+                listener.gotUserTimeline(getUserTimeline((String) args[0],
+                        (Paging) args[1]));
+            }
+        });
+    }
+
+    /**
+     * Returns the most recent statuses posted in the last 24 hours from the specified user id.
+     *
      * @param id       String
      * @param page    int
      * @param sinceId  Returns only statuses with an ID greater than (that is, more recent than) the specified ID
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use getUserTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getUserTimelineAsync(String id, int page,
                                                   long sinceId,
                                                   TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener,
-                new Object[]{id, page, sinceId}) {
-            public void invoke(TwitterListener listener, Object[] args)
-                    throws TwitterException {
-                listener.gotUserTimeline(getUserTimeline((String) args[0],
-                        (Integer) args[1], (Long) args[2]));
-            }
-        });
+        getUserTimelineAsync(id, new Paging(page, sinceId), listener);
     }
 
     /**
@@ -320,13 +343,10 @@ public class AsyncTwitter extends Twitter {
      * @param count int
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
+     * @deprecated use getUserTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getUserTimelineAsync(String id, int count, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Object[] {id, count}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotUserTimeline(getUserTimeline( (String) args[0], (Integer) args[1]));
-            }
-        });
+        getUserTimelineAsync(id, new Paging().count(count), listener);
     }
 
     /**
@@ -346,21 +366,37 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns the most recent statuses posted in the last 24 hours from the specified user id.
+     *
+     * @param paging   controls pagination
+     * @param listener TwitterListener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void getUserTimelineAsync(Paging paging,
+                                                  TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener,
+                new Object[]{paging}) {
+            public void invoke(TwitterListener listener, Object[] args)
+                    throws TwitterException {
+                listener.gotUserTimeline(getUserTimeline((Paging) args[0]));
+            }
+        });
+    }
+
+    /**
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
-     * @param count int
-     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
+     *
+     * @param count    int
+     * @param sinceId  Returns only statuses with an ID greater than (that is, more recent than) the specified ID
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use getUserTimelineAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getUserTimelineAsync(int count, long sinceId,
                                                   TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener,
-                new Object[] {count, sinceId}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotUserTimeline(getUserTimeline( (Integer) args[0], (Long) args[1]));
-            }
-        });
+        getUserTimelineAsync(new Paging(sinceId).count(count), listener);
     }
 
     /**
@@ -384,17 +420,11 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use getUserTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getUserTimelineAsync(String id, long sinceId,
                                                   TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener,
-                new Object[]{id, sinceId}) {
-            public void invoke(TwitterListener listener, Object[] args)
-                    throws TwitterException {
-                listener.gotUserTimeline(getUserTimeline((String) args[0],
-                        (Long) args[1]));
-            }
-        });
+        getUserTimelineAsync(id, new Paging(sinceId),listener);
     }
 
     /**
@@ -416,13 +446,10 @@ public class AsyncTwitter extends Twitter {
      * @param listener TwitterListener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use getUserTimelineAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getUserTimelineAsync(long sinceId, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(USER_TIMELINE, listener, new Long[]{sinceId}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotUserTimeline(getUserTimeline((Long)args[0]));
-            }
-        });
+        getUserTimelineAsync(new Paging(sinceId), listener);
     }
 
     /**
@@ -531,16 +558,40 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void getMentionsAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(MENTIONS, listener, null) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotMentions(getMentions());
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
+     * @param paging controls pagination
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void getMentionsAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(MENTIONS, listener, new Object[]{paging}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotMentions(getMentions((Paging)args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 1.1.8
+     * @deprecated use getMentionsAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getRepliesAsync(long sinceId, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, new Object[]{sinceId}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotReplies(getReplies((Long)args[0]));
-            }
-        });
+        getMentionsAsync(new Paging(sinceId), listener);
     }
 
     /**
@@ -548,13 +599,10 @@ public class AsyncTwitter extends Twitter {
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
      * @deprecated use getRepliesAsync(int page, TwitterListener listener) instead
+     * @deprecated use getMentionsAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getRepliesByPageAsync(int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, new Object[]{page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotReplies(getRepliesByPage((Integer)args[0]));
-            }
-        });
+        getMentionsAsync(new Paging(page), listener);
     }
 
     /**
@@ -562,13 +610,10 @@ public class AsyncTwitter extends Twitter {
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 1.1.8
+     * @deprecated use getMentionsAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getRepliesAsync(int page,TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, new Object[]{page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotReplies(getReplies((Integer)args[0]));
-            }
-        });
+        getMentionsAsync(new Paging(page), listener);
     }
 
     /**
@@ -577,13 +622,10 @@ public class AsyncTwitter extends Twitter {
      * @param page int
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 1.1.8
+     * @deprecated use getMentionsAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getRepliesAsync(long sinceId, int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, new Object[]{sinceId, page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotReplies(getReplies((Long)args[0], (Integer)args[1]));
-            }
-        });
+        getMentionsAsync(new Paging(page, sinceId), listener);
     }
 
     /**
@@ -671,18 +713,31 @@ public class AsyncTwitter extends Twitter {
         });
     }
 
+
+    /**
+     * Returns the specified user's friends, each with current status inline.
+     * @param paging controls pagination
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void getFriendsAsync(Paging paging,TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[]{paging}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotFriends(getFriends((Paging)args[0]));
+            }
+        });
+    }
+
     /**
      * Returns the specified user's friends, each with current status inline.
      * @param page number of the page to retrieve friends
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use getFriendsAsync(Paging paging,TwitterListener listener) instead
      */
     public synchronized void getFriendsAsync(int page,TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[]{page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriends(getFriends((Integer)args[0]));
-            }
-        });
+        getFriendsTimelineAsync(new Paging(page), listener);
     }
+
     /**
      * Returns the user's friends, each with current status inline.
      * @param id String
@@ -699,15 +754,27 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the user's friends, each with current status inline.
      * @param id String
-     * @param page int
+     * @param paging controls pagination
      * @param listener TwitterListener a listener object that receives the response
      */
-    public synchronized void getFriendsAsync(String id,int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[] {id,page}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriends(getFriends( (String) args[0],(Integer)args[1]));
+    public synchronized void getFriendsAsync(String id, Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[] {id,paging}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFriends(getFriends((String) args[0], (Paging) args[1]));
             }
         });
+    }
+
+
+    /**
+     * Returns the user's friends, each with current status inline.
+     * @param id String
+     * @param page int
+     * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use getFriendsAsync(String id, Paging paging, TwitterListener listener) instead
+     */
+    public synchronized void getFriendsAsync(String id,int page, TwitterListener listener) {
+        getFriendsAsync(id, new Paging(page), listener);
     }
 
 
@@ -725,16 +792,27 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * @param paging controls pagination
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void getFollowersAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{paging}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowers(getFollowers((Paging) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * @param page Retrieves the next 100 followers.
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 1.1.0
+     * @deprecated use getFollowersAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFollowersAsync(int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{page}) {
-            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFollowers(getFollowers((Integer) args[0]));
-            }
-        });
+        getFollowersAsync(new Paging(page), listener);
     }
 
     /**
@@ -755,16 +833,28 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * @param id The ID or screen name of the user for whom to request a list of followers.
+     * @param paging controls pagination
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     */
+    public synchronized void getFollowersAsync(String id, Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id, paging}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowers(getFollowers((String) args[0], (Paging) args[1]));
+            }
+        });
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * @param id The ID or screen name of the user for whom to request a list of followers.
      * @param page Retrieves the next 100 followers.
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 1.1.0
+     * @deprecated use getFollowersAsync(String id, Paging paging, TwitterListener listener) instead
      */
     public synchronized void getFollowersAsync(String id, int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id, page}) {
-            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFollowers(getFollowers((String) args[0], (Integer) args[1]));
-            }
-        });
+        getFollowersAsync(id, new Paging(page), listener);
     }
 
     /**
@@ -806,15 +896,26 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Returns a list of the direct messages sent to the authenticating user.
-     * @param page int
+     * @param paging controls pagination
      * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
      */
-    public synchronized void getDirectMessagesByPageAsync(int page, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {page}) {
+    public synchronized void getDirectMessagesAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {paging}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotDirectMessages(getDirectMessagesByPage( (Integer) args[0]));
+                listener.gotDirectMessages(getDirectMessages( (Paging) args[0]));
             }
         });
+    }
+
+    /**
+     * Returns a list of the direct messages sent to the authenticating user.
+     * @param page int
+     * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use getDirectMessagesAsync(Paging paging, TwitterListener listener) instead
+     */
+    public synchronized void getDirectMessagesByPageAsync(int page, TwitterListener listener) {
+        getDirectMessagesAsync(new Paging(page), listener);
     }
 
     /**
@@ -823,17 +924,11 @@ public class AsyncTwitter extends Twitter {
      * @param sinceId Returns only direct messages with an ID greater than (that is, more recent than) the specified ID.
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 2.0.0
+     * @deprecated use getDirectMessagesAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getDirectMessagesByPageAsync(int page
             , int sinceId, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener
-                , new Object[]{page, sinceId}) {
-            public void invoke(TwitterListener listener, Object[] args)
-                    throws TwitterException {
-                listener.gotDirectMessages(getDirectMessages(
-                        (Integer) args[0], (Integer) args[1]));
-            }
-        });
+        getDirectMessagesAsync(new Paging(page,(long)sinceId), listener);
     }
 
     /**
@@ -853,14 +948,12 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent to the authenticating user.
      * @param sinceId int
      * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use getDirectMessagesAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getDirectMessagesAsync(int sinceId, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {sinceId}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotDirectMessages(getDirectMessages( (Integer) args[0]));
-            }
-        });
+        getDirectMessagesAsync(new Paging((long)sinceId), listener);
     }
+
     /**
      * Returns a list of the direct messages sent by the authenticating user.
      * @param listener TwitterListener a listener object that receives the response
@@ -889,15 +982,26 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Returns a list of the direct messages sent by the authenticating user.
-     * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
+     * @param paging controls pagination
      * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
      */
-    public synchronized void getSentDirectMessagesAsync(int sinceId, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {sinceId}) {
+    public synchronized void getSentDirectMessagesAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[] {paging}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotSentDirectMessages(getSentDirectMessages( (Integer) args[0]));
+                listener.gotSentDirectMessages(getSentDirectMessages( (Paging) args[0]));
             }
         });
+    }
+
+    /**
+     * Returns a list of the direct messages sent by the authenticating user.
+     * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
+     * @param listener TwitterListener a listener object that receives the response
+     * @deprecated use getSentDirectMessagesAsync(Paging paging, TwitterListener listener) instead
+     */
+    public synchronized void getSentDirectMessagesAsync(int sinceId, TwitterListener listener) {
+        getSentDirectMessagesAsync(new Paging((long) sinceId), listener);
     }
 
     /**
@@ -906,14 +1010,11 @@ public class AsyncTwitter extends Twitter {
      * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
      * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 2.0.0
+     * @deprecated use getSentDirectMessagesAsync(Paging paging, TwitterListener listener) instead
      */
     public synchronized void getSentDirectMessagesAsync(int page
             , int sinceId, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listener, new Object[]{page,sinceId}) {
-            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotSentDirectMessages(getSentDirectMessages((Integer) args[0],(Integer) args[1]));
-            }
-        });
+        getSentDirectMessagesAsync(new Paging(page, (long) sinceId), listener);
     }
 
     /**
@@ -1659,7 +1760,11 @@ public class AsyncTwitter extends Twitter {
     public final static int USER_TIMELINE = 2;
     public final static int SHOW = 3;
     public final static int UPDATE = 4;
+    /**
+     * @deprecated use DESTROY_FRIENDSHIP instead.
+     */
     public final static int REPLIES = 5;
+    public final static int MENTIONS = 37;
     public final static int FRIENDS = 6;
     public final static int FOLLOWERS = 7;
     public final static int FEATURED = 8;
