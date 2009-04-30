@@ -184,7 +184,7 @@ public class Twitter implements java.io.Serializable {
      *
      * @param userId new userid
      */
-    public void setUserId(String userId) {
+    public synchronized void setUserId(String userId) {
         http.setUserId(System.getProperty("twitter4j.user", userId));
     }
 
@@ -202,7 +202,7 @@ public class Twitter implements java.io.Serializable {
      *
      * @param password new password
      */
-    public void setPassword(String password) {
+    public synchronized void setPassword(String password) {
         http.setPassword(System.getProperty("twitter4j.password", password));
     }
 
@@ -221,7 +221,7 @@ public class Twitter implements java.io.Serializable {
      * @param consumerSecret OAuth consumer secret
      * @since Twitter 2.0.0
      */
-    public void setOAuthConsumer(String consumerKey, String consumerSecret){
+    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
         this.http.setOAuthConsumer(consumerKey, consumerSecret);
     }
 
@@ -246,7 +246,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.0
      */
-    public AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
+    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
         return http.getOAuthAccessToken(requestToken);
     }
 
@@ -497,7 +497,7 @@ public class Twitter implements java.io.Serializable {
      * @return list of statuses of the Public Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<Status> getPublicTimeline() throws
+    public List<Status> getPublicTimeline() throws
             TwitterException {
         return Status.constructStatuses(get(baseURL +
                 "statuses/public_timeline.xml", false).
@@ -511,7 +511,7 @@ public class Twitter implements java.io.Serializable {
      * @return the 20 most recent statuses
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<Status> getPublicTimeline(int sinceID) throws
+    public List<Status> getPublicTimeline(int sinceID) throws
             TwitterException {
         return Status.constructStatuses(get(baseURL +
                 "statuses/public_timeline.xml", null, new Paging().sinceId(sinceID), false).
@@ -526,7 +526,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
-    public synchronized List<Status> getFriendsTimeline() throws
+    public List<Status> getFriendsTimeline() throws
             TwitterException {
         return getFriendsTimeline(new Paging());
     }
@@ -540,7 +540,7 @@ public class Twitter implements java.io.Serializable {
      * @deprecated use getFriendsTimeline(Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
-    public synchronized List<Status> getFriendsTimelineByPage(int page) throws
+    public List<Status> getFriendsTimelineByPage(int page) throws
             TwitterException {
         return getFriendsTimeline(page);
     }
@@ -555,7 +555,7 @@ public class Twitter implements java.io.Serializable {
      * @deprecated use getFriendsTimeline(Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
-    public synchronized List<Status> getFriendsTimeline(int page) throws
+    public List<Status> getFriendsTimeline(int page) throws
             TwitterException {
         return getFriendsTimeline(new Paging(page));
     }
@@ -571,7 +571,7 @@ public class Twitter implements java.io.Serializable {
      * @deprecated use getFriendsTimeline(Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
-    public synchronized List<Status> getFriendsTimeline(long sinceId, int page) throws
+    public List<Status> getFriendsTimeline(long sinceId, int page) throws
             TwitterException {
         return getFriendsTimeline(new Paging(page).sinceId(sinceId));
     }
@@ -585,7 +585,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
 
-    public synchronized List<Status> getFriendsTimeline(String id) throws
+    public List<Status> getFriendsTimeline(String id) throws
             TwitterException {
         return getFriendsTimeline(id, new Paging());
     }
@@ -601,7 +601,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      * @deprecated use getFriendsTimeline(String id, Paging paging) instead
      */
-    public synchronized List<Status> getFriendsTimelineByPage(String id, int page) throws
+    public List<Status> getFriendsTimelineByPage(String id, int page) throws
             TwitterException {
         return getFriendsTimeline(id, new Paging(page));
     }
@@ -617,7 +617,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      * @deprecated use getFriendsTimeline(String id, Paging paging) instead
      */
-    public synchronized List<Status> getFriendsTimeline(String id, int page) throws
+    public List<Status> getFriendsTimeline(String id, int page) throws
             TwitterException {
         return getFriendsTimeline(id, new Paging(page));
     }
@@ -634,7 +634,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      * @deprecated use getFriendsTimeline(String id, Paging paging) instead
      */
-    public synchronized List<Status> getFriendsTimeline(long sinceId, String id, int page) throws
+    public List<Status> getFriendsTimeline(long sinceId, String id, int page) throws
             TwitterException {
         return getFriendsTimeline(id, new Paging(page).sinceId(sinceId));
     }
@@ -648,7 +648,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
-    public synchronized List<Status> getFriendsTimeline(Paging paging) throws
+    public List<Status> getFriendsTimeline(Paging paging) throws
             TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/friends_timeline.xml",null, paging, true).asDocument(), this);
     }
@@ -663,7 +663,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
-    public synchronized List<Status> getFriendsTimeline(String id, Paging paging) throws
+    public List<Status> getFriendsTimeline(String id, Paging paging) throws
             TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml",null, paging, true).asDocument(), this);
     }
@@ -678,7 +678,7 @@ public class Twitter implements java.io.Serializable {
      * @deprecated use getFriendsTimeline(Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
-    public synchronized List<Status> getFriendsTimeline(Date since) throws
+    public List<Status> getFriendsTimeline(Date since) throws
             TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/friends_timeline.xml",
                 "since", format.format(since), true).asDocument(), this);
@@ -694,7 +694,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      * @deprecated use getFriendsTimeline(Paging paging) instead
      */
-    public synchronized List<Status> getFriendsTimeline(long sinceId) throws
+    public List<Status> getFriendsTimeline(long sinceId) throws
             TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/friends_timeline.xml",
                 "since_id", String.valueOf(sinceId), true).asDocument(), this);
@@ -710,7 +710,7 @@ public class Twitter implements java.io.Serializable {
      * @deprecated use getFriendsTimeline(String id, Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      */
-    public synchronized List<Status> getFriendsTimeline(String id,
+    public List<Status> getFriendsTimeline(String id,
                                                         Date since) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml",
                 "since", format.format(since), true).asDocument(), this);
@@ -727,7 +727,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      * @deprecated use getFriendsTimeline(String id, Paging paging) instead
      */
-    public synchronized List<Status> getFriendsTimeline(String id,
+    public List<Status> getFriendsTimeline(String id,
                                                         long sinceId) throws TwitterException {
         return getFriendsTimeline(id,new Paging().sinceId(sinceId));
     }
@@ -744,7 +744,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @deprecated using long sinceId is suggested.
      */
-    public synchronized List<Status> getUserTimeline(String id, int count,
+    public List<Status> getUserTimeline(String id, int count,
                                                      Date since) throws TwitterException {
         if (MAX_COUNT < count) {
             throw new IllegalArgumentException("count may not be greater than " + MAX_COUNT + " for performance purposes.");
@@ -765,7 +765,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @deprecated use getUserTimeline(String id, Paging paging) instead
      */
-    public synchronized List<Status> getUserTimeline(String id, int count,
+    public List<Status> getUserTimeline(String id, int count,
                                                      long sinceId) throws TwitterException {
         return getUserTimeline(id, new Paging().count(count).sinceId(sinceId));
     }
@@ -780,7 +780,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      */
-    public synchronized List<Status> getUserTimeline(String id, Paging paging)
+    public List<Status> getUserTimeline(String id, Paging paging)
             throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml",
                 null, paging, true).asDocument(), this);
@@ -796,7 +796,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @deprecated use getUserTimeline(String id, Paging paging) instead
      */
-    public synchronized List<Status> getUserTimeline(String id, Date since) throws TwitterException {
+    public List<Status> getUserTimeline(String id, Date since) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml",
                 "since", format.format(since), true).asDocument(), this);
     }
@@ -811,7 +811,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @deprecated use getUserTimeline(String id, Paging paging) instead
      */
-    public synchronized List<Status> getUserTimeline(String id, int count) throws
+    public List<Status> getUserTimeline(String id, int count) throws
             TwitterException {
         if (MAX_COUNT < count) {
             throw new IllegalArgumentException("count may not be greater than " + MAX_COUNT + " for performance purposes.");
@@ -830,7 +830,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @deprecated using long sinceId is suggested.
      */
-    public synchronized List<Status> getUserTimeline(int count, Date since) throws TwitterException {
+    public List<Status> getUserTimeline(int count, Date since) throws TwitterException {
         if (MAX_COUNT < count) {
             throw new IllegalArgumentException("count may not be greater than " + MAX_COUNT + " for performance purposes.");
         }
@@ -849,7 +849,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @deprecated use getUserTimeline(String id, Paging paging) instead
      */
-    public synchronized List<Status> getUserTimeline(int count, long sinceId) throws TwitterException {
+    public List<Status> getUserTimeline(int count, long sinceId) throws TwitterException {
         return getUserTimeline(new Paging(sinceId).count(count));
     }
 
@@ -861,7 +861,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      */
-    public synchronized List<Status> getUserTimeline(String id) throws TwitterException {
+    public List<Status> getUserTimeline(String id) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline/" + id + ".xml", true).asDocument(), this);
     }
 
@@ -876,7 +876,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @deprecated use getUserTimeline(String id, Paging paging) instead
      */
-    public synchronized List<Status> getUserTimeline(String id, long sinceId) throws TwitterException {
+    public List<Status> getUserTimeline(String id, long sinceId) throws TwitterException {
         return getUserTimeline(id, new Paging(sinceId));
     }
 
@@ -887,7 +887,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      */
-    public synchronized List<Status> getUserTimeline() throws
+    public List<Status> getUserTimeline() throws
             TwitterException {
         return getUserTimeline(new Paging());
     }
@@ -901,7 +901,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/usertimeline">Twitter API Wiki / REST API Documentation - statuses/user_timeline</a>
      * @since Twitter4J 2.0.1
      */
-    public synchronized List<Status> getUserTimeline(Paging paging) throws
+    public List<Status> getUserTimeline(Paging paging) throws
             TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml"
                 , null, paging, true).asDocument(), this);
@@ -917,7 +917,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @deprecated use getUserTimeline(Paging paging) instead
      */
-    public synchronized List<Status> getUserTimeline(long sinceId) throws
+    public List<Status> getUserTimeline(long sinceId) throws
             TwitterException {
         return getUserTimeline(new Paging(sinceId));
     }
@@ -932,7 +932,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/show">Twitter API Wiki / REST API Documentation - statuses/show</a>
      */
 
-    public synchronized Status show(int id) throws TwitterException {
+    public Status show(int id) throws TwitterException {
         return new Status(get(baseURL + "statuses/show/" + id + ".xml", false).asDocument().getDocumentElement(), this);
     }
 
@@ -946,7 +946,7 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/show">Twitter API Wiki / REST API Documentation - statuses/show</a>
      */
 
-    public synchronized Status show(long id) throws TwitterException {
+    public Status show(long id) throws TwitterException {
         return new Status(get(baseURL + "statuses/show/" + id + ".xml", false).asDocument().getDocumentElement(), this);
     }
 
@@ -992,7 +992,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getMentions() instead
      */
-    public synchronized List<Status> getReplies() throws TwitterException {
+    public List<Status> getReplies() throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/replies.xml", true).asDocument(), this);
     }
 
@@ -1005,7 +1005,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 1.1.8
      * @deprecated use getMentions(Paging paging) instead
      */
-    public synchronized List<Status> getReplies(long sinceId) throws TwitterException {
+    public List<Status> getReplies(long sinceId) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/replies.xml",
                 "since_id", String.valueOf(sinceId), true).asDocument(), this);
     }
@@ -1018,7 +1018,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getMentions(Paging paging) instead
      */
-    public synchronized List<Status> getRepliesByPage(int page) throws TwitterException {
+    public List<Status> getRepliesByPage(int page) throws TwitterException {
         if (page < 1) {
             throw new IllegalArgumentException("page should be positive integer. passed:" + page);
         }
@@ -1035,7 +1035,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 1.1.8
      * @deprecated use getMentions(Paging paging) instead
      */
-    public synchronized List<Status> getReplies(int page) throws TwitterException {
+    public List<Status> getReplies(int page) throws TwitterException {
         if (page < 1) {
             throw new IllegalArgumentException("page should be positive integer. passed:" + page);
         }
@@ -1053,7 +1053,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 1.1.8
      * @deprecated use getMentions(Paging paging) instead
      */
-    public synchronized List<Status> getReplies(long sinceId, int page) throws TwitterException {
+    public List<Status> getReplies(long sinceId, int page) throws TwitterException {
         if (page < 1) {
             throw new IllegalArgumentException("page should be positive integer. passed:" + page);
         }
@@ -1069,7 +1069,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized List<Status> getMentions() throws TwitterException {
+    public List<Status> getMentions() throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/mentions.xml",
                 null, true).asDocument(), this);
     }
@@ -1082,7 +1082,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized List<Status> getMentions(Paging paging) throws TwitterException {
+    public List<Status> getMentions(Paging paging) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "statuses/mentions.xml",
                 null, paging, true).asDocument(), this);
     }
@@ -1108,7 +1108,7 @@ public class Twitter implements java.io.Serializable {
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<User> getFriends() throws TwitterException {
+    public List<User> getFriends() throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends.xml", true).asDocument(), this);
     }
 
@@ -1120,7 +1120,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized List<User> getFriends(Paging paging) throws TwitterException {
+    public List<User> getFriends(Paging paging) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends.xml", null,
                 paging, true).asDocument(), this);
     }
@@ -1133,7 +1133,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getFriends(Paging paging) instead
      */
-    public synchronized List<User> getFriends(int page) throws TwitterException {
+    public List<User> getFriends(int page) throws TwitterException {
         return getFriends(new Paging(page));
     }
 
@@ -1144,7 +1144,7 @@ public class Twitter implements java.io.Serializable {
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<User> getFriends(String id) throws TwitterException {
+    public List<User> getFriends(String id) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends/" + id + ".xml"
                 , true).asDocument(), this);
     }
@@ -1158,7 +1158,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized List<User> getFriends(String id, Paging paging) throws TwitterException {
+    public List<User> getFriends(String id, Paging paging) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends/" + id + ".xml"
                 , null, paging, true).asDocument(), this);
     }
@@ -1172,7 +1172,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getFriends(String id, Paging paging) instead
      */
-    public synchronized List<User> getFriends(String id, int page) throws TwitterException {
+    public List<User> getFriends(String id, int page) throws TwitterException {
         return getFriends(id, new Paging(page));
     }
 
@@ -1182,7 +1182,7 @@ public class Twitter implements java.io.Serializable {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<User> getFollowers() throws TwitterException {
+    public List<User> getFollowers() throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers.xml", true).asDocument(), this);
     }
 
@@ -1194,7 +1194,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized List<User> getFollowers(Paging paging) throws TwitterException {
+    public List<User> getFollowers(Paging paging) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers.xml", null
                 , paging, true).asDocument(), this);
     }
@@ -1208,7 +1208,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 1.1.0
      * @deprecated use getFollowers(Paging paging) instead
      */
-    public synchronized List<User> getFollowers(int page) throws TwitterException {
+    public List<User> getFollowers(int page) throws TwitterException {
         return getFollowers(new Paging(page));
     }
 
@@ -1220,7 +1220,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.0
      */
-    public synchronized List<User> getFollowers(String id) throws TwitterException {
+    public List<User> getFollowers(String id) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers/" + id + ".xml", true).asDocument(), this);
     }
 
@@ -1233,7 +1233,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized List<User> getFollowers(String id, Paging paging) throws TwitterException {
+    public List<User> getFollowers(String id, Paging paging) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers/" + id +
                 ".xml", null, paging, true).asDocument(), this);
     }
@@ -1248,7 +1248,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 1.1.0
      * @deprecated use getFollowers(String id, Paging paging) instead
      */
-    public synchronized List<User> getFollowers(String id, int page) throws TwitterException {
+    public List<User> getFollowers(String id, int page) throws TwitterException {
         return getFollowers(id, new Paging(page));
     }
 
@@ -1258,7 +1258,7 @@ public class Twitter implements java.io.Serializable {
      * @return List of User
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<User> getFeatured() throws TwitterException {
+    public List<User> getFeatured() throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/featured.xml", true).asDocument(), this);
     }
 
@@ -1270,7 +1270,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#users/show">Twitter API &gt; User Methods &gt; users/show</a>
      */
-    public synchronized ExtendedUser getUserDetail(String id) throws TwitterException {
+    public ExtendedUser getUserDetail(String id) throws TwitterException {
         return new ExtendedUser(get(baseURL + "users/show/" + id + ".xml", true).asDocument().getDocumentElement(), this);
     }
 
@@ -1280,7 +1280,7 @@ public class Twitter implements java.io.Serializable {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<DirectMessage> getDirectMessages() throws TwitterException {
+    public List<DirectMessage> getDirectMessages() throws TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL + "direct_messages.xml", true).asDocument(), this);
     }
 
@@ -1291,7 +1291,7 @@ public class Twitter implements java.io.Serializable {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<DirectMessage> getDirectMessages(Paging paging) throws TwitterException {
+    public List<DirectMessage> getDirectMessages(Paging paging) throws TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL
                 + "direct_messages.xml", null, paging, true).asDocument(), this);
     }
@@ -1304,7 +1304,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getDirectMessages(Paging paging) instead
      */
-    public synchronized List<DirectMessage> getDirectMessagesByPage(int page) throws TwitterException {
+    public List<DirectMessage> getDirectMessagesByPage(int page) throws TwitterException {
         return getDirectMessages(new Paging(page));
     }
 
@@ -1318,7 +1318,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @deprecated use getDirectMessages(Paging paging) instead
      */
-    public synchronized List<DirectMessage> getDirectMessages(int page
+    public List<DirectMessage> getDirectMessages(int page
             , int sinceId) throws TwitterException {
         return getDirectMessages(new Paging(page).sinceId(sinceId));
     }
@@ -1331,7 +1331,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getDirectMessages(Paging paging) instead
      */
-    public synchronized List<DirectMessage> getDirectMessages(int sinceId) throws TwitterException {
+    public List<DirectMessage> getDirectMessages(int sinceId) throws TwitterException {
         return getDirectMessages(new Paging().sinceId(sinceId));
     }
 
@@ -1343,7 +1343,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getDirectMessages(Paging paging) instead
      */
-    public synchronized List<DirectMessage> getDirectMessages(Date since) throws
+    public List<DirectMessage> getDirectMessages(Date since) throws
             TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL +
                 "direct_messages.xml", "since", format.format(since), true).asDocument(), this);
@@ -1355,7 +1355,7 @@ public class Twitter implements java.io.Serializable {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<DirectMessage> getSentDirectMessages() throws
+    public List<DirectMessage> getSentDirectMessages() throws
             TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL +
                 "direct_messages/sent.xml", new PostParameter[0], true).asDocument(), this);
@@ -1369,7 +1369,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized List<DirectMessage> getSentDirectMessages(Paging paging) throws
+    public List<DirectMessage> getSentDirectMessages(Paging paging) throws
             TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL +
                 "direct_messages/sent.xml", new PostParameter[0],paging, true).asDocument(), this);
@@ -1383,7 +1383,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated using long sinceId is suggested.
      */
-    public synchronized List<DirectMessage> getSentDirectMessages(Date since) throws
+    public List<DirectMessage> getSentDirectMessages(Date since) throws
             TwitterException {
         return DirectMessage.constructDirectMessages(get(baseURL +
                 "direct_messages/sent.xml", "since", format.format(since), true).asDocument(), this);
@@ -1397,7 +1397,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use getSentDirectMessages(Paging paging) instead
      */
-    public synchronized List<DirectMessage> getSentDirectMessages(int sinceId) throws
+    public List<DirectMessage> getSentDirectMessages(int sinceId) throws
             TwitterException {
         return getSentDirectMessages(new Paging((long)sinceId));
     }
@@ -1412,7 +1412,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @deprecated use getSentDirectMessages(Paging paging) instead
      */
-    public synchronized List<DirectMessage> getSentDirectMessages(int page
+    public List<DirectMessage> getSentDirectMessages(int page
             , int sinceId) throws TwitterException {
         return getSentDirectMessages(new Paging(page, (long)sinceId));
     }
@@ -1426,7 +1426,7 @@ public class Twitter implements java.io.Serializable {
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized DirectMessage sendDirectMessage(String id,
+    public DirectMessage sendDirectMessage(String id,
                                                         String text) throws TwitterException {
         return new DirectMessage(http.post(baseURL + "direct_messages/new.xml",
                 new PostParameter[]{new PostParameter("user", id),
@@ -1442,7 +1442,7 @@ public class Twitter implements java.io.Serializable {
      * @return the deleted direct message
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized DirectMessage deleteDirectMessage(int id) throws
+    public DirectMessage deleteDirectMessage(int id) throws
             TwitterException {
         return new DirectMessage(http.post(baseURL +
                 "direct_messages/destroy/" + id + ".xml", new PostParameter[0], true).asDocument().getDocumentElement(), this);
@@ -1457,7 +1457,7 @@ public class Twitter implements java.io.Serializable {
      * @deprecated use createFriendship(String id) instead
      */
 
-    public synchronized User create(String id) throws TwitterException {
+    public User create(String id) throws TwitterException {
         return createFriendship(id);
     }
 
@@ -1469,7 +1469,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized User createFriendship(String id) throws TwitterException {
+    public User createFriendship(String id) throws TwitterException {
         return new User(http.post(baseURL + "friendships/create/" + id + ".xml", new PostParameter[0], true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1482,7 +1482,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use destroyFriendship(String id) instead
      */
-    public synchronized User destroy(String id) throws TwitterException {
+    public User destroy(String id) throws TwitterException {
         return destroyFriendship(id);
     }
 
@@ -1494,7 +1494,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized User destroyFriendship(String id) throws TwitterException {
+    public User destroyFriendship(String id) throws TwitterException {
         return new User(http.post(baseURL + "friendships/destroy/" + id + ".xml", new PostParameter[0], true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1508,7 +1508,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use friendshipExists(String userA, String userB)
      */
-    public synchronized boolean exists(String userA, String userB) throws TwitterException {
+    public boolean exists(String userA, String userB) throws TwitterException {
         return existsFriendship(userA, userB);
     }
     /**
@@ -1520,7 +1520,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized boolean existsFriendship(String userA, String userB) throws TwitterException {
+    public boolean existsFriendship(String userA, String userB) throws TwitterException {
         return get(baseURL + "friendships/exists.xml", "user_a", userA, "user_b", userB, true).
                 asString().contains("true");
     }
@@ -1532,7 +1532,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
      */
-    public synchronized IDs getFriendsIDs() throws TwitterException {
+    public IDs getFriendsIDs() throws TwitterException {
         return new IDs(get(baseURL + "friends/ids.xml", true).asDocument().getDocumentElement());
     }
 
@@ -1544,7 +1544,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
      */
-    public synchronized IDs getFriendsIDs(int userId) throws TwitterException {
+    public IDs getFriendsIDs(int userId) throws TwitterException {
         return new IDs(get(baseURL + "friends/ids.xml?user_id=" + userId, true).asDocument().getDocumentElement());
     }
 
@@ -1556,7 +1556,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
      */
-    public synchronized IDs getFriendsIDs(String screenName) throws TwitterException {
+    public IDs getFriendsIDs(String screenName) throws TwitterException {
         return new IDs(get(baseURL + "friends/ids.xml?screen_name=" + screenName, true).asDocument().getDocumentElement());
     }
 
@@ -1567,7 +1567,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#followers/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - followers/ids</a>
      */
-    public synchronized IDs getFollowersIDs() throws TwitterException {
+    public IDs getFollowersIDs() throws TwitterException {
         return new IDs(get(baseURL + "followers/ids.xml", true).asDocument().getDocumentElement());
     }
 
@@ -1579,7 +1579,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#followers/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - followers/ids</a>
      */
-    public synchronized IDs getFollowersIDs(int userId) throws TwitterException {
+    public IDs getFollowersIDs(int userId) throws TwitterException {
         return new IDs(get(baseURL + "followers/ids.xml?user_id=" + userId, true).asDocument().getDocumentElement());
     }
 
@@ -1591,7 +1591,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#followers/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - followers/ids</a>
      */
-    public synchronized IDs getFollowersIDs(String screenName) throws TwitterException {
+    public IDs getFollowersIDs(String screenName) throws TwitterException {
         return new IDs(get(baseURL + "followers/ids.xml?screen_name=" + screenName, true).asDocument().getDocumentElement());
     }
 
@@ -1602,7 +1602,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#account/verifycredentials">Twitter API Wiki / REST API Documentation - Account Methods - account/verify_credentials</a>
      */
-    public synchronized ExtendedUser verifyCredentials() throws TwitterException {
+    public ExtendedUser verifyCredentials() throws TwitterException {
         return new ExtendedUser(get(baseURL + "account/verify_credentials.xml"
                 , true).asDocument().getDocumentElement(), this);
     }
@@ -1616,7 +1616,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 1.0.4
      * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#account/updatelocation">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
      */
-    public synchronized User updateLocation(String location) throws TwitterException {
+    public User updateLocation(String location) throws TwitterException {
         return new User(http.post(baseURL + "account/update_location.xml", new PostParameter[]{new PostParameter("location", location)}, true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1633,7 +1633,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 2.0.0
      * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#account/updatelocation">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
      */
-    public synchronized ExtendedUser updateProfileColors(
+    public ExtendedUser updateProfileColors(
             String profileBackgroundColor,
             String profileTextColor,
             String profileLinkColor,
@@ -1672,7 +1672,7 @@ public class Twitter implements java.io.Serializable {
      * @since Twitter4J 1.1.4
      * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#ratelimitstatus">Twitter REST API Documentation &gt; Account Methods &gt; rate_limit_status</a>
      */
-    public synchronized RateLimitStatus rateLimitStatus() throws TwitterException {
+    public RateLimitStatus rateLimitStatus() throws TwitterException {
         return new RateLimitStatus(http.get(baseURL + "account/rate_limit_status.xml", null != getUserId() && null != getPassword()).
                 asDocument().getDocumentElement());
     }
@@ -1697,7 +1697,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.0.4
      */
-    public synchronized User updateDeliverlyDevice(Device device) throws TwitterException {
+    public User updateDeliverlyDevice(Device device) throws TwitterException {
         return new User(http.post(baseURL + "account/update_delivery_device.xml", new PostParameter[]{new PostParameter("device", device.DEVICE)}, true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1709,7 +1709,7 @@ public class Twitter implements java.io.Serializable {
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<Status> favorites() throws TwitterException {
+    public List<Status> favorites() throws TwitterException {
         return Status.constructStatuses(get(baseURL + "favorites.xml", new PostParameter[0], true).
                 asDocument(), this);
     }
@@ -1721,7 +1721,7 @@ public class Twitter implements java.io.Serializable {
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<Status> favorites(int page) throws TwitterException {
+    public List<Status> favorites(int page) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "favorites.xml", "page", String.valueOf(page), true).
                 asDocument(), this);
     }
@@ -1733,7 +1733,7 @@ public class Twitter implements java.io.Serializable {
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<Status> favorites(String id) throws TwitterException {
+    public List<Status> favorites(String id) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "favorites/" + id + ".xml", new PostParameter[0], true).
                 asDocument(), this);
     }
@@ -1746,7 +1746,7 @@ public class Twitter implements java.io.Serializable {
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized List<Status> favorites(String id, int page) throws TwitterException {
+    public List<Status> favorites(String id, int page) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "favorites/" + id + ".xml", "page", String.valueOf(page), true).
                 asDocument(), this);
     }
@@ -1758,7 +1758,7 @@ public class Twitter implements java.io.Serializable {
      * @return Status
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized Status createFavorite(long id) throws TwitterException {
+    public Status createFavorite(long id) throws TwitterException {
         return new Status(http.post(baseURL + "favorites/create/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1770,7 +1770,7 @@ public class Twitter implements java.io.Serializable {
      * @return Status
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    public synchronized Status destroyFavorite(long id) throws TwitterException {
+    public Status destroyFavorite(long id) throws TwitterException {
         return new Status(http.post(baseURL + "favorites/destroy/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1783,7 +1783,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use enableNotification(String id) instead
      */
-    public synchronized User follow(String id) throws TwitterException {
+    public User follow(String id) throws TwitterException {
         return enableNotification(id);
     }
 
@@ -1795,7 +1795,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized User enableNotification(String id) throws TwitterException {
+    public User enableNotification(String id) throws TwitterException {
         return new User(http.post(baseURL + "notifications/follow/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1808,7 +1808,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @deprecated use disableNotification(String id) instead
      */
-    public synchronized User leave(String id) throws TwitterException {
+    public User leave(String id) throws TwitterException {
         return disableNotification(id);
     }
 
@@ -1820,7 +1820,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      */
-    public synchronized User disableNotification(String id) throws TwitterException {
+    public User disableNotification(String id) throws TwitterException {
         return new User(http.post(baseURL + "notifications/leave/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1835,7 +1835,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.0.4
      */
-    public synchronized User block(String id) throws TwitterException {
+    public User block(String id) throws TwitterException {
         return new User(http.post(baseURL + "blocks/create/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1849,7 +1849,7 @@ public class Twitter implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.0.4
      */
-    public synchronized User unblock(String id) throws TwitterException {
+    public User unblock(String id) throws TwitterException {
         return new User(http.post(baseURL + "blocks/destroy/" + id + ".xml", true).
                 asDocument().getDocumentElement(), this);
     }
@@ -1870,7 +1870,7 @@ Formats: xml, json
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.0.4
      */
-    public synchronized boolean test() throws TwitterException {
+    public boolean test() throws TwitterException {
         return -1 != get(baseURL + "help/test.xml", false).
                 asString().indexOf("ok");
     }
@@ -1885,7 +1885,7 @@ Formats: xml, json
      * @since Twitter4J 1.1.3
      * @deprecated since Twitter4J 2.0.0 use verifyCredentials() instead
      */
-    public synchronized ExtendedUser getAuthenticatedUser() throws TwitterException {
+    public ExtendedUser getAuthenticatedUser() throws TwitterException {
         return new ExtendedUser(get(baseURL + "account/verify_credentials.xml", true).asDocument().getDocumentElement(),this);
     }
 
@@ -1896,7 +1896,7 @@ Formats: xml, json
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.0.4
      */
-    public synchronized String getDowntimeSchedule() throws TwitterException {
+    public String getDowntimeSchedule() throws TwitterException {
         return get(baseURL + "help/downtime_schedule.xml", false).asString();
     }
 
@@ -1909,7 +1909,7 @@ Formats: xml, json
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      */
 
-    public synchronized QueryResult search(Query query) throws TwitterException {
+    public QueryResult search(Query query) throws TwitterException {
         return new QueryResult(get(searchBaseURL + "search.json", query.asPostParameters(), false).asJSONObject(), this);
     }
 
