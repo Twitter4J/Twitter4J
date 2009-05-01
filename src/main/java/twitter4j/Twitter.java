@@ -476,11 +476,13 @@ public class Twitter implements java.io.Serializable {
                 System.arraycopy(params, 0, newparams, 0, params.length);
                 System.arraycopy(arrayPagingParams, 0, newparams, params.length, pagingParams.size());
             } else {
-                String encodedParams = HttpClient.encodeParameters(arrayPagingParams);
-                if (url.contains("?")) {
-                    url += "&" + encodedParams;
-                } else {
-                    url += "?" + encodedParams;
+                if (0 != arrayPagingParams.length) {
+                    String encodedParams = HttpClient.encodeParameters(arrayPagingParams);
+                    if (url.contains("?")) {
+                        url += "&" + encodedParams;
+                    } else {
+                        url += "?" + encodedParams;
+                    }
                 }
             }
             return get(url, newparams, authenticate);
@@ -514,7 +516,7 @@ public class Twitter implements java.io.Serializable {
     public List<Status> getPublicTimeline(int sinceID) throws
             TwitterException {
         return Status.constructStatuses(get(baseURL +
-                "statuses/public_timeline.xml", null, new Paging().sinceId(sinceID), false).
+                "statuses/public_timeline.xml", null, new Paging((long)sinceID), false).
                 asDocument(), this);
     }
 
@@ -528,7 +530,7 @@ public class Twitter implements java.io.Serializable {
      */
     public List<Status> getFriendsTimeline() throws
             TwitterException {
-        return getFriendsTimeline(new Paging());
+        return Status.constructStatuses(get(baseURL + "statuses/friends_timeline.xml", true).asDocument(), this);
     }
 
     /**
@@ -587,7 +589,7 @@ public class Twitter implements java.io.Serializable {
 
     public List<Status> getFriendsTimeline(String id) throws
             TwitterException {
-        return getFriendsTimeline(id, new Paging());
+        return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml", true).asDocument(), this);
     }
 
     /**
@@ -727,9 +729,8 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#statuses/friendstimeline">Twitter API Wiki / REST API Documentation - statuses/friends_timeline</a>
      * @deprecated use getFriendsTimeline(String id, Paging paging) instead
      */
-    public List<Status> getFriendsTimeline(String id,
-                                                        long sinceId) throws TwitterException {
-        return getFriendsTimeline(id,new Paging().sinceId(sinceId));
+    public List<Status> getFriendsTimeline(String id, long sinceId) throws TwitterException {
+        return getFriendsTimeline(id,new Paging(sinceId));
     }
 
     /**
@@ -767,7 +768,7 @@ public class Twitter implements java.io.Serializable {
      */
     public List<Status> getUserTimeline(String id, int count,
                                                      long sinceId) throws TwitterException {
-        return getUserTimeline(id, new Paging().count(count).sinceId(sinceId));
+        return getUserTimeline(id, new Paging(sinceId).count(count));
     }
 
     /**
@@ -889,7 +890,8 @@ public class Twitter implements java.io.Serializable {
      */
     public List<Status> getUserTimeline() throws
             TwitterException {
-        return getUserTimeline(new Paging());
+        return Status.constructStatuses(get(baseURL + "statuses/user_timeline.xml"
+                , true).asDocument(), this);
     }
 
     /**
@@ -1332,7 +1334,7 @@ public class Twitter implements java.io.Serializable {
      * @deprecated use getDirectMessages(Paging paging) instead
      */
     public List<DirectMessage> getDirectMessages(int sinceId) throws TwitterException {
-        return getDirectMessages(new Paging().sinceId(sinceId));
+        return getDirectMessages(new Paging((long)sinceId));
     }
 
     /**

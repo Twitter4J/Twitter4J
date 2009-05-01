@@ -393,7 +393,7 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(actualReturn.size() > 9);
     }
 
-    public void testGetDirectMessages() throws Exception{
+    public void testGetDirectMessages() throws Exception {
         try {
             twitterAPI1.create(id2);
             twitterAPI1.follow(id2);
@@ -408,20 +408,20 @@ public class TwitterTestUnit extends TestCase {
         }
         Thread.sleep(3000);
 
-        String expectedReturn = new Date()+":directmessage test";
+        String expectedReturn = new Date() + ":directmessage test";
 //        twitterAPI2.sendDirectMessage(id1,expectedReturn);
-        twitterAPI1.sendDirectMessage(id2,expectedReturn);
+        twitterAPI1.sendDirectMessage(id2, expectedReturn);
 //        twitterAPI2.sendDirectMessage("yusukey",expectedReturn);
         List<DirectMessage> actualReturn = twitterAPI2.getDirectMessages();
         assertTrue(actualReturn.get(0).getText().contains("directmessage test"));
-        actualReturn =  twitterAPI2.getDirectMessages(actualReturn.get(1).getId());
-        assertEquals(1,actualReturn.size());
+        actualReturn = twitterAPI2.getDirectMessages(actualReturn.get(1).getId());
+        assertEquals(1, actualReturn.size());
 
 //        String expectedReturn = new Date()+":directmessage test";
-        DirectMessage message = twitterAPI1.sendDirectMessage(id2,expectedReturn);
+        DirectMessage message = twitterAPI1.sendDirectMessage(id2, expectedReturn);
         assertEquals("", expectedReturn, message.getText());
         Thread.sleep(5000);
-        actualReturn = twitterAPI2.getDirectMessages(new Date(System.currentTimeMillis()-(1000*60*100)));
+        actualReturn = twitterAPI2.getDirectMessages(new Date(System.currentTimeMillis() - (1000 * 60 * 100)));
         assertEquals("", expectedReturn, actualReturn.get(0).getText());
         assertEquals("", id2, actualReturn.get(0).getRecipient().getName());
         assertEquals("", id1, actualReturn.get(0).getSender().getName());
@@ -434,19 +434,19 @@ public class TwitterTestUnit extends TestCase {
         actualReturn = twitterAPI1.getDirectMessages();
         int size = actualReturn.size();
         message = twitterAPI1.deleteDirectMessage(actualReturn.get(0).getId());
-        assertEquals(message.getId(),actualReturn.get(0).getId());
-        assertTrue(10< twitterAPI1.getDirectMessages().size());
+        assertEquals(message.getId(), actualReturn.get(0).getId());
+        assertTrue(5 <= twitterAPI1.getDirectMessages().size());
 
         actualReturn = twitterAPI1.getSentDirectMessages();
         assertTrue(5 < actualReturn.size());
-        assertEquals(id1 , actualReturn.get(0).getSender().getName());
-        assertEquals(id2 , actualReturn.get(0).getRecipient().getName());
+        assertEquals(id1, actualReturn.get(0).getSender().getName());
+        assertEquals(id2, actualReturn.get(0).getRecipient().getName());
 
         actualReturn = twitterAPI1.getSentDirectMessages(10, 10);
         assertTrue(5 < actualReturn.size());
 
         actualReturn = twitterAPI1.getDirectMessagesByPage(1);
-        assertTrue(10< twitterAPI1.getDirectMessages().size());
+        assertTrue(5 <= twitterAPI1.getDirectMessages().size());
 
     }
     public void testCreateDestroyFriend() throws Exception{
