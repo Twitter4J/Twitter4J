@@ -42,9 +42,22 @@ public interface TwitterListener {
 
     void gotUserTimeline(List<Status> statuses);
 
+    /**
+     * @deprecated use gotShowStatus instead
+     */
     void gotShow(Status status);
 
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void gotShowStatus(Status status);
+
+    /**
+     * @deprecated use updatedStatus instead
+     */
     void updated(Status status);
+
+    void updatedStatus(Status status);
 
     /**
      * @deprecated use gotMentions instead
@@ -54,7 +67,6 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.0.1
      */
-
     void gotMentions(List<Status> statuses);
 
     void destroyedStatus(Status destroyedStatus);
@@ -73,7 +85,15 @@ public interface TwitterListener {
 
     void sentDirectMessage(DirectMessage message);
 
+    /**
+     * @deprecated use destroyedDirectMessage instead
+     */
     void deletedDirectMessage(DirectMessage message);
+
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void destroyedDirectMessage(DirectMessage message);
 
     void gotFriendsIDs(IDs ids);
 
@@ -141,9 +161,25 @@ public interface TwitterListener {
      */
     void disabledNotification(User user);
 
+    /**
+     * @deprecated use createdBlock instead
+     */
     void blocked(User user);
 
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void createdBlock(User user);
+
+    /**
+     * @deprecated use destroyedBlock instead
+     */
     void unblocked(User user);
+
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void destroyedBlock(User user);
 
     void tested(boolean test);
 

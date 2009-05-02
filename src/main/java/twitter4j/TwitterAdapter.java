@@ -45,7 +45,11 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotShow(Status statuses){
     }
+    public void gotShowStatus(Status statuses){
+    }
     public void updated(Status statuses){
+    }
+    public void updatedStatus(Status statuses){
     }
     public void gotReplies(List<Status> statuses){
     }
@@ -69,10 +73,11 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void deletedDirectMessage(DirectMessage message){
     }
+    public void destroyedDirectMessage(DirectMessage message){
+    }
     public void gotFriendsIDs(IDs ids){
     }
     public void gotFollowersIDs(IDs ids){
-
     }
     public void created(User user){
     }
@@ -110,7 +115,11 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void blocked(User user){
     }
+    public void createdBlock(User user){
+    }
     public void unblocked(User user){
+    }
+    public void destroyedBlock(User user){
     }
     public void tested(boolean test){
     }

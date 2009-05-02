@@ -135,7 +135,7 @@ public class TwitterTestUnit extends TestCase {
         assertNotNull(uws.getLocation());
         assertNotNull(uws.getDescription());
         assertNotNull(uws.getProfileImageURL());
-        assertNull(uws.getURL());
+        assertNotNull(uws.getURL());
         assertFalse(uws.isProtected());
 
         assertTrue(0 <= uws.getFavouritesCount());
@@ -433,6 +433,12 @@ public class TwitterTestUnit extends TestCase {
 
         actualReturn = twitterAPI1.getDirectMessages();
         int size = actualReturn.size();
+        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
+        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
+        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
+        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
+        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
+
         message = twitterAPI1.deleteDirectMessage(actualReturn.get(0).getId());
         assertEquals(message.getId(), actualReturn.get(0).getId());
         assertTrue(5 <= twitterAPI1.getDirectMessages().size());

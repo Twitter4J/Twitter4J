@@ -17,8 +17,8 @@
     </licenses>
     <description>A Java library for the Twitter API</description>
     <issueManagement>
-      <system>Jira</system>
-      <url>http://yusuke.homeip.net/jira/browse/TFJ</url>
+        <system>Jira</system>
+        <url>http://yusuke.homeip.net/jira/browse/TFJ</url>
     </issueManagement>
     <scm>
         <connection>scm:svn:http://yusuke.homeip.net/svn/twitter4j/</connection>
@@ -98,6 +98,13 @@
                 </executions>
                 <configuration>
                     <charset>UTF-8</charset>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>

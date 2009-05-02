@@ -79,7 +79,17 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    public void gotShowStatus(Status status) {
+        this.status = status;
+        notifyResponse();
+    }
+
     public void updated(Status status) {
+        this.status = status;
+        notifyResponse();
+    }
+
+    public void updatedStatus(Status status) {
         this.status = status;
         notifyResponse();
     }
@@ -135,6 +145,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void deletedDirectMessage(DirectMessage message) {
+        this.message = message;
+        notifyResponse();
+    }
+
+    public void destroyedDirectMessage(DirectMessage message) {
         this.message = message;
         notifyResponse();
     }
@@ -239,7 +254,17 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    public void createdBlock(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
     public void unblocked(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
+    public void destroyedBlock(User user) {
         this.user = user;
         notifyResponse();
     }
