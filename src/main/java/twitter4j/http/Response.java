@@ -105,7 +105,7 @@ public class Response implements java.io.Serializable {
             }
         }
         if(null != saxe){
-            throw new TwitterException("Twitter returned a non-XML response", saxe);
+            throw new TwitterException("Twitter returned a non-XML response:" + responseString, saxe);
         }
         return response;
     }
