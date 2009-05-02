@@ -26,6 +26,13 @@
             http://yusuke.homeip.net/fisheye/browse/svn/twitter4j
         </url>
     </scm>
+    <distributionManagement>
+        <repository>
+            <id>net.homeip.yusuke</id>
+            <name>Yusuke Repository</name>
+            <url>file:${user.home}/maven2/</url>
+        </repository>
+    </distributionManagement>
     <mailingLists>
         <mailingList>
             <name>Twitter4J</name>
