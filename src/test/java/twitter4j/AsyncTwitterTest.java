@@ -617,11 +617,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     public void testGetDirectMessages() throws Exception {
         try {
-            twitterAPI2.create(id1);
+            twitterAPI2.createFriendship(id1);
         } catch (TwitterException ignore) {
         }
         try {
-            twitterAPI1.create(id2);
+            twitterAPI1.createFriendship(id2);
         } catch (TwitterException ignore) {
         }
 
@@ -643,13 +643,17 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void testCreateDestroyFriend() throws Exception {
-        twitterAPI2.destroyAsync(id1, this);
+        twitterAPI2.destroyFriendshipAsync(id1, this);
         waitForResponse();
 
-        twitterAPI2.destroyAsync(id1, this);
+        twitterAPI2.destroyFriendshipAsync(id1, this);
         waitForResponse();
         assertEquals(403, te.getStatusCode());
-        twitterAPI2.createAsync(id1, this);
+        twitterAPI2.createFriendshipAsync(id1, true, this);
+        // the Twitter API is not returning appropriate notifications value
+        // http://code.google.com/p/twitter-api/issues/detail?id=474
+//        ExtendedUser detail = twitterAPI2.getUserDetail(id1);
+//        assertTrue(detail.isNotificationEnabled());
         waitForResponse();
         assertEquals(id1, user.getName());
 
@@ -703,7 +707,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertEquals(-1, queryResult.getTotal());
         //warning is not included in the response anymore - 4/24/2009
 //        assertTrue(queryResult.getWarning().contains("adjusted"));
-        assertTrue(1 > queryResult.getCompletedIn());
+        assertTrue(0 < queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
         assertEquals(queryStr, queryResult.getQuery());
 

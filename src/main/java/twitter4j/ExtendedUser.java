@@ -77,7 +77,7 @@ public class ExtendedUser extends UserWithStatus {
     private String profileBackgroundImageUrl;
     private String profileBackgroundTile;
     private boolean following;
-    private boolean notifications;
+    private boolean notificationEnabled;
     private int statusesCount;
     private static final long serialVersionUID = -8486230870587454252L;
 
@@ -96,7 +96,7 @@ public class ExtendedUser extends UserWithStatus {
         profileBackgroundImageUrl = getChildText("profile_background_image_url", elem);
         profileBackgroundTile = getChildText("profile_background_tile", elem);
         following = getChildBoolean("following", elem);
-        notifications = getChildBoolean("notifications", elem);
+        notificationEnabled = getChildBoolean("notifications", elem);
         statusesCount = getChildInt("statuses_count", elem);
     }
 
@@ -152,8 +152,20 @@ public class ExtendedUser extends UserWithStatus {
         return following;
     }
 
+    /**
+     * @deprecated use isNotificationsEnabled() instead
+     */
+
     public boolean isNotifications() {
-        return notifications;
+        return notificationEnabled;
+    }
+
+    /**
+     *
+     * @since Twitter4J 2.0.1
+     */
+    public boolean isNotificationEnabled() {
+        return notificationEnabled;
     }
 
     public int getStatusesCount() {
@@ -171,7 +183,7 @@ public class ExtendedUser extends UserWithStatus {
         if (favouritesCount != that.favouritesCount) return false;
         if (following != that.following) return false;
         if (friendsCount != that.friendsCount) return false;
-        if (notifications != that.notifications) return false;
+        if (notificationEnabled != that.notificationEnabled) return false;
         if (statusesCount != that.statusesCount) return false;
         if (utcOffset != that.utcOffset) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null)
@@ -212,7 +224,7 @@ public class ExtendedUser extends UserWithStatus {
         result = 31 * result + (profileBackgroundImageUrl != null ? profileBackgroundImageUrl.hashCode() : 0);
         result = 31 * result + (profileBackgroundTile != null ? profileBackgroundTile.hashCode() : 0);
         result = 31 * result + (following ? 1 : 0);
-        result = 31 * result + (notifications ? 1 : 0);
+        result = 31 * result + (notificationEnabled ? 1 : 0);
         result = 31 * result + statusesCount;
         return result;
     }
@@ -233,7 +245,7 @@ public class ExtendedUser extends UserWithStatus {
                 ", profileBackgroundImageUrl='" + profileBackgroundImageUrl + '\'' +
                 ", profileBackgroundTile='" + profileBackgroundTile + '\'' +
                 ", following=" + following +
-                ", notifications=" + notifications +
+                ", notifications=" + notificationEnabled +
                 ", statusesCount=" + statusesCount +
                 '}';
     }

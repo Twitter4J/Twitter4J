@@ -1180,7 +1180,7 @@ public class Twitter implements java.io.Serializable {
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @Twitter4J 2.0.1
+     * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
      */
     public Status updateStatus(String status, long inReplyToStatusId) throws TwitterException {
@@ -1648,6 +1648,23 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     *
+     * @param id the ID or screen name of the user to be befriended
+     * @param follow Enable notifications for the target user in addition to becoming friends.
+     * @return the befriended user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friendships create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
+     */
+    public User createFriendship(String id, boolean follow) throws TwitterException {
+        return new User(http.post(baseURL + "friendships/create/" + id + ".xml"
+                , new PostParameter[]{new PostParameter("follow"
+                        , String.valueOf(follow))}, true).asDocument()
+                .getDocumentElement(), this);
+    }
+
+    /**
      * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      *
      * @param id the ID or screen name of the user for whom to request a list of friends
@@ -1925,7 +1942,7 @@ public class Twitter implements java.io.Serializable {
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
-     * @Twitter4J 2.0.1
+     * @since Twitter4J 2.0.1
      */
     public List<Status> getFavorites(int page) throws TwitterException {
         return Status.constructStatuses(get(baseURL + "favorites.xml", "page", String.valueOf(page), true).

@@ -1343,6 +1343,24 @@ public class AsyncTwitter extends Twitter {
     /**
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.
      * <br>calls http://twitter.com/friendships/create
+     *
+     * @param id the ID or screen name of the user to be befriended
+     * @param follow Enable notifications for the target user in addition to becoming friends.
+     * @param listener TwitterListener a listener object that receives the response
+     * @since Twitter4J 2.0.1
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friendships create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
+     */
+    public void createFriendshipAsync(String id, boolean follow, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_FRIENDSHIP, listener, new Object[]{id,follow}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.createdFriendship(createFriendship((String) args[0],(Boolean)args[1]));
+            }
+        });
+    }
+
+    /**
+     * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.
+     * <br>calls http://twitter.com/friendships/create
      * @param id String
      * @deprecated use createFriendshipAsync(String id) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friendships create">Twitter API Wiki / Twitter REST API Method: friendships create</a>

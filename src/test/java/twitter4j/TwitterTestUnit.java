@@ -458,26 +458,30 @@ public class TwitterTestUnit extends TestCase {
     public void testCreateDestroyFriend() throws Exception{
         User user;
         try {
-            user = twitterAPI2.destroy(id1);
+            user = twitterAPI2.destroyFriendship(id1);
         } catch (TwitterException te) {
             //ensure destory id1 before the actual test
         }
 
         try {
-            user = twitterAPI2.destroy(id1);
+            user = twitterAPI2.destroyFriendship(id1);
         } catch (TwitterException te) {
             assertEquals(403, te.getStatusCode());
         }
-        user = twitterAPI2.create(id1);
+        user = twitterAPI2.createFriendship(id1, true);
         assertEquals(id1, user.getName());
+        // the Twitter API is not returning appropriate notifications value
+        // http://code.google.com/p/twitter-api/issues/detail?id=474
+//        ExtendedUser detail = twitterAPI2.getUserDetail(id1);
+//        assertTrue(detail.isNotificationEnabled());
         try {
-            user = twitterAPI2.create(id2);
+            user = twitterAPI2.createFriendship(id2);
             fail("shouldn't be able to befrinend yourself");
         } catch (TwitterException te) {
             assertEquals(403, te.getStatusCode());
         }
         try {
-            user = twitterAPI2.create("doesnotexist--");
+            user = twitterAPI2.createFriendship("doesnotexist--");
             fail("non-existing user");
         } catch (TwitterException te) {
             //now befriending with non-existing user returns 404
@@ -687,7 +691,7 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(override, twitter.getUserAgent());
         twitter.setUserAgent(test);
         assertEquals(override, twitter.getUserAgent());
-        System.clearProperty("twitter4j.userAgent");
+        System.clearProperty("twitter4j.http.userAgent");
 
         System.clearProperty("twitter4j.http.proxyHost");
         twitter = new Twitter();
