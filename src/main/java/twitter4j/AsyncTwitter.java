@@ -1497,6 +1497,25 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns an array of numeric IDs for every user the authenticating user is following.
+     * <br>calls http://twitter.com/friends/ids   
+     *
+     * @param listener a listener object that receives the response
+     * @param paging   Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friends ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     * @since Twitter4J 2.0.1
+     */
+    public void getFriendsIDsAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listener
+                , new Object[]{paging}) {
+            public void invoke(TwitterListener listener, Object[] args)
+                    throws TwitterException {
+                listener.gotFriendsIDs(getFriendsIDs((Paging) args[0]));
+            }
+        });
+    }
+
+    /**
      * Returns an array of numeric IDs for every user the specified user is following.
      * <br>calls http://twitter.com/friends/ids   
      *
@@ -1509,6 +1528,24 @@ public class AsyncTwitter extends Twitter {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listener, new Integer[]{userId}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.gotFriendsIDs(getFriendsIDs((Integer) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     * <br>calls http://twitter.com/friends/ids   
+     *
+     * @param userId   Specfies the ID of the user for whom to return the friends list.
+     * @param paging   Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friends ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     * @since Twitter4J 2.0.1
+     */
+    public void getFriendsIDsAsync(int userId, Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listener, new Object[]{userId, paging}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFriendsIDs(getFriendsIDs((Integer) args[0],(Paging)args[1]));
             }
         });
     }
@@ -1531,6 +1568,28 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     * <br>calls http://twitter.com/friends/ids   
+     *
+     * @param screenName Specfies the screen name of the user for whom to return the friends list.
+     * @param paging   Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param listener   a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friends ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     * @since Twitter4J 2.0.1
+     */
+    public void getFriendsIDsAsync(String screenName,Paging paging
+            , TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listener
+                , new Object[]{screenName, paging}) {
+            public void invoke(TwitterListener listener, Object[] args)
+                    throws TwitterException {
+                listener.gotFriendsIDs(getFriendsIDs((String) args[0]
+                        , (Paging)args[1]));
+            }
+        });
+    }
+
+    /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>calls http://twitter.com/followers/ids 
      *
@@ -1542,6 +1601,24 @@ public class AsyncTwitter extends Twitter {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listener, null) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.gotFollowersIDs(getFollowersIDs());
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>calls http://twitter.com/followers/ids 
+     *
+     * @param listener a listener object that receives the response
+     * @param paging   Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-followers ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @since Twitter4J 2.0.1
+     */
+    public void getFollowersIDsAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listener
+                , new Object[]{paging}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowersIDs(getFollowersIDs((Paging)(args[0])));
             }
         });
     }
@@ -1567,6 +1644,26 @@ public class AsyncTwitter extends Twitter {
      * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>calls http://twitter.com/followers/ids 
      *
+     * @param userId   Specfies the ID of the user for whom to return the followers list.
+     * @param paging   Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-followers ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @since Twitter4J 2.0.1
+     */
+    public void getFollowersIDsAsync(int userId, Paging paging
+            , TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listener
+                , new Object[]{userId, paging}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowersIDs(getFollowersIDs((Integer) args[0],(Paging)args[1]));
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>calls http://twitter.com/followers/ids 
+     *
      * @param screenName Specfies the screen name of the user for whom to return the followers list.
      * @param listener   a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-followers ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
@@ -1576,6 +1673,27 @@ public class AsyncTwitter extends Twitter {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listener, new String[]{screenName}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.gotFollowersIDs(getFollowersIDs((String) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>calls http://twitter.com/followers/ids 
+     *
+     * @param screenName Specfies the screen name of the user for whom to return the followers list.
+     * @param paging     Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param listener   a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-followers ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @since Twitter4J 2.0.1
+     */
+    public void getFollowersIDsAsync(String screenName, Paging paging
+            , TwitterListener listener) throws TwitterException {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listener
+                , new Object[]{screenName, paging}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotFollowersIDs(getFollowersIDs((String) args[0]
+                        , (Paging) args[1]));
             }
         });
     }
