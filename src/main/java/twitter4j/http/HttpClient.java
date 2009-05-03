@@ -168,6 +168,25 @@ public class HttpClient implements java.io.Serializable {
     }
 
     /**
+     *
+     * @param token request token
+     * @param tokenSecret request token secret
+     * @return access token
+     * @throws TwitterException
+     * @since Twitter4J 2.0.1
+     */
+    public AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
+        try {
+            this.oauthToken = new OAuthToken(token, tokenSecret) {
+            };
+            this.oauthToken = new AccessToken(httpRequest(accessTokenURL, new PostParameter[0], true));
+        } catch (TwitterException te) {
+            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+        }
+        return (AccessToken) this.oauthToken;
+    }
+
+    /**
      * Sets the authorized access token
      * @param token authorized access token
      * @since Twitter4J 2.0.0

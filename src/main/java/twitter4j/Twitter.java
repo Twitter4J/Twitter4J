@@ -251,6 +251,20 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * retrieves an access token assosiated with the supplied request token.
+     * @param token request token
+     * @param tokenSecret request token secret
+     * @return access token associsted with the supplied request token.
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
+     * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
+     * @since Twitter 2.0.1
+     */
+    public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
+        return http.getOAuthAccessToken(token, tokenSecret);
+    }
+
+    /**
      * sets the access token
      * @param accessToken accessToken
      * @since Twitter 2.0.0
