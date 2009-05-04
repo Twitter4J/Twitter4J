@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.examples;
 
 import twitter4j.AsyncTwitter;
-import static twitter4j.AsyncTwitter.UPDATE;
 import twitter4j.Status;
 import twitter4j.TwitterAdapter;
 import twitter4j.TwitterException;
@@ -53,7 +52,7 @@ public class AsyncUpdate {
             System.exit( -1);
         }
         AsyncTwitter twitter = new AsyncTwitter(args[0], args[1]);
-        twitter.updateAsync(args[2], new TwitterAdapter() {
+        twitter.updateStatusAsync(args[2], new TwitterAdapter() {
             @Override public void updated(Status status) {
                 System.out.println("Successfully updated the status to [" +
                                    status.getText() + "].");
@@ -63,7 +62,7 @@ public class AsyncUpdate {
             }
 
             @Override public void onException(TwitterException e, int method) {
-                if (method == UPDATE) {
+                if (method == AsyncTwitter.UPDATE_STATUS) {
                     e.printStackTrace();
                     synchronized (lock) {
                         lock.notify();

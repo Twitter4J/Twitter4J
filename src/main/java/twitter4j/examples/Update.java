@@ -48,7 +48,7 @@ public class Update {
             System.exit( -1);
         }
         Twitter twitter = new Twitter(args[0], args[1]);
-        Status status = twitter.update(args[2]);
+        Status status = twitter.updateStatus(args[2]);
         System.out.println("Successfully updated the status to [" + status.getText() + "].");
     }
 }

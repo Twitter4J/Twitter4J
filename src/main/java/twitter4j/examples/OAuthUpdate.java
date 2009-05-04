@@ -76,7 +76,7 @@ public class OAuthUpdate {
             System.out.println("Access token: "+ accessToken.getToken());
             System.out.println("Access token secret: "+ accessToken.getTokenSecret());
 
-            Status status = twitter.update(args[0]);
+            Status status = twitter.updateStatus(args[0]);
             System.out.println("Successfully updated the status to [" + status.getText() + "].");
             System.exit(0);
         } catch (TwitterException te) {

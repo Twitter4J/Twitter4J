@@ -161,7 +161,7 @@ public class FeedMonitor {
                     }
                     log.info("Updating Twitter.");
 //                    System.out.println(status);
-                    twitter.update(status);
+                    twitter.updateStatus(status);
                     log.info("Done.");
                 }
             }
