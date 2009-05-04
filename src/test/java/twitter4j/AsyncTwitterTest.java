@@ -359,10 +359,10 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
         String id1status = dateStr + ":id1";
         String id2status = dateStr + ":id2";
-        twitterAPI1.updateAsync(id1status, this);
+        twitterAPI1.updateStatusAsync(id1status, this);
         waitForResponse();
         assertEquals(id1status, status.getText());
-        twitterAPI2.updateAsync(id2status, this);
+        twitterAPI2.updateStatusAsync(id2status, this);
         waitForResponse();
         assertEquals(id2status, status.getText());
 
@@ -370,24 +370,18 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         waitForResponse();
         assertTrue(statuses.size() > 0);
 
-        twitterAPI1.getFriendsTimelineAsync(new Date(0), this);
-        waitForResponse();
-        assertTrue(statuses.size() > 0);
 
         twitterAPI2.getFriendsTimelineAsync(id1, this);
         waitForResponse();
         assertTrue(statuses.size() > 0);
 
-        twitterAPI1.getFriendsTimelineAsync(id2, new Date(0), this);
-        waitForResponse();
-        assertTrue("size", 5 < statuses.size());
         trySerializable(statuses);
     }
 
     public void testGetUserDetail() throws Exception{
         twitterAPI1.getUserDetailAsync(id1,this);
         waitForResponse();
-        UserWithStatus uws = this.extendedUser;
+        ExtendedUser uws = this.extendedUser;
         assertEquals(id1, uws.getName());
         assertTrue(0 <= uws.getFavouritesCount());
         assertTrue(0 <= uws.getFollowersCount());
@@ -420,40 +414,31 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         twitterAPI2.getUserTimelineAsync(this);
         waitForResponse();
         assertTrue("size", 10 < statuses.size());
-        twitterAPI2.getUserTimelineAsync(999383469l,this);
+        twitterAPI2.getUserTimelineAsync(new Paging(999383469l),this);
         waitForResponse();
         assertTrue("size", 10 < statuses.size());
         twitterAPI2.getUserTimelineAsync(id1, this);
         waitForResponse();
         assertTrue("size", 10 < statuses.size());
-        twitterAPI2.getUserTimelineAsync(id1,999383469l, this);
+        twitterAPI2.getUserTimelineAsync(id1,new Paging(999383469l), this);
         waitForResponse();
         assertTrue("size", 10 < statuses.size());
-        twitterAPI2.getUserTimelineAsync(id1, 10, this);
+        twitterAPI2.getUserTimelineAsync(id1,new Paging().count(10), this);
         waitForResponse();
         assertEquals("size", 10, statuses.size());
-        twitterAPI2.getUserTimelineAsync(id1, 10,999383469l, this);
+        twitterAPI2.getUserTimelineAsync(id1, new Paging(999383469l).count(15), this);
         waitForResponse();
-        assertEquals("size", 20, statuses.size());
-        twitterAPI1.getUserTimelineAsync(15, new Date(0), this);
+        assertEquals("size", 15, statuses.size());
+        twitterAPI1.getUserTimelineAsync(new Paging(999383469l).count(25), this);
         waitForResponse();
-        assertTrue("size", 5 < statuses.size());
-        twitterAPI1.getUserTimelineAsync(15, 999383469l, this);
-        waitForResponse();
-        assertTrue("size", 5 < statuses.size());
-        twitterAPI1.getUserTimelineAsync(id1, new Date(0), this);
-        waitForResponse();
-        assertTrue("size", 5 < statuses.size());
-        twitterAPI1.getUserTimelineAsync(id1, 20, new Date(0), this);
-        waitForResponse();
-        assertTrue("size", 5 < statuses.size());
+        assertEquals("size", 25, statuses.size());
 
         trySerializable(statuses);
 
     }
 
     public void testFavorite() throws Exception {
-        Status status = twitterAPI1.update(new Date().toString());
+        Status status = twitterAPI1.updateStatus(new Date().toString());
         twitterAPI2.createFavoriteAsync(status.getId(), this);
         waitForResponse();
         assertEquals(status, this.status);
@@ -496,11 +481,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertTrue(found);
     }
     public void testAccountMethods() throws Exception{
-        twitterAPI1.createAsync(id2);
-        twitterAPI1.followAsync(id2);
-        twitterAPI2.createAsync(id1);
-        twitterAPI2.followAsync(id1);
-        twitterAPI1.existsAsync(id1,id2,this);
+        twitterAPI1.createFriendshipAsync(id2);
+        twitterAPI1.enableNotificationAsync(id2);
+        twitterAPI2.createFriendshipAsync(id1);
+        twitterAPI2.enableNotificationAsync(id1);
+        twitterAPI1.existsFriendshipAsync(id1,id2,this);
         waitForResponse();
         assertTrue(exists);
 
@@ -549,7 +534,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void testShow() throws Exception {
-        twitterAPI2.showAsync(1000l, this);
+        twitterAPI2.showStatusAsync(1000l, this);
         waitForResponse();
         assertEquals(52, status.getUser().getId());
         trySerializable(status);
@@ -557,7 +542,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     public void testUpdate() throws Exception {
         String date = new java.util.Date().toString() + "test";
-        twitterAPI1.updateAsync(date, this);
+        twitterAPI1.updateStatusAsync(date, this);
         waitForResponse();
         assertEquals("", date, status.getText());
 
@@ -567,7 +552,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         waitForResponse();
         assertEquals("", "@" + id1 + " " + date, status.getText());
         assertEquals("", id, status.getInReplyToStatusId());
-        assertEquals(twitterAPI1.getAuthenticatedUser().getId(), status.getInReplyToUserId());
+        assertEquals(twitterAPI1.verifyCredentials().getId(), status.getInReplyToUserId());
 
 
         id = status.getId();
@@ -636,9 +621,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         twitterAPI1.sendDirectMessageAsync(id2, expectedReturn, this);
         waitForResponse();
         assertEquals("", expectedReturn, message.getText());
-        twitterAPI2.getDirectMessagesAsync(new Date(System.currentTimeMillis() - (1000 * 60 * 100)), this);
-        waitForResponse();
-        assertEquals("", expectedReturn, messages.get(0).getText());
         trySerializable(messages);
     }
 
@@ -658,11 +640,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertEquals(id1, user.getName());
 
         te = null;
-        twitterAPI2.createAsync(id2, this);
+        twitterAPI2.createFriendshipAsync(id2, this);
         waitForResponse();
         assertEquals(403, te.getStatusCode());
         te = null;
-        twitterAPI2.createAsync("doesnotexist--", this);
+        twitterAPI2.createFriendshipAsync("doesnotexist--", this);
         waitForResponse();
         //now befriending with non-existing user returns 404
         //http://groups.google.com/group/twitter-development-talk/browse_thread/thread/bd2a912b181bc39f
@@ -679,17 +661,17 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     public void testFollowLeave() throws Exception {
         try {
-            twitterAPI2.create(id1);
+            twitterAPI2.createFriendship(id1);
         } catch (TwitterException te) {
         }
         try {
-            twitterAPI2.follow(id1);
+            twitterAPI2.enableNotification(id1);
         } catch (TwitterException te) {
         }
-        twitterAPI2.leaveAsync(id1, this);
+        twitterAPI2.disableNotificationAsync(id1, this);
         waitForResponse();
         assertEquals(id1, user.getName());
-        twitterAPI2.followAsync(id2, this);
+        twitterAPI2.enableNotificationAsync(id2, this);
         waitForResponse();
         assertEquals(id1, user.getName());
         trySerializable(user);
@@ -704,7 +686,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertTrue(1265204883 < queryResult.getMaxId());
         assertTrue(queryResult.getRefreshUrl().contains(queryStr));
         assertEquals(15, queryResult.getResultsPerPage());
-        assertEquals(-1, queryResult.getTotal());
+//        assertEquals(-1, queryResult.getTotal());
         //warning is not included in the response anymore - 4/24/2009
 //        assertTrue(queryResult.getWarning().contains("adjusted"));
         assertTrue(0 < queryResult.getCompletedIn());
