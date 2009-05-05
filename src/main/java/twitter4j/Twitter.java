@@ -1897,18 +1897,46 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
-     * Update the location
+     * Updates the location
      *
      * @param location the current location of the user
      * @return the updated user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.0.4
      * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#account/updatelocation">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
+     * @deprecated Use updateProfile(String name, String email, String url, String location, String description) instead
      */
     public User updateLocation(String location) throws TwitterException {
         return new User(http.post(baseURL + "account/update_location.xml", new PostParameter[]{new PostParameter("location", location)}, true).
                 asDocument().getDocumentElement(), this);
     }
+
+    /**
+     * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified(non-null) will be updated.
+     *
+     * @param name Optional. Maximum of 20 characters.
+     * @param email Optional. Maximum of 40 characters. Must be a valid email address.
+     * @param url Optional. Maximum of 100 characters. Will be prepended with "http://" if not present.
+     * @param location Optional. Maximum of 30 characters. The contents are not normalized or geocoded in any way.
+     * @param description Optional. Maximum of 160 characters.
+     * @return the updated user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
+     */
+    public ExtendedUser updateProfile(String name, String email, String url
+            , String location, String description) throws TwitterException {
+        List<PostParameter> profile = new ArrayList<PostParameter>(5);
+        addParameterToList(profile, "name", name);
+        addParameterToList(profile, "email", email);
+        addParameterToList(profile, "url", url);
+        addParameterToList(profile, "location", location);
+        addParameterToList(profile, "description", description);
+        return new ExtendedUser(http.post(baseURL + "account/update_profile.xml"
+                , profile.toArray(new PostParameter[profile.size()]), true).
+                asDocument().getDocumentElement(), this);
+    }
+
     /**
      * Returns the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.<br>
      *
@@ -1969,15 +1997,15 @@ public class Twitter implements java.io.Serializable {
             String profileSidebarBorderColor)
             throws TwitterException {
         List<PostParameter> colors = new ArrayList<PostParameter>(5);
-        addColor(colors, "profile_background_color"
+        addParameterToList(colors, "profile_background_color"
                 , profileBackgroundColor);
-        addColor(colors, "profile_text_color"
+        addParameterToList(colors, "profile_text_color"
                 , profileTextColor);
-        addColor(colors, "profile_link_color"
+        addParameterToList(colors, "profile_link_color"
                 , profileLinkColor);
-        addColor(colors, "profile_sidebar_fill_color"
+        addParameterToList(colors, "profile_sidebar_fill_color"
                 , profileSidebarFillColor);
-        addColor(colors, "profile_sidebar_border_color"
+        addParameterToList(colors, "profile_sidebar_border_color"
                 , profileSidebarBorderColor);
         return new ExtendedUser(http.post(baseURL +
                 "account/update_profile_colors.xml",
@@ -1985,7 +2013,7 @@ public class Twitter implements java.io.Serializable {
                 asDocument().getDocumentElement(), this);
     }
 
-    private void addColor(List<PostParameter> colors,
+    private void addParameterToList(List<PostParameter> colors,
                                       String paramName, String color) {
         if(null != color){
             colors.add(new PostParameter(paramName,color));

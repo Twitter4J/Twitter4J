@@ -129,7 +129,15 @@ public interface TwitterListener {
      */
     void gotExistsFriendship(boolean exists);
 
+    /**
+     * @deprecated Use updatedProfile instead
+     */
     void updatedLocation(User user);
+
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    void updatedProfile(ExtendedUser user);
 
     void updatedProfileColors(ExtendedUser user);
 

@@ -198,6 +198,10 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         this.user = user;
         notifyResponse();
     }
+    public void updatedProfile(ExtendedUser user) {
+        this.extendedUser = user;
+        notifyResponse();
+    }
 
     public void updatedProfileColors(ExtendedUser extendedUser){
         this.extendedUser = extendedUser;
@@ -483,6 +487,25 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertTrue(found);
     }
     public void testAccountMethods() throws Exception{
+        ExtendedUser original = twitterAPI1.verifyCredentials();
+
+        String newName, newURL, newLocation, newDescription;
+        String neu = "new";
+        newName = original.getName() + neu;
+        newURL = original.getURL() + neu;
+        newLocation = original.getLocation()+neu;
+        newDescription = original.getDescription()+neu;
+
+        twitterAPI1.updateProfileAsync(
+                newName, null, newURL, newLocation, newDescription,this);
+        twitterAPI1.updateProfile(original.getName()
+                , null, original.getURL().toString(), original.getLocation(), original.getDescription());
+        waitForResponse();
+        assertEquals(newName, extendedUser.getName());
+        assertEquals(newURL, extendedUser.getURL().toString());
+        assertEquals(newLocation, extendedUser.getLocation());
+        assertEquals(newDescription, extendedUser.getDescription());
+
         twitterAPI1.createFriendshipAsync(id2);
         twitterAPI1.enableNotificationAsync(id2);
         twitterAPI2.createFriendshipAsync(id1);

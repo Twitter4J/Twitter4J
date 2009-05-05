@@ -288,16 +288,29 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testAccountMethods() throws Exception{
-        twitterAPI1.verifyCredentials();
+        ExtendedUser original = twitterAPI1.verifyCredentials();
+
+        String newName, newURL, newLocation, newDescription;
+        String neu = "new";
+        newName = original.getName() + neu;
+        newURL = original.getURL() + neu;
+        newLocation = original.getLocation()+neu;
+        newDescription = original.getDescription()+neu;
+
+        ExtendedUser altered = twitterAPI1.updateProfile(
+                newName, null, newURL, newLocation, newDescription);
+        twitterAPI1.updateProfile(original.getName()
+                , null, original.getURL().toString(), original.getLocation(), original.getDescription());
+        assertEquals(newName, altered.getName());
+        assertEquals(newURL, altered.getURL().toString());
+        assertEquals(newLocation, altered.getLocation());
+        assertEquals(newDescription, altered.getDescription());
+
         try {
             new Twitter("doesnotexist--", "foobar").verifyCredentials();
             fail("should throw TwitterException");
         } catch (TwitterException te) {
-
         }
-        String location = "location:"+Math.random();
-        User user = twitterAPI1.updateLocation(location);
-        assertEquals(location,user.getLocation());
 
         twitterAPI1.updateDeliverlyDevice(Twitter.SMS);
         try {

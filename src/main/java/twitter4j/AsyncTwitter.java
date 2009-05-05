@@ -1699,7 +1699,7 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
-     * Update the location
+     * Updates the location
      *
      * @param location the current location of the user
      * @param listener a listener object that receives the response
@@ -1711,6 +1711,45 @@ public class AsyncTwitter extends Twitter {
                 listener.updatedLocation(updateLocation((String) args[0]));
             }
         });
+    }
+
+    /**
+     * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified(non-null) will be updated.
+     *
+     * @param name        Optional. Maximum of 20 characters.
+     * @param email       Optional. Maximum of 40 characters. Must be a valid email address.
+     * @param url         Optional. Maximum of 100 characters. Will be prepended with "http://" if not present.
+     * @param location    Optional. Maximum of 30 characters. The contents are not normalized or geocoded in any way.
+     * @param description Optional. Maximum of 160 characters.
+     * @param listener    a listener object that receives the response
+     * @since Twitter4J 2.0.2
+     */
+    public void updateProfileAsync(String name, String email, String url
+            , String location, String description, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE, listener,
+                new String[]{name, email, url, location, description}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.updatedProfile(updateProfile((String) args[0]
+                        , (String) args[1], (String) args[2], (String) args[3]
+                        , (String) args[4]));
+            }
+        });
+    }
+
+    /**
+     * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified(non-null) will be updated.
+     *
+     * @param name        Optional. Maximum of 20 characters.
+     * @param email       Optional. Maximum of 40 characters. Must be a valid email address.
+     * @param url         Optional. Maximum of 100 characters. Will be prepended with "http://" if not present.
+     * @param location    Optional. Maximum of 30 characters. The contents are not normalized or geocoded in any way.
+     * @param description Optional. Maximum of 160 characters.
+     * @since Twitter4J 2.0.2
+     */
+    public void updateProfileAsync(String name, String email, String url
+            , String location, String description) {
+        updateProfileAsync(name, email, url, location, description
+                , new TwitterAdapter());
     }
 
     /**
@@ -2380,6 +2419,7 @@ public class AsyncTwitter extends Twitter {
     public final static int CREATE_FAVORITE = 18;
     public final static int DESTROY_FAVORITE = 19;
     public final static int UPDATE_LOCATION = 20;
+    public final static int UPDATE_PROFILE = 37;
     public final static int UPDATE_PROFILE_COLORS = 31;
     public final static int RATE_LIMIT_STATUS = 28;
     public final static int UPDATE_DELIVERLY_DEVICE = 21;
