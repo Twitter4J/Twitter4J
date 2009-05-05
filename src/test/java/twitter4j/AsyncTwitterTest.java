@@ -443,6 +443,8 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         waitForResponse();
         assertEquals(status, this.status);
         this.status = null;
+        //need to wait for a second to get it destoryable
+        Thread.sleep(5000);
         twitterAPI2.destroyFavoriteAsync(status.getId(), this);
         waitForResponse();
         assertEquals(status, this.status);

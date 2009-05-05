@@ -41,6 +41,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 /**
  * A utility class to handle HTTP request/response.
@@ -93,6 +94,7 @@ public class HttpClient implements java.io.Serializable {
         setUserId(null);
         setPassword(null);
         setOAuthConsumer(null, null);
+        setRequestHeader("Accept-Encoding","gzip");
 
         String versionStr = System.getProperty("java.specification.version");
         if (null != versionStr) {
@@ -412,6 +414,10 @@ public class HttpClient implements java.io.Serializable {
                         is = con.getErrorStream();
                     } else {
                         is = con.getInputStream(); // this will throw IOException in case response code is 4xx 5xx
+                    }
+                    if("gzip".equals(con.getContentEncoding())){
+                        // the response is gzipped
+                        is = new GZIPInputStream(is);
                     }
                     res = new Response(con.getResponseCode(), is);
                     log("Response: ", res.toString());
