@@ -200,6 +200,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
     public void updatedProfile(ExtendedUser user) {
         this.extendedUser = user;
+        System.out.println("profile updated");
         notifyResponse();
     }
 
@@ -304,7 +305,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     private synchronized void waitForResponse(){
         try {
-            this.wait();
+            this.wait(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -498,9 +499,9 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
         twitterAPI1.updateProfileAsync(
                 newName, null, newURL, newLocation, newDescription,this);
+        waitForResponse();
         twitterAPI1.updateProfile(original.getName()
                 , null, original.getURL().toString(), original.getLocation(), original.getDescription());
-        waitForResponse();
         assertEquals(newName, extendedUser.getName());
         assertEquals(newURL, extendedUser.getURL().toString());
         assertEquals(newLocation, extendedUser.getLocation());

@@ -2418,8 +2418,11 @@ public class AsyncTwitter extends Twitter {
     public final static int FOLLOWERS_IDS = 30;
     public final static int CREATE_FAVORITE = 18;
     public final static int DESTROY_FAVORITE = 19;
+    /**
+     * @deprecated Use UPDATE_PROFILE instead.
+     */
     public final static int UPDATE_LOCATION = 20;
-    public final static int UPDATE_PROFILE = 37;
+    public final static int UPDATE_PROFILE = 41;
     public final static int UPDATE_PROFILE_COLORS = 31;
     public final static int RATE_LIMIT_STATUS = 28;
     public final static int UPDATE_DELIVERLY_DEVICE = 21;
