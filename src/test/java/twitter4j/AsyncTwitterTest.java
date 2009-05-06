@@ -306,7 +306,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     private synchronized void waitForResponse(){
         try {
-            this.wait(15000);
+            this.wait(30000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
