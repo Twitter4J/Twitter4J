@@ -48,7 +48,7 @@ public class SizeofStatusChecker {
         for (int i = 0; i < count; i++) {
             Document doc = builder.parse(new ByteArrayInputStream(statusXML.getBytes()));
             Element elem = doc.getDocumentElement();
-            statuses[i] = new Status(elem, null);
+//            statuses[i] = new Status(elem, null);
         }
         System.out.println((before - Runtime.getRuntime().freeMemory()) / count);
     }

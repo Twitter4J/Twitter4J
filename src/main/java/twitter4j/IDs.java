@@ -26,8 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
+import twitter4j.http.Response;
 
 import java.util.Arrays;
 
@@ -40,8 +41,9 @@ public class IDs extends TwitterResponse {
     private int[] ids;
     private static final long serialVersionUID = -6585026560164704953L;
 
-    /*package*/ IDs(Element elem) throws TwitterException {
-        super();
+    /*package*/ IDs(Response res) throws TwitterException {
+        super(res);
+        Element elem = res.asDocument().getDocumentElement();
         ensureRootNodeNameIs("ids", elem);
         NodeList idlist = elem.getElementsByTagName("id");
         ids = new int[idlist.getLength()];

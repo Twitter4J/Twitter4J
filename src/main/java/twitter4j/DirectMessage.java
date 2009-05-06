@@ -29,6 +29,7 @@ package twitter4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import twitter4j.http.Response;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,12 +49,19 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
     private String recipient_screen_name;
     private static final long serialVersionUID = -3253021825891789737L;
 
-    /*package*/DirectMessage(Element elem, Twitter twitter) throws TwitterException {
-        super();
+    /*package*/DirectMessage(Response res, Twitter twitter) throws TwitterException {
+        super(res);
+        init(res, res.asDocument().getDocumentElement(), twitter);
+    }
+    /*package*/DirectMessage(Response res, Element elem, Twitter twitter) throws TwitterException {
+        super(res);
+        init(res, elem, twitter);
+    }
+    private void init(Response res, Element elem, Twitter twitter) throws TwitterException{
         ensureRootNodeNameIs("direct_message", elem);
-        sender = new User((Element) elem.getElementsByTagName("sender").item(0),
+        sender = new User(res, (Element) elem.getElementsByTagName("sender").item(0),
                 twitter);
-        recipient = new User((Element) elem.getElementsByTagName("recipient").item(0),
+        recipient = new User(res, (Element) elem.getElementsByTagName("recipient").item(0),
                 twitter);
         id = getChildInt("id", elem);
         text = getChildText("text", elem);
@@ -109,8 +117,9 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
     }
 
     /*package*/
-    static List<DirectMessage> constructDirectMessages(Document doc,
+    static List<DirectMessage> constructDirectMessages(Response res,
                                                        Twitter twitter) throws TwitterException {
+        Document doc = res.asDocument();
         if (isRootNodeNilClasses(doc)) {
             return new ArrayList<DirectMessage>(0);
         } else {
@@ -122,7 +131,7 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
                 List<DirectMessage> messages = new ArrayList<DirectMessage>(size);
                 for (int i = 0; i < size; i++) {
                     Element status = (Element) list.item(i);
-                    messages.add(new DirectMessage(status, twitter));
+                    messages.add(new DirectMessage(res, status, twitter));
                 }
                 return messages;
             } catch (TwitterException te) {
@@ -135,38 +144,6 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
         }
     }
 
-    /*
-     <?xml version="1.0" encoding="UTF-8"?>
-  <direct_message>
-    <id>3611242</id>
-    <text>test</text>
-    <sender_id>4933401</sender_id>
-    <recipient_id>6459452</recipient_id>
-    <created_at>Thu Jun 07 06:36:21 +0000 2007</created_at>
-    <sender_screen_name>yusukey</sender_screen_name>
-    <recipient_screen_name>fast_ts</recipient_screen_name>
-    <sender>
-      <id>4933401</id>
-      <name>Yusuke Yamamoto</name>
-      <screen_name>yusukey</screen_name>
-      <location>Tokyo</location>
-      <description>http://yusuke.homeip.net/diary/</description>
-      <profile_image_url>http://assets3.twitter.com/system/user/profile_image/4933401/normal/1023824_2048059614.jpg?1176769649</profile_image_url>
-      <url>http://yusuke.homeip.net/diary/</url>
-      <protected>false</protected>
-    </sender>
-    <recipient>
-      <id>6459452</id>
-      <name>fast_ts</name>
-      <screen_name>fast_ts</screen_name>
-      <location></location>
-      <description></description>
-      <profile_image_url>http://assets1.twitter.com/system/user/profile_image/6459452/normal/_____-1.gif?1180974738</profile_image_url>
-      <url></url>
-      <protected>true</protected>
-    </recipient>
-  </direct_message>
-     */
     @Override
     public int hashCode() {
         return id;

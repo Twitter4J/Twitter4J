@@ -40,8 +40,8 @@ import java.net.Proxy.Type;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 /**
  * A utility class to handle HTTP request/response.
@@ -394,7 +394,6 @@ public class HttpClient implements java.io.Serializable {
                     con.setDoInput(true);
                     setHeaders(url, postParams, con, authenticated);
                     if (null != postParams) {
-                        log("POST ", url);
                         con.setRequestMethod("POST");
                         con.setRequestProperty("Content-Type",
                                 "application/x-www-form-urlencoded");
@@ -410,25 +409,29 @@ public class HttpClient implements java.io.Serializable {
                         osw.flush();
                         osw.close();
                     } else {
-                        log("GET " + url);
                         con.setRequestMethod("GET");
                     }
+                    res = new Response(con);
                     responseCode = con.getResponseCode();
-                    log("Response code: ", String.valueOf(responseCode));
-                    if (responseCode == OK) {
-                        is = con.getInputStream();
-                    } else {
-                        is = con.getErrorStream();
+                    if(DEBUG){
+                        log("Response: ");
+                        Map<String, List<String>> responseHeaders = con.getHeaderFields();
+                        for (String key : responseHeaders.keySet()) {
+                            List<String> values = responseHeaders.get(key);
+                            for (String value : values) {
+                                if(null != key){
+                                    log(key + ": " + value);
+                                }else{
+                                    log(value);
+                                }
+                            }
+                        }
                     }
-                    if("gzip".equals(con.getContentEncoding())){
-                        // the response is gzipped
-                        is = new GZIPInputStream(is);
-                    }
-                    res = new Response(con.getResponseCode(), is);
-                    log("Response: ", res.toString());
+                    log(res.toString());
                     if (responseCode != OK) {
                         throw new TwitterException(getCause(responseCode) + "\n" + res.toString(), responseCode);
                     }
+                    con.disconnect();
                     break;
                 } finally {
                     try {
@@ -482,7 +485,12 @@ public class HttpClient implements java.io.Serializable {
      * @param authenticated boolean
      */
     private void setHeaders(String url, PostParameter[] params, HttpURLConnection connection, boolean authenticated) {
-        log("Request Headers: ");
+        log("Request: ");
+        if (null != params) {
+            log("POST ", url);
+        }else{
+            log("GET ", url);
+        }
 
         if (authenticated) {
             if (basic == null && oauth == null) {

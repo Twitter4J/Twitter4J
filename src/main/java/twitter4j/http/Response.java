@@ -29,8 +29,8 @@ package twitter4j.http;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import twitter4j.TwitterException;
-import twitter4j.org.json.JSONObject;
 import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -40,6 +40,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.util.zip.GZIPInputStream;
 
 /**
  * A data class representing HTTP Response
@@ -48,7 +50,6 @@ import java.io.InputStreamReader;
 public class Response implements java.io.Serializable {
     static DocumentBuilder builder = null;
     static {
-
         try {
             builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         } catch (ParserConfigurationException ex) {
@@ -56,16 +57,31 @@ public class Response implements java.io.Serializable {
         }
     }
 
+
     private int statusCode;
     private Document response = null;
     private String responseString = null;
     private InputStream is;
-    private static final long serialVersionUID = 6190279542077827227L;
     private SAXException saxe = null;
+    private HttpURLConnection con;
+    private static final long serialVersionUID = -8868373803067492270L;
 
-    public Response(int statusCode, InputStream is) throws IOException {
-        this.statusCode = statusCode;
+    public Response(HttpURLConnection con) throws IOException {
+        this.statusCode = con.getResponseCode();
         BufferedReader br = null;
+        InputStream is = null;
+        if (statusCode == 200) {
+            is = con.getInputStream();
+        } else {
+            is = con.getErrorStream();
+        }
+        if("gzip".equals(con.getContentEncoding())){
+            // the response is gzipped
+            is = new GZIPInputStream(is);
+        }
+
+        this.con = con;
+
         try {
             br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             StringBuffer buf = new StringBuffer();
@@ -82,6 +98,10 @@ public class Response implements java.io.Serializable {
 
     public int getStatusCode() {
         return statusCode;
+    }
+
+    public String getResponseHeader(String name) {
+        return con.getHeaderField(name);
     }
 
     public String asString() {
@@ -130,4 +150,5 @@ public class Response implements java.io.Serializable {
     public String toString(){
         return responseString;
     }
+
 }

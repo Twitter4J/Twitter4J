@@ -29,8 +29,9 @@ package twitter4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import twitter4j.http.HTMLEntity;
-import twitter4j.org.json.JSONObject;
+import twitter4j.http.Response;
 import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
 
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -38,6 +39,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,7 +47,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.net.URLDecoder;
 
 /**
  * Super class of Twitter Response objects.
@@ -59,8 +60,26 @@ import java.net.URLDecoder;
 public class TwitterResponse implements java.io.Serializable {
     private Map<String,SimpleDateFormat> formatMap = new HashMap<String,SimpleDateFormat>();
     private static final long serialVersionUID = 3519962197957449562L;
+    private transient int rateLimitLimit = -1;
+    private transient int rateLimitRemaining = -1;
+    private transient long rateLimitReset = -1;
 
     public TwitterResponse() {
+    }
+
+    public TwitterResponse(Response res) {
+        String limit = res.getResponseHeader("X-RateLimit-Limit");
+        if(null != limit){
+            rateLimitLimit = Integer.parseInt(limit);
+        }
+        String remaining = res.getResponseHeader("X-RateLimit-Remaining");
+        if(null != remaining){
+            rateLimitRemaining = Integer.parseInt(remaining);
+        }
+        String reset = res.getResponseHeader("X-RateLimit-Reset");
+        if(null != reset){
+            rateLimitReset = Long.parseLong(reset);
+        }
     }
 
     protected void ensureRootNodeNameIs(String rootName, Element elem) throws TwitterException {
@@ -168,4 +187,15 @@ public class TwitterResponse implements java.io.Serializable {
         }
     }
 
+    public int getRateLimitLimit() {
+        return rateLimitLimit;
+    }
+
+    public int getRateLimitRemaining() {
+        return rateLimitRemaining;
+    }
+
+    public long getRateLimitReset() {
+        return rateLimitReset;
+    }
 }

@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import org.w3c.dom.Element;
+import twitter4j.http.Response;
 
 import java.util.Date;
 
@@ -81,8 +82,9 @@ public class ExtendedUser extends UserWithStatus {
     private int statusesCount;
     private static final long serialVersionUID = -8486230870587454252L;
 
-    public ExtendedUser(Element elem, Twitter twitter) throws TwitterException {
-        super(elem, twitter);
+    public ExtendedUser(Response res, Twitter twitter) throws TwitterException {
+        super(res, twitter);
+        Element elem = res.asDocument().getDocumentElement();
         profileBackgroundColor = getChildText("profile_background_color", elem);
         profileTextColor = getChildText("profile_text_color", elem);
         profileLinkColor = getChildText("profile_link_color", elem);

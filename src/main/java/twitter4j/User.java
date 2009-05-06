@@ -29,12 +29,13 @@ package twitter4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import twitter4j.http.Response;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A data class representing Basic user information element
@@ -89,8 +90,18 @@ public class User extends TwitterResponse implements java.io.Serializable {
 
     private static final long serialVersionUID = 3037057798600246529L;
 
-    /*package*/User(Element elem, Twitter twitter) throws TwitterException {
-        super();
+    /*package*/User(Response res, Twitter twitter) throws TwitterException {
+        super(res);
+        Element elem = res.asDocument().getDocumentElement();
+        init(elem, twitter);
+    }
+
+    /*package*/User(Response res, Element elem, Twitter twitter) throws TwitterException {
+        super(res);
+        init(elem, twitter);
+    }
+
+    private void init(Element elem, Twitter twitter) throws TwitterException {
         this.twitter = twitter;
         ensureRootNodeNameIs(POSSIBLE_ROOT_NAMES, elem);
         id = getChildInt("id", elem);
@@ -213,7 +224,8 @@ public class User extends TwitterResponse implements java.io.Serializable {
         return twitter.sendDirectMessage(this.getName(), text);
     }
 
-    public static List<User> constructUsers(Document doc, Twitter twitter) throws TwitterException {
+    public static List<User> constructUsers(Response res, Twitter twitter) throws TwitterException {
+        Document doc = res.asDocument();
         if (isRootNodeNilClasses(doc)) {
             return new ArrayList<User>(0);
         } else {
@@ -224,7 +236,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 int size = list.getLength();
                 List<User> users = new ArrayList<User>(size);
                 for (int i = 0; i < size; i++) {
-                    users.add(new User((Element) list.item(i), twitter));
+                    users.add(new User(res, (Element) list.item(i), twitter));
                 }
                 return users;
             } catch (TwitterException te) {

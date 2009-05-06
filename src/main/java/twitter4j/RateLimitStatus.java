@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import org.w3c.dom.Element;
+import twitter4j.http.Response;
 
 import java.util.Date;
 
@@ -41,8 +42,9 @@ public class RateLimitStatus extends TwitterResponse {
     private Date dateTime;
     private static final long serialVersionUID = -2326597301406666858L;
 
-    /* package */ RateLimitStatus(Element elem) throws TwitterException {
-        super();
+    /* package */ RateLimitStatus(Response res) throws TwitterException {
+        super(res);
+        Element elem = res.asDocument().getDocumentElement();
         remainingHits = getChildInt("remaining-hits", elem);
         hourlyLimit = getChildInt("hourly-limit", elem);
         resetTimeInSeconds = getChildInt("reset-time-in-seconds", elem);
