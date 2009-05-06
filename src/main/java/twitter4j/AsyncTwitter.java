@@ -50,8 +50,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://search.twitter.com/search
      * 
      * @param query - the search condition
-     * @return the result
-     * @throws TwitterException
+     * @param listener TwitterListener a listener object that receives the response
      * @since Twitter4J 1.1.7
      * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
