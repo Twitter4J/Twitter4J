@@ -295,6 +295,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     public void onException(TwitterException te, int method) {
         this.te = te;
+        System.out.println("onexception");
         te.printStackTrace();
         notifyResponse();
     }

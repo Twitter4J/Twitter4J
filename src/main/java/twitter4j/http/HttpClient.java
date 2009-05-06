@@ -48,14 +48,19 @@ import java.util.zip.GZIPInputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class HttpClient implements java.io.Serializable {
-    private final int OK = 200;
-    private final int NOT_MODIFIED = 304;
-    private final int UNAUTHORIZED = 401;
-    private final int FORBIDDEN = 403;
+    private final int OK = 200;// OK: Success!
+    private final int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.
+    private final int BAD_REQUEST = 400;// Bad Request: The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.
+    private final int NOT_AUTHORIZED = 401;// Not Authorized: Authentication credentials were missing or incorrect.
+    private final int FORBIDDEN = 403;// Forbidden: The request is understood, but it has been refused.  An accompanying error message will explain why.
+    private final int NOT_FOUND = 404;// Not Found: The URI requested is invalid or the resource requested, such as a user, does not exists.
+    private final int NOT_ACCEPTABLE = 406;// Not Acceptable: Returned by the Search API when an invalid format is specified in the request.
+    private final int INTERNAL_SERVER_ERROR = 500;// Internal Server Error: Something is broken.  Please post to the group so the Twitter team can investigate.
+    private final int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
+    private final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
 
     private final boolean DEBUG = Boolean.getBoolean("twitter4j.debug");
 
-    private final int INTERNAL_SERVER_ERROR = 500;
     private String basic;
     private int retryCount = 0;
     private int retryIntervalMillis = 10000;
@@ -410,10 +415,10 @@ public class HttpClient implements java.io.Serializable {
                     }
                     responseCode = con.getResponseCode();
                     log("Response code: ", String.valueOf(responseCode));
-                    if (responseCode == UNAUTHORIZED || responseCode == FORBIDDEN) {
-                        is = con.getErrorStream();
+                    if (responseCode == OK) {
+                        is = con.getInputStream();
                     } else {
-                        is = con.getInputStream(); // this will throw IOException in case response code is 4xx 5xx
+                        is = con.getErrorStream();
                     }
                     if("gzip".equals(con.getContentEncoding())){
                         // the response is gzipped
@@ -421,10 +426,9 @@ public class HttpClient implements java.io.Serializable {
                     }
                     res = new Response(con.getResponseCode(), is);
                     log("Response: ", res.toString());
-                    if (responseCode == UNAUTHORIZED || responseCode == FORBIDDEN) {
-                        throw new TwitterException(res.toString(), responseCode);
+                    if (responseCode != OK) {
+                        throw new TwitterException(getCause(responseCode) + "\n" + res.toString(), responseCode);
                     }
-
                     break;
                 } finally {
                     try {
@@ -441,13 +445,7 @@ public class HttpClient implements java.io.Serializable {
                     }
                 }
             } catch (IOException ioe) {
-                if (responseCode == UNAUTHORIZED || responseCode == FORBIDDEN) {
-                    //throw TwitterException without reply since this request won't success
-                    if (DEBUG) {
-                        ioe.printStackTrace();
-                    }
-                    throw new TwitterException(ioe.getMessage(), ioe, responseCode);
-                }
+                // connection timeout or read timeout
                 if (retriedCount == retryCount) {
                     throw new TwitterException(ioe.getMessage(), ioe, responseCode);
                 }
@@ -559,11 +557,7 @@ public class HttpClient implements java.io.Serializable {
     @Override
     public int hashCode() {
         int result = OK;
-        result = 31 * result + NOT_MODIFIED;
-        result = 31 * result + UNAUTHORIZED;
-        result = 31 * result + FORBIDDEN;
         result = 31 * result + (DEBUG ? 1 : 0);
-        result = 31 * result + INTERNAL_SERVER_ERROR;
         result = 31 * result + (basic != null ? basic.hashCode() : 0);
         result = 31 * result + retryCount;
         result = 31 * result + retryIntervalMillis;
@@ -612,4 +606,40 @@ public class HttpClient implements java.io.Serializable {
         }
     }
 
+
+    private String getCause(int statusCode){
+        String cause = null;
+        // http://apiwiki.twitter.com/HTTP-Response-Codes-and-Errors
+        switch(statusCode){
+            case NOT_MODIFIED:
+                break;
+            case BAD_REQUEST:
+                cause = "The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.";
+                break;
+            case NOT_AUTHORIZED:
+                cause = "Authentication credentials were missing or incorrect.";
+                break;
+            case FORBIDDEN:
+                cause = "The request is understood, but it has been refused.  An accompanying error message will explain why.";
+                break;
+            case NOT_FOUND:
+                cause = "The URI requested is invalid or the resource requested, such as a user, does not exists.";
+                break;
+            case NOT_ACCEPTABLE:
+                cause = "Returned by the Search API when an invalid format is specified in the request.";
+                break;
+            case INTERNAL_SERVER_ERROR:
+                cause = "Something is broken.  Please post to the group so the Twitter team can investigate.";
+                break;
+            case BAD_GATEWAY:
+                cause = "Twitter is down or being upgraded.";
+                break;
+            case SERVICE_UNAVAILABLE:
+                cause = "Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.";
+                break;
+            default:
+                cause = "";
+        }
+        return cause;
+    }
 }
