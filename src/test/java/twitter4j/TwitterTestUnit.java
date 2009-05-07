@@ -599,6 +599,76 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(1 > queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
+
+    }
+    public void testTrends() throws Exception{
+        Trends trends;
+        trends = unauthenticated.getTrends();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertEquals(10, trends.getTrends().length);
+        for (int i = 0; i < 10; i++) {
+            assertNotNull(trends.getTrends()[i].getName());
+            assertNotNull(trends.getTrends()[i].getUrl());
+            assertNull(trends.getTrends()[i].getQuery());
+        }
+
+        trends = unauthenticated.getCurrentTrends();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertEquals(10, trends.getTrends().length);
+        for(Trend trend : trends.getTrends()){
+                assertNotNull(trend.getName());
+                assertNull(trend.getUrl());
+                assertNotNull(trend.getQuery());
+        }
+
+        trends = unauthenticated.getCurrentTrends(true);
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        Trend[] trendArray = trends.getTrends();
+        assertEquals(10, trendArray.length);
+        for(Trend trend : trends.getTrends()){
+                assertNotNull(trend.getName());
+                assertNull(trend.getUrl());
+                assertNotNull(trend.getQuery());
+        }
+
+        List<Trends> trendsArray;
+
+        trendsArray = unauthenticated.getDailyTrends();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertEquals(24, trendsArray.size());
+        assertTrends(trendsArray,20);
+
+        trendsArray = unauthenticated.getDailyTrends(new Date(), true);
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertTrue(1 <= trendsArray.size());
+        assertTrends(trendsArray,20);
+
+        trendsArray = unauthenticated.getWeeklyTrends();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertEquals(7, trendsArray.size());
+        assertTrends(trendsArray,30);
+
+        trendsArray = unauthenticated.getWeeklyTrends(new Date(), true);
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertEquals(7, trendsArray.size());
+        assertTrends(trendsArray,30);
+    }
+    private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception{
+        Date trendAt = null;
+         for(Trends singleTrends : trendsArray){
+             assertEquals(expectedSize, singleTrends.getTrends().length);
+             if(null != trendAt){
+                 assertTrue(trendAt.before(singleTrends.getTrendAt()));
+             }
+             trendAt = singleTrends.getTrendAt();
+             System.out.println(singleTrends.getAsOf());
+             for (int i = 0; i < singleTrends.getTrends().length; i++) {
+                 assertNotNull(singleTrends.getTrends()[i].getName());
+                 assertNull(singleTrends.getTrends()[i].getUrl());
+                 assertNotNull(singleTrends.getTrends()[i].getQuery());
+             }
+         }
+
     }
 
     public void testProperties() throws Exception{

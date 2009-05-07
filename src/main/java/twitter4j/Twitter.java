@@ -514,9 +514,114 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search">Twitter API Wiki / Twitter Search API Method: search</a>
      */
     public QueryResult search(Query query) throws TwitterException {
-        return new QueryResult(get(searchBaseURL + "search.json", query.asPostParameters(), false).asJSONObject(), this);
+        return new QueryResult(get(searchBaseURL + "search.json", query.asPostParameters(), false), this);
     }
     
+    /**
+     * Returns the top ten topics that are currently trending on Twitter.  The response includes the time of the request, the name of each trend, and the url to the <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
+     * <br>This method calls http://search.twitter.com/trends
+     * @return the result
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
+     */
+    public Trends getTrends() throws TwitterException {
+        return Trends.constructTrends(get(searchBaseURL + "trends.json", false));
+    }
+
+    /**
+     * Returns the current top 10 trending topics on Twitter.  The response includes the time of the request, the name of each trending topic, and query used on <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
+     * <br>This method calls http://search.twitter.com/trends/current
+     * @return the result
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
+     */
+    public Trends getCurrentTrends() throws TwitterException {
+        return Trends.constructTrendsList(get(searchBaseURL + "trends/current.json"
+                , false)).get(0);
+    }
+
+    /**
+     * Returns the current top 10 trending topics on Twitter.  The response includes the time of the request, the name of each trending topic, and query used on <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
+     * <br>This method calls http://search.twitter.com/trends/current
+     * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
+     * @return the result
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
+     */
+    public Trends getCurrentTrends(boolean excludeHashTags) throws TwitterException {
+        return Trends.constructTrendsList(get(searchBaseURL + "trends/current.json"
+                + (excludeHashTags ? "?exclude=hashtags" : ""), false)).get(0);
+    }
+
+
+    /**
+     * Returns the top 20 trending topics for each hour in a given day.
+     * <br>This method calls http://search.twitter.com/trends/daily
+     * @return the result
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-daily">Twitter Search API Method: trends daily</a>
+     */
+    public List<Trends> getDailyTrends() throws TwitterException {
+        return Trends.constructTrendsList(get(searchBaseURL + "trends/daily.json", false));
+    }
+
+    /**
+     * Returns the top 20 trending topics for each hour in a given day.
+     * <br>This method calls http://search.twitter.com/trends/daily
+     * @param date Permits specifying a start date for the report.
+     * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
+     * @return the result
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-daily">Twitter Search API Method: trends daily</a>
+     */
+    public List<Trends> getDailyTrends(Date date, boolean excludeHashTags) throws TwitterException {
+        return Trends.constructTrendsList(get(searchBaseURL
+                + "trends/daily.json?date=" + toDateStr(date)
+                + (excludeHashTags ? "&exclude=hashtags" : ""), false));
+    }
+
+    private String toDateStr(Date date){
+        if(null == date){
+            date = new Date();
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date);
+    }
+
+    /**
+     * Returns the top 30 trending topics for each day in a given week.
+     * <br>This method calls http://search.twitter.com/trends/weekly
+     * @return the result
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-weekly">Twitter Search API Method: trends weekly</a>
+     */
+    public List<Trends> getWeeklyTrends() throws TwitterException {
+        return Trends.constructTrendsList(get(searchBaseURL
+                + "trends/weekly.json", false));
+    }
+
+    /**
+     * Returns the top 30 trending topics for each day in a given week.
+     * <br>This method calls http://search.twitter.com/trends/weekly
+     * @param date Permits specifying a start date for the report.
+     * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
+     * @return the result
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-weekly">Twitter Search API Method: trends weekly</a>
+     */
+    public List<Trends> getWeeklyTrends(Date date, boolean excludeHashTags) throws TwitterException {
+        return Trends.constructTrendsList(get(searchBaseURL
+                + "trends/weekly.json?date=" + toDateStr(date)
+                + (excludeHashTags ? "&exclude=hashtags" : ""), false));
+    }
+
     /* Status Methods */
 
     /**

@@ -69,7 +69,7 @@ public class Tweet extends TwitterResponse{
             }
             source = getString("source", tweet);
             profileImageUrl = getString("profile_image_url", tweet);
-            createdAt = encodeDate(tweet.getString("created_at"), "EEE, dd MMM yyyy HH:mm:ss z");
+            createdAt = parseDate(tweet.getString("created_at"), "EEE, dd MMM yyyy HH:mm:ss z");
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage());
         }

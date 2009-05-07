@@ -54,11 +54,11 @@ import java.util.TimeZone;
  * @see twitter4j.DirectMessage
  * @see twitter4j.Status
  * @see twitter4j.User
- * @see twitter4j.UserWithStatus
+ * @see twitter4j.ExtendedUser
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class TwitterResponse implements java.io.Serializable {
-    private Map<String,SimpleDateFormat> formatMap = new HashMap<String,SimpleDateFormat>();
+    private static Map<String,SimpleDateFormat> formatMap = new HashMap<String,SimpleDateFormat>();
     private static final long serialVersionUID = 3519962197957449562L;
     private transient int rateLimitLimit = -1;
     private transient int rateLimitRemaining = -1;
@@ -171,9 +171,9 @@ public class TwitterResponse implements java.io.Serializable {
     }
 
     protected Date getChildDate(String str, Element elem, String format) throws TwitterException {
-        return encodeDate(getChildText(str, elem),format);
+        return parseDate(getChildText(str, elem),format);
     }
-    protected Date encodeDate(String str, String format) throws TwitterException{
+    protected static Date parseDate(String str, String format) throws TwitterException{
         SimpleDateFormat sdf = formatMap.get(format);
         if (null == sdf) {
             sdf = new SimpleDateFormat(format, Locale.ENGLISH);
