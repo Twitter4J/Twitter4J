@@ -374,11 +374,11 @@ public class HttpClient implements java.io.Serializable {
     }
 
     //for test purpose
-    /*package*/ int retriedCount = 0;
     /*package*/ String lastURL;
 
     protected Response httpRequest(String url, PostParameter[] postParams,
                                  boolean authenticated) throws TwitterException {
+        int retriedCount;
         int retry = retryCount + 1;
         Response res = null;
         // update the status
@@ -428,11 +428,15 @@ public class HttpClient implements java.io.Serializable {
                         }
                     }
                     log(res.toString());
-                    if (responseCode != OK) {
-                        throw new TwitterException(getCause(responseCode) + "\n" + res.toString(), responseCode);
-                    }
                     con.disconnect();
-                    break;
+                    if (responseCode != OK) {
+                        if (responseCode != INTERNAL_SERVER_ERROR || retriedCount == retryCount) {
+                            throw new TwitterException(getCause(responseCode) + "\n" + res.toString(), responseCode);
+                        }
+                        // will retry if the status code is INTERNAL_SERVER_ERROR 
+                    } else {
+                        break;
+                    }
                 } finally {
                     try {
                         is.close();
