@@ -347,7 +347,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     protected void tearDown() throws Exception {
-        twitterAPI1 = null;
         super.tearDown();
     }
 

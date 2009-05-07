@@ -28,6 +28,8 @@ package twitter4j;
 
 import junit.framework.TestCase;
 
+import java.util.Map;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -57,8 +59,22 @@ public class DispatcherTest extends TestCase {
         dispatcher.invokeLater(new IncrementTask());
         dispatcher.invokeLater(new IncrementTask());
         Thread.sleep(1000);
-        dispatcher.shutdown();
+        assertTrue(existsThread(name));
         assertEquals(3,count);
+        dispatcher.shutdown();
+        Thread.sleep(1000);
+        assertFalse(existsThread(name));
+    }
+    private boolean existsThread(String name){
+        boolean exists = false;
+        Map<Thread,StackTraceElement[]> allThreads = Thread.getAllStackTraces();
+        for(Thread thread : allThreads.keySet()){
+            if(name.equals(thread.getName())){
+                exists = true;
+                break;
+            }
+        }
+        return exists;
     }
 
     class IncrementTask implements Runnable {

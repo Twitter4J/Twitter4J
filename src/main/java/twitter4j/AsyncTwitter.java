@@ -2298,8 +2298,27 @@ public class AsyncTwitter extends Twitter {
     }
 
     private static transient Dispatcher dispatcher;
+    private boolean shutdown = false;
 
+    /**
+     * Shuts down internal dispather thread.
+     *
+     * @since Twitter4J 2.0.2
+     */
+    public void shutdown(){
+        synchronized (AsyncTwitter.class) {
+            if (shutdown = true) {
+                throw new IllegalStateException("Already shut down");
+            }
+            getDispatcher().shutdown();
+            dispatcher = null;
+            shutdown = true;
+        }
+    }
     private Dispatcher getDispatcher(){
+        if(true == shutdown){
+            throw new IllegalStateException("Already shut down");
+        }
         if (null == dispatcher) {
             int numThreads = 1;
             try {
