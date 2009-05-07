@@ -47,10 +47,11 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns tweets that match a specified query.
      * <br>This method calls http://search.twitter.com/search
      * 
      * @param query - the search condition
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.7
      * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
@@ -64,13 +65,136 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns the top ten topics that are currently trending on Twitter.  The response includes the time of the request, the name of each trend, and the url to the <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
+     * <br>This method calls http://search.twitter.com/trends
+     * @since Twitter4J 2.0.2
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
+     */
+    public void getTrendsAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(TRENDS, listener, null) {
+            public void invoke(TwitterListener listener, Object[] args) throws
+                    TwitterException {
+                listener.gotTrends(getTrends());
+            }
+        });
+    }
+
+    /**
+     * Returns the current top 10 trending topics on Twitter.  The response includes the time of the request, the name of each trending topic, and query used on <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
+     * <br>This method calls http://search.twitter.com/trends/current
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
+     */
+    public void getCurrentTrendsAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(CURRENT_TRENDS, listener, null) {
+            public void invoke(TwitterListener listener, Object[] args) throws
+                    TwitterException {
+                listener.gotCurrentTrends(getCurrentTrends());
+            }
+        });
+    }
+
+    /**
+     * Returns the current top 10 trending topics on Twitter.  The response includes the time of the request, the name of each trending topic, and query used on <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
+     * <br>This method calls http://search.twitter.com/trends/current
+     * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
+     * @since Twitter4J 2.0.2
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
+     */
+    public void getCurrentTrendsAsync(boolean excludeHashTags, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(CURRENT_TRENDS, listener
+                , new Object[]{excludeHashTags}) {
+            public void invoke(TwitterListener listener, Object[] args) throws
+                    TwitterException {
+                listener.gotCurrentTrends(getCurrentTrends((Boolean)args[0]));
+            }
+        });
+    }
+
+
+    /**
+     * Returns the top 20 trending topics for each hour in a given day.
+     * <br>This method calls http://search.twitter.com/trends/daily
+     * @since Twitter4J 2.0.2
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-daily">Twitter Search API Method: trends daily</a>
+     */
+    public void getDailyTrendsAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DAILY_TRENDS, listener, null) {
+            public void invoke(TwitterListener listener, Object[] args) throws
+                    TwitterException {
+                listener.gotDailyTrends(getDailyTrends());
+            }
+        });
+    }
+
+    /**
+     * Returns the top 20 trending topics for each hour in a given day.
+     * <br>This method calls http://search.twitter.com/trends/daily
+     * @param date Permits specifying a start date for the report.
+     * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-daily">Twitter Search API Method: trends daily</a>
+     */
+    public void getDailyTrendsAsync(Date date, boolean excludeHashTags, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DAILY_TRENDS, listener
+                , new Object[]{date, excludeHashTags}) {
+            public void invoke(TwitterListener listener, Object[] args) throws
+                    TwitterException {
+                listener.gotDailyTrends(getDailyTrends((Date) args[0]
+                        , (Boolean) args[1]));
+            }
+        });
+    }
+
+    /**
+     * Returns the top 30 trending topics for each day in a given week.
+     * <br>This method calls http://search.twitter.com/trends/weekly
+     * @since Twitter4J 2.0.2
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-weekly">Twitter Search API Method: trends weekly</a>
+     */
+    public void getWeeklyTrendsAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(WEEKLY_TRENDS, listener
+                , null) {
+            public void invoke(TwitterListener listener, Object[] args) throws
+                    TwitterException {
+                listener.gotWeeklyTrends(getWeeklyTrends());
+            }
+        });
+    }
+
+    /**
+     * Returns the top 30 trending topics for each day in a given week.
+     * <br>This method calls http://search.twitter.com/trends/weekly
+     * @param date Permits specifying a start date for the report.
+     * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
+     * @since Twitter4J 2.0.2
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-weekly">Twitter Search API Method: trends weekly</a>
+     */
+    public void getWeeklyTrendsAsync(Date date, boolean excludeHashTags, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(WEEKLY_TRENDS, listener
+                , new Object[]{date, excludeHashTags}) {
+            public void invoke(TwitterListener listener, Object[] args) throws
+                    TwitterException {
+                listener.gotWeeklyTrends(getWeeklyTrends((Date) args[0]
+                        , (Boolean) args[1]));
+            }
+        });
+    }
+
+    /**
      * <br>This method calls http://twitter.com/statuses/public_timeline
      * Returns the 20 most recent statuses from non-protected users who have set a custom user icon.
      * <br>This method calls http://twitter.com/statuses/public_timeline
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
      */
-
     public void getPublicTimelineAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(PUBLIC_TIMELINE, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
@@ -83,7 +207,7 @@ public class AsyncTwitter extends Twitter {
      * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
      * <br>This method calls http://twitter.com/statuses/public_timeline
      * @param sinceID String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
      */
     public void getPublicTimelineAsync(int sinceID, TwitterListener listener) {
@@ -97,7 +221,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user and that user's friends.
      *  It's also possible to request another user's friends_timeline via the id parameter below.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      */
     public void getFriendsTimelineAsync(TwitterListener listener) {
@@ -113,7 +237,7 @@ public class AsyncTwitter extends Twitter {
      *  It's also possible to request another user's friends_timeline via the id parameter below.
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @since Twitter4J 2.0.1
      */
@@ -130,7 +254,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use getFriendsTimelineAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      */
@@ -141,7 +265,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @deprecated Use getFriendsTimelineAsync(Paging paging, TwitterListener listener) instead
@@ -156,7 +280,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @deprecated Use getFriendsTimelineAsync(Paging paging, TwitterListener listener) instead
@@ -169,7 +293,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified user id.
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param id String user ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      */
     public void getFriendsTimelineAsync(String id, TwitterListener listener) {
@@ -185,7 +309,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param id String user ID
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @since Twitter4J 2.0.1
      */
@@ -202,7 +326,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param id String user ID
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
@@ -216,7 +340,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param id String user ID
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
@@ -231,7 +355,7 @@ public class AsyncTwitter extends Twitter {
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
      * @param id   specifies the ID or screen name of the user for whom to return the friends_timeline
      * @param page the number of page
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
@@ -244,7 +368,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param since Date
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
@@ -261,7 +385,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @deprecated Use getFriendsTimelineAsync(Paging paging, TwitterListener listener) instead
      */
@@ -274,7 +398,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param id String user ID
      * @param since Date
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
@@ -290,7 +414,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the most recent statuses posted in the last 24 hours from the specified user id.
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @param id String user ID
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
@@ -305,7 +429,7 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param count int
      * @param since Date
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @deprecated using long sinceId is suggested.
      */
@@ -323,7 +447,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param id Specifies the ID or screen name of the user for whom to return the user_timeline.
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @since Twitter4J 2.0.1
      */
@@ -346,7 +470,7 @@ public class AsyncTwitter extends Twitter {
      * @param id       String
      * @param page    int
      * @param sinceId  Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @since Twitter4J 2.0.0
      * @deprecated Use getUserTimelineAsync(String id, Paging paging, TwitterListener listener) instead
@@ -362,7 +486,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/user_timeline
      * @param id String
      * @param since Date
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @deprecated using long sinceId is suggested.
      */
@@ -379,7 +503,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/user_timeline
      * @param id String
      * @param count int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @deprecated Use getUserTimelineAsync(String id, Paging paging, TwitterListener listener) instead
      */
@@ -392,7 +516,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/user_timeline
      * @param count int
      * @param since Date
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @deprecated using long sinceId is suggested.
      */
@@ -409,7 +533,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/user_timeline
      *
      * @param paging   controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @since Twitter4J 2.0.1
      */
@@ -430,7 +554,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param count    int
      * @param sinceId  Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @since Twitter4J 2.0.0
      * @deprecated Use getUserTimelineAsync(Paging paging, TwitterListener listener) instead
@@ -444,7 +568,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the most recent statuses posted in the last 24 hours from the specified user id.
      * <br>This method calls http://twitter.com/statuses/user_timeline
      * @param id String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      */
     public void getUserTimelineAsync(String id, TwitterListener listener) {
@@ -460,7 +584,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/user_timeline
      * @param id String
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @since Twitter4J 2.0.0
      * @deprecated Use getUserTimelineAsync(String id, Paging paging, TwitterListener listener) instead
@@ -473,7 +597,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
      * <br>This method calls http://twitter.com/statuses/user_timeline
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      */
     public void getUserTimelineAsync(TwitterListener listener) {
@@ -488,7 +612,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
      * <br>This method calls http://twitter.com/statuses/user_timeline
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-user_timeline">Twitter API Wiki / Twitter REST API Method: statuses user_timeline</a>
      * @since Twitter4J 2.0.0
      * @deprecated Use getUserTimelineAsync(Paging paging, TwitterListener listener) instead
@@ -500,7 +624,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * <br>This method calls http://twitter.com/statuses/mentions
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
      */
     public void getRepliesAsync(TwitterListener listener) {
@@ -514,7 +638,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * <br>This method calls http://twitter.com/statuses/mentions
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
      */
@@ -530,7 +654,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * <br>This method calls http://twitter.com/statuses/mentions
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
      */
@@ -546,7 +670,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * <br>This method calls http://twitter.com/statuses/mentions
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @deprecated Use getMentionsAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
@@ -558,7 +682,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use getMentionsAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
      */
@@ -570,7 +694,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * <br>This method calls http://twitter.com/statuses/mentions
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @deprecated Use getMentionsAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
@@ -584,7 +708,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/mentions
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @deprecated Use getMentionsAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
@@ -597,7 +721,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
      * <br>This method calls http://twitter.com/statuses/show
      * @param id int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use showAsync(long id) instead.
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0show">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0show</a>
      */
@@ -609,7 +733,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
      * <br>This method calls http://twitter.com/statuses/show
      * @param id int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since 1.1.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0show">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0show</a>
      * @deprecated Use showStatusAsync(long id, TwitterListener listener) instead
@@ -626,7 +750,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
      * <br>This method calls http://twitter.com/statuses/show
      * @param id int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0show">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0show</a>
      */
@@ -644,7 +768,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/update
      *
      * @param status String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0update</a>
      * @deprecated Use updateStatusAsync(String status, TwitterListener listener) instead
      */
@@ -678,7 +802,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/update
      *
      * @param status String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0update</a>
      * @since Twitter4J 2.0.1
      */
@@ -713,7 +837,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param status String
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0update</a>
      * @since Twitter4J 1.1.6
      */
@@ -750,7 +874,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param status String
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0update</a>
      * @since Twitter4J 2.0.1
      */
@@ -825,7 +949,7 @@ public class AsyncTwitter extends Twitter {
      * Destroys the status specified by the required ID parameter. asynchronously
      * <br>This method calls http://twitter.com/statuses/destroy
      * @param statusId String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since 1.0.6
      * @deprecated Use destroyStatusAsync(long statuId) instead.
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0destroy</a>
@@ -837,7 +961,7 @@ public class AsyncTwitter extends Twitter {
      * Destroys the status specified by the required ID parameter. asynchronously
      * <br>This method calls http://twitter.com/statuses/destroy
      * @param statusId String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since 1.1.2
      * @deprecated Use destroyStatusAsync(long statuId) instead.
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0destroy</a>
@@ -851,7 +975,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/destroy
      *
      * @param statusId String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since 1.1.2
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0destroy</a>
      */
@@ -867,7 +991,7 @@ public class AsyncTwitter extends Twitter {
      * Retrieves extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
      * <br>This method calls http://twitter.com/users/show
      * @param id String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users%C2%A0show</a>
      */
     public void getUserDetailAsync(String id, TwitterListener listener) {
@@ -881,7 +1005,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the specified user's friends, each with current status inline.
      * <br>This method calls http://twitter.com/statuses/friends
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      */
     public void getFriendsAsync(TwitterListener listener) {
@@ -897,7 +1021,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the specified user's friends, each with current status inline.
      * <br>This method calls http://twitter.com/statuses/friends
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      */
@@ -913,7 +1037,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the specified user's friends, each with current status inline.
      * <br>This method calls http://twitter.com/statuses/friends
      * @param page number of the page to retrieve friends
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use getFriendsAsync(Paging paging,TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      */
@@ -925,7 +1049,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the user's friends, each with current status inline.
      * <br>This method calls http://twitter.com/statuses/friends
      * @param id String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      */
     public void getFriendsAsync(String id, TwitterListener listener) {
@@ -941,7 +1065,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/friends
      * @param id String
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      */
     public void getFriendsAsync(String id, Paging paging, TwitterListener listener) {
@@ -958,7 +1082,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/friends
      * @param id String
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use getFriendsAsync(String id, Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      */
@@ -970,7 +1094,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://twitter.com/statuses/followers
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
      */
     public void getFollowersAsync(TwitterListener listener) {
@@ -985,7 +1109,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://twitter.com/statuses/followers
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
      */
@@ -1001,7 +1125,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://twitter.com/statuses/followers
      * @param page Retrieves the next 100 followers.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.0
      * @deprecated Use getFollowersAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
@@ -1015,7 +1139,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/followers
      *
      * @param id       The ID or screen name of the user for whom to request a list of followers.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
      */
@@ -1032,7 +1156,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/followers
      * @param id The ID or screen name of the user for whom to request a list of followers.
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
      */
@@ -1049,7 +1173,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/followers
      * @param id The ID or screen name of the user for whom to request a list of followers.
      * @param page Retrieves the next 100 followers.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.0
      * @deprecated Use getFollowersAsync(String id, Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
@@ -1060,7 +1184,7 @@ public class AsyncTwitter extends Twitter {
 
     /**
      * Returns a list of the users currently featured on the site with their current statuses inline.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      */
     public void getFeaturedAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FEATURED, listener, null) {
@@ -1073,7 +1197,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns a list of the direct messages sent to the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
      */
     public void getDirectMessagesAsync(TwitterListener listener) {
@@ -1088,7 +1212,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent to the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
      */
@@ -1104,7 +1228,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent to the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages
      * @param page int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use getDirectMessagesAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
      */
@@ -1117,7 +1241,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/direct_messages
      * @param page int
      * @param sinceId Returns only direct messages with an ID greater than (that is, more recent than) the specified ID.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.0
      * @deprecated Use getDirectMessagesAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
@@ -1131,7 +1255,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent to the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages
      * @param sinceId int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use getDirectMessagesAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
      */
@@ -1143,7 +1267,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent to the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages
      * @param since Date
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated using long sinceId is suggested.
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
      */
@@ -1157,7 +1281,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns a list of the direct messages sent by the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages/sent
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0sent</a>
      */
     public void getSentDirectMessagesAsync(TwitterListener listener) {
@@ -1172,7 +1296,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent by the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages/sent
      * @param paging controls pagination
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0sent</a>
      */
@@ -1188,7 +1312,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent by the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages/sent
      * @param since Date
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated using long sinceId is suggested.
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0sent</a>
      */
@@ -1204,7 +1328,7 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of the direct messages sent by the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages/sent
      * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use getSentDirectMessagesAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0sent</a>
      */
@@ -1217,7 +1341,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/direct_messages/sent
      * @param page Retrieves the 20 next most recent direct messages.
      * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.0
      * @deprecated Use getSentDirectMessagesAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0sent</a>
@@ -1233,7 +1357,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/direct_messages/new
      * @param id String
      * @param text String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0new">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0new</a>
      */
     public void sendDirectMessageAsync(String id, String text, TwitterListener listener) {
@@ -1264,7 +1388,7 @@ public class AsyncTwitter extends Twitter {
      * Delete specified direct message
      * <br>This method calls http://twitter.com/direct_messages/destroy
      * @param id int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0destroy</a>
      * @deprecated Use destroyDirectMessageAsync(int id, TwitterListener listener) instead
      */
@@ -1280,7 +1404,7 @@ public class AsyncTwitter extends Twitter {
      * Delete specified direct message
      * <br>This method calls http://twitter.com/direct_messages/destroy
      * @param id int
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0destroy</a>
      * @since Twitter4J 2.0.1
      */
@@ -1310,7 +1434,7 @@ public class AsyncTwitter extends Twitter {
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.
      * <br>This method calls http://twitter.com/friendships/create
      * @param id String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use createFriendshipAsync(String id, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships%C2%A0create</a>
      */
@@ -1327,7 +1451,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/friendships/create
      *
      * @param id       String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships%C2%A0create</a>
      */
@@ -1345,7 +1469,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param id the ID or screen name of the user to be befriended
      * @param follow Enable notifications for the target user in addition to becoming friends.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships%C2%A0create</a>
      */
@@ -1388,7 +1512,7 @@ public class AsyncTwitter extends Twitter {
      * Discontinues friendship with the specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.
      * <br>This method calls http://twitter.com/friendships/destroy
      * @param id String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use destroyFriendshipAsync(String id, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friendships%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: friendships%C2%A0destroy</a>
      */
@@ -1421,7 +1545,7 @@ public class AsyncTwitter extends Twitter {
      * Discontinues friendship with the specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.
      * <br>This method calls http://twitter.com/friendships/destroy
      * @param id String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friendships%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: friendships%C2%A0destroy</a>
      */
@@ -1835,7 +1959,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://twitter.com/favorites
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @deprecated Use getFavoritesAsync(TwitterListener listener) instead
      */
@@ -1846,7 +1970,7 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://twitter.com/favorites
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @since Twitter4J 2.0.1
      */
@@ -1862,7 +1986,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://twitter.com/favorites
      * @param page number of page to retrieve favorites
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @deprecated Use getFavoritesAsync(int page, TwitterListener listener) instead
      */
@@ -1874,7 +1998,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://twitter.com/favorites
      * @param page number of page to retrieve favorites
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @since Twitter4J 2.0.1
      */
@@ -1890,7 +2014,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://twitter.com/favorites
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @deprecated Use getFavoritesAsync(String id,TwitterListener listener) instead
      */
@@ -1906,7 +2030,7 @@ public class AsyncTwitter extends Twitter {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://twitter.com/favorites
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @since Twitter4J 2.0.1
      */
@@ -1923,7 +2047,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/favorites
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
      * @param page retrieves the 20 next most recent favorite statuses.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @deprecated Use getFavoritesAsync(String id,int page, TwitterListener listener) instead
      */
@@ -1940,7 +2064,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/favorites
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
      * @param page retrieves the 20 next most recent favorite statuses.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @since Twitter4J 2.0.1
      */
@@ -1956,7 +2080,7 @@ public class AsyncTwitter extends Twitter {
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
      * <br>This method calls http://twitter.com/favorites/create%C2%A0
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use createFavoriteAsync(long id, TwitterListener listener) instead.
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites%C2%A0create">Twitter API Wiki / Twitter REST API Method: favorites%C2%A0create</a>
      */
@@ -1969,7 +2093,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/favorites/create%C2%A0
      *
      * @param id       the ID or screen name of the user for whom to request a list of favorite statuses.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since 1.1.2
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites%C2%A0create">Twitter API Wiki / Twitter REST API Method: favorites%C2%A0create</a>
      */
@@ -2012,7 +2136,7 @@ public class AsyncTwitter extends Twitter {
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
      * <br>This method calls http://twitter.com/favorites/destroy
      * @param id the ID or screen name of the user for whom to request a list of un-favorite statuses.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use destroyFavoriteAsync(long id, TwitterListener listener) instead.
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: favorites%C2%A0destroy</a>
      */
@@ -2025,7 +2149,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/favorites/destroy
      *
      * @param id       the ID or screen name of the user for whom to request a list of un-favorite statuses.
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since 1.1.2
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-favorites%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: favorites%C2%A0destroy</a>
      */
@@ -2069,7 +2193,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/notifications/follow
      *
      * @param id       String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use enableNotificationAsync(String id, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0follow</a>
      */
@@ -2086,7 +2210,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/notifications/follow
      *
      * @param id       String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0follow</a>
      */
@@ -2130,7 +2254,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/notifications/leave
      *
      * @param id       String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @deprecated Use disableNotificationAsync(String id, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0leave</a>
      */
@@ -2147,7 +2271,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/notifications/leave
      *
      * @param id       String
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0leave</a>
      */
@@ -2211,7 +2335,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/blocks/create%C2%A0
      *
      * @param id the ID or screen_name of the user to block
-     * @param listener TwitterListener a listener object that receives the response
+     * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-blocks%C2%A0create">Twitter API Wiki / Twitter REST API Method: blocks%C2%A0create</a>
      */
@@ -2448,7 +2572,7 @@ public class AsyncTwitter extends Twitter {
      * @deprecated Use CREATED_BLOCK instead.
      */
     public final static int BLOCK = 22;
-    public final static int CREATED_BLOCK = 41;
+    public final static int CREATED_BLOCK = 43;
     /**
      * @deprecated Use DESTROYED_BLOCK instead.
      */
@@ -2458,4 +2582,9 @@ public class AsyncTwitter extends Twitter {
     public final static int GET_DOWNTIME_SCHEDULE = 25;
     public final static int DESTROY_STATUS = 26;
     public final static int SEARCH = 27;
+
+    public final static int TRENDS = 44;
+    public final static int CURRENT_TRENDS = 45;
+    public final static int DAILY_TRENDS = 46;
+    public final static int WEEKLY_TRENDS = 47;
 }

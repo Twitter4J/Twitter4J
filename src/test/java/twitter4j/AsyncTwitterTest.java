@@ -58,6 +58,8 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private boolean exists;
     private QueryResult queryResult;
     private IDs ids;
+    private List<Trends> trendsList;
+    private Trends trends;
 
     public void gotPublicTimeline(List<Status> statuses) {
         this.statuses = statuses;
@@ -285,6 +287,22 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
     public void searched(QueryResult result) {
         this.queryResult = result;
+        notifyResponse();
+    }
+    public void gotTrends(Trends trends) {
+        this.trends = trends;
+        notifyResponse();
+    }
+    public void gotCurrentTrends(Trends trends) {
+        this.trends = trends;
+        notifyResponse();
+    }
+    public void gotDailyTrends(List<Trends> trendsList) {
+        this.trendsList = trendsList;
+        notifyResponse();
+    }
+    public void gotWeeklyTrends(List<Trends> trendsList) {
+        this.trendsList = trendsList;
         notifyResponse();
     }
 
@@ -734,7 +752,81 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 //        assertNotNull(tweets.get(0).getIsoLanguageCode());
         assertTrue(tweets.get(0).getProfileImageUrl().contains(".jpg") ||tweets.get(0).getProfileImageUrl().contains(".png") );
         assertTrue(tweets.get(0).getSource().contains("twitter"));
+    }
 
+    public void testTrendsAsync() throws Exception {
+        this.twitterAPI1.getTrendsAsync(this);
+        waitForResponse();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertEquals(10, trends.getTrends().length);
+        for (int i = 0; i < 10; i++) {
+            assertNotNull(trends.getTrends()[i].getName());
+            assertNotNull(trends.getTrends()[i].getUrl());
+            assertNull(trends.getTrends()[i].getQuery());
+        }
+
+        twitterAPI1.getCurrentTrendsAsync(this);
+        waitForResponse();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertEquals(10, trends.getTrends().length);
+        for (Trend trend : trends.getTrends()) {
+            assertNotNull(trend.getName());
+            assertNull(trend.getUrl());
+            assertNotNull(trend.getQuery());
+        }
+
+        twitterAPI1.getCurrentTrendsAsync(true, this);
+        waitForResponse();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        Trend[] trendArray = trends.getTrends();
+        assertEquals(10, trendArray.length);
+        for (Trend trend : trends.getTrends()) {
+            assertNotNull(trend.getName());
+            assertNull(trend.getUrl());
+            assertNotNull(trend.getQuery());
+        }
+
+
+        twitterAPI1.getDailyTrendsAsync(this);
+        waitForResponse();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertEquals(24, trendsList.size());
+        assertTrends(trendsList, 20);
+
+        twitterAPI1.getDailyTrendsAsync(new Date(), true, this);
+        waitForResponse();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertTrue(0 <= trendsList.size());
+        assertTrends(trendsList, 20);
+
+        twitterAPI1.getWeeklyTrendsAsync(this);
+        waitForResponse();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertEquals(7, trendsList.size());
+        assertTrends(trendsList, 30);
+
+        twitterAPI1.getWeeklyTrendsAsync(new Date(), true, this);
+        waitForResponse();
+        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
+        assertTrue(1 <= trendsList.size());
+        assertTrends(trendsList, 30);
+    }
+
+    private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception{
+        Date trendAt = null;
+         for(Trends singleTrends : trendsArray){
+             assertEquals(expectedSize, singleTrends.getTrends().length);
+             if(null != trendAt){
+                 assertTrue(trendAt.before(singleTrends.getTrendAt()));
+             }
+             trendAt = singleTrends.getTrendAt();
+             System.out.println(singleTrends.getAsOf());
+             for (int i = 0; i < singleTrends.getTrends().length; i++) {
+                 assertNotNull(singleTrends.getTrends()[i].getName());
+                 assertNull(singleTrends.getTrends()[i].getUrl());
+                 assertNotNull(singleTrends.getTrends()[i].getQuery());
+             }
+         }
     }
 
     private void trySerializable(Object obj) throws IOException {

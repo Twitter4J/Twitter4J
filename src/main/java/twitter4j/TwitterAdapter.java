@@ -129,6 +129,15 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void searched(QueryResult result){
     }
+    public void gotTrends(Trends trends) {
+    }
+    public void gotCurrentTrends(Trends trends) {
+    }
+    public void gotDailyTrends(List<Trends> trendsList) {
+    }
+    public void gotWeeklyTrends(List<Trends> trendsList) {
+    }
+
     /**
      * @param ex TwitterException
      * @param method int

@@ -196,6 +196,26 @@ public interface TwitterListener {
     void searched(QueryResult queryResult);
 
     /**
+     * @since Twitter4J 2.0.2
+     */
+    void gotTrends(Trends trends);
+
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    void gotCurrentTrends(Trends trends);
+
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    void gotDailyTrends(List<Trends> trendsList);
+
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    void gotWeeklyTrends(List<Trends> trendsList);
+
+    /**
      * @param te     TwitterException
      * @param method int
      */
