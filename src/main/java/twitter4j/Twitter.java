@@ -1715,8 +1715,7 @@ public class Twitter implements java.io.Serializable {
      */
     public DirectMessage deleteDirectMessage(int id) throws
             TwitterException {
-        return new DirectMessage(http.post(baseURL +
-                "direct_messages/destroy/" + id + ".xml", new PostParameter[0], true), this);
+        return destroyDirectMessage(id);
     }
 
     /**
