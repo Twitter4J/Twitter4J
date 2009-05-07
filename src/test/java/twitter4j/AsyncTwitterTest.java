@@ -202,7 +202,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
     public void updatedProfile(ExtendedUser user) {
         this.extendedUser = user;
-        System.out.println("profile updated");
         notifyResponse();
     }
 
@@ -820,7 +819,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
                  assertTrue(trendAt.before(singleTrends.getTrendAt()));
              }
              trendAt = singleTrends.getTrendAt();
-             System.out.println(singleTrends.getAsOf());
              for (int i = 0; i < singleTrends.getTrends().length; i++) {
                  assertNotNull(singleTrends.getTrends()[i].getName());
                  assertNull(singleTrends.getTrends()[i].getUrl());

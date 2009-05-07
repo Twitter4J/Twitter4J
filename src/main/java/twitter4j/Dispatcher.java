@@ -48,7 +48,9 @@ import java.util.Queue;
         }
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
-                shutdown();
+                if (active) {
+                    shutdown();
+                }
             }
         });
     }
@@ -63,7 +65,7 @@ import java.util.Queue;
     }
     Object ticket = new Object();
     public Runnable poll(){
-        while(true){
+        while(active){
             synchronized(q){
                 Runnable task = q.poll();
                 if (null != task) {
@@ -77,17 +79,19 @@ import java.util.Queue;
                 }
             }
         }
+        return null;
     }
 
     private boolean active = true;
 
     public synchronized void shutdown() {
         if (active) {
-            for (int i = 0; i < threads.length; i++) {
-                threads[i].shutdown();
+            active = false;
+            for (ExecuteThread thread : threads) {
+                thread.shutdown();
             }
-            synchronized (q) {
-                q.notify();
+            synchronized (ticket) {
+                ticket.notify();
             }
         } else {
             throw new IllegalStateException("Already shutdown");
@@ -110,10 +114,12 @@ class ExecuteThread extends Thread {
     public void run() {
         while (alive) {
             Runnable task = q.poll();
-            try{
-                task.run();
-            }catch(Exception ex){
-                ex.printStackTrace();
+            if (null != task) {
+                try {
+                    task.run();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }

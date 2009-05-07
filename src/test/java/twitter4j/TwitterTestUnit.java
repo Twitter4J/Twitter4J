@@ -491,7 +491,6 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2.updateStatus("@"+id1+" reply to id1");
         List<Status> statuses = twitterAPI1.getMentions();
         assertTrue(statuses.size() > 0);
-        System.out.println(statuses.get(0).getText());
         assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
 
         statuses = twitterAPI1.getMentions(new Paging(1));
@@ -564,7 +563,6 @@ public class TwitterTestUnit extends TestCase {
         QueryResult queryResult = unauthenticated.search(query);
         assertEquals(0, queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
-        System.out.println(queryResult.getRefreshUrl());
         assertTrue(queryResult.getRefreshUrl().contains(queryStr));
         assertEquals(15, queryResult.getResultsPerPage());
 //        assertEquals(-1, queryResult.getTotal());
@@ -661,7 +659,6 @@ public class TwitterTestUnit extends TestCase {
                  assertTrue(trendAt.before(singleTrends.getTrendAt()));
              }
              trendAt = singleTrends.getTrendAt();
-             System.out.println(singleTrends.getAsOf());
              for (int i = 0; i < singleTrends.getTrends().length; i++) {
                  assertNotNull(singleTrends.getTrends()[i].getName());
                  assertNull(singleTrends.getTrends()[i].getUrl());

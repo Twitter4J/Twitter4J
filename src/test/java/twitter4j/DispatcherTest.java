@@ -58,18 +58,18 @@ public class DispatcherTest extends TestCase {
         dispatcher.invokeLater(new IncrementTask());
         dispatcher.invokeLater(new IncrementTask());
         dispatcher.invokeLater(new IncrementTask());
-        Thread.sleep(1000);
+        Thread.sleep(300);
         assertTrue(existsThread(name));
         assertEquals(3,count);
         dispatcher.shutdown();
-        Thread.sleep(1000);
+        Thread.sleep(500);
         assertFalse(existsThread(name));
     }
     private boolean existsThread(String name){
         boolean exists = false;
         Map<Thread,StackTraceElement[]> allThreads = Thread.getAllStackTraces();
         for(Thread thread : allThreads.keySet()){
-            if(name.equals(thread.getName())){
+            if(thread.getName().contains(name)){
                 exists = true;
                 break;
             }
