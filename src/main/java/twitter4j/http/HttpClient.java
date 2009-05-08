@@ -373,16 +373,13 @@ public class HttpClient implements java.io.Serializable {
         return httpRequest(url, null, false);
     }
 
-    //for test purpose
-    /*package*/ String lastURL;
-
     protected Response httpRequest(String url, PostParameter[] postParams,
                                  boolean authenticated) throws TwitterException {
         int retriedCount;
         int retry = retryCount + 1;
         Response res = null;
         // update the status
-        lastURL = url;
+//        lastURL = url;
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
             try {
@@ -583,8 +580,6 @@ public class HttpClient implements java.io.Serializable {
         result = 31 * result + readTimeout;
         result = 31 * result + (isJDK14orEarlier ? 1 : 0);
         result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
-        result = 31 * result + retriedCount;
-        result = 31 * result + (lastURL != null ? lastURL.hashCode() : 0);
         return result;
     }
 
@@ -598,8 +593,7 @@ public class HttpClient implements java.io.Serializable {
         }
         if (obj instanceof HttpClient) {
             HttpClient that = (HttpClient) obj;
-            return this.retryCount == that.retriedCount &&
-                    this.retryIntervalMillis
+            return this.retryIntervalMillis
                             == that.retryIntervalMillis && this.basic.equals(that.basic)
                     && this.requestHeaders.equals(that.requestHeaders);
         }
