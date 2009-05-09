@@ -28,6 +28,8 @@ package twitter4j;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import twitter4j.http.HTMLEntity;
 import twitter4j.http.Response;
 import twitter4j.org.json.JSONException;
@@ -82,13 +84,13 @@ public class TwitterResponse implements java.io.Serializable {
         }
     }
 
-    protected void ensureRootNodeNameIs(String rootName, Element elem) throws TwitterException {
+    protected static void ensureRootNodeNameIs(String rootName, Element elem) throws TwitterException {
         if (!rootName.equals(elem.getNodeName())) {
             throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check Twitter service availability.\n" + toString(elem));
         }
     }
 
-    protected void ensureRootNodeNameIs(String[] rootNames, Element elem) throws TwitterException {
+    protected static void ensureRootNodeNameIs(String[] rootNames, Element elem) throws TwitterException {
         String actualRootName = elem.getNodeName();
         for (String rootName : rootNames) {
             if (rootName.equals(actualRootName)) {
@@ -127,12 +129,24 @@ public class TwitterResponse implements java.io.Serializable {
         }
     }
 
-    protected String getChildText( String str, Element elem ) {
-        return HTMLEntity.unescape(elem.getElementsByTagName(str).getLength() > 0 ? elem.getElementsByTagName(str).item(0).getTextContent() : "");
+    protected static String getChildText( String str, Element elem ) {
+        return HTMLEntity.unescape(getTextContent(str,elem));
     }
 
-    protected int getChildInt(String str, Element elem) {
-        String str2 = elem.getElementsByTagName(str).getLength() > 0 ? elem.getElementsByTagName(str).item(0).getTextContent() : null;
+    protected static String getTextContent(String str, Element elem){
+        NodeList nodelist = elem.getElementsByTagName(str);
+        if (nodelist.getLength() > 0) {
+            Node node = nodelist.item(0).getFirstChild();
+            if (null != node) {
+                String nodeValue = node.getNodeValue();
+                return null != nodeValue ? nodeValue : "";
+            }
+        }
+        return "";
+     }
+
+    protected static int getChildInt(String str, Element elem) {
+        String str2 = getTextContent(str, elem);
         if (null == str2 || "".equals(str2)) {
             return -1;
         } else {
@@ -140,8 +154,8 @@ public class TwitterResponse implements java.io.Serializable {
         }
     }
 
-    protected long getChildLong(String str, Element elem) {
-        String str2 = elem.getElementsByTagName(str).getLength() > 0 ? elem.getElementsByTagName(str).item(0).getTextContent() : null;        
+    protected static long getChildLong(String str, Element elem) {
+        String str2 = getTextContent(str, elem);
         if (null == str2 || "".equals(str2)) {
             return -1;
         } else {
@@ -149,7 +163,7 @@ public class TwitterResponse implements java.io.Serializable {
         }
     }
 
-    protected String getString(String name, JSONObject json, boolean decode) {
+    protected static String getString(String name, JSONObject json, boolean decode) {
         String returnValue = null;
             try {
                 returnValue = json.getString(name);
@@ -165,14 +179,15 @@ public class TwitterResponse implements java.io.Serializable {
         return returnValue;
     }
 
-    protected boolean getChildBoolean(String str, Element elem) {
-        return elem.getElementsByTagName(str).getLength() > 0 ? Boolean.valueOf(elem.getElementsByTagName(str).item(0).getTextContent()) : false;
+    protected static boolean getChildBoolean(String str, Element elem) {
+        String value = getTextContent(str, elem);
+        return Boolean.valueOf(value);
     }
-    protected Date getChildDate(String str, Element elem) throws TwitterException {
+    protected static Date getChildDate(String str, Element elem) throws TwitterException {
         return getChildDate(str, elem, "EEE MMM d HH:mm:ss z yyyy");
     }
 
-    protected Date getChildDate(String str, Element elem, String format) throws TwitterException {
+    protected static Date getChildDate(String str, Element elem, String format) throws TwitterException {
         return parseDate(getChildText(str, elem),format);
     }
     protected static Date parseDate(String str, String format) throws TwitterException{

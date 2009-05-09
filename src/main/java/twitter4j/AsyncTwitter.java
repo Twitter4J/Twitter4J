@@ -2461,11 +2461,9 @@ public class AsyncTwitter extends Twitter {
      * @since Twitter4J 1.0.4
      */
     public void getDowntimeScheduleAsync() {
-        getDispatcher().invokeLater(new AsyncTask(GET_DOWNTIME_SCHEDULE, new TwitterAdapter(), new Object[]{}) {
-            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotDowntimeSchedule(getDowntimeSchedule());
-            }
-        });
+        throw new RuntimeException(
+                "this method is not supported by the Twitter API anymore"
+                , new NoSuchMethodException("this method is not supported by the Twitter API anymore"));
     }
 
     /**
@@ -2579,6 +2577,9 @@ public class AsyncTwitter extends Twitter {
     public final static int UNBLOCK = 23;
     public final static int DESTROYED_BLOCK = 42;
     public final static int TEST = 24;
+    /**
+     * @deprecated not supported by Twitter API anymore
+     */
     public final static int GET_DOWNTIME_SCHEDULE = 25;
     public final static int DESTROY_STATUS = 26;
     public final static int SEARCH = 27;

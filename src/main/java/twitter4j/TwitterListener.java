@@ -191,6 +191,9 @@ public interface TwitterListener {
 
     void tested(boolean test);
 
+    /**
+     * @deprecated not supported by Twitter API anymore
+     */
     void gotDowntimeSchedule(String schedule);
 
     void searched(QueryResult queryResult);

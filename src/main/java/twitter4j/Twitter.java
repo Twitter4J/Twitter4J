@@ -492,7 +492,7 @@ public class Twitter implements java.io.Serializable {
             } else {
                 if (0 != arrayPagingParams.length) {
                     String encodedParams = HttpClient.encodeParameters(arrayPagingParams);
-                    if (url.contains("?")) {
+                    if (-1 != url.indexOf("?")) {
                         url += "&" + encodedParams;
                     } else {
                         url += "?" + encodedParams;
@@ -1829,8 +1829,8 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-exists">Twitter API Wiki / Twitter REST API Method: friendships exists</a>
      */
     public boolean existsFriendship(String userA, String userB) throws TwitterException {
-        return get(baseURL + "friendships/exists.xml", "user_a", userA, "user_b", userB, true).
-                asString().contains("true");
+        return -1 != get(baseURL + "friendships/exists.xml", "user_a", userA, "user_b", userB, true).
+                asString().indexOf("true");
     }
 
     /**
@@ -2387,9 +2387,12 @@ public class Twitter implements java.io.Serializable {
      * @return the schedule
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.0.4
+     * @deprecated this method is not supported by the Twitter API anymore
      */
     public String getDowntimeSchedule() throws TwitterException {
-        return get(baseURL + "help/downtime_schedule.xml", false).asString();
+        throw new TwitterException(
+                "this method is not supported by the Twitter API anymore"
+                , new NoSuchMethodException("this method is not supported by the Twitter API anymore"));
     }
 
 

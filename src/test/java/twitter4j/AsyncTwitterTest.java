@@ -731,7 +731,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         waitForResponse();
         assertEquals(0, queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
-        assertTrue(queryResult.getRefreshUrl().contains(queryStr));
+        assertTrue(-1 != queryResult.getRefreshUrl().indexOf(queryStr));
         assertEquals(15, queryResult.getResultsPerPage());
 //        assertEquals(-1, queryResult.getTotal());
         //warning is not included in the response anymore - 4/24/2009
@@ -749,8 +749,8 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertEquals(1620730, tweets.get(0).getFromUserId());
         assertTrue(-1 !=  tweets.get(0).getId());
 //        assertNotNull(tweets.get(0).getIsoLanguageCode());
-        assertTrue(tweets.get(0).getProfileImageUrl().contains(".jpg") ||tweets.get(0).getProfileImageUrl().contains(".png") );
-        assertTrue(tweets.get(0).getSource().contains("twitter"));
+        assertTrue(-1 != tweets.get(0).getProfileImageUrl().indexOf(".jpg") || -1 != tweets.get(0).getProfileImageUrl().indexOf(".png") );
+        assertTrue(-1 != tweets.get(0).getSource().indexOf("twitter"));
     }
 
     public void testTrendsAsync() throws Exception {

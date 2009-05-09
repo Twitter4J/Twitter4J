@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 
 /**
  *
@@ -35,7 +35,7 @@ import java.util.Queue;
  */
 /*package*/ class Dispatcher {
     private ExecuteThread[] threads;
-    private Queue<Runnable> q = new LinkedList<Runnable> ();
+    private List<Runnable> q = new LinkedList<Runnable> ();
     public Dispatcher(String name){
         this(name,1);
     }
@@ -67,9 +67,11 @@ import java.util.Queue;
     public Runnable poll(){
         while(active){
             synchronized(q){
-                Runnable task = q.poll();
-                if (null != task) {
-                    return task;
+                if (q.size() > 0) {
+                    Runnable task = q.remove(0);
+                    if (null != task) {
+                        return task;
+                    }
                 }
             }
             synchronized (ticket) {

@@ -118,7 +118,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
         if (statuses.getLength() != 0) {
             Element status = (Element) statuses.item(0);
             statusCreatedAt = getChildDate("created_at", status);
-            statusId = Long.valueOf(status.getElementsByTagName("id").item(0).getTextContent());
+            statusId = getChildLong("id", status);
             statusText = getChildText("text", status);
             statusSource = getChildText("source", status);
             statusTruncated = getChildBoolean("truncated", status);

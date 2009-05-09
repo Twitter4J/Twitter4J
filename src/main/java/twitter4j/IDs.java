@@ -49,7 +49,7 @@ public class IDs extends TwitterResponse {
         ids = new int[idlist.getLength()];
         for (int i = 0; i < idlist.getLength(); i++) {
             try {
-                ids[i] = Integer.parseInt(idlist.item(i).getTextContent());
+                ids[i] = Integer.parseInt(idlist.item(i).getFirstChild().getNodeValue());
             } catch (NumberFormatException nfe) {
                 throw new TwitterException("Twitter API returned malformed response: " + elem, nfe);
             }

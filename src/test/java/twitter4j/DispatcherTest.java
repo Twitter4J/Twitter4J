@@ -69,7 +69,7 @@ public class DispatcherTest extends TestCase {
         boolean exists = false;
         Map<Thread,StackTraceElement[]> allThreads = Thread.getAllStackTraces();
         for(Thread thread : allThreads.keySet()){
-            if(thread.getName().contains(name)){
+            if(-1 != thread.getName().indexOf(name)){
                 exists = true;
                 break;
             }
