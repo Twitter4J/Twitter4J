@@ -43,16 +43,31 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotUserTimeline(List<Status> statuses){
     }
+    /**
+     * @deprecated use gotShowStatus instead
+     */
     public void gotShow(Status statuses){
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void gotShowStatus(Status statuses){
     }
+    /**
+     * @deprecated use updatedStatus instead
+     */
     public void updated(Status statuses){
     }
     public void updatedStatus(Status statuses){
     }
+    /**
+     * @deprecated use gotMentions instead
+     */
     public void gotReplies(List<Status> statuses){
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void gotMentions(List<Status> statuses){
     }
     public void destroyedStatus(Status destroyedStatus){
@@ -71,28 +86,58 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void sentDirectMessage(DirectMessage message){
     }
+    /**
+     * @deprecated use destroyedDirectMessage instead
+     */
     public void deletedDirectMessage(DirectMessage message){
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void destroyedDirectMessage(DirectMessage message){
     }
     public void gotFriendsIDs(IDs ids){
     }
     public void gotFollowersIDs(IDs ids){
     }
+    /**
+     * @deprecated use createdFriendship instead
+     */
     public void created(User user){
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void createdFriendship(User user){
     }
+    /**
+     * @deprecated use destroyedFriendship instead
+     */
     public void destroyed(User user){
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void destroyedFriendship(User user){
     }
+    /**
+     * @deprecated use gotExistsFriendship instead
+     */
     public void gotExists(boolean exists) {
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void gotExistsFriendship(boolean exists) {
     }
+    /**
+     * @deprecated Use updatedProfile instead
+     */
     public void updatedLocation(User user){
     }
+    /**
+     * @since Twitter4J 2.0.2
+     */
     public void updatedProfile(ExtendedUser user){
     }
     public void updatedProfileColors(ExtendedUser user){
@@ -107,34 +152,73 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void destroyedFavorite(Status status){
     }
+    /**
+     * @deprecated use enabledNotification instead
+     */
     public void followed(User user){
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void enabledNotification(User user){
     }
+    /**
+     * @deprecated use disabledNotification instead
+     */
     public void left(User user){
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void disabledNotification(User user){
     }
+    /**
+     * @deprecated use createdBlock instead
+     */
     public void blocked(User user){
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void createdBlock(User user){
     }
+    /**
+     * @deprecated use destroyedBlock instead
+     */
     public void unblocked(User user){
     }
+    /**
+     * @since Twitter4J 2.0.1
+     */
     public void destroyedBlock(User user){
     }
     public void tested(boolean test){
     }
+    /**
+     * @deprecated not supported by Twitter API anymore
+     */
     public void gotDowntimeSchedule(String schedule){
     }
     public void searched(QueryResult result){
     }
+    /**
+     * @since Twitter4J 2.0.2
+     */
     public void gotTrends(Trends trends) {
     }
+    /**
+     * @since Twitter4J 2.0.2
+     */
     public void gotCurrentTrends(Trends trends) {
     }
+    /**
+     * @since Twitter4J 2.0.2
+     */
     public void gotDailyTrends(List<Trends> trendsList) {
     }
+    /**
+     * @since Twitter4J 2.0.2
+     */
     public void gotWeeklyTrends(List<Trends> trendsList) {
     }
 
