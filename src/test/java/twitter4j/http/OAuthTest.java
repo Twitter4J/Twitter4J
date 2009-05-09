@@ -79,7 +79,6 @@ public class OAuthTest extends TwitterTestUnit {
             rt.getAccessToken();
             fail();
         } catch (TwitterException te) {
-            te.printStackTrace();
             assertEquals(401, te.getStatusCode());
         }
         Twitter twitter = new Twitter();
@@ -89,7 +88,6 @@ public class OAuthTest extends TwitterTestUnit {
             twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret());
             fail();
         } catch (TwitterException te) {
-            te.printStackTrace();
             assertEquals(401, te.getStatusCode());
         }
     }
