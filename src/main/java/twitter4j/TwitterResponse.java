@@ -149,17 +149,19 @@ public class TwitterResponse implements java.io.Serializable {
         }
     }
 
-    protected String getString(String name, JSONObject json){
+    protected String getString(String name, JSONObject json, boolean decode) {
         String returnValue = null;
-        try {
             try {
-                returnValue = URLDecoder.decode(json.getString(name), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
                 returnValue = json.getString(name);
+                if (decode) {
+                    try {
+                        returnValue = URLDecoder.decode(returnValue, "UTF-8");
+                    } catch (UnsupportedEncodingException ignore) {
+                    }
+                }
+            } catch (JSONException ignore) {
+                // refresh_url could be missing
             }
-        } catch (JSONException ignore) {
-            // refresh_url could be missing
-        }
         return returnValue;
     }
 

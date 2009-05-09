@@ -557,6 +557,9 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(1, queryResult.getPage());
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
 
+        twitterAPI1.updateStatus("%... 日本語");
+        query = new Query("from:twit4j %... 日本語");
+        queryResult = unauthenticated.search(query);
     }
     public void testTrends() throws Exception{
         Trends trends;

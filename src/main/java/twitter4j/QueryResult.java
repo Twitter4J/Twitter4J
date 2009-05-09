@@ -59,13 +59,13 @@ public class QueryResult extends TwitterResponse {
         try {
             sinceId = json.getLong("since_id");
             maxId = json.getLong("max_id");
-            refreshUrl = getString("refresh_url", json);
+            refreshUrl = getString("refresh_url", json, true);
 
             resultsPerPage = json.getInt("results_per_page");
-            warning = getString("warning", json);
+            warning = getString("warning", json, false);
             completedIn = json.getDouble("completed_in");
             page = json.getInt("page");
-            query = getString("query", json);
+            query = getString("query", json, true);
             JSONArray array = json.getJSONArray("results");
             tweets = new ArrayList<Tweet>(array.length());
             for (int i = 0; i < array.length(); i++) {

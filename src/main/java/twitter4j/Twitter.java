@@ -52,7 +52,7 @@ public class Twitter implements java.io.Serializable {
     private boolean usePostForcibly = false;
     private static final int MAX_COUNT = 200;
     private static final long serialVersionUID = -7550633067620779906L;
-    /*package*/ static final String VERSION = "2.0.2";
+    /*package*/ static final String VERSION = "2.0.3";
 
     public Twitter() {
         http = new HttpClient();
@@ -506,6 +506,7 @@ public class Twitter implements java.io.Serializable {
     }
 
     /**
+     * Returns tweets that match a specified query.
      * <br>This method calls http://search.twitter.com/search
      * @param query - the search condition
      * @return the result
