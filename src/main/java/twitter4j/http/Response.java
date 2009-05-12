@@ -45,18 +45,23 @@ import java.util.zip.GZIPInputStream;
 
 /**
  * A data class representing HTTP Response
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Response implements java.io.Serializable {
-    static DocumentBuilder builder = null;
-    static {
-        try {
-            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        } catch (ParserConfigurationException ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
-
+    private transient static ThreadLocal<DocumentBuilder> builders =
+            new ThreadLocal<DocumentBuilder>() {
+                @Override
+                protected DocumentBuilder initialValue() {
+                    try {
+                        return
+                                DocumentBuilderFactory.newInstance()
+                                        .newDocumentBuilder();
+                    } catch (ParserConfigurationException ex) {
+                        throw new ExceptionInInitializerError(ex);
+                    }
+                }
+            };
 
     private int statusCode;
     private Document response = null;
@@ -64,7 +69,7 @@ public class Response implements java.io.Serializable {
     private InputStream is;
     private SAXException saxe = null;
     private HttpURLConnection con;
-    private static final long serialVersionUID = -8868373803067492270L;
+    private static final long serialVersionUID = -3187691000424469995L;
 
     public Response(HttpURLConnection con) throws IOException {
         this.statusCode = con.getResponseCode();
@@ -75,7 +80,7 @@ public class Response implements java.io.Serializable {
         } else {
             is = con.getErrorStream();
         }
-        if("gzip".equals(con.getContentEncoding())){
+        if ("gzip".equals(con.getContentEncoding())) {
             // the response is gzipped
             is = new GZIPInputStream(is);
         }
@@ -96,6 +101,11 @@ public class Response implements java.io.Serializable {
         }
     }
 
+    // for test purpose
+    /*package*/ Response(String content) {
+        this.responseString = content;
+    }
+
     public int getStatusCode() {
         return statusCode;
     }
@@ -112,10 +122,11 @@ public class Response implements java.io.Serializable {
         return is;
     }
 
-    public Document asDocument() throws TwitterException{
-        if(null == saxe && null == response){
+
+    public Document asDocument() throws TwitterException {
+        if (null == saxe && null == response) {
             try {
-                this.response = builder.parse(new ByteArrayInputStream(
+                this.response = builders.get().parse(new ByteArrayInputStream(
                         responseString.getBytes("UTF-8")));
             } catch (SAXException saxe) {
                 this.saxe = saxe;
@@ -124,7 +135,7 @@ public class Response implements java.io.Serializable {
                 throw new TwitterException("Twitter returned a non-XML response", ioe);
             }
         }
-        if(null != saxe){
+        if (null != saxe) {
             throw new TwitterException("Twitter returned a non-XML response:" + responseString, saxe);
         }
         return response;
@@ -147,7 +158,7 @@ public class Response implements java.io.Serializable {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return responseString;
     }
 
