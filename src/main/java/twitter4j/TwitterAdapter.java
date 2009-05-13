@@ -192,6 +192,12 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void destroyedBlock(User user){
     }
+    /**
+     * @since Twitter4J 2.0.4
+     */
+    public void gotExistsBlock(boolean blockExists){
+    }
+
     public void tested(boolean test){
     }
     /**

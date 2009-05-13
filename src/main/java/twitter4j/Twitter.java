@@ -2354,6 +2354,29 @@ public class Twitter implements java.io.Serializable {
         return new User(http.post(baseURL + "blocks/destroy/" + id + ".xml", true), this);
     }
 
+
+    /**
+     * Tests if a friendship exists between two users.
+     * <br>This method calls http://twitter.com/blocks/exists/id.xml
+     *
+     * @param id The ID or screen_name of the potentially blocked user.
+     * @return  if the authenticating user is blocking a target user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.4
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-exists">Twitter API Wiki / Twitter REST API Method: blocks exists</a>
+     */
+    public boolean existsBlock(String id) throws TwitterException {
+        try{
+            return -1 == get(baseURL + "blocks/exists/" + id + ".xml", true).
+                    asString().indexOf("<error>You are not blocking this user.</error>");
+        }catch(TwitterException te){
+            if(te.getStatusCode() == 404){
+                return false;
+            }
+            throw te;
+        }
+    }
+
     /* Help Methods */
     /**
      * Returns the string "ok" in the requested format with a 200 OK HTTP status code.

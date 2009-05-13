@@ -189,6 +189,11 @@ public interface TwitterListener {
      */
     void destroyedBlock(User user);
 
+    /**
+     * @since Twitter4J 2.0.4
+     */
+    void gotExistsBlock(boolean blockExists);
+    
     void tested(boolean test);
 
     /**

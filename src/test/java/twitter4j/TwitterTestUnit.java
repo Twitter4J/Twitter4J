@@ -287,6 +287,7 @@ public class TwitterTestUnit extends TestCase {
         } catch (twitter4j.TwitterException te) {
         }
         assertTrue(twitterAPI1.existsFriendship(id1,id2));
+        assertFalse(twitterAPI1.existsFriendship(id1,"al3x"));
 
         ExtendedUser eu;
         eu = twitterAPI1.updateProfileColors("f00", "f0f", "0ff", "0f0", "f0f");
@@ -498,6 +499,8 @@ public class TwitterTestUnit extends TestCase {
     public void testBlock() throws Exception {
         twitterAPI2.createBlock(id1);
         twitterAPI2.destroyBlock(id1);
+        assertFalse(twitterAPI1.existsBlock("twit4j2"));
+        assertTrue(twitterAPI1.existsBlock("twit4jblock"));
     }
 
 

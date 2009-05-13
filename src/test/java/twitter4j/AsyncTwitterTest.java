@@ -60,6 +60,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private IDs ids;
     private List<Trends> trendsList;
     private Trends trends;
+    private boolean blockExists;
 
     public void gotPublicTimeline(List<Status> statuses) {
         this.statuses = statuses;
@@ -272,6 +273,10 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     public void destroyedBlock(User user) {
         this.user = user;
+        notifyResponse();
+    }
+    public void gotExistsBlock(boolean exists){
+        this.blockExists = exists;
         notifyResponse();
     }
 
@@ -587,6 +592,18 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         trySerializable(status);
     }
 
+    public void testBlock() throws Exception {
+        twitterAPI2.createBlockAsync(id1,this);
+        waitForResponse();
+        twitterAPI2.destroyBlockAsync(id1,this);
+        waitForResponse();
+        twitterAPI1.existsBlockAsync("twit4j2", this);
+        assertFalse(blockExists);
+        waitForResponse();
+        twitterAPI1.existsBlockAsync("twit4jblock", this);
+        waitForResponse();
+        assertTrue(blockExists);
+    }
     public void testUpdate() throws Exception {
         String date = new java.util.Date().toString() + "test";
         twitterAPI1.updateStatusAsync(date, this);

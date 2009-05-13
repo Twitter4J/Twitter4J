@@ -2404,6 +2404,23 @@ public class AsyncTwitter extends Twitter {
         destroyBlockAsync(id, new TwitterAdapter());
     }
 
+
+    /**
+     * Tests if a friendship exists between two users.
+     * <br>This method calls http://twitter.com/blocks/exists/id.xml
+     *
+     * @param id The ID or screen_name of the potentially blocked user.
+     * @since Twitter4J 2.0.4
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-exists">Twitter API Wiki / Twitter REST API Method: blocks exists</a>
+     */
+    public void existsBlockAsync(String id, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(EXISTS_BLOCK, listener, new String[]{id}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotExistsBlock(existsBlock((String) args[0]));
+            }
+        });
+    }
+
     /* Help Methods */
 
     /**
@@ -2576,6 +2593,8 @@ public class AsyncTwitter extends Twitter {
      */
     public final static int UNBLOCK = 23;
     public final static int DESTROYED_BLOCK = 42;
+    private static final int EXISTS_BLOCK = 48;
+
     public final static int TEST = 24;
     /**
      * @deprecated not supported by Twitter API anymore
