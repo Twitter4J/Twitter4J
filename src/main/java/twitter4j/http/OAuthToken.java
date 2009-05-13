@@ -42,9 +42,9 @@ abstract class OAuthToken implements Serializable {
     OAuthToken(Response response) {
         String[] responseStr = response.asString().split("&");
         for (String str : responseStr) {
-            if (str.startsWith("oauth_token_secret")) {
+            if (str.startsWith("oauth_token_secret=")) {
                 this.tokenSecret = str.split("=")[1].trim();
-            } else {
+            } else if (str.startsWith("oauth_token=")) {
                 this.token = str.split("=")[1].trim();
             }
         }
