@@ -60,7 +60,7 @@ import java.util.List;
             q.add(task);
         }
         synchronized (ticket) {
-            ticket.notifyAll();
+            ticket.notify();
         }
     }
     Object ticket = new Object();

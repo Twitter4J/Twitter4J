@@ -1331,7 +1331,8 @@ public class Twitter implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
      */
     public ExtendedUser getUserDetail(String id) throws TwitterException {
-        return new ExtendedUser(get(baseURL + "users/show/" + id + ".xml", true), this);
+        return new ExtendedUser(get(baseURL + "users/show/" + id + ".xml"
+                , http.isAuthenticationEnabled()), this);
     }
 
     /* User Methods */
