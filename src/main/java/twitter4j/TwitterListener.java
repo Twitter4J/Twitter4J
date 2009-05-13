@@ -194,6 +194,16 @@ public interface TwitterListener {
      */
     void gotExistsBlock(boolean blockExists);
     
+    /**
+     * @since Twitter4J 2.0.4
+     */
+    void gotBlockingUsers(List<ExtendedUser> blockingUsers);
+
+    /**
+     * @since Twitter4J 2.0.4
+     */
+    void gotBlockingUsersIDs(IDs blockingUsersIDs);
+
     void tested(boolean test);
 
     /**

@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Twitter API with a series of asynchronous APIs.<br>
@@ -2421,6 +2422,56 @@ public class AsyncTwitter extends Twitter {
         });
     }
 
+    /**
+     * Returns a list of user objects that the authenticating user is blocking.
+     * <br>This method calls http://twitter.com/blocks/blocking.xml
+     *
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.4
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
+     */
+    public void getBlockingUsersAsync(TwitterListener listener) throws
+            TwitterException {
+        getDispatcher().invokeLater(new AsyncTask(GET_BLOCKING_USERS, listener, null) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotBlockingUsers(getBlockingUsers());
+            }
+        });
+    }
+
+    /**
+     * Returns a list of user objects that the authenticating user is blocking.
+     * <br>This method calls http://twitter.com/blocks/blocking.xml
+     *
+     * @param page the number of page
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.4
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
+     */
+    public void getBlockingUsersAsync(int page, TwitterListener listener) throws
+            TwitterException {
+        getDispatcher().invokeLater(new AsyncTask(GET_BLOCKING_USERS, listener, new Integer[]{page}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotBlockingUsers(getBlockingUsers((Integer)args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns an array of numeric user ids the authenticating user is blocking.
+     * <br>This method calls http://twitter.com/blocks/blocking/ids
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.4
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking-ids">Twitter API Wiki / Twitter REST API Method: blocks blocking ids</a>
+     */
+    public void getBlockingUsersIDsAsync(TwitterListener listener) throws TwitterException {
+        getDispatcher().invokeLater(new AsyncTask(GET_BLOCKING_USERS_IDS, listener, null) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotBlockingUsersIDs(getBlockingUsersIDs());
+            }
+        });
+    }
+
     /* Help Methods */
 
     /**
@@ -2594,6 +2645,8 @@ public class AsyncTwitter extends Twitter {
     public final static int UNBLOCK = 23;
     public final static int DESTROYED_BLOCK = 42;
     private static final int EXISTS_BLOCK = 48;
+    private static final int GET_BLOCKING_USERS = 49;
+    private static final int GET_BLOCKING_USERS_IDS = 50;
 
     public final static int TEST = 24;
     /**

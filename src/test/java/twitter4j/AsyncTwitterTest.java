@@ -50,6 +50,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private Status status = null;
     private User user = null;
     private ExtendedUser extendedUser = null;
+    private List<ExtendedUser> extendedUsers = null;
     private boolean test;
     private String schedule;
     private DirectMessage message = null;
@@ -277,6 +278,15 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
     public void gotExistsBlock(boolean exists){
         this.blockExists = exists;
+        notifyResponse();
+    }
+
+    public void gotBlockingUsers(List<ExtendedUser> blockingUsers){
+        this.extendedUsers = blockingUsers;
+        notifyResponse();
+    }
+    public void gotBlockingUsersIDs(IDs blockingUsersIDs){
+        this.ids = blockingUsersIDs;
         notifyResponse();
     }
 
@@ -597,12 +607,26 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         waitForResponse();
         twitterAPI2.destroyBlockAsync(id1,this);
         waitForResponse();
+
         twitterAPI1.existsBlockAsync("twit4j2", this);
         assertFalse(blockExists);
         waitForResponse();
         twitterAPI1.existsBlockAsync("twit4jblock", this);
         waitForResponse();
         assertTrue(blockExists);
+
+        twitterAPI1.getBlockingUsersAsync(this);
+        waitForResponse();
+        assertEquals(1, extendedUsers.size());
+        assertEquals(39771963, extendedUsers.get(0).getId());
+        twitterAPI1.getBlockingUsersAsync(1,this);
+        waitForResponse();
+        assertEquals(1, extendedUsers.size());
+        assertEquals(39771963, extendedUsers.get(0).getId());
+        twitterAPI1.getBlockingUsersIDsAsync(this);
+        waitForResponse();
+        assertEquals(1, ids.getIDs().length);
+        assertEquals(39771963, ids.getIDs()[0]);
     }
     public void testUpdate() throws Exception {
         String date = new java.util.Date().toString() + "test";

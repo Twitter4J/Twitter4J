@@ -501,6 +501,16 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2.destroyBlock(id1);
         assertFalse(twitterAPI1.existsBlock("twit4j2"));
         assertTrue(twitterAPI1.existsBlock("twit4jblock"));
+        List<ExtendedUser> users = twitterAPI1.getBlockingUsers();
+        assertEquals(1, users.size());
+        assertEquals(39771963, users.get(0).getId());
+        users = twitterAPI1.getBlockingUsers(1);
+        assertEquals(1, users.size());
+        assertEquals(39771963, users.get(0).getId());
+
+        IDs ids = twitterAPI1.getBlockingUsersIDs();
+        assertEquals(1, ids.getIDs().length);
+        assertEquals(39771963, ids.getIDs()[0]);
     }
 
 

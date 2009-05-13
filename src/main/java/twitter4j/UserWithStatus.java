@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import org.w3c.dom.Element;
 import twitter4j.http.Response;
 
 import java.util.Date;
@@ -41,6 +42,9 @@ public abstract class UserWithStatus extends User {
 
     public UserWithStatus(Response res, Twitter twitter) throws TwitterException {
         super(res, twitter);
+    }
+    public UserWithStatus(Response res, Element elem, Twitter twitter) throws TwitterException {
+        super(res, elem, twitter);
     }
 
     public abstract String getProfileBackgroundColor();

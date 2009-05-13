@@ -27,9 +27,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import twitter4j.http.Response;
 
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * A data class representing Extended user information element
@@ -56,8 +60,14 @@ public class ExtendedUser extends UserWithStatus {
     private static final long serialVersionUID = -8486230870587454252L;
 
     public ExtendedUser(Response res, Twitter twitter) throws TwitterException {
-        super(res, twitter);
-        Element elem = res.asDocument().getDocumentElement();
+        super(res, res.asDocument().getDocumentElement(), twitter);
+        init(res.asDocument().getDocumentElement());
+    }
+    public ExtendedUser(Response res, Element elem, Twitter twitter) throws TwitterException {
+        super(res, elem, twitter);
+        init(elem);
+    }
+    private void init(Element elem) throws TwitterException{
         profileBackgroundColor = getChildText("profile_background_color", elem);
         profileTextColor = getChildText("profile_text_color", elem);
         profileLinkColor = getChildText("profile_link_color", elem);
@@ -75,6 +85,30 @@ public class ExtendedUser extends UserWithStatus {
         statusesCount = getChildInt("statuses_count", elem);
     }
 
+    public static List<ExtendedUser> constructExtendedUsers(Response res, Twitter twitter) throws TwitterException {
+        Document doc = res.asDocument();
+        if (isRootNodeNilClasses(doc)) {
+            return new ArrayList<ExtendedUser>(0);
+        } else {
+            try {
+                ensureRootNodeNameIs("users", doc);
+                NodeList list = doc.getDocumentElement().getElementsByTagName(
+                        "user");
+                int size = list.getLength();
+                List<ExtendedUser> users = new ArrayList<ExtendedUser>(size);
+                for (int i = 0; i < size; i++) {
+                    users.add(new ExtendedUser(res, (Element) list.item(i), twitter));
+                }
+                return users;
+            } catch (TwitterException te) {
+                if (isRootNodeNilClasses(doc)) {
+                    return new ArrayList<ExtendedUser>(0);
+                } else {
+                    throw te;
+                }
+            }
+        }
+    }
     public String getProfileBackgroundColor() {
         return profileBackgroundColor;
     }

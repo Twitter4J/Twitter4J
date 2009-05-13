@@ -2377,6 +2377,49 @@ public class Twitter implements java.io.Serializable {
         }
     }
 
+    /**
+     * Returns a list of user objects that the authenticating user is blocking.
+     * <br>This method calls http://twitter.com/blocks/blocking.xml
+     *
+     * @return a list of user objects that the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.4
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
+     */
+    public List<ExtendedUser> getBlockingUsers() throws
+            TwitterException {
+        return ExtendedUser.constructExtendedUsers(get(baseURL +
+                "blocks/blocking.xml", true), this);
+    }
+
+    /**
+     * Returns a list of user objects that the authenticating user is blocking.
+     * <br>This method calls http://twitter.com/blocks/blocking.xml
+     *
+     * @param page the number of page
+     * @return a list of user objects that the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.4
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
+     */
+    public List<ExtendedUser> getBlockingUsers(int page) throws
+            TwitterException {
+        return ExtendedUser.constructExtendedUsers(get(baseURL +
+                "blocks/blocking.xml?page=" + page, true), this);
+    }
+
+    /**
+     * Returns an array of numeric user ids the authenticating user is blocking.
+     * <br>This method calls http://twitter.com/blocks/blocking/ids
+     * @return Returns an array of numeric user ids the authenticating user is blocking.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.4
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking-ids">Twitter API Wiki / Twitter REST API Method: blocks blocking ids</a>
+     */
+    public IDs getBlockingUsersIDs() throws TwitterException {
+        return new IDs(get(baseURL + "blocks/blocking/ids.xml", true));
+    }
+
     /* Help Methods */
     /**
      * Returns the string "ok" in the requested format with a 200 OK HTTP status code.

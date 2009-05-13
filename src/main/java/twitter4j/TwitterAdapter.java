@@ -198,6 +198,18 @@ public class TwitterAdapter implements TwitterListener {
     public void gotExistsBlock(boolean blockExists){
     }
 
+    /**
+     * @since Twitter4J 2.0.4
+     */
+    public void gotBlockingUsers(List<ExtendedUser> blockingUsers){
+    }
+
+    /**
+     * @since Twitter4J 2.0.4
+     */
+    public void gotBlockingUsersIDs(IDs blockingUsersIDs){
+    }
+
     public void tested(boolean test){
     }
     /**
