@@ -652,6 +652,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void testGetFriends() throws Exception {
+        twitterAPI2.createFriendship(id1);
         twitterAPI1.getFriendsAsync(id2, this);
         waitForResponse();
         boolean found = false;
