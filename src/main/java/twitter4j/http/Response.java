@@ -48,8 +48,8 @@ import java.util.zip.GZIPInputStream;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Response implements java.io.Serializable {
-    private transient static ThreadLocal<DocumentBuilder> builders =
+public class Response {
+    private static ThreadLocal<DocumentBuilder> builders =
             new ThreadLocal<DocumentBuilder>() {
                 @Override
                 protected DocumentBuilder initialValue() {
@@ -69,7 +69,6 @@ public class Response implements java.io.Serializable {
     private InputStream is;
     private SAXException saxe = null;
     private HttpURLConnection con;
-    private static final long serialVersionUID = -3187691000424469995L;
 
     public Response(HttpURLConnection con) throws IOException {
         this.statusCode = con.getResponseCode();
