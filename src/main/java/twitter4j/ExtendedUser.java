@@ -38,33 +38,6 @@ import java.util.Date;
  * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#Extendeduserinformationelement">Extended user information element</a>
  */
 public class ExtendedUser extends UserWithStatus {
-    /*
-   <user>
-     id
-     name
-     screen_name
-     location
-     description
-     profile_image_url
-     url
-     protected
-     followers_count
-     profile_background_color
-     profile_text_color
-     profile_link_color
-     profile_sidebar_fill_color
-     profile_sidebar_border_color
-     friends_count
-     created_at
-     favourites_count
-     utc_offset
-     time_zone
-     profile_background_image_url
-     profile_background_tile
-     following
-     notifications
-     statuses_count 
-    */
     private String profileBackgroundColor;
     private String profileTextColor;
     private String profileLinkColor;
@@ -150,6 +123,10 @@ public class ExtendedUser extends UserWithStatus {
         return profileBackgroundTile;
     }
 
+    /**
+     *
+     * @deprecated <a href="http://groups.google.com/group/twitter-development-talk/browse_frm/thread/42ba883b9f8e3c6e">Deprecation of following and notification elements</a>
+     */
     public boolean isFollowing() {
         return following;
     }
@@ -165,6 +142,7 @@ public class ExtendedUser extends UserWithStatus {
     /**
      *
      * @since Twitter4J 2.0.1
+     * @deprecated <a href="http://groups.google.com/group/twitter-development-talk/browse_frm/thread/42ba883b9f8e3c6e">Deprecation of following and notification elements</a>
      */
     public boolean isNotificationEnabled() {
         return notificationEnabled;

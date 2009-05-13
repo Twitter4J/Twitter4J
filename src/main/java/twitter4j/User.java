@@ -43,28 +43,6 @@ import java.util.List;
  * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
 public class User extends TwitterResponse implements java.io.Serializable {
-/*
-<user>
-  id
-  name
-  screen_name
-  location
-  description
-  profile_image_url
-  url
-  protected
-  followers_count
-  <status>
-    created_at
-    id
-    text
-    source
-    truncated
-    in_reply_to_status_id
-    in_reply_to_user_id
-    favorited
-    in_reply_to_screen_name
- */
 
     static final String[] POSSIBLE_ROOT_NAMES = new String[]{"user", "sender", "recipient"};
     private Twitter twitter;
