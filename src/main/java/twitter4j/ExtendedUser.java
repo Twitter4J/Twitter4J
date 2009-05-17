@@ -30,6 +30,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import twitter4j.http.Response;
+import twitter4j.org.json.JSONObject;
+import twitter4j.org.json.JSONException;
 
 import java.util.Date;
 import java.util.List;
@@ -67,6 +69,35 @@ public class ExtendedUser extends UserWithStatus {
         super(res, elem, twitter);
         init(elem);
     }
+
+    public ExtendedUser(JSONObject json) throws TwitterException {
+        super(json);
+        init(json);
+    }
+
+    private void init(JSONObject json) throws TwitterException {
+        try {
+            profileBackgroundColor = json.getString("profile_background_color");
+            profileTextColor = json.getString("profile_text_color");
+            profileLinkColor = json.getString("profile_link_color");
+            profileSidebarFillColor = json.getString("profile_sidebar_fill_color");
+            profileSidebarBorderColor = json.getString("profile_sidebar_border_color");
+            friendsCount = json.getInt("friends_count");
+            createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+            favouritesCount = json.getInt("favourites_count");
+            utcOffset = getInt("utc_offset", json);
+            timeZone = json.getString("time_zone");
+            profileBackgroundImageUrl = json.getString("profile_background_image_url");
+            profileBackgroundTile = json.getString("profile_background_tile");
+            following = getBoolean("following", json);
+            notificationEnabled = getBoolean("notifications", json);
+            statusesCount = json.getInt("statuses_count");
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone.getMessage() + json.toString(), jsone);
+        }
+
+    }
+
     private void init(Element elem) throws TwitterException{
         profileBackgroundColor = getChildText("profile_background_color", elem);
         profileTextColor = getChildText("profile_text_color", elem);

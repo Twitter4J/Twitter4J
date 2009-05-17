@@ -28,6 +28,7 @@ package twitter4j;
 
 import org.w3c.dom.Element;
 import twitter4j.http.Response;
+import twitter4j.org.json.JSONObject;
 
 import java.util.Date;
 
@@ -45,6 +46,9 @@ public abstract class UserWithStatus extends User {
     }
     public UserWithStatus(Response res, Element elem, Twitter twitter) throws TwitterException {
         super(res, elem, twitter);
+    }
+    public UserWithStatus(JSONObject json) throws TwitterException {
+        super(json);
     }
 
     public abstract String getProfileBackgroundColor();

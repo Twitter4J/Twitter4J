@@ -90,6 +90,9 @@ public class OAuthTest extends TwitterTestUnit {
         } catch (TwitterException te) {
             assertEquals(401, te.getStatusCode());
         }
+        OAuthToken token = new AccessToken("oauth_token=6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk&oauth_token_secret=ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY&user_id=6377362&screen_name=twit4j2");
+        assertEquals("6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk", token.getToken());
+        assertEquals("ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY", token.getTokenSecret());
     }
 
     public void testSign() throws Exception {

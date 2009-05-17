@@ -30,6 +30,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import twitter4j.http.Response;
+import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -77,6 +79,38 @@ public class User extends TwitterResponse implements java.io.Serializable {
     /*package*/User(Response res, Element elem, Twitter twitter) throws TwitterException {
         super(res);
         init(elem, twitter);
+    }
+    /*package*/User(JSONObject json) throws TwitterException {
+        super();
+        init(json);
+    }
+
+    private void init(JSONObject json) throws TwitterException {
+        try {
+            id = json.getInt("id");
+            name = json.getString("name");
+            screenName = json.getString("screen_name");
+            location = json.getString("location");
+            description = json.getString("description");
+            profileImageUrl = json.getString("profile_image_url");
+            url = json.getString("url");
+            isProtected = json.getBoolean("protected");
+            followersCount = json.getInt("followers_count");
+            if (!json.isNull("status")) {
+                JSONObject status = json.getJSONObject("status");
+                statusCreatedAt = parseDate(status.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+                statusId = status.getLong("id");
+                statusText = status.getString("text");
+                statusSource = status.getString("source");
+                statusTruncated = status.getBoolean("truncated");
+                statusInReplyToStatusId = status.getLong("in_reply_to_status_id");
+                statusInReplyToUserId = status.getInt("in_reply_to_user_id");
+                statusFavorited = status.getBoolean("favorited");
+                statusInReplyToScreenName = status.getString("in_reply_to_screen_name");
+            }
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone.getMessage(), jsone);
+        }
     }
 
     private void init(Element elem, Twitter twitter) throws TwitterException {

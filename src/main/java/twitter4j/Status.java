@@ -30,6 +30,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import twitter4j.http.Response;
+import twitter4j.org.json.JSONObject;
+import twitter4j.org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,27 +42,6 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Status extends TwitterResponse implements java.io.Serializable {
-/*
-<status>
-  created_at
-  id
-  text
-  source
-  truncated
-  in_reply_to_status_id
-  in_reply_to_user_id
-  favorited
-  <user>
-    id
-    name
-    screen_name
-    description
-    location
-    profile_image_url
-    url
-    protected
-    followers_count 
- */
 
     private Date createdAt;
     private long id;
@@ -70,6 +51,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     private long inReplyToStatusId;
     private int inReplyToUserId;
     private boolean isFavorited;
+    private String inReplyToScreenName;
     private static final long serialVersionUID = 1608000492860584608L;
 
     /*package*/Status(Response res, Twitter twitter) throws TwitterException {
@@ -82,6 +64,24 @@ public class Status extends TwitterResponse implements java.io.Serializable {
             TwitterException {
         super(res);
         init(res, elem, twitter);
+    }
+
+    public Status(String str) throws TwitterException {
+        super();
+        try {
+            JSONObject json = new JSONObject(str);
+            id = json.getLong("id");
+            text = json.getString("text");
+            source = json.getString("source");
+            createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+
+            inReplyToStatusId = getLong("in_reply_to_status_id", json);
+            inReplyToUserId = getInt("in_reply_to_user_id", json);
+            isFavorited = getBoolean("favorited", json);
+            user = new ExtendedUser(json.getJSONObject("user"));
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone.getMessage() + ":" + str, jsone);
+        }
     }
 
     private void init(Response res, Element elem, Twitter twitter) throws
@@ -97,6 +97,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         inReplyToStatusId = getChildInt("in_reply_to_status_id", elem);
         inReplyToUserId = getChildInt("in_reply_to_user_id", elem);
         isFavorited = getChildBoolean("favorited", elem);
+        inReplyToScreenName = getChildText("in_reply_to_screen_name", elem);
     }
 
     /**
@@ -167,6 +168,16 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      */
     public int getInReplyToUserId() {
         return inReplyToUserId;
+    }
+
+    /**
+     * Returns the in_reply_to_screen_name
+     *
+     * @return the in_in_reply_to_screen_name
+     * @since Twitter4J 2.0.4
+     */
+    public String getInReplyToScreenName() {
+        return inReplyToScreenName;
     }
 
     /**
@@ -246,4 +257,5 @@ public class Status extends TwitterResponse implements java.io.Serializable {
                 ", user=" + user +
                 '}';
     }
+
 }

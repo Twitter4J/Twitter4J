@@ -198,10 +198,36 @@ public class TwitterResponse implements java.io.Serializable {
             formatMap.put(format, sdf);
         }
         try {
-            return sdf.parse(str);
+            synchronized(sdf){
+                // SimpleDateFormat is not thread safe
+                return sdf.parse(str);
+            }
         } catch (ParseException pe) {
             throw new TwitterException("Unexpected format(" + str + ") returned from twitter.com");
         }
+    }
+
+    protected static int getInt(String key, JSONObject json) throws JSONException {
+        String str = json.getString(key);
+        if(null == str || "null".equals(str)){
+            return -1;
+        }
+        return Integer.parseInt(str);
+    }
+
+    protected static long getLong(String key, JSONObject json) throws JSONException {
+        String str = json.getString(key);
+        if(null == str || "null".equals(str)){
+            return -1;
+        }
+        return Long.parseLong(str);
+    }
+    protected static boolean getBoolean(String key, JSONObject json) throws JSONException {
+        String str = json.getString(key);
+        if(null == str || "null".equals(str)){
+            return false;
+        }
+        return Boolean.parseBoolean(str);
     }
 
     public int getRateLimitLimit() {

@@ -24,53 +24,62 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j;
 
-import twitter4j.TwitterException;
+import twitter4j.http.Response;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * representing unauthorized Request Token which is passed to the service provider when acquiring the authorized Access Token
+ * @since Twitter4J 2.0.4
  */
-public class RequestToken extends OAuthToken {
-    private HttpClient httpClient;
-    private static final long serialVersionUID = -8214365845469757952L;
+public class StatusStream {
+    private boolean streamAlive = true;
+    private BufferedReader br;
+    private InputStream is;
+    private Response response;
 
-    RequestToken(Response res, HttpClient httpClient) throws TwitterException{
-        super(res);
-        this.httpClient = httpClient;
+    /*package*/ StatusStream(InputStream stream) throws IOException {
+        this.is = stream;
+        this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
     }
-
-    RequestToken(String token, String tokenSecret) {
-        super(token, tokenSecret);
+    /*package*/ StatusStream(Response response) throws IOException {
+        this(response.asStream());
+        this.response = response;
     }
+    public Status next() throws TwitterException{
+        if(!streamAlive){
+            throw new IllegalStateException("Stream already closed.");
+        }
+        try {
+            String line;
+            while (streamAlive) {
+                line = br.readLine();
+                if (null != line && line.length() > 0) {
+                    return new Status(line);
+                }
+            }
+            throw new TwitterException("Stream closed.");
+        } catch (IOException e) {
+            try {
+                is.close();
+            } catch (IOException ignore) {
+            }
+            streamAlive = false;
+            throw new TwitterException("Stream closed.", e);
+        }
 
-    public String getAuthorizationURL() {
-        return httpClient.getAuthorizationURL() + "?oauth_token=" + getToken();
     }
-
-    public AccessToken getAccessToken() throws TwitterException {
-        return httpClient.getOAuthAccessToken(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        RequestToken that = (RequestToken) o;
-
-        if (httpClient != null ? !httpClient.equals(that.httpClient) : that.httpClient != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (httpClient != null ? httpClient.hashCode() : 0);
-        return result;
+    public void close() throws IOException{
+        is.close();
+        br.close();
+        if(null != response){
+            response.disconnect();
+        }
     }
 }

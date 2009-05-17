@@ -26,6 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import twitter4j.TwitterException;
+
 import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
 
@@ -39,8 +41,11 @@ abstract class OAuthToken implements Serializable {
         this.tokenSecret = tokenSecret;
     }
 
-    OAuthToken(Response response) {
-        String[] responseStr = response.asString().split("&");
+    OAuthToken(Response response) throws TwitterException {
+        this(response.asString());
+    }
+    OAuthToken(String string) {
+        String[] responseStr = string.split("&");
         for (String str : responseStr) {
             if (str.startsWith("oauth_token_secret=")) {
                 this.tokenSecret = str.split("=")[1].trim();

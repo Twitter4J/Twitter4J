@@ -26,6 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import twitter4j.TwitterException;
+
 /**
  * Representing authorized Access Token which is passed to the service provider in order to access protected resources.<br>
  * the token and token secret can be stored into some persistent stores such as file system or RDBMS for the further accesses.
@@ -34,8 +36,12 @@ package twitter4j.http;
 public class AccessToken extends OAuthToken {
     private static final long serialVersionUID = -8344528374458826291L;
 
-    AccessToken(Response res) {
+    AccessToken(Response res) throws TwitterException {
         super(res);
+    }
+    // for test unit
+    AccessToken(String str) {
+        super(str);
     }
 
     public AccessToken(String token, String tokenSecret) {

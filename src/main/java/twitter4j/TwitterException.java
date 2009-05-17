@@ -39,6 +39,10 @@ public class TwitterException extends Exception {
         super(msg);
     }
 
+    public TwitterException(Exception cause) {
+        super(cause);
+    }
+
     public TwitterException(String msg, int statusCode) {
         super(msg);
         this.statusCode = statusCode;

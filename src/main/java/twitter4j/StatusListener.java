@@ -23,54 +23,16 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-package twitter4j.http;
 
-import twitter4j.TwitterException;
+*/
+package twitter4j;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * representing unauthorized Request Token which is passed to the service provider when acquiring the authorized Access Token
+ * @since Twitter4J 2.0.4
  */
-public class RequestToken extends OAuthToken {
-    private HttpClient httpClient;
-    private static final long serialVersionUID = -8214365845469757952L;
+public interface StatusListener {
+    void onStatus(Status status);
 
-    RequestToken(Response res, HttpClient httpClient) throws TwitterException{
-        super(res);
-        this.httpClient = httpClient;
-    }
-
-    RequestToken(String token, String tokenSecret) {
-        super(token, tokenSecret);
-    }
-
-    public String getAuthorizationURL() {
-        return httpClient.getAuthorizationURL() + "?oauth_token=" + getToken();
-    }
-
-    public AccessToken getAccessToken() throws TwitterException {
-        return httpClient.getOAuthAccessToken(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        RequestToken that = (RequestToken) o;
-
-        if (httpClient != null ? !httpClient.equals(that.httpClient) : that.httpClient != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (httpClient != null ? httpClient.hashCode() : 0);
-        return result;
-    }
+    void onException(Exception ex);
 }
