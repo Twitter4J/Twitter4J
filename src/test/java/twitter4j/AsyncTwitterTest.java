@@ -831,7 +831,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         twitterAPI1.getDailyTrendsAsync(this);
         waitForResponse();
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertEquals(24, trendsList.size());
+        assertTrue(20 < trendsList.size());
         assertTrends(trendsList, 20);
 
         twitterAPI1.getDailyTrendsAsync(new Date(), true, this);
