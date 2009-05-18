@@ -441,6 +441,7 @@ public class HttpClient implements java.io.Serializable {
                 }
             }
             try {
+                log("Sleeping " + retryIntervalMillis +" millisecs for next retry.");
                 Thread.sleep(retryIntervalMillis);
             } catch (InterruptedException ignore) {
                 //nothing to do

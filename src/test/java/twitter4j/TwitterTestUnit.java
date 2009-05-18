@@ -57,12 +57,14 @@ public class TwitterTestUnit extends TestCase {
         pass2 = p.getProperty("pass2");
         pass3 = p.getProperty("pass3");
         twitterAPI1 = new Twitter(id1, pass1);
-        twitterAPI1.setRetryCount(3);
-        twitterAPI1.setRetryIntervalSecs(10);
+        twitterAPI1.setRetryCount(5);
+        twitterAPI1.setRetryIntervalSecs(5);
         twitterAPI2 = new Twitter(id2, pass2);
-        twitterAPI2.setRetryCount(3);
-        twitterAPI2.setRetryIntervalSecs(10);
+        twitterAPI2.setRetryCount(5);
+        twitterAPI2.setRetryIntervalSecs(5);
         unauthenticated = new Twitter();
+        unauthenticated.setRetryCount(5);
+        unauthenticated.setRetryIntervalSecs(5);
     }
 
     protected void tearDown() throws Exception {

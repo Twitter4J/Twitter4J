@@ -362,11 +362,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         pass1 = p.getProperty("pass1");
         pass2 = p.getProperty("pass2");
         twitterAPI1 = new AsyncTwitter(id1, pass1);
-        twitterAPI1.setRetryCount(3);
-        twitterAPI1.setRetryIntervalSecs(10);
+        twitterAPI1.setRetryCount(5);
+        twitterAPI1.setRetryIntervalSecs(5);
         twitterAPI2 = new AsyncTwitter(id2, pass2);
-        twitterAPI2.setRetryCount(3);
-        twitterAPI2.setRetryIntervalSecs(10);
+        twitterAPI2.setRetryCount(5);
+        twitterAPI2.setRetryIntervalSecs(5);
         statuses = null;
         users = null;
         messages = null;
