@@ -255,9 +255,6 @@ public class Twitter extends TwitterSupport {
     protected Response get(String url, PostParameter[] params, Paging paging, boolean authenticate) throws TwitterException {
         if (null != paging) {
             List<PostParameter> pagingParams = new ArrayList<PostParameter>(4);
-            if (-1 != paging.getCount()) {
-                pagingParams.add(new PostParameter("count", String.valueOf(paging.getCount())));
-            }
             if (-1 != paging.getMaxId()) {
                 pagingParams.add(new PostParameter("max_id", String.valueOf(paging.getMaxId())));
             }
@@ -267,7 +264,7 @@ public class Twitter extends TwitterSupport {
             if (-1 != paging.getPage()) {
                 pagingParams.add(new PostParameter("page", String.valueOf(paging.getPage())));
             }
-            if (-1 != paging.getSinceId()) {
+            if (-1 != paging.getCount()) {
                 if (-1 != url.indexOf("search")) {
                     // search api takes "rpp"
                     // http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search

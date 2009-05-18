@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.Properties;
 
 public class StreamAPITest extends TestCase implements StatusListener{
-    protected StreamTwitter streamTwitter = null;
+    protected TwitterStream twitterStream = null;
     protected Twitter twitter = null;
     protected Properties p = new Properties();
 
@@ -47,7 +47,7 @@ public class StreamAPITest extends TestCase implements StatusListener{
         p.load(new FileInputStream("test.properties"));
         id = p.getProperty("id1");
         pass = p.getProperty("pass1");
-        streamTwitter = new StreamTwitter(id, pass, this);
+        twitterStream = new TwitterStream(id, pass, this);
         twitter = new Twitter(id, pass);
     }
 
@@ -56,7 +56,7 @@ public class StreamAPITest extends TestCase implements StatusListener{
     }
 
     public void testSpritzerPull() throws Exception {
-        StatusStream stream = streamTwitter.getSpritzerStream();
+        StatusStream stream = twitterStream.getSpritzerStream();
         Status status;
         for(int i=0;i<10;i++){
             status = stream.next();
@@ -67,15 +67,15 @@ public class StreamAPITest extends TestCase implements StatusListener{
         stream.close();
     }
     public void testSpritzerPush() throws Exception {
-        streamTwitter.spritzer();
+        twitterStream.spritzer();
         waitForStatus();
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
-        streamTwitter.cleanup();
+        twitterStream.cleanup();
     }
     public void testFollowPull() throws Exception {
-        streamTwitter.setHttpReadTimeout(120000);
-        StatusStream stream = streamTwitter.getFollowStream(new int[]{6358482});
+        twitterStream.setHttpReadTimeout(120000);
+        StatusStream stream = twitterStream.getFollowStream(new int[]{6358482});
         Thread.sleep(3000);
         String newStatus = "streaming test:" + new Date();
         twitter.updateStatus(newStatus);
@@ -91,7 +91,7 @@ public class StreamAPITest extends TestCase implements StatusListener{
     }
     public void testFollowPush() throws Exception {
         status = null;
-        streamTwitter.follow(new int[]{6358482});
+        twitterStream.follow(new int[]{6358482});
         String newStatus = "streaming test:" + new Date();
         twitter.updateStatus(newStatus);
         Thread.sleep(3000);
@@ -102,31 +102,31 @@ public class StreamAPITest extends TestCase implements StatusListener{
         System.out.println("got status-------------------:" + status);
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
-        streamTwitter.cleanup();
+        twitterStream.cleanup();
     }
     public void testUnAuthorizedStreamMethods() throws Exception {
         try{
-            StatusStream stream = streamTwitter.getFirehoseStream(0);
+            StatusStream stream = twitterStream.getFirehoseStream(0);
             fail();
         }catch(TwitterException te){
 
         }
         try{
-            StatusStream stream = streamTwitter.getGardenhoseStream();
+            StatusStream stream = twitterStream.getGardenhoseStream();
             fail();
         }catch(TwitterException te){
             // User not in required role
             assertEquals(403, te.getStatusCode());
         }
         try{
-            StatusStream stream = streamTwitter.getBirddogStream(0, new int[]{6358482});
+            StatusStream stream = twitterStream.getBirddogStream(0, new int[]{6358482});
             fail();
         }catch(TwitterException te){
             // User not in required role
             assertEquals(403, te.getStatusCode());
         }
         try{
-            StatusStream stream = streamTwitter.getShadowStream(0, new int[]{6358482});
+            StatusStream stream = twitterStream.getShadowStream(0, new int[]{6358482});
             fail();
         }catch(TwitterException te){
             // User not in required role

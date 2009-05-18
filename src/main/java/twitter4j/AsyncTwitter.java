@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Twitter API with a series of asynchronous APIs.<br>

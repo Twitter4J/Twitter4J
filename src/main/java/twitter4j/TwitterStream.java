@@ -38,7 +38,7 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public class StreamTwitter extends TwitterSupport {
+public class TwitterStream extends TwitterSupport {
     private final static boolean DEBUG = Boolean.getBoolean("twitter4j.debug");
 
     private static final String STREAM_BASE_URL = "http://stream.twitter.com/";
@@ -47,11 +47,11 @@ public class StreamTwitter extends TwitterSupport {
     private static final long serialVersionUID = -8469998455124896484L;
     private int retryPerMinutes = 1;
 
-    public StreamTwitter(String userId, String password) {
+    public TwitterStream(String userId, String password) {
         super(userId, password);
     }
 
-    public StreamTwitter(String userId, String password, StatusListener listener) {
+    public TwitterStream(String userId, String password, StatusListener listener) {
         super(userId, password);
         this.statusListener = listener;
     }
