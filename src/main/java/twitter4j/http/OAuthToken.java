@@ -32,10 +32,13 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
 
 abstract class OAuthToken implements Serializable {
-    private String token;
+    
+	private String token;
     private String tokenSecret;
+    
     private transient SecretKeySpec secretKeySpec;
-
+    String[] responseStr = null;
+    
     public OAuthToken(String token, String tokenSecret) {
         this.token = token;
         this.tokenSecret = tokenSecret;
@@ -45,14 +48,9 @@ abstract class OAuthToken implements Serializable {
         this(response.asString());
     }
     OAuthToken(String string) {
-        String[] responseStr = string.split("&");
-        for (String str : responseStr) {
-            if (str.startsWith("oauth_token_secret=")) {
-                this.tokenSecret = str.split("=")[1].trim();
-            } else if (str.startsWith("oauth_token=")) {
-                this.token = str.split("=")[1].trim();
-            }
-        }
+        responseStr = string.split("&");
+        tokenSecret = getParameter("oauth_token_secret");
+        token = getParameter("oauth_token");
     }
 
     public String getToken() {
@@ -71,6 +69,17 @@ abstract class OAuthToken implements Serializable {
         return secretKeySpec;
     }
 
+    public String getParameter(String parameter) {
+    	String value = null;
+        for (String str : responseStr) {
+        	if (str.startsWith(parameter+'=')) {
+        		value = str.split("=")[1].trim();
+            	break;
+            }
+        }
+        return value;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -103,4 +112,3 @@ abstract class OAuthToken implements Serializable {
                 '}';
     }
 }
-

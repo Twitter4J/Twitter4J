@@ -35,16 +35,32 @@ import twitter4j.TwitterException;
  */
 public class AccessToken extends OAuthToken {
     private static final long serialVersionUID = -8344528374458826291L;
-
+    private String screenName;
+    private int userId;
+    
+    
     AccessToken(Response res) throws TwitterException {
         super(res);
     }
     // for test unit
     AccessToken(String str) {
         super(str);
+        screenName = getParameter("screen_name");
+        userId = Integer.parseInt(getParameter("user_id"));
+
     }
 
     public AccessToken(String token, String tokenSecret) {
         super(token, tokenSecret);
     }
+    
+	public String getScreenName() {
+		return screenName;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+    
 }
+
