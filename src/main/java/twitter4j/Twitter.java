@@ -1110,12 +1110,12 @@ public class Twitter extends TwitterSupport {
      * <br>This method calls http://twitter.com/users/show
      *
      * @param id the ID or screen name of the user for whom to request the detail
-     * @return ExtendedUser
+     * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
      */
-    public ExtendedUser getUserDetail(String id) throws TwitterException {
-        return new ExtendedUser(get(baseURL + "users/show/" + id + ".xml"
+    public User getUserDetail(String id) throws TwitterException {
+        return new User(get(baseURL + "users/show/" + id + ".xml"
                 , http.isAuthenticationEnabled()), this);
     }
 
@@ -1772,13 +1772,13 @@ public class Twitter extends TwitterSupport {
     /**
      * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not.  Use this method to test if supplied user credentials are valid.
      *
-     * @return extended user
+     * @return user
      * @since Twitter4J 2.0.0
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0verify_credentials">Twitter API Wiki / Twitter REST API Method: account verify_credentials</a>
      */
-    public ExtendedUser verifyCredentials() throws TwitterException {
-        return new ExtendedUser(get(baseURL + "account/verify_credentials.xml"
+    public User verifyCredentials() throws TwitterException {
+        return new User(get(baseURL + "account/verify_credentials.xml"
                 , true), this);
     }
 
@@ -1809,7 +1809,7 @@ public class Twitter extends TwitterSupport {
      * @since Twitter4J 2.0.2
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
      */
-    public ExtendedUser updateProfile(String name, String email, String url
+    public User updateProfile(String name, String email, String url
             , String location, String description) throws TwitterException {
         List<PostParameter> profile = new ArrayList<PostParameter>(5);
         addParameterToList(profile, "name", name);
@@ -1817,7 +1817,7 @@ public class Twitter extends TwitterSupport {
         addParameterToList(profile, "url", url);
         addParameterToList(profile, "location", location);
         addParameterToList(profile, "description", description);
-        return new ExtendedUser(http.post(baseURL + "account/update_profile.xml"
+        return new User(http.post(baseURL + "account/update_profile.xml"
                 , profile.toArray(new PostParameter[profile.size()]), true), this);
     }
 
@@ -1871,7 +1871,7 @@ public class Twitter extends TwitterSupport {
      * @since Twitter4J 2.0.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile_colors">Twitter API Wiki / Twitter REST API Method: account update_profile_colors</a>
      */
-    public ExtendedUser updateProfileColors(
+    public User updateProfileColors(
             String profileBackgroundColor,
             String profileTextColor,
             String profileLinkColor,
@@ -1889,7 +1889,7 @@ public class Twitter extends TwitterSupport {
                 , profileSidebarFillColor);
         addParameterToList(colors, "profile_sidebar_border_color"
                 , profileSidebarBorderColor);
-        return new ExtendedUser(http.post(baseURL +
+        return new User(http.post(baseURL +
                 "account/update_profile_colors.xml",
                 colors.toArray(new PostParameter[colors.size()]), true), this);
     }
@@ -2170,9 +2170,9 @@ public class Twitter extends TwitterSupport {
      * @since Twitter4J 2.0.4
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
      */
-    public List<ExtendedUser> getBlockingUsers() throws
+    public List<User> getBlockingUsers() throws
             TwitterException {
-        return ExtendedUser.constructExtendedUsers(get(baseURL +
+        return User.constructUsers(get(baseURL +
                 "blocks/blocking.xml", true), this);
     }
 
@@ -2186,9 +2186,9 @@ public class Twitter extends TwitterSupport {
      * @since Twitter4J 2.0.4
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
      */
-    public List<ExtendedUser> getBlockingUsers(int page) throws
+    public List<User> getBlockingUsers(int page) throws
             TwitterException {
-        return ExtendedUser.constructExtendedUsers(get(baseURL +
+        return User.constructUsers(get(baseURL +
                 "blocks/blocking.xml?page=" + page, true), this);
     }
 
@@ -2223,13 +2223,13 @@ public class Twitter extends TwitterSupport {
      * The call Twitter.getAuthenticatedUser() is equivalent to the call:<br>
      * twitter.getUserDetail(twitter.getUserId());
      *
-     * @return UserWithStatus
+     * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.3
      * @deprecated Use verifyCredentials() instead
      */
-    public ExtendedUser getAuthenticatedUser() throws TwitterException {
-        return new ExtendedUser(get(baseURL + "account/verify_credentials.xml", true),this);
+    public User getAuthenticatedUser() throws TwitterException {
+        return new User(get(baseURL + "account/verify_credentials.xml", true),this);
     }
 
     /**

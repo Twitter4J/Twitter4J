@@ -49,8 +49,8 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private List<DirectMessage> messages = null;
     private Status status = null;
     private User user = null;
-    private ExtendedUser extendedUser = null;
-    private List<ExtendedUser> extendedUsers = null;
+    private User extendedUser = null;
+    private List<User> extendedUsers = null;
     private boolean test;
     private String schedule;
     private DirectMessage message = null;
@@ -128,7 +128,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotUserDetail(ExtendedUser extendedUser) {
+    public void gotUserDetail(User extendedUser) {
         this.extendedUser = extendedUser;
         notifyResponse();
     }
@@ -202,12 +202,12 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         this.user = user;
         notifyResponse();
     }
-    public void updatedProfile(ExtendedUser user) {
+    public void updatedProfile(User user) {
         this.extendedUser = user;
         notifyResponse();
     }
 
-    public void updatedProfileColors(ExtendedUser extendedUser){
+    public void updatedProfileColors(User extendedUser){
         this.extendedUser = extendedUser;
         notifyResponse();
     }
@@ -281,7 +281,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotBlockingUsers(List<ExtendedUser> blockingUsers){
+    public void gotBlockingUsers(List<User> blockingUsers){
         this.extendedUsers = blockingUsers;
         notifyResponse();
     }
@@ -338,7 +338,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     private synchronized void waitForResponse(){
         try {
-            this.wait(30000);
+            this.wait(60000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -418,7 +418,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     public void testGetUserDetail() throws Exception{
         twitterAPI1.getUserDetailAsync(id1,this);
         waitForResponse();
-        ExtendedUser uws = this.extendedUser;
+        User uws = this.extendedUser;
         assertEquals(id1, uws.getName());
         assertTrue(0 <= uws.getFavouritesCount());
         assertTrue(0 <= uws.getFollowersCount());
@@ -524,7 +524,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertTrue(found);
     }
     public void testAccountMethods() throws Exception{
-        ExtendedUser original = twitterAPI1.verifyCredentials();
+        User original = twitterAPI1.verifyCredentials();
 
         String newName, newURL, newLocation, newDescription;
         String neu = "new";

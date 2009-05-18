@@ -119,7 +119,7 @@ public class TwitterTestUnit extends TestCase {
 
     }
     public void testGetUserDetail() throws Exception{
-        ExtendedUser uws = twitterAPI1.getUserDetail(id1);
+        User uws = twitterAPI1.getUserDetail(id1);
         assertEquals(id1, uws.getName());
         assertEquals(id1,uws.getScreenName());
         assertNotNull(uws.getLocation());
@@ -251,7 +251,7 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testAccountMethods() throws Exception{
-        ExtendedUser original = twitterAPI1.verifyCredentials();
+        User original = twitterAPI1.verifyCredentials();
 
         String newName, newURL, newLocation, newDescription;
         String neu = "new";
@@ -260,7 +260,7 @@ public class TwitterTestUnit extends TestCase {
         newLocation = original.getLocation()+neu;
         newDescription = original.getDescription()+neu;
 
-        ExtendedUser altered = twitterAPI1.updateProfile(
+        User altered = twitterAPI1.updateProfile(
                 newName, null, newURL, newLocation, newDescription);
         twitterAPI1.updateProfile(original.getName()
                 , null, original.getURL().toString(), original.getLocation(), original.getDescription());
@@ -289,7 +289,7 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(twitterAPI1.existsFriendship(id1,id2));
         assertFalse(twitterAPI1.existsFriendship(id1,"al3x"));
 
-        ExtendedUser eu;
+        User eu;
         eu = twitterAPI1.updateProfileColors("f00", "f0f", "0ff", "0f0", "f0f");
         assertEquals("f00", eu.getProfileBackgroundColor());
         assertEquals("f0f", eu.getProfileTextColor());
@@ -426,7 +426,7 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(id1, user.getName());
         // the Twitter API is not returning appropriate notifications value
         // http://code.google.com/p/twitter-api/issues/detail?id=474
-//        ExtendedUser detail = twitterAPI2.getUserDetail(id1);
+//        User detail = twitterAPI2.getUserDetail(id1);
 //        assertTrue(detail.isNotificationEnabled());
         try {
             user = twitterAPI2.createFriendship(id2);
@@ -502,7 +502,7 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI2.destroyBlock(id1);
         assertFalse(twitterAPI1.existsBlock("twit4j2"));
         assertTrue(twitterAPI1.existsBlock("twit4jblock"));
-        List<ExtendedUser> users = twitterAPI1.getBlockingUsers();
+        List<User> users = twitterAPI1.getBlockingUsers();
         assertEquals(1, users.size());
         assertEquals(39771963, users.get(0).getId());
         users = twitterAPI1.getBlockingUsers(1);

@@ -78,7 +78,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
             inReplyToStatusId = getLong("in_reply_to_status_id", json);
             inReplyToUserId = getInt("in_reply_to_user_id", json);
             isFavorited = getBoolean("favorited", json);
-            user = new ExtendedUser(json.getJSONObject("user"));
+            user = new User(json.getJSONObject("user"));
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + str, jsone);
         }

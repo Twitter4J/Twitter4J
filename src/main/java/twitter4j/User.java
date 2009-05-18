@@ -68,7 +68,23 @@ public class User extends TwitterResponse implements java.io.Serializable {
     private boolean statusFavorited = false;
     private String statusInReplyToScreenName = null;
 
-    private static final long serialVersionUID = 3037057798600246529L;
+    private String profileBackgroundColor;
+    private String profileTextColor;
+    private String profileLinkColor;
+    private String profileSidebarFillColor;
+    private String profileSidebarBorderColor;
+    private int friendsCount;
+    private Date createdAt;
+    private int favouritesCount;
+    private int utcOffset;
+    private String timeZone;
+    private String profileBackgroundImageUrl;
+    private String profileBackgroundTile;
+    private boolean following;
+    private boolean notificationEnabled;
+    private int statusesCount;
+    private static final long serialVersionUID = -6345893237975349030L;
+
 
     /*package*/User(Response res, Twitter twitter) throws TwitterException {
         super(res);
@@ -96,6 +112,22 @@ public class User extends TwitterResponse implements java.io.Serializable {
             url = json.getString("url");
             isProtected = json.getBoolean("protected");
             followersCount = json.getInt("followers_count");
+
+            profileBackgroundColor = json.getString("profile_background_color");
+            profileTextColor = json.getString("profile_text_color");
+            profileLinkColor = json.getString("profile_link_color");
+            profileSidebarFillColor = json.getString("profile_sidebar_fill_color");
+            profileSidebarBorderColor = json.getString("profile_sidebar_border_color");
+            friendsCount = json.getInt("friends_count");
+            createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+            favouritesCount = json.getInt("favourites_count");
+            utcOffset = getInt("utc_offset", json);
+            timeZone = json.getString("time_zone");
+            profileBackgroundImageUrl = json.getString("profile_background_image_url");
+            profileBackgroundTile = json.getString("profile_background_tile");
+            following = getBoolean("following", json);
+            notificationEnabled = getBoolean("notifications", json);
+            statusesCount = json.getInt("statuses_count");
             if (!json.isNull("status")) {
                 JSONObject status = json.getJSONObject("status");
                 statusCreatedAt = parseDate(status.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
@@ -125,6 +157,22 @@ public class User extends TwitterResponse implements java.io.Serializable {
         url = getChildText("url", elem);
         isProtected = getChildBoolean("protected", elem);
         followersCount = getChildInt("followers_count", elem);
+
+        profileBackgroundColor = getChildText("profile_background_color", elem);
+        profileTextColor = getChildText("profile_text_color", elem);
+        profileLinkColor = getChildText("profile_link_color", elem);
+        profileSidebarFillColor = getChildText("profile_sidebar_fill_color", elem);
+        profileSidebarBorderColor = getChildText("profile_sidebar_border_color", elem);
+        friendsCount = getChildInt("friends_count", elem);
+        createdAt = getChildDate("created_at", elem);
+        favouritesCount = getChildInt("favourites_count", elem);
+        utcOffset = getChildInt("utc_offset", elem);
+        timeZone = getChildText("time_zone", elem);
+        profileBackgroundImageUrl = getChildText("profile_background_image_url", elem);
+        profileBackgroundTile = getChildText("profile_background_tile", elem);
+        following = getChildBoolean("following", elem);
+        notificationEnabled = getChildBoolean("notifications", elem);
+        statusesCount = getChildInt("statuses_count", elem);
 
         NodeList statuses = elem.getElementsByTagName("status");
         if (statuses.getLength() != 0) {
@@ -338,6 +386,83 @@ public class User extends TwitterResponse implements java.io.Serializable {
 
     public String getStatusInReplyToScreenName() {
         return -1 != statusInReplyToUserId ? statusInReplyToScreenName : null;
+    }
+
+        public String getProfileBackgroundColor() {
+        return profileBackgroundColor;
+    }
+
+    public String getProfileTextColor() {
+        return profileTextColor;
+    }
+
+    public String getProfileLinkColor() {
+        return profileLinkColor;
+    }
+
+    public String getProfileSidebarFillColor() {
+        return profileSidebarFillColor;
+    }
+
+    public String getProfileSidebarBorderColor() {
+        return profileSidebarBorderColor;
+    }
+
+    public int getFriendsCount() {
+        return friendsCount;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public int getFavouritesCount() {
+        return favouritesCount;
+    }
+
+    public int getUtcOffset() {
+        return utcOffset;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public String getProfileBackgroundImageUrl() {
+        return profileBackgroundImageUrl;
+    }
+
+    public String getProfileBackgroundTile() {
+        return profileBackgroundTile;
+    }
+
+    /**
+     *
+     * @deprecated <a href="http://groups.google.com/group/twitter-development-talk/browse_frm/thread/42ba883b9f8e3c6e">Deprecation of following and notification elements</a>
+     */
+    public boolean isFollowing() {
+        return following;
+    }
+
+    /**
+     * @deprecated use isNotificationsEnabled() instead
+     */
+
+    public boolean isNotifications() {
+        return notificationEnabled;
+    }
+
+    /**
+     *
+     * @since Twitter4J 2.0.1
+     * @deprecated <a href="http://groups.google.com/group/twitter-development-talk/browse_frm/thread/42ba883b9f8e3c6e">Deprecation of following and notification elements</a>
+     */
+    public boolean isNotificationEnabled() {
+        return notificationEnabled;
+    }
+
+    public int getStatusesCount() {
+        return statusesCount;
     }
 
     @Override

@@ -78,7 +78,7 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotFeatured(List<User> users){
     }
-    public void gotUserDetail(ExtendedUser extendedUser){
+    public void gotUserDetail(User user){
     }
     public void gotDirectMessages(List<DirectMessage> messages){
     }
@@ -138,9 +138,9 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.0.2
      */
-    public void updatedProfile(ExtendedUser user){
+    public void updatedProfile(User user){
     }
-    public void updatedProfileColors(ExtendedUser user){
+    public void updatedProfileColors(User user){
     }
     public void gotRateLimitStatus(RateLimitStatus status){
     }
@@ -201,7 +201,7 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.0.4
      */
-    public void gotBlockingUsers(List<ExtendedUser> blockingUsers){
+    public void gotBlockingUsers(List<User> blockingUsers){
     }
 
     /**

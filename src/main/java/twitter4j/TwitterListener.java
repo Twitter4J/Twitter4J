@@ -77,7 +77,7 @@ public interface TwitterListener {
 
     void gotFeatured(List<User> users);
 
-    void gotUserDetail(ExtendedUser extendedUser);
+    void gotUserDetail(User user);
 
     void gotDirectMessages(List<DirectMessage> messages);
 
@@ -137,9 +137,9 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.0.2
      */
-    void updatedProfile(ExtendedUser user);
+    void updatedProfile(User user);
 
-    void updatedProfileColors(ExtendedUser user);
+    void updatedProfileColors(User user);
 
     void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
 
@@ -197,7 +197,7 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.0.4
      */
-    void gotBlockingUsers(List<ExtendedUser> blockingUsers);
+    void gotBlockingUsers(List<User> blockingUsers);
 
     /**
      * @since Twitter4J 2.0.4
