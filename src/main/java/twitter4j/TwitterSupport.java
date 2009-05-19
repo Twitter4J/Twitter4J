@@ -35,7 +35,7 @@ public class TwitterSupport implements java.io.Serializable {
     protected HttpClient http = new HttpClient();
     protected String source;
     private static final long serialVersionUID = -7550633067620779906L;
-    /*package*/ static final String VERSION = "2.0.4";
+    /*package*/ static final String VERSION = "2.0.5";
     /*package*/ TwitterSupport(){
         this(null, null);
     }

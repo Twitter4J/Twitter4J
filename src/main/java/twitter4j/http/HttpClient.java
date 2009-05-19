@@ -426,7 +426,7 @@ public class HttpClient implements java.io.Serializable {
                                 // http://code.google.com/p/twitter-api/issues/detail?id=597&colspec=ID%20Stars%20Type%20Status%20Priority%20Owner%20Summary%20Opened%20Modified%20Component
                                 responseCode != FORBIDDEN)
                                 || retriedCount == retryCount) {
-                            throw new TwitterException(getCause(responseCode) + "\n" + res.toString(), responseCode);
+                            throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), responseCode);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR 
                     } else {
@@ -445,6 +445,9 @@ public class HttpClient implements java.io.Serializable {
                 }
             }
             try {
+                if(DEBUG){
+                    res.asString();
+                }
                 log("Sleeping " + retryIntervalMillis +" millisecs for next retry.");
                 Thread.sleep(retryIntervalMillis);
             } catch (InterruptedException ignore) {
@@ -637,6 +640,6 @@ public class HttpClient implements java.io.Serializable {
             default:
                 cause = "";
         }
-        return cause;
+        return statusCode + ":" + cause;
     }
 }

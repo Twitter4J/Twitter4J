@@ -198,7 +198,7 @@ public class Response {
 
     @Override
     public String toString() {
-        if(null == responseAsString){
+        if(null != responseAsString){
             return responseAsString;
         }
         return "Response{" +
