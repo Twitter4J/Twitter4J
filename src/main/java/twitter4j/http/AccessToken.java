@@ -41,6 +41,7 @@ public class AccessToken extends OAuthToken {
     AccessToken(Response res) throws TwitterException {
         super(res);
     }
+
     // for test unit
     AccessToken(String str) {
         super(str);
@@ -58,6 +59,7 @@ public class AccessToken extends OAuthToken {
      * @return screen name
      * @since Twitter4J 2.0.4
      */
+
 	public String getScreenName() {
 		return screenName;
 	}
@@ -67,6 +69,7 @@ public class AccessToken extends OAuthToken {
      * @return user id
      * @since Twitter4J 2.0.4
      */
+
 	public int getUserId() {
 		return userId;
 	}
