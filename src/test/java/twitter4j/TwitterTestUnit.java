@@ -688,7 +688,7 @@ public class TwitterTestUnit extends TestCase {
 
         System.getProperties().remove("twitter4j.clientVersion");
         twitterSupport = new Twitter();
-        assertEquals(TwitterSupport.VERSION, twitterSupport.getClientVersion());
+        assertEquals(Version.getVersion(), twitterSupport.getClientVersion());
 
         twitterSupport.setClientVersion(test);
         assertEquals(test, twitterSupport.getClientVersion());
@@ -702,7 +702,7 @@ public class TwitterTestUnit extends TestCase {
 
         System.getProperties().remove("twitter4j.clientURL");
         twitterSupport = new Twitter();
-        assertEquals("http://yusuke.homeip.net/twitter4j/en/twitter4j-" + twitterSupport.VERSION + ".xml", twitterSupport.getClientURL());
+        assertEquals("http://yusuke.homeip.net/twitter4j/en/twitter4j-" + Version.getVersion() + ".xml", twitterSupport.getClientURL());
 
         twitterSupport.setClientURL(test);
         assertEquals(test, twitterSupport.getClientURL());
@@ -717,7 +717,7 @@ public class TwitterTestUnit extends TestCase {
 
         System.getProperties().remove("twitter4j.http.userAgent");
         twitterSupport = new Twitter();
-        assertEquals("twitter4j http://yusuke.homeip.net/twitter4j/ /" + twitterSupport.VERSION, twitterSupport.http.getRequestHeader("User-Agent"));
+        assertEquals("twitter4j http://yusuke.homeip.net/twitter4j/ /" + Version.getVersion(), twitterSupport.http.getRequestHeader("User-Agent"));
 
         twitterSupport.setUserAgent(test);
         assertEquals(test, twitterSupport.getUserAgent());
@@ -743,7 +743,7 @@ public class TwitterTestUnit extends TestCase {
 
         System.getProperties().remove("twitter4j.http.proxyPort");
         twitterSupport = new Twitter();
-        assertEquals(0, twitterSupport.http.getProxyPort());
+        assertEquals(-1, twitterSupport.http.getProxyPort());
 
         twitterSupport.setHttpProxy(test,10);
         assertEquals(10, twitterSupport.http.getProxyPort());
@@ -799,7 +799,7 @@ public class TwitterTestUnit extends TestCase {
 
         System.getProperties().remove("twitter4j.http.readTimeout");
         twitterSupport = new Twitter();
-        assertEquals(30000, twitterSupport.http.getReadTimeout());
+        assertEquals(120000, twitterSupport.http.getReadTimeout());
 
         twitterSupport.setHttpReadTimeout(10);
         assertEquals(10, twitterSupport.http.getReadTimeout());

@@ -29,6 +29,7 @@ package twitter4j.http;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import twitter4j.TwitterException;
+import twitter4j.Configuration;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
@@ -49,7 +50,7 @@ import java.util.zip.GZIPInputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Response {
-    private final static boolean DEBUG = Boolean.getBoolean("twitter4j.debug");
+    private final static boolean DEBUG = Configuration.getDebug();
 
     private static ThreadLocal<DocumentBuilder> builders =
             new ThreadLocal<DocumentBuilder>() {

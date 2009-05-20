@@ -24,52 +24,35 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j;
 
-import twitter4j.TwitterException;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
 /**
- * Representing authorized Access Token which is passed to the service provider in order to access protected resources.<br>
- * the token and token secret can be stored into some persistent stores such as file system or RDBMS for the further accesses.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class AccessToken extends OAuthToken {
-    private static final long serialVersionUID = -8344528374458826291L;
-    private String screenName;
-    private int userId;
-    
-    AccessToken(Response res) throws TwitterException {
-        super(res);
-    }
-    // for test unit
-    AccessToken(String str) {
-        super(str);
-        screenName = getParameter("screen_name");
-        userId = Integer.parseInt(getParameter("user_id"));
-
+public class Twitter4JTestSuite extends TestCase {
+    public static void main(String[] args) {
+        TestRunner.run(suite());
     }
 
-    public AccessToken(String token, String tokenSecret) {
-        super(token, tokenSecret);
+    public Twitter4JTestSuite(String s) {
+        super(s);
     }
 
-    /**
-     *
-     * @return screen name
-     * @since Twitter4J 2.0.4
-     */
-	public String getScreenName() {
-		return screenName;
-	}
-
-    /**
-     *
-     * @return user id
-     * @since Twitter4J 2.0.4
-     */
-	public int getUserId() {
-		return userId;
-	}
-    
+    public static Test suite() {
+        TestSuite suite = new TestSuite("Twitter4J Test Suite");
+        suite.addTestSuite(AsyncTwitterTest.class);
+        suite.addTestSuite(DispatcherTest.class);
+        suite.addTestSuite(TwitterBasicAuthTest.class);
+        suite.addTestSuite(twitter4j.http.OAuthTest.class);
+        suite.addTestSuite(StreamAPITest.class);
+        suite.addTestSuite(twitter4j.http.BASE64EncoderTest.class);
+        suite.addTestSuite(twitter4j.http.HTMLEntityTest.class);
+        suite.addTestSuite(twitter4j.http.ResponseTest.class);
+        return suite;
+    }
 }
-

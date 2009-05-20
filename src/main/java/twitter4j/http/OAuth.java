@@ -26,6 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import twitter4j.Configuration;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -45,7 +47,7 @@ import java.util.List;
 public class OAuth {
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final PostParameter OAUTH_SIGNATURE_METHOD = new PostParameter("oauth_signature_method", "HMAC-SHA1");
-    private final boolean DEBUG = Boolean.getBoolean("twitter4j.debug");
+    private final static boolean DEBUG = Configuration.getDebug();
 
     private String consumerKey = "";
     private String consumerSecret;

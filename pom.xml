@@ -83,6 +83,22 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                        <manifest>
+                            <addDefaultSpecificationEntries>true
+                            </addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true
+                            </addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
                     <execution>
@@ -102,7 +118,8 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <excludePackageNames>twitter4j.org.json</excludePackageNames>
+                            <excludePackageNames>twitter4j.org.json
+                            </excludePackageNames>
                         </configuration>
                     </execution>
                 </executions>

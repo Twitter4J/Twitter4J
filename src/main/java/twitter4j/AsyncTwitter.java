@@ -2511,13 +2511,7 @@ public class AsyncTwitter extends Twitter {
             throw new IllegalStateException("Already shut down");
         }
         if (null == dispatcher) {
-            int numThreads = 1;
-            try {
-                numThreads = Integer.parseInt(System.getProperty("twitter4j.async.numThreads"));
-            } catch (NumberFormatException nfe) {
-
-            }
-            dispatcher = new Dispatcher("Twitter4J Async Dispatcher", numThreads);
+            dispatcher = new Dispatcher("Twitter4J Async Dispatcher", Configuration.getNumberOfAsyncThreads());
         }
         return dispatcher;
     }

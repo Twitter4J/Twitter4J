@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import twitter4j.Configuration;
 import twitter4j.TwitterException;
 
 import java.io.IOException;
@@ -58,19 +59,19 @@ public class HttpClient implements java.io.Serializable {
     private final int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
     private final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
 
-    private final static boolean DEBUG = Boolean.getBoolean("twitter4j.debug");
+    private final static boolean DEBUG = Configuration.getDebug();
 
     private String basic;
     private int retryCount = 0;
     private int retryIntervalMillis = 10000;
-    private String userId = null;
-    private String password = null;
-    private String proxyHost = null;
-    private int proxyPort = 0;
-    private String proxyAuthUser = null;
-    private String proxyAuthPassword = null;
-    private int connectionTimeout = 0;
-    private int readTimeout = 0;
+    private String userId = Configuration.getUser();
+    private String password = Configuration.getPassword();
+    private String proxyHost = Configuration.getProxyHost();
+    private int proxyPort = Configuration.getProxyPort();
+    private String proxyAuthUser = Configuration.getProxyUser();
+    private String proxyAuthPassword = Configuration.getProxyPassword();
+    private int connectionTimeout = Configuration.getConnectionTimeout();
+    private int readTimeout = Configuration.getReadTimeout();
     private static final long serialVersionUID = 808018030183407996L;
     private boolean isJDK14orEarlier = false;
     private Map<String, String> requestHeaders = new HashMap<String, String>();
@@ -88,15 +89,7 @@ public class HttpClient implements java.io.Serializable {
 
     public HttpClient() {
         this.basic = null;
-        //forcibly read system properties
-        setProxyPort(0);
-        setProxyHost(null);
-        setConnectionTimeout(10000);
-        setReadTimeout(30000);
-        setProxyAuthUser(null);
-        setProxyAuthPassword(null);
-        setUserId(null);
-        setPassword(null);
+        setUserAgent(null);
         setOAuthConsumer(null, null);
         setRequestHeader("Accept-Encoding","gzip");
 
@@ -137,8 +130,8 @@ public class HttpClient implements java.io.Serializable {
      * @see <a href="http://twitter.com/oauth_clients">Applications Using Twitter</a>
      */
     public void setOAuthConsumer(String consumerKey, String consumerSecret) {
-        consumerKey = System.getProperty("twitter4j.oauth.consumerKey", consumerKey);
-        consumerSecret = System.getProperty("twitter4j.oauth.consumerSecret", consumerSecret);
+        consumerKey = Configuration.getOAuthConsumerKey(consumerKey);
+        consumerSecret = Configuration.getOAuthConsumerSecret(consumerSecret);
         if (null != consumerKey && null != consumerSecret
                 && 0 != consumerKey.length() && 0 != consumerSecret.length()) {
             this.oauth = new OAuth(consumerKey, consumerSecret);
@@ -237,7 +230,7 @@ public class HttpClient implements java.io.Serializable {
      * @param proxyHost
      */
     public void setProxyHost(String proxyHost) {
-        this.proxyHost = System.getProperty("twitter4j.http.proxyHost", System.getProperty("http.proxyHost", proxyHost));
+        this.proxyHost = Configuration.getProxyHost(proxyHost);
     }
 
     public int getProxyPort() {
@@ -250,10 +243,7 @@ public class HttpClient implements java.io.Serializable {
      * @param proxyPort
      */
     public void setProxyPort(int proxyPort) {
-        try {
-            this.proxyPort = Integer.parseInt(System.getProperty("twitter4j.http.proxyPort", System.getProperty("http.proxyPort", String.valueOf(proxyPort))));
-        } catch (NumberFormatException ignore) {
-        }
+        this.proxyPort = Configuration.getProxyPort(proxyPort);
     }
 
     public String getProxyAuthUser() {
@@ -266,7 +256,7 @@ public class HttpClient implements java.io.Serializable {
      * @param proxyAuthUser
      */
     public void setProxyAuthUser(String proxyAuthUser) {
-        this.proxyAuthUser = System.getProperty("twitter4j.http.proxyUser", proxyAuthUser);
+        this.proxyAuthUser = Configuration.getProxyUser(proxyAuthUser);
     }
 
     public String getProxyAuthPassword() {
@@ -279,7 +269,7 @@ public class HttpClient implements java.io.Serializable {
      * @param proxyAuthPassword
      */
     public void setProxyAuthPassword(String proxyAuthPassword) {
-        this.proxyAuthPassword = System.getProperty("twitter4j.http.proxyPassword", proxyAuthPassword);
+        this.proxyAuthPassword = Configuration.getProxyPassword(proxyAuthPassword);
     }
 
     public int getConnectionTimeout() {
@@ -292,10 +282,7 @@ public class HttpClient implements java.io.Serializable {
      * @param connectionTimeout - an int that specifies the connect timeout value in milliseconds
      */
     public void setConnectionTimeout(int connectionTimeout) {
-        try {
-            this.connectionTimeout = Integer.parseInt(System.getProperty("twitter4j.http.connectionTimeout",String.valueOf(connectionTimeout)));
-        } catch (NumberFormatException ignore) {
-        }
+        this.connectionTimeout = Configuration.getConnectionTimeout(connectionTimeout);
 
     }
     public int getReadTimeout() {
@@ -307,10 +294,7 @@ public class HttpClient implements java.io.Serializable {
      * @param readTimeout - an int that specifies the timeout value to be used in milliseconds
      */
     public void setReadTimeout(int readTimeout) {
-        try {
-            this.readTimeout = Integer.parseInt(System.getProperty("twitter4j.http.readTimeout",String.valueOf(readTimeout)));
-        } catch (NumberFormatException ignore) {
-        }
+        this.readTimeout = Configuration.getReadTimeout(readTimeout);
     }
 
     private void encodeBasicAuthenticationString() {
@@ -329,7 +313,7 @@ public class HttpClient implements java.io.Serializable {
     }
 
     public void setUserAgent(String ua) {
-        setRequestHeader("User-Agent", ua);
+        setRequestHeader("User-Agent", Configuration.getUserAgent(ua));
     }
     public String getUserAgent(){
         return getRequestHeader("User-Agent");

@@ -33,18 +33,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A java reporesentation of the <a href="http://apiwiki.twitter.com/Streaming-API-Documentation">Twitter Streamin API</a>
+ * A java reporesentation of the <a href="http://apiwiki.twitter.com/Streaming-API-Documentation">Twitter Streaming API</a>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
 public class TwitterStream extends TwitterSupport {
-    private final static boolean DEBUG = Boolean.getBoolean("twitter4j.debug");
+    private final static boolean DEBUG = Configuration.getDebug();
 
     private static final String STREAM_BASE_URL = "http://stream.twitter.com/";
     private StatusListener statusListener;
     private StreamHandlingThread handler = null;
-    private static final long serialVersionUID = -8469998455124896484L;
     private int retryPerMinutes = 1;
 
     public TwitterStream(String userId, String password) {
@@ -56,7 +55,7 @@ public class TwitterStream extends TwitterSupport {
         this.statusListener = listener;
     }
 
-    /* Streamin API */
+    /* Streaming API */
     /**
      * Starts listening on all public statuses. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the firehose. If your service warrants access to it, we'll contact you.
      *
@@ -293,6 +292,9 @@ public class TwitterStream extends TwitterSupport {
 
     private synchronized void startHandler(StreamHandlingThread handler) throws TwitterException {
         cleanup();
+        if(null == statusListener){
+            throw new IllegalStateException("StatusListener is not set.");
+        }
         this.handler = handler;
         this.handler.start();
     }

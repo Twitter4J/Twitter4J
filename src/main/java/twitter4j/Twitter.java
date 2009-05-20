@@ -43,7 +43,7 @@ import java.util.TimeZone;
  * A java reporesentation of the <a href="http://apiwiki.twitter.com/">Twitter API</a>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Twitter extends TwitterSupport {
+public class Twitter extends TwitterSupport implements java.io.Serializable {
     private String baseURL = "http://twitter.com/";
     private String searchBaseURL = "http://search.twitter.com/";
     private static final long serialVersionUID = -1486360080128882436L;

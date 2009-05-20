@@ -56,7 +56,6 @@ import java.util.TimeZone;
  * @see twitter4j.DirectMessage
  * @see twitter4j.Status
  * @see twitter4j.User
- * @see twitter4j.ExtendedUser
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class TwitterResponse implements java.io.Serializable {

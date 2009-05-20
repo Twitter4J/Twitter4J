@@ -31,19 +31,16 @@ import twitter4j.http.HttpClient;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class TwitterSupport implements java.io.Serializable {
+public class TwitterSupport {
     protected HttpClient http = new HttpClient();
-    protected String source;
-    private static final long serialVersionUID = -7550633067620779906L;
-    /*package*/ static final String VERSION = "2.0.5";
+    protected String source = Configuration.getSource();
+//    /*package*/ static final String VERSION = Version.getVersion();
     /*package*/ TwitterSupport(){
         this(null, null);
     }
     /*package*/ TwitterSupport(String userId, String password){
-        setUserAgent("twitter4j http://yusuke.homeip.net/twitter4j/ /" + VERSION);
-        setSource("Twitter4J");
-        setClientVersion(VERSION);
-        setClientURL("http://yusuke.homeip.net/twitter4j/en/twitter4j-" + VERSION + ".xml");
+        setClientVersion(null);
+        setClientURL(null);
         setUserId(userId);
         setPassword(password);
     }
@@ -54,7 +51,7 @@ public class TwitterSupport implements java.io.Serializable {
      * @since Twitter4J 1.1.8
      */
     public void setUserAgent(String userAgent){
-        http.setUserAgent(System.getProperty("twitter4j.http.userAgent", userAgent));
+        http.setUserAgent(userAgent);
     }
 
     /**
@@ -72,7 +69,7 @@ public class TwitterSupport implements java.io.Serializable {
      * @since Twitter4J 1.1.8
      */
     public void setClientVersion(String version){
-        setRequestHeader("X-Twitter-Client-Version", System.getProperty("twitter4j.clientVersion", version));
+        setRequestHeader("X-Twitter-Client-Version", Configuration.getCilentVersion(version));
     }
 
     /**
@@ -90,7 +87,7 @@ public class TwitterSupport implements java.io.Serializable {
      * @since Twitter4J 1.1.8
      */
     public void setClientURL(String clientURL){
-        setRequestHeader("X-Twitter-Client-URL",System.getProperty("twitter4j.clientURL", clientURL));
+        setRequestHeader("X-Twitter-Client-URL", Configuration.getClientURL(clientURL));
     }
 
     /**
@@ -108,7 +105,7 @@ public class TwitterSupport implements java.io.Serializable {
      * @param userId new userid
      */
     public synchronized void setUserId(String userId) {
-        http.setUserId(System.getProperty("twitter4j.user", userId));
+        http.setUserId(Configuration.getUser(userId));
     }
 
     /**
@@ -126,7 +123,7 @@ public class TwitterSupport implements java.io.Serializable {
      * @param password new password
      */
     public synchronized void setPassword(String password) {
-        http.setPassword(System.getProperty("twitter4j.password", password));
+        http.setPassword(Configuration.getPassword(password));
     }
 
     /**
@@ -192,7 +189,7 @@ public class TwitterSupport implements java.io.Serializable {
      * @see <a href="http://twitter.com/help/request_source">Twitter - Request a link to your application</a>
      */
     public void setSource(String source) {
-        this.source = System.getProperty("twitter4j.source", source);
+        this.source = Configuration.getSource(source);
         setRequestHeader("X-Twitter-Client", this.source);
     }
 
