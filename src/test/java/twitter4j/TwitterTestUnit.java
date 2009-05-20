@@ -465,39 +465,13 @@ public class TwitterTestUnit extends TestCase {
 
     public void testNotification() throws Exception {
         try {
-            twitterAPI2.createFriendship(id1);
+            twitterAPI2.destroyFriendship(id1);
         } catch (TwitterException te) {
 
         }
-        try {
-            twitterAPI2.enableNotification(id1);
-        } catch (TwitterException te) {
-
-        }
-        twitterAPI2.disableNotification(id1);
-        try {
-            twitterAPI2.enableNotification(id1);
-            // Twitter API doesn't return error as of 4/18/2009
-//            fail("should fail");
-        } catch (TwitterException te) {
-
-        }
-        try {
-            twitterAPI2.createFriendship(id1);
-        } catch (TwitterException te) {
-
-        }
-        try {
-            twitterAPI2.enableNotification(id1);
-        } catch (TwitterException te) {
-
-        }
-        try {
-            twitterAPI2.enableNotification(id1);
-            fail("should fail");
-        } catch (TwitterException te) {
-
-        }
+        twitterAPI2.createFriendship(id1);
+        User user = twitterAPI2.enableNotification(id1);
+        user = twitterAPI2.disableNotification(id1);
     }
     public void testBlock() throws Exception {
         twitterAPI2.createBlock(id1);

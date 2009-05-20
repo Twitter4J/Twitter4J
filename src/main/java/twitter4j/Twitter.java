@@ -1556,7 +1556,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public User createFriendship(String id, boolean follow) throws TwitterException {
         return new User(http.post(baseURL + "friendships/create/" + id + ".xml"
-                , new PostParameter[]{new PostParameter("getFollowStream"
+                , new PostParameter[]{new PostParameter("follow"
                         , String.valueOf(follow))}, true)
                 , this);
     }
@@ -2049,7 +2049,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications follow</a>
      */
     public User enableNotification(String id) throws TwitterException {
-        return new User(http.post(baseURL + "notifications/getFollowStream/" + id + ".xml", true), this);
+        return new User(http.post(baseURL + "notifications/follow/" + id + ".xml", true), this);
     }
 
     /**
