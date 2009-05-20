@@ -405,11 +405,7 @@ public class HttpClient implements java.io.Serializable {
                         }
                     }
                     if (responseCode != OK) {
-                        if ((responseCode != INTERNAL_SERVER_ERROR &&
-                                // sometime method call fails with 403
-                                // http://code.google.com/p/twitter-api/issues/detail?id=597&colspec=ID%20Stars%20Type%20Status%20Priority%20Owner%20Summary%20Opened%20Modified%20Component
-                                responseCode != FORBIDDEN)
-                                || retriedCount == retryCount) {
+                        if (responseCode != INTERNAL_SERVER_ERROR || retriedCount == retryCount) {
                             throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), responseCode);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR 

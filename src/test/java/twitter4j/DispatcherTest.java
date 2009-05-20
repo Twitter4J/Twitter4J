@@ -48,9 +48,16 @@ public class DispatcherTest extends TestCase {
         super.tearDown();
         dispatcher = null;
     }
+
     public int count;
 
-    public void testInvokeLater() throws Exception{
+    public void testInvokeLater() throws Exception {
+        boolean isJDK14orEarlier = false;
+        String versionStr = System.getProperty("java.specification.version");
+        if (null != versionStr) {
+            isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
+        }
+        // this test runs only on JDK1.5 or later since Thread.getAllStackTraces() is available from JDK1.5
         String name = "test";
         int threadcount = 1;
         dispatcher = new Dispatcher(name, threadcount);
@@ -59,17 +66,22 @@ public class DispatcherTest extends TestCase {
         dispatcher.invokeLater(new IncrementTask());
         dispatcher.invokeLater(new IncrementTask());
         Thread.sleep(300);
-        assertTrue(existsThread(name));
-        assertEquals(3,count);
+        if (!isJDK14orEarlier) {
+            assertTrue(existsThread(name));
+        }
+        assertEquals(3, count);
         dispatcher.shutdown();
         Thread.sleep(500);
-        assertFalse(existsThread(name));
+        if (!isJDK14orEarlier) {
+            assertFalse(existsThread(name));
+        }
     }
-    private boolean existsThread(String name){
+
+    private boolean existsThread(String name) {
         boolean exists = false;
-        Map<Thread,StackTraceElement[]> allThreads = Thread.getAllStackTraces();
-        for(Thread thread : allThreads.keySet()){
-            if(-1 != thread.getName().indexOf(name)){
+        Map<Thread, StackTraceElement[]> allThreads = Thread.getAllStackTraces();
+        for (Thread thread : allThreads.keySet()) {
+            if (-1 != thread.getName().indexOf(name)) {
                 exists = true;
                 break;
             }
@@ -82,6 +94,8 @@ public class DispatcherTest extends TestCase {
             System.out.println("executed");
             count++;
         }
-    };
+    }
+
+    ;
 
 }

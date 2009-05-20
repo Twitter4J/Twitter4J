@@ -226,7 +226,7 @@ public class TwitterResponse implements java.io.Serializable {
         if(null == str || "null".equals(str)){
             return false;
         }
-        return Boolean.parseBoolean(str);
+        return Boolean.valueOf(str);
     }
 
     public int getRateLimitLimit() {
