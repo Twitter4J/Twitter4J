@@ -113,7 +113,7 @@ public class Response {
      */
     public InputStream asStream() {
         if(streamConsumed){
-            throw new IllegalStateException("Stream already consumed.");
+            throw new IllegalStateException("Stream has already been consumed.");
         }
         return is;
     }

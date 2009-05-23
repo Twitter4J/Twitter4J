@@ -405,7 +405,7 @@ public class HttpClient implements java.io.Serializable {
                         }
                     }
                     if (responseCode != OK) {
-                        if (responseCode != INTERNAL_SERVER_ERROR || retriedCount == retryCount) {
+                        if (responseCode < INTERNAL_SERVER_ERROR || retriedCount == retryCount) {
                             throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), responseCode);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR 

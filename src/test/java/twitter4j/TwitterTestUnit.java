@@ -280,12 +280,10 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI1.updateDeliverlyDevice(Twitter.SMS);
         try {
             twitterAPI1.createFriendship(id2);
-            twitterAPI1.enableNotification(id2);
         } catch (twitter4j.TwitterException te) {
         }
         try {
             twitterAPI2.createFriendship(id1);
-            twitterAPI2.enableNotification(id1);
         } catch (twitter4j.TwitterException te) {
         }
         assertTrue(twitterAPI1.existsFriendship(id1,id2));
@@ -363,12 +361,10 @@ public class TwitterTestUnit extends TestCase {
     public void testGetDirectMessages() throws Exception {
         try {
             twitterAPI1.createFriendship(id2);
-            twitterAPI1.enableNotification(id2);
         } catch (twitter4j.TwitterException te) {
         }
         try {
             twitterAPI2.createFriendship(id1);
-            twitterAPI2.enableNotification(id1);
         } catch (twitter4j.TwitterException te) {
         }
         Thread.sleep(3000);
@@ -465,13 +461,15 @@ public class TwitterTestUnit extends TestCase {
 
     public void testNotification() throws Exception {
         try {
-            twitterAPI2.destroyFriendship(id1);
+            twitterAPI2.createFriendship(id1);
         } catch (TwitterException te) {
-
         }
-        twitterAPI2.createFriendship(id1);
-        User user = twitterAPI2.enableNotification(id1);
-        user = twitterAPI2.disableNotification(id1);
+        try {
+            twitterAPI2.disableNotification(id1);
+        } catch (TwitterException te) {
+        }
+        twitterAPI2.enableNotification(id1);
+        twitterAPI2.disableNotification(id1);
     }
     public void testBlock() throws Exception {
         twitterAPI2.createBlock(id1);
@@ -500,118 +498,6 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(twitterAPI2.test());
     }
 
-    public void testSearch() throws Exception {
-        String queryStr = "test from:twit4j";
-        Query query = new Query(queryStr);
-        QueryResult queryResult = unauthenticated.search(query);
-        assertEquals(0, queryResult.getSinceId());
-        assertTrue(1265204883 < queryResult.getMaxId());
-        assertTrue(-1 != queryResult.getRefreshUrl().indexOf(queryStr));
-        assertEquals(15, queryResult.getResultsPerPage());
-//        assertEquals(-1, queryResult.getTotal());
-        //warning is not included in the response anymore - 4/24/2009
-//        assertTrue(result.getWarning().indexOf("adjusted"));
-        assertTrue(3 > queryResult.getCompletedIn());
-        assertEquals(1, queryResult.getPage());
-        assertEquals(queryStr, queryResult.getQuery());
-
-        List<Tweet> tweets = queryResult.getTweets();
-        assertTrue(1<=tweets.size());
-        assertNotNull(tweets.get(0).getText());
-        assertNull(tweets.get(0).getToUser());
-        assertEquals(-1, tweets.get(0).getToUserId());
-        assertNotNull(tweets.get(0).getCreatedAt());
-        assertEquals("twit4j", tweets.get(0).getFromUser());
-        assertEquals(1620730, tweets.get(0).getFromUserId());
-        assertTrue(-1 !=  tweets.get(0).getId());
-//        assertNotNull(tweets.get(0).getIsoLanguageCode());
-        assertTrue(-1 != tweets.get(0).getProfileImageUrl().indexOf(".jpg") ||-1 != tweets.get(0).getProfileImageUrl().indexOf(".png") );
-        assertTrue(-1 != tweets.get(0).getSource().indexOf("twitter"));
-
-
-        query = new Query("from:twit4j doesnothit");
-        queryResult = unauthenticated.search(query);
-        assertEquals(0, queryResult.getSinceId());
-        assertEquals(-1, queryResult.getMaxId());
-        assertNull(queryResult.getRefreshUrl());
-        assertEquals(15, queryResult.getResultsPerPage());
-//        assertEquals(-1, queryResult.getTotal());
-        assertNull(queryResult.getWarning());
-        assertTrue(1 > queryResult.getCompletedIn());
-        assertEquals(1, queryResult.getPage());
-        assertEquals("from:twit4j doesnothit", queryResult.getQuery());
-
-        twitterAPI1.updateStatus("%... 日本語");
-        query = new Query("from:twit4j %... 日本語");
-        queryResult = unauthenticated.search(query);
-    }
-    public void testTrends() throws Exception{
-        Trends trends;
-        trends = unauthenticated.getTrends();
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertEquals(10, trends.getTrends().length);
-        for (int i = 0; i < 10; i++) {
-            assertNotNull(trends.getTrends()[i].getName());
-            assertNotNull(trends.getTrends()[i].getUrl());
-            assertNull(trends.getTrends()[i].getQuery());
-        }
-
-        trends = unauthenticated.getCurrentTrends();
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertEquals(10, trends.getTrends().length);
-        for(Trend trend : trends.getTrends()){
-                assertNotNull(trend.getName());
-                assertNull(trend.getUrl());
-                assertNotNull(trend.getQuery());
-        }
-
-        trends = unauthenticated.getCurrentTrends(true);
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        Trend[] trendArray = trends.getTrends();
-        assertEquals(10, trendArray.length);
-        for(Trend trend : trends.getTrends()){
-                assertNotNull(trend.getName());
-                assertNull(trend.getUrl());
-                assertNotNull(trend.getQuery());
-        }
-
-        List<Trends> trendsList;
-
-        trendsList = unauthenticated.getDailyTrends();
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrue(20 < trendsList.size());
-        assertTrends(trendsList,20);
-
-        trendsList = unauthenticated.getDailyTrends(new Date(), true);
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrue(0 <= trendsList.size());
-        assertTrends(trendsList,20);
-
-        trendsList = unauthenticated.getWeeklyTrends();
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertEquals(7, trendsList.size());
-        assertTrends(trendsList,30);
-
-        trendsList = unauthenticated.getWeeklyTrends(new Date(), true);
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrue(1 <= trendsList.size());
-        assertTrends(trendsList,30);
-    }
-    private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception{
-        Date trendAt = null;
-         for(Trends singleTrends : trendsArray){
-             assertEquals(expectedSize, singleTrends.getTrends().length);
-             if(null != trendAt){
-                 assertTrue(trendAt.before(singleTrends.getTrendAt()));
-             }
-             trendAt = singleTrends.getTrendAt();
-             for (int i = 0; i < singleTrends.getTrends().length; i++) {
-                 assertNotNull(singleTrends.getTrends()[i].getName());
-                 assertNull(singleTrends.getTrends()[i].getUrl());
-                 assertNotNull(singleTrends.getTrends()[i].getQuery());
-             }
-         }
-    }
 
     public void testProperties() throws Exception{
         TwitterSupport twitterSupport;
@@ -759,7 +645,7 @@ public class TwitterTestUnit extends TestCase {
 
         System.getProperties().remove("twitter4j.http.connectionTimeout");
         twitterSupport = new Twitter();
-        assertEquals(10000, twitterSupport.http.getConnectionTimeout());
+        assertEquals(20000, twitterSupport.http.getConnectionTimeout());
 
         twitterSupport.setHttpConnectionTimeout(10);
         assertEquals(10, twitterSupport.http.getConnectionTimeout());

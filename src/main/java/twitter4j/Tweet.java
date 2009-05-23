@@ -118,8 +118,10 @@ public class Tweet extends TwitterResponse{
     }
 
     /**
-     * returns the user id of the tweet's owner
+     * returns the user id of the tweet's owner.<br>
+     * <font color="orange">Warning:</a> The user ids in the Search API are different from those in the REST API (about the two APIs). This defect is being tracked by Issue 214. This means that the to_user_id and from_user_id field vary from the actualy user id on Twitter.com. Applications will have to perform a screen name-based lookup with the users/show method to get the correct user id if necessary.
      * @return the user id of the tweet's owner
+     * @see <a href="http://code.google.com/p/twitter-api/issues/detail?id=214">Issue 214:	Search API "from_user_id" doesn't match up with the proper Twitter "user_id"</a>
      */
     public int getFromUserId() {
         return fromUserId;

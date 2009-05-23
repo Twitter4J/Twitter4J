@@ -76,6 +76,13 @@ public class QueryResult extends TwitterResponse {
             throw new TwitterException(jsone.getMessage());
         }
     }
+    /*package*/ QueryResult(Query query) throws TwitterException {
+        super();
+        sinceId = query.getSinceId();
+        resultsPerPage = query.getRpp();
+        page = query.getPage();
+        tweets = new ArrayList<Tweet>(0);
+    }
 
     public long getSinceId() {
         return sinceId;

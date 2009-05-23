@@ -31,7 +31,7 @@ import twitter4j.http.HttpClient;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class TwitterSupport {
+/*protected*/ class TwitterSupport {
     protected HttpClient http = new HttpClient();
     protected String source = Configuration.getSource();
 //    /*package*/ static final String VERSION = Version.getVersion();

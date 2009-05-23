@@ -305,7 +305,15 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search">Twitter API Wiki / Twitter Search API Method: search</a>
      */
     public QueryResult search(Query query) throws TwitterException {
+        try{
         return new QueryResult(get(searchBaseURL + "search.json", query.asPostParameters(), false), this);
+        }catch(TwitterException te){
+            if(404 == te.getStatusCode()){
+                return new QueryResult(query);
+            }else{
+                throw te;
+            }
+        }
     }
     
     /**
