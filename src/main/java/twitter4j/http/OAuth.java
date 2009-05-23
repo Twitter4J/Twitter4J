@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -111,13 +112,15 @@ public class OAuth {
 
     }
 
+    private static Random RAND = new Random();
+
     /**
      * @return
      * @see <a href="http://oauth.net/core/1.0#rfc.section.5.4.1">OAuth Core - 5.4.1.  Authorization Header</a>
      */
     /*package*/ String generateAuthorizationHeader(String method, String url, PostParameter[] params, OAuthToken token) {
-        long nonce = System.currentTimeMillis();
-        long timestamp = nonce / 1000;
+        long timestamp = System.currentTimeMillis() / 1000;
+        long nonce = timestamp + RAND.nextInt();
         return generateAuthorizationHeader(method, url, params, String.valueOf(nonce), String.valueOf(timestamp), token);
     }
 
