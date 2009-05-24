@@ -626,6 +626,7 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/mentions
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
+     * @deprecated Use getMentionsAsync(TwitterListener listener) instead
      */
     public void getRepliesAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(REPLIES, listener, null) {
@@ -840,6 +841,7 @@ public class AsyncTwitter extends Twitter {
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0update</a>
      * @since Twitter4J 1.1.6
+     * @deprecated Use updateStatusAsync(String status, long inReplyToStatusId, TwitterListener listener) instead
      */
     public void updateAsync(String status, long inReplyToStatusId, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE, listener, new Object[]{status, inReplyToStatusId}) {
@@ -858,6 +860,7 @@ public class AsyncTwitter extends Twitter {
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0update</a>
      * @since Twitter4J 1.1.6
+     * @deprecated Use updateStatusAsync(String status, long inReplyToStatusId) instead
      */
     public void updateAsync(String status, long inReplyToStatusId) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE, new TwitterAdapter(), new Object[]{status, inReplyToStatusId}) {
@@ -1827,6 +1830,7 @@ public class AsyncTwitter extends Twitter {
      * @param location the current location of the user
      * @param listener a listener object that receives the response
      * @since Twitter4J 1.0.4
+     * @deprecated Use updateProfileAsync(String name, String email, String url, String location, String description, TwitterListener listener) instead
      */
     public void updateLocationAsync(String location, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_LOCATION, listener, new Object[]{location}) {
@@ -2289,6 +2293,7 @@ public class AsyncTwitter extends Twitter {
      *
      * @param id String
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0leave</a>
+     * @deprecated Use disableNotificationAsync(String id) instead
      */
     public void leaveAsync(String id) {
         getDispatcher().invokeLater(new AsyncTask(LEAVE, new TwitterAdapter(), new String[]{id}) {
@@ -2367,6 +2372,7 @@ public class AsyncTwitter extends Twitter {
      * @param id the ID or screen_name of the user to block
      * @since Twitter4J 1.0.4
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-blocks%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: blocks%C2%A0destroy</a>
+     * @deprecated Use destroyBlockAsync(String id, TwitterListener listener) instead
      */
     public void unblockAsync(String id) {
         getDispatcher().invokeLater(new AsyncTask(UNBLOCK, new TwitterAdapter(), new String[]{id}) {
