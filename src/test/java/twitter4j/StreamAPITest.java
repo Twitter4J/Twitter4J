@@ -36,19 +36,23 @@ import java.util.Properties;
 public class StreamAPITest extends TestCase implements StatusListener{
     protected TwitterStream twitterStream = null;
     protected Twitter twitter = null;
+    protected Twitter protectedTwitter = null;
     protected Properties p = new Properties();
 
     public StreamAPITest(String name) {
         super(name);
     }
-    protected String id, pass;
+    protected String id,id4, pass,pass4;
     protected void setUp() throws Exception {
         super.setUp();
         p.load(new FileInputStream("test.properties"));
         id = p.getProperty("id1");
         pass = p.getProperty("pass1");
+        id4 = p.getProperty("id4");
+        pass4 = p.getProperty("pass4");
         twitterStream = new TwitterStream(id, pass, this);
         twitter = new Twitter(id, pass);
+        protectedTwitter = new Twitter(id4, pass4);
     }
 
     protected void tearDown() throws Exception {
@@ -91,15 +95,15 @@ public class StreamAPITest extends TestCase implements StatusListener{
     }
     public void testFollowPush() throws Exception {
         status = null;
-        twitterStream.follow(new int[]{6358482});
+        twitterStream.follow(new int[]{6358482,42419133});
         String newStatus = "streaming test:" + new Date();
         twitter.updateStatus(newStatus);
         Thread.sleep(3000);
         newStatus = "streaming test:" + new Date();
         twitter.updateStatus(newStatus);
+        protectedTwitter.updateStatus(newStatus);
 
         waitForStatus();
-        System.out.println("got status-------------------:" + status);
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
         twitterStream.cleanup();
@@ -148,6 +152,7 @@ public class StreamAPITest extends TestCase implements StatusListener{
 
     public void onStatus(Status status) {
         this.status = status;
+        System.out.println("got status-------------------:" + status);
         notifyResponse();
     }
 

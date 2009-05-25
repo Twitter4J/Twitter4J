@@ -110,7 +110,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
             description = json.getString("description");
             profileImageUrl = json.getString("profile_image_url");
             url = json.getString("url");
-            isProtected = json.getBoolean("protected");
+            isProtected = json.getBoolean("followers_count");
             followersCount = json.getInt("followers_count");
 
             profileBackgroundColor = json.getString("profile_background_color");
