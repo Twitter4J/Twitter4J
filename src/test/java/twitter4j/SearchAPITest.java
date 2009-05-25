@@ -140,22 +140,18 @@ public class SearchAPITest extends TestCase {
 
         trendsList = unauthenticated.getDailyTrends();
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrue(20 < trendsList.size());
         assertTrends(trendsList,20);
 
         trendsList = unauthenticated.getDailyTrends(new Date(), true);
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrue(0 <= trendsList.size());
         assertTrends(trendsList,20);
 
         trendsList = unauthenticated.getWeeklyTrends();
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertEquals(7, trendsList.size());
         assertTrends(trendsList,30);
 
         trendsList = unauthenticated.getWeeklyTrends(new Date(), true);
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrue(1 <= trendsList.size());
         assertTrends(trendsList,30);
     }
     private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception{
