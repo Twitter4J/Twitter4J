@@ -92,7 +92,7 @@ public class Trends extends TwitterResponse implements Comparable<Trends> {
             Collections.sort(trends);
             return trends;
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage(), jsone);
+            throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
         }
     }
 
@@ -105,7 +105,7 @@ public class Trends extends TwitterResponse implements Comparable<Trends> {
             Trend[] trendsArray = jsonArrayToTrendArray(array);
             return new Trends(res, asOf, asOf, trendsArray);
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage(), jsone);
+            throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
         }
     }
 

@@ -110,7 +110,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
             description = json.getString("description");
             profileImageUrl = json.getString("profile_image_url");
             url = json.getString("url");
-            isProtected = json.getBoolean("followers_count");
+            isProtected = json.getBoolean("protected");
             followersCount = json.getInt("followers_count");
 
             profileBackgroundColor = json.getString("profile_background_color");
@@ -141,7 +141,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 statusInReplyToScreenName = status.getString("in_reply_to_screen_name");
             }
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage(), jsone);
+            throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
     }
 

@@ -71,7 +71,7 @@ public class Tweet extends TwitterResponse{
             profileImageUrl = getString("profile_image_url", tweet, true);
             createdAt = parseDate(tweet.getString("created_at"), "EEE, dd MMM yyyy HH:mm:ss z");
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage());
+            throw new TwitterException(jsone.getMessage() + ":" + tweet.toString(), jsone);
         }
 
     }

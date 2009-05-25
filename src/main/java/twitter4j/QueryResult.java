@@ -73,7 +73,7 @@ public class QueryResult extends TwitterResponse {
                 tweets.add(new Tweet(tweet, twitterSupport));
             }
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage());
+            throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
     }
     /*package*/ QueryResult(Query query) throws TwitterException {

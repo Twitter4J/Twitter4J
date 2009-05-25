@@ -181,7 +181,7 @@ public class Response {
         try {
             return new JSONObject(asString());
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString);
+            throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
         }
     }
 
