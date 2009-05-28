@@ -117,17 +117,19 @@ public class Query {
         return geocode;
     }
 
-    public String MILES = "mi";
-    public String KILOMETERS = "km";
+    public static final String MILES = "mi";
+    public static final String KILOMETERS = "km";
 
     /**
      * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
-     * @param latitude
-     * @param longtitude
-     * @param unit - Query.MILES or Query.KILOMETERS
+     * @param latitude latitude
+     * @param longtitude longtitude
+     * @param radius radius
+     * @param unit Query.MILES or Query.KILOMETERS
      */
-    public void setGeoCode(double latitude, double longtitude, String unit) {
-        this.geocode = latitude + "," + longtitude + "," + unit;
+    public void setGeoCode(double latitude, double longtitude, double radius
+            , String unit) {
+        this.geocode = latitude + "," + longtitude + "," + radius + unit;
     }
     public PostParameter[] asPostParameters(){
         ArrayList<PostParameter> params = new ArrayList<PostParameter>();
