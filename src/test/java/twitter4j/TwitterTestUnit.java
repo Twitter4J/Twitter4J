@@ -168,7 +168,7 @@ public class TwitterTestUnit extends TestCase {
         List<Status> statuses;
         statuses = twitterAPI1.getUserTimeline();
         assertTrue("size", 0 < statuses.size());
-        statuses = twitterAPI2.getUserTimeline(id1);
+        statuses = unauthenticated.getUserTimeline(id1);
         assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(new Paging(999383469l));
         assertTrue("size", 0 < statuses.size());
