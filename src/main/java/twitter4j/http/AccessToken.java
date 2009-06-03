@@ -39,14 +39,15 @@ public class AccessToken extends OAuthToken {
     private int userId;
     
     AccessToken(Response res) throws TwitterException {
-        super(res);
+        this(res.asString());
     }
 
     // for test unit
     AccessToken(String str) {
         super(str);
         screenName = getParameter("screen_name");
-        userId = Integer.parseInt(getParameter("user_id"));
+	String sUserId = getParameter("user_id");
+	if (sUserId != null) userId = Integer.parseInt(sUserId);
 
     }
 
@@ -75,4 +76,3 @@ public class AccessToken extends OAuthToken {
 	}
     
 }
-
