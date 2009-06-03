@@ -707,6 +707,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
+     * @deprecated Use getUserTimeline(String id, Paging paging) instead
      */
     public List<Status> getUserTimeline(String id, int count,
                                                      long sinceId) throws TwitterException {
