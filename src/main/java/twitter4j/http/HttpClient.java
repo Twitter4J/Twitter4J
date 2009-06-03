@@ -444,8 +444,8 @@ public class HttpClient implements java.io.Serializable {
                 buf.append("&");
             }
             try {
-                buf.append(postParams[j].name).append("=").append(
-                        URLEncoder.encode(postParams[j].value, "UTF-8"));
+                buf.append(URLEncoder.encode(postParams[j].name, "UTF-8"))
+                        .append("=").append(URLEncoder.encode(postParams[j].value, "UTF-8"));
             } catch (java.io.UnsupportedEncodingException neverHappen) {
             }
         }

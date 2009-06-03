@@ -90,11 +90,36 @@ public class OAuthTest extends TwitterTestUnit {
         } catch (TwitterException te) {
             assertEquals(401, te.getStatusCode());
         }
-        AccessToken token = new AccessToken("oauth_token=6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk&oauth_token_secret=ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY&user_id=6377362&screen_name=twit4j2");
-        assertEquals("6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk", token.getToken());
-        assertEquals("ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY", token.getTokenSecret());
-        assertEquals("twit4j2", token.getScreenName());
-        assertEquals(6377362, token.getUserId());
+
+        HttpClient http = new HttpClient();
+        Response response = http.get(rt.getAuthorizationURL());
+        String cookie = response.getResponseHeader("Set-Cookie");
+        http.setRequestHeader("Cookie", cookie);
+        String resStr = response.asString();
+        String authorizeURL = catchPattern(resStr, "<form action=\"","\" id=\"login_form\"");
+        PostParameter[] params = new PostParameter[4];
+        params[0] = new PostParameter("authenticity_token"
+                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
+        params[1] = new PostParameter("oauth_token",
+                catchPattern(resStr,"name=\"oauth_token\" type=\"hidden\" value=\"","\" />"));
+        params[2] = new PostParameter("session[username_or_email]",id1);
+        params[3] = new PostParameter("session[password]",pass1);
+        response = http.post(authorizeURL, params);
+        AccessToken at;
+        at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret());
+        assertEquals(at.getScreenName(),id1);
+        assertEquals(at.getUserId(),6358482);
+
+        at = new AccessToken("oauth_token=6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk&oauth_token_secret=ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY&user_id=6377362&screen_name=twit4j2");
+        assertEquals("6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk", at.getToken());
+        assertEquals("ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY", at.getTokenSecret());
+        assertEquals("twit4j2", at.getScreenName());
+        assertEquals(6377362, at.getUserId());
+    }
+    private static String catchPattern(String body, String before, String after){
+        int beforeIndex = body.indexOf(before);
+        int afterIndex = body.indexOf(after, beforeIndex);
+        return body.substring(beforeIndex + before.length(), afterIndex);
     }
 
     public void testSign() throws Exception {
