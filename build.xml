@@ -38,7 +38,7 @@
         <mkdir dir="${classes}"/>
         <mkdir dir="${build}"/>
         <mkdir dir="${build}/classes"/>
-        <mkdir dir="${build}/test^classes"/>
+        <mkdir dir="${build}/testclasses"/>
         <mkdir dir="${doc}"/>
         <mkdir dir="${reports}"/>
     </target>
@@ -62,6 +62,7 @@
                 <exclude name="**/*.class"/>
                 <!--exclude name="**/*.properties"/-->
             </fileset>
+            <fileset dir="${resources}"/>
         </copy>
     </target>
 
