@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import java.util.Properties;
-import java.io.IOException;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -35,10 +34,11 @@ import java.io.IOException;
 public class Configuration {
     private static Properties defaultProperty = new Properties();
     static{
+        String defaultPropertiesPath = "/META-INF/twitter4j.properties";
         try {
-            defaultProperty.load(Configuration.class.getResourceAsStream("/META-INF/twitter4j.properties"));
-        } catch (IOException e) {
-            throw new ExceptionInInitializerError(e);
+            defaultProperty.load(Configuration.class.getResourceAsStream(defaultPropertiesPath));
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError("Error while reading "+ defaultPropertiesPath + ".");
         }
         defaultProperty.setProperty("twitter4j.clientVersion", Version.getVersion());
     }
@@ -97,6 +97,18 @@ public class Configuration {
     }
     public static int getReadTimeout(int readTimeout){
         return getIntProperty("twitter4j.http.readTimeout", readTimeout);
+    }
+    public static int getRetryCount(){
+        return getIntProperty("twitter4j.http.retryCount");
+    }
+    public static int getRetryCount(int retryCount){
+        return getIntProperty("twitter4j.http.retryCount", retryCount);
+    }
+    public static int getRetryIntervalSecs(){
+        return getIntProperty("twitter4j.http.retryIntervalSecs");
+    }
+    public static int getRetryIntervalSecs(int retryIntervalSecs){
+        return getIntProperty("twitter4j.http.retryIntervalSecs", retryIntervalSecs);
     }
 
     public static String getUser() {

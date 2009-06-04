@@ -62,8 +62,8 @@ public class HttpClient implements java.io.Serializable {
     private final static boolean DEBUG = Configuration.getDebug();
 
     private String basic;
-    private int retryCount = 0;
-    private int retryIntervalMillis = 10000;
+    private int retryCount = Configuration.getRetryCount();
+    private int retryIntervalMillis = Configuration.getRetryIntervalSecs() * 1000;
     private String userId = Configuration.getUser();
     private String password = Configuration.getPassword();
     private String proxyHost = Configuration.getProxyHost();
@@ -306,7 +306,7 @@ public class HttpClient implements java.io.Serializable {
 
     public void setRetryCount(int retryCount) {
         if (retryCount >= 0) {
-            this.retryCount = retryCount;
+            this.retryCount = Configuration.getRetryCount(retryCount);
         } else {
             throw new IllegalArgumentException("RetryCount cannot be negative.");
         }
@@ -321,7 +321,7 @@ public class HttpClient implements java.io.Serializable {
 
     public void setRetryIntervalSecs(int retryIntervalSecs) {
         if (retryIntervalSecs >= 0) {
-            this.retryIntervalMillis = retryIntervalSecs * 1000;
+            this.retryIntervalMillis = Configuration.getRetryIntervalSecs(retryIntervalSecs) * 1000;
         } else {
             throw new IllegalArgumentException(
                     "RetryInterval cannot be negative.");
