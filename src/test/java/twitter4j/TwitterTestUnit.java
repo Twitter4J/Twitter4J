@@ -494,6 +494,16 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(10 < status.getHourlyLimit());
         assertTrue(10 < status.getRemainingHits());
     }
+    public void testSavedSearches() throws Exception {
+        SavedSearch ss1 = twitterAPI1.createSavedSearch("my search");
+        assertEquals("my search", ss1.getQuery());
+        assertEquals(-1, ss1.getPosition());
+        List<SavedSearch> list = twitterAPI1.getSavedSearches();
+        assertEquals(1, list.size());
+        SavedSearch ss2 = twitterAPI1.destroySavedSearch(ss1.getId());
+        assertEquals(ss1, ss2);
+
+    }
     public void testTest() throws Exception {
         assertTrue(twitterAPI2.test());
     }

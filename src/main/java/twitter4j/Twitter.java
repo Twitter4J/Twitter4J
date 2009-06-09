@@ -2210,6 +2210,60 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         return new IDs(get(baseURL + "blocks/blocking/ids.xml", true));
     }
 
+    /* Saved Searches Methods */
+    /**
+     * Returns the authenticated user's saved search queries.
+     * <br>This method calls http://twitter.com/saved_searches.json
+     * @return Returns an array of numeric user ids the authenticating user is blocking.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.8
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-saved_searches">Twitter API Wiki / Twitter REST API Method: saved_searches</a>
+     */
+    public List<SavedSearch> getSavedSearches() throws TwitterException {
+        return SavedSearch.constructSavedSearches(get(baseURL + "saved_searches.json", true));
+    }
+
+    /**
+     * Retrieve the data for a saved search owned by the authenticating user specified by the given id.
+     * <br>This method calls http://twitter.com/saved_searches/show/id.json
+     * @param id The id of the saved search to be retrieved.
+     * @return the data for a saved search
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.8
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-saved_searches-show">Twitter API Wiki / Twitter REST API Method: saved_searches show</a>
+     */
+    public SavedSearch showSavedSearch(int id) throws TwitterException {
+        return new SavedSearch(get(baseURL + "saved_searches/show/" + id
+                + ".json", true));
+    }
+
+    /**
+     * Retrieve the data for a saved search owned by the authenticating user specified by the given id.
+     * <br>This method calls http://twitter.com/saved_searches/saved_searches/create.json
+     * @return the data for a created saved search
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.8
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-saved_searches-create">Twitter API Wiki / Twitter REST API Method: saved_searches create</a>
+     */
+    public SavedSearch createSavedSearch(String query) throws TwitterException {
+        return new SavedSearch(http.post(baseURL + "saved_searches/create.json"
+                , new PostParameter[]{new PostParameter("query", query)}, true));
+    }
+
+    /**
+     * Destroys a saved search for the authenticated user. The search specified by id must be owned by the authenticating user.
+     * <br>This method calls http://twitter.com/saved_searches/destroy/id.json
+     * @param id The id of the saved search to be deleted.
+     * @return the data for a destroyed saved search
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.8
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-saved_searches-destroy">Twitter API Wiki / Twitter REST API Method: saved_searches destroy</a>
+     */
+    public SavedSearch destroySavedSearch(int id) throws TwitterException {
+        return new SavedSearch(http.post(baseURL + "saved_searches/destroy/" + id
+                + ".json", true));
+    }
+
     /* Help Methods */
     /**
      * Returns the string "ok" in the requested format with a 200 OK HTTP status code.

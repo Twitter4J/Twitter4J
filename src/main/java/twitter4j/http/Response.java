@@ -28,8 +28,9 @@ package twitter4j.http;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import twitter4j.TwitterException;
 import twitter4j.Configuration;
+import twitter4j.TwitterException;
+import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
@@ -180,6 +181,20 @@ public class Response {
     public JSONObject asJSONObject() throws TwitterException {
         try {
             return new JSONObject(asString());
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
+        }
+    }
+
+    /**
+     * Returns the response body as twitter4j.org.json.JSONArray.<br>
+     * Disconnects the internal HttpURLConnection silently.
+     * @return response body as twitter4j.org.json.JSONArray
+     * @throws TwitterException
+     */
+    public JSONArray asJSONArray() throws TwitterException {
+        try {
+            return new JSONArray(asString());
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
         }
