@@ -34,9 +34,12 @@ import twitter4j.TwitterTestUnit;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class OAuthTest extends TwitterTestUnit {
-    private String consumerSecret;
-    private String consumerKey;
-    private HttpClient httpClient;
+    private String desktopConsumerSecret;
+    private String desktopConsumerKey;
+    private String browserConsumerSecret;
+    private String browserConsumerKey;
+    private HttpClient decktopClient;
+    private HttpClient browserClient;
 
     public OAuthTest(String name) {
         super(name);
@@ -45,13 +48,21 @@ public class OAuthTest extends TwitterTestUnit {
     @Override
     protected void setUp() throws Exception{
         super.setUp();
-        consumerSecret = p.getProperty("consumerSecret");
-        consumerKey = p.getProperty("consumerKey");
-        httpClient = new HttpClient();
-        httpClient.setOAuthConsumer(consumerKey,consumerSecret);
+        desktopConsumerSecret = p.getProperty("desktopConsumerSecret");
+        desktopConsumerKey = p.getProperty("desktopConsumerKey");
+        decktopClient = new HttpClient();
+        decktopClient.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+
+        browserConsumerSecret = p.getProperty("browserConsumerSecret");
+        browserConsumerKey = p.getProperty("browserConsumerKey");
+        browserClient = new HttpClient();
+        browserClient.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+
+//        consumerSecret = p.getProperty("browserConsumerSecret");
+//        consumerKey = p.getProperty("browserConsumerKey");
 
         twitterAPI1 = new Twitter();
-        twitterAPI1.setOAuthConsumer(consumerKey, consumerSecret);
+        twitterAPI1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         String id1token = p.getProperty("id1.oauth_token");
         String id1tokenSecret = p.getProperty("id1.oauth_token_secret");
         twitterAPI1.setOAuthAccessToken(new AccessToken(id1token,id1tokenSecret));
@@ -59,7 +70,7 @@ public class OAuthTest extends TwitterTestUnit {
         twitterAPI1.setRetryIntervalSecs(10);
 
         twitterAPI2 = new Twitter();
-        twitterAPI2.setOAuthConsumer(consumerKey, consumerSecret);
+        twitterAPI2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         String id2token = p.getProperty("id2.oauth_token");
         String id2tokenSecret = p.getProperty("id2.oauth_token_secret");
         twitterAPI2.setOAuthAccessToken(new AccessToken(id2token,id2tokenSecret));
@@ -74,7 +85,8 @@ public class OAuthTest extends TwitterTestUnit {
     }
 
     public void testGetToken() throws Exception{
-        RequestToken rt = httpClient.getOAuthRequestToken();
+        // desktop client - requiring pin
+        RequestToken rt = decktopClient.getOAuthRequestToken();
         try {
             rt.getAccessToken();
             fail();
@@ -82,7 +94,7 @@ public class OAuthTest extends TwitterTestUnit {
             assertEquals(401, te.getStatusCode());
         }
         Twitter twitter = new Twitter();
-        twitter.setOAuthConsumer(consumerKey, consumerSecret);
+        twitter.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         rt = twitter.getOAuthRequestToken();
         try {
             twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret());
@@ -105,10 +117,35 @@ public class OAuthTest extends TwitterTestUnit {
         params[2] = new PostParameter("session[username_or_email]",id1);
         params[3] = new PostParameter("session[password]",pass1);
         response = http.post(authorizeURL, params);
+        resStr = response.asString();
+        String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ","\n</div>");
         AccessToken at;
+        at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret(), pin);
+        assertEquals(at.getScreenName(),id1);
+        assertEquals(at.getUserId(),6358482);
+
+        // browser client - not requiring pin
+        twitter = new Twitter();
+        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        rt = twitter.getOAuthRequestToken();
+
+        response = http.get(rt.getAuthorizationURL());
+        cookie = response.getResponseHeader("Set-Cookie");
+        http.setRequestHeader("Cookie", cookie);
+        resStr = response.asString();
+        authorizeURL = catchPattern(resStr, "<form action=\"","\" id=\"login_form\"");
+        params = new PostParameter[4];
+        params[0] = new PostParameter("authenticity_token"
+                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
+        params[1] = new PostParameter("oauth_token",
+                catchPattern(resStr,"name=\"oauth_token\" type=\"hidden\" value=\"","\" />"));
+        params[2] = new PostParameter("session[username_or_email]",id1);
+        params[3] = new PostParameter("session[password]",pass1);
+        response = http.post(authorizeURL, params);
         at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret());
         assertEquals(at.getScreenName(),id1);
         assertEquals(at.getUserId(),6358482);
+
 
         at = new AccessToken("oauth_token=6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk&oauth_token_secret=ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY&user_id=6377362&screen_name=twit4j2");
         assertEquals("6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk", at.getToken());
@@ -127,9 +164,9 @@ public class OAuthTest extends TwitterTestUnit {
         OAuth oauth = new OAuth("dpf43f3p2l4k3l03","kd94hf93k423kf44");
         //http://wiki.oauth.net/TestCases
         assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=", oauth.generateSignature(baseStr,new RequestToken("nnch734d00sl2jdk","pfkkdhi9sl3r4s00")));
-        assertEquals("egQqG5AJep5sJ7anhXju1unge2I=",new OAuth(consumerKey,"cs").generateSignature("bs",new RequestToken("nnch734d00sl2jdk","")));
-        assertEquals("VZVjXceV7JgPq/dOTnNmEfO0Fv8=",new OAuth(consumerKey,"cs").generateSignature("bs",new RequestToken("nnch734d00sl2jdk","ts")));
-        assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=",new OAuth(consumerKey,"kd94hf93k423kf44").generateSignature("GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal",new RequestToken("nnch734d00sl2jdk","pfkkdhi9sl3r4s00")));
+        assertEquals("egQqG5AJep5sJ7anhXju1unge2I=",new OAuth(desktopConsumerKey,"cs").generateSignature("bs",new RequestToken("nnch734d00sl2jdk","")));
+        assertEquals("VZVjXceV7JgPq/dOTnNmEfO0Fv8=",new OAuth(desktopConsumerKey,"cs").generateSignature("bs",new RequestToken("nnch734d00sl2jdk","ts")));
+        assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=",new OAuth(desktopConsumerKey,"kd94hf93k423kf44").generateSignature("GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal",new RequestToken("nnch734d00sl2jdk","pfkkdhi9sl3r4s00")));
     }
     public void testHeader() throws Exception{
         PostParameter[] params = new PostParameter[2];

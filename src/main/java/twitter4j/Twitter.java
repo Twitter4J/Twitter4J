@@ -149,6 +149,20 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Retrieves an access token assosiated with the supplied request token.
+     * @param requestToken the request token
+     * @param pin pin
+     * @return access token associsted with the supplied request token.
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
+     * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
+     * @since Twitter 2.0.0
+     */
+    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String pin) throws TwitterException {
+        return http.getOAuthAccessToken(requestToken, pin);
+    }
+
+    /**
+     * Retrieves an access token assosiated with the supplied request token.
      * @param token request token
      * @param tokenSecret request token secret
      * @return access token associsted with the supplied request token.
@@ -159,6 +173,22 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
         return http.getOAuthAccessToken(token, tokenSecret);
+    }
+
+    /**
+     * Retrieves an access token assosiated with the supplied request token.
+     * @param token request token
+     * @param tokenSecret request token secret
+     * @param pin pin
+     * @return access token associsted with the supplied request token.
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
+     * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
+     * @since Twitter 2.0.8
+     */
+    public synchronized AccessToken getOAuthAccessToken(String token
+            , String tokenSecret, String pin) throws TwitterException {
+        return http.getOAuthAccessToken(token, tokenSecret, pin);
     }
 
     /**

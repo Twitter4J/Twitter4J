@@ -169,6 +169,24 @@ public class HttpClient implements java.io.Serializable {
     /**
      *
      * @param token request token
+     * @return access token
+     * @throws TwitterException
+     * @since Twitter4J 2.0.0
+     */
+    public AccessToken getOAuthAccessToken(RequestToken token, String pin) throws TwitterException {
+        try {
+            this.oauthToken = token;
+            this.oauthToken = new AccessToken(httpRequest(accessTokenURL
+                    , new PostParameter[]{new PostParameter("oauth_verifier", pin)}, true));
+        } catch (TwitterException te) {
+            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+        }
+        return (AccessToken) this.oauthToken;
+    }
+
+    /**
+     *
+     * @param token request token
      * @param tokenSecret request token secret
      * @return access token
      * @throws TwitterException
@@ -179,6 +197,28 @@ public class HttpClient implements java.io.Serializable {
             this.oauthToken = new OAuthToken(token, tokenSecret) {
             };
             this.oauthToken = new AccessToken(httpRequest(accessTokenURL, new PostParameter[0], true));
+        } catch (TwitterException te) {
+            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+        }
+        return (AccessToken) this.oauthToken;
+    }
+
+    /**
+     *
+     * @param token request token
+     * @param tokenSecret request token secret
+     * @param pin pin
+     * @return access token
+     * @throws TwitterException
+     * @since Twitter4J 2.0.8
+     */
+    public AccessToken getOAuthAccessToken(String token, String tokenSecret
+            , String pin) throws TwitterException {
+        try {
+            this.oauthToken = new OAuthToken(token, tokenSecret) {
+            };
+            this.oauthToken = new AccessToken(httpRequest(accessTokenURL,
+                    new PostParameter[]{new PostParameter("oauth_verifier", pin)}, true));
         } catch (TwitterException te) {
             throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
         }
