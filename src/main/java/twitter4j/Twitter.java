@@ -155,7 +155,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
-     * @since Twitter 2.0.0
+     * @since Twitter 2.0.8
      */
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String pin) throws TwitterException {
         return http.getOAuthAccessToken(requestToken, pin);

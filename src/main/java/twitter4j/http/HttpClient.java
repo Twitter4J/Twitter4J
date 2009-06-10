@@ -171,7 +171,7 @@ public class HttpClient implements java.io.Serializable {
      * @param token request token
      * @return access token
      * @throws TwitterException
-     * @since Twitter4J 2.0.0
+     * @since Twitter4J 2.0.8
      */
     public AccessToken getOAuthAccessToken(RequestToken token, String pin) throws TwitterException {
         try {
