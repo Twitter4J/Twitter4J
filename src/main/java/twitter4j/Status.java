@@ -94,7 +94,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         source = getChildText("source", elem);
         createdAt = getChildDate("created_at", elem);
         isTruncated = getChildBoolean("truncated", elem);
-        inReplyToStatusId = getChildInt("in_reply_to_status_id", elem);
+        inReplyToStatusId = getChildLong("in_reply_to_status_id", elem);
         inReplyToUserId = getChildInt("in_reply_to_user_id", elem);
         isFavorited = getChildBoolean("favorited", elem);
         inReplyToScreenName = getChildText("in_reply_to_screen_name", elem);
