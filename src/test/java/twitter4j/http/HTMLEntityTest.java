@@ -61,12 +61,13 @@ public class HTMLEntityTest extends TestCase {
         HTMLEntity.unescape(buf);
         assertEquals(expected, buf.toString());
 
-        original = ";&;asd&;gt;";
-        expected = ";&;asd&;gt;";
+        original = "&quot;;&;asd&;gt;";
+        expected = "\";&;asd&;gt;";
         assertEquals(expected, HTMLEntity.unescape(original));
         buf = new StringBuffer(original);
         HTMLEntity.unescape(buf);
         assertEquals(expected, buf.toString());
+
 
     }
 }
