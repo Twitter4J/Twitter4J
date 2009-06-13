@@ -326,7 +326,7 @@ public class HTMLEntity {
                         , {"&clubs;", "&#9827;"/* black club suit = shamrock */, "\u2663"}
                         , {"&hearts;", "&#9829;"/* black heart suit = valentine */, "\u2665"}
                         , {"&diams;", "&#9830;"/* black diamond suit */, "\u2666"}
-                        , {"&quot;", "&#34;" /* quotation mark = APL quote */, "\\u0022"}
+                        , {"&quot;", "&#34;" /* quotation mark = APL quote */, "\u0022"}
                         , {"&amp;", "&#38;" /* ampersand */, "\u0026"}
                         , {"&lt;", "&#60;" /* less-than sign */, "\u003C"}
                         , {"&gt;", "&#62;" /* greater-than sign */, "\u003E"}
