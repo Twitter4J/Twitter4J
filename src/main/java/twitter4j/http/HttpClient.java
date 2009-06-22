@@ -465,7 +465,7 @@ public class HttpClient implements java.io.Serializable {
                 }
             }
             try {
-                if(DEBUG){
+                if(DEBUG && null != res){
                     res.asString();
                 }
                 log("Sleeping " + retryIntervalMillis +" millisecs for next retry.");

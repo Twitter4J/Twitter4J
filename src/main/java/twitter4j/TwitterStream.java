@@ -370,6 +370,7 @@ public class TwitterStream extends TwitterSupport {
                         }
                     }
                 } catch (TwitterException te) {
+                    stream = null;
                     te.printStackTrace();
                     log(te.getMessage());
                     statusListener.onException(te);
