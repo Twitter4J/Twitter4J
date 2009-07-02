@@ -55,17 +55,14 @@ public class SearchAPITest extends TestCase {
         super.tearDown();
     }
     public void testSearch() throws Exception {
-        String queryStr = "test from:twit4j";
+        String queryStr = "test source:twitter4j";
         Query query = new Query(queryStr);
         QueryResult queryResult = unauthenticated.search(query);
-        assertEquals(0, queryResult.getSinceId());
+        assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
         assertTrue(-1 != queryResult.getRefreshUrl().indexOf(queryStr));
         assertEquals(15, queryResult.getResultsPerPage());
-//        assertEquals(-1, queryResult.getTotal());
-        //warning is not included in the response anymore - 4/24/2009
-//        assertTrue(result.getWarning().indexOf("adjusted"));
-        assertTrue(3 > queryResult.getCompletedIn());
+        assertTrue(0 < queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
         assertEquals(queryStr, queryResult.getQuery());
 
@@ -75,8 +72,8 @@ public class SearchAPITest extends TestCase {
         assertNull(tweets.get(0).getToUser());
         assertEquals(-1, tweets.get(0).getToUserId());
         assertNotNull(tweets.get(0).getCreatedAt());
-        assertEquals("twit4j", tweets.get(0).getFromUser());
-        assertEquals(1620730, tweets.get(0).getFromUserId());
+        assertNotNull("from user", tweets.get(0).getFromUser());
+        assertTrue("fromUserId", -1 != tweets.get(0).getFromUserId());
         assertTrue(-1 !=  tweets.get(0).getId());
 //        assertNotNull(tweets.get(0).getIsoLanguageCode());
         assertTrue(-1 != tweets.get(0).getProfileImageUrl().indexOf(".jpg") ||-1 != tweets.get(0).getProfileImageUrl().indexOf(".png") );
@@ -96,7 +93,7 @@ public class SearchAPITest extends TestCase {
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
 
         twitterAPI1.updateStatus("%... 日本語");
-        query = new Query("from:twit4j %... 日本語");
+        query = new Query("%... 日本語");
         queryResult = unauthenticated.search(query);
         assertTrue(0 < queryResult.getTweets().size());
         query.setQuery("from:al3x");

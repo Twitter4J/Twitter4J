@@ -463,10 +463,12 @@ public class TwitterTestUnit extends TestCase {
         try {
             twitterAPI2.createFriendship(id1);
         } catch (TwitterException te) {
+            te.printStackTrace();
         }
         try {
             twitterAPI2.disableNotification(id1);
         } catch (TwitterException te) {
+            te.printStackTrace();
         }
         twitterAPI2.enableNotification(id1);
         twitterAPI2.disableNotification(id1);

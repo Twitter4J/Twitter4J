@@ -775,31 +775,29 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     }
     public void testSearchAsync() throws Exception {
-        String queryStr = "test from:twit4j";
+        String queryStr = "test source:twitter4j";
         Query query = new Query(queryStr);
         twitterAPI1.searchAcync(query, this);
         waitForResponse();
-        assertEquals(0, queryResult.getSinceId());
+        assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
         assertTrue(-1 != queryResult.getRefreshUrl().indexOf(queryStr));
         assertEquals(15, queryResult.getResultsPerPage());
-//        assertEquals(-1, queryResult.getTotal());
-        //warning is not included in the response anymore - 4/24/2009
-//        assertTrue(queryResult.getWarning().contains("adjusted"));
         assertTrue(0 < queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
         assertEquals(queryStr, queryResult.getQuery());
 
         List<Tweet> tweets = queryResult.getTweets();
-        assertTrue(1 <= tweets.size());
+        assertTrue(1<=tweets.size());
+        assertNotNull(tweets.get(0).getText());
         assertNull(tweets.get(0).getToUser());
         assertEquals(-1, tweets.get(0).getToUserId());
         assertNotNull(tweets.get(0).getCreatedAt());
-        assertEquals("twit4j", tweets.get(0).getFromUser());
-        assertEquals(1620730, tweets.get(0).getFromUserId());
+        assertNotNull("from user", tweets.get(0).getFromUser());
+        assertTrue("fromUserId", -1 != tweets.get(0).getFromUserId());
         assertTrue(-1 !=  tweets.get(0).getId());
 //        assertNotNull(tweets.get(0).getIsoLanguageCode());
-        assertTrue(-1 != tweets.get(0).getProfileImageUrl().indexOf(".jpg") || -1 != tweets.get(0).getProfileImageUrl().indexOf(".png") );
+        assertTrue(-1 != tweets.get(0).getProfileImageUrl().indexOf(".jpg") ||-1 != tweets.get(0).getProfileImageUrl().indexOf(".png") );
         assertTrue(-1 != tweets.get(0).getSource().indexOf("twitter"));
     }
 
