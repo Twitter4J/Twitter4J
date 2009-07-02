@@ -209,11 +209,23 @@ public class AsyncTwitter extends Twitter {
      * @param sinceID String
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
+     * @deprecated use getpublicTimelineAsync(long sinceID, TwitterListener listener)
      */
     public void getPublicTimelineAsync(int sinceID, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(PUBLIC_TIMELINE, listener, new Integer[] {sinceID}) {
+        getPublicTimelineAsync((long)sinceID, listener);
+    }
+
+    /**
+     * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
+     * <br>This method calls http://twitter.com/statuses/public_timeline
+     * @param sinceID String
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
+     */
+    public void getPublicTimelineAsync(long sinceID, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(PUBLIC_TIMELINE, listener, new Long[] {sinceID}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotPublicTimeline(getPublicTimeline( (Integer) args[0]));
+                listener.gotPublicTimeline(getPublicTimeline( (Long) args[0]));
             }
         });
     }

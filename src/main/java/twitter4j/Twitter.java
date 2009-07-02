@@ -475,8 +475,22 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the 20 most recent statuses
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
+     * @deprecated use getPublicTimeline(long sinceID) instead
      */
     public List<Status> getPublicTimeline(int sinceID) throws
+            TwitterException {
+        return getPublicTimeline((long)sinceID);
+    }
+    /**
+     * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
+     * <br>This method calls http://twitter.com/statuses/public_timeline
+     *
+     * @param sinceID returns only public statuses with an ID greater than (that is, more recent than) the specified ID
+     * @return the 20 most recent statuses
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
+     */
+    public List<Status> getPublicTimeline(long sinceID) throws
             TwitterException {
         return Status.constructStatuses(get(baseURL +
                 "statuses/public_timeline.xml", null, new Paging((long) sinceID)

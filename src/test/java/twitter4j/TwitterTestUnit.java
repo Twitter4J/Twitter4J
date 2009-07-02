@@ -75,7 +75,7 @@ public class TwitterTestUnit extends TestCase {
         List<Status> statuses;
         statuses = twitterAPI1.getPublicTimeline();
         assertTrue("size", 5 < statuses.size());
-        statuses = twitterAPI1.getPublicTimeline(12345);
+        statuses = twitterAPI1.getPublicTimeline(12345l);
         assertTrue("size", 5 < statuses.size());
 
     }
