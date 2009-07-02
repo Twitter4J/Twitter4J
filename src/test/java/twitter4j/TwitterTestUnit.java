@@ -228,17 +228,17 @@ public class TwitterTestUnit extends TestCase {
         IDs ids;
         ids = twitterAPI1.getFriendsIDs();
         assertIDExsits(ids, 4933401);
-        ids = twitterAPI1.getFriendsIDs(4933401);
-        assertIDExsits(ids, 6358482);
-        ids = twitterAPI1.getFriendsIDs("yusukey");
-        assertIDExsits(ids, 6358482);
+        ids = twitterAPI1.getFriendsIDs(28074579);
+        assertIDExsits(ids, 28074306);
+        ids = twitterAPI1.getFriendsIDs("RedHatNewsJP");
+        assertIDExsits(ids, 28074579);
 
         ids = twitterAPI1.getFollowersIDs();
-        assertIDExsits(ids, 4933401);
-        ids = twitterAPI1.getFollowersIDs(4933401);
-        assertIDExsits(ids, 6358482);
-        ids = twitterAPI1.getFollowersIDs("yusukey");
-        assertIDExsits(ids, 6358482);
+        assertIDExsits(ids, 6377362);
+        ids = twitterAPI1.getFollowersIDs(28074579);
+        assertIDExsits(ids, 28074306);
+        ids = twitterAPI1.getFollowersIDs("JBossNewsJP");
+        assertIDExsits(ids, 28074306);
     }
 
     private void assertIDExsits(IDs ids, int idToFind){

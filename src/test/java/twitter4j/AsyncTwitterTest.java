@@ -495,22 +495,22 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         twitterAPI1.getFriendsIDsAsync(this);
         waitForResponse();
         assertIDExsits(ids, 4933401);
-        twitterAPI1.getFriendsIDsAsync(4933401, this);
+        twitterAPI1.getFriendsIDsAsync(28074579, this);
         waitForResponse();
-        assertIDExsits(ids, 6358482);
-        twitterAPI1.getFriendsIDsAsync("yusukey", this);
+        assertIDExsits(ids, 28074306);
+        twitterAPI1.getFriendsIDsAsync("RedHatNewsJP", this);
         waitForResponse();
-        assertIDExsits(ids, 6358482);
+        assertIDExsits(ids, 28074579);
 
         twitterAPI1.getFollowersIDsAsync(this);
         waitForResponse();
-        assertIDExsits(ids, 4933401);
-        twitterAPI1.getFollowersIDsAsync(4933401, this);
+        assertIDExsits(ids, 6377362);
+        twitterAPI1.getFollowersIDsAsync(28074579, this);
         waitForResponse();
-        assertIDExsits(ids, 6358482);
-        twitterAPI1.getFollowersIDsAsync("yusukey", this);
+        assertIDExsits(ids, 28074306);
+        twitterAPI1.getFollowersIDsAsync("JBossNewsJP", this);
         waitForResponse();
-        assertIDExsits(ids, 6358482);
+        assertIDExsits(ids, 28074306);
     }
 
     private void assertIDExsits(IDs ids, int idToFind){
@@ -653,6 +653,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     public void testGetFriends() throws Exception {
         try{
             twitterAPI2.createFriendship(id1);
+        }catch(TwitterException te){
+            assertEquals(403, te.getStatusCode());
+        }
+        try{
+            twitterAPI1.createFriendship(id2);
         }catch(TwitterException te){
             assertEquals(403, te.getStatusCode());
         }
