@@ -290,6 +290,54 @@ public class TwitterStream extends TwitterSupport {
         return buf.toString();
     }
 
+    /**
+     * Returns public statuses that contain at least one of the specified keywords. 
+     * Requires use of the "track" parameter, documented below. Allows following up 
+     * to 20 keywords, subject to Track Limitations, described above. 
+     * Predicate terms are case-insensitive logical ORs. Terms are exact-matched, 
+     * and exact-matched ignoring punctuation. Publicly available.
+     *
+     * Examples: The predicate Twitter will match all public statuses with the 
+     * following space delimited tokens in their text field: TWITTER, twitter, 
+     * "Twitter", twitter., #twitter and @twitter. The following tokens will not be matched: 
+     * TwitterTracker and http://www.twitter.com,
+     *
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#spritzer">Twitter API Wiki / Streaming API Documentation - spritizer</a>
+     * @since Twitter4J 2.0.9
+     */
+    public void track(final String []keywords) throws TwitterException {
+        startHandler(new StreamHandlingThread(null) {
+            public StatusStream getStream() throws TwitterException {
+                return getTrackStream(keywords);
+            }
+        });
+    }
+    
+    /** @see #getTrackStream(String[]) */
+    public StatusStream getTrackStream(final String[] keywords) throws TwitterException {
+        try {
+            return new StatusStream(http.post(STREAM_BASE_URL + "track.json"
+                    , new PostParameter[]{new PostParameter("track"
+                            , toTrackString(keywords))}, true));
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
+    }
+    
+    
+    private String toTrackString(final String[] keywords) {
+        final StringBuffer buf = new StringBuffer(20 * keywords.length  * 4);
+        for (String keyword : keywords) {
+            if (0 != buf.length()) {
+                buf.append(",");
+            }
+            buf.append(keyword);
+        }
+        return buf.toString();
+    }
+    
     private synchronized void startHandler(StreamHandlingThread handler) throws TwitterException {
         cleanup();
         if(null == statusListener){
