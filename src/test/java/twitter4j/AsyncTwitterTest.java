@@ -492,37 +492,49 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void testSocialGraphMethods() throws Exception {
+        try {
+            twitterAPI1.createFriendship(id2);
+        } catch (twitter4j.TwitterException te) {
+        }
+        try {
+            twitterAPI2.createFriendship(id1);
+        } catch (twitter4j.TwitterException te) {
+        }
         twitterAPI1.getFriendsIDsAsync(this);
         waitForResponse();
-        assertIDExsits(ids, 4933401);
-        twitterAPI1.getFriendsIDsAsync(28074579, this);
+        int yusukey = 4933401;
+        assertIDExsits("twit4j is following yusukey", ids, yusukey);
+        int JBossNewsJP = 28074579;
+        int RedHatNewsJP = 28074306;
+        twitterAPI1.getFriendsIDsAsync(JBossNewsJP, this);
         waitForResponse();
-        assertIDExsits(ids, 28074306);
+        assertIDExsits("JBossNewsJP is following RedHatNewsJP", ids, RedHatNewsJP);
         twitterAPI1.getFriendsIDsAsync("RedHatNewsJP", this);
         waitForResponse();
-        assertIDExsits(ids, 28074579);
+        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074579);
 
         twitterAPI1.getFollowersIDsAsync(this);
         waitForResponse();
-        assertIDExsits(ids, 6377362);
+        assertIDExsits("twit4j2 is following twit2j", ids, 6377362);
         twitterAPI1.getFollowersIDsAsync(28074579, this);
         waitForResponse();
-        assertIDExsits(ids, 28074306);
+        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
         twitterAPI1.getFollowersIDsAsync("JBossNewsJP", this);
         waitForResponse();
-        assertIDExsits(ids, 28074306);
+        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
     }
 
-    private void assertIDExsits(IDs ids, int idToFind){
+    private void assertIDExsits(String assertion, IDs ids, int idToFind) {
         boolean found = false;
-        for(int id : ids.getIDs()){
-            if(id == idToFind){
+        for (int id : ids.getIDs()) {
+            if (id == idToFind) {
                 found = true;
                 break;
             }
         }
-        assertTrue(found);
+        assertTrue(assertion, found);
     }
+
     public void testAccountMethods() throws Exception{
         User original = twitterAPI1.verifyCredentials();
 

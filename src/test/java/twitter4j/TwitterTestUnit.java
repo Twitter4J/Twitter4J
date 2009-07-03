@@ -225,31 +225,43 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testSocialGraphMethods() throws Exception {
+        try {
+            twitterAPI1.createFriendship(id2);
+        } catch (twitter4j.TwitterException te) {
+        }
+        try {
+            twitterAPI2.createFriendship(id1);
+        } catch (twitter4j.TwitterException te) {
+        }
+        
         IDs ids;
         ids = twitterAPI1.getFriendsIDs();
-        assertIDExsits(ids, 4933401);
-        ids = twitterAPI1.getFriendsIDs(28074579);
-        assertIDExsits(ids, 28074306);
+        int yusukey = 4933401;
+        assertIDExsits("twit4j is following yusukey", ids, yusukey);
+        int JBossNewsJP = 28074579;
+        int RedHatNewsJP = 28074306;
+        ids = twitterAPI1.getFriendsIDs(JBossNewsJP);
+        assertIDExsits("JBossNewsJP is following RedHatNewsJP", ids, RedHatNewsJP);
         ids = twitterAPI1.getFriendsIDs("RedHatNewsJP");
-        assertIDExsits(ids, 28074579);
+        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074579);
 
         ids = twitterAPI1.getFollowersIDs();
-        assertIDExsits(ids, 6377362);
+        assertIDExsits("twit4j2 is following twit2j", ids, 6377362);
         ids = twitterAPI1.getFollowersIDs(28074579);
-        assertIDExsits(ids, 28074306);
+        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
         ids = twitterAPI1.getFollowersIDs("JBossNewsJP");
-        assertIDExsits(ids, 28074306);
+        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
     }
 
-    private void assertIDExsits(IDs ids, int idToFind){
+    private void assertIDExsits(String assertion, IDs ids, int idToFind) {
         boolean found = false;
-        for(int id : ids.getIDs()){
-            if(id == idToFind){
+        for (int id : ids.getIDs()) {
+            if (id == idToFind) {
                 found = true;
                 break;
             }
         }
-        assertTrue(found);
+        assertTrue(assertion, found);
     }
 
     public void testAccountMethods() throws Exception{
@@ -367,7 +379,6 @@ public class TwitterTestUnit extends TestCase {
             twitterAPI2.createFriendship(id1);
         } catch (twitter4j.TwitterException te) {
         }
-        Thread.sleep(3000);
 
         String expectedReturn = new Date() + ":directmessage test";
 //        twitterAPI2.sendDirectMessage(id1,expectedReturn);
