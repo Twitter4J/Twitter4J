@@ -30,6 +30,7 @@
         <repository>
             <id>net.homeip.yusuke</id>
             <name>Yusuke Repository</name>
+            <uniqueVersion>false</uniqueVersion>
             <url>file:${user.home}/maven2/</url>
         </repository>
     </distributionManagement>
@@ -71,6 +72,14 @@
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>true</filtering>
+                <targetPath>../filtered-sources/java</targetPath>
+            </resource>
+        </resources>
+        <sourceDirectory>target/filtered-sources/java</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

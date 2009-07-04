@@ -33,87 +33,123 @@ import java.util.Properties;
  */
 public class Configuration {
     private static Properties defaultProperty = new Properties();
-    static{
-        String defaultPropertiesPath = "/META-INF/twitter4j.properties";
-        try {
-            defaultProperty.load(Configuration.class.getResourceAsStream(defaultPropertiesPath));
-        } catch (Exception e) {
-            throw new ExceptionInInitializerError("Error while reading "+ defaultPropertiesPath + ".");
-        }
+
+    static {
+        defaultProperty.setProperty("twitter4j.debug", "false");
+        defaultProperty.setProperty("twitter4j.source", "Twitter4J");
+        //defaultProperty.setProperty("twitter4j.clientVersion","");
+        defaultProperty.setProperty("twitter4j.clientURL", "http://yusuke.homeip.net/twitter4j/en/twitter4j-{twitter4j.clientVersion}.xml");
+        defaultProperty.setProperty("twitter4j.http.userAgent", "twitter4j http://yusuke.homeip.net/twitter4j/ /{twitter4j.clientVersion}");
+        //defaultProperty.setProperty("twitter4j.user","");
+        //defaultProperty.setProperty("twitter4j.password","");
+        //defaultProperty.setProperty("twitter4j.http.proxyHost","");
+        defaultProperty.setProperty("twitter4j.http.proxyHost.fallback", "http.proxyHost");
+        //defaultProperty.setProperty("twitter4j.http.proxyUser","");
+        //defaultProperty.setProperty("twitter4j.http.proxyPassword","");
+        //defaultProperty.setProperty("twitter4j.http.proxyPort","");
+        defaultProperty.setProperty("twitter4j.http.proxyPort.fallback", "http.proxyPort");
+        defaultProperty.setProperty("twitter4j.http.connectionTimeout", "20000");
+        defaultProperty.setProperty("twitter4j.http.readTimeout", "120000");
+        defaultProperty.setProperty("twitter4j.http.retryCount", "3");
+        defaultProperty.setProperty("twitter4j.http.retryIntervalSecs", "10");
+        //defaultProperty.setProperty("twitter4j.oauth.consumerKey","");
+        //defaultProperty.setProperty("twitter4j.oauth.consumerSecret","");
+        defaultProperty.setProperty("twitter4j.async.numThreads", "1");
         defaultProperty.setProperty("twitter4j.clientVersion", Version.getVersion());
     }
 
-    public static String getCilentVersion(){
+    public static String getCilentVersion() {
         return getProperty("twitter4j.clientVersion");
     }
-    public static String getCilentVersion(String clientVersion){
+
+    public static String getCilentVersion(String clientVersion) {
         return getProperty("twitter4j.clientVersion", clientVersion);
     }
-    public static String getSource(){
+
+    public static String getSource() {
         return getProperty("twitter4j.source");
     }
-    public static String getSource(String source){
+
+    public static String getSource(String source) {
         return getProperty("twitter4j.source", source);
     }
-    public static String getProxyHost(){
+
+    public static String getProxyHost() {
         return getProperty("twitter4j.http.proxyHost");
     }
-    public static String getProxyHost(String proxyHost){
+
+    public static String getProxyHost(String proxyHost) {
         return getProperty("twitter4j.http.proxyHost", proxyHost);
     }
-    public static String getProxyUser(){
+
+    public static String getProxyUser() {
         return getProperty("twitter4j.http.proxyUser");
     }
-    public static String getProxyUser(String user){
+
+    public static String getProxyUser(String user) {
         return getProperty("twitter4j.http.proxyUser", user);
     }
-    public static String getClientURL(){
+
+    public static String getClientURL() {
         return getProperty("twitter4j.clientURL");
     }
-    public static String getClientURL(String clientURL){
+
+    public static String getClientURL(String clientURL) {
         return getProperty("twitter4j.clientURL", clientURL);
     }
 
-    public static String getProxyPassword(){
+    public static String getProxyPassword() {
         return getProperty("twitter4j.http.proxyPassword");
     }
-    public static String getProxyPassword(String password){
+
+    public static String getProxyPassword(String password) {
         return getProperty("twitter4j.http.proxyPassword", password);
     }
-    public static int getProxyPort(){
+
+    public static int getProxyPort() {
         return getIntProperty("twitter4j.http.proxyPort");
     }
-    public static int getProxyPort(int port){
+
+    public static int getProxyPort(int port) {
         return getIntProperty("twitter4j.http.proxyPort", port);
     }
-    public static int getConnectionTimeout(){
+
+    public static int getConnectionTimeout() {
         return getIntProperty("twitter4j.http.connectionTimeout");
     }
-    public static int getConnectionTimeout(int connectionTimeout){
+
+    public static int getConnectionTimeout(int connectionTimeout) {
         return getIntProperty("twitter4j.http.connectionTimeout", connectionTimeout);
     }
-    public static int getReadTimeout(){
+
+    public static int getReadTimeout() {
         return getIntProperty("twitter4j.http.readTimeout");
     }
-    public static int getReadTimeout(int readTimeout){
+
+    public static int getReadTimeout(int readTimeout) {
         return getIntProperty("twitter4j.http.readTimeout", readTimeout);
     }
-    public static int getRetryCount(){
+
+    public static int getRetryCount() {
         return getIntProperty("twitter4j.http.retryCount");
     }
-    public static int getRetryCount(int retryCount){
+
+    public static int getRetryCount(int retryCount) {
         return getIntProperty("twitter4j.http.retryCount", retryCount);
     }
-    public static int getRetryIntervalSecs(){
+
+    public static int getRetryIntervalSecs() {
         return getIntProperty("twitter4j.http.retryIntervalSecs");
     }
-    public static int getRetryIntervalSecs(int retryIntervalSecs){
+
+    public static int getRetryIntervalSecs(int retryIntervalSecs) {
         return getIntProperty("twitter4j.http.retryIntervalSecs", retryIntervalSecs);
     }
 
     public static String getUser() {
         return getProperty("twitter4j.user");
     }
+
     public static String getUser(String userId) {
         return getProperty("twitter4j.user", userId);
     }
@@ -121,6 +157,7 @@ public class Configuration {
     public static String getPassword() {
         return getProperty("twitter4j.password");
     }
+
     public static String getPassword(String password) {
         return getProperty("twitter4j.password", password);
     }
@@ -128,6 +165,7 @@ public class Configuration {
     public static String getUserAgent() {
         return getProperty("twitter4j.http.userAgent");
     }
+
     public static String getUserAgent(String userAgent) {
         return getProperty("twitter4j.http.userAgent", userAgent);
     }
@@ -135,6 +173,7 @@ public class Configuration {
     public static String getOAuthConsumerKey() {
         return getProperty("twitter4j.oauth.consumerKey");
     }
+
     public static String getOAuthConsumerKey(String consumerKey) {
         return getProperty("twitter4j.oauth.consumerKey", consumerKey);
     }
@@ -142,6 +181,7 @@ public class Configuration {
     public static String getOAuthConsumerSecret() {
         return getProperty("twitter4j.oauth.consumerSecret");
     }
+
     public static String getOAuthConsumerSecret(String consumerSecret) {
         return getProperty("twitter4j.oauth.consumerSecret", consumerSecret);
     }
@@ -153,25 +193,27 @@ public class Configuration {
 
     public static int getIntProperty(String name) {
         String value = getProperty(name);
-        try{
+        try {
             return Integer.parseInt(value);
-        }catch(NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             return -1;
         }
     }
+
     public static int getIntProperty(String name, int fallbackValue) {
         String value = getProperty(name, String.valueOf(fallbackValue));
-        try{
+        try {
             return Integer.parseInt(value);
-        }catch(NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             return -1;
         }
     }
+
     public static long getLongProperty(String name) {
         String value = getProperty(name);
-        try{
+        try {
             return Long.parseLong(value);
-        }catch(NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             return -1;
         }
     }
@@ -179,33 +221,35 @@ public class Configuration {
     public static String getProperty(String name) {
         return getProperty(name, null);
     }
+
     public static String getProperty(String name, String fallbackValue) {
         String value = System.getProperty(name, fallbackValue);
-        if(null == value){
+        if (null == value) {
             value = defaultProperty.getProperty(name);
         }
-        if(null == value){
+        if (null == value) {
             String fallback = defaultProperty.getProperty(name + ".fallback");
-            if(null != fallback){
+            if (null != fallback) {
                 value = System.getProperty(fallback);
             }
         }
         return replace(value);
     }
-    private static String replace(String value){
-        if(null == value){
+
+    private static String replace(String value) {
+        if (null == value) {
             return value;
         }
         String newValue = value;
         int openBrace = 0;
-        if(-1 != (openBrace = value.indexOf("{", openBrace))){
+        if (-1 != (openBrace = value.indexOf("{", openBrace))) {
             int closeBrace = value.indexOf("}", openBrace);
-            if(closeBrace > (openBrace+1)){
+            if (closeBrace > (openBrace + 1)) {
                 String name = value.substring(openBrace + 1, closeBrace);
-                if(name.length() > 0){
-                    newValue = value.substring(0,openBrace) + getProperty(name)
+                if (name.length() > 0) {
+                    newValue = value.substring(0, openBrace) + getProperty(name)
                             + value.substring(closeBrace + 1);
-                    
+
                 }
             }
         }

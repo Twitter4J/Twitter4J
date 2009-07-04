@@ -105,7 +105,7 @@ public class TwitterTestUnit extends TestCase {
         actualReturn = twitterAPI1.getFriendsTimeline(new Paging(1000l));
         assertTrue(actualReturn.size() > 0);
 
-        actualReturn = twitterAPI2.getFriendsTimeline(id1);
+        actualReturn = twitterAPI2.getFriendsTimeline("JBossNewsJP");
         assertTrue(actualReturn.size() > 0);
 
 
@@ -225,15 +225,7 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testSocialGraphMethods() throws Exception {
-        try {
-            twitterAPI1.createFriendship(id2);
-        } catch (twitter4j.TwitterException te) {
-        }
-        try {
-            twitterAPI2.createFriendship(id1);
-        } catch (twitter4j.TwitterException te) {
-        }
-        
+
         IDs ids;
         ids = twitterAPI1.getFriendsIDs();
         int yusukey = 4933401;
@@ -379,6 +371,7 @@ public class TwitterTestUnit extends TestCase {
             twitterAPI2.createFriendship(id1);
         } catch (twitter4j.TwitterException te) {
         }
+        Thread.sleep(3000);
 
         String expectedReturn = new Date() + ":directmessage test";
 //        twitterAPI2.sendDirectMessage(id1,expectedReturn);
