@@ -567,10 +567,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public List<Status> getFriendsTimeline(String id) throws
             TwitterException {
-        return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml", true), this);
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
@@ -582,11 +583,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimeline(String id, Paging paging) instead
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public List<Status> getFriendsTimelineByPage(String id, int page) throws
             TwitterException {
-        return getFriendsTimeline(id, new Paging(page));
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
@@ -599,11 +600,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimeline(String id, Paging paging) instead
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public List<Status> getFriendsTimeline(String id, int page) throws
             TwitterException {
-        return getFriendsTimeline(id, new Paging(page));
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
@@ -617,11 +618,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimeline(String id, Paging paging) instead
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public List<Status> getFriendsTimeline(long sinceId, String id, int page) throws
             TwitterException {
-        return getFriendsTimeline(id, new Paging(page).sinceId(sinceId));
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
@@ -649,10 +650,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public List<Status> getFriendsTimeline(String id, Paging paging) throws
             TwitterException {
-        return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml",null, paging, true), this);
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
 
@@ -697,13 +699,12 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getFriendsTimeline(String id, Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public List<Status> getFriendsTimeline(String id,
                                                         Date since) throws TwitterException {
-        return Status.constructStatuses(get(baseURL + "statuses/friends_timeline/" + id + ".xml",
-                "since", format.format(since), true), this);
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
@@ -716,10 +717,10 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimeline(String id, Paging paging) instead
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public List<Status> getFriendsTimeline(String id, long sinceId) throws TwitterException {
-        return getFriendsTimeline(id,new Paging(sinceId));
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**

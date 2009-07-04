@@ -307,13 +307,10 @@ public class AsyncTwitter extends Twitter {
      * @param id String user ID
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public void getFriendsTimelineAsync(String id, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new String[] {id}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimeline( (String) args[0]));
-            }
-        });
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
@@ -324,13 +321,10 @@ public class AsyncTwitter extends Twitter {
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      * @since Twitter4J 2.0.1
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public void getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[]{id, paging}) {
-            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimeline((String) args[0], (Paging) args[1]));
-            }
-        });
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
@@ -340,10 +334,10 @@ public class AsyncTwitter extends Twitter {
      * @param page int
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public void getFriendsTimelineByPageAsync(String id, int page, TwitterListener listener) {
-        getFriendsTimelineAsync(id, new Paging(page), listener);
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
 
@@ -355,10 +349,10 @@ public class AsyncTwitter extends Twitter {
      * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.8
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public void getFriendsTimelineAsync(String id, int page, TwitterListener listener) {
-        getFriendsTimelineAsync(id, new Paging(page), listener);
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
@@ -369,10 +363,10 @@ public class AsyncTwitter extends Twitter {
      * @param page the number of page
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public void getFriendsTimelineAsync(long sinceId, String id, int page, TwitterListener listener) {
-        getFriendsTimelineAsync(id, new Paging(page, sinceId), listener);
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
 
@@ -412,14 +406,10 @@ public class AsyncTwitter extends Twitter {
      * @param since Date
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public void getFriendsTimelineAsync(String id, Date since, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listener, new Object[] {id, since}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsTimeline(getFriendsTimeline( (String) args[0], (Date) args[1]));
-            }
-        });
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
@@ -429,10 +419,10 @@ public class AsyncTwitter extends Twitter {
      * @param listener a listener object that receives the response
      * @param id String user ID
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimelineAsync(String id, Paging paging, TwitterListener listener) instead
+     * @deprecated The Twitter API does not support this method anymore.
      */
     public void getFriendsTimelineAsync(String id, long sinceId, TwitterListener listener) {
-        getFriendsTimelineAsync(id, new Paging(sinceId), listener);
+        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
     }
 
     /**
