@@ -39,8 +39,8 @@ public class RateLimitStatus extends TwitterResponse {
     private int remainingHits;
     private int hourlyLimit;
     private int resetTimeInSeconds;
-    private Date dateTime;
-    private static final long serialVersionUID = -2326597301406666858L;
+    private Date resetTime;
+    private static final long serialVersionUID = 933996804168952707L;
 
     /* package */ RateLimitStatus(Response res) throws TwitterException {
         super(res);
@@ -48,7 +48,7 @@ public class RateLimitStatus extends TwitterResponse {
         remainingHits = getChildInt("remaining-hits", elem);
         hourlyLimit = getChildInt("hourly-limit", elem);
         resetTimeInSeconds = getChildInt("reset-time-in-seconds", elem);
-        dateTime = getChildDate("reset-time", elem, "yyyy-M-d'T'HH:mm:ss+00:00");
+        resetTime = getChildDate("reset-time", elem, "yyyy-M-d'T'HH:mm:ss+00:00");
     }
 
     public int getRemainingHits() {
@@ -63,7 +63,18 @@ public class RateLimitStatus extends TwitterResponse {
         return resetTimeInSeconds;
     }
 
+    /**
+     *
+     * @deprecated use getResetTime() instead
+     */
     public Date getDateTime() {
-        return dateTime;
+        return resetTime;
+    }
+
+    /**
+     * @since Twitter4J 2.0.9
+     */
+    public Date getResetTime() {
+        return resetTime;
     }
 }
