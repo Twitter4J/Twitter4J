@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import java.security.AccessControlException;
 import java.util.Properties;
 
 /**
@@ -223,15 +224,21 @@ public class Configuration {
     }
 
     public static String getProperty(String name, String fallbackValue) {
-        String value = System.getProperty(name, fallbackValue);
-        if (null == value) {
-            value = defaultProperty.getProperty(name);
-        }
-        if (null == value) {
-            String fallback = defaultProperty.getProperty(name + ".fallback");
-            if (null != fallback) {
-                value = System.getProperty(fallback);
+        String value;
+        try {
+            value = System.getProperty(name, fallbackValue);
+            if (null == value) {
+                value = defaultProperty.getProperty(name);
             }
+            if (null == value) {
+                String fallback = defaultProperty.getProperty(name + ".fallback");
+                if (null != fallback) {
+                    value = System.getProperty(fallback);
+                }
+            }
+        } catch (AccessControlException ace) {
+            // Unsigned applet cannot access System properties
+            value = fallbackValue;
         }
         return replace(value);
     }

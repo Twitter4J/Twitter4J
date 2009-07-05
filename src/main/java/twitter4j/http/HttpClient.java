@@ -42,6 +42,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.security.AccessControlException;
 
 /**
  * A utility class to handle HTTP request/response.
@@ -73,13 +74,24 @@ public class HttpClient implements java.io.Serializable {
     private int connectionTimeout = Configuration.getConnectionTimeout();
     private int readTimeout = Configuration.getReadTimeout();
     private static final long serialVersionUID = 808018030183407996L;
-    private boolean isJDK14orEarlier = false;
+    private static boolean isJDK14orEarlier = false;
     private Map<String, String> requestHeaders = new HashMap<String, String>();
     private OAuth oauth = null;
     private String requestTokenURL = "http://twitter.com/oauth/request_token";
     private String authorizationURL = "http://twitter.com/oauth/authorize";
     private String accessTokenURL = "http://twitter.com/oauth/access_token";
     private OAuthToken oauthToken = null;
+
+    static {
+        try {
+            String versionStr = System.getProperty("java.specification.version");
+            if (null != versionStr) {
+                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
+            }
+        } catch (AccessControlException ace) {
+            isJDK14orEarlier = true;
+        }
+    }
 
     public HttpClient(String userId, String password) {
         this();
@@ -92,11 +104,6 @@ public class HttpClient implements java.io.Serializable {
         setUserAgent(null);
         setOAuthConsumer(null, null);
         setRequestHeader("Accept-Encoding","gzip");
-
-        String versionStr = System.getProperty("java.specification.version");
-        if (null != versionStr) {
-            isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
-        }
     }
 
     public void setUserId(String userId) {
