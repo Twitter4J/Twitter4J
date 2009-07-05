@@ -123,6 +123,9 @@ public class TwitterResponse implements java.io.Serializable {
             StringWriter output = new StringWriter();
             TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult(output));
             return output.toString();
+        } catch (NoClassDefFoundError ncdfe) {
+            // TransformerFactory is not available in Android platform.
+            return "";
         } catch (TransformerException tfe) {
             return "";
         }
