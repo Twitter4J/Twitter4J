@@ -407,16 +407,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         waitForResponse();
         assertTrue(statuses.size() > 0);
 
-
-        twitterAPI2.getFriendsTimelineAsync(id1, this);
-        waitForResponse();
-        assertTrue(statuses.size() > 0);
-
         trySerializable(statuses);
     }
 
-    public void testGetUserDetail() throws Exception{
-        twitterAPI1.getUserDetailAsync(id1,this);
+    public void testShowUser() throws Exception{
+        twitterAPI1.showUserAsync(id1,this);
         waitForResponse();
         User uws = this.extendedUser;
         assertEquals(id1, uws.getName());
@@ -647,7 +642,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
         long id = status.getId();
 
-        twitterAPI2.updateAsync("@" + id1 + " " + date, id, this);
+        twitterAPI2.updateStatusAsync("@" + id1 + " " + date, id, this);
         waitForResponse();
         assertEquals("", "@" + id1 + " " + date, status.getText());
         assertEquals("", id, status.getInReplyToStatusId());
@@ -673,7 +668,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         }catch(TwitterException te){
             assertEquals(403, te.getStatusCode());
         }
-        twitterAPI1.getFriendsAsync(id2, this);
+        twitterAPI1.getFriendsStatusesAsync(id2, this);
         waitForResponse();
         boolean found = false;
         for (User user : users) {
@@ -681,7 +676,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         }
         assertTrue(found);
 
-        twitterAPI2.getFriendsAsync(this);
+        twitterAPI2.getFriendsStatusesAsync(this);
         waitForResponse();
         found = false;
         for (User user : users) {
@@ -692,11 +687,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void testFollowers() throws Exception {
-        twitterAPI1.getFollowersAsync(this);
+        twitterAPI1.getFollowersStatusesAsync(this);
         waitForResponse();
         assertTrue(users.size() > 0);
 
-        twitterAPI2.getFollowersAsync(this);
+        twitterAPI2.getFollowersStatusesAsync(this);
         waitForResponse();
         assertTrue(users.size() > 0);
         trySerializable(users);

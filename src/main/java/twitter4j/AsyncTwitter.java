@@ -998,11 +998,24 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users%C2%A0show</a>
+     * @deprecated use showUserAsync(id,listener) instead
      */
     public void getUserDetailAsync(String id, TwitterListener listener) {
+        showUserAsync(id, listener);
+    }
+
+    /**
+     * Retrieves extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
+     * <br>This method calls http://twitter.com/users/show
+     * @param id String
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users%C2%A0show</a>
+     * @since Twitter4J 2.0.9
+     */
+    public void showUserAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(USER_DETAIL, listener, new Object[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotUserDetail(getUserDetail( (String) args[0]));
+                listener.gotUserDetail(showUser( (String) args[0]));
             }
         });
     }
@@ -1012,11 +1025,23 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/friends
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @deprecated use getFriendsStatusesAsync(listener)
      */
     public void getFriendsAsync(TwitterListener listener) {
+        getFriendsStatusesAsync(listener);
+    }
+
+    /**
+     * Returns the specified user's friends, each with current status inline.
+     * <br>This method calls http://twitter.com/statuses/friends
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @since Twitter4J 2.0.9
+     */
+    public void getFriendsStatusesAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriends(getFriends());
+                listener.gotFriends(getFriendsStatuses());
             }
         });
     }
@@ -1029,11 +1054,24 @@ public class AsyncTwitter extends Twitter {
      * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @deprecated use getFriendsStatusesAsync(paging,listener) instead
      */
     public void getFriendsAsync(Paging paging,TwitterListener listener) {
+        getFriendsStatusesAsync(paging, listener);
+    }
+
+    /**
+     * Returns the specified user's friends, each with current status inline.
+     * <br>This method calls http://twitter.com/statuses/friends
+     * @param paging controls pagination
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.9
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     */
+    public void getFriendsStatusesAsync(Paging paging,TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[]{paging}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriends(getFriends((Paging)args[0]));
+                listener.gotFriends(getFriendsStatuses((Paging)args[0]));
             }
         });
     }
@@ -1043,11 +1081,11 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://twitter.com/statuses/friends
      * @param page number of the page to retrieve friends
      * @param listener a listener object that receives the response
-     * @deprecated Use getFriendsAsync(Paging paging,TwitterListener listener) instead
+     * @deprecated Use getFriendsStatusesAsync(Paging paging,TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      */
     public void getFriendsAsync(int page,TwitterListener listener) {
-        getFriendsTimelineAsync(new Paging(page), listener);
+        getFriendsStatusesAsync(new Paging(page), listener);
     }
 
     /**
@@ -1056,11 +1094,24 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @deprecated use getFriendsStatusesAsync(id, listener) instead
      */
     public void getFriendsAsync(String id, TwitterListener listener) {
+        getFriendsStatusesAsync(id, listener);
+    }
+
+    /**
+     * Returns the user's friends, each with current status inline.
+     * <br>This method calls http://twitter.com/statuses/friends
+     * @param id String
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @since Twitter4J 2.0.9
+     */
+    public void getFriendsStatusesAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[] {id}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriends(getFriends( (String) args[0]));
+                listener.gotFriends(getFriendsStatuses( (String) args[0]));
             }
         });
     }
@@ -1072,15 +1123,28 @@ public class AsyncTwitter extends Twitter {
      * @param paging controls pagination
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @deprecated use getFriendsStatusesAsync(id, paging, listener) instead
      */
     public void getFriendsAsync(String id, Paging paging, TwitterListener listener) {
+        getFriendsStatusesAsync(id, paging, listener);
+    }
+
+    /**
+     * Returns the user's friends, each with current status inline.
+     * <br>This method calls http://twitter.com/statuses/friends
+     * @param id String
+     * @param paging controls pagination
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @since Twitter4J 2.0.9
+     */
+    public void getFriendsStatusesAsync(String id, Paging paging, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS, listener, new Object[] {id,paging}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFriends(getFriends((String) args[0], (Paging) args[1]));
+                listener.gotFriends(getFriendsStatuses((String) args[0], (Paging) args[1]));
             }
         });
     }
-
 
     /**
      * Returns the user's friends, each with current status inline.
@@ -1088,21 +1152,32 @@ public class AsyncTwitter extends Twitter {
      * @param id String
      * @param page int
      * @param listener a listener object that receives the response
-     * @deprecated Use getFriendsAsync(String id, Paging paging, TwitterListener listener) instead
+     * @deprecated Use getFriendsStatusesAsync(String id, Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      */
     public void getFriendsAsync(String id,int page, TwitterListener listener) {
-        getFriendsAsync(id, new Paging(page), listener);
+        getFriendsStatusesAsync(id, new Paging(page), listener);
     }
-
 
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://twitter.com/statuses/followers
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * @deprecated use getFollowersStatusesAsync(listener)
      */
     public void getFollowersAsync(TwitterListener listener) {
+        getFollowersStatusesAsync(listener);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://twitter.com/statuses/followers
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * @since Twitter4J 2.0.9
+     */
+    public void getFollowersStatusesAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, null) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotFollowers(getFollowers());
@@ -1117,11 +1192,24 @@ public class AsyncTwitter extends Twitter {
      * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * deprecated use getFollowersStatusesAsync(paging, listener) instead
      */
     public void getFollowersAsync(Paging paging, TwitterListener listener) {
+        getFollowersStatusesAsync(paging, listener);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://twitter.com/statuses/followers
+     * @param paging controls pagination
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.9
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     */
+    public void getFollowersStatusesAsync(Paging paging, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{paging}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFollowers(getFollowers((Paging) args[0]));
+                listener.gotFollowers(getFollowersStatuses((Paging) args[0]));
             }
         });
     }
@@ -1132,11 +1220,11 @@ public class AsyncTwitter extends Twitter {
      * @param page Retrieves the next 100 followers.
      * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.0
-     * @deprecated Use getFollowersAsync(Paging paging, TwitterListener listener) instead
+     * @deprecated Use getFollowersStatusesAsync(Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
      */
     public void getFollowersAsync(int page, TwitterListener listener) {
-        getFollowersAsync(new Paging(page), listener);
+        getFollowersStatusesAsync(new Paging(page), listener);
     }
 
     /**
@@ -1147,11 +1235,25 @@ public class AsyncTwitter extends Twitter {
      * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * @deprecated use getFollowersStatusesAsync(id, listener) instead
      */
     public void getFollowersAsync(String id, TwitterListener listener) {
+        getFollowersStatusesAsync(id, listener);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://twitter.com/statuses/followers
+     *
+     * @param id       The ID or screen name of the user for whom to request a list of followers.
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.9
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     */
+    public void getFollowersStatusesAsync(String id, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFollowers(getFollowers((String) args[0]));
+                listener.gotFollowers(getFollowersStatuses((String) args[0]));
             }
         });
     }
@@ -1164,11 +1266,25 @@ public class AsyncTwitter extends Twitter {
      * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * @deprecated use getFollowersStatusesAsync(id, paging, listener) instead
      */
     public void getFollowersAsync(String id, Paging paging, TwitterListener listener) {
+        getFollowersStatusesAsync(id, paging, listener);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://twitter.com/statuses/followers
+     * @param id The ID or screen name of the user for whom to request a list of followers.
+     * @param paging controls pagination
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.9
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     */
+    public void getFollowersStatusesAsync(String id, Paging paging, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS, listener, new Object[]{id, paging}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFollowers(getFollowers((String) args[0], (Paging) args[1]));
+                listener.gotFollowers(getFollowersStatuses((String) args[0], (Paging) args[1]));
             }
         });
     }
@@ -1180,11 +1296,11 @@ public class AsyncTwitter extends Twitter {
      * @param page Retrieves the next 100 followers.
      * @param listener a listener object that receives the response
      * @since Twitter4J 1.1.0
-     * @deprecated Use getFollowersAsync(String id, Paging paging, TwitterListener listener) instead
+     * @deprecated Use getFollowersStatusesAsync(String id, Paging paging, TwitterListener listener) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
      */
     public void getFollowersAsync(String id, int page, TwitterListener listener) {
-        getFollowersAsync(id, new Paging(page), listener);
+        getFollowersStatusesAsync(id, new Paging(page), listener);
     }
 
     /**

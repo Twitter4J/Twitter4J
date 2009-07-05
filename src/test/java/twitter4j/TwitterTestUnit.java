@@ -105,14 +105,6 @@ public class TwitterTestUnit extends TestCase {
         actualReturn = twitterAPI1.getFriendsTimeline(new Paging(1000l));
         assertTrue(actualReturn.size() > 0);
 
-        actualReturn = twitterAPI2.getFriendsTimeline("JBossNewsJP");
-        assertTrue(actualReturn.size() > 0);
-
-
-        actualReturn = twitterAPI1.getFriendsTimeline(id2, new Paging(1l));
-        assertTrue(actualReturn.size() > 0);
-//        actualReturn = twitterAPI1.getFriendsTimeline(id2, new Paging(status2.getId()));
-//        assertTrue(actualReturn.size() == 0);
         actualReturn = twitterAPI1.getFriendsTimeline(new Paging(1));
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFriendsTimeline(new Paging(1));
@@ -120,8 +112,8 @@ public class TwitterTestUnit extends TestCase {
 
 
     }
-    public void testGetUserDetail() throws Exception{
-        User uws = twitterAPI1.getUserDetail(id1);
+    public void testShowUser() throws Exception{
+        User uws = twitterAPI1.showUser(id1);
         assertEquals(id1, uws.getName());
         assertEquals(id1,uws.getScreenName());
         assertNotNull(uws.getLocation());
@@ -137,8 +129,6 @@ public class TwitterTestUnit extends TestCase {
         assertNotNull(uws.getTimeZone());
         assertNotNull(uws.getProfileBackgroundImageUrl());
         assertNotNull(uws.getProfileBackgroundTile());
-        assertFalse(uws.isFollowing());
-        assertFalse(uws.isNotificationEnabled());
 
         assertTrue(0 <= uws.getStatusesCount());
         assertNotNull(uws.getProfileBackgroundColor());
@@ -160,8 +150,8 @@ public class TwitterTestUnit extends TestCase {
 
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
-        unauthenticated.getUserDetail("twit4jnoupdate");
-        twitterAPI1.getUserDetail("tigertest");
+        unauthenticated.showUser("twit4jnoupdate");
+        twitterAPI1.showUser("tigertest");
     }
 
     public void testGetUserTimeline_Show() throws Exception{
@@ -181,11 +171,6 @@ public class TwitterTestUnit extends TestCase {
 //        statuses = twitterAPI1.getUserTimeline(id1, new Date(0));
 //        assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(id1,new Paging(999383469l));
-        assertTrue("size", 0 < statuses.size());
-
-//        statuses = twitterAPI1.getUserTimeline(id1, 20, new Date(0));
-//        assertTrue("size", 0 < statuses.size());
-        statuses = twitterAPI1.getUserTimeline(id1, 20, 999383469l);
         assertTrue("size", 0 < statuses.size());
     }
     public void testShow() throws Exception{
@@ -216,7 +201,7 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testGetFriends() throws Exception{
-        List<User> actualReturn = twitterAPI1.getFriends("yusukey");
+        List<User> actualReturn = twitterAPI1.getFriendsStatuses("yusukey");
         boolean found = false;
         for(User user: actualReturn){
             found = found || user.getName().equals("akr");
@@ -225,7 +210,6 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testSocialGraphMethods() throws Exception {
-
         IDs ids;
         ids = twitterAPI1.getFriendsIDs();
         int yusukey = 4933401;
@@ -237,8 +221,9 @@ public class TwitterTestUnit extends TestCase {
         ids = twitterAPI1.getFriendsIDs("RedHatNewsJP");
         assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074579);
 
+        followEachOther();
         ids = twitterAPI1.getFollowersIDs();
-        assertIDExsits("twit4j2 is following twit2j", ids, 6377362);
+        assertTrue("number of followers", ids.getIDs().length > 1);
         ids = twitterAPI1.getFollowersIDs(28074579);
         assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
         ids = twitterAPI1.getFollowersIDs("JBossNewsJP");
@@ -282,15 +267,8 @@ public class TwitterTestUnit extends TestCase {
         }
 
         twitterAPI1.updateDeliverlyDevice(Twitter.SMS);
-        try {
-            twitterAPI1.createFriendship(id2);
-        } catch (twitter4j.TwitterException te) {
-        }
-        try {
-            twitterAPI2.createFriendship(id1);
-        } catch (twitter4j.TwitterException te) {
-        }
-        assertTrue(twitterAPI1.existsFriendship(id1,id2));
+
+        assertTrue(twitterAPI1.existsFriendship("JBossNewsJP", "RedHatNewsJP"));
         assertFalse(twitterAPI1.existsFriendship(id1,"al3x"));
 
         User eu;
@@ -343,18 +321,18 @@ public class TwitterTestUnit extends TestCase {
         }
     }
     public void testFollowers() throws Exception{
-        List<User> actualReturn = twitterAPI1.getFollowers();
+        List<User> actualReturn = twitterAPI1.getFollowersStatuses();
         assertTrue(actualReturn.size() > 0);
-        actualReturn = twitterAPI1.getFollowers(new Paging(1));
+        actualReturn = twitterAPI1.getFollowersStatuses(new Paging(1));
         assertTrue(actualReturn.size() > 0);
-        actualReturn = twitterAPI1.getFollowers(new Paging(2));
+        actualReturn = twitterAPI1.getFollowersStatuses(new Paging(2));
         assertEquals(0,actualReturn.size());
 
-        actualReturn = twitterAPI2.getFollowers();
+        actualReturn = twitterAPI2.getFollowersStatuses();
         assertTrue(actualReturn.size() > 0);
-        actualReturn = twitterAPI2.getFollowers("yusukey");
-        assertTrue(actualReturn.size() > 90);
-        actualReturn = twitterAPI2.getFollowers("yusukey",new Paging(2));
+        actualReturn = twitterAPI2.getFollowersStatuses("yusukey");
+        assertTrue(actualReturn.size() > 60);
+        actualReturn = twitterAPI2.getFollowersStatuses("yusukey",new Paging(2));
         assertTrue(actualReturn.size() > 10);
     }
     public void testFeatured() throws Exception{
@@ -363,16 +341,7 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testGetDirectMessages() throws Exception {
-        try {
-            twitterAPI1.createFriendship(id2);
-        } catch (twitter4j.TwitterException te) {
-        }
-        try {
-            twitterAPI2.createFriendship(id1);
-        } catch (twitter4j.TwitterException te) {
-        }
-        Thread.sleep(3000);
-
+        followEachOther();
         String expectedReturn = new Date() + ":directmessage test";
 //        twitterAPI2.sendDirectMessage(id1,expectedReturn);
         twitterAPI1.sendDirectMessage(id2, expectedReturn);
@@ -410,6 +379,20 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(5 <= twitterAPI1.getDirectMessages().size());
 
     }
+
+    private void followEachOther() {
+        try {
+            twitterAPI1.createFriendship(id2);
+        } catch (TwitterException te) {
+            te.printStackTrace();
+        }
+        try {
+            twitterAPI2.createFriendship(id1);
+        } catch (TwitterException te) {
+            te.printStackTrace();
+        }
+    }
+
     public void testCreateDestroyFriend() throws Exception{
         User user;
         try {
@@ -464,11 +447,7 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testNotification() throws Exception {
-        try {
-            twitterAPI2.createFriendship(id1);
-        } catch (TwitterException te) {
-            te.printStackTrace();
-        }
+        followEachOther();
         try {
             twitterAPI2.disableNotification(id1);
         } catch (TwitterException te) {

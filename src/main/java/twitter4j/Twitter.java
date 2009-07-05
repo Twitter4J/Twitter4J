@@ -1164,8 +1164,23 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
+     * @deprecated use showUser(id) instead
      */
     public User getUserDetail(String id) throws TwitterException {
+        return showUser(id);
+    }
+
+    /**
+     * Returns extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
+     * <br>This method calls http://twitter.com/users/show
+     *
+     * @param id the ID or screen name of the user for whom to request the detail
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
+     * @since Twitter4J 2.0.9
+     */
+    public User showUser(String id) throws TwitterException {
         return new User(get(baseURL + "users/show/" + id + ".xml"
                 , http.isAuthenticationEnabled()), this);
     }
@@ -1179,8 +1194,22 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     * @deprecated use getFriendsStatues() instead
      */
     public List<User> getFriends() throws TwitterException {
+        return getFriendsStatuses();
+    }
+
+    /**
+     * Returns the specified user's friends, each with current status inline.
+     * <br>This method calls http://twitter.com/statuses/friends
+     *
+     * @return the list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     * @since Twitter4J 2.0.9
+     */
+    public List<User> getFriendsStatuses() throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends.xml", true), this);
     }
 
@@ -1193,8 +1222,23 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     * @deprecated Use getFriendsStatuses(Paging paging) instead
      */
     public List<User> getFriends(Paging paging) throws TwitterException {
+        return getFriendsStatuses(paging);
+    }
+
+    /**
+     * Returns the specified user's friends, each with current status inline.
+     * <br>This method calls http://twitter.com/statuses/friends
+     *
+     * @param paging controls pagination
+     * @return the list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.9
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     */
+    public List<User> getFriendsStatuses(Paging paging) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends.xml", null,
                 paging, true), this);
     }
@@ -1206,11 +1250,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param page number of page
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getFriends(Paging paging) instead
+     * @deprecated Use getFriendsStatuses(Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
      */
     public List<User> getFriends(int page) throws TwitterException {
-        return getFriends(new Paging(page));
+        return getFriendsStatuses(new Paging(page));
     }
 
     /**
@@ -1221,8 +1265,23 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     * @deprecated use getFriendsStatuses(id) instead
      */
     public List<User> getFriends(String id) throws TwitterException {
+        return getFriendsStatuses(id);
+    }
+
+    /**
+     * Returns the user's friends, each with current status inline.
+     * <br>This method calls http://twitter.com/statuses/friends
+     *
+     * @param id the ID or screen name of the user for whom to request a list of friends
+     * @return the list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     * @since Twitter4J 2.0.9
+     */
+    public List<User> getFriendsStatuses(String id) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends/" + id + ".xml"
                 , true), this);
     }
@@ -1237,8 +1296,24 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     * @deprecated use getFriendsStatuses(id,paging) instead
      */
     public List<User> getFriends(String id, Paging paging) throws TwitterException {
+        return getFriendsStatuses(id, paging);
+    }
+
+    /**
+     * Returns the user's friends, each with current status inline.
+     * <br>This method calls http://twitter.com/statuses/friends
+     *
+     * @param id the ID or screen name of the user for whom to request a list of friends
+     * @param paging controls pagination
+     * @return the list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.9
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     */
+    public List<User> getFriendsStatuses(String id, Paging paging) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends/" + id + ".xml"
                 , null, paging, true), this);
     }
@@ -1251,11 +1326,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param page the number of page
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getFriends(String id, Paging paging) instead
+     * @deprecated Use getFriendsStatuses(String id, Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
      */
     public List<User> getFriends(String id, int page) throws TwitterException {
-        return getFriends(id, new Paging(page));
+        return getFriendsStatuses(id, new Paging(page));
     }
 
     /**
@@ -1265,8 +1340,22 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     * @deprecated use getFollowersStatuses() instead
      */
     public List<User> getFollowers() throws TwitterException {
+        return getFollowersStatuses();
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://twitter.com/statuses/followers
+     *
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     * @since Twitter4J 2.0.9
+     */
+    public List<User> getFollowersStatuses() throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers.xml", true), this);
     }
 
@@ -1279,8 +1368,23 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     * @deprecated use getFollowersStatuses(paging)
      */
     public List<User> getFollowers(Paging paging) throws TwitterException {
+        return getFollowersStatuses(paging);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://twitter.com/statuses/followers
+     *
+     * @param paging controls pagination
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.9
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     */
+    public List<User> getFollowersStatuses(Paging paging) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers.xml", null
                 , paging, true), this);
     }
@@ -1293,11 +1397,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.0
-     * @deprecated Use getFollowers(Paging paging) instead
+     * @deprecated Use getFollowersStatuses(Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
      */
     public List<User> getFollowers(int page) throws TwitterException {
-        return getFollowers(new Paging(page));
+        return getFollowersStatuses(new Paging(page));
     }
 
     /**
@@ -1309,8 +1413,23 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     * @deprecated use getFollowersStatuses(id) instead
      */
     public List<User> getFollowers(String id) throws TwitterException {
+        return getFollowersStatuses(id);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://twitter.com/statuses/followers
+     *
+     * @param id The ID or screen name of the user for whom to request a list of followers.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.9
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     */
+    public List<User> getFollowersStatuses(String id) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers/" + id + ".xml", true), this);
     }
 
@@ -1324,8 +1443,24 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     * @deprecated use getFollowersStatuses(id) instead
      */
     public List<User> getFollowers(String id, Paging paging) throws TwitterException {
+        return getFollowersStatuses(id, paging);
+    }
+
+    /**
+     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://twitter.com/statuses/followers
+     *
+     * @param id   The ID or screen name of the user for whom to request a list of followers.
+     * @param paging controls pagination
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.9
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     */
+    public List<User> getFollowersStatuses(String id, Paging paging) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/followers/" + id +
                 ".xml", null, paging, true), this);
     }
@@ -1339,11 +1474,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 1.1.0
-     * @deprecated Use getFollowers(String id, Paging paging) instead
+     * @deprecated Use getFollowersStatuses(String id, Paging paging) instead
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
      */
     public List<User> getFollowers(String id, int page) throws TwitterException {
-        return getFollowers(id, new Paging(page));
+        return getFollowersStatuses(id, new Paging(page));
     }
 
     /**
