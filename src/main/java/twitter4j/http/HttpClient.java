@@ -49,16 +49,16 @@ import java.security.AccessControlException;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class HttpClient implements java.io.Serializable {
-    private final int OK = 200;// OK: Success!
-    private final int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.
-    private final int BAD_REQUEST = 400;// Bad Request: The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.
-    private final int NOT_AUTHORIZED = 401;// Not Authorized: Authentication credentials were missing or incorrect.
-    private final int FORBIDDEN = 403;// Forbidden: The request is understood, but it has been refused.  An accompanying error message will explain why.
-    private final int NOT_FOUND = 404;// Not Found: The URI requested is invalid or the resource requested, such as a user, does not exists.
-    private final int NOT_ACCEPTABLE = 406;// Not Acceptable: Returned by the Search API when an invalid format is specified in the request.
-    private final int INTERNAL_SERVER_ERROR = 500;// Internal Server Error: Something is broken.  Please post to the group so the Twitter team can investigate.
-    private final int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
-    private final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
+    private static final int OK = 200;// OK: Success!
+    private static final int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.
+    private static final int BAD_REQUEST = 400;// Bad Request: The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.
+    private static final int NOT_AUTHORIZED = 401;// Not Authorized: Authentication credentials were missing or incorrect.
+    private static final int FORBIDDEN = 403;// Forbidden: The request is understood, but it has been refused.  An accompanying error message will explain why.
+    private static final int NOT_FOUND = 404;// Not Found: The URI requested is invalid or the resource requested, such as a user, does not exists.
+    private static final int NOT_ACCEPTABLE = 406;// Not Acceptable: Returned by the Search API when an invalid format is specified in the request.
+    private static final int INTERNAL_SERVER_ERROR = 500;// Internal Server Error: Something is broken.  Please post to the group so the Twitter team can investigate.
+    private static final int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
+    private static final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
 
     private final static boolean DEBUG = Configuration.getDebug();
 
@@ -621,20 +621,19 @@ public class HttpClient implements java.io.Serializable {
         return false;
     }
 
-    private void log(String message) {
+    private static void log(String message) {
         if (DEBUG) {
             System.out.println("[" + new java.util.Date() + "]" + message);
         }
     }
 
-    private void log(String message, String message2) {
+    private static void log(String message, String message2) {
         if (DEBUG) {
             log(message + message2);
         }
     }
 
-
-    private String getCause(int statusCode){
+    private static String getCause(int statusCode){
         String cause = null;
         // http://apiwiki.twitter.com/HTTP-Response-Codes-and-Errors
         switch(statusCode){
