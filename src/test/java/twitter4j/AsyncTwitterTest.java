@@ -687,28 +687,14 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         trySerializable(users);
     }
 
-    public void testGetDirectMessages() throws Exception {
-        try {
-            twitterAPI2.createFriendship(id1);
-        } catch (TwitterException ignore) {
-        }
-        try {
-            twitterAPI1.createFriendship(id2);
-        } catch (TwitterException ignore) {
-        }
-
+    public void testDirectMessages() throws Exception {
         String expectedReturn = new Date() + ":directmessage test";
-        twitterAPI2.sendDirectMessageAsync(id1, expectedReturn, this);
+        twitterAPI1.sendDirectMessageAsync("twit4jnoupdate", expectedReturn, this);
         waitForResponse();
-//        twitterAPI2.sendDirectMessage("yusukey",expectedReturn);
+        assertEquals(expectedReturn, message.getText());
         twitterAPI1.getDirectMessagesAsync(this);
         waitForResponse();
-        assertTrue(1 <  messages.size());
-//        String expectedReturn = new Date()+":directmessage test";
-        twitterAPI1.sendDirectMessageAsync(id2, expectedReturn, this);
-        waitForResponse();
-        assertEquals("", expectedReturn, message.getText());
-        trySerializable(messages);
+        assertTrue(1<= messages.size());
     }
 
     public void testCreateDestroyFriend() throws Exception {

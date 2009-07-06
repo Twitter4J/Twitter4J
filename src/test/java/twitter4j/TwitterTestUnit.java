@@ -338,44 +338,12 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(actualReturn.size() > 9);
     }
 
-    public void testGetDirectMessages() throws Exception {
-        followEachOther();
+    public void testDirectMessages() throws Exception {
         String expectedReturn = new Date() + ":directmessage test";
-//        twitterAPI2.sendDirectMessage(id1,expectedReturn);
-        twitterAPI1.sendDirectMessage(id2, expectedReturn);
-//        twitterAPI2.sendDirectMessage("yusukey",expectedReturn);
-        List<DirectMessage> actualReturn = twitterAPI2.getDirectMessages();
-        assertTrue(-1 != actualReturn.get(0).getText().indexOf("directmessage test"));
-        actualReturn = twitterAPI2.getDirectMessages(new Paging().sinceId((long)actualReturn.get(1).getId()));
-        assertEquals(1, actualReturn.size());
-
-//        String expectedReturn = new Date()+":directmessage test";
-        DirectMessage message = twitterAPI1.sendDirectMessage(id2, expectedReturn);
-        assertEquals("", expectedReturn, message.getText());
-
-        actualReturn = twitterAPI1.getDirectMessages();
-        int size = actualReturn.size();
-        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
-        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
-        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
-        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
-        twitterAPI2.sendDirectMessage(id1, String.valueOf(System.currentTimeMillis()));
-
-        message = twitterAPI1.destroyDirectMessage(actualReturn.get(0).getId());
-        assertEquals(message.getId(), actualReturn.get(0).getId());
-        assertTrue(5 <= twitterAPI1.getDirectMessages().size());
-
-        actualReturn = twitterAPI1.getSentDirectMessages();
-        assertTrue(5 < actualReturn.size());
-        assertEquals(id1, actualReturn.get(0).getSender().getName());
-        assertEquals(id2, actualReturn.get(0).getRecipient().getName());
-
-        actualReturn = twitterAPI1.getSentDirectMessages(new Paging(10).sinceId(10));
-        assertTrue(5 < actualReturn.size());
-
-//        actualReturn = twitterAPI1.getDirectMessages(new Paging(1));
-        assertTrue(5 <= twitterAPI1.getDirectMessages().size());
-
+        DirectMessage actualReturn = twitterAPI1.sendDirectMessage("twit4jnoupdate", expectedReturn);
+        assertEquals(expectedReturn, actualReturn.getText());
+        List<DirectMessage> actualReturnList = twitterAPI1.getDirectMessages();
+        assertTrue(1<= actualReturnList.size());
     }
 
     private void followEachOther() {
