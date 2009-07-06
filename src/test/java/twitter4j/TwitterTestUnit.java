@@ -199,14 +199,12 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(twitterAPI1.verifyCredentials().getId(), status2.getInReplyToUserId());
         twitterAPI1.destroyStatus(status.getId());
     }
-
-    public void testGetFriends() throws Exception{
-        List<User> actualReturn = twitterAPI1.getFriendsStatuses("yusukey");
-        boolean found = false;
-        for(User user: actualReturn){
-            found = found || user.getName().equals("akr");
-        }
-        assertTrue(found);
+    
+    public void testGetFriendsStatuses() throws Exception{
+        List<User> actualReturn = twitterAPI1.getFriendsStatuses();
+        assertNotNull("friendsStatuses", actualReturn);
+        actualReturn = twitterAPI1.getFriendsStatuses("yusukey");
+        assertNotNull("friendsStatuses", actualReturn);
     }
 
     public void testSocialGraphMethods() throws Exception {

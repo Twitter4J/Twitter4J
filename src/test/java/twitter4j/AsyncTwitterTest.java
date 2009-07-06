@@ -657,32 +657,15 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         trySerializable(status);
     }
 
-    public void testGetFriends() throws Exception {
-        try{
-            twitterAPI2.createFriendship(id1);
-        }catch(TwitterException te){
-            assertEquals(403, te.getStatusCode());
-        }
-        try{
-            twitterAPI1.createFriendship(id2);
-        }catch(TwitterException te){
-            assertEquals(403, te.getStatusCode());
-        }
+    public void testGetFriendsStatuses() throws Exception {
+        user = null;
         twitterAPI1.getFriendsStatusesAsync(id2, this);
         waitForResponse();
-        boolean found = false;
-        for (User user : users) {
-            found = found || user.getName().equals(id1);
-        }
-        assertTrue(found);
-
+        assertNotNull(user);
+        user = null;
         twitterAPI2.getFriendsStatusesAsync(this);
         waitForResponse();
-        found = false;
-        for (User user : users) {
-            found = found || user.getName().equals(id1);
-        }
-        assertTrue(found);
+        assertNotNull(user);
         trySerializable(users);
     }
 
