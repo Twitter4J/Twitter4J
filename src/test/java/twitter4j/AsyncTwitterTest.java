@@ -658,14 +658,14 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void testGetFriendsStatuses() throws Exception {
-        user = null;
+        users = null;
         twitterAPI1.getFriendsStatusesAsync(id2, this);
         waitForResponse();
-        assertNotNull(user);
-        user = null;
+        assertNotNull(users);
+        users = null;
         twitterAPI2.getFriendsStatusesAsync(this);
         waitForResponse();
-        assertNotNull(user);
+        assertNotNull(users);
         trySerializable(users);
     }
 
