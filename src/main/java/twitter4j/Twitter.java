@@ -134,6 +134,10 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         return http.getOAuthRequestToken();
     }
 
+    public RequestToken getOAuthRequestToken(String callback_url) throws TwitterException {
+        return http.getOauthRequestToken(callback_url);
+    }
+
     /**
      * Retrieves an access token assosiated with the supplied request token.
      * @param requestToken the request token

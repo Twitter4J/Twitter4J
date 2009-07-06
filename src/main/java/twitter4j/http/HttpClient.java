@@ -156,6 +156,13 @@ public class HttpClient implements java.io.Serializable {
         return (RequestToken)this.oauthToken;
     }
 
+    public RequestToken getOauthRequestToken(String callback_url) throws TwitterException {
+        this.oauthToken = new RequestToken(httpRequest(requestTokenURL,
+                new PostParameter[]{new PostParameter("oauth_callback", callback_url)}
+                , true), this);
+        return (RequestToken) this.oauthToken;
+    }
+
     /**
      *
      * @param token request token
