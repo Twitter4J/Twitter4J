@@ -628,5 +628,7 @@ public class TwitterTestUnit extends TestCase {
         twitterSupport.setHttpConnectionTimeout(10);
         assertEquals(100, twitterSupport.http.getReadTimeout());
         System.getProperties().remove("twitter4j.http.readTimeout");
+
+        assertFalse(Configuration.isDalvik());
     }
 }

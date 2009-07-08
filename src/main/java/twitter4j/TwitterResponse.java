@@ -64,6 +64,7 @@ public class TwitterResponse implements java.io.Serializable {
     private transient int rateLimitLimit = -1;
     private transient int rateLimitRemaining = -1;
     private transient long rateLimitReset = -1;
+    private static final boolean IS_DALVIK = Configuration.isDalvik();
 
     public TwitterResponse() {
     }
@@ -120,15 +121,16 @@ public class TwitterResponse implements java.io.Serializable {
 
     private static String toString(Element doc) {
         try {
-            StringWriter output = new StringWriter();
-            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult(output));
-            return output.toString();
-        } catch (NoClassDefFoundError ncdfe) {
+            if (!IS_DALVIK) {
+                StringWriter output = new StringWriter();
+                TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult(output));
+                return output.toString();
+            }
+        } catch (NoClassDefFoundError ignore) {
             // TransformerFactory is not available in Android platform.
-            return "";
-        } catch (TransformerException tfe) {
-            return "";
+        } catch (TransformerException ignore) {
         }
+        return "";
     }
 
     protected static String getChildText( String str, Element elem ) {
