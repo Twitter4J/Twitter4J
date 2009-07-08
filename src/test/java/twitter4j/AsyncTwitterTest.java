@@ -551,7 +551,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertEquals(newDescription, extendedUser.getDescription());
 
         twitterAPI1.createFriendshipAsync(id2);
-        twitterAPI1.enableNotificationAsync(id2);
         twitterAPI2.createFriendshipAsync(id1);
         twitterAPI1.existsFriendshipAsync(id1,id2,this);
         waitForResponse();
@@ -701,21 +700,10 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         twitterAPI2.destroyFriendshipAsync(id1, this);
         waitForResponse();
 
-//        twitterAPI2.destroyFriendshipAsync(id1, this);
-//        waitForResponse();
-//        assertEquals(403, te.getStatusCode());
         twitterAPI2.createFriendshipAsync(id1, true, this);
-        // the Twitter API is not returning appropriate notifications value
-        // http://code.google.com/p/twitter-api/issues/detail?id=474
-//        ExtendedUser detail = twitterAPI2.getUserDetail(id1);
-//        assertTrue(detail.isNotificationEnabled());
         waitForResponse();
         assertEquals(id1, user.getName());
 
-//        te = null;
-//        twitterAPI2.createFriendshipAsync(id2, this);
-//        waitForResponse();
-//        assertEquals(403, te.getStatusCode());
         te = null;
         twitterAPI2.createFriendshipAsync("doesnotexist--", this);
         waitForResponse();
@@ -734,19 +722,16 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     public void testFollowLeave() throws Exception {
         try {
-            twitterAPI2.createFriendship(id1);
+            twitterAPI1.disableNotification("twit4jprotected");
         } catch (TwitterException te) {
         }
-        try {
-            twitterAPI2.enableNotification(id1);
-        } catch (TwitterException te) {
-        }
-        twitterAPI2.disableNotificationAsync(id1, this);
+        te = null;
+        twitterAPI1.enableNotificationAsync("twit4jprotected", this);
         waitForResponse();
-        assertEquals(id1, user.getName());
-        twitterAPI2.enableNotificationAsync(id2, this);
+        assertNull(te);
+        twitterAPI1.disableNotificationAsync("twit4jprotected", this);
         waitForResponse();
-        assertEquals(id1, user.getName());
+        assertNull(te);
         trySerializable(user);
 
     }

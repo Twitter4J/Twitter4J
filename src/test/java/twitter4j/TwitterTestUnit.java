@@ -413,14 +413,12 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testNotification() throws Exception {
-        followEachOther();
         try {
-            twitterAPI2.disableNotification(id1);
+            twitterAPI1.disableNotification("twit4jprotected");
         } catch (TwitterException te) {
-            te.printStackTrace();
         }
-        twitterAPI2.enableNotification(id1);
-        twitterAPI2.disableNotification(id1);
+        twitterAPI1.enableNotification("twit4jprotected");
+        twitterAPI1.disableNotification("twit4jprotected");
     }
     public void testBlock() throws Exception {
         twitterAPI2.createBlock(id1);
