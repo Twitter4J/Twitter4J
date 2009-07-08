@@ -156,6 +156,12 @@ public class HttpClient implements java.io.Serializable {
         return (RequestToken)this.oauthToken;
     }
 
+    /**
+     * @param callback_url callback url
+     * @return request token
+     * @throws TwitterException tw
+     * @since Twitter4J 2.0.9
+     */
     public RequestToken getOauthRequestToken(String callback_url) throws TwitterException {
         this.oauthToken = new RequestToken(httpRequest(requestTokenURL,
                 new PostParameter[]{new PostParameter("oauth_callback", callback_url)}
@@ -221,18 +227,18 @@ public class HttpClient implements java.io.Serializable {
      *
      * @param token request token
      * @param tokenSecret request token secret
-     * @param pin pin
+     * @param oauth_verifier oauth_verifier or pin
      * @return access token
      * @throws TwitterException
      * @since Twitter4J 2.0.8
      */
     public AccessToken getOAuthAccessToken(String token, String tokenSecret
-            , String pin) throws TwitterException {
+            , String oauth_verifier) throws TwitterException {
         try {
             this.oauthToken = new OAuthToken(token, tokenSecret) {
             };
             this.oauthToken = new AccessToken(httpRequest(accessTokenURL,
-                    new PostParameter[]{new PostParameter("oauth_verifier", pin)}, true));
+                    new PostParameter[]{new PostParameter("oauth_verifier", oauth_verifier)}, true));
         } catch (TwitterException te) {
             throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
         }

@@ -84,16 +84,26 @@ public class OAuthTest extends TwitterTestUnit {
 
     }
 
-    public void testGetToken() throws Exception{
+    public void testDesktopClient() throws Exception{
+        RequestToken rt;
+        Twitter twitter = new Twitter();
+        HttpClient http;
+        Response response;
+        String resStr;
+        String authorizeURL;
+        PostParameter[] params;
+        AccessToken at;
+        String cookie;
+        http = new HttpClient();
+
         // desktop client - requiring pin
-        RequestToken rt = decktopClient.getOAuthRequestToken();
+        rt = decktopClient.getOAuthRequestToken();
         try {
             rt.getAccessToken();
             fail();
         } catch (TwitterException te) {
             assertEquals(401, te.getStatusCode());
         }
-        Twitter twitter = new Twitter();
         twitter.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         rt = twitter.getOAuthRequestToken();
         try {
@@ -103,13 +113,12 @@ public class OAuthTest extends TwitterTestUnit {
             assertEquals(401, te.getStatusCode());
         }
 
-        HttpClient http = new HttpClient();
-        Response response = http.get(rt.getAuthorizationURL());
-        String cookie = response.getResponseHeader("Set-Cookie");
+        response = http.get(rt.getAuthorizationURL());
+        cookie = response.getResponseHeader("Set-Cookie");
         http.setRequestHeader("Cookie", cookie);
-        String resStr = response.asString();
-        String authorizeURL = catchPattern(resStr, "<form action=\"","\" id=\"login_form\"");
-        PostParameter[] params = new PostParameter[4];
+        resStr = response.asString();
+        authorizeURL = catchPattern(resStr, "<form action=\"","\" id=\"login_form\"");
+        params = new PostParameter[4];
         params[0] = new PostParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
         params[1] = new PostParameter("oauth_token",
@@ -119,13 +128,25 @@ public class OAuthTest extends TwitterTestUnit {
         response = http.post(authorizeURL, params);
         resStr = response.asString();
         String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ","\n</div>");
-        AccessToken at;
         at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret(), pin);
         assertEquals(at.getScreenName(),id1);
         assertEquals(at.getUserId(),6358482);
 
+    }
+
+    public void testBrowserClient() throws Exception{
+        RequestToken rt;
+        Twitter twitter = new Twitter();
+        HttpClient http;
+        Response response;
+        String resStr;
+        String authorizeURL;
+        PostParameter[] params;
+        AccessToken at;
+        String cookie;
+        http = new HttpClient();
+
         // browser client - not requiring pin
-        twitter = new Twitter();
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         rt = twitter.getOAuthRequestToken();
 
@@ -147,17 +168,63 @@ public class OAuthTest extends TwitterTestUnit {
         assertEquals(at.getUserId(),6358482);
 
 
-        at = new AccessToken("oauth_token=6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk&oauth_token_secret=ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY&user_id=6377362&screen_name=twit4j2");
-        assertEquals("6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk", at.getToken());
-        assertEquals("ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY", at.getTokenSecret());
-        assertEquals("twit4j2", at.getScreenName());
-        assertEquals(6377362, at.getUserId());
     }
+
+    public void testBrowserClientWithCustomCallback() throws Exception{
+        RequestToken rt;
+        Twitter twitter = new Twitter();
+        HttpClient http;
+        Response response;
+        String resStr;
+        String authorizeURL;
+        PostParameter[] params;
+        AccessToken at;
+        String cookie;
+        http = new HttpClient();
+
+        // browser client - not requiring pin / overriding callback url
+        twitter = new Twitter();
+        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        rt = twitter.getOAuthRequestToken("http://yusuke.homeip.net/twitter4j/custom_callback");
+        http = new HttpClient();
+
+        System.out.println("----------authorizeURL"+rt.getAuthorizationURL());
+        response = http.get(rt.getAuthorizationURL());
+        cookie = response.getResponseHeader("Set-Cookie");
+        http.setRequestHeader("Cookie", cookie);
+        resStr = response.asString();
+        authorizeURL = catchPattern(resStr, "<form action=\"","\" id=\"login_form\"");
+        params = new PostParameter[4];
+        params[0] = new PostParameter("authenticity_token"
+                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
+        params[1] = new PostParameter("oauth_token",
+                catchPattern(resStr,"name=\"oauth_token\" type=\"hidden\" value=\"","\" />"));
+        params[2] = new PostParameter("session[username_or_email]",id1);
+        params[3] = new PostParameter("session[password]",pass1);
+        response = http.post(authorizeURL, params);
+        resStr = response.asString();
+        String oauthVerifier = catchPattern(resStr,"&oauth_verifier=","\">");
+
+        at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret(), oauthVerifier);
+        assertEquals(at.getScreenName(),id1);
+        assertEquals(at.getUserId(),6358482);
+    }
+
+
     private static String catchPattern(String body, String before, String after){
         int beforeIndex = body.indexOf(before);
         int afterIndex = body.indexOf(after, beforeIndex);
         return body.substring(beforeIndex + before.length(), afterIndex);
     }
+
+    public void testAccessToken() {
+        AccessToken at = new AccessToken("oauth_token=6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk&oauth_token_secret=ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY&user_id=6377362&screen_name=twit4j2");
+        assertEquals("6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk", at.getToken());
+        assertEquals("ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY", at.getTokenSecret());
+        assertEquals("twit4j2", at.getScreenName());
+        assertEquals(6377362, at.getUserId());
+    }
+
 
     public void testSign() throws Exception {
         String baseStr = "GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal";
