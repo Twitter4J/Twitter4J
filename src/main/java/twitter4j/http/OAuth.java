@@ -45,11 +45,11 @@ import java.util.Random;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
  */
-public class OAuth {
+public class OAuth implements java.io.Serializable {
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final PostParameter OAUTH_SIGNATURE_METHOD = new PostParameter("oauth_signature_method", "HMAC-SHA1");
     private final static boolean DEBUG = Configuration.getDebug();
-
+    static final long serialVersionUID = -4368426677157998618L;
     private String consumerKey = "";
     private String consumerSecret;
 
@@ -324,5 +324,35 @@ public class OAuth {
         if (DEBUG) {
             log(message + message2);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OAuth)) return false;
+
+        OAuth oAuth = (OAuth) o;
+
+        if (consumerKey != null ? !consumerKey.equals(oAuth.consumerKey) : oAuth.consumerKey != null)
+            return false;
+        if (consumerSecret != null ? !consumerSecret.equals(oAuth.consumerSecret) : oAuth.consumerSecret != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = consumerKey != null ? consumerKey.hashCode() : 0;
+        result = 31 * result + (consumerSecret != null ? consumerSecret.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OAuth{" +
+                "consumerKey='" + consumerKey + '\'' +
+                ", consumerSecret='" + consumerSecret + '\'' +
+                '}';
     }
 }
