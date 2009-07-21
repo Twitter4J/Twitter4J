@@ -35,11 +35,6 @@ import twitter4j.http.Response;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -86,7 +81,7 @@ public class TwitterResponse implements java.io.Serializable {
 
     protected static void ensureRootNodeNameIs(String rootName, Element elem) throws TwitterException {
         if (!rootName.equals(elem.getNodeName())) {
-            throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check Twitter service availability.\n" + toString(elem));
+            throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check the availability of the Twitter API at http://status.twitter.com/.");
         }
     }
 
@@ -104,33 +99,19 @@ public class TwitterResponse implements java.io.Serializable {
             }
             expected += rootNames[i];
         }
-        throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + expected + ". Check Twitter service availability.\n" + toString(elem));
+        throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + expected + ". Check the availability of the Twitter API at http://status.twitter.com/.");
     }
 
     protected static void ensureRootNodeNameIs(String rootName, Document doc) throws TwitterException {
         Element elem = doc.getDocumentElement();
         if (!rootName.equals(elem.getNodeName())) {
-            throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check Twitter service availability.\n" + toString(elem));
+            throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check the availability of the Twitter API at http://status.twitter.com/");
         }
     }
 
     protected static boolean isRootNodeNilClasses(Document doc) {
         String root = doc.getDocumentElement().getNodeName();
         return "nil-classes".equals(root) || "nilclasses".equals(root);
-    }
-
-    private static String toString(Element doc) {
-        try {
-            if (!IS_DALVIK) {
-                StringWriter output = new StringWriter();
-                TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult(output));
-                return output.toString();
-            }
-        } catch (NoClassDefFoundError ignore) {
-            // TransformerFactory is not available in Android platform.
-        } catch (TransformerException ignore) {
-        }
-        return "";
     }
 
     protected static String getChildText( String str, Element elem ) {
