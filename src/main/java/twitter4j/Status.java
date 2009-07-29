@@ -66,22 +66,18 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         init(res, elem, twitter);
     }
 
-    public Status(String str) throws TwitterException {
+    public Status(String str) throws TwitterException, JSONException {
         super();
-        try {
-            JSONObject json = new JSONObject(str);
-            id = json.getLong("id");
-            text = json.getString("text");
-            source = json.getString("source");
-            createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+        JSONObject json = new JSONObject(str);
+        id = json.getLong("id");
+        text = json.getString("text");
+        source = json.getString("source");
+        createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
 
-            inReplyToStatusId = getLong("in_reply_to_status_id", json);
-            inReplyToUserId = getInt("in_reply_to_user_id", json);
-            isFavorited = getBoolean("favorited", json);
-            user = new User(json.getJSONObject("user"));
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + str, jsone);
-        }
+        inReplyToStatusId = getLong("in_reply_to_status_id", json);
+        inReplyToUserId = getInt("in_reply_to_user_id", json);
+        isFavorited = getBoolean("favorited", json);
+        user = new User(json.getJSONObject("user"));
     }
 
     private void init(Response res, Element elem, Twitter twitter) throws

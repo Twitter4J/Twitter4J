@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.http.Response;
+import twitter4j.org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,7 +62,14 @@ public class StatusStream {
             while (streamAlive) {
                 line = br.readLine();
                 if (null != line && line.length() > 0) {
-                    return new Status(line);
+                    try{
+                        return new Status(line);
+                    } catch (JSONException ignore) {
+                        // ignoring JSONException as per:
+                        // http://groups.google.com/group/twitter-development-talk/browse_thread/thread/acac6b17134c0fa8
+                        // it would be beneficial to have a listener which
+                        // gets notified every time when deleted tweets come in
+                    }
                 }
             }
             throw new TwitterException("Stream closed.");
