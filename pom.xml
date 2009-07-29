@@ -61,13 +61,15 @@
             <groupId>org.slf4j</groupId>
             <artifactId>nlog4j</artifactId>
             <version>1.2.25</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>rome</groupId>
             <artifactId>rome</artifactId>
             <version>0.9</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
     <build>
