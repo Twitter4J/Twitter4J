@@ -28,7 +28,11 @@ package twitter4j;
 
 import junit.framework.TestCase;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -630,5 +634,26 @@ public class TwitterTestUnit extends TestCase {
         System.getProperties().remove("twitter4j.http.readTimeout");
 
         assertFalse(Configuration.isDalvik());
+
+
+        writeFile("./twitter4j.properties","twitter4j.http.readTimeout=1234");
+        Configuration.init();
+        assertEquals(1234, Configuration.getReadTimeout());
+        writeFile("./twitter4j.properties","twitter4j.http.readTimeout=4321");
+        Configuration.init();
+        assertEquals(4321, Configuration.getReadTimeout());
+        deleteFile("./twitter4j.properties");
+        Configuration.init();
+    }
+    private void writeFile(String path, String content) throws IOException {
+        File file = new File(path);
+        file.delete();
+        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+        bw.write(content);
+        bw.close();
+    }
+    private void deleteFile(String path) throws IOException {
+        File file = new File(path);
+        file.delete();
     }
 }

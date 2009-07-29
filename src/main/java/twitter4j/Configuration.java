@@ -26,6 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.Properties;
 
@@ -33,9 +36,14 @@ import java.util.Properties;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Configuration {
-    private static Properties defaultProperty = new Properties();
+    private static Properties defaultProperty;
 
     static {
+        init();
+    }
+
+    /*package*/ static void init() {
+        defaultProperty = new Properties();
         defaultProperty.setProperty("twitter4j.debug", "false");
         defaultProperty.setProperty("twitter4j.source", "Twitter4J");
         //defaultProperty.setProperty("twitter4j.clientVersion","");
@@ -65,6 +73,31 @@ public class Configuration {
         } catch (ClassNotFoundException cnfe) {
             defaultProperty.setProperty("twitter4j.dalvik", "false");
         }
+        String t4jProps = "twitter4j.properties";
+        boolean loaded = !loadProperties(defaultProperty, "." + File.separatorChar + t4jProps) &&
+                !loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/WEB-INF/" + t4jProps)) &&
+                !loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/" + t4jProps));
+    }
+
+    private static boolean loadProperties(Properties props, String path) {
+        try {
+            File file = new File(path);
+            if(file.exists() && file.isFile()){
+                props.load(new FileInputStream(file));
+                return true;
+            }
+        } catch (Exception ignore) {
+        }
+        return false;
+    }
+
+    private static boolean loadProperties(Properties props, InputStream is) {
+        try {
+            props.load(is);
+            return true;
+        } catch (Exception ignore) {
+        }
+        return false;
     }
 
 
