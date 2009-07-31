@@ -1287,7 +1287,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public List<User> getFriendsStatuses(String id) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends/" + id + ".xml"
-                , true), this);
+                , false), this);
     }
 
     /**
@@ -1319,7 +1319,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public List<User> getFriendsStatuses(String id, Paging paging) throws TwitterException {
         return User.constructUsers(get(baseURL + "statuses/friends/" + id + ".xml"
-                , null, paging, true), this);
+                , null, paging, false), this);
     }
 
     /**

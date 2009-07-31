@@ -209,6 +209,8 @@ public class TwitterTestUnit extends TestCase {
         assertNotNull("friendsStatuses", actualReturn);
         actualReturn = twitterAPI1.getFriendsStatuses("yusukey");
         assertNotNull("friendsStatuses", actualReturn);
+        actualReturn = unauthenticated.getFriendsStatuses("yusukey");
+        assertNotNull("friendsStatuses", actualReturn);
     }
 
     public void testSocialGraphMethods() throws Exception {
