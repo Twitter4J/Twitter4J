@@ -51,6 +51,7 @@ public class Configuration {
         defaultProperty.setProperty("twitter4j.http.userAgent", "twitter4j http://yusuke.homeip.net/twitter4j/ /{twitter4j.clientVersion}");
         //defaultProperty.setProperty("twitter4j.user","");
         //defaultProperty.setProperty("twitter4j.password","");
+        defaultProperty.setProperty("twitter4j.http.useSSL", "false");
         //defaultProperty.setProperty("twitter4j.http.proxyHost","");
         defaultProperty.setProperty("twitter4j.http.proxyHost.fallback", "http.proxyHost");
         //defaultProperty.setProperty("twitter4j.http.proxyUser","");
@@ -103,6 +104,13 @@ public class Configuration {
 
     public static boolean isDalvik() {
         return getBoolean("twitter4j.dalvik");
+    }
+
+    public static boolean useSSL() {
+        return getBoolean("twitter4j.http.useSSL");
+    }
+    public static String getScheme(){
+        return useSSL() ? "https://" : "http://";
     }
 
     public static String getCilentVersion() {

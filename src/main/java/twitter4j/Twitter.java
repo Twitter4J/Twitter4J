@@ -44,17 +44,17 @@ import java.util.TimeZone;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Twitter extends TwitterSupport implements java.io.Serializable {
-    private String baseURL = "http://twitter.com/";
-    private String searchBaseURL = "http://search.twitter.com/";
+    private static String baseURL = Configuration.getScheme() + "twitter.com/";
+    private static String searchBaseURL = Configuration.getScheme() + "search.twitter.com/";
     private static final long serialVersionUID = -1486360080128882436L;
 
     public Twitter() {
         super();
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-        http.setRequestTokenURL("http://twitter.com/oauth/request_token");
-        http.setAuthorizationURL("http://twitter.com/oauth/authorize");
-        http.setAccessTokenURL("http://twitter.com/oauth/access_token");
+        http.setRequestTokenURL(Configuration.getScheme() + "twitter.com/oauth/request_token");
+        http.setAuthorizationURL(Configuration.getScheme() + "twitter.com/oauth/authorize");
+        http.setAccessTokenURL(Configuration.getScheme() + "twitter.com/oauth/access_token");
     }
 
     public Twitter(String baseURL) {

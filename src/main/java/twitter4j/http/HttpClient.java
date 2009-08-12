@@ -77,9 +77,9 @@ public class HttpClient implements java.io.Serializable {
     private static boolean isJDK14orEarlier = false;
     private Map<String, String> requestHeaders = new HashMap<String, String>();
     private OAuth oauth = null;
-    private String requestTokenURL = "http://twitter.com/oauth/request_token";
-    private String authorizationURL = "http://twitter.com/oauth/authorize";
-    private String accessTokenURL = "http://twitter.com/oauth/access_token";
+    private String requestTokenURL = Configuration.getScheme() + "twitter.com/oauth/request_token";
+    private String authorizationURL = Configuration.getScheme() + "twitter.com/oauth/authorize";
+    private String accessTokenURL = Configuration.getScheme() + "twitter.com/oauth/access_token";
     private OAuthToken oauthToken = null;
 
     static {
