@@ -247,6 +247,12 @@ public class TwitterTestUnit extends TestCase {
 
     public void testAccountMethods() throws Exception{
         User original = twitterAPI1.verifyCredentials();
+        if(original.getScreenName().endsWith("new")){
+            original = twitterAPI1.updateProfile(
+                    original.getName(), null, "http://yusuke.homeip.net/twitter4j/"
+                    , "location:" , "Hi there, I do test a lot!new");
+
+        }
 
         String newName, newURL, newLocation, newDescription;
         String neu = "new";
