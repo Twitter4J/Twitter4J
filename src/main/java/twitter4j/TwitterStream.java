@@ -41,7 +41,6 @@ import java.util.List;
 public class TwitterStream extends TwitterSupport {
     private final static boolean DEBUG = Configuration.getDebug();
 
-    private static final String STREAM_BASE_URL = "http://stream.twitter.com/";
     private StatusListener statusListener;
     private StreamHandlingThread handler = null;
     private int retryPerMinutes = 1;
@@ -86,7 +85,7 @@ public class TwitterStream extends TwitterSupport {
     public StatusStream getFirehoseStream(int count) throws TwitterException {
 
         try {
-            return new StatusStream(http.post(STREAM_BASE_URL + "firehose.json"
+            return new StatusStream(http.post(getStreamBaseURL() + "firehose.json"
                     , new PostParameter[]{new PostParameter("count"
                             , String.valueOf(count))}, true));
         } catch (IOException e) {
@@ -121,7 +120,7 @@ public class TwitterStream extends TwitterSupport {
      */
     public StatusStream getGardenhoseStream() throws TwitterException {
         try {
-            return new StatusStream(http.get(STREAM_BASE_URL + "gardenhose.json"
+            return new StatusStream(http.get(getStreamBaseURL() + "gardenhose.json"
                     , true));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -155,7 +154,7 @@ public class TwitterStream extends TwitterSupport {
      */
     public StatusStream getSpritzerStream() throws TwitterException {
         try {
-            return new StatusStream(http.get(STREAM_BASE_URL + "spritzer.json"
+            return new StatusStream(http.get(getStreamBaseURL() + "spritzer.json"
                     , true));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -193,7 +192,7 @@ public class TwitterStream extends TwitterSupport {
      */
     public StatusStream getBirddogStream(int count, int[] follow) throws TwitterException {
         try {
-            return new StatusStream(http.post(STREAM_BASE_URL + "birddog.json"
+            return new StatusStream(http.post(getStreamBaseURL() + "birddog.json"
                     , new PostParameter[]{new PostParameter("count"
                             , String.valueOf(count)), new PostParameter("follow"
                             , toFollowString(follow))}, true));
@@ -233,7 +232,7 @@ public class TwitterStream extends TwitterSupport {
      */
     public StatusStream getShadowStream(int count, int[] follow) throws TwitterException {
         try {
-            return new StatusStream(http.post(STREAM_BASE_URL + "shadow.json"
+            return new StatusStream(http.post(getStreamBaseURL() + "shadow.json"
                     , new PostParameter[]{new PostParameter("count"
                             , String.valueOf(count)), new PostParameter("follow"
                             , toFollowString(follow))}, true));
@@ -271,7 +270,7 @@ public class TwitterStream extends TwitterSupport {
      */
     public StatusStream getFollowStream(int[] follow) throws TwitterException {
         try {
-            return new StatusStream(http.post(STREAM_BASE_URL + "follow.json"
+            return new StatusStream(http.post(getStreamBaseURL() + "follow.json"
                     , new PostParameter[]{new PostParameter("follow"
                             , toFollowString(follow))}, true));
         } catch (IOException e) {
@@ -318,7 +317,7 @@ public class TwitterStream extends TwitterSupport {
     /** @see #getTrackStream(String[]) */
     public StatusStream getTrackStream(final String[] keywords) throws TwitterException {
         try {
-            return new StatusStream(http.post(STREAM_BASE_URL + "track.json"
+            return new StatusStream(http.post(getStreamBaseURL() + "track.json"
                     , new PostParameter[]{new PostParameter("track"
                             , toTrackString(keywords))}, true));
         } catch (IOException e) {
@@ -441,6 +440,10 @@ public class TwitterStream extends TwitterSupport {
 
         abstract StatusStream getStream() throws TwitterException;
 
+    }
+
+    private String getStreamBaseURL() {
+        return USE_SSL ? "https://stream.twitter.com/" : "http://stream.twitter.com/";
     }
 
     private void log(String message) {

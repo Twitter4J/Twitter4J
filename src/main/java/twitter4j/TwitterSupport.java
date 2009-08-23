@@ -34,11 +34,13 @@ import twitter4j.http.HttpClient;
 /*protected*/ class TwitterSupport {
     protected HttpClient http = new HttpClient();
     protected String source = Configuration.getSource();
-//    /*package*/ static final String VERSION = Version.getVersion();
+    protected final boolean USE_SSL;
+
     /*package*/ TwitterSupport(){
         this(null, null);
     }
     /*package*/ TwitterSupport(String userId, String password){
+        USE_SSL = Configuration.useSSL();
         setClientVersion(null);
         setClientURL(null);
         setUserId(userId);
