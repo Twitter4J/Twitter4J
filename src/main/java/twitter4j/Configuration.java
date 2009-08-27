@@ -74,6 +74,7 @@ public class Configuration {
         } catch (ClassNotFoundException cnfe) {
             defaultProperty.setProperty("twitter4j.dalvik", "false");
         }
+        DALVIK = getBoolean("twitter4j.dalvik");
         String t4jProps = "twitter4j.properties";
         boolean loaded = !loadProperties(defaultProperty, "." + File.separatorChar + t4jProps) &&
                 !loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/WEB-INF/" + t4jProps)) &&
@@ -101,9 +102,11 @@ public class Configuration {
         return false;
     }
 
+    private static boolean DALVIK;
+
 
     public static boolean isDalvik() {
-        return getBoolean("twitter4j.dalvik");
+        return DALVIK;
     }
 
     public static boolean useSSL() {

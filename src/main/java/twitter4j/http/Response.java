@@ -43,6 +43,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -137,6 +139,9 @@ public class Response {
                     buf.append(line).append("\n");
                 }
                 this.responseAsString = buf.toString();
+                if(Configuration.isDalvik()){
+                    this.responseAsString = unescape(responseAsString);
+                }
                 log(responseAsString);
                 stream.close();
                 con.disconnect();
@@ -212,6 +217,32 @@ public class Response {
         con.disconnect();
     }
 
+    private static Pattern escaped = Pattern.compile("&#([0-9]{5});");
+
+    /**
+     * Unescape characters to string.
+     *  Use: unescape("Twitter4J
+&#22312;android&#19978;&#19981;&#33021;&#26174;&#31034;&#20013;&#25991;&#65 292;&#36824;&#26159;UTF8&#26684;&#24335;&#65292;&#24456;&#22855;&#24618;&#6 5292;&#20294;&#32431;JAVA&#30340;&#27809;&#38382;&#39064;"
+     * );
+     * @author pengjianq...@gmail.com
+     *
+     * @param string The string to converted to string.
+     * @return The converted string
+     */
+    public static String unescape(String string) {
+        Matcher mm = escaped.matcher(string);
+        StringBuffer stringBuffer = new StringBuffer();
+        while (mm.find()) {
+            mm.appendReplacement(stringBuffer, Character.toString
+((char)Integer.parseInt(mm
+                    .group(1), 10)));
+        }
+        mm.appendTail(stringBuffer);
+        string = stringBuffer.toString();
+        //System.out.print(string);
+        return string;
+    }
+    
     @Override
     public String toString() {
         if(null != responseAsString){
