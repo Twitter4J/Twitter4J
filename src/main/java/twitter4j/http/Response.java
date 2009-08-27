@@ -80,12 +80,10 @@ public class Response {
     public Response(HttpURLConnection con) throws IOException {
         this.con = con;
         this.statusCode = con.getResponseCode();
-        if (statusCode == 200) {
+        if(null == (is = con.getErrorStream())){
             is = con.getInputStream();
-        } else {
-            is = con.getErrorStream();
         }
-        if ("gzip".equals(con.getContentEncoding())) {
+        if (null != is && "gzip".equals(con.getContentEncoding())) {
             // the response is gzipped
             is = new GZIPInputStream(is);
         }
@@ -132,6 +130,9 @@ public class Response {
             BufferedReader br;
             try {
                 InputStream stream = asStream();
+                if (null == stream) {
+                    return null;
+                }
                 br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
                 StringBuffer buf = new StringBuffer();
                 String line;
