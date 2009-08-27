@@ -220,29 +220,23 @@ public class Response {
     private static Pattern escaped = Pattern.compile("&#([0-9]{5});");
 
     /**
-     * Unescape characters to string.
-     *  Use: unescape("Twitter4J
-&#22312;android&#19978;&#19981;&#33021;&#26174;&#31034;&#20013;&#25991;&#65 292;&#36824;&#26159;UTF8&#26684;&#24335;&#65292;&#24456;&#22855;&#24618;&#6 5292;&#20294;&#32431;JAVA&#30340;&#27809;&#38382;&#39064;"
-     * );
+     * Unescape UTF-8 escaped characters to string.
      * @author pengjianq...@gmail.com
      *
-     * @param string The string to converted to string.
-     * @return The converted string
+     * @param original The string to be unescaped.
+     * @return The unescaped string
      */
-    public static String unescape(String string) {
-        Matcher mm = escaped.matcher(string);
-        StringBuffer stringBuffer = new StringBuffer();
+    public static String unescape(String original) {
+        Matcher mm = escaped.matcher(original);
+        StringBuffer unescaped = new StringBuffer();
         while (mm.find()) {
-            mm.appendReplacement(stringBuffer, Character.toString
-((char)Integer.parseInt(mm
-                    .group(1), 10)));
+            mm.appendReplacement(unescaped, Character.toString(
+                    (char) Integer.parseInt(mm.group(1), 10)));
         }
-        mm.appendTail(stringBuffer);
-        string = stringBuffer.toString();
-        //System.out.print(string);
-        return string;
+        mm.appendTail(unescaped);
+        return unescaped.toString();
     }
-    
+
     @Override
     public String toString() {
         if(null != responseAsString){
