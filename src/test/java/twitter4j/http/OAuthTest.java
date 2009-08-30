@@ -138,6 +138,41 @@ public class OAuthTest extends TwitterTestUnit {
 
     }
 
+    public void testSigninWithTwitter() throws Exception{
+        RequestToken rt;
+        Twitter twitter = new Twitter();
+        HttpClient http;
+        Response response;
+        String resStr;
+        String authorizeURL;
+        PostParameter[] params;
+        AccessToken at;
+        String cookie;
+        http = new HttpClient();
+
+        // browser client - not requiring pin
+        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        rt = twitter.getOAuthRequestToken();
+
+        response = http.get(rt.getAuthenticationURL());
+        cookie = response.getResponseHeader("Set-Cookie");
+        http.setRequestHeader("Cookie", cookie);
+        resStr = response.asString();
+        authorizeURL = catchPattern(resStr, "<form action=\"","\" id=\"login_form\"");
+        params = new PostParameter[4];
+        params[0] = new PostParameter("authenticity_token"
+                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
+        params[1] = new PostParameter("oauth_token",
+                catchPattern(resStr,"name=\"oauth_token\" type=\"hidden\" value=\"","\" />"));
+        params[2] = new PostParameter("session[username_or_email]",id1);
+        params[3] = new PostParameter("session[password]",pass1);
+        response = http.post(authorizeURL, params);
+        at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret());
+        assertEquals(at.getScreenName(),id1);
+        assertEquals(at.getUserId(),6358482);
+
+    }
+
     public void testBrowserClient() throws Exception{
         RequestToken rt;
         Twitter twitter = new Twitter();

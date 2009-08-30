@@ -76,9 +76,9 @@ public class Configuration {
         }
         DALVIK = getBoolean("twitter4j.dalvik");
         String t4jProps = "twitter4j.properties";
-        boolean loaded = !loadProperties(defaultProperty, "." + File.separatorChar + t4jProps) &&
-                !loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/WEB-INF/" + t4jProps)) &&
-                !loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/" + t4jProps));
+        boolean loaded = loadProperties(defaultProperty, "." + File.separatorChar + t4jProps) ||
+                loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/WEB-INF/" + t4jProps)) ||
+                loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/" + t4jProps));
     }
 
     private static boolean loadProperties(Properties props, String path) {

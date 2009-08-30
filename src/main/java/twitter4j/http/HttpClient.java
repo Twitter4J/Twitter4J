@@ -79,6 +79,7 @@ public class HttpClient implements java.io.Serializable {
     private OAuth oauth = null;
     private String requestTokenURL = Configuration.getScheme() + "twitter.com/oauth/request_token";
     private String authorizationURL = Configuration.getScheme() + "twitter.com/oauth/authorize";
+    private String authenticationURL = Configuration.getScheme() + "twitter.com/oauth/authenticate";
     private String accessTokenURL = Configuration.getScheme() + "twitter.com/oauth/access_token";
     private OAuthToken oauthToken = null;
 
@@ -270,6 +271,10 @@ public class HttpClient implements java.io.Serializable {
 
     public String getAuthorizationURL() {
         return authorizationURL;
+    }
+
+    public String getAuthenticationRL() {
+        return authenticationURL;
     }
 
     public void setAccessTokenURL(String accessTokenURL) {

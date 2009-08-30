@@ -49,6 +49,10 @@ public class RequestToken extends OAuthToken {
         return httpClient.getAuthorizationURL() + "?oauth_token=" + getToken();
     }
 
+    public String getAuthenticationURL() {
+        return httpClient.getAuthenticationRL() + "?oauth_token=" + getToken();
+    }
+
     public AccessToken getAccessToken() throws TwitterException {
         return httpClient.getOAuthAccessToken(this);
     }

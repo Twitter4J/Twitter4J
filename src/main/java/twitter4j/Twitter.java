@@ -152,7 +152,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
-     * Retrieves an access token assosiated with the supplied request token.
+     * Retrieves an access token assosiated with the supplied request token and sets userId.
      * @param requestToken the request token
      * @param pin pin
      * @return access token associsted with the supplied request token.
@@ -162,11 +162,13 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @since Twitter 2.0.8
      */
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String pin) throws TwitterException {
-        return http.getOAuthAccessToken(requestToken, pin);
+        AccessToken accessToken = http.getOAuthAccessToken(requestToken, pin);
+        setUserId(accessToken.getScreenName());
+        return accessToken;
     }
 
     /**
-     * Retrieves an access token assosiated with the supplied request token.
+     * Retrieves an access token assosiated with the supplied request token and sets userId.
      * @param token request token
      * @param tokenSecret request token secret
      * @return access token associsted with the supplied request token.
@@ -176,7 +178,9 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @since Twitter 2.0.1
      */
     public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        return http.getOAuthAccessToken(token, tokenSecret);
+        AccessToken accessToken = http.getOAuthAccessToken(token, tokenSecret);
+        setUserId(accessToken.getScreenName());
+        return accessToken;
     }
 
     /**
