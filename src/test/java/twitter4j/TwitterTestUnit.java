@@ -84,6 +84,14 @@ public class TwitterTestUnit extends TestCase {
 
     }
 
+    public void testGetHomeTimeline() throws Exception {
+        try {
+            List<Status> status = twitterAPI1.getHomeTimeline();
+        } catch (TwitterException te) {
+            assertEquals("this method is not available as of 8.30.2009", 404, te.getStatusCode());
+        }
+    }
+
     public void testGetFriendsTimeline()throws Exception {
         Date startDate = new Date();
         Calendar cal = Calendar.getInstance();

@@ -506,6 +506,36 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
+     * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
+     * <br>This method calls http://twitter.com/statuses/home_timeline
+     *
+     * @return list of the home Timeline
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-home_timeline">Twitter API Wiki / Twitter REST API Method: statuses home_timeline</a>
+     * @since Twitter4J 2.0.10
+     */
+    public List<Status> getHomeTimeline() throws
+            TwitterException {
+        return Status.constructStatuses(get(getBaseURL() + "statuses/home_timeline.xml", true), this);
+    }
+
+
+    /**
+     * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
+     * <br>This method calls http://twitter.com/statuses/home_timeline
+     *
+     * @param paging controls pagination
+     * @return list of the home Timeline
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-home_timeline">Twitter API Wiki / Twitter REST API Method: statuses home_timeline</a>
+     * @since Twitter4J 2.0.10
+     */
+    public List<Status> getHomeTimeline(Paging paging) throws
+            TwitterException {
+        return Status.constructStatuses(get(getBaseURL() + "statuses/home_timeline.xml", null, paging, true), this);
+    }
+
+    /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating1 user and that user's friends.
      * It's also possible to request another user's friends_timeline via the id parameter below.
      * <br>This method calls http://twitter.com/statuses/friends_timeline

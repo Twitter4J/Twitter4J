@@ -38,6 +38,11 @@ import java.util.List;
 public interface TwitterListener {
     void gotPublicTimeline(List<Status> statuses);
 
+    /**
+     * @since Twitter4J 2.0.10
+     */
+    void gotHomeTimeline(List<Status> statuses);
+
     void gotFriendsTimeline(List<Status> statuses);
 
     void gotUserTimeline(List<Status> statuses);

@@ -37,6 +37,11 @@ import java.util.List;
 public class TwitterAdapter implements TwitterListener {
     public TwitterAdapter() {
     }
+    /**
+     * @since Twitter4J 2.0.10
+     */
+    public void gotHomeTimeline(List<Status> statuses){
+    }
     public void gotPublicTimeline(List<Status> statuses){
     }
     public void gotFriendsTimeline(List<Status> statuses){

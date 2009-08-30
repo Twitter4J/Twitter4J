@@ -231,6 +231,37 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
+     * <br>This method calls http://twitter.com/statuses/home_timeline
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-home_timeline">Twitter API Wiki / Twitter REST API Method: statuses home_timeline</a>
+     * @since Twitter4J 2.0.10
+     */
+    public void getHomeTimelineAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(HOME_TIMELINE, listener,null) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotHomeTimeline(getHomeTimeline());
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
+     * <br>This method calls http://twitter.com/statuses/home_timeline
+     * @param paging controls pagination
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-home_timeline">Twitter API Wiki / Twitter REST API Method: statuses home_timeline</a>
+     * @since Twitter4J 2.0.10
+     */
+    public void getHomeTimelineAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(HOME_TIMELINE, listener,new Object[]{paging}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotHomeTimeline(getHomeTimeline((Paging)args[0]));
+            }
+        });
+    }
+
+    /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user and that user's friends.
      *  It's also possible to request another user's friends_timeline via the id parameter below.
      * @param listener a listener object that receives the response
@@ -2688,6 +2719,7 @@ public class AsyncTwitter extends Twitter {
         }
     }
     public final static int PUBLIC_TIMELINE = 0;
+    public final static int HOME_TIMELINE = 51;
     public final static int FRIENDS_TIMELINE = 1;
     public final static int USER_TIMELINE = 2;
     /**

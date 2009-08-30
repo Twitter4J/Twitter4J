@@ -68,6 +68,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    public void gotHomeTimeline(List<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
+
     public void gotFriendsTimeline(List<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
