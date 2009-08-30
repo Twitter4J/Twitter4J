@@ -273,6 +273,9 @@ public class HttpClient implements java.io.Serializable {
         return authorizationURL;
     }
 
+    /**
+     * since Twitter4J 2.0.10
+     */
     public String getAuthenticationRL() {
         return authenticationURL;
     }

@@ -45,6 +45,14 @@ public class TwitterStream extends TwitterSupport {
     private StreamHandlingThread handler = null;
     private int retryPerMinutes = 1;
 
+    /**
+     * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
+     * since Twitter4J 2.0.10
+     */
+    public TwitterStream() {
+        super();
+    }
+
     public TwitterStream(String userId, String password) {
         super(userId, password);
     }

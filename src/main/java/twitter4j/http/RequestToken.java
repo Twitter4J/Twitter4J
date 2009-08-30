@@ -49,6 +49,9 @@ public class RequestToken extends OAuthToken {
         return httpClient.getAuthorizationURL() + "?oauth_token=" + getToken();
     }
 
+    /**
+     * since Twitter4J 2.0.10
+     */
     public String getAuthenticationURL() {
         return httpClient.getAuthenticationRL() + "?oauth_token=" + getToken();
     }
