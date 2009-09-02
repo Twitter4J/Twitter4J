@@ -52,6 +52,9 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     private int inReplyToUserId;
     private boolean isFavorited;
     private String inReplyToScreenName;
+    private double latitude = -1;
+    private double longitude = -1;
+
     private static final long serialVersionUID = 1608000492860584608L;
 
     /*package*/Status(Response res, Twitter twitter) throws TwitterException {
@@ -67,6 +70,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     }
 
     public Status(String str) throws TwitterException, JSONException {
+        // StatusStream uses this constructor
         super();
         JSONObject json = new JSONObject(str);
         id = json.getLong("id");
@@ -94,6 +98,12 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         inReplyToUserId = getChildInt("in_reply_to_user_id", elem);
         isFavorited = getChildBoolean("favorited", elem);
         inReplyToScreenName = getChildText("in_reply_to_screen_name", elem);
+        NodeList georssPoint = elem.getElementsByTagName("georss:point");
+        if(1 == georssPoint.getLength()){
+            String[] point = georssPoint.item(0).getFirstChild().getNodeValue().split(" ");
+            latitude = Double.parseDouble(point[0]);
+            longitude = Double.parseDouble(point[1]);
+        }
     }
 
     /**
@@ -177,6 +187,24 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     }
 
     /**
+     * returns The location's latitude that this tweet refers to.
+     *
+     * @since Twitter4J 2.0.10
+     */
+    public double getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * returns The location's longitude that this tweet refers to.
+     *
+     * @since Twitter4J 2.0.10
+     */
+    public double getLongitude() {
+        return longitude;
+    }
+
+    /**
      * Test if the status is favorited
      *
      * @return true if favorited
@@ -250,8 +278,10 @@ public class Status extends TwitterResponse implements java.io.Serializable {
                 ", inReplyToStatusId=" + inReplyToStatusId +
                 ", inReplyToUserId=" + inReplyToUserId +
                 ", isFavorited=" + isFavorited +
+                ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
                 ", user=" + user +
                 '}';
     }
-
 }

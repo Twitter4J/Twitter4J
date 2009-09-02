@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import junit.framework.TestCase;
+import twitter4j.http.HttpClient;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -211,7 +212,40 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(twitterAPI1.verifyCredentials().getId(), status2.getInReplyToUserId());
         twitterAPI1.destroyStatus(status.getId());
     }
-    
+
+    public void testGeoLocation() throws Exception {
+        Status withgeo2 = twitterAPI1.updateStatus("with geo", 12.3456, -34.5678);
+        // not yet available
+        //        assertEquals(12.3456, withgeo2.getLatitude());
+        //        assertEquals(-34.5678, withgeo2.getLongitude());
+
+        HttpClient client = new HttpClient();
+        Status nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.xml"), new Twitter());
+        assertEquals(-1d, nogeo.getLatitude());
+        assertEquals(-1d, nogeo.getLongitude());
+        assertEquals(false, nogeo.getUser().isGeoEnabled());
+        assertEquals(false, nogeo.getUser().isVerified());
+
+        Status withgeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-withgeo.xml"), new Twitter());
+        assertEquals(37.78029, withgeo.getLatitude());
+        assertEquals(-122.39697, withgeo.getLongitude());
+        assertEquals(true, withgeo.getUser().isGeoEnabled());
+        assertEquals(true, withgeo.getUser().isVerified());
+
+//        nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.json").asString());
+//        assertEquals(-1d, nogeo.getLatitude());
+//        assertEquals(-1d, nogeo.getLongitude());
+//        assertEquals(false, nogeo.getUser().isGeoEnabled());
+//        assertEquals(false, nogeo.getUser().isVerified());
+//
+//        withgeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-withgeo.json").asString());
+//        assertEquals(37.78029, withgeo.getLatitude());
+//        assertEquals(-122.39697, withgeo.getLongitude());
+//        assertEquals(true, withgeo.getUser().isGeoEnabled());
+//        assertEquals(true, withgeo.getUser().isVerified());
+
+    }
+
     public void testGetFriendsStatuses() throws Exception{
         List<User> actualReturn = twitterAPI1.getFriendsStatuses();
         assertNotNull("friendsStatuses", actualReturn);

@@ -1151,6 +1151,27 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * The text will be trimed if the length of the text is exceeding 160 characters.
      * <br>This method calls http://twitter.com/statuses/update
      *
+     * @param status    the text of your status update
+     * @param latitude  The location's latitude that this tweet refers to.
+     * @param longitude The location's longitude that this tweet refers to.
+     * @return the latest status
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
+     * @since Twitter4J 2.0.10
+     */
+    public Status updateStatus(String status, double latitude, double longitude) throws TwitterException {
+        return new Status(http.post(getBaseURL() + "statuses/update.xml",
+                new PostParameter[]{new PostParameter("status", status),
+                        new PostParameter("lat", latitude),
+                        new PostParameter("long", longitude),
+                        new PostParameter("source", source)}, true), this);
+    }
+
+    /**
+     * Updates the user's status.
+     * The text will be trimed if the length of the text is exceeding 160 characters.
+     * <br>This method calls http://twitter.com/statuses/update
+     *
      * @param status            the text of your status update
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
      * @return the latest status
@@ -1177,6 +1198,31 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     public Status updateStatus(String status, long inReplyToStatusId) throws TwitterException {
         return new Status(http.post(getBaseURL() + "statuses/update.xml",
                 new PostParameter[]{new PostParameter("status", status), new PostParameter("in_reply_to_status_id", String.valueOf(inReplyToStatusId)), new PostParameter("source", source)}, true), this);
+    }
+
+    /**
+     * Updates the user's status.
+     * The text will be trimed if the length of the text is exceeding 160 characters.
+     * <br>This method calls http://twitter.com/statuses/update
+     *
+     * @param status            the text of your status update
+     * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
+     * @param latitude          The location's latitude that this tweet refers to.
+     * @param longitude         The location's longitude that this tweet refers to.
+     * @return the latest status
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
+     * @since Twitter4J 2.0.10
+     */
+    public Status updateStatus(String status, long inReplyToStatusId
+            , double latitude, double longitude) throws TwitterException {
+        return new Status(http.post(getBaseURL() + "statuses/update.xml",
+                new PostParameter[]{new PostParameter("status", status),
+                        new PostParameter("lat", latitude),
+                        new PostParameter("long", longitude),
+                        new PostParameter("in_reply_to_status_id",
+                                String.valueOf(inReplyToStatusId)),
+                        new PostParameter("source", source)}, true), this);
     }
 
     /**

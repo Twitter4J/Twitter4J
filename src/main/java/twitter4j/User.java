@@ -83,6 +83,8 @@ public class User extends TwitterResponse implements java.io.Serializable {
     private boolean following;
     private boolean notificationEnabled;
     private int statusesCount;
+    private boolean geoEnabled;
+    private boolean verified;
     private static final long serialVersionUID = -6345893237975349030L;
 
 
@@ -173,6 +175,8 @@ public class User extends TwitterResponse implements java.io.Serializable {
         following = getChildBoolean("following", elem);
         notificationEnabled = getChildBoolean("notifications", elem);
         statusesCount = getChildInt("statuses_count", elem);
+        geoEnabled = getChildBoolean("geo_enabled", elem);
+        verified = getChildBoolean("verified", elem);
 
         NodeList statuses = elem.getElementsByTagName("status");
         if (statuses.getLength() != 0) {
@@ -465,6 +469,23 @@ public class User extends TwitterResponse implements java.io.Serializable {
         return statusesCount;
     }
 
+    /**
+     * @return the user is enabling geo location
+     * @since Twitter4J 2.0.10
+     */
+    public boolean isGeoEnabled() {
+        return geoEnabled;
+    }
+
+    /**
+     * @return returns true if the user is a verified celebrity
+     * @since Twitter4J 2.0.10
+     */
+    public boolean isVerified() {
+        return verified;
+    }
+
+
     @Override
     public int hashCode() {
         return id;
@@ -503,6 +524,23 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 ", statusInReplyToUserId=" + statusInReplyToUserId +
                 ", statusFavorited=" + statusFavorited +
                 ", statusInReplyToScreenName='" + statusInReplyToScreenName + '\'' +
+                ", profileBackgroundColor='" + profileBackgroundColor + '\'' +
+                ", profileTextColor='" + profileTextColor + '\'' +
+                ", profileLinkColor='" + profileLinkColor + '\'' +
+                ", profileSidebarFillColor='" + profileSidebarFillColor + '\'' +
+                ", profileSidebarBorderColor='" + profileSidebarBorderColor + '\'' +
+                ", friendsCount=" + friendsCount +
+                ", createdAt=" + createdAt +
+                ", favouritesCount=" + favouritesCount +
+                ", utcOffset=" + utcOffset +
+                ", timeZone='" + timeZone + '\'' +
+                ", profileBackgroundImageUrl='" + profileBackgroundImageUrl + '\'' +
+                ", profileBackgroundTile='" + profileBackgroundTile + '\'' +
+                ", following=" + following +
+                ", notificationEnabled=" + notificationEnabled +
+                ", statusesCount=" + statusesCount +
+                ", geoEnabled=" + geoEnabled +
+                ", verified=" + verified +
                 '}';
     }
 }
