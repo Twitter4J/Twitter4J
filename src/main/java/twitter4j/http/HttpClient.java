@@ -606,10 +606,46 @@ public class HttpClient implements java.io.Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HttpClient)) return false;
+
+        HttpClient that = (HttpClient) o;
+
+        if (connectionTimeout != that.connectionTimeout) return false;
+        if (proxyPort != that.proxyPort) return false;
+        if (readTimeout != that.readTimeout) return false;
+        if (retryCount != that.retryCount) return false;
+        if (retryIntervalMillis != that.retryIntervalMillis) return false;
+        if (accessTokenURL != null ? !accessTokenURL.equals(that.accessTokenURL) : that.accessTokenURL != null)
+            return false;
+        if (!authenticationURL.equals(that.authenticationURL)) return false;
+        if (!authorizationURL.equals(that.authorizationURL)) return false;
+        if (basic != null ? !basic.equals(that.basic) : that.basic != null)
+            return false;
+        if (oauth != null ? !oauth.equals(that.oauth) : that.oauth != null)
+            return false;
+        if (oauthToken != null ? !oauthToken.equals(that.oauthToken) : that.oauthToken != null)
+            return false;
+        if (password != null ? !password.equals(that.password) : that.password != null)
+            return false;
+        if (proxyAuthPassword != null ? !proxyAuthPassword.equals(that.proxyAuthPassword) : that.proxyAuthPassword != null)
+            return false;
+        if (proxyAuthUser != null ? !proxyAuthUser.equals(that.proxyAuthUser) : that.proxyAuthUser != null)
+            return false;
+        if (proxyHost != null ? !proxyHost.equals(that.proxyHost) : that.proxyHost != null)
+            return false;
+        if (!requestHeaders.equals(that.requestHeaders)) return false;
+        if (!requestTokenURL.equals(that.requestTokenURL)) return false;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
     public int hashCode() {
-        int result = OK;
-        result = 31 * result + (DEBUG ? 1 : 0);
-        result = 31 * result + (basic != null ? basic.hashCode() : 0);
+        int result = basic != null ? basic.hashCode() : 0;
         result = 31 * result + retryCount;
         result = 31 * result + retryIntervalMillis;
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
@@ -620,26 +656,14 @@ public class HttpClient implements java.io.Serializable {
         result = 31 * result + (proxyAuthPassword != null ? proxyAuthPassword.hashCode() : 0);
         result = 31 * result + connectionTimeout;
         result = 31 * result + readTimeout;
-        result = 31 * result + (isJDK14orEarlier ? 1 : 0);
-        result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
+        result = 31 * result + requestHeaders.hashCode();
+        result = 31 * result + (oauth != null ? oauth.hashCode() : 0);
+        result = 31 * result + requestTokenURL.hashCode();
+        result = 31 * result + authorizationURL.hashCode();
+        result = 31 * result + authenticationURL.hashCode();
+        result = 31 * result + (accessTokenURL != null ? accessTokenURL.hashCode() : 0);
+        result = 31 * result + (oauthToken != null ? oauthToken.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof HttpClient) {
-            HttpClient that = (HttpClient) obj;
-            return this.retryIntervalMillis
-                            == that.retryIntervalMillis && this.basic.equals(that.basic)
-                    && this.requestHeaders.equals(that.requestHeaders);
-        }
-        return false;
     }
 
     private static void log(String message) {

@@ -88,6 +88,14 @@ public class OAuthTest extends TwitterTestUnit {
 
     }
 
+    public void testDeterministic() throws Exception{
+        Twitter twitter1 = new Twitter();
+        twitter1.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        Twitter twitter2 = new Twitter();
+        twitter2.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        assertEquals(twitter1, twitter2);
+    }
+
     public void testDesktopClient() throws Exception{
         RequestToken rt;
         Twitter twitter = new Twitter();
