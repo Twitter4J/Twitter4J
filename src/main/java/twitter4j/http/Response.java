@@ -218,7 +218,7 @@ public class Response {
         con.disconnect();
     }
 
-    private static Pattern escaped = Pattern.compile("&#([0-9]{5});");
+    private static Pattern escaped = Pattern.compile("&#([0-9]{3,5});");
 
     /**
      * Unescape UTF-8 escaped characters to string.
