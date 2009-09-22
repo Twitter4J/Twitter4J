@@ -212,6 +212,73 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(twitterAPI1.verifyCredentials().getId(), status2.getInReplyToUserId());
         twitterAPI1.destroyStatus(status.getId());
     }
+    public void testRetweetMethods() throws Exception {
+        HttpClient client = new HttpClient();
+        Status withRetweet = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-with-retweet.xml"), new Twitter());
+        assertTrue(withRetweet.isRetweet());
+        assertEquals(2245122541l, withRetweet.getRetweetDetails().getRetweetId());
+        assertEquals(new Date(1245451273000l)/*Sat Jun 20 07:41:13 JST 2009*/
+                , withRetweet.getRetweetDetails().getRetweetedAt());
+        assertEquals(3191321,withRetweet.getRetweetDetails().getRetweetingUser().getId());
+        assertEquals("Prabhakar Ragde",withRetweet.getUser().getName());
+        assertEquals("plragde",withRetweet.getUser().getScreenName());
+        assertEquals("Marcel Molina",withRetweet.getRetweetDetails().getRetweetingUser().getName());
+        assertEquals("noradio",withRetweet.getRetweetDetails().getRetweetingUser().getScreenName());
+        try {
+            twitterAPI1.retweetStatus(2245071380l);
+        } catch (TwitterException te) {
+            // retweet api is not yet availble
+            assertEquals(404, te.getStatusCode());
+        }
+        List<RetweetDetails> retweets = RetweetDetails.createRetweetDetails(client.get("http://yusuke.homeip.net/twitter4j/en/retweets.xml"), new Twitter());
+        assertEquals(2, retweets.size());
+        assertEquals(4017285870l,retweets.get(0).getRetweetId());
+        assertEquals(4013267275l,retweets.get(1).getRetweetId());
+
+        try {
+            twitterAPI1.getRetweetedByMe();
+        } catch (TwitterException te) {
+            // retweet api is not yet availble
+            assertEquals(404, te.getStatusCode());
+        }
+        try {
+            twitterAPI1.getRetweetedByMe(new Paging(1));
+        } catch (TwitterException te) {
+            // retweet api is not yet availble
+            assertEquals(404, te.getStatusCode());
+        }
+        try {
+            twitterAPI1.getRetweetedToMe();
+        } catch (TwitterException te) {
+            // retweet api is not yet availble
+            assertEquals(404, te.getStatusCode());
+        }
+        try {
+            twitterAPI1.getRetweetedToMe(new Paging(1));
+        } catch (TwitterException te) {
+            // retweet api is not yet availble
+            assertEquals(404, te.getStatusCode());
+        }
+        try {
+            twitterAPI1.getRetweetsOfMe();
+        } catch (TwitterException te) {
+            // retweet api is not yet availble
+            assertEquals(404, te.getStatusCode());
+        }
+        try {
+            twitterAPI1.getRetweetsOfMe(new Paging(1));
+        } catch (TwitterException te) {
+            // retweet api is not yet availble
+            assertEquals(404, te.getStatusCode());
+        }
+
+        try {
+            twitterAPI1.getRetweets(1000);
+        } catch (TwitterException te) {
+            // retweet api is not yet availble
+            assertEquals(404, te.getStatusCode());
+        }
+    }
 
     public void testGeoLocation() throws Exception {
         Status withgeo2 = twitterAPI1.updateStatus("with geo", 12.3456, -34.5678);

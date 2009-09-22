@@ -1071,6 +1071,94 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
+     * Returns the 20 most recent retweets posted by the authenticating user.
+     * <br>This method calls http://twitter.com/statuses/retweeted_by_me
+     *
+     * @return the 20 most recent retweets posted by the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_by_me">Twitter API Wiki / Twitter REST API Method: statuses/retweeted_by_me</a>
+     */
+    public List<Status> getRetweetedByMe() throws TwitterException {
+        return Status.constructStatuses(get(getBaseURL() + "statuses/retweeted_by_me.xml",
+                null, true), this);
+    }
+
+    /**
+     * Returns the 20 most recent retweets posted by the authenticating user.
+     * <br>This method calls http://twitter.com/statuses/retweeted_by_me
+     *
+     * @param paging controls pagination
+     * @return the 20 most recent retweets posted by the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_by_me">Twitter API Wiki / Twitter REST API Method: statuses/retweeted_by_me</a>
+     */
+    public List<Status> getRetweetedByMe(Paging paging) throws TwitterException {
+        return Status.constructStatuses(get(getBaseURL() + "statuses/retweeted_by_me.xml",
+                null, paging, true), this);
+    }
+
+    /**
+     * Returns the 20 most recent retweets posted by the authenticating user's friends.
+     * <br>This method calls http://twitter.com/statuses/retweeted_to_me
+     *
+     * @return the 20 most recent retweets posted by the authenticating user's friends.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_to_me">Twitter API Wiki / Twitter REST API Method: statuses/retweeted_to_me</a>
+     */
+    public List<Status> getRetweetedToMe() throws TwitterException {
+        return Status.constructStatuses(get(getBaseURL() + "statuses/retweeted_to_me.xml",
+                null, true), this);
+    }
+
+    /**
+     * Returns the 20 most recent retweets posted by the authenticating user's friends.
+     * <br>This method calls http://twitter.com/statuses/retweeted_to_me
+     *
+     * @param paging controls pagination
+     * @return the 20 most recent retweets posted by the authenticating user's friends.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_to_me">Twitter API Wiki / Twitter REST API Method: statuses/retweeted_to_me</a>
+     */
+    public List<Status> getRetweetedToMe(Paging paging) throws TwitterException {
+        return Status.constructStatuses(get(getBaseURL() + "statuses/retweeted_to_me.xml",
+                null, paging, true), this);
+    }
+
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://twitter.com/statuses/retweets_of_me
+     *
+     * @return the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweets_of_me">Twitter API Wiki / Twitter REST API Method: statuses/retweets_of_me</a>
+     */
+    public List<Status> getRetweetsOfMe() throws TwitterException {
+        return Status.constructStatuses(get(getBaseURL() + "statuses/retweets_of_me.xml",
+                null, true), this);
+    }
+
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://twitter.com/statuses/retweets_of_me
+     *
+     * @param paging controls pagination
+     * @return the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweets_of_me">Twitter API Wiki / Twitter REST API Method: statuses/retweets_of_me</a>
+     */
+    public List<Status> getRetweetsOfMe(Paging paging) throws TwitterException {
+        return Status.constructStatuses(get(getBaseURL() + "statuses/retweets_of_me.xml",
+                null, paging, true), this);
+    }
+
+
+    /**
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
      * <br>This method calls http://twitter.com/statuses/show
      *
@@ -1080,7 +1168,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @deprecated Use showStatus(long id) instead.
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0show">Twitter API Wiki / Twitter REST API Method: statuses show</a>
      */
-
     public Status show(int id) throws TwitterException {
         return showStatus((long)id);
     }
@@ -1238,6 +1325,36 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     public Status destroyStatus(long statusId) throws TwitterException {
         return new Status(http.post(getBaseURL() + "statuses/destroy/" + statusId + ".xml",
                 new PostParameter[0], true), this);
+    }
+
+    /**
+     * Retweets a tweet. Requires the id parameter of the tweet you are retweeting. Returns the original tweet with retweet details embedded.
+     * <br>This method calls http://twitter.com/statuses/retweet
+     *
+     * @param statusId The ID of the status to retweet.
+     * @return the retweeted status
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweet">Twitter API Wiki / Twitter REST API Method: statuses retweet</a>
+     */
+    public Status retweetStatus(long statusId) throws TwitterException {
+        return new Status(http.post(getBaseURL() + "statuses/retweet/" + statusId + ".xml",
+                new PostParameter[0], true), this);
+    }
+
+    /**
+     * Returns up to 100 of the first retweets of a given tweet.
+     * <br>This method calls http://twitter.com/statuses/retweets
+     *
+     * @param statusId The numerical ID of the tweet you want the retweets of.
+     * @return the retweets of a given tweet
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweets">Twitter API Wiki / Twitter REST API Method: statuses retweets</a>
+     */
+    public List<RetweetDetails> getRetweets(long statusId) throws TwitterException {
+        return RetweetDetails.createRetweetDetails(get(getBaseURL()
+                + "statuses/retweets/" + statusId + ".xml", true), this);
     }
 
     /**

@@ -73,8 +73,25 @@ public interface TwitterListener {
      * @since Twitter4J 2.0.1
      */
     void gotMentions(List<Status> statuses);
+    /**
+     * @since Twitter4J 2.0.10
+     */
+    void gotRetweetedByMe(List<Status> statuses);
+    /**
+     * @since Twitter4J 2.0.10
+     */
+    void gotRetweetedToMe(List<Status> statuses);
+    /**
+     * @since Twitter4J 2.0.10
+     */
+    void gotRetweetsOfMe(List<Status> statuses);
 
     void destroyedStatus(Status destroyedStatus);
+
+    /**
+     * @since Twitter4J 2.0.10
+     */
+    void retweetedStatus(Status retweetedStatus);
 
     void gotFriends(List<User> users);
 

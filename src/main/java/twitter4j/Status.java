@@ -55,6 +55,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     private double latitude = -1;
     private double longitude = -1;
 
+    private RetweetDetails retweetDetails;
     private static final long serialVersionUID = 1608000492860584608L;
 
     /*package*/Status(Response res, Twitter twitter) throws TwitterException {
@@ -103,6 +104,10 @@ public class Status extends TwitterResponse implements java.io.Serializable {
             String[] point = georssPoint.item(0).getFirstChild().getNodeValue().split(" ");
             latitude = Double.parseDouble(point[0]);
             longitude = Double.parseDouble(point[1]);
+        }
+        NodeList retweetDetailsNode = elem.getElementsByTagName("retweet_details");
+        if(1 == retweetDetailsNode.getLength()){
+            retweetDetails = new RetweetDetails(res,(Element)retweetDetailsNode.item(0),twitter);
         }
     }
 
@@ -226,6 +231,23 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         return user;
     }
 
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    public boolean isRetweet(){
+        return null != retweetDetails;
+    }
+
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    public RetweetDetails getRetweetDetails() {
+        return retweetDetails;
+    }
+
+
     /*package*/
     static List<Status> constructStatuses(Response res,
                                           Twitter twitter) throws TwitterException {
@@ -281,6 +303,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
                 ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
+                ", retweetDetails=" + retweetDetails +
                 ", user=" + user +
                 '}';
     }

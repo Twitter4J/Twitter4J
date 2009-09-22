@@ -113,8 +113,30 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    public void gotRetweetedByMe(List<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
+
+    public void gotRetweetedToMe(List<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
+
+    public void gotRetweetsOfMe(List<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
+
     public void destroyedStatus(Status destroyedStatus) {
         this.status = destroyedStatus;
+        notifyResponse();
+    }
+    /**
+     * @since Twitter4J 2.0.10
+     */
+    public void retweetedStatus(Status retweetedStatus) {
+        this.status = retweetedStatus;
         notifyResponse();
     }
 

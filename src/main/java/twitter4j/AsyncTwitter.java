@@ -701,6 +701,99 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
+     * Returns the 20 most recent retweets posted by the authenticating user.
+     * <br>This method calls http://twitter.com/statuses/retweeted_by_me
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_by_me">Twitter API Wiki / Twitter REST API Method: statuses/retweeted_by_me</a>
+     */
+    public void getRetweetedByMeAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY_ME, listener, null) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotRetweetedByMe(getRetweetedByMe());
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent retweets posted by the authenticating user.
+     * <br>This method calls http://twitter.com/statuses/retweeted_by_me
+     * @param paging controls pagination
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_by_me">Twitter API Wiki / Twitter REST API Method: statuses/retweeted_by_me</a>
+     */
+    public void getRetweetedByMeAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY_ME, listener, new Object[]{paging}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotRetweetedByMe(getRetweetedByMe((Paging)args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent retweets posted by the authenticating user's friends.
+     * <br>This method calls http://twitter.com/statuses/retweeted_to_me
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_to_me">Twitter API Wiki / Twitter REST API Method: statuses/retweeted_to_me</a>
+     */
+    public void getRetweetedToMeAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_TO_ME, listener, null) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotRetweetedToMe(getRetweetedToMe());
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent retweets posted by the authenticating user's friends.
+     * <br>This method calls http://twitter.com/statuses/retweeted_to_me
+     * @param paging controls pagination
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweeted_to_me">Twitter API Wiki / Twitter REST API Method: statuses/retweeted_to_me</a>
+     */
+    public void getRetweetedToMeAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_TO_ME, listener, new Object[]{paging}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotRetweetedToMe(getRetweetedToMe((Paging)args[0]));
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://twitter.com/statuses/retweets_of_me
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweets_of_me">Twitter API Wiki / Twitter REST API Method: statuses/retweets_of_me</a>
+     */
+    public void getRetweetsOfMeAsync(TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETS_OF_ME, listener, null) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotRetweetsOfMe(getRetweetsOfMe());
+            }
+        });
+    }
+
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://twitter.com/statuses/retweets_of_me
+     * @param paging controls pagination
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweets_of_me">Twitter API Wiki / Twitter REST API Method: statuses/retweets_of_me</a>
+     */
+    public void getRetweetsOfMeAsync(Paging paging, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETS_OF_ME, listener, new Object[]{paging}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.gotRetweetsOfMe(getRetweetsOfMe((Paging)args[0]));
+            }
+        });
+    }
+
+    /**
      * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
      * <br>This method calls http://twitter.com/statuses/mentions
      * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
@@ -1021,6 +1114,34 @@ public class AsyncTwitter extends Twitter {
                 listener.destroyedStatus(destroyStatus(((Long) args[0])));
             }
         });
+    }
+
+
+    /**
+     * Retweets a tweet. Requires the id parameter of the tweet you are retweeting. Returns the original tweet with retweet details embedded.
+     * <br>This method calls http://twitter.com/statuses/retweet
+     * @param statusId The ID of the status to retweet.
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweet">Twitter API Wiki / Twitter REST API Method: statuses retweet</a>
+     */
+    public void retweetStatusAsync(long statusId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEET_STATUS, listener, new Long[]{statusId}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.retweetedStatus(retweetStatus(((Long) args[0])));
+            }
+        });
+    }
+
+    /**
+     * Retweets a tweet. Requires the id parameter of the tweet you are retweeting. Returns the original tweet with retweet details embedded.
+     * <br>This method calls http://twitter.com/statuses/retweet
+     * @param statusId The ID of the status to retweet.
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweet">Twitter API Wiki / Twitter REST API Method: statuses retweet</a>
+     */
+    public void retweetStatusAsync(long statusId) {
+        retweetStatusAsync(statusId, new TwitterAdapter());
     }
 
     /**
@@ -2861,6 +2982,9 @@ public class AsyncTwitter extends Twitter {
      */
     public final static int REPLIES = 5;
     public final static int MENTIONS = 37;
+    public final static int RETWEETED_BY_ME = 53;
+    public final static int RETWEETED_TO_ME = 54;
+    public final static int RETWEETS_OF_ME = 55;
     public final static int FRIENDS = 6;
     public final static int FOLLOWERS = 7;
     public final static int FEATURED = 8;
@@ -2927,6 +3051,7 @@ public class AsyncTwitter extends Twitter {
      */
     public final static int GET_DOWNTIME_SCHEDULE = 25;
     public final static int DESTROY_STATUS = 26;
+    public final static int RETWEET_STATUS = 52;
     public final static int SEARCH = 27;
 
     public final static int TRENDS = 44;

@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class User extends TwitterResponse implements java.io.Serializable {
 
-    static final String[] POSSIBLE_ROOT_NAMES = new String[]{"user", "sender", "recipient"};
+    static final String[] POSSIBLE_ROOT_NAMES = new String[]{"user", "sender", "recipient", "retweeting_user"};
     private Twitter twitter;
     private int id;
     private String name;
