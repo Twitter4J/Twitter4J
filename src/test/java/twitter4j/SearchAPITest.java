@@ -110,31 +110,38 @@ public class SearchAPITest extends TestCase {
     public void testTrends() throws Exception{
         Trends trends;
         trends = unauthenticated.getTrends();
+
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
         assertEquals(10, trends.getTrends().length);
         for (int i = 0; i < 10; i++) {
             assertNotNull(trends.getTrends()[i].getName());
             assertNotNull(trends.getTrends()[i].getUrl());
             assertNull(trends.getTrends()[i].getQuery());
+            trends.getTrends()[i].hashCode();
+            trends.getTrends()[i].toString();
         }
 
         trends = unauthenticated.getCurrentTrends();
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
         assertEquals(10, trends.getTrends().length);
-        for(Trend trend : trends.getTrends()){
-                assertNotNull(trend.getName());
-                assertNull(trend.getUrl());
-                assertNotNull(trend.getQuery());
+        for (Trend trend : trends.getTrends()) {
+            assertNotNull(trend.getName());
+            assertNull(trend.getUrl());
+            assertNotNull(trend.getQuery());
+            trend.hashCode();
+            trend.toString();
         }
 
         trends = unauthenticated.getCurrentTrends(true);
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
         Trend[] trendArray = trends.getTrends();
         assertEquals(10, trendArray.length);
-        for(Trend trend : trends.getTrends()){
-                assertNotNull(trend.getName());
-                assertNull(trend.getUrl());
-                assertNotNull(trend.getQuery());
+        for (Trend trend : trends.getTrends()) {
+            assertNotNull(trend.getName());
+            assertNull(trend.getUrl());
+            assertNotNull(trend.getQuery());
+            trend.hashCode();
+            trend.toString();
         }
 
         List<Trends> trendsList;

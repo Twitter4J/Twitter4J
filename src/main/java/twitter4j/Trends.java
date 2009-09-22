@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Collections;
+import java.util.Arrays;
 
 /**
  * A data class representing Treands.
@@ -138,5 +139,38 @@ public class Trends extends TwitterResponse implements Comparable<Trends> {
 
     public Date getTrendAt() {
         return trendAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Trends)) return false;
+
+        Trends trends1 = (Trends) o;
+
+        if (asOf != null ? !asOf.equals(trends1.asOf) : trends1.asOf != null)
+            return false;
+        if (trendAt != null ? !trendAt.equals(trends1.trendAt) : trends1.trendAt != null)
+            return false;
+        if (!Arrays.equals(trends, trends1.trends)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = asOf != null ? asOf.hashCode() : 0;
+        result = 31 * result + (trendAt != null ? trendAt.hashCode() : 0);
+        result = 31 * result + (trends != null ? Arrays.hashCode(trends) : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Trends{" +
+                "asOf=" + asOf +
+                ", trendAt=" + trendAt +
+                ", trends=" + (trends == null ? null : Arrays.asList(trends)) +
+                '}';
     }
 }
