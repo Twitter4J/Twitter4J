@@ -296,7 +296,10 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(obamaFriends.hasNext());
         assertTrue(obamaFriends.hasPrevious());
 
-        twitterAPI2.createFriendship(id1);
+        try{
+            twitterAPI2.createFriendship(id1);
+        } catch (TwitterException ignore) {
+        }
         ids = twitterAPI1.getFollowersIDs();
         assertIDExsits("twit4j2 is following twit4j", ids, 6377362);
         ids = twitterAPI1.getFollowersIDs(28074579);
