@@ -1896,7 +1896,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
      */
     public IDs getFriendsIDs() throws TwitterException {
-        return new IDs(get(getBaseURL() + "friends/ids.xml", true));
+        return getFriendsIDs(-1l);
     }
 
     /**
@@ -1906,13 +1906,27 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     * @deprecated use getFriendsIDs(long cursor) instead
      */
     public IDs getFriendsIDs(Paging paging) throws TwitterException {
         return new IDs(get(getBaseURL() + "friends/ids.xml", null, paging, true));
     }
 
     /**
-     * Returns an array of numeric IDs for every user the specified user is following.
+     * Returns an array of numeric IDs for every user the authenticating user is following.
+     * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @return an array of numeric IDs for every user the authenticating user is following
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     */
+    public IDs getFriendsIDs(long cursor) throws TwitterException {
+        return new IDs(get(getBaseURL() + "friends/ids.xml?cursor=" + cursor, true));
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.<br>
+     * all IDs are attempted to be returned, but large sets of IDs will likely fail with timeout errors.
      * @param userId Specfies the ID of the user for whom to return the friends list.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1920,21 +1934,36 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
      */
     public IDs getFriendsIDs(int userId) throws TwitterException {
-        return new IDs(get(getBaseURL() + "friends/ids.xml?user_id=" + userId, true));
+        return getFriendsIDs(userId, -1l);
     }
 
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
-     * @param userId Specfies the ID of the user for whom to return the friends list.
+     * @param userId Specifies the ID of the user for whom to return the friends list.
      * @param paging Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     * @deprecated use getFriendsIDs(int userId, long cursor) instead
      */
     public IDs getFriendsIDs(int userId, Paging paging) throws TwitterException {
         return new IDs(get(getBaseURL() + "friends/ids.xml?user_id=" + userId, null
                 , paging, true));
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     * @param userId Specifies the ID of the user for whom to return the friends list.
+     * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @return an array of numeric IDs for every user the specified user is following
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     */
+    public IDs getFriendsIDs(int userId, long cursor) throws TwitterException {
+        return new IDs(get(getBaseURL() + "friends/ids.xml?user_id=" + userId +
+                "&cursor=" + cursor, true));
     }
 
     /**
@@ -1946,7 +1975,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
      */
     public IDs getFriendsIDs(String screenName) throws TwitterException {
-        return new IDs(get(getBaseURL() + "friends/ids.xml?screen_name=" + screenName, true));
+        return getFriendsIDs(screenName, -1l);
     }
 
     /**
@@ -1957,10 +1986,25 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     * @deprecated use getFriendsIDs(String screenName, long cursor) instead
      */
     public IDs getFriendsIDs(String screenName, Paging paging) throws TwitterException {
         return new IDs(get(getBaseURL() + "friends/ids.xml?screen_name=" + screenName
                 , null, paging, true));
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     * @param screenName Specfies the screen name of the user for whom to return the friends list.
+     * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @return an array of numeric IDs for every user the specified user is following
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     */
+    public IDs getFriendsIDs(String screenName, long cursor) throws TwitterException {
+        return new IDs(get(getBaseURL() + "friends/ids.xml?screen_name=" + screenName
+                + "&cursor=" + cursor, true));
     }
 
     /**
@@ -1971,7 +2015,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
      */
     public IDs getFollowersIDs() throws TwitterException {
-        return new IDs(get(getBaseURL() + "followers/ids.xml", true));
+        return getFollowersIDs(-1l);
     }
 
     /**
@@ -1981,9 +2025,23 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @deprecated use getFollowersIDs(long cursor) instead
      */
     public IDs getFollowersIDs(Paging paging) throws TwitterException {
         return new IDs(get(getBaseURL() + "followers/ids.xml", null, paging
+                , true));
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * @return The ID or screen_name of the user to retrieve the friends ID list for.
+     * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     */
+    public IDs getFollowersIDs(long cursor) throws TwitterException {
+        return new IDs(get(getBaseURL() + "followers/ids.xml?cursor=" + cursor
                 , true));
     }
 
@@ -1996,7 +2054,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
      */
     public IDs getFollowersIDs(int userId) throws TwitterException {
-        return new IDs(get(getBaseURL() + "followers/ids.xml?user_id=" + userId, true));
+        return getFollowersIDs(userId, -1l);
     }
 
     /**
@@ -2007,10 +2065,25 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @deprecated use getFollowersIDs(int userId, long cursor) instead
      */
     public IDs getFollowersIDs(int userId, Paging paging) throws TwitterException {
         return new IDs(get(getBaseURL() + "followers/ids.xml?user_id=" + userId, null
                 , paging, true));
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * @param userId Specifies the ID of the user for whom to return the followers list.
+     * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @return The ID or screen_name of the user to retrieve the friends ID list for.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     */
+    public IDs getFollowersIDs(int userId, long cursor) throws TwitterException {
+        return new IDs(get(getBaseURL() + "followers/ids.xml?user_id=" + userId
+                + "&cursor=" + cursor, true));
     }
 
     /**
@@ -2022,7 +2095,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
      */
     public IDs getFollowersIDs(String screenName) throws TwitterException {
-        return new IDs(get(getBaseURL() + "followers/ids.xml?screen_name=" + screenName, true));
+        return getFollowersIDs(screenName, -1l);
     }
 
     /**
@@ -2033,10 +2106,25 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @deprecated use getFollowersIDs(String screenName, long cursor) instead
      */
     public IDs getFollowersIDs(String screenName, Paging paging) throws TwitterException {
         return new IDs(get(getBaseURL() + "followers/ids.xml?screen_name="
                 + screenName, null, paging, true));
+    }
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * @param screenName Specfies the screen name of the user for whom to return the followers list.
+     * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @return The ID or screen_name of the user to retrieve the friends ID list for.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     */
+    public IDs getFollowersIDs(String screenName, long cursor) throws TwitterException {
+        return new IDs(get(getBaseURL() + "followers/ids.xml?screen_name="
+                + screenName + "&cursor=" + cursor, true));
     }
 
     /**

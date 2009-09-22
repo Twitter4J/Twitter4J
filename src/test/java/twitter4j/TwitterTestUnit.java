@@ -266,10 +266,39 @@ public class TwitterTestUnit extends TestCase {
         assertIDExsits("JBossNewsJP is following RedHatNewsJP", ids, RedHatNewsJP);
         ids = twitterAPI1.getFriendsIDs("RedHatNewsJP");
         assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074579);
+        IDs obamaFollowers;
+        obamaFollowers = twitterAPI1.getFollowersIDs("barackobama");
+        assertTrue(obamaFollowers.hasNext());
+        assertFalse(obamaFollowers.hasPrevious());
+        obamaFollowers = twitterAPI1.getFollowersIDs("barackobama", obamaFollowers.getNextCursor());
+        assertTrue(obamaFollowers.hasNext());
+        assertTrue(obamaFollowers.hasPrevious());
 
-        followEachOther();
+        obamaFollowers = twitterAPI1.getFollowersIDs(813286);
+        assertTrue(obamaFollowers.hasNext());
+        assertFalse(obamaFollowers.hasPrevious());
+        obamaFollowers = twitterAPI1.getFollowersIDs(813286, obamaFollowers.getNextCursor());
+        assertTrue(obamaFollowers.hasNext());
+        assertTrue(obamaFollowers.hasPrevious());
+
+        IDs obamaFriends;
+        obamaFriends = twitterAPI1.getFriendsIDs("barackobama");
+        assertTrue(obamaFriends.hasNext());
+        assertFalse(obamaFriends.hasPrevious());
+        obamaFriends = twitterAPI1.getFriendsIDs("barackobama", obamaFriends.getNextCursor());
+        assertTrue(obamaFriends.hasNext());
+        assertTrue(obamaFriends.hasPrevious());
+
+        obamaFriends = twitterAPI1.getFriendsIDs(813286);
+        assertTrue(obamaFriends.hasNext());
+        assertFalse(obamaFriends.hasPrevious());
+        obamaFriends = twitterAPI1.getFriendsIDs(813286, obamaFriends.getNextCursor());
+        assertTrue(obamaFriends.hasNext());
+        assertTrue(obamaFriends.hasPrevious());
+
+        twitterAPI2.createFriendship(id1);
         ids = twitterAPI1.getFollowersIDs();
-        assertTrue("number of followers", ids.getIDs().length > 1);
+        assertIDExsits("twit4j2 is following twit4j", ids, 6377362);
         ids = twitterAPI1.getFollowersIDs(28074579);
         assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
         ids = twitterAPI1.getFollowersIDs("JBossNewsJP");

@@ -39,12 +39,15 @@ import java.util.Arrays;
  */
 public class IDs extends TwitterResponse {
     private int[] ids;
+    private long previousCursor;
+    private long nextCursor;
     private static final long serialVersionUID = -6585026560164704953L;
+    private static String[] ROOT_NODE_NAMES = {"id_list", "ids"};
 
     /*package*/ IDs(Response res) throws TwitterException {
         super(res);
         Element elem = res.asDocument().getDocumentElement();
-        ensureRootNodeNameIs("ids", elem);
+        ensureRootNodeNameIs(ROOT_NODE_NAMES, elem);
         NodeList idlist = elem.getElementsByTagName("id");
         ids = new int[idlist.getLength()];
         for (int i = 0; i < idlist.getLength(); i++) {
@@ -54,10 +57,44 @@ public class IDs extends TwitterResponse {
                 throw new TwitterException("Twitter API returned malformed response: " + elem, nfe);
             }
         }
+        previousCursor = getChildLong("previous_cursor", elem);
+        nextCursor = getChildLong("next_cursor", elem);
     }
 
     public int[] getIDs() {
         return ids;
+    }
+
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    public boolean hasPrevious(){
+        return 0 != previousCursor;
+    }
+
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    public long getPreviousCursor() {
+        return previousCursor;
+    }
+
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    public boolean hasNext(){
+        return 0 != nextCursor;
+    }
+
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    public long getNextCursor() {
+        return nextCursor;
     }
 
     @Override
@@ -80,7 +117,9 @@ public class IDs extends TwitterResponse {
     @Override
     public String toString() {
         return "IDs{" +
-                "ids=" + (ids == null ? null : Arrays.asList(ids)) +
+                "ids=" + ids +
+                ", previousCursor=" + previousCursor +
+                ", nextCursor=" + nextCursor +
                 '}';
     }
 }
