@@ -61,8 +61,8 @@ public class StreamAPITest extends TestCase implements StatusListener {
         super.tearDown();
     }
 
-    public void testSpritzerPull() throws Exception {
-        StatusStream stream = twitterStream.getSpritzerStream();
+    public void testSamplePull() throws Exception {
+        StatusStream stream = twitterStream.getSampleStream();
         Status status;
         for (int i = 0; i < 10; i++) {
             status = stream.next();
@@ -73,43 +73,26 @@ public class StreamAPITest extends TestCase implements StatusListener {
         stream.close();
     }
 
-    public void testSpritzerPush() throws Exception {
-        twitterStream.spritzer();
+    public void testSamplePush() throws Exception {
+        twitterStream.sample();
         waitForStatus();
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
         twitterStream.cleanup();
     }
-//    public void testFollowPull() throws Exception {
-//        twitterStream.setHttpReadTimeout(40000);
-//        StatusStream stream = twitterStream.getFollowStream(new int[]{6358482});
-//
-//        TestThread testThread = new TestThread();
-//        testThread.start();
-//
-//        Status status;
-//        status = stream.next();
-//        assertTrue(-1 != status.getText().indexOf("streaming test"));
-//        assertTrue(-1 != status.getSource().indexOf("Twitter4J"));
-//        stream.close();
-//    }
 
-    //    public void testFollowPush() throws Exception {
-//        twitterStream.setHttpReadTimeout(40000);
+//    public void testFilterFollowPush() throws Exception {
+//        twitterStream.setHttpReadTimeout(Integer.MAX_VALUE);
 //        status = null;
-//        twitterStream.follow(new int[]{6358482,42419133});
-//        Thread.sleep(40000);
-//        TestThread testThread = new TestThread();
-//        testThread.start();
+//        twitterStream.filter(0, new int[]{18713}, null);
 //        waitForStatus();
-//        if (null != status) {
-//            assertNotNull(status.getText());
-//            assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
-//        }
+//        assertNotNull(status);
+//        assertNotNull(status.getText());
+//        assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
 //        twitterStream.cleanup();
 //    }
-    public void testTrackPush() throws Exception {
-        twitterStream.track(new String[]{"twitter", "iphone"});
+    public void testFilterTrackPush() throws Exception {
+        twitterStream.filter(0,null, new String[]{"twitter", "iphone"});
         waitForStatus();
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
@@ -140,29 +123,18 @@ public class StreamAPITest extends TestCase implements StatusListener {
     }
 
     public void testUnAuthorizedStreamMethods() throws Exception {
+        twitterStream = new TwitterStream();
         try {
             StatusStream stream = twitterStream.getFirehoseStream(0);
             fail();
+        } catch (IllegalStateException ise) {
         } catch (TwitterException te) {
 
         }
         try {
-            StatusStream stream = twitterStream.getGardenhoseStream();
+            StatusStream stream = twitterStream.getFilterStream(0, new int[]{6358482}, null);
             fail();
-        } catch (TwitterException te) {
-            // User not in required role
-            assertEquals(403, te.getStatusCode());
-        }
-        try {
-            StatusStream stream = twitterStream.getBirddogStream(0, new int[]{6358482});
-            fail();
-        } catch (TwitterException te) {
-            // User not in required role
-            assertEquals(403, te.getStatusCode());
-        }
-        try {
-            StatusStream stream = twitterStream.getShadowStream(0, new int[]{6358482});
-            fail();
+        } catch (IllegalStateException ise) {
         } catch (TwitterException te) {
             // User not in required role
             assertEquals(403, te.getStatusCode());
@@ -175,7 +147,8 @@ public class StreamAPITest extends TestCase implements StatusListener {
 
     private synchronized void waitForStatus() {
         try {
-            this.wait(30000);
+            this.wait(Integer.MAX_VALUE);
+            System.out.println("notified.");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

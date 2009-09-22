@@ -81,7 +81,7 @@ public class TwitterStream extends TwitterSupport {
     }
 
     /**
-     * Returns a status stream for all public statuses. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the firehose. If your service warrants access to it, we'll contact you.
+     * Returns a status stream of all public statuses. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the firehose. If your service warrants access to it, we'll contact you.
      *
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @return StatusStream
@@ -93,9 +93,128 @@ public class TwitterStream extends TwitterSupport {
     public StatusStream getFirehoseStream(int count) throws TwitterException {
 
         try {
-            return new StatusStream(http.post(getStreamBaseURL() + "firehose.json"
+            return new StatusStream(http.post(getStreamBaseURL() + "1/statuses/firehose.json"
                     , new PostParameter[]{new PostParameter("count"
                             , String.valueOf(count))}, true));
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    /**
+     * Starts listening on all retweets. The retweet stream is not a generally available resource. Few applications require this level of access. Creative use of a combination of other resources and various access levels can satisfy nearly every application use case. As of 9/11/2009, the site-wide retweet feature has not yet launched, so there are currently few, if any, retweets on this stream.
+     *
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#retweet">Twitter API Wiki / Streaming API Documentation - retweet</a>
+     * @since Twitter4J 2.0.10
+     */
+    public void retweet() throws TwitterException {
+        startHandler(new StreamHandlingThread(new Object[]{}) {
+            public StatusStream getStream() throws TwitterException {
+                return getRetweetStream();
+            }
+        });
+    }
+
+    /**
+     * Returns a stream of all retweets. The retweet stream is not a generally available resource. Few applications require this level of access. Creative use of a combination of other resources and various access levels can satisfy nearly every application use case. As of 9/11/2009, the site-wide retweet feature has not yet launched, so there are currently few, if any, retweets on this stream.
+     *
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#firehose">Twitter API Wiki / Streaming API Documentation - firehose</a>
+     * @since Twitter4J 2.0.10
+     */
+    public StatusStream getRetweetStream() throws TwitterException {
+
+        try {
+            return new StatusStream(http.post(getStreamBaseURL() + "1/statuses/retweet.json"
+                    , new PostParameter[]{}, true));
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    /**
+     * Starts listening on random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
+     *
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#sample">Twitter API Wiki / Streaming API Documentation - sample</a>
+     * @since Twitter4J 2.0.10
+     */
+    public void sample() throws TwitterException {
+        startHandler(new StreamHandlingThread(null) {
+            public StatusStream getStream() throws TwitterException {
+                return getSampleStream();
+            }
+        });
+    }
+
+    /**
+     * Returns a stream of random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
+     *
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#sample">Twitter API Wiki / Streaming API Documentation - sample</a>
+     * @since Twitter4J 2.0.10
+     */
+    public StatusStream getSampleStream() throws TwitterException {
+        try {
+            return new StatusStream(http.get(getStreamBaseURL() + "1/statuses/sample.json"
+                    , true));
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+
+    /**
+     * See birddog above. Allows following up to 200 users. Publicly available.
+     *
+     * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @param follow Specifies the users, by ID, to receive public tweets from.
+     * @param track Specifies keywords to track.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#filter">Twitter API Wiki / Streaming API Documentation - filter</a>
+     * @since Twitter4J 2.0.10
+     */
+    public void filter(int count, int[] follow, String[] track) throws TwitterException {
+        startHandler(new StreamHandlingThread(new Object[]{count, follow, track}) {
+            public StatusStream getStream() throws TwitterException {
+                return getFilterStream((Integer) args[0],(int[]) args[1],(String[]) args[2]);
+            }
+        });
+    }
+
+    /**
+     * Returns stream of public statuses that match one or more filter predicates. At least one predicate parameter, track or follow, must be specified. Both parameters may be specified which allows most clients to use a single connection to the Streaming API.
+     *
+     * @param follow Specifies the users, by ID, to receive public tweets from.
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#filter">Twitter API Wiki / Streaming API Documentation - filter</a>
+     * @since Twitter4J 2.0.10
+     */
+    public StatusStream getFilterStream(int count, int[] follow, String[] track)
+            throws TwitterException {
+        List<PostParameter> postparams = new ArrayList<PostParameter>();
+        postparams.add(new PostParameter("count", count));
+        if(null != follow && follow.length > 0){
+            postparams.add(new PostParameter("follow"
+                            , toFollowString(follow)));
+        }
+        if(null != track && track.length > 0){
+            postparams.add(new PostParameter("track"
+                            , toTrackString(track)));
+        }
+        try {
+            return new StatusStream(http.post(getStreamBaseURL() + "1/statuses/filter.json"
+                    , postparams.toArray(new PostParameter[0]), true));
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -108,6 +227,7 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#gardenhose">Twitter API Wiki / Streaming API Documentation - gardenhose</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use sample() instead
      */
     public void gardenhose() throws TwitterException {
         startHandler(new StreamHandlingThread(null) {
@@ -125,14 +245,10 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#gardenhose">Twitter API Wiki / Streaming API Documentation - gardenhose</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use sampleStream() instead
      */
     public StatusStream getGardenhoseStream() throws TwitterException {
-        try {
-            return new StatusStream(http.get(getStreamBaseURL() + "gardenhose.json"
-                    , true));
-        } catch (IOException e) {
-            throw new TwitterException(e);
-        }
+        return getSampleStream();
     }
 
     /**
@@ -142,6 +258,7 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#spritzer">Twitter API Wiki / Streaming API Documentation - spritizer</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use sample() instead
      */
     public void spritzer() throws TwitterException {
         startHandler(new StreamHandlingThread(null) {
@@ -159,14 +276,10 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#spritzer">Twitter API Wiki / Streaming API Documentation - spritizer</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use sampleStream() instead
      */
     public StatusStream getSpritzerStream() throws TwitterException {
-        try {
-            return new StatusStream(http.get(getStreamBaseURL() + "spritzer.json"
-                    , true));
-        } catch (IOException e) {
-            throw new TwitterException(e);
-        }
+        return getSampleStream();
     }
 
     /**
@@ -178,6 +291,7 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#birddog">Twitter API Wiki / Streaming API Documentation - birddog</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use filter() instead
      */
     public void birddog(int count, int[] follow) throws TwitterException {
         startHandler(new StreamHandlingThread(new Object[]{count, follow}) {
@@ -197,16 +311,10 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#birddog">Twitter API Wiki / Streaming API Documentation - birddog</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use filterStream() instead
      */
     public StatusStream getBirddogStream(int count, int[] follow) throws TwitterException {
-        try {
-            return new StatusStream(http.post(getStreamBaseURL() + "birddog.json"
-                    , new PostParameter[]{new PostParameter("count"
-                            , String.valueOf(count)), new PostParameter("follow"
-                            , toFollowString(follow))}, true));
-        } catch (IOException e) {
-            throw new TwitterException(e);
-        }
+        return getFilterStream(count, follow, null);
     }
 
     /**
@@ -218,6 +326,7 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#firehose">Twitter API Wiki / Streaming API Documentation - shadow</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use filter() instead
      */
     public void shadow(int count, int[] follow) throws TwitterException {
         startHandler(new StreamHandlingThread(new Object[]{count, follow}) {
@@ -237,16 +346,10 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#firehose">Twitter API Wiki / Streaming API Documentation - shadow</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use filterStream() instead
      */
     public StatusStream getShadowStream(int count, int[] follow) throws TwitterException {
-        try {
-            return new StatusStream(http.post(getStreamBaseURL() + "shadow.json"
-                    , new PostParameter[]{new PostParameter("count"
-                            , String.valueOf(count)), new PostParameter("follow"
-                            , toFollowString(follow))}, true));
-        } catch (IOException e) {
-            throw new TwitterException(e);
-        }
+        return getFilterStream(count, follow, null);
     }
 
     /**
@@ -257,6 +360,7 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#follow">Twitter API Wiki / Streaming API Documentation - follow</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use filter() instead
      */
     public void follow(int[] follow) throws TwitterException {
         startHandler(new StreamHandlingThread(new Object[]{follow}) {
@@ -275,15 +379,10 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#follow">Twitter API Wiki / Streaming API Documentation - follow</a>
      * @since Twitter4J 2.0.4
+     * @deprecated use filterStream() instead
      */
     public StatusStream getFollowStream(int[] follow) throws TwitterException {
-        try {
-            return new StatusStream(http.post(getStreamBaseURL() + "follow.json"
-                    , new PostParameter[]{new PostParameter("follow"
-                            , toFollowString(follow))}, true));
-        } catch (IOException e) {
-            throw new TwitterException(e);
-        }
+        return getFilterStream(0, follow, null);
     }
 
     private String toFollowString(int[] follows) {
@@ -313,6 +412,7 @@ public class TwitterStream extends TwitterSupport {
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#spritzer">Twitter API Wiki / Streaming API Documentation - spritizer</a>
      * @since Twitter4J 2.0.9
+     * @deprecated use filter() instead
      */
     public void track(final String []keywords) throws TwitterException {
         startHandler(new StreamHandlingThread(null) {
@@ -321,16 +421,12 @@ public class TwitterStream extends TwitterSupport {
             }
         });
     }
-    
-    /** @see #getTrackStream(String[]) */
+
+    /** @see #getTrackStream(String[])
+     * @deprecated use filterStream() instead
+     */
     public StatusStream getTrackStream(final String[] keywords) throws TwitterException {
-        try {
-            return new StatusStream(http.post(getStreamBaseURL() + "track.json"
-                    , new PostParameter[]{new PostParameter("track"
-                            , toTrackString(keywords))}, true));
-        } catch (IOException e) {
-            throw new TwitterException(e);
-        }
+        return getFilterStream(0, null, keywords);
     }
     
     
