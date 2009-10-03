@@ -60,10 +60,14 @@ public class OAuthUpdate {
             while (null == accessToken) {
                 System.out.println("Open the following URL and grant access to your account:");
                 System.out.println(requestToken.getAuthorizationURL());
-                System.out.print("Hit enter when it's done.[Enter]:");
-                br.readLine();
+                System.out.print("Enter the PIN(if available) and hit enter after you granted access.[PIN]:");
+                String pin = br.readLine();
                 try{
-                    accessToken = requestToken.getAccessToken();
+                    if(pin.length() > 0){
+                        accessToken = twitter.getOAuthAccessToken(requestToken, pin);
+                    }else{
+                        accessToken = requestToken.getAccessToken();
+                    }
                 } catch (TwitterException te) {
                     if(401 == te.getStatusCode()){
                         System.out.println("Unable to get the access token.");
