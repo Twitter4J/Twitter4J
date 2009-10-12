@@ -47,7 +47,7 @@ public class RetweetDetails extends TwitterResponse implements
     private Date retweetedAt;
     private User retweetingUser;
     static final long serialVersionUID = 1957982268696560598L;
-    
+
     /*package*/RetweetDetails(Response res, Twitter twitter) throws TwitterException {
         super(res);
         Element elem = res.asDocument().getDocumentElement();

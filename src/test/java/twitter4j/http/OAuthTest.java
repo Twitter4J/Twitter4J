@@ -30,9 +30,10 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterTestUnit;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -88,7 +89,10 @@ public class OAuthTest extends TwitterTestUnit {
 
     }
 
-    public void testDeterministic() throws Exception{
+    public void testDeterministic() throws Exception {
+        ArrayList list1 = new ArrayList();
+        ArrayList list2 = new ArrayList();
+        assertEquals(list1,list2);
         Twitter twitter1 = new Twitter();
         twitter1.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         Twitter twitter2 = new Twitter();
@@ -369,4 +373,3 @@ public class OAuthTest extends TwitterTestUnit {
         oos.writeObject(obj);
     }
 }
-

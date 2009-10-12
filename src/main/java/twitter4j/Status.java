@@ -54,7 +54,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     private String inReplyToScreenName;
     private double latitude = -1;
     private double longitude = -1;
-
+    
     private RetweetDetails retweetDetails;
     private static final long serialVersionUID = 1608000492860584608L;
 
@@ -193,19 +193,17 @@ public class Status extends TwitterResponse implements java.io.Serializable {
 
     /**
      * returns The location's latitude that this tweet refers to.
-     *
      * @since Twitter4J 2.0.10
      */
-    public double getLatitude() {
+    public double getLatitude(){
         return latitude;
     }
 
     /**
      * returns The location's longitude that this tweet refers to.
-     *
      * @since Twitter4J 2.0.10
      */
-    public double getLongitude() {
+    public double getLongitude(){
         return longitude;
     }
 
@@ -246,7 +244,6 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     public RetweetDetails getRetweetDetails() {
         return retweetDetails;
     }
-
 
     /*package*/
     static List<Status> constructStatuses(Response res,

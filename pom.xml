@@ -6,7 +6,7 @@
     <artifactId>twitter4j</artifactId>
     <packaging>jar</packaging>
     <name>twitter4j</name>
-    <version>2.0.11-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <url>http://yusuke.homeip.net/twitter4j/</url>
     <licenses>
         <license>

@@ -28,6 +28,9 @@ package twitter4j;
 
 import twitter4j.http.HttpClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -36,6 +39,10 @@ import twitter4j.http.HttpClient;
     protected String source = Configuration.getSource();
     protected final boolean USE_SSL;
 
+    protected List<RateLimitStatusListener> accountRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
+    protected List<RateLimitStatusListener> ipRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
+
+//    /*package*/ static final String VERSION = Version.getVersion();
     /*package*/ TwitterSupport(){
         this(null, null);
     }
@@ -45,6 +52,28 @@ import twitter4j.http.HttpClient;
         setClientURL(null);
         setUserId(userId);
         setPassword(password);
+    }
+
+    /**
+     * Registers a RateLimitStatusListener for account associated rate limits
+     *
+     * @since Twitter4J 3.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
+     */
+    public void addAccountRateLimitStatusListener(RateLimitStatusListener listener){
+    	accountRateLimitStatusListeners.add(listener);
+    }
+
+
+    /**
+     * Registers a RateLimitStatusListener for ip associated rate limits
+     *
+     * @since Twitter4J 3.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
+     */
+
+    public void addIpRateLimitStatusListener(RateLimitStatusListener listener){
+    	ipRateLimitStatusListeners.add(listener);
     }
 
     /**
@@ -214,24 +243,6 @@ import twitter4j.http.HttpClient;
      */
     public void setRequestHeader(String name, String value) {
         http.setRequestHeader(name, value);
-    }
-
-    /**
-     * Set true to force using POST method communicating to the server.<br>
-     * This method doesn't take effect anymore
-     *
-     * @param forceUsePost if true POST method will be used forcibly
-     * @deprecated some methods don't accept POST method anymore
-     */
-    public void forceUsePost(boolean forceUsePost) {
-        // this method doesn't take effect anymore
-    }
-
-    /**
-     * @return true if POST is used forcibly
-     */
-    public boolean isUsePostForced() {
-        return false;
     }
 
     public void setRetryCount(int retryCount) {

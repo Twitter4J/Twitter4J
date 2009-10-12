@@ -28,6 +28,8 @@ package twitter4j;
 
 import twitter4j.http.AccessToken;
 import twitter4j.http.HttpClient;
+import twitter4j.http.HttpResponseEvent;
+import twitter4j.http.HttpResponseListener;
 import twitter4j.http.PostParameter;
 import twitter4j.http.RequestToken;
 import twitter4j.http.Response;
@@ -44,22 +46,16 @@ import java.util.TimeZone;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Twitter extends TwitterSupport implements java.io.Serializable {
-    private String baseURL = Configuration.getScheme() + "twitter.com/";
-    private String searchBaseURL = Configuration.getScheme() + "search.twitter.com/";
     private static final long serialVersionUID = -1486360080128882436L;
 
     public Twitter() {
         super();
+        http.addHttpResponseListener(httpResponseListener);
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         http.setRequestTokenURL(Configuration.getScheme() + "twitter.com/oauth/request_token");
         http.setAuthorizationURL(Configuration.getScheme() + "twitter.com/oauth/authorize");
         http.setAccessTokenURL(Configuration.getScheme() + "twitter.com/oauth/access_token");
-    }
-
-    public Twitter(String baseURL) {
-        this();
-        this.baseURL = baseURL;
     }
 
     public Twitter(String id, String password) {
@@ -68,39 +64,13 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         setPassword(password);
     }
 
-    public Twitter(String id, String password, String baseURL) {
-        this();
-        setUserId(id);
-        setPassword(password);
-        this.baseURL = baseURL;
-    }
-
-    /**
-     * Sets the base URL
-     *
-     * @param baseURL String the base URL
-     */
-    public void setBaseURL(String baseURL) {
-        this.baseURL = baseURL;
-    }
-
     /**
      * Returns the base URL
      *
      * @return the base URL
      */
-    public String getBaseURL() {
-        return this.baseURL;
-    }
-
-    /**
-     * Sets the search base URL
-     *
-     * @param searchBaseURL the search base URL
-     * @since Twitter4J 1.1.7
-     */
-    public void setSearchBaseURL(String searchBaseURL) {
-        this.searchBaseURL = searchBaseURL;
+    protected String getBaseURL() {
+        return USE_SSL ? "https://twitter.com/" : "http://twitter.com/";
     }
 
     /**
@@ -108,8 +78,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return search base url
      * @since Twitter4J 1.1.7
      */
-    public String getSearchBaseURL(){
-        return this.searchBaseURL;
+    protected String getSearchBaseURL(){
+        return USE_SSL ? "https://search.twitter.com/" : "http://search.twitter.com/";
     }
 
     /**
@@ -135,11 +105,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     public RequestToken getOAuthRequestToken(String callback_url) throws TwitterException {
-        return http.getOauthRequestToken(callback_url);
+      return http.getOauthRequestToken(callback_url);
     }
 
     /**
-     * Retrieves an access token assosiated with the supplied request token.
+     * Retrieves an access token assosiated with the supplied request token and sets userId.
      * @param requestToken the request token
      * @return access token associsted with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
@@ -148,21 +118,23 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @since Twitter 2.0.0
      */
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
-        return http.getOAuthAccessToken(requestToken);
+        AccessToken accessToken = http.getOAuthAccessToken(requestToken);
+        setUserId(accessToken.getScreenName());
+        return accessToken;
     }
 
     /**
      * Retrieves an access token assosiated with the supplied request token and sets userId.
      * @param requestToken the request token
-     * @param pin pin
+     * @param oauth_verifier oauth_verifier or pin
      * @return access token associsted with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
-     * @since Twitter 2.0.8
+     * @since Twitter 2.0.0
      */
-    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String pin) throws TwitterException {
-        AccessToken accessToken = http.getOAuthAccessToken(requestToken, pin);
+    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauth_verifier) throws TwitterException {
+        AccessToken accessToken = http.getOAuthAccessToken(requestToken, oauth_verifier);
         setUserId(accessToken.getScreenName());
         return accessToken;
     }
@@ -187,7 +159,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * Retrieves an access token assosiated with the supplied request token.
      * @param token request token
      * @param tokenSecret request token secret
-     * @param oauth_verifier oauth_verifier or pin
+     * @param pin pin
      * @return access token associsted with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
@@ -195,8 +167,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @since Twitter 2.0.8
      */
     public synchronized AccessToken getOAuthAccessToken(String token
-            , String tokenSecret, String oauth_verifier) throws TwitterException {
-        return http.getOAuthAccessToken(token, tokenSecret, oauth_verifier);
+            , String tokenSecret, String pin) throws TwitterException {
+        return http.getOAuthAccessToken(token, tokenSecret, pin);
     }
 
     /**
@@ -228,7 +200,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @throws TwitterException when Twitter service or network is unavailable
      */
 
-    private Response get(String url, boolean authenticate) throws TwitterException {
+    protected Response get(String url, boolean authenticate) throws TwitterException {
         return get(url, null, authenticate);
     }
 
@@ -333,6 +305,46 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         }
     }
 
+    private HttpResponseListener httpResponseListener = new MyHttpResponseListener();
+
+    class MyHttpResponseListener implements HttpResponseListener, java.io.Serializable {
+        public void httpResponseReceived(HttpResponseEvent event) {
+            Response res = event.getResponse();
+            String limit = res.getResponseHeader("X-RateLimit-Limit");
+            if (null != limit) {
+                int rateLimitLimit = 0, rateLimitRemaining = 0;
+                long rateLimitReset = 01;
+                rateLimitLimit = Integer.parseInt(limit);
+                String remaining = res.getResponseHeader("X-RateLimit-Remaining");
+                if (null != remaining) {
+                    rateLimitRemaining = Integer.parseInt(remaining);
+                    String reset = res.getResponseHeader("X-RateLimit-Reset");
+                    if (null != reset) {
+                        rateLimitReset = Long.parseLong(reset);
+                        RateLimitStatus rateLimitStatus = new RateLimitStatus(rateLimitLimit,
+                                rateLimitRemaining, rateLimitReset);
+                        if (event.isAuthenticated()) {
+                            fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
+                        } else {
+                            fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void fireRateLimitStatusListenerUpdate(List<RateLimitStatusListener> listeners,RateLimitStatus status){
+            for(RateLimitStatusListener listener : listeners){
+                listener.rateLimitStatusUpdated(status);
+            }
+        }
+
+        public boolean equals(Object that){
+            return that instanceof MyHttpResponseListener;
+        }
+    };
+
     /**
      * Returns tweets that match a specified query.
      * <br>This method calls http://search.twitter.com/search
@@ -344,7 +356,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public QueryResult search(Query query) throws TwitterException {
         try{
-        return new QueryResult(get(searchBaseURL + "search.json", query.asPostParameters(), false), this);
+        return new QueryResult(get(getSearchBaseURL() + "search.json", query.asPostParameters(), false), this);
         }catch(TwitterException te){
             if(404 == te.getStatusCode()){
                 return new QueryResult(query);
@@ -353,7 +365,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
             }
         }
     }
-
+    
     /**
      * Returns the top ten topics that are currently trending on Twitter.  The response includes the time of the request, the name of each trend, and the url to the <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
      * <br>This method calls http://search.twitter.com/trends
@@ -363,7 +375,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
      */
     public Trends getTrends() throws TwitterException {
-        return Trends.constructTrends(get(searchBaseURL + "trends.json", false));
+        return Trends.constructTrends(get(getSearchBaseURL() + "trends.json", false));
     }
 
     /**
@@ -375,7 +387,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
      */
     public Trends getCurrentTrends() throws TwitterException {
-        return Trends.constructTrendsList(get(searchBaseURL + "trends/current.json"
+        return Trends.constructTrendsList(get(getSearchBaseURL() + "trends/current.json"
                 , false)).get(0);
     }
 
@@ -389,7 +401,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
      */
     public Trends getCurrentTrends(boolean excludeHashTags) throws TwitterException {
-        return Trends.constructTrendsList(get(searchBaseURL + "trends/current.json"
+        return Trends.constructTrendsList(get(getSearchBaseURL() + "trends/current.json"
                 + (excludeHashTags ? "?exclude=hashtags" : ""), false)).get(0);
     }
 
@@ -403,7 +415,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-daily">Twitter Search API Method: trends daily</a>
      */
     public List<Trends> getDailyTrends() throws TwitterException {
-        return Trends.constructTrendsList(get(searchBaseURL + "trends/daily.json", false));
+        return Trends.constructTrendsList(get(getSearchBaseURL() + "trends/daily.json", false));
     }
 
     /**
@@ -417,7 +429,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-daily">Twitter Search API Method: trends daily</a>
      */
     public List<Trends> getDailyTrends(Date date, boolean excludeHashTags) throws TwitterException {
-        return Trends.constructTrendsList(get(searchBaseURL
+        return Trends.constructTrendsList(get(getSearchBaseURL()
                 + "trends/daily.json?date=" + toDateStr(date)
                 + (excludeHashTags ? "&exclude=hashtags" : ""), false));
     }
@@ -439,7 +451,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-weekly">Twitter Search API Method: trends weekly</a>
      */
     public List<Trends> getWeeklyTrends() throws TwitterException {
-        return Trends.constructTrendsList(get(searchBaseURL
+        return Trends.constructTrendsList(get(getSearchBaseURL()
                 + "trends/weekly.json", false));
     }
 
@@ -454,7 +466,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-weekly">Twitter Search API Method: trends weekly</a>
      */
     public List<Trends> getWeeklyTrends(Date date, boolean excludeHashTags) throws TwitterException {
-        return Trends.constructTrendsList(get(searchBaseURL
+        return Trends.constructTrendsList(get(getSearchBaseURL()
                 + "trends/weekly.json?date=" + toDateStr(date)
                 + (excludeHashTags ? "&exclude=hashtags" : ""), false));
     }
@@ -475,20 +487,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
                 "statuses/public_timeline.xml", false), this);
     }
 
-    /**
-     * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
-     * <br>This method calls http://twitter.com/statuses/public_timeline
-     *
-     * @param sinceID returns only public statuses with an ID greater than (that is, more recent than) the specified ID
-     * @return the 20 most recent statuses
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
-     * @deprecated use getPublicTimeline(long sinceID) instead
-     */
-    public List<Status> getPublicTimeline(int sinceID) throws
-            TwitterException {
-        return getPublicTimeline((long)sinceID);
-    }
     /**
      * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
      * <br>This method calls http://twitter.com/statuses/public_timeline
@@ -550,120 +548,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param page the number of page
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getFriendsTimeline(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     */
-    public List<Status> getFriendsTimelineByPage(int page) throws
-            TwitterException {
-        return getFriendsTimeline(new Paging(page));
-    }
-
-    /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param page the number of page
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @deprecated Use getFriendsTimeline(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     */
-    public List<Status> getFriendsTimeline(int page) throws
-            TwitterException {
-        return getFriendsTimeline(new Paging(page));
-    }
-
-    /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param page    the number of page
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @deprecated Use getFriendsTimeline(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     */
-    public List<Status> getFriendsTimeline(long sinceId, int page) throws
-            TwitterException {
-        return getFriendsTimeline(new Paging(page).sinceId(sinceId));
-    }
-
-    /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param id specifies the ID or screen name of the user for whom to return the friends_timeline
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated The Twitter API does not support this method anymore.
-     */
-    public List<Status> getFriendsTimeline(String id) throws
-            TwitterException {
-        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
-    }
-
-    /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param id   specifies the ID or screen name of the user for whom to return the friends_timeline
-     * @param page the number of page
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated The Twitter API does not support this method anymore.
-     */
-    public List<Status> getFriendsTimelineByPage(String id, int page) throws
-            TwitterException {
-        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
-    }
-
-    /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param id   specifies the ID or screen name of the user for whom to return the friends_timeline
-     * @param page the number of page
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated The Twitter API does not support this method anymore.
-     */
-    public List<Status> getFriendsTimeline(String id, int page) throws
-            TwitterException {
-        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
-    }
-
-    /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param id   specifies the ID or screen name of the user for whom to return the friends_timeline
-     * @param page the number of page
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated The Twitter API does not support this method anymore.
-     */
-    public List<Status> getFriendsTimeline(long sinceId, String id, int page) throws
-            TwitterException {
-        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
-    }
-
-    /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
      * <br>This method calls http://twitter.com/statuses/friends_timeline
      *
@@ -676,125 +560,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     public List<Status> getFriendsTimeline(Paging paging) throws
             TwitterException {
         return Status.constructStatuses(get(getBaseURL() + "statuses/friends_timeline.xml",null, paging, true), this);
-    }
-
-    /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param id   specifies the ID or screen name of the user for whom to return the friends_timeline
-     * @param paging controls pagination
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated The Twitter API does not support this method anymore.
-     */
-    public List<Status> getFriendsTimeline(String id, Paging paging) throws
-            TwitterException {
-        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
-    }
-
-
-    /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getFriendsTimeline(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     */
-    public List<Status> getFriendsTimeline(Date since) throws
-            TwitterException {
-        return Status.constructStatuses(get(getBaseURL() + "statuses/friends_timeline.xml",
-                "since", format.format(since), true), this);
-    }
-
-    /**
-     * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getFriendsTimeline(Paging paging) instead
-     */
-    public List<Status> getFriendsTimeline(long sinceId) throws
-            TwitterException {
-        return Status.constructStatuses(get(getBaseURL() + "statuses/friends_timeline.xml",
-                "since_id", String.valueOf(sinceId), true), this);
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param id    specifies the ID or screen name of the user for whom to return the friends_timeline
-     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated The Twitter API does not support this method anymore.
-     */
-    public List<Status> getFriendsTimeline(String id,
-                                                        Date since) throws TwitterException {
-        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
-     *
-     * @param id    specifies the ID or screen name of the user for whom to return the friends_timeline
-     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated The Twitter API does not support this method anymore.
-     */
-    public List<Status> getFriendsTimeline(String id, long sinceId) throws TwitterException {
-        throw new IllegalStateException("The Twitter API is not supporting this method anymore");
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
-     *
-     * @param id    specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param count specifies the number of statuses to retrieve.  May not be greater than 200 for performance purposes
-     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
-     * @return list of the user Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated using long sinceId is suggested.
-     */
-    public List<Status> getUserTimeline(String id, int count
-            , Date since) throws TwitterException {
-        return Status.constructStatuses(get(getBaseURL() + "statuses/user_timeline/" + id + ".xml",
-                "since", format.format(since), "count", String.valueOf(count), http.isAuthenticationEnabled()), this);
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
-     *
-     * @param id    specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param count specifies the number of statuses to retrieve.  May not be greater than 200 for performance purposes
-     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @return list of the user Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getUserTimeline(String id, Paging paging) instead
-     */
-    public List<Status> getUserTimeline(String id, int count,
-                                                     long sinceId) throws TwitterException {
-        return getUserTimeline(id, new Paging(sinceId).count(count));
     }
 
     /**
@@ -818,71 +583,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
      * <br>This method calls http://twitter.com/statuses/user_timeline
      *
-     * @param id    specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
-     * @return the 20 most recent statuses posted in the last 24 hours from the user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getUserTimeline(String id, Paging paging) instead
-     */
-    public List<Status> getUserTimeline(String id, Date since) throws TwitterException {
-        return Status.constructStatuses(get(getBaseURL() + "statuses/user_timeline/" + id + ".xml",
-                "since", format.format(since), http.isAuthenticationEnabled()), this);
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
-     *
-     * @param id    specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param count specifies the number of statuses to retrieve.  May not be greater than 200 for performance purposes
-     * @return the 20 most recent statuses posted in the last 24 hours from the user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated Use getUserTimeline(String id, Paging paging) instead
-     */
-    public List<Status> getUserTimeline(String id, int count) throws
-            TwitterException {
-        return Status.constructStatuses(get(getBaseURL() + "statuses/user_timeline/" + id + ".xml",
-                "count", String.valueOf(count), http.isAuthenticationEnabled()), this);
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
-     *
-     * @param count specifies the number of statuses to retrieve.  May not be greater than 200 for performance purposes
-     * @param since narrows the returned results to just those statuses created after the specified HTTP-formatted date
-     * @return the 20 most recent statuses posted in the last 24 hours from the user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @deprecated using long sinceId is suggested.
-     */
-    public List<Status> getUserTimeline(int count, Date since) throws TwitterException {
-        return Status.constructStatuses(get(getBaseURL() + "statuses/user_timeline.xml",
-                "since", format.format(since), "count", String.valueOf(count), true), this);
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
-     *
-     * @param count specifies the number of statuses to retrieve.  May not be greater than 200 for performance purposes
-     * @param sinceId returns only statuses with an ID greater than (that is, more recent than) the specified ID.
-     * @return the 20 most recent statuses posted in the last 24 hours from the user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated Use getUserTimeline(String id, Paging paging) instead
-     */
-    public List<Status> getUserTimeline(int count, long sinceId) throws TwitterException {
-        return getUserTimeline(new Paging(sinceId).count(count));
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
-     *
      * @param id specifies the ID or screen name of the user for whom to return the user_timeline
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
@@ -890,22 +590,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public List<Status> getUserTimeline(String id) throws TwitterException {
         return Status.constructStatuses(get(getBaseURL() + "statuses/user_timeline/" + id + ".xml", http.isAuthenticationEnabled()), this);
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
-     *
-     * @param id specifies the ID or screen name of the user for whom to return the user_timeline
-     * @param sinceId returns only statuses with an ID greater than (that is, more recent than) the specified ID.
-     * @return the 20 most recent statuses posted in the last 24 hours from the user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated Use getUserTimeline(String id, Paging paging) instead
-     */
-    public List<Status> getUserTimeline(String id, long sinceId) throws TwitterException {
-        return getUserTimeline(id, new Paging(sinceId));
     }
 
     /**
@@ -936,109 +620,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
             TwitterException {
         return Status.constructStatuses(get(getBaseURL() + "statuses/user_timeline.xml"
                 , null, paging, true), this);
-    }
-
-    /**
-     * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
-     *
-     * @param sinceId returns only statuses with an ID greater than (that is, more recent than) the specified ID.
-     * @return the 20 most recent statuses posted in the last 24 hours from the user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated Use getUserTimeline(Paging paging) instead
-     */
-    public List<Status> getUserTimeline(long sinceId) throws
-            TwitterException {
-        return getUserTimeline(new Paging(sinceId));
-    }
-
-    /**
-     * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
-     * <br>This method calls http://twitter.com/statuses/mentions
-     *
-     * @return the 20 most recent replies
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getMentions() instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
-     */
-    public List<Status> getReplies() throws TwitterException {
-        return Status.constructStatuses(get(getBaseURL() + "statuses/replies.xml", true), this);
-    }
-
-    /**
-     * Returns the 20 most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
-     * <br>This method calls http://twitter.com/statuses/mentions
-     *
-     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @return the 20 most recent replies
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @deprecated Use getMentions(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
-     */
-    public List<Status> getReplies(long sinceId) throws TwitterException {
-        return Status.constructStatuses(get(getBaseURL() + "statuses/replies.xml",
-                "since_id", String.valueOf(sinceId), true), this);
-    }
-
-    /**
-     * Returns the most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
-     * <br>This method calls http://twitter.com/statuses/mentions
-     *
-     * @param page the number of page
-     * @return the 20 most recent replies
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getMentions(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
-     */
-    public List<Status> getRepliesByPage(int page) throws TwitterException {
-        if (page < 1) {
-            throw new IllegalArgumentException("page should be positive integer. passed:" + page);
-        }
-        return Status.constructStatuses(get(getBaseURL() + "statuses/replies.xml",
-                "page", String.valueOf(page), true), this);
-    }
-
-    /**
-     * Returns the most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
-     * <br>This method calls http://twitter.com/statuses/mentions
-     *
-     * @param page the number of page
-     * @return the 20 most recent replies
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @deprecated Use getMentions(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
-     */
-    public List<Status> getReplies(int page) throws TwitterException {
-        if (page < 1) {
-            throw new IllegalArgumentException("page should be positive integer. passed:" + page);
-        }
-        return Status.constructStatuses(get(getBaseURL() + "statuses/replies.xml",
-                "page", String.valueOf(page), true), this);
-    }
-
-    /**
-     * Returns the most recent replies (status updates prefixed with @username) to the authenticating user.  Replies are only available to the authenticating user; you can not request a list of replies to another user whether public or protected.
-     * <br>This method calls http://twitter.com/statuses/mentions
-     *
-     * @param sinceId Returns only statuses with an ID greater than (that is, more recent than) the specified ID
-     * @param page the number of page
-     * @return the 20 most recent replies
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.8
-     * @deprecated Use getMentions(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-mentions">Twitter API Wiki / Twitter REST API Method: statuses mentions</a>
-     */
-    public List<Status> getReplies(long sinceId, int page) throws TwitterException {
-        if (page < 1) {
-            throw new IllegalArgumentException("page should be positive integer. passed:" + page);
-        }
-        return Status.constructStatuses(get(getBaseURL() + "statuses/replies.xml",
-                "since_id", String.valueOf(sinceId),
-                "page", String.valueOf(page), true), this);
     }
 
     /**
@@ -1157,37 +738,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
                 null, paging, true), this);
     }
 
-
-    /**
-     * Returns a single status, specified by the id parameter. The status's author will be returned inline.
-     * <br>This method calls http://twitter.com/statuses/show
-     *
-     * @param id the numerical ID of the status you're trying to retrieve
-     * @return a single status
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use showStatus(long id) instead.
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0show">Twitter API Wiki / Twitter REST API Method: statuses show</a>
-     */
-    public Status show(int id) throws TwitterException {
-        return showStatus((long)id);
-    }
-
-    /**
-     * Returns a single status, specified by the id parameter. The status's author will be returned inline.
-     * <br>This method calls http://twitter.com/statuses/show
-     *
-     * @param id the numerical ID of the status you're trying to retrieve
-     * @return a single status
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0show">Twitter API Wiki / Twitter REST API Method: statuses show</a>
-     * @deprecated Use showStatus(long id) instead.
-     */
-
-    public Status show(long id) throws TwitterException {
-        return new Status(get(getBaseURL() + "statuses/show/" + id + ".xml", false), this);
-    }
-
     /**
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
      * <br>This method calls http://twitter.com/statuses/show
@@ -1200,21 +750,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public Status showStatus(long id) throws TwitterException {
         return new Status(get(getBaseURL() + "statuses/show/" + id + ".xml", false), this);
-    }
-
-    /**
-     * Updates the user's status.
-     * The text will be trimed if the length of the text is exceeding 160 characters.
-     * <br>This method calls http://twitter.com/statuses/update
-     *
-     * @param status the text of your status update
-     * @return the latest status
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
-     * @deprecated Use updateStatus(String status) instead
-     */
-    public Status update(String status) throws TwitterException {
-        return updateStatus(status);
     }
 
     /**
@@ -1238,13 +773,13 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * The text will be trimed if the length of the text is exceeding 160 characters.
      * <br>This method calls http://twitter.com/statuses/update
      *
-     * @param status    the text of your status update
-     * @param latitude  The location's latitude that this tweet refers to.
+     * @param status the text of your status update
+     * @param latitude The location's latitude that this tweet refers to.
      * @param longitude The location's longitude that this tweet refers to.
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
      * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
      */
     public Status updateStatus(String status, double latitude, double longitude) throws TwitterException {
         return new Status(http.post(getBaseURL() + "statuses/update.xml",
@@ -1252,22 +787,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
                         new PostParameter("lat", latitude),
                         new PostParameter("long", longitude),
                         new PostParameter("source", source)}, true), this);
-    }
-
-    /**
-     * Updates the user's status.
-     * The text will be trimed if the length of the text is exceeding 160 characters.
-     * <br>This method calls http://twitter.com/statuses/update
-     *
-     * @param status            the text of your status update
-     * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
-     * @return the latest status
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
-     * @deprecated Use updateStatus(String status, long inReplyToStatusId) instead
-     */
-    public Status update(String status, long inReplyToStatusId) throws TwitterException {
-        return updateStatus(status, inReplyToStatusId);
     }
 
     /**
@@ -1294,12 +813,12 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      *
      * @param status            the text of your status update
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
-     * @param latitude          The location's latitude that this tweet refers to.
-     * @param longitude         The location's longitude that this tweet refers to.
+     * @param latitude The location's latitude that this tweet refers to.
+     * @param longitude The location's longitude that this tweet refers to.
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
      * @since Twitter4J 2.0.10
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
      */
     public Status updateStatus(String status, long inReplyToStatusId
             , double latitude, double longitude) throws TwitterException {
@@ -1365,21 +884,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
-     * @deprecated use showUser(id) instead
-     */
-    public User getUserDetail(String id) throws TwitterException {
-        return showUser(id);
-    }
-
-    /**
-     * Returns extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
-     * <br>This method calls http://twitter.com/users/show
-     *
-     * @param id the ID or screen name of the user for whom to request the detail
-     * @return User
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
-     * @since Twitter4J 2.0.9
      */
     public User showUser(String id) throws TwitterException {
         return new User(get(getBaseURL() + "users/show/" + id + ".xml"
@@ -1395,38 +899,9 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
-     * @deprecated use getFriendsStatues() instead
-     */
-    public List<User> getFriends() throws TwitterException {
-        return getFriendsStatuses();
-    }
-
-    /**
-     * Returns the specified user's friends, each with current status inline.
-     * <br>This method calls http://twitter.com/statuses/friends
-     *
-     * @return the list of friends
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
-     * @since Twitter4J 2.0.9
      */
     public List<User> getFriendsStatuses() throws TwitterException {
         return User.constructUsers(get(getBaseURL() + "statuses/friends.xml", true), this);
-    }
-
-    /**
-     * Returns the specified user's friends, each with current status inline.
-     * <br>This method calls http://twitter.com/statuses/friends
-     *
-     * @param paging controls pagination
-     * @return the list of friends
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
-     * @deprecated Use getFriendsStatuses(Paging paging) instead
-     */
-    public List<User> getFriends(Paging paging) throws TwitterException {
-        return getFriendsStatuses(paging);
     }
 
     /**
@@ -1442,34 +917,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     public List<User> getFriendsStatuses(Paging paging) throws TwitterException {
         return User.constructUsers(get(getBaseURL() + "statuses/friends.xml", null,
                 paging, true), this);
-    }
-
-    /**
-     * Returns the specified user's friends, each with current status inline.
-     * <br>This method calls http://twitter.com/statuses/friends
-     *
-     * @param page number of page
-     * @return the list of friends
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getFriendsStatuses(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
-     */
-    public List<User> getFriends(int page) throws TwitterException {
-        return getFriendsStatuses(new Paging(page));
-    }
-
-    /**
-     * Returns the user's friends, each with current status inline.
-     * <br>This method calls http://twitter.com/statuses/friends
-     *
-     * @param id the ID or screen name of the user for whom to request a list of friends
-     * @return the list of friends
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
-     * @deprecated use getFriendsStatuses(id) instead
-     */
-    public List<User> getFriends(String id) throws TwitterException {
-        return getFriendsStatuses(id);
     }
 
     /**
@@ -1495,56 +942,12 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param paging controls pagination
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
-     * @deprecated use getFriendsStatuses(id,paging) instead
-     */
-    public List<User> getFriends(String id, Paging paging) throws TwitterException {
-        return getFriendsStatuses(id, paging);
-    }
-
-    /**
-     * Returns the user's friends, each with current status inline.
-     * <br>This method calls http://twitter.com/statuses/friends
-     *
-     * @param id the ID or screen name of the user for whom to request a list of friends
-     * @param paging controls pagination
-     * @return the list of friends
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.9
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
      */
     public List<User> getFriendsStatuses(String id, Paging paging) throws TwitterException {
         return User.constructUsers(get(getBaseURL() + "statuses/friends/" + id + ".xml"
                 , null, paging, false), this);
-    }
-
-    /**
-     * Returns the user's friends, each with current status inline.
-     * <br>This method calls http://twitter.com/statuses/friends
-     *
-     * @param id   the ID or screen name of the user for whom to request a list of friends
-     * @param page the number of page
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getFriendsStatuses(String id, Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
-     */
-    public List<User> getFriends(String id, int page) throws TwitterException {
-        return getFriendsStatuses(id, new Paging(page));
-    }
-
-    /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://twitter.com/statuses/followers
-     *
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
-     * @deprecated use getFollowersStatuses() instead
-     */
-    public List<User> getFollowers() throws TwitterException {
-        return getFollowersStatuses();
     }
 
     /**
@@ -1567,57 +970,12 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param paging controls pagination
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
-     * @deprecated use getFollowersStatuses(paging)
-     */
-    public List<User> getFollowers(Paging paging) throws TwitterException {
-        return getFollowersStatuses(paging);
-    }
-
-    /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://twitter.com/statuses/followers
-     *
-     * @param paging controls pagination
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.9
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
      */
     public List<User> getFollowersStatuses(Paging paging) throws TwitterException {
         return User.constructUsers(get(getBaseURL() + "statuses/followers.xml", null
                 , paging, true), this);
-    }
-
-    /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://twitter.com/statuses/followers
-     *
-     * @param page Retrieves the next 100 followers.
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.0
-     * @deprecated Use getFollowersStatuses(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
-     */
-    public List<User> getFollowers(int page) throws TwitterException {
-        return getFollowersStatuses(new Paging(page));
-    }
-
-    /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://twitter.com/statuses/followers
-     *
-     * @param id The ID or screen name of the user for whom to request a list of followers.
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.0
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
-     * @deprecated use getFollowersStatuses(id) instead
-     */
-    public List<User> getFollowers(String id) throws TwitterException {
-        return getFollowersStatuses(id);
     }
 
     /**
@@ -1642,44 +1000,12 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param paging controls pagination
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
-     * @deprecated use getFollowersStatuses(id) instead
-     */
-    public List<User> getFollowers(String id, Paging paging) throws TwitterException {
-        return getFollowersStatuses(id, paging);
-    }
-
-    /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://twitter.com/statuses/followers
-     *
-     * @param id   The ID or screen name of the user for whom to request a list of followers.
-     * @param paging controls pagination
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.9
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
      */
     public List<User> getFollowersStatuses(String id, Paging paging) throws TwitterException {
         return User.constructUsers(get(getBaseURL() + "statuses/followers/" + id +
                 ".xml", null, paging, true), this);
-    }
-
-    /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://twitter.com/statuses/followers
-     *
-     * @param id   The ID or screen name of the user for whom to request a list of followers.
-     * @param page Retrieves the next 100 followers.
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.0
-     * @deprecated Use getFollowersStatuses(String id, Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
-     */
-    public List<User> getFollowers(String id, int page) throws TwitterException {
-        return getFollowersStatuses(id, new Paging(page));
     }
 
     /**
@@ -1719,67 +1045,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
-     * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages
-     *
-     * @param page the number of page
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getDirectMessages(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
-     */
-    public List<DirectMessage> getDirectMessagesByPage(int page) throws TwitterException {
-        return getDirectMessages(new Paging(page));
-    }
-
-    /**
-     * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages
-     *
-     * @param page    the number of page
-     * @param sinceId Returns only direct messages with an ID greater than (that is, more recent than) the specified ID.
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.0
-     * @deprecated Use getDirectMessages(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
-     */
-    public List<DirectMessage> getDirectMessages(int page
-            , int sinceId) throws TwitterException {
-        return getDirectMessages(new Paging(page).sinceId(sinceId));
-    }
-
-    /**
-     * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages
-     *
-     * @param sinceId Returns only direct messages with an ID greater than (that is, more recent than) the specified ID.
-     * @return list of direct messages
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getDirectMessages(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
-     */
-    public List<DirectMessage> getDirectMessages(int sinceId) throws TwitterException {
-        return getDirectMessages(new Paging((long)sinceId));
-    }
-
-    /**
-     * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages
-     *
-     * @param since narrows the resulting list of direct messages to just those sent after the specified HTTP-formatted date
-     * @return list of direct messages
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getDirectMessages(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
-     */
-    public List<DirectMessage> getDirectMessages(Date since) throws
-            TwitterException {
-        return DirectMessage.constructDirectMessages(get(getBaseURL() +
-                "direct_messages.xml", "since", format.format(since), true), this);
-    }
-
-    /**
      * Returns a list of the direct messages sent by the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages/sent
      *
@@ -1810,54 +1075,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
-     * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages/sent
-     *
-     * @param since narrows the resulting list of direct messages to just those sent after the specified HTTP-formatted date
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated using long sinceId is suggested.
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages sent</a>
-     */
-    public List<DirectMessage> getSentDirectMessages(Date since) throws
-            TwitterException {
-        return DirectMessage.constructDirectMessages(get(getBaseURL() +
-                "direct_messages/sent.xml", "since", format.format(since), true), this);
-    }
-
-    /**
-     * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages/sent
-     *
-     * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getSentDirectMessages(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages sent</a>
-     */
-    public List<DirectMessage> getSentDirectMessages(int sinceId) throws
-            TwitterException {
-        return getSentDirectMessages(new Paging((long)sinceId));
-    }
-
-    /**
-     * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages/sent
-     *
-     * @param sinceId returns only sent direct messages with an ID greater than (that is, more recent than) the specified ID
-     * @param page Retrieves the 20 next most recent direct messages.
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.0
-     * @deprecated Use getSentDirectMessages(Paging paging) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages sent</a>
-     */
-    public List<DirectMessage> getSentDirectMessages(int page
-            , int sinceId) throws TwitterException {
-        return getSentDirectMessages(new Paging(page, (long)sinceId));
-    }
-
-    /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimed if the length of the text is exceeding 140 characters.
      * <br>This method calls http://twitter.com/direct_messages/new
@@ -1875,22 +1092,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
                         new PostParameter("text", text)}, true), this);
     }
 
-
-    /**
-     * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
-     * <br>This method calls http://twitter.com/direct_messages/destroy
-     *
-     * @param id the ID of the direct message to destroy
-     * @return the deleted direct message
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: direct_messages destroy</a>
-     * @deprecated Use destroyDirectMessage(int id) instead
-     */
-    public DirectMessage deleteDirectMessage(int id) throws
-            TwitterException {
-        return destroyDirectMessage(id);
-    }
-
     /**
      * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
      * <br>This method calls http://twitter.com/direct_messages/destroy
@@ -1905,20 +1106,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
             TwitterException {
         return new DirectMessage(http.post(getBaseURL() +
                 "direct_messages/destroy/" + id + ".xml", new PostParameter[0], true), this);
-    }
-
-    /**
-     * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
-     *
-     * @param id the ID or screen name of the user to be befriended
-     * @return the befriended user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use createFriendship(String id) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
-     */
-
-    public User create(String id) throws TwitterException {
-        return createFriendship(id);
     }
 
     /**
@@ -1957,19 +1144,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param id the ID or screen name of the user for whom to request a list of friends
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use destroyFriendship(String id) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: friendships destroy</a>
-     */
-    public User destroy(String id) throws TwitterException {
-        return destroyFriendship(id);
-    }
-
-    /**
-     * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
-     *
-     * @param id the ID or screen name of the user for whom to request a list of friends
-     * @return User
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: friendships destroy</a>
      */
@@ -1977,19 +1151,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         return new User(http.post(getBaseURL() + "friendships/destroy/" + id + ".xml", new PostParameter[0], true), this);
     }
 
-    /**
-     * Tests if a friendship exists between two users.
-     *
-     * @param userA The ID or screen_name of the first user to test friendship for.
-     * @param userB The ID or screen_name of the second user to test friendship for.
-     * @return if a friendship exists between two users.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use friendshipExists(String userA, String userB)
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-exists">Twitter API Wiki / Twitter REST API Method: friendships exists</a>
-     */
-    public boolean exists(String userA, String userB) throws TwitterException {
-        return existsFriendship(userA, userB);
-    }
     /**
      * Tests if a friendship exists between two users.
      *
@@ -2018,19 +1179,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the authenticating user is following.
-     * @param paging Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
-     * @return an array of numeric IDs for every user the authenticating user is following
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
-     * @deprecated use getFriendsIDs(long cursor) instead
-     */
-    public IDs getFriendsIDs(Paging paging) throws TwitterException {
-        return new IDs(get(getBaseURL() + "friends/ids.xml", null, paging, true));
-    }
-
-    /**
-     * Returns an array of numeric IDs for every user the authenticating user is following.
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the authenticating user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -2052,21 +1200,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public IDs getFriendsIDs(int userId) throws TwitterException {
         return getFriendsIDs(userId, -1l);
-    }
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is following.
-     * @param userId Specifies the ID of the user for whom to return the friends list.
-     * @param paging Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
-     * @return an array of numeric IDs for every user the specified user is following
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
-     * @deprecated use getFriendsIDs(int userId, long cursor) instead
-     */
-    public IDs getFriendsIDs(int userId, Paging paging) throws TwitterException {
-        return new IDs(get(getBaseURL() + "friends/ids.xml?user_id=" + userId, null
-                , paging, true));
     }
 
     /**
@@ -2098,21 +1231,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
      * @param screenName Specfies the screen name of the user for whom to return the friends list.
-     * @param paging Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
-     * @return an array of numeric IDs for every user the specified user is following
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
-     * @deprecated use getFriendsIDs(String screenName, long cursor) instead
-     */
-    public IDs getFriendsIDs(String screenName, Paging paging) throws TwitterException {
-        return new IDs(get(getBaseURL() + "friends/ids.xml?screen_name=" + screenName
-                , null, paging, true));
-    }
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is following.
-     * @param screenName Specfies the screen name of the user for whom to return the friends list.
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -2138,20 +1256,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
-     * @param paging Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
-     * @deprecated use getFollowersIDs(long cursor) instead
-     */
-    public IDs getFollowersIDs(Paging paging) throws TwitterException {
-        return new IDs(get(getBaseURL() + "followers/ids.xml", null, paging
-                , true));
-    }
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is followed by.
-     * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.10
@@ -2172,21 +1276,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public IDs getFollowersIDs(int userId) throws TwitterException {
         return getFollowersIDs(userId, -1l);
-    }
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is followed by.
-     * @param userId Specfies the ID of the user for whom to return the followers list.
-     * @param paging Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
-     * @return The ID or screen_name of the user to retrieve the friends ID list for.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
-     * @deprecated use getFollowersIDs(int userId, long cursor) instead
-     */
-    public IDs getFollowersIDs(int userId, Paging paging) throws TwitterException {
-        return new IDs(get(getBaseURL() + "followers/ids.xml?user_id=" + userId, null
-                , paging, true));
     }
 
     /**
@@ -2218,21 +1307,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
      * @param screenName Specfies the screen name of the user for whom to return the followers list.
-     * @param paging Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
-     * @return The ID or screen_name of the user to retrieve the friends ID list for.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.0.1
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
-     * @deprecated use getFollowersIDs(String screenName, long cursor) instead
-     */
-    public IDs getFollowersIDs(String screenName, Paging paging) throws TwitterException {
-        return new IDs(get(getBaseURL() + "followers/ids.xml?screen_name="
-                + screenName, null, paging, true));
-    }
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is followed by.
-     * @param screenName Specfies the screen name of the user for whom to return the followers list.
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -2255,20 +1329,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     public User verifyCredentials() throws TwitterException {
         return new User(get(getBaseURL() + "account/verify_credentials.xml"
                 , true), this);
-    }
-
-    /**
-     * Updates the location
-     *
-     * @param location the current location of the user
-     * @return the updated user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.0.4
-     * @see <a href="http://apiwiki.twitter.com/REST%20API%20Documentation#account/updatelocation">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
-     * @deprecated Use updateProfile(String name, String email, String url, String location, String description) instead
-     */
-    public User updateLocation(String location) throws TwitterException {
-        return new User(http.post(getBaseURL() + "account/update_location.xml", new PostParameter[]{new PostParameter("location", location)}, true), this);
     }
 
     /**
@@ -2382,35 +1442,10 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
-     * @deprecated Use getFavorited() instead
-     */
-    public List<Status> favorites() throws TwitterException {
-        return getFavorites();
-    }
-
-    /**
-     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     *
-     * @return List<Status>
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @since Twitter4J 2.0.1
      */
     public List<Status> getFavorites() throws TwitterException {
         return Status.constructStatuses(get(getBaseURL() + "favorites.xml", new PostParameter[0], true), this);
-    }
-
-    /**
-     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     *
-     * @param page the number of page
-     * @return List<Status>
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
-     * @deprecated Use getFavorites(int page) instead
-     */
-    public List<Status> favorites(int page) throws TwitterException {
-        return getFavorites(page);
     }
 
     /**
@@ -2433,37 +1468,10 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
-     * @deprecated Use getFavorites(String id) instead
-     */
-    public List<Status> favorites(String id) throws TwitterException {
-        return getFavorites(id);
-    }
-
-    /**
-     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     *
-     * @param id the ID or screen name of the user for whom to request a list of favorite statuses
-     * @return List<Status>
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
      * @since Twitter4J 2.0.1
      */
     public List<Status> getFavorites(String id) throws TwitterException {
         return Status.constructStatuses(get(getBaseURL() + "favorites/" + id + ".xml", new PostParameter[0], true), this);
-    }
-
-    /**
-     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     *
-     * @param id   the ID or screen name of the user for whom to request a list of favorite statuses
-     * @param page the number of page
-     * @return List<Status>
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use getFavorites(String id, int page) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-favorites">Twitter API Wiki / Twitter REST API Method: favorites</a>
-     */
-    public List<Status> favorites(String id, int page) throws TwitterException {
-        return getFavorites(id, page);
     }
 
     /**
@@ -2510,37 +1518,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param id String
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use enableNotification(String id) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications follow</a>
-     */
-    public User follow(String id) throws TwitterException {
-        return enableNotification(id);
-    }
-
-    /**
-     * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
-     *
-     * @param id String
-     * @return User
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications follow</a>
      */
     public User enableNotification(String id) throws TwitterException {
         return new User(http.post(getBaseURL() + "notifications/follow/" + id + ".xml", true), this);
-    }
-
-    /**
-     * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
-     *
-     * @param id String
-     * @return User
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use disableNotification(String id) instead
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications leave</a>
-     */
-    public User leave(String id) throws TwitterException {
-        return disableNotification(id);
     }
 
     /**
@@ -2564,40 +1546,11 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param id the ID or screen_name of the user to block
      * @return the blocked user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.0.4
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks%C2%A0create">Twitter API Wiki / Twitter REST API Method: blocks create</a>
-     * @deprecated Use createBlock(String id) instead
-     */
-    public User block(String id) throws TwitterException {
-        return new User(http.post(getBaseURL() + "blocks/create/" + id + ".xml", true), this);
-    }
-
-    /**
-     * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
-     *
-     * @param id the ID or screen_name of the user to block
-     * @return the blocked user
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks%C2%A0create">Twitter API Wiki / Twitter REST API Method: blocks create</a>
      */
     public User createBlock(String id) throws TwitterException {
         return new User(http.post(getBaseURL() + "blocks/create/" + id + ".xml", true), this);
-    }
-
-
-    /**
-     * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
-     *
-     * @param id the ID or screen_name of the user to block
-     * @return the unblocked user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.0.4
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: blocks destroy</a>
-     * @deprecated Use destroyBlock(String id) instead
-     */
-    public User unblock(String id) throws TwitterException {
-        return new User(http.post(getBaseURL() + "blocks/destroy/" + id + ".xml", true), this);
     }
 
     /**
@@ -2729,8 +1682,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-saved_searches-destroy">Twitter API Wiki / Twitter REST API Method: saved_searches destroy</a>
      */
     public SavedSearch destroySavedSearch(int id) throws TwitterException {
-        return new SavedSearch(http.post(getBaseURL() + "saved_searches/destroy/" + id
-                + ".json", true));
+        return new SavedSearch(http.post(getBaseURL()
+                + "saved_searches/destroy/" + id + ".json", true));
     }
 
     /* Help Methods */
@@ -2747,35 +1700,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
                 asString().indexOf("ok");
     }
 
-    /**
-     * Returns extended information of the authenticated user.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.<br>
-     * The call Twitter.getAuthenticatedUser() is equivalent to the call:<br>
-     * twitter.getUserDetail(twitter.getUserId());
-     *
-     * @return User
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.1.3
-     * @deprecated Use verifyCredentials() instead
-     */
-    public User getAuthenticatedUser() throws TwitterException {
-        return new User(get(getBaseURL() + "account/verify_credentials.xml", true),this);
-    }
-
-    /**
-     * Returns the same text displayed on http://twitter.com/home when a maintenance window is scheduled, in the requested format.
-     *
-     * @return the schedule
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 1.0.4
-     * @deprecated this method is not supported by the Twitter API anymore
-     */
-    public String getDowntimeSchedule() throws TwitterException {
-        throw new TwitterException(
-                "this method is not supported by the Twitter API anymore"
-                , new NoSuchMethodException("this method is not supported by the Twitter API anymore"));
-    }
-
-
     private SimpleDateFormat format = new SimpleDateFormat(
             "EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 
@@ -2786,10 +1710,10 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
         Twitter twitter = (Twitter) o;
 
-        if (!baseURL.equals(twitter.baseURL)) return false;
+        if (!getBaseURL().equals(twitter.getBaseURL())) return false;
         if (!format.equals(twitter.format)) return false;
         if (!http.equals(twitter.http)) return false;
-        if (!searchBaseURL.equals(twitter.searchBaseURL)) return false;
+        if (!getSearchBaseURL().equals(twitter.getSearchBaseURL())) return false;
         if (!source.equals(twitter.source)) return false;
 
         return true;
@@ -2798,8 +1722,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     @Override
     public int hashCode() {
         int result = http.hashCode();
-        result = 31 * result + baseURL.hashCode();
-        result = 31 * result + searchBaseURL.hashCode();
         result = 31 * result + source.hashCode();
         result = 31 * result + format.hashCode();
         return result;
@@ -2809,8 +1731,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     public String toString() {
         return "Twitter{" +
                 "http=" + http +
-                ", baseURL='" + baseURL + '\'' +
-                ", searchBaseURL='" + searchBaseURL + '\'' +
                 ", source='" + source + '\'' +
                 ", format=" + format +
                 '}';

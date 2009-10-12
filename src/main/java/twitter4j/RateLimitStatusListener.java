@@ -26,35 +26,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
-
 /**
- * @author Yusuke Yamamoto - yusuke at mac.com
+ * @author Andrew Hedges - andrew.hedges at gmail.com
  */
-public class Twitter4JTestSuite extends TestCase {
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
+public interface RateLimitStatusListener {
 
-    public Twitter4JTestSuite(String s) {
-        super(s);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Twitter4J Test Suite");
-        suite.addTestSuite(AsyncTwitterTest.class);
-        suite.addTestSuite(DispatcherTest.class);
-        suite.addTestSuite(TwitterBasicAuthTest.class);
-        suite.addTestSuite(twitter4j.http.OAuthTest.class);
-        suite.addTestSuite(StreamAPITest.class);
-        suite.addTestSuite(SearchAPITest.class);
-        suite.addTestSuite(twitter4j.http.BASE64EncoderTest.class);
-        suite.addTestSuite(twitter4j.http.HTMLEntityTest.class);
-        suite.addTestSuite(twitter4j.http.ResponseTest.class);
-        suite.addTestSuite(twitter4j.RateLimitStatusTest.class);
-        return suite;
-    }
+	public void rateLimitStatusUpdated(RateLimitStatus status);
+	
 }

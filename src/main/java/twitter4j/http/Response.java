@@ -206,6 +206,7 @@ public class Response {
         }
     }
 
+
     public InputStreamReader asReader() {
         try {
             return new InputStreamReader(is, "UTF-8");

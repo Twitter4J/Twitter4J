@@ -125,7 +125,7 @@ public class TwitterTestUnit extends TestCase {
 
 
     }
-    public void testShowUser() throws Exception{
+    public void testGetUserDetail() throws Exception{
         User uws = twitterAPI1.showUser(id1);
         assertEquals(id1, uws.getName());
         assertEquals(id1,uws.getScreenName());
@@ -175,7 +175,7 @@ public class TwitterTestUnit extends TestCase {
         assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(new Paging(999383469l));
         assertTrue("size", 0 < statuses.size());
-        statuses = twitterAPI2.getUserTimeline(id1, new Paging().count(10));
+        statuses = unauthenticated.getUserTimeline(id1, new Paging().count(10));
         assertTrue("size", 0 < statuses.size());
 //        statuses = twitterAPI1.getUserTimeline(15, new Date(0));
 //        assertTrue("size", 0 < statuses.size());
@@ -183,7 +183,12 @@ public class TwitterTestUnit extends TestCase {
         assertTrue("size", 0 < statuses.size());
 //        statuses = twitterAPI1.getUserTimeline(id1, new Date(0));
 //        assertTrue("size", 0 < statuses.size());
-        statuses = twitterAPI1.getUserTimeline(id1,new Paging(999383469l));
+        statuses = unauthenticated.getUserTimeline(id1,new Paging(999383469l));
+        assertTrue("size", 0 < statuses.size());
+
+//        statuses = twitterAPI1.getUserTimeline(id1, 20, new Date(0));
+//        assertTrue("size", 0 < statuses.size());
+        statuses = unauthenticated.getUserTimeline(id1, 20, 999383469l);
         assertTrue("size", 0 < statuses.size());
     }
     public void testShow() throws Exception{
@@ -212,6 +217,7 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(twitterAPI1.verifyCredentials().getId(), status2.getInReplyToUserId());
         twitterAPI1.destroyStatus(status.getId());
     }
+
     public void testRetweetMethods() throws Exception {
         HttpClient client = new HttpClient();
         Status withRetweet = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-with-retweet.xml"), new Twitter());
@@ -280,25 +286,25 @@ public class TwitterTestUnit extends TestCase {
         }
     }
 
-    public void testGeoLocation() throws Exception {
-        Status withgeo2 = twitterAPI1.updateStatus("with geo", 12.3456, -34.5678);
+    public void testGeoLocation() throws Exception{
+        Status withgeo2 = twitterAPI1.updateStatus("with geo",12.3456,-34.5678);
         // not yet available
-        //        assertEquals(12.3456, withgeo2.getLatitude());
-        //        assertEquals(-34.5678, withgeo2.getLongitude());
+//        assertEquals(12.3456, withgeo2.getLatitude());
+//        assertEquals(-34.5678, withgeo2.getLongitude());
 
         HttpClient client = new HttpClient();
-        Status nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.xml"), new Twitter());
+        Status nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.xml"),new Twitter());
         assertEquals(-1d, nogeo.getLatitude());
         assertEquals(-1d, nogeo.getLongitude());
         assertEquals(false, nogeo.getUser().isGeoEnabled());
         assertEquals(false, nogeo.getUser().isVerified());
 
-        Status withgeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-withgeo.xml"), new Twitter());
+        Status withgeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-withgeo.xml"),new Twitter());
         assertEquals(37.78029, withgeo.getLatitude());
         assertEquals(-122.39697, withgeo.getLongitude());
         assertEquals(true, withgeo.getUser().isGeoEnabled());
         assertEquals(true, withgeo.getUser().isVerified());
-
+        
 //        nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.json").asString());
 //        assertEquals(-1d, nogeo.getLatitude());
 //        assertEquals(-1d, nogeo.getLongitude());
@@ -375,10 +381,10 @@ public class TwitterTestUnit extends TestCase {
         assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
     }
 
-    private void assertIDExsits(String assertion, IDs ids, int idToFind) {
+    private void assertIDExsits(String assertion, IDs ids, int idToFind){
         boolean found = false;
-        for (int id : ids.getIDs()) {
-            if (id == idToFind) {
+        for(int id : ids.getIDs()){
+            if(id == idToFind){
                 found = true;
                 break;
             }
@@ -400,8 +406,8 @@ public class TwitterTestUnit extends TestCase {
         String neu = "new";
         newName = original.getName() + neu;
         newURL = original.getURL() + neu;
-        newLocation = original.getLocation()+neu;
-        newDescription = original.getDescription()+neu;
+        newLocation = original.getLocation() + neu;
+        newDescription = original.getDescription() + neu;
 
         User altered = twitterAPI1.updateProfile(
                 newName, null, newURL, newLocation, newDescription);
@@ -419,9 +425,9 @@ public class TwitterTestUnit extends TestCase {
         }
 
         twitterAPI1.updateDeliverlyDevice(Twitter.SMS);
-
-        assertTrue(twitterAPI1.existsFriendship("JBossNewsJP", "RedHatNewsJP"));
-        assertFalse(twitterAPI1.existsFriendship(id1,"al3x"));
+        followEachOther();
+        assertTrue(twitterAPI1.existsFriendship(id1, id2));
+        assertFalse(twitterAPI1.existsFriendship(id1, "al3x"));
 
         User eu;
         eu = twitterAPI1.updateProfileColors("f00", "f0f", "0ff", "0f0", "f0f");
@@ -461,6 +467,20 @@ public class TwitterTestUnit extends TestCase {
         assertEquals("e0ff92", eu.getProfileSidebarFillColor());
         assertEquals("87bc44", eu.getProfileSidebarBorderColor());
     }
+
+    private void followEachOther() {
+        try {
+            twitterAPI1.createFriendship(id2);
+        } catch (TwitterException te) {
+            te.printStackTrace();
+        }
+        try {
+            twitterAPI2.createFriendship(id1);
+        } catch (TwitterException te) {
+            te.printStackTrace();
+        }
+    }
+
     public void testFavoriteMethods() throws Exception{
         Status status = twitterAPI1.updateStatus("test");
         twitterAPI2.createFavorite(status.getId());
@@ -500,19 +520,6 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(1<= actualReturnList.size());
     }
 
-    private void followEachOther() {
-        try {
-            twitterAPI1.createFriendship(id2);
-        } catch (TwitterException te) {
-            te.printStackTrace();
-        }
-        try {
-            twitterAPI2.createFriendship(id1);
-        } catch (TwitterException te) {
-            te.printStackTrace();
-        }
-    }
-
     public void testCreateDestroyFriend() throws Exception{
         User user;
         try {
@@ -531,7 +538,7 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(id1, user.getName());
         // the Twitter API is not returning appropriate notifications value
         // http://code.google.com/p/twitter-api/issues/detail?id=474
-//        User detail = twitterAPI2.getUserDetail(id1);
+//        User detail = twitterAPI2.showUser(id1);
 //        assertTrue(detail.isNotificationEnabled());
         try {
             user = twitterAPI2.createFriendship(id2);

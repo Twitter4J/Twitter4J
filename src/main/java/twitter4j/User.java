@@ -80,8 +80,6 @@ public class User extends TwitterResponse implements java.io.Serializable {
     private String timeZone;
     private String profileBackgroundImageUrl;
     private String profileBackgroundTile;
-    private boolean following;
-    private boolean notificationEnabled;
     private int statusesCount;
     private boolean geoEnabled;
     private boolean verified;
@@ -127,8 +125,6 @@ public class User extends TwitterResponse implements java.io.Serializable {
             timeZone = json.getString("time_zone");
             profileBackgroundImageUrl = json.getString("profile_background_image_url");
             profileBackgroundTile = json.getString("profile_background_tile");
-            following = getBoolean("following", json);
-            notificationEnabled = getBoolean("notifications", json);
             statusesCount = json.getInt("statuses_count");
             if (!json.isNull("status")) {
                 JSONObject status = json.getJSONObject("status");
@@ -172,8 +168,6 @@ public class User extends TwitterResponse implements java.io.Serializable {
         timeZone = getChildText("time_zone", elem);
         profileBackgroundImageUrl = getChildText("profile_background_image_url", elem);
         profileBackgroundTile = getChildText("profile_background_tile", elem);
-        following = getChildBoolean("following", elem);
-        notificationEnabled = getChildBoolean("notifications", elem);
         statusesCount = getChildInt("statuses_count", elem);
         geoEnabled = getChildBoolean("geo_enabled", elem);
         verified = getChildBoolean("verified", elem);
@@ -440,36 +434,12 @@ public class User extends TwitterResponse implements java.io.Serializable {
         return profileBackgroundTile;
     }
 
-    /**
-     *
-     * @deprecated <a href="http://groups.google.com/group/twitter-development-talk/browse_frm/thread/42ba883b9f8e3c6e">Deprecation of following and notification elements</a>
-     */
-    public boolean isFollowing() {
-        return following;
-    }
-
-    /**
-     * @deprecated use isNotificationsEnabled() instead
-     */
-
-    public boolean isNotifications() {
-        return notificationEnabled;
-    }
-
-    /**
-     *
-     * @since Twitter4J 2.0.1
-     * @deprecated <a href="http://groups.google.com/group/twitter-development-talk/browse_frm/thread/42ba883b9f8e3c6e">Deprecation of following and notification elements</a>
-     */
-    public boolean isNotificationEnabled() {
-        return notificationEnabled;
-    }
-
     public int getStatusesCount() {
         return statusesCount;
     }
 
     /**
+     * 
      * @return the user is enabling geo location
      * @since Twitter4J 2.0.10
      */
@@ -478,13 +448,13 @@ public class User extends TwitterResponse implements java.io.Serializable {
     }
 
     /**
+     *
      * @return returns true if the user is a verified celebrity
      * @since Twitter4J 2.0.10
      */
     public boolean isVerified() {
         return verified;
     }
-
 
     @Override
     public int hashCode() {
@@ -536,8 +506,6 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 ", timeZone='" + timeZone + '\'' +
                 ", profileBackgroundImageUrl='" + profileBackgroundImageUrl + '\'' +
                 ", profileBackgroundTile='" + profileBackgroundTile + '\'' +
-                ", following=" + following +
-                ", notificationEnabled=" + notificationEnabled +
                 ", statusesCount=" + statusesCount +
                 ", geoEnabled=" + geoEnabled +
                 ", verified=" + verified +

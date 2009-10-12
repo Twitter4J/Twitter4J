@@ -48,26 +48,11 @@ public interface TwitterListener {
     void gotUserTimeline(List<Status> statuses);
 
     /**
-     * @deprecated use gotShowStatus instead
-     */
-    void gotShow(Status status);
-
-    /**
      * @since Twitter4J 2.0.1
      */
     void gotShowStatus(Status status);
 
-    /**
-     * @deprecated use updatedStatus instead
-     */
-    void updated(Status status);
-
     void updatedStatus(Status status);
-
-    /**
-     * @deprecated use gotMentions instead
-     */
-    void gotReplies(List<Status> statuses);
 
     /**
      * @since Twitter4J 2.0.1
@@ -93,9 +78,9 @@ public interface TwitterListener {
      */
     void retweetedStatus(Status retweetedStatus);
 
-    void gotFriends(List<User> users);
+    void gotFriendsStatuses(List<User> users);
 
-    void gotFollowers(List<User> users);
+    void gotFollowersStatuses(List<User> users);
 
     void gotFeatured(List<User> users);
 
@@ -108,11 +93,6 @@ public interface TwitterListener {
     void sentDirectMessage(DirectMessage message);
 
     /**
-     * @deprecated use destroyedDirectMessage instead
-     */
-    void deletedDirectMessage(DirectMessage message);
-
-    /**
      * @since Twitter4J 2.0.1
      */
     void destroyedDirectMessage(DirectMessage message);
@@ -122,19 +102,9 @@ public interface TwitterListener {
     void gotFollowersIDs(IDs ids);
 
     /**
-     * @deprecated use createdFriendship instead
-     */
-    void created(User user);
-
-    /**
      * @since Twitter4J 2.0.1
      */
     void createdFriendship(User user);
-
-    /**
-     * @deprecated use destroyedFriendship instead
-     */
-    void destroyed(User user);
 
     /**
      * @since Twitter4J 2.0.1
@@ -142,19 +112,9 @@ public interface TwitterListener {
     void destroyedFriendship(User user);
 
     /**
-     * @deprecated use gotExistsFriendship instead
-     */
-    void gotExists(boolean exists);
-
-    /**
      * @since Twitter4J 2.0.1
      */
     void gotExistsFriendship(boolean exists);
-
-    /**
-     * @deprecated Use updatedProfile instead
-     */
-    void updatedLocation(User user);
 
     /**
      * @since Twitter4J 2.0.2
@@ -174,37 +134,19 @@ public interface TwitterListener {
     void destroyedFavorite(Status status);
 
     /**
-     * @deprecated use enabledNotification instead
-     */
-    void followed(User user);
-    /**
      * @since Twitter4J 2.0.1
      */
     void enabledNotification(User user);
 
-    /**
-     * @deprecated use disabledNotification instead
-     */
-    void left(User user);
     /**
      * @since Twitter4J 2.0.1
      */
     void disabledNotification(User user);
 
     /**
-     * @deprecated use createdBlock instead
-     */
-    void blocked(User user);
-
-    /**
      * @since Twitter4J 2.0.1
      */
     void createdBlock(User user);
-
-    /**
-     * @deprecated use destroyedBlock instead
-     */
-    void unblocked(User user);
 
     /**
      * @since Twitter4J 2.0.1
@@ -227,11 +169,6 @@ public interface TwitterListener {
     void gotBlockingUsersIDs(IDs blockingUsersIDs);
 
     void tested(boolean test);
-
-    /**
-     * @deprecated not supported by Twitter API anymore
-     */
-    void gotDowntimeSchedule(String schedule);
 
     void searched(QueryResult queryResult);
 

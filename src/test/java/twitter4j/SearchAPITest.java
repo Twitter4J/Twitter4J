@@ -107,6 +107,7 @@ public class SearchAPITest extends TestCase {
         assertEquals(0, queryResult.getTweets().size());
 
     }
+
     public void testTrends() throws Exception{
         Trends trends;
         trends = unauthenticated.getTrends();
@@ -162,6 +163,7 @@ public class SearchAPITest extends TestCase {
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
         assertTrends(trendsList,30);
     }
+
     private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception{
         Date trendAt = null;
          for(Trends singleTrends : trendsArray){

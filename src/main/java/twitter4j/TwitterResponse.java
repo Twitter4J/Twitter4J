@@ -105,7 +105,7 @@ public class TwitterResponse implements java.io.Serializable {
     protected static void ensureRootNodeNameIs(String rootName, Document doc) throws TwitterException {
         Element elem = doc.getDocumentElement();
         if (!rootName.equals(elem.getNodeName())) {
-            throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check the availability of the Twitter API at http://status.twitter.com/");
+            throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check the availability of the Twitter API at http://status.twitter.com/.");
         }
     }
 

@@ -53,7 +53,7 @@ public class AsyncUpdate {
         }
         AsyncTwitter twitter = new AsyncTwitter(args[0], args[1]);
         twitter.updateStatusAsync(args[2], new TwitterAdapter() {
-            @Override public void updated(Status status) {
+            @Override public void updatedStatus(Status status) {
                 System.out.println("Successfully updated the status to [" +
                                    status.getText() + "].");
                 synchronized (lock) {

@@ -32,11 +32,11 @@ import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Collections;
-import java.util.Arrays;
 
 /**
  * A data class representing Treands.

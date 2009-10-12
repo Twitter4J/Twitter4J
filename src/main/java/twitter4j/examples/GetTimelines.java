@@ -76,7 +76,7 @@ public class GetTimelines {
                 System.out.println(status.getUser().getName() + ":" +
                                    status.getText());
             }
-            Status status = twitter.show(81642112l);
+            Status status = twitter.showStatus(81642112l);
             System.out.println("------------------------------");
             System.out.println("Showing " + status.getUser().getName() +
                                "'s status updated at " + status.getCreatedAt());

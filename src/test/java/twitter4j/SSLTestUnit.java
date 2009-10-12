@@ -26,12 +26,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-public class SSLTestUnit  extends TwitterTestUnit {
-    public SSLTestUnit(String name){
+/**
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ */
+public class SSLTestUnit extends TwitterTestUnit {
+    public SSLTestUnit(String name) {
         super(name);
     }
+
     protected void setUp() throws Exception {
-        System.setProperty("twitter4j.http.useSSL","true");
+        System.setProperty("twitter4j.http.useSSL", "true");
         super.setUp();
     }
 }
