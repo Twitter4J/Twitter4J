@@ -100,6 +100,10 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         isFavorited = getChildBoolean("favorited", elem);
         inReplyToScreenName = getChildText("in_reply_to_screen_name", elem);
         NodeList georssPoint = elem.getElementsByTagName("georss:point");
+        if(0 == georssPoint.getLength()){
+            // quick workaround for http://groups.google.com/group/twitter-development-talk/browse_thread/thread/2fb55a05ddead3cf
+            georssPoint = elem.getElementsByTagName("georss:Point");
+        }
         if(1 == georssPoint.getLength()){
             String[] point = georssPoint.item(0).getFirstChild().getNodeValue().split(" ");
             latitude = Double.parseDouble(point[0]);

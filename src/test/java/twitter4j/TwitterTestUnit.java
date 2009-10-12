@@ -284,9 +284,15 @@ public class TwitterTestUnit extends TestCase {
 
     public void testGeoLocation() throws Exception{
         Status withgeo2 = twitterAPI1.updateStatus("with geo",12.3456,-34.5678);
-        // not yet available
-//        assertEquals(12.3456, withgeo2.getLatitude());
-//        assertEquals(-34.5678, withgeo2.getLongitude());
+        if(withgeo2.getUser().isGeoEnabled()){
+            assertEquals(12.3456, withgeo2.getLatitude());
+            assertEquals(-34.5678, withgeo2.getLongitude());
+        }
+
+        withgeo2 = twitterAPI1.showStatus(4512367904l);
+        assertEquals(37.780300, withgeo2.getLatitude());
+        assertEquals(-122.396900, withgeo2.getLongitude());
+        assertTrue(withgeo2.getUser().isGeoEnabled());
 
         HttpClient client = new HttpClient();
         Status nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.xml"),new Twitter());
