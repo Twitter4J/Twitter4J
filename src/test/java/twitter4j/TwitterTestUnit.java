@@ -94,20 +94,6 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testGetFriendsTimeline()throws Exception {
-        Date startDate = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(startDate);
-        String dateStr = (cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.DATE);
-
-
-        String id1status = dateStr+":id1";
-        String id2status = dateStr+":id2";
-        Status status = twitterAPI1.updateStatus(id1status);
-        assertEquals(id1status, status.getText());
-        Thread.sleep(3000);
-        Status status2 = twitterAPI2.updateStatus(id2status);
-        assertEquals(id2status, status2.getText());
-
         List<Status> actualReturn;
 
         actualReturn = twitterAPI1.getFriendsTimeline();
@@ -484,7 +470,14 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testFavoriteMethods() throws Exception{
-        Status status = twitterAPI1.updateStatus("test");
+        Date startDate = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        String dateStr = (cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.DATE);
+
+
+        String id1status = dateStr+":id1";
+        Status status = twitterAPI1.updateStatus(id1status);
         twitterAPI2.createFavorite(status.getId());
         assertTrue(twitterAPI2.getFavorites().size() > 0);
         try {
@@ -558,11 +551,10 @@ public class TwitterTestUnit extends TestCase {
         }
 
     }
-    public void testGetReplies() throws Exception{
+    public void testGetMentions() throws Exception{
         twitterAPI2.updateStatus("@"+id1+" reply to id1");
         List<Status> statuses = twitterAPI1.getMentions();
         assertTrue(statuses.size() > 0);
-        assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
 
         statuses = twitterAPI1.getMentions(new Paging(1));
         assertTrue(statuses.size() > 0);
@@ -572,7 +564,6 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(statuses.size() > 0);
         statuses = twitterAPI1.getMentions(new Paging(1l));
         assertTrue(statuses.size() > 0);
-        assertTrue(-1 != statuses.get(0).getText().indexOf(" reply to id1"));
     }
 
     public void testNotification() throws Exception {

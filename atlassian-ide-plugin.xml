@@ -1,0 +1,13 @@
+<atlassian-ide-plugin>
+  <project-configuration>
+    <servers>
+      <jira>
+        <server-id>43348ceb-3346-4b51-9272-ad4ba286229c</server-id>
+        <name>yusuke.homeip.net</name>
+        <url>http://yusuke.homeip.net</url>
+        <dontUseBasicAuth>false</dontUseBasicAuth>
+      </jira>
+    </servers>
+    <default-jira-server>43348ceb-3346-4b51-9272-ad4ba286229c</default-jira-server>
+  </project-configuration>
+</atlassian-ide-plugin>
