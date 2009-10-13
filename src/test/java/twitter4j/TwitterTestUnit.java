@@ -171,6 +171,10 @@ public class TwitterTestUnit extends TestCase {
 //        assertTrue("size", 0 < statuses.size());
         statuses = unauthenticated.getUserTimeline(id1,new Paging(999383469l));
         assertTrue("size", 0 < statuses.size());
+
+        statuses = twitterAPI1.getUserTimeline(new Paging(1).count(30));
+        List<Status> statuses2 = twitterAPI1.getUserTimeline(new Paging(2).count(15));
+        assertEquals(statuses.get(15), statuses2.get(0));
     }
 
     public void testShow() throws Exception{
