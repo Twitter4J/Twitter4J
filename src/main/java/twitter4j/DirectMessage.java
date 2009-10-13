@@ -49,20 +49,18 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
     private String recipient_screen_name;
     private static final long serialVersionUID = -3253021825891789737L;
 
-    /*package*/DirectMessage(Response res, Twitter twitter) throws TwitterException {
+    /*package*/DirectMessage(Response res) throws TwitterException {
         super(res);
-        init(res, res.asDocument().getDocumentElement(), twitter);
+        init(res, res.asDocument().getDocumentElement());
     }
-    /*package*/DirectMessage(Response res, Element elem, Twitter twitter) throws TwitterException {
+    /*package*/DirectMessage(Response res, Element elem) throws TwitterException {
         super(res);
-        init(res, elem, twitter);
+        init(res, elem);
     }
-    private void init(Response res, Element elem, Twitter twitter) throws TwitterException{
+    private void init(Response res, Element elem) throws TwitterException{
         ensureRootNodeNameIs("direct_message", elem);
-        sender = new User(res, (Element) elem.getElementsByTagName("sender").item(0),
-                twitter);
-        recipient = new User(res, (Element) elem.getElementsByTagName("recipient").item(0),
-                twitter);
+        sender = new User(res, (Element) elem.getElementsByTagName("sender").item(0));
+        recipient = new User(res, (Element) elem.getElementsByTagName("recipient").item(0));
         id = getChildInt("id", elem);
         text = getChildText("text", elem);
         sender_id = getChildInt("sender_id", elem);
@@ -117,8 +115,7 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
     }
 
     /*package*/
-    static List<DirectMessage> constructDirectMessages(Response res,
-                                                       Twitter twitter) throws TwitterException {
+    static List<DirectMessage> constructDirectMessages(Response res) throws TwitterException {
         Document doc = res.asDocument();
         if (isRootNodeNilClasses(doc)) {
             return new ArrayList<DirectMessage>(0);
@@ -131,7 +128,7 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
                 List<DirectMessage> messages = new ArrayList<DirectMessage>(size);
                 for (int i = 0; i < size; i++) {
                     Element status = (Element) list.item(i);
-                    messages.add(new DirectMessage(res, status, twitter));
+                    messages.add(new DirectMessage(res, status));
                 }
                 return messages;
             } catch (TwitterException te) {

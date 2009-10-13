@@ -48,25 +48,24 @@ public class RetweetDetails extends TwitterResponse implements
     private User retweetingUser;
     static final long serialVersionUID = 1957982268696560598L;
 
-    /*package*/RetweetDetails(Response res, Twitter twitter) throws TwitterException {
+    /*package*/RetweetDetails(Response res) throws TwitterException {
         super(res);
         Element elem = res.asDocument().getDocumentElement();
-        init(res, elem, twitter);
+        init(res, elem);
     }
 
-    /*package*/RetweetDetails(Response res, Element elem, Twitter twitter) throws
+    /*package*/RetweetDetails(Response res, Element elem) throws
             TwitterException {
         super(res);
-        init(res, elem, twitter);
+        init(res, elem);
     }
 
-    private void init(Response res, Element elem, Twitter twitter) throws
+    private void init(Response res, Element elem) throws
             TwitterException {
         ensureRootNodeNameIs("retweet_details", elem);
         retweetId = getChildLong("retweet_id", elem);
         retweetedAt = getChildDate("retweeted_at", elem);
-        retweetingUser = new User(res, (Element) elem.getElementsByTagName("retweeting_user").item(0)
-                , twitter);
+        retweetingUser = new User(res, (Element) elem.getElementsByTagName("retweeting_user").item(0));
     }
 
     public long getRetweetId() {
@@ -81,8 +80,7 @@ public class RetweetDetails extends TwitterResponse implements
         return retweetingUser;
     }
     /*package*/
-    static List<RetweetDetails> createRetweetDetails(Response res,
-                                          Twitter twitter) throws TwitterException {
+    static List<RetweetDetails> createRetweetDetails(Response res) throws TwitterException {
         Document doc = res.asDocument();
         if (isRootNodeNilClasses(doc)) {
             return new ArrayList<RetweetDetails>(0);
@@ -95,7 +93,7 @@ public class RetweetDetails extends TwitterResponse implements
                 List<RetweetDetails> statuses = new ArrayList<RetweetDetails>(size);
                 for (int i = 0; i < size; i++) {
                     Element status = (Element) list.item(i);
-                    statuses.add(new RetweetDetails(res, status, twitter));
+                    statuses.add(new RetweetDetails(res, status));
                 }
                 return statuses;
             } catch (TwitterException te) {

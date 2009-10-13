@@ -48,7 +48,7 @@ public class Tweet extends TwitterResponse{
     private Date createdAt;
     private static final long serialVersionUID = 4299736733993211587L;
 
-    /*package*/Tweet(JSONObject tweet, TwitterSupport twitterSupport) throws TwitterException {
+    /*package*/Tweet(JSONObject tweet) throws TwitterException {
         super();
         try {
             text = getString("text", tweet, false);

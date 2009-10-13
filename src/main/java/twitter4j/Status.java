@@ -58,16 +58,16 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     private RetweetDetails retweetDetails;
     private static final long serialVersionUID = 1608000492860584608L;
 
-    /*package*/Status(Response res, Twitter twitter) throws TwitterException {
+    /*package*/Status(Response res) throws TwitterException {
         super(res);
         Element elem = res.asDocument().getDocumentElement();
-        init(res, elem, twitter);
+        init(res, elem);
     }
 
-    /*package*/Status(Response res, Element elem, Twitter twitter) throws
+    /*package*/Status(Response res, Element elem) throws
             TwitterException {
         super(res);
-        init(res, elem, twitter);
+        init(res, elem);
     }
 
     public Status(String str) throws TwitterException, JSONException {
@@ -85,11 +85,10 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         user = new User(json.getJSONObject("user"));
     }
 
-    private void init(Response res, Element elem, Twitter twitter) throws
+    private void init(Response res, Element elem) throws
             TwitterException {
         ensureRootNodeNameIs("status", elem);
-        user = new User(res, (Element) elem.getElementsByTagName("user").item(0)
-                , twitter);
+        user = new User(res, (Element) elem.getElementsByTagName("user").item(0));
         id = getChildLong("id", elem);
         text = getChildText("text", elem);
         source = getChildText("source", elem);
@@ -111,7 +110,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         }
         NodeList retweetDetailsNode = elem.getElementsByTagName("retweet_details");
         if(1 == retweetDetailsNode.getLength()){
-            retweetDetails = new RetweetDetails(res,(Element)retweetDetailsNode.item(0),twitter);
+            retweetDetails = new RetweetDetails(res,(Element)retweetDetailsNode.item(0));
         }
     }
 
@@ -250,8 +249,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     }
 
     /*package*/
-    static List<Status> constructStatuses(Response res,
-                                          Twitter twitter) throws TwitterException {
+    static List<Status> constructStatuses(Response res) throws TwitterException {
         Document doc = res.asDocument();
         if (isRootNodeNilClasses(doc)) {
             return new ArrayList<Status>(0);
@@ -264,7 +262,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
                 List<Status> statuses = new ArrayList<Status>(size);
                 for (int i = 0; i < size; i++) {
                     Element status = (Element) list.item(i);
-                    statuses.add(new Status(res, status, twitter));
+                    statuses.add(new Status(res, status));
                 }
                 return statuses;
             } catch (TwitterException te) {

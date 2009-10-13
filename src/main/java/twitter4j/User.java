@@ -47,7 +47,6 @@ import java.util.List;
 public class User extends TwitterResponse implements java.io.Serializable {
 
     static final String[] POSSIBLE_ROOT_NAMES = new String[]{"user", "sender", "recipient", "retweeting_user"};
-    private Twitter twitter;
     private int id;
     private String name;
     private String screenName;
@@ -86,15 +85,15 @@ public class User extends TwitterResponse implements java.io.Serializable {
     private static final long serialVersionUID = -6345893237975349030L;
 
 
-    /*package*/User(Response res, Twitter twitter) throws TwitterException {
+    /*package*/User(Response res) throws TwitterException {
         super(res);
         Element elem = res.asDocument().getDocumentElement();
-        init(elem, twitter);
+        init(elem);
     }
 
-    /*package*/User(Response res, Element elem, Twitter twitter) throws TwitterException {
+    /*package*/User(Response res, Element elem) throws TwitterException {
         super(res);
-        init(elem, twitter);
+        init(elem);
     }
     /*package*/User(JSONObject json) throws TwitterException {
         super();
@@ -143,8 +142,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
         }
     }
 
-    private void init(Element elem, Twitter twitter) throws TwitterException {
-        this.twitter = twitter;
+    private void init(Element elem) throws TwitterException {
         ensureRootNodeNameIs(POSSIBLE_ROOT_NAMES, elem);
         id = getChildInt("id", elem);
         name = getChildText("name", elem);
@@ -278,11 +276,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
         return followersCount;
     }
 
-    public DirectMessage sendDirectMessage(String text) throws TwitterException {
-        return twitter.sendDirectMessage(this.getName(), text);
-    }
-
-    public static List<User> constructUsers(Response res, Twitter twitter) throws TwitterException {
+    public static List<User> constructUsers(Response res) throws TwitterException {
         Document doc = res.asDocument();
         if (isRootNodeNilClasses(doc)) {
             return new ArrayList<User>(0);
@@ -294,7 +288,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 int size = list.getLength();
                 List<User> users = new ArrayList<User>(size);
                 for (int i = 0; i < size; i++) {
-                    users.add(new User(res, (Element) list.item(i), twitter));
+                    users.add(new User(res, (Element) list.item(i)));
                 }
                 return users;
             } catch (TwitterException te) {
@@ -475,7 +469,6 @@ public class User extends TwitterResponse implements java.io.Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "twitter=" + twitter +
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 ", screenName='" + screenName + '\'' +

@@ -52,7 +52,7 @@ public class QueryResult extends TwitterResponse {
     private List<Tweet> tweets;
     private static final long serialVersionUID = -9059136565234613286L;
 
-    /*package*/ QueryResult(Response res, TwitterSupport twitterSupport) throws TwitterException {
+    /*package*/ QueryResult(Response res) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
         try {
@@ -69,7 +69,7 @@ public class QueryResult extends TwitterResponse {
             tweets = new ArrayList<Tweet>(array.length());
             for (int i = 0; i < array.length(); i++) {
                 JSONObject tweet = array.getJSONObject(i);
-                tweets.add(new Tweet(tweet, twitterSupport));
+                tweets.add(new Tweet(tweet));
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);

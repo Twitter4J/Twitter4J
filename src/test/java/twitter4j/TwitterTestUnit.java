@@ -206,7 +206,7 @@ public class TwitterTestUnit extends TestCase {
 
     public void testRetweetMethods() throws Exception {
         HttpClient client = new HttpClient();
-        Status withRetweet = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-with-retweet.xml"), new Twitter());
+        Status withRetweet = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-with-retweet.xml"));
         assertTrue(withRetweet.isRetweet());
         assertEquals(2245122541l, withRetweet.getRetweetDetails().getRetweetId());
         assertEquals(new Date(1245451273000l)/*Sat Jun 20 07:41:13 JST 2009*/
@@ -222,7 +222,7 @@ public class TwitterTestUnit extends TestCase {
             // retweet api is not yet availble
             assertEquals(404, te.getStatusCode());
         }
-        List<RetweetDetails> retweets = RetweetDetails.createRetweetDetails(client.get("http://yusuke.homeip.net/twitter4j/en/retweets.xml"), new Twitter());
+        List<RetweetDetails> retweets = RetweetDetails.createRetweetDetails(client.get("http://yusuke.homeip.net/twitter4j/en/retweets.xml"));
         assertEquals(2, retweets.size());
         assertEquals(4017285870l,retweets.get(0).getRetweetId());
         assertEquals(4013267275l,retweets.get(1).getRetweetId());
@@ -285,13 +285,13 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(withgeo2.getUser().isGeoEnabled());
 
         HttpClient client = new HttpClient();
-        Status nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.xml"),new Twitter());
+        Status nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.xml"));
         assertEquals(-1d, nogeo.getLatitude());
         assertEquals(-1d, nogeo.getLongitude());
         assertEquals(false, nogeo.getUser().isGeoEnabled());
         assertEquals(false, nogeo.getUser().isVerified());
 
-        Status withgeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-withgeo.xml"),new Twitter());
+        Status withgeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-withgeo.xml"));
         assertEquals(37.78029, withgeo.getLatitude());
         assertEquals(-122.39697, withgeo.getLongitude());
         assertEquals(true, withgeo.getUser().isGeoEnabled());

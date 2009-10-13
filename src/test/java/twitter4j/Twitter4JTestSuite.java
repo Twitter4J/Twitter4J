@@ -29,15 +29,14 @@ package twitter4j;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Twitter4JTestSuite extends TestCase {
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
+//    public static void main(String[] args) {
+//        TestRunner.run(suite());
+//    }
 
     public Twitter4JTestSuite(String s) {
         super(s);
