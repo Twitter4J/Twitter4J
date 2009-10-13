@@ -610,8 +610,13 @@ public class TwitterTestUnit extends TestCase {
         // http://code.google.com/p/twitter-api/issues/detail?id=1032
         // the saved search may not be immediately available
         assertTrue(0 <= list.size());
-        SavedSearch ss2 = twitterAPI1.destroySavedSearch(ss1.getId());
-        assertEquals(ss1, ss2);
+        try {
+            SavedSearch ss2 = twitterAPI1.destroySavedSearch(ss1.getId());
+            assertEquals(ss1, ss2);
+        } catch (TwitterException te) {
+            // sometimes it returns 404 when its out of sync.
+            assertEquals(404, te.getStatusCode());
+        }
     }
 
     public void testTest() throws Exception {
