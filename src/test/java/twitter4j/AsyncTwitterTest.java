@@ -32,7 +32,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -363,19 +362,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void testGetFriendsTimeline() throws Exception {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        String dateStr = (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DATE);
-
-        String id1status = dateStr + ":id1";
-        String id2status = dateStr + ":id2";
-        twitterAPI1.updateStatusAsync(id1status, this);
-        waitForResponse();
-        assertEquals(id1status, status.getText());
-        twitterAPI2.updateStatusAsync(id2status, this);
-        waitForResponse();
-        assertEquals(id2status, status.getText());
-
         twitterAPI1.getFriendsTimelineAsync(this);
         waitForResponse();
         assertTrue(statuses.size() > 0);
