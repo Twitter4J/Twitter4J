@@ -461,7 +461,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
         twitterAPI1.getFollowersIDsAsync(this);
         waitForResponse();
-        assertIDExsits("twit4j2 is following twit2j", ids, 6377362);
+        try {
+            twitterAPI2.createFriendship(id1);
+        } catch (TwitterException te) {
+        }
+        assertIDExsits("twit4j2(6377362) is following twit4j(6358482)", ids, 6377362);
         twitterAPI1.getFollowersIDsAsync(28074579, this);
         waitForResponse();
         assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
