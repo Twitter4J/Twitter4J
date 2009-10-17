@@ -473,7 +473,7 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testFavoriteMethods() throws Exception{
-        Status status = twitterAPI1.getHomeTimeline(new Paging().count(1)).get(0);
+        Status status = twitterAPI1.getPublicTimeline().get(0);
         twitterAPI2.createFavorite(status.getId());
         assertTrue(twitterAPI2.getFavorites().size() > 0);
         try {
