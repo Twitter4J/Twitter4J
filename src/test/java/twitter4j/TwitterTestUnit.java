@@ -34,7 +34,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -474,14 +473,7 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testFavoriteMethods() throws Exception{
-        Date startDate = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(startDate);
-        String dateStr = (cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.DATE);
-
-
-        String id1status = dateStr+":id1";
-        Status status = twitterAPI1.updateStatus(id1status);
+        Status status = twitterAPI1.getHomeTimeline(new Paging().count(1)).get(0);
         twitterAPI2.createFavorite(status.getId());
         assertTrue(twitterAPI2.getFavorites().size() > 0);
         try {
