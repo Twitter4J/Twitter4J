@@ -212,66 +212,13 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testRetweetMethods() throws Exception {
-//        twitterAPI1.retweetStatus(2245071380l);
-//        HttpClient client = new HttpClient();
-//        Status withRetweet = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-with-retweet.xml"));
-//        assertTrue(withRetweet.isRetweet());
-//        assertEquals(2245122541l, withRetweet.getRetweetDetails().getRetweetId());
-//        assertEquals(new Date(1245451273000l)/*Sat Jun 20 07:41:13 JST 2009*/
-//                , withRetweet.getRetweetDetails().getRetweetedAt());
-//        assertEquals(3191321,withRetweet.getRetweetDetails().getRetweetingUser().getId());
-//        assertEquals("Prabhakar Ragde",withRetweet.getUser().getName());
-//        assertEquals("plragde",withRetweet.getUser().getScreenName());
-//        assertEquals("Marcel Molina",withRetweet.getRetweetDetails().getRetweetingUser().getName());
-//        assertEquals("noradio",withRetweet.getRetweetDetails().getRetweetingUser().getScreenName());
-//        List<RetweetDetails> retweets = RetweetDetails.createRetweetDetails(client.get("http://yusuke.homeip.net/twitter4j/en/retweets.xml"));
-//        assertEquals(2, retweets.size());
-//        assertEquals(4017285870l,retweets.get(0).getRetweetId());
-//        assertEquals(4013267275l,retweets.get(1).getRetweetId());
-
-        try {
-            twitterAPI1.getRetweetedByMe();
-        } catch (TwitterException te) {
-            // retweet api is not yet availble
-            assertEquals(404, te.getStatusCode());
-        }
-        try {
-            twitterAPI1.getRetweetedByMe(new Paging(1));
-        } catch (TwitterException te) {
-            // retweet api is not yet availble
-            assertEquals(404, te.getStatusCode());
-        }
-        try {
-            twitterAPI1.getRetweetedToMe();
-        } catch (TwitterException te) {
-            // retweet api is not yet availble
-            assertEquals(404, te.getStatusCode());
-        }
-        try {
-            twitterAPI1.getRetweetedToMe(new Paging(1));
-        } catch (TwitterException te) {
-            // retweet api is not yet availble
-            assertEquals(404, te.getStatusCode());
-        }
-        try {
-            twitterAPI1.getRetweetsOfMe();
-        } catch (TwitterException te) {
-            // retweet api is not yet availble
-            assertEquals(404, te.getStatusCode());
-        }
-        try {
-            twitterAPI1.getRetweetsOfMe(new Paging(1));
-        } catch (TwitterException te) {
-            // retweet api is not yet availble
-            assertEquals(404, te.getStatusCode());
-        }
-
-        try {
-            twitterAPI1.getRetweets(1000);
-        } catch (TwitterException te) {
-            // retweet api is not yet availble
-            assertEquals(404, te.getStatusCode());
-        }
+        twitterAPI1.getRetweetedByMe();
+        twitterAPI1.getRetweetedByMe(new Paging(1));
+        twitterAPI1.getRetweetedToMe();
+        twitterAPI1.getRetweetedToMe(new Paging(1));
+        twitterAPI1.getRetweetsOfMe();
+        twitterAPI1.getRetweetsOfMe(new Paging(1));
+        twitterAPI1.getRetweets(1000);
     }
 
     public void testGeoLocation() throws Exception {
