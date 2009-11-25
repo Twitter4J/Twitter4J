@@ -140,9 +140,6 @@ public class Response {
                     buf.append(line).append("\n");
                 }
                 this.responseAsString = buf.toString();
-                if(Configuration.isDalvik()){
-                    this.responseAsString = unescape(responseAsString);
-                }
                 log(responseAsString);
                 stream.close();
                 con.disconnect();
@@ -217,26 +214,6 @@ public class Response {
 
     public void disconnect(){
         con.disconnect();
-    }
-
-    private static Pattern escaped = Pattern.compile("&#([0-9]{3,5});");
-
-    /**
-     * Unescape UTF-8 escaped characters to string.
-     * @author pengjianq...@gmail.com
-     *
-     * @param original The string to be unescaped.
-     * @return The unescaped string
-     */
-    public static String unescape(String original) {
-        Matcher mm = escaped.matcher(original);
-        StringBuffer unescaped = new StringBuffer();
-        while (mm.find()) {
-            mm.appendReplacement(unescaped, Character.toString(
-                    (char) Integer.parseInt(mm.group(1), 10)));
-        }
-        mm.appendTail(unescaped);
-        return unescaped.toString();
     }
 
     @Override

@@ -26,12 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import twitter4j.http.Response;
-import twitter4j.org.json.JSONObject;
+import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,19 +53,18 @@ public class Status extends TwitterResponse implements java.io.Serializable {
     private double latitude = -1;
     private double longitude = -1;
     
-    private RetweetDetails retweetDetails;
+    private Status retweetedStatus;
     private static final long serialVersionUID = 1608000492860584608L;
 
     /*package*/Status(Response res) throws TwitterException {
         super(res);
-        Element elem = res.asDocument().getDocumentElement();
-        init(res, elem);
+        init(res, res.asJSONObject());
     }
 
-    /*package*/Status(Response res, Element elem) throws
+    /*package*/Status(Response res, JSONObject json) throws
             TwitterException {
         super(res);
-        init(res, elem);
+        init(res, json);
     }
 
     public Status(String str) throws TwitterException, JSONException {
@@ -85,32 +82,37 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         user = new User(json.getJSONObject("user"));
     }
 
-    private void init(Response res, Element elem) throws
+    private void init(Response res, JSONObject json) throws
             TwitterException {
-        ensureRootNodeNameIs("status", elem);
-        user = new User(res, (Element) elem.getElementsByTagName("user").item(0));
-        id = getChildLong("id", elem);
-        text = getChildText("text", elem);
-        source = getChildText("source", elem);
-        createdAt = getChildDate("created_at", elem);
-        isTruncated = getChildBoolean("truncated", elem);
-        inReplyToStatusId = getChildLong("in_reply_to_status_id", elem);
-        inReplyToUserId = getChildInt("in_reply_to_user_id", elem);
-        isFavorited = getChildBoolean("favorited", elem);
-        inReplyToScreenName = getChildText("in_reply_to_screen_name", elem);
-        NodeList georssPoint = elem.getElementsByTagName("georss:point");
-        if(0 == georssPoint.getLength()){
-            // quick workaround for http://groups.google.com/group/twitter-development-talk/browse_thread/thread/2fb55a05ddead3cf
-            georssPoint = elem.getElementsByTagName("georss:Point");
+        try {
+            user = new User(res, json.getJSONObject("user"));
+        } catch (JSONException ignore) {
         }
-        if(1 == georssPoint.getLength()){
-            String[] point = georssPoint.item(0).getFirstChild().getNodeValue().split(" ");
-            latitude = Double.parseDouble(point[0]);
-            longitude = Double.parseDouble(point[1]);
+        id = getChildLong("id", json);
+        text = getChildText("text", json);
+        source = getChildText("source", json);
+        createdAt = getChildDate("created_at", json);
+        isTruncated = getChildBoolean("truncated", json);
+        inReplyToStatusId = getChildLong("in_reply_to_status_id", json);
+        inReplyToUserId = getChildInt("in_reply_to_user_id", json);
+        isFavorited = getChildBoolean("favorited", json);
+        inReplyToScreenName = getChildText("in_reply_to_screen_name", json);
+        try {
+            if(!json.isNull("geo")){
+                String coordinates = json.getJSONObject("geo")
+                .getString("coordinates");
+                coordinates = coordinates.substring(1,coordinates.length()-1);
+                String[] point = coordinates.split(",");
+                latitude = Double.parseDouble(point[0]);
+                longitude = Double.parseDouble(point[1]);
+            }
+        } catch (JSONException ignore) {
         }
-        NodeList retweetDetailsNode = elem.getElementsByTagName("retweet_details");
-        if(1 == retweetDetailsNode.getLength()){
-            retweetDetails = new RetweetDetails(res,(Element)retweetDetailsNode.item(0));
+        if(!json.isNull("retweeted_status")){
+            try {
+                retweetedStatus = new Status(res, json.getJSONObject("retweeted_status"));
+            } catch (JSONException ignore) {
+            }
         }
     }
 
@@ -237,40 +239,33 @@ public class Status extends TwitterResponse implements java.io.Serializable {
      * @since Twitter4J 2.0.10
      */
     public boolean isRetweet(){
-        return null != retweetDetails;
+        return null != retweetedStatus;
     }
 
     /**
      *
-     * @since Twitter4J 2.0.10
+     * @since Twitter4J 2.1.0
      */
-    public RetweetDetails getRetweetDetails() {
-        return retweetDetails;
+    public Status getRetweetedStatus() {
+        return retweetedStatus;
     }
 
-    /*package*/
-    static List<Status> constructStatuses(Response res) throws TwitterException {
-        Document doc = res.asDocument();
-        if (isRootNodeNilClasses(doc)) {
-            return new ArrayList<Status>(0);
-        } else {
-            try {
-                ensureRootNodeNameIs("statuses", doc);
-                NodeList list = doc.getDocumentElement().getElementsByTagName(
-                        "status");
-                int size = list.getLength();
-                List<Status> statuses = new ArrayList<Status>(size);
-                for (int i = 0; i < size; i++) {
-                    Element status = (Element) list.item(i);
-                    statuses.add(new Status(res, status));
-                }
-                return statuses;
-            } catch (TwitterException te) {
-                ensureRootNodeNameIs("nil-classes", doc);
-                return new ArrayList<Status>(0);
+    /*package*/ static List<Status> constructStatuses(Response res) throws TwitterException {
+        try {
+            JSONArray list = res.asJSONArray();
+            int size = list.length();
+            List<Status> statuses = new ArrayList<Status>(size);
+            for (int i = 0; i < size; i++) {
+                statuses.add(new Status(res, list.getJSONObject(i)));
             }
+            return statuses;
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        } catch (TwitterException te) {
+            throw te;
         }
     }
+
 
     @Override
     public int hashCode() {
@@ -302,7 +297,7 @@ public class Status extends TwitterResponse implements java.io.Serializable {
                 ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", retweetDetails=" + retweetDetails +
+                ", retweetedStatus=" + retweetedStatus +
                 ", user=" + user +
                 '}';
     }

@@ -28,8 +28,6 @@ package twitter4j;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import twitter4j.http.HTMLEntity;
 import twitter4j.http.Response;
 import twitter4j.org.json.JSONException;
@@ -102,46 +100,34 @@ public class TwitterResponse implements java.io.Serializable {
         throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + expected + ". Check the availability of the Twitter API at http://status.twitter.com/.");
     }
 
-    protected static void ensureRootNodeNameIs(String rootName, Document doc) throws TwitterException {
-        Element elem = doc.getDocumentElement();
-        if (!rootName.equals(elem.getNodeName())) {
-            throw new TwitterException("Unexpected root node name:" + elem.getNodeName() + ". Expected:" + rootName + ". Check the availability of the Twitter API at http://status.twitter.com/.");
-        }
+    protected static String getChildText( String str, JSONObject json) {
+        return HTMLEntity.unescape(getTextContent(str, json));
     }
 
-    protected static boolean isRootNodeNilClasses(Document doc) {
-        String root = doc.getDocumentElement().getNodeName();
-        return "nil-classes".equals(root) || "nilclasses".equals(root);
-    }
-
-    protected static String getChildText( String str, Element elem ) {
-        return HTMLEntity.unescape(getTextContent(str,elem));
-    }
-
-    protected static String getTextContent(String str, Element elem){
-        NodeList nodelist = elem.getElementsByTagName(str);
-        if (nodelist.getLength() > 0) {
-            Node node = nodelist.item(0).getFirstChild();
-            if (null != node) {
-                String nodeValue = node.getNodeValue();
-                return null != nodeValue ? nodeValue : "";
+    protected static String getTextContent(String str, JSONObject json) {
+        try {
+            if(json.isNull(str)){
+                return null;
+            }else{
+                return json.getString(str);
             }
+        } catch (JSONException jsone) {
+            return null;
         }
-        return "";
-     }
+    }
 
-    protected static int getChildInt(String str, Element elem) {
+    protected static int getChildInt(String str, JSONObject elem) {
         String str2 = getTextContent(str, elem);
-        if (null == str2 || "".equals(str2)) {
+        if (null == str2 || "".equals(str2) || "null".equals(str2)) {
             return -1;
         } else {
             return Integer.valueOf(str2);
         }
     }
 
-    protected static long getChildLong(String str, Element elem) {
-        String str2 = getTextContent(str, elem);
-        if (null == str2 || "".equals(str2)) {
+    protected static long getChildLong(String str, JSONObject json) {
+        String str2 = getTextContent(str, json);
+        if (null == str2 || "".equals(str2) || "null".equals(str2)) {
             return -1;
         } else {
             return Long.valueOf(str2);
@@ -164,16 +150,21 @@ public class TwitterResponse implements java.io.Serializable {
         return returnValue;
     }
 
-    protected static boolean getChildBoolean(String str, Element elem) {
-        String value = getTextContent(str, elem);
+    protected static boolean getChildBoolean(String str, JSONObject json) {
+        String value = getTextContent(str, json);
         return Boolean.valueOf(value);
     }
-    protected static Date getChildDate(String str, Element elem) throws TwitterException {
-        return getChildDate(str, elem, "EEE MMM d HH:mm:ss z yyyy");
+    protected static Date getChildDate(String str, JSONObject json) throws TwitterException {
+        return getChildDate(str, json, "EEE MMM d HH:mm:ss z yyyy");
     }
 
-    protected static Date getChildDate(String str, Element elem, String format) throws TwitterException {
-        return parseDate(getChildText(str, elem),format);
+    protected static Date getChildDate(String str, JSONObject json, String format) throws TwitterException {
+        String dateStr = getChildText(str, json);
+        if ("null".equals(dateStr)) {
+            return null;
+        } else {
+            return parseDate(dateStr, format);
+        }
     }
     protected static Date parseDate(String str, String format) throws TwitterException{
         SimpleDateFormat sdf = formatMap.get(format);

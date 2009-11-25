@@ -48,11 +48,7 @@ public class ResponseTest extends TestCase {
         super.tearDown();
     }
     boolean failed = false;
-    public void testUnescape() {
-        String unescaped = Response.unescape("Twitter4J &#22312;android&#19978;&#19981;&#33021;&#26174;&#31034;&#20013;&#25991;&#65292;&#36824;&#26159;UTF8&#26684;&#24335;&#65292;&#24456;&#22855;&#24618;&#65292;&#20294;&#32431;JAVA&#30340;&#27809;&#38382;&#39064;");
-        String expected = "Twitter4J 在android上不能显示中文，还是UTF8格式，很奇怪，但纯JAVA的没问题";
-        assertEquals(expected, unescaped);
-    }
+
     public void testMultithreaded() throws Exception{
         failed = false;
         InputStream is = new FileInputStream("response_samples/public_timeline.xml");

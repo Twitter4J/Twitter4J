@@ -26,10 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import twitter4j.http.Response;
+import twitter4j.org.json.JSONArray;
+import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,23 +51,20 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
 
     /*package*/DirectMessage(Response res) throws TwitterException {
         super(res);
-        init(res, res.asDocument().getDocumentElement());
+        init(res, res.asJSONObject());
     }
-    /*package*/DirectMessage(Response res, Element elem) throws TwitterException {
+    /*package*/DirectMessage(Response res, JSONObject json) throws TwitterException {
         super(res);
-        init(res, elem);
+        init(res, json);
     }
-    private void init(Response res, Element elem) throws TwitterException{
-        ensureRootNodeNameIs("direct_message", elem);
-        sender = new User(res, (Element) elem.getElementsByTagName("sender").item(0));
-        recipient = new User(res, (Element) elem.getElementsByTagName("recipient").item(0));
-        id = getChildInt("id", elem);
-        text = getChildText("text", elem);
-        sender_id = getChildInt("sender_id", elem);
-        recipient_id = getChildInt("recipient_id", elem);
-        created_at = getChildDate("created_at", elem);
-        sender_screen_name = getChildText("sender_screen_name", elem);
-        recipient_screen_name = getChildText("recipient_screen_name", elem);
+    private void init(Response res, JSONObject json) throws TwitterException{
+        id = getChildInt("id", json);
+        text = getChildText("text", json);
+        sender_id = getChildInt("sender_id", json);
+        recipient_id = getChildInt("recipient_id", json);
+        created_at = getChildDate("created_at", json);
+        sender_screen_name = getChildText("sender_screen_name", json);
+        recipient_screen_name = getChildText("recipient_screen_name", json);
     }
 
     public int getId() {
@@ -114,30 +111,19 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
         return recipient;
     }
 
-    /*package*/
-    static List<DirectMessage> constructDirectMessages(Response res) throws TwitterException {
-        Document doc = res.asDocument();
-        if (isRootNodeNilClasses(doc)) {
-            return new ArrayList<DirectMessage>(0);
-        } else {
-            try {
-                ensureRootNodeNameIs("direct-messages", doc);
-                NodeList list = doc.getDocumentElement().getElementsByTagName(
-                        "direct_message");
-                int size = list.getLength();
-                List<DirectMessage> messages = new ArrayList<DirectMessage>(size);
-                for (int i = 0; i < size; i++) {
-                    Element status = (Element) list.item(i);
-                    messages.add(new DirectMessage(res, status));
-                }
-                return messages;
-            } catch (TwitterException te) {
-                if (isRootNodeNilClasses(doc)) {
-                    return new ArrayList<DirectMessage>(0);
-                } else {
-                    throw te;
-                }
+    /*package*/ static List<DirectMessage> constructDirectMessages(Response res) throws TwitterException {
+        try {
+            JSONArray list = res.asJSONArray();
+            int size = list.length();
+            List<DirectMessage> directMessages = new ArrayList<DirectMessage>(size);
+            for (int i = 0; i < size; i++) {
+                directMessages.add(new DirectMessage(res, list.getJSONObject(i)));
             }
+            return directMessages;
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        } catch (TwitterException te) {
+            throw te;
         }
     }
 

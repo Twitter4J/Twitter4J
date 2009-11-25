@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.http.HttpClient;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -50,7 +49,9 @@ public class TwitterTestUnit extends TestCase {
     public TwitterTestUnit(String name) {
         super(name);
     }
-    protected String id1,id2,id3,pass1,pass2,pass3;
+
+    protected String id1, id2, id3, pass1, pass2, pass3;
+
     protected void setUp() throws Exception {
         super.setUp();
         p.load(new FileInputStream("test.properties"));
@@ -92,7 +93,7 @@ public class TwitterTestUnit extends TestCase {
         }
     }
 
-    public void testGetFriendsTimeline()throws Exception {
+    public void testGetFriendsTimeline() throws Exception {
         List<Status> actualReturn;
 
         actualReturn = twitterAPI1.getFriendsTimeline();
@@ -110,10 +111,11 @@ public class TwitterTestUnit extends TestCase {
 
 
     }
-    public void testGetUserDetail() throws Exception{
+
+    public void testGetUserDetail() throws Exception {
         User uws = twitterAPI1.showUser(id1);
         assertEquals(id1, uws.getName());
-        assertEquals(id1,uws.getScreenName());
+        assertEquals(id1, uws.getScreenName());
         assertNotNull(uws.getLocation());
         assertNotNull(uws.getDescription());
         assertNotNull(uws.getProfileImageURL());
@@ -141,8 +143,8 @@ public class TwitterTestUnit extends TestCase {
         assertNotNull(uws.getStatusText());
         assertNotNull(uws.getStatusSource());
         assertFalse(uws.isStatusFavorited());
-        assertEquals(-1,uws.getStatusInReplyToStatusId());
-        assertEquals(-1,uws.getStatusInReplyToUserId());
+        assertEquals(-1, uws.getStatusInReplyToStatusId());
+        assertEquals(-1, uws.getStatusInReplyToUserId());
         assertFalse(uws.isStatusFavorited());
         assertNull(uws.getStatusInReplyToScreenName());
 
@@ -152,7 +154,7 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI1.showUser("tigertest");
     }
 
-    public void testGetUserTimeline_Show() throws Exception{
+    public void testGetUserTimeline_Show() throws Exception {
         List<Status> statuses;
         statuses = twitterAPI1.getUserTimeline();
         assertTrue("size", 0 < statuses.size());
@@ -168,31 +170,37 @@ public class TwitterTestUnit extends TestCase {
         assertTrue("size", 0 < statuses.size());
 //        statuses = twitterAPI1.getUserTimeline(id1, new Date(0));
 //        assertTrue("size", 0 < statuses.size());
-        statuses = unauthenticated.getUserTimeline(id1,new Paging(999383469l));
+        statuses = unauthenticated.getUserTimeline(id1, new Paging(999383469l));
         assertTrue("size", 0 < statuses.size());
 
         statuses = twitterAPI1.getUserTimeline(new Paging(1).count(30));
         List<Status> statuses2 = twitterAPI1.getUserTimeline(new Paging(2).count(15));
-        assertEquals(statuses.get(15), statuses2.get(0));
+//        for(int i=0;i < statuses.size();i++){
+//            System.out.println(statuses.get(i).getId());
+//        }
+//        System.out.println("------------");
+//        for(int i=0;i < statuses2.size();i++){
+//            System.out.println(
+//            statuses2.get(i).getId());
+//        }
+        assertEquals(statuses.get(statuses.size() - 1), statuses2.get(statuses2.size() - 1));
     }
 
-    public void testShow() throws Exception{
+    public void testShow() throws Exception {
         Status status = twitterAPI2.showStatus(1000l);
-        assertEquals(52,status.getUser().getId());
+        assertEquals(52, status.getUser().getId());
         Status status2 = unauthenticated.showStatus(1000l);
-        assertEquals(52,status2.getUser().getId());
+        assertEquals(52, status2.getUser().getId());
         assertTrue(50 < status.getRateLimitLimit());
         assertTrue(1 < status.getRateLimitRemaining());
         assertTrue(1 < status.getRateLimitReset());
 
         status2 = unauthenticated.showStatus(999383469l);
-        assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3",status2.getText());
-
-
-
+        assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3", status2.getText());
     }
-    public void testStatusMethods() throws Exception{
-        String date = new java.util.Date().toString()+"test";
+
+    public void testStatusMethods() throws Exception {
+        String date = new java.util.Date().toString() + "test";
         Status status = twitterAPI1.updateStatus(date);
 
         assertEquals(date, status.getText());
@@ -204,27 +212,22 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testRetweetMethods() throws Exception {
-        HttpClient client = new HttpClient();
-        Status withRetweet = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-with-retweet.xml"));
-        assertTrue(withRetweet.isRetweet());
-        assertEquals(2245122541l, withRetweet.getRetweetDetails().getRetweetId());
-        assertEquals(new Date(1245451273000l)/*Sat Jun 20 07:41:13 JST 2009*/
-                , withRetweet.getRetweetDetails().getRetweetedAt());
-        assertEquals(3191321,withRetweet.getRetweetDetails().getRetweetingUser().getId());
-        assertEquals("Prabhakar Ragde",withRetweet.getUser().getName());
-        assertEquals("plragde",withRetweet.getUser().getScreenName());
-        assertEquals("Marcel Molina",withRetweet.getRetweetDetails().getRetweetingUser().getName());
-        assertEquals("noradio",withRetweet.getRetweetDetails().getRetweetingUser().getScreenName());
-        try {
-            twitterAPI1.retweetStatus(2245071380l);
-        } catch (TwitterException te) {
-            // retweet api is not yet availble
-            assertEquals(404, te.getStatusCode());
-        }
-        List<RetweetDetails> retweets = RetweetDetails.createRetweetDetails(client.get("http://yusuke.homeip.net/twitter4j/en/retweets.xml"));
-        assertEquals(2, retweets.size());
-        assertEquals(4017285870l,retweets.get(0).getRetweetId());
-        assertEquals(4013267275l,retweets.get(1).getRetweetId());
+//        twitterAPI1.retweetStatus(2245071380l);
+//        HttpClient client = new HttpClient();
+//        Status withRetweet = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-with-retweet.xml"));
+//        assertTrue(withRetweet.isRetweet());
+//        assertEquals(2245122541l, withRetweet.getRetweetDetails().getRetweetId());
+//        assertEquals(new Date(1245451273000l)/*Sat Jun 20 07:41:13 JST 2009*/
+//                , withRetweet.getRetweetDetails().getRetweetedAt());
+//        assertEquals(3191321,withRetweet.getRetweetDetails().getRetweetingUser().getId());
+//        assertEquals("Prabhakar Ragde",withRetweet.getUser().getName());
+//        assertEquals("plragde",withRetweet.getUser().getScreenName());
+//        assertEquals("Marcel Molina",withRetweet.getRetweetDetails().getRetweetingUser().getName());
+//        assertEquals("noradio",withRetweet.getRetweetDetails().getRetweetingUser().getScreenName());
+//        List<RetweetDetails> retweets = RetweetDetails.createRetweetDetails(client.get("http://yusuke.homeip.net/twitter4j/en/retweets.xml"));
+//        assertEquals(2, retweets.size());
+//        assertEquals(4017285870l,retweets.get(0).getRetweetId());
+//        assertEquals(4013267275l,retweets.get(1).getRetweetId());
 
         try {
             twitterAPI1.getRetweetedByMe();
@@ -271,46 +274,22 @@ public class TwitterTestUnit extends TestCase {
         }
     }
 
-    public void testGeoLocation() throws Exception{
-        Status withgeo2 = twitterAPI1.updateStatus("with geo",12.3456,-34.5678);
-        if(withgeo2.getUser().isGeoEnabled()){
-            assertEquals(12.3456, withgeo2.getLatitude());
-            assertEquals(-34.5678, withgeo2.getLongitude());
-        }
+    public void testGeoLocation() throws Exception {
+        Status withgeo = twitterAPI1.updateStatus(new java.util.Date().toString() + ": updating geo location", 12.3456, -34.5678);
+        assertTrue(withgeo.getUser().isGeoEnabled());
+        assertEquals(12.3456, withgeo.getLatitude());
+        assertEquals(-34.5678, withgeo.getLongitude());
+        assertTrue(twitterAPI1.verifyCredentials().isGeoEnabled());
+        assertFalse(twitterAPI2.verifyCredentials().isGeoEnabled());
 
-        withgeo2 = twitterAPI1.showStatus(4512367904l);
-        assertEquals(37.780300, withgeo2.getLatitude());
-        assertEquals(-122.396900, withgeo2.getLongitude());
-        assertTrue(withgeo2.getUser().isGeoEnabled());
-
-        HttpClient client = new HttpClient();
-        Status nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.xml"));
-        assertEquals(-1d, nogeo.getLatitude());
-        assertEquals(-1d, nogeo.getLongitude());
-        assertEquals(false, nogeo.getUser().isGeoEnabled());
-        assertEquals(false, nogeo.getUser().isVerified());
-
-        Status withgeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-withgeo.xml"));
-        assertEquals(37.78029, withgeo.getLatitude());
-        assertEquals(-122.39697, withgeo.getLongitude());
-        assertEquals(true, withgeo.getUser().isGeoEnabled());
-        assertEquals(true, withgeo.getUser().isVerified());
-        
-//        nogeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-nogeo.json").asString());
-//        assertEquals(-1d, nogeo.getLatitude());
-//        assertEquals(-1d, nogeo.getLongitude());
-//        assertEquals(false, nogeo.getUser().isGeoEnabled());
-//        assertEquals(false, nogeo.getUser().isVerified());
-//
-//        withgeo = new Status(client.get("http://yusuke.homeip.net/twitter4j/en/status-withgeo.json").asString());
-//        assertEquals(37.78029, withgeo.getLatitude());
-//        assertEquals(-122.39697, withgeo.getLongitude());
-//        assertEquals(true, withgeo.getUser().isGeoEnabled());
-//        assertEquals(true, withgeo.getUser().isVerified());
+        withgeo = twitterAPI1.showStatus(4512367904l);
+        assertEquals(37.780300, withgeo.getLatitude());
+        assertEquals(-122.396900, withgeo.getLongitude());
+        assertTrue(withgeo.getUser().isGeoEnabled());
 
     }
 
-    public void testGetFriendsStatuses() throws Exception{
+    public void testGetFriendsStatuses() throws Exception {
         List<User> actualReturn = twitterAPI1.getFriendsStatuses();
         assertNotNull("friendsStatuses", actualReturn);
         actualReturn = twitterAPI1.getFriendsStatuses("yusukey");
@@ -360,7 +339,7 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(obamaFriends.hasNext());
         assertTrue(obamaFriends.hasPrevious());
 
-        try{
+        try {
             twitterAPI2.createFriendship(id1);
         } catch (TwitterException ignore) {
         }
@@ -372,10 +351,10 @@ public class TwitterTestUnit extends TestCase {
         assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
     }
 
-    private void assertIDExsits(String assertion, IDs ids, int idToFind){
+    private void assertIDExsits(String assertion, IDs ids, int idToFind) {
         boolean found = false;
-        for(int id : ids.getIDs()){
-            if(id == idToFind){
+        for (int id : ids.getIDs()) {
+            if (id == idToFind) {
                 found = true;
                 break;
             }
@@ -385,11 +364,11 @@ public class TwitterTestUnit extends TestCase {
 
     public void testAccountMethods() throws Exception {
         User original = twitterAPI1.verifyCredentials();
-        if(original.getScreenName().endsWith("new") ||
-                original.getName().endsWith("new")){
+        if (original.getScreenName().endsWith("new") ||
+                original.getName().endsWith("new")) {
             original = twitterAPI1.updateProfile(
                     "twit4j", null, "http://yusuke.homeip.net/twitter4j/"
-                    , "location:" , "Hi there, I do test a lot!new");
+                    , "location:", "Hi there, I do test a lot!new");
 
         }
 
@@ -472,8 +451,8 @@ public class TwitterTestUnit extends TestCase {
         }
     }
 
-    public void testFavoriteMethods() throws Exception{
-        Status status = twitterAPI1.getPublicTimeline().get(0);
+    public void testFavoriteMethods() throws Exception {
+        Status status = twitterAPI1.getHomeTimeline(new Paging().count(1)).get(0);
         twitterAPI2.createFavorite(status.getId());
         assertTrue(twitterAPI2.getFavorites().size() > 0);
         try {
@@ -483,22 +462,24 @@ public class TwitterTestUnit extends TestCase {
             assertEquals(404, te.getStatusCode());
         }
     }
-    public void testFollowers() throws Exception{
+
+    public void testFollowers() throws Exception {
         List<User> actualReturn = twitterAPI1.getFollowersStatuses();
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFollowersStatuses(new Paging(1));
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI1.getFollowersStatuses(new Paging(2));
-        assertEquals(0,actualReturn.size());
+        assertEquals(0, actualReturn.size());
 
         actualReturn = twitterAPI2.getFollowersStatuses();
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI2.getFollowersStatuses("yusukey");
         assertTrue(actualReturn.size() > 60);
-        actualReturn = twitterAPI2.getFollowersStatuses("yusukey",new Paging(2));
+        actualReturn = twitterAPI2.getFollowersStatuses("yusukey", new Paging(2));
         assertTrue(actualReturn.size() > 10);
     }
-    public void testFeatured() throws Exception{
+
+    public void testFeatured() throws Exception {
         List<User> actualReturn = twitterAPI1.getFeatured();
         assertTrue(actualReturn.size() > 9);
     }
@@ -508,10 +489,10 @@ public class TwitterTestUnit extends TestCase {
         DirectMessage actualReturn = twitterAPI1.sendDirectMessage("twit4jnoupdate", expectedReturn);
         assertEquals(expectedReturn, actualReturn.getText());
         List<DirectMessage> actualReturnList = twitterAPI1.getDirectMessages();
-        assertTrue(1<= actualReturnList.size());
+        assertTrue(1 <= actualReturnList.size());
     }
 
-    public void testCreateDestroyFriend() throws Exception{
+    public void testCreateDestroyFriend() throws Exception {
         User user;
         try {
             user = twitterAPI2.destroyFriendship(id1);
@@ -547,8 +528,9 @@ public class TwitterTestUnit extends TestCase {
         }
 
     }
-    public void testGetMentions() throws Exception{
-        twitterAPI2.updateStatus("@"+id1+" reply to id1");
+
+    public void testGetMentions() throws Exception {
+        twitterAPI2.updateStatus("@" + id1 + " reply to id1");
         List<Status> statuses = twitterAPI1.getMentions();
         assertTrue(statuses.size() > 0);
 
@@ -570,6 +552,7 @@ public class TwitterTestUnit extends TestCase {
         twitterAPI1.enableNotification("twit4jprotected");
         twitterAPI1.disableNotification("twit4jprotected");
     }
+
     public void testBlock() throws Exception {
         twitterAPI2.createBlock(id1);
         twitterAPI2.destroyBlock(id1);
@@ -588,7 +571,7 @@ public class TwitterTestUnit extends TestCase {
     }
 
 
-    public void testRateLimitStatus() throws Exception{
+    public void testRateLimitStatus() throws Exception {
         RateLimitStatus status = twitterAPI1.rateLimitStatus();
         assertTrue(10 < status.getHourlyLimit());
         assertTrue(10 < status.getRemainingHits());
@@ -596,7 +579,7 @@ public class TwitterTestUnit extends TestCase {
 
     public void testSavedSearches() throws Exception {
         List<SavedSearch> list = twitterAPI1.getSavedSearches();
-        for(SavedSearch savedSearch : list){
+        for (SavedSearch savedSearch : list) {
             twitterAPI1.destroySavedSearch(savedSearch.getId());
         }
         SavedSearch ss1 = twitterAPI1.createSavedSearch("my search");
@@ -620,7 +603,7 @@ public class TwitterTestUnit extends TestCase {
     }
 
 
-    public void testProperties() throws Exception{
+    public void testProperties() throws Exception {
         TwitterSupport twitterSupport;
         String test = "t4j";
         String override = "system property";
@@ -695,7 +678,6 @@ public class TwitterTestUnit extends TestCase {
         System.getProperties().remove("twitter4j.clientURL");
 
 
-
         System.getProperties().remove("twitter4j.http.userAgent");
         twitterSupport = new Twitter();
         assertEquals("twitter4j http://yusuke.homeip.net/twitter4j/ /" + Version.getVersion(), twitterSupport.http.getRequestHeader("User-Agent"));
@@ -713,12 +695,12 @@ public class TwitterTestUnit extends TestCase {
         twitterSupport = new Twitter();
         assertEquals(null, twitterSupport.http.getProxyHost());
 
-        twitterSupport.setHttpProxy(test,10);
+        twitterSupport.setHttpProxy(test, 10);
         assertEquals(test, twitterSupport.http.getProxyHost());
         System.setProperty("twitter4j.http.proxyHost", override);
         twitterSupport = new Twitter();
         assertEquals(override, twitterSupport.http.getProxyHost());
-        twitterSupport.setHttpProxy(test,10);
+        twitterSupport.setHttpProxy(test, 10);
         assertEquals(override, twitterSupport.http.getProxyHost());
         System.getProperties().remove("twitter4j.http.proxyHost");
 
@@ -726,12 +708,12 @@ public class TwitterTestUnit extends TestCase {
         twitterSupport = new Twitter();
         assertEquals(-1, twitterSupport.http.getProxyPort());
 
-        twitterSupport.setHttpProxy(test,10);
+        twitterSupport.setHttpProxy(test, 10);
         assertEquals(10, twitterSupport.http.getProxyPort());
         System.setProperty("twitter4j.http.proxyPort", "100");
         twitterSupport = new Twitter();
         assertEquals(100, twitterSupport.http.getProxyPort());
-        twitterSupport.setHttpProxy(test,10);
+        twitterSupport.setHttpProxy(test, 10);
         assertEquals(100, twitterSupport.http.getProxyPort());
         System.getProperties().remove("twitter4j.http.proxyPort");
 
@@ -740,12 +722,12 @@ public class TwitterTestUnit extends TestCase {
         twitterSupport = new Twitter();
         assertEquals(null, twitterSupport.http.getProxyAuthUser());
 
-        twitterSupport.setHttpProxyAuth(test,test);
+        twitterSupport.setHttpProxyAuth(test, test);
         assertEquals(test, twitterSupport.http.getProxyAuthUser());
         System.setProperty("twitter4j.http.proxyUser", override);
         twitterSupport = new Twitter();
         assertEquals(override, twitterSupport.http.getProxyAuthUser());
-        twitterSupport.setHttpProxyAuth(test,test);
+        twitterSupport.setHttpProxyAuth(test, test);
         assertEquals(override, twitterSupport.http.getProxyAuthUser());
         System.getProperties().remove("twitter4j.http.proxyUser");
 
@@ -754,12 +736,12 @@ public class TwitterTestUnit extends TestCase {
         twitterSupport = new Twitter();
         assertEquals(null, twitterSupport.http.getProxyAuthPassword());
 
-        twitterSupport.setHttpProxyAuth(test,test);
+        twitterSupport.setHttpProxyAuth(test, test);
         assertEquals(test, twitterSupport.http.getProxyAuthPassword());
-        System.setProperty("twitter4j.http.proxyPassword",  override);
+        System.setProperty("twitter4j.http.proxyPassword", override);
         twitterSupport = new Twitter();
         assertEquals(override, twitterSupport.http.getProxyAuthPassword());
-        twitterSupport.setHttpProxyAuth(test,test);
+        twitterSupport.setHttpProxyAuth(test, test);
         assertEquals(override, twitterSupport.http.getProxyAuthPassword());
         System.getProperties().remove("twitter4j.http.proxyPassword");
 
@@ -784,7 +766,7 @@ public class TwitterTestUnit extends TestCase {
 
         twitterSupport.setHttpReadTimeout(10);
         assertEquals(10, twitterSupport.http.getReadTimeout());
-        System.setProperty("twitter4j.http.readTimeout",  "100");
+        System.setProperty("twitter4j.http.readTimeout", "100");
         twitterSupport = new Twitter();
         assertEquals(100, twitterSupport.http.getReadTimeout());
         twitterSupport.setHttpConnectionTimeout(10);
@@ -794,15 +776,16 @@ public class TwitterTestUnit extends TestCase {
         assertFalse(Configuration.isDalvik());
 
 
-        writeFile("./twitter4j.properties","twitter4j.http.readTimeout=1234");
+        writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=1234");
         Configuration.init();
         assertEquals(1234, Configuration.getReadTimeout());
-        writeFile("./twitter4j.properties","twitter4j.http.readTimeout=4321");
+        writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=4321");
         Configuration.init();
         assertEquals(4321, Configuration.getReadTimeout());
         deleteFile("./twitter4j.properties");
         Configuration.init();
     }
+
     private void writeFile(String path, String content) throws IOException {
         File file = new File(path);
         file.delete();
@@ -810,6 +793,7 @@ public class TwitterTestUnit extends TestCase {
         bw.write(content);
         bw.close();
     }
+
     private void deleteFile(String path) throws IOException {
         File file = new File(path);
         file.delete();

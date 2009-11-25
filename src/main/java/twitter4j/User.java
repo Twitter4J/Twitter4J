@@ -26,10 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import twitter4j.http.Response;
+import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
@@ -46,7 +44,6 @@ import java.util.List;
  */
 public class User extends TwitterResponse implements java.io.Serializable {
 
-    static final String[] POSSIBLE_ROOT_NAMES = new String[]{"user", "sender", "recipient", "retweeting_user"};
     private int id;
     private String name;
     private String screenName;
@@ -80,21 +77,21 @@ public class User extends TwitterResponse implements java.io.Serializable {
     private String profileBackgroundImageUrl;
     private String profileBackgroundTile;
     private int statusesCount;
-    private boolean geoEnabled;
-    private boolean verified;
+    private boolean isGeoEnabled;
+    private boolean isVerified;
     private static final long serialVersionUID = -6345893237975349030L;
 
 
     /*package*/User(Response res) throws TwitterException {
         super(res);
-        Element elem = res.asDocument().getDocumentElement();
-        init(elem);
+        init(res.asJSONObject());
     }
 
-    /*package*/User(Response res, Element elem) throws TwitterException {
+    /*package*/User(Response res, JSONObject json) throws TwitterException {
         super(res);
-        init(elem);
+        init(json);
     }
+
     /*package*/User(JSONObject json) throws TwitterException {
         super();
         init(json);
@@ -110,6 +107,8 @@ public class User extends TwitterResponse implements java.io.Serializable {
             profileImageUrl = json.getString("profile_image_url");
             url = json.getString("url");
             isProtected = json.getBoolean("protected");
+            isGeoEnabled = json.getBoolean("geo_enabled");
+            isVerified = json.getBoolean("verified");
             followersCount = json.getInt("followers_count");
 
             profileBackgroundColor = json.getString("profile_background_color");
@@ -132,56 +131,13 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 statusText = status.getString("text");
                 statusSource = status.getString("source");
                 statusTruncated = status.getBoolean("truncated");
-                statusInReplyToStatusId = status.getLong("in_reply_to_status_id");
-                statusInReplyToUserId = status.getInt("in_reply_to_user_id");
+                statusInReplyToStatusId = getLong("in_reply_to_status_id", status);
+                statusInReplyToUserId = getInt("in_reply_to_user_id", status);
                 statusFavorited = status.getBoolean("favorited");
                 statusInReplyToScreenName = status.getString("in_reply_to_screen_name");
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
-        }
-    }
-
-    private void init(Element elem) throws TwitterException {
-        ensureRootNodeNameIs(POSSIBLE_ROOT_NAMES, elem);
-        id = getChildInt("id", elem);
-        name = getChildText("name", elem);
-        screenName = getChildText("screen_name", elem);
-        location = getChildText("location", elem);
-        description = getChildText("description", elem);
-        profileImageUrl = getChildText("profile_image_url", elem);
-        url = getChildText("url", elem);
-        isProtected = getChildBoolean("protected", elem);
-        followersCount = getChildInt("followers_count", elem);
-
-        profileBackgroundColor = getChildText("profile_background_color", elem);
-        profileTextColor = getChildText("profile_text_color", elem);
-        profileLinkColor = getChildText("profile_link_color", elem);
-        profileSidebarFillColor = getChildText("profile_sidebar_fill_color", elem);
-        profileSidebarBorderColor = getChildText("profile_sidebar_border_color", elem);
-        friendsCount = getChildInt("friends_count", elem);
-        createdAt = getChildDate("created_at", elem);
-        favouritesCount = getChildInt("favourites_count", elem);
-        utcOffset = getChildInt("utc_offset", elem);
-        timeZone = getChildText("time_zone", elem);
-        profileBackgroundImageUrl = getChildText("profile_background_image_url", elem);
-        profileBackgroundTile = getChildText("profile_background_tile", elem);
-        statusesCount = getChildInt("statuses_count", elem);
-        geoEnabled = getChildBoolean("geo_enabled", elem);
-        verified = getChildBoolean("verified", elem);
-
-        NodeList statuses = elem.getElementsByTagName("status");
-        if (statuses.getLength() != 0) {
-            Element status = (Element) statuses.item(0);
-            statusCreatedAt = getChildDate("created_at", status);
-            statusId = getChildLong("id", status);
-            statusText = getChildText("text", status);
-            statusSource = getChildText("source", status);
-            statusTruncated = getChildBoolean("truncated", status);
-            statusInReplyToStatusId = getChildLong("in_reply_to_status_id", status);
-            statusInReplyToUserId = getChildInt("in_reply_to_user_id", status);
-            statusFavorited = getChildBoolean("favorited", status);
-            statusInReplyToScreenName = getChildText("in_reply_to_screen_name", status);
         }
     }
 
@@ -276,28 +232,19 @@ public class User extends TwitterResponse implements java.io.Serializable {
         return followersCount;
     }
 
-    public static List<User> constructUsers(Response res) throws TwitterException {
-        Document doc = res.asDocument();
-        if (isRootNodeNilClasses(doc)) {
-            return new ArrayList<User>(0);
-        } else {
-            try {
-                ensureRootNodeNameIs("users", doc);
-                NodeList list = doc.getDocumentElement().getElementsByTagName(
-                        "user");
-                int size = list.getLength();
-                List<User> users = new ArrayList<User>(size);
-                for (int i = 0; i < size; i++) {
-                    users.add(new User(res, (Element) list.item(i)));
-                }
-                return users;
-            } catch (TwitterException te) {
-                if (isRootNodeNilClasses(doc)) {
-                    return new ArrayList<User>(0);
-                } else {
-                    throw te;
-                }
+    /*package*/ static List<User> constructUsers(Response res) throws TwitterException {
+        try {
+            JSONArray list = res.asJSONArray();
+            int size = list.length();
+            List<User> users = new ArrayList<User>(size);
+            for (int i = 0; i < size; i++) {
+                users.add(new User(res, list.getJSONObject(i)));
             }
+            return users;
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        } catch (TwitterException te) {
+            throw te;
         }
     }
 
@@ -438,7 +385,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
      * @since Twitter4J 2.0.10
      */
     public boolean isGeoEnabled() {
-        return geoEnabled;
+        return isGeoEnabled;
     }
 
     /**
@@ -447,7 +394,7 @@ public class User extends TwitterResponse implements java.io.Serializable {
      * @since Twitter4J 2.0.10
      */
     public boolean isVerified() {
-        return verified;
+        return isVerified;
     }
 
     @Override
@@ -500,8 +447,8 @@ public class User extends TwitterResponse implements java.io.Serializable {
                 ", profileBackgroundImageUrl='" + profileBackgroundImageUrl + '\'' +
                 ", profileBackgroundTile='" + profileBackgroundTile + '\'' +
                 ", statusesCount=" + statusesCount +
-                ", geoEnabled=" + geoEnabled +
-                ", verified=" + verified +
+                ", geoEnabled=" + isGeoEnabled +
+                ", verified=" + isVerified +
                 '}';
     }
 }

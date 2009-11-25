@@ -51,9 +51,13 @@ public class HTMLEntity {
     }
 
     public static String unescape(String original) {
-        StringBuffer buf = new StringBuffer(original);
-        unescape(buf);
-        return buf.toString();
+        String returnValue = null;
+        if (null != original) {
+            StringBuffer buf = new StringBuffer(original);
+            unescape(buf);
+            returnValue = buf.toString();
+        }
+        return returnValue;
     }
 
     public static void unescape(StringBuffer original) {
