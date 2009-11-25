@@ -81,7 +81,7 @@ public class DAOTest extends TestCase {
         trySerializeable(directMessages);
 
         // empty Trends list
-        List<Trends> trends = Trends.constructTrendsList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
+        List<Trends> trends = Trends.constructTrendsList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/trends/daily-empty.json"));
         assertTrue(trends.size() == 0);
         trySerializeable(trends);
 
@@ -91,7 +91,7 @@ public class DAOTest extends TestCase {
         // single User
         HttpClient http = new HttpClient();
         User user = new User(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/users/show/twit4j.json"));
-        assertFalse(user.isGeoEnabled());
+        assertTrue(user.isGeoEnabled());
         assertFalse(user.isVerified());
         assertEquals(id1, user.getName());
         assertEquals(id1, user.getScreenName());
