@@ -65,6 +65,12 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
         created_at = getChildDate("created_at", json);
         sender_screen_name = getChildText("sender_screen_name", json);
         recipient_screen_name = getChildText("recipient_screen_name", json);
+        try {
+            sender = new User(json.getJSONObject("sender"));
+            recipient = new User(json.getJSONObject("recipient"));
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
     }
 
     public int getId() {

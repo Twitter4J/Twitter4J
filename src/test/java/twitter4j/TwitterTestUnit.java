@@ -435,6 +435,8 @@ public class TwitterTestUnit extends TestCase {
         String expectedReturn = new Date() + ":directmessage test";
         DirectMessage actualReturn = twitterAPI1.sendDirectMessage("twit4jnoupdate", expectedReturn);
         assertEquals(expectedReturn, actualReturn.getText());
+        assertEquals(id1, actualReturn.getSender().getScreenName());
+        assertEquals("twit4jnoupdate", actualReturn.getRecipient().getScreenName());
         List<DirectMessage> actualReturnList = twitterAPI1.getDirectMessages();
         assertTrue(1 <= actualReturnList.size());
     }

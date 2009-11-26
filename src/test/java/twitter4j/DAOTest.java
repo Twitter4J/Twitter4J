@@ -173,6 +173,22 @@ public class DAOTest extends TestCase {
         trySerializeable(status);
     }
 
+    public void testDirectMessagesAsJSON() throws Exception {
+        HttpClient http = new HttpClient();
+        List<DirectMessage> directMessages = DirectMessage.constructDirectMessages(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/direct_messages.json"));
+        DirectMessage dm = directMessages.get(0);
+        assertEquals(new java.util.Date(1248177356000l),dm.getCreatedAt());
+        assertEquals(6358482,dm.getRecipient().getId());
+        assertEquals(246928323,dm.getId());
+        assertEquals(6358482,dm.getRecipientId());
+        assertEquals("twit4j",dm.getRecipientScreenName());
+        assertEquals(6377362,dm.getSender().getId());
+        assertEquals(6377362,dm.getSenderId());
+        assertEquals("twit4j2",dm.getSenderScreenName());
+        assertEquals("Tue Jul 21 20:55:39 KST 2009:directmessage test",dm.getText());
+        trySerializeable(directMessages);
+    }
+
     private void trySerializeable(Object obj) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new ByteArrayOutputStream());
         oos.writeObject(obj);
