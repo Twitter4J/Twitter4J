@@ -212,13 +212,26 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testRetweetMethods() throws Exception {
-        twitterAPI1.getRetweetedByMe();
-        twitterAPI1.getRetweetedByMe(new Paging(1));
-        twitterAPI1.getRetweetedToMe();
-        twitterAPI1.getRetweetedToMe(new Paging(1));
-        twitterAPI1.getRetweetsOfMe();
-        twitterAPI1.getRetweetsOfMe(new Paging(1));
-        twitterAPI1.getRetweets(1000);
+        List<Status> statuses = twitterAPI1.getRetweetedByMe();
+        assertIsRetweet(statuses);
+        statuses = twitterAPI1.getRetweetedByMe(new Paging(1));
+        assertIsRetweet(statuses);
+        statuses = twitterAPI1.getRetweetedToMe();
+        assertIsRetweet(statuses);
+        statuses = twitterAPI1.getRetweetedToMe(new Paging(1));
+        assertIsRetweet(statuses);
+        statuses = twitterAPI1.getRetweetsOfMe();
+        assertIsRetweet(statuses);
+        statuses = twitterAPI1.getRetweetsOfMe(new Paging(1));
+        assertIsRetweet(statuses);
+        statuses = twitterAPI1.getRetweets(1000);
+        assertIsRetweet(statuses);
+    }
+
+    private void assertIsRetweet(List<Status> statuses) {
+        for(Status status : statuses){
+            assertTrue(status.isRetweet());
+        }
     }
 
     public void testGeoLocation() throws Exception {
