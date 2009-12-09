@@ -181,7 +181,7 @@ public class List extends TwitterResponseImpl implements java.io.Serializable {
     public User getUser() {
         return user;
     }
-    /*package*/ static PagableResponseList<List> constructListOfLists(Response res) throws TwitterException {
+    /*package*/ static PagableResponseList<List> createListList(Response res) throws TwitterException {
         try {
             JSONObject json = res.asJSONObject();
             JSONArray list = json.getJSONArray("lists");

@@ -63,7 +63,7 @@ public class SavedSearch extends TwitterResponseImpl {
         init(savedSearch);
     }
 
-    /*package*/ static List<SavedSearch> constructSavedSearches(Response res) throws TwitterException {
+    /*package*/ static List<SavedSearch> createSavedSearchList(Response res) throws TwitterException {
             JSONArray json = res.asJSONArray();
             List<SavedSearch> savedSearches;
             try {

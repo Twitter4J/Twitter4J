@@ -117,7 +117,7 @@ public class DirectMessage extends TwitterResponseImpl implements java.io.Serial
         return recipient;
     }
 
-    /*package*/ static ResponseList<DirectMessage> constructDirectMessages(Response res) throws TwitterException {
+    /*package*/ static ResponseList<DirectMessage> createDirectMessageList(Response res) throws TwitterException {
         try {
             JSONArray list = res.asJSONArray();
             int size = list.length();

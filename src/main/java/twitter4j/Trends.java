@@ -63,7 +63,7 @@ public class Trends extends TwitterResponseImpl implements Comparable<Trends> {
     }
 
     /*package*/
-    static List<Trends> constructTrendsList(Response res) throws
+    static List<Trends> createTrendsList(Response res) throws
             TwitterException {
         JSONObject json = res.asJSONObject();
         List<Trends> trends;
@@ -98,7 +98,7 @@ public class Trends extends TwitterResponseImpl implements Comparable<Trends> {
     }
 
     /*package*/
-    static Trends constructTrends(Response res) throws TwitterException {
+    static Trends createTrends(Response res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         try {
             Date asOf = parseDate(json.getString("as_of"));

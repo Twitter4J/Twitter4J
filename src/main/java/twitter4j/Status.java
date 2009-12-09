@@ -250,7 +250,7 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
         return retweetedStatus;
     }
 
-    /*package*/ static ResponseList<Status> constructStatuses(Response res) throws TwitterException {
+    /*package*/ static ResponseList<Status> createStatuseList(Response res) throws TwitterException {
         try {
             JSONArray list = res.asJSONArray();
             int size = list.length();
