@@ -70,8 +70,9 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the base URL
      */
     protected String getBaseURL() {
-        return USE_SSL ? "https://twitter.com/" : "http://twitter.com/";
+        return USE_SSL ? "https://api.twitter.com/1/" : "http://api.twitter.com/1/";
     }
+
 
     /**
      * Returns the search base url
@@ -82,14 +83,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         return USE_SSL ? "https://search.twitter.com/" : "http://search.twitter.com/";
     }
 
-    /**
-     * Returns the API base url (i.e. for newer APIs such as list memberships)
-     * @return API base url
-     */
-    protected String getApiBaseURL() {
-        return USE_SSL ? "https://api.twitter.com/" : "http://api.twitter.com/";
-    }
-    protected final String V1 = "1/";
     /**
      *
      * @param consumerKey OAuth consumer key
@@ -1030,7 +1023,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         if (description != null) {
             postParams.add(new PostParameter("description", description));
         }
-        return new twitter4j.List(http.post(getApiBaseURL() + V1 + user +
+        return new twitter4j.List(http.post(getBaseURL() + user +
                                             "/lists.json",
                                             postParams.toArray(new PostParameter[0]),
                                             true));
@@ -1059,7 +1052,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         if (description != null) {
             postParams.add(new PostParameter("description", description));
         }
-        return new twitter4j.List(http.post(getApiBaseURL() + V1 + user + "/lists/"
+        return new twitter4j.List(http.post(getBaseURL() + user + "/lists/"
                 + id + ".json", postParams.toArray(new PostParameter[0]), true));
     }
 
@@ -1073,7 +1066,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-lists">Twitter REST API Method: GET lists</a>
      */
     public PagableResponseList<twitter4j.List> getUserLists(String user, long cursor) throws TwitterException {
-        return twitter4j.List.createListList(get(getApiBaseURL() + V1 +
+        return twitter4j.List.createListList(get(getBaseURL() +
                 user + "/lists.json?cursor=" + cursor, true));
     }
 
@@ -1087,7 +1080,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-id">Twitter REST API Method: GET list id</a>
      */
     public twitter4j.List showUserList(String user, int id) throws TwitterException {
-        return new twitter4j.List(get(getApiBaseURL() + V1 + user + "/lists/"
+        return new twitter4j.List(get(getBaseURL() + user + "/lists/"
                 + id + ".json", true));
     }
 
@@ -1101,9 +1094,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-DELETE-list-id">Twitter REST API Method: DELETE /:user/lists/:id</a>
      */
     public twitter4j.List deleteUserList(String user, int id) throws TwitterException {
-        return new twitter4j.List(http.delete(getApiBaseURL() + V1 +user +
-                                              "/lists/" + id + ".json",
-                                              true));
+        return new twitter4j.List(http.delete(getBaseURL() +user +
+                "/lists/" + id + ".json", true));
     }
 
     /**
@@ -1117,7 +1109,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-statuses">Twitter REST API Method: GET list statuses</a>
      */
     public ResponseList<Status> getUserListStatuses(String user, int id, Paging paging) throws TwitterException {
-        return Status.createStatuseList(get(getApiBaseURL() + V1 + user +
+        return Status.createStatuseList(get(getBaseURL() + user +
                 "/lists/" + id + "/statuses.json", new PostParameter[0],
                 paging.asPostParameterList(Paging.SMCP, Paging.PER_PAGE), true));
     }
@@ -1132,7 +1124,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-memberships">Twitter REST API Method: GET /:user/lists/memberships</a>
      */
     public PagableResponseList<twitter4j.List> getUserListMemberships(String user, long cursor) throws TwitterException {
-        return twitter4j.List.createListList(get(getApiBaseURL() + V1 +
+        return twitter4j.List.createListList(get(getBaseURL() +
                 user + "/lists/memberships.json?cursor=" + cursor, true));
     }
 
@@ -1146,7 +1138,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-subscriptions">Twitter REST API Method: GET list subscriptions</a>
      */
     public PagableResponseList<twitter4j.List> getUserListSubscriptions(String user, long cursor) throws TwitterException {
-        return twitter4j.List.createListList(get(getApiBaseURL() + V1 +
+        return twitter4j.List.createListList(get(getBaseURL() +
                 user + "/lists/subscriptions.json?cursor=" + cursor, true));
     }
 
