@@ -441,11 +441,6 @@ public class TwitterTestUnit extends TestCase {
         assertTrue(actualReturn.size() > 10);
     }
 
-    public void testFeatured() throws Exception {
-        List<User> actualReturn = twitterAPI1.getFeatured();
-        assertTrue(actualReturn.size() > 9);
-    }
-
     public void testDirectMessages() throws Exception {
         String expectedReturn = new Date() + ":directmessage test";
         DirectMessage actualReturn = twitterAPI1.sendDirectMessage("twit4jnoupdate", expectedReturn);

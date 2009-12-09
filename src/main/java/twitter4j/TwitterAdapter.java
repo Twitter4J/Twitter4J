@@ -88,8 +88,6 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotFollowersStatuses(PagableResponseList<User> users){
     }
-    public void gotFeatured(ResponseList<User> users){
-    }
     public void gotUserDetail(User user){
     }
     public void gotDirectMessages(ResponseList<DirectMessage> messages){

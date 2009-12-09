@@ -992,16 +992,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
                 ".json?cursor=" + cursor, null, true));
     }
 
-    /**
-     * Returns a list of the users currently featured on the site with their current statuses inline.
-     *
-     * @return List of User
-     * @throws TwitterException when Twitter service or network is unavailable
-     */
-    public ResponseList<User> getFeatured() throws TwitterException {
-        return User.createUsersList(get(getBaseURL() + "statuses/featured.json", true));
-    }
-
     /*List Methods*/
     /**
      * Creates a new list for the authenticated user.

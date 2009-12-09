@@ -768,18 +768,6 @@ public class AsyncTwitter extends Twitter {
     }
 
     /**
-     * Returns a list of the users currently featured on the site with their current statuses inline.
-     * @param listener a listener object that receives the response
-     */
-    public void getFeaturedAsync(TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FEATURED, listener, null) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFeatured(getFeatured());
-            }
-        });
-    }
-
-    /**
      * Returns a list of the direct messages sent to the authenticating user.
      * <br>This method calls http://twitter.com/direct_messages
      * @param listener a listener object that receives the response
@@ -1750,7 +1738,6 @@ public class AsyncTwitter extends Twitter {
     public final static int RETWEETS_OF_ME = 55;
     public final static int FRIENDS_STATUSES = 6;
     public final static int FOLLOWERS_STATUSES = 7;
-    public final static int FEATURED = 8;
     public final static int SHOW_USER = 9;
     public final static int DIRECT_MESSAGES = 10;
     public final static int DESTROY_DIRECT_MESSAGES = 40;

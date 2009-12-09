@@ -133,11 +133,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotFeatured(ResponseList<User> users) {
-        this.users = users;
-        notifyResponse();
-    }
-
     public void gotUserDetail(User extendedUser) {
         this.extendedUser = extendedUser;
         notifyResponse();
@@ -630,13 +625,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         twitterAPI2.getFollowersStatusesAsync(this);
         waitForResponse();
         assertTrue(users.size() > 0);
-        assertSerializable(users);
-    }
-
-    public void testFeatured() throws Exception {
-        twitterAPI1.getFeaturedAsync(this);
-        waitForResponse();
-        assertTrue(users.size() > 9);
         assertSerializable(users);
     }
 

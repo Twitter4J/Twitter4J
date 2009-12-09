@@ -82,8 +82,6 @@ public interface TwitterListener {
 
     void gotFollowersStatuses(PagableResponseList<User> users);
 
-    void gotFeatured(ResponseList<User> users);
-
     void gotUserDetail(User user);
 
     void gotDirectMessages(ResponseList<DirectMessage> messages);
