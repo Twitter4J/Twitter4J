@@ -38,10 +38,10 @@ import java.util.Arrays;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class IDs extends TwitterResponse {
+public class IDs extends TwitterResponseImpl implements CursorSupport {
     private int[] ids;
-    private long previousCursor;
-    private long nextCursor;
+    private long previousCursor = -1;
+    private long nextCursor = -1;
     private static final long serialVersionUID = -6585026560164704953L;
 
     private IDs(Response res) throws TwitterException {
@@ -93,34 +93,18 @@ public class IDs extends TwitterResponse {
         return ids;
     }
 
-    /**
-     *
-     * @since Twitter4J 2.0.10
-     */
     public boolean hasPrevious(){
         return 0 != previousCursor;
     }
 
-    /**
-     *
-     * @since Twitter4J 2.0.10
-     */
     public long getPreviousCursor() {
         return previousCursor;
     }
 
-    /**
-     *
-     * @since Twitter4J 2.0.10
-     */
     public boolean hasNext(){
         return 0 != nextCursor;
     }
 
-    /**
-     *
-     * @since Twitter4J 2.0.10
-     */
     public long getNextCursor() {
         return nextCursor;
     }

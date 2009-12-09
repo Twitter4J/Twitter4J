@@ -26,17 +26,43 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.http.Response;
+import twitter4j.org.json.JSONObject;
+
 /**
- * Super class of Twitter Response objects.
+ * CursorSupport'ed ResponseList implementation.
  *
- * @see twitter4j.DirectMessage
- * @see twitter4j.Status
- * @see twitter4j.User
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface TwitterResponse extends java.io.Serializable {
+public class PagableResponseList<T extends TwitterResponse> extends
+        ResponseList implements CursorSupport{
+    private final long previousCursor;
+    private final long nextCursor;
+    private static final long serialVersionUID = 1531950333538983361L;
 
-    public int getRateLimitLimit() ;
-    public int getRateLimitRemaining();
-    public long getRateLimitReset() ;
+
+    /*package*/
+
+    PagableResponseList(int size, JSONObject json, Response res) {
+        super(size, res);
+        this.previousCursor = TwitterResponseImpl.getChildLong("previous_cursor", json);
+        this.nextCursor = TwitterResponseImpl.getChildLong("next_cursor", json);
+    }
+
+    public boolean hasPrevious() {
+        return 0 != previousCursor;
+    }
+
+    public long getPreviousCursor() {
+        return previousCursor;
+    }
+
+    public boolean hasNext() {
+        return 0 != nextCursor;
+    }
+
+    public long getNextCursor() {
+        return nextCursor;
+    }
+
 }

@@ -33,16 +33,14 @@ import twitter4j.org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A data class representing Basic user information element
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
-public class User extends TwitterResponse implements java.io.Serializable {
+public class User extends TwitterResponseImpl implements java.io.Serializable {
 
     private int id;
     private String name;
@@ -232,11 +230,29 @@ public class User extends TwitterResponse implements java.io.Serializable {
         return followersCount;
     }
 
-    /*package*/ static List<User> constructUsers(Response res) throws TwitterException {
+    /*package*/ static PagableResponseList<User> createCursorSupportUserList(Response res) throws TwitterException {
+        try {
+            JSONObject json = res.asJSONObject();
+            JSONArray list = json.getJSONArray("users");
+            int size = list.length();
+            PagableResponseList<User> users =
+                    new PagableResponseList<User>(size, json, res);
+            for (int i = 0; i < size; i++) {
+                users.add(new User(res, list.getJSONObject(i)));
+            }
+            return users;
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        } catch (TwitterException te) {
+            throw te;
+        }
+    }
+    /*package*/ static ResponseList<User> createUsersList(Response res) throws TwitterException {
         try {
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            List<User> users = new ArrayList<User>(size);
+            ResponseList<User> users =
+                    new ResponseList<User>(size, res);
             for (int i = 0; i < size; i++) {
                 users.add(new User(res, list.getJSONObject(i)));
             }

@@ -43,13 +43,13 @@ import java.util.Properties;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class AsyncTwitterTest extends TestCase implements TwitterListener {
-    private List<Status> statuses = null;
-    private List<User> users = null;
-    private List<DirectMessage> messages = null;
+    private ResponseList<Status> statuses = null;
+    private ResponseList<User> users = null;
+    private ResponseList<DirectMessage> messages = null;
     private Status status = null;
     private User user = null;
     private User extendedUser = null;
-    private List<User> extendedUsers = null;
+    private ResponseList<User> extendedUsers = null;
     private boolean test;
     private String schedule;
     private DirectMessage message = null;
@@ -62,22 +62,22 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private Trends trends;
     private boolean blockExists;
 
-    public void gotPublicTimeline(List<Status> statuses) {
+    public void gotPublicTimeline(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
 
-    public void gotHomeTimeline(List<Status> statuses) {
+    public void gotHomeTimeline(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
 
-    public void gotFriendsTimeline(List<Status> statuses) {
+    public void gotFriendsTimeline(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
 
-    public void gotUserTimeline(List<Status> statuses) {
+    public void gotUserTimeline(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
@@ -92,21 +92,21 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotMentions(List<Status> statuses) {
+    public void gotMentions(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
-    public void gotRetweetedByMe(List<Status> statuses) {
-        this.statuses = statuses;
-        notifyResponse();
-    }
-
-    public void gotRetweetedToMe(List<Status> statuses) {
+    public void gotRetweetedByMe(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
 
-    public void gotRetweetsOfMe(List<Status> statuses) {
+    public void gotRetweetedToMe(ResponseList<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
+
+    public void gotRetweetsOfMe(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
@@ -123,17 +123,17 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
  
-    public void gotFriendsStatuses(List<User> users) {
+    public void gotFriendsStatuses(PagableResponseList<User> users) {
         this.users = users;
         notifyResponse();
     }
 
-    public void gotFollowersStatuses(List<User> users) {
+    public void gotFollowersStatuses(PagableResponseList<User> users) {
         this.users = users;
         notifyResponse();
     }
 
-    public void gotFeatured(List<User> users) {
+    public void gotFeatured(ResponseList<User> users) {
         this.users = users;
         notifyResponse();
     }
@@ -143,12 +143,12 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotDirectMessages(List<DirectMessage> messages) {
+    public void gotDirectMessages(ResponseList<DirectMessage> messages) {
         this.messages = messages;
         notifyResponse();
     }
 
-    public void gotSentDirectMessages(List<DirectMessage> messages) {
+    public void gotSentDirectMessages(ResponseList<DirectMessage> messages) {
         this.messages = messages;
         notifyResponse();
     }
@@ -213,7 +213,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotFavorites(List<Status> statuses) {
+    public void gotFavorites(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
@@ -257,7 +257,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotBlockingUsers(List<User> blockingUsers){
+    public void gotBlockingUsers(ResponseList<User> blockingUsers){
         this.extendedUsers = blockingUsers;
         notifyResponse();
     }
@@ -457,12 +457,12 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         waitForResponse();
         assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074579);
 
-        twitterAPI1.getFollowersIDsAsync(this);
-        waitForResponse();
         try {
             twitterAPI2.createFriendship(id1);
         } catch (TwitterException te) {
         }
+        twitterAPI1.getFollowersIDsAsync(this);
+        waitForResponse();
         assertIDExsits("twit4j2(6377362) is following twit4j(6358482)", ids, 6377362);
         twitterAPI1.getFollowersIDsAsync(28074579, this);
         waitForResponse();

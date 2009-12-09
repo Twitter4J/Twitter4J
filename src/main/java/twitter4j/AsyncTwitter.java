@@ -656,15 +656,15 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the specified user's friends, each with current status inline.
      * <br>This method calls http://twitter.com/statuses/friends
-     * @param paging controls pagination
+     * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.9
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      */
-    public void getFriendsStatusesAsync(Paging paging,TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listener, new Object[]{paging}) {
+    public void getFriendsStatusesAsync(long cursor,TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listener, new Object[]{cursor}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotFriendsStatuses(getFriendsStatuses((Paging)args[0]));
+                listener.gotFriendsStatuses(getFriendsStatuses((Long)args[0]));
             }
         });
     }
@@ -689,15 +689,15 @@ public class AsyncTwitter extends Twitter {
      * Returns the user's friends, each with current status inline.
      * <br>This method calls http://twitter.com/statuses/friends
      * @param id String
-     * @param paging controls pagination
+     * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
      * @since Twitter4J 2.0.9
      */
-    public void getFriendsStatusesAsync(String id, Paging paging, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listener, new Object[] {id,paging}) {
+    public void getFriendsStatusesAsync(String id, long cursor, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listener, new Object[] {id, cursor}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFriendsStatuses(getFriendsStatuses((String) args[0], (Paging) args[1]));
+                listener.gotFriendsStatuses(getFriendsStatuses((String) args[0], (Long) args[1]));
             }
         });
     }
@@ -720,15 +720,15 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://twitter.com/statuses/followers
-     * @param paging controls pagination
+     * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.9
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
      */
-    public void getFollowersStatusesAsync(Paging paging, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_STATUSES, listener, new Object[]{paging}) {
+    public void getFollowersStatusesAsync(long cursor, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_STATUSES, listener, new Object[]{cursor}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFollowersStatuses(getFollowersStatuses((Paging) args[0]));
+                listener.gotFollowersStatuses(getFollowersStatuses((Long) args[0]));
             }
         });
     }
@@ -754,15 +754,15 @@ public class AsyncTwitter extends Twitter {
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://twitter.com/statuses/followers
      * @param id The ID or screen name of the user for whom to request a list of followers.
-     * @param paging controls pagination
+     * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.9
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
      */
-    public void getFollowersStatusesAsync(String id, Paging paging, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_STATUSES, listener, new Object[]{id, paging}) {
+    public void getFollowersStatusesAsync(String id, long cursor, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_STATUSES, listener, new Object[]{id, cursor}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotFollowersStatuses(getFollowersStatuses((String) args[0], (Paging) args[1]));
+                listener.gotFollowersStatuses(getFollowersStatuses((String) args[0], (Long) args[1]));
             }
         });
     }
@@ -1123,7 +1123,7 @@ public class AsyncTwitter extends Twitter {
      * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>This method calls http://twitter.com/followers/ids
      *
-     * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers%C2%A0ids</a>
      * @since Twitter4J 2.0.10

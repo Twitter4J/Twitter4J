@@ -44,7 +44,7 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.2
  */
-public class Trends extends TwitterResponse implements Comparable<Trends> {
+public class Trends extends TwitterResponseImpl implements Comparable<Trends> {
     private Date asOf;
     private Date trendAt;
     private Trend[] trends;
@@ -115,7 +115,7 @@ public class Trends extends TwitterResponse implements Comparable<Trends> {
         if (asOfStr.length() == 10) {
             parsed = new Date(Long.parseLong(asOfStr) * 1000);
         } else {
-            parsed = TwitterResponse.parseDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
+            parsed = parseDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
         }
         return parsed;
     }

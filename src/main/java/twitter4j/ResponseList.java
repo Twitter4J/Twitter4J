@@ -26,17 +26,48 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.http.Response;
+
+import java.util.ArrayList;
+
 /**
- * Super class of Twitter Response objects.
+ * List of TwitterResponse.
  *
- * @see twitter4j.DirectMessage
- * @see twitter4j.Status
- * @see twitter4j.User
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface TwitterResponse extends java.io.Serializable {
+public class ResponseList<T extends TwitterResponse> extends ArrayList<T>
+        implements TwitterResponse {
 
-    public int getRateLimitLimit() ;
-    public int getRateLimitRemaining();
-    public long getRateLimitReset() ;
+    private transient int rateLimitLimit = -1;
+    private transient int rateLimitRemaining = -1;
+    private transient long rateLimitReset = -1;
+    private static final long serialVersionUID = 1106730646596850864L;
+
+    ResponseList(int size, Response res) {
+        super(size);
+        String limit = res.getResponseHeader("X-RateLimit-Limit");
+        if (null != limit) {
+            rateLimitLimit = Integer.parseInt(limit);
+        }
+        String remaining = res.getResponseHeader("X-RateLimit-Remaining");
+        if (null != remaining) {
+            rateLimitRemaining = Integer.parseInt(remaining);
+        }
+        String reset = res.getResponseHeader("X-RateLimit-Reset");
+        if (null != reset) {
+            rateLimitReset = Long.parseLong(reset);
+        }
+    }
+
+    public int getRateLimitLimit() {
+        return rateLimitLimit;
+    }
+
+    public int getRateLimitRemaining() {
+        return rateLimitRemaining;
+    }
+
+    public long getRateLimitReset() {
+        return rateLimitReset;
+    }
 }

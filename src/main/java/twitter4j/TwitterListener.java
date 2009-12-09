@@ -36,16 +36,16 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface TwitterListener {
-    void gotPublicTimeline(List<Status> statuses);
+    void gotPublicTimeline(ResponseList<Status> statuses);
 
     /**
      * @since Twitter4J 2.0.10
      */
-    void gotHomeTimeline(List<Status> statuses);
+    void gotHomeTimeline(ResponseList<Status> statuses);
 
-    void gotFriendsTimeline(List<Status> statuses);
+    void gotFriendsTimeline(ResponseList<Status> statuses);
 
-    void gotUserTimeline(List<Status> statuses);
+    void gotUserTimeline(ResponseList<Status> statuses);
 
     /**
      * @since Twitter4J 2.0.1
@@ -57,19 +57,19 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.0.1
      */
-    void gotMentions(List<Status> statuses);
+    void gotMentions(ResponseList<Status> statuses);
     /**
      * @since Twitter4J 2.0.10
      */
-    void gotRetweetedByMe(List<Status> statuses);
+    void gotRetweetedByMe(ResponseList<Status> statuses);
     /**
      * @since Twitter4J 2.0.10
      */
-    void gotRetweetedToMe(List<Status> statuses);
+    void gotRetweetedToMe(ResponseList<Status> statuses);
     /**
      * @since Twitter4J 2.0.10
      */
-    void gotRetweetsOfMe(List<Status> statuses);
+    void gotRetweetsOfMe(ResponseList<Status> statuses);
 
     void destroyedStatus(Status destroyedStatus);
 
@@ -78,17 +78,17 @@ public interface TwitterListener {
      */
     void retweetedStatus(Status retweetedStatus);
 
-    void gotFriendsStatuses(List<User> users);
+    void gotFriendsStatuses(PagableResponseList<User> users);
 
-    void gotFollowersStatuses(List<User> users);
+    void gotFollowersStatuses(PagableResponseList<User> users);
 
-    void gotFeatured(List<User> users);
+    void gotFeatured(ResponseList<User> users);
 
     void gotUserDetail(User user);
 
-    void gotDirectMessages(List<DirectMessage> messages);
+    void gotDirectMessages(ResponseList<DirectMessage> messages);
 
-    void gotSentDirectMessages(List<DirectMessage> messages);
+    void gotSentDirectMessages(ResponseList<DirectMessage> messages);
 
     void sentDirectMessage(DirectMessage message);
 
@@ -127,7 +127,7 @@ public interface TwitterListener {
 
     void updatedDeliverlyDevice(User user);
 
-    void gotFavorites(List<Status> statuses);
+    void gotFavorites(ResponseList<Status> statuses);
 
     void createdFavorite(Status status);
 
@@ -161,7 +161,7 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.0.4
      */
-    void gotBlockingUsers(List<User> blockingUsers);
+    void gotBlockingUsers(ResponseList<User> blockingUsers);
 
     /**
      * @since Twitter4J 2.0.4

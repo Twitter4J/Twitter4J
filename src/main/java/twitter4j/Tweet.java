@@ -35,7 +35,7 @@ import java.util.Date;
  * A data class representing a Tweet in the search response
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Tweet extends TwitterResponse{
+public class Tweet extends TwitterResponseImpl {
     private String text;
     private int toUserId = -1;
     private String toUser = null;

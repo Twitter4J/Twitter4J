@@ -54,6 +54,7 @@ public class Twitter4JTestSuite extends TestCase {
         suite.addTestSuite(twitter4j.http.HTMLEntityTest.class);
         suite.addTestSuite(twitter4j.http.ResponseTest.class);
         suite.addTestSuite(twitter4j.RateLimitStatusTest.class);
+        suite.addTestSuite(ListAPITest.class);
         return suite;
     }
 }

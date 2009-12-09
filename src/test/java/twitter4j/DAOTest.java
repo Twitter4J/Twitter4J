@@ -66,7 +66,7 @@ public class DAOTest extends TestCase {
         HttpClient http = new HttpClient();
 
         // empty User list
-        List<User> users = User.constructUsers(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
+        List<User> users = User.createCursorSupportUserList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
         assertTrue(users.size() == 0);
         trySerializeable(users);
 
@@ -131,7 +131,7 @@ public class DAOTest extends TestCase {
         List<User> users;
 
         // User list
-        users = User.constructUsers(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/followers/T4J_hudson.json"));
+        users = User.createCursorSupportUserList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/followers/T4J_hudson.json"));
         assertTrue(users.size() > 0);
         trySerializeable(users);
     }

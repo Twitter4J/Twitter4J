@@ -39,7 +39,7 @@ import java.util.List;
  * A data class representing sent/received direct message.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class DirectMessage extends TwitterResponse implements java.io.Serializable {
+public class DirectMessage extends TwitterResponseImpl implements java.io.Serializable {
     private int id;
     private String text;
     private int sender_id;
@@ -117,11 +117,11 @@ public class DirectMessage extends TwitterResponse implements java.io.Serializab
         return recipient;
     }
 
-    /*package*/ static List<DirectMessage> constructDirectMessages(Response res) throws TwitterException {
+    /*package*/ static ResponseList<DirectMessage> constructDirectMessages(Response res) throws TwitterException {
         try {
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            List<DirectMessage> directMessages = new ArrayList<DirectMessage>(size);
+            ResponseList<DirectMessage> directMessages = new ResponseList<DirectMessage>(size, res);
             for (int i = 0; i < size; i++) {
                 directMessages.add(new DirectMessage(res, list.getJSONObject(i)));
             }

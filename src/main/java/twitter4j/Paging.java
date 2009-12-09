@@ -26,8 +26,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.http.PostParameter;
+
+import java.util.*;
+import java.util.List;
+
 /**
- * Controlls pagination
+ * Controls pagination.<br>
+ * It is possible to use the same Paging instance in a multi-threaded
+ * context only if the instance is treated immutably.<br>
+ * But basically instance of this class is NOT thread safe.
+ * A client should instantiate Paging class per thread.<br>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -37,6 +46,64 @@ public class Paging implements java.io.Serializable {
     private long sinceId = -1;
     private long maxId = -1;
     private static final long serialVersionUID = -3285857427993796670L;
+
+    // since only
+    static char[] S = new char[]{'s'};
+    // since, max_id, count, page
+    static char[] SMCP = new char[]{'s', 'm', 'c', 'p'};
+
+    static final String COUNT = "count";
+    // somewhat GET list statuses requires "per_page" instead of "count"
+    // @see http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-statuses
+    static final String PER_PAGE = "per_page";
+
+    /*package*/ List<PostParameter> asPostParameterList() {
+        return asPostParameterList(SMCP, COUNT);
+    }
+
+    /*package*/ List<PostParameter> asPostParameterList(char[] supportedParams) {
+        return asPostParameterList(supportedParams, COUNT);
+    }
+
+    /**
+     * Converts the pagination parameters into a List of PostParameter.<br>
+     * This method also Validates the preset parameters, and throws
+     *  IllegalStateException if any unsupported parameter is set.
+     * @param supportedParams char array representation of supported parameters
+     * @param perPageParamName name used for per-page parameter. getUserListStatuses() requires "per_page" instead of "count".
+     * @return list of PostParameter
+     */
+
+    /*package*/ List<PostParameter> asPostParameterList(char[] supportedParams, String perPageParamName) {
+        java.util.List<PostParameter> pagingParams = new ArrayList<PostParameter>(supportedParams.length);
+        addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
+        addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
+        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
+        addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
+        if (pagingParams.size() == 0) {
+            return null;
+        } else {
+            return pagingParams;
+        }
+    }
+
+    private void addPostParameter(char[] supportedParams, char paramKey
+            , List<PostParameter> pagingParams, String paramName, long paramValue) {
+        boolean supported = false;
+        for (char supportedParam : supportedParams) {
+            if (supportedParam == paramKey) {
+                supported = true;
+                break;
+            }
+        }
+        if (!supported && -1 != paramValue) {
+            throw new IllegalStateException("Paging parameter [" + paramName
+                    + "] is not supported with this operation.");
+        }
+        if (-1 != paramValue) {
+            pagingParams.add(new PostParameter(paramName, String.valueOf(paramValue)));
+        }
+    }
 
     public Paging() {
     }
@@ -53,6 +120,7 @@ public class Paging implements java.io.Serializable {
         this(page);
         setCount(count);
     }
+
     public Paging(int page, long sinceId) {
         this(page);
         setSinceId(sinceId);
@@ -99,17 +167,17 @@ public class Paging implements java.io.Serializable {
         return sinceId;
     }
 
-    public void setSinceId(int sinceId) {
-        if (sinceId < 1) {
-            throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
-        }
-        this.sinceId = sinceId;
-    }
+//    public void setSinceId(int sinceId) {
+//        if (sinceId < 1) {
+//            throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
+//        }
+//        this.sinceId = sinceId;
+//    }
 
-    public Paging sinceId(int sinceId) {
-        setSinceId(sinceId);
-        return this;
-    }
+//    public Paging sinceId(int sinceId) {
+//        setSinceId(sinceId);
+//        return this;
+//    }
 
     public void setSinceId(long sinceId) {
         if (sinceId < 1) {
@@ -137,5 +205,39 @@ public class Paging implements java.io.Serializable {
     public Paging maxId(long maxId) {
         setMaxId(maxId);
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Paging)) return false;
+
+        Paging paging = (Paging) o;
+
+        if (count != paging.count) return false;
+        if (maxId != paging.maxId) return false;
+        if (page != paging.page) return false;
+        if (sinceId != paging.sinceId) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = page;
+        result = 31 * result + count;
+        result = 31 * result + (int) (sinceId ^ (sinceId >>> 32));
+        result = 31 * result + (int) (maxId ^ (maxId >>> 32));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Paging{" +
+                "page=" + page +
+                ", count=" + count +
+                ", sinceId=" + sinceId +
+                ", maxId=" + maxId +
+                '}';
     }
 }

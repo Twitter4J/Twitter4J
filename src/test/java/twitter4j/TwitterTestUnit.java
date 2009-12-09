@@ -424,18 +424,20 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testFollowers() throws Exception {
-        List<User> actualReturn = twitterAPI1.getFollowersStatuses();
+        PagableResponseList<User> actualReturn = twitterAPI1.getFollowersStatuses();
         assertTrue(actualReturn.size() > 0);
-        actualReturn = twitterAPI1.getFollowersStatuses(new Paging(1));
+        actualReturn = twitterAPI1.getFollowersStatuses();
         assertTrue(actualReturn.size() > 0);
-        actualReturn = twitterAPI1.getFollowersStatuses(new Paging(2));
+        assertFalse(actualReturn.hasNext());
+        assertFalse(actualReturn.hasPrevious());
+        actualReturn = twitterAPI1.getFollowersStatuses(actualReturn.getNextCursor());
         assertEquals(0, actualReturn.size());
 
         actualReturn = twitterAPI2.getFollowersStatuses();
         assertTrue(actualReturn.size() > 0);
         actualReturn = twitterAPI2.getFollowersStatuses("yusukey");
         assertTrue(actualReturn.size() > 60);
-        actualReturn = twitterAPI2.getFollowersStatuses("yusukey", new Paging(2));
+        actualReturn = twitterAPI2.getFollowersStatuses("yusukey", actualReturn.getNextCursor());
         assertTrue(actualReturn.size() > 10);
     }
 

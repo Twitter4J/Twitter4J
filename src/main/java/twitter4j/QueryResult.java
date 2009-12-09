@@ -39,7 +39,7 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 
-public class QueryResult extends TwitterResponse {
+public class QueryResult extends TwitterResponseImpl {
 
     private long sinceId;
     private long maxId;

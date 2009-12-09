@@ -41,7 +41,7 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.8
  */
-public class SavedSearch extends TwitterResponse {
+public class SavedSearch extends TwitterResponseImpl {
     private Date createdAt;
     private String query;
     private int position;

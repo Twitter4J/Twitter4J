@@ -35,7 +35,7 @@ import java.util.Date;
  * A data class representing Twitter rate limit status
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class RateLimitStatus extends TwitterResponse {
+public class RateLimitStatus extends TwitterResponseImpl {
     private int remainingHits;
     private int hourlyLimit;
     private int resetTimeInSeconds;

@@ -24,19 +24,49 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
+package twitter4j.http;
 
 /**
- * Super class of Twitter Response objects.
  *
- * @see twitter4j.DirectMessage
- * @see twitter4j.Status
- * @see twitter4j.User
- * @author Yusuke Yamamoto - yusuke at mac.com
+ * @author Dan Checkoway - dcheckoway at gmail.com
  */
-public interface TwitterResponse extends java.io.Serializable {
+final class RequestMethod {
+    private final String method;
+    public static final RequestMethod HEAD = new RequestMethod("HEAD");
+    public static final RequestMethod GET = new RequestMethod("GET");
+    public static final RequestMethod POST = new RequestMethod("POST");
+    public static final RequestMethod PUT = new RequestMethod("PUT");
+    public static final RequestMethod DELETE = new RequestMethod("DELETE");
 
-    public int getRateLimitLimit() ;
-    public int getRateLimitRemaining();
-    public long getRateLimitReset() ;
+    private RequestMethod(String method) {
+        this.method = method;
+    }
+
+    public final String name() {
+        return method;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RequestMethod)) return false;
+
+        RequestMethod that = (RequestMethod) o;
+
+        if (!method.equals(that.method)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return method.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "RequestMethod{" +
+                "method='" + method + '\'' +
+                '}';
+    }
 }

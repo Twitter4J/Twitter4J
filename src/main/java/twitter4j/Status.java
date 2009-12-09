@@ -39,7 +39,7 @@ import java.util.List;
  * A data class representing one single status of a user.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Status extends TwitterResponse implements java.io.Serializable {
+public class Status extends TwitterResponseImpl implements java.io.Serializable {
 
     private Date createdAt;
     private long id;
@@ -250,11 +250,11 @@ public class Status extends TwitterResponse implements java.io.Serializable {
         return retweetedStatus;
     }
 
-    /*package*/ static List<Status> constructStatuses(Response res) throws TwitterException {
+    /*package*/ static ResponseList<Status> constructStatuses(Response res) throws TwitterException {
         try {
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            List<Status> statuses = new ArrayList<Status>(size);
+            ResponseList<Status> statuses = new ResponseList<Status>(size, res);
             for (int i = 0; i < size; i++) {
                 statuses.add(new Status(res, list.getJSONObject(i)));
             }

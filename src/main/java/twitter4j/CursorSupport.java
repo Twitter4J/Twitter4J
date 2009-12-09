@@ -27,16 +27,31 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 /**
- * Super class of Twitter Response objects.
  *
- * @see twitter4j.DirectMessage
- * @see twitter4j.Status
- * @see twitter4j.User
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface TwitterResponse extends java.io.Serializable {
+public interface CursorSupport {
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    boolean hasPrevious();
 
-    public int getRateLimitLimit() ;
-    public int getRateLimitRemaining();
-    public long getRateLimitReset() ;
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    long getPreviousCursor();
+
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    boolean hasNext();
+
+    /**
+     *
+     * @since Twitter4J 2.0.10
+     */
+    long getNextCursor();
 }

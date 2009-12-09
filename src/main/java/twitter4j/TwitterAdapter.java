@@ -37,18 +37,18 @@ import java.util.List;
 public class TwitterAdapter implements TwitterListener {
     public TwitterAdapter() {
     }
-    public void gotPublicTimeline(List<Status> statuses){
+    public void gotPublicTimeline(ResponseList<Status> statuses){
     }
 
     /**
      * @since Twitter4J 2.0.10
      */
-    public void gotHomeTimeline(List<Status> statuses) {
+    public void gotHomeTimeline(ResponseList<Status> statuses) {
     }
 
-    public void gotFriendsTimeline(List<Status> statuses){
+    public void gotFriendsTimeline(ResponseList<Status> statuses){
     }
-    public void gotUserTimeline(List<Status> statuses){
+    public void gotUserTimeline(ResponseList<Status> statuses){
     }
     /**
      * @since Twitter4J 2.0.1
@@ -60,22 +60,22 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.0.1
      */
-    public void gotMentions(List<Status> statuses){
+    public void gotMentions(ResponseList<Status> statuses){
     }
     /**
      * @since Twitter4J 2.0.10
      */
-    public void gotRetweetedByMe(List<Status> statuses) {
+    public void gotRetweetedByMe(ResponseList<Status> statuses) {
     }
     /**
      * @since Twitter4J 2.0.10
      */
-    public void gotRetweetedToMe(List<Status> statuses) {
+    public void gotRetweetedToMe(ResponseList<Status> statuses) {
     }
     /**
      * @since Twitter4J 2.0.10
      */
-    public void gotRetweetsOfMe(List<Status> statuses) {
+    public void gotRetweetsOfMe(ResponseList<Status> statuses) {
     }
     public void destroyedStatus(Status destroyedStatus){
     }
@@ -84,17 +84,17 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void retweetedStatus(Status retweetedStatus){
     }
-    public void gotFriendsStatuses(List<User> users){
+    public void gotFriendsStatuses(PagableResponseList<User> users){
     }
-    public void gotFollowersStatuses(List<User> users){
+    public void gotFollowersStatuses(PagableResponseList<User> users){
     }
-    public void gotFeatured(List<User> users){
+    public void gotFeatured(ResponseList<User> users){
     }
     public void gotUserDetail(User user){
     }
-    public void gotDirectMessages(List<DirectMessage> messages){
+    public void gotDirectMessages(ResponseList<DirectMessage> messages){
     }
-    public void gotSentDirectMessages(List<DirectMessage> messages){
+    public void gotSentDirectMessages(ResponseList<DirectMessage> messages){
     }
     public void sentDirectMessage(DirectMessage message){
     }
@@ -133,7 +133,7 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void updatedDeliverlyDevice(User user){
     }
-    public void gotFavorites(List<Status> statuses){
+    public void gotFavorites(ResponseList<Status> statuses){
     }
     public void createdFavorite(Status status){
     }
@@ -168,7 +168,7 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.0.4
      */
-    public void gotBlockingUsers(List<User> blockingUsers){
+    public void gotBlockingUsers(ResponseList<User> blockingUsers){
     }
 
     /**
