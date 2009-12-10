@@ -44,17 +44,22 @@ public class Twitter4JTestSuite extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite("Twitter4J Test Suite");
-        suite.addTestSuite(AsyncTwitterTest.class);
-        suite.addTestSuite(DispatcherTest.class);
-        suite.addTestSuite(TwitterBasicAuthTest.class);
-        suite.addTestSuite(twitter4j.http.OAuthTest.class);
-        suite.addTestSuite(StreamAPITest.class);
-        suite.addTestSuite(SearchAPITest.class);
         suite.addTestSuite(twitter4j.http.BASE64EncoderTest.class);
         suite.addTestSuite(twitter4j.http.HTMLEntityTest.class);
+        suite.addTestSuite(twitter4j.http.HttpClientTest.class);
+        suite.addTestSuite(twitter4j.http.OAuthTest.class);
+        suite.addTestSuite(twitter4j.http.PostParameterTest.class);
         suite.addTestSuite(twitter4j.http.ResponseTest.class);
-        suite.addTestSuite(twitter4j.RateLimitStatusTest.class);
+
+        suite.addTestSuite(AsyncTwitterTest.class);
+        suite.addTestSuite(DAOTest.class);
+        suite.addTestSuite(DispatcherTest.class);
         suite.addTestSuite(ListAPITest.class);
+        suite.addTestSuite(PagingTest.class);
+        suite.addTestSuite(RateLimitStatusTest.class);
+        suite.addTestSuite(SearchAPITest.class);
+        suite.addTestSuite(StreamAPITest.class);
+        suite.addTestSuite(TwitterBasicAuthTest.class);
         return suite;
     }
 }

@@ -37,6 +37,31 @@ import java.util.List;
 public class TwitterAdapter implements TwitterListener {
     public TwitterAdapter() {
     }
+    /*Search API Methods*/
+    public void searched(QueryResult result){
+    }
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    public void gotTrends(Trends trends) {
+    }
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    public void gotCurrentTrends(Trends trends) {
+    }
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    public void gotDailyTrends(List<Trends> trendsList) {
+    }
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    public void gotWeeklyTrends(List<Trends> trendsList) {
+    }
+
+    /*Timeline Methods*/
     public void gotPublicTimeline(ResponseList<Status> statuses){
     }
 
@@ -49,13 +74,6 @@ public class TwitterAdapter implements TwitterListener {
     public void gotFriendsTimeline(ResponseList<Status> statuses){
     }
     public void gotUserTimeline(ResponseList<Status> statuses){
-    }
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    public void gotShowStatus(Status statuses){
-    }
-    public void updatedStatus(Status statuses){
     }
     /**
      * @since Twitter4J 2.0.1
@@ -77,6 +95,15 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void gotRetweetsOfMe(ResponseList<Status> statuses) {
     }
+
+    /*Status Methods*/
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    public void gotShowStatus(Status statuses){
+    }
+    public void updatedStatus(Status statuses){
+    }
     public void destroyedStatus(Status destroyedStatus){
     }
     /**
@@ -84,12 +111,22 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void retweetedStatus(Status retweetedStatus){
     }
+
+    /*User Methods*/
+    public void gotUserDetail(User user){
+    }
+
     public void gotFriendsStatuses(PagableResponseList<User> users){
     }
     public void gotFollowersStatuses(PagableResponseList<User> users){
     }
-    public void gotUserDetail(User user){
-    }
+    /*List Methods*/
+
+    /*List Members Methods*/
+
+    /*List Subscribers Methods*/
+
+    /*Direct Message Methods*/
     public void gotDirectMessages(ResponseList<DirectMessage> messages){
     }
     public void gotSentDirectMessages(ResponseList<DirectMessage> messages){
@@ -101,10 +138,8 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void destroyedDirectMessage(DirectMessage message){
     }
-    public void gotFriendsIDs(IDs ids){
-    }
-    public void gotFollowersIDs(IDs ids){
-    }
+
+    /*Friendship Methods*/
     /**
      * @since Twitter4J 2.0.1
      */
@@ -120,23 +155,48 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void gotExistsFriendship(boolean exists) {
     }
+
+    /*Social Graph Methods*/
+    public void gotFriendsIDs(IDs ids){
+    }
+
+    public void gotFollowersIDs(IDs ids){
+    }
+
+    /*Account Methods*/
+
+    public void gotRateLimitStatus(RateLimitStatus status) {
+    }
+
+    public void updatedDeliveryDevice(User user) {
+    }
+
+    public void updatedProfileColors(User user) {
+    }
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void updatedProfileImage(User user) {
+    }
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void updatedProfileBackgroundImage(User user) {
+    }
     /**
      * @since Twitter4J 2.0.2
      */
     public void updatedProfile(User user){
     }
-    public void updatedProfileColors(User user){
-    }
-    public void gotRateLimitStatus(RateLimitStatus status){
-    }
-    public void updatedDeliverlyDevice(User user){
-    }
+    /*Favorite Methods*/
     public void gotFavorites(ResponseList<Status> statuses){
     }
     public void createdFavorite(Status status){
     }
     public void destroyedFavorite(Status status){
     }
+
+    /*Notification Methods*/
     /**
      * @since Twitter4J 2.0.1
      */
@@ -147,6 +207,7 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void disabledNotification(User user){
     }
+    /*Block Methods*/
     /**
      * @since Twitter4J 2.0.1
      */
@@ -175,35 +236,25 @@ public class TwitterAdapter implements TwitterListener {
     public void gotBlockingUsersIDs(IDs blockingUsersIDs){
     }
 
+    /*Spam Reporting Methods*/
+    //reportSpam()
+
+    /*Saved Searches Methods*/
+    //getSavedSearches()
+    //showSavedSearch()
+    //createSavedSearch()
+    //destroySavedSearch()
+
+    /*Local Trends Methods*/
+
+    /*Help Methods*/
     public void tested(boolean test){
-    }
-    public void searched(QueryResult result){
-    }
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    public void gotTrends(Trends trends) {
-    }
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    public void gotCurrentTrends(Trends trends) {
-    }
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    public void gotDailyTrends(List<Trends> trendsList) {
-    }
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    public void gotWeeklyTrends(List<Trends> trendsList) {
     }
 
     /**
      * @param ex TwitterException
-     * @param method int
+     * @param method
      */
-    public void onException(TwitterException ex,int method) {
+    public void onException(TwitterException ex, TwitterMethod method) {
     }
 }

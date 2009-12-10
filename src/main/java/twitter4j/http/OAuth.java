@@ -73,7 +73,9 @@ public class OAuth implements java.io.Serializable {
         }
         List<PostParameter> signatureBaseParams = new ArrayList<PostParameter>(oauthHeaderParams.size() + params.length);
         signatureBaseParams.addAll(oauthHeaderParams);
-        signatureBaseParams.addAll(toParamList(params));
+        if (!PostParameter.containsFile(params)) {
+            signatureBaseParams.addAll(toParamList(params));
+        }
         parseGetParameters(url, signatureBaseParams);
         StringBuffer base = new StringBuffer(method).append("&")
                 .append(encode(constructRequestURL(url))).append("&");
@@ -215,18 +217,19 @@ public class OAuth implements java.io.Serializable {
     public static String encodeParameters(List<PostParameter> postParams, String splitter, boolean quot) {
         StringBuffer buf = new StringBuffer();
         for (PostParameter param : postParams) {
-            if (buf.length() != 0) {
+            if (!param.isFile()) {
+                if (buf.length() != 0) {
+                    if (quot) {
+                        buf.append("\"");
+                    }
+                    buf.append(splitter);
+                }
+                buf.append(encode(param.getName())).append("=");
                 if (quot) {
                     buf.append("\"");
                 }
-                buf.append(splitter);
+                buf.append(encode(param.getValue()));
             }
-            buf.append(encode(param.name)).append("=");
-            if (quot) {
-                buf.append("\"");
-            }
-            buf.append(
-                    encode(param.value));
         }
         if (buf.length() != 0) {
             if (quot) {

@@ -42,7 +42,6 @@ import java.util.List;
     protected List<RateLimitStatusListener> accountRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     protected List<RateLimitStatusListener> ipRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
 
-//    /*package*/ static final String VERSION = Version.getVersion();
     /*package*/ TwitterSupport(){
         this(null, null);
     }
@@ -57,7 +56,7 @@ import java.util.List;
     /**
      * Registers a RateLimitStatusListener for account associated rate limits
      *
-     * @since Twitter4J 3.0
+     * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
      */
     public void addAccountRateLimitStatusListener(RateLimitStatusListener listener){
@@ -68,10 +67,9 @@ import java.util.List;
     /**
      * Registers a RateLimitStatusListener for ip associated rate limits
      *
-     * @since Twitter4J 3.0
+     * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
      */
-
     public void addIpRateLimitStatusListener(RateLimitStatusListener listener){
     	ipRateLimitStatusListeners.add(listener);
     }

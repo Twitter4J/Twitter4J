@@ -36,6 +36,30 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface TwitterListener {
+    /*Search API Methods*/
+    void searched(QueryResult queryResult);
+
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    void gotTrends(Trends trends);
+
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    void gotCurrentTrends(Trends trends);
+
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    void gotDailyTrends(List<Trends> trendsList);
+
+    /**
+     * @since Twitter4J 2.0.2
+     */
+    void gotWeeklyTrends(List<Trends> trendsList);
+
+    /*Timeline Methods*/
     void gotPublicTimeline(ResponseList<Status> statuses);
 
     /**
@@ -46,13 +70,6 @@ public interface TwitterListener {
     void gotFriendsTimeline(ResponseList<Status> statuses);
 
     void gotUserTimeline(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void gotShowStatus(Status status);
-
-    void updatedStatus(Status status);
 
     /**
      * @since Twitter4J 2.0.1
@@ -71,6 +88,15 @@ public interface TwitterListener {
      */
     void gotRetweetsOfMe(ResponseList<Status> statuses);
 
+
+    /*Status Methods*/
+    /**
+     * @since Twitter4J 2.0.1
+     */
+    void gotShowStatus(Status status);
+
+    void updatedStatus(Status status);
+
     void destroyedStatus(Status destroyedStatus);
 
     /**
@@ -78,12 +104,20 @@ public interface TwitterListener {
      */
     void retweetedStatus(Status retweetedStatus);
 
+    /*User Methods*/
+    void gotUserDetail(User user);
+
     void gotFriendsStatuses(PagableResponseList<User> users);
 
     void gotFollowersStatuses(PagableResponseList<User> users);
 
-    void gotUserDetail(User user);
+    /*List Methods*/
 
+    /*List Members Methods*/
+
+    /*List Subscribers Methods*/
+
+    /*Direct Message Methods*/
     void gotDirectMessages(ResponseList<DirectMessage> messages);
 
     void gotSentDirectMessages(ResponseList<DirectMessage> messages);
@@ -95,10 +129,7 @@ public interface TwitterListener {
      */
     void destroyedDirectMessage(DirectMessage message);
 
-    void gotFriendsIDs(IDs ids);
-
-    void gotFollowersIDs(IDs ids);
-
+    /*Friendship Methods*/
     /**
      * @since Twitter4J 2.0.1
      */
@@ -114,23 +145,41 @@ public interface TwitterListener {
      */
     void gotExistsFriendship(boolean exists);
 
+    /*Social Graph Methods*/
+    void gotFriendsIDs(IDs ids);
+
+    void gotFollowersIDs(IDs ids);
+
+    /*Account Methods*/
+    void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
+
+    void updatedDeliveryDevice(User user);
+
+    void updatedProfileColors(User user);
+
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    void updatedProfileImage(User user);
+
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    void updatedProfileBackgroundImage(User user);
+
     /**
      * @since Twitter4J 2.0.2
      */
     void updatedProfile(User user);
 
-    void updatedProfileColors(User user);
-
-    void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
-
-    void updatedDeliverlyDevice(User user);
-
+    /*Favorite Methods*/
     void gotFavorites(ResponseList<Status> statuses);
 
     void createdFavorite(Status status);
 
     void destroyedFavorite(Status status);
 
+    /*Notification Methods*/
     /**
      * @since Twitter4J 2.0.1
      */
@@ -141,6 +190,7 @@ public interface TwitterListener {
      */
     void disabledNotification(User user);
 
+    /*Block Methods*/
     /**
      * @since Twitter4J 2.0.1
      */
@@ -166,34 +216,24 @@ public interface TwitterListener {
      */
     void gotBlockingUsersIDs(IDs blockingUsersIDs);
 
+    /*Spam Reporting Methods*/
+    //reportSpam()
+
+    /*Saved Searches Methods*/
+    //getSavedSearches()
+    //showSavedSearch()
+    //createSavedSearch()
+    //destroySavedSearch()
+
+    /*Local Trends Methods*/
+
+    /*Help Methods*/
     void tested(boolean test);
-
-    void searched(QueryResult queryResult);
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    void gotTrends(Trends trends);
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    void gotCurrentTrends(Trends trends);
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    void gotDailyTrends(List<Trends> trendsList);
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    void gotWeeklyTrends(List<Trends> trendsList);
 
     /**
      * @param te     TwitterException
-     * @param method int
+     * @param method
      */
-    void onException(TwitterException te, int method);
+    void onException(TwitterException te, TwitterMethod method);
 
 }

@@ -29,6 +29,7 @@ package twitter4j;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -61,7 +62,29 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private List<Trends> trendsList;
     private Trends trends;
     private boolean blockExists;
+    /*Search API Methods*/
+    public void searched(QueryResult result) {
+        this.queryResult = result;
+        notifyResponse();
+    }
+    public void gotTrends(Trends trends) {
+        this.trends = trends;
+        notifyResponse();
+    }
+    public void gotCurrentTrends(Trends trends) {
+        this.trends = trends;
+        notifyResponse();
+    }
+    public void gotDailyTrends(List<Trends> trendsList) {
+        this.trendsList = trendsList;
+        notifyResponse();
+    }
+    public void gotWeeklyTrends(List<Trends> trendsList) {
+        this.trendsList = trendsList;
+        notifyResponse();
+    }
 
+    /*Timeline Methods*/
     public void gotPublicTimeline(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
@@ -81,17 +104,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         this.statuses = statuses;
         notifyResponse();
     }
-
-    public void gotShowStatus(Status status) {
-        this.status = status;
-        notifyResponse();
-    }
-
-    public void updatedStatus(Status status) {
-        this.status = status;
-        notifyResponse();
-    }
-
     public void gotMentions(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
@@ -111,6 +123,17 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    /*Status Methods*/
+    public void gotShowStatus(Status status) {
+        this.status = status;
+        notifyResponse();
+    }
+
+    public void updatedStatus(Status status) {
+        this.status = status;
+        notifyResponse();
+    }
+
     public void destroyedStatus(Status destroyedStatus) {
         this.status = destroyedStatus;
         notifyResponse();
@@ -123,6 +146,12 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
  
+    /*User Methods*/
+    public void gotUserDetail(User extendedUser) {
+        this.extendedUser = extendedUser;
+        notifyResponse();
+    }
+
     public void gotFriendsStatuses(PagableResponseList<User> users) {
         this.users = users;
         notifyResponse();
@@ -133,11 +162,13 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotUserDetail(User extendedUser) {
-        this.extendedUser = extendedUser;
-        notifyResponse();
-    }
+    /*List Methods*/
 
+    /*List Members Methods*/
+
+    /*List Subscribers Methods*/
+
+    /*Direct Message Methods*/
     public void gotDirectMessages(ResponseList<DirectMessage> messages) {
         this.messages = messages;
         notifyResponse();
@@ -158,16 +189,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotFriendsIDs(IDs ids){
-        this.ids = ids;
-        notifyResponse();
-    }
-
-    public void gotFollowersIDs(IDs ids){
-        this.ids = ids;
-        notifyResponse();
-    }
-
+    /*Friendship Methods*/
     public void createdFriendship(User user) {
         this.user = user;
         notifyResponse();
@@ -178,18 +200,30 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotExists(boolean exists) {
-        this.exists = exists;
-        notifyResponse();
-    }
-
     public void gotExistsFriendship(boolean exists) {
         this.exists = exists;
         notifyResponse();
     }
 
-    public void updatedProfile(User user) {
-        this.extendedUser = user;
+    /*Social Graph Methods*/
+    public void gotFriendsIDs(IDs ids){
+        this.ids = ids;
+        notifyResponse();
+    }
+
+    public void gotFollowersIDs(IDs ids){
+        this.ids = ids;
+        notifyResponse();
+    }
+
+    /*Account Methods*/
+    public void gotRateLimitStatus(RateLimitStatus status){
+        this.rateLimitStatus = status;
+        notifyResponse();
+    }
+
+    public void updatedDeliveryDevice(User user) {
+        this.user = user;
         notifyResponse();
     }
 
@@ -198,16 +232,29 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void gotRateLimitStatus(RateLimitStatus status){
-        this.rateLimitStatus = status;
-        notifyResponse();
-    }
-
-    public void updatedDeliverlyDevice(User user) {
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void updatedProfileImage(User user) {
         this.user = user;
         notifyResponse();
     }
 
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void updatedProfileBackgroundImage(User user) {
+        this.user = user;
+        notifyResponse();
+
+    }
+
+    public void updatedProfile(User user) {
+        this.extendedUser = user;
+        notifyResponse();
+    }
+
+    /*Favorite Methods*/
     public void gotFavorites(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
@@ -223,6 +270,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    /*Notification Methods*/
     public void enabledNotification(User user) {
         this.user = user;
         notifyResponse();
@@ -233,12 +281,8 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    /*Block Methods*/
     public void createdBlock(User user) {
-        this.user = user;
-        notifyResponse();
-    }
-
-    public void unblocked(User user) {
         this.user = user;
         notifyResponse();
     }
@@ -261,29 +305,20 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
+    /*Spam Reporting Methods*/
+    //reportSpam()
+
+    /*Saved Searches Methods*/
+    //getSavedSearches()
+    //showSavedSearch()
+    //createSavedSearch()
+    //destroySavedSearch()
+
+    /*Local Trends Methods*/
+
+    /*Help Methods*/
     public void tested(boolean test) {
         this.test = test;
-        notifyResponse();
-    }
-
-    public void searched(QueryResult result) {
-        this.queryResult = result;
-        notifyResponse();
-    }
-    public void gotTrends(Trends trends) {
-        this.trends = trends;
-        notifyResponse();
-    }
-    public void gotCurrentTrends(Trends trends) {
-        this.trends = trends;
-        notifyResponse();
-    }
-    public void gotDailyTrends(List<Trends> trendsList) {
-        this.trendsList = trendsList;
-        notifyResponse();
-    }
-    public void gotWeeklyTrends(List<Trends> trendsList) {
-        this.trendsList = trendsList;
         notifyResponse();
     }
 
@@ -291,10 +326,9 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
      * @param te     TwitterException
      * @param method int
      */
-
-    public void onException(TwitterException te, int method) {
+    public void onException(TwitterException te, TwitterMethod method) {
         this.te = te;
-        System.out.println("onexception");
+        System.out.println("onexception on " + method.name());
         te.printStackTrace();
         notifyResponse();
     }
@@ -420,6 +454,18 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertTrue("size", 10 < statuses.size());
         assertSerializable(statuses);
     }
+    public void testAccountProfileImageUpdates() throws Exception {
+        te = null;
+        twitterAPI1.updateProfileImageAsync(TwitterTestUnit.getRandomlyChosenFile(), this);
+        waitForResponse();
+        assertNull(te);
+        // tile randomly
+        twitterAPI1.updateProfileBackgroundImageAsync(TwitterTestUnit.getRandomlyChosenFile(),
+                (5 < System.currentTimeMillis() % 5), this);
+        waitForResponse();
+        assertNull(te);
+    }
+
 
     public void testFavorite() throws Exception {
         Status status = twitterAPI1.updateStatus(new Date().toString());

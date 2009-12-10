@@ -61,7 +61,20 @@ public class HttpClientTest extends TestCase {
 
     public void testUpload() throws Exception {
         client.setRetryCount(0);
-//        User user = new User(client.post("http://api.twitter.com/1/account/update_profile_image.json", new PostParameter[]{new PostParameter("image", new File("src/test/resources/t4j-reverse.jpeg"))}, true));
-//        System.out.println(user.getProfileImageURL());
+//        PostParameter[] params = new PostParameter[]{
+//                new PostParameter("theText","texttext"),
+//                new PostParameter("theFile", new File("src/test/resources/t4j-reverse.jpeg"))
+//        };
+//        client.post("http://localhost:9000/struts-examples-1.3.5/upload/upload-submit.do?queryParam=Successful",
+//                params).asString();
+
+//        PostParameter[] params = new PostParameter[]{
+//                new PostParameter("image", new File("src/test/resources/t4j-reverse.gif"))
+//                new PostParameter("image", new File("src/test/resources/t4j.gif"))
+//        };
+
+//        User user = new User(client.post("http://api.twitter.com/1/account/update_profile_image.json",params, true));
+//        User user = new User(client.post("http://localhost:9001/account/update_profile_image.json",params, true));
+//        System.out.println(user.getProfileImageURL().toString());
     }
 }

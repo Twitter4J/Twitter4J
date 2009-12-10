@@ -411,6 +411,23 @@ public class TwitterTestUnit extends TestCase {
         }
     }
 
+    public void testAccountProfileImageUpdates() throws Exception {
+        twitterAPI1.updateProfileImage(getRandomlyChosenFile());
+        // tile randomly
+        twitterAPI1.updateProfileBackgroundImage(getRandomlyChosenFile(),
+                (5 < System.currentTimeMillis() % 5));
+    }
+    final static String[] files = {"src/test/resources/t4j-reverse.jpeg",
+            "src/test/resources/t4j-reverse.png",
+            "src/test/resources/t4j-reverse.gif",
+            "src/test/resources/t4j.jpeg",
+            "src/test/resources/t4j.png",
+            "src/test/resources/t4j.gif",
+    };
+    public static File getRandomlyChosenFile(){
+        return new File(files[(int) (System.currentTimeMillis() % 6)]);
+    }
+
     public void testFavoriteMethods() throws Exception {
         Status status = twitterAPI1.getHomeTimeline(new Paging().count(1)).get(0);
         twitterAPI2.createFavorite(status.getId());

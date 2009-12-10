@@ -460,7 +460,7 @@ public class HttpClient implements java.io.Serializable {
                     setHeaders(url, postParams, con, authenticated);
                     con.setRequestMethod(requestMethod.name());
                     if (requestMethod == POST) {
-                        if (containsFile(postParams)) {
+                        if (PostParameter.containsFile(postParams)) {
                             String boundary = "----Twitter4J-upload" + System.currentTimeMillis();
                             con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
                             boundary = "--" + boundary;
@@ -471,19 +471,20 @@ public class HttpClient implements java.io.Serializable {
                                 if (param.isFile()) {
                                     write(out, boundary + "\r\n");
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"; filename=\"" + param.file.getName() + "\"\r\n");
-                                    write(out, "Content-Type: application/octet-stream\r\n\r\n");
+                                    write(out, "Content-Type: " + param.getContentType() + "\r\n\r\n");
                                     BufferedInputStream in = new BufferedInputStream(new FileInputStream(param.file));
                                     int buff = 0;
                                     while ((buff = in.read()) != -1) {
                                         out.write(buff);
                                     }
-                                    write(out, "\"\r\n");
+                                    write(out, "\r\n");
                                     in.close();
                                 } else {
                                     write(out, boundary + "\r\n");
-                                    write(out, "Content-Disposition: form-data; name=\"text\"\r\n");
+                                    write(out, "Content-Disposition: form-data; name=\"" + param.name + "\"\r\n");
                                     write(out, "Content-Type: text/plain; charset=UTF-8\r\n\r\n");
-                                    out.write(encodeParameter(param).getBytes("UTF-8"));
+                                    log(param.value);
+                                    out.write(encode(param.value).getBytes("UTF-8"));
                                     write(out, "\r\n");
                                 }
                             }
@@ -560,16 +561,6 @@ public class HttpClient implements java.io.Serializable {
         log(outStr);
     }
 
-    private boolean containsFile(PostParameter[] params) {
-        boolean containsFile = false;
-        for (PostParameter param : params) {
-            if (param.isFile()) {
-                containsFile = true;
-                break;
-            }
-        }
-        return containsFile;
-    }
 
     private void fireHttpResponseEvent(HttpResponseEvent httpResponseEvent) {
         for (HttpResponseListener listener : httpResponseListeners) {
@@ -605,13 +596,17 @@ public class HttpClient implements java.io.Serializable {
             throw new IllegalArgumentException("parameter [" + postParam.name + "]should be text");
         }
         StringBuffer buf = new StringBuffer(postParam.name.length() + postParam.value.length() + 1);
-        try {
-
-            buf.append(URLEncoder.encode(postParam.name, "UTF-8"))
-                    .append("=").append(URLEncoder.encode(postParam.value, "UTF-8"));
-        } catch (java.io.UnsupportedEncodingException neverHappen) {
-        }
+        buf.append(encode(postParam.name))
+                .append("=").append(encode(postParam.value));
         return buf.toString();
+    }
+
+    public static String encode(String str) {
+        try {
+            return URLEncoder.encode(str, "UTF-8");
+        } catch (java.io.UnsupportedEncodingException neverHappen) {
+            throw new AssertionError("will never happen");
+        }
     }
 
     /**

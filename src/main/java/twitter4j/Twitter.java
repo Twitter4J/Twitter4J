@@ -34,6 +34,9 @@ import twitter4j.http.PostParameter;
 import twitter4j.http.RequestToken;
 import twitter4j.http.Response;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -269,12 +272,6 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
                 for(PostParameter param : params){
                     pagingParams.add(param);
                 }
-//                pagingParams.addAll()
-//                PostParameter[] newparams = new PostParameter[params.length
-//                        + pagingParams.length];
-//                System.arraycopy(params, 0, newparams, 0, params.length);
-//                System.arraycopy(pagingParams, 0, newparams, params.length
-//                        , pagingParams.length);
                 return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authenticate);
             } else {
                 return get(url, params, authenticate);
@@ -456,7 +453,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent statuses from non-protected users who have set a custom user icon.
-     * <br>This method calls http://twitter.com/statuses/public_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/public_timeline
      *
      * @return list of statuses of the Public Timeline
      * @throws TwitterException when Twitter service or network is unavailable
@@ -470,7 +467,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
-     * <br>This method calls http://twitter.com/statuses/public_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/public_timeline
      *
      * @param sinceID returns only public statuses with an ID greater than (that is, more recent than) the specified ID
      * @return the 20 most recent statuses
@@ -486,7 +483,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
-     * <br>This method calls http://twitter.com/statuses/home_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/home_timeline
      *
      * @return list of the home Timeline
      * @throws TwitterException when Twitter service or network is unavailable
@@ -501,7 +498,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
-     * <br>This method calls http://twitter.com/statuses/home_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/home_timeline
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return list of the home Timeline
@@ -517,7 +514,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating1 user and that user's friends.
      * It's also possible to request another user's friends_timeline via the id parameter below.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/friends_timeline
      *
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
@@ -530,7 +527,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/friends_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/friends_timeline
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return list of the Friends Timeline
@@ -545,7 +542,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/user_timeline
      *
      * @param id    specifies the ID or screen name of the user for whom to return the user_timeline
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
@@ -562,7 +559,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/user_timeline
      *
      * @param id specifies the ID or screen name of the user for whom to return the user_timeline
      * @return the 20 most recent statuses posted in the last 24 hours from the user
@@ -575,7 +572,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/user_timeline
      *
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
@@ -589,7 +586,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the most recent statuses posted in the last 24 hours from the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/user_timeline
+     * <br>This method calls http://api.twitter.com/1/statuses/user_timeline
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return the 20 most recent statuses posted in the last 24 hours from the user
@@ -605,7 +602,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent mentions (status containing @username) for the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/mentions
+     * <br>This method calls http://api.twitter.com/1/statuses/mentions
      *
      * @return the 20 most recent replies
      * @throws TwitterException when Twitter service or network is unavailable
@@ -619,7 +616,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent mentions (status containing @username) for the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/mentions
+     * <br>This method calls http://api.twitter.com/1/statuses/mentions
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return the 20 most recent replies
@@ -634,7 +631,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent retweets posted by the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/retweeted_by_me
+     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_me
      *
      * @return the 20 most recent retweets posted by the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
@@ -648,7 +645,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent retweets posted by the authenticating user.
-     * <br>This method calls http://twitter.com/statuses/retweeted_by_me
+     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_me
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return the 20 most recent retweets posted by the authenticating user
@@ -663,7 +660,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent retweets posted by the authenticating user's friends.
-     * <br>This method calls http://twitter.com/statuses/retweeted_to_me
+     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_to_me
      *
      * @return the 20 most recent retweets posted by the authenticating user's friends.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -677,7 +674,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent retweets posted by the authenticating user's friends.
-     * <br>This method calls http://twitter.com/statuses/retweeted_to_me
+     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_to_me
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return the 20 most recent retweets posted by the authenticating user's friends.
@@ -692,7 +689,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
-     * <br>This method calls http://twitter.com/statuses/retweets_of_me
+     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
      *
      * @return the 20 most recent tweets of the authenticated user that have been retweeted by others.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -706,7 +703,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
-     * <br>This method calls http://twitter.com/statuses/retweets_of_me
+     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return the 20 most recent tweets of the authenticated user that have been retweeted by others.
@@ -721,7 +718,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns a single status, specified by the id parameter. The status's author will be returned inline.
-     * <br>This method calls http://twitter.com/statuses/show
+     * <br>This method calls http://api.twitter.com/1/statuses/show
      *
      * @param id the numerical ID of the status you're trying to retrieve
      * @return a single status
@@ -736,7 +733,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Updates the user's status.
      * The text will be trimed if the length of the text is exceeding 160 characters.
-     * <br>This method calls http://twitter.com/statuses/update
+     * <br>This method calls http://api.twitter.com/1/statuses/update
      *
      * @param status the text of your status update
      * @return the latest status
@@ -752,7 +749,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Updates the user's status.
      * The text will be trimed if the length of the text is exceeding 160 characters.
-     * <br>This method calls http://twitter.com/statuses/update
+     * <br>This method calls http://api.twitter.com/1/statuses/update
      *
      * @param status the text of your status update
      * @param latitude The location's latitude that this tweet refers to.
@@ -773,7 +770,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Updates the user's status.
      * The text will be trimed if the length of the text is exceeding 160 characters.
-     * <br>This method calls http://twitter.com/statuses/update
+     * <br>This method calls http://api.twitter.com/1/statuses/update
      *
      * @param status            the text of your status update
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
@@ -790,7 +787,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Updates the user's status.
      * The text will be trimed if the length of the text is exceeding 160 characters.
-     * <br>This method calls http://twitter.com/statuses/update
+     * <br>This method calls http://api.twitter.com/1/statuses/update
      *
      * @param status            the text of your status update
      * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
@@ -814,7 +811,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Destroys the status specified by the required ID parameter.  The authenticating user must be the author of the specified status.
-     * <br>This method calls http://twitter.com/statuses/destroy
+     * <br>This method calls http://api.twitter.com/1/statuses/destroy
      *
      * @param statusId The ID of the status to destroy.
      * @return the deleted status
@@ -829,7 +826,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Retweets a tweet. Requires the id parameter of the tweet you are retweeting. Returns the original tweet with retweet details embedded.
-     * <br>This method calls http://twitter.com/statuses/retweet
+     * <br>This method calls http://api.twitter.com/1/statuses/retweet
      *
      * @param statusId The ID of the status to retweet.
      * @return the retweeted status
@@ -844,7 +841,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns up to 100 of the first retweets of a given tweet.
-     * <br>This method calls http://twitter.com/statuses/retweets
+     * <br>This method calls http://api.twitter.com/1/statuses/retweets
      *
      * @param statusId The numerical ID of the tweet you want the retweets of.
      * @return the retweets of a given tweet
@@ -859,7 +856,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
-     * <br>This method calls http://twitter.com/users/show
+     * <br>This method calls http://api.twitter.com/1/users/show
      *
      * @param id the ID or screen name of the user for whom to request the detail
      * @return User
@@ -875,7 +872,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the specified user's friends, each with current status inline.
-     * <br>This method calls http://twitter.com/statuses/friends
+     * <br>This method calls http://api.twitter.com/1/statuses/friends
      *
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
@@ -887,7 +884,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the specified user's friends, each with current status inline.
-     * <br>This method calls http://twitter.com/statuses/friends
+     * <br>This method calls http://api.twitter.com/1/statuses/friends
      *
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of friends
@@ -904,7 +901,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Returns the user's friends, each with current status inline.<br>
      * This method automatically provides a value of cursor=-1 to begin paging.
-     * <br>This method calls http://twitter.com/statuses/friends
+     * <br>This method calls http://api.twitter.com/1/statuses/friends
      *
      * @param id the ID or screen name of the user for whom to request a list of friends
      * @return the list of friends
@@ -918,7 +915,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the user's friends, each with current status inline.
-     * <br>This method calls http://twitter.com/statuses/friends
+     * <br>This method calls http://api.twitter.com/1/statuses/friends
      *
      * @param id the ID or screen name of the user for whom to request a list of friends
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -936,7 +933,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).<br>
      * This method automatically provides a value of cursor=-1 to begin paging.
-     * <br>This method calls http://twitter.com/statuses/followers
+     * <br>This method calls http://api.twitter.com/1/statuses/followers
      *
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
@@ -949,7 +946,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://twitter.com/statuses/followers
+     * <br>This method calls http://api.twitter.com/1/statuses/followers
      *
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return List
@@ -964,7 +961,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://twitter.com/statuses/followers
+     * <br>This method calls http://api.twitter.com/1/statuses/followers
      *
      * @param id The ID or screen name of the user for whom to request a list of followers.
      * @return List
@@ -978,7 +975,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://twitter.com/statuses/followers
+     * <br>This method calls http://api.twitter.com/1/statuses/followers
      *
      * @param id   The ID or screen name of the user for whom to request a list of followers.
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -993,6 +990,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /*List Methods*/
+
     /**
      * Creates a new list for the authenticated user.
      * <br>This method calls http://api.twitter.com/1/user/lists.json
@@ -1003,6 +1001,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the list that was created
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-lists">Twitter REST API Method: POST lists</a>
+     * @since Twitter4J 2.1.0
      */
     public twitter4j.List createUserList(String user, String name, String mode, String description) throws TwitterException {
         List<PostParameter> postParams = new ArrayList<PostParameter>();
@@ -1030,6 +1029,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-lists-id">Twitter REST API Method: POST lists id</a>
+     * @since Twitter4J 2.1.0
      */
     public twitter4j.List updateUserList(String user, int id, String name, String mode, String description) throws TwitterException {
         List<PostParameter> postParams = new ArrayList<PostParameter>();
@@ -1054,6 +1054,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-lists">Twitter REST API Method: GET lists</a>
+     * @since Twitter4J 2.1.0
      */
     public PagableResponseList<twitter4j.List> getUserLists(String user, long cursor) throws TwitterException {
         return twitter4j.List.createListList(get(getBaseURL() +
@@ -1068,6 +1069,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the specified list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-id">Twitter REST API Method: GET list id</a>
+     * @since Twitter4J 2.1.0
      */
     public twitter4j.List showUserList(String user, int id) throws TwitterException {
         return new twitter4j.List(get(getBaseURL() + user + "/lists/"
@@ -1082,6 +1084,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the deleted list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-DELETE-list-id">Twitter REST API Method: DELETE /:user/lists/:id</a>
+     * @since Twitter4J 2.1.0
      */
     public twitter4j.List deleteUserList(String user, int id) throws TwitterException {
         return new twitter4j.List(http.delete(getBaseURL() +user +
@@ -1097,6 +1100,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return list of statuses for members of the specified list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-statuses">Twitter REST API Method: GET list statuses</a>
+     * @since Twitter4J 2.1.0
      */
     public ResponseList<Status> getUserListStatuses(String user, int id, Paging paging) throws TwitterException {
         return Status.createStatuseList(get(getBaseURL() + user +
@@ -1112,6 +1116,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-memberships">Twitter REST API Method: GET /:user/lists/memberships</a>
+     * @since Twitter4J 2.1.0
      */
     public PagableResponseList<twitter4j.List> getUserListMemberships(String user, long cursor) throws TwitterException {
         return twitter4j.List.createListList(get(getBaseURL() +
@@ -1126,6 +1131,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-subscriptions">Twitter REST API Method: GET list subscriptions</a>
+     * @since Twitter4J 2.1.0
      */
     public PagableResponseList<twitter4j.List> getUserListSubscriptions(String user, long cursor) throws TwitterException {
         return twitter4j.List.createListList(get(getBaseURL() +
@@ -1133,21 +1139,22 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /*Direct Message Methods */
+
     /**
-    * Returns a list of the direct messages sent to the authenticating user.
-    * <br>This method calls http://twitter.com/direct_messages
-    *
-    * @return List
-    * @throws TwitterException when Twitter service or network is unavailable
-    * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
-    */
+     * Returns a list of the direct messages sent to the authenticating user.
+     * <br>This method calls http://api.twitter.com/1/direct_messages
+     *
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
+     */
     public ResponseList<DirectMessage> getDirectMessages() throws TwitterException {
         return DirectMessage.createDirectMessageList(get(getBaseURL() + "direct_messages.json", true));
     }
 
     /**
      * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages
+     * <br>This method calls http://api.twitter.com/1/direct_messages
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return List
@@ -1161,7 +1168,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages/sent
+     * <br>This method calls http://api.twitter.com/1/direct_messages/sent
      *
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1175,7 +1182,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls http://twitter.com/direct_messages/sent
+     * <br>This method calls http://api.twitter.com/1/direct_messages/sent
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return List
@@ -1193,7 +1200,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimed if the length of the text is exceeding 140 characters.
-     * <br>This method calls http://twitter.com/direct_messages/new
+     * <br>This method calls http://api.twitter.com/1/direct_messages/new
      *
      * @param id   the ID or screen name of the user to whom send the direct message
      * @param text String
@@ -1210,7 +1217,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
-     * <br>This method calls http://twitter.com/direct_messages/destroy
+     * <br>This method calls http://api.twitter.com/1/direct_messages/destroy
      *
      * @param id the ID of the direct message to destroy
      * @return the deleted direct message
@@ -1226,6 +1233,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
      *
      * @param id the ID or screen name of the user to be befriended
      * @return the befriended user
@@ -1239,6 +1247,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
      *
      * @param id the ID or screen name of the user to be befriended
      * @param follow Enable notifications for the target user in addition to becoming friends.
@@ -1255,6 +1264,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * <br>This method calls http://api.twitter.com/1/friendships/destroy/[id].json
      *
      * @param id the ID or screen name of the user for whom to request a list of friends
      * @return User
@@ -1268,6 +1278,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Tests if a friendship exists between two users.
+     * <br>This method calls http://api.twitter.com/1/friendships/exists.json
      *
      * @param userA The ID or screen_name of the first user to test friendship for.
      * @param userB The ID or screen_name of the second user to test friendship for.
@@ -1283,6 +1294,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the authenticating user is following.
+     * <br>This method calls http://api.twitter.com/1/friends/ids.json
      * @return an array of numeric IDs for every user the authenticating user is following
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.0
@@ -1294,6 +1306,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the authenticating user is following.
+     * <br>This method calls http://api.twitter.com/1/friends/ids.json
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the authenticating user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1307,6 +1320,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Returns an array of numeric IDs for every user the specified user is following.<br>
      * all IDs are attempted to be returned, but large sets of IDs will likely fail with timeout errors.
+     * <br>This method calls http://api.twitter.com/1/friends/ids.json
      * @param userId Specfies the ID of the user for whom to return the friends list.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1319,6 +1333,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
+     * <br>This method calls http://api.twitter.com/1/friends/ids.json
      * @param userId Specifies the ID of the user for whom to return the friends list.
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the specified user is following
@@ -1333,6 +1348,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
+     * <br>This method calls http://api.twitter.com/1/friends/ids.json
      * @param screenName Specfies the screen name of the user for whom to return the friends list.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1345,6 +1361,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
+     * <br>This method calls http://api.twitter.com/1/friends/ids.json
      * @param screenName Specfies the screen name of the user for whom to return the friends list.
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the specified user is following
@@ -1359,6 +1376,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>This method calls http://api.twitter.com/1/followers/ids.json
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.0
@@ -1370,6 +1388,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>This method calls http://api.twitter.com/1/followers/ids.json
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1383,6 +1402,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>This method calls http://api.twitter.com/1/followers/ids.json
      * @param userId Specfies the ID of the user for whom to return the followers list.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1395,6 +1415,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>This method calls http://api.twitter.com/1/followers/ids.json
      * @param userId Specifies the ID of the user for whom to return the followers list.
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
@@ -1409,6 +1430,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>This method calls http://api.twitter.com/1/followers/ids.json
      * @param screenName Specfies the screen name of the user for whom to return the followers list.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1421,6 +1443,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>This method calls http://api.twitter.com/1/followers/ids.json
+     * 
      * @param screenName Specfies the screen name of the user for whom to return the followers list.
      * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
@@ -1435,6 +1459,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not.  Use this method to test if supplied user credentials are valid.
+     * <br>This method calls http://api.twitter.com/1/account/verify_credentials.json
      *
      * @return user
      * @since Twitter4J 2.0.0
@@ -1448,6 +1473,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified(non-null) will be updated.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile.json
      *
      * @param name Optional. Maximum of 20 characters.
      * @param email Optional. Maximum of 40 characters. Must be a valid email address.
@@ -1473,6 +1499,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.<br>
+     * <br>This method calls http://api.twitter.com/1/account/rate_limit_status.json
      *
      * @return the rate limit status
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1497,6 +1524,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
+     * <br>This method calls http://api.twitter.com/1/account/update_delivery_device.json
      *
      * @param device new Delivery device. Must be one of: IM, SMS, NONE.
      * @return the updated user
@@ -1511,6 +1539,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.  These values are also returned in the getUserDetail() method.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile_colors.json
      * @param profileBackgroundColor optional, can be null
      * @param profileTextColor optional, can be null
      * @param profileLinkColor optional, can be null
@@ -1552,7 +1581,62 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
+     * Updates the authenticating user's profile image.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
+     * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
+     * @return the updated user
+     * @throws TwitterException when Twitter service or network is unavailable,
+     *  or when the specified file is not found (FileNotFoundException will be nested),
+     *  or when the specified file object in not representing a file (IOException will be nexted)
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile_image">Twitter API Wiki / Twitter REST API Method: account update_profile_image</a>
+     */
+    public User updateProfileImage(File image) throws TwitterException {
+        checkFileValidity(image);
+        return new User(http.post(getBaseURL()
+                + "account/update_profile_image.json",
+                new PostParameter[]{new PostParameter("image", image)}, true));
+    }
+
+    /**
+     * Updates the authenticating user's profile background image.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile_background_image.json
+     * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forceably scaled down.
+     * @param tile If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
+     * @return the updated user
+     * @throws TwitterException when Twitter service or network is unavailable,
+     *  or when the specified file is not found (FileNotFoundException will be nested),
+     *  or when the specified file object in not representing a file (IOException will be nexted)
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile_background_image">Twitter API Wiki / Twitter REST API Method: account update_profile_background_image</a>
+     */
+    public User updateProfileBackgroundImage(File image, boolean tile)
+            throws TwitterException {
+        checkFileValidity(image);
+        return new User(http.post(getBaseURL()
+                + "account/update_profile_background_image.json",
+                new PostParameter[]{new PostParameter("image", image),
+                new PostParameter("tile", tile)}, true));
+    }
+
+    /**
+     * Check the existence, and the type of the specified file.
+     * @param image image to be uploaded
+     * @throws TwitterException when the specified file is not found (FileNotFoundException is nested).
+     * @throws IllegalArgumentException when the specified file object is not representing a file.
+     */
+    private void checkFileValidity(File image) throws TwitterException {
+        if (!image.exists()) {
+            new TwitterException(new FileNotFoundException(image +" is not found."));
+        }
+        if (!image.isFile()) {
+            new TwitterException(new IOException(image +" is not a file."));
+        }
+    }
+
+    /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+     * <br>This method calls http://api.twitter.com/1/favorites.json
      *
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1565,6 +1649,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+     * <br>This method calls http://api.twitter.com/1/favorites.json
      *
      * @param page the number of page
      * @return ResponseList<Status>
@@ -1591,6 +1676,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+     * <br>This method calls http://api.twitter.com/1/favorites/[id].json
      *
      * @param id   the ID or screen name of the user for whom to request a list of favorite statuses
      * @param page the number of page
@@ -1605,6 +1691,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
+     * <br>This method calls http://api.twitter.com/1/favorites/create/[id].json
      *
      * @param id the ID of the status to favorite
      * @return Status
@@ -1617,6 +1704,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Un-favorites the status specified in the ID parameter as the authenticating user.  Returns the un-favorited status in the requested format when successful.
+     * <br>This method calls http://api.twitter.com/1/favorites/destroy/[id].json
      *
      * @param id the ID of the status to un-favorite
      * @return Status
@@ -1629,6 +1717,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * <br>This method calls http://api.twitter.com/1/notifications/follow/[id].json
      *
      * @param id String
      * @return User
@@ -1642,6 +1731,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * <br>This method calls http://api.twitter.com/1/notifications/leave/[id].json
      *
      * @param id String
      * @return User
@@ -1657,6 +1747,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
+     * <br>This method calls http://api.twitter.com/1/blocks/create/[id].json
      *
      * @param id the ID or screen_name of the user to block
      * @return the blocked user
@@ -1670,6 +1761,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
+     * <br>This method calls http://api.twitter.com/1/blocks/destroy/[id].json
      *
      * @param id the ID or screen_name of the user to block
      * @return the unblocked user
@@ -1683,7 +1775,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Tests if a friendship exists between two users.
-     * <br>This method calls http://twitter.com/blocks/exists/id.json
+     * <br>This method calls http://api.twitter.com/1/blocks/exists/[id].json
      *
      * @param id The ID or screen_name of the potentially blocked user.
      * @return  if the authenticating user is blocking a target user
@@ -1705,7 +1797,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns a list of user objects that the authenticating user is blocking.
-     * <br>This method calls http://twitter.com/blocks/blocking.json
+     * <br>This method calls http://api.twitter.com/1/blocks/blocking.json
      *
      * @return a list of user objects that the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1720,7 +1812,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns a list of user objects that the authenticating user is blocking.
-     * <br>This method calls http://twitter.com/blocks/blocking.json
+     * <br>This method calls http://api.twitter.com/1/blocks/blocking.json
      *
      * @param page the number of page
      * @return a list of user objects that the authenticating user
@@ -1736,7 +1828,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Returns an array of numeric user ids the authenticating user is blocking.
-     * <br>This method calls http://twitter.com/blocks/blocking/ids
+     * <br>This method calls http://api.twitter.com/1/blocks/blocking/ids
      * @return Returns an array of numeric user ids the authenticating user is blocking.
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.4
@@ -1749,7 +1841,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /* Saved Searches Methods */
     /**
      * Returns the authenticated user's saved search queries.
-     * <br>This method calls http://twitter.com/saved_searches.json
+     * <br>This method calls http://api.twitter.com/1/saved_searches.json
      * @return Returns an array of numeric user ids the authenticating user is blocking.
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.8
@@ -1761,7 +1853,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Retrieve the data for a saved search owned by the authenticating user specified by the given id.
-     * <br>This method calls http://twitter.com/saved_searches/show/id.json
+     * <br>This method calls http://api.twitter.com/1/saved_searches/show/id.json
      * @param id The id of the saved search to be retrieved.
      * @return the data for a saved search
      * @throws TwitterException when Twitter service or network is unavailable
@@ -1775,7 +1867,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Retrieve the data for a saved search owned by the authenticating user specified by the given id.
-     * <br>This method calls http://twitter.com/saved_searches/saved_searches/create.json
+     * <br>This method calls http://api.twitter.com/1/saved_searches/saved_searches/create.json
      * @return the data for a created saved search
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.8
@@ -1788,7 +1880,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Destroys a saved search for the authenticated user. The search specified by id must be owned by the authenticating user.
-     * <br>This method calls http://twitter.com/saved_searches/destroy/id.json
+     * <br>This method calls http://api.twitter.com/1/saved_searches/destroy/id.json
      * @param id The id of the saved search to be deleted.
      * @return the data for a destroyed saved search
      * @throws TwitterException when Twitter service or network is unavailable
