@@ -26,18 +26,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import java.io.File;
+
 /**
  * A data class representing HTTP Post parameter
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class PostParameter implements java.io.Serializable, Comparable {
-    String name;
-    String value;
+    String name = null;
+    String value = null;
+    File file = null;
     private static final long serialVersionUID = -8708108746980739212L;
 
     public PostParameter(String name, String value) {
         this.name = name;
         this.value = value;
+    }
+    public PostParameter(String name, File file) {
+        this.name = name;
+        this.file = file;
     }
     public PostParameter(String name, double value) {
         this.name = name;
@@ -55,27 +62,41 @@ public class PostParameter implements java.io.Serializable, Comparable {
     public String getValue(){
         return value;
     }
+    public boolean isFile(){
+        return null != file;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PostParameter)) return false;
+
+        PostParameter that = (PostParameter) o;
+
+        if (file != null ? !file.equals(that.file) : that.file != null)
+            return false;
+        if (!name.equals(that.name)) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null)
+            return false;
+
+        return true;
+    }
 
     @Override
     public int hashCode() {
         int result = name.hashCode();
-        result = 31 * result + value.hashCode();
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (file != null ? file.hashCode() : 0);
         return result;
     }
 
-    @Override public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof PostParameter) {
-            PostParameter that = (PostParameter) obj;
-            return this.name.equals(that.name) &&
-                this.value.equals(that.value);
-        }
-        return false;
+    @Override
+    public String toString() {
+        return "PostParameter{" +
+                "name='" + name + '\'' +
+                ", value='" + value + '\'' +
+                ", file=" + file +
+                '}';
     }
 
     public int compareTo(Object o) {
