@@ -1532,7 +1532,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @since Twitter4J 1.0.4
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_delivery_device">Twitter API Wiki / Twitter REST API Method: account update_delivery_device</a>
      */
-    public User updateDeliverlyDevice(Device device) throws TwitterException {
+    public User updateDeliveryDevice(Device device) throws TwitterException {
         return new User(http.post(getBaseURL() + "account/update_delivery_device.json", new PostParameter[]{new PostParameter("device", device.DEVICE)}, true));
     }
 

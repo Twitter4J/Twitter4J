@@ -354,7 +354,7 @@ public class TwitterTestUnit extends TestCase {
         } catch (TwitterException te) {
         }
 
-        twitterAPI1.updateDeliverlyDevice(Twitter.SMS);
+        twitterAPI1.updateDeliveryDevice(Twitter.SMS);
         followEachOther();
         assertTrue(twitterAPI1.existsFriendship(id1, id2));
         assertFalse(twitterAPI1.existsFriendship(id1, "al3x"));

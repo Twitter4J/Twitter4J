@@ -1267,7 +1267,7 @@ public class AsyncTwitter extends Twitter {
     public void updateDeliverlyDeviceAsync(Device device, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_DELIVERY_DEVICE, listener, new Object[]{device}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.updatedDeliveryDevice(updateDeliverlyDevice((Device) args[0]));
+                listener.updatedDeliveryDevice(updateDeliveryDevice((Device) args[0]));
             }
         });
     }
