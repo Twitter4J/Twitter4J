@@ -542,8 +542,11 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         assertEquals(newDescription, user.getDescription());
 
         twitterAPI1.createFriendshipAsync(id2, this);
+        waitForResponse();
         twitterAPI1.enableNotificationAsync(id2, this);
+        waitForResponse();
         twitterAPI2.createFriendshipAsync(id1, this);
+        waitForResponse();
         twitterAPI1.existsFriendshipAsync(id1,id2,this);
         waitForResponse();
         assertTrue(exists);
