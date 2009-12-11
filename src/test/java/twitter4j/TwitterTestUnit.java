@@ -50,7 +50,8 @@ public class TwitterTestUnit extends TestCase {
         super(name);
     }
 
-    protected String id1, id2, id3, pass1, pass2, pass3;
+    protected String id1, id2, id3,numberId, pass1, pass2, pass3,numberPass;
+    protected int id1id, numberIdId;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -58,9 +59,14 @@ public class TwitterTestUnit extends TestCase {
         id1 = p.getProperty("id1");
         id2 = p.getProperty("id2");
         id3 = p.getProperty("id3");
+        numberId = p.getProperty("numberid");
         pass1 = p.getProperty("pass1");
         pass2 = p.getProperty("pass2");
         pass3 = p.getProperty("pass3");
+        numberPass = p.getProperty("numberpass");
+        id1id = Integer.valueOf(p.getProperty("id1id"));
+        numberIdId = Integer.valueOf(p.getProperty("numberidid"));
+
         twitterAPI1 = new Twitter(id1, pass1);
 //        twitterAPI1.setRetryCount(5);
 //        twitterAPI1.setRetryIntervalSecs(5);
@@ -86,11 +92,8 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testGetHomeTimeline() throws Exception {
-        try {
-            List<Status> status = twitterAPI1.getHomeTimeline();
-        } catch (TwitterException te) {
-            assertEquals("this method is not available as of 8.30.2009", 404, te.getStatusCode());
-        }
+        List<Status> status = twitterAPI1.getHomeTimeline();
+        assertTrue(0 < status.size());
     }
 
     public void testGetFriendsTimeline() throws Exception {
@@ -106,87 +109,82 @@ public class TwitterTestUnit extends TestCase {
 
         actualReturn = twitterAPI1.getFriendsTimeline(new Paging(1));
         assertTrue(actualReturn.size() > 0);
-        actualReturn = twitterAPI1.getFriendsTimeline(new Paging(1));
-        assertTrue(actualReturn.size() > 0);
-
-
     }
 
-    public void testGetUserDetail() throws Exception {
-        User uws = twitterAPI1.showUser(id1);
-        assertEquals(id1, uws.getName());
-        assertEquals(id1, uws.getScreenName());
-        assertNotNull(uws.getLocation());
-        assertNotNull(uws.getDescription());
-        assertNotNull(uws.getProfileImageURL());
-        assertNotNull(uws.getURL());
-        assertFalse(uws.isProtected());
+    public void testShowUser() throws Exception {
+        User user = twitterAPI1.showUser(id1);
+        assertEquals(id1, user.getName());
+        assertEquals(id1, user.getScreenName());
+        assertNotNull(user.getLocation());
+        assertNotNull(user.getDescription());
+        assertNotNull(user.getProfileImageURL());
+        assertNotNull(user.getURL());
+        assertFalse(user.isProtected());
 
-        assertTrue(0 <= uws.getFavouritesCount());
-        assertTrue(0 <= uws.getFollowersCount());
-        assertTrue(0 <= uws.getFriendsCount());
-        assertNotNull(uws.getCreatedAt());
-        assertNotNull(uws.getTimeZone());
-        assertNotNull(uws.getProfileBackgroundImageUrl());
-        assertNotNull(uws.getProfileBackgroundTile());
+        assertTrue(0 <= user.getFavouritesCount());
+        assertTrue(0 <= user.getFollowersCount());
+        assertTrue(0 <= user.getFriendsCount());
+        assertNotNull(user.getCreatedAt());
+        assertNotNull(user.getTimeZone());
+        assertNotNull(user.getProfileBackgroundImageUrl());
+        assertNotNull(user.getProfileBackgroundTile());
 
-        assertTrue(0 <= uws.getStatusesCount());
-        assertNotNull(uws.getProfileBackgroundColor());
-        assertNotNull(uws.getProfileTextColor());
-        assertNotNull(uws.getProfileLinkColor());
-        assertNotNull(uws.getProfileSidebarBorderColor());
-        assertNotNull(uws.getProfileSidebarFillColor());
-        assertNotNull(uws.getProfileTextColor());
+        assertTrue(0 <= user.getStatusesCount());
+        assertNotNull(user.getProfileBackgroundColor());
+        assertNotNull(user.getProfileTextColor());
+        assertNotNull(user.getProfileLinkColor());
+        assertNotNull(user.getProfileSidebarBorderColor());
+        assertNotNull(user.getProfileSidebarFillColor());
+        assertNotNull(user.getProfileTextColor());
 
-        assertTrue(1 < uws.getFollowersCount());
-        assertNotNull(uws.getStatusCreatedAt());
-        assertNotNull(uws.getStatusText());
-        assertNotNull(uws.getStatusSource());
-        assertFalse(uws.isStatusFavorited());
-        assertEquals(-1, uws.getStatusInReplyToStatusId());
-        assertEquals(-1, uws.getStatusInReplyToUserId());
-        assertFalse(uws.isStatusFavorited());
-        assertNull(uws.getStatusInReplyToScreenName());
+        assertTrue(1 < user.getFollowersCount());
+        assertNotNull(user.getStatusCreatedAt());
+        assertNotNull(user.getStatusText());
+        assertNotNull(user.getStatusSource());
+        assertFalse(user.isStatusFavorited());
+        assertEquals(-1, user.getStatusInReplyToStatusId());
+        assertEquals(-1, user.getStatusInReplyToUserId());
+        assertFalse(user.isStatusFavorited());
+        assertNull(user.getStatusInReplyToScreenName());
 
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
         unauthenticated.showUser("twit4jnoupdate");
         twitterAPI1.showUser("tigertest");
+
+        user = unauthenticated.showUser(numberId);
+        assertEquals(numberIdId, user.getId());
+
+        user = unauthenticated.showUser(numberIdId);
+        assertEquals(numberIdId, user.getId());
     }
 
-    public void testGetUserTimeline_Show() throws Exception {
+    public void testUserTimeline() throws Exception {
         List<Status> statuses;
         statuses = twitterAPI1.getUserTimeline();
         assertTrue("size", 0 < statuses.size());
-        statuses = unauthenticated.getUserTimeline(id1);
+        statuses = unauthenticated.getUserTimeline("1000");
         assertTrue("size", 0 < statuses.size());
+        assertEquals(9737332,statuses.get(0).getUser().getId());
+        statuses = unauthenticated.getUserTimeline(1000);
+        assertTrue("size", 0 < statuses.size());
+        assertEquals(1000,statuses.get(0).getUser().getId());
+
         statuses = twitterAPI1.getUserTimeline(new Paging(999383469l));
         assertTrue("size", 0 < statuses.size());
         statuses = unauthenticated.getUserTimeline(id1, new Paging().count(10));
         assertTrue("size", 0 < statuses.size());
-//        statuses = twitterAPI1.getUserTimeline(15, new Date(0));
-//        assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(new Paging(999383469l).count(15));
         assertTrue("size", 0 < statuses.size());
-//        statuses = twitterAPI1.getUserTimeline(id1, new Date(0));
-//        assertTrue("size", 0 < statuses.size());
         statuses = unauthenticated.getUserTimeline(id1, new Paging(999383469l));
         assertTrue("size", 0 < statuses.size());
 
         statuses = twitterAPI1.getUserTimeline(new Paging(1).count(30));
         List<Status> statuses2 = twitterAPI1.getUserTimeline(new Paging(2).count(15));
-//        for(int i=0;i < statuses.size();i++){
-//            System.out.println(statuses.get(i).getId());
-//        }
-//        System.out.println("------------");
-//        for(int i=0;i < statuses2.size();i++){
-//            System.out.println(
-//            statuses2.get(i).getId());
-//        }
         assertEquals(statuses.get(statuses.size() - 1), statuses2.get(statuses2.size() - 1));
     }
 
-    public void testShow() throws Exception {
+    public void testShowStatus() throws Exception {
         Status status = twitterAPI2.showStatus(1000l);
         assertEquals(52, status.getUser().getId());
         Status status2 = unauthenticated.showStatus(1000l);
@@ -250,12 +248,26 @@ public class TwitterTestUnit extends TestCase {
     }
 
     public void testGetFriendsStatuses() throws Exception {
-        List<User> actualReturn = twitterAPI1.getFriendsStatuses();
-        assertNotNull("friendsStatuses", actualReturn);
-        actualReturn = twitterAPI1.getFriendsStatuses("yusukey");
-        assertNotNull("friendsStatuses", actualReturn);
-        actualReturn = unauthenticated.getFriendsStatuses("yusukey");
-        assertNotNull("friendsStatuses", actualReturn);
+        PagableResponseList<User> users = twitterAPI1.getFriendsStatuses();
+        assertNotNull("friendsStatuses", users);
+
+        users = twitterAPI1.getFriendsStatuses(numberId);
+        assertNotNull("friendsStatuses", users);
+        assertEquals(id1, users.get(0).getScreenName());
+
+        users = twitterAPI1.getFriendsStatuses(numberIdId);
+        assertNotNull("friendsStatuses", users);
+        assertEquals(id1, users.get(0).getScreenName());
+
+        users = unauthenticated.getFriendsStatuses("yusukey");
+        assertNotNull("friendsStatuses", users);
+
+//        user = unauthenticated.showUser("1000");
+//        assertEquals(9737332, user.getId());
+//
+//        user = unauthenticated.showUser(1000);
+//        assertEquals(1000, user.getId());
+
     }
 
     public void testSocialGraphMethods() throws Exception {

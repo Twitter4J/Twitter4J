@@ -53,6 +53,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     public Twitter() {
         super();
+        HttpResponseListener httpResponseListener = new MyHttpResponseListener();
         http.addHttpResponseListener(httpResponseListener);
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
 
@@ -283,9 +284,9 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         }
     }
 
-    private HttpResponseListener httpResponseListener = new MyHttpResponseListener();
-
     class MyHttpResponseListener implements HttpResponseListener, java.io.Serializable {
+        private static final long serialVersionUID = 5385389730784875997L;
+
         public void httpResponseReceived(HttpResponseEvent event) {
             Response res = event.getResponse();
             String limit = res.getResponseHeader("X-RateLimit-Limit");
@@ -540,34 +541,70 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         return Status.createStatuseList(get(getBaseURL() + "statuses/friends_timeline.json",null, paging.asPostParameterList(), true));
     }
 
+
     /**
-     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
-     * <br>This method calls http://api.twitter.com/1/statuses/user_timeline
+     * Returns the most recent statuses posted in the last 24 hours from the specified screen name.
+     * <br>This method calls http://api.twitter.com/1/statuses/user_timeline.json
      *
-     * @param id    specifies the ID or screen name of the user for whom to return the user_timeline
+     * @param screenName specifies the screen name of the user for whom to return the user_timeline
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return list of the user Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      */
-    public ResponseList<Status> getUserTimeline(String id, Paging paging)
+    public ResponseList<Status> getUserTimeline(String screenName, Paging paging)
             throws TwitterException {
-        return Status.createStatuseList(get(getBaseURL() + "statuses/user_timeline/" + id + ".json",
-                null, paging.asPostParameterList(), http.isAuthenticationEnabled()));
+        return Status.createStatuseList(get(getBaseURL()
+                + "statuses/user_timeline.json",
+                new PostParameter[]{new PostParameter("screen_name",screenName)}
+                , paging.asPostParameterList(), http.isAuthenticationEnabled()));
+    }
+
+    /**
+     * Returns the most recent statuses posted in the last 24 hours from the specified screen name.
+     * <br>This method calls http://api.twitter.com/1/statuses/user_timeline.json
+     *
+     * @param userId specifies the ID of the user for whom to return the user_timeline
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @return list of the user Timeline
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
+     */
+    public ResponseList<Status> getUserTimeline(int userId, Paging paging)
+            throws TwitterException {
+        return Status.createStatuseList(get(getBaseURL()
+                + "statuses/user_timeline.json",
+                new PostParameter[]{new PostParameter("user_id", userId)}
+                , paging.asPostParameterList(), http.isAuthenticationEnabled()));
     }
 
     /**
      * Returns the most recent statuses posted in the last 24 hours from the specified userid.
      * <br>This method calls http://api.twitter.com/1/statuses/user_timeline
      *
-     * @param id specifies the ID or screen name of the user for whom to return the user_timeline
+     * @param screenName specifies the screen name of the user for whom to return the user_timeline
      * @return the 20 most recent statuses posted in the last 24 hours from the user
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
      */
-    public ResponseList<Status> getUserTimeline(String id) throws TwitterException {
-        return Status.createStatuseList(get(getBaseURL() + "statuses/user_timeline/" + id + ".json", http.isAuthenticationEnabled()));
+    public ResponseList<Status> getUserTimeline(String screenName) throws TwitterException {
+        return getUserTimeline(screenName, new Paging());
+    }
+    
+    /**
+     * Returns the most recent statuses posted in the last 24 hours from the specified userid.
+     * <br>This method calls http://api.twitter.com/1/statuses/user_timeline
+     *
+     * @param user_id specifies the ID of the user for whom to return the user_timeline
+     * @return the 20 most recent statuses posted in the last 24 hours from the user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
+     * @since Twitter4J 2.1.0
+     */
+    public ResponseList<Status> getUserTimeline(int user_id) throws TwitterException {
+        return getUserTimeline(user_id, new Paging());
     }
 
     /**
@@ -580,8 +617,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      */
     public ResponseList<Status> getUserTimeline() throws
             TwitterException {
-        return Status.createStatuseList(get(getBaseURL() + "statuses/user_timeline.json"
-                , true));
+        return getUserTimeline(new Paging());
     }
 
     /**
@@ -855,17 +891,32 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
-     * Returns extended information of a given user, specified by ID or screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
-     * <br>This method calls http://api.twitter.com/1/users/show
+     * Returns extended information of a given user, specified by screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
+     * <br>This method calls http://api.twitter.com/1/users/show.json
      *
-     * @param id the ID or screen name of the user for whom to request the detail
+     * @param screenName the screen name of the user for whom to request the detail
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
      */
-    public User showUser(String id) throws TwitterException {
-        return new User(get(getBaseURL() + "users/show/" + id + ".json"
-                , http.isAuthenticationEnabled()));
+    public User showUser(String screenName) throws TwitterException {
+        return new User(get(getBaseURL() + "users/show.json?screen_name="
+                + screenName , http.isAuthenticationEnabled()));
+    }
+
+    /**
+     * Returns extended information of a given user, specified by ID.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
+     * <br>This method calls http://api.twitter.com/1/users/show
+     *
+     * @param userId the ID of the user for whom to request the detail
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
+     * @since Twitter4J 2.1.0
+     */
+    public User showUser(int userId) throws TwitterException {
+        return new User(get(getBaseURL() + "users/show.json?user_id="
+                + userId , http.isAuthenticationEnabled()));
     }
 
     /* User Methods */
@@ -883,7 +934,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
-     * Returns the specified user's friends, each with current status inline.
+     * Returns the user's friends, each with current status inline.<br>
      * <br>This method calls http://api.twitter.com/1/statuses/friends
      *
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -899,36 +950,69 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
-     * Returns the user's friends, each with current status inline.<br>
+     * Returns the specified user's friends, each with current status inline.
      * This method automatically provides a value of cursor=-1 to begin paging.
      * <br>This method calls http://api.twitter.com/1/statuses/friends
      *
-     * @param id the ID or screen name of the user for whom to request a list of friends
+     * @param screenName the screen name of the user for whom to request a list of friends
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
      * @since Twitter4J 2.0.9
      */
-    public PagableResponseList<User> getFriendsStatuses(String id) throws TwitterException {
-        return getFriendsStatuses(id, -1l);
+    public PagableResponseList<User> getFriendsStatuses(String screenName) throws TwitterException {
+        return getFriendsStatuses(screenName, -1l);
     }
 
     /**
-     * Returns the user's friends, each with current status inline.
+     * Returns the specified user's friends, each with current status inline.
+     * This method automatically provides a value of cursor=-1 to begin paging.
      * <br>This method calls http://api.twitter.com/1/statuses/friends
      *
-     * @param id the ID or screen name of the user for whom to request a list of friends
+     * @param userId the ID of the user for whom to request a list of friends
+     * @return the list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     * @since Twitter4J 2.1.0
+     */
+    public PagableResponseList<User> getFriendsStatuses(int userId) throws TwitterException {
+        return getFriendsStatuses(userId, -1l);
+    }
+
+    /**
+     * Returns the specified user's friends, each with current status inline.
+     * <br>This method calls http://api.twitter.com/1/statuses/friends
+     *
+     * @param screenName the screen name of the user for whom to request a list of friends
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.9
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
      */
-    public PagableResponseList<User> getFriendsStatuses(String id, long cursor) throws TwitterException {
-        return User.createCursorSupportUserList(get(getBaseURL() + "statuses/friends/" + id +
-                ".json?cursor=" + cursor
+    public PagableResponseList<User> getFriendsStatuses(String screenName, long cursor) throws TwitterException {
+        return User.createCursorSupportUserList(get(getBaseURL()
+                + "statuses/friends.json?screen_name=" + screenName + "&cursor=" + cursor
                 , null, false));
     }
+
+    /**
+     * Returns the specified user's friends, each with current status inline.
+     * <br>This method calls http://api.twitter.com/1/statuses/friends
+     *
+     * @param userId the ID of the user for whom to request a list of friends
+     * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     */
+    public PagableResponseList<User> getFriendsStatuses(int userId, long cursor) throws TwitterException {
+        return User.createCursorSupportUserList(get(getBaseURL()
+                + "statuses/friends.json?user_id=" + userId + "&cursor=" + cursor
+                , null, false));
+    }
+
 
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).<br>
@@ -960,33 +1044,63 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     }
 
     /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://api.twitter.com/1/statuses/followers
      *
-     * @param id The ID or screen name of the user for whom to request a list of followers.
+     * @param screenName The screen name of the user for whom to request a list of followers.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.9
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
      */
-    public PagableResponseList<User> getFollowersStatuses(String id) throws TwitterException {
-        return getFollowersStatuses(id, -1l);
+    public PagableResponseList<User> getFollowersStatuses(String screenName) throws TwitterException {
+        return getFollowersStatuses(screenName, -1l);
     }
 
     /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://api.twitter.com/1/statuses/followers
      *
-     * @param id   The ID or screen name of the user for whom to request a list of followers.
+     * @param userId The ID of the user for whom to request a list of followers.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     */
+    public PagableResponseList<User> getFollowersStatuses(int userId) throws TwitterException {
+        return getFollowersStatuses(userId, -1l);
+    }
+
+    /**
+     * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://api.twitter.com/1/statuses/followers
+     *
+     * @param screenName The screen name of the user for whom to request a list of followers.
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.9
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
      */
-    public PagableResponseList<User> getFollowersStatuses(String id, long cursor) throws TwitterException {
-        return User.createCursorSupportUserList(get(getBaseURL() + "statuses/followers/" + id +
-                ".json?cursor=" + cursor, null, true));
+    public PagableResponseList<User> getFollowersStatuses(String screenName, long cursor) throws TwitterException {
+        return User.createCursorSupportUserList(get(getBaseURL() + "statuses/followers.json?screen_name=" + screenName +
+                "&cursor=" + cursor, null, true));
+    }
+
+    /**
+     * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
+     * <br>This method calls http://api.twitter.com/1/statuses/followers
+     *
+     * @param userId   The ID of the user for whom to request a list of followers.
+     * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses followers</a>
+     */
+    public PagableResponseList<User> getFollowersStatuses(int userId, long cursor) throws TwitterException {
+        return User.createCursorSupportUserList(get(getBaseURL() + "statuses/followers.json?user_id=" + userId +
+                "&cursor=" + cursor, null, true));
     }
 
     /*List Methods*/
@@ -1235,45 +1349,90 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
      *
-     * @param id the ID or screen name of the user to be befriended
+     * @param screenName the screen name of the user to be befriended
      * @return the befriended user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
      */
-    public User createFriendship(String id) throws TwitterException {
-        return new User(http.post(getBaseURL() + "friendships/create/" + id + ".json", new PostParameter[0], true));
+    public User createFriendship(String screenName) throws TwitterException {
+        return new User(http.post(getBaseURL() + "friendships/create.json?screen_name=" + screenName, new PostParameter[0], true));
     }
 
     /**
      * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
      *
-     * @param id the ID or screen name of the user to be befriended
+     * @param userId the ID of the user to be befriended
+     * @return the befriended user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
+     */
+    public User createFriendship(int userId) throws TwitterException {
+        return new User(http.post(getBaseURL() + "friendships/create.json?user_id=" + userId, new PostParameter[0], true));
+    }
+
+    /**
+     * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
+     *
+     * @param screenName the screen name of the user to be befriended
      * @param follow Enable notifications for the target user in addition to becoming friends.
      * @return the befriended user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.2
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
      */
-    public User createFriendship(String id, boolean follow) throws TwitterException {
-        return new User(http.post(getBaseURL() + "friendships/create/" + id + ".json"
-                , new PostParameter[]{new PostParameter("follow"
-                        , String.valueOf(follow))}, true));
+    public User createFriendship(String screenName, boolean follow) throws TwitterException {
+        return new User(http.post(getBaseURL() + "friendships/create.json?screen_name=" + screenName
+                + "&follow=" + follow , true));
+    }
+
+    /**
+     * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
+     *
+     * @param userId the ID of the user to be befriended
+     * @param follow Enable notifications for the target user in addition to becoming friends.
+     * @return the befriended user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
+     */
+    public User createFriendship(int userId, boolean follow) throws TwitterException {
+        return new User(http.post(getBaseURL() + "friendships/create.json?user_id=" + userId
+                + "&follow=" + follow , true));
     }
 
     /**
      * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
      * <br>This method calls http://api.twitter.com/1/friendships/destroy/[id].json
      *
-     * @param id the ID or screen name of the user for whom to request a list of friends
+     * @param screenName the screen name of the user for whom to request a list of friends
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: friendships destroy</a>
      */
-    public User destroyFriendship(String id) throws TwitterException {
-        return new User(http.post(getBaseURL() + "friendships/destroy/" + id + ".json", new PostParameter[0], true));
+    public User destroyFriendship(String screenName) throws TwitterException {
+        return new User(http.post(getBaseURL() + "friendships/destroy.json?screen_name="
+                + screenName, true));
+    }
+
+    /**
+     * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * <br>This method calls http://api.twitter.com/1/friendships/destroy/[id].json
+     *
+     * @param userId the ID of the user for whom to request a list of friends
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: friendships destroy</a>
+     */
+    public User destroyFriendship(int userId) throws TwitterException {
+        return new User(http.post(getBaseURL() + "friendships/destroy.json?user_id="
+                + userId, true));
     }
 
     /**
@@ -1749,43 +1908,93 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
      * <br>This method calls http://api.twitter.com/1/blocks/create/[id].json
      *
-     * @param id the ID or screen_name of the user to block
+     * @param screenName the screen_name of the user to block
      * @return the blocked user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks%C2%A0create">Twitter API Wiki / Twitter REST API Method: blocks create</a>
      */
-    public User createBlock(String id) throws TwitterException {
-        return new User(http.post(getBaseURL() + "blocks/create/" + id + ".json", true));
+    public User createBlock(String screenName) throws TwitterException {
+        return new User(http.post(getBaseURL() + "blocks/create.json?screen_name=" + screenName, true));
+    }
+
+    /**
+     * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
+     * <br>This method calls http://api.twitter.com/1/blocks/create/[id].json
+     *
+     * @param userId the ID of the user to block
+     * @return the blocked user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks%C2%A0create">Twitter API Wiki / Twitter REST API Method: blocks create</a>
+     */
+    public User createBlock(int userId) throws TwitterException {
+        return new User(http.post(getBaseURL() + "blocks/create.json?user_id=" + userId, true));
     }
 
     /**
      * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
      * <br>This method calls http://api.twitter.com/1/blocks/destroy/[id].json
      *
-     * @param id the ID or screen_name of the user to block
+     * @param screen_name the screen_name of the user to block
      * @return the unblocked user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: blocks destroy</a>
      */
-    public User destroyBlock(String id) throws TwitterException {
-        return new User(http.post(getBaseURL() + "blocks/destroy/" + id + ".json", true));
+    public User destroyBlock(String screen_name) throws TwitterException {
+        return new User(http.post(getBaseURL() + "blocks/destroy.json?screen_name=" + screen_name, true));
+    }
+
+    /**
+     * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
+     * <br>This method calls http://api.twitter.com/1/blocks/destroy/[id].json
+     *
+     * @param userId the ID of the user to block
+     * @return the unblocked user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.0.1
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: blocks destroy</a>
+     */
+    public User destroyBlock(int userId) throws TwitterException {
+        return new User(http.post(getBaseURL() + "blocks/destroy.json?user_id=" + userId, true));
     }
 
     /**
      * Tests if a friendship exists between two users.
      * <br>This method calls http://api.twitter.com/1/blocks/exists/[id].json
      *
-     * @param id The ID or screen_name of the potentially blocked user.
+     * @param screenName The screen_name of the potentially blocked user.
      * @return  if the authenticating user is blocking a target user
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.4
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-exists">Twitter API Wiki / Twitter REST API Method: blocks exists</a>
      */
-    public boolean existsBlock(String id) throws TwitterException {
+    public boolean existsBlock(String screenName) throws TwitterException {
         try{
-            return -1 == get(getBaseURL() + "blocks/exists/" + id + ".json", true).
+            return -1 == get(getBaseURL() + "blocks/exists.json?screen_name=" + screenName, true).
+                    asString().indexOf("<error>You are not blocking this user.</error>");
+        }catch(TwitterException te){
+            if(te.getStatusCode() == 404){
+                return false;
+            }
+            throw te;
+        }
+    }
+
+    /**
+     * Tests if a friendship exists between two users.
+     * <br>This method calls http://api.twitter.com/1/blocks/exists/[id].json
+     *
+     * @param userId The ID of the potentially blocked user.
+     * @return  if the authenticating user is blocking a target user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-exists">Twitter API Wiki / Twitter REST API Method: blocks exists</a>
+     */
+    public boolean existsBlock(int userId) throws TwitterException {
+        try{
+            return -1 == get(getBaseURL() + "blocks/exists.json?user_id=" + userId, true).
                     asString().indexOf("<error>You are not blocking this user.</error>");
         }catch(TwitterException te){
             if(te.getStatusCode() == 404){

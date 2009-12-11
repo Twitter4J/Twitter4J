@@ -29,7 +29,6 @@ package twitter4j;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -49,7 +48,6 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private ResponseList<DirectMessage> messages = null;
     private Status status = null;
     private User user = null;
-    private User extendedUser = null;
     private ResponseList<User> extendedUsers = null;
     private boolean test;
     private String schedule;
@@ -147,8 +145,8 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
  
     /*User Methods*/
-    public void gotUserDetail(User extendedUser) {
-        this.extendedUser = extendedUser;
+    public void gotUserDetail(User user) {
+        this.user = user;
         notifyResponse();
     }
 
@@ -227,8 +225,8 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         notifyResponse();
     }
 
-    public void updatedProfileColors(User extendedUser){
-        this.extendedUser = extendedUser;
+    public void updatedProfileColors(User user){
+        this.user = user;
         notifyResponse();
     }
 
@@ -250,7 +248,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void updatedProfile(User user) {
-        this.extendedUser = user;
+        this.user = user;
         notifyResponse();
     }
 
@@ -297,7 +295,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     }
 
     public void gotBlockingUsers(ResponseList<User> blockingUsers){
-        this.extendedUsers = blockingUsers;
+        this.users = blockingUsers;
         notifyResponse();
     }
     public void gotBlockingUsersIDs(IDs blockingUsersIDs){
@@ -373,7 +371,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         messages = null;
         status = null;
         user = null;
-        extendedUser = null;
+        user = null;
         message = null;
         te = null;
 
@@ -401,33 +399,33 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     public void testGetUserDetail() throws Exception{
         twitterAPI1.showUserAsync(id1,this);
         waitForResponse();
-        User uws = this.extendedUser;
-        assertEquals(id1, uws.getName());
-        assertTrue(0 <= uws.getFavouritesCount());
-        assertTrue(0 <= uws.getFollowersCount());
-        assertTrue(0 <= uws.getFriendsCount());
-        assertTrue(0 <= uws.getStatusesCount());
-        assertNotNull(uws.getProfileBackgroundColor());
-        assertNotNull(uws.getProfileTextColor());
-        assertNotNull(uws.getProfileLinkColor());
-        assertNotNull(uws.getProfileSidebarBorderColor());
-        assertNotNull(uws.getProfileSidebarFillColor());
-        assertNotNull(uws.getProfileTextColor());
+        User user = this.user;
+        assertEquals(id1, user.getName());
+        assertTrue(0 <= user.getFavouritesCount());
+        assertTrue(0 <= user.getFollowersCount());
+        assertTrue(0 <= user.getFriendsCount());
+        assertTrue(0 <= user.getStatusesCount());
+        assertNotNull(user.getProfileBackgroundColor());
+        assertNotNull(user.getProfileTextColor());
+        assertNotNull(user.getProfileLinkColor());
+        assertNotNull(user.getProfileSidebarBorderColor());
+        assertNotNull(user.getProfileSidebarFillColor());
+        assertNotNull(user.getProfileTextColor());
 
-        this.extendedUser = null;
+        this.user = null;
         twitterAPI1.getAuthenticatedUserAsync(this);
         waitForResponse();
-        assertEquals(id1, uws.getName());
-        assertTrue(0 <= uws.getFavouritesCount());
-        assertTrue(0 <= uws.getFollowersCount());
-        assertTrue(0 <= uws.getFriendsCount());
-        assertTrue(0 <= uws.getStatusesCount());
-        assertNotNull(uws.getProfileBackgroundColor());
-        assertNotNull(uws.getProfileTextColor());
-        assertNotNull(uws.getProfileLinkColor());
-        assertNotNull(uws.getProfileSidebarBorderColor());
-        assertNotNull(uws.getProfileSidebarFillColor());
-        assertNotNull(uws.getProfileTextColor());
+        assertEquals(id1, user.getName());
+        assertTrue(0 <= user.getFavouritesCount());
+        assertTrue(0 <= user.getFollowersCount());
+        assertTrue(0 <= user.getFriendsCount());
+        assertTrue(0 <= user.getStatusesCount());
+        assertNotNull(user.getProfileBackgroundColor());
+        assertNotNull(user.getProfileTextColor());
+        assertNotNull(user.getProfileLinkColor());
+        assertNotNull(user.getProfileSidebarBorderColor());
+        assertNotNull(user.getProfileSidebarFillColor());
+        assertNotNull(user.getProfileTextColor());
     }
 
     public void testGetUserTimeline_Show() throws Exception {
@@ -538,60 +536,60 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         waitForResponse();
         twitterAPI1.updateProfile(original.getName()
                 , null, original.getURL().toString(), original.getLocation(), original.getDescription());
-        assertEquals(newName, extendedUser.getName());
-        assertEquals(newURL, extendedUser.getURL().toString());
-        assertEquals(newLocation, extendedUser.getLocation());
-        assertEquals(newDescription, extendedUser.getDescription());
+        assertEquals(newName, user.getName());
+        assertEquals(newURL, user.getURL().toString());
+        assertEquals(newLocation, user.getLocation());
+        assertEquals(newDescription, user.getDescription());
 
-        twitterAPI1.createFriendshipAsync(id2);
-        twitterAPI1.enableNotificationAsync(id2);
-        twitterAPI2.createFriendshipAsync(id1);
+        twitterAPI1.createFriendshipAsync(id2, this);
+        twitterAPI1.enableNotificationAsync(id2, this);
+        twitterAPI2.createFriendshipAsync(id1, this);
         twitterAPI1.existsFriendshipAsync(id1,id2,this);
         waitForResponse();
         assertTrue(exists);
 
         twitterAPI1.updateProfileColorsAsync("f00", "f0f", "0ff", "0f0", "f0f", this);
         waitForResponse();
-        assertEquals("f00", extendedUser.getProfileBackgroundColor());
-        assertEquals("f0f", extendedUser.getProfileTextColor());
-        assertEquals("0ff", extendedUser.getProfileLinkColor());
-        assertEquals("0f0", extendedUser.getProfileSidebarFillColor());
-        assertEquals("f0f", extendedUser.getProfileSidebarBorderColor());
+        assertEquals("f00", user.getProfileBackgroundColor());
+        assertEquals("f0f", user.getProfileTextColor());
+        assertEquals("0ff", user.getProfileLinkColor());
+        assertEquals("0f0", user.getProfileSidebarFillColor());
+        assertEquals("f0f", user.getProfileSidebarBorderColor());
         twitterAPI1.updateProfileColorsAsync("f0f", "f00", "f0f", "0ff", "0f0", this);
         waitForResponse();
-        assertEquals("f0f", extendedUser.getProfileBackgroundColor());
-        assertEquals("f00", extendedUser.getProfileTextColor());
-        assertEquals("f0f", extendedUser.getProfileLinkColor());
-        assertEquals("0ff", extendedUser.getProfileSidebarFillColor());
-        assertEquals("0f0", extendedUser.getProfileSidebarBorderColor());
+        assertEquals("f0f", user.getProfileBackgroundColor());
+        assertEquals("f00", user.getProfileTextColor());
+        assertEquals("f0f", user.getProfileLinkColor());
+        assertEquals("0ff", user.getProfileSidebarFillColor());
+        assertEquals("0f0", user.getProfileSidebarBorderColor());
         twitterAPI1.updateProfileColorsAsync("87bc44", "9ae4e8", "000000", "0000ff", "e0ff92", this);
         waitForResponse();
-        assertEquals("87bc44", extendedUser.getProfileBackgroundColor());
-        assertEquals("9ae4e8", extendedUser.getProfileTextColor());
-        assertEquals("000000", extendedUser.getProfileLinkColor());
-        assertEquals("0000ff", extendedUser.getProfileSidebarFillColor());
-        assertEquals("e0ff92", extendedUser.getProfileSidebarBorderColor());
+        assertEquals("87bc44", user.getProfileBackgroundColor());
+        assertEquals("9ae4e8", user.getProfileTextColor());
+        assertEquals("000000", user.getProfileLinkColor());
+        assertEquals("0000ff", user.getProfileSidebarFillColor());
+        assertEquals("e0ff92", user.getProfileSidebarBorderColor());
         twitterAPI1.updateProfileColorsAsync("f0f", null, "f0f", null, "0f0", this);
         waitForResponse();
-        assertEquals("f0f", extendedUser.getProfileBackgroundColor());
-        assertEquals("9ae4e8", extendedUser.getProfileTextColor());
-        assertEquals("f0f", extendedUser.getProfileLinkColor());
-        assertEquals("0000ff", extendedUser.getProfileSidebarFillColor());
-        assertEquals("0f0", extendedUser.getProfileSidebarBorderColor());
+        assertEquals("f0f", user.getProfileBackgroundColor());
+        assertEquals("9ae4e8", user.getProfileTextColor());
+        assertEquals("f0f", user.getProfileLinkColor());
+        assertEquals("0000ff", user.getProfileSidebarFillColor());
+        assertEquals("0f0", user.getProfileSidebarBorderColor());
         twitterAPI1.updateProfileColorsAsync(null, "f00", null, "0ff", null, this);
         waitForResponse();
-        assertEquals("f0f", extendedUser.getProfileBackgroundColor());
-        assertEquals("f00", extendedUser.getProfileTextColor());
-        assertEquals("f0f", extendedUser.getProfileLinkColor());
-        assertEquals("0ff", extendedUser.getProfileSidebarFillColor());
-        assertEquals("0f0", extendedUser.getProfileSidebarBorderColor());
+        assertEquals("f0f", user.getProfileBackgroundColor());
+        assertEquals("f00", user.getProfileTextColor());
+        assertEquals("f0f", user.getProfileLinkColor());
+        assertEquals("0ff", user.getProfileSidebarFillColor());
+        assertEquals("0f0", user.getProfileSidebarBorderColor());
         twitterAPI1.updateProfileColorsAsync("9ae4e8", "000000", "0000ff", "e0ff92", "87bc44", this);
         waitForResponse();
-        assertEquals("9ae4e8", extendedUser.getProfileBackgroundColor());
-        assertEquals("000000", extendedUser.getProfileTextColor());
-        assertEquals("0000ff", extendedUser.getProfileLinkColor());
-        assertEquals("e0ff92", extendedUser.getProfileSidebarFillColor());
-        assertEquals("87bc44", extendedUser.getProfileSidebarBorderColor());
+        assertEquals("9ae4e8", user.getProfileBackgroundColor());
+        assertEquals("000000", user.getProfileTextColor());
+        assertEquals("0000ff", user.getProfileLinkColor());
+        assertEquals("e0ff92", user.getProfileSidebarFillColor());
+        assertEquals("87bc44", user.getProfileSidebarBorderColor());
     }
 
     public void testShow() throws Exception {
@@ -616,12 +614,12 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
         twitterAPI1.getBlockingUsersAsync(this);
         waitForResponse();
-        assertEquals(1, extendedUsers.size());
-        assertEquals(39771963, extendedUsers.get(0).getId());
+        assertEquals(1, users.size());
+        assertEquals(39771963, users.get(0).getId());
         twitterAPI1.getBlockingUsersAsync(1,this);
         waitForResponse();
-        assertEquals(1, extendedUsers.size());
-        assertEquals(39771963, extendedUsers.get(0).getId());
+        assertEquals(1, users.size());
+        assertEquals(39771963, users.get(0).getId());
         twitterAPI1.getBlockingUsersIDsAsync(this);
         waitForResponse();
         assertEquals(1, ids.getIDs().length);
@@ -694,7 +692,7 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
         twitterAPI2.createFriendshipAsync(id1, true, this);
         // the Twitter API is not returning appropriate notifications value
         // http://code.google.com/p/twitter-api/issues/detail?id=474
-//        ExtendedUser detail = twitterAPI2.showUser(id1);
+//        user detail = twitterAPI2.showUser(id1);
 //        assertTrue(detail.isNotificationEnabled());
         waitForResponse();
         assertEquals(id1, user.getName());

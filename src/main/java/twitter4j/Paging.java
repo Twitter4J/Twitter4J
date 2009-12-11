@@ -49,8 +49,6 @@ public class Paging implements java.io.Serializable {
 
     // since only
     static char[] S = new char[]{'s'};
-    // page only
-    static char[] P = new char[]{'p'};
     // since, max_id, count, page
     static char[] SMCP = new char[]{'s', 'm', 'c', 'p'};
 
