@@ -1313,19 +1313,37 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
 
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
-     * The text will be trimed if the length of the text is exceeding 140 characters.
+     * The text will be trimmed if the length of the text is exceeding 140 characters.
      * <br>This method calls http://api.twitter.com/1/direct_messages/new
      *
-     * @param id   the ID or screen name of the user to whom send the direct message
-     * @param text String
+     * @param screenName the screen name of the user to whom send the direct message
+     * @param text The text of your direct message.
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
-     @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages%C2%A0new">Twitter API Wiki / Twitter REST API Method: direct_messages new</a>
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages%C2%A0new">Twitter API Wiki / Twitter REST API Method: direct_messages new</a>
      */
-    public DirectMessage sendDirectMessage(String id,
-                                           String text) throws TwitterException {
+    public DirectMessage sendDirectMessage(String screenName, String text) throws TwitterException {
         return new DirectMessage(http.post(getBaseURL() + "direct_messages/new.json",
-                new PostParameter[]{new PostParameter("user", id),
+                new PostParameter[]{new PostParameter("screen_name", screenName),
+                        new PostParameter("text", text)}, true));
+    }
+
+    /**
+     * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
+     * The text will be trimmed if the length of the text is exceeding 140 characters.
+     * <br>This method calls http://api.twitter.com/1/direct_messages/new
+     *
+     * @param userId the screen name of the user to whom send the direct message
+     * @param text The text of your direct message.
+     * @return DirectMessage
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-direct_messages%C2%A0new">Twitter API Wiki / Twitter REST API Method: direct_messages new</a>
+     * @since Twitter4j 2.1.0
+     */
+    public DirectMessage sendDirectMessage(int userId, String text)
+            throws TwitterException {
+        return new DirectMessage(http.post(getBaseURL() + "direct_messages/new.json",
+                new PostParameter[]{new PostParameter("user_id", userId),
                         new PostParameter("text", text)}, true));
     }
 
@@ -1878,28 +1896,56 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
      * <br>This method calls http://api.twitter.com/1/notifications/follow/[id].json
      *
-     * @param id String
+     * @param screenName Specifies the screen name of the user to follow with device updates.
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications follow</a>
      */
-    public User enableNotification(String id) throws TwitterException {
-        return new User(http.post(getBaseURL() + "notifications/follow/" + id + ".json", true));
+    public User enableNotification(String screenName) throws TwitterException {
+        return new User(http.post(getBaseURL() + "notifications/follow.json?screen_name=" + screenName, true));
+    }
+
+    /**
+     * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * <br>This method calls http://api.twitter.com/1/notifications/follow/[id].json
+     *
+     * @param userId Specifies the ID of the user to follow with device updates.
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications follow</a>
+     */
+    public User enableNotification(int userId) throws TwitterException {
+        return new User(http.post(getBaseURL() + "notifications/follow.json?userId=" + userId, true));
     }
 
     /**
      * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
      * <br>This method calls http://api.twitter.com/1/notifications/leave/[id].json
      *
-     * @param id String
+     * @param screenName Specifies the screen name of the user to disable device notifications.
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications leave</a>
      */
-    public User disableNotification(String id) throws TwitterException {
-        return new User(http.post(getBaseURL() + "notifications/leave/" + id + ".json", true));
+    public User disableNotification(String screenName) throws TwitterException {
+        return new User(http.post(getBaseURL() + "notifications/leave.json?screen_name=" + screenName, true));
+    }
+
+    /**
+     * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * <br>This method calls http://api.twitter.com/1/notifications/leave/[id].json
+     *
+     * @param userId Specifies the ID of the user to disable device notifications.
+     * @return User
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications leave</a>
+     */
+    public User disableNotification(int userId) throws TwitterException {
+        return new User(http.post(getBaseURL() + "notifications/leave.json?user_id=" + userId, true));
     }
 
     /* Block Methods */

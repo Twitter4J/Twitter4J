@@ -863,15 +863,33 @@ public class AsyncTwitter extends Twitter {
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimed if the length of the text is exceeding 140 characters.
      * <br>This method calls http://api.twitter.com/1/direct_messages/new
-     * @param id String
-     * @param text String
+     * @param screenName the screen name of the user to whom send the direct message
+     * @param text The text of your direct message.
      * @param listener a listener object that receives the response
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0new">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0new</a>
      */
-    public void sendDirectMessageAsync(String id, String text, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(SEND_DIRECT_MESSAGE, listener, new String[] {id, text}) {
+    public void sendDirectMessageAsync(String screenName, String text, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(SEND_DIRECT_MESSAGE, listener, new String[] {screenName, text}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.sentDirectMessage(sendDirectMessage( (String) args[0], (String) args[1]));
+            }
+        });
+    }
+
+    /**
+     * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
+     * The text will be trimed if the length of the text is exceeding 140 characters.
+     * <br>This method calls http://api.twitter.com/1/direct_messages/new
+     * @param userId the screen name of the user to whom send the direct message
+     * @param text The text of your direct message.
+     * @param listener a listener object that receives the response
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0new">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0new</a>
+     * @since Twitter4j 2.1.0
+     */
+    public void sendDirectMessageAsync(int userId, String text, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(SEND_DIRECT_MESSAGE, listener, new Object[] {userId, text}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.sentDirectMessage(sendDirectMessage( (Integer) args[0], (String) args[1]));
             }
         });
     }
@@ -1456,15 +1474,32 @@ public class AsyncTwitter extends Twitter {
      * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
      * <br>This method calls http://api.twitter.com/1/notifications/follow
      *
-     * @param id       String
+     * @param screenName Specifies the screen name of the user to follow with device updates.
      * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0follow</a>
      */
-    public void enableNotificationAsync(String id, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(ENABLE_NOTIFICATION, listener, new String[]{id}) {
+    public void enableNotificationAsync(String screenName, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(ENABLE_NOTIFICATION, listener, new String[]{screenName}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.enabledNotification((enableNotification((String) args[0])));
+            }
+        });
+    }
+
+    /**
+     * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * <br>This method calls http://api.twitter.com/1/notifications/follow
+     *
+     * @param userId Specifies the ID of the user to follow with device updates.
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0follow</a>
+     */
+    public void enableNotificationAsync(int userId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(ENABLE_NOTIFICATION, listener, new Integer[]{userId}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.enabledNotification((enableNotification((Integer) args[0])));
             }
         });
     }
@@ -1473,15 +1508,32 @@ public class AsyncTwitter extends Twitter {
      * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
      * <br>This method calls http://api.twitter.com/1/notifications/leave
      *
-     * @param id       String
+     * @param screenName Specifies the screen name of the user to disable device notifications.
      * @param listener a listener object that receives the response
      * @since Twitter4J 2.0.1
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0leave</a>
      */
-    public void disableNotificationAsync(String id, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(DISABLE_NOTIFICATION, listener, new String[]{id}) {
+    public void disableNotificationAsync(String screenName, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DISABLE_NOTIFICATION, listener, new String[]{screenName}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.disabledNotification(disableNotification((String) args[0]));
+            }
+        });
+    }
+
+    /**
+     * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
+     * <br>This method calls http://api.twitter.com/1/notifications/leave
+     *
+     * @param userId Specifies the ID of the user to disable device notifications.
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0leave</a>
+     */
+    public void disableNotificationAsync(int userId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(DISABLE_NOTIFICATION, listener, new Integer[]{userId}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.disabledNotification(disableNotification((Integer) args[0]));
             }
         });
     }
