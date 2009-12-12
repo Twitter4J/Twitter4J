@@ -1472,13 +1472,13 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /**
      * Gets the detailed relationship status between a source user and a target user
      * <br>This method calls http://api.twitter.com/1/friendships/show.json
+     * @param sourceScreenName the screen name of the source user
+     * @param targetScreenName the screen name of the target user
+     * @return Relationship
      *
-     * @param sourceScreenName the screen name of the source user
-     * @param targetScreenName the screen name of the target user
-     * @return Relationship
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.1.0
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API DOCUMENTATION</a>
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API Wiki / Twitter REST API Method: friendships show</a>
      */
     public Relationship showFriendShip(String sourceScreenName, String targetScreenName) throws TwitterException {
         return new Relationship(get(getBaseURL() + "friendships/show.json", "source_screen_name", sourceScreenName,
@@ -1489,12 +1489,12 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * Gets the detailed relationship status between a source user and a target user
      * <br>This method calls http://api.twitter.com/1/friendships/show.json
      *
-     * @param sourceId the ID of the source user
-     * @param targetId the ID of the target user
-     * @return Relationship
+     * @param sourceId the screen ID of the source user
+     * @param targetId the screen ID of the target user
+     * @return Relationship
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.1.0
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API DOCUMENTATION</a>
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API Wiki / Twitter REST API Method: friendships show</a>
      */
     public Relationship showFriendShip(int sourceId, int targetId) throws TwitterException {
         return new Relationship(get(getBaseURL() + "friendships/show.json", "source_id", String.valueOf(sourceId),

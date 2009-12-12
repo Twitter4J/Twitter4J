@@ -1035,11 +1035,11 @@ public class AsyncTwitter extends Twitter {
      * Gets the detailed relationship status between a source user and a target user
      * <br>This method calls http://api.twitter.com/1/friendships/show.json
      *
-     * @param sourceScreenName the screen name of the source user
-     * @param targetScreenName the screen name of the target user
+     * @param sourceScreenName the screen name of the source user
+     * @param targetScreenName the screen name of the target user
      * @param listener a listener object that receives the response
-     * @since Twitter4J 2.1.0
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API DOCUMENTATION</a>
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API Wiki / Twitter REST API Method: friendships show</a>
      */
     public void showFriendShipAsync(String sourceScreenName, String targetScreenName, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(SHOW_FRIENDSHIP, listener, new String[]{sourceScreenName, targetScreenName}) {
@@ -1053,11 +1053,11 @@ public class AsyncTwitter extends Twitter {
      * Gets the detailed relationship status between a source user and a target user
      * <br>This method calls http://api.twitter.com/1/friendships/show.json
      *
-     * @param sourceId the ID of the source user
-     * @param targetId the ID of the target user
+     * @param sourceId the screen ID of the source user
+     * @param targetId the screen ID of the target user
      * @param listener a listener object that receives the response
-     * @since Twitter4J 2.1.0
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API DOCUMENTATION</a>
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API Wiki / Twitter REST API Method: friendships show</a>
      */
     public void showFriendShipAsync(int sourceId, int targetId, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(SHOW_FRIENDSHIP, listener, new Integer[]{sourceId, targetId}) {
