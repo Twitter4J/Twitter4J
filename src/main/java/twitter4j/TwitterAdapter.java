@@ -155,6 +155,11 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void gotExistsFriendship(boolean exists) {
     }
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void gotShowFriendship(Relationship relationship) {
+    }
 
     /*Social Graph Methods*/
     public void gotFriendsIDs(IDs ids){

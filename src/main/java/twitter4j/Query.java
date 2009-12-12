@@ -56,7 +56,7 @@ public class Query {
 
     /**
      * Sets the query string
-     * @param query - the query string
+     * @param query the query string
      * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      */
@@ -95,7 +95,7 @@ public class Query {
 
     /**
      * sets the page number (starting at 1) to return, up to a max of roughly 1500 results
-     * @param page - the page number (starting at 1) to return
+     * @param page the page number (starting at 1) to return
      */
     public void setPage(int page) {
         this.page = page;
@@ -107,7 +107,7 @@ public class Query {
 
     /**
      * returns tweets with status ids greater than the given id.
-     * @param sinceId - returns tweets with status ids greater than the given id
+     * @param sinceId returns tweets with status ids greater than the given id
      */
     public void setSinceId(long sinceId) {
         this.sinceId = sinceId;

@@ -109,6 +109,7 @@ public final class TwitterMethod {
     public final static TwitterMethod CREATE_FRIENDSHIP = new TwitterMethod("CREATE_FRIENDSHIP");
     public final static TwitterMethod DESTROY_FRIENDSHIP = new TwitterMethod("DESTROY_FRIENDSHIP");
     public final static TwitterMethod EXISTS_FRIENDSHIP = new TwitterMethod("EXISTS_FRIENDSHIP");
+    public final static TwitterMethod SHOW_FRIENDSHIP = new TwitterMethod("SHOW_FRIENDSHIP");
 
     /*Social Graph Methods*/
     public final static TwitterMethod FRIENDS_IDS = new TwitterMethod("FRIENDS_IDS");

@@ -144,6 +144,10 @@ public interface TwitterListener {
      * @since Twitter4J 2.0.1
      */
     void gotExistsFriendship(boolean exists);
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    void gotShowFriendship(Relationship relationship);
 
     /*Social Graph Methods*/
     void gotFriendsIDs(IDs ids);

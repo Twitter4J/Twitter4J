@@ -453,7 +453,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
     /* Status Methods */
 
     /**
-     * Returns the 20 most recent statuses from non-protected users who have set a custom user icon.
+     * Returns the 20 most recent statuses from non-protected users who have set a custom user icon. <a href="http://groups.google.com/group/twitter-development-talk/browse_thread/thread/f881564598a947a7#">The public timeline is cached for 60 seconds</a> so requesting it more often than that is a waste of resources.
      * <br>This method calls http://api.twitter.com/1/statuses/public_timeline
      *
      * @return list of statuses of the Public Timeline
@@ -1445,8 +1445,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @param userId the ID of the user for whom to request a list of friends
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: friendships destroy</a>
+     * @since Twitter4J 2.1.0
      */
     public User destroyFriendship(int userId) throws TwitterException {
         return new User(http.post(getBaseURL() + "friendships/destroy.json?user_id="
@@ -1468,6 +1468,39 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         return -1 != get(getBaseURL() + "friendships/exists.json", "user_a", userA, "user_b", userB, true).
                 asString().indexOf("true");
     }
+
+    /**
+     * Gets the detailed relationship status between a source user and a target user
+     * <br>This method calls http://api.twitter.com/1/friendships/show.json
+     *
+     * @param sourceScreenName the screen name of the source user
+     * @param targetScreenName the screen name of the target user
+     * @return Relationship
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API DOCUMENTATION</a>
+     */
+    public Relationship showFriendShip(String sourceScreenName, String targetScreenName) throws TwitterException {
+        return new Relationship(get(getBaseURL() + "friendships/show.json", "source_screen_name", sourceScreenName,
+                "target_screen_name", targetScreenName, true));
+    }
+
+    /**
+     * Gets the detailed relationship status between a source user and a target user
+     * <br>This method calls http://api.twitter.com/1/friendships/show.json
+     *
+     * @param sourceId the ID of the source user
+     * @param targetId the ID of the target user
+     * @return Relationship
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API DOCUMENTATION</a>
+     */
+    public Relationship showFriendShip(int sourceId, int targetId) throws TwitterException {
+        return new Relationship(get(getBaseURL() + "friendships/show.json", "source_id", String.valueOf(sourceId),
+                "target_id", String.valueOf(targetId), true));
+    }
+
 
     /**
      * Returns an array of numeric IDs for every user the authenticating user is following.

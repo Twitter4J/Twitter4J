@@ -48,9 +48,8 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private ResponseList<DirectMessage> messages = null;
     private Status status = null;
     private User user = null;
-    private ResponseList<User> extendedUsers = null;
     private boolean test;
-    private String schedule;
+    private Relationship relationship;
     private DirectMessage message = null;
     private TwitterException te = null;
     private RateLimitStatus rateLimitStatus;
@@ -201,6 +200,12 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     public void gotExistsFriendship(boolean exists) {
         this.exists = exists;
         notifyResponse();
+    }
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void gotShowFriendship(Relationship relationship) {
+        this.relationship = relationship;
     }
 
     /*Social Graph Methods*/
