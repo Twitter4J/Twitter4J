@@ -457,7 +457,7 @@ public class HttpClient implements java.io.Serializable {
                 try {
                     con = getConnection(url);
                     con.setDoInput(true);
-                    setHeaders(url, postParams, con, authenticated);
+                    setHeaders(requestMethod, url, postParams, con, authenticated);
                     con.setRequestMethod(requestMethod.name());
                     if (requestMethod == POST) {
                         if (PostParameter.containsFile(postParams)) {
@@ -611,17 +611,15 @@ public class HttpClient implements java.io.Serializable {
 
     /**
      * sets HTTP headers
-     *
+     * @param requestMethod Specifies the HTTP request method. Currently GET, POST, DELETE, HEAD and PUT are supported.
+     * @param url the URL
+     * @param params request parameters
      * @param connection    HttpURLConnection
      * @param authenticated boolean
      */
-    private void setHeaders(String url, PostParameter[] params, HttpURLConnection connection, boolean authenticated) {
+    private void setHeaders(RequestMethod requestMethod, String url, PostParameter[] params, HttpURLConnection connection, boolean authenticated) {
         log("Request: ");
-        if (null != params) {
-            log("POST ", url);
-        } else {
-            log("GET ", url);
-        }
+        log(requestMethod.name() + " ", url);
 
         if (authenticated) {
             if (basic == null && oauth == null) {
@@ -629,7 +627,7 @@ public class HttpClient implements java.io.Serializable {
             String authorization = null;
             if (null != oauth) {
                 // use OAuth
-                authorization = oauth.generateAuthorizationHeader(params != null ? "POST" : "GET", url, params, oauthToken);
+                authorization = oauth.generateAuthorizationHeader(requestMethod.name(), url, params, oauthToken);
             } else if (null != basic) {
                 // use Basic Auth
                 authorization = this.basic;

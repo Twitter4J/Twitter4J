@@ -159,6 +159,34 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(numberIdId, user.getId());
     }
 
+    public void testList() throws Exception {
+        twitter4j.List list = twitterAPI1.createUserList(id1, "testpoint1", null, null);
+        assertNotNull(list);
+        assertEquals("testpoint1", list.getName());
+
+        list = twitterAPI1.updateUserList(id1, list.getId(), "testpoint2", null, null);
+        assertNotNull(list);
+        assertEquals("testpoint2", list.getName());
+
+        ResponseList<twitter4j.List> lists = twitterAPI1.getUserLists(id1, -1l);
+        assertFalse(lists.size() == 0);
+
+        list = twitterAPI1.showUserList(id1, list.getId());
+        assertNotNull(list);
+
+        List<Status> statuses = twitterAPI1.getUserListStatuses(id1, list.getId(), new Paging());
+        assertNotNull(statuses);
+
+        lists = twitterAPI1.getUserListMemberships(id1, -1l);
+        assertNotNull(lists);
+
+        lists = twitterAPI1.getUserListSubscriptions(id1, -1l);
+        assertNotNull(lists);
+
+        list = twitterAPI1.deleteUserList(id1, list.getId());
+        assertNotNull(list);
+    }
+
     public void testUserTimeline() throws Exception {
         List<Status> statuses;
         statuses = twitterAPI1.getUserTimeline();

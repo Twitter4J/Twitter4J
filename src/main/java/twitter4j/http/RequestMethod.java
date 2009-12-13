@@ -32,11 +32,11 @@ package twitter4j.http;
  */
 final class RequestMethod {
     private final String method;
-    public static final RequestMethod HEAD = new RequestMethod("HEAD");
     public static final RequestMethod GET = new RequestMethod("GET");
     public static final RequestMethod POST = new RequestMethod("POST");
-    public static final RequestMethod PUT = new RequestMethod("PUT");
     public static final RequestMethod DELETE = new RequestMethod("DELETE");
+    public static final RequestMethod HEAD = new RequestMethod("HEAD");
+    public static final RequestMethod PUT = new RequestMethod("PUT");
 
     private RequestMethod(String method) {
         this.method = method;
