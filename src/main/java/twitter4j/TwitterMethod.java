@@ -94,10 +94,26 @@ public final class TwitterMethod {
     public final static TwitterMethod FOLLOWERS_STATUSES = new TwitterMethod("FOLLOWERS_STATUSES");
 
     /*List Methods*/
+    public final static TwitterMethod CREATE_USER_LIST = new TwitterMethod("CREATE_USER_LIST");
+    public final static TwitterMethod UPDATE_USER_LIST = new TwitterMethod("UPDATE_USER_LIST");
+    public final static TwitterMethod USER_LISTS = new TwitterMethod("USER_LISTS");
+    public final static TwitterMethod SHOW_USER_LIST = new TwitterMethod("SHOW_USER_LIST");
+    public final static TwitterMethod DELETE_USER_LIST = new TwitterMethod("DELETE_USER_LIST");
+    public final static TwitterMethod USER_LIST_STATUSES = new TwitterMethod("USER_LIST_STATUSES");
+    public final static TwitterMethod USER_LIST_MEMBERSHIPS = new TwitterMethod("USER_LIST_MEMBERSHIPS");
+    public final static TwitterMethod USER_LIST_SUBSCRIPTIONS = new TwitterMethod("USER_LIST_SUBSCRIPTIONS");
 
     /*List Members Methods*/
+    public final static TwitterMethod LIST_MEMBERS = new TwitterMethod("LIST_MEMBERS");
+    public final static TwitterMethod ADD_LIST_MEMBER = new TwitterMethod("ADD_LIST_MEMBERS");
+    public final static TwitterMethod DELETE_LIST_MEMBER = new TwitterMethod("DELETE_LIST_MEMBERS");
+    public final static TwitterMethod CHECK_LIST_MEMBERSHIP = new TwitterMethod("CHECK_LIST_MEMBERSHIP");
 
     /*List Subscribers Methods*/
+    public final static TwitterMethod LIST_SUBSCRIBERS = new TwitterMethod("LIST_SUBSCRIBERS");
+    public final static TwitterMethod SUBSCRIBE_LIST = new TwitterMethod("SUBSCRIBE_LIST");
+    public final static TwitterMethod UNSUBSCRIBE_LIST = new TwitterMethod("UNSUBSCRIBE_LIST");
+    public final static TwitterMethod CHECK_LIST_SUBSCRIPTION = new TwitterMethod("CHECK_LIST_SUBSCRIPTION");
 
     /*Direct Message Methods*/
     public final static TwitterMethod DIRECT_MESSAGES = new TwitterMethod("DIRECT_MESSAGES");

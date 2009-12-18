@@ -41,10 +41,19 @@ import java.util.Properties;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class TwitterTestUnit extends TestCase {
-    protected Twitter twitterAPI1 = null;
-    protected Twitter twitterAPI2 = null;
-    protected Twitter unauthenticated = null;
+    protected Twitter twitterAPI1, twitterAPI2, unauthenticated, twitterAPI4;
     protected Properties p = new Properties();
+
+    class TestUserInfo {
+        String name;
+        String pass;
+        int id;
+        TestUserInfo(String name, Properties props){
+            this.name = p.getProperty(name);
+            this.pass = p.getProperty(name + "pass");
+            this.id = Integer.valueOf( p.getProperty(name + "id"));
+        }
+    }
 
     public TwitterTestUnit(String name) {
         super(name);
@@ -52,17 +61,23 @@ public class TwitterTestUnit extends TestCase {
 
     protected String id1, id2, id3,numberId, pass1, pass2, pass3,numberPass;
     protected int id1id, numberIdId;
+    protected TestUserInfo id1Info, id2Info, id3Info, id4Info;
 
     protected void setUp() throws Exception {
         super.setUp();
         p.load(new FileInputStream("test.properties"));
+        id1Info = new TestUserInfo("id1", p);
+        id2Info = new TestUserInfo("id2", p);
+        id3Info = new TestUserInfo("id3", p);
+        id4Info = new TestUserInfo("id4", p);
+
         id1 = p.getProperty("id1");
         id2 = p.getProperty("id2");
         id3 = p.getProperty("id3");
         numberId = p.getProperty("numberid");
-        pass1 = p.getProperty("pass1");
-        pass2 = p.getProperty("pass2");
-        pass3 = p.getProperty("pass3");
+        pass1 = p.getProperty("id1pass");
+        pass2 = p.getProperty("id2pass");
+        pass3 = p.getProperty("id3pass");
         numberPass = p.getProperty("numberpass");
         id1id = Integer.valueOf(p.getProperty("id1id"));
         numberIdId = Integer.valueOf(p.getProperty("numberidid"));
@@ -71,6 +86,7 @@ public class TwitterTestUnit extends TestCase {
 //        twitterAPI1.setRetryCount(5);
 //        twitterAPI1.setRetryIntervalSecs(5);
         twitterAPI2 = new Twitter(id2, pass2);
+        twitterAPI4 = new Twitter(id4Info.name, id4Info.pass);
 //        twitterAPI2.setRetryCount(5);
 //        twitterAPI2.setRetryIntervalSecs(5);
         unauthenticated = new Twitter();
@@ -159,16 +175,27 @@ public class TwitterTestUnit extends TestCase {
         assertEquals(numberIdId, user.getId());
     }
 
+    /*List Methods*/
+
     public void testList() throws Exception {
-        twitter4j.List list = twitterAPI1.createUserList(id1, "testpoint1", null, null);
+        PagableResponseList<twitter4j.List> lists;
+        lists = twitterAPI1.getUserLists(id1Info.name,-1l);
+        for(twitter4j.List alist : lists){
+            twitterAPI1.deleteUserList(alist.getId());
+        }
+
+
+        /*List Methods*/
+        twitter4j.List list = twitterAPI1.createUserList("testpoint1", false, null);
         assertNotNull(list);
         assertEquals("testpoint1", list.getName());
 
-        list = twitterAPI1.updateUserList(id1, list.getId(), "testpoint2", null, null);
+        list = twitterAPI1.updateUserList(list.getId(), "testpoint2", true, null);
         assertNotNull(list);
         assertEquals("testpoint2", list.getName());
 
-        ResponseList<twitter4j.List> lists = twitterAPI1.getUserLists(id1, -1l);
+
+        lists = twitterAPI1.getUserLists(id1, -1l);
         assertFalse(lists.size() == 0);
 
         list = twitterAPI1.showUserList(id1, list.getId());
@@ -177,13 +204,62 @@ public class TwitterTestUnit extends TestCase {
         List<Status> statuses = twitterAPI1.getUserListStatuses(id1, list.getId(), new Paging());
         assertNotNull(statuses);
 
+        /*List Member Methods*/
+        User user;
+        try {
+            user = twitterAPI1.checkUserListMembership(id1Info.name, id2Info.id, list.getId());
+            fail("id2 shouldn't be a member of the list yet. expecting a TwitterException");
+        } catch (TwitterException ignore) {
+            assertEquals(404, ignore.getStatusCode());
+        }
+        list = twitterAPI1.addUserListMember(list.getId(), id2Info.id);
+        assertNotNull(list);
+        assertEquals(1, list.getMemberCount());
+
+        List<User> users = twitterAPI1.getUserListMembers(id1Info.name, list.getId(), -1);
+        assertEquals(list.getMemberCount(), users.size());
+
+        user = twitterAPI1.checkUserListMembership(id1Info.name, list.getId(), id2Info.id);
+        assertEquals(id2Info.id, user.getId());
+
+        list = twitterAPI1.deleteUserListMember(list.getId(), id2Info.id);
+        assertNotNull(list);
+        assertEquals(0, list.getMemberCount());
+
         lists = twitterAPI1.getUserListMemberships(id1, -1l);
         assertNotNull(lists);
 
         lists = twitterAPI1.getUserListSubscriptions(id1, -1l);
         assertNotNull(lists);
+        assertEquals(0, lists.size());
 
-        list = twitterAPI1.deleteUserList(id1, list.getId());
+        /*List Subscribers Methods*/
+
+        users = twitterAPI1.getUserListSubscribers(id1Info.name, list.getId(), -1);
+        assertEquals(0, users.size());
+        twitterAPI2.subscribeUserList(id1Info.name, list.getId());
+        // expected subscribers: id2
+        twitterAPI4.subscribeUserList(id1Info.name, list.getId());
+        // expected subscribers: id2 and id4
+        twitterAPI2.unsubscribeUserList(id1Info.name, list.getId());
+        // expected subscribers: id4
+        users = twitterAPI1.getUserListSubscribers(id1Info.name, list.getId(), -1);
+        assertEquals(1, users.size()); //only id4 should be subscribing the list
+        user = twitterAPI1.checkUserListSubscription(id1Info.name, list.getId(), id4Info.id);
+        assertEquals(id4Info.id, user.getId());
+
+        lists = twitterAPI1.getUserListSubscriptions(id4Info.name, -1l);
+        assertNotNull(lists);
+        assertEquals(1, lists.size());
+
+        try {
+            user = twitterAPI1.checkUserListSubscription(id1Info.name, id2Info.id, list.getId());
+            fail("id2 shouldn't be a subscriber the list. expecting a TwitterException");
+        } catch (TwitterException ignore) {
+            assertEquals(404, ignore.getStatusCode());
+        }
+
+        list = twitterAPI1.deleteUserList(list.getId());
         assertNotNull(list);
     }
 

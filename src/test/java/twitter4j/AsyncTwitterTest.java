@@ -49,6 +49,8 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
     private Status status = null;
     private User user = null;
     private boolean test;
+    private twitter4j.List list;
+    private PagableResponseList<twitter4j.List> lists;
     private Relationship relationship;
     private DirectMessage message = null;
     private TwitterException te = null;
@@ -161,9 +163,73 @@ public class AsyncTwitterTest extends TestCase implements TwitterListener {
 
     /*List Methods*/
 
+    public void createdUserList(twitter4j.List list) {
+        this.list = list;
+    }
+
+    public void updatedUserList(twitter4j.List list) {
+        this.list = list;
+    }
+
+    public void gotUserLists(PagableResponseList<twitter4j.List> lists) {
+        this.lists = lists;
+    }
+
+    public void gotShowUserList(twitter4j.List list) {
+        this.list = list;
+    }
+
+    public void deletedUserList(twitter4j.List list) {
+        this.list = list;
+    }
+
+    public void gotUserListStatuses(PagableResponseList<twitter4j.List> lists) {
+        this.lists = lists;
+    }
+
+    public void gotUserListMemberships(PagableResponseList<twitter4j.List> lists) {
+        this.lists = lists;
+    }
+
+    public void gotUserListSubscriptions(PagableResponseList<twitter4j.List> lists) {
+        this.lists = lists;
+    }
+
     /*List Members Methods*/
 
+    public void gotUserListMembers(PagableResponseList<User> users) {
+        this.users = users;
+    }
+
+    public void addedUserListMember(twitter4j.List list) {
+        this.list = list;
+    }
+
+    public void deletedUserListMember(twitter4j.List list) {
+        this.list = list;
+    }
+
+    public void checkedUserListMembership(PagableResponseList<User> users) {
+        this.users = users;
+    }
+
     /*List Subscribers Methods*/
+
+    public void gotUserListSubscribers(PagableResponseList<User> users) {
+        this.users = users;
+    }
+
+    public void subscribedUserList(twitter4j.List list) {
+        this.list = list;
+    }
+
+    public void unsubscribedUserList(twitter4j.List list) {
+        this.list = list;
+    }
+
+    public void checkedUserListSubscription(User user) {
+        this.user = user;
+    }
 
     /*Direct Message Methods*/
     public void gotDirectMessages(ResponseList<DirectMessage> messages) {

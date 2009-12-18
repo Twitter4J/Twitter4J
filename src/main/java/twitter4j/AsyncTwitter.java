@@ -1041,10 +1041,10 @@ public class AsyncTwitter extends Twitter {
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API Wiki / Twitter REST API Method: friendships show</a>
      */
-    public void showFriendShipAsync(String sourceScreenName, String targetScreenName, TwitterListener listener) {
+    public void showFriendhipAsync(String sourceScreenName, String targetScreenName, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(SHOW_FRIENDSHIP, listener, new String[]{sourceScreenName, targetScreenName}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotShowFriendship(showFriendShip((String) args[0], (String) args[1]));
+                listener.gotShowFriendship(showFriendship((String) args[0], (String) args[1]));
             }
         });
     }
@@ -1059,10 +1059,10 @@ public class AsyncTwitter extends Twitter {
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API Wiki / Twitter REST API Method: friendships show</a>
      */
-    public void showFriendShipAsync(int sourceId, int targetId, TwitterListener listener) {
+    public void showFriendshipAsync(int sourceId, int targetId, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(SHOW_FRIENDSHIP, listener, new Integer[]{sourceId, targetId}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotShowFriendship(showFriendShip((Integer) args[0], (Integer) args[1]));
+                listener.gotShowFriendship(showFriendship((Integer) args[0], (Integer) args[1]));
             }
         });
     }

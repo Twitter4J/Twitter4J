@@ -230,7 +230,7 @@ public class User extends TwitterResponseImpl implements java.io.Serializable {
         return followersCount;
     }
 
-    /*package*/ static PagableResponseList<User> createCursorSupportUserList(Response res) throws TwitterException {
+    /*package*/ static PagableResponseList<User> createPagableUserList(Response res) throws TwitterException {
         try {
             JSONObject json = res.asJSONObject();
             JSONArray list = json.getJSONArray("users");
@@ -247,7 +247,7 @@ public class User extends TwitterResponseImpl implements java.io.Serializable {
             throw te;
         }
     }
-    /*package*/ static ResponseList<User> createUsersList(Response res) throws TwitterException {
+    /*package*/ static ResponseList<User> createUserList(Response res) throws TwitterException {
         try {
             JSONArray list = res.asJSONArray();
             int size = list.length();

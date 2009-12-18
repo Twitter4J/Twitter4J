@@ -66,12 +66,12 @@ public class DAOTest extends TestCase {
         HttpClient http = new HttpClient();
 
         // empty User list
-        List<User> users = User.createUsersList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
+        List<User> users = User.createUserList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
         assertTrue(users.size() == 0);
         trySerializeable(users);
 
         // empty Status list
-        List<Status> statuses = Status.createStatuseList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
+        List<Status> statuses = Status.createStatusList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
         assertTrue(statuses.size() == 0);
         trySerializeable(statuses);
 
@@ -131,7 +131,7 @@ public class DAOTest extends TestCase {
         List<User> users;
 
         // User list
-        users = User.createUsersList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/followers/T4J_hudson.json"));
+        users = User.createUserList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/followers/T4J_hudson.json"));
         assertTrue(users.size() > 0);
         trySerializeable(users);
     }
@@ -139,7 +139,7 @@ public class DAOTest extends TestCase {
     public void testStatusAsJSON() throws Exception {
         // single Status
         HttpClient http = new HttpClient();
-        List<Status> statuses = Status.createStatuseList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/public_timeline.json"));
+        List<Status> statuses = Status.createStatusList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/public_timeline.json"));
         Status status = statuses.get(0);
         assertEquals(new Date(1259041785000l), status.getCreatedAt());
         assertEquals(6000554383l, status.getId());

@@ -121,10 +121,74 @@ public class TwitterAdapter implements TwitterListener {
     public void gotFollowersStatuses(PagableResponseList<User> users){
     }
     /*List Methods*/
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void createdUserList(twitter4j.List list) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void updatedUserList(twitter4j.List list) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void gotUserLists(PagableResponseList<twitter4j.List> lists) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void gotShowUserList(twitter4j.List list) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void deletedUserList(twitter4j.List list) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void gotUserListStatuses(PagableResponseList<twitter4j.List> lists) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void gotUserListMemberships(PagableResponseList<twitter4j.List> lists) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void gotUserListSubscriptions(PagableResponseList<twitter4j.List> lists) {}
 
     /*List Members Methods*/
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void gotUserListMembers(PagableResponseList<User> users) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void addedUserListMember(twitter4j.List list) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void deletedUserListMember(twitter4j.List list) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void checkedUserListMembership(PagableResponseList<User> users) {}
 
     /*List Subscribers Methods*/
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void gotUserListSubscribers(PagableResponseList<User> users) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void subscribedUserList(twitter4j.List list) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void unsubscribedUserList(twitter4j.List list) {}
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void checkedUserListSubscription(User user) {}
 
     /*Direct Message Methods*/
     public void gotDirectMessages(ResponseList<DirectMessage> messages){

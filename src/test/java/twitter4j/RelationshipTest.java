@@ -66,7 +66,7 @@ public class RelationshipTest extends TestCase {
     public void testRelationship() throws Exception {
         //  TESTING PRECONDITIONS:
         //  1) id1 is followed by "followsOneWay", but not following "followsOneWay"
-        Relationship rel1 = twitterAPI1.showFriendShip(id1, followsOneWay);
+        Relationship rel1 = twitterAPI1.showFriendship(id1, followsOneWay);
 
         // test second precondition
         assertNotNull(rel1);
@@ -76,7 +76,7 @@ public class RelationshipTest extends TestCase {
         assertFalse(rel1.isTargetFollowedBySource());
 
         //  2) best_friend1 is following and followed by best_friend2
-        Relationship rel2 = twitterAPI1.showFriendShip(bestFriend1, bestFriend2);
+        Relationship rel2 = twitterAPI1.showFriendship(bestFriend1, bestFriend2);
 
         // test second precondition
         assertNotNull(rel2);
@@ -86,7 +86,7 @@ public class RelationshipTest extends TestCase {
         assertTrue(rel2.isTargetFollowedBySource());
 
         // test equality
-        Relationship rel3 = twitterAPI1.showFriendShip(id1, followsOneWay);
+        Relationship rel3 = twitterAPI1.showFriendship(id1, followsOneWay);
         assertEquals(rel1, rel3);
         assertFalse(rel1.equals(rel2));
     }
