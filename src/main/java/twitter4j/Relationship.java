@@ -38,13 +38,14 @@ import twitter4j.org.json.JSONException;
  */
 public class Relationship extends TwitterResponseImpl implements java.io.Serializable {
 
-    private int sourceUserId;
     private int targetUserId;
-    private String sourceUserScreenName;
     private String targetUserScreenName;
+    private boolean sourceBlockingTarget;
+    private boolean sourceNotificationsEnabled;
     private boolean sourceFollowingTarget;
     private boolean sourceFollowedByTarget;
-    private boolean sourceNotificationsEnabled;
+    private int sourceUserId;
+    private String sourceUserScreenName;
     private static final long serialVersionUID = 697705345506281849L;
 
     /*package*/
@@ -77,6 +78,7 @@ public class Relationship extends TwitterResponseImpl implements java.io.Seriali
             targetUserId = getChildInt("id", targetJson);
             sourceUserScreenName = getChildText("screen_name", sourceJson);
             targetUserScreenName = getChildText("screen_name", targetJson);
+            sourceBlockingTarget = getChildBoolean("blocking", sourceJson);
             sourceFollowingTarget = getChildBoolean("following", sourceJson);
             sourceFollowedByTarget = getChildBoolean("followed_by", sourceJson);
             sourceNotificationsEnabled = getChildBoolean("notifications_enabled", sourceJson);
@@ -101,6 +103,15 @@ public class Relationship extends TwitterResponseImpl implements java.io.Seriali
      */
     public int getTargetUserId() {
         return targetUserId;
+    }
+
+    /**
+     * Returns if the source user is blocking the target user
+     *
+     * @return if the source is blocking the target
+     */
+    public boolean isSourceBlockingTarget() {
+        return sourceBlockingTarget;
     }
 
     /**

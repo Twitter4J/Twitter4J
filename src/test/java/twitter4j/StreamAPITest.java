@@ -33,7 +33,7 @@ import java.io.FileInputStream;
 import java.util.Date;
 import java.util.Properties;
 
-public class StreamAPITest extends TestCase implements StatusListener {
+public class StreamAPITest extends TwitterTestBase implements StatusListener {
     protected TwitterStream twitterStream = null;
     protected Twitter twitter = null;
     protected Twitter protectedTwitter = null;
@@ -43,18 +43,18 @@ public class StreamAPITest extends TestCase implements StatusListener {
         super(name);
     }
 
-    protected String id, id4, pass, pass4;
+//    protected String id, id4, pass, pass4;
 
     protected void setUp() throws Exception {
         super.setUp();
-        p.load(new FileInputStream("test.properties"));
-        id = p.getProperty("id1");
-        pass = p.getProperty("pass1");
-        id4 = p.getProperty("id4");
-        pass4 = p.getProperty("pass4");
-        twitterStream = new TwitterStream(id, pass, this);
-        twitter = new Twitter(id, pass);
-        protectedTwitter = new Twitter(id4, pass4);
+//        p.load(new FileInputStream("test.properties"));
+//        id = p.getProperty("id1");
+//        pass = p.getProperty("pass1");
+//        id4 = p.getProperty("id4");
+//        pass4 = p.getProperty("pass4");
+        twitterStream = new TwitterStream(id1.name, id1.pass, this);
+        twitter = new Twitter(id1.name, id1.pass);
+        protectedTwitter = new Twitter(id4.name, id4.pass);
     }
 
     protected void tearDown() throws Exception {

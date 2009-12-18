@@ -33,22 +33,13 @@ import java.util.Date;
 import java.util.Properties;
 import java.io.FileInputStream;
 
-public class SearchAPITest extends TestCase {
-    protected Twitter unauthenticated = null;
-    protected Twitter twitterAPI1 = null;
-    protected Properties p = new Properties();
+public class SearchAPITest extends TwitterTestBase {
 
     public SearchAPITest(String name) {
         super(name);
     }
-    protected String id1,pass1;
     protected void setUp() throws Exception {
         super.setUp();
-        p.load(new FileInputStream("test.properties"));
-        id1 = p.getProperty("id1");
-        pass1 = p.getProperty("pass1");
-        twitterAPI1 = new Twitter(id1, pass1);
-        unauthenticated = new Twitter();
     }
 
     protected void tearDown() throws Exception {

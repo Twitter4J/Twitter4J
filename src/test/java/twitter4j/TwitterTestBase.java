@@ -23,72 +23,66 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 */
 package twitter4j;
 
 import junit.framework.TestCase;
 
-import java.util.Properties;
 import java.io.FileInputStream;
+import java.util.Properties;
 
-/**
- * @author Perry Sakkaris - psakkaris at gmail.com
- *         Date: Dec 9, 2009
- */
-public class RelationshipTest extends TestCase {
-
-    protected Twitter twitterAPI1;
+public class TwitterTestBase  extends TestCase {
+    protected Twitter twitterAPI1, twitterAPI2, unauthenticated, twitterAPI4;
     protected Properties p = new Properties();
-    protected String id1, followsOneWay, bestFriend1, bestFriend2;
-    protected String pass1;
 
-    public RelationshipTest(String name) {
+    protected class TestUserInfo {
+        public String name;
+        public String pass;
+        public int id;
+        TestUserInfo(String name, Properties props){
+            this.name = p.getProperty(name);
+            this.pass = p.getProperty(name + "pass");
+            this.id = Integer.valueOf( p.getProperty(name + "id"));
+        }
+    }
+
+    public TwitterTestBase(String name) {
         super(name);
     }
+    protected String numberId, numberPass, followsOneWay, bestFriend1, bestFriend2;
+    protected int id1id, numberIdId;
+    protected TestUserInfo id1, id2, id3, id4;
 
     protected void setUp() throws Exception {
         super.setUp();
         p.load(new FileInputStream("test.properties"));
-        id1 = p.getProperty("id1");
-        pass1 = p.getProperty("pass1");
-        twitterAPI1 = new Twitter(id1, pass1);
+        id1 = new TestUserInfo("id1", p);
+        id2 = new TestUserInfo("id2", p);
+        id3 = new TestUserInfo("id3", p);
+        id4 = new TestUserInfo("id4", p);
 
+        numberId = p.getProperty("numberid");
+        numberPass = p.getProperty("numberpass");
+        id1id = Integer.valueOf(p.getProperty("id1id"));
+        numberIdId = Integer.valueOf(p.getProperty("numberidid"));
+
+        twitterAPI1 = new Twitter(id1.name, id1.pass);
+//        twitterAPI1.setRetryCount(5);
+//        twitterAPI1.setRetryIntervalSecs(5);
+        twitterAPI2 = new Twitter(id2.name, id2.pass);
+        twitterAPI4 = new Twitter(id4.name, id4.pass);
+//        twitterAPI2.setRetryCount(5);
+//        twitterAPI2.setRetryIntervalSecs(5);
+        unauthenticated = new Twitter();
+//        unauthenticated.setRetryCount(5);
+//        unauthenticated.setRetryIntervalSecs(5);
         followsOneWay = p.getProperty("followsOneWay");
         bestFriend1 = p.getProperty("bestFriend1");
         bestFriend2 = p.getProperty("bestFriend2");
     }
 
     protected void tearDown() throws Exception {
-
         super.tearDown();
     }
-
-    public void testRelationship() throws Exception {
-        //  TESTING PRECONDITIONS:
-        //  1) id1 is followed by "followsOneWay", but not following "followsOneWay"
-        Relationship rel1 = twitterAPI1.showFriendship(id1, followsOneWay);
-
-        // test second precondition
-        assertNotNull(rel1);
-        assertTrue(rel1.isSourceFollowedByTarget());
-        assertFalse(rel1.isSourceFollowingTarget());
-        assertTrue(rel1.isTargetFollowingSource());
-        assertFalse(rel1.isTargetFollowedBySource());
-
-        //  2) best_friend1 is following and followed by best_friend2
-        Relationship rel2 = twitterAPI1.showFriendship(bestFriend1, bestFriend2);
-
-        // test second precondition
-        assertNotNull(rel2);
-        assertTrue(rel2.isSourceFollowedByTarget());
-        assertTrue(rel2.isSourceFollowingTarget());
-        assertTrue(rel2.isTargetFollowingSource());
-        assertTrue(rel2.isTargetFollowedBySource());
-
-        // test equality
-        Relationship rel3 = twitterAPI1.showFriendship(id1, followsOneWay);
-        assertEquals(rel1, rel3);
-        assertFalse(rel1.equals(rel2));
-    }
-
 }
