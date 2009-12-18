@@ -124,35 +124,35 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    public void createdUserList(twitter4j.List list) {}
+    public void createdUserList(UserList userList) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void updatedUserList(twitter4j.List list) {}
+    public void updatedUserList(UserList userList) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void gotUserLists(PagableResponseList<twitter4j.List> lists) {}
+    public void gotUserLists(PagableResponseList<UserList> userLists) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void gotShowUserList(twitter4j.List list) {}
+    public void gotShowUserList(UserList userList) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void deletedUserList(twitter4j.List list) {}
+    public void deletedUserList(UserList userList) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void gotUserListStatuses(PagableResponseList<twitter4j.List> lists) {}
+    public void gotUserListStatuses(PagableResponseList<UserList> userLists) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void gotUserListMemberships(PagableResponseList<twitter4j.List> lists) {}
+    public void gotUserListMemberships(PagableResponseList<UserList> userLists) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void gotUserListSubscriptions(PagableResponseList<twitter4j.List> lists) {}
+    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {}
 
     /*List Members Methods*/
     /**
@@ -162,11 +162,11 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    public void addedUserListMember(twitter4j.List list) {}
+    public void addedUserListMember(UserList userList) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void deletedUserListMember(twitter4j.List list) {}
+    public void deletedUserListMember(UserList userList) {}
     /**
      * @since Twitter4J 2.1.0
      */
@@ -180,11 +180,11 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    public void subscribedUserList(twitter4j.List list) {}
+    public void subscribedUserList(UserList userList) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void unsubscribedUserList(twitter4j.List list) {}
+    public void unsubscribedUserList(UserList userList) {}
     /**
      * @since Twitter4J 2.1.0
      */

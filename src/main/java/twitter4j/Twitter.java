@@ -1130,14 +1130,14 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-lists">Twitter REST API Method: POST lists</a>
      * @since Twitter4J 2.1.0
      */
-    public twitter4j.List createUserList(String listName, boolean isPublicList, String description) throws TwitterException {
+    public UserList createUserList(String listName, boolean isPublicList, String description) throws TwitterException {
         List<PostParameter> postParams = new ArrayList<PostParameter>();
         postParams.add(new PostParameter("name", listName));
         postParams.add(new PostParameter("mode", isPublicList ? "public" : "private"));
         if (description != null) {
             postParams.add(new PostParameter("description", description));
         }
-        return new twitter4j.List(http.post(getBaseURL() + checkUserId() +
+        return new UserList(http.post(getBaseURL() + checkUserId() +
                                             "/lists.json",
                                             postParams.toArray(new PostParameter[0]),
                                             true));
@@ -1155,7 +1155,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-lists-id">Twitter REST API Method: POST lists id</a>
      * @since Twitter4J 2.1.0
      */
-    public twitter4j.List updateUserList(int listId, String name, boolean isPublicList, String description) throws TwitterException {
+    public UserList updateUserList(int listId, String name, boolean isPublicList, String description) throws TwitterException {
         List<PostParameter> postParams = new ArrayList<PostParameter>();
         if (name != null) {
             postParams.add(new PostParameter("name", name));
@@ -1164,7 +1164,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         if (description != null) {
             postParams.add(new PostParameter("description", description));
         }
-        return new twitter4j.List(http.post(getBaseURL() + checkUserId() + "/lists/"
+        return new UserList(http.post(getBaseURL() + checkUserId() + "/lists/"
                 + listId + ".json", postParams.toArray(new PostParameter[0]), true));
     }
 
@@ -1178,8 +1178,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-lists">Twitter REST API Method: GET lists</a>
      * @since Twitter4J 2.1.0
      */
-    public PagableResponseList<twitter4j.List> getUserLists(String user, long cursor) throws TwitterException {
-        return twitter4j.List.createListList(get(getBaseURL() +
+    public PagableResponseList<UserList> getUserLists(String user, long cursor) throws TwitterException {
+        return UserList.createListList(get(getBaseURL() +
                 user + "/lists.json?cursor=" + cursor, true));
     }
 
@@ -1193,8 +1193,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-id">Twitter REST API Method: GET list id</a>
      * @since Twitter4J 2.1.0
      */
-    public twitter4j.List showUserList(String user, int id) throws TwitterException {
-        return new twitter4j.List(get(getBaseURL() + user + "/lists/"
+    public UserList showUserList(String user, int id) throws TwitterException {
+        return new UserList(get(getBaseURL() + user + "/lists/"
                 + id + ".json", true));
     }
 
@@ -1207,8 +1207,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-DELETE-list-id">Twitter REST API Method: DELETE /:user/lists/:id</a>
      * @since Twitter4J 2.1.0
      */
-    public twitter4j.List deleteUserList(int listId) throws TwitterException {
-        return new twitter4j.List(http.delete(getBaseURL() + checkUserId() +
+    public UserList deleteUserList(int listId) throws TwitterException {
+        return new UserList(http.delete(getBaseURL() + checkUserId() +
                 "/lists/" + listId + ".json", true));
     }
 
@@ -1239,8 +1239,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-memberships">Twitter REST API Method: GET /:user/lists/memberships</a>
      * @since Twitter4J 2.1.0
      */
-    public PagableResponseList<twitter4j.List> getUserListMemberships(String user, long cursor) throws TwitterException {
-        return twitter4j.List.createListList(get(getBaseURL() +
+    public PagableResponseList<UserList> getUserListMemberships(String user, long cursor) throws TwitterException {
+        return UserList.createListList(get(getBaseURL() +
                 user + "/lists/memberships.json?cursor=" + cursor, true));
     }
 
@@ -1254,8 +1254,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-subscriptions">Twitter REST API Method: GET list subscriptions</a>
      * @since Twitter4J 2.1.0
      */
-    public PagableResponseList<twitter4j.List> getUserListSubscriptions(String user, long cursor) throws TwitterException {
-        return twitter4j.List.createListList(get(getBaseURL() +
+    public PagableResponseList<UserList> getUserListSubscriptions(String user, long cursor) throws TwitterException {
+        return UserList.createListList(get(getBaseURL() +
                 user + "/lists/subscriptions.json?cursor=" + cursor, true));
     }
 
@@ -1288,8 +1288,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-list-members">Twitter REST API Method: POST /:user/:id/members</a>
      * @since Twitter4J 2.1.0
      */
-    public twitter4j.List addUserListMember(int listId, int userId) throws TwitterException {
-        return new twitter4j.List(http.post(getBaseURL() + checkUserId() +
+    public UserList addUserListMember(int listId, int userId) throws TwitterException {
+        return new UserList(http.post(getBaseURL() + checkUserId() +
                 "/" + listId + "/members.json?id=" + userId, true));
     }
 
@@ -1303,8 +1303,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-DELETE-list-members">Twitter REST API Method: DELETE /:user/:list_id/members</a>
      * @since Twitter4J 2.1.0
      */
-    public twitter4j.List deleteUserListMember(int listId, int userId) throws TwitterException {
-        return new twitter4j.List(http.delete(getBaseURL() + checkUserId() +
+    public UserList deleteUserListMember(int listId, int userId) throws TwitterException {
+        return new UserList(http.delete(getBaseURL() + checkUserId() +
                 "/" + listId + "/members.json?id=" + userId, true));
     }
 
@@ -1354,8 +1354,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-list-subscribers">Twitter REST API Method: POST /:user/:id/members</a>
      * @since Twitter4J 2.1.0
      */
-    public twitter4j.List subscribeUserList(String listOwner, int listId) throws TwitterException {
-        return new twitter4j.List(http.post(getBaseURL() + listOwner +
+    public UserList subscribeUserList(String listOwner, int listId) throws TwitterException {
+        return new UserList(http.post(getBaseURL() + listOwner +
                 "/" + listId + "/subscribers.json", true));
     }
 
@@ -1369,8 +1369,8 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-DELETE-list-subscribers">Twitter REST API Method: DELETE /:user/:list_id/members</a>
      * @since Twitter4J 2.1.0
      */
-    public twitter4j.List unsubscribeUserList(String listOwner, int listId) throws TwitterException {
-        return new twitter4j.List(http.delete(getBaseURL() + listOwner +
+    public UserList unsubscribeUserList(String listOwner, int listId) throws TwitterException {
+        return new UserList(http.delete(getBaseURL() + listOwner +
                 "/" + listId + "/subscribers.json?id=" + verifyCredentials().getId(), true));
     }
 

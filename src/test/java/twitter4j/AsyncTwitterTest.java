@@ -72,8 +72,8 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private Status status = null;
     private User user = null;
     private boolean test;
-    private twitter4j.List list;
-    private PagableResponseList<twitter4j.List> lists;
+    private UserList userList;
+    private PagableResponseList<UserList> userLists;
     private Relationship relationship;
     private DirectMessage message = null;
     private TwitterException te = null;
@@ -186,36 +186,36 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     /*List Methods*/
 
-    public void createdUserList(twitter4j.List list) {
-        this.list = list;
+    public void createdUserList(UserList userList) {
+        this.userList = userList;
     }
 
-    public void updatedUserList(twitter4j.List list) {
-        this.list = list;
+    public void updatedUserList(UserList userList) {
+        this.userList = userList;
     }
 
-    public void gotUserLists(PagableResponseList<twitter4j.List> lists) {
-        this.lists = lists;
+    public void gotUserLists(PagableResponseList<UserList> userLists) {
+        this.userLists = userLists;
     }
 
-    public void gotShowUserList(twitter4j.List list) {
-        this.list = list;
+    public void gotShowUserList(UserList userList) {
+        this.userList = userList;
     }
 
-    public void deletedUserList(twitter4j.List list) {
-        this.list = list;
+    public void deletedUserList(UserList userList) {
+        this.userList = userList;
     }
 
-    public void gotUserListStatuses(PagableResponseList<twitter4j.List> lists) {
-        this.lists = lists;
+    public void gotUserListStatuses(PagableResponseList<UserList> userLists) {
+        this.userLists = userLists;
     }
 
-    public void gotUserListMemberships(PagableResponseList<twitter4j.List> lists) {
-        this.lists = lists;
+    public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
+        this.userLists = userLists;
     }
 
-    public void gotUserListSubscriptions(PagableResponseList<twitter4j.List> lists) {
-        this.lists = lists;
+    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {
+        this.userLists = userLists;
     }
 
     /*List Members Methods*/
@@ -224,12 +224,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.users = users;
     }
 
-    public void addedUserListMember(twitter4j.List list) {
-        this.list = list;
+    public void addedUserListMember(UserList userList) {
+        this.userList = userList;
     }
 
-    public void deletedUserListMember(twitter4j.List list) {
-        this.list = list;
+    public void deletedUserListMember(UserList userList) {
+        this.userList = userList;
     }
 
     public void checkedUserListMembership(PagableResponseList<User> users) {
@@ -242,12 +242,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.users = users;
     }
 
-    public void subscribedUserList(twitter4j.List list) {
-        this.list = list;
+    public void subscribedUserList(UserList userList) {
+        this.userList = userList;
     }
 
-    public void unsubscribedUserList(twitter4j.List list) {
-        this.list = list;
+    public void unsubscribedUserList(UserList userList) {
+        this.userList = userList;
     }
 
     public void checkedUserListSubscription(User user) {

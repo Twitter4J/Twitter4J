@@ -115,35 +115,35 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    void createdUserList(twitter4j.List list);
+    void createdUserList(UserList userList);
     /**
      * @since Twitter4J 2.1.0
      */
-    void updatedUserList(twitter4j.List list);
+    void updatedUserList(UserList userList);
     /**
      * @since Twitter4J 2.1.0
      */
-    void gotUserLists(PagableResponseList<twitter4j.List> lists);
+    void gotUserLists(PagableResponseList<UserList> userLists);
     /**
      * @since Twitter4J 2.1.0
      */
-    void gotShowUserList(twitter4j.List list);
+    void gotShowUserList(UserList userList);
     /**
      * @since Twitter4J 2.1.0
      */
-    void deletedUserList(twitter4j.List list);
+    void deletedUserList(UserList userList);
     /**
      * @since Twitter4J 2.1.0
      */
-    void gotUserListStatuses(PagableResponseList<twitter4j.List> lists);
+    void gotUserListStatuses(PagableResponseList<UserList> userLists);
     /**
      * @since Twitter4J 2.1.0
      */
-    void gotUserListMemberships(PagableResponseList<twitter4j.List> lists);
+    void gotUserListMemberships(PagableResponseList<UserList> userLists);
     /**
      * @since Twitter4J 2.1.0
      */
-    void gotUserListSubscriptions(PagableResponseList<twitter4j.List> lists);
+    void gotUserListSubscriptions(PagableResponseList<UserList> userLists);
 
     /*List Members Methods*/
     /**
@@ -153,11 +153,11 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    void addedUserListMember(twitter4j.List list);
+    void addedUserListMember(UserList userList);
     /**
      * @since Twitter4J 2.1.0
      */
-    void deletedUserListMember(twitter4j.List list);
+    void deletedUserListMember(UserList userList);
     /**
      * @since Twitter4J 2.1.0
      */
@@ -171,11 +171,11 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    void subscribedUserList(twitter4j.List list);
+    void subscribedUserList(UserList userList);
     /**
      * @since Twitter4J 2.1.0
      */
-    void unsubscribedUserList(twitter4j.List list);
+    void unsubscribedUserList(UserList userList);
     /**
      * @since Twitter4J 2.1.0
      */
