@@ -33,6 +33,7 @@ package twitter4j;
  */
 public class TwitterException extends Exception {
     private int statusCode = -1;
+    private int retryAfter;
     private static final long serialVersionUID = -2623309261327598087L;
 
     public TwitterException(String msg) {
@@ -46,7 +47,13 @@ public class TwitterException extends Exception {
     public TwitterException(String msg, int statusCode) {
         super(msg);
         this.statusCode = statusCode;
+    }
 
+    public static TwitterException createRateLimitedTwitterException(String msg
+            , int statusCode, int retryAfter) {
+        TwitterException te = new TwitterException(msg);
+        te.retryAfter = retryAfter;
+        return te;
     }
 
     public TwitterException(String msg, Exception cause) {
@@ -61,5 +68,23 @@ public class TwitterException extends Exception {
 
     public int getStatusCode() {
         return this.statusCode;
+    }
+
+    /**
+     * Returns int value of "Retry-After" response header.
+     * An application that exceeds the rate limitations of the Search API will receive HTTP 503 response codes to requests.<br>
+     * It is a best practice to watch for this error condition and honor the Retry-After header that instructs the application when it is safe to continue. The Retry-After header's value is the number of seconds your application should wait before submitting another query.<br>
+     *  (for example: Retry-After: 67).<br>
+     * This method throws IllegalStateException when "Retry-After" response header was not included in the response.<br>
+     * Check getStatusCode() == 503 before calling this method to ensure that you are actually exceeding rate limitation with query apis.
+     * @return instructs the application when it is safe to continue in seconds
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
+     */
+    public int getRetryAfter() {
+        if(this.statusCode != 503){
+            throw new IllegalStateException("Rate limitation is not exceeded");
+        }
+        return retryAfter;
     }
 }

@@ -523,6 +523,18 @@ public class HttpClient implements java.io.Serializable {
                         }
                     }
                     if (responseCode != OK) {
+                        if (responseCode == SERVICE_UNAVAILABLE){
+                            // application exceeded the rate limitation
+                            // Search API returns Retry-After header that instructs the application when it is safe to continue.
+                            // @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
+                            int retryAfter = -1;
+                            try {
+                                retryAfter = Integer.valueOf(con.getHeaderField("Retry-After"));
+                            } catch (NumberFormatException ignore) {
+                            }
+                            throw TwitterException.createRateLimitedTwitterException(getCause(responseCode)
+                                    , responseCode, retryAfter);
+                        }
                         if (responseCode < INTERNAL_SERVER_ERROR || retriedCount == retryCount) {
                             throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), responseCode);
                         }
