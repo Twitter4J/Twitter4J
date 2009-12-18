@@ -56,7 +56,7 @@ public class TwitterTestBase  extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        p.load(new FileInputStream("test.properties"));
+        p.load(new FileInputStream("src/test/resources/test.properties"));
         id1 = new TestUserInfo("id1", p);
         id2 = new TestUserInfo("id2", p);
         id3 = new TestUserInfo("id3", p);

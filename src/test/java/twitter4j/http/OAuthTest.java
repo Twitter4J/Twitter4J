@@ -145,7 +145,7 @@ public class OAuthTest extends TwitterTestUnit {
         resStr = response.asString();
         String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ","\n</div>");
         at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret(), pin);
-        assertEquals(at.getScreenName(),id1);
+        assertEquals(at.getScreenName(),id1.name);
         assertEquals(at.getUserId(),6358482);
 
     }
@@ -180,7 +180,7 @@ public class OAuthTest extends TwitterTestUnit {
         params[3] = new PostParameter("session[password]",id1.pass);
         response = http.post(authorizeURL, params);
         at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret());
-        assertEquals(at.getScreenName(),id1);
+        assertEquals(at.getScreenName(),id1.name);
         assertEquals(at.getUserId(),6358482);
 
     }
@@ -215,7 +215,7 @@ public class OAuthTest extends TwitterTestUnit {
         params[3] = new PostParameter("session[password]",id1.pass);
         response = http.post(authorizeURL, params);
         at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret());
-        assertEquals(at.getScreenName(),id1);
+        assertEquals(at.getScreenName(),id1.name);
         assertEquals(at.getUserId(),6358482);
 
 
@@ -257,7 +257,7 @@ public class OAuthTest extends TwitterTestUnit {
         String oauthVerifier = catchPattern(resStr,"&oauth_verifier=","\">");
 
         at = twitter.getOAuthAccessToken(rt.getToken(),rt.getTokenSecret(), oauthVerifier);
-        assertEquals(at.getScreenName(),id1);
+        assertEquals(at.getScreenName(),id1.name);
         assertEquals(at.getUserId(),6358482);
     }
 

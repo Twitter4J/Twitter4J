@@ -26,19 +26,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-import junit.framework.TestCase;
-import twitter4j.User;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.Properties;
+import twitter4j.TwitterTestBase;
 
 /**
  * Test case for HttpCient
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class HttpClientTest extends TestCase {
+public class HttpClientTest extends TwitterTestBase {
     public HttpClientTest(String name) {
         super(name);
     }
@@ -46,14 +41,10 @@ public class HttpClientTest extends TestCase {
     HttpClient client;
 
     protected void setUp() throws Exception {
-        Properties p = new Properties();
-
-        p.load(new FileInputStream("test.properties"));
-        String id1 = p.getProperty("id1");
-        String pass1 = p.getProperty("pass1");
+        super.setUp();
         client = new HttpClient();
-        client.setUserId(id1);
-        client.setPassword(pass1);
+        client.setUserId(id1.name);
+        client.setPassword(id1.pass);
     }
 
     protected void tearDown() {

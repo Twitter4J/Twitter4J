@@ -55,7 +55,6 @@ public class Twitter4JTestSuite extends TestCase {
         suite.addTestSuite(DAOTest.class);
         suite.addTestSuite(DispatcherTest.class);
         suite.addTestSuite(PagingTest.class);
-        suite.addTestSuite(RateLimitStatusTest.class);
         suite.addTestSuite(SearchAPITest.class);
         suite.addTestSuite(StreamAPITest.class);
         suite.addTestSuite(TwitterBasicAuthTest.class);

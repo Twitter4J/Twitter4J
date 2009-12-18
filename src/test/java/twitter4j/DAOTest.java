@@ -26,37 +26,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import junit.framework.TestCase;
 import twitter4j.http.HttpClient;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class DAOTest extends TestCase {
-    protected Twitter twitterAPI1 = null;
-    protected Twitter twitterAPI2 = null;
-    protected Properties p = new Properties();
-    protected String id1, id2, id3, pass1, pass2, pass3;
+public class DAOTest extends TwitterTestBase {
+    public DAOTest(String name) {
+        super(name);
+    }
 
     protected void setUp() throws Exception {
         super.setUp();
-        p.load(new FileInputStream("test.properties"));
-        id1 = p.getProperty("id1");
-        id2 = p.getProperty("id2");
-        id3 = p.getProperty("id3");
-        pass1 = p.getProperty("pass1");
-        pass2 = p.getProperty("pass2");
-        pass3 = p.getProperty("pass3");
-        twitterAPI1 = new Twitter(id1, pass1);
-        twitterAPI2 = new Twitter(id2, pass2);
     }
 
     protected void tearDown() throws Exception {
@@ -93,8 +80,8 @@ public class DAOTest extends TestCase {
         User user = new User(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/users/show/twit4j.json"));
         assertTrue(user.isGeoEnabled());
         assertFalse(user.isVerified());
-        assertEquals(id1, user.getName());
-        assertEquals(id1, user.getScreenName());
+        assertEquals(id1.name, user.getName());
+        assertEquals(id1.name, user.getScreenName());
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());
         assertNotNull(user.getProfileImageURL());

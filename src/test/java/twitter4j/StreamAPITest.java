@@ -27,15 +27,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import junit.framework.TestCase;
-
-import java.io.FileInputStream;
 import java.util.Date;
 import java.util.Properties;
 
 public class StreamAPITest extends TwitterTestBase implements StatusListener {
     protected TwitterStream twitterStream = null;
-    protected Twitter twitter = null;
     protected Twitter protectedTwitter = null;
     protected Properties p = new Properties();
 
@@ -47,13 +43,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
 
     protected void setUp() throws Exception {
         super.setUp();
-//        p.load(new FileInputStream("test.properties"));
-//        id = p.getProperty("id1");
-//        pass = p.getProperty("pass1");
-//        id4 = p.getProperty("id4");
-//        pass4 = p.getProperty("pass4");
         twitterStream = new TwitterStream(id1.name, id1.pass, this);
-        twitter = new Twitter(id1.name, id1.pass);
         protectedTwitter = new Twitter(id4.name, id4.pass);
     }
 
@@ -106,7 +96,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
             while (alive) {
                 String newStatus = "streaming test:" + new Date();
                 try {
-                    twitter.updateStatus(newStatus);
+                    twitterAPI1.updateStatus(newStatus);
                     protectedTwitter.updateStatus(newStatus);
                     Thread.sleep(10000);
                 } catch (TwitterException e) {

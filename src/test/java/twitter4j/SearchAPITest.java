@@ -26,12 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import junit.framework.TestCase;
-
 import java.util.List;
 import java.util.Date;
-import java.util.Properties;
-import java.io.FileInputStream;
 
 public class SearchAPITest extends TwitterTestBase {
 

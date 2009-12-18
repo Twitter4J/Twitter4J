@@ -26,16 +26,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import junit.framework.TestCase;
-
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -645,6 +641,7 @@ public class TwitterTestUnit extends TwitterTestBase {
     RateLimitStatus rateLimitStatus = null;
     boolean accountLimitStatusAcquired;
     boolean ipLimitStatusAcquired;
+    //need to think of a way to test this, perhaps mocking out Twitter is the way to go
     public void testRateLimitStatus() throws Exception {
         RateLimitStatus status = twitterAPI1.rateLimitStatus();
         assertTrue(10 < status.getHourlyLimit());
