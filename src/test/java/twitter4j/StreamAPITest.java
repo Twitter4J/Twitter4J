@@ -53,12 +53,30 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
 
     public void testSamplePull() throws Exception {
         StatusStream stream = twitterStream.getSampleStream();
-        Status status;
-        for (int i = 0; i < 10; i++) {
-            status = stream.next();
-            assertNotNull(status.getText());
-            assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
-            System.out.println(status.getCreatedAt() + ":" + status.getText() + " from:" + status.getSource());
+        for (int i = 0; i < 100; i++) {
+            stream.next(new StatusListener(){
+                public void onStatus(Status status){
+                    assertNotNull(status.getText());
+                    assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
+                    System.out.println(status.getCreatedAt() + ":" + status.getText() + " from:" + status.getSource());
+                    if(status.getText().startsWith("RT")){
+                        Status retweetedStatus = status.getRetweetedStatus();
+                        if(null != retweetedStatus){
+                            System.out.println("got a retweet!-----------------------------");
+                        }else{
+
+                            System.out.println("not a retweet!-----------------------------");
+                        }
+                    }
+                }
+                public void onDeletion(StatusDeletion statusDeletion){
+
+                }
+
+                public void onException(Exception ex){
+
+                }
+            });
         }
         stream.close();
     }
@@ -148,8 +166,12 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
 
     public void onStatus(Status status) {
         this.status = status;
-        System.out.println("got status-------------------:" + status);
+        System.out.println("got status from stream:" + status.toString());
         notifyResponse();
+    }
+
+    public void onDeletion(StatusDeletion statusDeletion) {
+        System.out.println("got status deletion notification:" + statusDeletion.toString());
     }
 
     public void onException(Exception ex) {

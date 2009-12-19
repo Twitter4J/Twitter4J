@@ -67,27 +67,12 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
         init(res, json);
     }
 
-    public Status(String str) throws TwitterException, JSONException {
-        // StatusStream uses this constructor
+    /*package*/ Status(JSONObject json) throws TwitterException, JSONException {
         super();
-        JSONObject json = new JSONObject(str);
-        id = json.getLong("id");
-        text = json.getString("text");
-        source = json.getString("source");
-        createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
-
-        inReplyToStatusId = getLong("in_reply_to_status_id", json);
-        inReplyToUserId = getInt("in_reply_to_user_id", json);
-        isFavorited = getBoolean("favorited", json);
-        user = new User(json.getJSONObject("user"));
+        init(json);
     }
 
-    private void init(Response res, JSONObject json) throws
-            TwitterException {
-        try {
-            user = new User(res, json.getJSONObject("user"));
-        } catch (JSONException ignore) {
-        }
+    private void init(JSONObject json) throws TwitterException {
         id = getChildLong("id", json);
         text = getChildText("text", json);
         source = getChildText("source", json);
@@ -108,6 +93,15 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
             }
         } catch (JSONException ignore) {
         }
+    }
+
+    private void init(Response res, JSONObject json) throws
+            TwitterException {
+        try {
+            user = new User(res, json.getJSONObject("user"));
+        } catch (JSONException ignore) {
+        }
+        init(json);
         if(!json.isNull("retweeted_status")){
             try {
                 retweetedStatus = new Status(res, json.getJSONObject("retweeted_status"));

@@ -27,17 +27,50 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-/**
- * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.0.4
- */
-public interface StatusListener {
-    void onStatus(Status status);
-    /**
-     * @since Twitter4J 2.1.0
-     * @param statusDeletion
-     */
-    void onDeletion(StatusDeletion statusDeletion);
+import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
 
-    void onException(Exception ex);
+/**
+ * A data class representing Status deletion
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.0
+ */
+public class StatusDeletion {
+
+    long statusId;
+    int userId;
+    /*package*/ StatusDeletion(JSONObject json) throws JSONException {
+        //{"delete":{"status":{"id":4821647803,"user_id":16346228}}}
+        JSONObject status = json.getJSONObject("delete").getJSONObject("status");
+        this.statusId = TwitterResponseImpl.getChildLong("id", status);
+        this.userId = TwitterResponseImpl.getChildInt("user_id", status);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StatusDeletion)) return false;
+
+        StatusDeletion that = (StatusDeletion) o;
+
+        if (statusId != that.statusId) return false;
+        if (userId != that.userId) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (statusId ^ (statusId >>> 32));
+        result = 31 * result + userId;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StatusDeletion{" +
+                "statusId=" + statusId +
+                ", userId=" + userId +
+                '}';
+    }
 }

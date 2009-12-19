@@ -28,6 +28,7 @@ package twitter4j;
 
 import twitter4j.http.Response;
 import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,6 +41,8 @@ import java.io.InputStreamReader;
  * @since Twitter4J 2.0.4
  */
 public class StatusStream {
+    private final static boolean DEBUG = Configuration.getDebug();
+
     private boolean streamAlive = true;
     private BufferedReader br;
     private InputStream is;
@@ -53,26 +56,27 @@ public class StatusStream {
         this(response.asStream());
         this.response = response;
     }
-    public Status next() throws TwitterException{
+
+    public void next(StatusListener listener) throws TwitterException{
         if(!streamAlive){
             throw new IllegalStateException("Stream already closed.");
         }
         try {
             String line;
-            while (streamAlive) {
-                line = br.readLine();
-                if (null != line && line.length() > 0) {
-                    try{
-                        return new Status(line);
-                    } catch (JSONException ignore) {
-                        // ignoring JSONException as per:
-                        // http://groups.google.com/group/twitter-development-talk/browse_thread/thread/acac6b17134c0fa8
-                        // it would be beneficial to have a listener which
-                        // gets notified every time when deleted tweets come in
+            line = br.readLine();
+            if (null != line && line.length() > 0) {
+                log("received:", line);
+                try {
+                    JSONObject json = new JSONObject(line);
+                    if (!json.isNull("text")) {
+                        listener.onStatus(new Status(json));
+                    } else if (!json.isNull("delete")) {
+                        listener.onDeletion(new StatusDeletion(json));
                     }
+                } catch (JSONException ex) {
+                    listener.onException(ex);
                 }
             }
-            throw new TwitterException("Stream closed.");
         } catch (IOException e) {
             try {
                 is.close();
@@ -83,11 +87,23 @@ public class StatusStream {
         }
 
     }
+
     public void close() throws IOException{
         is.close();
         br.close();
         if(null != response){
             response.disconnect();
+        }
+    }
+    private void log(String message) {
+        if (DEBUG) {
+            System.out.println("[" + new java.util.Date() + "]" + message);
+        }
+    }
+
+    private void log(String message, String message2) {
+        if (DEBUG) {
+            log(message + message2);
         }
     }
 }

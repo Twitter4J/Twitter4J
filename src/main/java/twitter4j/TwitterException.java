@@ -75,8 +75,8 @@ public class TwitterException extends Exception {
      * An application that exceeds the rate limitations of the Search API will receive HTTP 503 response codes to requests.<br>
      * It is a best practice to watch for this error condition and honor the Retry-After header that instructs the application when it is safe to continue. The Retry-After header's value is the number of seconds your application should wait before submitting another query.<br>
      *  (for example: Retry-After: 67).<br>
-     * This method throws IllegalStateException when "Retry-After" response header was not included in the response.<br>
-     * Check getStatusCode() == 503 before calling this method to ensure that you are actually exceeding rate limitation with query apis.
+     * Check if getStatusCode() == 503 before calling this method to ensure that you are actually exceeding rate limitation with query apis.<br>
+     * Otherwise, you'll get an IllegalStateException if "Retry-After" response header was not included in the response.<br>
      * @return instructs the application when it is safe to continue in seconds
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>

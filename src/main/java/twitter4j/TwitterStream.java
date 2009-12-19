@@ -314,11 +314,8 @@ public class TwitterStream extends TwitterSupport {
                     if(null != stream){
                         // stream established
                         setStatus("[receiving stream]");
-                        while (!closed && null != (status = stream.next())) {
-                            log("received:", status.toString());
-                            if (null != statusListener) {
-                                statusListener.onStatus(status);
-                            }
+                        while (!closed){
+                            stream.next(statusListener);
                         }
                     }
                 } catch (TwitterException te) {
