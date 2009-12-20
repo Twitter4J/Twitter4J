@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.Properties;
 
@@ -45,38 +46,35 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
         super.setUp();
         twitterStream = new TwitterStream(id1.name, id1.pass, this);
         protectedTwitter = new Twitter(id4.name, id4.pass);
+        this.status = null;
+        this.deletionNotice = null;
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
     }
 
+    public void testStatusStream() throws Exception {
+        FileInputStream fis = new FileInputStream("src/test/resources/streamingapi-testcase.json");
+        StatusStream stream = new StatusStream(fis);
+        stream.next(this);
+        assertEquals(6832057002l, deletionNotice.getStatusId());
+        assertEquals(18378841, deletionNotice.getUserId());
+        stream.next(this);
+        assertEquals("aaa minha irma ta enchendo aki querendo entra --'", status.getText());
+        stream.next(this);
+        assertEquals("Acho retartado ter que esperar para usar o script de novo, por isso só uso o Twitter Followers, o site da empresa é: http://bit.ly/5tNlDp", status.getText());
+        stream.next(this);
+        assertEquals(121564, trackLimit);
+        stream.next(this);
+        assertEquals("ngantuk banget nguap mulu", status.getText());
+        
+    }
+
     public void testSamplePull() throws Exception {
         StatusStream stream = twitterStream.getSampleStream();
-        for (int i = 0; i < 100; i++) {
-            stream.next(new StatusListener(){
-                public void onStatus(Status status){
-                    assertNotNull(status.getText());
-                    assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
-                    System.out.println(status.getCreatedAt() + ":" + status.getText() + " from:" + status.getSource());
-                    if(status.getText().startsWith("RT")){
-                        Status retweetedStatus = status.getRetweetedStatus();
-                        if(null != retweetedStatus){
-                            System.out.println("got a retweet!-----------------------------");
-                        }else{
-
-                            System.out.println("not a retweet!-----------------------------");
-                        }
-                    }
-                }
-                public void onDeletion(StatusDeletion statusDeletion){
-
-                }
-
-                public void onException(Exception ex){
-
-                }
-            });
+        for (int i = 0; i < 10; i++) {
+            stream.next(this);
         }
         stream.close();
     }
@@ -167,14 +165,37 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
     public void onStatus(Status status) {
         this.status = status;
         System.out.println("got status from stream:" + status.toString());
+        assertNotNull(status.getText());
+        assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
+        System.out.println(status.getCreatedAt() + ":" + status.getText() + " from:" + status.getSource());
+        if(status.getText().startsWith("RT")){
+            Status retweetedStatus = status.getRetweetedStatus();
+            if(null != retweetedStatus){
+                System.out.println("got a retweet!-----------------------------");
+            }else{
+
+                System.out.println("not a retweet!-----------------------------");
+            }
+        }
         notifyResponse();
     }
+    StatusDeletionNotice deletionNotice;
+//onDeletionNoice
+    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+        this.deletionNotice = statusDeletionNotice;
+        System.out.println("got status deletionNotice notification:" + statusDeletionNotice.toString());
+    }
 
-    public void onDeletion(StatusDeletion statusDeletion) {
-        System.out.println("got status deletion notification:" + statusDeletion.toString());
+    int trackLimit;
+//onTrackLimitNotice
+    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
+        this.trackLimit = numberOfLimitedStatuses;
+        System.out.println("got limit notice:" + numberOfLimitedStatuses);
+
     }
 
     public void onException(Exception ex) {
+        ex.printStackTrace();
         notifyResponse();
     }
 }

@@ -35,8 +35,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import static twitter4j.TwitterResponseImpl.*;
+
 /**
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
@@ -48,17 +49,21 @@ public class StatusStream {
     private InputStream is;
     private Response response;
 
-    /*package*/ StatusStream(InputStream stream) throws IOException {
+    /*package*/
+
+    StatusStream(InputStream stream) throws IOException {
         this.is = stream;
         this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
     }
-    /*package*/ StatusStream(Response response) throws IOException {
+    /*package*/
+
+    StatusStream(Response response) throws IOException {
         this(response.asStream());
         this.response = response;
     }
 
-    public void next(StatusListener listener) throws TwitterException{
-        if(!streamAlive){
+    public void next(StatusListener listener) throws TwitterException {
+        if (!streamAlive) {
             throw new IllegalStateException("Stream already closed.");
         }
         try {
@@ -71,7 +76,9 @@ public class StatusStream {
                     if (!json.isNull("text")) {
                         listener.onStatus(new Status(json));
                     } else if (!json.isNull("delete")) {
-                        listener.onDeletion(new StatusDeletion(json));
+                        listener.onDeletionNotice(new StatusDeletionNotice(json));
+                    } else if (!json.isNull("limit")) {
+                        listener.onTrackLimitationNotice(getChildInt("track", json.getJSONObject("limit")));
                     }
                 } catch (JSONException ex) {
                     listener.onException(ex);
@@ -88,13 +95,14 @@ public class StatusStream {
 
     }
 
-    public void close() throws IOException{
+    public void close() throws IOException {
         is.close();
         br.close();
-        if(null != response){
+        if (null != response) {
             response.disconnect();
         }
     }
+
     private void log(String message) {
         if (DEBUG) {
             System.out.println("[" + new java.util.Date() + "]" + message);

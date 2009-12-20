@@ -30,28 +30,41 @@ package twitter4j;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
- * A data class representing Status deletion
+ * A data class representing Status deletionNotice<br>
+ * Clients are urged to honor deletionNotice requests and discard deleted statuses immediately. At times, status deletionNotice messages may arrive before the status. Even in this case, the late arriving status should be deleted from your backing store.
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public class StatusDeletion {
+public class StatusDeletionNotice implements Serializable {
 
-    long statusId;
-    int userId;
-    /*package*/ StatusDeletion(JSONObject json) throws JSONException {
+    private long statusId;
+    private int userId;
+    private static final long serialVersionUID = 1723338404242596062L;
+
+    /*package*/ StatusDeletionNotice(JSONObject json) throws JSONException {
         //{"delete":{"status":{"id":4821647803,"user_id":16346228}}}
         JSONObject status = json.getJSONObject("delete").getJSONObject("status");
         this.statusId = TwitterResponseImpl.getChildLong("id", status);
         this.userId = TwitterResponseImpl.getChildInt("user_id", status);
     }
 
+    public long getStatusId() {
+        return statusId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof StatusDeletion)) return false;
+        if (!(o instanceof StatusDeletionNotice)) return false;
 
-        StatusDeletion that = (StatusDeletion) o;
+        StatusDeletionNotice that = (StatusDeletionNotice) o;
 
         if (statusId != that.statusId) return false;
         if (userId != that.userId) return false;
@@ -68,7 +81,7 @@ public class StatusDeletion {
 
     @Override
     public String toString() {
-        return "StatusDeletion{" +
+        return "StatusDeletionNotice{" +
                 "statusId=" + statusId +
                 ", userId=" + userId +
                 '}';
