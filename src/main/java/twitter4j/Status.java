@@ -58,13 +58,13 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
 
     /*package*/Status(Response res) throws TwitterException {
         super(res);
-        init(res, res.asJSONObject());
+        init(res.asJSONObject());
     }
 
     /*package*/Status(Response res, JSONObject json) throws
             TwitterException {
         super(res);
-        init(res, json);
+        init(json);
     }
 
     /*package*/ Status(JSONObject json) throws TwitterException, JSONException {
@@ -83,28 +83,27 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
         isFavorited = getChildBoolean("favorited", json);
         inReplyToScreenName = getChildText("in_reply_to_screen_name", json);
         try {
-            if(!json.isNull("geo")){
+            if (!json.isNull("user")) {
+                user = new User(json.getJSONObject("user"));
+            }
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
+        try {
+            if (!json.isNull("geo")) {
                 String coordinates = json.getJSONObject("geo")
-                .getString("coordinates");
-                coordinates = coordinates.substring(1,coordinates.length()-1);
+                        .getString("coordinates");
+                coordinates = coordinates.substring(1, coordinates.length() - 1);
                 String[] point = coordinates.split(",");
                 latitude = Double.parseDouble(point[0]);
                 longitude = Double.parseDouble(point[1]);
             }
-        } catch (JSONException ignore) {
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
         }
-    }
-
-    private void init(Response res, JSONObject json) throws
-            TwitterException {
-        try {
-            user = new User(res, json.getJSONObject("user"));
-        } catch (JSONException ignore) {
-        }
-        init(json);
-        if(!json.isNull("retweeted_status")){
+        if (!json.isNull("retweeted_status")) {
             try {
-                retweetedStatus = new Status(res, json.getJSONObject("retweeted_status"));
+                retweetedStatus = new Status(json.getJSONObject("retweeted_status"));
             } catch (JSONException ignore) {
             }
         }

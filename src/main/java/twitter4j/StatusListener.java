@@ -47,7 +47,7 @@ public interface StatusListener {
      * @param numberOfLimitedStatuses an enumeration of statuses that matched the track predicate but were administratively limited.
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#TrackLimiting">Streaming API Documentation - Track Limiting</a>
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#ParsingResponses">Streaming API Documentation - Parsing Responses</a>
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#ParsingResponses">- Parsing Responses</a>
      * @see <a href="http://groups.google.co.jp/group/twitter-development-talk/browse_thread/thread/15d0504b3dd7b939">Twitter Development Talk - Track API Limit message meaning</a>
      */
     void onTrackLimitationNotice(int numberOfLimitedStatuses);
