@@ -11,4 +11,4 @@ for jar in ../lib/*.jar;do
  export CLASSPATH=$CLASSPATH:$jar
 done
 
-export MEM_ARGS="-Xms10m -Xmx10m"
+export MEM_ARGS="-Xms30m -Xmx30m"
