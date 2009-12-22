@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Device
+public final class Device
 	implements Serializable
 {
 	private static final long serialVersionUID = -258215809702057490L;
