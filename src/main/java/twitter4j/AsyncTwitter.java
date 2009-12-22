@@ -932,10 +932,10 @@ public class AsyncTwitter extends Twitter
     /**
      * {@inheritDoc}
      */
-    public void rateLimitStatusAsync(TwitterListener listener) {
+    public void getRateLimitStatusAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(RATE_LIMIT_STATUS, listener, new Object[]{}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
-                listener.gotRateLimitStatus(rateLimitStatus());
+                listener.gotRateLimitStatus(getRateLimitStatus());
             }
         });
     }

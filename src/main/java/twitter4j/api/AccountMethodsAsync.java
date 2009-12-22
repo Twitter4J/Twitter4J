@@ -43,7 +43,7 @@ public interface AccountMethodsAsync
 	 * @since Twitter4J 1.1.4
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account%C2%A0rate_limit_status</a>
 	 */
-	void rateLimitStatusAsync(TwitterListener listener);
+	void getRateLimitStatusAsync(TwitterListener listener);
 
 	/**
 	 * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.

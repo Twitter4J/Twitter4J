@@ -58,7 +58,7 @@ public interface AccountMethods
 	 * @since Twitter4J 1.1.4
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
 	 */
-	RateLimitStatus rateLimitStatus()
+	RateLimitStatus getRateLimitStatus()
 			throws TwitterException;
 
 	/**

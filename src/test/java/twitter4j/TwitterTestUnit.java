@@ -667,7 +667,7 @@ public class TwitterTestUnit extends TwitterTestBase {
     boolean ipLimitStatusAcquired;
     //need to think of a way to test this, perhaps mocking out Twitter is the way to go
     public void testRateLimitStatus() throws Exception {
-        RateLimitStatus status = twitterAPI1.rateLimitStatus();
+        RateLimitStatus status = twitterAPI1.getRateLimitStatus();
         assertTrue(10 < status.getHourlyLimit());
         assertTrue(10 < status.getRemainingHits());
 

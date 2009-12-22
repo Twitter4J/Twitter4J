@@ -773,7 +773,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     public void testRateLimitStatus() throws Exception{
-        twitterAPI1.rateLimitStatusAsync(this);
+        twitterAPI1.getRateLimitStatusAsync(this);
         waitForResponse();
         assertTrue(10 < rateLimitStatus.getHourlyLimit());
         assertTrue(10 < rateLimitStatus.getRemainingHits());
