@@ -1899,7 +1899,7 @@ public class Twitter extends TwitterSupport
     }
 
 	/*
-	Moved to interface AccountMethods and changed into an enum.
+	Moved to twitter4j.Device.
 
     public final static Device IM = new Device("im");
     public final static Device SMS = new Device("sms");
@@ -1925,7 +1925,7 @@ public class Twitter extends TwitterSupport
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_delivery_device">Twitter API Wiki / Twitter REST API Method: account update_delivery_device</a>
      */
     public User updateDeliveryDevice(Device device) throws TwitterException {
-        return new User(http.post(getBaseURL() + "account/update_delivery_device.json", new PostParameter[]{new PostParameter("device", device.name())}, true));
+        return new User(http.post(getBaseURL() + "account/update_delivery_device.json", new PostParameter[]{new PostParameter("device", device.getName())}, true));
     }
 
 

@@ -1,5 +1,6 @@
 package twitter4j.api;
 
+import twitter4j.Device;
 import twitter4j.TwitterListener;
 
 import java.io.File;
@@ -24,7 +25,7 @@ public interface AccountMethodsAsync
 	 * @since Twitter4J 1.0.4
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0update_delivery_device">Twitter API Wiki / Twitter REST API Method: account%C2%A0update_delivery_device</a>
 	 */
-	void updateDeliverlyDeviceAsync(AccountMethods.Device device, TwitterListener listener);
+	void updateDeliverlyDeviceAsync(Device device, TwitterListener listener);
 
 	/**
 	 * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.  These values are also returned in the getUserDetail() method.

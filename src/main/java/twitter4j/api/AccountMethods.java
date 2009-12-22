@@ -1,5 +1,6 @@
 package twitter4j.api;
 
+import twitter4j.Device;
 import twitter4j.RateLimitStatus;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -8,11 +9,6 @@ import java.io.File;
 
 public interface AccountMethods
 {
-	public enum Device
-	{
-		im, sms, none
-	}
-
 	/**
 	 * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not.  Use this method to test if supplied user credentials are valid.
 	 * <br>This method calls http://api.twitter.com/1/account/verify_credentials.json
