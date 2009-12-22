@@ -1,0 +1,74 @@
+package twitter4j.api;
+
+import twitter4j.TwitterListener;
+
+import java.io.File;
+
+public interface AccountMethodsAsync
+{
+	/**
+	 * Gets the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.
+	 * <br>This method calls http://api.twitter.com/1/account/rate_limit_status
+	 *
+	 * @since Twitter4J 1.1.4
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account%C2%A0rate_limit_status</a>
+	 */
+	void rateLimitStatusAsync(TwitterListener listener);
+
+	/**
+	 * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
+	 * <br>This method calls http://api.twitter.com/1/account/update_delivery_device
+	 *
+	 * @param device   new Delivery device. Must be one of: IM, SMS, NONE.
+	 * @param listener a listener object that receives the response
+	 * @since Twitter4J 1.0.4
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0update_delivery_device">Twitter API Wiki / Twitter REST API Method: account%C2%A0update_delivery_device</a>
+	 */
+	void updateDeliverlyDeviceAsync(AccountMethods.Device device, TwitterListener listener);
+
+	/**
+	 * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.  These values are also returned in the getUserDetail() method.
+	 * <br>This method calls http://api.twitter.com/1/account/update_profile_colors
+	 * @param profileBackgroundColor optional, can be null
+	 * @param profileTextColor optional, can be null
+	 * @param profileLinkColor optional, can be null
+	 * @param profileSidebarFillColor optional, can be null
+	 * @param profileSidebarBorderColor optional, can be null
+	 * @param listener a listener object that receives the response
+	 * @since Twitter4J 2.0.0
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0update_profile_colors">Twitter API Wiki / Twitter REST API Method: account%C2%A0update_profile_colors</a>
+	 */
+	void updateProfileColorsAsync(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor, TwitterListener listener);
+
+	/**
+	 * Updates the authenticating user's profile image.
+	 * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
+	 * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
+	 * @since Twitter4J 2.1.0
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile_image">Twitter API Wiki / Twitter REST API Method: account update_profile_image</a>
+	 */
+	void updateProfileImageAsync(File image, TwitterListener listener);
+
+	/**
+	 * Updates the authenticating user's profile background image.
+	 * <br>This method calls http://api.twitter.com/1/account/update_profile_background_image.json
+	 * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forceably scaled down.
+	 * @param tile If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
+	 * @since Twitter4J 2.1.0
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile_background_image">Twitter API Wiki / Twitter REST API Method: account update_profile_background_image</a>
+	 */
+	void updateProfileBackgroundImageAsync(File image, boolean tile, TwitterListener listener);
+
+	/**
+	 * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified(non-null) will be updated.
+	 *
+	 * @param name        Optional. Maximum of 20 characters.
+	 * @param email       Optional. Maximum of 40 characters. Must be a valid email address.
+	 * @param url         Optional. Maximum of 100 characters. Will be prepended with "http://" if not present.
+	 * @param location    Optional. Maximum of 30 characters. The contents are not normalized or geocoded in any way.
+	 * @param description Optional. Maximum of 160 characters.
+	 * @param listener    a listener object that receives the response
+	 * @since Twitter4J 2.0.2
+	 */
+	void updateProfileAsync(String name, String email, String url, String location, String description, TwitterListener listener);
+}
