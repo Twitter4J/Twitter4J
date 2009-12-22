@@ -88,17 +88,17 @@ public interface TimelineMethods
 
 	/**
 	 * Returns the 20 most recent statuses posted in the last 24 hours from the authenticating1 user and that user's friends.
-	 * It's also possible to request another user's friends_timeline via the id parameter below.
+	 * It's also possible to request another user's friends_timeline via the id parameter below.<br>
+     * Note: Retweets will not appear in the friends_timeline for backwards compatibility. If you want retweets included use getHomeTimeline().
 	 * <br>This method calls http://api.twitter.com/1/statuses/friends_timeline
 	 *
 	 * @return list of the Friends Timeline
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
 	 */
-	ResponseList<Status> getFriendsTimeline()
-			throws TwitterException;
+    ResponseList<Status> getFriendsTimeline() throws TwitterException;
 
-	/**
+    /**
 	 * Returns the 20 most recent statuses posted in the last 24 hours from the specified userid.
 	 * <br>This method calls http://api.twitter.com/1/statuses/friends_timeline
 	 *
