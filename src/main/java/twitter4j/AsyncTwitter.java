@@ -26,6 +26,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.api.AccountMethodsAsync;
+import twitter4j.api.BlockMethodsAsync;
+import twitter4j.api.DirectMessageMethodsAsync;
+import twitter4j.api.FavoriteMethodsAsync;
+import twitter4j.api.FriendshipMethodsAsync;
+import twitter4j.api.HelpMethodsAsync;
+import twitter4j.api.ListMembersMethodsAsync;
+import twitter4j.api.ListMethodsAsync;
+import twitter4j.api.ListSubscribersMethodsAsync;
+import twitter4j.api.LocalTrendsMethodsAsync;
+import twitter4j.api.NotificationMethodsAsync;
+import twitter4j.api.SavedSearchesMethodsAsync;
+import twitter4j.api.SearchMethodsAsync;
+import twitter4j.api.SocialGraphMethodsAsync;
+import twitter4j.api.SpamReportingMethodsAsync;
+import twitter4j.api.StatusMethodsAsync;
+import twitter4j.api.TimelineMethodsAsync;
+import twitter4j.api.UserMethodsAsync;
+
 import java.io.File;
 import java.util.Date;
 import static twitter4j.TwitterMethod.*;
@@ -37,7 +56,27 @@ import static twitter4j.TwitterMethod.*;
  * @see twitter4j.TwitterListener
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class AsyncTwitter extends Twitter {
+public class AsyncTwitter extends Twitter
+		implements
+		SearchMethodsAsync,
+		TimelineMethodsAsync,
+		StatusMethodsAsync,
+		UserMethodsAsync,
+		ListMethodsAsync,
+		ListMembersMethodsAsync,
+		ListSubscribersMethodsAsync,
+		DirectMessageMethodsAsync,
+		FriendshipMethodsAsync,
+		SocialGraphMethodsAsync,
+		AccountMethodsAsync,
+		FavoriteMethodsAsync,
+		NotificationMethodsAsync,
+		BlockMethodsAsync,
+		SpamReportingMethodsAsync,
+		SavedSearchesMethodsAsync,
+		LocalTrendsMethodsAsync,
+		HelpMethodsAsync
+{
     private static final long serialVersionUID = -2008667933225051907L;
 
     public AsyncTwitter(String id, String password) {
@@ -1678,7 +1717,6 @@ public class AsyncTwitter extends Twitter {
      * Returns a list of user objects that the authenticating user is blocking.
      * <br>This method calls http://api.twitter.com/1/blocks/blocking.xml
      *
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.4
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
      */
@@ -1695,7 +1733,6 @@ public class AsyncTwitter extends Twitter {
      * <br>This method calls http://api.twitter.com/1/blocks/blocking.xml
      *
      * @param page the number of page
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.4
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
      */
@@ -1710,7 +1747,6 @@ public class AsyncTwitter extends Twitter {
     /**
      * Returns an array of numeric user ids the authenticating user is blocking.
      * <br>This method calls http://api.twitter.com/1/blocks/blocking/ids
-     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.0.4
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking-ids">Twitter API Wiki / Twitter REST API Method: blocks blocking ids</a>
      */
