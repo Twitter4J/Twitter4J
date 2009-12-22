@@ -87,6 +87,7 @@ public final class TwitterMethod {
     public final static TwitterMethod UPDATE_STATUS = new TwitterMethod("UPDATE_STATUS");
     public final static TwitterMethod DESTROY_STATUS = new TwitterMethod("DESTROY_STATUS");
     public final static TwitterMethod RETWEET_STATUS = new TwitterMethod("RETWEET_STATUS");
+    public final static TwitterMethod RETWEETS = new TwitterMethod("RETWEETS");
 
     /*User Methods*/
     public final static TwitterMethod SHOW_USER = new TwitterMethod("SHOW_USER");

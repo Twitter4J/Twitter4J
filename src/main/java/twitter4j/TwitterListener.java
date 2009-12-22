@@ -104,6 +104,11 @@ public interface TwitterListener {
      */
     void retweetedStatus(Status retweetedStatus);
 
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    void gotRetweets(ResponseList<Status> retweets);
+
     /*User Methods*/
     void gotUserDetail(User user);
 

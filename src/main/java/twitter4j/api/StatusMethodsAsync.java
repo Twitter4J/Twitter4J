@@ -26,6 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.GeoLocation;
+import twitter4j.ResponseList;
+import twitter4j.Status;
+import twitter4j.TwitterException;
 import twitter4j.TwitterListener;
 
 /**
@@ -55,6 +59,19 @@ public interface StatusMethodsAsync
 	 */
 	void updateStatusAsync(String status, TwitterListener listener);
 
+    /**
+     * Updates the user's status asynchronously.
+     * <br>Statuses over 140 characters will be forcibly truncated.
+     * <br>This method calls http://api.twitter.com/1/statuses/update
+     *
+     * @param status the text of your status update
+     * @param location The location that this tweet refers to.
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
+     */
+    void updateStatusAsync(String status, GeoLocation location, TwitterListener listener);
+
 	/**
 	 *
 	 * Updates the user's status asynchronously
@@ -67,6 +84,20 @@ public interface StatusMethodsAsync
 	 * @since Twitter4J 2.0.1
 	 */
 	void updateStatusAsync(String status, long inReplyToStatusId, TwitterListener listener);
+
+    /**
+     * Updates the user's status.
+     * <br>Statuses over 140 characters will be forcibly truncated.
+     * <br>This method calls http://api.twitter.com/1/statuses/update
+     *
+     * @param status            the text of your status update
+     * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
+     * @param location The location that this tweet refers to.
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
+     */
+    void updateStatusAsync(String status, long inReplyToStatusId, GeoLocation location, TwitterListener listener);
 
 	/**
 	 * Destroys the status specified by the required ID parameter. asynchronously
@@ -89,5 +120,14 @@ public interface StatusMethodsAsync
 	 */
 	void retweetStatusAsync(long statusId, TwitterListener listener);
 
-	// TODO: getRetweetsAsync?
+    /**
+     * Returns up to 100 of the first retweets of a given tweet.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweets
+     *
+     * @param statusId The numerical ID of the tweet you want the retweets of.
+     * @param listener a listener object that receives the response
+     * @since Twitter4J 2.1.0
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweets">Twitter API Wiki / Twitter REST API Method: statuses retweets</a>
+     */
+    void getRetweetsAsync(long statusId, TwitterListener listener);
 }

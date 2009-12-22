@@ -133,8 +133,7 @@ public class DAOTest extends TwitterTestBase {
         assertEquals("G_Shock22", status.getInReplyToScreenName());
         assertEquals(6000444309l, status.getInReplyToStatusId());
         assertEquals(20159829, status.getInReplyToUserId());
-        assertEquals(-1.0, status.getLatitude());
-        assertEquals(-1.0, status.getLongitude());
+        assertNull(status.getGeoLocation());
         assertEquals("web", status.getSource());
         assertEquals("@G_Shock22 I smelled a roast session coming when yu said that shyt about @2koolNicia lol....", status.getText());
         assertEquals(23459577, status.getUser().getId());
@@ -151,8 +150,7 @@ public class DAOTest extends TwitterTestBase {
         assertEquals(null, status.getInReplyToScreenName());
         assertEquals(-1l, status.getInReplyToStatusId());
         assertEquals(-1, status.getInReplyToUserId());
-        assertEquals(-1.0, status.getLatitude());
-        assertEquals(-1.0, status.getLongitude());
+        assertNull(status.getGeoLocation());
         assertEquals("<a href=\"http://apiwiki.twitter.com/\" rel=\"nofollow\">API</a>", status.getSource());
         assertEquals("RT @yusukey: この前取材受けた奴 -> 次世代のシステム環境を見据えたアプリケーションサーバー製品の選択 ITpro: http://special.nikkeibp.co.jp/ts/article/0iaa/104388/", status.getText());
         assertEquals(6358482, status.getUser().getId());

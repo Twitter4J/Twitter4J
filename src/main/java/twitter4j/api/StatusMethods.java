@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.GeoLocation;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.TwitterException;
@@ -49,8 +50,8 @@ public interface StatusMethods
 
 	/**
 	 * Updates the user's status.
-	 * The text will be trimed if the length of the text is exceeding 160 characters.
-	 * <br>This method calls http://api.twitter.com/1/statuses/update
+	 * <br>Statuses over 140 characters will be forcibly truncated.
+     * <br>This method calls http://api.twitter.com/1/statuses/update
 	 *
 	 * @param status the text of your status update
 	 * @return the latest status
@@ -62,22 +63,21 @@ public interface StatusMethods
 
 	/**
 	 * Updates the user's status.
-	 * The text will be trimed if the length of the text is exceeding 160 characters.
+     * <br>Statuses over 140 characters will be forcibly truncated.
 	 * <br>This method calls http://api.twitter.com/1/statuses/update
 	 *
 	 * @param status the text of your status update
-	 * @param latitude The location's latitude that this tweet refers to.
-	 * @param longitude The location's longitude that this tweet refers to.
+	 * @param location The location that this tweet refers to.
 	 * @return the latest status
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.10
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
 	 */
-	Status updateStatus(String status, double latitude, double longitude) throws TwitterException;
+	Status updateStatus(String status, GeoLocation location) throws TwitterException;
 
 	/**
 	 * Updates the user's status.
-	 * The text will be trimed if the length of the text is exceeding 160 characters.
+     * <br>Statuses over 140 characters will be forcibly truncated.
 	 * <br>This method calls http://api.twitter.com/1/statuses/update
 	 *
 	 * @param status            the text of your status update
@@ -92,19 +92,18 @@ public interface StatusMethods
 
 	/**
 	 * Updates the user's status.
-	 * The text will be trimed if the length of the text is exceeding 160 characters.
+     * <br>Statuses over 140 characters will be forcibly truncated.
 	 * <br>This method calls http://api.twitter.com/1/statuses/update
 	 *
 	 * @param status            the text of your status update
 	 * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
-	 * @param latitude The location's latitude that this tweet refers to.
-	 * @param longitude The location's longitude that this tweet refers to.
+     * @param location The location that this tweet refers to.
 	 * @return the latest status
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.10
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
 	 */
-	Status updateStatus(String status, long inReplyToStatusId, double latitude, double longitude)
+	Status updateStatus(String status, long inReplyToStatusId, GeoLocation location)
 			throws TwitterException;
 
 	/**

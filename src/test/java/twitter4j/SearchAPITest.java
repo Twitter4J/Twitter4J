@@ -84,7 +84,7 @@ public class SearchAPITest extends TwitterTestBase {
         queryResult = unauthenticated.search(query);
         assertTrue(0 < queryResult.getTweets().size());
         query.setQuery("from:al3x");
-        query.setGeoCode(37.78233252646689,-122.39301681518555,10,Query.KILOMETERS);
+        query.setGeoCode(new GeoLocation(37.78233252646689,-122.39301681518555) ,10,Query.KILOMETERS);
         queryResult = unauthenticated.search(query);
         assertTrue(0 < queryResult.getTweets().size());
 

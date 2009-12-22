@@ -50,9 +50,8 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
     private int inReplyToUserId;
     private boolean isFavorited;
     private String inReplyToScreenName;
-    private double latitude = -1;
-    private double longitude = -1;
-    
+    private GeoLocation location = null;
+
     private Status retweetedStatus;
     private static final long serialVersionUID = 1608000492860584608L;
 
@@ -95,8 +94,8 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
                         .getString("coordinates");
                 coordinates = coordinates.substring(1, coordinates.length() - 1);
                 String[] point = coordinates.split(",");
-                latitude = Double.parseDouble(point[0]);
-                longitude = Double.parseDouble(point[1]);
+                location = new GeoLocation(Double.parseDouble(point[0]),
+                        Double.parseDouble(point[1]));
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -190,19 +189,11 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
     }
 
     /**
-     * returns The location's latitude that this tweet refers to.
-     * @since Twitter4J 2.0.10
+     * returns The location that this tweet refers to.
+     * @since Twitter4J 2.1.0
      */
-    public double getLatitude(){
-        return latitude;
-    }
-
-    /**
-     * returns The location's longitude that this tweet refers to.
-     * @since Twitter4J 2.0.10
-     */
-    public double getLongitude(){
-        return longitude;
+    public GeoLocation getGeoLocation(){
+        return location;
     }
 
     /**
@@ -288,8 +279,7 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
                 ", inReplyToUserId=" + inReplyToUserId +
                 ", isFavorited=" + isFavorited +
                 ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", location=" + location +
                 ", retweetedStatus=" + retweetedStatus +
                 ", user=" + user +
                 '}';

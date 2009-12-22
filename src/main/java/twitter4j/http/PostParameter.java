@@ -66,11 +66,6 @@ public class PostParameter implements java.io.Serializable, Comparable {
         return name;
     }
     public String getValue(){
-//http://code.google.com/p/twitter-api/issues/detail?id=889&q=oauth%20image&colspec=ID%20Stars%20Type%20Status%20Priority%20Owner%20Summary%20Opened%20Modified%20Component#c9
-// @todo        
-//        if(isFile()){
-//            return "@" + file.getName() + ";type=" + getContentType();
-//        }
         return value;
     }
     public boolean isFile(){

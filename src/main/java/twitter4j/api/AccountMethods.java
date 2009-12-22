@@ -45,7 +45,6 @@ public interface AccountMethods
 	 * @since Twitter4J 2.0.0
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0verify_credentials">Twitter API Wiki / Twitter REST API Method: account verify_credentials</a>
-     * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not.  Use this method to test if supplied user credentials are valid.
      */
     User verifyCredentials() throws TwitterException;
 

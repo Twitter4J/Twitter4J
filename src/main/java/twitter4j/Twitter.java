@@ -644,11 +644,11 @@ public class Twitter extends TwitterSupport
     /**
      * {@inheritDoc}
      */
-    public Status updateStatus(String status, double latitude, double longitude) throws TwitterException {
+    public Status updateStatus(String status, GeoLocation location) throws TwitterException {
         return new Status(http.post(getBaseURL() + "statuses/update.json",
                 new PostParameter[]{new PostParameter("status", status),
-                        new PostParameter("lat", latitude),
-                        new PostParameter("long", longitude),
+                        new PostParameter("lat", location.getLatitude()),
+                        new PostParameter("long", location.getLongitude()),
                         new PostParameter("source", source)}, true));
     }
 
@@ -664,11 +664,11 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public Status updateStatus(String status, long inReplyToStatusId
-            , double latitude, double longitude) throws TwitterException {
+            , GeoLocation location) throws TwitterException {
         return new Status(http.post(getBaseURL() + "statuses/update.json",
                 new PostParameter[]{new PostParameter("status", status),
-                        new PostParameter("lat", latitude),
-                        new PostParameter("long", longitude),
+                        new PostParameter("lat", location.getLatitude()),
+                        new PostParameter("long", location.getLongitude()),
                         new PostParameter("in_reply_to_status_id",
                                 String.valueOf(inReplyToStatusId)),
                         new PostParameter("source", source)}, true));

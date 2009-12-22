@@ -430,10 +430,32 @@ public class AsyncTwitter extends Twitter
     /**
      * {@inheritDoc}
      */
+    public void updateStatusAsync(String status, GeoLocation location, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS, listener, new Object[] {status, location}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.updatedStatus(updateStatus( (String) args[0], (GeoLocation)args[1]));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void updateStatusAsync(String status, long inReplyToStatusId, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS, listener, new Object[]{status, inReplyToStatusId}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.updatedStatus(updateStatus((String) args[0], (Long) args[1]));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void updateStatusAsync(String status, long inReplyToStatusId, GeoLocation location, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS, listener, new Object[]{status, inReplyToStatusId, location}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.updatedStatus(updateStatus((String) args[0], (Long) args[1], (GeoLocation)args[2]));
             }
         });
     }
@@ -456,6 +478,17 @@ public class AsyncTwitter extends Twitter
         getDispatcher().invokeLater(new AsyncTask(RETWEET_STATUS, listener, new Long[]{statusId}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.retweetedStatus(retweetStatus(((Long) args[0])));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetsAsync(long statusId, TwitterListener listener) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETS, listener, new Long[]{statusId}) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.gotRetweets(getRetweets((Long) args[0]));
             }
         });
     }

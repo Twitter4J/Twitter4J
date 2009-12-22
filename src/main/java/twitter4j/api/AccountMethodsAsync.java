@@ -41,7 +41,7 @@ public interface AccountMethodsAsync
 	 * <br>This method calls http://api.twitter.com/1/account/rate_limit_status
 	 *
 	 * @since Twitter4J 1.1.4
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account%C2%A0rate_limit_status</a>
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
 	 */
 	void getRateLimitStatusAsync(TwitterListener listener);
 
@@ -52,7 +52,7 @@ public interface AccountMethodsAsync
 	 * @param device   new Delivery device. Must be one of: IM, SMS, NONE.
 	 * @param listener a listener object that receives the response
 	 * @since Twitter4J 1.0.4
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0update_delivery_device">Twitter API Wiki / Twitter REST API Method: account%C2%A0update_delivery_device</a>
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0update_delivery_device">Twitter API Wiki / Twitter REST API Method: account update_delivery_device</a>
 	 */
 	void updateDeliveryDeviceAsync(Device device, TwitterListener listener);
 
@@ -66,7 +66,7 @@ public interface AccountMethodsAsync
 	 * @param profileSidebarBorderColor optional, can be null
 	 * @param listener a listener object that receives the response
 	 * @since Twitter4J 2.0.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0update_profile_colors">Twitter API Wiki / Twitter REST API Method: account%C2%A0update_profile_colors</a>
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-account%C2%A0update_profile_colors">Twitter API Wiki / Twitter REST API Method: account update_profile_colors</a>
 	 */
 	void updateProfileColorsAsync(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor, TwitterListener listener);
 

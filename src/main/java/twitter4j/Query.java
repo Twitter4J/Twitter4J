@@ -122,14 +122,13 @@ public class Query {
 
     /**
      * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
-     * @param latitude latitude
-     * @param longtitude longtitude
+     * @param location geo location
      * @param radius radius
      * @param unit Query.MILES or Query.KILOMETERS
      */
-    public void setGeoCode(double latitude, double longtitude, double radius
+    public void setGeoCode(GeoLocation location, double radius
             , String unit) {
-        this.geocode = latitude + "," + longtitude + "," + radius + unit;
+        this.geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit;
     }
     public PostParameter[] asPostParameters(){
         ArrayList<PostParameter> params = new ArrayList<PostParameter>();
