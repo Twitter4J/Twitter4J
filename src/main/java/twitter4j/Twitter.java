@@ -57,6 +57,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -238,6 +239,7 @@ public class Twitter extends TwitterSupport
      * This method automatically retrieves userId using verifyCredentials if the instance is using OAuth based authentication.
      *
      * @return userid
+	 * @throws TwitterException if verifyCredentials is throwing an exception.
      */
     private String checkUserId() throws TwitterException {
         String userId = super.getUserId();
@@ -322,9 +324,7 @@ public class Twitter extends TwitterSupport
     protected Response get(String url, PostParameter[] params, List<PostParameter> pagingParams, boolean authenticate) throws TwitterException {
         if (null != params) {
             if (null != pagingParams) {
-                for(PostParameter param : params){
-                    pagingParams.add(param);
-                }
+				pagingParams.addAll(Arrays.asList(params));
                 return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authenticate);
             } else {
                 return get(url, params, authenticate);
@@ -343,8 +343,9 @@ public class Twitter extends TwitterSupport
             Response res = event.getResponse();
             String limit = res.getResponseHeader("X-RateLimit-Limit");
             if (null != limit) {
-                int rateLimitLimit = 0, rateLimitRemaining = 0;
-                long rateLimitReset = 01;
+                int rateLimitLimit;
+				int rateLimitRemaining;
+                long rateLimitReset;
                 rateLimitLimit = Integer.parseInt(limit);
                 String remaining = res.getResponseHeader("X-RateLimit-Remaining");
                 if (null != remaining) {
@@ -374,7 +375,7 @@ public class Twitter extends TwitterSupport
         public boolean equals(Object that){
             return that instanceof MyHttpResponseListener;
         }
-    };
+    }
 
     /**
      * Returns tweets that match a specified query.
@@ -530,7 +531,7 @@ public class Twitter extends TwitterSupport
     public ResponseList<Status> getPublicTimeline(long sinceID) throws
             TwitterException {
         return Status.createStatusList(get(getBaseURL() +
-                "statuses/public_timeline.json", null, new Paging((long) sinceID).asPostParameterList(Paging.S)
+                "statuses/public_timeline.json", null, new Paging(sinceID).asPostParameterList(Paging.S)
                 , false));
     }
 
@@ -1177,7 +1178,7 @@ public class Twitter extends TwitterSupport
         }
         return new UserList(http.post(getBaseURL() + checkUserId() +
                                             "/lists.json",
-                                            postParams.toArray(new PostParameter[0]),
+											postParams.toArray(new PostParameter[postParams.size()]),
                                             true));
     }
 
@@ -1203,7 +1204,7 @@ public class Twitter extends TwitterSupport
             postParams.add(new PostParameter("description", description));
         }
         return new UserList(http.post(getBaseURL() + checkUserId() + "/lists/"
-                + listId + ".json", postParams.toArray(new PostParameter[0]), true));
+                + listId + ".json", postParams.toArray(new PostParameter[postParams.size()]), true));
     }
 
     /**
@@ -2018,10 +2019,12 @@ public class Twitter extends TwitterSupport
      */
     private void checkFileValidity(File image) throws TwitterException {
         if (!image.exists()) {
-            new TwitterException(new FileNotFoundException(image +" is not found."));
+			//noinspection ThrowableInstanceNeverThrown
+			throw new TwitterException(new FileNotFoundException(image +" is not found."));
         }
         if (!image.isFile()) {
-            new TwitterException(new IOException(image +" is not a file."));
+			//noinspection ThrowableInstanceNeverThrown
+            throw new TwitterException(new IOException(image +" is not a file."));
         }
     }
 
