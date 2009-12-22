@@ -469,7 +469,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         } catch (TwitterException te) {
         }
 
-        twitterAPI1.updateDeliveryDevice(Twitter.SMS);
+        twitterAPI1.updateDeliveryDevice(Twitter.Device.sms);
         followEachOther();
         assertTrue(twitterAPI1.existsFriendship(id1.name, id2.name));
         assertFalse(twitterAPI1.existsFriendship(id1.name, "al3x"));

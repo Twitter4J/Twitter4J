@@ -26,6 +26,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.api.AccountMethods;
+import twitter4j.api.BlockMethods;
+import twitter4j.api.DirectMessageMethods;
+import twitter4j.api.FavoriteMethods;
+import twitter4j.api.FriendshipMethods;
+import twitter4j.api.HelpMethods;
+import twitter4j.api.ListMembersMethods;
+import twitter4j.api.ListMethods;
+import twitter4j.api.ListSubscribersMethods;
+import twitter4j.api.LocalTrendsMethods;
+import twitter4j.api.NotificationMethods;
+import twitter4j.api.SavedSearchesMethods;
+import twitter4j.api.SearchMethods;
+import twitter4j.api.SocialGraphMethods;
+import twitter4j.api.SpamReportingMethods;
+import twitter4j.api.StatusMethods;
+import twitter4j.api.TimelineMethods;
+import twitter4j.api.UserMethods;
 import twitter4j.http.AccessToken;
 import twitter4j.http.HttpClient;
 import twitter4j.http.HttpResponseEvent;
@@ -48,7 +66,27 @@ import java.util.TimeZone;
  * A java reporesentation of the <a href="http://apiwiki.twitter.com/">Twitter API</a>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Twitter extends TwitterSupport implements java.io.Serializable {
+public class Twitter extends TwitterSupport
+		implements java.io.Serializable,
+		SearchMethods,
+		TimelineMethods,
+		StatusMethods,
+		UserMethods,
+		ListMethods,
+		ListMembersMethods,
+		ListSubscribersMethods,
+		DirectMessageMethods,
+		FriendshipMethods,
+		SocialGraphMethods,
+		AccountMethods,
+		FavoriteMethods,
+		NotificationMethods,
+		BlockMethods,
+		SpamReportingMethods,
+		SavedSearchesMethods,
+		LocalTrendsMethods,
+		HelpMethods
+{
     private static final long serialVersionUID = -1486360080128882436L;
 
     public Twitter() {
@@ -1859,6 +1897,9 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
         return new RateLimitStatus(http.get(getBaseURL() + "account/rate_limit_status.json", null != getUserId() && null != getPassword()));
     }
 
+	/*
+	Moved to interface AccountMethods and changed into an enum.
+
     public final static Device IM = new Device("im");
     public final static Device SMS = new Device("sms");
     public final static Device NONE = new Device("none");
@@ -1870,6 +1911,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
             DEVICE = device;
         }
     }
+    */
 
     /**
      * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
@@ -1882,7 +1924,7 @@ public class Twitter extends TwitterSupport implements java.io.Serializable {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_delivery_device">Twitter API Wiki / Twitter REST API Method: account update_delivery_device</a>
      */
     public User updateDeliveryDevice(Device device) throws TwitterException {
-        return new User(http.post(getBaseURL() + "account/update_delivery_device.json", new PostParameter[]{new PostParameter("device", device.DEVICE)}, true));
+        return new User(http.post(getBaseURL() + "account/update_delivery_device.json", new PostParameter[]{new PostParameter("device", device.name())}, true));
     }
 
 
