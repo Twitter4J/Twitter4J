@@ -54,7 +54,7 @@ public class AsyncTwitter extends Twitter {
      * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      */
-    public void searchAcync(Query query, TwitterListener listener) {
+    public void searchAsync(Query query, TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(SEARCH, listener, new Object[]{query}) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
                 listener.searched(search((Query) args[0]));
@@ -1792,7 +1792,7 @@ public class AsyncTwitter extends Twitter {
         showUserAsync(getUserId(), listener);
     }
 
-    abstract class AsyncTask implements Runnable {
+	abstract class AsyncTask implements Runnable {
         TwitterListener listener;
         Object[] args;
         TwitterMethod method;

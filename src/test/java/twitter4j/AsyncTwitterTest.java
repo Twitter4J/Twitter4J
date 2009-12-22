@@ -797,7 +797,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     public void testSearchAsync() throws Exception {
         String queryStr = "test source:twitter4j";
         Query query = new Query(queryStr);
-        twitterAPI1.searchAcync(query, this);
+        twitterAPI1.searchAsync(query, this);
         waitForResponse();
         assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
