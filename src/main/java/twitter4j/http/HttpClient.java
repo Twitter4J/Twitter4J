@@ -112,6 +112,7 @@ public class HttpClient implements java.io.Serializable {
         setUserAgent(null);
         setOAuthConsumer(null, null);
         setRequestHeader("Accept-Encoding", "gzip");
+        setRequestHeader("Connection", "close");
     }
 
     public void setUserId(String userId) {
