@@ -462,11 +462,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertSerializable(statuses);
     }
 
-    public void testGetUserDetail() throws Exception{
+    public void testShowUser() throws Exception{
         twitterAPI1.showUserAsync(id1.name,this);
         waitForResponse();
         User user = this.user;
-        assertEquals(id1.name, user.getName());
+        assertEquals(id1.name, user.getScreenName());
         assertTrue(0 <= user.getFavouritesCount());
         assertTrue(0 <= user.getFollowersCount());
         assertTrue(0 <= user.getFriendsCount());
@@ -765,7 +765,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 //        user detail = twitterAPI2.showUser(id1.name);
 //        assertTrue(detail.isNotificationEnabled());
         waitForResponse();
-        assertEquals(id1.name, user.getName());
+        assertEquals(id1.name, user.getScreenName());
 
 //        te = null;
 //        twitterAPI2.createFriendshipAsync(id2.name, this);

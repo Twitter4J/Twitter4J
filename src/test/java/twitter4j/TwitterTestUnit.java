@@ -89,7 +89,6 @@ public class TwitterTestUnit extends TwitterTestBase {
 
     public void testShowUser() throws Exception {
         User user = twitterAPI1.showUser(id1.name);
-        assertEquals(id1.name, user.getName());
         assertEquals(id1.name, user.getScreenName());
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());
