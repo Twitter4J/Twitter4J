@@ -60,9 +60,21 @@ public class Query {
      * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      */
-
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    /**
+     * Sets the query string
+     * @param query the query string
+     * @return the instance
+     * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
+     * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
+     * @since Twitter4J 2.1.0
+     */
+    public Query query(String query) {
+        setQuery(query);
+        return this;
     }
 
     public String getLang() {
@@ -77,6 +89,17 @@ public class Query {
         this.lang = lang;
     }
 
+    /**
+     * restricts tweets to the given language, given by an <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1 code</a>
+     * @param lang an <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1 code</a>
+     * @return the instance
+     * @since Twitter4J 2.1.0
+     */
+    public Query lang(String lang) {
+        setLang(lang);
+        return this;
+    }
+
     public int getRpp() {
         return rpp;
     }
@@ -87,6 +110,17 @@ public class Query {
      */
     public void setRpp(int rpp) {
         this.rpp = rpp;
+    }
+
+    /**
+     * sets the number of tweets to return per page, up to a max of 100
+     * @param rpp the number of tweets to return per page
+     * @return the instance
+     * @since Twitter4J 2.1.0
+     */
+    public Query rpp(int rpp) {
+        setRpp(rpp);
+        return this;
     }
 
     public int getPage() {
@@ -101,6 +135,17 @@ public class Query {
         this.page = page;
     }
 
+    /**
+     * sets the page number (starting at 1) to return, up to a max of roughly 1500 results
+     * @param page the page number (starting at 1) to return
+     * @return the instance
+     * @since Twitter4J 2.1.0
+     */
+    public Query page(int page) {
+        setPage(page);
+        return this;
+    }
+
     public long getSinceId() {
         return sinceId;
     }
@@ -111,6 +156,17 @@ public class Query {
      */
     public void setSinceId(long sinceId) {
         this.sinceId = sinceId;
+    }
+
+    /**
+     * returns tweets with status ids greater than the given id.
+     * @param sinceId returns tweets with status ids greater than the given id
+     * @return the instance
+     * @since Twitter4J 2.1.0
+     */
+    public Query sinceId(long sinceId) {
+        setSinceId(sinceId);
+        return this;
     }
 
     public String getGeocode() {
@@ -129,6 +185,20 @@ public class Query {
     public void setGeoCode(GeoLocation location, double radius
             , String unit) {
         this.geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit;
+    }
+
+    /**
+     * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
+     * @param location geo location
+     * @param radius radius
+     * @param unit Query.MILES or Query.KILOMETERS
+     * @return the instance
+     * @since Twitter4J 2.1.0
+     */
+    public Query geoCode(GeoLocation location, double radius
+            , String unit) {
+        setGeoCode(location, radius, unit);
+        return this;
     }
     public PostParameter[] asPostParameters(){
         ArrayList<PostParameter> params = new ArrayList<PostParameter>();

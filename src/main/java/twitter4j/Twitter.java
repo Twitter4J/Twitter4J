@@ -350,13 +350,15 @@ public class Twitter extends TwitterSupport
         private static final long serialVersionUID = 5385389730784875997L;
 
         public void httpResponseReceived(HttpResponseEvent event) {
-            Response res = event.getResponse();
-            RateLimitStatus rateLimitStatus = RateLimitStatus.createFromResponseHeader(res);
-            if (null != rateLimitStatus) {
-                if (event.isAuthenticated()) {
-                    fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
-                } else {
-                    fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
+            if (0 < (accountRateLimitStatusListeners.size() + ipRateLimitStatusListeners.size())) {
+                Response res = event.getResponse();
+                RateLimitStatus rateLimitStatus = RateLimitStatus.createFromResponseHeader(res);
+                if (null != rateLimitStatus) {
+                    if (event.isAuthenticated()) {
+                        fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
+                    } else {
+                        fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
+                    }
                 }
             }
         }
