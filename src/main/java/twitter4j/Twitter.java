@@ -1210,7 +1210,7 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public RateLimitStatus getRateLimitStatus() throws TwitterException {
-        return RateLimitStatus.createFromJSONResponse(http.get(getBaseURL() + "account/rate_limit_status.json", null != getUserId() && null != getPassword()));
+        return RateLimitStatus.createFromJSONResponse(http.get(getBaseURL() + "account/rate_limit_status.json", http.isAuthenticationEnabled()));
     }
 
     /**
