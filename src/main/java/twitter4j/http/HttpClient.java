@@ -635,21 +635,20 @@ public class HttpClient implements java.io.Serializable {
         log(requestMethod.name() + " ", url);
 
         if (authenticated) {
-            if (basic == null && oauth == null) {
-            }
             String authorization = null;
             if (null != oauth) {
                 // use OAuth
                 authorization = oauth.generateAuthorizationHeader(requestMethod.name(), url, params, oauthToken);
+                log("Authorization: " + authorization);
             } else if (null != basic) {
                 // use Basic Auth
                 authorization = this.basic;
+                log("Authorization: Basic ************************");
             } else {
                 throw new IllegalStateException(
                         "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
             }
             connection.addRequestProperty("Authorization", authorization);
-            log("Authorization: " + authorization);
         }
         for (String key : requestHeaders.keySet()) {
             connection.addRequestProperty(key, requestHeaders.get(key));
