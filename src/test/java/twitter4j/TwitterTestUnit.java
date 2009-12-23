@@ -420,7 +420,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertFalse(rel1.isTargetFollowedBySource());
 
         //  2) best_friend1 is following and followed by best_friend2
-        Relationship rel2 = twitterAPI1.showFriendship(bestFriend1, bestFriend2);
+        Relationship rel2 = twitterAPI1.showFriendship(bestFriend1.name, bestFriend2.name);
 
         // test second precondition
         assertNotNull(rel2);
@@ -479,8 +479,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         }
 
         twitterAPI1.updateDeliveryDevice(Device.SMS);
-        followEachOther();
-        assertTrue(twitterAPI1.existsFriendship(id1.name, id2.name));
+        assertTrue(twitterAPIBestFriend1.existsFriendship(bestFriend1.name, bestFriend2.name));
         assertFalse(twitterAPI1.existsFriendship(id1.name, "al3x"));
 
         User eu;
@@ -520,19 +519,6 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertEquals("0000ff", eu.getProfileLinkColor());
         assertEquals("e0ff92", eu.getProfileSidebarFillColor());
         assertEquals("87bc44", eu.getProfileSidebarBorderColor());
-    }
-
-    private void followEachOther() {
-        try {
-            twitterAPI1.createFriendship(id2.name);
-        } catch (TwitterException te) {
-            te.printStackTrace();
-        }
-        try {
-            twitterAPI2.createFriendship(id1.name);
-        } catch (TwitterException te) {
-            te.printStackTrace();
-        }
     }
 
     public void testAccountProfileImageUpdates() throws Exception {

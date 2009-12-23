@@ -33,8 +33,17 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 public class TwitterTestBase extends TestCase {
-    protected Twitter twitterAPI1, twitterAPI2, twitterAPI3, twitterAPI4, unauthenticated;
+    public TwitterTestBase(String name) {
+        super(name);
+    }
+
+    protected Twitter twitterAPI1, twitterAPI2, twitterAPI3, twitterAPI4,
+            unauthenticated, twitterAPIBestFriend1, twitterAPIBestFriend2;
     protected Properties p = new Properties();
+
+    protected String numberId, numberPass, followsOneWay;
+    protected int id1id, numberIdId;
+    protected TestUserInfo id1, id2, id3, id4,bestFriend1, bestFriend2;
 
     protected class TestUserInfo {
         public String name;
@@ -48,13 +57,6 @@ public class TwitterTestBase extends TestCase {
         }
     }
 
-    public TwitterTestBase(String name) {
-        super(name);
-    }
-
-    protected String numberId, numberPass, followsOneWay, bestFriend1, bestFriend2;
-    protected int id1id, numberIdId;
-    protected TestUserInfo id1, id2, id3, id4;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -63,6 +65,8 @@ public class TwitterTestBase extends TestCase {
         id2 = new TestUserInfo("id2", p);
         id3 = new TestUserInfo("id3", p);
         id4 = new TestUserInfo("id4", p);
+        id4 = new TestUserInfo("bestFriend1", p);
+        id4 = new TestUserInfo("bestFriend2", p);
 
         numberId = p.getProperty("numberid");
         numberPass = p.getProperty("numberpass");
@@ -75,10 +79,10 @@ public class TwitterTestBase extends TestCase {
         twitterAPI2 = new Twitter(id2.name, id2.pass);
         twitterAPI3 = new Twitter(id3.name, id3.pass);
         twitterAPI4 = new Twitter(id4.name, id4.pass);
+        twitterAPIBestFriend1 = new Twitter(bestFriend1.name, bestFriend1.pass);
+        twitterAPIBestFriend2 = new Twitter(bestFriend2.name, bestFriend2.pass);
         unauthenticated = new Twitter();
         followsOneWay = p.getProperty("followsOneWay");
-        bestFriend1 = p.getProperty("bestFriend1");
-        bestFriend2 = p.getProperty("bestFriend2");
     }
 
     protected void tearDown() throws Exception {
