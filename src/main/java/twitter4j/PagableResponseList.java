@@ -45,8 +45,8 @@ public class PagableResponseList<T extends TwitterResponse> extends
 
     PagableResponseList(int size, JSONObject json, Response res) {
         super(size, res);
-        this.previousCursor = TwitterResponseImpl.getChildLong("previous_cursor", json);
-        this.nextCursor = TwitterResponseImpl.getChildLong("next_cursor", json);
+        this.previousCursor = ParseUtil.getLong("previous_cursor", json);
+        this.nextCursor = ParseUtil.getLong("next_cursor", json);
     }
 
     public boolean hasPrevious() {

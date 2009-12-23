@@ -31,15 +31,16 @@ import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+import static twitter4j.ParseUtil.*;
 /**
  * A data class representing search API response
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 
-public class QueryResult extends TwitterResponseImpl {
+public class QueryResult implements Serializable {
 
     private long sinceId;
     private long maxId;
@@ -53,7 +54,6 @@ public class QueryResult extends TwitterResponseImpl {
     private static final long serialVersionUID = -9059136565234613286L;
 
     /*package*/ QueryResult(Response res) throws TwitterException {
-        super(res);
         JSONObject json = res.asJSONObject();
         try {
             sinceId = json.getLong("since_id");

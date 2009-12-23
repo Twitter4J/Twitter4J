@@ -31,10 +31,8 @@ import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
+import static twitter4j.ParseUtil.*;
 /**
  * A data class representing a Saved Search
  *
@@ -54,22 +52,17 @@ public class SavedSearch extends TwitterResponseImpl {
         init(res.asJSONObject());
     }
 
-    /*package*/ SavedSearch(Response res, JSONObject json) throws TwitterException {
-        super(res);
-        init(json);
-    }
-
     /*package*/ SavedSearch(JSONObject savedSearch) throws TwitterException {
         init(savedSearch);
     }
 
-    /*package*/ static List<SavedSearch> createSavedSearchList(Response res) throws TwitterException {
+    /*package*/ static ResponseList<SavedSearch> createSavedSearchList(Response res) throws TwitterException {
             JSONArray json = res.asJSONArray();
-            List<SavedSearch> savedSearches;
+            ResponseList<SavedSearch> savedSearches;
             try {
-                savedSearches = new ArrayList<SavedSearch>(json.length());
+                savedSearches = new ResponseList<SavedSearch>(json.length(), res);
                 for(int i=0;i<json.length();i++){
-                    savedSearches.add(new SavedSearch(res,json.getJSONObject(i)));
+                    savedSearches.add(new SavedSearch(json.getJSONObject(i)));
                 }
                 return savedSearches;
             } catch (JSONException jsone) {

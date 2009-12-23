@@ -26,16 +26,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class TwitterMethod {
+public final class TwitterMethod implements Serializable {
     String name;
+    private static final long serialVersionUID = 5776633408291563058L;
+
+    private TwitterMethod() {
+        throw new AssertionError();
+    }
 
     private TwitterMethod(String name) {
         this.name = name;
+        instances.put(name, this);
     }
+
+    private static final Map<String, TwitterMethod> instances = new HashMap<String, TwitterMethod>();
 
     public final String name() {
         return name;
@@ -64,8 +77,18 @@ public final class TwitterMethod {
                 "name='" + name + '\'' +
                 '}';
     }
+
+    private static TwitterMethod getInstance(String name){
+        return instances.get(name);
+    }
+
+    // assures equality after deserialization
+    private Object readResolve() throws ObjectStreamException {
+        return getInstance(name);
+    }
+
     /*Search API Methods*/
-    public final static TwitterMethod SEARCH = new TwitterMethod("SEARCH");
+    public final static TwitterMethod SEARCH = getInstance("SEARCH");
 
     public final static TwitterMethod TRENDS = new TwitterMethod("TRENDS");
     public final static TwitterMethod CURRENT_TRENDS = new TwitterMethod("CURRENT_TRENDS");

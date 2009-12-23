@@ -28,8 +28,10 @@ package twitter4j;
 
 import twitter4j.http.HttpClient;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
@@ -55,22 +57,22 @@ public class DAOTest extends TwitterTestBase {
         // empty User list
         List<User> users = User.createUserList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
         assertTrue(users.size() == 0);
-        trySerializeable(users);
+        assertDeserializedFormIsEqual(users);
 
         // empty Status list
         List<Status> statuses = Status.createStatusList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
         assertTrue(statuses.size() == 0);
-        trySerializeable(statuses);
+        assertDeserializedFormIsEqual(statuses);
 
         // empty DirectMessages list
         List<DirectMessage> directMessages = DirectMessage.createDirectMessageList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/friends/T4J_hudson.json"));
         assertTrue(directMessages.size() == 0);
-        trySerializeable(directMessages);
+        assertDeserializedFormIsEqual(directMessages);
 
         // empty Trends list
         List<Trends> trends = Trends.createTrendsList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/trends/daily-empty.json"));
         assertTrue(trends.size() == 0);
-        trySerializeable(trends);
+        assertDeserializedFormIsEqual(trends);
 
     }
 
@@ -113,14 +115,14 @@ public class DAOTest extends TwitterTestBase {
         assertEquals(-1, user.getStatusInReplyToUserId());
         assertFalse(user.isStatusFavorited());
         assertNull(user.getStatusInReplyToScreenName());
-        trySerializeable(user);
+        assertDeserializedFormIsEqual(user);
 
         List<User> users;
 
         // User list
         users = User.createUserList(http.get("http://yusuke.homeip.net/twitter4j/en/testcases/statuses/followers/T4J_hudson.json"));
         assertTrue(users.size() > 0);
-        trySerializeable(users);
+        assertDeserializedFormIsEqual(users);
     }
 
     public void testStatusAsJSON() throws Exception {
@@ -138,7 +140,7 @@ public class DAOTest extends TwitterTestBase {
         assertEquals("@G_Shock22 I smelled a roast session coming when yu said that shyt about @2koolNicia lol....", status.getText());
         assertEquals(23459577, status.getUser().getId());
         assertFalse(status.isRetweet());
-        trySerializeable(statuses);
+        assertDeserializedFormIsEqual(statuses);
     }
 
     public void testRetweetStatusAsJSON() throws Exception {
@@ -155,7 +157,7 @@ public class DAOTest extends TwitterTestBase {
         assertEquals("RT @yusukey: この前取材受けた奴 -> 次世代のシステム環境を見据えたアプリケーションサーバー製品の選択 ITpro: http://special.nikkeibp.co.jp/ts/article/0iaa/104388/", status.getText());
         assertEquals(6358482, status.getUser().getId());
         assertTrue(status.isRetweet());
-        trySerializeable(status);
+        assertDeserializedFormIsEqual(status);
     }
 
     public void testDirectMessagesAsJSON() throws Exception {
@@ -171,11 +173,58 @@ public class DAOTest extends TwitterTestBase {
         assertEquals(6377362,dm.getSenderId());
         assertEquals("twit4j2",dm.getSenderScreenName());
         assertEquals("Tue Jul 21 20:55:39 KST 2009:directmessage test",dm.getText());
-        trySerializeable(directMessages);
+        assertDeserializedFormIsEqual(directMessages);
     }
 
-    private void trySerializeable(Object obj) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream(new ByteArrayOutputStream());
+    public void testTwitterMethod() throws Exception {
+        assertDeserializedFormIsSingleton(TwitterMethod.ADD_LIST_MEMBER);
+        assertDeserializedFormIsSingleton(TwitterMethod.BLOCKING_USERS);
+    }
+
+    public void testDevice() throws Exception {
+        assertDeserializedFormIsSingleton(Device.IM);
+        assertDeserializedFormIsSingleton(Device.SMS);
+        assertDeserializedFormIsSingleton(Device.NONE);
+    }
+
+    /**
+     *
+     * @param obj the object to be asserted
+     * @return the deserialized object
+     * @throws Exception in the case the object is not (de)serializable
+     */
+    public static Object assertDeserializedFormIsEqual(Object obj) throws Exception {
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
         oos.writeObject(obj);
+        byteOutputStream.close();
+        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteOutputStream.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(byteInputStream);
+        Object that = ois.readObject();
+        byteInputStream.close();
+        ois.close();
+        assertEquals(obj,that);
+        return that;
+    }
+
+    /**
+     *
+     * @param obj the object to be asserted
+     * @return the deserialized object
+     * @throws Exception in the case the object is not (de)serializable
+     */
+    public static Object assertDeserializedFormIsSingleton(Object obj) throws Exception {
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
+        oos.writeObject(obj);
+        byteOutputStream.close();
+        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteOutputStream.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(byteInputStream);
+        Object that = ois.readObject();
+        byteInputStream.close();
+        ois.close();
+        assertEquals(obj,that);
+        assertTrue(obj == that);
+        return that;
     }
 }

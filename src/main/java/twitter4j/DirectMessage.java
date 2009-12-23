@@ -31,10 +31,8 @@ import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
+import static twitter4j.ParseUtil.*;
 /**
  * A data class representing sent/received direct message.
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -51,20 +49,19 @@ public class DirectMessage extends TwitterResponseImpl implements java.io.Serial
 
     /*package*/DirectMessage(Response res) throws TwitterException {
         super(res);
-        init(res, res.asJSONObject());
+        init(res.asJSONObject());
     }
-    /*package*/DirectMessage(Response res, JSONObject json) throws TwitterException {
-        super(res);
-        init(res, json);
+    /*package*/DirectMessage(JSONObject json) throws TwitterException {
+        init(json);
     }
-    private void init(Response res, JSONObject json) throws TwitterException{
-        id = getChildInt("id", json);
-        text = getChildText("text", json);
-        sender_id = getChildInt("sender_id", json);
-        recipient_id = getChildInt("recipient_id", json);
-        created_at = getChildDate("created_at", json);
-        sender_screen_name = getChildText("sender_screen_name", json);
-        recipient_screen_name = getChildText("recipient_screen_name", json);
+    private void init(JSONObject json) throws TwitterException{
+        id = getInt("id", json);
+        text = ParseUtil.getText("text", json);
+        sender_id = getInt("sender_id", json);
+        recipient_id = getInt("recipient_id", json);
+        created_at = getDate("created_at", json);
+        sender_screen_name = ParseUtil.getText("sender_screen_name", json);
+        recipient_screen_name = ParseUtil.getText("recipient_screen_name", json);
         try {
             sender = new User(json.getJSONObject("sender"));
             recipient = new User(json.getJSONObject("recipient"));
@@ -123,7 +120,7 @@ public class DirectMessage extends TwitterResponseImpl implements java.io.Serial
             int size = list.length();
             ResponseList<DirectMessage> directMessages = new ResponseList<DirectMessage>(size, res);
             for (int i = 0; i < size; i++) {
-                directMessages.add(new DirectMessage(res, list.getJSONObject(i)));
+                directMessages.add(new DirectMessage(list.getJSONObject(i)));
             }
             return directMessages;
         } catch (JSONException jsone) {

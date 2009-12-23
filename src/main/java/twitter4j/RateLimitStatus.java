@@ -30,36 +30,69 @@ import twitter4j.http.Response;
 import twitter4j.org.json.JSONObject;
 
 import java.util.Date;
-
+import static twitter4j.ParseUtil.*;
 /**
  * A data class representing Twitter rate limit status
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class RateLimitStatus extends TwitterResponseImpl {
-    private int remainingHits;
-    private int hourlyLimit;
+public class RateLimitStatus {
+    private int remainingHits;//"X-RateLimit-Remaining"
+    private int hourlyLimit;//"X-RateLimit-Limit"
     private int resetTimeInSeconds;
-    private Date resetTime;
+    private Date resetTime;//new Date("X-RateLimit-Reset")
     private static final long serialVersionUID = 933996804168952707L;
 
-    /* package */ RateLimitStatus(Response res) throws TwitterException {
-        super(res);
-        JSONObject json = res.asJSONObject();
-        remainingHits = getChildInt("remaining_hits", json);
-        hourlyLimit = getChildInt("hourly_limit", json);
-        resetTimeInSeconds = getChildInt("reset_time_in_seconds", json);
-        resetTime = getChildDate("reset_time", json, "EEE MMM d HH:mm:ss Z yyyy");
+    // disabling the default constructor
+    private RateLimitStatus() {
+        throw new AssertionError();
+    }
+    private RateLimitStatus(int hourlyLimit, int remainingHits, int resetTimeInSeconds, Date resetTime){
+        this.hourlyLimit = hourlyLimit;
+        this.remainingHits = remainingHits;
+        this.resetTimeInSeconds = resetTimeInSeconds;
+        this.resetTime = resetTime;
     }
 
-    public RateLimitStatus(int rateLimitLimit, int rateLimitRemaining,
-			long rateLimitReset) {
-    	hourlyLimit = rateLimitLimit;
-		remainingHits = rateLimitRemaining;
-		resetTime = new Date(rateLimitReset * 1000);
-		resetTimeInSeconds = (int)rateLimitReset;
-	}
+    static RateLimitStatus createFromJSONResponse(Response res) throws TwitterException {
+        JSONObject json = res.asJSONObject();
+        return new RateLimitStatus(getInt("hourly_limit", json),
+                getInt("remaining_hits", json),
+                getInt("reset_time_in_seconds", json),
+                getDate("reset_time", json, "EEE MMM d HH:mm:ss Z yyyy"));
+    }
 
-	public int getRemainingHits() {
+    static RateLimitStatus createFromResponseHeader(Response res) {
+        int remainingHits;//"X-RateLimit-Remaining"
+        int hourlyLimit;//"X-RateLimit-Limit"
+        int resetTimeInSeconds;//not included in the response header. Need to be calculated.
+        Date resetTime;//new Date("X-RateLimit-Reset")
+
+
+        String limit = res.getResponseHeader("X-RateLimit-Limit");
+        if(null != limit){
+            hourlyLimit = Integer.parseInt(limit);
+        }else{
+            return null;
+        }
+        String remaining = res.getResponseHeader("X-RateLimit-Remaining");
+        if(null != remaining){
+            remainingHits = Integer.parseInt(remaining);
+        }else{
+            return null;
+        }
+        String reset = res.getResponseHeader("X-RateLimit-Reset");
+        if(null != reset){
+            long longReset =  Long.parseLong(reset);
+            resetTime = new Date(longReset);
+            resetTimeInSeconds =  (int)(longReset - System.currentTimeMillis()) / 1000;
+        }else{
+            return null;
+        }
+        return new RateLimitStatus(hourlyLimit, remainingHits, resetTimeInSeconds, resetTime);
+    }
+
+    public int getRemainingHits() {
         return remainingHits;
     }
 

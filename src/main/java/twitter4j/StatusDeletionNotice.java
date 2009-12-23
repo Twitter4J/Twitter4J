@@ -47,8 +47,8 @@ public class StatusDeletionNotice implements Serializable {
     /*package*/ StatusDeletionNotice(JSONObject json) throws JSONException {
         //{"delete":{"status":{"id":4821647803,"user_id":16346228}}}
         JSONObject status = json.getJSONObject("delete").getJSONObject("status");
-        this.statusId = TwitterResponseImpl.getChildLong("id", status);
-        this.userId = TwitterResponseImpl.getChildInt("user_id", status);
+        this.statusId = ParseUtil.getLong("id", status);
+        this.userId = ParseUtil.getInt("user_id", status);
     }
 
     public long getStatusId() {

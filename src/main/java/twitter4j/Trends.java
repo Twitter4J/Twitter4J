@@ -31,20 +31,21 @@ import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
+import static twitter4j.ParseUtil.*;
 /**
  * A data class representing Treands.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.2
  */
-public class Trends extends TwitterResponseImpl implements Comparable<Trends> {
+public class Trends implements Comparable<Trends> , Serializable {
     private Date asOf;
     private Date trendAt;
     private Trend[] trends;
@@ -54,9 +55,8 @@ public class Trends extends TwitterResponseImpl implements Comparable<Trends> {
         return this.trendAt.compareTo(that.trendAt);
     }
 
-    /*package*/ Trends(Response res, Date asOf, Date trendAt, Trend[] trends)
+    /*package*/ Trends(Date asOf, Date trendAt, Trend[] trends)
             throws TwitterException {
-        super(res);
         this.asOf = asOf;
         this.trendAt = trendAt;
         this.trends = trends;
@@ -68,7 +68,7 @@ public class Trends extends TwitterResponseImpl implements Comparable<Trends> {
         JSONObject json = res.asJSONObject();
         List<Trends> trends;
         try {
-            Date asOf = parseDate(json.getString("as_of"));
+            Date asOf = parseTrendsDate(json.getString("as_of"));
             JSONObject trendsJson = json.getJSONObject("trends");
             trends = new ArrayList<Trends>(trendsJson.length());
             Iterator ite = trendsJson.keys();
@@ -78,15 +78,15 @@ public class Trends extends TwitterResponseImpl implements Comparable<Trends> {
                 Trend[] trendsArray = jsonArrayToTrendArray(array);
                 if (key.length() == 19) {
                     // current trends
-                    trends.add(new Trends(res, asOf, parseDate(key
+                    trends.add(new Trends(asOf, parseDate(key
                             , "yyyy-MM-dd HH:mm:ss"), trendsArray));
                 } else if (key.length() == 16) {
                     // daily trends
-                    trends.add(new Trends(res, asOf, parseDate(key
+                    trends.add(new Trends(asOf, parseDate(key
                             , "yyyy-MM-dd HH:mm"), trendsArray));
                 } else if (key.length() == 10) {
                     // weekly trends
-                    trends.add(new Trends(res, asOf, parseDate(key
+                    trends.add(new Trends(asOf, parseDate(key
                             , "yyyy-MM-dd"), trendsArray));
                 }
             }
@@ -101,16 +101,16 @@ public class Trends extends TwitterResponseImpl implements Comparable<Trends> {
     static Trends createTrends(Response res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         try {
-            Date asOf = parseDate(json.getString("as_of"));
+            Date asOf = parseTrendsDate(json.getString("as_of"));
             JSONArray array = json.getJSONArray("trends");
             Trend[] trendsArray = jsonArrayToTrendArray(array);
-            return new Trends(res, asOf, asOf, trendsArray);
+            return new Trends(asOf, asOf, trendsArray);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
         }
     }
 
-    private static Date parseDate(String asOfStr) throws TwitterException {
+    private static Date parseTrendsDate(String asOfStr) throws TwitterException {
         Date parsed;
         if (asOfStr.length() == 10) {
             parsed = new Date(Long.parseLong(asOfStr) * 1000);

@@ -29,13 +29,15 @@ package twitter4j;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Date;
+import static twitter4j.ParseUtil.*;
 
 /**
  * A data class representing a Tweet in the search response
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Tweet extends TwitterResponseImpl {
+public class Tweet implements Serializable {
     private String text;
     private int toUserId = -1;
     private String toUser = null;

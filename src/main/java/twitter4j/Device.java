@@ -5,63 +5,61 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Device
-	implements Serializable
-{
-	private static final long serialVersionUID = -258215809702057490L;
+/**
+ * @author Joern Huxhorn - jhuxhorn at googlemail.com
+ */
+public final class Device implements Serializable {
+    private static final long serialVersionUID = -258215809702057490L;
 
-	private static final Map<String, Device> instances=new HashMap<String, Device>();
+    private static final Map<String, Device> instances = new HashMap<String, Device>();
 
-	public static final Device IM = new Device("im");
-	public static final Device SMS = new Device("sms");
-	public static final Device NONE = new Device("none");
+    public static final Device IM = new Device("im");
+    public static final Device SMS = new Device("sms");
+    public static final Device NONE = new Device("none");
 
-	private final String name;
+    private final String name;
 
-	public static Device getInstance(String name)
-	{
-		return instances.get(name);
-	}
+    private Device() {
+        throw new AssertionError();
+    }
 
-	private Device(String name) {
-		this.name = name;
-		instances.put(name, this);
-	}
+    private Device(String name) {
+        this.name = name;
+        instances.put(name, this);
+    }
 
-	public String getName()
-	{
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public boolean equals(Object o)
-	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		Device device = (Device) o;
+        Device device = (Device) o;
 
-		if (!name.equals(device.name)) return false;
+        if (!name.equals(device.name)) return false;
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return name.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 
-	private Object readResolve()
-    		throws ObjectStreamException
-	{
-		return getInstance(name);
-	}
+    private static Device getInstance(String name) {
+        return instances.get(name);
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        return getInstance(name);
+    }
 
 }

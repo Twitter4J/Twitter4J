@@ -50,7 +50,7 @@ public class IDs extends TwitterResponseImpl implements CursorSupport {
     /*package*/ static IDs getFriendsIDs(Response res) throws TwitterException {
         IDs friendsIDs = new IDs(res);
         JSONObject json = res.asJSONObject();
-        JSONArray idList = null;
+        JSONArray idList;
         try {
             idList = json.getJSONArray("ids");
             friendsIDs.ids = new int[idList.length()];
@@ -61,8 +61,8 @@ public class IDs extends TwitterResponseImpl implements CursorSupport {
                     throw new TwitterException("Twitter API returned malformed response: " + json, nfe);
                 }
             }
-            friendsIDs.previousCursor = getChildLong("previous_cursor", json);
-            friendsIDs.nextCursor = getChildLong("next_cursor", json);
+            friendsIDs.previousCursor = ParseUtil.getLong("previous_cursor", json);
+            friendsIDs.nextCursor = ParseUtil.getLong("next_cursor", json);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }

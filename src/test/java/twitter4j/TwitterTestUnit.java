@@ -270,9 +270,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertEquals(52, status.getUser().getId());
         Status status2 = unauthenticated.showStatus(1000l);
         assertEquals(52, status2.getUser().getId());
-        assertTrue(50 < status.getRateLimitLimit());
-        assertTrue(1 < status.getRateLimitRemaining());
-        assertTrue(1 < status.getRateLimitReset());
+        assertNotNull(status.getRateLimitStatus());
 
         status2 = unauthenticated.showStatus(999383469l);
         assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3", status2.getText());

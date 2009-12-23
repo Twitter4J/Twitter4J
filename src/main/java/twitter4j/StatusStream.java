@@ -35,8 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import static twitter4j.TwitterResponseImpl.*;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
@@ -78,7 +76,7 @@ public class StatusStream {
                     } else if (!json.isNull("delete")) {
                         listener.onDeletionNotice(new StatusDeletionNotice(json));
                     } else if (!json.isNull("limit")) {
-                        listener.onTrackLimitationNotice(getChildInt("track", json.getJSONObject("limit")));
+                        listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
                     }
                 } catch (JSONException ex) {
                     listener.onException(ex);

@@ -29,7 +29,7 @@ package twitter4j;
 import twitter4j.http.Response;
 import twitter4j.org.json.JSONObject;
 import twitter4j.org.json.JSONException;
-
+import static twitter4j.ParseUtil.*;
 /**
  * A class that has detailed information about a relationship between two users
  * @author Perry Sakkaris - psakkaris at gmail.com
@@ -74,14 +74,14 @@ public class Relationship extends TwitterResponseImpl implements java.io.Seriali
             JSONObject relationship = json.getJSONObject("relationship");
             JSONObject sourceJson = relationship.getJSONObject("source");
             JSONObject targetJson = relationship.getJSONObject("target");
-            sourceUserId = getChildInt("id", sourceJson);
-            targetUserId = getChildInt("id", targetJson);
-            sourceUserScreenName = getChildText("screen_name", sourceJson);
-            targetUserScreenName = getChildText("screen_name", targetJson);
-            sourceBlockingTarget = getChildBoolean("blocking", sourceJson);
-            sourceFollowingTarget = getChildBoolean("following", sourceJson);
-            sourceFollowedByTarget = getChildBoolean("followed_by", sourceJson);
-            sourceNotificationsEnabled = getChildBoolean("notifications_enabled", sourceJson);
+            sourceUserId = getInt("id", sourceJson);
+            targetUserId = getInt("id", targetJson);
+            sourceUserScreenName = getText("screen_name", sourceJson);
+            targetUserScreenName = getText("screen_name", targetJson);
+            sourceBlockingTarget = getBoolean("blocking", sourceJson);
+            sourceFollowingTarget = getBoolean("following", sourceJson);
+            sourceFollowedByTarget = getBoolean("followed_by", sourceJson);
+            sourceNotificationsEnabled = getBoolean("notifications_enabled", sourceJson);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }

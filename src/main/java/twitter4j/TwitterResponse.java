@@ -35,8 +35,11 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface TwitterResponse extends java.io.Serializable {
-
-    public int getRateLimitLimit() ;
-    public int getRateLimitRemaining();
-    public long getRateLimitReset() ;
+    /**
+     * Returns the current rate limit status if available.
+     *
+     * @return current rate limit status
+     * @since Twitter4J 2.1.0
+     */
+    RateLimitStatus getRateLimitStatus();
 }

@@ -31,9 +31,8 @@ import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import static twitter4j.ParseUtil.*;
 
 /**
  * A data class representing one single status of a user.
@@ -60,27 +59,21 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
         init(res.asJSONObject());
     }
 
-    /*package*/Status(Response res, JSONObject json) throws
-            TwitterException {
-        super(res);
-        init(json);
-    }
-
     /*package*/ Status(JSONObject json) throws TwitterException, JSONException {
         super();
         init(json);
     }
 
     private void init(JSONObject json) throws TwitterException {
-        id = getChildLong("id", json);
-        text = getChildText("text", json);
-        source = getChildText("source", json);
-        createdAt = getChildDate("created_at", json);
-        isTruncated = getChildBoolean("truncated", json);
-        inReplyToStatusId = getChildLong("in_reply_to_status_id", json);
-        inReplyToUserId = getChildInt("in_reply_to_user_id", json);
-        isFavorited = getChildBoolean("favorited", json);
-        inReplyToScreenName = getChildText("in_reply_to_screen_name", json);
+        id = getLong("id", json);
+        text = ParseUtil.getText("text", json);
+        source = ParseUtil.getText("source", json);
+        createdAt = getDate("created_at", json);
+        isTruncated = getBoolean("truncated", json);
+        inReplyToStatusId = getLong("in_reply_to_status_id", json);
+        inReplyToUserId = getInt("in_reply_to_user_id", json);
+        isFavorited = getBoolean("favorited", json);
+        inReplyToScreenName = ParseUtil.getText("in_reply_to_screen_name", json);
         try {
             if (!json.isNull("user")) {
                 user = new User(json.getJSONObject("user"));
@@ -240,7 +233,7 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
             int size = list.length();
             ResponseList<Status> statuses = new ResponseList<Status>(size, res);
             for (int i = 0; i < size; i++) {
-                statuses.add(new Status(res, list.getJSONObject(i)));
+                statuses.add(new Status(list.getJSONObject(i)));
             }
             return statuses;
         } catch (JSONException jsone) {

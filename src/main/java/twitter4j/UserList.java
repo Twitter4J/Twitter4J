@@ -63,13 +63,6 @@ public class UserList extends TwitterResponseImpl implements java.io.Serializabl
 
     /*package*/
 
-    UserList(Response res, JSONObject json) throws TwitterException {
-        super(res);
-        init(json);
-    }
-
-    /*package*/
-
     UserList(JSONObject json) throws TwitterException {
         super();
         init(json);
@@ -195,7 +188,7 @@ public class UserList extends TwitterResponseImpl implements java.io.Serializabl
             PagableResponseList<UserList> users =
                     new PagableResponseList<UserList>(size, json, res);
             for (int i = 0; i < size; i++) {
-                users.add(new UserList(res, list.getJSONObject(i)));
+                users.add(new UserList(list.getJSONObject(i)));
             }
             return users;
         } catch (JSONException jsone) {

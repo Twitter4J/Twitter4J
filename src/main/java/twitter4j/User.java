@@ -34,6 +34,7 @@ import twitter4j.org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
+import static twitter4j.ParseUtil.*;
 
 /**
  * A data class representing Basic user information element
@@ -83,11 +84,6 @@ public class User extends TwitterResponseImpl implements java.io.Serializable {
     /*package*/User(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
-    }
-
-    /*package*/User(Response res, JSONObject json) throws TwitterException {
-        super(res);
-        init(json);
     }
 
     /*package*/User(JSONObject json) throws TwitterException {
@@ -238,7 +234,7 @@ public class User extends TwitterResponseImpl implements java.io.Serializable {
             PagableResponseList<User> users =
                     new PagableResponseList<User>(size, json, res);
             for (int i = 0; i < size; i++) {
-                users.add(new User(res, list.getJSONObject(i)));
+                users.add(new User(list.getJSONObject(i)));
             }
             return users;
         } catch (JSONException jsone) {
@@ -254,7 +250,7 @@ public class User extends TwitterResponseImpl implements java.io.Serializable {
             ResponseList<User> users =
                     new ResponseList<User>(size, res);
             for (int i = 0; i < size; i++) {
-                users.add(new User(res, list.getJSONObject(i)));
+                users.add(new User(list.getJSONObject(i)));
             }
             return users;
         } catch (JSONException jsone) {

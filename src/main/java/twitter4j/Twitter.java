@@ -340,29 +340,14 @@ public class Twitter extends TwitterSupport
 
         public void httpResponseReceived(HttpResponseEvent event) {
             Response res = event.getResponse();
-            String limit = res.getResponseHeader("X-RateLimit-Limit");
-            if (null != limit) {
-                int rateLimitLimit;
-				int rateLimitRemaining;
-                long rateLimitReset;
-                rateLimitLimit = Integer.parseInt(limit);
-                String remaining = res.getResponseHeader("X-RateLimit-Remaining");
-                if (null != remaining) {
-                    rateLimitRemaining = Integer.parseInt(remaining);
-                    String reset = res.getResponseHeader("X-RateLimit-Reset");
-                    if (null != reset) {
-                        rateLimitReset = Long.parseLong(reset);
-                        RateLimitStatus rateLimitStatus = new RateLimitStatus(rateLimitLimit,
-                                rateLimitRemaining, rateLimitReset);
-                        if (event.isAuthenticated()) {
-                            fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
-                        } else {
-                            fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
-                        }
-                    }
+            RateLimitStatus rateLimitStatus = RateLimitStatus.createFromResponseHeader(res);
+            if (null != rateLimitStatus) {
+                if (event.isAuthenticated()) {
+                    fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
+                } else {
+                    fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
                 }
             }
-
         }
 
         private void fireRateLimitStatusListenerUpdate(List<RateLimitStatusListener> listeners,RateLimitStatus status){
@@ -1212,7 +1197,7 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public RateLimitStatus getRateLimitStatus() throws TwitterException {
-        return new RateLimitStatus(http.get(getBaseURL() + "account/rate_limit_status.json", null != getUserId() && null != getPassword()));
+        return RateLimitStatus.createFromJSONResponse(http.get(getBaseURL() + "account/rate_limit_status.json", null != getUserId() && null != getPassword()));
     }
 
     /**
