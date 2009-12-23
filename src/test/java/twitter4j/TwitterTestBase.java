@@ -65,8 +65,8 @@ public class TwitterTestBase extends TestCase {
         id2 = new TestUserInfo("id2", p);
         id3 = new TestUserInfo("id3", p);
         id4 = new TestUserInfo("id4", p);
-        id4 = new TestUserInfo("bestFriend1", p);
-        id4 = new TestUserInfo("bestFriend2", p);
+        bestFriend1 = new TestUserInfo("bestFriend1", p);
+        bestFriend2 = new TestUserInfo("bestFriend2", p);
 
         numberId = p.getProperty("numberid");
         numberPass = p.getProperty("numberpass");
