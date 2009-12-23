@@ -32,7 +32,7 @@ import junit.framework.TestCase;
 import java.io.FileInputStream;
 import java.util.Properties;
 
-public class TwitterTestBase  extends TestCase {
+public class TwitterTestBase extends TestCase {
     protected Twitter twitterAPI1, twitterAPI2, unauthenticated, twitterAPI4;
     protected Properties p = new Properties();
 
@@ -40,16 +40,18 @@ public class TwitterTestBase  extends TestCase {
         public String name;
         public String pass;
         public int id;
-        TestUserInfo(String name, Properties props){
+
+        TestUserInfo(String name, Properties props) {
             this.name = p.getProperty(name);
             this.pass = p.getProperty(name + "pass");
-            this.id = Integer.valueOf( p.getProperty(name + "id"));
+            this.id = Integer.valueOf(p.getProperty(name + "id"));
         }
     }
 
     public TwitterTestBase(String name) {
         super(name);
     }
+
     protected String numberId, numberPass, followsOneWay, bestFriend1, bestFriend2;
     protected int id1id, numberIdId;
     protected TestUserInfo id1, id2, id3, id4;

@@ -214,16 +214,7 @@ public class DAOTest extends TwitterTestBase {
      * @throws Exception in the case the object is not (de)serializable
      */
     public static Object assertDeserializedFormIsSingleton(Object obj) throws Exception {
-        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
-        oos.writeObject(obj);
-        byteOutputStream.close();
-        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteOutputStream.toByteArray());
-        ObjectInputStream ois = new ObjectInputStream(byteInputStream);
-        Object that = ois.readObject();
-        byteInputStream.close();
-        ois.close();
-        assertEquals(obj,that);
+        Object that = assertDeserializedFormIsEqual(obj);
         assertTrue(obj == that);
         return that;
     }

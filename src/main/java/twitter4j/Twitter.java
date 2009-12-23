@@ -1484,26 +1484,20 @@ public class Twitter extends TwitterSupport
 
     @Override
     public boolean equals(Object o) {
+        super.equals(o);
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Twitter)) return false;
 
         Twitter twitter = (Twitter) o;
 
-        if (!getBaseURL().equals(twitter.getBaseURL())) return false;
         if (!format.equals(twitter.format)) return false;
-        if (!http.equals(twitter.http)) return false;
-        if (!getSearchBaseURL().equals(twitter.getSearchBaseURL())) return false;
-        if (!source.equals(twitter.source)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = http.hashCode();
-        result = 31 * result + source.hashCode();
-        result = 31 * result + format.hashCode();
-        return result;
+        return format.hashCode();
     }
 
     @Override

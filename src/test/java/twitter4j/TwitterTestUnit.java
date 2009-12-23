@@ -32,6 +32,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import static twitter4j.DAOTest.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -63,6 +64,12 @@ public class TwitterTestUnit extends TwitterTestBase {
     public void testGetHomeTimeline() throws Exception {
         List<Status> status = twitterAPI1.getHomeTimeline();
         assertTrue(0 < status.size());
+    }
+    public void testSerializability() throws Exception {
+        Twitter deserialized = (Twitter)assertDeserializedFormIsEqual(twitterAPI1);
+        assertEquals(deserialized.getUserId(), twitterAPI1.getUserId());
+        assertEquals(deserialized.getSource(), twitterAPI1.getSource());
+        assertDeserializedFormIsEqual(this.unauthenticated);
     }
 
     public void testGetFriendsTimeline() throws Exception {

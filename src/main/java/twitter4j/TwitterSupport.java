@@ -28,19 +28,21 @@ package twitter4j;
 
 import twitter4j.http.HttpClient;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*protected*/ class TwitterSupport {
+/*protected*/ class TwitterSupport implements Serializable {
     protected HttpClient http = new HttpClient();
     protected String source = Configuration.getSource();
     protected final boolean USE_SSL;
 
     protected List<RateLimitStatusListener> accountRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     protected List<RateLimitStatusListener> ipRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
+    private static final long serialVersionUID = -4779804628175934804L;
 
     /*package*/ TwitterSupport(){
         this(null, null);
