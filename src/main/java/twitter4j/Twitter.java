@@ -87,6 +87,9 @@ public class Twitter extends TwitterSupport
         HelpMethods {
     private static final long serialVersionUID = -1486360080128882436L;
 
+    /**
+     * Creates an unauthenticated Twitter instance
+     */
     public Twitter() {
         super();
         HttpResponseListener httpResponseListener = new MyHttpResponseListener();
@@ -97,9 +100,14 @@ public class Twitter extends TwitterSupport
         http.setAccessTokenURL(Configuration.getScheme() + "twitter.com/oauth/access_token");
     }
 
-    public Twitter(String id, String password) {
+    /**
+     * Creates a Twitter instance with supplied id
+     * @param screenName the screen name of the user
+     * @param password the password of the user
+     */
+    public Twitter(String screenName, String password) {
         this();
-        setUserId(id);
+        setUserId(screenName);
         setPassword(password);
     }
 
@@ -231,17 +239,23 @@ public class Twitter extends TwitterSupport
     }
 
     /**
-     * Returns authenticating userid.<br>
+     * Returns authenticating user's screen name.<br>
      * This method automatically retrieves userId using verifyCredentials if the instance is using OAuth based authentication.
      *
-     * @return userid
+     * @return the authenticating screen name
 	 * @throws TwitterException if verifyCredentials is throwing an exception.
+     * @throws IllegalStateException if no credentials are supplied
      */
-    private String checkUserId() throws TwitterException {
+    protected String getScreenName() throws TwitterException , IllegalStateException{
         String userId = super.getUserId();
-        if(null == userId && http.isAuthenticationEnabled()){
-            userId = this.verifyCredentials().getName();
+        if ((null == userId && http.isAuthenticationEnabled()) || -1 != userId.indexOf("@")) {
+            // retrieve the screen name if this instance is authenticated with OAuth or email address
+            userId = this.verifyCredentials().getScreenName();
             setUserId(userId);
+        }
+        if(null == userId){
+            throw new IllegalStateException(
+                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
         }
         return userId;
     }
@@ -803,7 +817,7 @@ public class Twitter extends TwitterSupport
         if (description != null) {
             postParams.add(new PostParameter("description", description));
         }
-        return new UserList(http.post(getBaseURL() + checkUserId() +
+        return new UserList(http.post(getBaseURL() + getScreenName() +
                                             "/lists.json",
 											postParams.toArray(new PostParameter[postParams.size()]),
                                             true));
@@ -812,32 +826,32 @@ public class Twitter extends TwitterSupport
     /**
      * {@inheritDoc}
      */
-    public UserList updateUserList(int listId, String name, boolean isPublicList, String description) throws TwitterException {
+    public UserList updateUserList(int listId, String newListName, boolean isPublicList, String newDescription) throws TwitterException {
         List<PostParameter> postParams = new ArrayList<PostParameter>();
-        if (name != null) {
-            postParams.add(new PostParameter("name", name));
+        if (newListName != null) {
+            postParams.add(new PostParameter("name", newListName));
         }
         postParams.add(new PostParameter("mode", isPublicList ? "public" : "private"));
-        if (description != null) {
-            postParams.add(new PostParameter("description", description));
+        if (newDescription != null) {
+            postParams.add(new PostParameter("description", newDescription));
         }
-        return new UserList(http.post(getBaseURL() + checkUserId() + "/lists/"
+        return new UserList(http.post(getBaseURL() + getScreenName() + "/lists/"
                 + listId + ".json", postParams.toArray(new PostParameter[postParams.size()]), true));
     }
 
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<UserList> getUserLists(String user, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor) throws TwitterException {
         return UserList.createListList(get(getBaseURL() +
-                user + "/lists.json?cursor=" + cursor, true));
+                listOwnerScreenName + "/lists.json?cursor=" + cursor, true));
     }
 
     /**
      * {@inheritDoc}
      */
-    public UserList showUserList(String user, int id) throws TwitterException {
-        return new UserList(get(getBaseURL() + user + "/lists/"
+    public UserList showUserList(String listOwnerScreenName, int id) throws TwitterException {
+        return new UserList(get(getBaseURL() + listOwnerScreenName + "/lists/"
                 + id + ".json", true));
     }
 
@@ -845,15 +859,15 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public UserList deleteUserList(int listId) throws TwitterException {
-        return new UserList(http.delete(getBaseURL() + checkUserId() +
+        return new UserList(http.delete(getBaseURL() + getScreenName() +
                 "/lists/" + listId + ".json", true));
     }
 
     /**
      * {@inheritDoc}
      */
-    public ResponseList<Status> getUserListStatuses(String user, int id, Paging paging) throws TwitterException {
-        return Status.createStatusList(get(getBaseURL() + user +
+    public ResponseList<Status> getUserListStatuses(String listOwnerScreenName, int id, Paging paging) throws TwitterException {
+        return Status.createStatusList(get(getBaseURL() + listOwnerScreenName +
                 "/lists/" + id + "/statuses.json", new PostParameter[0],
                 paging.asPostParameterList(Paging.SMCP, Paging.PER_PAGE), true));
     }
@@ -861,17 +875,17 @@ public class Twitter extends TwitterSupport
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<UserList> getUserListMemberships(String user, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(String listOwnerScreenName, long cursor) throws TwitterException {
         return UserList.createListList(get(getBaseURL() +
-                user + "/lists/memberships.json?cursor=" + cursor, true));
+                listOwnerScreenName + "/lists/memberships.json?cursor=" + cursor, true));
     }
 
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<UserList> getUserListSubscriptions(String user, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor) throws TwitterException {
         return UserList.createListList(get(getBaseURL() +
-                user + "/lists/subscriptions.json?cursor=" + cursor, true));
+                listOwnerScreenName + "/lists/subscriptions.json?cursor=" + cursor, true));
     }
 
     /*List Members Methods*/
@@ -879,17 +893,17 @@ public class Twitter extends TwitterSupport
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<User> getUserListMembers(String user, int listId
+    public PagableResponseList<User> getUserListMembers(String listOwnerScreenName, int listId
             , long cursor) throws TwitterException {
         return User.createPagableUserList(get(getBaseURL() +
-                user + "/" + listId + "/members.json?cursor=" + cursor, true));
+                listOwnerScreenName + "/" + listId + "/members.json?cursor=" + cursor, true));
     }
 
     /**
      * {@inheritDoc}
      */
     public UserList addUserListMember(int listId, int userId) throws TwitterException {
-        return new UserList(http.post(getBaseURL() + checkUserId() +
+        return new UserList(http.post(getBaseURL() + getScreenName() +
                 "/" + listId + "/members.json?id=" + userId, true));
     }
 
@@ -897,15 +911,15 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public UserList deleteUserListMember(int listId, int userId) throws TwitterException {
-        return new UserList(http.delete(getBaseURL() + checkUserId() +
+        return new UserList(http.delete(getBaseURL() + getScreenName() +
                 "/" + listId + "/members.json?id=" + userId, true));
     }
 
     /**
      * {@inheritDoc}
      */
-    public User checkUserListMembership(String listOwner, int listId, int userId) throws TwitterException {
-        return new User(get(getBaseURL() + listOwner + "/" + listId
+    public User checkUserListMembership(String listOwnerScreenName, int listId, int userId) throws TwitterException {
+        return new User(get(getBaseURL() + listOwnerScreenName + "/" + listId
                 + "/members/"+ userId +".json", true));
     }
 
@@ -914,33 +928,33 @@ public class Twitter extends TwitterSupport
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<User> getUserListSubscribers(String listOwner
+    public PagableResponseList<User> getUserListSubscribers(String listOwnerScreenName
             , int listId, long cursor) throws TwitterException {
         return User.createPagableUserList(get(getBaseURL() +
-                listOwner + "/" + listId + "/subscribers.json?cursor=" + cursor, true));
+                listOwnerScreenName + "/" + listId + "/subscribers.json?cursor=" + cursor, true));
     }
 
     /**
      * {@inheritDoc}
      */
-    public UserList subscribeUserList(String listOwner, int listId) throws TwitterException {
-        return new UserList(http.post(getBaseURL() + listOwner +
+    public UserList subscribeUserList(String listOwnerScreenName, int listId) throws TwitterException {
+        return new UserList(http.post(getBaseURL() + listOwnerScreenName +
                 "/" + listId + "/subscribers.json", true));
     }
 
     /**
      * {@inheritDoc}
      */
-    public UserList unsubscribeUserList(String listOwner, int listId) throws TwitterException {
-        return new UserList(http.delete(getBaseURL() + listOwner +
+    public UserList unsubscribeUserList(String listOwnerScreenName, int listId) throws TwitterException {
+        return new UserList(http.delete(getBaseURL() + listOwnerScreenName +
                 "/" + listId + "/subscribers.json?id=" + verifyCredentials().getId(), true));
     }
 
     /**
      * {@inheritDoc}
      */
-    public User checkUserListSubscription(String listOwner, int listId, int userId) throws TwitterException {
-        return new User(get(getBaseURL() + listOwner + "/" + listId
+    public User checkUserListSubscription(String listOwnerScreenName, int listId, int userId) throws TwitterException {
+        return new User(get(getBaseURL() + listOwnerScreenName + "/" + listId
                 + "/subscribers/" + userId + ".json", true));
     }
 

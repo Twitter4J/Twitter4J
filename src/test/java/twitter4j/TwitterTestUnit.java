@@ -142,15 +142,20 @@ public class TwitterTestUnit extends TwitterTestBase {
             twitterAPI1.deleteUserList(alist.getId());
         }
 
-
         /*List Methods*/
-        UserList userList = twitterAPI1.createUserList("testpoint1", false, null);
+        UserList userList;
+        //ensuring createUserList works in the case an email is specified a userid
+        userList = twitterAPI3.createUserList("api3 is email", false, null);
+        twitterAPI3.deleteUserList(userList.getId());
+        userList = twitterAPI1.createUserList("testpoint1", false, "description1");
         assertNotNull(userList);
         assertEquals("testpoint1", userList.getName());
+        assertEquals("description1", userList.getDescription());
 
-        userList = twitterAPI1.updateUserList(userList.getId(), "testpoint2", true, null);
+        userList = twitterAPI1.updateUserList(userList.getId(), "testpoint2", true, "description2");
         assertNotNull(userList);
         assertEquals("testpoint2", userList.getName());
+        assertEquals("description2", userList.getDescription());
 
 
         userLists = twitterAPI1.getUserLists(id1.name, -1l);
@@ -603,7 +608,7 @@ public class TwitterTestUnit extends TwitterTestBase {
             assertEquals(403, te.getStatusCode());
         }
         user = twitterAPI2.createFriendship(id1.name, true);
-        assertEquals(id1.name, user.getName());
+        assertEquals(id1.name, user.getScreenName());
         // the Twitter API is not returning appropriate notifications value
         // http://code.google.com/p/twitter-api/issues/detail?id=474
 //        User detail = twitterAPI2.showUser(id1);

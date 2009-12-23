@@ -33,7 +33,7 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 public class TwitterTestBase extends TestCase {
-    protected Twitter twitterAPI1, twitterAPI2, unauthenticated, twitterAPI4;
+    protected Twitter twitterAPI1, twitterAPI2, twitterAPI3, twitterAPI4, unauthenticated;
     protected Properties p = new Properties();
 
     protected class TestUserInfo {
@@ -69,16 +69,13 @@ public class TwitterTestBase extends TestCase {
         id1id = Integer.valueOf(p.getProperty("id1id"));
         numberIdId = Integer.valueOf(p.getProperty("numberidid"));
 
-        twitterAPI1 = new Twitter(id1.name, id1.pass);
 //        twitterAPI1.setRetryCount(5);
 //        twitterAPI1.setRetryIntervalSecs(5);
+        twitterAPI1 = new Twitter(id1.name, id1.pass);
         twitterAPI2 = new Twitter(id2.name, id2.pass);
+        twitterAPI3 = new Twitter(id3.name, id3.pass);
         twitterAPI4 = new Twitter(id4.name, id4.pass);
-//        twitterAPI2.setRetryCount(5);
-//        twitterAPI2.setRetryIntervalSecs(5);
         unauthenticated = new Twitter();
-//        unauthenticated.setRetryCount(5);
-//        unauthenticated.setRetryIntervalSecs(5);
         followsOneWay = p.getProperty("followsOneWay");
         bestFriend1 = p.getProperty("bestFriend1");
         bestFriend2 = p.getProperty("bestFriend2");

@@ -56,41 +56,41 @@ public interface ListMethods
 	 * Updates the specified list.
 	 * <br>This method calls http://api.twitter.com/1/user/lists/id.json
 	 * @param listId The id of the list to update.
-	 * @param name What you'd like to change the list's name to.
+	 * @param newListName What you'd like to change the list's name to.
 	 * @param isPublicList Whether your list is public or private. Optional. Values can be public or private. Lists are public by default if no mode is specified.
-	 * @param description What you'd like to change the list description to.
+	 * @param newDescription What you'd like to change the list description to.
 	 * @return the updated list
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-lists-id">Twitter REST API Method: POST lists id</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	UserList updateUserList(int listId, String name, boolean isPublicList, String description)
+	UserList updateUserList(int listId, String newListName, boolean isPublicList, String newDescription)
 			throws TwitterException;
 
 	/**
 	 * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
 	 * <br>This method calls http://api.twitter.com/1/user/lists.json
-	 * @param user The specified user
+     * @param listOwnerScreenName The screen name of the list owner
 	 * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
 	 * @return the list of lists
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-lists">Twitter REST API Method: GET lists</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	PagableResponseList<UserList> getUserLists(String user, long cursor)
+	PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor)
 			throws TwitterException;
 
 	/**
 	 * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
 	 * <br>This method calls http://api.twitter.com/1/user/lists/id.json
-	 * @param user The name of the authenticated user creating the list
+     * @param listOwnerScreenName The screen name of the list owner
 	 * @param id The id of the list to show
 	 * @return the specified list
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-id">Twitter REST API Method: GET list id</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	UserList showUserList(String user, int id)
+	UserList showUserList(String listOwnerScreenName, int id)
 			throws TwitterException;
 
 	/**
@@ -108,7 +108,7 @@ public interface ListMethods
 	/**
 	 * Show tweet timeline for members of the specified list.
 	 * <br>http://api.twitter.com/1/user/lists/list_id/statuses.json
-	 * @param user The name of the authenticated user deleting the list
+     * @param listOwnerScreenName The screen name of the list owner
 	 * @param id The id of the list to delete
 	 * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
 	 * @return list of statuses for members of the specified list
@@ -116,32 +116,32 @@ public interface ListMethods
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-statuses">Twitter REST API Method: GET list statuses</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	ResponseList<Status> getUserListStatuses(String user, int id, Paging paging)
+	ResponseList<Status> getUserListStatuses(String listOwnerScreenName, int id, Paging paging)
 			throws TwitterException;
 
 	/**
 	 * List the lists the specified user has been added to.
 	 * <br>This method calls http://api.twitter.com/1/user/lists/memberships.json
-	 * @param user The specified user
+     * @param listOwnerScreenName The screen name of the list owner
 	 * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
 	 * @return the list of lists
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-memberships">Twitter REST API Method: GET /:user/lists/memberships</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	PagableResponseList<UserList> getUserListMemberships(String user, long cursor)
+	PagableResponseList<UserList> getUserListMemberships(String listOwnerScreenName, long cursor)
 			throws TwitterException;
 
 	/**
 	 * List the lists the specified user follows.
 	 * <br>This method calls http://api.twitter.com/1/[user]/lists/subscriptions.json
-	 * @param user The specified user
+     * @param listOwnerScreenName The screen name of the list owner
 	 * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
 	 * @return the list of lists
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-subscriptions">Twitter REST API Method: GET list subscriptions</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	PagableResponseList<UserList> getUserListSubscriptions(String user, long cursor)
+	PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor)
 			throws TwitterException;
 }
