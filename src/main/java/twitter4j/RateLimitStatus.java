@@ -32,16 +32,17 @@ import twitter4j.org.json.JSONObject;
 import java.util.Date;
 import static twitter4j.ParseUtil.*;
 /**
- * A data class representing Twitter rate limit status
+ * A data class representing Twitter REST API's rate limit status
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Twitter API Wiki / Rate limiting</a>
  */
-public class RateLimitStatus {
-    private int remainingHits;//"X-RateLimit-Remaining"
-    private int hourlyLimit;//"X-RateLimit-Limit"
+public class RateLimitStatus implements java.io.Serializable{
+    private int remainingHits;
+    private int hourlyLimit;
     private int resetTimeInSeconds;
-    private Date resetTime;//new Date("X-RateLimit-Reset")
-    private static final long serialVersionUID = 933996804168952707L;
+    private Date resetTime;
+    private static final long serialVersionUID = 753839064833831619L;
 
     // disabling the default constructor
     private RateLimitStatus() {
@@ -83,7 +84,7 @@ public class RateLimitStatus {
         }
         String reset = res.getResponseHeader("X-RateLimit-Reset");
         if(null != reset){
-            long longReset =  Long.parseLong(reset);
+            long longReset =  Long.parseLong(reset) * 1000;
             resetTime = new Date(longReset);
             resetTimeInSeconds =  (int)(longReset - System.currentTimeMillis()) / 1000;
         }else{
@@ -92,22 +93,74 @@ public class RateLimitStatus {
         return new RateLimitStatus(hourlyLimit, remainingHits, resetTimeInSeconds, resetTime);
     }
 
+    /**
+     * Returns the remaining number of API requests available.<br>
+     * This value is identical to the &quot;X-RateLimit-Remaining&quot; response header.
+     * @return the remaining number of API requests available
+     */
     public int getRemainingHits() {
         return remainingHits;
     }
 
+    /**
+     * Returns the current limit in effect<br>
+     * This value is identical to the &quot;X-RateLimit-Limit&quot; response header.
+     * @return the current limit in effect
+     */
     public int getHourlyLimit() {
         return hourlyLimit;
     }
 
+    /**
+     * Returns the seconds the current rate limiting period ends.<br>
+     * @return the seconds the current rate limiting period ends
+     * @since Twitter4J 2.0.9
+     */
     public int getResetTimeInSeconds() {
         return resetTimeInSeconds;
     }
 
     /**
+     * Returns the time the current rate limiting period ends.<br>
+     * This value is a java.util.Date-typed variation of the &quot;X-RateLimit-Reset&quot; response header.
+     * @return the time the current rate limiting period ends
      * @since Twitter4J 2.0.9
      */
     public Date getResetTime() {
         return resetTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RateLimitStatus)) return false;
+
+        RateLimitStatus that = (RateLimitStatus) o;
+
+        if (hourlyLimit != that.hourlyLimit) return false;
+        if (remainingHits != that.remainingHits) return false;
+        if (resetTimeInSeconds != that.resetTimeInSeconds) return false;
+        if (!resetTime.equals(that.resetTime)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = remainingHits;
+        result = 31 * result + hourlyLimit;
+        result = 31 * result + resetTimeInSeconds;
+        result = 31 * result + resetTime.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RateLimitStatus{" +
+                "remainingHits=" + remainingHits +
+                ", hourlyLimit=" + hourlyLimit +
+                ", resetTimeInSeconds=" + resetTimeInSeconds +
+                ", resetTime=" + resetTime +
+                '}';
     }
 }
