@@ -818,9 +818,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
         List<Tweet> tweets = queryResult.getTweets();
         assertTrue(1 <= tweets.size());
-        assertNotNull(tweets.get(0).getText());
-        assertNull(tweets.get(0).getToUser());
-        assertEquals(-1, tweets.get(0).getToUserId());
         assertNotNull(tweets.get(0).getCreatedAt());
         assertNotNull("from user", tweets.get(0).getFromUser());
         assertTrue("fromUserId", -1 != tweets.get(0).getFromUserId());
