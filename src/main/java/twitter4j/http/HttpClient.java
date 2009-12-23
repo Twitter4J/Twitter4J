@@ -62,6 +62,10 @@ public class HttpClient implements java.io.Serializable {
     private static final int FORBIDDEN = 403;// Forbidden: The request is understood, but it has been refused.  An accompanying error message will explain why.
     private static final int NOT_FOUND = 404;// Not Found: The URI requested is invalid or the resource requested, such as a user, does not exists.
     private static final int NOT_ACCEPTABLE = 406;// Not Acceptable: Returned by the Search API when an invalid format is specified in the request.
+    /**
+     *     @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/3f3b0fd38deb9b0f?hl=en">Search API: new HTTP response code 420 for rate limiting starting 1/18/2010</a>
+     */
+    private static final int EXCEEDED_RATE_LIMIT_QUOTA = 420;// Not registered in RFC.
     private static final int INTERNAL_SERVER_ERROR = 500;// Internal Server Error: Something is broken.  Please post to the group so the Twitter team can investigate.
     private static final int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
     private static final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
@@ -524,7 +528,7 @@ public class HttpClient implements java.io.Serializable {
                         }
                     }
                     if (responseCode != OK) {
-                        if (responseCode == SERVICE_UNAVAILABLE){
+                        if (responseCode == SERVICE_UNAVAILABLE || responseCode == EXCEEDED_RATE_LIMIT_QUOTA){
                             // application exceeded the rate limitation
                             // Search API returns Retry-After header that instructs the application when it is safe to continue.
                             // @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
@@ -798,6 +802,9 @@ public class HttpClient implements java.io.Serializable {
                 break;
             case NOT_ACCEPTABLE:
                 cause = "Returned by the Search API when an invalid format is specified in the request.";
+                break;
+            case EXCEEDED_RATE_LIMIT_QUOTA:
+                cause = "The number of requests you have made exceeds the quota afforded by your assigned rate limit.";
                 break;
             case INTERNAL_SERVER_ERROR:
                 cause = "Something is broken.  Please post to the group so the Twitter team can investigate.";
