@@ -60,8 +60,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * A java representation of the <a href="http://apiwiki.twitter.com/">Twitter API</a>
@@ -93,7 +91,6 @@ public class Twitter extends TwitterSupport
         super();
         HttpResponseListener httpResponseListener = new MyHttpResponseListener();
         http.addHttpResponseListener(httpResponseListener);
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         http.setRequestTokenURL(Configuration.getScheme() + "twitter.com/oauth/request_token");
         http.setAuthorizationURL(Configuration.getScheme() + "twitter.com/oauth/authorize");
@@ -152,7 +149,7 @@ public class Twitter extends TwitterSupport
     }
 
     /**
-     * Retrieves an access token assosiated with the supplied request token and sets userId.
+     * Retrieves an access token associated with the supplied request token and sets userId.
      * @param requestToken the request token
      * @return access token associsted with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
@@ -167,7 +164,7 @@ public class Twitter extends TwitterSupport
     }
 
     /**
-     * Retrieves an access token assosiated with the supplied request token and sets userId.
+     * Retrieves an access token associated with the supplied request token and sets userId.
      * @param requestToken the request token
      * @param oauth_verifier oauth_verifier or pin
      * @return access token associsted with the supplied request token.
@@ -183,10 +180,10 @@ public class Twitter extends TwitterSupport
     }
 
     /**
-     * Retrieves an access token assosiated with the supplied request token and sets userId.
+     * Retrieves an access token associated with the supplied request token and sets userId.
      * @param token request token
      * @param tokenSecret request token secret
-     * @return access token associsted with the supplied request token.
+     * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
@@ -199,11 +196,11 @@ public class Twitter extends TwitterSupport
     }
 
     /**
-     * Retrieves an access token assosiated with the supplied request token.
+     * Retrieves an access token associated with the supplied request token.
      * @param token request token
      * @param tokenSecret request token secret
      * @param pin pin
-     * @return access token associsted with the supplied request token.
+     * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
@@ -1478,34 +1475,14 @@ public class Twitter extends TwitterSupport
         return -1 != get(getBaseURL() + "help/test.json", false).
                 asString().indexOf("ok");
     }
-
-    private SimpleDateFormat format = new SimpleDateFormat(
-            "EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH);
-
-    @Override
-    public boolean equals(Object o) {
-        super.equals(o);
-        if (this == o) return true;
-        if (!(o instanceof Twitter)) return false;
-
-        Twitter twitter = (Twitter) o;
-
-        if (!format.equals(twitter.format)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return format.hashCode();
-    }
-
     @Override
     public String toString() {
         return "Twitter{" +
                 "http=" + http +
                 ", source='" + source + '\'' +
-                ", format=" + format +
+                ", USE_SSL=" + USE_SSL +
+                ", accountRateLimitStatusListeners=" + accountRateLimitStatusListeners +
+                ", ipRateLimitStatusListeners=" + ipRateLimitStatusListeners +
                 '}';
     }
 }

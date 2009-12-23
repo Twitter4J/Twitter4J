@@ -57,7 +57,7 @@ import java.util.List;
 
     /**
      * Registers a RateLimitStatusListener for account associated rate limits
-     *
+     * @param listener the listener to be added
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
      */
@@ -69,6 +69,7 @@ import java.util.List;
     /**
      * Registers a RateLimitStatusListener for ip associated rate limits
      *
+     * @param listener the listener to be added
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
      */
@@ -251,5 +252,45 @@ import java.util.List;
 
     public void setRetryIntervalSecs(int retryIntervalSecs) {
         http.setRetryIntervalSecs(retryIntervalSecs);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TwitterSupport)) return false;
+
+        TwitterSupport that = (TwitterSupport) o;
+
+        if (USE_SSL != that.USE_SSL) return false;
+        if (!accountRateLimitStatusListeners.equals(that.accountRateLimitStatusListeners))
+            return false;
+        if (!http.equals(that.http)) return false;
+        if (!ipRateLimitStatusListeners.equals(that.ipRateLimitStatusListeners))
+            return false;
+        if (source != null ? !source.equals(that.source) : that.source != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = http.hashCode();
+        result = 31 * result + (source != null ? source.hashCode() : 0);
+        result = 31 * result + (USE_SSL ? 1 : 0);
+        result = 31 * result + accountRateLimitStatusListeners.hashCode();
+        result = 31 * result + ipRateLimitStatusListeners.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TwitterSupport{" +
+                "http=" + http +
+                ", source='" + source + '\'' +
+                ", USE_SSL=" + USE_SSL +
+                ", accountRateLimitStatusListeners=" + accountRateLimitStatusListeners +
+                ", ipRateLimitStatusListeners=" + ipRateLimitStatusListeners +
+                '}';
     }
 }
