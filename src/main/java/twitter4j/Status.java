@@ -49,7 +49,7 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
     private int inReplyToUserId;
     private boolean isFavorited;
     private String inReplyToScreenName;
-    private GeoLocation location = null;
+    private GeoLocation geoLocation = null;
 
     private Status retweetedStatus;
     private static final long serialVersionUID = 1608000492860584608L;
@@ -81,24 +81,29 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-        try {
-            if (!json.isNull("geo")) {
-                String coordinates = json.getJSONObject("geo")
-                        .getString("coordinates");
-                coordinates = coordinates.substring(1, coordinates.length() - 1);
-                String[] point = coordinates.split(",");
-                location = new GeoLocation(Double.parseDouble(point[0]),
-                        Double.parseDouble(point[1]));
-            }
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
+        geoLocation = extractGeoLocation(json);
         if (!json.isNull("retweeted_status")) {
             try {
                 retweetedStatus = new Status(json.getJSONObject("retweeted_status"));
             } catch (JSONException ignore) {
             }
         }
+    }
+
+    static GeoLocation extractGeoLocation(JSONObject json) throws TwitterException {
+        try {
+            if (!json.isNull("geo")) {
+                String coordinates = json.getJSONObject("geo")
+                        .getString("coordinates");
+                coordinates = coordinates.substring(1, coordinates.length() - 1);
+                String[] point = coordinates.split(",");
+                return new GeoLocation(Double.parseDouble(point[0]),
+                        Double.parseDouble(point[1]));
+            }
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
+        return null;
     }
 
     /**
@@ -182,11 +187,12 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
     }
 
     /**
-     * returns The location that this tweet refers to.
+     * Returns The location that this tweet refers to if available.
+     * @return returns The location that this tweet refers to if available (can be null)
      * @since Twitter4J 2.1.0
      */
     public GeoLocation getGeoLocation(){
-        return location;
+        return geoLocation;
     }
 
     /**
@@ -272,7 +278,7 @@ public class Status extends TwitterResponseImpl implements java.io.Serializable 
                 ", inReplyToUserId=" + inReplyToUserId +
                 ", isFavorited=" + isFavorited +
                 ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
-                ", location=" + location +
+                ", geoLocation=" + geoLocation +
                 ", retweetedStatus=" + retweetedStatus +
                 ", user=" + user +
                 '}';

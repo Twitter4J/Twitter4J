@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.http.HttpClient;
+import twitter4j.org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -74,6 +75,14 @@ public class DAOTest extends TwitterTestBase {
         assertTrue(trends.size() == 0);
         assertDeserializedFormIsEqual(trends);
 
+    }
+    public void testTweet() throws Exception {
+        JSONObject json = new JSONObject("{\"profile_image_url\":\"http://a3.twimg.com/profile_images/554278229/twitterProfilePhoto_normal.jpg\",\"created_at\":\"Thu, 24 Dec 2009 18:30:56 +0000\",\"from_user\":\"pskh\",\"to_user_id\":null,\"text\":\"test\",\"id\":7007483122,\"from_user_id\":215487,\"geo\":{\"type\":\"Point\",\"coordinates\":[37.78029, -122.39697]},\"source\":\"&lt;a href=&quot;http://yusuke.homeip.net/twitter4j/&quot; rel=&quot;nofollow&quot;&gt;Twitter4J&lt;/a&gt;\"}");
+        Tweet tweet = new Tweet(json);
+        GeoLocation geo = tweet.getGeoLocation();
+        assertNotNull(geo);
+        assertEquals(37.78029,geo.getLatitude());
+        assertEquals(-122.39697,geo.getLongitude());
     }
 
     public void testUserAsJSON() throws Exception {
