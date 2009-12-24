@@ -138,14 +138,14 @@ public class TwitterTestUnit extends TwitterTestBase {
         PagableResponseList<UserList> userLists;
         userLists = twitterAPI1.getUserLists(id1.name,-1l);
         for(UserList alist : userLists){
-            twitterAPI1.deleteUserList(alist.getId());
+            twitterAPI1.destroyUserList(alist.getId());
         }
 
         /*List Methods*/
         UserList userList;
         //ensuring createUserList works in the case an email is specified a userid
         userList = twitterAPI3.createUserList("api3 is email", false, null);
-        twitterAPI3.deleteUserList(userList.getId());
+        twitterAPI3.destroyUserList(userList.getId());
         userList = twitterAPI1.createUserList("testpoint1", false, "description1");
         assertNotNull(userList);
         assertEquals("testpoint1", userList.getName());
@@ -247,7 +247,7 @@ public class TwitterTestUnit extends TwitterTestBase {
             assertEquals(404, ignore.getStatusCode());
         }
 
-        userList = twitterAPI1.deleteUserList(userList.getId());
+        userList = twitterAPI1.destroyUserList(userList.getId());
         assertNotNull(userList);
     }
 

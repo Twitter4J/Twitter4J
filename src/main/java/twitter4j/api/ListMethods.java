@@ -102,7 +102,7 @@ public interface ListMethods
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-DELETE-list-id">Twitter REST API Method: DELETE /:user/lists/:id</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	UserList deleteUserList(int listId)
+	UserList destroyUserList(int listId)
 			throws TwitterException;
 
 	/**
