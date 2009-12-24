@@ -43,7 +43,7 @@ public interface AccountMethods
 	 *
 	 * @return user
 	 * @since Twitter4J 2.0.0
-	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable, or if supplied credential is wrong (TwitterException.getStatusCode() == 401)
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0verify_credentials">Twitter API Wiki / Twitter REST API Method: account verify_credentials</a>
      */
     User verifyCredentials() throws TwitterException;
