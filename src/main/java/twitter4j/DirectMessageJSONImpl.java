@@ -47,6 +47,11 @@ import static twitter4j.ParseUtil.*;
     private String recipientScreenName;
     private static final long serialVersionUID = -3253021825891789737L;
 
+    /*package*/ DirectMessageJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
+
     /*package*/DirectMessageJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());

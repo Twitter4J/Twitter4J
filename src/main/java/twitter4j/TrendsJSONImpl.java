@@ -54,6 +54,11 @@ import static twitter4j.ParseUtil.*;
         return this.trendAt.compareTo(that.getTrendAt());
     }
 
+    /*package*/ TrendsJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
+
     /*package*/ TrendsJSONImpl(Date asOf, Date trendAt, Trend[] trends)
             throws TwitterException {
         this.asOf = asOf;

@@ -50,6 +50,11 @@ import static twitter4j.ParseUtil.*;
     private String sourceUserScreenName;
     private static final long serialVersionUID = 697705345506281849L;
 
+    /*package*/ RelationshipJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
+
     /*package*/ RelationshipJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());

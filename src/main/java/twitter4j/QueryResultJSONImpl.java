@@ -50,6 +50,10 @@ import static twitter4j.ParseUtil.*;
     private String query;
     private List<Tweet> tweets;
     private static final long serialVersionUID = -9059136565234613286L;
+    /*package*/ QueryResultJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
 
     /*package*/ QueryResultJSONImpl(Response res) throws TwitterException {
         JSONObject json = res.asJSONObject();

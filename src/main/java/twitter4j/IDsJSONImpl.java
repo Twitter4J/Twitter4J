@@ -45,6 +45,11 @@ import java.util.Arrays;
     private long nextCursor = -1;
     private static final long serialVersionUID = -6585026560164704953L;
 
+    /*package*/ IDsJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
+
     private IDsJSONImpl(Response res) throws TwitterException {
         super(res);
     }

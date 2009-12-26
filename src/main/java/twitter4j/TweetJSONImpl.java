@@ -53,8 +53,12 @@ import static twitter4j.ParseUtil.*;
     private GeoLocation geoLocation = null;
     private static final long serialVersionUID = 4299736733993211587L;
 
+    /*package*/ TweetJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
+
     /*package*/ TweetJSONImpl(JSONObject tweet) throws TwitterException {
-        super();
         text = getURLDecodedString("text", tweet);
         toUserId = getInt("to_user_id", tweet);
         toUser = getRawString("to_user", tweet);

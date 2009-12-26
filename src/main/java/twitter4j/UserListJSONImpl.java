@@ -53,17 +53,17 @@ import java.net.URISyntaxException;
     private User user;
     private static final long serialVersionUID = -6345893237975349030L;
 
+    /*package*/ UserListJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
 
-    /*package*/
-
-    UserListJSONImpl(Response res) throws TwitterException {
+    /*package*/ UserListJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
     }
 
-    /*package*/
-
-    UserListJSONImpl(JSONObject json) throws TwitterException {
+    /*package*/ UserListJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }

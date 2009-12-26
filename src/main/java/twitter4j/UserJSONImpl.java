@@ -80,6 +80,10 @@ import static twitter4j.ParseUtil.*;
     private boolean isVerified;
     private static final long serialVersionUID = -6345893237975349030L;
 
+    /*package*/UserJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
 
     /*package*/UserJSONImpl(Response res) throws TwitterException {
         super(res);

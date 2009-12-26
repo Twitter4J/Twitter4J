@@ -54,6 +54,11 @@ import static twitter4j.ParseUtil.*;
     private Status retweetedStatus;
     private static final long serialVersionUID = 1608000492860584608L;
 
+    /*package*/StatusJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
+
     /*package*/StatusJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());

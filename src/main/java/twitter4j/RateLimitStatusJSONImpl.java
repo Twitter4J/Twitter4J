@@ -44,6 +44,10 @@ import static twitter4j.ParseUtil.*;
     private int resetTimeInSeconds;
     private Date resetTime;
     private static final long serialVersionUID = 753839064833831619L;
+    /*package*/ RateLimitStatusJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
 
     private RateLimitStatusJSONImpl(int hourlyLimit, int remainingHits, int resetTimeInSeconds, Date resetTime){
         this.hourlyLimit = hourlyLimit;

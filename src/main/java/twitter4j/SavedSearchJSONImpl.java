@@ -48,6 +48,11 @@ import static twitter4j.ParseUtil.*;
     private int id;
     private static final long serialVersionUID = 3083819860391598212L;
 
+    /*package*/ SavedSearchJSONImpl() {
+        // Just for protobuf support
+        // Currently this constructor is never used in twitter4j artifact.
+    }
+
     /*package*/ SavedSearchJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
