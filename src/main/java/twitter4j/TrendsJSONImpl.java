@@ -77,15 +77,15 @@ import static twitter4j.ParseUtil.*;
                 Trend[] trendsArray = jsonArrayToTrendArray(array);
                 if (key.length() == 19) {
                     // current trends
-                    trends.add(new TrendsJSONImpl(asOf, parseDate(key
+                    trends.add(new TrendsJSONImpl(asOf, getDate(key
                             , "yyyy-MM-dd HH:mm:ss"), trendsArray));
                 } else if (key.length() == 16) {
                     // daily trends
-                    trends.add(new TrendsJSONImpl(asOf, parseDate(key
+                    trends.add(new TrendsJSONImpl(asOf, getDate(key
                             , "yyyy-MM-dd HH:mm"), trendsArray));
                 } else if (key.length() == 10) {
                     // weekly trends
-                    trends.add(new TrendsJSONImpl(asOf, parseDate(key
+                    trends.add(new TrendsJSONImpl(asOf, getDate(key
                             , "yyyy-MM-dd"), trendsArray));
                 }
             }
@@ -114,7 +114,7 @@ import static twitter4j.ParseUtil.*;
         if (asOfStr.length() == 10) {
             parsed = new Date(Long.parseLong(asOfStr) * 1000);
         } else {
-            parsed = parseDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
+            parsed = getDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
         }
         return parsed;
     }

@@ -93,7 +93,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
 //        twitterStream.filter(0, new int[]{18713}, null);
 //        waitForStatus();
 //        assertNotNull(status);
-//        assertNotNull(status.getText());
+//        assertNotNull(status.getUnescapedString());
 //        assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
 //        twitterStream.cleanup();
 //    }

@@ -45,7 +45,7 @@ public interface ListMethods
 	 * @param isPublicList set true if you wish to make a public list
 	 * @param description The description of the list you are creating. Optional.
 	 * @return the list that was created
-	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable, or the authenticated user already has 20 lists(TwitterException.getStatusCode() == 403).
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-lists">Twitter REST API Method: POST lists</a>
 	 * @since Twitter4J 2.1.0
 	 */

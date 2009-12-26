@@ -56,12 +56,12 @@ import static twitter4j.ParseUtil.*;
     }
     private void init(JSONObject json) throws TwitterException{
         id = getInt("id", json);
-        text = ParseUtil.getText("text", json);
+        text = getUnescapedString("text", json);
         senderId = getInt("sender_id", json);
         recipientIdd = getInt("recipient_id", json);
         createdAt = getDate("created_at", json);
-        senderScreenName = ParseUtil.getText("sender_screen_name", json);
-        recipientScreenName = ParseUtil.getText("recipient_screen_name", json);
+        senderScreenName = getUnescapedString("sender_screen_name", json);
+        recipientScreenName = getUnescapedString("recipient_screen_name", json);
         try {
             sender = new UserJSONImpl(json.getJSONObject("sender"));
             recipient = new UserJSONImpl(json.getJSONObject("recipient"));

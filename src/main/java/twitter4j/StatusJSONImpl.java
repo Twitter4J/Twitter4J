@@ -66,14 +66,14 @@ import static twitter4j.ParseUtil.*;
 
     private void init(JSONObject json) throws TwitterException {
         id = getLong("id", json);
-        text = ParseUtil.getText("text", json);
-        source = ParseUtil.getText("source", json);
+        text = getUnescapedString("text", json);
+        source = getUnescapedString("source", json);
         createdAt = getDate("created_at", json);
         isTruncated = getBoolean("truncated", json);
         inReplyToStatusId = getLong("in_reply_to_status_id", json);
         inReplyToUserId = getInt("in_reply_to_user_id", json);
         isFavorited = getBoolean("favorited", json);
-        inReplyToScreenName = ParseUtil.getText("in_reply_to_screen_name", json);
+        inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
         try {
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
@@ -81,29 +81,13 @@ import static twitter4j.ParseUtil.*;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-        geoLocation = extractGeoLocation(json);
+        geoLocation = GeoLocationJSONImpl.getInstance(json);
         if (!json.isNull("retweeted_status")) {
             try {
                 retweetedStatus = new StatusJSONImpl(json.getJSONObject("retweeted_status"));
             } catch (JSONException ignore) {
             }
         }
-    }
-
-    static GeoLocation extractGeoLocation(JSONObject json) throws TwitterException {
-        try {
-            if (!json.isNull("geo")) {
-                String coordinates = json.getJSONObject("geo")
-                        .getString("coordinates");
-                coordinates = coordinates.substring(1, coordinates.length() - 1);
-                String[] point = coordinates.split(",");
-                return new GeoLocationJSONImpl(Double.parseDouble(point[0]),
-                        Double.parseDouble(point[1]));
-            }
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-        return null;
     }
 
     /**

@@ -30,10 +30,12 @@ import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
 import java.util.Date;
+
 import static twitter4j.ParseUtil.*;
 
 /**
  * A data class representing a Tweet in the search response
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ class TweetJSONImpl implements Tweet, java.io.Serializable {
@@ -51,37 +53,25 @@ import static twitter4j.ParseUtil.*;
     private GeoLocation geoLocation = null;
     private static final long serialVersionUID = 4299736733993211587L;
 
-    /*package*/TweetJSONImpl(JSONObject tweet) throws TwitterException {
+    /*package*/ TweetJSONImpl(JSONObject tweet) throws TwitterException {
         super();
-        try {
-            text = getString("text", tweet, false);
-            try{
-                toUserId = tweet.getInt("to_user_id");
-                toUser = tweet.getString("to_user");
-            }catch(JSONException ignore){
-                // to_user_id can be "null"
-                // to_user can be missing
-            }
-            fromUser = tweet.getString("from_user");
-            id = tweet.getLong("id");
-            fromUserId = tweet.getInt("from_user_id");
-            try{
-                isoLanguageCode = tweet.getString("iso_language_code");
-            }catch(JSONException ignore){
-                // iso_language_code can be missing
-            }
-            source = getString("source", tweet, true);
-            profileImageUrl = getString("profile_image_url", tweet, true);
-            createdAt = parseDate(tweet.getString("created_at"), "EEE, dd MMM yyyy HH:mm:ss z");
-            geoLocation = StatusJSONImpl.extractGeoLocation(tweet);
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + tweet.toString(), jsone);
-        }
+        text = getURLDecodedString("text", tweet);
+        toUserId = getInt("to_user_id", tweet);
+        toUser = getRawString("to_user", tweet);
+        fromUser = getRawString("from_user", tweet);
+        id = getLong("id", tweet);
+        fromUserId = getInt("from_user_id", tweet);
+        isoLanguageCode = getRawString("iso_language_code", tweet);
+        source = getURLDecodedString("source", tweet);
+        profileImageUrl = getURLDecodedString("profile_image_url", tweet);
+        createdAt = getDate("created_at", tweet, "EEE, dd MMM yyyy HH:mm:ss z");
+        geoLocation = GeoLocationJSONImpl.getInstance(tweet);
 
     }
 
     /**
      * returns the text
+     *
      * @return the text
      */
 
@@ -91,6 +81,7 @@ import static twitter4j.ParseUtil.*;
 
     /**
      * returns the to_user_id
+     *
      * @return the to_user_id value or -1 if to_user_id is not specified by the tweet
      */
     public int getToUserId() {
@@ -99,6 +90,7 @@ import static twitter4j.ParseUtil.*;
 
     /**
      * returns the to_user
+     *
      * @return the to_user value or null if to_user is not specified by the tweet
      */
     public String getToUser() {
@@ -107,6 +99,7 @@ import static twitter4j.ParseUtil.*;
 
     /**
      * returns the from_user
+     *
      * @return the from_user
      */
     public String getFromUser() {
@@ -115,6 +108,7 @@ import static twitter4j.ParseUtil.*;
 
     /**
      * returns the status id of the tweet
+     *
      * @return the status id
      */
     public long getId() {
@@ -124,6 +118,7 @@ import static twitter4j.ParseUtil.*;
     /**
      * returns the user id of the tweet's owner.<br>
      * <font color="orange">Warning:</font> The user ids in the Search API are different from those in the REST API (about the two APIs). This defect is being tracked by Issue 214. This means that the to_user_id and from_user_id field vary from the actualy user id on Twitter.com. Applications will have to perform a screen name-based lookup with the users/show method to get the correct user id if necessary.
+     *
      * @return the user id of the tweet's owner
      * @see <a href="http://code.google.com/p/twitter-api/issues/detail?id=214">Issue 214:	Search API "from_user_id" doesn't match up with the proper Twitter "user_id"</a>
      */
@@ -133,6 +128,7 @@ import static twitter4j.ParseUtil.*;
 
     /**
      * returns the iso language code of the tweet
+     *
      * @return the iso language code of the tweet or null if iso_language_code is not specified by the tweet
      */
     public String getIsoLanguageCode() {
@@ -141,6 +137,7 @@ import static twitter4j.ParseUtil.*;
 
     /**
      * returns the source of the tweet
+     *
      * @return the source of the tweet
      */
     public String getSource() {
@@ -149,13 +146,16 @@ import static twitter4j.ParseUtil.*;
 
     /**
      * returns the profile_image_url
+     *
      * @return the profile_image_url
      */
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
+
     /**
      * returns the created_at
+     *
      * @return the created_at
      */
     public Date getCreatedAt() {
@@ -164,6 +164,7 @@ import static twitter4j.ParseUtil.*;
 
     /**
      * Returns The location that this tweet refers to if available.
+     *
      * @return returns The location that this tweet refers to if available (can be null)
      * @since Twitter4J 2.1.0
      */

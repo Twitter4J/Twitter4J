@@ -28,7 +28,7 @@ package twitter4j;
 
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
-
+import static twitter4j.ParseUtil.*;
 
 /**
  * A data class representing Trend.
@@ -43,13 +43,9 @@ import twitter4j.org.json.JSONObject;
     private static final long serialVersionUID = 1925956704460743946L;
 
     public TrendJSONImpl(JSONObject json) throws JSONException {
-        this.name = json.getString("name");
-        if (!json.isNull("url")) {
-            this.url = json.getString("url");
-        }
-        if (!json.isNull("query")) {
-            this.query = json.getString("query");
-        }
+        this.name = getRawString("name", json);
+        this.url = getRawString("url", json);
+        this.query = getRawString("query", json);
     }
 
     public String getName() {

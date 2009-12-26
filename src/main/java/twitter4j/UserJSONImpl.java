@@ -93,34 +93,34 @@ import static twitter4j.ParseUtil.*;
 
     private void init(JSONObject json) throws TwitterException {
         try {
-            id = json.getInt("id");
-            name = json.getString("name");
-            screenName = json.getString("screen_name");
-            location = json.getString("location");
-            description = json.getString("description");
-            profileImageUrl = json.getString("profile_image_url");
-            url = json.getString("url");
-            isProtected = json.getBoolean("protected");
-            isGeoEnabled = json.getBoolean("geo_enabled");
-            isVerified = json.getBoolean("verified");
-            followersCount = json.getInt("followers_count");
+            id = getInt("id", json);
+            name = getRawString("name", json);
+            screenName = getRawString("screen_name", json);
+            location = getRawString("location", json);
+            description = getRawString("description", json);
+            profileImageUrl = getRawString("profile_image_url", json);
+            url = getRawString("url", json);
+            isProtected = getBoolean("protected", json);
+            isGeoEnabled = getBoolean("geo_enabled", json);
+            isVerified = getBoolean("verified", json);
+            followersCount = getInt("followers_count", json);
 
-            profileBackgroundColor = json.getString("profile_background_color");
-            profileTextColor = json.getString("profile_text_color");
-            profileLinkColor = json.getString("profile_link_color");
-            profileSidebarFillColor = json.getString("profile_sidebar_fill_color");
-            profileSidebarBorderColor = json.getString("profile_sidebar_border_color");
-            friendsCount = json.getInt("friends_count");
-            createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+            profileBackgroundColor = getRawString("profile_background_color", json);
+            profileTextColor = getRawString("profile_text_color", json);
+            profileLinkColor = getRawString("profile_link_color", json);
+            profileSidebarFillColor = getRawString("profile_sidebar_fill_color", json);
+            profileSidebarBorderColor = getRawString("profile_sidebar_border_color", json);
+            friendsCount = getInt("friends_count", json);
+            createdAt = getDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
             favouritesCount = json.getInt("favourites_count");
             utcOffset = getInt("utc_offset", json);
-            timeZone = json.getString("time_zone");
-            profileBackgroundImageUrl = json.getString("profile_background_image_url");
+            timeZone = getRawString("time_zone", json);
+            profileBackgroundImageUrl = getRawString("profile_background_image_url", json);
             profileBackgroundTiled = getBoolean("profile_background_tile", json);
-            statusesCount = json.getInt("statuses_count");
+            statusesCount = getInt("statuses_count", json);
             if (!json.isNull("status")) {
                 JSONObject status = json.getJSONObject("status");
-                statusCreatedAt = parseDate(status.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
+                statusCreatedAt = getDate(status.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
                 statusId = status.getLong("id");
                 statusText = status.getString("text");
                 statusSource = status.getString("source");

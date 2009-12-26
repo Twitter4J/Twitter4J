@@ -54,15 +54,15 @@ import static twitter4j.ParseUtil.*;
     /*package*/ QueryResultJSONImpl(Response res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         try {
-            sinceId = json.getLong("since_id");
-            maxId = json.getLong("max_id");
-            refreshUrl = getString("refresh_url", json, true);
+            sinceId = getLong("since_id", json);
+            maxId = getLong("max_id", json);
+            refreshUrl = getURLDecodedString("refresh_url", json);
 
-            resultsPerPage = json.getInt("results_per_page");
-            warning = getString("warning", json, false);
-            completedIn = json.getDouble("completed_in");
-            page = json.getInt("page");
-            query = getString("query", json, true);
+            resultsPerPage = getInt("results_per_page", json);
+            warning = getRawString("warning", json);
+            completedIn = getDouble("completed_in", json);
+            page = getInt("page", json);
+            query = getURLDecodedString("query", json);
             JSONArray array = json.getJSONArray("results");
             tweets = new ArrayList<Tweet>(array.length());
             for (int i = 0; i < array.length(); i++) {

@@ -52,16 +52,16 @@ import java.util.TimeZone;
 
     private static Map<String, SimpleDateFormat> formatMap = new HashMap<String, SimpleDateFormat>();
 
-    static String getText(String str, JSONObject json) {
-        return HTMLEntity.unescape(getTextContent(str, json));
+    static String getUnescapedString(String str, JSONObject json) {
+        return HTMLEntity.unescape(getRawString(str, json));
     }
 
-    private static String getTextContent(String str, JSONObject json) {
+    static String getRawString(String name, JSONObject json) {
         try {
-            if (json.isNull(str)) {
+            if (json.isNull(name)) {
                 return null;
             } else {
-                return json.getString(str);
+                return json.getString(name);
             }
         } catch (JSONException jsone) {
             return null;
@@ -69,36 +69,31 @@ import java.util.TimeZone;
     }
 
 
-    static String getString(String name, JSONObject json, boolean decode) {
-        String returnValue = null;
-        try {
-            returnValue = json.getString(name);
-            if (decode) {
-                try {
-                    returnValue = URLDecoder.decode(returnValue, "UTF-8");
-                } catch (UnsupportedEncodingException ignore) {
-                }
+    static String getURLDecodedString(String name, JSONObject json) {
+        String returnValue = getRawString(name, json);
+        if (null != returnValue) {
+            try {
+                returnValue = URLDecoder.decode(returnValue, "UTF-8");
+            } catch (UnsupportedEncodingException ignore) {
             }
-        } catch (JSONException ignore) {
-            // refresh_url could be missing
         }
         return returnValue;
     }
 
-    static Date getDate(String key, JSONObject json) throws TwitterException {
-        return getDate(key, json, "EEE MMM d HH:mm:ss z yyyy");
+    static Date getDate(String name, JSONObject json) throws TwitterException {
+        return getDate(name, json, "EEE MMM d HH:mm:ss z yyyy");
     }
 
-    static Date getDate(String key, JSONObject json, String format) throws TwitterException {
-        String dateStr = getText(key, json);
+    static Date getDate(String name, JSONObject json, String format) throws TwitterException {
+        String dateStr = getUnescapedString(name, json);
         if ("null".equals(dateStr)) {
             return null;
         } else {
-            return parseDate(dateStr, format);
+            return getDate(dateStr, format);
         }
     }
 
-    static Date parseDate(String str, String format) throws TwitterException {
+    static Date getDate(String name, String format) throws TwitterException {
         SimpleDateFormat sdf = formatMap.get(format);
         if (null == sdf) {
             sdf = new SimpleDateFormat(format, Locale.ENGLISH);
@@ -108,15 +103,15 @@ import java.util.TimeZone;
         try {
             synchronized (sdf) {
                 // SimpleDateFormat is not thread safe
-                return sdf.parse(str);
+                return sdf.parse(name);
             }
         } catch (ParseException pe) {
-            throw new TwitterException("Unexpected format(" + str + ") returned from twitter.com");
+            throw new TwitterException("Unexpected format(" + name + ") returned from twitter.com");
         }
     }
 
-    static int getInt(String str, JSONObject elem) {
-        String str2 = getTextContent(str, elem);
+    static int getInt(String name, JSONObject elem) {
+        String str2 = getRawString(name, elem);
         if (null == str2 || "".equals(str2) || "null".equals(str2)) {
             return -1;
         } else {
@@ -125,17 +120,25 @@ import java.util.TimeZone;
     }
 
 
-    static long getLong(String key, JSONObject json) {
-        String str2 = getTextContent(key, json);
+    static long getLong(String name, JSONObject json) {
+        String str2 = getRawString(name, json);
         if (null == str2 || "".equals(str2) || "null".equals(str2)) {
             return -1;
         } else {
             return Long.valueOf(str2);
         }
     }
+    static double getDouble(String name, JSONObject json) {
+        String str2 = getRawString(name, json);
+        if (null == str2 || "".equals(str2) || "null".equals(str2)) {
+            return -1;
+        } else {
+            return Double.valueOf(str2);
+        }
+    }
 
-    static boolean getBoolean(String key, JSONObject json) {
-        String str = getTextContent(key, json);
+    static boolean getBoolean(String name, JSONObject json) {
+        String str = getRawString(name, json);
         if (null == str || "null".equals(str)) {
             return false;
         }

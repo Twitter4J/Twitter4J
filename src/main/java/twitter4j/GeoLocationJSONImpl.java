@@ -26,6 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
+
 
 /**
  * A data class representing geo location.
@@ -41,6 +44,22 @@ package twitter4j;
     public GeoLocationJSONImpl(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    /*package*/ static GeoLocation getInstance(JSONObject json) throws TwitterException {
+        try {
+            if (!json.isNull("geo")) {
+                String coordinates = json.getJSONObject("geo")
+                        .getString("coordinates");
+                coordinates = coordinates.substring(1, coordinates.length() - 1);
+                String[] point = coordinates.split(",");
+                return new GeoLocationJSONImpl(Double.parseDouble(point[0]),
+                        Double.parseDouble(point[1]));
+            }
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
+        return null;
     }
 
     /**

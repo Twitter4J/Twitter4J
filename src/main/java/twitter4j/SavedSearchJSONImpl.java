@@ -72,10 +72,10 @@ import static twitter4j.ParseUtil.*;
 
     private void init(JSONObject savedSearch) throws TwitterException {
         try {
-            createdAt = parseDate(savedSearch.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
-            query = getString("query", savedSearch, true);
+            createdAt = getDate(savedSearch.getString("created_at"), savedSearch, "EEE MMM dd HH:mm:ss z yyyy");
+            query = getURLDecodedString("query", savedSearch);
             position = getInt("position", savedSearch);
-            name = getString("name", savedSearch, true);
+            name = getURLDecodedString("name", savedSearch);
             id = getInt("id", savedSearch);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + savedSearch.toString(), jsone);
