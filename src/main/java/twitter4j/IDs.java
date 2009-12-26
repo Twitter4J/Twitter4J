@@ -26,112 +26,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
-import twitter4j.org.json.JSONArray;
-import twitter4j.org.json.JSONException;
-import twitter4j.org.json.JSONObject;
-
-import java.util.Arrays;
 
 /**
- * A data class representing array of numeric IDs.
+ * A data interface representing array of numeric IDs.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class IDs extends TwitterResponseImpl implements CursorSupport {
-    private int[] ids;
-    private long previousCursor = -1;
-    private long nextCursor = -1;
-    private static final long serialVersionUID = -6585026560164704953L;
+public interface IDs extends TwitterResponse, CursorSupport, java.io.Serializable {
+    int[] getIDs();
 
-    private IDs(Response res) throws TwitterException {
-        super(res);
-    }
-    /*package*/ static IDs getFriendsIDs(Response res) throws TwitterException {
-        IDs friendsIDs = new IDs(res);
-        JSONObject json = res.asJSONObject();
-        JSONArray idList;
-        try {
-            idList = json.getJSONArray("ids");
-            friendsIDs.ids = new int[idList.length()];
-            for (int i = 0; i < idList.length(); i++) {
-                try {
-                    friendsIDs.ids[i] = Integer.parseInt(idList.getString(i));
-                } catch (NumberFormatException nfe) {
-                    throw new TwitterException("Twitter API returned malformed response: " + json, nfe);
-                }
-            }
-            friendsIDs.previousCursor = ParseUtil.getLong("previous_cursor", json);
-            friendsIDs.nextCursor = ParseUtil.getLong("next_cursor", json);
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-        return friendsIDs;
-    }
+    boolean hasPrevious();
 
+    long getPreviousCursor();
 
-    /*package*/ static IDs getBlockIDs(Response res) throws TwitterException {
-        IDs blockIDs = new IDs(res);
-        JSONArray idList = null;
-        try {
-            idList = res.asJSONArray();
-            blockIDs.ids = new int[idList.length()];
-            for (int i = 0; i < idList.length(); i++) {
-                try {
-                    blockIDs.ids[i] = Integer.parseInt(idList.getString(i));
-                } catch (NumberFormatException nfe) {
-                    throw new TwitterException("Twitter API returned malformed response: " + idList, nfe);
-                }
-            }
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-        return blockIDs;
-    }
+    boolean hasNext();
 
-    public int[] getIDs() {
-        return ids;
-    }
-
-    public boolean hasPrevious(){
-        return 0 != previousCursor;
-    }
-
-    public long getPreviousCursor() {
-        return previousCursor;
-    }
-
-    public boolean hasNext(){
-        return 0 != nextCursor;
-    }
-
-    public long getNextCursor() {
-        return nextCursor;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof IDs)) return false;
-
-        IDs iDs = (IDs) o;
-
-        if (!Arrays.equals(ids, iDs.ids)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return ids != null ? Arrays.hashCode(ids) : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "IDs{" +
-                "ids=" + ids +
-                ", previousCursor=" + previousCursor +
-                ", nextCursor=" + nextCursor +
-                '}';
-    }
+    long getNextCursor();
 }

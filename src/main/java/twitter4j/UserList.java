@@ -26,207 +26,83 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
-import twitter4j.org.json.JSONArray;
-import twitter4j.org.json.JSONException;
-import twitter4j.org.json.JSONObject;
-
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
- * A data class representing Basic list information element
+ * A data interface representing Basic list information element
+ *
  * @author Dan Checkoway - dcheckoway at gmail.com
  * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-id">REST API Documentation - Basic list information element</a>
  */
-public class UserList extends TwitterResponseImpl implements java.io.Serializable {
-
-    private int id;
-    private String name;
-    private String fullName;
-    private String slug;
-    private String description;
-    private int subscriberCount;
-    private int memberCount;
-    private String uri;
-    private String mode;
-    private User user;
-    private static final long serialVersionUID = -6345893237975349030L;
-
-
-    /*package*/
-
-    UserList(Response res) throws TwitterException {
-        super(res);
-        init(res.asJSONObject());
-    }
-
-    /*package*/
-
-    UserList(JSONObject json) throws TwitterException {
-        super();
-        init(json);
-    }
-
-    private void init(JSONObject json) throws TwitterException {
-        try {
-            id = json.getInt("id");
-            name = json.getString("name");
-            fullName = json.getString("full_name");
-            slug = json.getString("slug");
-            description = json.getString("description");
-            subscriberCount = json.getInt("subscriber_count");
-            memberCount = json.getInt("member_count");
-            uri = json.getString("uri");
-            mode = json.getString("mode");
-            if (!json.isNull("user")) {
-                user = new User(json.getJSONObject("user"));
-            }
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
-        }
-    }
-
+public interface UserList extends TwitterResponse, java.io.Serializable {
     /**
      * Returns the id of the list
      *
      * @return the id of the list
      */
-    public int getId() {
-        return id;
-    }
+    int getId();
 
     /**
      * Returns the name of the list
      *
      * @return the name of the list
      */
-    public String getName() {
-        return name;
-    }
+    String getName();
 
     /**
      * Returns the full name of the list
      *
      * @return the full name of the list
      */
-    public String getFullName() {
-        return fullName;
-    }
+    String getFullName();
 
     /**
      * Returns the slug of the list
      *
      * @return the slug of the list
      */
-    public String getSlug() {
-        return slug;
-    }
+    String getSlug();
 
     /**
      * Returns the description of the list
      *
      * @return the description of the list
      */
-    public String getDescription() {
-        return description;
-    }
+    String getDescription();
 
     /**
      * Returns the subscriber count of the list
      *
      * @return the subscriber count of the list
      */
-    public int getSubscriberCount() {
-        return subscriberCount;
-    }
+    int getSubscriberCount();
 
     /**
      * Returns the member count of the list
      *
      * @return the member count of the list
      */
-    public int getMemberCount() {
-        return memberCount;
-    }
+    int getMemberCount();
 
     /**
      * Returns the uri of the list
      *
      * @return the uri of the list
      */
-    public URI getURI() {
-        try {
-            return new URI(uri);
-        } catch (URISyntaxException ex) {
-            return null;
-        }
-    }
-        
+    URI getURI();
+
     /**
      * Returns the mode of the list
      *
      * @return the mode of the list
      */
-    public String getMode() {
-        return mode;
-    }
-        
+    String getMode();
+
     /**
      * Returns the user of the list
      *
      * @return the user of the list
      */
-    public User getUser() {
-        return user;
-    }
-    /*package*/ static PagableResponseList<UserList> createListList(Response res) throws TwitterException {
-        try {
-            JSONObject json = res.asJSONObject();
-            JSONArray list = json.getJSONArray("lists");
-            int size = list.length();
-            PagableResponseList<UserList> users =
-                    new PagableResponseList<UserList>(size, json, res);
-            for (int i = 0; i < size; i++) {
-                users.add(new UserList(list.getJSONObject(i)));
-            }
-            return users;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
-        }
-    }
+    User getUser();
 
-    @Override
-    public int hashCode() {
-        return id;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        return obj instanceof UserList && ((UserList) obj).id == this.id;
-    }
-
-    @Override
-    public String toString() {
-        return "UserList{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", slug='" + slug + '\'' +
-                ", description='" + description + '\'' +
-                ", subscriberCount=" + subscriberCount +
-                ", memberCount=" + memberCount +
-                ", uri='" + uri + '\'' +
-                ", mode='" + mode + '\'' +
-                ", user=" + user +
-                '}';
-    }
 }

@@ -26,8 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+
 /**
- * Super class of Twitter Response objects.
+ * Super interface of Twitter Response data interfaces which indicates that rate limit status is avaialble.
  *
  * @see twitter4j.DirectMessage
  * @see twitter4j.Status

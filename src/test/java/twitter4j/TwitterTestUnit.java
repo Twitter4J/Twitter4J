@@ -323,7 +323,7 @@ public class TwitterTestUnit extends TwitterTestBase {
     }
 
     public void testGeoLocation() throws Exception {
-        Status withgeo = twitterAPI1.updateStatus(new java.util.Date().toString() + ": updating geo location", new GeoLocation(12.3456, -34.5678));
+        Status withgeo = twitterAPI1.updateStatus(new java.util.Date().toString() + ": updating geo location", new GeoLocationJSONImpl(12.3456, -34.5678));
         assertTrue(withgeo.getUser().isGeoEnabled());
         assertEquals(12.3456, withgeo.getGeoLocation().getLatitude());
         assertEquals(-34.5678, withgeo.getGeoLocation().getLongitude());

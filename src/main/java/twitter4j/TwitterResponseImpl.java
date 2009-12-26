@@ -28,15 +28,16 @@ package twitter4j;
 
 import twitter4j.http.Response;
 
+
 /**
- * Generic TwitterResponse implementation.
+ * Super interface of Twitter Response data interfaces which indicates that rate limit status is avaialble.
  *
  * @see twitter4j.DirectMessage
  * @see twitter4j.Status
  * @see twitter4j.User
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class TwitterResponseImpl implements java.io.Serializable, TwitterResponse {
+/*package*/ abstract class TwitterResponseImpl implements TwitterResponse, java.io.Serializable {
 
     private transient RateLimitStatus rateLimitStatus = null;
     private static final long serialVersionUID = -7284708239736552059L;
@@ -45,7 +46,7 @@ public class TwitterResponseImpl implements java.io.Serializable, TwitterRespons
     }
 
     public TwitterResponseImpl(Response res) {
-        this.rateLimitStatus = RateLimitStatus.createFromResponseHeader(res);
+        this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
     }
 
     /**

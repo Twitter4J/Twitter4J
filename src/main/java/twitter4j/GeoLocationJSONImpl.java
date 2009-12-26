@@ -26,30 +26,66 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
-
-import java.util.ArrayList;
 
 /**
- * List of TwitterResponse.
+ * A data class representing geo location.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class ResponseList<T extends TwitterResponse> extends ArrayList<T>
-        implements TwitterResponse {
+/*package*/ class GeoLocationJSONImpl implements GeoLocation, java.io.Serializable{
 
-    private transient RateLimitStatus rateLimitStatus = null;
-    private static final long serialVersionUID = 5646617841989265312L;
+    private double latitude;
+    private double longitude;
+    private static final long serialVersionUID = -4847567157651889935L;
 
-    ResponseList(int size, Response res) {
-        super(size);
-        this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+    public GeoLocationJSONImpl(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     /**
      * {@inheritDoc}
      */
-    public RateLimitStatus getRateLimitStatus() {
-        return rateLimitStatus;
+    public double getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public double getLongitude() {
+        return longitude;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GeoLocation)) return false;
+
+        GeoLocation that = (GeoLocation) o;
+
+        if (Double.compare(that.getLatitude(), latitude) != 0) return false;
+        if (Double.compare(that.getLongitude(), longitude) != 0) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = latitude != +0.0d ? Double.doubleToLongBits(latitude) : 0L;
+        result = (int) (temp ^ (temp >>> 32));
+        temp = longitude != +0.0d ? Double.doubleToLongBits(longitude) : 0L;
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GeoLocationJSONImpl{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

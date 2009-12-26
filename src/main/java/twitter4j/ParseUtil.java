@@ -44,7 +44,7 @@ import java.util.TimeZone;
  * A tiny parse utility class.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-final class ParseUtil {
+/*package*/ final class ParseUtil {
     private ParseUtil() {
         // should never be instantiated
         throw new AssertionError();

@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import java.io.ObjectStreamException;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +34,7 @@ import java.util.Map;
  * 
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class TwitterMethod implements Serializable {
+public final class TwitterMethod implements java.io.Serializable {
     String name;
     private static final long serialVersionUID = 5776633408291563058L;
 

@@ -28,14 +28,13 @@ package twitter4j;
 
 import twitter4j.http.HttpClient;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*protected*/ class TwitterSupport implements Serializable {
+/*protected*/ class TwitterSupport implements java.io.Serializable {
     protected HttpClient http = new HttpClient();
     protected String source = Configuration.getSource();
     protected final boolean USE_SSL;

@@ -26,120 +26,55 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
-import twitter4j.org.json.JSONObject;
-import twitter4j.org.json.JSONException;
-import static twitter4j.ParseUtil.*;
+
 /**
- * A class that has detailed information about a relationship between two users
+ * A data interface that has detailed information about a relationship between two users
  * @author Perry Sakkaris - psakkaris at gmail.com
  * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">REST API DOCUMENTATION</a>
  * @since Twitter4J 2.1.0
  */
-public class Relationship extends TwitterResponseImpl implements java.io.Serializable {
-
-    private int targetUserId;
-    private String targetUserScreenName;
-    private boolean sourceBlockingTarget;
-    private boolean sourceNotificationsEnabled;
-    private boolean sourceFollowingTarget;
-    private boolean sourceFollowedByTarget;
-    private int sourceUserId;
-    private String sourceUserScreenName;
-    private static final long serialVersionUID = 697705345506281849L;
-
-    /*package*/
-
-    Relationship(Response res) throws TwitterException {
-        super(res);
-        init(res.asJSONObject());
-    }
-
-    /*package*/
-
-    Relationship(Response res, JSONObject json) throws TwitterException {
-        super(res);
-        init(json);
-    }
-
-    /*package*/
-
-    Relationship(JSONObject json) throws TwitterException {
-        super();
-        init(json);
-    }
-
-    private void init(JSONObject json) throws TwitterException {
-        try {
-            JSONObject relationship = json.getJSONObject("relationship");
-            JSONObject sourceJson = relationship.getJSONObject("source");
-            JSONObject targetJson = relationship.getJSONObject("target");
-            sourceUserId = getInt("id", sourceJson);
-            targetUserId = getInt("id", targetJson);
-            sourceUserScreenName = getText("screen_name", sourceJson);
-            targetUserScreenName = getText("screen_name", targetJson);
-            sourceBlockingTarget = getBoolean("blocking", sourceJson);
-            sourceFollowingTarget = getBoolean("following", sourceJson);
-            sourceFollowedByTarget = getBoolean("followed_by", sourceJson);
-            sourceNotificationsEnabled = getBoolean("notifications_enabled", sourceJson);
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
-        }
-    }
-
+ public interface Relationship extends TwitterResponse, java.io.Serializable {
     /**
      * Returns the source user id
      *
      * @return the source user id
      */
-    public int getSourceUserId() {
-        return sourceUserId;
-    }
+    int getSourceUserId();
 
     /**
      * Returns the target user id
      *
      * @return target user id
      */
-    public int getTargetUserId() {
-        return targetUserId;
-    }
+    int getTargetUserId();
 
     /**
      * Returns if the source user is blocking the target user
      *
      * @return if the source is blocking the target
      */
-    public boolean isSourceBlockingTarget() {
-        return sourceBlockingTarget;
-    }
+    boolean isSourceBlockingTarget();
 
     /**
      * Returns the source user screen name
      *
      * @return returns the source user screen name
      */
-    public String getSourceUserScreenName() {
-        return sourceUserScreenName;
-    }
+    String getSourceUserScreenName();
 
     /**
      * Returns the target user screen name
      *
      * @return the target user screen name
      */
-    public String getTargetUserScreenName() {
-        return targetUserScreenName;
-    }
+    String getTargetUserScreenName();
 
     /**
      * Checks if source user is following target user
      *
      * @return true if source user is following target user
      */
-    public boolean isSourceFollowingTarget() {
-        return sourceFollowingTarget;
-    }
+    boolean isSourceFollowingTarget();
 
     /**
      * Checks if target user is following source user.<br>
@@ -147,18 +82,14 @@ public class Relationship extends TwitterResponseImpl implements java.io.Seriali
      *
      * @return true if target user is following source user
      */
-    public boolean isTargetFollowingSource() {
-        return sourceFollowedByTarget;
-    }
+    boolean isTargetFollowingSource();
 
     /**
      * Checks if source user is being followed by target user
      *
      * @return true if source user is being followed by target user
      */
-    public boolean isSourceFollowedByTarget() {
-        return sourceFollowedByTarget;
-    }
+    boolean isSourceFollowedByTarget();
 
     /**
      * Checks if target user is being followed by source user.<br>
@@ -166,55 +97,13 @@ public class Relationship extends TwitterResponseImpl implements java.io.Seriali
      *
      * @return true if target user is being followed by source user
      */
-    public boolean isTargetFollowedBySource() {
-        return sourceFollowingTarget;
-    }
+    boolean isTargetFollowedBySource();
 
     /**
      * Checks if the source user has enabled notifications for updates of the target user
      *
      * @return true if source user enabled notifications for target user
      */
-    public boolean isSourceNotificationsEnabled() {
-        return sourceNotificationsEnabled;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Relationship)) return false;
-
-        Relationship that = (Relationship) o;
-
-        if (sourceUserId != that.sourceUserId) return false;
-        if (targetUserId != that.targetUserId) return false;
-        if (!sourceUserScreenName.equals(that.sourceUserScreenName))
-            return false;
-        if (!targetUserScreenName.equals(that.targetUserScreenName))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = sourceUserId;
-        result = 31 * result + targetUserId;
-        result = 31 * result + sourceUserScreenName.hashCode();
-        result = 31 * result + targetUserScreenName.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Relationship{" +
-                "sourceUserId=" + sourceUserId +
-                ", targetUserId=" + targetUserId +
-                ", sourceUserScreenName='" + sourceUserScreenName + '\'' +
-                ", targetUserScreenName='" + targetUserScreenName + '\'' +
-                ", sourceFollowingTarget=" + sourceFollowingTarget +
-                ", sourceFollowedByTarget=" + sourceFollowedByTarget +
-                ", sourceNotificationsEnabled=" + sourceNotificationsEnabled +
-                '}';
-    }
+    boolean isSourceNotificationsEnabled();
+    
 }

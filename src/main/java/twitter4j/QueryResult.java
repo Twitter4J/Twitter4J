@@ -26,151 +26,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
-import twitter4j.org.json.JSONArray;
-import twitter4j.org.json.JSONException;
-import twitter4j.org.json.JSONObject;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import static twitter4j.ParseUtil.*;
+
 /**
- * A data class representing search API response
+ * A data interface representing search API response
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+public interface QueryResult extends java.io.Serializable {
+    long getSinceId();
 
-public class QueryResult implements Serializable {
+    long getMaxId();
 
-    private long sinceId;
-    private long maxId;
-    private String refreshUrl;
-    private int resultsPerPage;
-    private String warning;
-    private double completedIn;
-    private int page;
-    private String query;
-    private List<Tweet> tweets;
-    private static final long serialVersionUID = -9059136565234613286L;
+    String getRefreshUrl();
 
-    /*package*/ QueryResult(Response res) throws TwitterException {
-        JSONObject json = res.asJSONObject();
-        try {
-            sinceId = json.getLong("since_id");
-            maxId = json.getLong("max_id");
-            refreshUrl = getString("refresh_url", json, true);
+    int getResultsPerPage();
 
-            resultsPerPage = json.getInt("results_per_page");
-            warning = getString("warning", json, false);
-            completedIn = json.getDouble("completed_in");
-            page = json.getInt("page");
-            query = getString("query", json, true);
-            JSONArray array = json.getJSONArray("results");
-            tweets = new ArrayList<Tweet>(array.length());
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject tweet = array.getJSONObject(i);
-                tweets.add(new Tweet(tweet));
-            }
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
-        }
-    }
-    /*package*/ QueryResult(Query query) throws TwitterException {
-        super();
-        sinceId = query.getSinceId();
-        resultsPerPage = query.getRpp();
-        page = query.getPage();
-        tweets = new ArrayList<Tweet>(0);
-    }
+    String getWarning();
 
-    public long getSinceId() {
-        return sinceId;
-    }
+    double getCompletedIn();
 
-    public long getMaxId() {
-        return maxId;
-    }
+    int getPage();
 
-    public String getRefreshUrl() {
-        return refreshUrl;
-    }
+    String getQuery();
 
-    public int getResultsPerPage() {
-        return resultsPerPage;
-    }
-
-    public String getWarning() {
-        return warning;
-    }
-
-    public double getCompletedIn() {
-        return completedIn;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public String getQuery() {
-        return query;
-    }
-
-    public List<Tweet> getTweets() {
-        return tweets;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        QueryResult that = (QueryResult) o;
-
-        if (Double.compare(that.completedIn, completedIn) != 0) return false;
-        if (maxId != that.maxId) return false;
-        if (page != that.page) return false;
-        if (resultsPerPage != that.resultsPerPage) return false;
-        if (sinceId != that.sinceId) return false;
-        if (!query.equals(that.query)) return false;
-        if (refreshUrl != null ? !refreshUrl.equals(that.refreshUrl) : that.refreshUrl != null)
-            return false;
-        if (tweets != null ? !tweets.equals(that.tweets) : that.tweets != null)
-            return false;
-        if (warning != null ? !warning.equals(that.warning) : that.warning != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = (int) (sinceId ^ (sinceId >>> 32));
-        result = 31 * result + (int) (maxId ^ (maxId >>> 32));
-        result = 31 * result + (refreshUrl != null ? refreshUrl.hashCode() : 0);
-        result = 31 * result + resultsPerPage;
-        result = 31 * result + (warning != null ? warning.hashCode() : 0);
-        temp = completedIn != +0.0d ? Double.doubleToLongBits(completedIn) : 0L;
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + page;
-        result = 31 * result + query.hashCode();
-        result = 31 * result + (tweets != null ? tweets.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "QueryResult{" +
-                "sinceId=" + sinceId +
-                ", maxId=" + maxId +
-                ", refreshUrl='" + refreshUrl + '\'' +
-                ", resultsPerPage=" + resultsPerPage +
-                ", warning='" + warning + '\'' +
-                ", completedIn=" + completedIn +
-                ", page=" + page +
-                ", query='" + query + '\'' +
-                ", tweets=" + tweets +
-                '}';
-    }
+    List<Tweet> getTweets();
 }

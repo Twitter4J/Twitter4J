@@ -29,9 +29,8 @@ package twitter4j.http;
 import twitter4j.TwitterException;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.io.Serializable;
 
-abstract class OAuthToken implements Serializable {
+abstract class OAuthToken implements java.io.Serializable {
     
 	private String token;
     private String tokenSecret;

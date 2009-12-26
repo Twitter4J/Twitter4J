@@ -26,65 +26,74 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import java.io.ObjectStreamException;
-import java.util.HashMap;
-import java.util.Map;
+import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
+
 
 /**
- * @author Joern Huxhorn - jhuxhorn at googlemail.com
+ * A data class representing Trend.
+ *
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.0.2
  */
-public final class Device implements java.io.Serializable {
-    private static final long serialVersionUID = -258215809702057490L;
+/*package*/ class TrendJSONImpl implements Trend, java.io.Serializable {
+    private String name;
+    private String url = null;
+    private String query = null;
+    private static final long serialVersionUID = 1925956704460743946L;
 
-    private static final Map<String, Device> instances = new HashMap<String, Device>();
-
-    public static final Device IM = new Device("im");
-    public static final Device SMS = new Device("sms");
-    public static final Device NONE = new Device("none");
-
-    private final String name;
-
-    private Device() {
-        throw new AssertionError();
-    }
-
-    private Device(String name) {
-        this.name = name;
-        instances.put(name, this);
+    public TrendJSONImpl(JSONObject json) throws JSONException {
+        this.name = json.getString("name");
+        if (!json.isNull("url")) {
+            this.url = json.getString("url");
+        }
+        if (!json.isNull("query")) {
+            this.query = json.getString("query");
+        }
     }
 
     public String getName() {
         return name;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Trend)) return false;
 
-        Device device = (Device) o;
+        Trend trend = (Trend) o;
 
-        if (!name.equals(device.name)) return false;
+        if (!name.equals(trend.getName())) return false;
+        if (query != null ? !query.equals(trend.getQuery()) : trend.getQuery() != null)
+            return false;
+        if (url != null ? !url.equals(trend.getUrl()) : trend.getUrl() != null)
+            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        int result = name.hashCode();
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (query != null ? query.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        return name;
+        return "TrendJSONImpl{" +
+                "name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", query='" + query + '\'' +
+                '}';
     }
-
-    private static Device getInstance(String name) {
-        return instances.get(name);
-    }
-
-    private Object readResolve() throws ObjectStreamException {
-        return getInstance(name);
-    }
-
 }

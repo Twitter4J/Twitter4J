@@ -26,61 +26,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import java.io.Serializable;
 
 /**
- * A data class representing geo location.
+ * A data interface representing geo location.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class GeoLocation implements Serializable{
+public interface GeoLocation extends java.io.Serializable {
+    double getLatitude();
 
-    private double latitude;
-    private double longitude;
-    private static final long serialVersionUID = -4847567157651889935L;
+    double getLongitude();
 
-    public GeoLocation(double latitude, double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof GeoLocation)) return false;
-
-        GeoLocation that = (GeoLocation) o;
-
-        if (Double.compare(that.latitude, latitude) != 0) return false;
-        if (Double.compare(that.longitude, longitude) != 0) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        temp = latitude != +0.0d ? Double.doubleToLongBits(latitude) : 0L;
-        result = (int) (temp ^ (temp >>> 32));
-        temp = longitude != +0.0d ? Double.doubleToLongBits(longitude) : 0L;
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "GeoLocation{" +
-                "latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
-    }
 }

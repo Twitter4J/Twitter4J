@@ -72,7 +72,7 @@ public class StatusStream {
                 try {
                     JSONObject json = new JSONObject(line);
                     if (!json.isNull("text")) {
-                        listener.onStatus(new Status(json));
+                        listener.onStatus(new StatusJSONImpl(json));
                     } else if (!json.isNull("delete")) {
                         listener.onDeletionNotice(new StatusDeletionNotice(json));
                     } else if (!json.isNull("limit")) {

@@ -30,7 +30,6 @@ package twitter4j;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
-import java.io.Serializable;
 
 /**
  * A data class representing Status deletionNotice<br>
@@ -38,7 +37,7 @@ import java.io.Serializable;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public class StatusDeletionNotice implements Serializable {
+public class StatusDeletionNotice implements java.io.Serializable {
 
     private long statusId;
     private int userId;
