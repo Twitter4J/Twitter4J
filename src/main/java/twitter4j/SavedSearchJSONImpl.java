@@ -40,6 +40,7 @@ import static twitter4j.ParseUtil.*;
  * @since Twitter4J 2.0.8
  */
 /*package*/ class SavedSearchJSONImpl extends TwitterResponseImpl implements SavedSearch {
+
     private Date createdAt;
     private String query;
     private int position;
@@ -71,35 +72,66 @@ import static twitter4j.ParseUtil.*;
         }
 
     private void init(JSONObject savedSearch) throws TwitterException {
-        try {
-            createdAt = getDate(savedSearch.getString("created_at"), savedSearch, "EEE MMM dd HH:mm:ss z yyyy");
+            createdAt = getDate("created_at", savedSearch, "EEE MMM dd HH:mm:ss z yyyy");
             query = getURLDecodedString("query", savedSearch);
             position = getInt("position", savedSearch);
             name = getURLDecodedString("name", savedSearch);
             id = getInt("id", savedSearch);
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + savedSearch.toString(), jsone);
-        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Date getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getQuery() {
         return query;
     }
 
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getPosition() {
         return position;
     }
 
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

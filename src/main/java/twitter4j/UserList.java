@@ -92,11 +92,11 @@ public interface UserList extends TwitterResponse, java.io.Serializable {
     URI getURI();
 
     /**
-     * Returns the mode of the list
+     * tests if the list is public
      *
-     * @return the mode of the list
+     * @return if the list is public
      */
-    String getMode();
+    boolean isPublic();
 
     /**
      * Returns the user of the list

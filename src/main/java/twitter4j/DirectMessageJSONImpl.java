@@ -41,7 +41,7 @@ import static twitter4j.ParseUtil.*;
     private int id;
     private String text;
     private int senderId;
-    private int recipientIdd;
+    private int recipientId;
     private Date createdAt;
     private String senderScreenName;
     private String recipientScreenName;
@@ -58,7 +58,7 @@ import static twitter4j.ParseUtil.*;
         id = getInt("id", json);
         text = getUnescapedString("text", json);
         senderId = getInt("sender_id", json);
-        recipientIdd = getInt("recipient_id", json);
+        recipientId = getInt("recipient_id", json);
         createdAt = getDate("created_at", json);
         senderScreenName = getUnescapedString("sender_screen_name", json);
         recipientScreenName = getUnescapedString("recipient_screen_name", json);
@@ -76,12 +76,19 @@ import static twitter4j.ParseUtil.*;
     public int getId() {
         return id;
     }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     /**
      * {@inheritDoc}
      */
     public String getText() {
         return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     /**
@@ -91,18 +98,29 @@ import static twitter4j.ParseUtil.*;
         return senderId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public int getRecipientId() {
-        return recipientIdd;
+    public void setSenderId(int senderId) {
+        this.senderId = senderId;
     }
 
     /**
      * {@inheritDoc}
      */
+    public int getRecipientId() {
+        return recipientId;
+    }
+
+    public void setRecipientId(int recipientId) {
+        this.recipientId = recipientId;
+    }
+    /**
+     * {@inheritDoc}
+     */
     public Date getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     /**
@@ -112,11 +130,19 @@ import static twitter4j.ParseUtil.*;
         return senderScreenName;
     }
 
+    public void setSenderScreenName(String senderScreenName) {
+        this.senderScreenName = senderScreenName;
+    }
+
     /**
      * {@inheritDoc}
      */
     public String getRecipientScreenName() {
         return recipientScreenName;
+    }
+
+    public void setRecipientScreenName(String recipientScreenName) {
+        this.recipientScreenName = recipientScreenName;
     }
 
     private User sender;
@@ -128,6 +154,10 @@ import static twitter4j.ParseUtil.*;
         return sender;
     }
 
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
     private User recipient;
 
     /**
@@ -135,6 +165,10 @@ import static twitter4j.ParseUtil.*;
      */
     public User getRecipient() {
         return recipient;
+    }
+
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
     }
 
     /*package*/ static ResponseList<DirectMessage> createDirectMessageList(Response res) throws TwitterException {
@@ -175,7 +209,7 @@ import static twitter4j.ParseUtil.*;
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", sender_id=" + senderId +
-                ", recipient_id=" + recipientIdd +
+                ", recipient_id=" + recipientId +
                 ", created_at=" + createdAt +
                 ", sender_screen_name='" + senderScreenName + '\'' +
                 ", recipient_screen_name='" + recipientScreenName + '\'' +

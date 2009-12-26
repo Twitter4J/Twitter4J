@@ -70,106 +70,124 @@ import static twitter4j.ParseUtil.*;
     }
 
     /**
-     * returns the text
-     *
-     * @return the text
+     * {@inheritDoc}
      */
-
     public String getText() {
         return text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     /**
-     * returns the to_user_id
-     *
-     * @return the to_user_id value or -1 if to_user_id is not specified by the tweet
+     * {@inheritDoc}
      */
     public int getToUserId() {
         return toUserId;
     }
 
+    public void setToUserId(int toUserId) {
+        this.toUserId = toUserId;
+    }
+
     /**
-     * returns the to_user
-     *
-     * @return the to_user value or null if to_user is not specified by the tweet
+     * {@inheritDoc}
      */
     public String getToUser() {
         return toUser;
     }
 
+    public void setToUser(String toUser) {
+        this.toUser = toUser;
+    }
+
     /**
-     * returns the from_user
-     *
-     * @return the from_user
+     * {@inheritDoc}
      */
     public String getFromUser() {
         return fromUser;
     }
 
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
+    }
+
     /**
-     * returns the status id of the tweet
-     *
-     * @return the status id
+     * {@inheritDoc}
      */
     public long getId() {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     /**
-     * returns the user id of the tweet's owner.<br>
-     * <font color="orange">Warning:</font> The user ids in the Search API are different from those in the REST API (about the two APIs). This defect is being tracked by Issue 214. This means that the to_user_id and from_user_id field vary from the actualy user id on Twitter.com. Applications will have to perform a screen name-based lookup with the users/show method to get the correct user id if necessary.
-     *
-     * @return the user id of the tweet's owner
-     * @see <a href="http://code.google.com/p/twitter-api/issues/detail?id=214">Issue 214:	Search API "from_user_id" doesn't match up with the proper Twitter "user_id"</a>
+     * {@inheritDoc}
      */
     public int getFromUserId() {
         return fromUserId;
     }
 
+    public void setFromUserId(int fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
     /**
-     * returns the iso language code of the tweet
-     *
-     * @return the iso language code of the tweet or null if iso_language_code is not specified by the tweet
+     * {@inheritDoc}
      */
     public String getIsoLanguageCode() {
         return isoLanguageCode;
     }
 
+    public void setIsoLanguageCode(String isoLanguageCode) {
+        this.isoLanguageCode = isoLanguageCode;
+    }
+
     /**
-     * returns the source of the tweet
-     *
-     * @return the source of the tweet
+     * {@inheritDoc}
      */
     public String getSource() {
         return source;
     }
 
+    public void setSource(String source) {
+        this.source = source;
+    }
+
     /**
-     * returns the profile_image_url
-     *
-     * @return the profile_image_url
+     * {@inheritDoc}
      */
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
 
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
     /**
-     * returns the created_at
-     *
-     * @return the created_at
+     * {@inheritDoc}
      */
     public Date getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
     /**
-     * Returns The location that this tweet refers to if available.
-     *
-     * @return returns The location that this tweet refers to if available (can be null)
-     * @since Twitter4J 2.1.0
+     * {@inheritDoc}
      */
     public GeoLocation getGeoLocation() {
         return geoLocation;
+    }
+
+    public void setGeoLocation(GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
     }
 
     @Override

@@ -39,6 +39,7 @@ import java.util.Arrays;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ class IDsJSONImpl extends TwitterResponseImpl implements IDs {
+
     private int[] ids;
     private long previousCursor = -1;
     private long nextCursor = -1;
@@ -96,6 +97,10 @@ import java.util.Arrays;
         return ids;
     }
 
+    public void setIds(int[] ids) {
+        this.ids = ids;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -110,6 +115,10 @@ import java.util.Arrays;
         return previousCursor;
     }
 
+    public void setPreviousCursor(long previousCursor) {
+        this.previousCursor = previousCursor;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -122,6 +131,10 @@ import java.util.Arrays;
      */
     public long getNextCursor() {
         return nextCursor;
+    }
+
+    public void setNextCursor(long nextCursor) {
+        this.nextCursor = nextCursor;
     }
 
     @Override

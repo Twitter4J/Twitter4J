@@ -48,16 +48,37 @@ import static twitter4j.ParseUtil.*;
         this.query = getRawString("query", json);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getUrl() {
         return url;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getQuery() {
         return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     @Override

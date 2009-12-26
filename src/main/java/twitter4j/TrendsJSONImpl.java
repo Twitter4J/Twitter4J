@@ -128,16 +128,37 @@ import static twitter4j.ParseUtil.*;
         return trends;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Trend[] getTrends() {
         return this.trends;
     }
 
+    public void setTrends(Trend[] trends) {
+        this.trends = trends;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Date getAsOf() {
         return asOf;
     }
 
+    public void setAsOf(Date asOf) {
+        this.asOf = asOf;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Date getTrendAt() {
         return trendAt;
+    }
+
+    public void setTrendAt(Date trendAt) {
+        this.trendAt = trendAt;
     }
 
     @Override

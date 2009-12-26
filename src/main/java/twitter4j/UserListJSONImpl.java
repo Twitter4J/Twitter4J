@@ -30,7 +30,7 @@ import twitter4j.http.Response;
 import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
-
+import static twitter4j.ParseUtil.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -49,7 +49,7 @@ import java.net.URISyntaxException;
     private int subscriberCount;
     private int memberCount;
     private String uri;
-    private String mode;
+    private boolean mode;
     private User user;
     private static final long serialVersionUID = -6345893237975349030L;
 
@@ -69,16 +69,16 @@ import java.net.URISyntaxException;
     }
 
     private void init(JSONObject json) throws TwitterException {
+            id = getInt("id", json);
+            name = getRawString("name", json);
+            fullName = getRawString("full_name", json);
+            slug = getRawString("slug", json);
+            description = getRawString("description", json);
+            subscriberCount = getInt("subscriber_count", json);
+            memberCount = getInt("member_count", json);
+            uri = getRawString("uri", json);
+            mode = "pubic".equals(getRawString("mode", json));
         try {
-            id = json.getInt("id");
-            name = json.getString("name");
-            fullName = json.getString("full_name");
-            slug = json.getString("slug");
-            description = json.getString("description");
-            subscriberCount = json.getInt("subscriber_count");
-            memberCount = json.getInt("member_count");
-            uri = json.getString("uri");
-            mode = json.getString("mode");
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
             }
@@ -88,72 +88,84 @@ import java.net.URISyntaxException;
     }
 
     /**
-     * Returns the id of the list
-     *
-     * @return the id of the list
+     * {@inheritDoc}
      */
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
-     * Returns the name of the list
-     *
-     * @return the name of the list
+     * {@inheritDoc}
      */
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
-     * Returns the full name of the list
-     *
-     * @return the full name of the list
+     * {@inheritDoc}
      */
     public String getFullName() {
         return fullName;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     /**
-     * Returns the slug of the list
-     *
-     * @return the slug of the list
+     * {@inheritDoc}
      */
     public String getSlug() {
         return slug;
     }
 
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
     /**
-     * Returns the description of the list
-     *
-     * @return the description of the list
+     * {@inheritDoc}
      */
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /**
-     * Returns the subscriber count of the list
-     *
-     * @return the subscriber count of the list
+     * {@inheritDoc}
      */
     public int getSubscriberCount() {
         return subscriberCount;
     }
 
+    public void setSubscriberCount(int subscriberCount) {
+        this.subscriberCount = subscriberCount;
+    }
+
     /**
-     * Returns the member count of the list
-     *
-     * @return the member count of the list
+     * {@inheritDoc}
      */
     public int getMemberCount() {
         return memberCount;
     }
 
+    public void setMemberCount(int memberCount) {
+        this.memberCount = memberCount;
+    }
+
     /**
-     * Returns the uri of the list
-     *
-     * @return the uri of the list
+     * {@inheritDoc}
      */
     public URI getURI() {
         try {
@@ -163,23 +175,32 @@ import java.net.URISyntaxException;
         }
     }
         
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
     /**
-     * Returns the mode of the list
-     *
-     * @return the mode of the list
+     * {@inheritDoc}
      */
-    public String getMode() {
+    public boolean isPublic() {
         return mode;
     }
         
+    public void setPublic(boolean mode) {
+        this.mode = mode;
+    }
+
     /**
-     * Returns the user of the list
-     *
-     * @return the user of the list
+     * {@inheritDoc}
      */
     public User getUser() {
         return user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
     /*package*/ static PagableResponseList<UserList> createUserListList(Response res) throws TwitterException {
         try {
             JSONObject json = res.asJSONObject();

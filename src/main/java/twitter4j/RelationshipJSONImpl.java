@@ -50,16 +50,12 @@ import static twitter4j.ParseUtil.*;
     private String sourceUserScreenName;
     private static final long serialVersionUID = 697705345506281849L;
 
-    /*package*/
-
-    RelationshipJSONImpl(Response res) throws TwitterException {
+    /*package*/ RelationshipJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
     }
 
-    /*package*/
-
-    RelationshipJSONImpl(JSONObject json) throws TwitterException {
+    /*package*/ RelationshipJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }
@@ -89,11 +85,19 @@ import static twitter4j.ParseUtil.*;
         return sourceUserId;
     }
 
+    public void setSourceUserId(int sourceUserId) {
+        this.sourceUserId = sourceUserId;
+    }
+
     /**
      * {@inheritDoc}
      */
     public int getTargetUserId() {
         return targetUserId;
+    }
+
+    public void setTargetUserId(int targetUserId) {
+        this.targetUserId = targetUserId;
     }
 
     /**
@@ -103,69 +107,77 @@ import static twitter4j.ParseUtil.*;
         return sourceBlockingTarget;
     }
 
+    public void setSourceBlockingTarget(boolean sourceBlockingTarget) {
+        this.sourceBlockingTarget = sourceBlockingTarget;
+    }
+
     /**
-     * Returns the source user screen name
-     *
-     * @return returns the source user screen name
+     * {@inheritDoc}
      */
     public String getSourceUserScreenName() {
         return sourceUserScreenName;
     }
 
+    public void setSourceUserScreenName(String sourceUserScreenName) {
+        this.sourceUserScreenName = sourceUserScreenName;
+    }
+
     /**
-     * Returns the target user screen name
-     *
-     * @return the target user screen name
+     * {@inheritDoc}
      */
     public String getTargetUserScreenName() {
         return targetUserScreenName;
     }
 
+    public void setTargetUserScreenName(String targetUserScreenName) {
+        this.targetUserScreenName = targetUserScreenName;
+    }
+
     /**
-     * Checks if source user is following target user
-     *
-     * @return true if source user is following target user
+     * {@inheritDoc}
      */
     public boolean isSourceFollowingTarget() {
         return sourceFollowingTarget;
     }
 
+    public void setSourceFollowingTarget(boolean sourceFollowingTarget) {
+        this.sourceFollowingTarget = sourceFollowingTarget;
+    }
+
     /**
-     * Checks if target user is following source user.<br>
-     * This method is equivalent to isSourceFollowedByTarget().
-     *
-     * @return true if target user is following source user
+     * {@inheritDoc}
      */
     public boolean isTargetFollowingSource() {
         return sourceFollowedByTarget;
     }
 
     /**
-     * Checks if source user is being followed by target user
-     *
-     * @return true if source user is being followed by target user
+     * {@inheritDoc}
      */
     public boolean isSourceFollowedByTarget() {
         return sourceFollowedByTarget;
     }
 
+    public void setSourceFollowedByTarget(boolean sourceFollowedByTarget) {
+        this.sourceFollowedByTarget = sourceFollowedByTarget;
+    }
+
     /**
-     * Checks if target user is being followed by source user.<br>
-     * This method is equivalent to isSourceFollowingTarget().
-     *
-     * @return true if target user is being followed by source user
+     * {@inheritDoc}
      */
     public boolean isTargetFollowedBySource() {
         return sourceFollowingTarget;
     }
 
     /**
-     * Checks if the source user has enabled notifications for updates of the target user
-     *
-     * @return true if source user enabled notifications for target user
+     * {@inheritDoc}
      */
     public boolean isSourceNotificationsEnabled() {
         return sourceNotificationsEnabled;
+    }
+
+    public void setSourceNotificationsEnabled(boolean sourceNotificationsEnabled) {
+        this.sourceNotificationsEnabled = sourceNotificationsEnabled;
     }
 
     @Override

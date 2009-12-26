@@ -37,9 +37,15 @@ import twitter4j.org.json.JSONObject;
  */
 public class GeoLocation implements java.io.Serializable{
 
-    private double latitude;
-    private double longitude;
+    protected double latitude;
+    protected double longitude;
     private static final long serialVersionUID = -4847567157651889935L;
+
+    /**
+     * Creates a GeoLocation instance
+     * @param latitude the latitude
+     * @param longitude the longitude
+     */
 
     public GeoLocation(double latitude, double longitude) {
         this.latitude = latitude;
@@ -48,11 +54,10 @@ public class GeoLocation implements java.io.Serializable{
 
     /**
      * returns a GeoLocation instance if a "geo" element is found.
-     * @param json
+     * @param json JSONObject to be parsed
      * @return GeoLocation instance 
-     * @throws TwitterException
+     * @throws TwitterException when coordinates is not included in geo element (should be an API side issue)
      */
-
     /*package*/ static GeoLocation getInstance(JSONObject json) throws TwitterException {
         try {
             if (!json.isNull("geo")) {
@@ -70,14 +75,16 @@ public class GeoLocation implements java.io.Serializable{
     }
 
     /**
-     * {@inheritDoc}
+     * returns the latitude of the geo location
+     * @return the latitude
      */
     public double getLatitude() {
         return latitude;
     }
 
     /**
-     * {@inheritDoc}
+     * returns the longitude of the geo location
+     * @return the longitude
      */
     public double getLongitude() {
         return longitude;

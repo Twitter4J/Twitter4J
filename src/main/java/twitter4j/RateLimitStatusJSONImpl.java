@@ -38,6 +38,7 @@ import static twitter4j.ParseUtil.*;
  * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Twitter API Wiki / Rate limiting</a>
  */
 /*package*/ class RateLimitStatusJSONImpl implements RateLimitStatus, java.io.Serializable {
+
     private int remainingHits;
     private int hourlyLimit;
     private int resetTimeInSeconds;
@@ -96,11 +97,19 @@ import static twitter4j.ParseUtil.*;
         return remainingHits;
     }
 
+    public void setRemainingHits(int remainingHits) {
+        this.remainingHits = remainingHits;
+    }
+
     /**
      * {@inheritDoc}
      */
     public int getHourlyLimit() {
         return hourlyLimit;
+    }
+
+    public void setHourlyLimit(int hourlyLimit) {
+        this.hourlyLimit = hourlyLimit;
     }
 
     /**
@@ -110,11 +119,19 @@ import static twitter4j.ParseUtil.*;
         return resetTimeInSeconds;
     }
 
+    public void setResetTimeInSeconds(int resetTimeInSeconds) {
+        this.resetTimeInSeconds = resetTimeInSeconds;
+    }
+
     /**
      * {@inheritDoc}
      */
     public Date getResetTime() {
         return resetTime;
+    }
+
+    public void setResetTime(Date resetTime) {
+        this.resetTime = resetTime;
     }
 
     @Override

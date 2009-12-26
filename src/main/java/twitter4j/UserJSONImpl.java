@@ -136,54 +136,62 @@ import static twitter4j.ParseUtil.*;
     }
 
     /**
-     * Returns the id of the user
-     *
-     * @return the id of the user
+     * {@inheritDoc}
      */
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
-     * Returns the name of the user
-     *
-     * @return the name of the user
+     * {@inheritDoc}
      */
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
-     * Returns the screen name of the user
-     *
-     * @return the screen name of the user
+     * {@inheritDoc}
      */
     public String getScreenName() {
         return screenName;
     }
 
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
     /**
-     * Returns the location of the user
-     *
-     * @return the location of the user
+     * {@inheritDoc}
      */
     public String getLocation() {
         return location;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     /**
-     * Returns the description of the user
-     *
-     * @return the description of the user
+     * {@inheritDoc}
      */
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /**
-     * Returns the profile image url of the user
-     *
-     * @return the profile image url of the user
+     * {@inheritDoc}
      */
     public URL getProfileImageURL() {
         try {
@@ -193,10 +201,12 @@ import static twitter4j.ParseUtil.*;
         }
     }
 
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
     /**
-     * Returns the url of the user
-     *
-     * @return the url of the user
+     * {@inheritDoc}
      */
     public URL getURL() {
         try {
@@ -206,173 +216,291 @@ import static twitter4j.ParseUtil.*;
         }
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     /**
-     * Test if the user status is protected
-     *
-     * @return true if the user status is protected
+     * {@inheritDoc}
      */
     public boolean isProtected() {
         return isProtected;
     }
 
+    public void setProtected(boolean aProtected) {
+        isProtected = aProtected;
+    }
 
     /**
-     * Returns the number of followers
-     *
-     * @return the number of followers
-     * @since Twitter4J 1.0.4
+     * {@inheritDoc}
      */
     public int getFollowersCount() {
         return followersCount;
     }
 
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
+    }
+
     /**
-     * @return created_at or null if the user is protected
-     * @since Twitter4J 1.1.0
+     * {@inheritDoc}
      */
     public Date getStatusCreatedAt() {
         return statusCreatedAt;
     }
 
+    public void setStatusCreatedAt(Date statusCreatedAt) {
+        this.statusCreatedAt = statusCreatedAt;
+    }
+
     /**
-     *
-     * @return status id or -1 if the user is protected
+     * {@inheritDoc}
      */
     public long getStatusId() {
         return statusId;
     }
 
+    public void setStatusId(long statusId) {
+        this.statusId = statusId;
+    }
+
     /**
-     *
-     * @return status text or null if the user is protected
+     * {@inheritDoc}
      */
     public String getStatusText() {
         return statusText;
     }
 
+    public void setStatusText(String statusText) {
+        this.statusText = statusText;
+    }
+
     /**
-     *
-     * @return source or null if the user is protected
-     * @since 1.1.4
+     * {@inheritDoc}
      */
     public String getStatusSource() {
         return statusSource;
     }
 
+    public void setStatusSource(String statusSource) {
+        this.statusSource = statusSource;
+    }
+
     /**
-     *
-     * @return truncated or false if the user is protected
-     * @since 1.1.4
+     * {@inheritDoc}
      */
     public boolean isStatusTruncated() {
         return statusTruncated;
     }
 
+    public void setStatusTruncated(boolean statusTruncated) {
+        this.statusTruncated = statusTruncated;
+    }
+
     /**
-     *
-     * @return in_reply_to_status_id or -1 if the user is protected
-     * @since 1.1.4
+     * {@inheritDoc}
      */
     public long getStatusInReplyToStatusId() {
         return statusInReplyToStatusId;
     }
 
+    public void setStatusInReplyToStatusId(long statusInReplyToStatusId) {
+        this.statusInReplyToStatusId = statusInReplyToStatusId;
+    }
+
     /**
-     *
-     * @return in_reply_to_user_id or -1 if the user is protected
-     * @since 1.1.4
+     * {@inheritDoc}
      */
     public int getStatusInReplyToUserId() {
         return statusInReplyToUserId;
     }
 
+    public void setStatusInReplyToUserId(int statusInReplyToUserId) {
+        this.statusInReplyToUserId = statusInReplyToUserId;
+    }
+
     /**
-     *
-     * @return favorited or false if the user is protected
-     * @since 1.1.4
+     * {@inheritDoc}
      */
     public boolean isStatusFavorited() {
         return statusFavorited;
     }
 
-    /**
-     *
-     * @return in_reply_to_screen_name or null if the user is protected
-     * @since 1.1.4
-     */
+    public void setStatusFavorited(boolean statusFavorited) {
+        this.statusFavorited = statusFavorited;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getStatusInReplyToScreenName() {
         return -1 != statusInReplyToUserId ? statusInReplyToScreenName : null;
     }
 
-        public String getProfileBackgroundColor() {
+    public void setStatusInReplyToScreenName(String statusInReplyToScreenName) {
+        this.statusInReplyToScreenName = statusInReplyToScreenName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getProfileBackgroundColor() {
         return profileBackgroundColor;
+    }
+
+    public void setProfileBackgroundColor(String profileBackgroundColor) {
+        this.profileBackgroundColor = profileBackgroundColor;
     }
 
     public String getProfileTextColor() {
         return profileTextColor;
     }
 
+    public void setProfileTextColor(String profileTextColor) {
+        this.profileTextColor = profileTextColor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getProfileLinkColor() {
         return profileLinkColor;
     }
 
+    public void setProfileLinkColor(String profileLinkColor) {
+        this.profileLinkColor = profileLinkColor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getProfileSidebarFillColor() {
         return profileSidebarFillColor;
     }
 
+    public void setProfileSidebarFillColor(String profileSidebarFillColor) {
+        this.profileSidebarFillColor = profileSidebarFillColor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getProfileSidebarBorderColor() {
         return profileSidebarBorderColor;
     }
 
+    public void setProfileSidebarBorderColor(String profileSidebarBorderColor) {
+        this.profileSidebarBorderColor = profileSidebarBorderColor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getFriendsCount() {
         return friendsCount;
     }
 
+    public void setFriendsCount(int friendsCount) {
+        this.friendsCount = friendsCount;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Date getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getFavouritesCount() {
         return favouritesCount;
     }
 
+    public void setFavouritesCount(int favouritesCount) {
+        this.favouritesCount = favouritesCount;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getUtcOffset() {
         return utcOffset;
     }
 
+    public void setUtcOffset(int utcOffset) {
+        this.utcOffset = utcOffset;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getTimeZone() {
         return timeZone;
     }
 
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getProfileBackgroundImageUrl() {
         return profileBackgroundImageUrl;
     }
 
+    public void setProfileBackgroundImageUrl(String profileBackgroundImageUrl) {
+        this.profileBackgroundImageUrl = profileBackgroundImageUrl;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isProfileBackgroundTiled() {
         return profileBackgroundTiled;
     }
 
+    public void setProfileBackgroundTiled(boolean profileBackgroundTiled) {
+        this.profileBackgroundTiled = profileBackgroundTiled;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getStatusesCount() {
         return statusesCount;
     }
 
+    public void setStatusesCount(int statusesCount) {
+        this.statusesCount = statusesCount;
+    }
+
     /**
-     * 
-     * @return the user is enabling geo location
-     * @since Twitter4J 2.0.10
+     * {@inheritDoc}
      */
     public boolean isGeoEnabled() {
         return isGeoEnabled;
     }
 
+    public void setGeoEnabled(boolean geoEnabled) {
+        isGeoEnabled = geoEnabled;
+    }
+
     /**
-     *
-     * @return returns true if the user is a verified celebrity
-     * @since Twitter4J 2.0.10
+     * {@inheritDoc}
      */
     public boolean isVerified() {
         return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
     }
 
     /*package*/ static PagableResponseList<User> createPagableUserList(Response res) throws TwitterException {
