@@ -74,7 +74,7 @@ import static twitter4j.ParseUtil.*;
     private int utcOffset;
     private String timeZone;
     private String profileBackgroundImageUrl;
-    private String profileBackgroundTile;
+    private boolean profileBackgroundTiled;
     private int statusesCount;
     private boolean isGeoEnabled;
     private boolean isVerified;
@@ -116,7 +116,7 @@ import static twitter4j.ParseUtil.*;
             utcOffset = getInt("utc_offset", json);
             timeZone = json.getString("time_zone");
             profileBackgroundImageUrl = json.getString("profile_background_image_url");
-            profileBackgroundTile = json.getString("profile_background_tile");
+            profileBackgroundTiled = getBoolean("profile_background_tile", json);
             statusesCount = json.getInt("statuses_count");
             if (!json.isNull("status")) {
                 JSONObject status = json.getJSONObject("status");
@@ -349,8 +349,8 @@ import static twitter4j.ParseUtil.*;
         return profileBackgroundImageUrl;
     }
 
-    public String getProfileBackgroundTile() {
-        return profileBackgroundTile;
+    public boolean isProfileBackgroundTiled() {
+        return profileBackgroundTiled;
     }
 
     public int getStatusesCount() {
@@ -457,7 +457,7 @@ import static twitter4j.ParseUtil.*;
                 ", utcOffset=" + utcOffset +
                 ", timeZone='" + timeZone + '\'' +
                 ", profileBackgroundImageUrl='" + profileBackgroundImageUrl + '\'' +
-                ", profileBackgroundTile='" + profileBackgroundTile + '\'' +
+                ", profileBackgroundTile='" + profileBackgroundTiled + '\'' +
                 ", statusesCount=" + statusesCount +
                 ", geoEnabled=" + isGeoEnabled +
                 ", verified=" + isVerified +

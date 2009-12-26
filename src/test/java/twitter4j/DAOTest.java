@@ -31,7 +31,6 @@ import twitter4j.org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
@@ -105,7 +104,6 @@ public class DAOTest extends TwitterTestBase {
         assertNotNull(user.getCreatedAt());
         assertNotNull(user.getTimeZone());
         assertNotNull(user.getProfileBackgroundImageUrl());
-        assertNotNull(user.getProfileBackgroundTile());
 
         assertTrue(0 <= user.getStatusesCount());
         assertNotNull(user.getProfileBackgroundColor());

@@ -102,7 +102,6 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertNotNull(user.getCreatedAt());
         assertNotNull(user.getTimeZone());
         assertNotNull(user.getProfileBackgroundImageUrl());
-        assertNotNull(user.getProfileBackgroundTile());
 
         assertTrue(0 <= user.getStatusesCount());
         assertNotNull(user.getProfileBackgroundColor());

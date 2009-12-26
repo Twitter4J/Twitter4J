@@ -31,6 +31,7 @@ import java.util.Date;
 
 /**
  * A data interface representing Basic user information element
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
@@ -40,56 +41,56 @@ public interface User extends TwitterResponse, java.io.Serializable {
      *
      * @return the id of the user
      */
-     int getId();
+    int getId();
 
     /**
      * Returns the name of the user
      *
      * @return the name of the user
      */
-     String getName();
+    String getName();
 
     /**
      * Returns the screen name of the user
      *
      * @return the screen name of the user
      */
-     String getScreenName();
+    String getScreenName();
 
     /**
      * Returns the location of the user
      *
      * @return the location of the user
      */
-     String getLocation();
+    String getLocation();
 
     /**
      * Returns the description of the user
      *
      * @return the description of the user
      */
-     String getDescription();
+    String getDescription();
 
     /**
      * Returns the profile image url of the user
      *
      * @return the profile image url of the user
      */
-     URL getProfileImageURL();
+    URL getProfileImageURL();
 
     /**
      * Returns the url of the user
      *
      * @return the url of the user
      */
-     URL getURL();
+    URL getURL();
 
     /**
      * Test if the user status is protected
      *
      * @return true if the user status is protected
      */
-     boolean isProtected();
+    boolean isProtected();
 
     /**
      * Returns the number of followers
@@ -97,106 +98,96 @@ public interface User extends TwitterResponse, java.io.Serializable {
      * @return the number of followers
      * @since Twitter4J 1.0.4
      */
-     int getFollowersCount();
+    int getFollowersCount();
 
     /**
      * @return created_at or null if the user is protected
      * @since Twitter4J 1.1.0
      */
-     Date getStatusCreatedAt();
+    Date getStatusCreatedAt();
 
     /**
-     *
      * @return status id or -1 if the user is protected
      */
-     long getStatusId();
+    long getStatusId();
 
     /**
-     *
      * @return status text or null if the user is protected
      */
-     String getStatusText();
+    String getStatusText();
 
     /**
-     *
      * @return source or null if the user is protected
      * @since 1.1.4
      */
-     String getStatusSource();
+    String getStatusSource();
 
     /**
-     *
      * @return truncated or false if the user is protected
      * @since 1.1.4
      */
-     boolean isStatusTruncated();
+    boolean isStatusTruncated();
 
     /**
-     *
      * @return in_reply_to_status_id or -1 if the user is protected
      * @since 1.1.4
      */
-     long getStatusInReplyToStatusId();
+    long getStatusInReplyToStatusId();
 
     /**
-     *
      * @return in_reply_to_user_id or -1 if the user is protected
      * @since 1.1.4
      */
-     int getStatusInReplyToUserId();
+    int getStatusInReplyToUserId();
 
     /**
-     *
      * @return favorited or false if the user is protected
      * @since 1.1.4
      */
-     boolean isStatusFavorited() ;
+    boolean isStatusFavorited();
 
     /**
-     *
      * @return in_reply_to_screen_name or null if the user is protected
      * @since 1.1.4
      */
 
-     String getStatusInReplyToScreenName() ;
+    String getStatusInReplyToScreenName();
 
-         String getProfileBackgroundColor() ;
+    String getProfileBackgroundColor();
 
-     String getProfileTextColor() ;
+    String getProfileTextColor();
 
-     String getProfileLinkColor() ;
+    String getProfileLinkColor();
 
-     String getProfileSidebarFillColor() ;
+    String getProfileSidebarFillColor();
 
-     String getProfileSidebarBorderColor() ;
+    String getProfileSidebarBorderColor();
 
-     int getFriendsCount() ;
+    int getFriendsCount();
 
-     Date getCreatedAt() ;
+    Date getCreatedAt();
 
-     int getFavouritesCount() ;
+    int getFavouritesCount();
 
-     int getUtcOffset() ;
+    int getUtcOffset();
 
-     String getTimeZone() ;
+    String getTimeZone();
 
-     String getProfileBackgroundImageUrl() ;
+    String getProfileBackgroundImageUrl();
 
-     String getProfileBackgroundTile() ;
+    boolean isProfileBackgroundTiled();
 
-     int getStatusesCount() ;
+    int getStatusesCount();
 
     /**
-     *
      * @return the user is enabling geo location
      * @since Twitter4J 2.0.10
      */
-     boolean isGeoEnabled() ;
+    boolean isGeoEnabled();
 
     /**
-     *
      * @return returns true if the user is a verified celebrity
      * @since Twitter4J 2.0.10
      */
-     boolean isVerified() ;
+    boolean isVerified();
 }
