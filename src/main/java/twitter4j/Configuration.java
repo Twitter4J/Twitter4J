@@ -36,47 +36,71 @@ import java.util.Properties;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Configuration {
+    public static final String DEBUG = "twitter4j.debug";
+    public static final String SOURCE = "twitter4j.source";
+    public static final String CLIENT_URL = "twitter4j.clientURL";
+    public static final String HTTP_USER_AGENT = "twitter4j.http.userAgent";
+    public static final String USER = "twitter4j.user";
+    public static final String PASSWORD = "twitter4j.password";
+    public static final String HTTP_USE_SSL = "twitter4j.http.useSSL";
+    public static final String HTTP_PROXY_HOST = "twitter4j.http.proxyHost";
+    public static final String HTTP_PROXY_HOST_FALLBACK = "twitter4j.http.proxyHost.fallback";
+    public static final String HTTP_PROXY_USER = "twitter4j.http.proxyUser";
+    public static final String HTTP_PROXY_PASSWORD = "twitter4j.http.proxyPassword";
+    public static final String HTTP_PROXY_PORT = "twitter4j.http.proxyPort";
+    public static final String HTTP_PROXY_PORT_FALLBACK = "twitter4j.http.proxyPort.fallback";
+    public static final String HTTP_CONNECTION_TIMEOUT = "twitter4j.http.connectionTimeout";
+    public static final String HTTP_READ_TIMEOUT = "twitter4j.http.readTimeout";
+    public static final String HTTP_RETRY_COUNT = "twitter4j.http.retryCount";
+    public static final String HTTP_RETRY_INTERVAL_SECS = "twitter4j.http.retryIntervalSecs";
+    public static final String OAUTH_CONSUMER_KEY = "twitter4j.oauth.consumerKey";
+    public static final String OAUTH_CONSUMER_SECRET = "twitter4j.oauth.consumerSecret";
+    public static final String ASYNC_NUM_THREADS = "twitter4j.async.numThreads";
+    public static final String CLIENT_VERSION = "twitter4j.clientVersion";
+    public static final String DALVIK = "twitter4j.dalvik";
+
     private static Properties defaultProperty = new Properties();
+
     static {
         init();
     }
 
     /*package*/ static void init() {
-        defaultProperty.setProperty("twitter4j.debug", "false");
-        defaultProperty.setProperty("twitter4j.source", "Twitter4J");
-        //defaultProperty.setProperty("twitter4j.clientVersion","");
-        defaultProperty.setProperty("twitter4j.clientURL", "http://yusuke.homeip.net/twitter4j/en/twitter4j-{twitter4j.clientVersion}.xml");
-        defaultProperty.setProperty("twitter4j.http.userAgent", "twitter4j http://yusuke.homeip.net/twitter4j/ /{twitter4j.clientVersion}");
-        //defaultProperty.setProperty("twitter4j.user","");
-        //defaultProperty.setProperty("twitter4j.password","");
-        defaultProperty.setProperty("twitter4j.http.useSSL", "false");
-        //defaultProperty.setProperty("twitter4j.http.proxyHost","");
-        defaultProperty.setProperty("twitter4j.http.proxyHost.fallback", "http.proxyHost");
-        //defaultProperty.setProperty("twitter4j.http.proxyUser","");
-        //defaultProperty.setProperty("twitter4j.http.proxyPassword","");
-        //defaultProperty.setProperty("twitter4j.http.proxyPort","");
-        defaultProperty.setProperty("twitter4j.http.proxyPort.fallback", "http.proxyPort");
-        defaultProperty.setProperty("twitter4j.http.connectionTimeout", "20000");
-        defaultProperty.setProperty("twitter4j.http.readTimeout", "120000");
-        defaultProperty.setProperty("twitter4j.http.retryCount", "3");
-        defaultProperty.setProperty("twitter4j.http.retryIntervalSecs", "10");
-        //defaultProperty.setProperty("twitter4j.oauth.consumerKey","");
-        //defaultProperty.setProperty("twitter4j.oauth.consumerSecret","");
-        defaultProperty.setProperty("twitter4j.async.numThreads", "1");
-        defaultProperty.setProperty("twitter4j.clientVersion", Version.getVersion());
+        defaultProperty.setProperty(DEBUG, "false");
+        defaultProperty.setProperty(SOURCE, "Twitter4J");
+        defaultProperty.setProperty(CLIENT_URL, "http://yusuke.homeip.net/twitter4j/en/twitter4j-{twitter4j.clientVersion}.xml");
+        defaultProperty.setProperty(HTTP_USER_AGENT, "twitter4j http://yusuke.homeip.net/twitter4j/ /{twitter4j.clientVersion}");
+        //defaultProperty.setProperty(USER,"");
+        //defaultProperty.setProperty(PASSWORD,"");
+        defaultProperty.setProperty(HTTP_USE_SSL, "false");
+        //defaultProperty.setProperty(HTTP_PROXY_HOST,"");
+        defaultProperty.setProperty(HTTP_PROXY_HOST_FALLBACK, "http.proxyHost");
+        //defaultProperty.setProperty(HTTP_PROXY_USER,"");
+        //defaultProperty.setProperty(HTTP_PROXY_PASSWORD,"");
+        //defaultProperty.setProperty(HTTP_PROXY_PORT,"");
+        defaultProperty.setProperty(HTTP_PROXY_PORT_FALLBACK, "http.proxyPort");
+        defaultProperty.setProperty(HTTP_CONNECTION_TIMEOUT, "20000");
+        defaultProperty.setProperty(HTTP_READ_TIMEOUT, "120000");
+        defaultProperty.setProperty(HTTP_RETRY_COUNT, "3");
+        defaultProperty.setProperty(HTTP_RETRY_INTERVAL_SECS, "10");
+        //defaultProperty.setProperty(OAUTH_CONSUMER_KEY,"");
+        //defaultProperty.setProperty(OAUTH_CONSUMER_SECRET,"");
+        defaultProperty.setProperty(ASYNC_NUM_THREADS, "1");
+        defaultProperty.setProperty(CLIENT_VERSION, Version.getVersion());
         try{
             // Android platform should have dalvik.system.VMRuntime in the classpath.
             // @see http://developer.android.com/reference/dalvik/system/VMRuntime.html
             Class.forName("dalvik.system.VMRuntime");
-            defaultProperty.setProperty("twitter4j.dalvik", "true");
+            defaultProperty.setProperty(DALVIK, "true");
         }catch(ClassNotFoundException cnfe){
-            defaultProperty.setProperty("twitter4j.dalvik", "false");
+            defaultProperty.setProperty(DALVIK, "false");
         }
-        DALVIK = getBoolean("twitter4j.dalvik");
-        String t4jProps = "twitter4j.properties";
-        boolean loaded = loadProperties(defaultProperty, "." + File.separatorChar + t4jProps) ||
-                loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/WEB-INF/" + t4jProps)) ||
-                loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/" + t4jProps));
+        IS_DALVIK = getBoolean(DALVIK);
+
+        final String TWITTER4J_PROPERTIES = "twitter4j.properties";
+        boolean loaded = loadProperties(defaultProperty, "." + File.separatorChar + TWITTER4J_PROPERTIES) ||
+                loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/WEB-INF/" + TWITTER4J_PROPERTIES)) ||
+                loadProperties(defaultProperty, Configuration.class.getResourceAsStream("/" + TWITTER4J_PROPERTIES));
     }
 
     private static boolean loadProperties(Properties props, String path) {
@@ -100,129 +124,138 @@ public class Configuration {
         return false;
     }
 
-    private static boolean DALVIK;
+    private static boolean IS_DALVIK;
 
 
     public static boolean isDalvik() {
-        return DALVIK;
+        return IS_DALVIK;
     }
 
     public static boolean useSSL() {
-        return getBoolean("twitter4j.http.useSSL");
+        return getBoolean(HTTP_USE_SSL);
     }
     public static String getScheme(){
         return useSSL() ? "https://" : "http://";
     }
 
     public static String getCilentVersion(){
-        return getProperty("twitter4j.clientVersion");
+        return getProperty(CLIENT_VERSION);
     }
     public static String getCilentVersion(String clientVersion){
-        return getProperty("twitter4j.clientVersion", clientVersion);
+        return getProperty(CLIENT_VERSION, clientVersion);
     }
     public static String getSource(){
-        return getProperty("twitter4j.source");
+        return getProperty(SOURCE);
     }
     public static String getSource(String source){
-        return getProperty("twitter4j.source", source);
+        return getProperty(SOURCE, source);
     }
     public static String getProxyHost(){
-        return getProperty("twitter4j.http.proxyHost");
+        return getProperty(HTTP_PROXY_HOST);
     }
     public static String getProxyHost(String proxyHost){
-        return getProperty("twitter4j.http.proxyHost", proxyHost);
+        return getProperty(HTTP_PROXY_HOST, proxyHost);
     }
     public static String getProxyUser(){
-        return getProperty("twitter4j.http.proxyUser");
+        return getProperty(HTTP_PROXY_USER);
     }
     public static String getProxyUser(String user){
-        return getProperty("twitter4j.http.proxyUser", user);
+        return getProperty(HTTP_PROXY_USER, user);
     }
     public static String getClientURL(){
-        return getProperty("twitter4j.clientURL");
+        return getProperty(CLIENT_URL);
     }
     public static String getClientURL(String clientURL){
-        return getProperty("twitter4j.clientURL", clientURL);
+        return getProperty(CLIENT_URL, clientURL);
     }
 
     public static String getProxyPassword(){
-        return getProperty("twitter4j.http.proxyPassword");
+        return getProperty(HTTP_PROXY_PASSWORD);
     }
     public static String getProxyPassword(String password){
-        return getProperty("twitter4j.http.proxyPassword", password);
+        return getProperty(HTTP_PROXY_PASSWORD, password);
     }
     public static int getProxyPort(){
-        return getIntProperty("twitter4j.http.proxyPort");
+        return getIntProperty(HTTP_PROXY_PORT);
     }
     public static int getProxyPort(int port){
-        return getIntProperty("twitter4j.http.proxyPort", port);
+        return getIntProperty(HTTP_PROXY_PORT, port);
     }
     public static int getConnectionTimeout(){
-        return getIntProperty("twitter4j.http.connectionTimeout");
+        return getIntProperty(HTTP_CONNECTION_TIMEOUT);
     }
     public static int getConnectionTimeout(int connectionTimeout){
-        return getIntProperty("twitter4j.http.connectionTimeout", connectionTimeout);
+        return getIntProperty(HTTP_CONNECTION_TIMEOUT, connectionTimeout);
     }
     public static int getReadTimeout(){
-        return getIntProperty("twitter4j.http.readTimeout");
+        return getIntProperty(HTTP_READ_TIMEOUT);
     }
     public static int getReadTimeout(int readTimeout){
-        return getIntProperty("twitter4j.http.readTimeout", readTimeout);
+        return getIntProperty(HTTP_READ_TIMEOUT, readTimeout);
     }
     public static int getRetryCount(){
-        return getIntProperty("twitter4j.http.retryCount");
+        return getIntProperty(HTTP_RETRY_COUNT);
     }
     public static int getRetryCount(int retryCount){
-        return getIntProperty("twitter4j.http.retryCount", retryCount);
+        return getIntProperty(HTTP_RETRY_COUNT, retryCount);
     }
     public static int getRetryIntervalSecs(){
-        return getIntProperty("twitter4j.http.retryIntervalSecs");
+        return getIntProperty(HTTP_RETRY_INTERVAL_SECS);
     }
     public static int getRetryIntervalSecs(int retryIntervalSecs){
-        return getIntProperty("twitter4j.http.retryIntervalSecs", retryIntervalSecs);
+        return getIntProperty(HTTP_RETRY_INTERVAL_SECS, retryIntervalSecs);
     }
 
     public static String getUser() {
-        return getProperty("twitter4j.user");
+        return getProperty(USER);
     }
     public static String getUser(String userId) {
-        return getProperty("twitter4j.user", userId);
+        return getProperty(USER, userId);
     }
 
     public static String getPassword() {
-        return getProperty("twitter4j.password");
+        return getProperty(PASSWORD);
     }
     public static String getPassword(String password) {
-        return getProperty("twitter4j.password", password);
+        return getProperty(PASSWORD, password);
     }
 
     public static String getUserAgent() {
-        return getProperty("twitter4j.http.userAgent");
+        return getProperty(HTTP_USER_AGENT);
     }
     public static String getUserAgent(String userAgent) {
-        return getProperty("twitter4j.http.userAgent", userAgent);
+        return getProperty(HTTP_USER_AGENT, userAgent);
     }
 
     public static String getOAuthConsumerKey() {
-        return getProperty("twitter4j.oauth.consumerKey");
+        return getProperty(OAUTH_CONSUMER_KEY);
     }
     public static String getOAuthConsumerKey(String consumerKey) {
-        return getProperty("twitter4j.oauth.consumerKey", consumerKey);
+        return getProperty(OAUTH_CONSUMER_KEY, consumerKey);
     }
 
     public static String getOAuthConsumerSecret() {
-        return getProperty("twitter4j.oauth.consumerSecret");
+        return getProperty(OAUTH_CONSUMER_SECRET);
     }
     public static String getOAuthConsumerSecret(String consumerSecret) {
-        return getProperty("twitter4j.oauth.consumerSecret", consumerSecret);
+        return getProperty(OAUTH_CONSUMER_SECRET, consumerSecret);
     }
 
-    public static boolean getBoolean(String name) {
+    public static int getNumberOfAsyncThreads() {
+        return getIntProperty(ASYNC_NUM_THREADS);
+    }
+
+    public static boolean getDebug() {
+        return getBoolean(DEBUG);
+
+    }
+
+    private static boolean getBoolean(String name) {
         String value = getProperty(name);
         return Boolean.valueOf(value);
     }
 
-    public static int getIntProperty(String name) {
+    private static int getIntProperty(String name) {
         String value = getProperty(name);
         try{
             return Integer.parseInt(value);
@@ -230,7 +263,7 @@ public class Configuration {
             return -1;
         }
     }
-    public static int getIntProperty(String name, int fallbackValue) {
+    private static int getIntProperty(String name, int fallbackValue) {
         String value = getProperty(name, String.valueOf(fallbackValue));
         try{
             return Integer.parseInt(value);
@@ -238,7 +271,7 @@ public class Configuration {
             return -1;
         }
     }
-    public static long getLongProperty(String name) {
+    private static long getLongProperty(String name) {
         String value = getProperty(name);
         try{
             return Long.parseLong(value);
@@ -247,10 +280,10 @@ public class Configuration {
         }
     }
 
-    public static String getProperty(String name) {
+    private static String getProperty(String name) {
         return getProperty(name, null);
     }
-    public static String getProperty(String name, String fallbackValue) {
+    private static String getProperty(String name, String fallbackValue) {
         String value;
         try {
             value = System.getProperty(name, fallbackValue);
@@ -291,14 +324,5 @@ public class Configuration {
         } else {
             return replace(newValue);
         }
-    }
-
-    public static int getNumberOfAsyncThreads() {
-        return getIntProperty("twitter4j.async.numThreads");
-    }
-
-    public static boolean getDebug() {
-        return getBoolean("twitter4j.debug");
-
     }
 }
