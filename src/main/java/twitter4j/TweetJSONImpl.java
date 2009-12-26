@@ -65,7 +65,7 @@ import static twitter4j.ParseUtil.*;
         source = getURLDecodedString("source", tweet);
         profileImageUrl = getURLDecodedString("profile_image_url", tweet);
         createdAt = getDate("created_at", tweet, "EEE, dd MMM yyyy HH:mm:ss z");
-        geoLocation = GeoLocationJSONImpl.getInstance(tweet);
+        geoLocation = GeoLocation.getInstance(tweet);
 
     }
 

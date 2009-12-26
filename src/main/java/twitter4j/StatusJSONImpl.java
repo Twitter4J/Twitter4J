@@ -81,7 +81,7 @@ import static twitter4j.ParseUtil.*;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-        geoLocation = GeoLocationJSONImpl.getInstance(json);
+        geoLocation = GeoLocation.getInstance(json);
         if (!json.isNull("retweeted_status")) {
             try {
                 retweetedStatus = new StatusJSONImpl(json.getJSONObject("retweeted_status"));

@@ -26,15 +26,92 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.org.json.JSONException;
+import twitter4j.org.json.JSONObject;
+
 
 /**
- * A data interface representing geo location.
+ * A data class representing geo location.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface GeoLocation extends java.io.Serializable {
-    double getLatitude();
+public class GeoLocation implements java.io.Serializable{
 
-    double getLongitude();
+    private double latitude;
+    private double longitude;
+    private static final long serialVersionUID = -4847567157651889935L;
 
+    public GeoLocation(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    /**
+     * returns a GeoLocation instance if a "geo" element is found.
+     * @param json
+     * @return GeoLocation instance 
+     * @throws TwitterException
+     */
+
+    /*package*/ static GeoLocation getInstance(JSONObject json) throws TwitterException {
+        try {
+            if (!json.isNull("geo")) {
+                String coordinates = json.getJSONObject("geo")
+                        .getString("coordinates");
+                coordinates = coordinates.substring(1, coordinates.length() - 1);
+                String[] point = coordinates.split(",");
+                return new GeoLocation(Double.parseDouble(point[0]),
+                        Double.parseDouble(point[1]));
+            }
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public double getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public double getLongitude() {
+        return longitude;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GeoLocation)) return false;
+
+        GeoLocation that = (GeoLocation) o;
+
+        if (Double.compare(that.getLatitude(), latitude) != 0) return false;
+        if (Double.compare(that.getLongitude(), longitude) != 0) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = latitude != +0.0d ? Double.doubleToLongBits(latitude) : 0L;
+        result = (int) (temp ^ (temp >>> 32));
+        temp = longitude != +0.0d ? Double.doubleToLongBits(longitude) : 0L;
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GeoLocationJSONImpl{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
+    }
 }
