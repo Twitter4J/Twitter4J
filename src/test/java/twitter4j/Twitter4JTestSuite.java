@@ -29,6 +29,7 @@ package twitter4j;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import twitter4j.conf.ConfigurationTest;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -44,6 +45,7 @@ public class Twitter4JTestSuite extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite("Twitter4J Test Suite");
+        suite.addTestSuite(ConfigurationTest.class);
         suite.addTestSuite(twitter4j.http.BASE64EncoderTest.class);
         suite.addTestSuite(twitter4j.http.HTMLEntityTest.class);
         suite.addTestSuite(twitter4j.http.HttpClientTest.class);

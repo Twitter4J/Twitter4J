@@ -26,38 +26,49 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import twitter4j.conf.Configuration;
 import twitter4j.TwitterException;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * representing unauthorized Request Token which is passed to the service provider when acquiring the authorized Access Token
+ *         representing unauthorized Request Token which is passed to the service provider when acquiring the authorized Access Token
  */
-public class RequestToken extends OAuthToken {
-    private HttpClient httpClient;
+public class RequestToken extends OAuthToken implements java.io.Serializable {
+    private static final transient Configuration conf = Configuration.getInstance();
+    private OAuthAuthentication oauth;
     private static final long serialVersionUID = -8214365845469757952L;
 
-    RequestToken(Response res, HttpClient httpClient) throws TwitterException{
+    RequestToken(Response res, OAuthAuthentication oauth) throws TwitterException {
         super(res);
-        this.httpClient = httpClient;
+        this.oauth = oauth;
     }
 
-    RequestToken(String token, String tokenSecret) {
+    public RequestToken(String token, String tokenSecret) {
         super(token, tokenSecret);
     }
 
+    RequestToken(String token, String tokenSecret, OAuthAuthentication oauth) {
+        super(token, tokenSecret);
+        this.oauth = oauth;
+    }
+
+    public AccessToken getAccessToken() throws TwitterException {
+        return oauth.getAccessToken();
+    }
+
+    public AccessToken getAccessToken(String oauth_verifier) throws TwitterException {
+        return oauth.getAccessToken(oauth_verifier);
+    }
+
     public String getAuthorizationURL() {
-        return httpClient.getAuthorizationURL() + "?oauth_token=" + getToken();
+        return conf.getOAuthAuthorizationURL() + "?oauth_token=" + getToken();
     }
 
     /**
      * since Twitter4J 2.0.10
      */
     public String getAuthenticationURL() {
-        return httpClient.getAuthenticationRL() + "?oauth_token=" + getToken();
-    }
-
-    public AccessToken getAccessToken() throws TwitterException {
-        return httpClient.getOAuthAccessToken(this);
+        return conf.getOAuthAuthenticationURL() + "?oauth_token=" + getToken();
     }
 
     @Override
@@ -68,7 +79,7 @@ public class RequestToken extends OAuthToken {
 
         RequestToken that = (RequestToken) o;
 
-        if (httpClient != null ? !httpClient.equals(that.httpClient) : that.httpClient != null)
+        if (oauth != null ? !oauth.equals(that.oauth) : that.oauth != null)
             return false;
 
         return true;
@@ -77,7 +88,7 @@ public class RequestToken extends OAuthToken {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (httpClient != null ? httpClient.hashCode() : 0);
+        result = 31 * result + (oauth != null ? oauth.hashCode() : 0);
         return result;
     }
 }

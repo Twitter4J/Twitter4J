@@ -45,7 +45,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
     protected void setUp() throws Exception {
         super.setUp();
         twitterStream = new TwitterStream(id1.name, id1.pass, this);
-        protectedTwitter = new Twitter(id4.name, id4.pass);
+        protectedTwitter = TwitterFactory.getBasicAuthenticatedInstance(id4.name, id4.pass);
         this.status = null;
         this.deletionNotice = null;
     }
@@ -129,8 +129,8 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
     }
 
     public void testUnAuthorizedStreamMethods() throws Exception {
-        twitterStream = new TwitterStream();
         try {
+            twitterStream = new TwitterStream();
             StatusStream stream = twitterStream.getFirehoseStream(0);
             fail();
         } catch (IllegalStateException ise) {
@@ -138,6 +138,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
 
         }
         try {
+            twitterStream = new TwitterStream();
             StatusStream stream = twitterStream.getFilterStream(0, new int[]{6358482}, null);
             fail();
         } catch (IllegalStateException ise) {

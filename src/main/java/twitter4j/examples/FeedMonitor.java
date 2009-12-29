@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import twitter4j.http.HttpClient;
 import twitter4j.http.Response;
 
@@ -109,7 +110,7 @@ public class FeedMonitor {
             log.error("Configuration file not found:" + ex.getMessage());
             System.exit( -1);
         }
-        this.twitter = new Twitter(prop.getProperty("id"),
+        this.twitter = TwitterFactory.getBasicAuthenticatedInstance(prop.getProperty("id"),
                                    prop.getProperty("password"));
         this.feedurl = prop.getProperty("feedurl");
         this.lastUpdate = new Date(Long.valueOf(prop.getProperty("lastUpdate",

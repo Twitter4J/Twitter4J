@@ -26,24 +26,35 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import twitter4j.Device;
+
+import java.io.ObjectStreamException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Dan Checkoway - dcheckoway at gmail.com
  */
-final class RequestMethod {
-    private final String method;
+final class RequestMethod implements java.io.Serializable {
+    private final String name;
+    private static final Map<String, RequestMethod> instances = new HashMap<String, RequestMethod>(5);
+
     public static final RequestMethod GET = new RequestMethod("GET");
     public static final RequestMethod POST = new RequestMethod("POST");
     public static final RequestMethod DELETE = new RequestMethod("DELETE");
     public static final RequestMethod HEAD = new RequestMethod("HEAD");
     public static final RequestMethod PUT = new RequestMethod("PUT");
 
-    private RequestMethod(String method) {
-        this.method = method;
+    private static final long serialVersionUID = -4399222582680270381L;
+
+    private RequestMethod(String name) {
+        this.name = name;
+        instances.put(name, this);
     }
 
     public final String name() {
-        return method;
+        return name;
     }
 
     @Override
@@ -53,20 +64,28 @@ final class RequestMethod {
 
         RequestMethod that = (RequestMethod) o;
 
-        if (!method.equals(that.method)) return false;
+        if (!name.equals(that.name)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return method.hashCode();
+        return name.hashCode();
     }
 
     @Override
     public String toString() {
         return "RequestMethod{" +
-                "method='" + method + '\'' +
+                "name='" + name + '\'' +
                 '}';
+    }
+
+    private static RequestMethod getInstance(String name) {
+        return instances.get(name);
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        return getInstance(name);
     }
 }

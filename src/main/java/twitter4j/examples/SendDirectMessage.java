@@ -29,6 +29,7 @@ package twitter4j.examples;
 import twitter4j.DirectMessage;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 
 /**
  * Example application that sends a message to specified Twitter-er from specified account.<br>
@@ -46,7 +47,7 @@ public class SendDirectMessage {
             System.out.println("Usage: java twitter4j.examples.DirectMessage senderID senderPassword message recipientId");
             System.exit( -1);
         }
-        Twitter twitter = new Twitter(args[0], args[1]);
+        Twitter twitter = TwitterFactory.getBasicAuthenticatedInstance(args[0], args[1]);
         try {
             DirectMessage message = twitter.sendDirectMessage(args[2], args[3]);
             System.out.println("Direct message successfully sent to " +

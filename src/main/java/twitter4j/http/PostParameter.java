@@ -134,6 +134,9 @@ public class PostParameter implements Comparable, java.io.Serializable {
 
     /*package*/ static boolean containsFile(PostParameter[] params) {
         boolean containsFile = false;
+        if(null == params){
+            return false;
+        }
         for (PostParameter param : params) {
             if (param.isFile()) {
                 containsFile = true;

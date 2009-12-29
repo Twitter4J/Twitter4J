@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-import twitter4j.Configuration;
+import twitter4j.conf.Configuration;
 import twitter4j.TwitterException;
 
 import java.io.BufferedInputStream;
@@ -55,6 +55,7 @@ import static twitter4j.http.RequestMethod.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class HttpClient implements java.io.Serializable {
+    private static final Configuration conf = Configuration.getInstance();
     private static final int OK = 200;// OK: Success!
     private static final int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.
     private static final int BAD_REQUEST = 400;// Bad Request: The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.
@@ -70,29 +71,17 @@ public class HttpClient implements java.io.Serializable {
     private static final int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
     private static final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
 
-    private final static boolean DEBUG = Configuration.getDebug();
-
-    private String basic;
-    private int retryCount = Configuration.getRetryCount();
-    private int retryIntervalMillis = Configuration.getRetryIntervalSecs() * 1000;
-    private String userId = Configuration.getUser();
-    private String password = Configuration.getPassword();
-    private String proxyHost = Configuration.getProxyHost();
-    private int proxyPort = Configuration.getProxyPort();
-    private String proxyAuthUser = Configuration.getProxyUser();
-    private String proxyAuthPassword = Configuration.getProxyPassword();
-    private int connectionTimeout = Configuration.getConnectionTimeout();
-    private int readTimeout = Configuration.getReadTimeout();
+    private String proxyHost = conf.getProxyHost();
+    private int proxyPort = conf.getProxyPort();
+    private String proxyAuthUser = conf.getProxyUser();
+    private String proxyAuthPassword = conf.getProxyPassword();
+    private int httpConnectionTimeout = conf.getHttpConnectionTimeout();
+    private int httpReadTimeout = conf.getHttpReadTimeout();
     private static final long serialVersionUID = 808018030183407996L;
     private static boolean isJDK14orEarlier = false;
-    private Map<String, String> requestHeaders = new HashMap<String, String>();
-    private OAuth oauth = null;
-    private String requestTokenURL = Configuration.getScheme() + "twitter.com/oauth/request_token";
-    private String authorizationURL = Configuration.getScheme() + "twitter.com/oauth/authorize";
-    private String authenticationURL = Configuration.getScheme() + "twitter.com/oauth/authenticate";
-    private String accessTokenURL = Configuration.getScheme() + "twitter.com/oauth/access_token";
-    private OAuthToken oauthToken = null;
+//    private Map<String, String> requestHeaders = new HashMap<String, String>();
     private List<HttpResponseListener> httpResponseListeners = new ArrayList<HttpResponseListener>();
+//    HttpRequestFactory requestFactory;
 
     static {
         try {
@@ -105,354 +94,20 @@ public class HttpClient implements java.io.Serializable {
         }
     }
 
-    public HttpClient(String userId, String password) {
-        this();
-        setUserId(userId);
-        setPassword(password);
-    }
-
     public HttpClient() {
-        this.basic = null;
-        setUserAgent(null);
-        setOAuthConsumer(null, null);
-        setRequestHeader("Accept-Encoding", "gzip");
-        setRequestHeader("Connection", "close");
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-        encodeBasicAuthenticationString();
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-        encodeBasicAuthenticationString();
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public boolean isAuthenticationEnabled() {
-        return null != basic || null != oauth;
-    }
-
-    /**
-     * Sets the consumer key and consumer secret.<br>
-     * System property -Dtwitter4j.oauth.consumerKey and -Dhttp.oauth.consumerSecret override this attribute.
-     *
-     * @param consumerKey    Consumer Key
-     * @param consumerSecret Consumer Secret
-     * @see <a href="http://twitter.com/oauth_clients">Applications Using Twitter</a>
-     * @since Twitter4J 2.0.0
-     */
-    public void setOAuthConsumer(String consumerKey, String consumerSecret) {
-        consumerKey = Configuration.getOAuthConsumerKey(consumerKey);
-        consumerSecret = Configuration.getOAuthConsumerSecret(consumerSecret);
-        if (null != consumerKey && null != consumerSecret
-                && 0 != consumerKey.length() && 0 != consumerSecret.length()) {
-            this.oauth = new OAuth(consumerKey, consumerSecret);
-        }
-    }
-
-    /**
-     * @return request token
-     * @throws TwitterException tw
-     * @since Twitter4J 2.0.0
-     */
-    public RequestToken getOAuthRequestToken() throws TwitterException {
-        this.oauthToken = new RequestToken(httpRequest(POST, requestTokenURL, new PostParameter[0], true), this);
-        return (RequestToken)this.oauthToken;
-    }
-
-    /**
-     * @param callback_url callback url
-     * @return request token
-     * @throws TwitterException tw
-     * @since Twitter4J 2.0.9
-     */
-    public RequestToken getOauthRequestToken(String callback_url) throws TwitterException {
-      this.oauthToken = new RequestToken(httpRequest(POST, requestTokenURL, new PostParameter[]{new PostParameter("oauth_callback", callback_url)}, true), this);
-      return (RequestToken)this.oauthToken;
-    }
-
-    /**
-     * @param token request token
-     * @return access token
-     * @throws TwitterException
-     * @since Twitter4J 2.0.0
-     */
-    public AccessToken getOAuthAccessToken(RequestToken token) throws TwitterException {
-        try {
-            this.oauthToken = token;
-            this.oauthToken = new AccessToken(httpRequest(POST, accessTokenURL, new PostParameter[0], true));
-        } catch (TwitterException te) {
-            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
-        }
-        return (AccessToken) this.oauthToken;
-    }
-
-    /**
-     * @param token          request token
-     * @param oauth_verifier oauth_verifier or pin
-     * @return access token
-     * @throws TwitterException
-     * @since Twitter4J 2.0.0
-     */
-    public AccessToken getOAuthAccessToken(RequestToken token, String oauth_verifier) throws TwitterException {
-        try {
-            this.oauthToken = token;
-            this.oauthToken = new AccessToken(httpRequest(POST, accessTokenURL
-                    , new PostParameter[]{new PostParameter("oauth_verifier", oauth_verifier)}, true));
-        } catch (TwitterException te) {
-            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
-        }
-        return (AccessToken) this.oauthToken;
-    }
-
-    /**
-     * @param token       request token
-     * @param tokenSecret request token secret
-     * @return access token
-     * @throws TwitterException
-     * @since Twitter4J 2.0.1
-     */
-    public AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        try {
-            this.oauthToken = new OAuthToken(token, tokenSecret) {
-            };
-            this.oauthToken = new AccessToken(httpRequest(POST, accessTokenURL, new PostParameter[0], true));
-        } catch (TwitterException te) {
-            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
-        }
-        return (AccessToken) this.oauthToken;
-    }
-
-    /**
-     * @param token          request token
-     * @param tokenSecret    request token secret
-     * @param oauth_verifier oauth_verifier or pin
-     * @return access token
-     * @throws TwitterException
-     * @since Twitter4J 2.0.8
-     */
-    public AccessToken getOAuthAccessToken(String token, String tokenSecret
-            , String oauth_verifier) throws TwitterException {
-        try {
-            this.oauthToken = new OAuthToken(token, tokenSecret) {
-            };
-            this.oauthToken = new AccessToken(httpRequest(POST, accessTokenURL,
-                    new PostParameter[]{new PostParameter("oauth_verifier", oauth_verifier)}, true));
-        } catch (TwitterException te) {
-            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
-        }
-        return (AccessToken) this.oauthToken;
-    }
-
-    /**
-     * Sets the authorized access token
-     *
-     * @param token authorized access token
-     * @since Twitter4J 2.0.0
-     */
-
-    public void setOAuthAccessToken(AccessToken token) {
-        this.oauthToken = token;
-    }
-
-    public void setRequestTokenURL(String requestTokenURL) {
-        this.requestTokenURL = requestTokenURL;
-    }
-
-    public String getRequestTokenURL() {
-        return requestTokenURL;
-    }
-
-
-    public void setAuthorizationURL(String authorizationURL) {
-        this.authorizationURL = authorizationURL;
-    }
-
-    public String getAuthorizationURL() {
-        return authorizationURL;
-    }
-
-    /**
-     * since Twitter4J 2.0.10
-     */
-    public String getAuthenticationRL() {
-        return authenticationURL;
-    }
-
-    public void setAccessTokenURL(String accessTokenURL) {
-        this.accessTokenURL = accessTokenURL;
-    }
-
-    public String getAccessTokenURL() {
-        return accessTokenURL;
-    }
-
-    public String getProxyHost() {
-        return proxyHost;
-    }
-
-    /**
-     * Sets proxy host.
-     * System property -Dtwitter4j.http.proxyHost or http.proxyHost overrides this attribute.
-     *
-     * @param proxyHost
-     */
-    public void setProxyHost(String proxyHost) {
-        this.proxyHost = Configuration.getProxyHost(proxyHost);
-    }
-
-    public int getProxyPort() {
-        return proxyPort;
-    }
-
-    /**
-     * Sets proxy port.
-     * System property -Dtwitter4j.http.proxyPort or -Dhttp.proxyPort overrides this attribute.
-     *
-     * @param proxyPort
-     */
-    public void setProxyPort(int proxyPort) {
-        this.proxyPort = Configuration.getProxyPort(proxyPort);
-    }
-
-    public String getProxyAuthUser() {
-        return proxyAuthUser;
-    }
-
-    /**
-     * Sets proxy authentication user.
-     * System property -Dtwitter4j.http.proxyUser overrides this attribute.
-     *
-     * @param proxyAuthUser
-     */
-    public void setProxyAuthUser(String proxyAuthUser) {
-        this.proxyAuthUser = Configuration.getProxyUser(proxyAuthUser);
-    }
-
-    public String getProxyAuthPassword() {
-        return proxyAuthPassword;
-    }
-
-    /**
-     * Sets proxy authentication password.
-     * System property -Dtwitter4j.http.proxyPassword overrides this attribute.
-     *
-     * @param proxyAuthPassword
-     */
-    public void setProxyAuthPassword(String proxyAuthPassword) {
-        this.proxyAuthPassword = Configuration.getProxyPassword(proxyAuthPassword);
-    }
-
-    public int getConnectionTimeout() {
-        return connectionTimeout;
-    }
-
-    /**
-     * Sets a specified timeout value, in milliseconds, to be used when opening a communications link to the resource referenced by this URLConnection.
-     * System property -Dtwitter4j.http.connectionTimeout overrides this attribute.
-     *
-     * @param connectionTimeout - an int that specifies the connect timeout value in milliseconds
-     */
-    public void setConnectionTimeout(int connectionTimeout) {
-        this.connectionTimeout = Configuration.getConnectionTimeout(connectionTimeout);
-
-    }
-
-    public int getReadTimeout() {
-        return readTimeout;
-    }
-
-    /**
-     * Sets the read timeout to a specified timeout, in milliseconds. System property -Dtwitter4j.http.readTimeout overrides this attribute.
-     *
-     * @param readTimeout - an int that specifies the timeout value to be used in milliseconds
-     */
-    public void setReadTimeout(int readTimeout) {
-        this.readTimeout = Configuration.getReadTimeout(readTimeout);
-    }
-
-    private void encodeBasicAuthenticationString() {
-        if (null != userId && null != password) {
-            this.basic = "Basic " +
-                    new String(new BASE64Encoder().encode((userId + ":" + password).getBytes()));
-        }
-    }
-
-    public void setRetryCount(int retryCount) {
-        if (retryCount >= 0) {
-            this.retryCount = Configuration.getRetryCount(retryCount);
-        } else {
-            throw new IllegalArgumentException("RetryCount cannot be negative.");
-        }
-    }
-
-    public void setUserAgent(String ua) {
-        setRequestHeader("User-Agent", Configuration.getUserAgent(ua));
-    }
-
-    public String getUserAgent() {
-        return getRequestHeader("User-Agent");
-    }
-
-    public void setRetryIntervalSecs(int retryIntervalSecs) {
-        if (retryIntervalSecs >= 0) {
-            this.retryIntervalMillis = Configuration.getRetryIntervalSecs(retryIntervalSecs) * 1000;
-        } else {
-            throw new IllegalArgumentException(
-                    "RetryInterval cannot be negative.");
-        }
-    }
-
-    public Response post(String url, PostParameter[] postParameters,
-                         boolean authenticated) throws TwitterException {
-        return httpRequest(POST, url, postParameters, authenticated);
-    }
-
-    public Response post(String url, boolean authenticated) throws TwitterException {
-        return httpRequest(POST, url, new PostParameter[0], authenticated);
-    }
-
-    public Response post(String url, PostParameter[] PostParameters) throws
-            TwitterException {
-        return httpRequest(POST, url, PostParameters, false);
-    }
-
-    public Response post(String url) throws
-            TwitterException {
-        return httpRequest(POST, url, new PostParameter[0], false);
-    }
-
-    public Response get(String url, boolean authenticated) throws
-            TwitterException {
-        return httpRequest(GET, url, null, authenticated);
     }
 
     public Response get(String url) throws TwitterException {
-        return httpRequest(GET, url, null, false);
+        return request(new HttpRequest(RequestMethod.GET, url, null, null, null));
     }
 
-    public Response delete(String url, boolean authenticated) throws TwitterException {
-        return httpRequest(DELETE, url, null, authenticated);
+    public Response post(String url, PostParameter[] params) throws TwitterException {
+        return request(new HttpRequest(RequestMethod.POST, url, params, null, null));
     }
 
-    public Response delete(String url) throws TwitterException {
-        return httpRequest(DELETE, url, null, false);
-    }
-
-    protected Response httpRequest(RequestMethod requestMethod,
-                                   String url, PostParameter[] postParams,
-                                   boolean authenticated) throws TwitterException {
+    public Response request(HttpRequest req) throws TwitterException {
         int retriedCount;
-        int retry = retryCount + 1;
+        int retry = conf.getRetryCount() + 1;
         Response res = null;
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
@@ -460,19 +115,19 @@ public class HttpClient implements java.io.Serializable {
                 HttpURLConnection con = null;
                 OutputStream os = null;
                 try {
-                    con = getConnection(url);
+                    con = getConnection(req.url);
                     con.setDoInput(true);
-                    setHeaders(requestMethod, url, postParams, con, authenticated);
-                    con.setRequestMethod(requestMethod.name());
-                    if (requestMethod == POST) {
-                        if (PostParameter.containsFile(postParams)) {
+                    setHeaders(req, con);
+                    con.setRequestMethod(req.requestMethod.name());
+                    if (req.requestMethod == POST) {
+                        if (PostParameter.containsFile(req.postParams)) {
                             String boundary = "----Twitter4J-upload" + System.currentTimeMillis();
                             con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
                             boundary = "--" + boundary;
                             con.setDoOutput(true);
                             os = con.getOutputStream();
                             DataOutputStream out = new DataOutputStream(os);
-                            for (PostParameter param : postParams) {
+                            for (PostParameter param : req.postParams) {
                                 if (param.isFile()) {
                                     write(out, boundary + "\r\n");
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"; filename=\"" + param.file.getName() + "\"\r\n");
@@ -499,7 +154,7 @@ public class HttpClient implements java.io.Serializable {
                         } else {
                             con.setRequestProperty("Content-Type",
                                     "application/x-www-form-urlencoded");
-                            String postParam = encodeParameters(postParams);
+                            String postParam = encodeParameters(req.postParams);
                             log("Post Params: ", postParam);
                             byte[] bytes = postParam.getBytes("UTF-8");
                             con.setRequestProperty("Content-Length",
@@ -513,7 +168,7 @@ public class HttpClient implements java.io.Serializable {
                     }
                     res = new Response(con);
                     responseCode = con.getResponseCode();
-                    if (DEBUG) {
+                    if (conf.isDebug()) {
                         log("Response: ");
                         Map<String, List<String>> responseHeaders = con.getHeaderFields();
                         for (String key : responseHeaders.keySet()) {
@@ -540,7 +195,7 @@ public class HttpClient implements java.io.Serializable {
                             throw TwitterException.createRateLimitedTwitterException(getCause(responseCode)
                                     , responseCode, retryAfter);
                         }
-                        if (responseCode < INTERNAL_SERVER_ERROR || retriedCount == retryCount) {
+                        if (responseCode < INTERNAL_SERVER_ERROR || retriedCount == conf.getRetryCount()) {
                             throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), responseCode);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR
@@ -555,21 +210,21 @@ public class HttpClient implements java.io.Serializable {
                 }
             } catch (IOException ioe) {
                 // connection timeout or read timeout
-                if (retriedCount == retryCount) {
+                if (retriedCount == conf.getRetryCount()) {
                     throw new TwitterException(ioe.getMessage(), ioe, responseCode);
                 }
             }
             try {
-                if (DEBUG && null != res) {
+                if (conf.isDebug() && null != res) {
                     res.asString();
                 }
-                log("Sleeping " + retryIntervalMillis + " millisecs for next retry.");
-                Thread.sleep(retryIntervalMillis);
+                log("Sleeping " + conf.getRetryIntervalMilliSecs() + " milli seconds for next retry.");
+                Thread.sleep(conf.getRetryIntervalMilliSecs());
             } catch (InterruptedException ignore) {
                 //nothing to do
             }
         }
-        fireHttpResponseEvent(new HttpResponseEvent(url, postParams, authenticated, res));
+        fireHttpResponseEvent(new HttpResponseEvent(req, res));
         return res;
     }
 
@@ -590,6 +245,9 @@ public class HttpClient implements java.io.Serializable {
     }
 
     public static String encodeParameters(PostParameter[] postParams) {
+        if (null == postParams) {
+            return "";
+        }
         StringBuffer buf = new StringBuffer();
         for (int j = 0; j < postParams.length; j++) {
             if (postParams[j].isFile()) {
@@ -628,44 +286,22 @@ public class HttpClient implements java.io.Serializable {
 
     /**
      * sets HTTP headers
-     * @param requestMethod Specifies the HTTP request method. Currently GET, POST, DELETE, HEAD and PUT are supported.
-     * @param url the URL
-     * @param params request parameters
+     * @param req The request
      * @param connection    HttpURLConnection
-     * @param authenticated boolean
      */
-    private void setHeaders(RequestMethod requestMethod, String url, PostParameter[] params, HttpURLConnection connection, boolean authenticated) {
+    private void setHeaders(HttpRequest req, HttpURLConnection connection) {
         log("Request: ");
-        log(requestMethod.name() + " ", url);
+        log(req.requestMethod.name() + " ", req.url);
 
-        if (authenticated) {
-            String authorization = null;
-            if (null != oauth) {
-                // use OAuth
-                authorization = oauth.generateAuthorizationHeader(requestMethod.name(), url, params, oauthToken);
-                log("Authorization: " + authorization);
-            } else if (null != basic) {
-                // use Basic Auth
-                authorization = this.basic;
-                log("Authorization: Basic ************************");
-            } else {
-                throw new IllegalStateException(
-                        "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
+        if (null != req.authentication) {
+            req.authentication.setAuthorizationHeader(req.requestMethod.name(), req.url, req.postParams, connection);
+        }
+        if (null != req.requestHeaders) {
+            for (String key : req.requestHeaders.keySet()) {
+                connection.addRequestProperty(key, req.requestHeaders.get(key));
+                log(key + ": " + req.requestHeaders.get(key));
             }
-            connection.addRequestProperty("Authorization", authorization);
         }
-        for (String key : requestHeaders.keySet()) {
-            connection.addRequestProperty(key, requestHeaders.get(key));
-            log(key + ": " + requestHeaders.get(key));
-        }
-    }
-
-    public void setRequestHeader(String name, String value) {
-        requestHeaders.put(name, value);
-    }
-
-    public String getRequestHeader(String name) {
-        return requestHeaders.get(name);
     }
 
     private HttpURLConnection getConnection(String url) throws IOException {
@@ -691,18 +327,18 @@ public class HttpClient implements java.io.Serializable {
             }
             final Proxy proxy = new Proxy(Type.HTTP, InetSocketAddress
                     .createUnresolved(proxyHost, proxyPort));
-            if (DEBUG) {
+            if (conf.isDebug()) {
                 log("Opening proxied connection(" + proxyHost + ":" + proxyPort + ")");
             }
             con = (HttpURLConnection) new URL(url).openConnection(proxy);
         } else {
             con = (HttpURLConnection) new URL(url).openConnection();
         }
-        if (connectionTimeout > 0 && !isJDK14orEarlier) {
-            con.setConnectTimeout(connectionTimeout);
+        if (httpConnectionTimeout > 0 && !isJDK14orEarlier) {
+            con.setConnectTimeout(httpConnectionTimeout);
         }
-        if (readTimeout > 0 && !isJDK14orEarlier) {
-            con.setReadTimeout(readTimeout);
+        if (httpReadTimeout > 0 && !isJDK14orEarlier) {
+            con.setReadTimeout(httpReadTimeout);
         }
         return con;
     }
@@ -714,23 +350,10 @@ public class HttpClient implements java.io.Serializable {
 
         HttpClient that = (HttpClient) o;
 
-        if (connectionTimeout != that.connectionTimeout) return false;
+        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
         if (proxyPort != that.proxyPort) return false;
-        if (readTimeout != that.readTimeout) return false;
-        if (retryCount != that.retryCount) return false;
-        if (retryIntervalMillis != that.retryIntervalMillis) return false;
-        if (!accessTokenURL.equals(that.accessTokenURL)) return false;
-        if (!authenticationURL.equals(that.authenticationURL)) return false;
-        if (!authorizationURL.equals(that.authorizationURL)) return false;
-        if (basic != null ? !basic.equals(that.basic) : that.basic != null)
-            return false;
+        if (httpReadTimeout != that.httpReadTimeout) return false;
         if (!httpResponseListeners.equals(that.httpResponseListeners))
-            return false;
-        if (oauth != null ? !oauth.equals(that.oauth) : that.oauth != null)
-            return false;
-        if (oauthToken != null ? !oauthToken.equals(that.oauthToken) : that.oauthToken != null)
-            return false;
-        if (password != null ? !password.equals(that.password) : that.password != null)
             return false;
         if (proxyAuthPassword != null ? !proxyAuthPassword.equals(that.proxyAuthPassword) : that.proxyAuthPassword != null)
             return false;
@@ -738,46 +361,30 @@ public class HttpClient implements java.io.Serializable {
             return false;
         if (proxyHost != null ? !proxyHost.equals(that.proxyHost) : that.proxyHost != null)
             return false;
-        if (!requestHeaders.equals(that.requestHeaders)) return false;
-        if (!requestTokenURL.equals(that.requestTokenURL)) return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null)
-            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = basic != null ? basic.hashCode() : 0;
-        result = 31 * result + retryCount;
-        result = 31 * result + retryIntervalMillis;
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (proxyHost != null ? proxyHost.hashCode() : 0);
+        int result = proxyHost != null ? proxyHost.hashCode() : 0;
         result = 31 * result + proxyPort;
         result = 31 * result + (proxyAuthUser != null ? proxyAuthUser.hashCode() : 0);
         result = 31 * result + (proxyAuthPassword != null ? proxyAuthPassword.hashCode() : 0);
-        result = 31 * result + connectionTimeout;
-        result = 31 * result + readTimeout;
-        result = 31 * result + requestHeaders.hashCode();
-        result = 31 * result + (oauth != null ? oauth.hashCode() : 0);
-        result = 31 * result + requestTokenURL.hashCode();
-        result = 31 * result + authorizationURL.hashCode();
-        result = 31 * result + authenticationURL.hashCode();
-        result = 31 * result + accessTokenURL.hashCode();
-        result = 31 * result + (oauthToken != null ? oauthToken.hashCode() : 0);
+        result = 31 * result + httpConnectionTimeout;
+        result = 31 * result + httpReadTimeout;
         result = 31 * result + httpResponseListeners.hashCode();
         return result;
     }
 
     private static void log(String message) {
-        if (DEBUG) {
+        if (conf.isDebug()) {
             System.out.println("[" + new java.util.Date() + "]" + message);
         }
     }
 
     private static void log(String message, String message2) {
-        if (DEBUG) {
+        if (conf.isDebug()) {
             log(message + message2);
         }
     }

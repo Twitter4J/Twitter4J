@@ -26,22 +26,48 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-import junit.framework.TestCase;
+import java.io.ObjectStreamException;
+import java.net.HttpURLConnection;
+import java.util.Arrays;
+
 /**
+ * An interface represents credentials.
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class BASE64EncoderTest extends TestCase {
-    public BASE64EncoderTest(String name) {
-        super(name);
+public final class NullAuthentication implements Authentication, java.io.Serializable {
+    private static NullAuthentication SINGLETON = new NullAuthentication();
+    private static final long serialVersionUID = -8748173338942663960L;
+
+    public static NullAuthentication getInstance() {
+        return SINGLETON;
     }
 
+    private NullAuthentication() {
 
-    public void testEncode() {
-        assertEquals("QUJDREVGRw==", BASE64Encoder.encode("ABCDEFG".getBytes()));
-        assertEquals("VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu", BASE64Encoder.encode("The quick brown fox jumped over the lazy dog.".getBytes()));
-        assertEquals("bGVhc3VyZS4=", BASE64Encoder.encode("leasure.".getBytes()));
-        assertEquals("ZWFzdXJlLg==", BASE64Encoder.encode("easure.".getBytes()));
-        assertEquals("YXN1cmUu", BASE64Encoder.encode("asure.".getBytes()));
-        assertEquals("c3VyZS4=", BASE64Encoder.encode("sure.".getBytes()));
     }
+
+    public void setAuthorizationHeader(String method, String url, PostParameter[] params, HttpURLConnection con) {
+        // does nothing
+    }
+
+    public boolean isAuthenticationEnabled() {
+        return false;
+    }
+
+    /** @noinspection EqualsWhichDoesntCheckParameterClass*/
+    @Override
+    public boolean equals(Object o) {
+        return SINGLETON == o;
+    }
+
+    @Override
+    public String toString() {
+        return "NullAuthentication{SINGLETON}";
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        return SINGLETON;
+    }
+
 }

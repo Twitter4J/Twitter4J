@@ -29,6 +29,7 @@ package twitter4j.examples;
 import twitter4j.DirectMessage;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class GetDirectMessages {
                 "Usage: java twitter4j.examples.GetDirectMessages ID Password");
             System.exit( -1);
         }
-        Twitter twitter = new Twitter(args[0], args[1]);
+        Twitter twitter = TwitterFactory.getBasicAuthenticatedInstance(args[0], args[1]);
         try {
             List<DirectMessage> messages = twitter.getDirectMessages();
             for (DirectMessage message : messages) {

@@ -37,14 +37,16 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
 import static twitter4j.ParseUtil.*;
+
 /**
  * A data class representing Trends.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.2
  */
-/*package*/ class TrendsJSONImpl implements Trends , java.io.Serializable {
+/*package*/ class TrendsJSONImpl implements Trends, java.io.Serializable {
     private Date asOf;
     private Date trendAt;
     private Trend[] trends;
@@ -54,12 +56,16 @@ import static twitter4j.ParseUtil.*;
         return this.trendAt.compareTo(that.getTrendAt());
     }
 
-    /*package*/ TrendsJSONImpl() {
+    /*package*/
+
+    TrendsJSONImpl() {
         // Just for protobuf support
         // Currently this constructor is never used in twitter4j artifact.
     }
 
-    /*package*/ TrendsJSONImpl(Date asOf, Date trendAt, Trend[] trends)
+    /*package*/
+
+    TrendsJSONImpl(Date asOf, Date trendAt, Trend[] trends)
             throws TwitterException {
         this.asOf = asOf;
         this.trendAt = trendAt;
@@ -67,6 +73,7 @@ import static twitter4j.ParseUtil.*;
     }
 
     /*package*/
+
     static List<Trends> createTrendsList(Response res) throws
             TwitterException {
         JSONObject json = res.asJSONObject();
@@ -102,6 +109,7 @@ import static twitter4j.ParseUtil.*;
     }
 
     /*package*/
+
     static Trends createTrends(Response res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         try {

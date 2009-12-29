@@ -167,18 +167,6 @@ public class Paging implements java.io.Serializable {
         return sinceId;
     }
 
-//    public void setSinceId(int sinceId) {
-//        if (sinceId < 1) {
-//            throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
-//        }
-//        this.sinceId = sinceId;
-//    }
-
-//    public Paging sinceId(int sinceId) {
-//        setSinceId(sinceId);
-//        return this;
-//    }
-
     public void setSinceId(long sinceId) {
         if (sinceId < 1) {
             throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);

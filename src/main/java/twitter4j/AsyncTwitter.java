@@ -44,6 +44,7 @@ import twitter4j.api.SpamReportingMethodsAsync;
 import twitter4j.api.StatusMethodsAsync;
 import twitter4j.api.TimelineMethodsAsync;
 import twitter4j.api.UserMethodsAsync;
+import twitter4j.conf.Configuration;
 
 import java.io.File;
 import java.util.Date;
@@ -1281,7 +1282,7 @@ public class AsyncTwitter extends Twitter
             throw new IllegalStateException("Already shut down");
         }
         if (null == dispatcher) {
-            dispatcher = new Dispatcher("Twitter4J Async Dispatcher", Configuration.getNumberOfAsyncThreads());
+            dispatcher = new Dispatcher("Twitter4J Async Dispatcher", Configuration.getInstance().getAsyncNumThreads());
         }
         return dispatcher;
     }

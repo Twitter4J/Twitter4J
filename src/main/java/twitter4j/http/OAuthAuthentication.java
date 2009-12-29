@@ -26,11 +26,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-import twitter4j.Configuration;
+import twitter4j.conf.Configuration;
+import twitter4j.TwitterException;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
@@ -43,22 +45,47 @@ import java.util.Random;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
+ * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
-public class OAuth implements java.io.Serializable {
+public final class OAuthAuthentication implements Authentication, java.io.Serializable {
+    private static final Configuration conf = Configuration.getInstance();
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final PostParameter OAUTH_SIGNATURE_METHOD = new PostParameter("oauth_signature_method", "HMAC-SHA1");
-    private final static boolean DEBUG = Configuration.getDebug();
+    private final static boolean DEBUG = Configuration.getInstance().isDebug();
     static final long serialVersionUID = -4368426677157998618L;
     private String consumerKey = "";
     private String consumerSecret;
 
-    public OAuth(String consumerKey, String consumerSecret) {
+    private HttpClient http;
+    private HttpRequestFactory requestFactory;
+    private OAuthToken oauthToken = null;
+
+    public OAuthAuthentication(String consumerKey, String consumerSecret) {
+        init(consumerKey, consumerSecret);
+        http = new HttpClient();
+        this.requestFactory = new HttpRequestFactory();
+    }
+
+    public OAuthAuthentication(String consumerKey, String consumerSecret, HttpClient http) {
+        init(consumerKey, consumerSecret);
+        this.http = http;
+        this.requestFactory = new HttpRequestFactory();
+    }
+
+    public OAuthAuthentication(String consumerKey, String consumerSecret, HttpClient http, HttpRequestFactory requestFactory) {
+        init(consumerKey, consumerSecret);
+        this.http = http;
+        this.requestFactory = requestFactory;
+    }
+
+    private void init(String consumerKey, String consumerSecret){
         setConsumerKey(consumerKey);
         setConsumerSecret(consumerSecret);
     }
 
-    /*package*/ String generateAuthorizationHeader(String method, String url, PostParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
+    /*package*/
+
+    String generateAuthorizationHeader(String method, String url, PostParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
         if (null == params) {
             params = new PostParameter[0];
         }
@@ -81,9 +108,9 @@ public class OAuth implements java.io.Serializable {
                 .append(encode(constructRequestURL(url))).append("&");
         base.append(encode(normalizeRequestParameters(signatureBaseParams)));
         String oauthBaseString = base.toString();
-        log("OAuth base string:", oauthBaseString);
+        log("OAuth base string: ", oauthBaseString);
         String signature = generateSignature(oauthBaseString, otoken);
-        log("OAuth signature:", signature);
+        log("OAuth signature: ", signature);
 
         oauthHeaderParams.add(new PostParameter("oauth_signature", signature));
         return "OAuth " + encodeParameters(oauthHeaderParams, ",", true);
@@ -118,12 +145,66 @@ public class OAuth implements java.io.Serializable {
 
     /**
      * @return
-     * @see <a href="http://oauth.net/core/1.0#rfc.section.5.4.1">OAuth Core - 5.4.1.  Authorization Header</a>
+     * @see <a href="http://oauth.net/core/1.0a/#rfc.section.5.4.1">OAuth Core - 5.4.1.  Authorization Header</a>
      */
     /*package*/ String generateAuthorizationHeader(String method, String url, PostParameter[] params, OAuthToken token) {
         long timestamp = System.currentTimeMillis() / 1000;
         long nonce = timestamp + RAND.nextInt();
         return generateAuthorizationHeader(method, url, params, String.valueOf(nonce), String.valueOf(timestamp), token);
+    }
+
+    public void setAuthorizationHeader(String method, String url, PostParameter[] params, HttpURLConnection con) {
+        String authorization = generateAuthorizationHeader(method, url, params, oauthToken);
+        log("Authorization: " + authorization);
+        con.addRequestProperty("Authorization", authorization);
+    }
+
+    public boolean isAuthenticationEnabled() {
+        return true;
+    }
+
+    public RequestToken getRequestToken() throws TwitterException {
+        return getRequestToken(null);
+    }
+
+    public RequestToken getRequestToken(String callbackURL) throws TwitterException {
+        PostParameter[] params = null != callbackURL ? new PostParameter[]{new PostParameter("oauth_callback", callbackURL)} : new PostParameter[0];
+        oauthToken = new RequestToken(http.request(
+                requestFactory.createPostRequest(conf.getOAuthRequestTokenURL(), params, this)), this);
+        return (RequestToken) oauthToken;
+    }
+
+    public AccessToken getAccessToken(RequestToken requestToken) throws TwitterException {
+        this.oauthToken = requestToken;
+        return getAccessToken();
+    }
+
+    public AccessToken getAccessToken() throws TwitterException {
+        try {
+            oauthToken = new AccessToken(http.request(requestFactory.createPostRequest(conf.getOAuthAccessTokenURL(), new PostParameter[0], this)));
+            return (AccessToken) oauthToken;
+        } catch (TwitterException te) {
+            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+        }
+    }
+
+    public AccessToken getAccessToken(RequestToken requestToken, String oauth_verifier) throws TwitterException {
+        this.oauthToken = requestToken;
+        return getAccessToken(oauth_verifier);
+    }
+
+    public void setAccessToken(AccessToken accessToken) {
+        this.oauthToken = accessToken;
+    }
+
+    public AccessToken getAccessToken(String oauth_verifier) throws TwitterException {
+        try {
+            oauthToken = new AccessToken(http.request(requestFactory.createPostRequest(conf.getOAuthAccessTokenURL()
+                    , new PostParameter[]{new PostParameter("oauth_verifier", oauth_verifier)}, this)));
+            return (AccessToken) oauthToken;
+        } catch (TwitterException te) {
+            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+        }
     }
 
 
@@ -132,7 +213,7 @@ public class OAuth implements java.io.Serializable {
      *
      * @param data the data to be signed
      * @return signature
-     * @see <a href="http://oauth.net/core/1.0/#rfc.section.9.2.1">OAuth Core - 9.2.1.  Generating Signature</a>
+     * @see <a href="http://oauth.net/core/1.0a/#rfc.section.9.2.1">OAuth Core - 9.2.1.  Generating Signature</a>
      */
     /*package*/ String generateSignature(String data, OAuthToken token) {
         byte[] byteHMAC = null;
@@ -157,10 +238,12 @@ public class OAuth implements java.io.Serializable {
         } catch (NoSuchAlgorithmException ignore) {
             // should never happen
         }
-        return new BASE64Encoder().encode(byteHMAC);
+        return BASE64Encoder.encode(byteHMAC);
     }
 
-    /*package*/ String generateSignature(String data) {
+    /*package*/
+
+    String generateSignature(String data) {
         return generateSignature(data, null);
     }
 
@@ -309,11 +392,11 @@ public class OAuth implements java.io.Serializable {
         return url;
     }
 
-    public void setConsumerKey(String consumerKey) {
+    private void setConsumerKey(String consumerKey) {
         this.consumerKey = null != consumerKey ? consumerKey : "";
     }
 
-    public void setConsumerSecret(String consumerSecret) {
+    private void setConsumerSecret(String consumerSecret) {
         this.consumerSecret = null != consumerSecret ? consumerSecret : "";
     }
 
@@ -332,13 +415,13 @@ public class OAuth implements java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OAuth)) return false;
+        if (!(o instanceof OAuthAuthentication)) return false;
 
-        OAuth oAuth = (OAuth) o;
+        OAuthAuthentication oAuthAuthentication = (OAuthAuthentication) o;
 
-        if (consumerKey != null ? !consumerKey.equals(oAuth.consumerKey) : oAuth.consumerKey != null)
+        if (consumerKey != null ? !consumerKey.equals(oAuthAuthentication.consumerKey) : oAuthAuthentication.consumerKey != null)
             return false;
-        if (consumerSecret != null ? !consumerSecret.equals(oAuth.consumerSecret) : oAuth.consumerSecret != null)
+        if (consumerSecret != null ? !consumerSecret.equals(oAuthAuthentication.consumerSecret) : oAuthAuthentication.consumerSecret != null)
             return false;
 
         return true;
@@ -353,7 +436,7 @@ public class OAuth implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "OAuth{" +
+        return "OAuthAuthentication{" +
                 "consumerKey='" + consumerKey + '\'' +
                 ", consumerSecret='" + consumerSecret + '\'' +
                 '}';

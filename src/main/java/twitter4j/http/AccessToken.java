@@ -33,11 +33,10 @@ import twitter4j.TwitterException;
  * the token and token secret can be stored into some persistent stores such as file system or RDBMS for the further accesses.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class AccessToken extends OAuthToken {
+public class AccessToken extends OAuthToken implements java.io.Serializable {
     private static final long serialVersionUID = -8344528374458826291L;
     private String screenName;
     private int userId;
-    
     AccessToken(Response res) throws TwitterException {
         this(res.asString());
     }
@@ -74,5 +73,35 @@ public class AccessToken extends OAuthToken {
 	public int getUserId() {
 		return userId;
 	}
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AccessToken)) return false;
+        if (!super.equals(o)) return false;
+
+        AccessToken that = (AccessToken) o;
+
+        if (userId != that.userId) return false;
+        if (screenName != null ? !screenName.equals(that.screenName) : that.screenName != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
+        result = 31 * result + userId;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AccessToken{" +
+                "screenName='" + screenName + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }

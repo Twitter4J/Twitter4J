@@ -67,8 +67,8 @@ public class TwitterTestUnit extends TwitterTestBase {
     }
     public void testSerializability() throws Exception {
         Twitter deserialized = (Twitter)assertDeserializedFormIsEqual(twitterAPI1);
-        assertEquals(deserialized.getUserId(), twitterAPI1.getUserId());
-        assertEquals(deserialized.getSource(), twitterAPI1.getSource());
+        assertEquals(deserialized.screenName, twitterAPI1.screenName);
+        assertEquals(deserialized.auth, twitterAPI1.auth);
         assertDeserializedFormIsEqual(this.unauthenticated);
     }
 
@@ -456,7 +456,6 @@ public class TwitterTestUnit extends TwitterTestBase {
                     , "location:", "Hi there, I do test a lot!new");
 
         }
-
         String newName, newURL, newLocation, newDescription;
         String neu = "new";
         newName = original.getName() + neu;
@@ -474,7 +473,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertEquals(newDescription, altered.getDescription());
 
         try {
-            new Twitter("doesnotexist--", "foobar").verifyCredentials();
+            TwitterFactory.getBasicAuthenticatedInstance("doesnotexist--", "foobar").verifyCredentials();
             fail("should throw TwitterException");
         } catch (TwitterException te) {
         }
@@ -731,202 +730,5 @@ public class TwitterTestUnit extends TwitterTestBase {
 
     public void testTest() throws Exception {
         assertTrue(twitterAPI2.test());
-    }
-
-
-    public void testProperties() throws Exception {
-        TwitterSupport twitterSupport;
-        String test = "t4j";
-        String override = "system property";
-
-
-        System.getProperties().remove("twitter4j.user");
-        twitterSupport = new Twitter();
-        assertNull(twitterSupport.getUserId());
-
-        twitterSupport.setUserId(test);
-        assertEquals(test, twitterSupport.getUserId());
-        System.setProperty("twitter4j.user", override);
-        twitterSupport = new Twitter();
-        assertEquals(override, twitterSupport.getUserId());
-        twitterSupport.setUserId(test);
-        assertEquals(override, twitterSupport.getUserId());
-        System.getProperties().remove("twitter4j.user");
-
-        System.getProperties().remove("twitter4j.password");
-        twitterSupport = new Twitter();
-        assertNull(twitterSupport.getPassword());
-
-        twitterSupport.setPassword(test);
-        assertEquals(test, twitterSupport.getPassword());
-        System.setProperty("twitter4j.password", override);
-        twitterSupport = new Twitter();
-        assertEquals(override, twitterSupport.getPassword());
-        twitterSupport.setPassword(test);
-        assertEquals(override, twitterSupport.getPassword());
-        System.getProperties().remove("twitter4j.password");
-
-
-        System.getProperties().remove("twitter4j.source");
-        twitterSupport = new Twitter();
-        assertEquals("Twitter4J", twitterSupport.getSource());
-
-        twitterSupport.setSource(test);
-        assertEquals(test, twitterSupport.getSource());
-        System.setProperty("twitter4j.source", override);
-        twitterSupport = new Twitter();
-        assertEquals(override, twitterSupport.getSource());
-        twitterSupport.setSource(test);
-        assertEquals(override, twitterSupport.getSource());
-        System.getProperties().remove("twitter4j.source");
-
-
-        System.getProperties().remove("twitter4j.clientVersion");
-        twitterSupport = new Twitter();
-        assertEquals(Version.getVersion(), twitterSupport.getClientVersion());
-
-        twitterSupport.setClientVersion(test);
-        assertEquals(test, twitterSupport.getClientVersion());
-        System.setProperty("twitter4j.clientVersion", override);
-        twitterSupport = new Twitter();
-        assertEquals(override, twitterSupport.getClientVersion());
-        twitterSupport.setClientVersion(test);
-        assertEquals(override, twitterSupport.getClientVersion());
-        System.getProperties().remove("twitter4j.clientVersion");
-
-
-        System.getProperties().remove("twitter4j.clientURL");
-        twitterSupport = new Twitter();
-        assertEquals("http://yusuke.homeip.net/twitter4j/en/twitter4j-" + Version.getVersion() + ".xml", twitterSupport.getClientURL());
-
-        twitterSupport.setClientURL(test);
-        assertEquals(test, twitterSupport.getClientURL());
-        System.setProperty("twitter4j.clientURL", override);
-        twitterSupport = new Twitter();
-        assertEquals(override, twitterSupport.getClientURL());
-        twitterSupport.setClientURL(test);
-        assertEquals(override, twitterSupport.getClientURL());
-        System.getProperties().remove("twitter4j.clientURL");
-
-
-        System.getProperties().remove("twitter4j.http.userAgent");
-        twitterSupport = new Twitter();
-        assertEquals("twitter4j http://yusuke.homeip.net/twitter4j/ /" + Version.getVersion(), twitterSupport.http.getRequestHeader("User-Agent"));
-
-        twitterSupport.setUserAgent(test);
-        assertEquals(test, twitterSupport.getUserAgent());
-        System.setProperty("twitter4j.http.userAgent", override);
-        twitterSupport = new Twitter();
-        assertEquals(override, twitterSupport.getUserAgent());
-        twitterSupport.setUserAgent(test);
-        assertEquals(override, twitterSupport.getUserAgent());
-        System.getProperties().remove("twitter4j.http.userAgent");
-
-        System.getProperties().remove("twitter4j.http.proxyHost");
-        twitterSupport = new Twitter();
-        assertEquals(null, twitterSupport.http.getProxyHost());
-
-        twitterSupport.setHttpProxy(test, 10);
-        assertEquals(test, twitterSupport.http.getProxyHost());
-        System.setProperty("twitter4j.http.proxyHost", override);
-        twitterSupport = new Twitter();
-        assertEquals(override, twitterSupport.http.getProxyHost());
-        twitterSupport.setHttpProxy(test, 10);
-        assertEquals(override, twitterSupport.http.getProxyHost());
-        System.getProperties().remove("twitter4j.http.proxyHost");
-
-        System.getProperties().remove("twitter4j.http.proxyPort");
-        twitterSupport = new Twitter();
-        assertEquals(-1, twitterSupport.http.getProxyPort());
-
-        twitterSupport.setHttpProxy(test, 10);
-        assertEquals(10, twitterSupport.http.getProxyPort());
-        System.setProperty("twitter4j.http.proxyPort", "100");
-        twitterSupport = new Twitter();
-        assertEquals(100, twitterSupport.http.getProxyPort());
-        twitterSupport.setHttpProxy(test, 10);
-        assertEquals(100, twitterSupport.http.getProxyPort());
-        System.getProperties().remove("twitter4j.http.proxyPort");
-
-
-        System.getProperties().remove("twitter4j.http.proxyUser");
-        twitterSupport = new Twitter();
-        assertEquals(null, twitterSupport.http.getProxyAuthUser());
-
-        twitterSupport.setHttpProxyAuth(test, test);
-        assertEquals(test, twitterSupport.http.getProxyAuthUser());
-        System.setProperty("twitter4j.http.proxyUser", override);
-        twitterSupport = new Twitter();
-        assertEquals(override, twitterSupport.http.getProxyAuthUser());
-        twitterSupport.setHttpProxyAuth(test, test);
-        assertEquals(override, twitterSupport.http.getProxyAuthUser());
-        System.getProperties().remove("twitter4j.http.proxyUser");
-
-
-        System.getProperties().remove("twitter4j.http.proxyPassword");
-        twitterSupport = new Twitter();
-        assertEquals(null, twitterSupport.http.getProxyAuthPassword());
-
-        twitterSupport.setHttpProxyAuth(test, test);
-        assertEquals(test, twitterSupport.http.getProxyAuthPassword());
-        System.setProperty("twitter4j.http.proxyPassword", override);
-        twitterSupport = new Twitter();
-        assertEquals(override, twitterSupport.http.getProxyAuthPassword());
-        twitterSupport.setHttpProxyAuth(test, test);
-        assertEquals(override, twitterSupport.http.getProxyAuthPassword());
-        System.getProperties().remove("twitter4j.http.proxyPassword");
-
-
-        System.getProperties().remove("twitter4j.http.connectionTimeout");
-        twitterSupport = new Twitter();
-        assertEquals(20000, twitterSupport.http.getConnectionTimeout());
-
-        twitterSupport.setHttpConnectionTimeout(10);
-        assertEquals(10, twitterSupport.http.getConnectionTimeout());
-        System.setProperty("twitter4j.http.connectionTimeout", "100");
-        twitterSupport = new Twitter();
-        assertEquals(100, twitterSupport.http.getConnectionTimeout());
-        twitterSupport.setHttpConnectionTimeout(10);
-        assertEquals(100, twitterSupport.http.getConnectionTimeout());
-        System.getProperties().remove("twitter4j.http.connectionTimeout");
-
-
-        System.getProperties().remove("twitter4j.http.readTimeout");
-        twitterSupport = new Twitter();
-        assertEquals(120000, twitterSupport.http.getReadTimeout());
-
-        twitterSupport.setHttpReadTimeout(10);
-        assertEquals(10, twitterSupport.http.getReadTimeout());
-        System.setProperty("twitter4j.http.readTimeout", "100");
-        twitterSupport = new Twitter();
-        assertEquals(100, twitterSupport.http.getReadTimeout());
-        twitterSupport.setHttpConnectionTimeout(10);
-        assertEquals(100, twitterSupport.http.getReadTimeout());
-        System.getProperties().remove("twitter4j.http.readTimeout");
-
-        assertFalse(Configuration.isDalvik());
-
-
-        writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=1234");
-        Configuration.init();
-        assertEquals(1234, Configuration.getReadTimeout());
-        writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=4321");
-        Configuration.init();
-        assertEquals(4321, Configuration.getReadTimeout());
-        deleteFile("./twitter4j.properties");
-        Configuration.init();
-    }
-
-    private void writeFile(String path, String content) throws IOException {
-        File file = new File(path);
-        file.delete();
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-        bw.write(content);
-        bw.close();
-    }
-
-    private void deleteFile(String path) throws IOException {
-        File file = new File(path);
-        file.delete();
     }
 }

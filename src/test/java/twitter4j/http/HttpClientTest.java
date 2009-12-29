@@ -43,15 +43,15 @@ public class HttpClientTest extends TwitterTestBase {
     protected void setUp() throws Exception {
         super.setUp();
         client = new HttpClient();
-        client.setUserId(id1.name);
-        client.setPassword(id1.pass);
+//        client.setUserId(id1.name);
+//        client.setPassword(id1.pass);
     }
 
     protected void tearDown() {
     }
 
     public void testUpload() throws Exception {
-        client.setRetryCount(0);
+//        client.setRetryCount(0);
 //        PostParameter[] params = new PostParameter[]{
 //                new PostParameter("theText","texttext"),
 //                new PostParameter("theFile", new File("src/test/resources/t4j-reverse.jpeg"))

@@ -29,6 +29,7 @@ package twitter4j.examples;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class GetTimelines {
             }
 
             // Other methods require authentication
-            Twitter twitter = new Twitter(args[0], args[1]);
+            Twitter twitter = TwitterFactory.getBasicAuthenticatedInstance(args[0], args[1]);
             statuses = twitter.getFriendsTimeline();
             System.out.println("------------------------------");
             System.out.println("Showing " + args[0] + "'s friends timeline.");

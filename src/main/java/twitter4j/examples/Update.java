@@ -29,6 +29,8 @@ package twitter4j.examples;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+
 /**
  * <p>This is a code example of Twitter4J update API.<br>
  * Usage: java twitter4j.examples.Update <i>TwitterID</i> <i>TwitterPassword</i> <i>text</i><br>
@@ -47,7 +49,7 @@ public class Update {
                 "Usage: java twitter4j.examples.Update ID Password text");
             System.exit( -1);
         }
-        Twitter twitter = new Twitter(args[0], args[1]);
+        Twitter twitter = TwitterFactory.getBasicAuthenticatedInstance(args[0], args[1]);
         Status status = twitter.updateStatus(args[2]);
         System.out.println("Successfully updated the status to [" + status.getText() + "].");
     }

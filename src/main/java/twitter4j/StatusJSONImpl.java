@@ -101,7 +101,6 @@ import static twitter4j.ParseUtil.*;
      * @return created_at
      * @since Twitter4J 1.1.0
      */
-
     public Date getCreatedAt() {
         return this.createdAt;
     }

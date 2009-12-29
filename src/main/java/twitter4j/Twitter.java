@@ -44,13 +44,8 @@ import twitter4j.api.SpamReportingMethods;
 import twitter4j.api.StatusMethods;
 import twitter4j.api.TimelineMethods;
 import twitter4j.api.UserMethods;
-import twitter4j.http.AccessToken;
-import twitter4j.http.HttpClient;
-import twitter4j.http.HttpResponseEvent;
-import twitter4j.http.HttpResponseListener;
-import twitter4j.http.PostParameter;
-import twitter4j.http.RequestToken;
-import twitter4j.http.Response;
+import twitter4j.conf.Configuration;
+import twitter4j.http.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -63,6 +58,7 @@ import java.util.List;
 
 /**
  * A java representation of the <a href="http://apiwiki.twitter.com/">Twitter API</a>
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Twitter extends TwitterSupport
@@ -92,145 +88,122 @@ public class Twitter extends TwitterSupport
      */
     public Twitter() {
         super();
-        HttpResponseListener httpResponseListener = new MyHttpResponseListener();
-        http.addHttpResponseListener(httpResponseListener);
-
-        http.setRequestTokenURL(Configuration.getScheme() + "twitter.com/oauth/request_token");
-        http.setAuthorizationURL(Configuration.getScheme() + "twitter.com/oauth/authorize");
-        http.setAccessTokenURL(Configuration.getScheme() + "twitter.com/oauth/access_token");
+        init();
     }
 
     /**
      * Creates a Twitter instance with supplied id
+     *
      * @param screenName the screen name of the user
-     * @param password the password of the user
+     * @param password   the password of the user
+     * @deprecated use TwitterFactory.getBasicAuthenticatedInstance(screenName, password) instead
      */
     public Twitter(String screenName, String password) {
-        this();
-        setUserId(screenName);
-        setPassword(password);
+        super(screenName, password);
+        init();
     }
 
-    /**
-     * Returns the base URL
-     *
-     * @return the base URL
-     */
-    protected String getBaseURL() {
-        return USE_SSL ? "https://api.twitter.com/1/" : "http://api.twitter.com/1/";
-    }
-
-
-    /**
-     * Returns the search base url
-     * @return search base url
-     * @since Twitter4J 1.1.7
-     */
-    protected String getSearchBaseURL(){
-        return USE_SSL ? "https://search.twitter.com/" : "http://search.twitter.com/";
-    }
-
-    /**
-     *
-     * @param consumerKey OAuth consumer key
-     * @param consumerSecret OAuth consumer secret
-     * @since Twitter 2.0.0
-     */
-    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
-        this.http.setOAuthConsumer(consumerKey, consumerSecret);
+    private void init() {
+        HttpResponseListener httpResponseListener = new MyHttpResponseListener();
+        http.addHttpResponseListener(httpResponseListener);
     }
 
     /**
      * Retrieves a request token
+     *
      * @return generated request token.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter 2.0.0
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ">Twitter API Wiki - OAuth FAQ</a>
-     * @see <a href="http://oauth.net/core/1.0/#auth_step1">OAuth Core 1.0 - 6.1.  Obtaining an Unauthorized Request Token</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
+     * @since Twitter 2.0.0
      */
     public RequestToken getOAuthRequestToken() throws TwitterException {
-        return http.getOAuthRequestToken();
+        return getOAuthRequestToken(null);
     }
 
     public RequestToken getOAuthRequestToken(String callback_url) throws TwitterException {
-      return http.getOauthRequestToken(callback_url);
+        return getOAuth().getRequestToken(callback_url);
     }
 
     /**
      * Retrieves an access token associated with the supplied request token and sets userId.
+     *
      * @param requestToken the request token
      * @return access token associsted with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
-     * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.0
      */
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
-        AccessToken accessToken = http.getOAuthAccessToken(requestToken);
-        setUserId(accessToken.getScreenName());
-        return accessToken;
+        OAuthAuthentication oauth = getOAuth();
+        AccessToken oauthAccessToken = oauth.getAccessToken(requestToken);
+        screenName = oauthAccessToken.getScreenName();
+        return oauthAccessToken;
     }
 
     /**
      * Retrieves an access token associated with the supplied request token and sets userId.
-     * @param requestToken the request token
-     * @param oauth_verifier oauth_verifier or pin
+     *
+     * @param requestToken   the request token
+     * @param oauthVerifier oauth_verifier or pin
      * @return access token associsted with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
-     * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.0
      */
-    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauth_verifier) throws TwitterException {
-        AccessToken accessToken = http.getOAuthAccessToken(requestToken, oauth_verifier);
-        setUserId(accessToken.getScreenName());
-        return accessToken;
+    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
+        AccessToken oauthAccessToken = getOAuth().getAccessToken(requestToken, oauthVerifier);
+        return oauthAccessToken;
     }
 
     /**
      * Retrieves an access token associated with the supplied request token and sets userId.
-     * @param token request token
+     *
+     * @param token       request token
      * @param tokenSecret request token secret
      * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
-     * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.1
      */
     public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        AccessToken accessToken = http.getOAuthAccessToken(token, tokenSecret);
-        setUserId(accessToken.getScreenName());
-        return accessToken;
+        return getOAuth().getAccessToken(new RequestToken(token,tokenSecret));
     }
 
     /**
      * Retrieves an access token associated with the supplied request token.
-     * @param token request token
+     *
+     * @param token       request token
      * @param tokenSecret request token secret
-     * @param pin pin
+     * @param pin         pin
      * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
-     * @see <a href="http://oauth.net/core/1.0/#auth_step2">OAuth Core 1.0 - 6.2.  Obtaining User Authorization</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.8
      */
     public synchronized AccessToken getOAuthAccessToken(String token
             , String tokenSecret, String pin) throws TwitterException {
-        return http.getOAuthAccessToken(token, tokenSecret, pin);
+        return getOAuth().getAccessToken(new RequestToken(token, tokenSecret), pin);
     }
 
     /**
      * Sets the access token
+     *
      * @param accessToken accessToken
      * @since Twitter 2.0.0
      */
-    public void setOAuthAccessToken(AccessToken accessToken){
-        this.http.setOAuthAccessToken(accessToken);
+    public void setOAuthAccessToken(AccessToken accessToken) {
+        getOAuth().setAccessToken(accessToken);
     }
 
     /**
      * Sets the access token
-     * @param token token
+     *
+     * @param token       token
      * @param tokenSecret token secret
      * @since Twitter 2.0.0
      */
@@ -243,66 +216,72 @@ public class Twitter extends TwitterSupport
      * This method automatically retrieves userId using verifyCredentials if the instance is using OAuth based authentication.
      *
      * @return the authenticating screen name
-	 * @throws TwitterException if verifyCredentials is throwing an exception.
+     * @throws TwitterException      when verifyCredentials threw an exception.
      * @throws IllegalStateException if no credentials are supplied
      */
-    protected String getScreenName() throws TwitterException , IllegalStateException{
-        String userId = super.getUserId();
-        if ((null == userId && http.isAuthenticationEnabled()) || -1 != userId.indexOf("@")) {
-            // retrieve the screen name if this instance is authenticated with OAuth or email address
-            userId = this.verifyCredentials().getScreenName();
-            setUserId(userId);
+    protected String getScreenName() throws TwitterException, IllegalStateException {
+        if(null != screenName){
+            return screenName;
         }
-        if(null == userId){
+        if (!auth.isAuthenticationEnabled()) {
             throw new IllegalStateException(
                     "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
         }
-        return userId;
+        if (auth instanceof BasicAuthentication) {
+            screenName = ((BasicAuthentication) auth).getUserId();
+            if (-1 != screenName.indexOf("@")) {
+                screenName = null;
+            }
+        }
+        // retrieve the screen name if this instance is authenticated with OAuth or email address
+        return screenName = this.verifyCredentials().getScreenName();
+    }
+
+    String screenName = null;
+
+    /**
+     * Issues an HTTP GET request.
+     *
+     * @param url            the request url
+     * @param authentication if true, the request will be sent with BASIC authentication header
+     * @return the response
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+
+    protected Response get(String url, Authentication authentication) throws TwitterException {
+        return get(url, null, authentication);
     }
 
     /**
      * Issues an HTTP GET request.
      *
-     * @param url          the request url
-     * @param authenticate if true, the request will be sent with BASIC authentication header
+     * @param url            the request url
+     * @param authentication if true, the request will be sent with BASIC authentication header
+     * @param name1          the name of the first parameter
+     * @param value1         the value of the first parameter
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
 
-    protected Response get(String url, boolean authenticate) throws TwitterException {
-        return get(url, null, authenticate);
+    protected Response get(String url, String name1, String value1, Authentication authentication) throws TwitterException {
+        return get(url, new PostParameter[]{new PostParameter(name1, value1)}, authentication);
     }
 
     /**
      * Issues an HTTP GET request.
      *
-     * @param url          the request url
-     * @param authenticate if true, the request will be sent with BASIC authentication header
-     * @param name1        the name of the first parameter
-     * @param value1       the value of the first parameter
+     * @param url            the request url
+     * @param name1          the name of the first parameter
+     * @param value1         the value of the first parameter
+     * @param name2          the name of the second parameter
+     * @param value2         the value of the second parameter
+     * @param authentication if true, the request will be sent with BASIC authentication header
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
 
-    protected Response get(String url, String name1, String value1, boolean authenticate) throws TwitterException {
-        return get(url, new PostParameter[]{new PostParameter(name1, value1)}, authenticate);
-    }
-
-    /**
-     * Issues an HTTP GET request.
-     *
-     * @param url          the request url
-     * @param name1        the name of the first parameter
-     * @param value1       the value of the first parameter
-     * @param name2        the name of the second parameter
-     * @param value2       the value of the second parameter
-     * @param authenticate if true, the request will be sent with BASIC authentication header
-     * @return the response
-     * @throws TwitterException when Twitter service or network is unavailable
-     */
-
-    protected Response get(String url, String name1, String value1, String name2, String value2, boolean authenticate) throws TwitterException {
-        return get(url, new PostParameter[]{new PostParameter(name1, value1), new PostParameter(name2, value2)}, authenticate);
+    protected Response get(String url, String name1, String value1, String name2, String value2, Authentication authentication) throws TwitterException {
+        return get(url, new PostParameter[]{new PostParameter(name1, value1), new PostParameter(name2, value2)}, authentication);
     }
 
     /**
@@ -314,35 +293,35 @@ public class Twitter extends TwitterSupport
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    protected Response get(String url, PostParameter[] params, boolean authenticate) throws TwitterException {
+    protected Response get(String url, PostParameter[] params, Authentication authenticate) throws TwitterException {
         if (null != params && params.length > 0) {
             url += "?" + HttpClient.encodeParameters(params);
         }
-        return http.get(url, authenticate);
+        return http.request(requestFactory.createGetRequest(url, authenticate));
     }
 
     /**
      * Issues an HTTP GET request.
      *
-     * @param url          the request url
-     * @param params       the request parameters
-     * @param pagingParams controls pagination
-     * @param authenticate if true, the request will be sent with BASIC authentication header
+     * @param url            the request url
+     * @param params         the request parameters
+     * @param pagingParams   controls pagination
+     * @param authentication if true, the request will be sent with BASIC authentication header
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    protected Response get(String url, PostParameter[] params, List<PostParameter> pagingParams, boolean authenticate) throws TwitterException {
+    protected Response get(String url, PostParameter[] params, List<PostParameter> pagingParams, Authentication authentication) throws TwitterException {
         if (null != params) {
             if (null != pagingParams) {
-				pagingParams.addAll(Arrays.asList(params));
-                return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authenticate);
+                pagingParams.addAll(Arrays.asList(params));
+                return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authentication);
             } else {
-                return get(url, params, authenticate);
+                return get(url, params, authentication);
             }
         } else if (null != pagingParams) {
-            return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authenticate);
-        }else{
-            return get(url, authenticate);
+            return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authentication);
+        } else {
+            return get(url, authentication);
         }
     }
 
@@ -363,13 +342,13 @@ public class Twitter extends TwitterSupport
             }
         }
 
-        private void fireRateLimitStatusListenerUpdate(List<RateLimitStatusListener> listeners,RateLimitStatus status){
-            for(RateLimitStatusListener listener : listeners){
+        private void fireRateLimitStatusListenerUpdate(List<RateLimitStatusListener> listeners, RateLimitStatus status) {
+            for (RateLimitStatusListener listener : listeners) {
                 listener.rateLimitStatusUpdated(status);
             }
         }
 
-        public boolean equals(Object that){
+        public boolean equals(Object that) {
             return that instanceof MyHttpResponseListener;
         }
     }
@@ -378,58 +357,58 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public QueryResult search(Query query) throws TwitterException {
-        try{
-        return new QueryResultJSONImpl(get(getSearchBaseURL() + "search.json", query.asPostParameters(), false));
-        }catch(TwitterException te){
-            if(404 == te.getStatusCode()){
+        try {
+            return new QueryResultJSONImpl(get(conf.getSearchBaseURL() + "search.json", query.asPostParameters(), null));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
                 return new QueryResultJSONImpl(query);
-            }else{
+            } else {
                 throw te;
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public Trends getTrends() throws TwitterException {
-        return TrendsJSONImpl.createTrends(get(getSearchBaseURL() + "trends.json", false));
+        return TrendsJSONImpl.createTrends(get(conf.getSearchBaseURL() + "trends.json", null));
     }
 
     /**
      * {@inheritDoc}
      */
     public Trends getCurrentTrends() throws TwitterException {
-        return TrendsJSONImpl.createTrendsList(get(getSearchBaseURL() + "trends/current.json"
-                , false)).get(0);
+        return TrendsJSONImpl.createTrendsList(get(conf.getSearchBaseURL() + "trends/current.json"
+                , null)).get(0);
     }
 
     /**
      * {@inheritDoc}
      */
     public Trends getCurrentTrends(boolean excludeHashTags) throws TwitterException {
-        return TrendsJSONImpl.createTrendsList(get(getSearchBaseURL() + "trends/current.json"
-                + (excludeHashTags ? "?exclude=hashtags" : ""), false)).get(0);
+        return TrendsJSONImpl.createTrendsList(get(conf.getSearchBaseURL() + "trends/current.json"
+                + (excludeHashTags ? "?exclude=hashtags" : ""), null)).get(0);
     }
 
     /**
      * {@inheritDoc}
      */
     public List<Trends> getDailyTrends() throws TwitterException {
-        return TrendsJSONImpl.createTrendsList(get(getSearchBaseURL() + "trends/daily.json", false));
+        return TrendsJSONImpl.createTrendsList(get(conf.getSearchBaseURL() + "trends/daily.json", null));
     }
 
     /**
      * {@inheritDoc}
      */
     public List<Trends> getDailyTrends(Date date, boolean excludeHashTags) throws TwitterException {
-        return TrendsJSONImpl.createTrendsList(get(getSearchBaseURL()
+        return TrendsJSONImpl.createTrendsList(get(conf.getSearchBaseURL()
                 + "trends/daily.json?date=" + toDateStr(date)
-                + (excludeHashTags ? "&exclude=hashtags" : ""), false));
+                + (excludeHashTags ? "&exclude=hashtags" : ""), null));
     }
 
-    private String toDateStr(Date date){
-        if(null == date){
+    private String toDateStr(Date date) {
+        if (null == date) {
             date = new Date();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -440,17 +419,17 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public List<Trends> getWeeklyTrends() throws TwitterException {
-        return TrendsJSONImpl.createTrendsList(get(getSearchBaseURL()
-                + "trends/weekly.json", false));
+        return TrendsJSONImpl.createTrendsList(get(conf.getSearchBaseURL()
+                + "trends/weekly.json", null));
     }
 
     /**
      * {@inheritDoc}
      */
     public List<Trends> getWeeklyTrends(Date date, boolean excludeHashTags) throws TwitterException {
-        return TrendsJSONImpl.createTrendsList(get(getSearchBaseURL()
+        return TrendsJSONImpl.createTrendsList(get(conf.getSearchBaseURL()
                 + "trends/weekly.json?date=" + toDateStr(date)
-                + (excludeHashTags ? "&exclude=hashtags" : ""), false));
+                + (excludeHashTags ? "&exclude=hashtags" : ""), null));
     }
 
     /* Status Methods */
@@ -460,8 +439,8 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<Status> getPublicTimeline() throws
             TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() +
-                "statuses/public_timeline.json", http.isAuthenticationEnabled()));
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() +
+                "statuses/public_timeline.json", auth));
     }
 
     /**
@@ -469,9 +448,9 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<Status> getPublicTimeline(long sinceID) throws
             TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() +
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() +
                 "statuses/public_timeline.json", null, new Paging(sinceID).asPostParameterList(Paging.S)
-                , http.isAuthenticationEnabled()));
+                , auth));
     }
 
     /**
@@ -479,7 +458,8 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<Status> getHomeTimeline() throws
             TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/home_timeline.json", true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/home_timeline.json", auth));
     }
 
     /**
@@ -487,7 +467,8 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<Status> getHomeTimeline(Paging paging) throws
             TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/home_timeline.json", null, paging.asPostParameterList(), true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/home_timeline.json", null, paging.asPostParameterList(), auth));
     }
 
     /**
@@ -495,7 +476,8 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<Status> getFriendsTimeline() throws
             TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/friends_timeline.json", true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/friends_timeline.json", auth));
     }
 
     /**
@@ -503,7 +485,8 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<Status> getFriendsTimeline(Paging paging) throws
             TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/friends_timeline.json",null, paging.asPostParameterList(), true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/friends_timeline.json", null, paging.asPostParameterList(), auth));
     }
 
 
@@ -512,10 +495,10 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<Status> getUserTimeline(String screenName, Paging paging)
             throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL()
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL()
                 + "statuses/user_timeline.json",
-                new PostParameter[]{new PostParameter("screen_name",screenName)}
-                , paging.asPostParameterList(), http.isAuthenticationEnabled()));
+                new PostParameter[]{new PostParameter("screen_name", screenName)}
+                , paging.asPostParameterList(), auth));
     }
 
     /**
@@ -523,10 +506,10 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<Status> getUserTimeline(int userId, Paging paging)
             throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL()
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL()
                 + "statuses/user_timeline.json",
                 new PostParameter[]{new PostParameter("user_id", userId)}
-                , paging.asPostParameterList(), http.isAuthenticationEnabled()));
+                , paging.asPostParameterList(), auth));
     }
 
     /**
@@ -535,7 +518,7 @@ public class Twitter extends TwitterSupport
     public ResponseList<Status> getUserTimeline(String screenName) throws TwitterException {
         return getUserTimeline(screenName, new Paging());
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -556,106 +539,118 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<Status> getUserTimeline(Paging paging) throws
             TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/user_timeline.json"
-                , null, paging.asPostParameterList(), true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/user_timeline.json"
+                , null, paging.asPostParameterList(), auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getMentions() throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/mentions.json",
-                null, true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/mentions.json",
+                null, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getMentions(Paging paging) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/mentions.json",
-                null, paging.asPostParameterList(), true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/mentions.json",
+                null, paging.asPostParameterList(), auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetedByMe() throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/retweeted_by_me.json",
-                null, true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/retweeted_by_me.json",
+                null, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetedByMe(Paging paging) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/retweeted_by_me.json",
-                null, paging.asPostParameterList(), true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/retweeted_by_me.json",
+                null, paging.asPostParameterList(), auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetedToMe() throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/retweeted_to_me.json",
-                null, true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/retweeted_to_me.json",
+                null, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetedToMe(Paging paging) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/retweeted_to_me.json",
-                null, paging.asPostParameterList(), true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/retweeted_to_me.json",
+                null, paging.asPostParameterList(), auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetsOfMe() throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/retweets_of_me.json",
-                null, true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/retweets_of_me.json",
+                null, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetsOfMe(Paging paging) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "statuses/retweets_of_me.json",
-                null, paging.asPostParameterList(), true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "statuses/retweets_of_me.json",
+                null, paging.asPostParameterList(), auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public Status showStatus(long id) throws TwitterException {
-        return new StatusJSONImpl(get(getBaseURL() + "statuses/show/" + id + ".json", http.isAuthenticationEnabled()));
+        return new StatusJSONImpl(get(conf.getRestBaseURL() + "statuses/show/" + id + ".json", auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public Status updateStatus(String status) throws TwitterException {
-        return new StatusJSONImpl(http.post(getBaseURL() + "statuses/update.json",
-                new PostParameter[]{new PostParameter("status", status), new PostParameter("source", source)}, true));
+        ensureAuthenticationEnabled();
+        return new StatusJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "statuses/update.json",
+                new PostParameter[]{new PostParameter("status", status), new PostParameter("source", conf.getSource())}, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public Status updateStatus(String status, GeoLocation location) throws TwitterException {
-        return new StatusJSONImpl(http.post(getBaseURL() + "statuses/update.json",
+        ensureAuthenticationEnabled();
+        return new StatusJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "statuses/update.json",
                 new PostParameter[]{new PostParameter("status", status),
                         new PostParameter("lat", location.getLatitude()),
                         new PostParameter("long", location.getLongitude()),
-                        new PostParameter("source", source)}, true));
+                        new PostParameter("source", conf.getSource())}, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public Status updateStatus(String status, long inReplyToStatusId) throws TwitterException {
-        return new StatusJSONImpl(http.post(getBaseURL() + "statuses/update.json",
-                new PostParameter[]{new PostParameter("status", status), new PostParameter("in_reply_to_status_id", String.valueOf(inReplyToStatusId)), new PostParameter("source", source)}, true));
+        ensureAuthenticationEnabled();
+        return new StatusJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "statuses/update.json",
+                new PostParameter[]{new PostParameter("status", status), new PostParameter("in_reply_to_status_id", String.valueOf(inReplyToStatusId)), new PostParameter("source", conf.getSource())}, auth)));
     }
 
     /**
@@ -663,53 +658,57 @@ public class Twitter extends TwitterSupport
      */
     public Status updateStatus(String status, long inReplyToStatusId
             , GeoLocation location) throws TwitterException {
-        return new StatusJSONImpl(http.post(getBaseURL() + "statuses/update.json",
+        ensureAuthenticationEnabled();
+        return new StatusJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "statuses/update.json",
                 new PostParameter[]{new PostParameter("status", status),
                         new PostParameter("lat", location.getLatitude()),
                         new PostParameter("long", location.getLongitude()),
                         new PostParameter("in_reply_to_status_id",
                                 String.valueOf(inReplyToStatusId)),
-                        new PostParameter("source", source)}, true));
+                        new PostParameter("source", conf.getSource())}, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public Status destroyStatus(long statusId) throws TwitterException {
-        return new StatusJSONImpl(http.post(getBaseURL() + "statuses/destroy/" + statusId + ".json",
-                new PostParameter[0], true));
+        ensureAuthenticationEnabled();
+        return new StatusJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "statuses/destroy/" + statusId + ".json",
+                new PostParameter[0], auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public Status retweetStatus(long statusId) throws TwitterException {
-        return new StatusJSONImpl(http.post(getBaseURL() + "statuses/retweet/" + statusId + ".json",
-                new PostParameter[]{new PostParameter("source", source)}, true));
+        ensureAuthenticationEnabled();
+        return new StatusJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "statuses/retweet/" + statusId + ".json",
+                new PostParameter[]{new PostParameter("source", conf.getSource())}, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweets(long statusId) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL()
-                + "statuses/retweets/" + statusId + ".json", true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL()
+                + "statuses/retweets/" + statusId + ".json", auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public User showUser(String screenName) throws TwitterException {
-        return new UserJSONImpl(get(getBaseURL() + "users/show.json?screen_name="
-                + screenName , http.isAuthenticationEnabled()));
+        return new UserJSONImpl(get(conf.getRestBaseURL() + "users/show.json?screen_name="
+                + screenName, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public User showUser(int userId) throws TwitterException {
-        return new UserJSONImpl(get(getBaseURL() + "users/show.json?user_id="
-                + userId , http.isAuthenticationEnabled()));
+        return new UserJSONImpl(get(conf.getRestBaseURL() + "users/show.json?user_id="
+                + userId, auth));
     }
 
     /* User Methods */
@@ -725,9 +724,9 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFriendsStatuses(long cursor) throws TwitterException {
-        return UserJSONImpl.createPagableUserList(get(getBaseURL()
+        return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL()
                 + "statuses/friends.json?cursor=" + cursor, null,
-                 http.isAuthenticationEnabled()));
+                auth));
     }
 
     /**
@@ -748,18 +747,18 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFriendsStatuses(String screenName, long cursor) throws TwitterException {
-        return UserJSONImpl.createPagableUserList(get(getBaseURL()
+        return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL()
                 + "statuses/friends.json?screen_name=" + screenName + "&cursor=" + cursor
-                , null, http.isAuthenticationEnabled()));
+                , null, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFriendsStatuses(int userId, long cursor) throws TwitterException {
-        return UserJSONImpl.createPagableUserList(get(getBaseURL()
+        return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL()
                 + "statuses/friends.json?user_id=" + userId + "&cursor=" + cursor
-                , null, http.isAuthenticationEnabled()));
+                , null, auth));
     }
 
     /**
@@ -773,8 +772,8 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFollowersStatuses(long cursor) throws TwitterException {
-        return UserJSONImpl.createPagableUserList(get(getBaseURL()
-                + "statuses/followers.json?cursor=" + cursor, null, http.isAuthenticationEnabled()));
+        return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL()
+                + "statuses/followers.json?cursor=" + cursor, null, auth));
     }
 
     /**
@@ -795,16 +794,16 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFollowersStatuses(String screenName, long cursor) throws TwitterException {
-        return UserJSONImpl.createPagableUserList(get(getBaseURL() + "statuses/followers.json?screen_name=" + screenName +
-                "&cursor=" + cursor, null, http.isAuthenticationEnabled()));
+        return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL() + "statuses/followers.json?screen_name=" + screenName +
+                "&cursor=" + cursor, null, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFollowersStatuses(int userId, long cursor) throws TwitterException {
-        return UserJSONImpl.createPagableUserList(get(getBaseURL() + "statuses/followers.json?user_id=" + userId +
-                "&cursor=" + cursor, null, http.isAuthenticationEnabled()));
+        return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL() + "statuses/followers.json?user_id=" + userId +
+                "&cursor=" + cursor, null, auth));
     }
 
     /*List Methods*/
@@ -813,22 +812,24 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public UserList createUserList(String listName, boolean isPublicList, String description) throws TwitterException {
+        ensureAuthenticationEnabled();
         List<PostParameter> postParams = new ArrayList<PostParameter>();
         postParams.add(new PostParameter("name", listName));
         postParams.add(new PostParameter("mode", isPublicList ? "public" : "private"));
         if (description != null) {
             postParams.add(new PostParameter("description", description));
         }
-        return new UserListJSONImpl(http.post(getBaseURL() + getScreenName() +
-                                            "/lists.json",
-											postParams.toArray(new PostParameter[postParams.size()]),
-                                            true));
+        return new UserListJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + getScreenName() +
+                "/lists.json",
+                postParams.toArray(new PostParameter[postParams.size()]),
+                auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public UserList updateUserList(int listId, String newListName, boolean isPublicList, String newDescription) throws TwitterException {
+        ensureAuthenticationEnabled();
         List<PostParameter> postParams = new ArrayList<PostParameter>();
         if (newListName != null) {
             postParams.add(new PostParameter("name", newListName));
@@ -837,57 +838,62 @@ public class Twitter extends TwitterSupport
         if (newDescription != null) {
             postParams.add(new PostParameter("description", newDescription));
         }
-        return new UserListJSONImpl(http.post(getBaseURL() + getScreenName() + "/lists/"
-                + listId + ".json", postParams.toArray(new PostParameter[postParams.size()]), true));
+        return new UserListJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + getScreenName() + "/lists/"
+                + listId + ".json", postParams.toArray(new PostParameter[postParams.size()]), auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor) throws TwitterException {
-        return UserListJSONImpl.createUserListList(get(getBaseURL() +
-                listOwnerScreenName + "/lists.json?cursor=" + cursor, true));
+        ensureAuthenticationEnabled();
+        return UserListJSONImpl.createUserListList(get(conf.getRestBaseURL() +
+                listOwnerScreenName + "/lists.json?cursor=" + cursor, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public UserList showUserList(String listOwnerScreenName, int id) throws TwitterException {
-        return new UserListJSONImpl(get(getBaseURL() + listOwnerScreenName + "/lists/"
-                + id + ".json", true));
+        ensureAuthenticationEnabled();
+        return new UserListJSONImpl(get(conf.getRestBaseURL() + listOwnerScreenName + "/lists/"
+                + id + ".json", auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public UserList destroyUserList(int listId) throws TwitterException {
-        return new UserListJSONImpl(http.delete(getBaseURL() + getScreenName() +
-                "/lists/" + listId + ".json", true));
+        ensureAuthenticationEnabled();
+        return new UserListJSONImpl(http.request(requestFactory.createDeleteRequest(conf.getRestBaseURL() + getScreenName() +
+                "/lists/" + listId + ".json", auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getUserListStatuses(String listOwnerScreenName, int id, Paging paging) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + listOwnerScreenName +
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + listOwnerScreenName +
                 "/lists/" + id + "/statuses.json", new PostParameter[0],
-                paging.asPostParameterList(Paging.SMCP, Paging.PER_PAGE), http.isAuthenticationEnabled()));
+                paging.asPostParameterList(Paging.SMCP, Paging.PER_PAGE), auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserListMemberships(String listOwnerScreenName, long cursor) throws TwitterException {
-        return UserListJSONImpl.createUserListList(get(getBaseURL() +
-                listOwnerScreenName + "/lists/memberships.json?cursor=" + cursor, true));
+        ensureAuthenticationEnabled();
+        return UserListJSONImpl.createUserListList(get(conf.getRestBaseURL() +
+                listOwnerScreenName + "/lists/memberships.json?cursor=" + cursor, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor) throws TwitterException {
-        return UserListJSONImpl.createUserListList(get(getBaseURL() +
-                listOwnerScreenName + "/lists/subscriptions.json?cursor=" + cursor, true));
+        ensureAuthenticationEnabled();
+        return UserListJSONImpl.createUserListList(get(conf.getRestBaseURL() +
+                listOwnerScreenName + "/lists/subscriptions.json?cursor=" + cursor, auth));
     }
 
     /*List Members Methods*/
@@ -897,32 +903,36 @@ public class Twitter extends TwitterSupport
      */
     public PagableResponseList<User> getUserListMembers(String listOwnerScreenName, int listId
             , long cursor) throws TwitterException {
-        return UserJSONImpl.createPagableUserList(get(getBaseURL() +
-                listOwnerScreenName + "/" + listId + "/members.json?cursor=" + cursor, true));
+        ensureAuthenticationEnabled();
+        return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL() +
+                listOwnerScreenName + "/" + listId + "/members.json?cursor=" + cursor, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public UserList addUserListMember(int listId, int userId) throws TwitterException {
-        return new UserListJSONImpl(http.post(getBaseURL() + getScreenName() +
-                "/" + listId + "/members.json?id=" + userId, true));
+        ensureAuthenticationEnabled();
+        return new UserListJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + getScreenName() +
+                "/" + listId + "/members.json?id=" + userId, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public UserList deleteUserListMember(int listId, int userId) throws TwitterException {
-        return new UserListJSONImpl(http.delete(getBaseURL() + getScreenName() +
-                "/" + listId + "/members.json?id=" + userId, true));
+        ensureAuthenticationEnabled();
+        return new UserListJSONImpl(http.request(requestFactory.createDeleteRequest(conf.getRestBaseURL() + getScreenName() +
+                "/" + listId + "/members.json?id=" + userId, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User checkUserListMembership(String listOwnerScreenName, int listId, int userId) throws TwitterException {
-        return new UserJSONImpl(get(getBaseURL() + listOwnerScreenName + "/" + listId
-                + "/members/"+ userId +".json", true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(get(conf.getRestBaseURL() + listOwnerScreenName + "/" + listId
+                + "/members/" + userId + ".json", auth));
     }
 
     /*List Subscribers Methods*/
@@ -932,32 +942,36 @@ public class Twitter extends TwitterSupport
      */
     public PagableResponseList<User> getUserListSubscribers(String listOwnerScreenName
             , int listId, long cursor) throws TwitterException {
-        return UserJSONImpl.createPagableUserList(get(getBaseURL() +
-                listOwnerScreenName + "/" + listId + "/subscribers.json?cursor=" + cursor, true));
+        ensureAuthenticationEnabled();
+        return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL() +
+                listOwnerScreenName + "/" + listId + "/subscribers.json?cursor=" + cursor, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public UserList subscribeUserList(String listOwnerScreenName, int listId) throws TwitterException {
-        return new UserListJSONImpl(http.post(getBaseURL() + listOwnerScreenName +
-                "/" + listId + "/subscribers.json", true));
+        ensureAuthenticationEnabled();
+        return new UserListJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + listOwnerScreenName +
+                "/" + listId + "/subscribers.json", auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public UserList unsubscribeUserList(String listOwnerScreenName, int listId) throws TwitterException {
-        return new UserListJSONImpl(http.delete(getBaseURL() + listOwnerScreenName +
-                "/" + listId + "/subscribers.json?id=" + verifyCredentials().getId(), true));
+        ensureAuthenticationEnabled();
+        return new UserListJSONImpl(http.request(requestFactory.createDeleteRequest(conf.getRestBaseURL() + listOwnerScreenName +
+                "/" + listId + "/subscribers.json?id=" + verifyCredentials().getId(), auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User checkUserListSubscription(String listOwnerScreenName, int listId, int userId) throws TwitterException {
-        return new UserJSONImpl(get(getBaseURL() + listOwnerScreenName + "/" + listId
-                + "/subscribers/" + userId + ".json", true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(get(conf.getRestBaseURL() + listOwnerScreenName + "/" + listId
+                + "/subscribers/" + userId + ".json", auth));
     }
 
     /*Direct Message Methods */
@@ -966,15 +980,17 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public ResponseList<DirectMessage> getDirectMessages() throws TwitterException {
-        return DirectMessageJSONImpl.createDirectMessageList(get(getBaseURL() + "direct_messages.json", true));
+        ensureAuthenticationEnabled();
+        return DirectMessageJSONImpl.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages.json", auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<DirectMessage> getDirectMessages(Paging paging) throws TwitterException {
-        return DirectMessageJSONImpl.createDirectMessageList(get(getBaseURL()
-                + "direct_messages.json", null, paging.asPostParameterList(), true));
+        ensureAuthenticationEnabled();
+        return DirectMessageJSONImpl.createDirectMessageList(get(conf.getRestBaseURL()
+                + "direct_messages.json", null, paging.asPostParameterList(), auth));
     }
 
     /**
@@ -982,8 +998,9 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<DirectMessage> getSentDirectMessages() throws
             TwitterException {
-        return DirectMessageJSONImpl.createDirectMessageList(get(getBaseURL() +
-                "direct_messages/sent.json", new PostParameter[0], true));
+        ensureAuthenticationEnabled();
+        return DirectMessageJSONImpl.createDirectMessageList(get(conf.getRestBaseURL() +
+                "direct_messages/sent.json", new PostParameter[0], auth));
     }
 
     /**
@@ -991,18 +1008,20 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<DirectMessage> getSentDirectMessages(Paging paging) throws
             TwitterException {
-        return DirectMessageJSONImpl.createDirectMessageList(get(getBaseURL() +
+        ensureAuthenticationEnabled();
+        return DirectMessageJSONImpl.createDirectMessageList(get(conf.getRestBaseURL() +
                 "direct_messages/sent.json", new PostParameter[0],
-                paging.asPostParameterList(), true));
+                paging.asPostParameterList(), auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public DirectMessage sendDirectMessage(String screenName, String text) throws TwitterException {
-        return new DirectMessageJSONImpl(http.post(getBaseURL() + "direct_messages/new.json",
+        ensureAuthenticationEnabled();
+        return new DirectMessageJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "direct_messages/new.json",
                 new PostParameter[]{new PostParameter("screen_name", screenName),
-                        new PostParameter("text", text)}, true));
+                        new PostParameter("text", text)}, auth)));
     }
 
     /**
@@ -1010,9 +1029,10 @@ public class Twitter extends TwitterSupport
      */
     public DirectMessage sendDirectMessage(int userId, String text)
             throws TwitterException {
-        return new DirectMessageJSONImpl(http.post(getBaseURL() + "direct_messages/new.json",
+        ensureAuthenticationEnabled();
+        return new DirectMessageJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "direct_messages/new.json",
                 new PostParameter[]{new PostParameter("user_id", userId),
-                        new PostParameter("text", text)}, true));
+                        new PostParameter("text", text)}, auth)));
     }
 
     /**
@@ -1020,61 +1040,68 @@ public class Twitter extends TwitterSupport
      */
     public DirectMessage destroyDirectMessage(int id) throws
             TwitterException {
-        return new DirectMessageJSONImpl(http.post(getBaseURL() +
-                "direct_messages/destroy/" + id + ".json", new PostParameter[0], true));
+        ensureAuthenticationEnabled();
+        return new DirectMessageJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() +
+                "direct_messages/destroy/" + id + ".json", new PostParameter[0], auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User createFriendship(String screenName) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "friendships/create.json?screen_name=" + screenName, new PostParameter[0], true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "friendships/create.json?screen_name=" + screenName, new PostParameter[0], auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User createFriendship(int userId) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "friendships/create.json?user_id=" + userId, new PostParameter[0], true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "friendships/create.json?user_id=" + userId, new PostParameter[0], auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User createFriendship(String screenName, boolean follow) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "friendships/create.json?screen_name=" + screenName
-                + "&follow=" + follow , true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "friendships/create.json?screen_name=" + screenName
+                + "&follow=" + follow, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User createFriendship(int userId, boolean follow) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "friendships/create.json?user_id=" + userId
-                + "&follow=" + follow , true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "friendships/create.json?user_id=" + userId
+                + "&follow=" + follow, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User destroyFriendship(String screenName) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "friendships/destroy.json?screen_name="
-                + screenName, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "friendships/destroy.json?screen_name="
+                + screenName, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User destroyFriendship(int userId) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "friendships/destroy.json?user_id="
-                + userId, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "friendships/destroy.json?user_id="
+                + userId, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean existsFriendship(String userA, String userB) throws TwitterException {
-        return -1 != get(getBaseURL() + "friendships/exists.json", "user_a", userA, "user_b", userB, http.isAuthenticationEnabled()).
+        return -1 != get(conf.getRestBaseURL() + "friendships/exists.json", "user_a", userA, "user_b", userB, auth).
                 asString().indexOf("true");
     }
 
@@ -1082,16 +1109,16 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public Relationship showFriendship(String sourceScreenName, String targetScreenName) throws TwitterException {
-        return new RelationshipJSONImpl(get(getBaseURL() + "friendships/show.json", "source_screen_name", sourceScreenName,
-                "target_screen_name", targetScreenName, http.isAuthenticationEnabled()));
+        return new RelationshipJSONImpl(get(conf.getRestBaseURL() + "friendships/show.json", "source_screen_name", sourceScreenName,
+                "target_screen_name", targetScreenName, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public Relationship showFriendship(int sourceId, int targetId) throws TwitterException {
-        return new RelationshipJSONImpl(get(getBaseURL() + "friendships/show.json", "source_id", String.valueOf(sourceId),
-                "target_id", String.valueOf(targetId), http.isAuthenticationEnabled()));
+        return new RelationshipJSONImpl(get(conf.getRestBaseURL() + "friendships/show.json", "source_id", String.valueOf(sourceId),
+                "target_id", String.valueOf(targetId), auth));
     }
 
     /**
@@ -1105,7 +1132,7 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public IDs getFriendsIDs(long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(get(getBaseURL() + "friends/ids.json?cursor=" + cursor, http.isAuthenticationEnabled()));
+        return IDsJSONImpl.getFriendsIDs(get(conf.getRestBaseURL() + "friends/ids.json?cursor=" + cursor, auth));
     }
 
     /**
@@ -1119,8 +1146,8 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public IDs getFriendsIDs(int userId, long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(get(getBaseURL() + "friends/ids.json?user_id=" + userId +
-                "&cursor=" + cursor, http.isAuthenticationEnabled()));
+        return IDsJSONImpl.getFriendsIDs(get(conf.getRestBaseURL() + "friends/ids.json?user_id=" + userId +
+                "&cursor=" + cursor, auth));
     }
 
     /**
@@ -1134,8 +1161,8 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public IDs getFriendsIDs(String screenName, long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(get(getBaseURL() + "friends/ids.json?screen_name=" + screenName
-                + "&cursor=" + cursor, http.isAuthenticationEnabled()));
+        return IDsJSONImpl.getFriendsIDs(get(conf.getRestBaseURL() + "friends/ids.json?screen_name=" + screenName
+                + "&cursor=" + cursor, auth));
     }
 
     /**
@@ -1149,8 +1176,8 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public IDs getFollowersIDs(long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(get(getBaseURL() + "followers/ids.json?cursor=" + cursor
-                , http.isAuthenticationEnabled()));
+        return IDsJSONImpl.getFriendsIDs(get(conf.getRestBaseURL() + "followers/ids.json?cursor=" + cursor
+                , auth));
     }
 
     /**
@@ -1164,8 +1191,8 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public IDs getFollowersIDs(int userId, long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(get(getBaseURL() + "followers/ids.json?user_id=" + userId
-                + "&cursor=" + cursor, http.isAuthenticationEnabled()));
+        return IDsJSONImpl.getFriendsIDs(get(conf.getRestBaseURL() + "followers/ids.json?user_id=" + userId
+                + "&cursor=" + cursor, auth));
     }
 
     /**
@@ -1179,16 +1206,16 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public IDs getFollowersIDs(String screenName, long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(get(getBaseURL() + "followers/ids.json?screen_name="
-                + screenName + "&cursor=" + cursor, http.isAuthenticationEnabled()));
+        return IDsJSONImpl.getFriendsIDs(get(conf.getRestBaseURL() + "followers/ids.json?screen_name="
+                + screenName + "&cursor=" + cursor, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public User verifyCredentials() throws TwitterException {
-        return new UserJSONImpl(get(getBaseURL() + "account/verify_credentials.json"
-                , true));
+        return new UserJSONImpl(get(conf.getRestBaseURL() + "account/verify_credentials.json"
+                , auth));
     }
 
     /**
@@ -1196,28 +1223,30 @@ public class Twitter extends TwitterSupport
      */
     public User updateProfile(String name, String email, String url
             , String location, String description) throws TwitterException {
+        ensureAuthenticationEnabled();
         List<PostParameter> profile = new ArrayList<PostParameter>(5);
         addParameterToList(profile, "name", name);
         addParameterToList(profile, "email", email);
         addParameterToList(profile, "url", url);
         addParameterToList(profile, "location", location);
         addParameterToList(profile, "description", description);
-        return new UserJSONImpl(http.post(getBaseURL() + "account/update_profile.json"
-                , profile.toArray(new PostParameter[profile.size()]), true));
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "account/update_profile.json"
+                , profile.toArray(new PostParameter[profile.size()]), auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public RateLimitStatus getRateLimitStatus() throws TwitterException {
-        return RateLimitStatusJSONImpl.createFromJSONResponse(http.get(getBaseURL() + "account/rate_limit_status.json", http.isAuthenticationEnabled()));
+        return RateLimitStatusJSONImpl.createFromJSONResponse(http.request(requestFactory.createGetRequest(conf.getRestBaseURL() + "account/rate_limit_status.json", auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User updateDeliveryDevice(Device device) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "account/update_delivery_device.json", new PostParameter[]{new PostParameter("device", device.getName())}, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "account/update_delivery_device.json", new PostParameter[]{new PostParameter("device", device.getName())}, auth)));
     }
 
 
@@ -1231,6 +1260,7 @@ public class Twitter extends TwitterSupport
             String profileSidebarFillColor,
             String profileSidebarBorderColor)
             throws TwitterException {
+        ensureAuthenticationEnabled();
         List<PostParameter> colors = new ArrayList<PostParameter>(5);
         addParameterToList(colors, "profile_background_color"
                 , profileBackgroundColor);
@@ -1242,15 +1272,15 @@ public class Twitter extends TwitterSupport
                 , profileSidebarFillColor);
         addParameterToList(colors, "profile_sidebar_border_color"
                 , profileSidebarBorderColor);
-        return new UserJSONImpl(http.post(getBaseURL() +
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() +
                 "account/update_profile_colors.json",
-                colors.toArray(new PostParameter[colors.size()]), true));
+                colors.toArray(new PostParameter[colors.size()]), auth)));
     }
 
     private void addParameterToList(List<PostParameter> colors,
-                                      String paramName, String color) {
-        if(null != color){
-            colors.add(new PostParameter(paramName,color));
+                                    String paramName, String color) {
+        if (null != color) {
+            colors.add(new PostParameter(paramName, color));
         }
     }
 
@@ -1259,9 +1289,10 @@ public class Twitter extends TwitterSupport
      */
     public User updateProfileImage(File image) throws TwitterException {
         checkFileValidity(image);
-        return new UserJSONImpl(http.post(getBaseURL()
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL()
                 + "account/update_profile_image.json",
-                new PostParameter[]{new PostParameter("image", image)}, true));
+                new PostParameter[]{new PostParameter("image", image)}, auth)));
     }
 
     /**
@@ -1269,27 +1300,29 @@ public class Twitter extends TwitterSupport
      */
     public User updateProfileBackgroundImage(File image, boolean tile)
             throws TwitterException {
+        ensureAuthenticationEnabled();
         checkFileValidity(image);
-        return new UserJSONImpl(http.post(getBaseURL()
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL()
                 + "account/update_profile_background_image.json",
                 new PostParameter[]{new PostParameter("image", image),
-                new PostParameter("tile", tile)}, true));
+                        new PostParameter("tile", tile)}, auth)));
     }
 
     /**
      * Check the existence, and the type of the specified file.
+     *
      * @param image image to be uploaded
      * @throws TwitterException when the specified file is not found (FileNotFoundException will be nested)
-     * , or when the specified file object is not representing a file(IOException will be nested).
+     *                          , or when the specified file object is not representing a file(IOException will be nested).
      */
     private void checkFileValidity(File image) throws TwitterException {
         if (!image.exists()) {
-			//noinspection ThrowableInstanceNeverThrown
-			throw new TwitterException(new FileNotFoundException(image +" is not found."));
+            //noinspection ThrowableInstanceNeverThrown
+            throw new TwitterException(new FileNotFoundException(image + " is not found."));
         }
         if (!image.isFile()) {
-			//noinspection ThrowableInstanceNeverThrown
-            throw new TwitterException(new IOException(image +" is not a file."));
+            //noinspection ThrowableInstanceNeverThrown
+            throw new TwitterException(new IOException(image + " is not a file."));
         }
     }
 
@@ -1297,70 +1330,80 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public ResponseList<Status> getFavorites() throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "favorites.json", new PostParameter[0], true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "favorites.json", new PostParameter[0], auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getFavorites(int page) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "favorites.json", "page", String.valueOf(page), true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "favorites.json", "page", String.valueOf(page), auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getFavorites(String id) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "favorites/" + id + ".json", new PostParameter[0], true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "favorites/" + id + ".json", new PostParameter[0], auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getFavorites(String id, int page) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(getBaseURL() + "favorites/" + id + ".json", "page", String.valueOf(page), true));
+        ensureAuthenticationEnabled();
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "favorites/" + id + ".json", "page", String.valueOf(page), auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public Status createFavorite(long id) throws TwitterException {
-        return new StatusJSONImpl(http.post(getBaseURL() + "favorites/create/" + id + ".json", true));
+        ensureAuthenticationEnabled();
+        return new StatusJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "favorites/create/" + id + ".json", auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public Status destroyFavorite(long id) throws TwitterException {
-        return new StatusJSONImpl(http.post(getBaseURL() + "favorites/destroy/" + id + ".json", true));
+        ensureAuthenticationEnabled();
+        return new StatusJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "favorites/destroy/" + id + ".json", auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User enableNotification(String screenName) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "notifications/follow.json?screen_name=" + screenName, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "notifications/follow.json?screen_name=" + screenName, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User enableNotification(int userId) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "notifications/follow.json?userId=" + userId, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "notifications/follow.json?userId=" + userId, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User disableNotification(String screenName) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "notifications/leave.json?screen_name=" + screenName, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "notifications/leave.json?screen_name=" + screenName, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User disableNotification(int userId) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "notifications/leave.json?user_id=" + userId, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "notifications/leave.json?user_id=" + userId, auth)));
     }
 
     /* Block Methods */
@@ -1369,40 +1412,45 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public User createBlock(String screenName) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "blocks/create.json?screen_name=" + screenName, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "blocks/create.json?screen_name=" + screenName, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User createBlock(int userId) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "blocks/create.json?user_id=" + userId, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "blocks/create.json?user_id=" + userId, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User destroyBlock(String screen_name) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "blocks/destroy.json?screen_name=" + screen_name, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "blocks/destroy.json?screen_name=" + screen_name, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public User destroyBlock(int userId) throws TwitterException {
-        return new UserJSONImpl(http.post(getBaseURL() + "blocks/destroy.json?user_id=" + userId, true));
+        ensureAuthenticationEnabled();
+        return new UserJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "blocks/destroy.json?user_id=" + userId, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean existsBlock(String screenName) throws TwitterException {
-        try{
+        ensureAuthenticationEnabled();
+        try {
             // @todo this method looks to be always returning false as it's expecting an XML format.
-            return -1 == get(getBaseURL() + "blocks/exists.json?screen_name=" + screenName, true).
+            return -1 == get(conf.getRestBaseURL() + "blocks/exists.json?screen_name=" + screenName, auth).
                     asString().indexOf("<error>You are not blocking this user.</error>");
-        }catch(TwitterException te){
-            if(te.getStatusCode() == 404){
+        } catch (TwitterException te) {
+            if (te.getStatusCode() == 404) {
                 return false;
             }
             throw te;
@@ -1413,11 +1461,12 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public boolean existsBlock(int userId) throws TwitterException {
-        try{
-            return -1 == get(getBaseURL() + "blocks/exists.json?user_id=" + userId, true).
+        ensureAuthenticationEnabled();
+        try {
+            return -1 == get(conf.getRestBaseURL() + "blocks/exists.json?user_id=" + userId, auth).
                     asString().indexOf("<error>You are not blocking this user.</error>");
-        }catch(TwitterException te){
-            if(te.getStatusCode() == 404){
+        } catch (TwitterException te) {
+            if (te.getStatusCode() == 404) {
                 return false;
             }
             throw te;
@@ -1429,8 +1478,9 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<User> getBlockingUsers() throws
             TwitterException {
-        return UserJSONImpl.createUserList(get(getBaseURL() +
-                "blocks/blocking.json", true));
+        ensureAuthenticationEnabled();
+        return UserJSONImpl.createUserList(get(conf.getRestBaseURL() +
+                "blocks/blocking.json", auth));
     }
 
     /**
@@ -1438,15 +1488,17 @@ public class Twitter extends TwitterSupport
      */
     public ResponseList<User> getBlockingUsers(int page) throws
             TwitterException {
-        return UserJSONImpl.createUserList(get(getBaseURL() +
-                "blocks/blocking.json?page=" + page, true));
+        ensureAuthenticationEnabled();
+        return UserJSONImpl.createUserList(get(conf.getRestBaseURL() +
+                "blocks/blocking.json?page=" + page, auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public IDs getBlockingUsersIDs() throws TwitterException {
-        return IDsJSONImpl.getBlockIDs(get(getBaseURL() + "blocks/blocking/ids.json", true));
+        ensureAuthenticationEnabled();
+        return IDsJSONImpl.getBlockIDs(get(conf.getRestBaseURL() + "blocks/blocking/ids.json", auth));
     }
 
     /* Saved Searches Methods */
@@ -1455,31 +1507,35 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public List<SavedSearch> getSavedSearches() throws TwitterException {
-        return SavedSearchJSONImpl.createSavedSearchList(get(getBaseURL() + "saved_searches.json", true));
+        ensureAuthenticationEnabled();
+        return SavedSearchJSONImpl.createSavedSearchList(get(conf.getRestBaseURL() + "saved_searches.json", auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public SavedSearch showSavedSearch(int id) throws TwitterException {
-        return new SavedSearchJSONImpl(get(getBaseURL() + "saved_searches/show/" + id
-                + ".json", true));
+        ensureAuthenticationEnabled();
+        return new SavedSearchJSONImpl(get(conf.getRestBaseURL() + "saved_searches/show/" + id
+                + ".json", auth));
     }
 
     /**
      * {@inheritDoc}
      */
     public SavedSearch createSavedSearch(String query) throws TwitterException {
-        return new SavedSearchJSONImpl(http.post(getBaseURL() + "saved_searches/create.json"
-                , new PostParameter[]{new PostParameter("query", query)}, true));
+        ensureAuthenticationEnabled();
+        return new SavedSearchJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL() + "saved_searches/create.json"
+                , new PostParameter[]{new PostParameter("query", query)}, auth)));
     }
 
     /**
      * {@inheritDoc}
      */
     public SavedSearch destroySavedSearch(int id) throws TwitterException {
-        return new SavedSearchJSONImpl(http.post(getBaseURL()
-                + "saved_searches/destroy/" + id + ".json", true));
+        ensureAuthenticationEnabled();
+        return new SavedSearchJSONImpl(http.request(requestFactory.createPostRequest(conf.getRestBaseURL()
+                + "saved_searches/destroy/" + id + ".json", auth)));
     }
 
     /* Help Methods */
@@ -1488,17 +1544,38 @@ public class Twitter extends TwitterSupport
      * {@inheritDoc}
      */
     public boolean test() throws TwitterException {
-        return -1 != get(getBaseURL() + "help/test.json", false).
+        return -1 != get(conf.getRestBaseURL() + "help/test.json", null).
                 asString().indexOf("ok");
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!super.equals(o)){
+            return false;
+        }
+        if (this == o) return true;
+        if (!(o instanceof Twitter)) return false;
+        if (!super.equals(o)) return false;
+
+        Twitter twitter = (Twitter) o;
+
+        if (screenName != null ? !screenName.equals(twitter.screenName) : twitter.screenName != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
+        return result;
+    }
+
     @Override
     public String toString() {
         return "Twitter{" +
-                "http=" + http +
-                ", source='" + source + '\'' +
-                ", USE_SSL=" + USE_SSL +
-                ", accountRateLimitStatusListeners=" + accountRateLimitStatusListeners +
-                ", ipRateLimitStatusListeners=" + ipRateLimitStatusListeners +
+                "screenName='" + screenName + '\'' +
                 '}';
     }
 }

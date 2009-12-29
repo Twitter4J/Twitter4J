@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.http.Response;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
@@ -40,7 +41,7 @@ import java.io.InputStreamReader;
  * @since Twitter4J 2.0.4
  */
 public class StatusStream {
-    private final static boolean DEBUG = Configuration.getDebug();
+    private final static boolean DEBUG = Configuration.getInstance().isDebug();
 
     private boolean streamAlive = true;
     private BufferedReader br;

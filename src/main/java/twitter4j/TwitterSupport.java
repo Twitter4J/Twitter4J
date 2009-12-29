@@ -26,32 +26,116 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.conf.Configuration;
+import twitter4j.http.AccessToken;
+import twitter4j.http.Authentication;
+import twitter4j.http.BasicAuthentication;
 import twitter4j.http.HttpClient;
+import twitter4j.http.HttpRequestFactory;
+import twitter4j.http.NullAuthentication;
+import twitter4j.http.OAuthAuthentication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*protected*/ class TwitterSupport implements java.io.Serializable {
-    protected HttpClient http = new HttpClient();
-    protected String source = Configuration.getSource();
-    protected final boolean USE_SSL;
+abstract class TwitterSupport implements java.io.Serializable {
+    protected static final Configuration conf = Configuration.getInstance();
+
+    protected static final HttpRequestFactory requestFactory;
+
+    static{
+        Map<String, String> requestHeaders = new HashMap<String, String>();
+        requestHeaders.put("X-Twitter-Client-Version", conf.getClientVersion());
+        requestHeaders.put("X-Twitter-Client-URL", conf.getClientURL());
+        requestHeaders.put("X-Twitter-Client", conf.getSource());
+
+        requestHeaders.put("User-Agent", conf.getUserAgent());
+        requestHeaders.put("Accept-Encoding", "gzip");
+        requestHeaders.put("Connection", "close");
+        requestFactory = new HttpRequestFactory(requestHeaders);
+
+    }
+
+    protected static HttpClient http = new HttpClient();
 
     protected List<RateLimitStatusListener> accountRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     protected List<RateLimitStatusListener> ipRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     private static final long serialVersionUID = -4779804628175934804L;
+    Authentication auth = null;
 
     /*package*/ TwitterSupport(){
-        this(null, null);
+        init();
     }
     /*package*/ TwitterSupport(String userId, String password){
-        USE_SSL = Configuration.useSSL();
-        setClientVersion(null);
-        setClientURL(null);
-        setUserId(userId);
-        setPassword(password);
+        useBasic(userId, password);
+        init();
+    }
+    private void useBasic(String userId, String password){
+        auth = new BasicAuthentication(userId, password);
+    }
+
+    /**
+     *
+     * @param consumerKey OAuth consumer key
+     * @param consumerSecret OAuth consumer secret
+     * @since Twitter 2.0.0
+     */
+    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
+        auth = new OAuthAuthentication(consumerKey, consumerSecret, http);
+    }
+
+    protected void ensureAuthenticationEnabled() {
+        if (!auth.isAuthenticationEnabled()) {
+            throw new IllegalStateException(
+                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
+        }
+    }
+
+    protected void ensureBasicAuthenticationEnabled() {
+        if (!(auth instanceof BasicAuthentication)) {
+            throw new IllegalStateException(
+                    "user ID/password combination not supplied");
+        }
+    }
+    protected OAuthAuthentication getOAuth() {
+        if (!(auth instanceof OAuthAuthentication)) {
+            throw new IllegalStateException(
+                    "OAuth consumer key/secret combination not supplied");
+        }
+        return (OAuthAuthentication)auth;
+    }
+    private void init(){
+        String consumerKey = conf.getOAuthConsumerKey();
+        String consumerSecret = conf.getOAuthConsumerSecret();
+        if (null == auth) {
+            // firstly try to find oauth tokens in the configuration
+            boolean consumerKeyFound = false;
+            if (null != consumerKey && null != consumerSecret) {
+                setOAuthConsumer(consumerKey, consumerSecret);
+                consumerKeyFound = true;
+            }
+            boolean accessTokenFound = false;
+            String accessToken = conf.getOAuthAccessToken();
+            String accessTokenSecret = conf.getOAuthAccessTokenSecret();
+            if (null != accessToken && null != accessTokenSecret) {
+                getOAuth().setAccessToken(new AccessToken(accessToken, accessTokenSecret));
+                accessTokenFound = true;
+            }
+            // if oauth tokens are not found in the configuration, try to find basic auth credentials
+            String userId = conf.getUser();
+            String password = conf.getPassword();
+            if (!consumerKeyFound && !accessTokenFound && userId != null && password != null) {
+                auth = new BasicAuthentication(userId, password);
+            }
+            if(null == auth){
+                auth = NullAuthentication.getInstance();
+            }
+        }
     }
 
     /**
@@ -76,183 +160,6 @@ import java.util.List;
     	ipRateLimitStatusListeners.add(listener);
     }
 
-    /**
-     * Sets the User-Agent header. System property -Dtwitter4j.http.userAgent overrides this attribute.
-     * @param userAgent UserAgent
-     * @since Twitter4J 1.1.8
-     */
-    public void setUserAgent(String userAgent){
-        http.setUserAgent(userAgent);
-    }
-
-    /**
-     *
-     * @return UserAgent
-     * @since Twitter4J 1.1.8
-     */
-    public String getUserAgent(){
-        return http.getUserAgent();
-    }
-
-    /**
-     * Sets the X-Twitter-Client-Version header. System property -Dtwitter4j.clientVersion overrides this attribute.
-     * @param version client version
-     * @since Twitter4J 1.1.8
-     */
-    public void setClientVersion(String version){
-        setRequestHeader("X-Twitter-Client-Version", Configuration.getCilentVersion(version));
-    }
-
-    /**
-     *
-     * @return client version
-     * @since Twitter4J 1.1.8
-     */
-    public String getClientVersion(){
-        return http.getRequestHeader("X-Twitter-Client-Version");
-    }
-
-    /**
-     * Sets the X-Twitter-Client-URL header. System property -Dtwitter4j.clientURL overrides this attribute.
-     * @param clientURL client URL
-     * @since Twitter4J 1.1.8
-     */
-    public void setClientURL(String clientURL){
-        setRequestHeader("X-Twitter-Client-URL", Configuration.getClientURL(clientURL));
-    }
-
-    /**
-     *
-     * @return client URL
-     * @since Twitter4J 1.1.8
-     */
-    public String getClientURL(){
-        return http.getRequestHeader("X-Twitter-Client-URL");
-    }
-
-    /**
-     * Sets the userid
-     *
-     * @param userId new userid
-     */
-    public synchronized void setUserId(String userId) {
-        http.setUserId(Configuration.getUser(userId));
-    }
-
-    /**
-     * Returns authenticating userid
-     *
-     * @return userid
-     */
-    public String getUserId() {
-        return http.getUserId();
-    }
-
-    /**
-     * Sets the password
-     *
-     * @param password new password
-     */
-    public synchronized void setPassword(String password) {
-        http.setPassword(Configuration.getPassword(password));
-    }
-
-    /**
-     * Returns authenticating password
-     *
-     * @return password
-     */
-    public String getPassword() {
-        return http.getPassword();
-    }
-
-    /**
-     * Enables use of HTTP proxy
-     *
-     * @param proxyHost proxy host, can be overridden system property -Dtwitter4j.http.proxyHost , -Dhttp.proxyHost
-     * @param proxyPort proxy port, can be overridden system property -Dtwitter4j.http.proxyPort , -Dhttp.proxyPort
-     * @since Twitter4J 1.1.6
-     */
-    public void setHttpProxy(String proxyHost, int proxyPort) {
-        http.setProxyHost(proxyHost);
-        http.setProxyPort(proxyPort);
-    }
-
-    /**
-     * Adds authentication on HTTP proxy
-     *
-     * @param proxyUser proxy user, can be overridden system property -Dtwitter4j.http.proxyUser
-     * @param proxyPass proxy password, can be overridden system property -Dtwitter4j.http.proxyPassword
-     * @since Twitter4J 1.1.6
-     */
-    public void setHttpProxyAuth(String proxyUser, String proxyPass) {
-        http.setProxyAuthUser(proxyUser);
-        http.setProxyAuthPassword(proxyPass);
-    }
-
-    /**
-     * Sets a specified timeout value, in milliseconds, to be used when opening a communications link to the Twitter API.
-     * System property -Dtwitter4j.http.connectionTimeout overrides this attribute.
-     *
-     * @param connectionTimeout an int that specifies the connect timeout value in milliseconds
-     * @since Twitter4J 1.1.6
-     */
-    public void setHttpConnectionTimeout(int connectionTimeout) {
-        http.setConnectionTimeout(connectionTimeout);
-    }
-
-    /**
-     * Sets the read timeout to a specified timeout, in milliseconds.
-     *
-     * @param readTimeoutMilliSecs an int that specifies the timeout value to be used in milliseconds
-     * @since Twitter4J 1.1.6
-     */
-    public void setHttpReadTimeout(int readTimeoutMilliSecs) {
-        http.setReadTimeout(readTimeoutMilliSecs);
-    }
-
-    /**
-     * Sets X-Twitter-Client http header and the source parameter that will be passed by updating methods. System property -Dtwitter4j.source overrides this attribute.
-     * System property -Dtwitter4j.source overrides this attribute.
-     *
-     * @param source the new source
-     * @see <a href='http://apiwiki.twitter.com/FAQ#HowdoIget“fromMyApp”appendedtoupdatessentfrommyAPIapplication'>How do I get "from [MyApp]" appended to updates sent from my API application?</a>
-     * @see <a href="http://twitter.com/help/request_source">Twitter - Request a link to your application</a>
-     */
-    public void setSource(String source) {
-        this.source = Configuration.getSource(source);
-        setRequestHeader("X-Twitter-Client", this.source);
-    }
-
-    /**
-     * Returns the source
-     *
-     * @return source
-     */
-    public String getSource() {
-        return this.source;
-    }
-
-    /**
-     * Sets the request header name/value combination
-     * see Twitter Fan Wiki for detail.
-     * http://twitter.pbwiki.com/API-Docs#RequestHeaders
-     *
-     * @param name  the name of the request header
-     * @param value the value of the request header
-     */
-    public void setRequestHeader(String name, String value) {
-        http.setRequestHeader(name, value);
-    }
-
-    public void setRetryCount(int retryCount) {
-        http.setRetryCount(retryCount);
-    }
-
-    public void setRetryIntervalSecs(int retryIntervalSecs) {
-        http.setRetryIntervalSecs(retryIntervalSecs);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -260,13 +167,10 @@ import java.util.List;
 
         TwitterSupport that = (TwitterSupport) o;
 
-        if (USE_SSL != that.USE_SSL) return false;
         if (!accountRateLimitStatusListeners.equals(that.accountRateLimitStatusListeners))
             return false;
         if (!http.equals(that.http)) return false;
         if (!ipRateLimitStatusListeners.equals(that.ipRateLimitStatusListeners))
-            return false;
-        if (source != null ? !source.equals(that.source) : that.source != null)
             return false;
 
         return true;
@@ -275,8 +179,6 @@ import java.util.List;
     @Override
     public int hashCode() {
         int result = http.hashCode();
-        result = 31 * result + (source != null ? source.hashCode() : 0);
-        result = 31 * result + (USE_SSL ? 1 : 0);
         result = 31 * result + accountRateLimitStatusListeners.hashCode();
         result = 31 * result + ipRateLimitStatusListeners.hashCode();
         return result;
@@ -286,8 +188,6 @@ import java.util.List;
     public String toString() {
         return "TwitterSupport{" +
                 "http=" + http +
-                ", source='" + source + '\'' +
-                ", USE_SSL=" + USE_SSL +
                 ", accountRateLimitStatusListeners=" + accountRateLimitStatusListeners +
                 ", ipRateLimitStatusListeners=" + ipRateLimitStatusListeners +
                 '}';

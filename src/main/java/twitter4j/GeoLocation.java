@@ -29,7 +29,6 @@ package twitter4j;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
-
 /**
  * A data class representing geo location.
  *
@@ -46,7 +45,6 @@ public class GeoLocation implements java.io.Serializable{
      * @param latitude the latitude
      * @param longitude the longitude
      */
-
     public GeoLocation(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
@@ -116,7 +114,7 @@ public class GeoLocation implements java.io.Serializable{
 
     @Override
     public String toString() {
-        return "GeoLocationJSONImpl{" +
+        return "GeoLocation{" +
                 "latitude=" + latitude +
                 ", longitude=" + longitude +
                 '}';

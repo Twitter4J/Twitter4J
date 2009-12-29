@@ -29,9 +29,8 @@ package twitter4j;
 import java.util.Date;
 
 /**
- * @todo make this class localizable. ResourceBundle cannot be used since Android doesn't support properties file.
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
- * @Since Twitter4J 2.1.0
+ * @since Twitter4J 2.1.0
  */
 public class TimeSpanUtil {
     private static int ONE_HOUR_IN_SECONDS = 60 * 60;
