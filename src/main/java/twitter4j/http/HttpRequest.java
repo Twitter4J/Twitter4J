@@ -45,6 +45,7 @@ public final class HttpRequest implements java.io.Serializable {
     final Authentication authentication;
     /*package*/
     Map<String, String> requestHeaders;
+    private static final long serialVersionUID = -3463594029098858381L;
 
     /**
      * @param method         Specifies the HTTP method

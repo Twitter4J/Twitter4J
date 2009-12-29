@@ -49,35 +49,35 @@ public class ResponseTest extends TestCase {
     }
     boolean failed = false;
 
-    public void testMultithreaded() throws Exception{
-        failed = false;
-        InputStream is = new FileInputStream("response_samples/public_timeline.xml");
-        BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-        StringBuffer buf = new StringBuffer();
-        String line;
-        while (null != (line = br.readLine())) {
-            buf.append(line).append("\n");
-        }
-        is.close();
-        String content = buf.toString();
-        int threadCount = 2;
-        Thread[] threads = new Thread[threadCount];
-        for(int i=0; i<threads.length;i++){
-            threads[i] = new Runner(content);
-            threads[i].setDaemon(true);
-            threads[i].start();
-        }
-        while(waiting != threadCount){
-            Thread.sleep(100);
-        }
-        synchronized(lock){
-            lock.notifyAll();
-        }
-        while(waiting != 0){
-            Thread.sleep(100);
-        }
-        assertFalse(failed);
-    }
+//    public void testMultithreaded() throws Exception{
+//        failed = false;
+//        InputStream is = new FileInputStream("response_samples/public_timeline.xml");
+//        BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+//        StringBuffer buf = new StringBuffer();
+//        String line;
+//        while (null != (line = br.readLine())) {
+//            buf.append(line).append("\n");
+//        }
+//        is.close();
+//        String content = buf.toString();
+//        int threadCount = 2;
+//        Thread[] threads = new Thread[threadCount];
+//        for(int i=0; i<threads.length;i++){
+//            threads[i] = new Runner(content);
+//            threads[i].setDaemon(true);
+//            threads[i].start();
+//        }
+//        while(waiting != threadCount){
+//            Thread.sleep(100);
+//        }
+//        synchronized(lock){
+//            lock.notifyAll();
+//        }
+//        while(waiting != 0){
+//            Thread.sleep(100);
+//        }
+//        assertFalse(failed);
+//    }
     Object lock = new Object();
     int waiting = 0;
 
