@@ -62,7 +62,7 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Twitter extends TwitterSupport
-        implements java.io.Serializable, HttpResponseListener,
+        implements java.io.Serializable,
         SearchMethods,
         TimelineMethods,
         StatusMethods,
@@ -104,7 +104,8 @@ public class Twitter extends TwitterSupport
     }
 
     private void init() {
-        http.addHttpResponseListener(this);
+        HttpResponseListener httpResponseListener = new RateLimitListenerInvoker(accountRateLimitStatusListeners,ipRateLimitStatusListeners);
+        http.addHttpResponseListener(httpResponseListener);
     }
 
     /**
@@ -324,25 +325,6 @@ public class Twitter extends TwitterSupport
         }
     }
 
-    public void httpResponseReceived(HttpResponseEvent event) {
-        if (0 < (accountRateLimitStatusListeners.size() + ipRateLimitStatusListeners.size())) {
-            Response res = event.getResponse();
-            RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
-            if (null != rateLimitStatus) {
-                if (event.isAuthenticated()) {
-                    fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
-                } else {
-                    fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
-                }
-            }
-        }
-    }
-
-    private void fireRateLimitStatusListenerUpdate(List<RateLimitStatusListener> listeners, RateLimitStatus status) {
-        for (RateLimitStatusListener listener : listeners) {
-            listener.rateLimitStatusUpdated(status);
-        }
-    }
 
     /**
      * {@inheritDoc}
@@ -1567,6 +1549,64 @@ public class Twitter extends TwitterSupport
     public String toString() {
         return "Twitter{" +
                 "screenName='" + screenName + '\'' +
+                '}';
+    }
+}
+class RateLimitListenerInvoker implements HttpResponseListener , java.io.Serializable{
+    private List<RateLimitStatusListener> accountRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
+    private List<RateLimitStatusListener> ipRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
+    RateLimitListenerInvoker(List<RateLimitStatusListener> accountRateLimitStatusListeners
+            , List<RateLimitStatusListener> ipRateLimitStatusListeners){
+        this.accountRateLimitStatusListeners = accountRateLimitStatusListeners;
+        this.ipRateLimitStatusListeners = ipRateLimitStatusListeners;
+    }
+    public void httpResponseReceived(HttpResponseEvent event) {
+        if (0 < (accountRateLimitStatusListeners.size() + ipRateLimitStatusListeners.size())) {
+            Response res = event.getResponse();
+            RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+            if (null != rateLimitStatus) {
+                if (event.isAuthenticated()) {
+                    fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
+                } else {
+                    fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
+                }
+            }
+        }
+    }
+
+    private void fireRateLimitStatusListenerUpdate(List<RateLimitStatusListener> listeners, RateLimitStatus status) {
+        for (RateLimitStatusListener listener : listeners) {
+            listener.rateLimitStatusUpdated(status);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RateLimitListenerInvoker)) return false;
+
+        RateLimitListenerInvoker that = (RateLimitListenerInvoker) o;
+
+        if (accountRateLimitStatusListeners != null ? !accountRateLimitStatusListeners.equals(that.accountRateLimitStatusListeners) : that.accountRateLimitStatusListeners != null)
+            return false;
+        if (ipRateLimitStatusListeners != null ? !ipRateLimitStatusListeners.equals(that.ipRateLimitStatusListeners) : that.ipRateLimitStatusListeners != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = accountRateLimitStatusListeners != null ? accountRateLimitStatusListeners.hashCode() : 0;
+        result = 31 * result + (ipRateLimitStatusListeners != null ? ipRateLimitStatusListeners.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RateLimitListenerInvoker{" +
+                "accountRateLimitStatusListeners=" + accountRateLimitStatusListeners +
+                ", ipRateLimitStatusListeners=" + ipRateLimitStatusListeners +
                 '}';
     }
 }

@@ -67,6 +67,7 @@ public class TwitterTestUnit extends TwitterTestBase {
     }
     public void testSerializability() throws Exception {
         Twitter deserialized = (Twitter)assertDeserializedFormIsEqual(twitterAPI1);
+
         assertEquals(deserialized.screenName, twitterAPI1.screenName);
         assertEquals(deserialized.auth, twitterAPI1.auth);
         assertDeserializedFormIsEqual(this.unauthenticated);
