@@ -192,7 +192,6 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
     public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
         this.trackLimit = numberOfLimitedStatuses;
         System.out.println("got limit notice:" + numberOfLimitedStatuses);
-
     }
 
     public void onException(Exception ex) {

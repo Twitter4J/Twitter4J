@@ -289,7 +289,6 @@ public class TwitterStream extends TwitterSupport {
         }
 
         public void run() {
-            Status status;
             while (!closed) {
                 try {
                     // dispose outdated retry history
@@ -301,14 +300,13 @@ public class TwitterStream extends TwitterSupport {
                     if(retryHistory.size() < retryPerMinutes){
                         // try establishing connection
                         setStatus("[establishing connection]");
-
                         while (!closed && null == stream) {
                             if (retryHistory.size() < retryPerMinutes) {
                                 retryHistory.add(System.currentTimeMillis());
                                 stream = getStream();
                             }
                         }
-                    }else{
+                    }else if(!closed) {
                         // exceeded retry limit, wait to a moment not to overload Twitter API
                         long timeToSleep = 60000 - (System.currentTimeMillis() - retryHistory.get(retryHistory.size() - 1));
                         setStatus("[retry limit reached. sleeping for " + (timeToSleep / 1000) + " secs]");
@@ -332,14 +330,15 @@ public class TwitterStream extends TwitterSupport {
                     statusListener.onException(te);
                 }
             }
+            try {
+                this.stream.close();
+            } catch (IOException ignore) {
+            }
         }
 
         public synchronized void close() throws IOException {
             setStatus("[disposing thread]");
-            if (null != stream) {
-                this.stream.close();
-                closed = true;
-            }
+            closed = true;
         }
         private void setStatus(String message){
             String actualMessage = NAME + message;
