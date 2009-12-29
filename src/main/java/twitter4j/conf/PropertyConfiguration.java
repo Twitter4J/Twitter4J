@@ -108,6 +108,10 @@ class PropertyConfiguration extends Configuration {
         }
         if (notNull(props, HTTP_USE_SSL)) {
             setUseSSL(getBoolean(props, HTTP_USE_SSL));
+        } else if (notNull(props, USER) &&
+                notNull(props, PASSWORD)) {
+            // use SSL with Basic Auth
+            setUseSSL(true);
         }
         if (notNull(props, HTTP_PROXY_HOST)) {
             setHttpProxyHost(getString(props, HTTP_PROXY_HOST));
