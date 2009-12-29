@@ -29,11 +29,10 @@ package twitter4j.http;
 /**
  * @author Andrew Hedges - andrew.hedges at gmail.com
  */
-public class HttpResponseEvent implements java.io.Serializable {
+public class HttpResponseEvent {
     private HttpRequest request;
 
     private Response response;
-    private static final long serialVersionUID = -728668061052006813L;
 
     /* package */
 

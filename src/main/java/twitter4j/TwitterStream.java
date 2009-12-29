@@ -39,7 +39,7 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public class TwitterStream extends TwitterSupport implements java.io.Serializable {
+public class TwitterStream extends TwitterSupport {
     private final static boolean DEBUG = Configuration.getInstance().isDebug();
 
     private StatusListener statusListener;

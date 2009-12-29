@@ -62,7 +62,7 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Twitter extends TwitterSupport
-        implements java.io.Serializable,
+        implements java.io.Serializable, HttpResponseListener,
         SearchMethods,
         TimelineMethods,
         StatusMethods,
@@ -104,8 +104,7 @@ public class Twitter extends TwitterSupport
     }
 
     private void init() {
-        HttpResponseListener httpResponseListener = new MyHttpResponseListener();
-        http.addHttpResponseListener(httpResponseListener);
+        http.addHttpResponseListener(this);
     }
 
     /**
@@ -325,31 +324,23 @@ public class Twitter extends TwitterSupport
         }
     }
 
-    class MyHttpResponseListener implements HttpResponseListener, java.io.Serializable {
-        private static final long serialVersionUID = 5385389730784875997L;
-
-        public void httpResponseReceived(HttpResponseEvent event) {
-            if (0 < (accountRateLimitStatusListeners.size() + ipRateLimitStatusListeners.size())) {
-                Response res = event.getResponse();
-                RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
-                if (null != rateLimitStatus) {
-                    if (event.isAuthenticated()) {
-                        fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
-                    } else {
-                        fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
-                    }
+    public void httpResponseReceived(HttpResponseEvent event) {
+        if (0 < (accountRateLimitStatusListeners.size() + ipRateLimitStatusListeners.size())) {
+            Response res = event.getResponse();
+            RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+            if (null != rateLimitStatus) {
+                if (event.isAuthenticated()) {
+                    fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
+                } else {
+                    fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
                 }
             }
         }
+    }
 
-        private void fireRateLimitStatusListenerUpdate(List<RateLimitStatusListener> listeners, RateLimitStatus status) {
-            for (RateLimitStatusListener listener : listeners) {
-                listener.rateLimitStatusUpdated(status);
-            }
-        }
-
-        public boolean equals(Object that) {
-            return that instanceof MyHttpResponseListener;
+    private void fireRateLimitStatusListenerUpdate(List<RateLimitStatusListener> listeners, RateLimitStatus status) {
+        for (RateLimitStatusListener listener : listeners) {
+            listener.rateLimitStatusUpdated(status);
         }
     }
 

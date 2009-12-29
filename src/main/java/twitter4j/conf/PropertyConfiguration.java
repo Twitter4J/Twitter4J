@@ -28,6 +28,7 @@ package twitter4j.conf;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.Properties;
@@ -196,13 +197,23 @@ class PropertyConfiguration extends Configuration {
     }
 
     private boolean loadProperties(Properties props, String path) {
+        FileInputStream fis = null;
         try {
             File file = new File(path);
             if (file.exists() && file.isFile()) {
+                fis = new FileInputStream(file);
                 props.load(new FileInputStream(file));
                 return true;
             }
         } catch (Exception ignore) {
+        } finally {
+            try {
+                if (null != fis) {
+                    fis.close();
+                }
+            } catch (IOException ignore) {
+
+            }
         }
         return false;
     }

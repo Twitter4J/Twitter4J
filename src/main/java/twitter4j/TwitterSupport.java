@@ -61,7 +61,7 @@ abstract class TwitterSupport implements java.io.Serializable {
 
     }
 
-    protected static HttpClient http = new HttpClient();
+    protected HttpClient http = new HttpClient();
 
     protected List<RateLimitStatusListener> accountRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     protected List<RateLimitStatusListener> ipRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
