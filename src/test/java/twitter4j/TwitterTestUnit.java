@@ -136,122 +136,123 @@ public class TwitterTestUnit extends TwitterTestBase {
 
     // list deletion doesn't work now.
     // http://groups.google.com/group/twitter-development-talk/t/4e4164a347da1c3b
-    public void testList() throws Exception {
-        PagableResponseList<UserList> userLists;
-        userLists = twitterAPI1.getUserLists(id1.name,-1l);
-        for(UserList alist : userLists){
-            twitterAPI1.destroyUserList(alist.getId());
-        }
-
-        /*List Methods*/
-        UserList userList;
-        //ensuring createUserList works in the case an email is specified a userid
-        userList = twitterAPI3.createUserList("api3 is email", false, null);
-        twitterAPI3.destroyUserList(userList.getId());
-        userList = twitterAPI1.createUserList("testpoint1", false, "description1");
-        assertNotNull(userList);
-        assertEquals("testpoint1", userList.getName());
-        assertEquals("description1", userList.getDescription());
-
-        userList = twitterAPI1.updateUserList(userList.getId(), "testpoint2", true, "description2");
-        assertNotNull(userList);
-        assertEquals("testpoint2", userList.getName());
-        assertEquals("description2", userList.getDescription());
-
-
-        userLists = twitterAPI1.getUserLists(id1.name, -1l);
-        assertFalse(userLists.size() == 0);
-
-        userList = twitterAPI1.showUserList(id1.name, userList.getId());
-        assertNotNull(userList);
-
-        List<Status> statuses = twitterAPI1.getUserListStatuses(id1.name, userList.getId(), new Paging());
-        assertNotNull(statuses);
-
-        /*List Member Methods*/
-        User user;
-        try {
-            user = twitterAPI1.checkUserListMembership(id1.name, id2.id, userList.getId());
-            fail("id2 shouldn't be a member of the userList yet. expecting a TwitterException");
-        } catch (TwitterException ignore) {
-            assertEquals(404, ignore.getStatusCode());
-        }
-        userList = twitterAPI1.addUserListMember(userList.getId(), id2.id);
-        userList = twitterAPI1.addUserListMember(userList.getId(), id4.id);
-        assertNotNull(userList);
-
-        List<User> users = twitterAPI1.getUserListMembers(id1.name, userList.getId(), -1);
-        // workaround issue 1301
-        // http://code.google.com/p/twitter-api/issues/detail?id=1301
-//        assertEquals(userList.getMemberCount(), users.size());
-        assertTrue(0 < users.size());// workaround issue 1301
-
-        userList = twitterAPI1.deleteUserListMember(userList.getId(), id2.id);
-        assertNotNull(userList);
-        //
-//        assertEquals(1, userList.getMemberCount());
-
-        user = twitterAPI1.checkUserListMembership(id1.name, userList.getId(), id4.id);
-        assertEquals(id4.id, user.getId());
-
-        userLists = twitterAPI1.getUserListMemberships(id1.name, -1l);
-        assertNotNull(userLists);
-
-        userLists = twitterAPI1.getUserListSubscriptions(id1.name, -1l);
-        assertNotNull(userLists);
-        assertEquals(0, userLists.size());
-
-        /*List Subscribers Methods*/
-
-        users = twitterAPI1.getUserListSubscribers(id1.name, userList.getId(), -1);
-        assertEquals(0, users.size());
-        try {
-            twitterAPI2.subscribeUserList(id1.name, userList.getId());
-        } catch (TwitterException te) {
-            // workarounding issue 1300
-            // http://code.google.com/p/twitter-api/issues/detail?id=1300
-            assertEquals(404,te.getStatusCode());
-        }
-        // expected subscribers: id2
-        try {
-            twitterAPI4.subscribeUserList(id1.name, userList.getId());
-        } catch (TwitterException te) {
-            // workarounding issue 1300
-            assertEquals(404, te.getStatusCode());
-        }
-        // expected subscribers: id2 and id4
-        try {
-            twitterAPI2.unsubscribeUserList(id1.name, userList.getId());
-        } catch (TwitterException te) {
-            // workarounding issue 1300
-            assertEquals(404, te.getStatusCode());
-        }
-        // expected subscribers: id4
-        users = twitterAPI1.getUserListSubscribers(id1.name, userList.getId(), -1);
-//        assertEquals(1, users.size()); //only id4 should be subscribing the userList
-        assertTrue(0 <= users.size()); // workarounding issue 1300
-        try {
-        user = twitterAPI1.checkUserListSubscription(id1.name, userList.getId(), id4.id);
-        assertEquals(id4.id, user.getId());
-        } catch (TwitterException te) {
-            // workarounding issue 1300
-            assertEquals(404, te.getStatusCode());
-        }
-
-        userLists = twitterAPI1.getUserListSubscriptions(id4.name, -1l);
-        assertNotNull(userLists);
-//        assertEquals(1, userLists.size()); workarounding issue 1300
-
-        try {
-            user = twitterAPI1.checkUserListSubscription(id1.name, id2.id, userList.getId());
-            fail("id2 shouldn't be a subscriber the userList. expecting a TwitterException");
-        } catch (TwitterException ignore) {
-            assertEquals(404, ignore.getStatusCode());
-        }
-
-        userList = twitterAPI1.destroyUserList(userList.getId());
-        assertNotNull(userList);
-    }
+    // http://code.google.com/p/twitter-api/issues/detail?id=1327
+//    public void testList() throws Exception {
+//        PagableResponseList<UserList> userLists;
+//        userLists = twitterAPI1.getUserLists(id1.name,-1l);
+//        for(UserList alist : userLists){
+//            twitterAPI1.destroyUserList(alist.getId());
+//        }
+//
+//        /*List Methods*/
+//        UserList userList;
+//        //ensuring createUserList works in the case an email is specified a userid
+//        userList = twitterAPI3.createUserList("api3 is email", false, null);
+//        twitterAPI3.destroyUserList(userList.getId());
+//        userList = twitterAPI1.createUserList("testpoint1", false, "description1");
+//        assertNotNull(userList);
+//        assertEquals("testpoint1", userList.getName());
+//        assertEquals("description1", userList.getDescription());
+//
+//        userList = twitterAPI1.updateUserList(userList.getId(), "testpoint2", true, "description2");
+//        assertNotNull(userList);
+//        assertEquals("testpoint2", userList.getName());
+//        assertEquals("description2", userList.getDescription());
+//
+//
+//        userLists = twitterAPI1.getUserLists(id1.name, -1l);
+//        assertFalse(userLists.size() == 0);
+//
+//        userList = twitterAPI1.showUserList(id1.name, userList.getId());
+//        assertNotNull(userList);
+//
+//        List<Status> statuses = twitterAPI1.getUserListStatuses(id1.name, userList.getId(), new Paging());
+//        assertNotNull(statuses);
+//
+//        /*List Member Methods*/
+//        User user;
+//        try {
+//            user = twitterAPI1.checkUserListMembership(id1.name, id2.id, userList.getId());
+//            fail("id2 shouldn't be a member of the userList yet. expecting a TwitterException");
+//        } catch (TwitterException ignore) {
+//            assertEquals(404, ignore.getStatusCode());
+//        }
+//        userList = twitterAPI1.addUserListMember(userList.getId(), id2.id);
+//        userList = twitterAPI1.addUserListMember(userList.getId(), id4.id);
+//        assertNotNull(userList);
+//
+//        List<User> users = twitterAPI1.getUserListMembers(id1.name, userList.getId(), -1);
+//        // workaround issue 1301
+//        // http://code.google.com/p/twitter-api/issues/detail?id=1301
+////        assertEquals(userList.getMemberCount(), users.size());
+//        assertTrue(0 < users.size());// workaround issue 1301
+//
+//        userList = twitterAPI1.deleteUserListMember(userList.getId(), id2.id);
+//        assertNotNull(userList);
+//        //
+////        assertEquals(1, userList.getMemberCount());
+//
+//        user = twitterAPI1.checkUserListMembership(id1.name, userList.getId(), id4.id);
+//        assertEquals(id4.id, user.getId());
+//
+//        userLists = twitterAPI1.getUserListMemberships(id1.name, -1l);
+//        assertNotNull(userLists);
+//
+//        userLists = twitterAPI1.getUserListSubscriptions(id1.name, -1l);
+//        assertNotNull(userLists);
+//        assertEquals(0, userLists.size());
+//
+//        /*List Subscribers Methods*/
+//
+//        users = twitterAPI1.getUserListSubscribers(id1.name, userList.getId(), -1);
+//        assertEquals(0, users.size());
+//        try {
+//            twitterAPI2.subscribeUserList(id1.name, userList.getId());
+//        } catch (TwitterException te) {
+//            // workarounding issue 1300
+//            // http://code.google.com/p/twitter-api/issues/detail?id=1300
+//            assertEquals(404,te.getStatusCode());
+//        }
+//        // expected subscribers: id2
+//        try {
+//            twitterAPI4.subscribeUserList(id1.name, userList.getId());
+//        } catch (TwitterException te) {
+//            // workarounding issue 1300
+//            assertEquals(404, te.getStatusCode());
+//        }
+//        // expected subscribers: id2 and id4
+//        try {
+//            twitterAPI2.unsubscribeUserList(id1.name, userList.getId());
+//        } catch (TwitterException te) {
+//            // workarounding issue 1300
+//            assertEquals(404, te.getStatusCode());
+//        }
+//        // expected subscribers: id4
+//        users = twitterAPI1.getUserListSubscribers(id1.name, userList.getId(), -1);
+////        assertEquals(1, users.size()); //only id4 should be subscribing the userList
+//        assertTrue(0 <= users.size()); // workarounding issue 1300
+//        try {
+//        user = twitterAPI1.checkUserListSubscription(id1.name, userList.getId(), id4.id);
+//        assertEquals(id4.id, user.getId());
+//        } catch (TwitterException te) {
+//            // workarounding issue 1300
+//            assertEquals(404, te.getStatusCode());
+//        }
+//
+//        userLists = twitterAPI1.getUserListSubscriptions(id4.name, -1l);
+//        assertNotNull(userLists);
+////        assertEquals(1, userLists.size()); workarounding issue 1300
+//
+//        try {
+//            user = twitterAPI1.checkUserListSubscription(id1.name, id2.id, userList.getId());
+//            fail("id2 shouldn't be a subscriber the userList. expecting a TwitterException");
+//        } catch (TwitterException ignore) {
+//            assertEquals(404, ignore.getStatusCode());
+//        }
+//
+//        userList = twitterAPI1.destroyUserList(userList.getId());
+//        assertNotNull(userList);
+//    }
 
     public void testUserTimeline() throws Exception {
         List<Status> statuses;
