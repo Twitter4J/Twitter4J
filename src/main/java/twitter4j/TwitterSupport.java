@@ -61,22 +61,40 @@ abstract class TwitterSupport implements java.io.Serializable {
 
     }
 
-    protected HttpClient http = new HttpClient();
+    protected final HttpClient http = new HttpClient();
 
-    protected List<RateLimitStatusListener> accountRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
-    protected List<RateLimitStatusListener> ipRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     private static final long serialVersionUID = -4779804628175934804L;
-    Authentication auth = null;
+    Authentication auth;
 
     /*package*/ TwitterSupport(){
-        init();
+        this(conf.getUser(), conf.getPassword());
     }
+
     /*package*/ TwitterSupport(String userId, String password){
-        useBasic(userId, password);
-        init();
-    }
-    private void useBasic(String userId, String password){
-        auth = new BasicAuthentication(userId, password);
+        String consumerKey = conf.getOAuthConsumerKey();
+        String consumerSecret = conf.getOAuthConsumerSecret();
+        if (null == auth) {
+            // firstly try to find oauth tokens in the configuration
+            boolean consumerKeyFound = false;
+            if (null != consumerKey && null != consumerSecret) {
+                auth = new OAuthAuthentication(consumerKey, consumerSecret, http);
+                consumerKeyFound = true;
+            }
+            boolean accessTokenFound = false;
+            String accessToken = conf.getOAuthAccessToken();
+            String accessTokenSecret = conf.getOAuthAccessTokenSecret();
+            if (null != accessToken && null != accessTokenSecret) {
+                getOAuth().setAccessToken(new AccessToken(accessToken, accessTokenSecret));
+                accessTokenFound = true;
+            }
+            // if oauth tokens are not found in the configuration, try to find basic auth credentials
+            if (!consumerKeyFound && !accessTokenFound && userId != null && password != null) {
+                auth = new BasicAuthentication(userId, password);
+            }
+            if(null == auth){
+                auth = NullAuthentication.getInstance();
+            }
+        }
     }
 
     /**
@@ -88,6 +106,15 @@ abstract class TwitterSupport implements java.io.Serializable {
     public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
         auth = new OAuthAuthentication(consumerKey, consumerSecret, http);
     }
+
+//    /**
+//     *
+//     * @param consumerKey OAuth consumer key
+//     * @param consumerSecret OAuth consumer secret
+//     * @since Twitter 2.0.0
+//     */
+//    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
+//    }
 
     protected void ensureAuthenticationEnabled() {
         if (!auth.isAuthenticationEnabled()) {
@@ -109,56 +136,6 @@ abstract class TwitterSupport implements java.io.Serializable {
         }
         return (OAuthAuthentication)auth;
     }
-    private void init(){
-        String consumerKey = conf.getOAuthConsumerKey();
-        String consumerSecret = conf.getOAuthConsumerSecret();
-        if (null == auth) {
-            // firstly try to find oauth tokens in the configuration
-            boolean consumerKeyFound = false;
-            if (null != consumerKey && null != consumerSecret) {
-                setOAuthConsumer(consumerKey, consumerSecret);
-                consumerKeyFound = true;
-            }
-            boolean accessTokenFound = false;
-            String accessToken = conf.getOAuthAccessToken();
-            String accessTokenSecret = conf.getOAuthAccessTokenSecret();
-            if (null != accessToken && null != accessTokenSecret) {
-                getOAuth().setAccessToken(new AccessToken(accessToken, accessTokenSecret));
-                accessTokenFound = true;
-            }
-            // if oauth tokens are not found in the configuration, try to find basic auth credentials
-            String userId = conf.getUser();
-            String password = conf.getPassword();
-            if (!consumerKeyFound && !accessTokenFound && userId != null && password != null) {
-                auth = new BasicAuthentication(userId, password);
-            }
-            if(null == auth){
-                auth = NullAuthentication.getInstance();
-            }
-        }
-    }
-
-    /**
-     * Registers a RateLimitStatusListener for account associated rate limits
-     * @param listener the listener to be added
-     * @since Twitter4J 2.1.0
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
-     */
-    public void addAccountRateLimitStatusListener(RateLimitStatusListener listener){
-    	accountRateLimitStatusListeners.add(listener);
-    }
-
-
-    /**
-     * Registers a RateLimitStatusListener for ip associated rate limits
-     *
-     * @param listener the listener to be added
-     * @since Twitter4J 2.1.0
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
-     */
-    public void addIpRateLimitStatusListener(RateLimitStatusListener listener){
-    	ipRateLimitStatusListeners.add(listener);
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -167,11 +144,8 @@ abstract class TwitterSupport implements java.io.Serializable {
 
         TwitterSupport that = (TwitterSupport) o;
 
-        if (!accountRateLimitStatusListeners.equals(that.accountRateLimitStatusListeners))
-            return false;
+        if (!auth.equals(that.auth)) return false;
         if (!http.equals(that.http)) return false;
-        if (!ipRateLimitStatusListeners.equals(that.ipRateLimitStatusListeners))
-            return false;
 
         return true;
     }
@@ -179,8 +153,7 @@ abstract class TwitterSupport implements java.io.Serializable {
     @Override
     public int hashCode() {
         int result = http.hashCode();
-        result = 31 * result + accountRateLimitStatusListeners.hashCode();
-        result = 31 * result + ipRateLimitStatusListeners.hashCode();
+        result = 31 * result + auth.hashCode();
         return result;
     }
 
@@ -188,8 +161,7 @@ abstract class TwitterSupport implements java.io.Serializable {
     public String toString() {
         return "TwitterSupport{" +
                 "http=" + http +
-                ", accountRateLimitStatusListeners=" + accountRateLimitStatusListeners +
-                ", ipRateLimitStatusListeners=" + ipRateLimitStatusListeners +
+                ", auth=" + auth +
                 '}';
     }
 }
