@@ -26,6 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.org.json.JSONObject;
+
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Date;
 
@@ -42,7 +45,7 @@ public class SearchAPITest extends TwitterTestBase {
         super.tearDown();
     }
     public void testSearch() throws Exception {
-        String queryStr = "test source:twitter4j";
+        String queryStr = "test";
         Query query = new Query(queryStr);
         QueryResult queryResult = unauthenticated.search(query);
         assertTrue("sinceId", -1 != queryResult.getSinceId());
@@ -62,10 +65,12 @@ public class SearchAPITest extends TwitterTestBase {
         assertTrue(-1 !=  tweets.get(0).getId());
 //        assertNotNull(tweets.get(0).getIsoLanguageCode());
         String profileImageURL = tweets.get(0).getProfileImageUrl();
-        assertTrue(-1 != profileImageURL.indexOf(".jpg")
-                || -1 != profileImageURL.indexOf(".png")
-                || -1 != profileImageURL.indexOf(".gif"));
-        assertTrue(-1 != tweets.get(0).getSource().indexOf("twitter"));
+        assertTrue(-1 != profileImageURL.toLowerCase().indexOf(".jpg")
+                || -1 != profileImageURL.toLowerCase().indexOf(".png")
+                || -1 != profileImageURL.toLowerCase().indexOf(".gif"));
+        String source = tweets.get(0).getSource();
+        System.out.println(source);
+        assertTrue(-1 != source.indexOf("<a href=\"") || "web".equals(source) || "API".equals(source));
 
 
         query = new Query("from:twit4j doesnothit");
@@ -80,9 +85,13 @@ public class SearchAPITest extends TwitterTestBase {
         assertEquals(1, queryResult.getPage());
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
 
+        queryStr = "%... 日本語";
+
         twitterAPI1.updateStatus("%... 日本語");
         query = new Query("%... 日本語");
-        queryResult = unauthenticated.search(query);        
+        queryResult = unauthenticated.search(query);
+        System.out.println(queryResult.getRefreshUrl());
+        assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());
         query.setQuery("from:al3x");
         query.setGeoCode(new GeoLocation(37.78233252646689,-122.39301681518555) ,10,Query.KILOMETERS);
@@ -94,6 +103,8 @@ public class SearchAPITest extends TwitterTestBase {
         queryResult = unauthenticated.search(query);
         assertEquals(0, queryResult.getTweets().size());
 
+        query = new Query("\\u5e30%u5e30 <%}& foobar").rpp(100).page(1);
+        QueryResult result = twitterAPI1.search(query);
     }
 
     public void testTrends() throws Exception{

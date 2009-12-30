@@ -101,7 +101,7 @@ public class Configuration {
         setHttpProxyPort(-1);
         setHttpConnectionTimeout(20000);
         setHttpReadTimeout(120000);
-        setHttpRetryCount(1);
+        setHttpRetryCount(0);
         setHttpRetryIntervalSecs(5);
         setOAuthConsumerKey(null);
         setOAuthConsumerSecret(null);

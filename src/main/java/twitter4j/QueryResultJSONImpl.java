@@ -66,7 +66,7 @@ import static twitter4j.ParseUtil.*;
             warning = getRawString("warning", json);
             completedIn = getDouble("completed_in", json);
             page = getInt("page", json);
-            query = getUnescapedString("query", json);
+            query = getURLDecodedString("query", json);
             JSONArray array = json.getJSONArray("results");
             tweets = new ArrayList<Tweet>(array.length());
             for (int i = 0; i < array.length(); i++) {
