@@ -40,7 +40,7 @@ import java.io.ObjectInputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class TwitterSupport implements java.io.Serializable {
-    protected transient final static Configuration conf = Configuration.getInstance();
+    protected transient static final Configuration conf = Configuration.getInstance();
 
     protected transient static final HttpRequestFactory requestFactory = new HttpRequestFactory(conf);
 

@@ -36,8 +36,8 @@ import twitter4j.http.BasicAuthorization;
  * @since Twitter4J 2.1.0
  */
 public class TwitterFactory {
-    private final static Twitter DEFAULT_INSTANCE;
-    private static final Configuration conf = Configuration.getInstance();
+    private static final Twitter DEFAULT_INSTANCE;
+    private transient static final Configuration conf = Configuration.getInstance();
 
     static {
         DEFAULT_INSTANCE = new Twitter();

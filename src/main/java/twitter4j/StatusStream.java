@@ -41,7 +41,7 @@ import java.io.InputStreamReader;
  * @since Twitter4J 2.0.4
  */
 public class StatusStream {
-    private final static boolean DEBUG = Configuration.getInstance().isDebug();
+    private static final boolean DEBUG = Configuration.getInstance().isDebug();
 
     private boolean streamAlive = true;
     private BufferedReader br;

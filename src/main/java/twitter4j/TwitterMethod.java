@@ -87,97 +87,97 @@ public final class TwitterMethod implements java.io.Serializable {
     }
 
     /*Search API Methods*/
-    public final static TwitterMethod SEARCH = getInstance("SEARCH");
+    public static final TwitterMethod SEARCH = getInstance("SEARCH");
 
-    public final static TwitterMethod TRENDS = new TwitterMethod("TRENDS");
-    public final static TwitterMethod CURRENT_TRENDS = new TwitterMethod("CURRENT_TRENDS");
-    public final static TwitterMethod DAILY_TRENDS = new TwitterMethod("DAILY_TRENDS");
-    public final static TwitterMethod WEEKLY_TRENDS = new TwitterMethod("WEEKLY_TRENDS");
+    public static final TwitterMethod TRENDS = new TwitterMethod("TRENDS");
+    public static final TwitterMethod CURRENT_TRENDS = new TwitterMethod("CURRENT_TRENDS");
+    public static final TwitterMethod DAILY_TRENDS = new TwitterMethod("DAILY_TRENDS");
+    public static final TwitterMethod WEEKLY_TRENDS = new TwitterMethod("WEEKLY_TRENDS");
 
     /*Timeline Methods*/
-    public final static TwitterMethod PUBLIC_TIMELINE = new TwitterMethod("PUBLIC_TIMELINE");
-    public final static TwitterMethod HOME_TIMELINE = new TwitterMethod("HOME_TIMELINE");
-    public final static TwitterMethod FRIENDS_TIMELINE = new TwitterMethod("FRIENDS_TIMELINE");
-    public final static TwitterMethod USER_TIMELINE = new TwitterMethod("USER_TIMELINE");
-    public final static TwitterMethod MENTIONS = new TwitterMethod("MENTIONS");
-    public final static TwitterMethod RETWEETED_BY_ME = new TwitterMethod("RETWEETED_BY_ME");
-    public final static TwitterMethod RETWEETED_TO_ME = new TwitterMethod("RETWEETED_TO_ME");
-    public final static TwitterMethod RETWEETS_OF_ME = new TwitterMethod("RETWEETS_OF_ME");
+    public static final TwitterMethod PUBLIC_TIMELINE = new TwitterMethod("PUBLIC_TIMELINE");
+    public static final TwitterMethod HOME_TIMELINE = new TwitterMethod("HOME_TIMELINE");
+    public static final TwitterMethod FRIENDS_TIMELINE = new TwitterMethod("FRIENDS_TIMELINE");
+    public static final TwitterMethod USER_TIMELINE = new TwitterMethod("USER_TIMELINE");
+    public static final TwitterMethod MENTIONS = new TwitterMethod("MENTIONS");
+    public static final TwitterMethod RETWEETED_BY_ME = new TwitterMethod("RETWEETED_BY_ME");
+    public static final TwitterMethod RETWEETED_TO_ME = new TwitterMethod("RETWEETED_TO_ME");
+    public static final TwitterMethod RETWEETS_OF_ME = new TwitterMethod("RETWEETS_OF_ME");
 
     /*Status Methods*/
-    public final static TwitterMethod SHOW_STATUS = new TwitterMethod("SHOW_STATUS");
-    public final static TwitterMethod UPDATE_STATUS = new TwitterMethod("UPDATE_STATUS");
-    public final static TwitterMethod DESTROY_STATUS = new TwitterMethod("DESTROY_STATUS");
-    public final static TwitterMethod RETWEET_STATUS = new TwitterMethod("RETWEET_STATUS");
-    public final static TwitterMethod RETWEETS = new TwitterMethod("RETWEETS");
+    public static final TwitterMethod SHOW_STATUS = new TwitterMethod("SHOW_STATUS");
+    public static final TwitterMethod UPDATE_STATUS = new TwitterMethod("UPDATE_STATUS");
+    public static final TwitterMethod DESTROY_STATUS = new TwitterMethod("DESTROY_STATUS");
+    public static final TwitterMethod RETWEET_STATUS = new TwitterMethod("RETWEET_STATUS");
+    public static final TwitterMethod RETWEETS = new TwitterMethod("RETWEETS");
 
     /*User Methods*/
-    public final static TwitterMethod SHOW_USER = new TwitterMethod("SHOW_USER");
-    public final static TwitterMethod FRIENDS_STATUSES = new TwitterMethod("FRIENDS_STAUSES");
-    public final static TwitterMethod FOLLOWERS_STATUSES = new TwitterMethod("FOLLOWERS_STATUSES");
+    public static final TwitterMethod SHOW_USER = new TwitterMethod("SHOW_USER");
+    public static final TwitterMethod FRIENDS_STATUSES = new TwitterMethod("FRIENDS_STAUSES");
+    public static final TwitterMethod FOLLOWERS_STATUSES = new TwitterMethod("FOLLOWERS_STATUSES");
 
     /*List Methods*/
-    public final static TwitterMethod CREATE_USER_LIST = new TwitterMethod("CREATE_USER_LIST");
-    public final static TwitterMethod UPDATE_USER_LIST = new TwitterMethod("UPDATE_USER_LIST");
-    public final static TwitterMethod USER_LISTS = new TwitterMethod("USER_LISTS");
-    public final static TwitterMethod SHOW_USER_LIST = new TwitterMethod("SHOW_USER_LIST");
-    public final static TwitterMethod DELETE_USER_LIST = new TwitterMethod("DELETE_USER_LIST");
-    public final static TwitterMethod USER_LIST_STATUSES = new TwitterMethod("USER_LIST_STATUSES");
-    public final static TwitterMethod USER_LIST_MEMBERSHIPS = new TwitterMethod("USER_LIST_MEMBERSHIPS");
-    public final static TwitterMethod USER_LIST_SUBSCRIPTIONS = new TwitterMethod("USER_LIST_SUBSCRIPTIONS");
+    public static final TwitterMethod CREATE_USER_LIST = new TwitterMethod("CREATE_USER_LIST");
+    public static final TwitterMethod UPDATE_USER_LIST = new TwitterMethod("UPDATE_USER_LIST");
+    public static final TwitterMethod USER_LISTS = new TwitterMethod("USER_LISTS");
+    public static final TwitterMethod SHOW_USER_LIST = new TwitterMethod("SHOW_USER_LIST");
+    public static final TwitterMethod DELETE_USER_LIST = new TwitterMethod("DELETE_USER_LIST");
+    public static final TwitterMethod USER_LIST_STATUSES = new TwitterMethod("USER_LIST_STATUSES");
+    public static final TwitterMethod USER_LIST_MEMBERSHIPS = new TwitterMethod("USER_LIST_MEMBERSHIPS");
+    public static final TwitterMethod USER_LIST_SUBSCRIPTIONS = new TwitterMethod("USER_LIST_SUBSCRIPTIONS");
 
     /*List Members Methods*/
-    public final static TwitterMethod LIST_MEMBERS = new TwitterMethod("LIST_MEMBERS");
-    public final static TwitterMethod ADD_LIST_MEMBER = new TwitterMethod("ADD_LIST_MEMBERS");
-    public final static TwitterMethod DELETE_LIST_MEMBER = new TwitterMethod("DELETE_LIST_MEMBERS");
-    public final static TwitterMethod CHECK_LIST_MEMBERSHIP = new TwitterMethod("CHECK_LIST_MEMBERSHIP");
+    public static final TwitterMethod LIST_MEMBERS = new TwitterMethod("LIST_MEMBERS");
+    public static final TwitterMethod ADD_LIST_MEMBER = new TwitterMethod("ADD_LIST_MEMBERS");
+    public static final TwitterMethod DELETE_LIST_MEMBER = new TwitterMethod("DELETE_LIST_MEMBERS");
+    public static final TwitterMethod CHECK_LIST_MEMBERSHIP = new TwitterMethod("CHECK_LIST_MEMBERSHIP");
 
     /*List Subscribers Methods*/
-    public final static TwitterMethod LIST_SUBSCRIBERS = new TwitterMethod("LIST_SUBSCRIBERS");
-    public final static TwitterMethod SUBSCRIBE_LIST = new TwitterMethod("SUBSCRIBE_LIST");
-    public final static TwitterMethod UNSUBSCRIBE_LIST = new TwitterMethod("UNSUBSCRIBE_LIST");
-    public final static TwitterMethod CHECK_LIST_SUBSCRIPTION = new TwitterMethod("CHECK_LIST_SUBSCRIPTION");
+    public static final TwitterMethod LIST_SUBSCRIBERS = new TwitterMethod("LIST_SUBSCRIBERS");
+    public static final TwitterMethod SUBSCRIBE_LIST = new TwitterMethod("SUBSCRIBE_LIST");
+    public static final TwitterMethod UNSUBSCRIBE_LIST = new TwitterMethod("UNSUBSCRIBE_LIST");
+    public static final TwitterMethod CHECK_LIST_SUBSCRIPTION = new TwitterMethod("CHECK_LIST_SUBSCRIPTION");
 
     /*Direct Message Methods*/
-    public final static TwitterMethod DIRECT_MESSAGES = new TwitterMethod("DIRECT_MESSAGES");
-    public final static TwitterMethod SENT_DIRECT_MESSAGES = new TwitterMethod("SENT_DIRECT_MESSAGES");
-    public final static TwitterMethod SEND_DIRECT_MESSAGE = new TwitterMethod("SEND_DIRECT_MESSAGE");
-    public final static TwitterMethod DESTROY_DIRECT_MESSAGES = new TwitterMethod("DESTROY_DIRECT_MESSAGES");
+    public static final TwitterMethod DIRECT_MESSAGES = new TwitterMethod("DIRECT_MESSAGES");
+    public static final TwitterMethod SENT_DIRECT_MESSAGES = new TwitterMethod("SENT_DIRECT_MESSAGES");
+    public static final TwitterMethod SEND_DIRECT_MESSAGE = new TwitterMethod("SEND_DIRECT_MESSAGE");
+    public static final TwitterMethod DESTROY_DIRECT_MESSAGES = new TwitterMethod("DESTROY_DIRECT_MESSAGES");
 
     /*Friendship Methods*/
-    public final static TwitterMethod CREATE_FRIENDSHIP = new TwitterMethod("CREATE_FRIENDSHIP");
-    public final static TwitterMethod DESTROY_FRIENDSHIP = new TwitterMethod("DESTROY_FRIENDSHIP");
-    public final static TwitterMethod EXISTS_FRIENDSHIP = new TwitterMethod("EXISTS_FRIENDSHIP");
-    public final static TwitterMethod SHOW_FRIENDSHIP = new TwitterMethod("SHOW_FRIENDSHIP");
+    public static final TwitterMethod CREATE_FRIENDSHIP = new TwitterMethod("CREATE_FRIENDSHIP");
+    public static final TwitterMethod DESTROY_FRIENDSHIP = new TwitterMethod("DESTROY_FRIENDSHIP");
+    public static final TwitterMethod EXISTS_FRIENDSHIP = new TwitterMethod("EXISTS_FRIENDSHIP");
+    public static final TwitterMethod SHOW_FRIENDSHIP = new TwitterMethod("SHOW_FRIENDSHIP");
 
     /*Social Graph Methods*/
-    public final static TwitterMethod FRIENDS_IDS = new TwitterMethod("FRIENDS_IDS");
-    public final static TwitterMethod FOLLOWERS_IDS = new TwitterMethod("FOLLOWERS_IDS");
+    public static final TwitterMethod FRIENDS_IDS = new TwitterMethod("FRIENDS_IDS");
+    public static final TwitterMethod FOLLOWERS_IDS = new TwitterMethod("FOLLOWERS_IDS");
 
     /*Account Methods*/
     //verifyCredentials
-    public final static TwitterMethod RATE_LIMIT_STATUS = new TwitterMethod("RATE_LIMIT_STATUS");
-    public final static TwitterMethod UPDATE_DELIVERY_DEVICE = new TwitterMethod("UPDATE_DELIVERY_DEVICE");
-    public final static TwitterMethod UPDATE_PROFILE_COLORS = new TwitterMethod("UPDATE_PROFILE_COLORS");
-    public final static TwitterMethod UPDATE_PROFILE_IMAGE = new TwitterMethod("UPDATE_PROFILE_IMAGE");
-    public final static TwitterMethod UPDATE_PROFILE_BACKGROUND_IMAGE = new TwitterMethod("UPDATE_PROFILE_BACKGROUND_IMAGE");
-    public final static TwitterMethod UPDATE_PROFILE = new TwitterMethod("UPDATE_PROFILE");
+    public static final TwitterMethod RATE_LIMIT_STATUS = new TwitterMethod("RATE_LIMIT_STATUS");
+    public static final TwitterMethod UPDATE_DELIVERY_DEVICE = new TwitterMethod("UPDATE_DELIVERY_DEVICE");
+    public static final TwitterMethod UPDATE_PROFILE_COLORS = new TwitterMethod("UPDATE_PROFILE_COLORS");
+    public static final TwitterMethod UPDATE_PROFILE_IMAGE = new TwitterMethod("UPDATE_PROFILE_IMAGE");
+    public static final TwitterMethod UPDATE_PROFILE_BACKGROUND_IMAGE = new TwitterMethod("UPDATE_PROFILE_BACKGROUND_IMAGE");
+    public static final TwitterMethod UPDATE_PROFILE = new TwitterMethod("UPDATE_PROFILE");
 
     /*Favorite Methods*/
-    public final static TwitterMethod FAVORITES = new TwitterMethod("FAVORITES");
-    public final static TwitterMethod CREATE_FAVORITE = new TwitterMethod("CREATE_FAVORITE");
-    public final static TwitterMethod DESTROY_FAVORITE = new TwitterMethod("DESTROY_FAVORITE");
+    public static final TwitterMethod FAVORITES = new TwitterMethod("FAVORITES");
+    public static final TwitterMethod CREATE_FAVORITE = new TwitterMethod("CREATE_FAVORITE");
+    public static final TwitterMethod DESTROY_FAVORITE = new TwitterMethod("DESTROY_FAVORITE");
 
     /*Notification Methods*/
-    public final static TwitterMethod ENABLE_NOTIFICATION = new TwitterMethod("ENABLE_NOTIFICATION");
-    public final static TwitterMethod DISABLE_NOTIFICATION = new TwitterMethod("DISABLE_NOTIFICATION");
+    public static final TwitterMethod ENABLE_NOTIFICATION = new TwitterMethod("ENABLE_NOTIFICATION");
+    public static final TwitterMethod DISABLE_NOTIFICATION = new TwitterMethod("DISABLE_NOTIFICATION");
 
     /*Block Methods*/
-    public final static TwitterMethod CREATE_BLOCK = new TwitterMethod("CREATE_BLOCK");
-    public final static TwitterMethod DESTROY_BLOCK = new TwitterMethod("DESTROY_BLOCK");
-    public final static TwitterMethod EXISTS_BLOCK = new TwitterMethod("EXISTS_BLOCK");
-    public final static TwitterMethod BLOCKING_USERS = new TwitterMethod("BLOCKING_USERS");
-    public final static TwitterMethod BLOCKING_USERS_IDS = new TwitterMethod("BLOCKING_USERS_IDS");
+    public static final TwitterMethod CREATE_BLOCK = new TwitterMethod("CREATE_BLOCK");
+    public static final TwitterMethod DESTROY_BLOCK = new TwitterMethod("DESTROY_BLOCK");
+    public static final TwitterMethod EXISTS_BLOCK = new TwitterMethod("EXISTS_BLOCK");
+    public static final TwitterMethod BLOCKING_USERS = new TwitterMethod("BLOCKING_USERS");
+    public static final TwitterMethod BLOCKING_USERS_IDS = new TwitterMethod("BLOCKING_USERS_IDS");
 
     /*Spam Reporting Methods*/
     //reportSpam()
@@ -191,5 +191,5 @@ public final class TwitterMethod implements java.io.Serializable {
     /*Local Trends Methods*/
 
     /*Help Methods*/
-    public final static TwitterMethod TEST = new TwitterMethod("TEST");
+    public static final TwitterMethod TEST = new TwitterMethod("TEST");
 }

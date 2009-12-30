@@ -40,9 +40,9 @@ import java.util.List;
  * @since Twitter4J 2.0.4
  */
 public class TwitterStream extends TwitterSupport {
-    private final static Configuration conf = Configuration.getInstance();
+    private transient static final Configuration conf = Configuration.getInstance();
 
-    private final static boolean DEBUG = conf.isDebug();
+    private static final boolean DEBUG = conf.isDebug();
 
     private StatusListener statusListener;
     private StreamHandlingThread handler = null;

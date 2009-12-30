@@ -528,7 +528,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         twitterAPI1.updateProfileBackgroundImage(getRandomlyChosenFile(),
                 (5 < System.currentTimeMillis() % 5));
     }
-    final static String[] files = {"src/test/resources/t4j-reverse.jpeg",
+    static final String[] files = {"src/test/resources/t4j-reverse.jpeg",
             "src/test/resources/t4j-reverse.png",
             "src/test/resources/t4j-reverse.gif",
             "src/test/resources/t4j.jpeg",

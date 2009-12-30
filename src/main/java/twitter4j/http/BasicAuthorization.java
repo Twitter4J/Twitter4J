@@ -37,7 +37,7 @@ import java.net.HttpURLConnection;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class BasicAuthorization implements Authorization, java.io.Serializable {
-    private final static boolean DEBUG = Configuration.getInstance().isDebug();
+    private transient static final boolean DEBUG = Configuration.getInstance().isDebug();
 
     private String userId;
     private String password;

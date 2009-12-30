@@ -27,16 +27,32 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 /**
+ * A data interface representing Twitter REST API's rate limit status
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Twitter API Wiki / Rate limiting</a>
  */
-public class Version {
-    private static final String VERSION = "2.1.0-SNAPSHOT";
-    private static final String TITLE = "Twitter4J";
+public class RateLimitStatusEvent extends java.util.EventObject {
 
-    public static String getVersion(){
-        return VERSION;
+    private RateLimitStatus rateLimitStatus;
+
+    private boolean isAccountRateLimitStatus;
+
+    RateLimitStatusEvent(Object source, RateLimitStatus rateLimitStatus, boolean isAccountRateLimitStatus){
+        super(source);
+        this.rateLimitStatus = rateLimitStatus;
+        this.isAccountRateLimitStatus = isAccountRateLimitStatus;
     }
-    public static void main(String[] args) {
-        System.out.println(TITLE +" " + VERSION);
+
+    public RateLimitStatus getRateLimitStatus() {
+        return rateLimitStatus;
     }
+
+    public boolean isAccountRateLimitStatus() {
+        return isAccountRateLimitStatus;
+    }
+    public boolean isIPRateLimitStatus() {
+        return !isAccountRateLimitStatus;
+    }
+
 }

@@ -51,7 +51,7 @@ import java.util.zip.GZIPInputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class Response {
-    private final static boolean DEBUG = Configuration.getInstance().isDebug();
+    private static final boolean DEBUG = Configuration.getInstance().isDebug();
 
     private static ThreadLocal<DocumentBuilder> builders =
             new ThreadLocal<DocumentBuilder>() {

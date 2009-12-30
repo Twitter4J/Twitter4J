@@ -48,10 +48,10 @@ import java.util.Random;
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
 public final class OAuthAuthorization implements Authorization, java.io.Serializable {
-    private static final Configuration conf = Configuration.getInstance();
+    private transient static final Configuration conf = Configuration.getInstance();
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final PostParameter OAUTH_SIGNATURE_METHOD = new PostParameter("oauth_signature_method", "HMAC-SHA1");
-    private final static boolean DEBUG = Configuration.getInstance().isDebug();
+    private transient static final boolean DEBUG = conf.getInstance().isDebug();
     static final long serialVersionUID = -4368426677157998618L;
     private String consumerKey = "";
     private String consumerSecret;
