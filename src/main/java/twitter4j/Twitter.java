@@ -412,16 +412,6 @@ public class Twitter extends RateLimitListenerSupport
     /**
      * {@inheritDoc}
      */
-    public ResponseList<Status> getPublicTimeline(long sinceID) throws
-            TwitterException {
-        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/public_timeline.json", null, new Paging(sinceID).asPostParameterList(Paging.S)
-                , auth));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public ResponseList<Status> getHomeTimeline() throws
             TwitterException {
         ensureAuthenticationEnabled();

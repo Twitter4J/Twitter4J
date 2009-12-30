@@ -198,17 +198,6 @@ public class AsyncTwitter extends Twitter
     /**
      * {@inheritDoc}
      */
-    public void getPublicTimelineAsync(long sinceID, TwitterListener listener) {
-        getDispatcher().invokeLater(new AsyncTask(PUBLIC_TIMELINE, listener, new Long[] {sinceID}) {
-            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
-                listener.gotPublicTimeline(getPublicTimeline( (Long) args[0]));
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getHomeTimelineAsync(TwitterListener listener) {
         getDispatcher().invokeLater(new AsyncTask(HOME_TIMELINE, listener, null) {
             public void invoke(TwitterListener listener, Object[] args) throws TwitterException {

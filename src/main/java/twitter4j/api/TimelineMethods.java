@@ -49,18 +49,6 @@ public interface TimelineMethods
 			throws TwitterException;
 
 	/**
-	 * Returns only public statuses with an ID greater than (that is, more recent than) the specified ID.
-	 * <br>This method calls http://api.twitter.com/1/statuses/public_timeline
-	 *
-	 * @param sinceID returns only public statuses with an ID greater than (that is, more recent than) the specified ID
-	 * @return the 20 most recent statuses
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
-	 */
-	ResponseList<Status> getPublicTimeline(long sinceID)
-			throws TwitterException;
-
-	/**
 	 * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
 	 * <br>This method calls http://api.twitter.com/1/statuses/home_timeline
 	 *
