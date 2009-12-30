@@ -38,7 +38,6 @@ public final class Device implements java.io.Serializable {
 
     private static final Map<String, Device> instances = new HashMap<String, Device>();
 
-    public static final Device IM = new Device("im");
     public static final Device SMS = new Device("sms");
     public static final Device NONE = new Device("none");
 
