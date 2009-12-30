@@ -28,6 +28,8 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 import twitter4j.http.AccessToken;
+import twitter4j.http.Authorization;
+import twitter4j.http.BasicAuthorization;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -48,10 +50,14 @@ public class TwitterFactory {
     /**
      * Returns a Twitter instance.
      *
-     * @return
+     * @return default singleton instance
      */
     public static Twitter getInstance() {
         return DEFAULT_INSTANCE;
+    }
+
+    public static Twitter getInstance(Authorization auth) {
+        return new Twitter(auth);
     }
 
     /**
@@ -62,7 +68,7 @@ public class TwitterFactory {
      */
     public static Twitter getBasicAuthenticatedInstance(String screenName
             , String password) {
-        return new Twitter(screenName, password);
+        return getInstance(new BasicAuthorization(screenName, password));
     }
 
     public static Twitter getOAuthAuthenticatedInstance(String consumerKey

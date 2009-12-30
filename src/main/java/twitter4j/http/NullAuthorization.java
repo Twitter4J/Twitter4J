@@ -28,22 +28,21 @@ package twitter4j.http;
 
 import java.io.ObjectStreamException;
 import java.net.HttpURLConnection;
-import java.util.Arrays;
 
 /**
  * An interface represents credentials.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class NullAuthentication implements Authentication, java.io.Serializable {
-    private static NullAuthentication SINGLETON = new NullAuthentication();
+public final class NullAuthorization implements Authorization, java.io.Serializable {
+    private static NullAuthorization SINGLETON = new NullAuthorization();
     private static final long serialVersionUID = -8748173338942663960L;
 
-    public static NullAuthentication getInstance() {
+    public static NullAuthorization getInstance() {
         return SINGLETON;
     }
 
-    private NullAuthentication() {
+    private NullAuthorization() {
 
     }
 

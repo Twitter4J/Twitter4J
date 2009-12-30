@@ -27,11 +27,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.conf;
 
 import twitter4j.Version;
+import twitter4j.http.HttpClientConfiguration;
+import twitter4j.http.HttpRequestFactory;
+import twitter4j.http.HttpRequestFactoryConfiguration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Configuration {
+public class Configuration implements HttpClientConfiguration, HttpRequestFactoryConfiguration {
     public static final String CONFIGURATION_IMPL = "twitter4j.configuration.impl";
 
     private boolean debug;
@@ -40,14 +46,14 @@ public class Configuration {
     private String user;
     private String password;
     private boolean useSSL;
-    private String proxyHost;
-    private String proxyUser;
-    private String proxyPassword;
-    private int proxyPort;
-    private int connectionTimeout;
-    private int readTimeout;
-    private int retryCount;
-    private int retryIntervalMilliSecs;
+    private String httpProxyHost;
+    private String httpProxyUser;
+    private String httpProxyPassword;
+    private int httpProxyPort;
+    private int httpConnectionTimeout;
+    private int httpReadTimeout;
+    private int httpRetryCount;
+    private int httpRetryIntervalMilliSecs;
     private String oAuthConsumerKey;
     private String oAuthConsumerSecret;
     private String oAuthAccessToken;
@@ -159,6 +165,7 @@ public class Configuration {
 
     protected final void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+        initRequestHeaders();
     }
 
     public final String getSource() {
@@ -167,6 +174,7 @@ public class Configuration {
 
     protected final void setSource(String source) {
         this.source = source;
+        initRequestHeaders();
     }
 
     public final String getUser() {
@@ -196,69 +204,90 @@ public class Configuration {
         setOAuthAuthenticationURL(getOAuthAuthenticationURL());
     }
 
-    public final String getProxyHost() {
-        return proxyHost;
+    // method for HttpRequestFactoryConfiguration
+    Map<String, String> requestHeaders;
+    private void initRequestHeaders() {
+        requestHeaders = new HashMap<String, String>();
+        requestHeaders.put("X-Twitter-Client-Version", getClientVersion());
+        requestHeaders.put("X-Twitter-Client-URL", getClientURL());
+        requestHeaders.put("X-Twitter-Client", getSource());
+
+        requestHeaders.put("User-Agent", getUserAgent());
+        requestHeaders.put("Accept-Encoding", "gzip");
+        requestHeaders.put("Connection", "close");
+
+    }
+    public Map<String, String> getRequestHeaders() {
+        return requestHeaders;
+    }
+
+    // methods for HttpClientConfiguration
+
+    public final String getHttpProxyHost() {
+        return httpProxyHost;
     }
 
     protected final void setHttpProxyHost(String proxyHost) {
-        this.proxyHost = proxyHost;
+        this.httpProxyHost = proxyHost;
     }
 
-    public final String getProxyUser() {
-        return proxyUser;
+    public final String getHttpProxyUser() {
+        return httpProxyUser;
     }
 
     protected final void setHttpProxyUser(String proxyUser) {
-        this.proxyUser = proxyUser;
+        this.httpProxyUser = proxyUser;
     }
 
-    public final String getProxyPassword() {
-        return proxyPassword;
+    public final String getHttpProxyPassword() {
+        return httpProxyPassword;
     }
 
     protected final void setHttpProxyPassword(String proxyPassword) {
-        this.proxyPassword = proxyPassword;
+        this.httpProxyPassword = proxyPassword;
     }
 
-    public final int getProxyPort() {
-        return proxyPort;
+    public final int getHttpProxyPort() {
+        return httpProxyPort;
     }
 
     protected final void setHttpProxyPort(int proxyPort) {
-        this.proxyPort = proxyPort;
+        this.httpProxyPort = proxyPort;
     }
 
     public final int getHttpConnectionTimeout() {
-        return connectionTimeout;
+        return httpConnectionTimeout;
     }
 
     protected final void setHttpConnectionTimeout(int connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+        this.httpConnectionTimeout = connectionTimeout;
     }
 
     public final int getHttpReadTimeout() {
-        return readTimeout;
+        return httpReadTimeout;
     }
 
     protected final void setHttpReadTimeout(int readTimeout) {
-        this.readTimeout = readTimeout;
+        this.httpReadTimeout = readTimeout;
     }
 
-    public final int getRetryCount() {
-        return retryCount;
+    public final int getHttpRetryCount() {
+        return httpRetryCount;
     }
 
     protected final void setHttpRetryCount(int retryCount) {
-        this.retryCount = retryCount;
+        this.httpRetryCount = retryCount;
     }
 
-    public final int getRetryIntervalMilliSecs() {
-        return retryIntervalMilliSecs;
+    public final int getHttpRetryIntervalSeconds() {
+        return httpRetryIntervalMilliSecs;
     }
 
     protected final void setHttpRetryIntervalSecs(int retryIntervalSecs) {
-        this.retryIntervalMilliSecs = retryIntervalSecs * 1000;
+        this.httpRetryIntervalMilliSecs = retryIntervalSecs * 1000;
     }
+
+    // oauth related setter/getters
 
     public final String getOAuthConsumerKey() {
         return oAuthConsumerKey;
@@ -306,6 +335,7 @@ public class Configuration {
 
     protected final void setClientVersion(String clientVersion) {
         this.clientVersion = clientVersion;
+        initRequestHeaders();
     }
 
     public final String getClientURL() {
@@ -314,6 +344,7 @@ public class Configuration {
 
     protected final void setClientURL(String clientURL) {
         this.clientURL = clientURL;
+        initRequestHeaders();
     }
 
     public String getRestBaseURL() {
@@ -382,12 +413,12 @@ public class Configuration {
 
         if (IS_DALVIK != that.IS_DALVIK) return false;
         if (asyncNumThreads != that.asyncNumThreads) return false;
-        if (connectionTimeout != that.connectionTimeout) return false;
+        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
         if (debug != that.debug) return false;
-        if (proxyPort != that.proxyPort) return false;
-        if (readTimeout != that.readTimeout) return false;
-        if (retryCount != that.retryCount) return false;
-        if (retryIntervalMilliSecs != that.retryIntervalMilliSecs) return false;
+        if (httpProxyPort != that.httpProxyPort) return false;
+        if (httpReadTimeout != that.httpReadTimeout) return false;
+        if (httpRetryCount != that.httpRetryCount) return false;
+        if (httpRetryIntervalMilliSecs != that.httpRetryIntervalMilliSecs) return false;
         if (useSSL != that.useSSL) return false;
         if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null)
             return false;
@@ -411,11 +442,11 @@ public class Configuration {
             return false;
         if (password != null ? !password.equals(that.password) : that.password != null)
             return false;
-        if (proxyHost != null ? !proxyHost.equals(that.proxyHost) : that.proxyHost != null)
+        if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
             return false;
-        if (proxyPassword != null ? !proxyPassword.equals(that.proxyPassword) : that.proxyPassword != null)
+        if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
             return false;
-        if (proxyUser != null ? !proxyUser.equals(that.proxyUser) : that.proxyUser != null)
+        if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
             return false;
         if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null)
             return false;
@@ -442,14 +473,14 @@ public class Configuration {
                 ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
                 ", useSSL=" + useSSL +
-                ", proxyHost='" + proxyHost + '\'' +
-                ", proxyUser='" + proxyUser + '\'' +
-                ", proxyPassword='" + proxyPassword + '\'' +
-                ", proxyPort=" + proxyPort +
-                ", connectionTimeout=" + connectionTimeout +
-                ", readTimeout=" + readTimeout +
-                ", retryCount=" + retryCount +
-                ", retryIntervalMilliSecs=" + retryIntervalMilliSecs +
+                ", httpProxyHost='" + httpProxyHost + '\'' +
+                ", httpProxyUser='" + httpProxyUser + '\'' +
+                ", httpProxyPassword='" + httpProxyPassword + '\'' +
+                ", httpProxyPort=" + httpProxyPort +
+                ", httpConnectionTimeout=" + httpConnectionTimeout +
+                ", httpReadTimeout=" + httpReadTimeout +
+                ", httpRetryCount=" + httpRetryCount +
+                ", httpRetryIntervalMilliSecs=" + httpRetryIntervalMilliSecs +
                 ", oAuthConsumerKey='" + oAuthConsumerKey + '\'' +
                 ", oAuthConsumerSecret='" + oAuthConsumerSecret + '\'' +
                 ", oAuthAccessToken='" + oAuthAccessToken + '\'' +

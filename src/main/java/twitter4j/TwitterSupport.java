@@ -28,16 +28,15 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 import twitter4j.http.AccessToken;
-import twitter4j.http.Authentication;
-import twitter4j.http.BasicAuthentication;
+import twitter4j.http.Authorization;
+import twitter4j.http.BasicAuthorization;
 import twitter4j.http.HttpClient;
 import twitter4j.http.HttpRequestFactory;
-import twitter4j.http.NullAuthentication;
-import twitter4j.http.OAuthAuthentication;
+import twitter4j.http.NullAuthorization;
+import twitter4j.http.OAuthAuthorization;
+import twitter4j.http.RequestToken;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,75 +45,25 @@ import java.util.Map;
 abstract class TwitterSupport implements java.io.Serializable {
     protected static final Configuration conf = Configuration.getInstance();
 
-    protected static final HttpRequestFactory requestFactory;
-
-    static{
-        Map<String, String> requestHeaders = new HashMap<String, String>();
-        requestHeaders.put("X-Twitter-Client-Version", conf.getClientVersion());
-        requestHeaders.put("X-Twitter-Client-URL", conf.getClientURL());
-        requestHeaders.put("X-Twitter-Client", conf.getSource());
-
-        requestHeaders.put("User-Agent", conf.getUserAgent());
-        requestHeaders.put("Accept-Encoding", "gzip");
-        requestHeaders.put("Connection", "close");
-        requestFactory = new HttpRequestFactory(requestHeaders);
-
-    }
+    protected static final HttpRequestFactory requestFactory = new HttpRequestFactory(conf);
 
     protected final HttpClient http = new HttpClient();
 
     private static final long serialVersionUID = -4779804628175934804L;
-    Authentication auth;
+    Authorization auth;
 
     /*package*/ TwitterSupport(){
         this(conf.getUser(), conf.getPassword());
     }
 
     /*package*/ TwitterSupport(String userId, String password){
-        String consumerKey = conf.getOAuthConsumerKey();
-        String consumerSecret = conf.getOAuthConsumerSecret();
-        if (null == auth) {
-            // firstly try to find oauth tokens in the configuration
-            boolean consumerKeyFound = false;
-            if (null != consumerKey && null != consumerSecret) {
-                auth = new OAuthAuthentication(consumerKey, consumerSecret, http);
-                consumerKeyFound = true;
-            }
-            boolean accessTokenFound = false;
-            String accessToken = conf.getOAuthAccessToken();
-            String accessTokenSecret = conf.getOAuthAccessTokenSecret();
-            if (null != accessToken && null != accessTokenSecret) {
-                getOAuth().setAccessToken(new AccessToken(accessToken, accessTokenSecret));
-                accessTokenFound = true;
-            }
-            // if oauth tokens are not found in the configuration, try to find basic auth credentials
-            if (!consumerKeyFound && !accessTokenFound && userId != null && password != null) {
-                auth = new BasicAuthentication(userId, password);
-            }
-            if(null == auth){
-                auth = NullAuthentication.getInstance();
-            }
+        if (null != userId && null != password) {
+            auth = new BasicAuthorization(userId, password);
+        }
+        if(null == auth){
+            auth = NullAuthorization.getInstance();
         }
     }
-
-    /**
-     *
-     * @param consumerKey OAuth consumer key
-     * @param consumerSecret OAuth consumer secret
-     * @since Twitter 2.0.0
-     */
-    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
-        auth = new OAuthAuthentication(consumerKey, consumerSecret, http);
-    }
-
-//    /**
-//     *
-//     * @param consumerKey OAuth consumer key
-//     * @param consumerSecret OAuth consumer secret
-//     * @since Twitter 2.0.0
-//     */
-//    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
-//    }
 
     protected void ensureAuthenticationEnabled() {
         if (!auth.isAuthenticationEnabled()) {
@@ -124,17 +73,10 @@ abstract class TwitterSupport implements java.io.Serializable {
     }
 
     protected void ensureBasicAuthenticationEnabled() {
-        if (!(auth instanceof BasicAuthentication)) {
+        if (!(auth instanceof BasicAuthorization)) {
             throw new IllegalStateException(
                     "user ID/password combination not supplied");
         }
-    }
-    protected OAuthAuthentication getOAuth() {
-        if (!(auth instanceof OAuthAuthentication)) {
-            throw new IllegalStateException(
-                    "OAuth consumer key/secret combination not supplied");
-        }
-        return (OAuthAuthentication)auth;
     }
 
     @Override

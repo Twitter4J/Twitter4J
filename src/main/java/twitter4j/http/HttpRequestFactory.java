@@ -43,24 +43,21 @@ public class HttpRequestFactory implements java.io.Serializable{
     private final Map<String, String> requestHeaders;
     private static final long serialVersionUID = -6511977105603119379L;
 
-    public HttpRequestFactory(Map<String, String> requestHeaders) {
-        this.requestHeaders = requestHeaders;
-    }
-    public HttpRequestFactory() {
-        this.requestHeaders = null;
+    public HttpRequestFactory(HttpRequestFactoryConfiguration conf) {
+        this.requestHeaders = conf.getRequestHeaders();
     }
 
     public HttpRequest createGetRequest(String url, PostParameter[] parameters
-            , Authentication authentication) {
-        return new HttpRequest(GET, url, parameters, authentication, this.requestHeaders);
+            , Authorization authorization) {
+        return new HttpRequest(GET, url, parameters, authorization, this.requestHeaders);
     }
 
     public HttpRequest createGetRequest(String url, PostParameter[] parameters) {
         return new HttpRequest(GET, url, parameters, null, this.requestHeaders);
     }
 
-    public HttpRequest createGetRequest(String url, Authentication authentication) {
-        return new HttpRequest(GET, url, null, authentication, this.requestHeaders);
+    public HttpRequest createGetRequest(String url, Authorization authorization) {
+        return new HttpRequest(GET, url, null, authorization, this.requestHeaders);
     }
 
     public HttpRequest createGetRequest(String url) {
@@ -68,15 +65,15 @@ public class HttpRequestFactory implements java.io.Serializable{
     }
 
     public HttpRequest createPostRequest(String url, PostParameter[] parameters
-            , Authentication authentication) {
-        return new HttpRequest(POST, url, parameters, authentication, this.requestHeaders);
+            , Authorization authorization) {
+        return new HttpRequest(POST, url, parameters, authorization, this.requestHeaders);
     }
     public HttpRequest createPostRequest(String url, PostParameter[] parameters) {
         return new HttpRequest(POST, url, parameters, null, this.requestHeaders);
     }
 
-    public HttpRequest createPostRequest(String url, Authentication authentication) {
-        return new HttpRequest(POST, url, null, authentication, this.requestHeaders);
+    public HttpRequest createPostRequest(String url, Authorization authorization) {
+        return new HttpRequest(POST, url, null, authorization, this.requestHeaders);
     }
 
     public HttpRequest createPostRequest(String url) {
@@ -84,8 +81,8 @@ public class HttpRequestFactory implements java.io.Serializable{
     }
 
     public HttpRequest createDeleteRequest(String url, PostParameter[] parameters
-            , Authentication authentication) {
-        return new HttpRequest(DELETE, url, parameters, authentication, this.requestHeaders);
+            , Authorization authorization) {
+        return new HttpRequest(DELETE, url, parameters, authorization, this.requestHeaders);
     }
 
     public HttpRequest createDeleteRequest(String url, PostParameter[] parameters) {
@@ -93,8 +90,8 @@ public class HttpRequestFactory implements java.io.Serializable{
     }
 
     public HttpRequest createDeleteRequest(String url,
-                                           Authentication authentication) {
-        return new HttpRequest(DELETE, url, null, authentication, this.requestHeaders);
+                                           Authorization authorization) {
+        return new HttpRequest(DELETE, url, null, authorization, this.requestHeaders);
     }
 
     public HttpRequest createDeleteRequest(String url) {
@@ -102,16 +99,16 @@ public class HttpRequestFactory implements java.io.Serializable{
     }
 
     public HttpRequest createHeadRequest(String url, PostParameter[] parameters
-            , Authentication authentication) {
-        return new HttpRequest(HEAD, url, parameters, authentication, this.requestHeaders);
+            , Authorization authorization) {
+        return new HttpRequest(HEAD, url, parameters, authorization, this.requestHeaders);
     }
     public HttpRequest createHeadRequest(String url, PostParameter[] parameters) {
         return new HttpRequest(HEAD, url, parameters, null, this.requestHeaders);
     }
 
     public HttpRequest createHeadRequest(String url
-            , Authentication authentication) {
-        return new HttpRequest(HEAD, url, null, authentication, this.requestHeaders);
+            , Authorization authorization) {
+        return new HttpRequest(HEAD, url, null, authorization, this.requestHeaders);
     }
 
     public HttpRequest createHeadRequest(String url) {
@@ -119,16 +116,16 @@ public class HttpRequestFactory implements java.io.Serializable{
     }
 
     public HttpRequest createPutRequest(String url, PostParameter[] parameters
-            , Authentication authentication) {
-        return new HttpRequest(PUT, url, parameters, authentication, this.requestHeaders);
+            , Authorization authorization) {
+        return new HttpRequest(PUT, url, parameters, authorization, this.requestHeaders);
     }
 
     public HttpRequest createPutRequest(String url, PostParameter[] parameters) {
         return new HttpRequest(PUT, url, parameters, null, this.requestHeaders);
     }
 
-    public HttpRequest createPutRequest(String url, Authentication authentication) {
-        return new HttpRequest(PUT, url, null, authentication, this.requestHeaders);
+    public HttpRequest createPutRequest(String url, Authorization authorization) {
+        return new HttpRequest(PUT, url, null, authorization, this.requestHeaders);
     }
 
     public HttpRequest createPutRequest(String url) {

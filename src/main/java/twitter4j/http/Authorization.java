@@ -26,64 +26,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import java.net.HttpURLConnection;
+
 /**
- * @author Andrew Hedges - andrew.hedges at gmail.com
+ * An interface represents credentials.
+ *
+ * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class HttpResponseEvent {
-    private HttpRequest request;
+public interface Authorization extends java.io.Serializable {
+    void setAuthorizationHeader(String method, String url, PostParameter[] params, HttpURLConnection con);
 
-    private Response response;
-
-    /* package */
-
-    HttpResponseEvent(HttpRequest request, Response response) {
-        this.request = request;
-        this.response = response;
-    }
-
-    public String getUrl() {
-        return request.url;
-    }
-
-    public PostParameter[] getPostParameters() {
-        return request.postParams;
-    }
-
-    public boolean isAuthenticated() {
-        return request.authorization.isAuthenticationEnabled();
-    }
-
-    public Response getResponse() {
-        return response;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        HttpResponseEvent that = (HttpResponseEvent) o;
-
-        if (request != null ? !request.equals(that.request) : that.request != null)
-            return false;
-        if (response != null ? !response.equals(that.response) : that.response != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = request != null ? request.hashCode() : 0;
-        result = 31 * result + (response != null ? response.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "HttpResponseEvent{" +
-                "request=" + request +
-                ", response=" + response +
-                '}';
-    }
+    boolean isAuthenticationEnabled();
 }

@@ -159,40 +159,40 @@ public class ConfigurationTest  extends TestCase {
 
         System.getProperties().remove("twitter4j.http.proxyHost");
         conf = new PropertyConfiguration();
-        assertEquals(null, conf.getProxyHost());
+        assertEquals(null, conf.getHttpProxyHost());
 
         System.setProperty("twitter4j.http.proxyHost", override);
         conf = new PropertyConfiguration();
-        assertEquals(override, conf.getProxyHost());
+        assertEquals(override, conf.getHttpProxyHost());
         System.getProperties().remove("twitter4j.http.proxyHost");
 
         System.getProperties().remove("twitter4j.http.proxyPort");
         conf = new PropertyConfiguration();
-        assertEquals(-1, conf.getProxyPort());
+        assertEquals(-1, conf.getHttpProxyPort());
 
         System.setProperty("twitter4j.http.proxyPort", "100");
         conf = new PropertyConfiguration();
-        assertEquals(100, conf.getProxyPort());
+        assertEquals(100, conf.getHttpProxyPort());
         System.getProperties().remove("twitter4j.http.proxyPort");
 
 
         System.getProperties().remove("twitter4j.http.proxyUser");
         conf = new PropertyConfiguration();
-        assertEquals(null, conf.getProxyUser());
+        assertEquals(null, conf.getHttpProxyUser());
 
         System.setProperty("twitter4j.http.proxyUser", override);
         conf = new PropertyConfiguration();
-        assertEquals(override, conf.getProxyUser());
+        assertEquals(override, conf.getHttpProxyUser());
         System.getProperties().remove("twitter4j.http.proxyUser");
 
 
         System.getProperties().remove("twitter4j.http.proxyPassword");
         conf = new PropertyConfiguration();
-        assertEquals(null, conf.getProxyPassword());
+        assertEquals(null, conf.getHttpProxyPassword());
 
         System.setProperty("twitter4j.http.proxyPassword", override);
         conf = new PropertyConfiguration();
-        assertEquals(override, conf.getProxyPassword());
+        assertEquals(override, conf.getHttpProxyPassword());
         System.getProperties().remove("twitter4j.http.proxyPassword");
 
 

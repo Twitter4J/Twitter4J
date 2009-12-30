@@ -42,7 +42,7 @@ public final class HttpRequest implements java.io.Serializable {
     /*package*/
     final PostParameter[] postParams;
     /*package*/
-    final Authentication authentication;
+    final Authorization authorization;
     /*package*/
     Map<String, String> requestHeaders;
     private static final long serialVersionUID = -3463594029098858381L;
@@ -51,15 +51,15 @@ public final class HttpRequest implements java.io.Serializable {
      * @param method         Specifies the HTTP method
      * @param url            the request to request
      * @param postParams     parameters
-     * @param authentication Authentication implementation. Currently BasicAuthentication, OAuthAuthentication and NullAuthentication are supported.
+     * @param authorization Authentication implementation. Currently BasicAuthentication, OAuthAuthentication and NullAuthentication are supported.
      * @param requestHeaders
      */
     HttpRequest(RequestMethod method, String url, PostParameter[] postParams
-            , Authentication authentication, Map<String, String> requestHeaders) {
+            , Authorization authorization, Map<String, String> requestHeaders) {
         this.requestMethod = method;
         this.url = url;
         this.postParams = postParams;
-        this.authentication = authentication;
+        this.authorization = authorization;
         this.requestHeaders = requestHeaders;
     }
 
@@ -70,7 +70,7 @@ public final class HttpRequest implements java.io.Serializable {
 
         HttpRequest that = (HttpRequest) o;
 
-        if (authentication != null ? !authentication.equals(that.authentication) : that.authentication != null)
+        if (authorization != null ? !authorization.equals(that.authorization) : that.authorization != null)
             return false;
         if (!Arrays.equals(postParams, that.postParams)) return false;
         if (requestHeaders != null ? !requestHeaders.equals(that.requestHeaders) : that.requestHeaders != null)
@@ -88,7 +88,7 @@ public final class HttpRequest implements java.io.Serializable {
         int result = requestMethod != null ? requestMethod.hashCode() : 0;
         result = 31 * result + (url != null ? url.hashCode() : 0);
         result = 31 * result + (postParams != null ? Arrays.hashCode(postParams) : 0);
-        result = 31 * result + (authentication != null ? authentication.hashCode() : 0);
+        result = 31 * result + (authorization != null ? authorization.hashCode() : 0);
         result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
         return result;
     }
@@ -99,7 +99,7 @@ public final class HttpRequest implements java.io.Serializable {
                 "requestMethod=" + requestMethod +
                 ", url='" + url + '\'' +
                 ", postParams=" + (postParams == null ? null : Arrays.asList(postParams)) +
-                ", authentication=" + authentication +
+                ", authentication=" + authorization +
                 ", requestHeaders=" + requestHeaders +
                 '}';
     }

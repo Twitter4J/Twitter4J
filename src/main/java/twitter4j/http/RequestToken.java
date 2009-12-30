@@ -35,10 +35,10 @@ import twitter4j.TwitterException;
  */
 public class RequestToken extends OAuthToken implements java.io.Serializable {
     private static final transient Configuration conf = Configuration.getInstance();
-    private OAuthAuthentication oauth;
+    private OAuthAuthorization oauth;
     private static final long serialVersionUID = -8214365845469757952L;
 
-    RequestToken(Response res, OAuthAuthentication oauth) throws TwitterException {
+    RequestToken(Response res, OAuthAuthorization oauth) throws TwitterException {
         super(res);
         this.oauth = oauth;
     }
@@ -47,7 +47,7 @@ public class RequestToken extends OAuthToken implements java.io.Serializable {
         super(token, tokenSecret);
     }
 
-    RequestToken(String token, String tokenSecret, OAuthAuthentication oauth) {
+    RequestToken(String token, String tokenSecret, OAuthAuthorization oauth) {
         super(token, tokenSecret);
         this.oauth = oauth;
     }

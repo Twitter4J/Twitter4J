@@ -44,7 +44,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.AccessControlException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static twitter4j.http.RequestMethod.*;
@@ -55,7 +54,7 @@ import static twitter4j.http.RequestMethod.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class HttpClient implements java.io.Serializable {
-    private static final Configuration conf = Configuration.getInstance();
+    private static final boolean DEBUG = Configuration.getInstance().isDebug();
     private static final int OK = 200;// OK: Success!
     private static final int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.
     private static final int BAD_REQUEST = 400;// Bad Request: The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.
@@ -71,17 +70,17 @@ public class HttpClient implements java.io.Serializable {
     private static final int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
     private static final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
 
-    private String proxyHost = conf.getProxyHost();
-    private int proxyPort = conf.getProxyPort();
-    private String proxyAuthUser = conf.getProxyUser();
-    private String proxyAuthPassword = conf.getProxyPassword();
-    private int httpConnectionTimeout = conf.getHttpConnectionTimeout();
-    private int httpReadTimeout = conf.getHttpReadTimeout();
+    private String proxyHost = null;
+    private int proxyPort = -1;
+    private String proxyAuthUser = null;
+    private String proxyAuthPassword = null;
+    private int connectionTimeout = 20000;
+    private int readTimeout = 120000;
+    private int retryCount = 0;
+    private int retryIntervalSeconds = 5 * 1000;
     private static final long serialVersionUID = 808018030183407996L;
     private static boolean isJDK14orEarlier = false;
-//    private Map<String, String> requestHeaders = new HashMap<String, String>();
-    private List<HttpResponseListener> httpResponseListeners = new ArrayList<HttpResponseListener>();
-//    HttpRequestFactory requestFactory;
+    private List<HttpResponseListener> httpResponseListeners;
 
     static {
         try {
@@ -97,6 +96,117 @@ public class HttpClient implements java.io.Serializable {
     public HttpClient() {
     }
 
+    public HttpClient(HttpClientConfiguration conf) {
+        proxyHost = conf.getHttpProxyHost();
+        proxyPort = conf.getHttpProxyPort();
+        proxyAuthUser = conf.getHttpProxyUser();
+        proxyAuthPassword = conf.getHttpProxyPassword();
+        connectionTimeout = conf.getHttpConnectionTimeout();
+        readTimeout = conf.getHttpReadTimeout();
+        retryCount = conf.getHttpRetryCount();
+        retryIntervalSeconds = conf.getHttpRetryIntervalSeconds();
+    }
+
+
+    public String getProxyHost() {
+        return proxyHost;
+    }
+
+    /**
+     * Sets proxy host.
+     *
+     * @param proxyHost
+     */
+    public void setProxyHost(String proxyHost) {
+        this.proxyHost = proxyHost;
+    }
+
+    public int getProxyPort() {
+        return proxyPort;
+    }
+
+    /**
+     * Sets proxy port.
+     *
+     * @param proxyPort
+     */
+    public void setProxyPort(int proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
+    public String getProxyAuthUser() {
+        return proxyAuthUser;
+    }
+
+    /**
+     * Sets proxy authentication user.
+     * System property -Dtwitter4j.http.proxyUser overrides this attribute.
+     *
+     * @param proxyAuthUser
+     */
+    public void setProxyAuthUser(String proxyAuthUser) {
+        this.proxyAuthUser = proxyAuthUser;
+    }
+
+    public String getProxyAuthPassword() {
+        return proxyAuthPassword;
+    }
+
+    /**
+     * Sets proxy authentication password.
+     * System property -Dtwitter4j.http.proxyPassword overrides this attribute.
+     *
+     * @param proxyAuthPassword
+     */
+    public void setProxyAuthPassword(String proxyAuthPassword) {
+        this.proxyAuthPassword = proxyAuthPassword;
+    }
+
+    public int getConnectionTimeout() {
+        return connectionTimeout;
+    }
+
+    /**
+     * Sets a specified timeout value, in milliseconds, to be used when opening a communications link to the resource referenced by this URLConnection.
+     *
+     * @param connectionTimeout - an int that specifies the connect timeout value in milliseconds
+     */
+    public void setConnectionTimeout(int connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+
+    }
+
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
+    /**
+     * Sets the read timeout to a specified timeout, in milliseconds.
+     *
+     * @param readTimeout - an int that specifies the timeout value to be used in milliseconds
+     */
+    public void setReadTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
+    }
+
+    public void setRetryCount(int retryCount) {
+        if (retryCount >= 0) {
+            this.retryCount = retryCount;
+        } else {
+            throw new IllegalArgumentException("RetryCount cannot be negative.");
+        }
+    }
+
+    public void setRetryIntervalSeconds(int retryIntervalSeconds) {
+        if (retryIntervalSeconds >= 0) {
+            this.retryIntervalSeconds = retryIntervalSeconds;
+        } else {
+            throw new IllegalArgumentException(
+                    "RetryInterval cannot be negative.");
+        }
+    }
+
+
     public Response get(String url) throws TwitterException {
         return request(new HttpRequest(RequestMethod.GET, url, null, null, null));
     }
@@ -107,7 +217,7 @@ public class HttpClient implements java.io.Serializable {
 
     public Response request(HttpRequest req) throws TwitterException {
         int retriedCount;
-        int retry = conf.getRetryCount() + 1;
+        int retry = retryCount + 1;
         Response res = null;
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
@@ -168,7 +278,7 @@ public class HttpClient implements java.io.Serializable {
                     }
                     res = new Response(con);
                     responseCode = con.getResponseCode();
-                    if (conf.isDebug()) {
+                    if (DEBUG) {
                         log("Response: ");
                         Map<String, List<String>> responseHeaders = con.getHeaderFields();
                         for (String key : responseHeaders.keySet()) {
@@ -195,7 +305,7 @@ public class HttpClient implements java.io.Serializable {
                             throw TwitterException.createRateLimitedTwitterException(getCause(responseCode)
                                     , responseCode, retryAfter);
                         }
-                        if (responseCode < INTERNAL_SERVER_ERROR || retriedCount == conf.getRetryCount()) {
+                        if (responseCode < INTERNAL_SERVER_ERROR || retriedCount == retryCount) {
                             throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), responseCode);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR
@@ -210,16 +320,16 @@ public class HttpClient implements java.io.Serializable {
                 }
             } catch (IOException ioe) {
                 // connection timeout or read timeout
-                if (retriedCount == conf.getRetryCount()) {
+                if (retriedCount == retryCount) {
                     throw new TwitterException(ioe.getMessage(), ioe, responseCode);
                 }
             }
             try {
-                if (conf.isDebug() && null != res) {
+                if (DEBUG && null != res) {
                     res.asString();
                 }
-                log("Sleeping " + conf.getRetryIntervalMilliSecs() + " milli seconds for next retry.");
-                Thread.sleep(conf.getRetryIntervalMilliSecs());
+                log("Sleeping " + retryIntervalSeconds + " seconds until the next retry.");
+                Thread.sleep(retryIntervalSeconds * 1000);
             } catch (InterruptedException ignore) {
                 //nothing to do
             }
@@ -235,12 +345,17 @@ public class HttpClient implements java.io.Serializable {
 
 
     private void fireHttpResponseEvent(HttpResponseEvent httpResponseEvent) {
-        for (HttpResponseListener listener : httpResponseListeners) {
-            listener.httpResponseReceived(httpResponseEvent);
+        if (null != httpResponseListeners) {
+            for (HttpResponseListener listener : httpResponseListeners) {
+                listener.httpResponseReceived(httpResponseEvent);
+            }
         }
     }
 
     public void addHttpResponseListener(HttpResponseListener listener) {
+        if (null == httpResponseListeners) {
+            httpResponseListeners = new ArrayList<HttpResponseListener>();
+        }
         httpResponseListeners.add(listener);
     }
 
@@ -266,16 +381,6 @@ public class HttpClient implements java.io.Serializable {
 
     }
 
-    public static String encodeParameter(PostParameter postParam) {
-        if (postParam.isFile()) {
-            throw new IllegalArgumentException("parameter [" + postParam.name + "]should be text");
-        }
-        StringBuffer buf = new StringBuffer(postParam.name.length() + postParam.value.length() + 1);
-        buf.append(encode(postParam.name))
-                .append("=").append(encode(postParam.value));
-        return buf.toString();
-    }
-
     public static String encode(String str) {
         try {
             return URLEncoder.encode(str, "UTF-8");
@@ -293,8 +398,8 @@ public class HttpClient implements java.io.Serializable {
         log("Request: ");
         log(req.requestMethod.name() + " ", req.url);
 
-        if (null != req.authentication) {
-            req.authentication.setAuthorizationHeader(req.requestMethod.name(), req.url, req.postParams, connection);
+        if (null != req.authorization) {
+            req.authorization.setAuthorizationHeader(req.requestMethod.name(), req.url, req.postParams, connection);
         }
         if (null != req.requestHeaders) {
             for (String key : req.requestHeaders.keySet()) {
@@ -327,18 +432,18 @@ public class HttpClient implements java.io.Serializable {
             }
             final Proxy proxy = new Proxy(Type.HTTP, InetSocketAddress
                     .createUnresolved(proxyHost, proxyPort));
-            if (conf.isDebug()) {
+            if (DEBUG) {
                 log("Opening proxied connection(" + proxyHost + ":" + proxyPort + ")");
             }
             con = (HttpURLConnection) new URL(url).openConnection(proxy);
         } else {
             con = (HttpURLConnection) new URL(url).openConnection();
         }
-        if (httpConnectionTimeout > 0 && !isJDK14orEarlier) {
-            con.setConnectTimeout(httpConnectionTimeout);
+        if (connectionTimeout > 0 && !isJDK14orEarlier) {
+            con.setConnectTimeout(connectionTimeout);
         }
-        if (httpReadTimeout > 0 && !isJDK14orEarlier) {
-            con.setReadTimeout(httpReadTimeout);
+        if (readTimeout > 0 && !isJDK14orEarlier) {
+            con.setReadTimeout(readTimeout);
         }
         return con;
     }
@@ -350,10 +455,12 @@ public class HttpClient implements java.io.Serializable {
 
         HttpClient that = (HttpClient) o;
 
-        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
+        if (connectionTimeout != that.connectionTimeout) return false;
+        if (readTimeout != that.readTimeout) return false;
+        if (retryCount != that.retryCount) return false;
         if (proxyPort != that.proxyPort) return false;
-        if (httpReadTimeout != that.httpReadTimeout) return false;
-        if (!httpResponseListeners.equals(that.httpResponseListeners))
+        if (retryIntervalSeconds != that.retryIntervalSeconds) return false;
+        if (httpResponseListeners != null ? !httpResponseListeners.equals(that.httpResponseListeners) : that.httpResponseListeners != null)
             return false;
         if (proxyAuthPassword != null ? !proxyAuthPassword.equals(that.proxyAuthPassword) : that.proxyAuthPassword != null)
             return false;
@@ -371,20 +478,22 @@ public class HttpClient implements java.io.Serializable {
         result = 31 * result + proxyPort;
         result = 31 * result + (proxyAuthUser != null ? proxyAuthUser.hashCode() : 0);
         result = 31 * result + (proxyAuthPassword != null ? proxyAuthPassword.hashCode() : 0);
-        result = 31 * result + httpConnectionTimeout;
-        result = 31 * result + httpReadTimeout;
-        result = 31 * result + httpResponseListeners.hashCode();
+        result = 31 * result + connectionTimeout;
+        result = 31 * result + readTimeout;
+        result = 31 * result + retryCount;
+        result = 31 * result + retryIntervalSeconds;
+        result = 31 * result + (httpResponseListeners != null ? httpResponseListeners.hashCode() : 0);
         return result;
     }
 
     private static void log(String message) {
-        if (conf.isDebug()) {
+        if (DEBUG) {
             System.out.println("[" + new java.util.Date() + "]" + message);
         }
     }
 
     private static void log(String message, String message2) {
-        if (conf.isDebug()) {
+        if (DEBUG) {
             log(message + message2);
         }
     }

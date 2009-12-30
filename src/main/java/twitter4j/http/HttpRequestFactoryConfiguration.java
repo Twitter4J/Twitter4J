@@ -26,15 +26,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-import java.net.HttpURLConnection;
+import java.util.Map;
 
-/**
- * An interface represents credentials.
- *
- * @author Yusuke Yamamoto - yusuke at mac.com
- */
-public interface Authentication extends java.io.Serializable {
-    void setAuthorizationHeader(String method, String url, PostParameter[] params, HttpURLConnection con);
-
-    boolean isAuthenticationEnabled();
+public interface HttpRequestFactoryConfiguration {
+    /**
+     *
+     * @return request headers
+     */
+    Map<String, String> getRequestHeaders();
 }

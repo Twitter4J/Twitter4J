@@ -44,7 +44,6 @@ import twitter4j.api.SpamReportingMethods;
 import twitter4j.api.StatusMethods;
 import twitter4j.api.TimelineMethods;
 import twitter4j.api.UserMethods;
-import twitter4j.conf.Configuration;
 import twitter4j.http.*;
 
 import java.io.File;
@@ -61,7 +60,7 @@ import java.util.List;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Twitter extends RateLimitListenerSupport
+public class Twitter extends OAuthTwitterSupport
         implements java.io.Serializable,
         SearchMethods,
         TimelineMethods,
@@ -100,109 +99,11 @@ public class Twitter extends RateLimitListenerSupport
     public Twitter(String screenName, String password) {
         super(screenName, password);
     }
-
-    /**
-     * Retrieves a request token
-     *
-     * @return generated request token.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ">Twitter API Wiki - OAuth FAQ</a>
-     * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
-     * @since Twitter 2.0.0
-     */
-    public RequestToken getOAuthRequestToken() throws TwitterException {
-        return getOAuthRequestToken(null);
+    /*package*/
+    Twitter(Authorization auth) {
+        super(auth);
     }
 
-    public RequestToken getOAuthRequestToken(String callback_url) throws TwitterException {
-        return getOAuth().getRequestToken(callback_url);
-    }
-
-    /**
-     * Retrieves an access token associated with the supplied request token and sets userId.
-     *
-     * @param requestToken the request token
-     * @return access token associsted with the supplied request token.
-     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
-     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @since Twitter 2.0.0
-     */
-    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
-        OAuthAuthentication oauth = getOAuth();
-        AccessToken oauthAccessToken = oauth.getAccessToken(requestToken);
-        screenName = oauthAccessToken.getScreenName();
-        return oauthAccessToken;
-    }
-
-    /**
-     * Retrieves an access token associated with the supplied request token and sets userId.
-     *
-     * @param requestToken   the request token
-     * @param oauthVerifier oauth_verifier or pin
-     * @return access token associsted with the supplied request token.
-     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
-     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @since Twitter 2.0.0
-     */
-    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
-        AccessToken oauthAccessToken = getOAuth().getAccessToken(requestToken, oauthVerifier);
-        return oauthAccessToken;
-    }
-
-    /**
-     * Retrieves an access token associated with the supplied request token and sets userId.
-     *
-     * @param token       request token
-     * @param tokenSecret request token secret
-     * @return access token associated with the supplied request token.
-     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
-     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @since Twitter 2.0.1
-     */
-    public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        return getOAuth().getAccessToken(new RequestToken(token,tokenSecret));
-    }
-
-    /**
-     * Retrieves an access token associated with the supplied request token.
-     *
-     * @param token       request token
-     * @param tokenSecret request token secret
-     * @param pin         pin
-     * @return access token associated with the supplied request token.
-     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
-     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @since Twitter 2.0.8
-     */
-    public synchronized AccessToken getOAuthAccessToken(String token
-            , String tokenSecret, String pin) throws TwitterException {
-        return getOAuth().getAccessToken(new RequestToken(token, tokenSecret), pin);
-    }
-
-    /**
-     * Sets the access token
-     *
-     * @param accessToken accessToken
-     * @since Twitter 2.0.0
-     */
-    public void setOAuthAccessToken(AccessToken accessToken) {
-        getOAuth().setAccessToken(accessToken);
-    }
-
-    /**
-     * Sets the access token
-     *
-     * @param token       token
-     * @param tokenSecret token secret
-     * @since Twitter 2.0.0
-     */
-    public void setOAuthAccessToken(String token, String tokenSecret) {
-        setOAuthAccessToken(new AccessToken(token, tokenSecret));
-    }
 
     /**
      * Returns authenticating user's screen name.<br>
@@ -220,8 +121,8 @@ public class Twitter extends RateLimitListenerSupport
             throw new IllegalStateException(
                     "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
         }
-        if (auth instanceof BasicAuthentication) {
-            screenName = ((BasicAuthentication) auth).getUserId();
+        if (auth instanceof BasicAuthorization) {
+            screenName = ((BasicAuthorization) auth).getUserId();
             if (-1 != screenName.indexOf("@")) {
                 screenName = null;
             }
@@ -230,34 +131,33 @@ public class Twitter extends RateLimitListenerSupport
         return screenName = this.verifyCredentials().getScreenName();
     }
 
-    String screenName = null;
 
     /**
      * Issues an HTTP GET request.
      *
      * @param url            the request url
-     * @param authentication if true, the request will be sent with BASIC authentication header
+     * @param authorization if true, the request will be sent with BASIC authentication header
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
 
-    protected Response get(String url, Authentication authentication) throws TwitterException {
-        return get(url, null, authentication);
+    protected Response get(String url, Authorization authorization) throws TwitterException {
+        return get(url, null, authorization);
     }
 
     /**
      * Issues an HTTP GET request.
      *
      * @param url            the request url
-     * @param authentication if true, the request will be sent with BASIC authentication header
+     * @param authorization if true, the request will be sent with BASIC authentication header
      * @param name1          the name of the first parameter
      * @param value1         the value of the first parameter
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
 
-    protected Response get(String url, String name1, String value1, Authentication authentication) throws TwitterException {
-        return get(url, new PostParameter[]{new PostParameter(name1, value1)}, authentication);
+    protected Response get(String url, String name1, String value1, Authorization authorization) throws TwitterException {
+        return get(url, new PostParameter[]{new PostParameter(name1, value1)}, authorization);
     }
 
     /**
@@ -268,13 +168,13 @@ public class Twitter extends RateLimitListenerSupport
      * @param value1         the value of the first parameter
      * @param name2          the name of the second parameter
      * @param value2         the value of the second parameter
-     * @param authentication if true, the request will be sent with BASIC authentication header
+     * @param authorization if true, the request will be sent with BASIC authentication header
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
 
-    protected Response get(String url, String name1, String value1, String name2, String value2, Authentication authentication) throws TwitterException {
-        return get(url, new PostParameter[]{new PostParameter(name1, value1), new PostParameter(name2, value2)}, authentication);
+    protected Response get(String url, String name1, String value1, String name2, String value2, Authorization authorization) throws TwitterException {
+        return get(url, new PostParameter[]{new PostParameter(name1, value1), new PostParameter(name2, value2)}, authorization);
     }
 
     /**
@@ -286,7 +186,7 @@ public class Twitter extends RateLimitListenerSupport
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    protected Response get(String url, PostParameter[] params, Authentication authenticate) throws TwitterException {
+    protected Response get(String url, PostParameter[] params, Authorization authenticate) throws TwitterException {
         if (null != params && params.length > 0) {
             url += "?" + HttpClient.encodeParameters(params);
         }
@@ -299,22 +199,22 @@ public class Twitter extends RateLimitListenerSupport
      * @param url            the request url
      * @param params         the request parameters
      * @param pagingParams   controls pagination
-     * @param authentication if true, the request will be sent with BASIC authentication header
+     * @param authorization if true, the request will be sent with BASIC authentication header
      * @return the response
      * @throws TwitterException when Twitter service or network is unavailable
      */
-    protected Response get(String url, PostParameter[] params, List<PostParameter> pagingParams, Authentication authentication) throws TwitterException {
+    protected Response get(String url, PostParameter[] params, List<PostParameter> pagingParams, Authorization authorization) throws TwitterException {
         if (null != params) {
             if (null != pagingParams) {
                 pagingParams.addAll(Arrays.asList(params));
-                return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authentication);
+                return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authorization);
             } else {
-                return get(url, params, authentication);
+                return get(url, params, authorization);
             }
         } else if (null != pagingParams) {
-            return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authentication);
+            return get(url, pagingParams.toArray(new PostParameter[pagingParams.size()]), authorization);
         } else {
-            return get(url, authentication);
+            return get(url, authorization);
         }
     }
 

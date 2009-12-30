@@ -47,7 +47,7 @@ import java.util.Random;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
-public final class OAuthAuthentication implements Authentication, java.io.Serializable {
+public final class OAuthAuthorization implements Authorization, java.io.Serializable {
     private static final Configuration conf = Configuration.getInstance();
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final PostParameter OAUTH_SIGNATURE_METHOD = new PostParameter("oauth_signature_method", "HMAC-SHA1");
@@ -60,19 +60,19 @@ public final class OAuthAuthentication implements Authentication, java.io.Serial
     private HttpRequestFactory requestFactory;
     private OAuthToken oauthToken = null;
 
-    public OAuthAuthentication(String consumerKey, String consumerSecret) {
+    public OAuthAuthorization(String consumerKey, String consumerSecret) {
         init(consumerKey, consumerSecret);
-        http = new HttpClient();
-        this.requestFactory = new HttpRequestFactory();
+        http = new HttpClient(conf);
+        this.requestFactory = new HttpRequestFactory(conf);
     }
 
-    public OAuthAuthentication(String consumerKey, String consumerSecret, HttpClient http) {
+    public OAuthAuthorization(String consumerKey, String consumerSecret, HttpClient http) {
         init(consumerKey, consumerSecret);
         this.http = http;
-        this.requestFactory = new HttpRequestFactory();
+        this.requestFactory = new HttpRequestFactory(conf);
     }
 
-    public OAuthAuthentication(String consumerKey, String consumerSecret, HttpClient http, HttpRequestFactory requestFactory) {
+    public OAuthAuthorization(String consumerKey, String consumerSecret, HttpClient http, HttpRequestFactory requestFactory) {
         init(consumerKey, consumerSecret);
         this.http = http;
         this.requestFactory = requestFactory;
@@ -160,7 +160,7 @@ public final class OAuthAuthentication implements Authentication, java.io.Serial
     }
 
     public boolean isAuthenticationEnabled() {
-        return true;
+        return null != oauthToken && oauthToken instanceof AccessToken;
     }
 
     public RequestToken getRequestToken() throws TwitterException {
@@ -415,9 +415,9 @@ public final class OAuthAuthentication implements Authentication, java.io.Serial
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OAuthAuthentication)) return false;
+        if (!(o instanceof OAuthAuthorization)) return false;
 
-        OAuthAuthentication oAuthAuthentication = (OAuthAuthentication) o;
+        OAuthAuthorization oAuthAuthentication = (OAuthAuthorization) o;
 
         if (consumerKey != null ? !consumerKey.equals(oAuthAuthentication.consumerKey) : oAuthAuthentication.consumerKey != null)
             return false;

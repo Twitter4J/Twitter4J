@@ -35,7 +35,7 @@ import java.net.HttpURLConnection;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class BasicAuthentication implements Authentication, java.io.Serializable {
+public final class BasicAuthorization implements Authorization, java.io.Serializable {
     private final static boolean DEBUG = Configuration.getInstance().isDebug();
 
     private String userId;
@@ -43,7 +43,7 @@ public final class BasicAuthentication implements Authentication, java.io.Serial
     private String basic;
     private static final long serialVersionUID = -5861104407848415060L;
 
-    public BasicAuthentication(String userId, String password) {
+    public BasicAuthorization(String userId, String password) {
         this.userId = userId;
         this.password = password;
         this.basic = encodeBasicAuthenticationString();
@@ -72,9 +72,9 @@ public final class BasicAuthentication implements Authentication, java.io.Serial
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BasicAuthentication)) return false;
+        if (!(o instanceof BasicAuthorization)) return false;
 
-        BasicAuthentication that = (BasicAuthentication) o;
+        BasicAuthorization that = (BasicAuthorization) o;
 
         if (!basic.equals(that.basic)) return false;
 
