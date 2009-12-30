@@ -53,7 +53,7 @@ public interface RateLimitStatus extends java.io.Serializable {
 
     /**
      * Returns the seconds the current rate limiting period ends.<br>
-     * This is the same as getResetTime().getTime()/1000.
+     * This should be a same as getResetTime().getTime()/1000.
      *
      * @return the seconds the current rate limiting period ends
      * @since Twitter4J 2.0.9
@@ -62,8 +62,10 @@ public interface RateLimitStatus extends java.io.Serializable {
 
     /**
      * Returns the amount of seconds until the current rate limiting period ends.<br>
+     * This is a value provided/calculated only by Twitter4J for handiness and not a part of the twitter API spec.
      *
      * @return the amount of seconds until next rate limiting period
+     * @since Twitter4J 2.1.0
      */
     int getSecondsUntilReset();
 
