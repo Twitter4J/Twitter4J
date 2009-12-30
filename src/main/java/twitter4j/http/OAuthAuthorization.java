@@ -62,7 +62,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
 
     public OAuthAuthorization(String consumerKey, String consumerSecret) {
         init(consumerKey, consumerSecret);
-        http = new HttpClient(conf);
+        http = HttpClient.getInstance(conf);
         this.requestFactory = new HttpRequestFactory(conf);
     }
 

@@ -45,11 +45,6 @@ import java.util.Arrays;
     private long nextCursor = -1;
     private static final long serialVersionUID = -6585026560164704953L;
 
-    /*package*/ IDsJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
-
     private IDsJSONImpl(Response res) throws TwitterException {
         super(res);
     }
@@ -102,10 +97,6 @@ import java.util.Arrays;
         return ids;
     }
 
-    public void setIds(int[] ids) {
-        this.ids = ids;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -120,10 +111,6 @@ import java.util.Arrays;
         return previousCursor;
     }
 
-    public void setPreviousCursor(long previousCursor) {
-        this.previousCursor = previousCursor;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -136,10 +123,6 @@ import java.util.Arrays;
      */
     public long getNextCursor() {
         return nextCursor;
-    }
-
-    public void setNextCursor(long nextCursor) {
-        this.nextCursor = nextCursor;
     }
 
     @Override

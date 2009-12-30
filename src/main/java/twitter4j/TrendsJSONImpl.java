@@ -58,13 +58,6 @@ import static twitter4j.ParseUtil.*;
 
     /*package*/
 
-    TrendsJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
-
-    /*package*/
-
     TrendsJSONImpl(Date asOf, Date trendAt, Trend[] trends)
             throws TwitterException {
         this.asOf = asOf;
@@ -148,10 +141,6 @@ import static twitter4j.ParseUtil.*;
         return this.trends;
     }
 
-    public void setTrends(Trend[] trends) {
-        this.trends = trends;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -159,19 +148,11 @@ import static twitter4j.ParseUtil.*;
         return asOf;
     }
 
-    public void setAsOf(Date asOf) {
-        this.asOf = asOf;
-    }
-
     /**
      * {@inheritDoc}
      */
     public Date getTrendAt() {
         return trendAt;
-    }
-
-    public void setTrendAt(Date trendAt) {
-        this.trendAt = trendAt;
     }
 
     @Override

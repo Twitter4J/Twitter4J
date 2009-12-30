@@ -48,11 +48,6 @@ import static twitter4j.ParseUtil.*;
     private int id;
     private static final long serialVersionUID = 3083819860391598212L;
 
-    /*package*/ SavedSearchJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
-
     /*package*/ SavedSearchJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
@@ -91,19 +86,11 @@ import static twitter4j.ParseUtil.*;
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getQuery() {
         return query;
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
     }
 
     /**
@@ -113,10 +100,6 @@ import static twitter4j.ParseUtil.*;
         return position;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -124,19 +107,11 @@ import static twitter4j.ParseUtil.*;
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override

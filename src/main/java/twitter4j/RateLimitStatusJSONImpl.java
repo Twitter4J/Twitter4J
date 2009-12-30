@@ -47,12 +47,6 @@ import static twitter4j.ParseUtil.*;
     private int secondsUntilReset;
     private Date resetTime;
     private static final long serialVersionUID = 832355052293658614L;
-    /*package*/
-
-    RateLimitStatusJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
 
     private RateLimitStatusJSONImpl(int hourlyLimit, int remainingHits, int resetTimeInSeconds, Date resetTime) {
         this.hourlyLimit = hourlyLimit;
@@ -106,19 +100,11 @@ import static twitter4j.ParseUtil.*;
         return remainingHits;
     }
 
-    public void setRemainingHits(int remainingHits) {
-        this.remainingHits = remainingHits;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getHourlyLimit() {
         return hourlyLimit;
-    }
-
-    public void setHourlyLimit(int hourlyLimit) {
-        this.hourlyLimit = hourlyLimit;
     }
 
     /**
@@ -128,10 +114,6 @@ import static twitter4j.ParseUtil.*;
         return resetTimeInSeconds;
     }
 
-    public void setResetTimeInSeconds(int resetTimeInSeconds) {
-        this.resetTimeInSeconds = resetTimeInSeconds;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -139,19 +121,11 @@ import static twitter4j.ParseUtil.*;
         return secondsUntilReset;
     }
 
-    public void setSecondsUntilReset(int secondsUntilReset) {
-        this.secondsUntilReset = secondsUntilReset;
-    }
-
     /**
      * {@inheritDoc}
      */
     public Date getResetTime() {
         return resetTime;
-    }
-
-    public void setResetTime(Date resetTime) {
-        this.resetTime = resetTime;
     }
 
     @Override

@@ -80,11 +80,6 @@ import static twitter4j.ParseUtil.*;
     private boolean isVerified;
     private static final long serialVersionUID = -6345893237975349030L;
 
-    /*package*/UserJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
-
     /*package*/UserJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
@@ -146,19 +141,11 @@ import static twitter4j.ParseUtil.*;
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -168,10 +155,6 @@ import static twitter4j.ParseUtil.*;
         return screenName;
     }
 
-    public void setScreenName(String screenName) {
-        this.screenName = screenName;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -179,19 +162,11 @@ import static twitter4j.ParseUtil.*;
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     /**
@@ -205,10 +180,6 @@ import static twitter4j.ParseUtil.*;
         }
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -220,19 +191,11 @@ import static twitter4j.ParseUtil.*;
         }
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     /**
      * {@inheritDoc}
      */
     public boolean isProtected() {
         return isProtected;
-    }
-
-    public void setProtected(boolean aProtected) {
-        isProtected = aProtected;
     }
 
     /**
@@ -242,19 +205,11 @@ import static twitter4j.ParseUtil.*;
         return followersCount;
     }
 
-    public void setFollowersCount(int followersCount) {
-        this.followersCount = followersCount;
-    }
-
     /**
      * {@inheritDoc}
      */
     public Date getStatusCreatedAt() {
         return statusCreatedAt;
-    }
-
-    public void setStatusCreatedAt(Date statusCreatedAt) {
-        this.statusCreatedAt = statusCreatedAt;
     }
 
     /**
@@ -264,19 +219,11 @@ import static twitter4j.ParseUtil.*;
         return statusId;
     }
 
-    public void setStatusId(long statusId) {
-        this.statusId = statusId;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getStatusText() {
         return statusText;
-    }
-
-    public void setStatusText(String statusText) {
-        this.statusText = statusText;
     }
 
     /**
@@ -286,19 +233,11 @@ import static twitter4j.ParseUtil.*;
         return statusSource;
     }
 
-    public void setStatusSource(String statusSource) {
-        this.statusSource = statusSource;
-    }
-
     /**
      * {@inheritDoc}
      */
     public boolean isStatusTruncated() {
         return statusTruncated;
-    }
-
-    public void setStatusTruncated(boolean statusTruncated) {
-        this.statusTruncated = statusTruncated;
     }
 
     /**
@@ -308,19 +247,11 @@ import static twitter4j.ParseUtil.*;
         return statusInReplyToStatusId;
     }
 
-    public void setStatusInReplyToStatusId(long statusInReplyToStatusId) {
-        this.statusInReplyToStatusId = statusInReplyToStatusId;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getStatusInReplyToUserId() {
         return statusInReplyToUserId;
-    }
-
-    public void setStatusInReplyToUserId(int statusInReplyToUserId) {
-        this.statusInReplyToUserId = statusInReplyToUserId;
     }
 
     /**
@@ -330,19 +261,11 @@ import static twitter4j.ParseUtil.*;
         return statusFavorited;
     }
 
-    public void setStatusFavorited(boolean statusFavorited) {
-        this.statusFavorited = statusFavorited;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getStatusInReplyToScreenName() {
         return -1 != statusInReplyToUserId ? statusInReplyToScreenName : null;
-    }
-
-    public void setStatusInReplyToScreenName(String statusInReplyToScreenName) {
-        this.statusInReplyToScreenName = statusInReplyToScreenName;
     }
 
     /**
@@ -352,16 +275,8 @@ import static twitter4j.ParseUtil.*;
         return profileBackgroundColor;
     }
 
-    public void setProfileBackgroundColor(String profileBackgroundColor) {
-        this.profileBackgroundColor = profileBackgroundColor;
-    }
-
     public String getProfileTextColor() {
         return profileTextColor;
-    }
-
-    public void setProfileTextColor(String profileTextColor) {
-        this.profileTextColor = profileTextColor;
     }
 
     /**
@@ -371,19 +286,11 @@ import static twitter4j.ParseUtil.*;
         return profileLinkColor;
     }
 
-    public void setProfileLinkColor(String profileLinkColor) {
-        this.profileLinkColor = profileLinkColor;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getProfileSidebarFillColor() {
         return profileSidebarFillColor;
-    }
-
-    public void setProfileSidebarFillColor(String profileSidebarFillColor) {
-        this.profileSidebarFillColor = profileSidebarFillColor;
     }
 
     /**
@@ -393,19 +300,11 @@ import static twitter4j.ParseUtil.*;
         return profileSidebarBorderColor;
     }
 
-    public void setProfileSidebarBorderColor(String profileSidebarBorderColor) {
-        this.profileSidebarBorderColor = profileSidebarBorderColor;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getFriendsCount() {
         return friendsCount;
-    }
-
-    public void setFriendsCount(int friendsCount) {
-        this.friendsCount = friendsCount;
     }
 
     /**
@@ -415,19 +314,11 @@ import static twitter4j.ParseUtil.*;
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getFavouritesCount() {
         return favouritesCount;
-    }
-
-    public void setFavouritesCount(int favouritesCount) {
-        this.favouritesCount = favouritesCount;
     }
 
     /**
@@ -437,19 +328,11 @@ import static twitter4j.ParseUtil.*;
         return utcOffset;
     }
 
-    public void setUtcOffset(int utcOffset) {
-        this.utcOffset = utcOffset;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getTimeZone() {
         return timeZone;
-    }
-
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
     }
 
     /**
@@ -459,19 +342,11 @@ import static twitter4j.ParseUtil.*;
         return profileBackgroundImageUrl;
     }
 
-    public void setProfileBackgroundImageUrl(String profileBackgroundImageUrl) {
-        this.profileBackgroundImageUrl = profileBackgroundImageUrl;
-    }
-
     /**
      * {@inheritDoc}
      */
     public boolean isProfileBackgroundTiled() {
         return profileBackgroundTiled;
-    }
-
-    public void setProfileBackgroundTiled(boolean profileBackgroundTiled) {
-        this.profileBackgroundTiled = profileBackgroundTiled;
     }
 
     /**
@@ -481,10 +356,6 @@ import static twitter4j.ParseUtil.*;
         return statusesCount;
     }
 
-    public void setStatusesCount(int statusesCount) {
-        this.statusesCount = statusesCount;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -492,19 +363,11 @@ import static twitter4j.ParseUtil.*;
         return isGeoEnabled;
     }
 
-    public void setGeoEnabled(boolean geoEnabled) {
-        isGeoEnabled = geoEnabled;
-    }
-
     /**
      * {@inheritDoc}
      */
     public boolean isVerified() {
         return isVerified;
-    }
-
-    public void setVerified(boolean verified) {
-        isVerified = verified;
     }
 
     /*package*/ static PagableResponseList<User> createPagableUserList(Response res) throws TwitterException {

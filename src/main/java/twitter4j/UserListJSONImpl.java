@@ -53,11 +53,6 @@ import java.net.URISyntaxException;
     private User user;
     private static final long serialVersionUID = -6345893237975349030L;
 
-    /*package*/ UserListJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
-
     /*package*/ UserListJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
@@ -94,19 +89,11 @@ import java.net.URISyntaxException;
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -116,19 +103,11 @@ import java.net.URISyntaxException;
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getSlug() {
         return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
     }
 
     /**
@@ -138,10 +117,6 @@ import java.net.URISyntaxException;
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -149,19 +124,11 @@ import java.net.URISyntaxException;
         return subscriberCount;
     }
 
-    public void setSubscriberCount(int subscriberCount) {
-        this.subscriberCount = subscriberCount;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getMemberCount() {
         return memberCount;
-    }
-
-    public void setMemberCount(int memberCount) {
-        this.memberCount = memberCount;
     }
 
     /**
@@ -175,10 +142,6 @@ import java.net.URISyntaxException;
         }
     }
         
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -186,10 +149,6 @@ import java.net.URISyntaxException;
         return mode;
     }
         
-    public void setPublic(boolean mode) {
-        this.mode = mode;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -197,10 +156,6 @@ import java.net.URISyntaxException;
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
     /*package*/ static PagableResponseList<UserList> createUserListList(Response res) throws TwitterException {
         try {
             JSONObject json = res.asJSONObject();

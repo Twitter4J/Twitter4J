@@ -42,11 +42,6 @@ import static twitter4j.ParseUtil.*;
     private String query = null;
     private static final long serialVersionUID = 1925956704460743946L;
 
-    /*package*/ TrendJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
-
     /*package*/ TrendJSONImpl(JSONObject json) throws JSONException {
         this.name = getRawString("name", json);
         this.url = getRawString("url", json);
@@ -60,10 +55,6 @@ import static twitter4j.ParseUtil.*;
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -71,19 +62,11 @@ import static twitter4j.ParseUtil.*;
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getQuery() {
         return query;
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
     }
 
     @Override

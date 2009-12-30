@@ -50,10 +50,6 @@ import static twitter4j.ParseUtil.*;
     private String query;
     private List<Tweet> tweets;
     private static final long serialVersionUID = -9059136565234613286L;
-    /*package*/ QueryResultJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
 
     /*package*/ QueryResultJSONImpl(Response res) throws TwitterException {
         JSONObject json = res.asJSONObject();
@@ -92,19 +88,11 @@ import static twitter4j.ParseUtil.*;
         return sinceId;
     }
 
-    public void setSinceId(long sinceId) {
-        this.sinceId = sinceId;
-    }
-
     /**
      * {@inheritDoc}
      */
     public long getMaxId() {
         return maxId;
-    }
-
-    public void setMaxId(long maxId) {
-        this.maxId = maxId;
     }
 
     /**
@@ -114,19 +102,11 @@ import static twitter4j.ParseUtil.*;
         return refreshUrl;
     }
 
-    public void setRefreshUrl(String refreshUrl) {
-        this.refreshUrl = refreshUrl;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getResultsPerPage() {
         return resultsPerPage;
-    }
-
-    public void setResultsPerPage(int resultsPerPage) {
-        this.resultsPerPage = resultsPerPage;
     }
 
     /**
@@ -136,19 +116,11 @@ import static twitter4j.ParseUtil.*;
         return warning;
     }
 
-    public void setWarning(String warning) {
-        this.warning = warning;
-    }
-
     /**
      * {@inheritDoc}
      */
     public double getCompletedIn() {
         return completedIn;
-    }
-
-    public void setCompletedIn(double completedIn) {
-        this.completedIn = completedIn;
     }
 
     /**
@@ -158,10 +130,6 @@ import static twitter4j.ParseUtil.*;
         return page;
     }
 
-    public void setPage(int page) {
-        this.page = page;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -169,19 +137,11 @@ import static twitter4j.ParseUtil.*;
         return query;
     }
 
-    public void setQuery(String query) {
-        this.query = query;
-    }
-
     /**
      * {@inheritDoc}
      */
     public List<Tweet> getTweets() {
         return tweets;
-    }
-
-    public void setTweets(List<Tweet> tweets) {
-        this.tweets = tweets;
     }
 
     @Override

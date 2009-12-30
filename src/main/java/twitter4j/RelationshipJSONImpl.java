@@ -50,11 +50,6 @@ import static twitter4j.ParseUtil.*;
     private String sourceUserScreenName;
     private static final long serialVersionUID = 697705345506281849L;
 
-    /*package*/ RelationshipJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
-
     /*package*/ RelationshipJSONImpl(Response res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
@@ -90,19 +85,11 @@ import static twitter4j.ParseUtil.*;
         return sourceUserId;
     }
 
-    public void setSourceUserId(int sourceUserId) {
-        this.sourceUserId = sourceUserId;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getTargetUserId() {
         return targetUserId;
-    }
-
-    public void setTargetUserId(int targetUserId) {
-        this.targetUserId = targetUserId;
     }
 
     /**
@@ -112,19 +99,11 @@ import static twitter4j.ParseUtil.*;
         return sourceBlockingTarget;
     }
 
-    public void setSourceBlockingTarget(boolean sourceBlockingTarget) {
-        this.sourceBlockingTarget = sourceBlockingTarget;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getSourceUserScreenName() {
         return sourceUserScreenName;
-    }
-
-    public void setSourceUserScreenName(String sourceUserScreenName) {
-        this.sourceUserScreenName = sourceUserScreenName;
     }
 
     /**
@@ -134,19 +113,11 @@ import static twitter4j.ParseUtil.*;
         return targetUserScreenName;
     }
 
-    public void setTargetUserScreenName(String targetUserScreenName) {
-        this.targetUserScreenName = targetUserScreenName;
-    }
-
     /**
      * {@inheritDoc}
      */
     public boolean isSourceFollowingTarget() {
         return sourceFollowingTarget;
-    }
-
-    public void setSourceFollowingTarget(boolean sourceFollowingTarget) {
-        this.sourceFollowingTarget = sourceFollowingTarget;
     }
 
     /**
@@ -163,10 +134,6 @@ import static twitter4j.ParseUtil.*;
         return sourceFollowedByTarget;
     }
 
-    public void setSourceFollowedByTarget(boolean sourceFollowedByTarget) {
-        this.sourceFollowedByTarget = sourceFollowedByTarget;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -179,10 +146,6 @@ import static twitter4j.ParseUtil.*;
      */
     public boolean isSourceNotificationsEnabled() {
         return sourceNotificationsEnabled;
-    }
-
-    public void setSourceNotificationsEnabled(boolean sourceNotificationsEnabled) {
-        this.sourceNotificationsEnabled = sourceNotificationsEnabled;
     }
 
     @Override

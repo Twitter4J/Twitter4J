@@ -44,6 +44,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.AccessControlException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static twitter4j.http.RequestMethod.*;
@@ -96,15 +97,23 @@ public class HttpClient implements java.io.Serializable {
     public HttpClient() {
     }
 
-    public HttpClient(HttpClientConfiguration conf) {
-        proxyHost = conf.getHttpProxyHost();
-        proxyPort = conf.getHttpProxyPort();
-        proxyAuthUser = conf.getHttpProxyUser();
-        proxyAuthPassword = conf.getHttpProxyPassword();
-        connectionTimeout = conf.getHttpConnectionTimeout();
-        readTimeout = conf.getHttpReadTimeout();
-        retryCount = conf.getHttpRetryCount();
-        retryIntervalSeconds = conf.getHttpRetryIntervalSeconds();
+    private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<HttpClientConfiguration, HttpClient>(1);
+
+    public static HttpClient getInstance(HttpClientConfiguration conf) {
+        HttpClient client = instanceMap.get(conf);
+        if (null == client) {
+            client = new HttpClient();
+            client.setProxyHost(conf.getHttpProxyHost());
+            client.setProxyPort(conf.getHttpProxyPort());
+            client.setProxyAuthUser(conf.getHttpProxyUser());
+            client.setProxyAuthPassword(conf.getHttpProxyPassword());
+            client.setConnectionTimeout(conf.getHttpConnectionTimeout());
+            client.setReadTimeout(conf.getHttpReadTimeout());
+            client.setRetryCount(conf.getHttpRetryCount());
+            client.setRetryIntervalSeconds(conf.getHttpRetryIntervalSeconds());
+            instanceMap.put(conf, client);
+        }
+        return client;
     }
 
 

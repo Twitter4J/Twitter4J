@@ -53,11 +53,6 @@ import static twitter4j.ParseUtil.*;
     private GeoLocation geoLocation = null;
     private static final long serialVersionUID = 4299736733993211587L;
 
-    /*package*/ TweetJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
-
     /*package*/ TweetJSONImpl(JSONObject tweet) throws TwitterException {
         text = getUnescapedString("text", tweet);
         toUserId = getInt("to_user_id", tweet);
@@ -80,19 +75,11 @@ import static twitter4j.ParseUtil.*;
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getToUserId() {
         return toUserId;
-    }
-
-    public void setToUserId(int toUserId) {
-        this.toUserId = toUserId;
     }
 
     /**
@@ -102,19 +89,11 @@ import static twitter4j.ParseUtil.*;
         return toUser;
     }
 
-    public void setToUser(String toUser) {
-        this.toUser = toUser;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getFromUser() {
         return fromUser;
-    }
-
-    public void setFromUser(String fromUser) {
-        this.fromUser = fromUser;
     }
 
     /**
@@ -124,19 +103,11 @@ import static twitter4j.ParseUtil.*;
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     /**
      * {@inheritDoc}
      */
     public int getFromUserId() {
         return fromUserId;
-    }
-
-    public void setFromUserId(int fromUserId) {
-        this.fromUserId = fromUserId;
     }
 
     /**
@@ -146,19 +117,11 @@ import static twitter4j.ParseUtil.*;
         return isoLanguageCode;
     }
 
-    public void setIsoLanguageCode(String isoLanguageCode) {
-        this.isoLanguageCode = isoLanguageCode;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getSource() {
         return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
     }
 
     /**
@@ -168,10 +131,6 @@ import static twitter4j.ParseUtil.*;
         return profileImageUrl;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -179,19 +138,11 @@ import static twitter4j.ParseUtil.*;
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     /**
      * {@inheritDoc}
      */
     public GeoLocation getGeoLocation() {
         return geoLocation;
-    }
-
-    public void setGeoLocation(GeoLocation geoLocation) {
-        this.geoLocation = geoLocation;
     }
 
     @Override

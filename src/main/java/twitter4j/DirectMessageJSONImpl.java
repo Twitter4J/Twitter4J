@@ -47,10 +47,6 @@ import static twitter4j.ParseUtil.*;
     private String recipientScreenName;
     private static final long serialVersionUID = -3253021825891789737L;
 
-    /*package*/ DirectMessageJSONImpl() {
-        // Just for protobuf support
-        // Currently this constructor is never used in twitter4j artifact.
-    }
 
     /*package*/DirectMessageJSONImpl(Response res) throws TwitterException {
         super(res);
@@ -81,19 +77,12 @@ import static twitter4j.ParseUtil.*;
     public int getId() {
         return id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * {@inheritDoc}
      */
     public String getText() {
         return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     /**
@@ -103,10 +92,6 @@ import static twitter4j.ParseUtil.*;
         return senderId;
     }
 
-    public void setSenderId(int senderId) {
-        this.senderId = senderId;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -114,18 +99,11 @@ import static twitter4j.ParseUtil.*;
         return recipientId;
     }
 
-    public void setRecipientId(int recipientId) {
-        this.recipientId = recipientId;
-    }
     /**
      * {@inheritDoc}
      */
     public Date getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     /**
@@ -135,19 +113,11 @@ import static twitter4j.ParseUtil.*;
         return senderScreenName;
     }
 
-    public void setSenderScreenName(String senderScreenName) {
-        this.senderScreenName = senderScreenName;
-    }
-
     /**
      * {@inheritDoc}
      */
     public String getRecipientScreenName() {
         return recipientScreenName;
-    }
-
-    public void setRecipientScreenName(String recipientScreenName) {
-        this.recipientScreenName = recipientScreenName;
     }
 
     private User sender;
@@ -159,10 +129,6 @@ import static twitter4j.ParseUtil.*;
         return sender;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
     private User recipient;
 
     /**
@@ -170,10 +136,6 @@ import static twitter4j.ParseUtil.*;
      */
     public User getRecipient() {
         return recipient;
-    }
-
-    public void setRecipient(User recipient) {
-        this.recipient = recipient;
     }
 
     /*package*/ static ResponseList<DirectMessage> createDirectMessageList(Response res) throws TwitterException {

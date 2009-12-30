@@ -47,7 +47,7 @@ abstract class TwitterSupport implements java.io.Serializable {
 
     protected static final HttpRequestFactory requestFactory = new HttpRequestFactory(conf);
 
-    protected final HttpClient http = new HttpClient();
+    protected final HttpClient http = HttpClient.getInstance(conf);
 
     private static final long serialVersionUID = -4779804628175934804L;
     Authorization auth;
