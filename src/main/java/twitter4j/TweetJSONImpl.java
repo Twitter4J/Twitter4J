@@ -59,15 +59,15 @@ import static twitter4j.ParseUtil.*;
     }
 
     /*package*/ TweetJSONImpl(JSONObject tweet) throws TwitterException {
-        text = getURLDecodedString("text", tweet);
+        text = getUnescapedString("text", tweet);
         toUserId = getInt("to_user_id", tweet);
         toUser = getRawString("to_user", tweet);
         fromUser = getRawString("from_user", tweet);
         id = getLong("id", tweet);
         fromUserId = getInt("from_user_id", tweet);
         isoLanguageCode = getRawString("iso_language_code", tweet);
-        source = getURLDecodedString("source", tweet);
-        profileImageUrl = getURLDecodedString("profile_image_url", tweet);
+        source = getUnescapedString("source", tweet);
+        profileImageUrl = getUnescapedString("profile_image_url", tweet);
         createdAt = getDate("created_at", tweet, "EEE, dd MMM yyyy HH:mm:ss z");
         geoLocation = GeoLocation.getInstance(tweet);
 

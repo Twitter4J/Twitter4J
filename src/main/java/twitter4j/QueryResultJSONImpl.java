@@ -60,13 +60,13 @@ import static twitter4j.ParseUtil.*;
         try {
             sinceId = getLong("since_id", json);
             maxId = getLong("max_id", json);
-            refreshUrl = getURLDecodedString("refresh_url", json);
+            refreshUrl = getUnescapedString("refresh_url", json);
 
             resultsPerPage = getInt("results_per_page", json);
             warning = getRawString("warning", json);
             completedIn = getDouble("completed_in", json);
             page = getInt("page", json);
-            query = getURLDecodedString("query", json);
+            query = getUnescapedString("query", json);
             JSONArray array = json.getJSONArray("results");
             tweets = new ArrayList<Tweet>(array.length());
             for (int i = 0; i < array.length(); i++) {

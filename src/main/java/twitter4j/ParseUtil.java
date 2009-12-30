@@ -68,18 +68,6 @@ import java.util.TimeZone;
         }
     }
 
-
-    static String getURLDecodedString(String name, JSONObject json) {
-        String returnValue = getRawString(name, json);
-        if (null != returnValue) {
-            try {
-                returnValue = URLDecoder.decode(returnValue, "UTF-8");
-            } catch (UnsupportedEncodingException ignore) {
-            }
-        }
-        return returnValue;
-    }
-
     static Date getDate(String name, JSONObject json) throws TwitterException {
         return getDate(name, json, "EEE MMM d HH:mm:ss z yyyy");
     }
