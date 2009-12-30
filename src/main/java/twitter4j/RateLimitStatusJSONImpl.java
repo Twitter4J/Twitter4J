@@ -67,8 +67,7 @@ import static twitter4j.ParseUtil.*;
         return new RateLimitStatusJSONImpl(getInt("hourly_limit", json),
                 getInt("remaining_hits", json),
                 getInt("reset_time_in_seconds", json),
-                new Date(((long) getInt("reset_time_in_seconds", json)) * 1000)
-        );
+                getDate("reset_time", json, "EEE MMM d HH:mm:ss Z yyyy"));
     }
 
     static RateLimitStatus createFromResponseHeader(Response res) {
