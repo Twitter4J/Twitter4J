@@ -28,6 +28,7 @@ package twitter4j.http;
 
 import twitter4j.conf.Configuration;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 
 /**

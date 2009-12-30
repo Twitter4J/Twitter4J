@@ -42,6 +42,7 @@ class PropertyConfiguration extends Configuration {
     public static final String HTTP_USER_AGENT = "twitter4j.http.userAgent";
     public static final String USER = "twitter4j.user";
     public static final String PASSWORD = "twitter4j.password";
+
     public static final String HTTP_USE_SSL = "twitter4j.http.useSSL";
     public static final String HTTP_PROXY_HOST = "twitter4j.http.proxyHost";
     public static final String HTTP_PROXY_HOST_FALLBACK = "http.proxyHost";
@@ -51,8 +52,12 @@ class PropertyConfiguration extends Configuration {
     public static final String HTTP_PROXY_PORT_FALLBACK = "http.proxyPort";
     public static final String HTTP_CONNECTION_TIMEOUT = "twitter4j.http.connectionTimeout";
     public static final String HTTP_READ_TIMEOUT = "twitter4j.http.readTimeout";
+
+    public static final String HTTP_STREAMING_READ_TIMEOUT = "twitter4j.http.streamingReadTimeout";
+
     public static final String HTTP_RETRY_COUNT = "twitter4j.http.retryCount";
     public static final String HTTP_RETRY_INTERVAL_SECS = "twitter4j.http.retryIntervalSecs";
+
     public static final String OAUTH_CONSUMER_KEY = "twitter4j.oauth.consumerKey";
     public static final String OAUTH_CONSUMER_SECRET = "twitter4j.oauth.consumerSecret";
     public static final String OAUTH_ACCESS_TOKEN = "twitter4j.oauth.accessToken";
@@ -134,6 +139,9 @@ class PropertyConfiguration extends Configuration {
         }
         if (notNull(props, HTTP_READ_TIMEOUT)) {
             setHttpReadTimeout(getIntProperty(props, HTTP_READ_TIMEOUT));
+        }
+        if (notNull(props, HTTP_STREAMING_READ_TIMEOUT)) {
+            setHttpStreamingReadTimeout(getIntProperty(props, HTTP_STREAMING_READ_TIMEOUT));
         }
         if (notNull(props, HTTP_RETRY_COUNT)) {
             setHttpRetryCount(getIntProperty(props, HTTP_RETRY_COUNT));

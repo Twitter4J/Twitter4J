@@ -189,7 +189,6 @@ public class DAOTest extends TwitterTestBase {
     }
 
     public void testDevice() throws Exception {
-        assertDeserializedFormIsSingleton(Device.IM);
         assertDeserializedFormIsSingleton(Device.SMS);
         assertDeserializedFormIsSingleton(Device.NONE);
     }

@@ -66,10 +66,10 @@ public class HttpClient implements java.io.Serializable {
     /**
      *     @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/3f3b0fd38deb9b0f?hl=en">Search API: new HTTP response code 420 for rate limiting starting 1/18/2010</a>
      */
-    private static final int EXCEEDED_RATE_LIMIT_QUOTA = 420;// Not registered in RFC.
+    public static final int EXCEEDED_RATE_LIMIT_QUOTA = 420;// Not registered in RFC.
     private static final int INTERNAL_SERVER_ERROR = 500;// Internal Server Error: Something is broken.  Please post to the group so the Twitter team can investigate.
     private static final int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
-    private static final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
+    public static final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
 
     private String proxyHost = null;
     private int proxyPort = -1;

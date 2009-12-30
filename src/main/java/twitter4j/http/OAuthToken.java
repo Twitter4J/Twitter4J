@@ -86,8 +86,6 @@ abstract class OAuthToken implements java.io.Serializable {
 
         OAuthToken that = (OAuthToken) o;
 
-        if (secretKeySpec != null ? !secretKeySpec.equals(that.secretKeySpec) : that.secretKeySpec != null)
-            return false;
         if (!token.equals(that.token)) return false;
         if (!tokenSecret.equals(that.tokenSecret)) return false;
 
@@ -98,7 +96,6 @@ abstract class OAuthToken implements java.io.Serializable {
     public int hashCode() {
         int result = token.hashCode();
         result = 31 * result + tokenSecret.hashCode();
-        result = 31 * result + (secretKeySpec != null ? secretKeySpec.hashCode() : 0);
         return result;
     }
 

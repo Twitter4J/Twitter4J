@@ -40,7 +40,9 @@ import java.util.List;
  * @since Twitter4J 2.0.4
  */
 public class TwitterStream extends TwitterSupport {
-    private final static boolean DEBUG = Configuration.getInstance().isDebug();
+    private final static Configuration conf = Configuration.getInstance();
+
+    private final static boolean DEBUG = conf.isDebug();
 
     private StatusListener statusListener;
     private StreamHandlingThread handler = null;
@@ -53,16 +55,22 @@ public class TwitterStream extends TwitterSupport {
      */
     public TwitterStream() {
         super();
-        ensureBasicAuthenticationEnabled();
+        init();
     }
 
     public TwitterStream(String userId, String password) {
         super(userId, password);
+        init();
     }
 
     public TwitterStream(String userId, String password, StatusListener listener) {
         super(userId, password);
         this.statusListener = listener;
+        init();
+    }
+    private void init(){
+        ensureBasicAuthenticationEnabled();
+        http.setReadTimeout(conf.getHttpStreamingReadTimeout());
     }
 
     /* Streaming API */

@@ -1,21 +1,15 @@
 package twitter4j;
 
-import twitter4j.http.AccessToken;
-import twitter4j.http.Authorization;
-import twitter4j.http.HttpResponseEvent;
-import twitter4j.http.HttpResponseListener;
-import twitter4j.http.NullAuthorization;
-import twitter4j.http.OAuthAuthorization;
-import twitter4j.http.RequestToken;
-import twitter4j.http.Response;
+import twitter4j.http.*;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-class OAuthTwitterSupport extends TwitterSupport implements java.io.Serializable {
+class OAuthTwitterSupport extends TwitterSupport implements HttpResponseListener, java.io.Serializable {
 
-    protected final List<RateLimitStatusListener> accountRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
-    protected final List<RateLimitStatusListener> ipRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
+    protected List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     private static final long serialVersionUID = 6960663978976449394L;
 
     OAuthTwitterSupport() {
@@ -49,10 +43,17 @@ class OAuthTwitterSupport extends TwitterSupport implements java.io.Serializable
                 this.auth = oauth;
             }
         }
-        HttpResponseListener httpResponseListener = new RateLimitListenerInvoker(accountRateLimitStatusListeners,ipRateLimitStatusListeners);
-        http.addHttpResponseListener(httpResponseListener);
+        http.addHttpResponseListener(this);
+    }
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(rateLimitStatusListeners);
     }
 
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        rateLimitStatusListeners = (ArrayList<RateLimitStatusListener>)stream.readObject();
+        http.addHttpResponseListener(this);
+    }
     protected OAuthAuthorization getOAuth() {
         if (!(auth instanceof OAuthAuthorization)) {
             throw new IllegalStateException(
@@ -183,20 +184,8 @@ class OAuthTwitterSupport extends TwitterSupport implements java.io.Serializable
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
      */
-    public void addAccountRateLimitStatusListener(RateLimitStatusListener listener){
-    	accountRateLimitStatusListeners.add(listener);
-    }
-
-
-    /**
-     * Registers a RateLimitStatusListener for ip associated rate limits
-     *
-     * @param listener the listener to be added
-     * @since Twitter4J 2.1.0
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
-     */
-    public void addIpRateLimitStatusListener(RateLimitStatusListener listener){
-    	ipRateLimitStatusListeners.add(listener);
+    public void addRateLimitStatusListener(RateLimitStatusListener listener){
+    	rateLimitStatusListeners.add(listener);
     }
 
     @Override
@@ -207,9 +196,7 @@ class OAuthTwitterSupport extends TwitterSupport implements java.io.Serializable
 
         OAuthTwitterSupport that = (OAuthTwitterSupport) o;
 
-        if (!accountRateLimitStatusListeners.equals(that.accountRateLimitStatusListeners))
-            return false;
-        if (!ipRateLimitStatusListeners.equals(that.ipRateLimitStatusListeners))
+        if (!rateLimitStatusListeners.equals(that.rateLimitStatusListeners))
             return false;
 
         return true;
@@ -218,68 +205,32 @@ class OAuthTwitterSupport extends TwitterSupport implements java.io.Serializable
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + accountRateLimitStatusListeners.hashCode();
-        result = 31 * result + ipRateLimitStatusListeners.hashCode();
+        result = 31 * result + rateLimitStatusListeners.hashCode();
         return result;
     }
-}
-class RateLimitListenerInvoker implements HttpResponseListener, java.io.Serializable{
-    private List<RateLimitStatusListener> accountRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
-    private List<RateLimitStatusListener> ipRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
-    private static final long serialVersionUID = 2277134489548449905L;
 
-    RateLimitListenerInvoker(List<RateLimitStatusListener> accountRateLimitStatusListeners
-            , List<RateLimitStatusListener> ipRateLimitStatusListeners){
-        this.accountRateLimitStatusListeners = accountRateLimitStatusListeners;
-        this.ipRateLimitStatusListeners = ipRateLimitStatusListeners;
-    }
     public void httpResponseReceived(HttpResponseEvent event) {
-        if (0 < (accountRateLimitStatusListeners.size() + ipRateLimitStatusListeners.size())) {
+        if (0 < (rateLimitStatusListeners.size())) {
             Response res = event.getResponse();
             RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+            RateLimitStatusEvent statusEvent = null;
             if (null != rateLimitStatus) {
-                if (event.isAuthenticated()) {
-                    fireRateLimitStatusListenerUpdate(accountRateLimitStatusListeners, rateLimitStatus);
-                } else {
-                    fireRateLimitStatusListenerUpdate(ipRateLimitStatusListeners, rateLimitStatus);
+                statusEvent = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
+                for (RateLimitStatusListener listener : rateLimitStatusListeners) {
+                    listener.rateLimitStatusUpdated(statusEvent);
+                }
+            }
+            if(res.getStatusCode() == HttpClient.EXCEEDED_RATE_LIMIT_QUOTA
+                    || res.getStatusCode() == HttpClient.SERVICE_UNAVAILABLE){
+                // EXCEEDED_RATE_LIMIT_QUOTA is returned by Rest API
+                // SERVICE_UNAVAILABLE is returned by Search API
+                if (null == statusEvent) {
+                    statusEvent = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
+                }
+                for (RateLimitStatusListener listener : rateLimitStatusListeners) {
+                    listener.onRateLimitReached(statusEvent);
                 }
             }
         }
-    }
-
-    private void fireRateLimitStatusListenerUpdate(List<RateLimitStatusListener> listeners, RateLimitStatus status) {
-        for (RateLimitStatusListener listener : listeners) {
-            listener.rateLimitStatusUpdated(status);
-        }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof RateLimitListenerInvoker)) return false;
-
-        RateLimitListenerInvoker that = (RateLimitListenerInvoker) o;
-
-        if (accountRateLimitStatusListeners != null ? !accountRateLimitStatusListeners.equals(that.accountRateLimitStatusListeners) : that.accountRateLimitStatusListeners != null)
-            return false;
-        if (ipRateLimitStatusListeners != null ? !ipRateLimitStatusListeners.equals(that.ipRateLimitStatusListeners) : that.ipRateLimitStatusListeners != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = accountRateLimitStatusListeners != null ? accountRateLimitStatusListeners.hashCode() : 0;
-        result = 31 * result + (ipRateLimitStatusListeners != null ? ipRateLimitStatusListeners.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "RateLimitListenerInvoker{" +
-                "accountRateLimitStatusListeners=" + accountRateLimitStatusListeners +
-                ", ipRateLimitStatusListeners=" + ipRateLimitStatusListeners +
-                '}';
     }
 }

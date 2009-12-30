@@ -31,6 +31,6 @@ package twitter4j;
  */
 public interface RateLimitStatusListener {
 
-	public void rateLimitStatusUpdated(RateLimitStatus status);
-	
+	public void rateLimitStatusUpdated(RateLimitStatusEvent event);
+	public void onRateLimitReached(RateLimitStatusEvent event);
 }

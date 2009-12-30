@@ -52,6 +52,8 @@ public class Configuration implements HttpClientConfiguration, HttpRequestFactor
     private int httpProxyPort;
     private int httpConnectionTimeout;
     private int httpReadTimeout;
+
+    private int httpStreamingReadTimeout;
     private int httpRetryCount;
     private int httpRetryIntervalMilliSecs;
     private String oAuthConsumerKey;
@@ -107,6 +109,7 @@ public class Configuration implements HttpClientConfiguration, HttpRequestFactor
         setHttpProxyPort(-1);
         setHttpConnectionTimeout(20000);
         setHttpReadTimeout(120000);
+        setHttpStreamingReadTimeout(60*5*1000);
         setHttpRetryCount(0);
         setHttpRetryIntervalSecs(5);
         setOAuthConsumerKey(null);
@@ -270,6 +273,15 @@ public class Configuration implements HttpClientConfiguration, HttpRequestFactor
     protected final void setHttpReadTimeout(int readTimeout) {
         this.httpReadTimeout = readTimeout;
     }
+
+    public int getHttpStreamingReadTimeout() {
+        return httpStreamingReadTimeout;
+    }
+
+    protected void setHttpStreamingReadTimeout(int httpStreamingReadTimeout) {
+        this.httpStreamingReadTimeout = httpStreamingReadTimeout;
+    }
+
 
     public final int getHttpRetryCount() {
         return httpRetryCount;

@@ -27,30 +27,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.http.HttpClient;
 import twitter4j.http.HttpRequestFactory;
 import twitter4j.http.NullAuthorization;
-import twitter4j.http.OAuthAuthorization;
-import twitter4j.http.RequestToken;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-abstract class TwitterSupport implements java.io.Serializable {
-    protected static final Configuration conf = Configuration.getInstance();
+class TwitterSupport implements java.io.Serializable {
+    protected transient final static Configuration conf = Configuration.getInstance();
 
-    protected static final HttpRequestFactory requestFactory = new HttpRequestFactory(conf);
+    protected transient static final HttpRequestFactory requestFactory = new HttpRequestFactory(conf);
 
-    protected final HttpClient http = HttpClient.getInstance(conf);
+    protected transient HttpClient http = HttpClient.getInstance(conf);
 
-    private static final long serialVersionUID = -4779804628175934804L;
-    Authorization auth;
+    protected Authorization auth;
+    private static final long serialVersionUID = -3812176145960812140L;
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(auth);
+    }
+
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        auth = (Authorization)stream.readObject();
+        http = HttpClient.getInstance(conf);
+    }
+
 
     /*package*/ TwitterSupport(){
         this(conf.getUser(), conf.getPassword());
@@ -87,23 +95,19 @@ abstract class TwitterSupport implements java.io.Serializable {
         TwitterSupport that = (TwitterSupport) o;
 
         if (!auth.equals(that.auth)) return false;
-        if (!http.equals(that.http)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = http.hashCode();
-        result = 31 * result + auth.hashCode();
-        return result;
+        return auth != null ? auth.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "TwitterSupport{" +
-                "http=" + http +
-                ", auth=" + auth +
+                "auth=" + auth +
                 '}';
     }
 }

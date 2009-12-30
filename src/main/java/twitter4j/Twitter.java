@@ -1432,6 +1432,7 @@ public class Twitter extends OAuthTwitterSupport
     public String toString() {
         return "Twitter{" +
                 "screenName='" + screenName + '\'' +
+                "auth='" + auth + '\'' +
                 '}';
     }
 }

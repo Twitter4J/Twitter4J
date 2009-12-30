@@ -26,10 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import static twitter4j.DAOTest.*;
@@ -670,21 +667,27 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(10 < status.getHourlyLimit());
         assertTrue(10 < status.getRemainingHits());
 
-        twitterAPI1.addAccountRateLimitStatusListener(new RateLimitStatusListener() {
+        twitterAPI1.addRateLimitStatusListener(new RateLimitStatusListener() {
 
-            public void rateLimitStatusUpdated(RateLimitStatus status) {
-                accountLimitStatusAcquired = true;
-                ipLimitStatusAcquired = false;
-                rateLimitStatus = status;
+            public void rateLimitStatusUpdated(RateLimitStatusEvent event) {
+                accountLimitStatusAcquired = event.isAccountRateLimitStatus();
+                ipLimitStatusAcquired = event.isIPRateLimitStatus();
+                rateLimitStatus = event.getRateLimitStatus();
+            }
+
+            public void onRateLimitReached(RateLimitStatusEvent event) {
+
             }
 
         });
 
-        unauthenticated.addIpRateLimitStatusListener(new RateLimitStatusListener() {
-            public void rateLimitStatusUpdated(RateLimitStatus status) {
-                ipLimitStatusAcquired = true;
-                accountLimitStatusAcquired = false;
-                rateLimitStatus = status;
+        unauthenticated.addRateLimitStatusListener(new RateLimitStatusListener() {
+            public void rateLimitStatusUpdated(RateLimitStatusEvent event) {
+                accountLimitStatusAcquired = event.isAccountRateLimitStatus();
+                ipLimitStatusAcquired = event.isIPRateLimitStatus();
+                rateLimitStatus = event.getRateLimitStatus();
+            }
+            public void onRateLimitReached(RateLimitStatusEvent event){
             }
 
         });
