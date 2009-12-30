@@ -42,6 +42,7 @@ import static twitter4j.ParseUtil.*;
     private int remainingHits;
     private int hourlyLimit;
     private int resetTimeInSeconds;
+    private int secondsUntilReset;
     private Date resetTime;
     private static final long serialVersionUID = 753839064833831619L;
     /*package*/ RateLimitStatusJSONImpl() {
@@ -49,27 +50,26 @@ import static twitter4j.ParseUtil.*;
         // Currently this constructor is never used in twitter4j artifact.
     }
 
-    private RateLimitStatusJSONImpl(int hourlyLimit, int remainingHits, int resetTimeInSeconds, Date resetTime){
+    private RateLimitStatusJSONImpl(int hourlyLimit, int remainingHits, Date resetTime) {
         this.hourlyLimit = hourlyLimit;
         this.remainingHits = remainingHits;
-        this.resetTimeInSeconds = resetTimeInSeconds;
         this.resetTime = resetTime;
+        this.resetTimeInSeconds = (int)(resetTime.getTime()/1000);
+        this.secondsUntilReset = (int)((resetTime.getTime() - System.currentTimeMillis())/1000);
     }
 
     static RateLimitStatus createFromJSONResponse(Response res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         return new RateLimitStatusJSONImpl(getInt("hourly_limit", json),
                 getInt("remaining_hits", json),
-                getInt("reset_time_in_seconds", json),
-                getDate("reset_time", json, "EEE MMM d HH:mm:ss Z yyyy"));
+                new Date( ((long)getInt("reset_time_in_seconds", json)) * 1000 )
+                );
     }
 
     static RateLimitStatus createFromResponseHeader(Response res) {
         int remainingHits;//"X-RateLimit-Remaining"
         int hourlyLimit;//"X-RateLimit-Limit"
-        int resetTimeInSeconds;//not included in the response header. Need to be calculated.
         Date resetTime;//new Date("X-RateLimit-Reset")
-
 
         String limit = res.getResponseHeader("X-RateLimit-Limit");
         if(null != limit){
@@ -85,13 +85,11 @@ import static twitter4j.ParseUtil.*;
         }
         String reset = res.getResponseHeader("X-RateLimit-Reset");
         if(null != reset){
-            long longReset =  Long.parseLong(reset) * 1000;
-            resetTime = new Date(longReset);
-            resetTimeInSeconds =  (int)(longReset - System.currentTimeMillis()) / 1000;
+            resetTime = new Date(Long.parseLong(reset) * 1000);
         }else{
             return null;
         }
-        return new RateLimitStatusJSONImpl(hourlyLimit, remainingHits, resetTimeInSeconds, resetTime);
+        return new RateLimitStatusJSONImpl(hourlyLimit, remainingHits, resetTime);
     }
 
     /**
@@ -125,6 +123,17 @@ import static twitter4j.ParseUtil.*;
 
     public void setResetTimeInSeconds(int resetTimeInSeconds) {
         this.resetTimeInSeconds = resetTimeInSeconds;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getSecondsUntilReset() {
+        return secondsUntilReset;
+    }
+
+    public void setSecondsUntilReset(int secondsUntilReset) {
+        this.secondsUntilReset = secondsUntilReset;
     }
 
     /**
@@ -167,7 +176,7 @@ import static twitter4j.ParseUtil.*;
         return "RateLimitStatusJSONImpl{" +
                 "remainingHits=" + remainingHits +
                 ", hourlyLimit=" + hourlyLimit +
-                ", resetTimeInSeconds=" + resetTimeInSeconds +
+                ", secondsUntilReset=" + secondsUntilReset +
                 ", resetTime=" + resetTime +
                 '}';
     }
