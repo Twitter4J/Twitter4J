@@ -38,7 +38,7 @@ public class RequestToken extends OAuthToken implements java.io.Serializable {
     private OAuthAuthorization oauth;
     private static final long serialVersionUID = -8214365845469757952L;
 
-    RequestToken(Response res, OAuthAuthorization oauth) throws TwitterException {
+    RequestToken(HttpResponse res, OAuthAuthorization oauth) throws TwitterException {
         super(res);
         this.oauth = oauth;
     }

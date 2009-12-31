@@ -47,8 +47,8 @@ public class PostParameterTest extends TestCase {
         super.tearDown();
     }
     public void testBooleanParameter() throws Exception {
-        assertEquals("true", new PostParameter("test", true).getValue());
-        assertEquals("false", new PostParameter("test", false).getValue());
+        assertEquals("true", new HttpParameter("test", true).getValue());
+        assertEquals("false", new HttpParameter("test", false).getValue());
     }
 
     public void testgetContentType() throws Exception {
@@ -79,7 +79,7 @@ public class PostParameterTest extends TestCase {
 
     }
     private void assertValidContentType(String expected, String fileName){
-        PostParameter param = new PostParameter("file", new File(fileName));
+        HttpParameter param = new HttpParameter("file", new File(fileName));
         assertEquals(expected, param.getContentType());
 
     }

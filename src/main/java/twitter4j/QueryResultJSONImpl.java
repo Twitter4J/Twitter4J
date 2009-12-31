@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
@@ -51,7 +51,7 @@ import static twitter4j.ParseUtil.*;
     private List<Tweet> tweets;
     private static final long serialVersionUID = -9059136565234613286L;
 
-    /*package*/ QueryResultJSONImpl(Response res) throws TwitterException {
+    /*package*/ QueryResultJSONImpl(HttpResponse res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         try {
             sinceId = getLong("since_id", json);

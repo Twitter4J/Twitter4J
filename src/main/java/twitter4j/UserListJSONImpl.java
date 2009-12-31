@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
@@ -53,7 +53,7 @@ import java.net.URISyntaxException;
     private User user;
     private static final long serialVersionUID = -6345893237975349030L;
 
-    /*package*/ UserListJSONImpl(Response res) throws TwitterException {
+    /*package*/ UserListJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
     }
@@ -156,7 +156,7 @@ import java.net.URISyntaxException;
         return user;
     }
 
-    /*package*/ static PagableResponseList<UserList> createUserListList(Response res) throws TwitterException {
+    /*package*/ static PagableResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException {
         try {
             JSONObject json = res.asJSONObject();
             JSONArray list = json.getJSONArray("lists");

@@ -34,7 +34,7 @@ import java.net.HttpURLConnection;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface Authorization extends java.io.Serializable {
-    void setAuthorizationHeader(String method, String url, PostParameter[] params, HttpURLConnection con);
+    void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con);
 
     boolean isAuthenticationEnabled();
 }

@@ -43,7 +43,7 @@ abstract class OAuthToken implements java.io.Serializable {
         this.tokenSecret = tokenSecret;
     }
 
-    OAuthToken(Response response) throws TwitterException {
+    OAuthToken(HttpResponse response) throws TwitterException {
         this(response.asString());
     }
     OAuthToken(String string) {

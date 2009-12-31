@@ -30,7 +30,7 @@ import twitter4j.conf.Configuration;
 import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.http.HttpClient;
-import twitter4j.http.HttpRequestFactory;
+import twitter4j.http.HttpClientWrapper;
 import twitter4j.http.NullAuthorization;
 
 import java.io.IOException;
@@ -39,25 +39,20 @@ import java.io.ObjectInputStream;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-class TwitterSupport implements java.io.Serializable {
-    protected transient static final Configuration conf = Configuration.getInstance();
-
-    protected transient static final HttpRequestFactory requestFactory = HttpRequestFactory.getInstance(conf);
-
-    protected transient HttpClient http = new HttpClient(conf);
+abstract class TwitterSupport implements java.io.Serializable {
+    protected static final Configuration conf = Configuration.getInstance();
 
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
 
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(auth);
-    }
-
-    private void readObject(ObjectInputStream stream)
-            throws IOException, ClassNotFoundException {
-        auth = (Authorization)stream.readObject();
-        http = new HttpClient(conf);
-    }
+//    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+//        out.writeObject(auth);
+//    }
+//
+//    private void readObject(ObjectInputStream stream)
+//            throws IOException, ClassNotFoundException {
+//        auth = (Authorization)stream.readObject();
+//    }
 
 
     /*package*/ TwitterSupport(){

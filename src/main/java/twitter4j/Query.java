@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.PostParameter;
+import twitter4j.http.HttpParameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -200,27 +200,27 @@ public class Query {
         setGeoCode(location, radius, unit);
         return this;
     }
-    public PostParameter[] asPostParameters(){
-        ArrayList<PostParameter> params = new ArrayList<PostParameter>();
+    public HttpParameter[] asPostParameters(){
+        ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("q", query, params);
         appendParameter("lang", lang, params);
         appendParameter("rpp",rpp , params);
         appendParameter("page", page, params);
         appendParameter("since_id",sinceId , params);
         appendParameter("geocode", geocode, params);
-        PostParameter[] paramArray = new PostParameter[params.size()];
+        HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
 
-    private void appendParameter(String name, String value, List<PostParameter> params) {
+    private void appendParameter(String name, String value, List<HttpParameter> params) {
         if (null != value) {
-            params.add(new PostParameter(name, value));
+            params.add(new HttpParameter(name, value));
         }
     }
 
-    private void appendParameter(String name, long value, List<PostParameter> params) {
+    private void appendParameter(String name, long value, List<HttpParameter> params) {
         if (0 <= value) {
-            params.add(new PostParameter(name, String.valueOf(value)));
+            params.add(new HttpParameter(name, String.valueOf(value)));
         }
     }
 

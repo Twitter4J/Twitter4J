@@ -35,9 +35,8 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.http.HttpClient;
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -140,7 +139,7 @@ public class FeedMonitor {
         Date latestEntry = lastUpdate;
         log.info("Last update is {}", lastUpdate);
         try {
-            Response res = http.get(feedurl);
+            HttpResponse res = http.get(feedurl);
             List<SyndEntry> entries = new SyndFeedInput().build(res.asDocument()).
                 getEntries();
 

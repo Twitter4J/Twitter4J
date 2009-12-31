@@ -28,7 +28,6 @@ package twitter4j.conf;
 
 import twitter4j.Version;
 import twitter4j.http.HttpClientConfiguration;
-import twitter4j.http.HttpRequestFactory;
 import twitter4j.http.HttpRequestFactoryConfiguration;
 
 import java.util.HashMap;
@@ -372,7 +371,8 @@ public class Configuration implements HttpClientConfiguration, HttpRequestFactor
     }
 
     protected void setSearchBaseURL(String searchBaseURL) {
-        this.searchBaseURL = fixURL(useSSL, searchBaseURL);
+        // search api tends to fail with SSL as of 12/31/2009
+        this.searchBaseURL = fixURL(false, searchBaseURL);
     }
 
     public String getStreamBaseURL() {

@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 import twitter4j.org.json.JSONObject;
 
 /**
@@ -43,7 +43,7 @@ public class PagableResponseList<T extends TwitterResponse> extends
 
     /*package*/
 
-    PagableResponseList(int size, JSONObject json, Response res) {
+    PagableResponseList(int size, JSONObject json, HttpResponse res) {
         super(size, res);
         this.previousCursor = ParseUtil.getLong("previous_cursor", json);
         this.nextCursor = ParseUtil.getLong("next_cursor", json);

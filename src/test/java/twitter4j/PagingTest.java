@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.http.PostParameter;
+import twitter4j.http.HttpParameter;
 
 public class PagingTest extends TestCase {
 
@@ -44,13 +44,13 @@ public class PagingTest extends TestCase {
     }
 
     public void testPaging() throws Exception {
-        java.util.List<PostParameter> params;
+        java.util.List<HttpParameter> params;
         Paging paging = new Paging();
         params = paging.asPostParameterList();
-        assertNull(params);
+        assertEquals(0, params.size());
         // parameter validation test
         params = paging.asPostParameterList(Paging.S);
-        assertNull(params);
+        assertEquals(0, params.size());
 
         // setter validation test
         try {
@@ -65,7 +65,7 @@ public class PagingTest extends TestCase {
             fail("IllegalStateException should not be thrown.");
         }
         params = paging.asPostParameterList();
-        assertNull(params);
+        assertEquals(0, params.size());
         paging.setSinceId(2000l);
         params = paging.asPostParameterList();
         assertEquals(1, params.size());
@@ -128,9 +128,9 @@ public class PagingTest extends TestCase {
         assertContains(params, "count", 3000);
 
     }
-    private void assertContains(java.util.List<PostParameter> params, String name, long value){
+    private void assertContains(java.util.List<HttpParameter> params, String name, long value){
         boolean contains = false;
-        for(PostParameter param : params){
+        for(HttpParameter param : params){
             if(param.getName().equals(name) && param.getValue().equals(String.valueOf(value))){
                 contains = true;
                 break;

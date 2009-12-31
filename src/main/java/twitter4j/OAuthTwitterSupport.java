@@ -3,14 +3,12 @@ package twitter4j;
 import twitter4j.http.*;
 
 import java.io.IOException;
-import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 class OAuthTwitterSupport extends TwitterSupport implements HttpResponseListener, java.io.Serializable {
+    protected static final HttpClientWrapper http = HttpClientWrapper.getInstance(conf, conf);
 
     protected List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     private static final long serialVersionUID = 6960663978976449394L;
@@ -214,7 +212,7 @@ class OAuthTwitterSupport extends TwitterSupport implements HttpResponseListener
 
     public void httpResponseReceived(HttpResponseEvent event) {
         if (0 < (rateLimitStatusListeners.size())) {
-            Response res = event.getResponse();
+            HttpResponse res = event.getResponse();
             RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
             RateLimitStatusEvent statusEvent = null;
             if (null != rateLimitStatus) {

@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 import twitter4j.org.json.JSONObject;
 
 import java.util.Date;
@@ -56,7 +56,7 @@ import static twitter4j.ParseUtil.*;
         this.secondsUntilReset = (int) ((resetTime.getTime() - System.currentTimeMillis()) / 1000);
     }
 
-    static RateLimitStatus createFromJSONResponse(Response res) throws TwitterException {
+    static RateLimitStatus createFromJSONResponse(HttpResponse res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         return new RateLimitStatusJSONImpl(getInt("hourly_limit", json),
                 getInt("remaining_hits", json),
@@ -64,7 +64,7 @@ import static twitter4j.ParseUtil.*;
                 getDate("reset_time", json, "EEE MMM d HH:mm:ss Z yyyy"));
     }
 
-    static RateLimitStatus createFromResponseHeader(Response res) {
+    static RateLimitStatus createFromResponseHeader(HttpResponse res) {
         int remainingHits;//"X-RateLimit-Remaining"
         int hourlyLimit;//"X-RateLimit-Limit"
         int resetTimeInSeconds;//not included in the response header. Need to be calculated.

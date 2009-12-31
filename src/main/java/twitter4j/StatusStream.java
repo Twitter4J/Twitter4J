@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 
@@ -46,7 +46,7 @@ public class StatusStream {
     private boolean streamAlive = true;
     private BufferedReader br;
     private InputStream is;
-    private Response response;
+    private HttpResponse response;
 
     /*package*/
 
@@ -56,7 +56,7 @@ public class StatusStream {
     }
     /*package*/
 
-    StatusStream(Response response) throws IOException {
+    StatusStream(HttpResponse response) throws IOException {
         this(response.asStream());
         this.response = response;
     }

@@ -35,11 +35,11 @@ public class HttpResponseEvent {
 
     private HttpClient source;
 
-    private Response response;
+    private HttpResponse response;
 
     /* package */
 
-    HttpResponseEvent(HttpClient source, HttpRequest request, Response response) {
+    HttpResponseEvent(HttpClient source, HttpRequest request, HttpResponse response) {
         this.source = source;
         this.request = request;
         this.response = response;
@@ -57,7 +57,7 @@ public class HttpResponseEvent {
      * returns the response
      * @return
      */
-    public Response getResponse() {
+    public HttpResponse getResponse() {
         return response;
     }
 

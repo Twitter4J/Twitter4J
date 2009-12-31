@@ -28,7 +28,6 @@ package twitter4j.http;
 
 import twitter4j.conf.Configuration;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 
 /**
@@ -37,7 +36,7 @@ import java.net.HttpURLConnection;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class BasicAuthorization implements Authorization, java.io.Serializable {
-    private transient static final boolean DEBUG = Configuration.getInstance().isDebug();
+    private static final boolean DEBUG = Configuration.getInstance().isDebug();
 
     private String userId;
     private String password;
@@ -61,7 +60,7 @@ public final class BasicAuthorization implements Authorization, java.io.Serializ
         return null;
     }
 
-    public void setAuthorizationHeader(String method, String url, PostParameter[] params, HttpURLConnection con) {
+    public void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con) {
         log("Authorization: Basic ************************");
         con.addRequestProperty("Authorization", basic);
     }

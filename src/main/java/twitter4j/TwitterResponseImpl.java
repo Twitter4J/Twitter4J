@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 
 
 /**
@@ -45,7 +45,7 @@ import twitter4j.http.Response;
     public TwitterResponseImpl() {
     }
 
-    public TwitterResponseImpl(Response res) {
+    public TwitterResponseImpl(HttpResponse res) {
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
     }
 

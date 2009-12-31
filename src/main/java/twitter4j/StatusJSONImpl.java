@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
@@ -54,7 +54,7 @@ import static twitter4j.ParseUtil.*;
     private Status retweetedStatus;
     private static final long serialVersionUID = 1608000492860584608L;
 
-    /*package*/StatusJSONImpl(Response res) throws TwitterException {
+    /*package*/StatusJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
     }
@@ -216,7 +216,7 @@ import static twitter4j.ParseUtil.*;
         return retweetedStatus;
     }
 
-    /*package*/ static ResponseList<Status> createStatusList(Response res) throws TwitterException {
+    /*package*/ static ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
         try {
             JSONArray list = res.asJSONArray();
             int size = list.length();

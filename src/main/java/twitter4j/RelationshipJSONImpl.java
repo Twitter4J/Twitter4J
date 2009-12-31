@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 import twitter4j.org.json.JSONObject;
 import twitter4j.org.json.JSONException;
 
@@ -50,7 +50,7 @@ import static twitter4j.ParseUtil.*;
     private String sourceUserScreenName;
     private static final long serialVersionUID = 697705345506281849L;
 
-    /*package*/ RelationshipJSONImpl(Response res) throws TwitterException {
+    /*package*/ RelationshipJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
         init(res.asJSONObject());
     }

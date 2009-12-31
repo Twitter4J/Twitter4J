@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.PostParameter;
+import twitter4j.http.HttpParameter;
 
 import java.util.*;
 import java.util.List;
@@ -57,12 +57,44 @@ public class Paging implements java.io.Serializable {
     // @see http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-statuses
     static final String PER_PAGE = "per_page";
 
-    /*package*/ List<PostParameter> asPostParameterList() {
+    /*package*/ List<HttpParameter> asPostParameterList() {
         return asPostParameterList(SMCP, COUNT);
     }
 
-    /*package*/ List<PostParameter> asPostParameterList(char[] supportedParams) {
+    private static HttpParameter[] NULL_PARAMETER_ARRAY = new HttpParameter[0];
+    /*package*/ HttpParameter[] asPostParameterArray() {
+        List<HttpParameter> list = asPostParameterList(SMCP, COUNT);
+        if(list.size() == 0){
+            return NULL_PARAMETER_ARRAY;
+        }
+        return list.toArray(new HttpParameter[list.size()]);
+    }
+
+    /*package*/ List<HttpParameter> asPostParameterList(char[] supportedParams) {
         return asPostParameterList(supportedParams, COUNT);
+    }
+
+
+    private static List<HttpParameter> NULL_PARAMETER_LIST = new ArrayList<HttpParameter>(0);
+    /**
+     * Converts the pagination parameters into a List of PostParameter.<br>
+     * This method also Validates the preset parameters, and throws
+     *  IllegalStateException if any unsupported parameter is set.
+     * @param supportedParams char array representation of supported parameters
+     * @param perPageParamName name used for per-page parameter. getUserListStatuses() requires "per_page" instead of "count".
+     * @return list of PostParameter
+     */
+    /*package*/ List<HttpParameter> asPostParameterList(char[] supportedParams, String perPageParamName) {
+        java.util.List<HttpParameter> pagingParams = new ArrayList<HttpParameter>(supportedParams.length);
+        addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
+        addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
+        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
+        addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
+        if (pagingParams.size() == 0) {
+            return NULL_PARAMETER_LIST;
+        } else {
+            return pagingParams;
+        }
     }
 
     /**
@@ -73,22 +105,21 @@ public class Paging implements java.io.Serializable {
      * @param perPageParamName name used for per-page parameter. getUserListStatuses() requires "per_page" instead of "count".
      * @return list of PostParameter
      */
-
-    /*package*/ List<PostParameter> asPostParameterList(char[] supportedParams, String perPageParamName) {
-        java.util.List<PostParameter> pagingParams = new ArrayList<PostParameter>(supportedParams.length);
+    /*package*/ HttpParameter[] asPostParameterArray(char[] supportedParams, String perPageParamName) {
+        java.util.List<HttpParameter> pagingParams = new ArrayList<HttpParameter>(supportedParams.length);
         addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
         addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
         addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
         addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
         if (pagingParams.size() == 0) {
-            return null;
+            return new HttpParameter[0];
         } else {
-            return pagingParams;
+            return pagingParams.toArray(new HttpParameter[pagingParams.size()]);
         }
     }
 
     private void addPostParameter(char[] supportedParams, char paramKey
-            , List<PostParameter> pagingParams, String paramName, long paramValue) {
+            , List<HttpParameter> pagingParams, String paramName, long paramValue) {
         boolean supported = false;
         for (char supportedParam : supportedParams) {
             if (supportedParam == paramKey) {
@@ -101,7 +132,7 @@ public class Paging implements java.io.Serializable {
                     + "] is not supported with this operation.");
         }
         if (-1 != paramValue) {
-            pagingParams.add(new PostParameter(paramName, String.valueOf(paramValue)));
+            pagingParams.add(new HttpParameter(paramName, String.valueOf(paramValue)));
         }
     }
 

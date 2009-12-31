@@ -46,7 +46,7 @@ public final class NullAuthorization implements Authorization, java.io.Serializa
 
     }
 
-    public void setAuthorizationHeader(String method, String url, PostParameter[] params, HttpURLConnection con) {
+    public void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con) {
         // does nothing
     }
 

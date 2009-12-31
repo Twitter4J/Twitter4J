@@ -27,37 +27,44 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.http;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
  * A data class representing HTTP Post parameter
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class PostParameter implements Comparable, java.io.Serializable {
+public class HttpParameter implements Comparable, java.io.Serializable {
     String name = null;
     String value = null;
     File file = null;
     private static final long serialVersionUID = -8708108746980739212L;
 
-    public PostParameter(String name, String value) {
+    public HttpParameter(String name, String value) {
         this.name = name;
         this.value = value;
     }
-    public PostParameter(String name, File file) {
+    public HttpParameter(String name, File file) {
         this.name = name;
         this.file = file;
     }
-    public PostParameter(String name, double value) {
+
+    public HttpParameter(String name, int value) {
         this.name = name;
         this.value = String.valueOf(value);
     }
 
-    public PostParameter(String name, int value) {
+    public HttpParameter(String name, long value) {
         this.name = name;
         this.value = String.valueOf(value);
     }
 
-    public PostParameter(String name, boolean value) {
+    public HttpParameter(String name, double value) {
+        this.name = name;
+        this.value = String.valueOf(value);
+    }
+
+    public HttpParameter(String name, boolean value) {
         this.name = name;
         this.value = String.valueOf(value);
     }
@@ -119,9 +126,9 @@ public class PostParameter implements Comparable, java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PostParameter)) return false;
+        if (!(o instanceof HttpParameter)) return false;
 
-        PostParameter that = (PostParameter) o;
+        HttpParameter that = (HttpParameter) o;
 
         if (file != null ? !file.equals(that.file) : that.file != null)
             return false;
@@ -132,12 +139,12 @@ public class PostParameter implements Comparable, java.io.Serializable {
         return true;
     }
 
-    /*package*/ static boolean containsFile(PostParameter[] params) {
+    /*package*/ static boolean containsFile(HttpParameter[] params) {
         boolean containsFile = false;
         if(null == params){
             return false;
         }
-        for (PostParameter param : params) {
+        for (HttpParameter param : params) {
             if (param.isFile()) {
                 containsFile = true;
                 break;
@@ -145,15 +152,32 @@ public class PostParameter implements Comparable, java.io.Serializable {
         }
         return containsFile;
     }
-    /*package*/ static boolean containsFile(List<PostParameter> params) {
+    /*package*/ static boolean containsFile(List<HttpParameter> params) {
         boolean containsFile = false;
-        for (PostParameter param : params) {
+        for (HttpParameter param : params) {
             if (param.isFile()) {
                 containsFile = true;
                 break;
             }
         }
         return containsFile;
+    }
+
+    public static HttpParameter[] getParameterArray(String name, String value) {
+        return new HttpParameter[]{new HttpParameter(name,value)};
+    }
+    public static HttpParameter[] getParameterArray(String name, int value) {
+        return getParameterArray(name,String.valueOf(value));
+    }
+
+    public static HttpParameter[] getParameterArray(String name1, String value1
+            , String name2, String value2) {
+        return new HttpParameter[]{new HttpParameter(name1, value1)
+                , new HttpParameter(name2, value2)};
+    }
+    public static HttpParameter[] getParameterArray(String name1, int value1
+            , String name2, int value2) {
+        return getParameterArray(name1,String.valueOf(value1),name2,String.valueOf(value2));
     }
 
     @Override
@@ -175,11 +199,33 @@ public class PostParameter implements Comparable, java.io.Serializable {
 
     public int compareTo(Object o) {
         int compared;
-        PostParameter that = (PostParameter) o;
+        HttpParameter that = (HttpParameter) o;
         compared = name.compareTo(that.name);
         if (0 == compared) {
             compared = value.compareTo(that.value);
         }
         return compared;
+    }
+
+    public static String encodeParameters(HttpParameter[] httpParams) {
+        if (null == httpParams) {
+            return "";
+        }
+        StringBuffer buf = new StringBuffer();
+        for (int j = 0; j < httpParams.length; j++) {
+            if (httpParams[j].isFile()) {
+                throw new IllegalArgumentException("parameter [" + httpParams[j].name + "]should be text");
+            }
+            if (j != 0) {
+                buf.append("&");
+            }
+            try {
+                buf.append(URLEncoder.encode(httpParams[j].name, "UTF-8"))
+                        .append("=").append(URLEncoder.encode(httpParams[j].value, "UTF-8"));
+            } catch (java.io.UnsupportedEncodingException neverHappen) {
+            }
+        }
+        return buf.toString();
+
     }
 }

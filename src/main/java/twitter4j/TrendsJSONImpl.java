@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
@@ -67,7 +67,7 @@ import static twitter4j.ParseUtil.*;
 
     /*package*/
 
-    static List<Trends> createTrendsList(Response res) throws
+    static List<Trends> createTrendsList(HttpResponse res) throws
             TwitterException {
         JSONObject json = res.asJSONObject();
         List<Trends> trends;
@@ -103,7 +103,7 @@ import static twitter4j.ParseUtil.*;
 
     /*package*/
 
-    static Trends createTrends(Response res) throws TwitterException {
+    static Trends createTrends(HttpResponse res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         try {
             Date asOf = parseTrendsDate(json.getString("as_of"));

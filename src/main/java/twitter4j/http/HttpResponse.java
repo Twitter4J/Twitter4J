@@ -50,7 +50,7 @@ import java.util.zip.GZIPInputStream;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Response {
+public class HttpResponse {
     private static final boolean DEBUG = Configuration.getInstance().isDebug();
 
     private static ThreadLocal<DocumentBuilder> builders =
@@ -75,7 +75,7 @@ public class Response {
     private boolean streamConsumed = false;
 
 
-    public Response(HttpURLConnection con) throws IOException {
+    public HttpResponse(HttpURLConnection con) throws IOException {
         this.con = con;
         this.statusCode = con.getResponseCode();
         if(null == (is = con.getErrorStream())){
@@ -88,7 +88,7 @@ public class Response {
     }
 
     // for test purpose
-    /*package*/ Response(String content) {
+    /*package*/ HttpResponse(String content) {
         this.responseAsString = content;
     }
 

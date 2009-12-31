@@ -43,7 +43,6 @@ import java.net.Proxy.Type;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.AccessControlException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +79,6 @@ public class HttpClient implements java.io.Serializable {
     private int retryCount = 0;
     private int retryIntervalSeconds = 5 * 1000;
     private static boolean isJDK14orEarlier = false;
-    private List<HttpResponseListener> httpResponseListeners;
     private static final long serialVersionUID = -8819171414069621503L;
 
     static {
@@ -218,37 +216,37 @@ public class HttpClient implements java.io.Serializable {
     }
 
 
-    public Response get(String url) throws TwitterException {
+    public HttpResponse get(String url) throws TwitterException {
         return request(new HttpRequest(RequestMethod.GET, url, null, null, null));
     }
 
-    public Response post(String url, PostParameter[] params) throws TwitterException {
+    public HttpResponse post(String url, HttpParameter[] params) throws TwitterException {
         return request(new HttpRequest(RequestMethod.POST, url, params, null, null));
     }
 
-    public Response request(HttpRequest req) throws TwitterException {
+    public HttpResponse request(HttpRequest req) throws TwitterException {
         int retriedCount;
         int retry = retryCount + 1;
-        Response res = null;
+        HttpResponse res = null;
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
             try {
                 HttpURLConnection con = null;
                 OutputStream os = null;
                 try {
-                    con = getConnection(req.url);
+                    con = getConnection(req.getURL());
                     con.setDoInput(true);
                     setHeaders(req, con);
                     con.setRequestMethod(req.requestMethod.name());
                     if (req.requestMethod == POST) {
-                        if (PostParameter.containsFile(req.postParams)) {
+                        if (HttpParameter.containsFile(req.httpParams)) {
                             String boundary = "----Twitter4J-upload" + System.currentTimeMillis();
                             con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
                             boundary = "--" + boundary;
                             con.setDoOutput(true);
                             os = con.getOutputStream();
                             DataOutputStream out = new DataOutputStream(os);
-                            for (PostParameter param : req.postParams) {
+                            for (HttpParameter param : req.httpParams) {
                                 if (param.isFile()) {
                                     write(out, boundary + "\r\n");
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"; filename=\"" + param.file.getName() + "\"\r\n");
@@ -275,7 +273,7 @@ public class HttpClient implements java.io.Serializable {
                         } else {
                             con.setRequestProperty("Content-Type",
                                     "application/x-www-form-urlencoded");
-                            String postParam = encodeParameters(req.postParams);
+                            String postParam = HttpParameter.encodeParameters(req.httpParams);
                             log("Post Params: ", postParam);
                             byte[] bytes = postParam.getBytes("UTF-8");
                             con.setRequestProperty("Content-Length",
@@ -287,7 +285,7 @@ public class HttpClient implements java.io.Serializable {
                         os.flush();
                         os.close();
                     }
-                    res = new Response(con);
+                    res = new HttpResponse(con);
                     responseCode = con.getResponseCode();
                     if (DEBUG) {
                         log("Response: ");
@@ -345,51 +343,12 @@ public class HttpClient implements java.io.Serializable {
                 //nothing to do
             }
         }
-        fireHttpResponseEvent(new HttpResponseEvent(this, req, res));
         return res;
     }
 
     private void write(DataOutputStream out, String outStr) throws IOException {
         out.writeBytes(outStr);
         log(outStr);
-    }
-
-
-    private void fireHttpResponseEvent(HttpResponseEvent httpResponseEvent) {
-        if (null != httpResponseListeners) {
-            for (HttpResponseListener listener : httpResponseListeners) {
-                listener.httpResponseReceived(httpResponseEvent);
-            }
-        }
-    }
-
-    public void addHttpResponseListener(HttpResponseListener listener) {
-        if (null == httpResponseListeners) {
-            httpResponseListeners = new ArrayList<HttpResponseListener>();
-        }
-        httpResponseListeners.add(listener);
-    }
-
-    public static String encodeParameters(PostParameter[] postParams) {
-        if (null == postParams) {
-            return "";
-        }
-        StringBuffer buf = new StringBuffer();
-        for (int j = 0; j < postParams.length; j++) {
-            if (postParams[j].isFile()) {
-                throw new IllegalArgumentException("parameter [" + postParams[j].name + "]should be text");
-            }
-            if (j != 0) {
-                buf.append("&");
-            }
-            try {
-                buf.append(URLEncoder.encode(postParams[j].name, "UTF-8"))
-                        .append("=").append(URLEncoder.encode(postParams[j].value, "UTF-8"));
-            } catch (java.io.UnsupportedEncodingException neverHappen) {
-            }
-        }
-        return buf.toString();
-
     }
 
     public static String encode(String str) {
@@ -407,10 +366,10 @@ public class HttpClient implements java.io.Serializable {
      */
     private void setHeaders(HttpRequest req, HttpURLConnection connection) {
         log("Request: ");
-        log(req.requestMethod.name() + " ", req.url);
+        log(req.requestMethod.name() + " ", req.getURL());
 
         if (null != req.authorization) {
-            req.authorization.setAuthorizationHeader(req.requestMethod.name(), req.url, req.postParams, connection);
+            req.authorization.setAuthorizationHeader(req.requestMethod.name(), req.getURL(), req.httpParams, connection);
         }
         if (null != req.requestHeaders) {
             for (String key : req.requestHeaders.keySet()) {

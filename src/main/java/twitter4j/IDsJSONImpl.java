@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.http.Response;
+import twitter4j.http.HttpResponse;
 import twitter4j.org.json.JSONArray;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
@@ -45,10 +45,10 @@ import java.util.Arrays;
     private long nextCursor = -1;
     private static final long serialVersionUID = -6585026560164704953L;
 
-    private IDsJSONImpl(Response res) throws TwitterException {
+    private IDsJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
     }
-    /*package*/ static IDs getFriendsIDs(Response res) throws TwitterException {
+    /*package*/ static IDs getFriendsIDs(HttpResponse res) throws TwitterException {
         IDsJSONImpl friendsIDs = new IDsJSONImpl(res);
         JSONObject json = res.asJSONObject();
         JSONArray idList;
@@ -71,7 +71,7 @@ import java.util.Arrays;
     }
 
 
-    /*package*/ static IDs getBlockIDs(Response res) throws TwitterException {
+    /*package*/ static IDs getBlockIDs(HttpResponse res) throws TwitterException {
         IDsJSONImpl blockIDs = new IDsJSONImpl(res);
         JSONArray idList = null;
         try {

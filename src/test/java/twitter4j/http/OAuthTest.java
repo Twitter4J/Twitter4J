@@ -45,10 +45,6 @@ public class OAuthTest extends TwitterTestUnit {
     private String desktopConsumerKey;
     private String browserConsumerSecret;
     private String browserConsumerKey;
-    private HttpClient decktopClient;
-    private HttpClient browserClient;
-    private OAuthAuthorization desktopClientOAuthAuthentication;
-    private OAuthAuthorization browserClientOAuthAuthentication;
 
     public OAuthTest(String name) {
         super(name);
@@ -59,13 +55,13 @@ public class OAuthTest extends TwitterTestUnit {
         super.setUp();
         desktopConsumerSecret = p.getProperty("desktopConsumerSecret");
         desktopConsumerKey = p.getProperty("desktopConsumerKey");
-        decktopClient = new HttpClient();
-        desktopClientOAuthAuthentication = new OAuthAuthorization(desktopConsumerKey, desktopConsumerSecret);
+        HttpClient decktopClient = new HttpClient();
+        OAuthAuthorization desktopClientOAuthAuthentication = new OAuthAuthorization(desktopConsumerKey, desktopConsumerSecret);
 
         browserConsumerSecret = p.getProperty("browserConsumerSecret");
         browserConsumerKey = p.getProperty("browserConsumerKey");
-        browserClient = new HttpClient();
-        browserClientOAuthAuthentication = new OAuthAuthorization(browserConsumerKey, browserConsumerSecret);
+        HttpClient browserClient = new HttpClient();
+        OAuthAuthorization browserClientOAuthAuthentication = new OAuthAuthorization(browserConsumerKey, browserConsumerSecret);
 
 //        consumerSecret = p.getString("browserConsumerSecret");
 //        consumerKey = p.getString("browserConsumerKey");
@@ -100,10 +96,10 @@ public class OAuthTest extends TwitterTestUnit {
         RequestToken rt;
         Twitter twitter = new Twitter();
         HttpClient http;
-        Response response;
+        HttpResponse response;
         String resStr;
         String authorizeURL;
-        PostParameter[] params;
+        HttpParameter[] params;
         AccessToken at;
         String cookie;
         http = new HttpClient();
@@ -132,13 +128,13 @@ public class OAuthTest extends TwitterTestUnit {
         props.put("Cookie", cookie);
         resStr = response.asString();
         authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
-        params = new PostParameter[4];
-        params[0] = new PostParameter("authenticity_token"
+        params = new HttpParameter[4];
+        params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
-        params[1] = new PostParameter("oauth_token",
+        params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new PostParameter("session[username_or_email]", id1.name);
-        params[3] = new PostParameter("session[password]", id1.pass);
+        params[2] = new HttpParameter("session[username_or_email]", id1.name);
+        params[3] = new HttpParameter("session[password]", id1.pass);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
         resStr = response.asString();
         String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ", "\n</div>");
@@ -152,10 +148,10 @@ public class OAuthTest extends TwitterTestUnit {
         RequestToken rt;
         Twitter twitter = new Twitter();
         HttpClient http;
-        Response response;
+        HttpResponse response;
         String resStr;
         String authorizeURL;
-        PostParameter[] params;
+        HttpParameter[] params;
         AccessToken at;
         String cookie;
         http = new HttpClient();
@@ -172,13 +168,13 @@ public class OAuthTest extends TwitterTestUnit {
 
         resStr = response.asString();
         authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
-        params = new PostParameter[4];
-        params[0] = new PostParameter("authenticity_token"
+        params = new HttpParameter[4];
+        params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
-        params[1] = new PostParameter("oauth_token",
+        params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new PostParameter("session[username_or_email]", id1.name);
-        params[3] = new PostParameter("session[password]", id1.pass);
+        params[2] = new HttpParameter("session[username_or_email]", id1.name);
+        params[3] = new HttpParameter("session[password]", id1.pass);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
 
 //        response = http.post(authorizeURL, params);
@@ -192,10 +188,10 @@ public class OAuthTest extends TwitterTestUnit {
         RequestToken rt;
         Twitter twitter = new Twitter();
         HttpClient http;
-        Response response;
+        HttpResponse response;
         String resStr;
         String authorizeURL;
-        PostParameter[] params;
+        HttpParameter[] params;
         AccessToken at;
         String cookie;
         http = new HttpClient();
@@ -213,13 +209,13 @@ public class OAuthTest extends TwitterTestUnit {
         props.put("Cookie", cookie);
         resStr = response.asString();
         authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
-        params = new PostParameter[4];
-        params[0] = new PostParameter("authenticity_token"
+        params = new HttpParameter[4];
+        params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
-        params[1] = new PostParameter("oauth_token",
+        params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new PostParameter("session[username_or_email]", id1.name);
-        params[3] = new PostParameter("session[password]", id1.pass);
+        params[2] = new HttpParameter("session[username_or_email]", id1.name);
+        params[3] = new HttpParameter("session[password]", id1.pass);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret());
         assertEquals(at.getScreenName(), id1.name);
@@ -232,10 +228,10 @@ public class OAuthTest extends TwitterTestUnit {
         RequestToken rt;
         Twitter twitter = new Twitter();
         HttpClient http;
-        Response response;
+        HttpResponse response;
         String resStr;
         String authorizeURL;
-        PostParameter[] params;
+        HttpParameter[] params;
         AccessToken at;
         String cookie;
         http = new HttpClient();
@@ -246,7 +242,7 @@ public class OAuthTest extends TwitterTestUnit {
         rt = twitter.getOAuthRequestToken("http://yusuke.homeip.net/twitter4j/custom_callback");
         http = new HttpClient();
 
-        System.out.println("----------authorizeURL" + rt.getAuthorizationURL());
+        System.out.println("AuthorizationURL: " + rt.getAuthorizationURL());
         response = http.get(rt.getAuthorizationURL());
         Map<String,String> props = new HashMap<String,String>();
         cookie = response.getResponseHeader("Set-Cookie");
@@ -254,17 +250,17 @@ public class OAuthTest extends TwitterTestUnit {
         props.put("Cookie", cookie);
         resStr = response.asString();
         authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
-        params = new PostParameter[4];
-        params[0] = new PostParameter("authenticity_token"
+        params = new HttpParameter[4];
+        params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
-        params[1] = new PostParameter("oauth_token",
+        params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new PostParameter("session[username_or_email]", id1.name);
-        params[3] = new PostParameter("session[password]", id1.pass);
+        params[2] = new HttpParameter("session[username_or_email]", id1.name);
+        params[3] = new HttpParameter("session[password]", id1.pass);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
 //        response = http.post(authorizeURL, params);
         resStr = response.asString();
-        String oauthVerifier = catchPattern(resStr, "&oauth_verifier=", "\">");
+        String oauthVerifier = catchPattern(resStr, "&amp;oauth_verifier=", "\">");
 
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret(), oauthVerifier);
         assertEquals(at.getScreenName(), id1.name);
@@ -299,9 +295,9 @@ public class OAuthTest extends TwitterTestUnit {
     }
 
     public void testHeader() throws Exception {
-        PostParameter[] params = new PostParameter[2];
-        params[0] = new PostParameter("file", "vacation.jpg");
-        params[1] = new PostParameter("size", "original");
+        HttpParameter[] params = new HttpParameter[2];
+        params[0] = new HttpParameter("file", "vacation.jpg");
+        params[1] = new HttpParameter("size", "original");
         OAuthAuthorization oauth = new OAuthAuthorization("dpf43f3p2l4k3l03", "kd94hf93k423kf44");
         String expected = "OAuth oauth_consumer_key=\"dpf43f3p2l4k3l03\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"1191242096\",oauth_nonce=\"kllo9940pd9333jh\",oauth_version=\"1.0\",oauth_token=\"nnch734d00sl2jdk\",oauth_signature=\"tR3%2BTy81lMeYAr%2FFid0kMTYa%2FWM%3D\"";
         assertEquals(expected, oauth.generateAuthorizationHeader("GET", "http://photos.example.net/photos", params, "kllo9940pd9333jh", "1191242096", new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
@@ -328,44 +324,44 @@ public class OAuthTest extends TwitterTestUnit {
 
     public void testNormalizeRequestParameters() throws Exception {
         // a=1, c=hi%20there, f=25, f=50, f=a, z=p, z=t
-        PostParameter[] params = new PostParameter[]{
-                new PostParameter("a", "1"),
-                new PostParameter("c", "hi there"),
-                new PostParameter("f", "50"),
-                new PostParameter("f", "25"),
-                new PostParameter("z", "t"),
-                new PostParameter("z", "p"),
-                new PostParameter("f", "a"),
+        HttpParameter[] params = new HttpParameter[]{
+                new HttpParameter("a", "1"),
+                new HttpParameter("c", "hi there"),
+                new HttpParameter("f", "50"),
+                new HttpParameter("f", "25"),
+                new HttpParameter("z", "t"),
+                new HttpParameter("z", "p"),
+                new HttpParameter("f", "a"),
         };
         assertEquals("a=1&c=hi%20there&f=25&f=50&f=a&z=p&z=t", OAuthAuthorization.normalizeRequestParameters(params));
 
         // test cases from http://wiki.oauth.net/TestCases - Normalize Request Parameters (section 9.1.1)
-        params = new PostParameter[]{
-                new PostParameter("name", ""),
+        params = new HttpParameter[]{
+                new HttpParameter("name", ""),
         };
         assertEquals("name=", OAuthAuthorization.normalizeRequestParameters(params));
 
 
-        params = new PostParameter[]{
-                new PostParameter("a", "b"),
+        params = new HttpParameter[]{
+                new HttpParameter("a", "b"),
         };
         assertEquals("a=b", OAuthAuthorization.normalizeRequestParameters(params));
 
-        params = new PostParameter[]{
-                new PostParameter("a", "b"),
-                new PostParameter("c", "d"),
+        params = new HttpParameter[]{
+                new HttpParameter("a", "b"),
+                new HttpParameter("c", "d"),
         };
         assertEquals("a=b&c=d", OAuthAuthorization.normalizeRequestParameters(params));
 
-        params = new PostParameter[]{
-                new PostParameter("a", "x!y"),
-                new PostParameter("a", "x y"),
+        params = new HttpParameter[]{
+                new HttpParameter("a", "x!y"),
+                new HttpParameter("a", "x y"),
         };
         assertEquals("a=x%20y&a=x%21y", OAuthAuthorization.normalizeRequestParameters(params));
 
-        params = new PostParameter[]{
-                new PostParameter("x!y", "a"),
-                new PostParameter("x", "a"),
+        params = new HttpParameter[]{
+                new HttpParameter("x!y", "a"),
+                new HttpParameter("x", "a"),
         };
         assertEquals("x=a&x%21y=a", OAuthAuthorization.normalizeRequestParameters(params));
 

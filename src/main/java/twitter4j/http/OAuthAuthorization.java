@@ -48,17 +48,15 @@ import java.util.Random;
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
 public final class OAuthAuthorization implements Authorization, java.io.Serializable {
-    private transient static final Configuration conf = Configuration.getInstance();
+    private static final Configuration conf = Configuration.getInstance();
     private static final String HMAC_SHA1 = "HmacSHA1";
-    private static final PostParameter OAUTH_SIGNATURE_METHOD = new PostParameter("oauth_signature_method", "HMAC-SHA1");
-    private transient static final boolean DEBUG = conf.getInstance().isDebug();
+    private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
+    private static final boolean DEBUG = conf.getInstance().isDebug();
     static final long serialVersionUID = -4368426677157998618L;
     private String consumerKey = "";
     private String consumerSecret;
 
-    private transient HttpClient http = HttpClient.getInstance(conf);
-
-    private HttpRequestFactory requestFactory = HttpRequestFactory.getInstance(conf);
+    private transient HttpClientWrapper clientWrapper = HttpClientWrapper.getInstance(conf, conf);
     private OAuthToken oauthToken = null;
 
     public OAuthAuthorization(String consumerKey, String consumerSecret) {
@@ -72,22 +70,22 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
 
     /*package*/
 
-    String generateAuthorizationHeader(String method, String url, PostParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
+    String generateAuthorizationHeader(String method, String url, HttpParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
         if (null == params) {
-            params = new PostParameter[0];
+            params = new HttpParameter[0];
         }
-        List<PostParameter> oauthHeaderParams = new ArrayList<PostParameter>(5);
-        oauthHeaderParams.add(new PostParameter("oauth_consumer_key", consumerKey));
+        List<HttpParameter> oauthHeaderParams = new ArrayList<HttpParameter>(5);
+        oauthHeaderParams.add(new HttpParameter("oauth_consumer_key", consumerKey));
         oauthHeaderParams.add(OAUTH_SIGNATURE_METHOD);
-        oauthHeaderParams.add(new PostParameter("oauth_timestamp", timestamp));
-        oauthHeaderParams.add(new PostParameter("oauth_nonce", nonce));
-        oauthHeaderParams.add(new PostParameter("oauth_version", "1.0"));
+        oauthHeaderParams.add(new HttpParameter("oauth_timestamp", timestamp));
+        oauthHeaderParams.add(new HttpParameter("oauth_nonce", nonce));
+        oauthHeaderParams.add(new HttpParameter("oauth_version", "1.0"));
         if (null != otoken) {
-            oauthHeaderParams.add(new PostParameter("oauth_token", otoken.getToken()));
+            oauthHeaderParams.add(new HttpParameter("oauth_token", otoken.getToken()));
         }
-        List<PostParameter> signatureBaseParams = new ArrayList<PostParameter>(oauthHeaderParams.size() + params.length);
+        List<HttpParameter> signatureBaseParams = new ArrayList<HttpParameter>(oauthHeaderParams.size() + params.length);
         signatureBaseParams.addAll(oauthHeaderParams);
-        if (!PostParameter.containsFile(params)) {
+        if (!HttpParameter.containsFile(params)) {
             signatureBaseParams.addAll(toParamList(params));
         }
         parseGetParameters(url, signatureBaseParams);
@@ -99,11 +97,11 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         String signature = generateSignature(oauthBaseString, otoken);
         log("OAuth signature: ", signature);
 
-        oauthHeaderParams.add(new PostParameter("oauth_signature", signature));
+        oauthHeaderParams.add(new HttpParameter("oauth_signature", signature));
         return "OAuth " + encodeParameters(oauthHeaderParams, ",", true);
     }
 
-    private void parseGetParameters(String url, List<PostParameter> signatureBaseParams) {
+    private void parseGetParameters(String url, List<HttpParameter> signatureBaseParams) {
         int queryStart = url.indexOf("?");
         if (-1 != queryStart) {
             String[] queryStrs = url.substring(queryStart + 1).split("&");
@@ -112,12 +110,12 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
                     String[] split = query.split("=");
                     if (split.length == 2) {
                         signatureBaseParams.add(
-                                new PostParameter(URLDecoder.decode(split[0],
+                                new HttpParameter(URLDecoder.decode(split[0],
                                         "UTF-8"), URLDecoder.decode(split[1],
                                         "UTF-8")));
                     } else {
                         signatureBaseParams.add(
-                                new PostParameter(URLDecoder.decode(split[0],
+                                new HttpParameter(URLDecoder.decode(split[0],
                                         "UTF-8"), ""));
                     }
                 }
@@ -134,13 +132,13 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      * @return
      * @see <a href="http://oauth.net/core/1.0a/#rfc.section.5.4.1">OAuth Core - 5.4.1.  Authorization Header</a>
      */
-    /*package*/ String generateAuthorizationHeader(String method, String url, PostParameter[] params, OAuthToken token) {
+    /*package*/ String generateAuthorizationHeader(String method, String url, HttpParameter[] params, OAuthToken token) {
         long timestamp = System.currentTimeMillis() / 1000;
         long nonce = timestamp + RAND.nextInt();
         return generateAuthorizationHeader(method, url, params, String.valueOf(nonce), String.valueOf(timestamp), token);
     }
 
-    public void setAuthorizationHeader(String method, String url, PostParameter[] params, HttpURLConnection con) {
+    public void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con) {
         String authorization = generateAuthorizationHeader(method, url, params, oauthToken);
         log("Authorization: " + authorization);
         con.addRequestProperty("Authorization", authorization);
@@ -155,9 +153,8 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     }
 
     public RequestToken getRequestToken(String callbackURL) throws TwitterException {
-        PostParameter[] params = null != callbackURL ? new PostParameter[]{new PostParameter("oauth_callback", callbackURL)} : new PostParameter[0];
-        oauthToken = new RequestToken(http.request(
-                requestFactory.createPostRequest(conf.getOAuthRequestTokenURL(), params, this)), this);
+        HttpParameter[] params = null != callbackURL ? new HttpParameter[]{new HttpParameter("oauth_callback", callbackURL)} : new HttpParameter[0];
+        oauthToken = new RequestToken(clientWrapper.post(conf.getOAuthRequestTokenURL(), params, this), this);
         return (RequestToken) oauthToken;
     }
 
@@ -168,7 +165,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
 
     public AccessToken getAccessToken() throws TwitterException {
         try {
-            oauthToken = new AccessToken(http.request(requestFactory.createPostRequest(conf.getOAuthAccessTokenURL(), new PostParameter[0], this)));
+            oauthToken = new AccessToken(clientWrapper.post(conf.getOAuthAccessTokenURL(), new HttpParameter[0], this));
             return (AccessToken) oauthToken;
         } catch (TwitterException te) {
             throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
@@ -186,8 +183,8 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
 
     public AccessToken getAccessToken(String oauth_verifier) throws TwitterException {
         try {
-            oauthToken = new AccessToken(http.request(requestFactory.createPostRequest(conf.getOAuthAccessTokenURL()
-                    , new PostParameter[]{new PostParameter("oauth_verifier", oauth_verifier)}, this)));
+            oauthToken = new AccessToken(clientWrapper.post(conf.getOAuthAccessTokenURL()
+                    , new HttpParameter[]{new HttpParameter("oauth_verifier", oauth_verifier)}, this));
             return (AccessToken) oauthToken;
         } catch (TwitterException te) {
             throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
@@ -254,39 +251,39 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      * @return nomarized and concatenated parameters
      * @see <a href="http://oauth.net/core/1.0#rfc.section.9.1.1">OAuth Core - 9.1.1.  Normalize Request Parameters</a>
      */
-    public static String normalizeRequestParameters(PostParameter[] params) {
+    public static String normalizeRequestParameters(HttpParameter[] params) {
         return normalizeRequestParameters(toParamList(params));
     }
 
-    public static String normalizeRequestParameters(List<PostParameter> params) {
+    public static String normalizeRequestParameters(List<HttpParameter> params) {
         Collections.sort(params);
         return encodeParameters(params);
     }
 
-    public static String normalizeAuthorizationHeaders(List<PostParameter> params) {
+    public static String normalizeAuthorizationHeaders(List<HttpParameter> params) {
         Collections.sort(params);
         return encodeParameters(params);
     }
 
-    public static List<PostParameter> toParamList(PostParameter[] params) {
-        List<PostParameter> paramList = new ArrayList<PostParameter>(params.length);
+    public static List<HttpParameter> toParamList(HttpParameter[] params) {
+        List<HttpParameter> paramList = new ArrayList<HttpParameter>(params.length);
         paramList.addAll(Arrays.asList(params));
         return paramList;
     }
 
     /**
-     * @param postParams parameters to be enocded and concatenated
+     * @param httpParams parameters to be enocded and concatenated
      * @return eoncoded string
      * @see <a href="http://wiki.oauth.net/TestCases">OAuth / TestCases</a>
      * @see <a href="http://groups.google.com/group/oauth/browse_thread/thread/a8398d0521f4ae3d/9d79b698ab217df2?hl=en&lnk=gst&q=space+encoding#9d79b698ab217df2">Space encoding - OAuth | Google Groups</a>
      */
-    public static String encodeParameters(List<PostParameter> postParams) {
-        return encodeParameters(postParams, "&", false);
+    public static String encodeParameters(List<HttpParameter> httpParams) {
+        return encodeParameters(httpParams, "&", false);
     }
 
-    public static String encodeParameters(List<PostParameter> postParams, String splitter, boolean quot) {
+    public static String encodeParameters(List<HttpParameter> httpParams, String splitter, boolean quot) {
         StringBuffer buf = new StringBuffer();
-        for (PostParameter param : postParams) {
+        for (HttpParameter param : httpParams) {
             if (!param.isFile()) {
                 if (buf.length() != 0) {
                     if (quot) {
