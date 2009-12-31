@@ -69,7 +69,6 @@ public class SearchAPITest extends TwitterTestBase {
                 || -1 != profileImageURL.toLowerCase().indexOf(".png")
                 || -1 != profileImageURL.toLowerCase().indexOf(".gif"));
         String source = tweets.get(0).getSource();
-        System.out.println(source);
         assertTrue(-1 != source.indexOf("<a href=\"") || "web".equals(source) || "API".equals(source));
 
 
@@ -90,7 +89,6 @@ public class SearchAPITest extends TwitterTestBase {
         twitterAPI1.updateStatus("%... 日本語");
         query = new Query("%... 日本語");
         queryResult = unauthenticated.search(query);
-        System.out.println(queryResult.getRefreshUrl());
         assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());
         query.setQuery("from:al3x");
