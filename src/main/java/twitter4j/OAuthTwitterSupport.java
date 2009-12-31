@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class OAuthTwitterSupport extends TwitterSupport implements HttpResponseListener, java.io.Serializable {
-    protected static final HttpClientWrapper http = HttpClientWrapper.getInstance(conf, conf);
+    protected transient final HttpClientWrapper http = HttpClientWrapper.getInstance(conf, conf);
 
     protected List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     private static final long serialVersionUID = 6960663978976449394L;

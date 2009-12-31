@@ -41,10 +41,10 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public class TwitterStream extends TwitterSupport {
-    private static final Configuration conf = Configuration.getInstance();
-    protected static final HttpClientWrapper http = HttpClientWrapper.getInstance(conf, new StreamingReadTimeoutConfiguration(conf));
-    private static final boolean DEBUG = conf.isDebug();
+public class TwitterStream extends TwitterSupport implements java.io.Serializable {
+    private transient static final Configuration conf = Configuration.getInstance();
+    private transient static final HttpClientWrapper http = HttpClientWrapper.getInstance(conf, new StreamingReadTimeoutConfiguration(conf));
+    private transient static final boolean DEBUG = conf.isDebug();
 
     private StatusListener statusListener;
     private StreamHandlingThread handler = null;

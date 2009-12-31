@@ -45,16 +45,6 @@ abstract class TwitterSupport implements java.io.Serializable {
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
 
-//    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-//        out.writeObject(auth);
-//    }
-//
-//    private void readObject(ObjectInputStream stream)
-//            throws IOException, ClassNotFoundException {
-//        auth = (Authorization)stream.readObject();
-//    }
-
-
     /*package*/ TwitterSupport(){
         this(conf.getUser(), conf.getPassword());
     }
