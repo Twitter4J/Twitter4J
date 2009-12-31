@@ -3,8 +3,11 @@ package twitter4j;
 import twitter4j.http.*;
 
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 class OAuthTwitterSupport extends TwitterSupport implements HttpResponseListener, java.io.Serializable {
@@ -34,7 +37,7 @@ class OAuthTwitterSupport extends TwitterSupport implements HttpResponseListener
             String consumerSecret = conf.getOAuthConsumerSecret();
             // try to find oauth tokens in the configuration
             if (null != consumerKey && null != consumerSecret) {
-                OAuthAuthorization oauth = new OAuthAuthorization(consumerKey, consumerSecret, http, requestFactory);
+                OAuthAuthorization oauth = new OAuthAuthorization(consumerKey, consumerSecret);
                 String accessToken = conf.getOAuthAccessToken();
                 String accessTokenSecret = conf.getOAuthAccessTokenSecret();
                 if (null != accessToken && null != accessTokenSecret) {
@@ -175,7 +178,7 @@ class OAuthTwitterSupport extends TwitterSupport implements HttpResponseListener
      * @since Twitter 2.0.0
      */
     public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
-        auth = new OAuthAuthorization(consumerKey, consumerSecret, http);
+        auth = new OAuthAuthorization(consumerKey, consumerSecret);
     }
 
     /**

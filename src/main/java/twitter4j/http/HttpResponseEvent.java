@@ -30,31 +30,43 @@ package twitter4j.http;
  * @author Andrew Hedges - andrew.hedges at gmail.com
  */
 public class HttpResponseEvent {
+
     private HttpRequest request;
+
+    private HttpClient source;
 
     private Response response;
 
     /* package */
 
-    HttpResponseEvent(HttpRequest request, Response response) {
+    HttpResponseEvent(HttpClient source, HttpRequest request, Response response) {
+        this.source = source;
         this.request = request;
         this.response = response;
     }
 
-    public String getUrl() {
-        return request.url;
+    /**
+     * returns the request
+     * @return
+     */
+    public HttpRequest getRequest() {
+        return request;
     }
 
-    public PostParameter[] getPostParameters() {
-        return request.postParams;
+    /**
+     * returns the response
+     * @return
+     */
+    public Response getResponse() {
+        return response;
     }
 
     public boolean isAuthenticated() {
         return request.authorization.isAuthenticationEnabled();
     }
 
-    public Response getResponse() {
-        return response;
+    public HttpClient getSource() {
+        return source;
     }
 
     @Override

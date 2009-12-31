@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static twitter4j.http.RequestMethod.DELETE;
@@ -43,9 +44,24 @@ public class HttpRequestFactory implements java.io.Serializable{
     private final Map<String, String> requestHeaders;
     private static final long serialVersionUID = -6511977105603119379L;
 
-    public HttpRequestFactory(HttpRequestFactoryConfiguration conf) {
+    public  HttpRequestFactory( Map<String, String> requestHeaders) {
+        this.requestHeaders = requestHeaders;
+    }
+    private static final Map<HttpRequestFactoryConfiguration, HttpRequestFactory> instanceMap = new HashMap<HttpRequestFactoryConfiguration, HttpRequestFactory>(1);
+
+    private HttpRequestFactory(HttpRequestFactoryConfiguration conf) {
         this.requestHeaders = conf.getRequestHeaders();
     }
+
+    public static HttpRequestFactory getInstance(HttpRequestFactoryConfiguration conf) {
+        HttpRequestFactory factory = instanceMap.get(conf);
+        if (null == factory) {
+            factory = new HttpRequestFactory(conf);
+            instanceMap.put(conf, factory);
+        }
+        return factory;
+    }
+
 
     public HttpRequest createGetRequest(String url, PostParameter[] parameters
             , Authorization authorization) {

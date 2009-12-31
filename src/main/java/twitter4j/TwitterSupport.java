@@ -42,9 +42,9 @@ import java.io.ObjectInputStream;
 class TwitterSupport implements java.io.Serializable {
     protected transient static final Configuration conf = Configuration.getInstance();
 
-    protected transient static final HttpRequestFactory requestFactory = new HttpRequestFactory(conf);
+    protected transient static final HttpRequestFactory requestFactory = HttpRequestFactory.getInstance(conf);
 
-    protected transient HttpClient http = HttpClient.getInstance(conf);
+    protected transient HttpClient http = new HttpClient(conf);
 
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
@@ -56,7 +56,7 @@ class TwitterSupport implements java.io.Serializable {
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
         auth = (Authorization)stream.readObject();
-        http = HttpClient.getInstance(conf);
+        http = new HttpClient(conf);
     }
 
 

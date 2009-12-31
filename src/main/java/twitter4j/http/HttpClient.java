@@ -79,9 +79,9 @@ public class HttpClient implements java.io.Serializable {
     private int readTimeout = 120000;
     private int retryCount = 0;
     private int retryIntervalSeconds = 5 * 1000;
-    private static final long serialVersionUID = 808018030183407996L;
     private static boolean isJDK14orEarlier = false;
     private List<HttpResponseListener> httpResponseListeners;
+    private static final long serialVersionUID = -8819171414069621503L;
 
     static {
         try {
@@ -96,21 +96,23 @@ public class HttpClient implements java.io.Serializable {
 
     public HttpClient() {
     }
+    public HttpClient(HttpClientConfiguration conf) {
+        setProxyHost(conf.getHttpProxyHost());
+        setProxyPort(conf.getHttpProxyPort());
+        setProxyAuthUser(conf.getHttpProxyUser());
+        setProxyAuthPassword(conf.getHttpProxyPassword());
+        setConnectionTimeout(conf.getHttpConnectionTimeout());
+        setReadTimeout(conf.getHttpReadTimeout());
+        setRetryCount(conf.getHttpRetryCount());
+        setRetryIntervalSeconds(conf.getHttpRetryIntervalSeconds());
+    }
 
     private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<HttpClientConfiguration, HttpClient>(1);
 
     public static HttpClient getInstance(HttpClientConfiguration conf) {
         HttpClient client = instanceMap.get(conf);
         if (null == client) {
-            client = new HttpClient();
-            client.setProxyHost(conf.getHttpProxyHost());
-            client.setProxyPort(conf.getHttpProxyPort());
-            client.setProxyAuthUser(conf.getHttpProxyUser());
-            client.setProxyAuthPassword(conf.getHttpProxyPassword());
-            client.setConnectionTimeout(conf.getHttpConnectionTimeout());
-            client.setReadTimeout(conf.getHttpReadTimeout());
-            client.setRetryCount(conf.getHttpRetryCount());
-            client.setRetryIntervalSeconds(conf.getHttpRetryIntervalSeconds());
+            client = new HttpClient(conf);
             instanceMap.put(conf, client);
         }
         return client;
@@ -343,7 +345,7 @@ public class HttpClient implements java.io.Serializable {
                 //nothing to do
             }
         }
-        fireHttpResponseEvent(new HttpResponseEvent(req, res));
+        fireHttpResponseEvent(new HttpResponseEvent(this, req, res));
         return res;
     }
 
@@ -465,12 +467,10 @@ public class HttpClient implements java.io.Serializable {
         HttpClient that = (HttpClient) o;
 
         if (connectionTimeout != that.connectionTimeout) return false;
+        if (proxyPort != that.proxyPort) return false;
         if (readTimeout != that.readTimeout) return false;
         if (retryCount != that.retryCount) return false;
-        if (proxyPort != that.proxyPort) return false;
         if (retryIntervalSeconds != that.retryIntervalSeconds) return false;
-        if (httpResponseListeners != null ? !httpResponseListeners.equals(that.httpResponseListeners) : that.httpResponseListeners != null)
-            return false;
         if (proxyAuthPassword != null ? !proxyAuthPassword.equals(that.proxyAuthPassword) : that.proxyAuthPassword != null)
             return false;
         if (proxyAuthUser != null ? !proxyAuthUser.equals(that.proxyAuthUser) : that.proxyAuthUser != null)
@@ -491,7 +491,6 @@ public class HttpClient implements java.io.Serializable {
         result = 31 * result + readTimeout;
         result = 31 * result + retryCount;
         result = 31 * result + retryIntervalSeconds;
-        result = 31 * result + (httpResponseListeners != null ? httpResponseListeners.hashCode() : 0);
         return result;
     }
 
