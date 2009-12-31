@@ -89,7 +89,7 @@ public final class BasicAuthorization implements Authorization, java.io.Serializ
 
     @Override
     public String toString() {
-        return "BasicAuthentication{" +
+        return "BasicAuthorization{" +
                 "userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 '}';

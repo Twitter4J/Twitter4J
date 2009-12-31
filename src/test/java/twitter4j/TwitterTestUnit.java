@@ -60,11 +60,17 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(0 < status.size());
     }
     public void testSerializability() throws Exception {
-        Twitter deserialized = (Twitter)assertDeserializedFormIsEqual(twitterAPI1);
+        Twitter twitter = TwitterFactory.getBasicAuthenticatedInstance("foo", "bar");
+        Twitter deserialized = (Twitter)assertDeserializedFormIsEqual(twitter);
 
-        assertEquals(deserialized.screenName, twitterAPI1.screenName);
-        assertEquals(deserialized.auth, twitterAPI1.auth);
-        assertDeserializedFormIsEqual(this.unauthenticated);
+        assertEquals(deserialized.screenName, twitter.screenName);
+        assertEquals(deserialized.auth, twitter.auth);
+
+        twitter = TwitterFactory.getInstance();
+        deserialized = (Twitter)assertDeserializedFormIsEqual(twitter);
+        assertEquals(deserialized.screenName, twitter.screenName);
+        assertEquals(deserialized.auth, twitter.auth);
+
     }
 
     public void testGetFriendsTimeline() throws Exception {

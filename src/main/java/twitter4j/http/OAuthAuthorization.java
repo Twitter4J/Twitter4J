@@ -368,7 +368,6 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      * @return the Signature Base String
      * @see <a href="http://oauth.net/core/1.0#rfc.section.9.1.2">OAuth Core - 9.1.2.  Construct Request URL</a>
      */
-
     public static String constructRequestURL(String url) {
         int index = url.indexOf("?");
         if (-1 != index) {
@@ -417,11 +416,13 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         if (this == o) return true;
         if (!(o instanceof OAuthAuthorization)) return false;
 
-        OAuthAuthorization oAuthAuthentication = (OAuthAuthorization) o;
+        OAuthAuthorization that = (OAuthAuthorization) o;
 
-        if (consumerKey != null ? !consumerKey.equals(oAuthAuthentication.consumerKey) : oAuthAuthentication.consumerKey != null)
+        if (consumerKey != null ? !consumerKey.equals(that.consumerKey) : that.consumerKey != null)
             return false;
-        if (consumerSecret != null ? !consumerSecret.equals(oAuthAuthentication.consumerSecret) : oAuthAuthentication.consumerSecret != null)
+        if (consumerSecret != null ? !consumerSecret.equals(that.consumerSecret) : that.consumerSecret != null)
+            return false;
+        if (oauthToken != null ? !oauthToken.equals(that.oauthToken) : that.oauthToken != null)
             return false;
 
         return true;
@@ -431,14 +432,16 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     public int hashCode() {
         int result = consumerKey != null ? consumerKey.hashCode() : 0;
         result = 31 * result + (consumerSecret != null ? consumerSecret.hashCode() : 0);
+        result = 31 * result + (oauthToken != null ? oauthToken.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "OAuthAuthentication{" +
+        return "OAuthAuthorization{" +
                 "consumerKey='" + consumerKey + '\'' +
                 ", consumerSecret='" + consumerSecret + '\'' +
+                ", oauthToken=" + oauthToken +
                 '}';
     }
 }

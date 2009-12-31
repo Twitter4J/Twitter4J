@@ -165,17 +165,15 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
 
     public void onStatus(Status status) {
         this.status = status;
-        System.out.println("got status from stream:" + status.toString());
+//        System.out.println("got status from stream:" + status.toString());
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
-        System.out.println(status.getCreatedAt() + ":" + status.getText() + " from:" + status.getSource());
+//        System.out.println(status.getCreatedAt() + ":" + status.getText() + " from:" + status.getSource());
         if(status.getText().startsWith("RT")){
             Status retweetedStatus = status.getRetweetedStatus();
+            System.out.println("got a retweet!");
             if(null != retweetedStatus){
-                System.out.println("got a retweet!-----------------------------");
-            }else{
-
-                System.out.println("not a retweet!-----------------------------");
+                System.out.println("not it's not an official retweet!");
             }
         }
         notifyResponse();
