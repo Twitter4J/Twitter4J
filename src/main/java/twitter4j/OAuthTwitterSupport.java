@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class OAuthTwitterSupport extends TwitterSupport implements HttpResponseListener, java.io.Serializable {
-    protected transient final HttpClientWrapper http = HttpClientWrapper.getInstance(conf, conf);
+    protected transient HttpClientWrapper http = HttpClientWrapper.getInstance(conf, conf);
 
     protected List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     private static final long serialVersionUID = 6960663978976449394L;
@@ -53,6 +53,7 @@ class OAuthTwitterSupport extends TwitterSupport implements HttpResponseListener
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
         rateLimitStatusListeners = (ArrayList<RateLimitStatusListener>)stream.readObject();
+        http = HttpClientWrapper.getInstance(conf, conf);
         http.addHttpResponseListener(this);
     }
     protected OAuthAuthorization getOAuth() {
