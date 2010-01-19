@@ -53,6 +53,13 @@ public final class TwitterFactory {
     }
 
     /**
+     * Creates a TwitterFactory
+     */
+    public TwitterFactory(String configHierarchy) {
+        this(ConfigurationFactory.getInstance(configHierarchy));
+    }
+
+    /**
      * Returns a Twitter instance.
      *
      * @return default singleton instance
