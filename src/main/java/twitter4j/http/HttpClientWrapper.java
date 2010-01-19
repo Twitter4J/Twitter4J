@@ -44,18 +44,16 @@ import static twitter4j.http.RequestMethod.PUT;
  */
 public class HttpClientWrapper implements java.io.Serializable {
     private final HttpClientWrapperConfiguration wrapperConf;
-    private final HttpClientConfiguration httpConf;
     private HttpClient http;
 
     private final Map<String, String> requestHeaders;
     private static final long serialVersionUID = -6511977105603119379L;
     private HttpResponseListener httpResponseListener;
 
-    public HttpClientWrapper(HttpClientWrapperConfiguration wrapperConf, HttpClientConfiguration httpConf) {
+    public HttpClientWrapper(HttpClientWrapperConfiguration wrapperConf) {
         this.wrapperConf = wrapperConf;
-        this.httpConf = httpConf;
         requestHeaders = wrapperConf.getRequestHeaders();
-        http = new HttpClient(httpConf);
+        http = new HttpClient(wrapperConf);
     }
     private HttpResponse request(HttpRequest req) throws TwitterException {
         HttpResponse res = http.request(req);

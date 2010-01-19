@@ -74,7 +74,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     }
 
     private void init(String consumerKey, String consumerSecret){
-        http = new HttpClientWrapper(conf, conf);
+        http = new HttpClientWrapper(conf);
         setConsumerKey(consumerKey);
         setConsumerSecret(consumerSecret);
     }

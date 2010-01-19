@@ -31,6 +31,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterTestUnit;
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -58,17 +59,17 @@ public class OAuthTest extends TwitterTestUnit {
         desktopConsumerSecret = p.getProperty("desktopConsumerSecret");
         desktopConsumerKey = p.getProperty("desktopConsumerKey");
         HttpClient decktopClient = new HttpClient();
-        OAuthSupport desktopClientOAuthAuthentication = new OAuthAuthorization(Configuration.getInstance(), desktopConsumerKey, desktopConsumerSecret);
+        OAuthSupport desktopClientOAuthAuthentication = new OAuthAuthorization(ConfigurationFactory.getInstance(), desktopConsumerKey, desktopConsumerSecret);
 
         browserConsumerSecret = p.getProperty("browserConsumerSecret");
         browserConsumerKey = p.getProperty("browserConsumerKey");
         HttpClient browserClient = new HttpClient();
-        OAuthSupport browserClientOAuthAuthentication = new OAuthAuthorization(Configuration.getInstance(), browserConsumerKey, browserConsumerSecret);
+        OAuthSupport browserClientOAuthAuthentication = new OAuthAuthorization(ConfigurationFactory.getInstance(), browserConsumerKey, browserConsumerSecret);
 
 //        consumerSecret = p.getString("browserConsumerSecret");
 //        consumerKey = p.getString("browserConsumerKey");
 
-        twitterAPI1 = TwitterFactory.getDefaultFactory().getInstance();
+        twitterAPI1 = new TwitterFactory().getInstance();
         twitterAPI1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         String id1token = p.getProperty("id1.oauth_token");
         String id1tokenSecret = p.getProperty("id1.oauth_token_secret");
@@ -287,20 +288,20 @@ public class OAuthTest extends TwitterTestUnit {
 
     public void testSign() throws Exception {
         String baseStr = "GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal";
-        OAuthAuthorization oauth = new OAuthAuthorization(Configuration.getInstance(), "dpf43f3p2l4k3l03", "kd94hf93k423kf44");
+        OAuthAuthorization oauth = new OAuthAuthorization(ConfigurationFactory.getInstance(), "dpf43f3p2l4k3l03", "kd94hf93k423kf44");
         trySerializable(oauth);
         //http://wiki.oauth.net/TestCases
         assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=", oauth.generateSignature(baseStr, new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
-        assertEquals("egQqG5AJep5sJ7anhXju1unge2I=", new OAuthAuthorization(Configuration.getInstance(), desktopConsumerKey, "cs").generateSignature("bs", new RequestToken("nnch734d00sl2jdk", "")));
-        assertEquals("VZVjXceV7JgPq/dOTnNmEfO0Fv8=", new OAuthAuthorization(Configuration.getInstance(), desktopConsumerKey, "cs").generateSignature("bs", new RequestToken("nnch734d00sl2jdk", "ts")));
-        assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=", new OAuthAuthorization(Configuration.getInstance(), desktopConsumerKey, "kd94hf93k423kf44").generateSignature("GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal", new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
+        assertEquals("egQqG5AJep5sJ7anhXju1unge2I=", new OAuthAuthorization(ConfigurationFactory.getInstance(), desktopConsumerKey, "cs").generateSignature("bs", new RequestToken("nnch734d00sl2jdk", "")));
+        assertEquals("VZVjXceV7JgPq/dOTnNmEfO0Fv8=", new OAuthAuthorization(ConfigurationFactory.getInstance(), desktopConsumerKey, "cs").generateSignature("bs", new RequestToken("nnch734d00sl2jdk", "ts")));
+        assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=", new OAuthAuthorization(ConfigurationFactory.getInstance(), desktopConsumerKey, "kd94hf93k423kf44").generateSignature("GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal", new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
     }
 
     public void testHeader() throws Exception {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter("file", "vacation.jpg");
         params[1] = new HttpParameter("size", "original");
-        OAuthAuthorization oauth = new OAuthAuthorization(Configuration.getInstance(), "dpf43f3p2l4k3l03", "kd94hf93k423kf44");
+        OAuthAuthorization oauth = new OAuthAuthorization(ConfigurationFactory.getInstance(), "dpf43f3p2l4k3l03", "kd94hf93k423kf44");
         String expected = "OAuth oauth_consumer_key=\"dpf43f3p2l4k3l03\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"1191242096\",oauth_nonce=\"kllo9940pd9333jh\",oauth_version=\"1.0\",oauth_token=\"nnch734d00sl2jdk\",oauth_signature=\"tR3%2BTy81lMeYAr%2FFid0kMTYa%2FWM%3D\"";
         assertEquals(expected, oauth.generateAuthorizationHeader("GET", "http://photos.example.net/photos", params, "kllo9940pd9333jh", "1191242096", new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
 

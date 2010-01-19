@@ -49,7 +49,7 @@ public class Update {
                 "Usage: java twitter4j.examples.Update ID Password text");
             System.exit( -1);
         }
-        Twitter twitter = TwitterFactory.getDefaultFactory().getBasicAuthorizedInstance(args[0], args[1]);
+        Twitter twitter = new TwitterFactory().getBasicAuthorizedInstance(args[0], args[1]);
         Status status = twitter.updateStatus(args[2]);
         System.out.println("Successfully updated the status to [" + status.getText() + "].");
     }

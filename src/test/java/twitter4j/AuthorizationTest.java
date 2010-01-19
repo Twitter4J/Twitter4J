@@ -50,7 +50,7 @@ public class AuthorizationTest extends TwitterTestBase {
     }
 
     public void testAnonymousInstance() throws Exception {
-        Twitter twitter = TwitterFactory.getDefaultFactory().getInstance();
+        Twitter twitter = new TwitterFactory().getInstance();
         assertFalse(twitter.isBasicAuthEnabled());
         assertFalse(twitter.isOAuthEnabled());
         Authorization auth = twitter.getAuthorization();
@@ -58,7 +58,7 @@ public class AuthorizationTest extends TwitterTestBase {
     }
 
     public void testBasicInstance() throws Exception {
-        Twitter twitter = TwitterFactory.getDefaultFactory().getBasicAuthorizedInstance(id1.name, id1.pass);
+        Twitter twitter = new TwitterFactory().getBasicAuthorizedInstance(id1.name, id1.pass);
         assertTrue(twitter.isBasicAuthEnabled());
         assertFalse(twitter.isOAuthEnabled());
         Authorization auth = twitter.getAuthorization();
@@ -71,7 +71,7 @@ public class AuthorizationTest extends TwitterTestBase {
         consumerSecret = p.getProperty("browserConsumerSecret");
         consumerKey = p.getProperty("browserConsumerKey");
 
-        Twitter twitter = TwitterFactory.getDefaultFactory().getOAuthAuthorizedInstance(consumerKey, consumerSecret);
+        Twitter twitter = new TwitterFactory().getOAuthAuthorizedInstance(consumerKey, consumerSecret);
         assertFalse(twitter.isBasicAuthEnabled());
         assertFalse(twitter.isOAuthEnabled());
         try {

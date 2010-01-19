@@ -49,7 +49,7 @@ class OAuthSupportTwitter extends TwitterSupport implements HttpResponseListener
                 this.auth = oauth;
             }
         }
-        http = new HttpClientWrapper(conf, conf);
+        http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
     }
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
@@ -59,7 +59,7 @@ class OAuthSupportTwitter extends TwitterSupport implements HttpResponseListener
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
         rateLimitStatusListeners = (ArrayList<RateLimitStatusListener>)stream.readObject();
-        HttpClientWrapper http = new HttpClientWrapper(conf, conf);
+        HttpClientWrapper http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
     }
 

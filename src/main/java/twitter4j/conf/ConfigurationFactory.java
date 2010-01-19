@@ -24,42 +24,31 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.logging;
-
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationFactory;
+package twitter4j.conf;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.0
  */
-public final class Logger {
-    private static final boolean DEBUG = ConfigurationFactory.getInstance().isDebugEnabled();
-    private static final Logger SINGLETON = new Logger();
-    private Logger() {
-        //@todo will wrap SLF4J / commons-logging / jul l8er @TFJ-148
-    }
-
-    public static Logger getLogger(){
-        //@todo detect the class name from the stacktrace @TFJ-148
-        return SINGLETON;
-    }
-
-    public boolean isDebugEnabled() {
-        return DEBUG;
-    }
-
-    public void debug(String message) {
-        if (DEBUG) {
-            //@todo include class name in the message @TFJ-148
-            System.out.println("[" + new java.util.Date() + "]" + message);
+public class ConfigurationFactory {
+    private static final Configuration ROOT_CONFIGURATION;
+    public static final String DEFAULT_CONFIGURATION_IMPL = "twitter4j.conf.PropertyConfiguration";
+    public static final String CONFIGURATION_IMPL = "twitter4j.configuration.impl";
+    static {
+        String CONFIG_IMPL = System.getProperty(CONFIGURATION_IMPL, DEFAULT_CONFIGURATION_IMPL);
+        try {
+            Class configImplClass = Class.forName(CONFIG_IMPL);
+            ROOT_CONFIGURATION = (Configuration) configImplClass.newInstance();
+        } catch (ClassNotFoundException cnfe) {
+            throw new ExceptionInInitializerError(cnfe);
+        } catch (InstantiationException ie) {
+            throw new ExceptionInInitializerError(ie);
+        } catch (IllegalAccessException iae) {
+            throw new ExceptionInInitializerError(iae);
         }
     }
 
-    public void debug(String message, String message2) {
-        if (DEBUG) {
-            debug(message + message2);
-        }
-    }
 
+    public static Configuration getInstance() {
+        return ROOT_CONFIGURATION;
+    }
 }

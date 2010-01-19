@@ -120,7 +120,7 @@ public class FeedMonitor {
                 }
             }
         }
-        this.twitter = TwitterFactory.getDefaultFactory().getBasicAuthorizedInstance(prop.getProperty("id"),
+        this.twitter = new TwitterFactory().getBasicAuthorizedInstance(prop.getProperty("id"),
                                    prop.getProperty("password"));
         this.feedurl = prop.getProperty("feedurl");
         this.lastUpdate = new Date(Long.valueOf(prop.getProperty("lastUpdate",

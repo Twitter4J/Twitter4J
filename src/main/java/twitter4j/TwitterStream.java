@@ -27,14 +27,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.http.HttpClientConfiguration;
 import twitter4j.http.HttpClientWrapper;
+import twitter4j.http.HttpClientWrapperConfiguration;
 import twitter4j.http.HttpParameter;
 import twitter4j.logging.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A java reporesentation of the <a href="http://apiwiki.twitter.com/Streaming-API-Documentation">Twitter Streaming API</a>
@@ -57,20 +58,20 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
      */
     public TwitterStream() {
         super();
-        http = new HttpClientWrapper(conf, new StreamingReadTimeoutConfiguration(conf));
+        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         ensureBasicEnabled();
     }
 
     public TwitterStream(String userId, String password) {
         super(userId, password);
-        http = new HttpClientWrapper(conf, new StreamingReadTimeoutConfiguration(conf));
+        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         ensureBasicEnabled();
     }
 
     public TwitterStream(String userId, String password, StatusListener listener) {
         super(userId, password);
         this.statusListener = listener;
-        http = new HttpClientWrapper(conf, new StreamingReadTimeoutConfiguration(conf));
+        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         ensureBasicEnabled();
     }
 
@@ -362,43 +363,47 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
     }
 }
 
-class StreamingReadTimeoutConfiguration implements HttpClientConfiguration {
-    Configuration httpConf;
+class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguration {
+    Configuration nestedConf;
 
     StreamingReadTimeoutConfiguration(Configuration httpConf) {
-        this.httpConf = httpConf;
+        this.nestedConf = httpConf;
     }
 
     public String getHttpProxyHost() {
-        return httpConf.getHttpProxyHost();
+        return nestedConf.getHttpProxyHost();
     }
 
     public int getHttpProxyPort() {
-        return httpConf.getHttpProxyPort();
+        return nestedConf.getHttpProxyPort();
     }
 
     public String getHttpProxyUser() {
-        return httpConf.getHttpProxyUser();
+        return nestedConf.getHttpProxyUser();
     }
 
     public String getHttpProxyPassword() {
-        return httpConf.getHttpProxyPassword();
+        return nestedConf.getHttpProxyPassword();
     }
 
     public int getHttpConnectionTimeout() {
-        return httpConf.getHttpConnectionTimeout();
+        return nestedConf.getHttpConnectionTimeout();
     }
 
     public int getHttpReadTimeout() {
         // this is the trick that overrides connection timeout
-        return httpConf.getHttpStreamingReadTimeout();
+        return nestedConf.getHttpStreamingReadTimeout();
     }
 
     public int getHttpRetryCount() {
-        return httpConf.getHttpRetryCount();
+        return nestedConf.getHttpRetryCount();
     }
 
     public int getHttpRetryIntervalSeconds() {
-        return httpConf.getHttpRetryIntervalSeconds();
+        return nestedConf.getHttpRetryIntervalSeconds();
     }
+    public Map<String, String> getRequestHeaders() {
+        return nestedConf.getRequestHeaders();
+    }
+
 }

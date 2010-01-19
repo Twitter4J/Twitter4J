@@ -55,21 +55,20 @@ public class ConfigurationTest  extends TestCase {
         super.tearDown();
     }
     public void testGetInstance() throws Exception {
-        Configuration conf = Configuration.getInstance();
+        Configuration conf = ConfigurationFactory.getInstance();
         assertNotNull(conf);
     }
     public void testFixURL() throws Exception {
-        assertEquals("http://www.bea.com", Configuration.fixURL(false, "http://www.bea.com"));
-        assertEquals("http://www.bea.com", Configuration.fixURL(false, "https://www.bea.com"));
-        assertEquals("https://www.bea.com", Configuration.fixURL(true, "http://www.bea.com"));
-        assertEquals("https://www.bea.com", Configuration.fixURL(true, "https://www.bea.com"));
-        assertNull(Configuration.fixURL(false, null));
-        assertNull(Configuration.fixURL(true, null));
+        assertEquals("http://www.bea.com", ConfigurationBase.fixURL(false, "http://www.bea.com"));
+        assertEquals("http://www.bea.com", ConfigurationBase.fixURL(false, "https://www.bea.com"));
+        assertEquals("https://www.bea.com", ConfigurationBase.fixURL(true, "http://www.bea.com"));
+        assertEquals("https://www.bea.com", ConfigurationBase.fixURL(true, "https://www.bea.com"));
+        assertNull(ConfigurationBase.fixURL(false, null));
+        assertNull(ConfigurationBase.fixURL(true, null));
     }
 
     public void testConfiguration() throws Exception {
-        Configuration conf = new PropertyConfiguration();
-        conf = new PropertyConfiguration();
+        ConfigurationBase conf = new PropertyConfiguration();
 
         String test = "t4j";
         String override = "system property";

@@ -36,7 +36,7 @@ import java.util.Properties;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-class PropertyConfiguration extends Configuration implements java.io.Serializable {
+class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
     public static final String DEBUG = "twitter4j.debug";
     public static final String SOURCE = "twitter4j.source";
     public static final String HTTP_USER_AGENT = "twitter4j.http.userAgent";

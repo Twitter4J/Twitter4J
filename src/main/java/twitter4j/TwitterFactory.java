@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationFactory;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
@@ -37,24 +38,18 @@ import twitter4j.http.OAuthAuthorization;
  * @since Twitter4J 2.1.0
  */
 public final class TwitterFactory {
-    private static final TwitterFactory DEFAULT_INSTANCE;
     private final Configuration conf;
 
-    static {
-        DEFAULT_INSTANCE = new TwitterFactory(Configuration.getInstance());
-    }
 
     private TwitterFactory(Configuration conf) {
-        this.conf = Configuration.getInstance();
+        this.conf = conf;
     }
 
     /**
-     * Returns a Twitter instance.
-     *
-     * @return default singleton instance
+     * Creates a TwitterFactory
      */
-    public static TwitterFactory getDefaultFactory() {
-        return DEFAULT_INSTANCE;
+    public TwitterFactory() {
+        this(ConfigurationFactory.getInstance());
     }
 
     /**

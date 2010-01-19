@@ -50,7 +50,7 @@ public class GetDirectMessages {
                 "Usage: java twitter4j.examples.GetDirectMessages ID Password");
             System.exit( -1);
         }
-        Twitter twitter = TwitterFactory.getDefaultFactory().getBasicAuthorizedInstance(args[0], args[1]);
+        Twitter twitter = new TwitterFactory().getBasicAuthorizedInstance(args[0], args[1]);
         try {
             List<DirectMessage> messages = twitter.getDirectMessages();
             for (DirectMessage message : messages) {

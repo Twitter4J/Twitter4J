@@ -28,6 +28,7 @@ package twitter4j;
 
 import junit.framework.TestCase;
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationFactory;
 
 import java.util.Map;
 
@@ -61,7 +62,7 @@ public class DispatcherTest extends TestCase {
         // this test runs only on JDK1.5 or later since Thread.getAllStackTraces() is available from JDK1.5
         String name = "test";
         int threadcount = 1;
-        dispatcher = new Dispatcher(Configuration.getInstance(), name, threadcount);
+        dispatcher = new Dispatcher(ConfigurationFactory.getInstance(), name, threadcount);
         count = 0;
         dispatcher.invokeLater(new IncrementTask());
         dispatcher.invokeLater(new IncrementTask());

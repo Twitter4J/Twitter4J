@@ -28,7 +28,7 @@ package twitter4j.http;
 
 import java.util.Map;
 
-public interface HttpClientWrapperConfiguration {
+public interface HttpClientWrapperConfiguration extends HttpClientConfiguration{
     /**
      *
      * @return request headers
