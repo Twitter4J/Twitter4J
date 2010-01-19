@@ -281,10 +281,13 @@ public class ConfigurationTest  extends TestCase {
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
                 + "\n" + "twitter4j.http.useSSL=false"
                 + "\n" + "china.twitter4j.restBaseURL=http://somewhere.cn/");
+
         conf = new PropertyConfiguration("/china");
         assertEquals("http://somewhere.cn/", conf.getRestBaseURL());
+
+        conf = new PropertyConfiguration("/china/");
+        assertEquals("http://somewhere.cn/", conf.getRestBaseURL());
         deleteFile("./twitter4j.properties");
-        conf = new PropertyConfiguration();
     }
     private void writeFile(String path, String content) throws IOException {
         File file = new File(path);
