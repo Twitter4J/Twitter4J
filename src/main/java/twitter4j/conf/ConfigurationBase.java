@@ -508,4 +508,5 @@ public class ConfigurationBase implements Configuration, java.io.Serializable {
             return "http://" + hostAndLater;
         }
     }
+    //@todo implement readresolve to save memory usage
 }
