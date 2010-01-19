@@ -24,13 +24,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
+package twitter4j.http;
 
-/**
- * @author Andrew Hedges - andrew.hedges at gmail.com
- */
-public interface RateLimitStatusListener {
+import java.util.Map;
 
-	public void onRateLimitStatus(RateLimitStatusEvent event);
-	public void onRateLimitReached(RateLimitStatusEvent event);
+public interface HttpClientWrapperConfiguration {
+    /**
+     *
+     * @return request headers
+     */
+    Map<String, String> getRequestHeaders();
 }

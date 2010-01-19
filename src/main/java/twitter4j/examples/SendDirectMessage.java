@@ -47,7 +47,7 @@ public class SendDirectMessage {
             System.out.println("Usage: java twitter4j.examples.DirectMessage senderID senderPassword message recipientId");
             System.exit( -1);
         }
-        Twitter twitter = TwitterFactory.getBasicAuthenticatedInstance(args[0], args[1]);
+        Twitter twitter = TwitterFactory.getDefaultFactory().getBasicAuthorizedInstance(args[0], args[1]);
         try {
             DirectMessage message = twitter.sendDirectMessage(args[2], args[3]);
             System.out.println("Direct message successfully sent to " +

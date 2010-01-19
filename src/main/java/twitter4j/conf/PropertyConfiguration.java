@@ -36,7 +36,7 @@ import java.util.Properties;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-class PropertyConfiguration extends Configuration {
+class PropertyConfiguration extends Configuration implements java.io.Serializable {
     public static final String DEBUG = "twitter4j.debug";
     public static final String SOURCE = "twitter4j.source";
     public static final String HTTP_USER_AGENT = "twitter4j.http.userAgent";
@@ -79,6 +79,7 @@ class PropertyConfiguration extends Configuration {
     // hidden portion
     public static final String CLIENT_VERSION = "twitter4j.clientVersion";
     public static final String CLIENT_URL = "twitter4j.clientURL";
+    private static final long serialVersionUID = 6458764415636588373L;
 
     PropertyConfiguration() {
         super();

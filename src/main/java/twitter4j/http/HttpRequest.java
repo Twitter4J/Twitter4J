@@ -50,6 +50,7 @@ public final class HttpRequest implements java.io.Serializable {
 
 
     private static final HttpParameter[] NULL_PARAMETERS = new HttpParameter[0];
+
     /**
      * @param method         Specifies the HTTP method
      * @param url            the request to request

@@ -36,5 +36,5 @@ import java.net.HttpURLConnection;
 public interface Authorization extends java.io.Serializable {
     void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con);
 
-    boolean isAuthenticationEnabled();
+    boolean isEnabled();
 }

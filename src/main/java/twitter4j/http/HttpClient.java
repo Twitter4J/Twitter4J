@@ -26,8 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-import twitter4j.conf.Configuration;
 import twitter4j.TwitterException;
+import twitter4j.logging.Logger;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -54,7 +54,7 @@ import static twitter4j.http.RequestMethod.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class HttpClient implements java.io.Serializable {
-    private static final boolean DEBUG = Configuration.getInstance().isDebug();
+    private static final Logger logger = Logger.getLogger();
     private static final int OK = 200;// OK: Success!
     private static final int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.
     private static final int BAD_REQUEST = 400;// Bad Request: The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.
@@ -262,7 +262,7 @@ public class HttpClient implements java.io.Serializable {
                                     write(out, boundary + "\r\n");
                                     write(out, "Content-Disposition: form-data; name=\"" + param.name + "\"\r\n");
                                     write(out, "Content-Type: text/plain; charset=UTF-8\r\n\r\n");
-                                    log(param.value);
+                                    logger.debug(param.value);
                                     out.write(encode(param.value).getBytes("UTF-8"));
                                     write(out, "\r\n");
                                 }
@@ -274,7 +274,7 @@ public class HttpClient implements java.io.Serializable {
                             con.setRequestProperty("Content-Type",
                                     "application/x-www-form-urlencoded");
                             String postParam = HttpParameter.encodeParameters(req.httpParams);
-                            log("Post Params: ", postParam);
+                            logger.debug("Post Params: ", postParam);
                             byte[] bytes = postParam.getBytes("UTF-8");
                             con.setRequestProperty("Content-Length",
                                     Integer.toString(bytes.length));
@@ -287,16 +287,16 @@ public class HttpClient implements java.io.Serializable {
                     }
                     res = new HttpResponse(con);
                     responseCode = con.getResponseCode();
-                    if (DEBUG) {
-                        log("Response: ");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Response: ");
                         Map<String, List<String>> responseHeaders = con.getHeaderFields();
                         for (String key : responseHeaders.keySet()) {
                             List<String> values = responseHeaders.get(key);
                             for (String value : values) {
                                 if (null != key) {
-                                    log(key + ": " + value);
+                                    logger.debug(key + ": " + value);
                                 } else {
-                                    log(value);
+                                    logger.debug(value);
                                 }
                             }
                         }
@@ -334,10 +334,10 @@ public class HttpClient implements java.io.Serializable {
                 }
             }
             try {
-                if (DEBUG && null != res) {
+                if (logger.isDebugEnabled() && null != res) {
                     res.asString();
                 }
-                log("Sleeping " + retryIntervalSeconds + " seconds until the next retry.");
+                logger.debug("Sleeping " + retryIntervalSeconds + " seconds until the next retry.");
                 Thread.sleep(retryIntervalSeconds * 1000);
             } catch (InterruptedException ignore) {
                 //nothing to do
@@ -348,7 +348,7 @@ public class HttpClient implements java.io.Serializable {
 
     private void write(DataOutputStream out, String outStr) throws IOException {
         out.writeBytes(outStr);
-        log(outStr);
+        logger.debug(outStr);
     }
 
     public static String encode(String str) {
@@ -365,8 +365,8 @@ public class HttpClient implements java.io.Serializable {
      * @param connection    HttpURLConnection
      */
     private void setHeaders(HttpRequest req, HttpURLConnection connection) {
-        log("Request: ");
-        log(req.requestMethod.name() + " ", req.getURL());
+        logger.debug("Request: ");
+        logger.debug(req.requestMethod.name() + " ", req.getURL());
 
         if (null != req.authorization) {
             req.authorization.setAuthorizationHeader(req.requestMethod.name(), req.getURL(), req.httpParams, connection);
@@ -374,7 +374,7 @@ public class HttpClient implements java.io.Serializable {
         if (null != req.requestHeaders) {
             for (String key : req.requestHeaders.keySet()) {
                 connection.addRequestProperty(key, req.requestHeaders.get(key));
-                log(key + ": " + req.requestHeaders.get(key));
+                logger.debug(key + ": " + req.requestHeaders.get(key));
             }
         }
     }
@@ -383,8 +383,8 @@ public class HttpClient implements java.io.Serializable {
         HttpURLConnection con = null;
         if (proxyHost != null && !proxyHost.equals("")) {
             if (proxyAuthUser != null && !proxyAuthUser.equals("")) {
-                log("Proxy AuthUser: " + proxyAuthUser);
-                log("Proxy AuthPassword: " + proxyAuthPassword);
+                logger.debug("Proxy AuthUser: " + proxyAuthUser);
+                logger.debug("Proxy AuthPassword: " + proxyAuthPassword);
                 Authenticator.setDefault(new Authenticator() {
                     @Override
                     protected PasswordAuthentication
@@ -402,8 +402,8 @@ public class HttpClient implements java.io.Serializable {
             }
             final Proxy proxy = new Proxy(Type.HTTP, InetSocketAddress
                     .createUnresolved(proxyHost, proxyPort));
-            if (DEBUG) {
-                log("Opening proxied connection(" + proxyHost + ":" + proxyPort + ")");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Opening proxied connection(" + proxyHost + ":" + proxyPort + ")");
             }
             con = (HttpURLConnection) new URL(url).openConnection(proxy);
         } else {
@@ -453,17 +453,6 @@ public class HttpClient implements java.io.Serializable {
         return result;
     }
 
-    private static void log(String message) {
-        if (DEBUG) {
-            System.out.println("[" + new java.util.Date() + "]" + message);
-        }
-    }
-
-    private static void log(String message, String message2) {
-        if (DEBUG) {
-            log(message + message2);
-        }
-    }
 
     private static String getCause(int statusCode) {
         String cause = null;

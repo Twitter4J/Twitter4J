@@ -29,47 +29,81 @@ package twitter4j;
 import twitter4j.conf.Configuration;
 import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
-import twitter4j.http.HttpClient;
-import twitter4j.http.HttpClientWrapper;
 import twitter4j.http.NullAuthorization;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 abstract class TwitterSupport implements java.io.Serializable {
-    protected static final Configuration conf = Configuration.getInstance();
+    protected final Configuration conf;
 
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
 
     /*package*/ TwitterSupport(){
-        this(conf.getUser(), conf.getPassword());
+        conf = Configuration.getInstance();
+        initBasicAuthorization(conf.getUser(), conf.getPassword());
+    }
+
+    /*package*/ TwitterSupport(Configuration conf){
+        this.conf = conf;
+        initBasicAuthorization(conf.getUser(), conf.getPassword());
     }
 
     /*package*/ TwitterSupport(String userId, String password){
-        if (null != userId && null != password) {
-            auth = new BasicAuthorization(userId, password);
+        this();
+        initBasicAuthorization(userId, password);
+    }
+    private void initBasicAuthorization(String screenName, String password){
+        if (null != screenName && null != password) {
+            auth = new BasicAuthorization(screenName, password);
         }
         if(null == auth){
             auth = NullAuthorization.getInstance();
         }
     }
 
-    protected void ensureAuthenticationEnabled() {
-        if (!auth.isAuthenticationEnabled()) {
+    /*package*/ TwitterSupport(Authorization auth) {
+        this();
+        this.auth = auth;
+    }
+
+    /**
+     * tests if the instance is authenticated by Basic
+     * @return returns true if the instance is authenticated by Basic
+     */
+    public boolean isBasicAuthEnabled() {
+        return auth instanceof BasicAuthorization && auth.isEnabled();
+    }
+
+    protected void ensureAuthorizationEnabled() {
+        if (!auth.isEnabled()) {
             throw new IllegalStateException(
                     "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
         }
     }
 
-    protected void ensureBasicAuthenticationEnabled() {
+    protected void ensureBasicEnabled() {
         if (!(auth instanceof BasicAuthorization)) {
             throw new IllegalStateException(
                     "user ID/password combination not supplied");
         }
+    }
+
+    protected void ensureBasicNotEnabled() {
+        if (!(auth instanceof BasicAuthorization)) {
+            throw new IllegalStateException(
+                    "user ID/password combination not supplied");
+        }
+    }
+
+    /**
+     * Returns the authorization scheme for this instance.<br>
+     * The returned type will be either of BasicAuthorization, OAuthAuthorization, or NullAuthorization
+     * @return the authorization scheme for this instance
+     */
+    public Authorization getAuthorization(){
+        return auth;
     }
 
     @Override

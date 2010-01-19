@@ -60,13 +60,13 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(0 < status.size());
     }
     public void testSerializability() throws Exception {
-        Twitter twitter = TwitterFactory.getBasicAuthenticatedInstance("foo", "bar");
+        Twitter twitter = TwitterFactory.getDefaultFactory().getBasicAuthorizedInstance("foo", "bar");
         Twitter deserialized = (Twitter)assertDeserializedFormIsEqual(twitter);
 
         assertEquals(deserialized.screenName, twitter.screenName);
         assertEquals(deserialized.auth, twitter.auth);
 
-        twitter = TwitterFactory.getInstance();
+        twitter = TwitterFactory.getDefaultFactory().getInstance();
         deserialized = (Twitter)assertDeserializedFormIsEqual(twitter);
         assertEquals(deserialized.screenName, twitter.screenName);
         assertEquals(deserialized.auth, twitter.auth);
@@ -480,7 +480,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertEquals(newDescription, altered.getDescription());
 
         try {
-            TwitterFactory.getBasicAuthenticatedInstance("doesnotexist--", "foobar").verifyCredentials();
+            TwitterFactory.getDefaultFactory().getBasicAuthorizedInstance("doesnotexist--", "foobar").verifyCredentials();
             fail("should throw TwitterException");
         } catch (TwitterException te) {
         }
@@ -675,7 +675,7 @@ public class TwitterTestUnit extends TwitterTestBase {
 
         twitterAPI1.addRateLimitStatusListener(new RateLimitStatusListener() {
 
-            public void rateLimitStatusUpdated(RateLimitStatusEvent event) {
+            public void onRateLimitStatus(RateLimitStatusEvent event) {
                 accountLimitStatusAcquired = event.isAccountRateLimitStatus();
                 ipLimitStatusAcquired = event.isIPRateLimitStatus();
                 rateLimitStatus = event.getRateLimitStatus();
@@ -688,14 +688,13 @@ public class TwitterTestUnit extends TwitterTestBase {
         });
 
         unauthenticated.addRateLimitStatusListener(new RateLimitStatusListener() {
-            public void rateLimitStatusUpdated(RateLimitStatusEvent event) {
+            public void onRateLimitStatus(RateLimitStatusEvent event) {
                 accountLimitStatusAcquired = event.isAccountRateLimitStatus();
                 ipLimitStatusAcquired = event.isIPRateLimitStatus();
                 rateLimitStatus = event.getRateLimitStatus();
             }
             public void onRateLimitReached(RateLimitStatusEvent event){
             }
-
         });
 
         twitterAPI1.getMentions();

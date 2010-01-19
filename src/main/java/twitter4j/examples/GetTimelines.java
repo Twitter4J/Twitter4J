@@ -45,7 +45,7 @@ public class GetTimelines {
      */
     public static void main(String[] args) {
 
-        Twitter unauthenticatedTwitter = new Twitter();
+        Twitter unauthenticatedTwitter = TwitterFactory.getDefaultFactory().getInstance();
         System.out.println("Showing public timeline.");
         try {
             List<Status> statuses = unauthenticatedTwitter.getPublicTimeline();
@@ -62,7 +62,7 @@ public class GetTimelines {
             }
 
             // Other methods require authentication
-            Twitter twitter = TwitterFactory.getBasicAuthenticatedInstance(args[0], args[1]);
+            Twitter twitter = TwitterFactory.getDefaultFactory().getBasicAuthorizedInstance(args[0], args[1]);
             statuses = twitter.getFriendsTimeline();
             System.out.println("------------------------------");
             System.out.println("Showing " + args[0] + "'s friends timeline.");

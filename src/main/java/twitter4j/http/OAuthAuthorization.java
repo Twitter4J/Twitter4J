@@ -28,6 +28,7 @@ package twitter4j.http;
 
 import twitter4j.conf.Configuration;
 import twitter4j.TwitterException;
+import twitter4j.logging.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -47,25 +48,116 @@ import java.util.Random;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
-public final class OAuthAuthorization implements Authorization, java.io.Serializable {
-    private static final Configuration conf = Configuration.getInstance();
+public final class OAuthAuthorization implements Authorization, java.io.Serializable, OAuthSupport {
+    private final Configuration conf;
+    private transient static HttpClientWrapper http;
+
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
-    private static final boolean DEBUG = conf.getInstance().isDebug();
+    private static final Logger logger = Logger.getLogger();
     static final long serialVersionUID = -4368426677157998618L;
     private String consumerKey = "";
     private String consumerSecret;
 
-    private transient HttpClientWrapper clientWrapper = HttpClientWrapper.getInstance(conf, conf);
     private OAuthToken oauthToken = null;
 
-    public OAuthAuthorization(String consumerKey, String consumerSecret) {
+    // constructors
+
+    public OAuthAuthorization(Configuration conf, String consumerKey, String consumerSecret) {
+        this.conf = conf;
         init(consumerKey, consumerSecret);
     }
 
+    public OAuthAuthorization(Configuration conf, String consumerKey, String consumerSecret, AccessToken accessToken) {
+        this.conf = conf;
+        init(consumerKey, consumerSecret, accessToken);
+    }
+
     private void init(String consumerKey, String consumerSecret){
+        http = new HttpClientWrapper(conf, conf);
         setConsumerKey(consumerKey);
         setConsumerSecret(consumerSecret);
+    }
+
+    private void init(String consumerKey, String consumerSecret, AccessToken accessToken){
+        init(consumerKey, consumerSecret);
+        setOAuthAccessToken(accessToken);
+    }
+
+    // implementations for Authorization
+    public void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con) {
+        String authorization = generateAuthorizationHeader(method, url, params, oauthToken);
+        logger.debug("Authorization: " + authorization);
+        con.addRequestProperty("Authorization", authorization);
+    }
+
+    public boolean isEnabled() {
+        return null != oauthToken && oauthToken instanceof AccessToken;
+    }
+
+    // implementation for OAuthSupport interface
+    /**
+     * {@inheritDoc}
+     */
+    public RequestToken getOAuthRequestToken() throws TwitterException {
+        return getOAuthRequestToken(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public RequestToken getOAuthRequestToken(String callbackURL) throws TwitterException {
+        HttpParameter[] params = null != callbackURL ? new HttpParameter[]{new HttpParameter("oauth_callback", callbackURL)} : new HttpParameter[0];
+        oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params, this), this);
+        return (RequestToken) oauthToken;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AccessToken getOAuthAccessToken() throws TwitterException {
+        try {
+            oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), this));
+            return (AccessToken) oauthToken;
+        } catch (TwitterException te) {
+            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
+        try {
+            oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL()
+                    , new HttpParameter[]{new HttpParameter("oauth_verifier", oauthVerifier)}, this));
+            return (AccessToken) oauthToken;
+        } catch (TwitterException te) {
+            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
+        this.oauthToken = requestToken;
+        return getOAuthAccessToken();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
+        this.oauthToken = requestToken;
+        return getOAuthAccessToken(oauthVerifier);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setOAuthAccessToken(AccessToken accessToken) {
+        this.oauthToken = accessToken;
     }
 
     /*package*/
@@ -93,9 +185,9 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
                 .append(encode(constructRequestURL(url))).append("&");
         base.append(encode(normalizeRequestParameters(signatureBaseParams)));
         String oauthBaseString = base.toString();
-        log("OAuth base string: ", oauthBaseString);
+        logger.debug("OAuth base string: ", oauthBaseString);
         String signature = generateSignature(oauthBaseString, otoken);
-        log("OAuth signature: ", signature);
+        logger.debug("OAuth signature: ", signature);
 
         oauthHeaderParams.add(new HttpParameter("oauth_signature", signature));
         return "OAuth " + encodeParameters(oauthHeaderParams, ",", true);
@@ -129,7 +221,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     private static Random RAND = new Random();
 
     /**
-     * @return
+     * @return generated authorization header
      * @see <a href="http://oauth.net/core/1.0a/#rfc.section.5.4.1">OAuth Core - 5.4.1.  Authorization Header</a>
      */
     /*package*/ String generateAuthorizationHeader(String method, String url, HttpParameter[] params, OAuthToken token) {
@@ -138,64 +230,12 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         return generateAuthorizationHeader(method, url, params, String.valueOf(nonce), String.valueOf(timestamp), token);
     }
 
-    public void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con) {
-        String authorization = generateAuthorizationHeader(method, url, params, oauthToken);
-        log("Authorization: " + authorization);
-        con.addRequestProperty("Authorization", authorization);
-    }
-
-    public boolean isAuthenticationEnabled() {
-        return null != oauthToken && oauthToken instanceof AccessToken;
-    }
-
-    public RequestToken getRequestToken() throws TwitterException {
-        return getRequestToken(null);
-    }
-
-    public RequestToken getRequestToken(String callbackURL) throws TwitterException {
-        HttpParameter[] params = null != callbackURL ? new HttpParameter[]{new HttpParameter("oauth_callback", callbackURL)} : new HttpParameter[0];
-        oauthToken = new RequestToken(clientWrapper.post(conf.getOAuthRequestTokenURL(), params, this), this);
-        return (RequestToken) oauthToken;
-    }
-
-    public AccessToken getAccessToken(RequestToken requestToken) throws TwitterException {
-        this.oauthToken = requestToken;
-        return getAccessToken();
-    }
-
-    public AccessToken getAccessToken() throws TwitterException {
-        try {
-            oauthToken = new AccessToken(clientWrapper.post(conf.getOAuthAccessTokenURL(), new HttpParameter[0], this));
-            return (AccessToken) oauthToken;
-        } catch (TwitterException te) {
-            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
-        }
-    }
-
-    public AccessToken getAccessToken(RequestToken requestToken, String oauth_verifier) throws TwitterException {
-        this.oauthToken = requestToken;
-        return getAccessToken(oauth_verifier);
-    }
-
-    public void setAccessToken(AccessToken accessToken) {
-        this.oauthToken = accessToken;
-    }
-
-    public AccessToken getAccessToken(String oauth_verifier) throws TwitterException {
-        try {
-            oauthToken = new AccessToken(clientWrapper.post(conf.getOAuthAccessTokenURL()
-                    , new HttpParameter[]{new HttpParameter("oauth_verifier", oauth_verifier)}, this));
-            return (AccessToken) oauthToken;
-        } catch (TwitterException te) {
-            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
-        }
-    }
-
 
     /**
      * Computes RFC 2104-compliant HMAC signature.
      *
      * @param data the data to be signed
+     * @param token the token
      * @return signature
      * @see <a href="http://oauth.net/core/1.0a/#rfc.section.9.2.1">OAuth Core - 9.2.1.  Generating Signature</a>
      */
@@ -208,12 +248,12 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
                 String oauthSignature = encode(consumerSecret) + "&";
                 spec = new SecretKeySpec(oauthSignature.getBytes(), HMAC_SHA1);
             } else {
-                if (null == token.getSecretKeySpec()) {
+                spec = token.getSecretKeySpec();
+                if (null == spec) {
                     String oauthSignature = encode(consumerSecret) + "&" + encode(token.getTokenSecret());
                     spec = new SecretKeySpec(oauthSignature.getBytes(), HMAC_SHA1);
                     token.setSecretKeySpec(spec);
                 }
-                spec = token.getSecretKeySpec();
             }
             mac.init(spec);
             byteHMAC = mac.doFinal(data.getBytes());
@@ -383,22 +423,10 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         this.consumerSecret = null != consumerSecret ? consumerSecret : "";
     }
 
-    private void log(String message) {
-        if (DEBUG) {
-            System.out.println("[" + new java.util.Date() + "]" + message);
-        }
-    }
-
-    private void log(String message, String message2) {
-        if (DEBUG) {
-            log(message + message2);
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OAuthAuthorization)) return false;
+        if (!(o instanceof OAuthSupport)) return false;
 
         OAuthAuthorization that = (OAuthAuthorization) o;
 

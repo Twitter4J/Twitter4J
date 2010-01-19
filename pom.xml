@@ -21,10 +21,8 @@
         <url>http://yusuke.homeip.net/jira/browse/TFJ</url>
     </issueManagement>
     <scm>
-        <connection>scm:svn:http://yusuke.homeip.net/svn/twitter4j/</connection>
-        <url>
-            http://yusuke.homeip.net/fisheye/browse/svn/twitter4j
-        </url>
+        <connection>scm:git:http://github.com/yusuke/twitter4j/</connection>
+        <url>http://yusuke.homeip.net/fisheye/browse/twitter4j</url>
     </scm>
     <distributionManagement>
         <repository>

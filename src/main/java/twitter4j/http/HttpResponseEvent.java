@@ -46,23 +46,23 @@ public class HttpResponseEvent {
     }
 
     /**
-     * returns the request
-     * @return
+     * returns the request associated with the event
+     * @return the request associated with the event
      */
     public HttpRequest getRequest() {
         return request;
     }
 
     /**
-     * returns the response
-     * @return
+     * returns the response associated with the event
+     * @return the response associated with the event
      */
     public HttpResponse getResponse() {
         return response;
     }
 
     public boolean isAuthenticated() {
-        return request.authorization.isAuthenticationEnabled();
+        return request.authorization.isEnabled();
     }
 
     public HttpClient getSource() {

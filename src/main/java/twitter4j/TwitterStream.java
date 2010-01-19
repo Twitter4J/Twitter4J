@@ -30,6 +30,7 @@ import twitter4j.conf.Configuration;
 import twitter4j.http.HttpClientConfiguration;
 import twitter4j.http.HttpClientWrapper;
 import twitter4j.http.HttpParameter;
+import twitter4j.logging.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,9 +43,8 @@ import java.util.List;
  * @since Twitter4J 2.0.4
  */
 public class TwitterStream extends TwitterSupport implements java.io.Serializable {
-    private transient static final Configuration conf = Configuration.getInstance();
-    private transient static final HttpClientWrapper http = HttpClientWrapper.getInstance(conf, new StreamingReadTimeoutConfiguration(conf));
-    private transient static final boolean DEBUG = conf.isDebug();
+    private final HttpClientWrapper http;
+    private static final Logger logger = Logger.getLogger();
 
     private StatusListener statusListener;
     private StreamHandlingThread handler = null;
@@ -57,22 +57,21 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
      */
     public TwitterStream() {
         super();
-        init();
+        http = new HttpClientWrapper(conf, new StreamingReadTimeoutConfiguration(conf));
+        ensureBasicEnabled();
     }
 
     public TwitterStream(String userId, String password) {
         super(userId, password);
-        init();
+        http = new HttpClientWrapper(conf, new StreamingReadTimeoutConfiguration(conf));
+        ensureBasicEnabled();
     }
 
     public TwitterStream(String userId, String password, StatusListener listener) {
         super(userId, password);
         this.statusListener = listener;
-        init();
-    }
-
-    private void init() {
-        ensureBasicAuthenticationEnabled();
+        http = new HttpClientWrapper(conf, new StreamingReadTimeoutConfiguration(conf));
+        ensureBasicEnabled();
     }
 
     /* Streaming API */
@@ -105,7 +104,7 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
      * @since Twitter4J 2.0.4
      */
     public StatusStream getFirehoseStream(int count) throws TwitterException {
-        ensureBasicAuthenticationEnabled();
+        ensureBasicEnabled();
         try {
             return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/firehose.json"
                     , new HttpParameter[]{new HttpParameter("count"
@@ -124,7 +123,7 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
      * @since Twitter4J 2.0.10
      */
     public void retweet() throws TwitterException {
-        ensureBasicAuthenticationEnabled();
+        ensureBasicEnabled();
         startHandler(new StreamHandlingThread(new Object[]{}) {
             public StatusStream getStream() throws TwitterException {
                 return getRetweetStream();
@@ -142,7 +141,7 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
      * @since Twitter4J 2.0.10
      */
     public StatusStream getRetweetStream() throws TwitterException {
-        ensureAuthenticationEnabled();
+        ensureAuthorizationEnabled();
         try {
             return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
                     , new HttpParameter[]{}, auth));
@@ -160,7 +159,7 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
      * @since Twitter4J 2.0.10
      */
     public void sample() throws TwitterException {
-        ensureBasicAuthenticationEnabled();
+        ensureBasicEnabled();
         startHandler(new StreamHandlingThread(null) {
             public StatusStream getStream() throws TwitterException {
                 return getSampleStream();
@@ -178,7 +177,7 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
      * @since Twitter4J 2.0.10
      */
     public StatusStream getSampleStream() throws TwitterException {
-        ensureBasicAuthenticationEnabled();
+        ensureBasicEnabled();
         try {
             return new StatusStream(http.get(conf.getStreamBaseURL() + "statuses/sample.json"
                     , auth));
@@ -219,7 +218,7 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
      */
     public StatusStream getFilterStream(int count, int[] follow, String[] track)
             throws TwitterException {
-        ensureBasicAuthenticationEnabled();
+        ensureBasicEnabled();
         List<HttpParameter> postparams = new ArrayList<HttpParameter>();
         postparams.add(new HttpParameter("count", count));
         if (null != follow && follow.length > 0) {
@@ -232,7 +231,7 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
         }
         try {
             return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/filter.json"
-                    , postparams.toArray(new HttpParameter[0]), auth));
+                    , postparams.toArray(new HttpParameter[postparams.size()]), auth));
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -337,7 +336,7 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
                 } catch (TwitterException te) {
                     stream = null;
                     te.printStackTrace();
-                    log(te.getMessage());
+                    logger.debug(te.getMessage());
                     statusListener.onException(te);
                 }
             }
@@ -355,23 +354,11 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
         private void setStatus(String message) {
             String actualMessage = NAME + message;
             setName(actualMessage);
-            log(actualMessage);
+            logger.debug(actualMessage);
         }
 
         abstract StatusStream getStream() throws TwitterException;
 
-    }
-
-    private void log(String message) {
-        if (DEBUG) {
-            System.out.println("[" + new java.util.Date() + "]" + message);
-        }
-    }
-
-    private void log(String message, String message2) {
-        if (DEBUG) {
-            log(message + message2);
-        }
     }
 }
 

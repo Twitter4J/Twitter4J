@@ -27,10 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.http;
 
 import twitter4j.TwitterException;
+import twitter4j.conf.Configuration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static twitter4j.http.RequestMethod.DELETE;
@@ -40,54 +38,36 @@ import static twitter4j.http.RequestMethod.POST;
 import static twitter4j.http.RequestMethod.PUT;
 
 /**
- * HTTP Client wrapper.
+ * HTTP Client wrapper with handy request methods, ResponseListener mechanism 
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class HttpClientWrapper implements java.io.Serializable {
-    private final Map<String, String> requestHeaders;
-    private static final long serialVersionUID = -6511977105603119379L;
-    private List<HttpResponseListener> httpResponseListeners;
-
-    public HttpClientWrapper(Map<String, String> requestHeaders) {
-        this.requestHeaders = requestHeaders;
-    }
-
-    private static final Map<HttpRequestFactoryConfiguration, HttpClientWrapper> instanceMap = new HashMap<HttpRequestFactoryConfiguration, HttpClientWrapper>(1);
-
-    private HttpClientWrapper(HttpRequestFactoryConfiguration conf) {
-        this.requestHeaders = conf.getRequestHeaders();
-    }
+    private final HttpClientWrapperConfiguration wrapperConf;
+    private final HttpClientConfiguration httpConf;
     private HttpClient http;
 
-    public static HttpClientWrapper getInstance(HttpRequestFactoryConfiguration conf, HttpClientConfiguration httpConf) {
-        HttpClientWrapper wrapper = instanceMap.get(conf);
-        if (null == wrapper) {
-            wrapper = new HttpClientWrapper(conf);
-            instanceMap.put(conf, wrapper);
-        }
-        wrapper.http = new HttpClient(httpConf);
-        return wrapper;
+    private final Map<String, String> requestHeaders;
+    private static final long serialVersionUID = -6511977105603119379L;
+    private HttpResponseListener httpResponseListener;
+
+    public HttpClientWrapper(HttpClientWrapperConfiguration wrapperConf, HttpClientConfiguration httpConf) {
+        this.wrapperConf = wrapperConf;
+        this.httpConf = httpConf;
+        requestHeaders = wrapperConf.getRequestHeaders();
+        http = new HttpClient(httpConf);
     }
     private HttpResponse request(HttpRequest req) throws TwitterException {
         HttpResponse res = http.request(req);
-        fireHttpResponseEvent(new HttpResponseEvent(http, req, res));
+        //fire HttpResponseEvent
+        if (null != httpResponseListener) {
+            httpResponseListener.httpResponseReceived(new HttpResponseEvent(http, req, res));
+        }
         return res;
     }
 
-    private HttpResponse fireHttpResponseEvent(HttpResponseEvent httpResponseEvent) {
-        if (null != httpResponseListeners) {
-            for (HttpResponseListener listener : httpResponseListeners) {
-                listener.httpResponseReceived(httpResponseEvent);
-            }
-        }
-        return httpResponseEvent.getResponse();
-    }
-    public void addHttpResponseListener(HttpResponseListener listener) {
-        if (null == httpResponseListeners) {
-            httpResponseListeners = new ArrayList<HttpResponseListener>();
-        }
-        httpResponseListeners.add(listener);
+    public void setHttpResponseListener(HttpResponseListener listener) {
+        httpResponseListener = listener;
     }
 
     public HttpResponse get(String url, HttpParameter[] parameters

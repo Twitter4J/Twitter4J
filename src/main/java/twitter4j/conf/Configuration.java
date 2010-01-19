@@ -28,7 +28,7 @@ package twitter4j.conf;
 
 import twitter4j.Version;
 import twitter4j.http.HttpClientConfiguration;
-import twitter4j.http.HttpRequestFactoryConfiguration;
+import twitter4j.http.HttpClientWrapperConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Configuration implements HttpClientConfiguration, HttpRequestFactoryConfiguration {
+public class Configuration implements HttpClientConfiguration, HttpClientWrapperConfiguration ,java.io.Serializable {
     public static final String CONFIGURATION_IMPL = "twitter4j.configuration.impl";
 
     private boolean debug;
@@ -81,6 +81,7 @@ public class Configuration implements HttpClientConfiguration, HttpRequestFactor
 
     private boolean IS_DALVIK;
     private static final Configuration CONFIGURATION;
+    private static final long serialVersionUID = -6610497517837844232L;
 
     static {
         String CONFIG_IMPL = System.getProperty(CONFIGURATION_IMPL, DEFAULT_CONFIGURATION_IMPL);
@@ -153,7 +154,7 @@ public class Configuration implements HttpClientConfiguration, HttpRequestFactor
         return IS_DALVIK;
     }
 
-    public final boolean isDebug() {
+    public final boolean isDebugEnabled() {
         return debug;
     }
 

@@ -30,21 +30,22 @@ import twitter4j.conf.Configuration;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
+import twitter4j.http.OAuthAuthorization;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public class TwitterFactory {
-    private static final Twitter DEFAULT_INSTANCE;
-    private static final Configuration conf = Configuration.getInstance();
+public final class TwitterFactory {
+    private static final TwitterFactory DEFAULT_INSTANCE;
+    private final Configuration conf;
 
     static {
-        DEFAULT_INSTANCE = new Twitter();
+        DEFAULT_INSTANCE = new TwitterFactory(Configuration.getInstance());
     }
 
-    private TwitterFactory() {
-        throw new AssertionError();
+    private TwitterFactory(Configuration conf) {
+        this.conf = Configuration.getInstance();
     }
 
     /**
@@ -52,11 +53,20 @@ public class TwitterFactory {
      *
      * @return default singleton instance
      */
-    public static Twitter getInstance() {
+    public static TwitterFactory getDefaultFactory() {
         return DEFAULT_INSTANCE;
     }
 
-    public static Twitter getInstance(Authorization auth) {
+    /**
+     * Returns a Twitter instance.
+     *
+     * @return default singleton instance
+     */
+    public Twitter getInstance() {
+        return new Twitter(conf);
+    }
+
+    public Twitter getInstance(Authorization auth) {
         return new Twitter(auth);
     }
 
@@ -66,33 +76,36 @@ public class TwitterFactory {
      * @return basic authenticated instance
      * @noinspection deprecation
      */
-    public static Twitter getBasicAuthenticatedInstance(String screenName
+    public Twitter getBasicAuthorizedInstance(String screenName
             , String password) {
         return getInstance(new BasicAuthorization(screenName, password));
     }
 
-    public static Twitter getOAuthAuthenticatedInstance(String consumerKey
-            , String consumerSecret, AccessToken accessToken) {
-        Twitter twitter = new Twitter();
-        twitter.setOAuthConsumer(consumerKey, consumerSecret);
-        twitter.setOAuthAccessToken(accessToken);
-        return twitter;
+//    public static Twitter getOAuthAuthorizedInstance(String consumerKey, String consumerSecret
+//            , AccessToken accessToken) {
+//        if (null == consumerKey && null == consumerSecret) {
+//            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
+//        }
+//        OAuthAuthorization oauth = new OAuthAuthorization(consumerKey, consumerSecret, accessToken);
+//        return getInstance(oauth);
+//    }
+//
+    public Twitter getOAuthAuthorizedInstance(String consumerKey, String consumerSecret) {
+        if (null == consumerKey && null == consumerSecret) {
+            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
+        }
+        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
+        return getInstance(oauth);
     }
 
-    public static Twitter getOAuthAuthenticatedInstance(AccessToken accessToken) {
+    public Twitter getInstance(AccessToken accessToken) {
         String consumerKey = conf.getOAuthConsumerKey();
         String consumerSecret = conf.getOAuthConsumerSecret();
         if (null == consumerKey && null == consumerSecret) {
             throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
         }
-        Twitter twitter = new Twitter();
-        twitter.setOAuthConsumer(consumerKey, consumerSecret);
-        twitter.setOAuthAccessToken(accessToken);
-        return twitter;
+        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret, accessToken);
+        return getInstance(oauth);
     }
-
-//    public static Twitter getInstance(Authentication authentication) {
-//
-//    }
 
 }

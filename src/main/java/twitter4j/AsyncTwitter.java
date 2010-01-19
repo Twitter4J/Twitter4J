@@ -1258,7 +1258,7 @@ public class AsyncTwitter extends Twitter
      */
     public void shutdown(){
         synchronized (AsyncTwitter.class) {
-            if (shutdown = true) {
+            if (shutdown) {
                 throw new IllegalStateException("Already shut down");
             }
             getDispatcher().shutdown();
@@ -1267,11 +1267,11 @@ public class AsyncTwitter extends Twitter
         }
     }
     private Dispatcher getDispatcher(){
-        if(true == shutdown){
+        if(shutdown){
             throw new IllegalStateException("Already shut down");
         }
         if (null == dispatcher) {
-            dispatcher = new Dispatcher("Twitter4J Async Dispatcher", Configuration.getInstance().getAsyncNumThreads());
+            dispatcher = new Dispatcher(conf, "Twitter4J Async Dispatcher", Configuration.getInstance().getAsyncNumThreads());
         }
         return dispatcher;
     }

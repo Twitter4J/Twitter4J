@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.http;
 
 import twitter4j.conf.Configuration;
+import twitter4j.logging.Logger;
 
 import java.net.HttpURLConnection;
 
@@ -36,7 +37,7 @@ import java.net.HttpURLConnection;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class BasicAuthorization implements Authorization, java.io.Serializable {
-    private static final boolean DEBUG = Configuration.getInstance().isDebug();
+    private static final Logger logger = Logger.getLogger();
 
     private String userId;
     private String password;
@@ -61,11 +62,11 @@ public final class BasicAuthorization implements Authorization, java.io.Serializ
     }
 
     public void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con) {
-        log("Authorization: Basic ************************");
+        logger.debug("Authorization: Basic ************************");
         con.addRequestProperty("Authorization", basic);
     }
 
-    public boolean isAuthenticationEnabled() {
+    public boolean isEnabled() {
         return true;
     }
 
@@ -94,15 +95,4 @@ public final class BasicAuthorization implements Authorization, java.io.Serializ
                 '}';
     }
 
-    private void log(String message) {
-        if (DEBUG) {
-            System.out.println("[" + new java.util.Date() + "]" + message);
-        }
-    }
-
-    private void log(String message, String message2) {
-        if (DEBUG) {
-            log(message + message2);
-        }
-    }
 }

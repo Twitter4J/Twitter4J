@@ -112,7 +112,7 @@ public class Paging implements java.io.Serializable {
         addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
         addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
         if (pagingParams.size() == 0) {
-            return new HttpParameter[0];
+            return NULL_PARAMETER_ARRAY;
         } else {
             return pagingParams.toArray(new HttpParameter[pagingParams.size()]);
         }

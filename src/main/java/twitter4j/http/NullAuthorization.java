@@ -50,7 +50,7 @@ public final class NullAuthorization implements Authorization, java.io.Serializa
         // does nothing
     }
 
-    public boolean isAuthenticationEnabled() {
+    public boolean isEnabled() {
         return false;
     }
 
