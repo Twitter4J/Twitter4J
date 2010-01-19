@@ -26,6 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.conf;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -33,22 +36,39 @@ public class ConfigurationFactory {
     private static final Configuration ROOT_CONFIGURATION;
     public static final String DEFAULT_CONFIGURATION_IMPL = "twitter4j.conf.PropertyConfiguration";
     public static final String CONFIGURATION_IMPL = "twitter4j.configuration.impl";
+    private static final Constructor constructor;
     static {
         String CONFIG_IMPL = System.getProperty(CONFIGURATION_IMPL, DEFAULT_CONFIGURATION_IMPL);
         try {
             Class configImplClass = Class.forName(CONFIG_IMPL);
-            ROOT_CONFIGURATION = (Configuration) configImplClass.newInstance();
+            constructor = configImplClass.getDeclaredConstructor(String.class);
+            ROOT_CONFIGURATION = (Configuration)constructor.newInstance("/");
         } catch (ClassNotFoundException cnfe) {
-            throw new ExceptionInInitializerError(cnfe);
+            throw new AssertionError(cnfe);
         } catch (InstantiationException ie) {
-            throw new ExceptionInInitializerError(ie);
+            throw new AssertionError(ie);
+        } catch (NoSuchMethodException nsme) {
+            throw new AssertionError(nsme);
         } catch (IllegalAccessException iae) {
-            throw new ExceptionInInitializerError(iae);
+            throw new AssertionError(iae);
+        } catch (InvocationTargetException ite) {
+            throw new AssertionError(ite);
         }
     }
 
 
     public static Configuration getInstance() {
         return ROOT_CONFIGURATION;
+    }
+    public static Configuration getInstance(String configTreePath) {
+        try {
+            return (Configuration)constructor.newInstance(configTreePath);
+        } catch (InstantiationException ie) {
+            throw new AssertionError(ie);
+        } catch (IllegalAccessException iae) {
+            throw new AssertionError(iae);
+        } catch (InvocationTargetException ite) {
+            throw new AssertionError(ite);
+        }
     }
 }

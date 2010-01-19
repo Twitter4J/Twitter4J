@@ -233,6 +233,58 @@ public class ConfigurationTest  extends TestCase {
         assertEquals(4321, conf.getHttpReadTimeout());
         deleteFile("./twitter4j.properties");
         conf = new PropertyConfiguration();
+
+    }
+
+    public void testSSL() throws Exception {
+        Configuration conf;
+
+        // disable SSL
+        writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
+        + "\n" + "twitter4j.http.useSSL=false");
+        conf = new PropertyConfiguration("/");
+        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
+
+        // explicitly enabling SSL
+        writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
+        + "\n" + "twitter4j.http.useSSL=true");
+        conf = new PropertyConfiguration("/");
+        assertEquals("https://somewhere.com/", conf.getRestBaseURL());
+        deleteFile("./twitter4j.properties");
+        conf = new PropertyConfiguration();
+
+        // uses SSL by default
+        System.getProperties().remove("twitter4j.http.useSSL");
+
+        writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/");
+        conf = new PropertyConfiguration("/");
+        assertEquals("https://somewhere.com/", conf.getRestBaseURL());
+
+    }
+
+    public void testTwitter4jPrefixOmittable() throws Exception {
+        Configuration conf;
+        writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/");
+        conf = new PropertyConfiguration("/");
+        assertEquals("https://somewhere.com/", conf.getRestBaseURL());
+        writeFile("./twitter4j.properties", "restBaseURL=http://somewhere2.com/");
+        conf = new PropertyConfiguration("/");
+        assertEquals("https://somewhere2.com/", conf.getRestBaseURL());
+    }
+
+    public void testTreeConfiguration() throws Exception {
+        Configuration conf;
+        writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
+        + "\n" + "twitter4j.http.useSSL=false");
+        conf = new PropertyConfiguration("/");
+        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
+        writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
+                + "\n" + "twitter4j.http.useSSL=false"
+                + "\n" + "china.twitter4j.restBaseURL=http://somewhere.cn/");
+        conf = new PropertyConfiguration("/china");
+        assertEquals("http://somewhere.cn/", conf.getRestBaseURL());
+        deleteFile("./twitter4j.properties");
+        conf = new PropertyConfiguration();
     }
     private void writeFile(String path, String content) throws IOException {
         File file = new File(path);

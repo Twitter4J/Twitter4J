@@ -65,7 +65,6 @@ public interface Configuration extends HttpClientConfiguration, HttpClientWrappe
 
     int getHttpReadTimeout();
 
-
     int getHttpStreamingReadTimeout();
 
     int getHttpRetryCount();
@@ -88,9 +87,7 @@ public interface Configuration extends HttpClientConfiguration, HttpClientWrappe
 
     String getClientURL();
 
-
     String getRestBaseURL();
-
 
     String getSearchBaseURL();
 

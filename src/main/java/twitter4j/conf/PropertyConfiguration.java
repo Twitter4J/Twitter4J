@@ -37,56 +37,58 @@ import java.util.Properties;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
-    public static final String DEBUG = "twitter4j.debug";
-    public static final String SOURCE = "twitter4j.source";
-    public static final String HTTP_USER_AGENT = "twitter4j.http.userAgent";
-    public static final String USER = "twitter4j.user";
-    public static final String PASSWORD = "twitter4j.password";
+    public static final String DEBUG = "debug";
+    public static final String SOURCE = "source";
+    public static final String HTTP_USER_AGENT = "http.userAgent";
+    public static final String USER = "user";
+    public static final String PASSWORD = "password";
 
-    public static final String HTTP_USE_SSL = "twitter4j.http.useSSL";
-    public static final String HTTP_PROXY_HOST = "twitter4j.http.proxyHost";
+    public static final String HTTP_USE_SSL = "http.useSSL";
+    public static final String HTTP_PROXY_HOST = "http.proxyHost";
     public static final String HTTP_PROXY_HOST_FALLBACK = "http.proxyHost";
-    public static final String HTTP_PROXY_USER = "twitter4j.http.proxyUser";
-    public static final String HTTP_PROXY_PASSWORD = "twitter4j.http.proxyPassword";
-    public static final String HTTP_PROXY_PORT = "twitter4j.http.proxyPort";
+    public static final String HTTP_PROXY_USER = "http.proxyUser";
+    public static final String HTTP_PROXY_PASSWORD = "http.proxyPassword";
+    public static final String HTTP_PROXY_PORT = "http.proxyPort";
     public static final String HTTP_PROXY_PORT_FALLBACK = "http.proxyPort";
-    public static final String HTTP_CONNECTION_TIMEOUT = "twitter4j.http.connectionTimeout";
-    public static final String HTTP_READ_TIMEOUT = "twitter4j.http.readTimeout";
+    public static final String HTTP_CONNECTION_TIMEOUT = "http.connectionTimeout";
+    public static final String HTTP_READ_TIMEOUT = "http.readTimeout";
 
-    public static final String HTTP_STREAMING_READ_TIMEOUT = "twitter4j.http.streamingReadTimeout";
+    public static final String HTTP_STREAMING_READ_TIMEOUT = "http.streamingReadTimeout";
 
-    public static final String HTTP_RETRY_COUNT = "twitter4j.http.retryCount";
-    public static final String HTTP_RETRY_INTERVAL_SECS = "twitter4j.http.retryIntervalSecs";
+    public static final String HTTP_RETRY_COUNT = "http.retryCount";
+    public static final String HTTP_RETRY_INTERVAL_SECS = "http.retryIntervalSecs";
 
-    public static final String OAUTH_CONSUMER_KEY = "twitter4j.oauth.consumerKey";
-    public static final String OAUTH_CONSUMER_SECRET = "twitter4j.oauth.consumerSecret";
-    public static final String OAUTH_ACCESS_TOKEN = "twitter4j.oauth.accessToken";
-    public static final String OAUTH_ACCESS_TOKEN_SECRET = "twitter4j.oauth.accessTokenSecret";
-
-
-    public static final String OAUTH_REQUEST_TOKEN_URL = "twitter4j.oauth.requestTokenURL";
-    public static final String OAUTH_AUTHORIZATION_URL = "twitter4j.oauth.authorizationURL";
-    public static final String OAUTH_ACCESS_TOKEN_URL = "twitter4j.oauth.accessTokenURL";
-    public static final String OAUTH_AUTHENTICATION_URL = "twitter4j.oauth.authenticationURL";
-
-    public static final String REST_BASE_URL = "twitter4j.restBaseURL";
-    public static final String SEARCH_BASE_URL = "twitter4j.searchBaseURL";
-    public static final String STREAM_BASE_URL = "twitter4j.streamBaseURL";
+    public static final String OAUTH_CONSUMER_KEY = "oauth.consumerKey";
+    public static final String OAUTH_CONSUMER_SECRET = "oauth.consumerSecret";
+    public static final String OAUTH_ACCESS_TOKEN = "oauth.accessToken";
+    public static final String OAUTH_ACCESS_TOKEN_SECRET = "oauth.accessTokenSecret";
 
 
-    public static final String ASYNC_NUM_THREADS = "twitter4j.async.numThreads";
+    public static final String OAUTH_REQUEST_TOKEN_URL = "oauth.requestTokenURL";
+    public static final String OAUTH_AUTHORIZATION_URL = "oauth.authorizationURL";
+    public static final String OAUTH_ACCESS_TOKEN_URL = "oauth.accessTokenURL";
+    public static final String OAUTH_AUTHENTICATION_URL = "oauth.authenticationURL";
+
+    public static final String REST_BASE_URL = "restBaseURL";
+    public static final String SEARCH_BASE_URL = "searchBaseURL";
+    public static final String STREAM_BASE_URL = "streamBaseURL";
+
+
+    public static final String ASYNC_NUM_THREADS = "async.numThreads";
 
     // hidden portion
-    public static final String CLIENT_VERSION = "twitter4j.clientVersion";
-    public static final String CLIENT_URL = "twitter4j.clientURL";
+    public static final String CLIENT_VERSION = "clientVersion";
+    public static final String CLIENT_URL = "clientURL";
     private static final long serialVersionUID = 6458764415636588373L;
 
-    PropertyConfiguration() {
+
+    PropertyConfiguration(String treePath) {
         super();
         Properties props;
         // load from system properties
         try {
             props = System.getProperties();
+            normalize(props);
         } catch (AccessControlException ace) {
             // Unsigned applets are not allowed to access System properties
             props = new Properties();
@@ -99,114 +101,18 @@ class PropertyConfiguration extends ConfigurationBase implements java.io.Seriali
         // then, override with /WEB/INF/twiter4j.properties in the classpath
         loadProperties(props, Configuration.class.getResourceAsStream("/WEB-INF/" + TWITTER4J_PROPERTIES));
 
-        if (notNull(props, DEBUG)) {
-            setDebug(getBoolean(props, DEBUG));
-        }
-
-        if (notNull(props, SOURCE)) {
-            setSource(getString(props, SOURCE));
-        }
-        if (notNull(props, USER)) {
-            setUser(getString(props, USER));
-        }
-        if (notNull(props, PASSWORD)) {
-            setPassword(getString(props, PASSWORD));
-        }
-        if (notNull(props, HTTP_USE_SSL)) {
-            setUseSSL(getBoolean(props, HTTP_USE_SSL));
-        } else if (notNull(props, USER) &&
-                notNull(props, PASSWORD)) {
-            // use SSL with Basic Auth
-            setUseSSL(true);
-        }
-        if (notNull(props, HTTP_PROXY_HOST)) {
-            setHttpProxyHost(getString(props, HTTP_PROXY_HOST));
-        } else if (notNull(props, HTTP_PROXY_HOST_FALLBACK)) {
-            setHttpProxyHost(getString(props, HTTP_PROXY_HOST_FALLBACK));
-        }
-        if (notNull(props, HTTP_PROXY_USER)) {
-            setHttpProxyUser(getString(props, HTTP_PROXY_USER));
-        }
-        if (notNull(props, HTTP_PROXY_PASSWORD)) {
-            setHttpProxyPassword(getString(props, HTTP_PROXY_PASSWORD));
-        }
-        if (notNull(props, HTTP_PROXY_PORT)) {
-            setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT));
-        } else if (notNull(props, HTTP_PROXY_PORT_FALLBACK)) {
-            setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT_FALLBACK));
-        }
-        if (notNull(props, HTTP_CONNECTION_TIMEOUT)) {
-            setHttpConnectionTimeout(getIntProperty(props, HTTP_CONNECTION_TIMEOUT));
-        }
-        if (notNull(props, HTTP_READ_TIMEOUT)) {
-            setHttpReadTimeout(getIntProperty(props, HTTP_READ_TIMEOUT));
-        }
-        if (notNull(props, HTTP_STREAMING_READ_TIMEOUT)) {
-            setHttpStreamingReadTimeout(getIntProperty(props, HTTP_STREAMING_READ_TIMEOUT));
-        }
-        if (notNull(props, HTTP_RETRY_COUNT)) {
-            setHttpRetryCount(getIntProperty(props, HTTP_RETRY_COUNT));
-        }
-        if (notNull(props, HTTP_RETRY_INTERVAL_SECS)) {
-            setHttpRetryIntervalSecs(getIntProperty(props, HTTP_RETRY_INTERVAL_SECS));
-        }
-        if (notNull(props, OAUTH_CONSUMER_KEY)) {
-            setOAuthConsumerKey(getString(props, OAUTH_CONSUMER_KEY));
-        }
-        if (notNull(props, OAUTH_CONSUMER_SECRET)) {
-            setOAuthConsumerSecret(getString(props, OAUTH_CONSUMER_SECRET));
-        }
-        if (notNull(props, OAUTH_ACCESS_TOKEN)) {
-            setOAuthAccessToken(getString(props, OAUTH_ACCESS_TOKEN));
-        }
-        if (notNull(props, OAUTH_ACCESS_TOKEN_SECRET)) {
-            setOAuthAccessTokenSecret(getString(props, OAUTH_ACCESS_TOKEN_SECRET));
-        }
-        if (notNull(props, ASYNC_NUM_THREADS)) {
-            setAsyncNumThreads(getIntProperty(props, ASYNC_NUM_THREADS));
-        }
-        if (notNull(props, CLIENT_VERSION)) {
-            setClientVersion(getString(props, CLIENT_VERSION));
-        }
-        if (notNull(props, CLIENT_URL)) {
-            setClientURL(getString(props, CLIENT_URL));
-        }
-        if (notNull(props, HTTP_USER_AGENT)) {
-            setUserAgent(getString(props, HTTP_USER_AGENT));
-        }
-
-        if (notNull(props, OAUTH_REQUEST_TOKEN_URL)) {
-            setOAuthRequestTokenURL(getString(props, OAUTH_REQUEST_TOKEN_URL));
-        }
-
-        if (notNull(props, OAUTH_AUTHORIZATION_URL)) {
-            setOAuthAuthorizationURL(getString(props, OAUTH_AUTHORIZATION_URL));
-        }
-
-        if (notNull(props, OAUTH_ACCESS_TOKEN_URL)) {
-            setOAuthAccessTokenURL(getString(props, OAUTH_ACCESS_TOKEN_URL));
-        }
-
-        if (notNull(props, OAUTH_AUTHENTICATION_URL)) {
-            setOAuthAuthenticationURL(getString(props, OAUTH_AUTHENTICATION_URL));
-        }
-
-        if (notNull(props, REST_BASE_URL)) {
-            setRestBaseURL(getString(props, REST_BASE_URL));
-        }
-
-        if (notNull(props, SEARCH_BASE_URL)) {
-            setSearchBaseURL(getString(props, SEARCH_BASE_URL));
-        }
-
-        if (notNull(props, STREAM_BASE_URL)) {
-            setStreamBaseURL(getString(props, STREAM_BASE_URL));
-        }
-
+        setFieldsWithTreePath(props, treePath);
     }
 
-    private boolean notNull(Properties props, String name) {
-        return null != props.getProperty(name);
+    /**
+     * Creates a root PropertyConfiguration. This constructor is equivalent to new PropertyConfiguration("/").
+     */
+    PropertyConfiguration() {
+        this("/");
+    }
+
+    private boolean notNull(Properties props, String prefix, String name) {
+        return null != props.getProperty(prefix + name);
     }
 
     private boolean loadProperties(Properties props, String path) {
@@ -216,6 +122,7 @@ class PropertyConfiguration extends ConfigurationBase implements java.io.Seriali
             if (file.exists() && file.isFile()) {
                 fis = new FileInputStream(file);
                 props.load(new FileInputStream(file));
+                normalize(props);
                 return true;
             }
         } catch (Exception ignore) {
@@ -234,19 +141,164 @@ class PropertyConfiguration extends ConfigurationBase implements java.io.Seriali
     private boolean loadProperties(Properties props, InputStream is) {
         try {
             props.load(is);
+            normalize(props);
             return true;
         } catch (Exception ignore) {
         }
         return false;
     }
 
-    protected boolean getBoolean(Properties props, String name) {
-        String value = props.getProperty(name);
+    private void normalize(Properties props) {
+        for (String key : props.stringPropertyNames()) {
+            int index;
+            if (-1 != (index = key.indexOf("twitter4j."))) {
+                String property = props.getProperty(key);
+                props.remove(key);
+                String newKwy = key.substring(0, index) + key.substring(index + 10);
+                props.setProperty(newKwy, property);
+            }
+        }
+    }
+
+    /**
+     * passing "/foo/bar" as treePath will result:<br>
+     * 1. load [twitter4j.]restBaseURL<br>
+     * 2. override the value with foo.[twitter4j.]restBaseURL<br>
+     * 3. override the value with foo.bar.[twitter4j.]restBaseURL<br>
+     *
+     * @param props    properties to be loaded
+     * @param treePath the path
+     */
+    private void setFieldsWithTreePath(Properties props, String treePath) {
+        setFieldsWithPrefix(props, "");
+        String[] splitArray = treePath.split("/");
+        String prefix = null;
+        for (String split : splitArray) {
+            if (!"".equals(split)) {
+                if (null == prefix) {
+                    prefix = split + ".";
+                } else {
+                    prefix += split + ".";
+                }
+                setFieldsWithPrefix(props, prefix);
+            }
+        }
+    }
+
+    private void setFieldsWithPrefix(Properties props, String prefix) {
+        if (notNull(props, prefix, DEBUG)) {
+            setDebug(getBoolean(props, prefix, DEBUG));
+        }
+
+        if (notNull(props, prefix, SOURCE)) {
+            setSource(getString(props, prefix, SOURCE));
+        }
+
+        if (notNull(props, prefix, USER)) {
+            setUser(getString(props, prefix, USER));
+        }
+        if (notNull(props, prefix, PASSWORD)) {
+            setPassword(getString(props, prefix, PASSWORD));
+        }
+        if (notNull(props, prefix, HTTP_USE_SSL)) {
+            setUseSSL(getBoolean(props, prefix, HTTP_USE_SSL));
+        } else if (notNull(props, prefix, USER) &&
+                notNull(props, prefix, PASSWORD)) {
+            // use SSL with Basic Auth
+            setUseSSL(true);
+        }
+        if (notNull(props, prefix, HTTP_PROXY_HOST)) {
+            setHttpProxyHost(getString(props, prefix, HTTP_PROXY_HOST));
+        } else if (notNull(props, prefix, HTTP_PROXY_HOST_FALLBACK)) {
+            setHttpProxyHost(getString(props, prefix, HTTP_PROXY_HOST_FALLBACK));
+        }
+        if (notNull(props, prefix, HTTP_PROXY_USER)) {
+            setHttpProxyUser(getString(props, prefix, HTTP_PROXY_USER));
+        }
+        if (notNull(props, prefix, HTTP_PROXY_PASSWORD)) {
+            setHttpProxyPassword(getString(props, prefix, HTTP_PROXY_PASSWORD));
+        }
+        if (notNull(props, prefix, HTTP_PROXY_PORT)) {
+            setHttpProxyPort(getIntProperty(props, prefix, HTTP_PROXY_PORT));
+        } else if (notNull(props, prefix, HTTP_PROXY_PORT_FALLBACK)) {
+            setHttpProxyPort(getIntProperty(props, prefix, HTTP_PROXY_PORT_FALLBACK));
+        }
+        if (notNull(props, prefix, HTTP_CONNECTION_TIMEOUT)) {
+            setHttpConnectionTimeout(getIntProperty(props, prefix, HTTP_CONNECTION_TIMEOUT));
+        }
+        if (notNull(props, prefix, HTTP_READ_TIMEOUT)) {
+            setHttpReadTimeout(getIntProperty(props, prefix, HTTP_READ_TIMEOUT));
+        }
+        if (notNull(props, prefix, HTTP_STREAMING_READ_TIMEOUT)) {
+            setHttpStreamingReadTimeout(getIntProperty(props, prefix, HTTP_STREAMING_READ_TIMEOUT));
+        }
+        if (notNull(props, prefix, HTTP_RETRY_COUNT)) {
+            setHttpRetryCount(getIntProperty(props, prefix, HTTP_RETRY_COUNT));
+        }
+        if (notNull(props, prefix, HTTP_RETRY_INTERVAL_SECS)) {
+            setHttpRetryIntervalSecs(getIntProperty(props, prefix, HTTP_RETRY_INTERVAL_SECS));
+        }
+        if (notNull(props, prefix, OAUTH_CONSUMER_KEY)) {
+            setOAuthConsumerKey(getString(props, prefix, OAUTH_CONSUMER_KEY));
+        }
+        if (notNull(props, prefix, OAUTH_CONSUMER_SECRET)) {
+            setOAuthConsumerSecret(getString(props, prefix, OAUTH_CONSUMER_SECRET));
+        }
+        if (notNull(props, prefix, OAUTH_ACCESS_TOKEN)) {
+            setOAuthAccessToken(getString(props, prefix, OAUTH_ACCESS_TOKEN));
+        }
+        if (notNull(props, prefix, OAUTH_ACCESS_TOKEN_SECRET)) {
+            setOAuthAccessTokenSecret(getString(props, prefix, OAUTH_ACCESS_TOKEN_SECRET));
+        }
+        if (notNull(props, prefix, ASYNC_NUM_THREADS)) {
+            setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_NUM_THREADS));
+        }
+        if (notNull(props, prefix, CLIENT_VERSION)) {
+            setClientVersion(getString(props, prefix, CLIENT_VERSION));
+        }
+        if (notNull(props, prefix, CLIENT_URL)) {
+            setClientURL(getString(props, prefix, CLIENT_URL));
+        }
+        if (notNull(props, prefix, HTTP_USER_AGENT)) {
+            setUserAgent(getString(props, prefix, HTTP_USER_AGENT));
+        }
+
+        if (notNull(props, prefix, OAUTH_REQUEST_TOKEN_URL)) {
+            setOAuthRequestTokenURL(getString(props, prefix, OAUTH_REQUEST_TOKEN_URL));
+        }
+
+        if (notNull(props, prefix, OAUTH_AUTHORIZATION_URL)) {
+            setOAuthAuthorizationURL(getString(props, prefix, OAUTH_AUTHORIZATION_URL));
+        }
+
+        if (notNull(props, prefix, OAUTH_ACCESS_TOKEN_URL)) {
+            setOAuthAccessTokenURL(getString(props, prefix, OAUTH_ACCESS_TOKEN_URL));
+        }
+
+        if (notNull(props, prefix, OAUTH_AUTHENTICATION_URL)) {
+            setOAuthAuthenticationURL(getString(props, prefix, OAUTH_AUTHENTICATION_URL));
+        }
+
+        if (notNull(props, prefix, REST_BASE_URL)) {
+            setRestBaseURL(getString(props, prefix, REST_BASE_URL));
+        }
+
+        if (notNull(props, prefix, SEARCH_BASE_URL)) {
+            setSearchBaseURL(getString(props, prefix, SEARCH_BASE_URL));
+        }
+
+        if (notNull(props, prefix, STREAM_BASE_URL)) {
+            setStreamBaseURL(getString(props, prefix, STREAM_BASE_URL));
+        }
+    }
+
+    protected boolean getBoolean(Properties props, String prefix, String name) {
+        String value = props.getProperty(prefix + name);
         return Boolean.valueOf(value);
     }
 
-    protected int getIntProperty(Properties props, String name) {
-        String value = props.getProperty(name);
+    protected int getIntProperty(Properties props, String prefix, String name) {
+        String value = props.getProperty(prefix + name);
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException nfe) {
@@ -254,7 +306,7 @@ class PropertyConfiguration extends ConfigurationBase implements java.io.Seriali
         }
     }
 
-    protected String getString(Properties props, String name) {
-        return props.getProperty(name);
+    protected String getString(Properties props, String prefix, String name) {
+        return props.getProperty(prefix + name);
     }
 }
