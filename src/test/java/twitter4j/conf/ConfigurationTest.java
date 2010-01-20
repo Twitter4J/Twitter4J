@@ -292,7 +292,6 @@ public class ConfigurationTest  extends TestCase {
         assertEquals("http://somewhere.cn/", conf.getRestBaseURL());
         deleteFile("./twitter4j.properties");
 
-
         // configuration for two different countries and default
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/"
                 + "\n" + "http.useSSL=false"
