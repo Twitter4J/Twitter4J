@@ -32,6 +32,5 @@ package twitter4j.api;
 /**
  * Not yet implemented.
  */
-public interface ListSubscribersMethodsAsync
-{
+public interface ListSubscribersMethodsAsync {
 }

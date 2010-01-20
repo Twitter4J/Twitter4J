@@ -45,6 +45,7 @@ import twitter4j.api.StatusMethods;
 import twitter4j.api.TimelineMethods;
 import twitter4j.api.UserMethods;
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
 import static twitter4j.http.HttpParameter.*;
 
@@ -92,7 +93,7 @@ public class Twitter extends OAuthSupportTwitter
      * @deprecated use TwitterFactory.getInstance() instead
      */
     public Twitter() {
-        super();
+        super(ConfigurationContext.getInstance());
     }
 
     /**
@@ -103,13 +104,16 @@ public class Twitter extends OAuthSupportTwitter
      * @deprecated use TwitterFactory.getBasicAuthenticatedInstance(screenName, password) instead
      */
     public Twitter(String screenName, String password) {
-        super(screenName, password);
+        super(ConfigurationContext.getInstance(), screenName, password);
     }
     /*package*/
-    Twitter(Authorization auth) {
-        super(auth);
+    Twitter(Configuration conf, String screenName, String password) {
+        super(conf, screenName, password);
     }
-
+    /*package*/
+    Twitter(Configuration conf, Authorization auth) {
+        super(conf, auth);
+    }
 
     /**
      * Returns authenticating user's screen name.<br>

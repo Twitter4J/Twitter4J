@@ -40,73 +40,34 @@ import twitter4j.http.OAuthAuthorization;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class TwitterFactory {
-    private final Configuration conf;
+public final class TwitterFactory extends TwitterFactoryBase<Twitter> implements java.io.Serializable {
+    private static final long serialVersionUID = 5193900138477709155L;
 
     /**
-     * Creates a TwitterFactory
+     * {@inheritDoc}
      */
     public TwitterFactory() {
-        this.conf = ConfigurationContext.getInstance();
+        super();
     }
 
     /**
-     * Creates a TwitterFactory with a specified config tree path.
-     * @param configTreePath the path
+     * {@inheritDoc}
+     */
+    TwitterFactory(Configuration conf) {
+        super(conf);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public TwitterFactory(String configTreePath) {
-        this.conf = ConfigurationContext.getInstance(configTreePath);
+        super(configTreePath);
     }
 
     /**
-     * Returns a Twitter instance.
-     *
-     * @return default singleton instance
+     * {@inheritDoc}
      */
-    public Twitter getInstance() {
-        return new Twitter(conf);
+    protected Twitter getInstance(Configuration conf, Authorization auth) {
+        return new Twitter(conf, auth);
     }
-
-    public Twitter getInstance(Authorization auth) {
-        return new Twitter(auth);
-    }
-
-    /**
-     * @param screenName screen name
-     * @param password password
-     * @return basic authenticated instance
-     * @noinspection deprecation
-     */
-    public Twitter getBasicAuthorizedInstance(String screenName
-            , String password) {
-        return getInstance(new BasicAuthorization(screenName, password));
-    }
-
-//    public static Twitter getOAuthAuthorizedInstance(String consumerKey, String consumerSecret
-//            , AccessToken accessToken) {
-//        if (null == consumerKey && null == consumerSecret) {
-//            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
-//        }
-//        OAuthAuthorization oauth = new OAuthAuthorization(consumerKey, consumerSecret, accessToken);
-//        return getInstance(oauth);
-//    }
-//
-    public Twitter getOAuthAuthorizedInstance(String consumerKey, String consumerSecret) {
-        if (null == consumerKey && null == consumerSecret) {
-            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
-        }
-        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
-        return getInstance(oauth);
-    }
-
-    public Twitter getInstance(AccessToken accessToken) {
-        String consumerKey = conf.getOAuthConsumerKey();
-        String consumerSecret = conf.getOAuthConsumerSecret();
-        if (null == consumerKey && null == consumerSecret) {
-            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
-        }
-        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret, accessToken);
-        return getInstance(oauth);
-    }
-
 }

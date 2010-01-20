@@ -41,18 +41,13 @@ abstract class TwitterSupport implements java.io.Serializable {
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
 
-    /*package*/ TwitterSupport(){
-        conf = ConfigurationContext.getInstance();
-        initBasicAuthorization(conf.getUser(), conf.getPassword());
-    }
-
     /*package*/ TwitterSupport(Configuration conf){
         this.conf = conf;
         initBasicAuthorization(conf.getUser(), conf.getPassword());
     }
 
-    /*package*/ TwitterSupport(String userId, String password){
-        this();
+    /*package*/ TwitterSupport(Configuration conf, String userId, String password){
+        this.conf = conf;
         initBasicAuthorization(userId, password);
     }
     private void initBasicAuthorization(String screenName, String password){
@@ -64,8 +59,8 @@ abstract class TwitterSupport implements java.io.Serializable {
         }
     }
 
-    /*package*/ TwitterSupport(Authorization auth) {
-        this();
+    /*package*/ TwitterSupport(Configuration conf, Authorization auth) {
+        this.conf = conf;
         this.auth = auth;
     }
 

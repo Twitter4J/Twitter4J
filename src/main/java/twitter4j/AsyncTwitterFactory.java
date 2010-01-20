@@ -24,15 +24,43 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.api;
+package twitter4j;
+
+import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationContext;
+import twitter4j.http.Authorization;
 
 /**
- * @author Joern Huxhorn - jhuxhorn at googlemail.com
- */
-/**
- * Not yet supported.
+ * A factory class for AsyncTwitter.<br>
+ * An instance of this class is completely thread safe and can be re-used and used concurrently.
  *
- * http://yusuke.homeip.net/jira/browse/TFJ-233
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.0
  */
-public interface LocalTrendsMethodsAsync {
+public final class AsyncTwitterFactory extends TwitterFactoryBase<AsyncTwitter> implements java.io.Serializable {
+    private TwitterListener listener;
+    private static final long serialVersionUID = -2565686715640816219L;
+
+    /**
+     * {@inheritDoc}
+     */
+    public AsyncTwitterFactory(TwitterListener listener) {
+        super();
+        this.listener = listener;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AsyncTwitterFactory(String configTreePath, TwitterListener listener) {
+        super(configTreePath);
+        this.listener = listener;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected AsyncTwitter getInstance(Configuration conf, Authorization auth) {
+        return new AsyncTwitter(conf, auth, listener);
+    }
 }

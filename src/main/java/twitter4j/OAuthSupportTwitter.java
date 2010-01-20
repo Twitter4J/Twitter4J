@@ -1,6 +1,7 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
 
 import java.io.IOException;
@@ -14,22 +15,17 @@ class OAuthSupportTwitter extends TwitterSupport implements HttpResponseListener
     protected List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     private static final long serialVersionUID = 6960663978976449394L;
 
-    OAuthSupportTwitter() {
-        super(); // this will populate BasicAuthorization from the configuration
-        init();
-    }
-
     OAuthSupportTwitter(Configuration conf) {
         super(conf); // this will populate BasicAuthorization from the configuration
         init();
     }
 
-    OAuthSupportTwitter(String screenName, String password) {
-        super(screenName, password);
+    OAuthSupportTwitter(Configuration conf, String screenName, String password) {
+        super(conf, screenName, password);
         init();
     }
-    /*package*/ OAuthSupportTwitter(Authorization auth) {
-        super(auth);
+    /*package*/ OAuthSupportTwitter(Configuration conf, Authorization auth) {
+        super(conf, auth);
         init();
     }
 

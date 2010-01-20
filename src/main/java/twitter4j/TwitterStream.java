@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.HttpClientWrapper;
 import twitter4j.http.HttpClientWrapperConfiguration;
 import twitter4j.http.HttpParameter;
@@ -57,19 +58,19 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
      * since Twitter4J 2.0.10
      */
     public TwitterStream() {
-        super();
+        super(ConfigurationContext.getInstance());
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         ensureBasicEnabled();
     }
 
     public TwitterStream(String userId, String password) {
-        super(userId, password);
+        super(ConfigurationContext.getInstance(), userId, password);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         ensureBasicEnabled();
     }
 
     public TwitterStream(String userId, String password, StatusListener listener) {
-        super(userId, password);
+        super(ConfigurationContext.getInstance(), userId, password);
         this.statusListener = listener;
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         ensureBasicEnabled();

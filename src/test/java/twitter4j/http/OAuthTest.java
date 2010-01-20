@@ -262,7 +262,7 @@ public class OAuthTest extends TwitterTestUnit {
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
 //        response = http.post(authorizeURL, params);
         resStr = response.asString();
-        String oauthVerifier = catchPattern(resStr, "&amp;oauth_verifier=", "\">");
+        String oauthVerifier = catchPattern(resStr, "&oauth_verifier=", "\">");
 
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret(), oauthVerifier);
         assertEquals(at.getScreenName(), id1.name);

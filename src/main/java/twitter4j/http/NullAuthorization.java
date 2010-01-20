@@ -38,12 +38,12 @@ public final class NullAuthorization implements Authorization, java.io.Serializa
     private static NullAuthorization SINGLETON = new NullAuthorization();
     private static final long serialVersionUID = -8748173338942663960L;
 
-    public static NullAuthorization getInstance() {
-        return SINGLETON;
-    }
-
     private NullAuthorization() {
 
+    }
+
+    public static NullAuthorization getInstance() {
+        return SINGLETON;
     }
 
     public void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con) {

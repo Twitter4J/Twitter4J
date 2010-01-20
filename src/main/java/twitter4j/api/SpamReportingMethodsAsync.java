@@ -34,6 +34,5 @@ package twitter4j.api;
  *
  * http://yusuke.homeip.net/jira/browse/TFJ-223
  */
-public interface SpamReportingMethodsAsync
-{
+public interface SpamReportingMethodsAsync {
 }

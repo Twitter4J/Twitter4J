@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.examples;
 
 import twitter4j.AsyncTwitter;
+import twitter4j.AsyncTwitterFactory;
 import twitter4j.Status;
 import twitter4j.TwitterAdapter;
 import twitter4j.TwitterException;
@@ -55,8 +56,7 @@ public class AsyncUpdate {
                     "Usage: java twitter4j.examples.AsyncUpdate ID Password text");
             System.exit(-1);
         }
-        AsyncTwitter twitter = new AsyncTwitter(args[0], args[1]);
-        twitter.updateStatusAsync(args[2], new TwitterAdapter() {
+        AsyncTwitterFactory factory = new AsyncTwitterFactory(new TwitterAdapter() {
             @Override
             public void updatedStatus(Status status) {
                 System.out.println("Successfully updated the status to [" +
@@ -80,8 +80,9 @@ public class AsyncUpdate {
                     throw new AssertionError("Should not happen");
                 }
             }
-        }
-        );
+        });
+        AsyncTwitter twitter = factory.getBasicAuthorizedInstance(args[0], args[1]);
+        twitter.updateStatus(args[2]);
         synchronized (lock) {
             lock.wait();
         }
