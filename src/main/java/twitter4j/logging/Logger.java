@@ -26,15 +26,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.logging;
 
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationFactory;
+import twitter4j.conf.ConfigurationContext;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
 public final class Logger {
-    private static final boolean DEBUG = ConfigurationFactory.getInstance().isDebugEnabled();
+    private static final boolean DEBUG = ConfigurationContext.getInstance().isDebugEnabled();
     private static final Logger SINGLETON = new Logger();
     private Logger() {
         //@todo will wrap SLF4J / commons-logging / jul l8er @TFJ-148

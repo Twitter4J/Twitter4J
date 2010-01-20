@@ -26,25 +26,36 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.conf;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
+ * Static factory of Configuration. This class wraps ConfigurationFactory implementations.<br>
+ * By default, twitter4j.conf.PropertyConfigurationFactory will be used and can be changed with -Dtwitter4j.configurationFactory system property.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface ConfigurationFactory {
-    /**
-     * returns the root configuration
-     * @return root configuration
-     */
-    Configuration getInstance();
+public class ConfigurationContext {
+    public static final String DEFAULT_CONFIGURATION_FACTORY = "twitter4j.conf.PropertyConfigurationFactory";
+    public static final String CONFIGURATION_IMPL = "twitter4j.configurationFactory";
+    private static final ConfigurationFactory factory;
 
-    /**
-     * returns the configuration specified by the path
-     * @param configTreePath the path
-     * @return the configuratoin
-     */
-    Configuration getInstance(String configTreePath);
+    static {
+        String CONFIG_IMPL = System.getProperty(CONFIGURATION_IMPL, DEFAULT_CONFIGURATION_FACTORY);
+        try {
+            factory = (ConfigurationFactory)Class.forName(CONFIG_IMPL).newInstance();
+        } catch (ClassNotFoundException cnfe) {
+            throw new AssertionError(cnfe);
+        } catch (InstantiationException ie) {
+            throw new AssertionError(ie);
+        } catch (IllegalAccessException iae) {
+            throw new AssertionError(iae);
+        }
+    }
 
-    /**
-     * clean up resources acquired by this factory.
-     */
-    void dispose();
+
+    public static Configuration getInstance() {
+        return factory.getInstance();
+    }
+    public static Configuration getInstance(String configTreePath) {
+        return factory.getInstance(configTreePath);
+    }
 }

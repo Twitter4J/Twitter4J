@@ -28,7 +28,7 @@ package twitter4j.http;
 
 import twitter4j.conf.Configuration;
 import twitter4j.TwitterException;
-import twitter4j.conf.ConfigurationFactory;
+import twitter4j.conf.ConfigurationContext;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -41,18 +41,18 @@ public class RequestToken extends OAuthToken implements java.io.Serializable {
 
     RequestToken(HttpResponse res, OAuthSupport oauth) throws TwitterException {
         super(res);
-        conf = ConfigurationFactory.getInstance();
+        conf = ConfigurationContext.getInstance();
         this.oauth = oauth;
     }
 
     public RequestToken(String token, String tokenSecret) {
         super(token, tokenSecret);
-        conf = ConfigurationFactory.getInstance();
+        conf = ConfigurationContext.getInstance();
     }
 
     RequestToken(String token, String tokenSecret, OAuthSupport oauth) {
         super(token, tokenSecret);
-        conf = ConfigurationFactory.getInstance();
+        conf = ConfigurationContext.getInstance();
         this.oauth = oauth;
     }
 

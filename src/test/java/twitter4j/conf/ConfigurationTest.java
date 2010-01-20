@@ -55,7 +55,7 @@ public class ConfigurationTest  extends TestCase {
         super.tearDown();
     }
     public void testGetInstance() throws Exception {
-        Configuration conf = ConfigurationFactory.getInstance();
+        Configuration conf = ConfigurationContext.getInstance();
         assertNotNull(conf);
     }
     public void testFixURL() throws Exception {
@@ -263,11 +263,14 @@ public class ConfigurationTest  extends TestCase {
     }
 
     public void testTwitter4jPrefixOmittable() throws Exception {
+        System.getProperties().remove("http.useSSL");
+        System.getProperties().remove("twitter4j.http.useSSL");
         Configuration conf;
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/");
         conf = new PropertyConfiguration("/");
         assertEquals("https://somewhere.com/", conf.getRestBaseURL());
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere2.com/");
+
         conf = new PropertyConfiguration("/");
         assertEquals("https://somewhere2.com/", conf.getRestBaseURL());
     }
@@ -326,6 +329,7 @@ public class ConfigurationTest  extends TestCase {
         assertEquals("three", conf.getUser());
         assertEquals("pasword-three", conf.getPassword());
 
+        deleteFile("./twitter4j.properties");
     }
     private void writeFile(String path, String content) throws IOException {
         File file = new File(path);

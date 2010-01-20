@@ -27,36 +27,35 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationFactory;
+import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.http.OAuthAuthorization;
 
 /**
+ * A factory class for Twitter.<br>
+ * An instance of this class is completely thread safe and can be re-used and used concurrently.
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
 public final class TwitterFactory {
     private final Configuration conf;
 
-
-    private TwitterFactory(Configuration conf) {
-        this.conf = conf;
-    }
-
     /**
      * Creates a TwitterFactory
      */
     public TwitterFactory() {
-        this(ConfigurationFactory.getInstance());
+        this.conf = ConfigurationContext.getInstance();
     }
 
     /**
-     * Creates a TwitterFactory
+     * Creates a TwitterFactory with a specified config tree path.
+     * @param configTreePath the path
      */
-    public TwitterFactory(String configHierarchy) {
-        this(ConfigurationFactory.getInstance(configHierarchy));
+    public TwitterFactory(String configTreePath) {
+        this.conf = ConfigurationContext.getInstance(configTreePath);
     }
 
     /**

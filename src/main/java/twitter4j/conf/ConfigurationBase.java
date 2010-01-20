@@ -37,7 +37,7 @@ import java.util.Map;
  * Configuration base class with default settings.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class ConfigurationBase implements Configuration, java.io.Serializable {
+class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean debug;
     private String source;

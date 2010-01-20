@@ -289,7 +289,6 @@ public class TwitterTestUnit extends TwitterTestBase {
         status2 = unauthenticated.showStatus(999383469l);
         assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3", status2.getText());
         status2 = unauthenticated.showStatus(7185737372l);
-        System.out.println(status2.getText());
         assertEquals("\\u5e30%u5e30 <%}& foobar",status2.getText());
 
 

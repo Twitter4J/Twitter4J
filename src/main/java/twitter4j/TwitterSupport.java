@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationFactory;
+import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.http.NullAuthorization;
@@ -42,7 +42,7 @@ abstract class TwitterSupport implements java.io.Serializable {
     private static final long serialVersionUID = -3812176145960812140L;
 
     /*package*/ TwitterSupport(){
-        conf = ConfigurationFactory.getInstance();
+        conf = ConfigurationContext.getInstance();
         initBasicAuthorization(conf.getUser(), conf.getPassword());
     }
 

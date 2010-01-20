@@ -31,7 +31,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessControlException;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -82,12 +84,13 @@ class PropertyConfiguration extends ConfigurationBase implements java.io.Seriali
     private static final long serialVersionUID = 6458764415636588373L;
 
 
+
     PropertyConfiguration(String treePath) {
         super();
-        Properties props;
+        Properties props = new Properties();
         // load from system properties
         try {
-            props = System.getProperties();
+            props = (Properties)System.getProperties().clone();
             normalize(props);
         } catch (AccessControlException ace) {
             // Unsigned applets are not allowed to access System properties
@@ -149,14 +152,19 @@ class PropertyConfiguration extends ConfigurationBase implements java.io.Seriali
     }
 
     private void normalize(Properties props) {
-        for (String key : props.stringPropertyNames()) {
-            int index;
-            if (-1 != (index = key.indexOf("twitter4j."))) {
-                String property = props.getProperty(key);
-                props.remove(key);
-                String newKwy = key.substring(0, index) + key.substring(index + 10);
-                props.setProperty(newKwy, property);
+        Set keys = props.keySet();
+        ArrayList<String> toBeNormalized = new ArrayList<String>(10);
+        for (Object key : keys) {
+            String keyStr = (String) key;
+            if (-1 != (keyStr.indexOf("twitter4j."))) {
+                toBeNormalized.add(keyStr);
             }
+        }
+        for (String keyStr : toBeNormalized) {
+            String property = props.getProperty(keyStr);
+            int index = keyStr.indexOf("twitter4j.");
+            String newKey = keyStr.substring(0, index) + keyStr.substring(index + 10);
+            props.setProperty(newKey, property);
         }
     }
 
