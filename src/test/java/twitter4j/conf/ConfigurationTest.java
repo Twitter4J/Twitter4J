@@ -288,6 +288,44 @@ public class ConfigurationTest  extends TestCase {
         conf = new PropertyConfiguration("/china/");
         assertEquals("http://somewhere.cn/", conf.getRestBaseURL());
         deleteFile("./twitter4j.properties");
+
+
+        // configuration for two different countries and default
+        writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/"
+                + "\n" + "http.useSSL=false"
+                + "\n" + "user=one"
+                + "\n" + "china.restBaseURL=http://somewhere.cn/"
+                + "\n" + "china.user=two"
+                + "\n" + "japan.restBaseURL=http://yusuke.homeip.net/"
+                + "\n" + "japan.user=three"
+        );
+        conf = new PropertyConfiguration();
+        assertEquals("one", conf.getUser());
+        conf = new PropertyConfiguration("/china");
+        assertEquals("two", conf.getUser());
+        conf = new PropertyConfiguration("/japan");
+        assertEquals("three", conf.getUser());
+
+
+        writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/"
+                + "\n" + "http.useSSL=false"
+                + "\n" + "user=one"
+                + "\n" + "password=pasword-one"
+                + "\n" + "china.restBaseURL=http://somewhere.cn/"
+                + "\n" + "china.user1.user=two"
+                + "\n" + "china.user1.password=pasword-two"
+                + "\n" + "china.user2.user=three"
+                + "\n" + "china.user2.password=pasword-three"
+        );
+        conf = new PropertyConfiguration();
+        assertEquals("one", conf.getUser());
+        conf = new PropertyConfiguration("/china/user1");
+        assertEquals("two", conf.getUser());
+        assertEquals("pasword-two", conf.getPassword());
+        conf = new PropertyConfiguration("/china/user2");
+        assertEquals("three", conf.getUser());
+        assertEquals("pasword-three", conf.getPassword());
+
     }
     private void writeFile(String path, String content) throws IOException {
         File file = new File(path);
