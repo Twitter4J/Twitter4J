@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class TwitterMethod implements java.io.Serializable {

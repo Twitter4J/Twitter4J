@@ -44,8 +44,8 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
 
     protected void setUp() throws Exception {
         super.setUp();
-        twitterStream = new TwitterStream(id1.name, id1.pass, this);
-        protectedTwitter = new TwitterFactory().getBasicAuthorizedInstance(id4.name, id4.pass);
+        twitterStream = new TwitterStream(id1.screenName, id1.pass, this);
+        protectedTwitter = new TwitterFactory().getBasicAuthorizedInstance(id4.screenName, id4.pass);
         this.status = null;
         this.deletionNotice = null;
     }

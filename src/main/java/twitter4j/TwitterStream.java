@@ -28,6 +28,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
+import twitter4j.http.Authorization;
 import twitter4j.http.HttpClientWrapper;
 import twitter4j.http.HttpClientWrapperConfiguration;
 import twitter4j.http.HttpParameter;
@@ -56,6 +57,7 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
     /**
      * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
      * since Twitter4J 2.0.10
+     * @deprecated use new TwitterStreamFactory.getInstance() instead.
      */
     public TwitterStream() {
         super(ConfigurationContext.getInstance());
@@ -63,6 +65,11 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
         ensureBasicEnabled();
     }
 
+    /**
+     * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
+     * since Twitter4J 2.0.10
+     * @deprecated use new TwitterStreamFactory.getBasicAuthorizedInstance() instead.
+     */
     public TwitterStream(String userId, String password) {
         super(ConfigurationContext.getInstance(), userId, password);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
@@ -72,6 +79,13 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
     public TwitterStream(String userId, String password, StatusListener listener) {
         super(ConfigurationContext.getInstance(), userId, password);
         this.statusListener = listener;
+        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
+        ensureBasicEnabled();
+    }
+
+    /*package*/
+    TwitterStream(Configuration conf, Authorization auth) {
+        super(conf, auth);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         ensureBasicEnabled();
     }

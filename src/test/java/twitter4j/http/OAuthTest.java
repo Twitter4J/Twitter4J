@@ -135,13 +135,13 @@ public class OAuthTest extends TwitterTestUnit {
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
         params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new HttpParameter("session[username_or_email]", id1.name);
+        params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
         params[3] = new HttpParameter("session[password]", id1.pass);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
         resStr = response.asString();
         String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ", "\n</div>");
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret(), pin);
-        assertEquals(at.getScreenName(), id1.name);
+        assertEquals(at.getScreenName(), id1.screenName);
         assertEquals(at.getUserId(), 6358482);
 
     }
@@ -175,13 +175,13 @@ public class OAuthTest extends TwitterTestUnit {
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
         params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new HttpParameter("session[username_or_email]", id1.name);
+        params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
         params[3] = new HttpParameter("session[password]", id1.pass);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
 
 //        response = http.post(authorizeURL, params);
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret());
-        assertEquals(at.getScreenName(), id1.name);
+        assertEquals(at.getScreenName(), id1.screenName);
         assertEquals(at.getUserId(), 6358482);
 
     }
@@ -216,11 +216,11 @@ public class OAuthTest extends TwitterTestUnit {
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
         params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new HttpParameter("session[username_or_email]", id1.name);
+        params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
         params[3] = new HttpParameter("session[password]", id1.pass);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret());
-        assertEquals(at.getScreenName(), id1.name);
+        assertEquals(at.getScreenName(), id1.screenName);
         assertEquals(at.getUserId(), 6358482);
 
 
@@ -257,7 +257,7 @@ public class OAuthTest extends TwitterTestUnit {
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
         params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new HttpParameter("session[username_or_email]", id1.name);
+        params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
         params[3] = new HttpParameter("session[password]", id1.pass);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
 //        response = http.post(authorizeURL, params);
@@ -265,7 +265,7 @@ public class OAuthTest extends TwitterTestUnit {
         String oauthVerifier = catchPattern(resStr, "&oauth_verifier=", "\">");
 
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret(), oauthVerifier);
-        assertEquals(at.getScreenName(), id1.name);
+        assertEquals(at.getScreenName(), id1.screenName);
         assertEquals(at.getUserId(), 6358482);
     }
 

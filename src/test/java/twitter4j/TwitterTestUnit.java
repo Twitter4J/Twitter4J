@@ -89,8 +89,8 @@ public class TwitterTestUnit extends TwitterTestBase {
     }
 
     public void testShowUser() throws Exception {
-        User user = twitterAPI1.showUser(id1.name);
-        assertEquals(id1.name, user.getScreenName());
+        User user = twitterAPI1.showUser(id1.screenName);
+        assertEquals(id1.screenName, user.getScreenName());
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());
         assertNotNull(user.getProfileImageURL());
@@ -267,11 +267,11 @@ public class TwitterTestUnit extends TwitterTestBase {
 
         statuses = twitterAPI1.getUserTimeline(new Paging(999383469l));
         assertTrue("size", 0 < statuses.size());
-        statuses = unauthenticated.getUserTimeline(id1.name, new Paging().count(10));
+        statuses = unauthenticated.getUserTimeline(id1.screenName, new Paging().count(10));
         assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(new Paging(999383469l).count(15));
         assertTrue("size", 0 < statuses.size());
-        statuses = unauthenticated.getUserTimeline(id1.name, new Paging(999383469l));
+        statuses = unauthenticated.getUserTimeline(id1.screenName, new Paging(999383469l));
         assertTrue("size", 0 < statuses.size());
 
         statuses = twitterAPI1.getUserTimeline(new Paging(1).count(30));
@@ -299,8 +299,8 @@ public class TwitterTestUnit extends TwitterTestBase {
         Status status = twitterAPI1.updateStatus(date);
 
         assertEquals(date, status.getText());
-        Status status2 = twitterAPI2.updateStatus("@" + id1.name + " " + date, status.getId());
-        assertEquals("@" + id1.name + " " + date, status2.getText());
+        Status status2 = twitterAPI2.updateStatus("@" + id1.screenName + " " + date, status.getId());
+        assertEquals("@" + id1.screenName + " " + date, status2.getText());
         assertEquals(status.getId(), status2.getInReplyToStatusId());
         assertEquals(twitterAPI1.verifyCredentials().getId(), status2.getInReplyToUserId());
         twitterAPI1.destroyStatus(status.getId());
@@ -350,11 +350,11 @@ public class TwitterTestUnit extends TwitterTestBase {
 
         users = twitterAPI1.getFriendsStatuses(numberId);
         assertNotNull("friendsStatuses", users);
-        assertEquals(id1.name, users.get(0).getScreenName());
+        assertEquals(id1.screenName, users.get(0).getScreenName());
 
         users = twitterAPI1.getFriendsStatuses(numberIdId);
         assertNotNull("friendsStatuses", users);
-        assertEquals(id1.name, users.get(0).getScreenName());
+        assertEquals(id1.screenName, users.get(0).getScreenName());
 
         users = unauthenticated.getFriendsStatuses("yusukey");
         assertNotNull("friendsStatuses", users);
@@ -402,7 +402,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(obamaFriends.hasPrevious());
 
         try {
-            twitterAPI2.createFriendship(id1.name);
+            twitterAPI2.createFriendship(id1.screenName);
         } catch (TwitterException ignore) {
         }
         ids = twitterAPI1.getFollowersIDs();
@@ -417,7 +417,7 @@ public class TwitterTestUnit extends TwitterTestBase {
     public void testRelationship() throws Exception {
         //  TESTING PRECONDITIONS:
         //  1) id1 is followed by "followsOneWay", but not following "followsOneWay"
-        Relationship rel1 = twitterAPI1.showFriendship(id1.name, followsOneWay);
+        Relationship rel1 = twitterAPI1.showFriendship(id1.screenName, followsOneWay);
 
         // test second precondition
         assertNotNull(rel1);
@@ -427,7 +427,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertFalse(rel1.isTargetFollowedBySource());
 
         //  2) best_friend1 is following and followed by best_friend2
-        Relationship rel2 = twitterAPI1.showFriendship(bestFriend1.name, bestFriend2.name);
+        Relationship rel2 = twitterAPI1.showFriendship(bestFriend1.screenName, bestFriend2.screenName);
 
         // test second precondition
         assertNotNull(rel2);
@@ -437,7 +437,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(rel2.isTargetFollowedBySource());
 
         // test equality
-        Relationship rel3 = twitterAPI1.showFriendship(id1.name, followsOneWay);
+        Relationship rel3 = twitterAPI1.showFriendship(id1.screenName, followsOneWay);
         assertEquals(rel1, rel3);
         assertFalse(rel1.equals(rel2));
     }
@@ -485,8 +485,8 @@ public class TwitterTestUnit extends TwitterTestBase {
         }
 
         twitterAPI1.updateDeliveryDevice(Device.SMS);
-        assertTrue(twitterAPIBestFriend1.existsFriendship(bestFriend1.name, bestFriend2.name));
-        assertFalse(twitterAPI1.existsFriendship(id1.name, "al3x"));
+        assertTrue(twitterAPIBestFriend1.existsFriendship(bestFriend1.screenName, bestFriend2.screenName));
+        assertFalse(twitterAPI1.existsFriendship(id1.screenName, "al3x"));
 
         User eu;
         eu = twitterAPI1.updateProfileColors("f00", "f0f", "0ff", "0f0", "f0f");
@@ -578,7 +578,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         String expectedReturn = new Date() + ":directmessage test";
         DirectMessage actualReturn = twitterAPI1.sendDirectMessage("twit4jnoupdate", expectedReturn);
         assertEquals(expectedReturn, actualReturn.getText());
-        assertEquals(id1.name, actualReturn.getSender().getScreenName());
+        assertEquals(id1.screenName, actualReturn.getSender().getScreenName());
         assertEquals("twit4jnoupdate", actualReturn.getRecipient().getScreenName());
         List<DirectMessage> actualReturnList = twitterAPI1.getDirectMessages();
         assertTrue(1 <= actualReturnList.size());
@@ -587,25 +587,25 @@ public class TwitterTestUnit extends TwitterTestBase {
     public void testCreateDestroyFriend() throws Exception {
         User user;
         try {
-            user = twitterAPI2.destroyFriendship(id1.name);
+            user = twitterAPI2.destroyFriendship(id1.screenName);
         } catch (TwitterException te) {
             //ensure destory id1 before the actual test
             //ensure destory id1 before the actual test
         }
 
         try {
-            user = twitterAPI2.destroyFriendship(id1.name);
+            user = twitterAPI2.destroyFriendship(id1.screenName);
         } catch (TwitterException te) {
             assertEquals(403, te.getStatusCode());
         }
-        user = twitterAPI2.createFriendship(id1.name, true);
-        assertEquals(id1.name, user.getScreenName());
+        user = twitterAPI2.createFriendship(id1.screenName, true);
+        assertEquals(id1.screenName, user.getScreenName());
         // the Twitter API is not returning appropriate notifications value
         // http://code.google.com/p/twitter-api/issues/detail?id=474
 //        User detail = twitterAPI2.showUser(id1);
 //        assertTrue(detail.isNotificationEnabled());
         try {
-            user = twitterAPI2.createFriendship(id2.name);
+            user = twitterAPI2.createFriendship(id2.screenName);
             fail("shouldn't be able to befrinend yourself");
         } catch (TwitterException te) {
             assertEquals(403, te.getStatusCode());
@@ -622,7 +622,7 @@ public class TwitterTestUnit extends TwitterTestBase {
     }
 
     public void testGetMentions() throws Exception {
-        twitterAPI2.updateStatus("@" + id1.name + " reply to id1");
+        twitterAPI2.updateStatus("@" + id1.screenName + " reply to id1");
         List<Status> statuses = twitterAPI1.getMentions();
         assertTrue(statuses.size() > 0);
 
@@ -646,8 +646,8 @@ public class TwitterTestUnit extends TwitterTestBase {
     }
 
     public void testBlock() throws Exception {
-        twitterAPI2.createBlock(id1.name);
-        twitterAPI2.destroyBlock(id1.name);
+        twitterAPI2.createBlock(id1.screenName);
+        twitterAPI2.destroyBlock(id1.screenName);
         assertFalse(twitterAPI1.existsBlock("twit4j2"));
         assertTrue(twitterAPI1.existsBlock("twit4jblock"));
         List<User> users = twitterAPI1.getBlockingUsers();

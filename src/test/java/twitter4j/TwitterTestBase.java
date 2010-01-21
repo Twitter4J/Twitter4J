@@ -46,14 +46,14 @@ public class TwitterTestBase extends TestCase {
     protected TestUserInfo id1, id2, id3, id4,bestFriend1, bestFriend2;
 
     protected class TestUserInfo {
-        public String name;
+        public String screenName;
         public String pass;
         public int id;
 
-        TestUserInfo(String name, Properties props) {
-            this.name = p.getProperty(name);
-            this.pass = p.getProperty(name + "pass");
-            this.id = Integer.valueOf(p.getProperty(name + "id"));
+        TestUserInfo(String screenName, Properties props) {
+            this.screenName = p.getProperty(screenName);
+            this.pass = p.getProperty(screenName + "pass");
+            this.id = Integer.valueOf(p.getProperty(screenName + "id"));
         }
     }
 
@@ -73,12 +73,12 @@ public class TwitterTestBase extends TestCase {
         id1id = Integer.valueOf(p.getProperty("id1id"));
         numberIdId = Integer.valueOf(p.getProperty("numberidid"));
 
-        twitterAPI1 = new TwitterFactory().getBasicAuthorizedInstance(id1.name, id1.pass);
-        twitterAPI2 = new TwitterFactory().getBasicAuthorizedInstance(id2.name, id2.pass);
-        twitterAPI3 = new TwitterFactory().getBasicAuthorizedInstance(id3.name, id3.pass);
-        twitterAPI4 = new TwitterFactory().getBasicAuthorizedInstance(id4.name, id4.pass);
-        twitterAPIBestFriend1 = new TwitterFactory().getBasicAuthorizedInstance(bestFriend1.name, bestFriend1.pass);
-        twitterAPIBestFriend2 = new TwitterFactory().getBasicAuthorizedInstance(bestFriend2.name, bestFriend2.pass);
+        twitterAPI1 = new TwitterFactory().getBasicAuthorizedInstance(id1.screenName, id1.pass);
+        twitterAPI2 = new TwitterFactory().getBasicAuthorizedInstance(id2.screenName, id2.pass);
+        twitterAPI3 = new TwitterFactory().getBasicAuthorizedInstance(id3.screenName, id3.pass);
+        twitterAPI4 = new TwitterFactory().getBasicAuthorizedInstance(id4.screenName, id4.pass);
+        twitterAPIBestFriend1 = new TwitterFactory().getBasicAuthorizedInstance(bestFriend1.screenName, bestFriend1.pass);
+        twitterAPIBestFriend2 = new TwitterFactory().getBasicAuthorizedInstance(bestFriend2.screenName, bestFriend2.pass);
         unauthenticated = new Twitter();
         followsOneWay = p.getProperty("followsOneWay");
     }

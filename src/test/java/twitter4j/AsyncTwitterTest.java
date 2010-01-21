@@ -44,8 +44,8 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     protected void setUp() throws Exception {
         super.setUp();
         AsyncTwitterFactory factory = new AsyncTwitterFactory(this);
-        async1 = factory.getBasicAuthorizedInstance(id1.name, id1.pass);
-        async2 = factory.getBasicAuthorizedInstance(id2.name, id2.pass);
+        async1 = factory.getBasicAuthorizedInstance(id1.screenName, id1.pass);
+        async2 = factory.getBasicAuthorizedInstance(id2.screenName, id2.pass);
 
         statuses = null;
         users = null;
@@ -80,10 +80,10 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     public void testShowUser() throws Exception{
-        async1.showUser(id1.name);
+        async1.showUser(id1.screenName);
         waitForResponse();
         User user = this.user;
-        assertEquals(id1.name, user.getScreenName());
+        assertEquals(id1.screenName, user.getScreenName());
         assertTrue(0 <= user.getFavouritesCount());
         assertTrue(0 <= user.getFollowersCount());
         assertTrue(0 <= user.getFriendsCount());
@@ -119,16 +119,16 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async2.getUserTimeline(new Paging(999383469l));
         waitForResponse();
         assertTrue("size", 10 < statuses.size());
-        async2.getUserTimeline(id1.name);
+        async2.getUserTimeline(id1.screenName);
         waitForResponse();
         assertTrue("size", 10 < statuses.size());
-        async2.getUserTimeline(id1.name, new Paging(999383469l));
+        async2.getUserTimeline(id1.screenName, new Paging(999383469l));
         waitForResponse();
         assertTrue("size", 10 < statuses.size());
-        async2.getUserTimeline(id1.name, new Paging().count(10));
+        async2.getUserTimeline(id1.screenName, new Paging().count(10));
         waitForResponse();
         assertTrue("size", 5 < statuses.size());
-        async2.getUserTimeline(id1.name, new Paging(999383469l).count(15));
+        async2.getUserTimeline(id1.screenName, new Paging(999383469l).count(15));
         waitForResponse();
         assertTrue("size", 10 < statuses.size());
         async1.getUserTimeline(new Paging(999383469l).count(25));
@@ -181,7 +181,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074579);
 
         try {
-            twitterAPI2.createFriendship(id1.name);
+            twitterAPI2.createFriendship(id1.screenName);
         } catch (TwitterException te) {
         }
         async1.getFollowersIDs();
@@ -218,20 +218,17 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.updateProfile(
                 newName, null, newURL, newLocation, newDescription);
         waitForResponse();
-        async1.updateProfile(original.getName()
-                , null, original.getURL().toString(), original.getLocation(), original.getDescription());
         assertEquals(newName, user.getName());
         assertEquals(newURL, user.getURL().toString());
         assertEquals(newLocation, user.getLocation());
         assertEquals(newDescription, user.getDescription());
 
-        async1.createFriendship(id2.name);
+        //revert the profile
+        async1.updateProfile(original.getName()
+                , null, original.getURL().toString(), original.getLocation(), original.getDescription());
         waitForResponse();
-        async1.enableNotification(id2.name);
-        waitForResponse();
-        async2.createFriendship(id1.name);
-        waitForResponse();
-        async1.existsFriendship(id1.name,id2.name);
+
+        async1.existsFriendship(bestFriend1.screenName,bestFriend2.screenName);
         waitForResponse();
         assertTrue(exists);
 
@@ -287,9 +284,9 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     public void testBlock() throws Exception {
-        async2.createBlock(id1.name);
+        async2.createBlock(id1.screenName);
         waitForResponse();
-        async2.destroyBlock(id1.name);
+        async2.destroyBlock(id1.screenName);
         waitForResponse();
 
         async1.existsBlock("twit4j2");
@@ -320,9 +317,9 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
         long id = status.getId();
 
-        async2.updateStatus("@" + id1.name + " " + date, id);
+        async2.updateStatus("@" + id1.screenName + " " + date, id);
         waitForResponse();
-        assertEquals("", "@" + id1.name + " " + date, status.getText());
+        assertEquals("", "@" + id1.screenName + " " + date, status.getText());
         assertEquals("", id, status.getInReplyToStatusId());
         assertEquals(twitterAPI1.verifyCredentials().getId(), status.getInReplyToUserId());
 
@@ -331,13 +328,13 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.status = null;
         async2.destroyStatus(id);
         waitForResponse();
-        assertEquals("", "@" + id1.name + " " + date, status.getText());
+        assertEquals("", "@" + id1.screenName + " " + date, status.getText());
         assertDeserializedFormIsEqual(status);
     }
 
     public void testGetFriendsStatuses() throws Exception {
         users = null;
-        async1.getFriendsStatuses(id2.name);
+        async1.getFriendsStatuses(id2.screenName);
         waitForResponse();
         assertNotNull(users);
 
@@ -370,19 +367,19 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     public void testCreateDestroyFriend() throws Exception {
-        async2.destroyFriendship(id1.name);
+        async2.destroyFriendship(id1.screenName);
         waitForResponse();
 
 //        twitterAPI2.destroyFriendshipAsync(id1.name);
 //        waitForResponse();
 //        assertEquals(403, te.getStatusCode());
-        async2.createFriendship(id1.name, true);
+        async2.createFriendship(id1.screenName, true);
         // the Twitter API is not returning appropriate notifications value
         // http://code.google.com/p/twitter-api/issues/detail?id=474
 //        user detail = twitterAPI2.showUser(id1.name);
 //        assertTrue(detail.isNotificationEnabled());
         waitForResponse();
-        assertEquals(id1.name, user.getScreenName());
+        assertEquals(id1.screenName, user.getScreenName());
 
 //        te = null;
 //        twitterAPI2.createFriendshipAsync(id2.name);

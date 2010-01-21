@@ -89,13 +89,13 @@ public class AsyncTwitter extends OAuthSupportTwitter implements java.io.Seriali
      */
     public AsyncTwitter(String screenName, String password) {
         super(ConfigurationContext.getInstance(), screenName, password);
-        twitter = new TwitterFactory().getInstance();
+        twitter = new TwitterFactory().getInstance(auth);
     }
 
     /*package*/
     AsyncTwitter(Configuration conf, Authorization auth, TwitterListener listener) {
         super(conf, auth);
-        twitter = new TwitterFactory(conf).getInstance();
+        twitter = new TwitterFactory(conf).getInstance(auth);
         this.listener = listener;
     }
 

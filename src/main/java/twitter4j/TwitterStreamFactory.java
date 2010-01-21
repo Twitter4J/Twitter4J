@@ -27,55 +27,43 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
-import twitter4j.http.BasicAuthorization;
-import twitter4j.http.NullAuthorization;
 
 /**
- * A FactoryBase class which supports Basic Authorization
+ * A factory class for TwitterFactory.<br>
+ * An instance of this class is completely thread safe and can be re-used and used concurrently.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.0
  */
-abstract class TwitterFactoryBase<T> implements java.io.Serializable {
-    protected final Configuration conf;
+public class TwitterStreamFactory extends TwitterFactoryBase<TwitterStream>{
+    private static final long serialVersionUID = 8146074704915782233L;
 
     /**
-     * Creates a Factory
+     * {@inheritDoc}
      */
-    protected TwitterFactoryBase() {
-        this.conf = ConfigurationContext.getInstance();
-    }
-
-    /**
-     * Creates a Factory with a specified config tree path.
-     *
-     * @param configTreePath the path
-     */
-    protected TwitterFactoryBase(String configTreePath) {
-        this.conf = ConfigurationContext.getInstance(configTreePath);
-    }
-
-    protected TwitterFactoryBase(Configuration conf) {
-        this.conf = conf;
+    public TwitterStreamFactory() {
+        super();
     }
 
     /**
-     * Returns a instance.
-     *
-     * @return default singleton instance
+     * {@inheritDoc}
      */
-    public T getInstance() {
-        return getInstance(conf, NullAuthorization.getInstance());
+    TwitterStreamFactory(Configuration conf) {
+        super(conf);
     }
 
-    public T getInstance(Authorization auth) {
-        return getInstance(conf, auth);
+    /**
+     * {@inheritDoc}
+     */
+    public TwitterStreamFactory(String configTreePath) {
+        super(configTreePath);
     }
 
-    public T getBasicAuthorizedInstance(String screenName, String password) {
-        return getInstance(new BasicAuthorization(screenName, password));
+    /**
+     * {@inheritDoc}
+     */
+    protected TwitterStream getInstance(Configuration conf, Authorization auth) {
+        return new TwitterStream(conf, auth);
     }
-
-    protected abstract T getInstance(Configuration conf, Authorization auth);
 }

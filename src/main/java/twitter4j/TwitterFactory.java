@@ -27,11 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
-import twitter4j.http.BasicAuthorization;
-import twitter4j.http.OAuthAuthorization;
 
 /**
  * A factory class for Twitter.<br>
@@ -40,7 +36,7 @@ import twitter4j.http.OAuthAuthorization;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class TwitterFactory extends TwitterFactoryBase<Twitter> implements java.io.Serializable {
+public final class TwitterFactory extends OAuthSupportTwitterFactoryBase<Twitter> implements java.io.Serializable {
     private static final long serialVersionUID = 5193900138477709155L;
 
     /**
@@ -68,6 +64,12 @@ public final class TwitterFactory extends TwitterFactoryBase<Twitter> implements
      * {@inheritDoc}
      */
     protected Twitter getInstance(Configuration conf, Authorization auth) {
+        return new Twitter(conf, auth);
+    }
+    /**
+     * {@inheritDoc}
+     */
+    protected Twitter getOAuthSupportInstance(Configuration conf, Authorization auth) {
         return new Twitter(conf, auth);
     }
 }
