@@ -102,8 +102,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setOAuthAccessTokenSecret(null);
         setAsyncNumThreads(1);
         setClientVersion(Version.getVersion());
-        setClientURL("http://yusuke.homeip.net/twitter4j/en/twitter4j-" + Version.getVersion() + ".xml");
-        setUserAgent("twitter4j http://yusuke.homeip.net/twitter4j/ /" + Version.getVersion());
+        setClientURL("http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
+        setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
 
 
         setOAuthRequestTokenURL("http://twitter.com/oauth/request_token");

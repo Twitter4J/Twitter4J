@@ -60,7 +60,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(0 < status.size());
     }
     public void testSerializability() throws Exception {
-        Twitter twitter = new TwitterFactory().getBasicAuthorizedInstance("foo", "bar");
+        Twitter twitter = new TwitterFactory().getInstance("foo", "bar");
         Twitter deserialized = (Twitter)assertDeserializedFormIsEqual(twitter);
 
         assertEquals(deserialized.screenName, twitter.screenName);
@@ -479,7 +479,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertEquals(newDescription, altered.getDescription());
 
         try {
-            new TwitterFactory().getBasicAuthorizedInstance("doesnotexist--", "foobar").verifyCredentials();
+            new TwitterFactory().getInstance("doesnotexist--", "foobar").verifyCredentials();
             fail("should throw TwitterException");
         } catch (TwitterException te) {
         }

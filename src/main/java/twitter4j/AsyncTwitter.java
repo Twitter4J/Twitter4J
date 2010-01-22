@@ -59,7 +59,7 @@ import static twitter4j.TwitterMethod.*;
  * @see twitter4j.TwitterListener
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class AsyncTwitter extends OAuthSupportTwitter implements java.io.Serializable,
+public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Serializable,
         SearchMethodsAsync,
         TimelineMethodsAsync,
         StatusMethodsAsync,
@@ -83,13 +83,15 @@ public class AsyncTwitter extends OAuthSupportTwitter implements java.io.Seriali
     private TwitterListener listener;
 
     /**
-     * @param screenName
-     * @param password
+     * Creates a basic authenticated AsyncTwitter instance.
+     * @param screenName screen name
+     * @param password password
      * @deprecated use new AsyncTwitterFactory.getBasicAuthorizedInstance() instead.
      */
-    public AsyncTwitter(String screenName, String password) {
+    public AsyncTwitter(String screenName, String password, TwitterListener listener) {
         super(ConfigurationContext.getInstance(), screenName, password);
         twitter = new TwitterFactory().getInstance(auth);
+        this.listener = listener;
     }
 
     /*package*/

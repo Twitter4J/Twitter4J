@@ -26,6 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.GeoLocation;
+import twitter4j.Tweet;
+import twitter4j.TwitterException;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;
 

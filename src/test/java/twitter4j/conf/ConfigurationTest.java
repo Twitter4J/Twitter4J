@@ -131,7 +131,7 @@ public class ConfigurationTest  extends TestCase {
 
         System.getProperties().remove("twitter4j.clientURL");
         conf = new PropertyConfiguration();
-        assertEquals("http://yusuke.homeip.net/twitter4j/en/twitter4j-" + Version.getVersion() + ".xml", conf.getClientURL());
+        assertEquals("http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml", conf.getClientURL());
 
         conf.setClientURL(test);
         assertEquals(test, conf.getClientURL());
@@ -145,7 +145,7 @@ public class ConfigurationTest  extends TestCase {
 
         System.getProperties().remove("twitter4j.http.userAgent");
         conf = new PropertyConfiguration();
-        assertEquals("twitter4j http://yusuke.homeip.net/twitter4j/ /" + Version.getVersion(), conf.getUserAgent());
+        assertEquals("twitter4j http://twitter4j.org/ /" + Version.getVersion(), conf.getUserAgent());
 
         conf.setUserAgent(test);
         assertEquals(test, conf.getUserAgent());

@@ -30,13 +30,13 @@ import twitter4j.conf.Configuration;
 import twitter4j.http.Authorization;
 
 /**
- * A factory class for Twitter.<br>
- * An instance of this class is completely thread safe and can be re-used and used concurrently.
+ * A factory class for Twitter.
+ * <br>An instance of this class is completely thread safe and can be re-used and used concurrently.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class TwitterFactory extends OAuthSupportTwitterFactoryBase<Twitter> implements java.io.Serializable {
+public final class TwitterFactory extends TwitterFactoryOAuthSupportBase<Twitter> implements java.io.Serializable {
     private static final long serialVersionUID = 5193900138477709155L;
 
     /**

@@ -81,7 +81,7 @@ public class AsyncUpdate {
                 }
             }
         });
-        AsyncTwitter twitter = factory.getBasicAuthorizedInstance(args[0], args[1]);
+        AsyncTwitter twitter = factory.getInstance(args[0], args[1]);
         twitter.updateStatus(args[2]);
         synchronized (lock) {
             lock.wait();

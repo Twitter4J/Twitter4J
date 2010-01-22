@@ -45,7 +45,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public class TwitterStream extends TwitterSupport implements java.io.Serializable {
+public class TwitterStream extends TwitterBase implements java.io.Serializable {
     private final HttpClientWrapper http;
     private static final Logger logger = Logger.getLogger();
 
@@ -68,25 +68,36 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
     /**
      * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
      * since Twitter4J 2.0.10
-     * @deprecated use new TwitterStreamFactory.getBasicAuthorizedInstance() instead.
+     * @param screenName screen name
+     * @param password password
+     * @deprecated use new TwitterStreamFactory.getInstance() instead.
      */
-    public TwitterStream(String userId, String password) {
-        super(ConfigurationContext.getInstance(), userId, password);
+    public TwitterStream(String screenName, String password) {
+        super(ConfigurationContext.getInstance(), screenName, password);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         ensureBasicEnabled();
     }
 
-    public TwitterStream(String userId, String password, StatusListener listener) {
-        super(ConfigurationContext.getInstance(), userId, password);
+    /**
+     * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
+     * since Twitter4J 2.0.10
+     * @param screenName screen name
+     * @param password password
+     * @param listener listener
+     * @deprecated use new TwitterStreamFactory.getInstance() instead.
+     */
+    public TwitterStream(String screenName, String password, StatusListener listener) {
+        super(ConfigurationContext.getInstance(), screenName, password);
         this.statusListener = listener;
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         ensureBasicEnabled();
     }
 
     /*package*/
-    TwitterStream(Configuration conf, Authorization auth) {
+    TwitterStream(Configuration conf, Authorization auth, StatusListener listener) {
         super(conf, auth);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
+        this.statusListener = listener;
         ensureBasicEnabled();
     }
 
@@ -295,10 +306,6 @@ public class TwitterStream extends TwitterSupport implements java.io.Serializabl
 
     public StatusListener getStatusListener() {
         return statusListener;
-    }
-
-    public void setStatusListener(StatusListener statusListener) {
-        this.statusListener = statusListener;
     }
 
     abstract class StreamHandlingThread extends Thread {

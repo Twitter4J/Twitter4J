@@ -27,29 +27,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.http.NullAuthorization;
 
 /**
+ * Base class of Twitter / AsyncTwitter / TwitterStream supports Basic Authorization.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-abstract class TwitterSupport implements java.io.Serializable {
+abstract class TwitterBase implements java.io.Serializable {
     protected final Configuration conf;
 
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
 
-    /*package*/ TwitterSupport(Configuration conf){
+    /*package*/ TwitterBase(Configuration conf){
         this.conf = conf;
         initBasicAuthorization(conf.getUser(), conf.getPassword());
     }
 
-    /*package*/ TwitterSupport(Configuration conf, String userId, String password){
+    /*package*/ TwitterBase(Configuration conf, String userId, String password){
         this.conf = conf;
         initBasicAuthorization(userId, password);
     }
+
     private void initBasicAuthorization(String screenName, String password){
         if (null != screenName && null != password) {
             auth = new BasicAuthorization(screenName, password);
@@ -59,7 +60,7 @@ abstract class TwitterSupport implements java.io.Serializable {
         }
     }
 
-    /*package*/ TwitterSupport(Configuration conf, Authorization auth) {
+    /*package*/ TwitterBase(Configuration conf, Authorization auth) {
         this.conf = conf;
         this.auth = auth;
     }
@@ -105,9 +106,9 @@ abstract class TwitterSupport implements java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TwitterSupport)) return false;
+        if (!(o instanceof TwitterBase)) return false;
 
-        TwitterSupport that = (TwitterSupport) o;
+        TwitterBase that = (TwitterBase) o;
 
         if (!auth.equals(that.auth)) return false;
 

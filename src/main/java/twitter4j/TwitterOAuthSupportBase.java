@@ -1,7 +1,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
 
 import java.io.IOException;
@@ -9,22 +8,22 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-class OAuthSupportTwitter extends TwitterSupport implements HttpResponseListener, OAuthSupport, java.io.Serializable {
+class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListener, OAuthSupport, java.io.Serializable {
     protected transient HttpClientWrapper http;
 
     protected List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
     private static final long serialVersionUID = 6960663978976449394L;
 
-    OAuthSupportTwitter(Configuration conf) {
+    TwitterOAuthSupportBase(Configuration conf) {
         super(conf); // this will populate BasicAuthorization from the configuration
         init();
     }
 
-    OAuthSupportTwitter(Configuration conf, String screenName, String password) {
+    TwitterOAuthSupportBase(Configuration conf, String screenName, String password) {
         super(conf, screenName, password);
         init();
     }
-    /*package*/ OAuthSupportTwitter(Configuration conf, Authorization auth) {
+    /*package*/ TwitterOAuthSupportBase(Configuration conf, Authorization auth) {
         super(conf, auth);
         init();
     }
@@ -207,10 +206,10 @@ class OAuthSupportTwitter extends TwitterSupport implements HttpResponseListener
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OAuthSupportTwitter)) return false;
+        if (!(o instanceof TwitterOAuthSupportBase)) return false;
         if (!super.equals(o)) return false;
 
-        OAuthSupportTwitter that = (OAuthSupportTwitter) o;
+        TwitterOAuthSupportBase that = (TwitterOAuthSupportBase) o;
 
         if (!rateLimitStatusListeners.equals(that.rateLimitStatusListeners))
             return false;

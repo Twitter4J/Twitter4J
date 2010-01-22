@@ -73,12 +73,12 @@ public class TwitterTestBase extends TestCase {
         id1id = Integer.valueOf(p.getProperty("id1id"));
         numberIdId = Integer.valueOf(p.getProperty("numberidid"));
 
-        twitterAPI1 = new TwitterFactory().getBasicAuthorizedInstance(id1.screenName, id1.pass);
-        twitterAPI2 = new TwitterFactory().getBasicAuthorizedInstance(id2.screenName, id2.pass);
-        twitterAPI3 = new TwitterFactory().getBasicAuthorizedInstance(id3.screenName, id3.pass);
-        twitterAPI4 = new TwitterFactory().getBasicAuthorizedInstance(id4.screenName, id4.pass);
-        twitterAPIBestFriend1 = new TwitterFactory().getBasicAuthorizedInstance(bestFriend1.screenName, bestFriend1.pass);
-        twitterAPIBestFriend2 = new TwitterFactory().getBasicAuthorizedInstance(bestFriend2.screenName, bestFriend2.pass);
+        twitterAPI1 = new TwitterFactory().getInstance(id1.screenName, id1.pass);
+        twitterAPI2 = new TwitterFactory().getInstance(id2.screenName, id2.pass);
+        twitterAPI3 = new TwitterFactory().getInstance(id3.screenName, id3.pass);
+        twitterAPI4 = new TwitterFactory().getInstance(id4.screenName, id4.pass);
+        twitterAPIBestFriend1 = new TwitterFactory().getInstance(bestFriend1.screenName, bestFriend1.pass);
+        twitterAPIBestFriend2 = new TwitterFactory().getInstance(bestFriend2.screenName, bestFriend2.pass);
         unauthenticated = new Twitter();
         followsOneWay = p.getProperty("followsOneWay");
     }

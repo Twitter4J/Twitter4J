@@ -73,7 +73,14 @@ abstract class TwitterFactoryBase<T> implements java.io.Serializable {
         return getInstance(conf, auth);
     }
 
-    public T getBasicAuthorizedInstance(String screenName, String password) {
+    /**
+     * Returns a Basic Authenticated instance.
+     *
+     * @param screenName screen name 
+     * @param password password
+     * @return an instance
+     */
+    public T getInstance(String screenName, String password) {
         return getInstance(new BasicAuthorization(screenName, password));
     }
 

@@ -28,6 +28,7 @@ package twitter4j.http;
 
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationContext;
 
 import java.util.Map;
 
@@ -52,6 +53,12 @@ public class HttpClientWrapper implements java.io.Serializable {
 
     public HttpClientWrapper(HttpClientWrapperConfiguration wrapperConf) {
         this.wrapperConf = wrapperConf;
+        requestHeaders = wrapperConf.getRequestHeaders();
+        http = new HttpClient(wrapperConf);
+    }
+    // never used with this project. Just for handiness for those using this class.
+    public HttpClientWrapper() {
+        this.wrapperConf = ConfigurationContext.getInstance();
         requestHeaders = wrapperConf.getRequestHeaders();
         http = new HttpClient(wrapperConf);
     }

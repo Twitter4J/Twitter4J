@@ -58,7 +58,7 @@ public class AuthorizationTest extends TwitterTestBase {
     }
 
     public void testBasicInstance() throws Exception {
-        Twitter twitter = new TwitterFactory().getBasicAuthorizedInstance(id1.screenName, id1.pass);
+        Twitter twitter = new TwitterFactory().getInstance(id1.screenName, id1.pass);
         assertTrue(twitter.isBasicAuthEnabled());
         assertFalse(twitter.isOAuthEnabled());
         Authorization auth = twitter.getAuthorization();

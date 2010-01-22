@@ -38,12 +38,21 @@ import twitter4j.http.Authorization;
  */
 public class TwitterStreamFactory extends TwitterFactoryBase<TwitterStream>{
     private static final long serialVersionUID = 8146074704915782233L;
+    private StatusListener listener = null;
 
     /**
      * {@inheritDoc}
      */
     public TwitterStreamFactory() {
         super();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public TwitterStreamFactory(StatusListener listener) {
+        super();
+        this.listener = listener;
     }
 
     /**
@@ -63,7 +72,15 @@ public class TwitterStreamFactory extends TwitterFactoryBase<TwitterStream>{
     /**
      * {@inheritDoc}
      */
+    public TwitterStreamFactory(String configTreePath, StatusListener listener) {
+        super(configTreePath);
+        this.listener = listener;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     protected TwitterStream getInstance(Configuration conf, Authorization auth) {
-        return new TwitterStream(conf, auth);
+        return new TwitterStream(conf, auth, listener);
     }
 }

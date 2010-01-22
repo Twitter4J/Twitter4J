@@ -26,8 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.conf.Configuration;
 import twitter4j.http.HttpResponse;
+import twitter4j.ParseUtil;
+import twitter4j.StatusJSONImpl;
 import twitter4j.logging.Logger;
 import twitter4j.org.json.JSONException;
 import twitter4j.org.json.JSONObject;

@@ -36,7 +36,7 @@ import twitter4j.http.Authorization;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class AsyncTwitterFactory extends OAuthSupportTwitterFactoryBase<AsyncTwitter> implements java.io.Serializable {
+public final class AsyncTwitterFactory extends TwitterFactoryOAuthSupportBase<AsyncTwitter> implements java.io.Serializable {
     private TwitterListener listener;
     private static final long serialVersionUID = -2565686715640816219L;
 

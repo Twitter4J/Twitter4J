@@ -62,7 +62,7 @@ public class GetTimelines {
             }
 
             // Other methods require authentication
-            Twitter twitter = new TwitterFactory().getBasicAuthorizedInstance(args[0], args[1]);
+            Twitter twitter = new TwitterFactory().getInstance(args[0], args[1]);
             statuses = twitter.getFriendsTimeline();
             System.out.println("------------------------------");
             System.out.println("Showing " + args[0] + "'s friends timeline.");

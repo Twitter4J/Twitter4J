@@ -59,10 +59,11 @@ import java.util.List;
 
 /**
  * A java representation of the <a href="http://apiwiki.twitter.com/">Twitter API</a>
+ * <br>This class is thread safe and can be cached/re-used and used concurrently.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Twitter extends OAuthSupportTwitter
+public class Twitter extends TwitterOAuthSupportBase
         implements java.io.Serializable,
         SearchMethods,
         TimelineMethods,

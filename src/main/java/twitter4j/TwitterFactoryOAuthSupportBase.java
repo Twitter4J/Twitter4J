@@ -33,14 +33,14 @@ import twitter4j.http.Authorization;
 import twitter4j.http.OAuthAuthorization;
 
 /**
- * A FactoryBase class which supports both Basic Authorization and OAuth
+ * A FactoryBase class supports both Basic Authorization and OAuth authorization
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-abstract class OAuthSupportTwitterFactoryBase<T> extends TwitterFactoryBase<T> {
+abstract class TwitterFactoryOAuthSupportBase<T> extends TwitterFactoryBase<T> {
     /**
      * Creates a Factory
      */
-    protected OAuthSupportTwitterFactoryBase() {
+    protected TwitterFactoryOAuthSupportBase() {
         super();
     }
 
@@ -48,19 +48,27 @@ abstract class OAuthSupportTwitterFactoryBase<T> extends TwitterFactoryBase<T> {
      * Creates a Factory with a specified config tree path.
      * @param configTreePath the path
      */
-    protected OAuthSupportTwitterFactoryBase(String configTreePath) {
+    protected TwitterFactoryOAuthSupportBase(String configTreePath) {
         super(configTreePath);
     }
+
     protected abstract T getInstance(Configuration conf, Authorization auth);
 
     /**
      * Creates a Factory with a specified config tree path.
      * @param conf the configuration
      */
-    protected OAuthSupportTwitterFactoryBase(Configuration conf) {
+    protected TwitterFactoryOAuthSupportBase(Configuration conf) {
         super(conf);
     }
 
+    /**
+     * Returns a OAuth Authenticated instance.
+     *
+     * @param consumerKey consumer key
+     * @param consumerSecret consumer secret
+     * @return an instance
+     */
     public T getOAuthAuthorizedInstance(String consumerKey, String consumerSecret) {
         if (null == consumerKey && null == consumerSecret) {
             throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
@@ -69,6 +77,14 @@ abstract class OAuthSupportTwitterFactoryBase<T> extends TwitterFactoryBase<T> {
         return getOAuthSupportInstance(oauth);
     }
 
+    /**
+     * Returns a OAuth Authenticated instance.
+     *
+     * @param consumerKey consumer key
+     * @param consumerSecret consumer secret
+     * @param accessToken access token
+     * @return an instance
+     */
     public T getOAuthAuthorizedInstance(String consumerKey, String consumerSecret, AccessToken accessToken) {
         if (null == consumerKey && null == consumerSecret) {
             throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
@@ -78,6 +94,13 @@ abstract class OAuthSupportTwitterFactoryBase<T> extends TwitterFactoryBase<T> {
         return getOAuthSupportInstance(oauth);
     }
 
+    /**
+     * Returns a OAuth Authenticated instance.<br>
+     * consumer key and consumer Secret must be provided by twitter4j.properties, or system properties.
+     *
+     * @param accessToken access token
+     * @return an instance
+     */
     public T getOAuthAuthorizedInstance(AccessToken accessToken) {
         String consumerKey = conf.getOAuthConsumerKey();
         String consumerSecret = conf.getOAuthConsumerSecret();
@@ -93,5 +116,4 @@ abstract class OAuthSupportTwitterFactoryBase<T> extends TwitterFactoryBase<T> {
     public T getOAuthSupportInstance(Authorization auth) {
         return getInstance(conf, auth);
     }
-
 }
