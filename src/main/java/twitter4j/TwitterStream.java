@@ -304,8 +304,8 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
         }
     }
 
-    public StatusListener getStatusListener() {
-        return statusListener;
+    public void setStatusListener(StatusListener statusListener) {
+        this.statusListener = statusListener;
     }
 
     abstract class StreamHandlingThread extends Thread {
