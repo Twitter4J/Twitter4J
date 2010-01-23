@@ -42,7 +42,16 @@ public final class AsyncTwitterFactory extends TwitterFactoryOAuthSupportBase<As
     private static final long serialVersionUID = -2565686715640816219L;
 
     /**
-     * {@inheritDoc}
+     * Creates a AsyncTwitterFactory with the root configuration, with no listener. AsyncTwitter instances will not perform callbacks when using this constructor.
+     */
+    public AsyncTwitterFactory() {
+        super();
+        this.listener = new TwitterAdapter();
+    }
+
+    /**
+     * Creates a AsyncTwitterFactory with the root configuration, with given listener
+     * @param listener listener
      */
     public AsyncTwitterFactory(TwitterListener listener) {
         super();
@@ -50,7 +59,9 @@ public final class AsyncTwitterFactory extends TwitterFactoryOAuthSupportBase<As
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a AsyncTwitterFactory with a specified config tree, with given listener
+     * @param configTreePath the path
+     * @param listener listener
      */
     public AsyncTwitterFactory(String configTreePath, TwitterListener listener) {
         super(configTreePath);

@@ -40,21 +40,19 @@ public final class TwitterFactory extends TwitterFactoryOAuthSupportBase<Twitter
     private static final long serialVersionUID = 5193900138477709155L;
 
     /**
-     * {@inheritDoc}
+     * Creates a TwitterFactory with the root configuration.
      */
     public TwitterFactory() {
         super();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     TwitterFactory(Configuration conf) {
         super(conf);
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a TwitterFactory with a specified config tree
+     * @param configTreePath the path
      */
     public TwitterFactory(String configTreePath) {
         super(configTreePath);
