@@ -68,10 +68,10 @@ public interface UserMethods
      * <br>This method calls http://api.twitter.com/1/users/search.json
      *
      * @param query The query to run against people search. 
-     * @param page Specifies the page of results to retrieve. Number of statuses page is fixed to 20.
+     * @param page Specifies the page of results to retrieve. Number of statuses per page is fixed to 20.
      * @return the list of Users matches the provided
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users-search">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users-search">Twitter API Wiki / Twitter REST API Method: users search</a>
      */
     ResponseList<User> searchUsers(String query, int page) throws TwitterException;
 

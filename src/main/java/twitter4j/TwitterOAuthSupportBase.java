@@ -6,7 +6,7 @@ import twitter4j.http.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListener, OAuthSupport, java.io.Serializable {
+abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListener, OAuthSupport, java.io.Serializable {
     protected transient HttpClientWrapper http;
 
     protected RateLimitStatusListener rateLimitStatusListener = null;
@@ -60,13 +60,6 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
         http.setHttpResponseListener(this);
     }
 
-    private OAuthSupport getOAuth() {
-        if (!(auth instanceof OAuthSupport)) {
-            throw new IllegalStateException(
-                    "OAuth consumer key/secret combination not supplied");
-        }
-        return (OAuthSupport)auth;
-    }
 
     /**
      * sets the OAuth consumer key and consumer secret
@@ -76,85 +69,51 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
      * @throws IllegalStateException when OAuth consumer has already been set, or the instance is using basic authorization
      * @deprecated Use TwitterFactory.getInstance(String consumerKey, String consumerSecret)
      */
-    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
-        if (auth instanceof NullAuthorization) {
-            auth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
-        }else if(auth instanceof BasicAuthorization){
-            throw new IllegalStateException("Basic authenticated instance.");
-        }else if(auth instanceof OAuthAuthorization){
-            throw new IllegalStateException("consumer key/secret pair already set.");
-        }
-    }
+    public abstract void setOAuthConsumer(String consumerKey, String consumerSecret);
 
     // implementation for OAuthSupport interface
     /**
      * {@inheritDoc}
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
-    public RequestToken getOAuthRequestToken() throws TwitterException {
-        return getOAuthRequestToken(null);
-    }
+    public abstract RequestToken getOAuthRequestToken() throws TwitterException;
 
     /**
      * {@inheritDoc}
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
-    public RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException {
-        return getOAuth().getOAuthRequestToken(callbackUrl);
-    }
-
-    protected String screenName = null;
+    public abstract RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException;
 
     /**
      * {@inheritDoc}
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
-    public AccessToken getOAuthAccessToken() throws TwitterException {
-        AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken();
-        screenName = oauthAccessToken.getScreenName();
-        return oauthAccessToken;
-    }
+    public abstract AccessToken getOAuthAccessToken() throws TwitterException;
 
     /**
      * {@inheritDoc}
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
-    public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
-        AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken(oauthVerifier);
-        screenName = oauthAccessToken.getScreenName();
-        return oauthAccessToken;
-    }
+    public abstract AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException;
 
     /**
      * {@inheritDoc}
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
-    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
-        OAuthSupport oauth = getOAuth();
-        AccessToken oauthAccessToken = oauth.getOAuthAccessToken(requestToken);
-        screenName = oauthAccessToken.getScreenName();
-        return oauthAccessToken;
-    }
+    public abstract AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException;
 
     /**
      * {@inheritDoc}
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
-    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
-        return getOAuth().getOAuthAccessToken(requestToken, oauthVerifier);
-    }
-
+    public abstract AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException;
     /**
      * {@inheritDoc}
      * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
      */
-    public void setOAuthAccessToken(AccessToken accessToken) {
-        getOAuth().setOAuthAccessToken(accessToken);
-    }
+    public abstract void setOAuthAccessToken(AccessToken accessToken);
 
-    public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        return getOAuth().getOAuthAccessToken(new RequestToken(token,tokenSecret));
-    }
+    public abstract AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException;
 
     /**
      * Retrieves an access token associated with the supplied request token.
@@ -169,10 +128,8 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
      * @since Twitter 2.0.8
      * @deprecated Use getOAuthAccessToken(RequestToken requestToken, String oauthVerifier)
      */
-    public synchronized AccessToken getOAuthAccessToken(String token
-            , String tokenSecret, String pin) throws TwitterException {
-        return getOAuthAccessToken(new RequestToken(token, tokenSecret), pin);
-    }
+    public abstract AccessToken getOAuthAccessToken(String token
+            , String tokenSecret, String pin) throws TwitterException;
 
     /**
      * Sets the access token
@@ -183,9 +140,7 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
      * @deprecated Use Twitter getInstance(AccessToken accessToken)
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
-    public void setOAuthAccessToken(String token, String tokenSecret) {
-        getOAuth().setOAuthAccessToken(new AccessToken(token, tokenSecret));
-    }
+    public abstract void setOAuthAccessToken(String token, String tokenSecret);
 
     /**
      * tests if the instance is authenticated by Basic
@@ -227,10 +182,6 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
     }
 
     public void httpResponseReceived(HttpResponseEvent event) {
-        System.out.println("received:"+event);
-        System.out.println("rateLimit:"+rateLimitStatusListener);
-        System.out.println("hashCode:"+this.hashCode());
-
         if (null != rateLimitStatusListener) {
             HttpResponse res = event.getResponse();
             RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);

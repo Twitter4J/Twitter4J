@@ -1378,6 +1378,121 @@ public class Twitter extends TwitterOAuthSupportBase
                 asString().indexOf("ok");
     }
 
+    /* OAuth support methods */
+
+    private OAuthSupport getOAuth() {
+        if (!(auth instanceof OAuthSupport)) {
+            throw new IllegalStateException(
+                    "OAuth consumer key/secret combination not supplied");
+        }
+        return (OAuthSupport)auth;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
+        if (auth instanceof NullAuthorization) {
+            auth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
+        }else if(auth instanceof BasicAuthorization){
+            throw new IllegalStateException("Basic authenticated instance.");
+        }else if(auth instanceof OAuthAuthorization){
+            throw new IllegalStateException("consumer key/secret pair already set.");
+        }
+    }
+
+    // implementation for OAuthSupport interface
+    /**
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
+     */
+    public RequestToken getOAuthRequestToken() throws TwitterException {
+        return getOAuthRequestToken(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException {
+        return getOAuth().getOAuthRequestToken(callbackUrl);
+    }
+
+    protected String screenName = null;
+
+    /**
+     * {@inheritDoc}
+     */
+    public AccessToken getOAuthAccessToken() throws TwitterException {
+        AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken();
+        screenName = oauthAccessToken.getScreenName();
+        return oauthAccessToken;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
+        AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken(oauthVerifier);
+        screenName = oauthAccessToken.getScreenName();
+        return oauthAccessToken;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
+        OAuthSupport oauth = getOAuth();
+        AccessToken oauthAccessToken = oauth.getOAuthAccessToken(requestToken);
+        screenName = oauthAccessToken.getScreenName();
+        return oauthAccessToken;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
+        return getOAuth().getOAuthAccessToken(requestToken, oauthVerifier);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setOAuthAccessToken(AccessToken accessToken) {
+        getOAuth().setOAuthAccessToken(accessToken);
+    }
+
+    public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
+        return getOAuth().getOAuthAccessToken(new RequestToken(token,tokenSecret));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public synchronized AccessToken getOAuthAccessToken(String token
+            , String tokenSecret, String pin) throws TwitterException {
+        return getOAuthAccessToken(new RequestToken(token, tokenSecret), pin);
+    }
+
+    /**
+     * Sets the access token
+     *
+     * @param token access token
+     * @param tokenSecret access token secret
+     * @since Twitter 2.0.0
+     * @deprecated Use Twitter getInstance(AccessToken accessToken)
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
+     */
+    public void setOAuthAccessToken(String token, String tokenSecret) {
+        getOAuth().setOAuthAccessToken(new AccessToken(token, tokenSecret));
+    }
+
+    /**
+     * tests if the instance is authenticated by Basic
+     * @return returns true if the instance is authenticated by Basic
+     */
+    public boolean isOAuthEnabled() {
+        return auth instanceof OAuthAuthorization && auth.isEnabled();
+    }
+
     @Override
     public String toString() {
         return "Twitter{" +

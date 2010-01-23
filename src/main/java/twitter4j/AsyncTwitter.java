@@ -46,7 +46,9 @@ import twitter4j.api.TimelineMethodsAsync;
 import twitter4j.api.UserMethodsAsync;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
+import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
+import twitter4j.http.RequestToken;
 
 import java.io.File;
 import java.util.Date;
@@ -87,6 +89,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
      * Creates a basic authenticated AsyncTwitter instance.
      * @param screenName screen name
      * @param password password
+     * @param listener
      * @deprecated use new AsyncTwitterFactory.getBasicAuthorizedInstance() instead.
      */
     public AsyncTwitter(String screenName, String password, TwitterListener listener) {
@@ -1326,6 +1329,61 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
             dispatcher = new Dispatcher(conf, "Twitter4J Async Dispatcher", ConfigurationContext.getInstance().getAsyncNumThreads());
         }
         return dispatcher;
+    }
+
+    @Override
+    public void setOAuthConsumer(String consumerKey, String consumerSecret) {
+        twitter.setOAuthConsumer(consumerKey, consumerSecret);
+    }
+
+    @Override
+    public RequestToken getOAuthRequestToken() throws TwitterException {
+        return twitter.getOAuthRequestToken();
+    }
+
+    @Override
+    public RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException {
+        return twitter.getOAuthRequestToken(callbackUrl);
+    }
+
+    @Override
+    public AccessToken getOAuthAccessToken() throws TwitterException {
+        return twitter.getOAuthAccessToken();
+    }
+
+    @Override
+    public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
+        return twitter.getOAuthAccessToken(oauthVerifier);
+    }
+
+    @Override
+    public AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
+        return twitter.getOAuthAccessToken(requestToken);
+    }
+
+    @Override
+    public AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
+        return twitter.getOAuthAccessToken(requestToken, oauthVerifier);
+    }
+
+    @Override
+    public void setOAuthAccessToken(AccessToken accessToken) {
+        twitter.setOAuthAccessToken(accessToken);
+    }
+
+    @Override
+    public AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
+        return twitter.getOAuthAccessToken(token, tokenSecret);
+    }
+
+    @Override
+    public AccessToken getOAuthAccessToken(String token, String tokenSecret, String pin) throws TwitterException {
+        return twitter.getOAuthAccessToken(token, tokenSecret, pin);
+    }
+
+    @Override
+    public void setOAuthAccessToken(String token, String tokenSecret) {
+        twitter.setOAuthAccessToken(token, tokenSecret);
     }
 
     abstract class AsyncTask implements Runnable {
