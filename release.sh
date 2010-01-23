@@ -2,7 +2,7 @@ LANG=C
 cp pom.xml pom.$1.xml
 sed -i '' "s/<version>.*SNAPSHOT<\/version>/<version>$1<\/version>/g" pom.$1.xml
 sed -i '' "s/version=.*$/version=twitter4j-$1/g" build.properties
-
+mvn clean
 mvn -f pom.$1.xml install -Dmaven.test.skip=true
 DIR=twitter4j-$1
 mkdir $DIR
@@ -17,7 +17,7 @@ cp -r lib $DIR/
 cp target/twitter4j-$1.jar $DIR/
 cp target/twitter4j-$1-sources.jar $DIR/
 cp target/twitter4j-$1-javadoc.jar $DIR/
-javadoc -windowtitle Twitter4J-$1 -sourcepath src/main/java twitter4j twitter4j.http -d ../twitter4j-site/site/javadoc
+javadoc -windowtitle Twitter4J-$1 -sourcepath src/main/java twitter4j twitter4j.examples twitter4j.api -d ../twitter4j-site/site/javadoc
 mkdir twitter4j-$1/doc/
 cp -r ../twitter4j-site/site/javadoc/* twitter4j-$1/doc/
 cd $DIR/

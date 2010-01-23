@@ -1,6 +1,7 @@
 LANG=C
 
-mvn  install -Dmaven.test.skip=true
+mvn clean
+mvn install -Dmaven.test.skip=true
 DIR=twitter4j-$1
 mkdir $DIR
 cp -r src $DIR/
