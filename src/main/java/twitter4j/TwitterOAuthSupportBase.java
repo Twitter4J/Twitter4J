@@ -198,7 +198,10 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
      */
     public void setRateLimitStatusListener(RateLimitStatusListener listener){
-    	rateLimitStatusListener = listener;
+    	this.rateLimitStatusListener = listener;
+        System.out.println("setting a listener--------------");
+        System.out.println("rateLimit:"+rateLimitStatusListener);
+        System.out.println("hashCode:"+this.hashCode());
     }
 
     @Override
@@ -209,7 +212,7 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
 
         TwitterOAuthSupportBase that = (TwitterOAuthSupportBase) o;
 
-        if (!rateLimitStatusListener.equals(that.rateLimitStatusListener))
+        if (rateLimitStatusListener != null ? !rateLimitStatusListener.equals(that.rateLimitStatusListener) : that.rateLimitStatusListener != null)
             return false;
 
         return true;
@@ -218,26 +221,30 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + rateLimitStatusListener.hashCode();
+        result = 31 * result + (rateLimitStatusListener != null ? rateLimitStatusListener.hashCode() : 0);
         return result;
     }
 
     public void httpResponseReceived(HttpResponseEvent event) {
+        System.out.println("received:"+event);
+        System.out.println("rateLimit:"+rateLimitStatusListener);
+        System.out.println("hashCode:"+this.hashCode());
+
         if (null != rateLimitStatusListener) {
             HttpResponse res = event.getResponse();
             RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
             RateLimitStatusEvent statusEvent = null;
             if (null != rateLimitStatus) {
                 statusEvent = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
-            }
-            if (res.getStatusCode() == HttpClient.EXCEEDED_RATE_LIMIT_QUOTA
-                    || res.getStatusCode() == HttpClient.SERVICE_UNAVAILABLE){
-                // EXCEEDED_RATE_LIMIT_QUOTA is returned by Rest API
-                // SERVICE_UNAVAILABLE is returned by Search API
-                if (null == statusEvent) {
-                    statusEvent = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
+                if (res.getStatusCode() == HttpClient.EXCEEDED_RATE_LIMIT_QUOTA
+                        || res.getStatusCode() == HttpClient.SERVICE_UNAVAILABLE) {
+                    // EXCEEDED_RATE_LIMIT_QUOTA is returned by Rest API
+                    // SERVICE_UNAVAILABLE is returned by Search API
+                    rateLimitStatusListener.onRateLimitStatus(statusEvent);
+                    rateLimitStatusListener.onRateLimitReached(statusEvent);
+                } else {
+                    rateLimitStatusListener.onRateLimitStatus(statusEvent);
                 }
-                rateLimitStatusListener.onRateLimitReached(statusEvent);
             }
         }
     }

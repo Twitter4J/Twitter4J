@@ -675,6 +675,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         twitterAPI1.setRateLimitStatusListener(new RateLimitStatusListener() {
 
             public void onRateLimitStatus(RateLimitStatusEvent event) {
+                System.out.println("onRateLimitStatus"+event);
                 accountLimitStatusAcquired = event.isAccountRateLimitStatus();
                 ipLimitStatusAcquired = event.isIPRateLimitStatus();
                 rateLimitStatus = event.getRateLimitStatus();

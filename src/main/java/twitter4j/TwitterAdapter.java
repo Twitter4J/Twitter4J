@@ -307,11 +307,14 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.0.4
      */
-    public void gotBlockingUsersIDs(IDs blockingUsersIDs){
+    public void gotBlockingUsersIDs(IDs blockingUsersIDs) {
     }
 
     /*Spam Reporting Methods*/
-    //reportSpam()
+
+    public void reportedSpam(User reportedSpammer) throws TwitterException {
+    }
+
 
     /*Saved Searches Methods*/
     //getSavedSearches()

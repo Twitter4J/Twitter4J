@@ -77,9 +77,8 @@ public final class BasicAuthorization implements Authorization, java.io.Serializ
 
         BasicAuthorization that = (BasicAuthorization) o;
 
-        if (!basic.equals(that.basic)) return false;
+        return basic.equals(that.basic);
 
-        return true;
     }
 
     @Override

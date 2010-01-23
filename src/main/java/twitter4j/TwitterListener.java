@@ -292,8 +292,6 @@ public interface TwitterListener {
     /*Spam Reporting Methods*/
     void reportedSpam(User reportedSpammer) throws TwitterException;
 
-    //reportSpam()
-
     /*Saved Searches Methods*/
     //getSavedSearches()
     //showSavedSearch()

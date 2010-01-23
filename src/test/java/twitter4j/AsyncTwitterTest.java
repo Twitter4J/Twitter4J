@@ -757,7 +757,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     /*Spam Reporting Methods*/
-    //reportSpam()
+
+    public void reportedSpam(User reportedSpammer) throws TwitterException {
+        this.user = reportedSpammer;
+        notifyResponse();
+    }
 
     /*Saved Searches Methods*/
     //getSavedSearches()
