@@ -122,7 +122,7 @@ abstract class TwitterBase implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "TwitterSupport{" +
+        return "TwitterBase{" +
                 "auth=" + auth +
                 '}';
     }

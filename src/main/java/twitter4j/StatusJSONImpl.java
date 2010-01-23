@@ -38,7 +38,7 @@ import static twitter4j.ParseUtil.*;
  * A data class representing one single status of a user.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
+/*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
 
     private Date createdAt;
     private long id;

@@ -1301,6 +1301,24 @@ public class Twitter extends TwitterOAuthSupportBase
         return IDsJSONImpl.getBlockIDs(http.get(conf.getRestBaseURL() + "blocks/blocking/ids.json", auth));
     }
 
+    /* Spam Reporting Methods */
+
+    /**
+     * {@inheritDoc}
+     */
+    public User reportSpam(int userId) throws TwitterException{
+        ensureAuthorizationEnabled();
+        return new UserJSONImpl(http.post(conf.getRestBaseURL() + "report_spam.json?user_id=" + userId, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public User reportSpam(String screenName) throws TwitterException{
+        ensureAuthorizationEnabled();
+        return new UserJSONImpl(http.post(conf.getRestBaseURL() + "report_spam.json?screenName=" + screenName, auth));
+    }
+
     /* Saved Searches Methods */
 
     /**

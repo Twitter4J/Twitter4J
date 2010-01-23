@@ -179,7 +179,7 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod BLOCKING_USERS_IDS = new TwitterMethod("BLOCKING_USERS_IDS");
 
     /*Spam Reporting Methods*/
-    //reportSpam()
+    public static final TwitterMethod REPORT_SPAM = new TwitterMethod("REPORT_SPAM");
 
     /*Saved Searches Methods*/
     //getSavedSearches()

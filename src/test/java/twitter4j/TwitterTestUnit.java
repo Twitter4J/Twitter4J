@@ -672,7 +672,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(10 < status.getHourlyLimit());
         assertTrue(10 < status.getRemainingHits());
 
-        twitterAPI1.addRateLimitStatusListener(new RateLimitStatusListener() {
+        twitterAPI1.setRateLimitStatusListener(new RateLimitStatusListener() {
 
             public void onRateLimitStatus(RateLimitStatusEvent event) {
                 accountLimitStatusAcquired = event.isAccountRateLimitStatus();
@@ -686,7 +686,7 @@ public class TwitterTestUnit extends TwitterTestBase {
 
         });
 
-        unauthenticated.addRateLimitStatusListener(new RateLimitStatusListener() {
+        unauthenticated.setRateLimitStatusListener(new RateLimitStatusListener() {
             public void onRateLimitStatus(RateLimitStatusEvent event) {
                 accountLimitStatusAcquired = event.isAccountRateLimitStatus();
                 ipLimitStatusAcquired = event.isIPRateLimitStatus();
@@ -716,6 +716,14 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(previous.getRemainingHits() > rateLimitStatus.getRemainingHits());
         assertEquals(previous.getHourlyLimit(), rateLimitStatus.getHourlyLimit());
     }
+
+    /* Spam Reporting Methods */
+    public void testReportSpammerSavedSearches() throws Exception {
+        // Not sure they're accepting multiple spam reports for the same user.
+        // Do we really need to test this method? How?
+    }
+
+    /* Saved Searches Methods */
 
 
     public void testSavedSearches() throws Exception {

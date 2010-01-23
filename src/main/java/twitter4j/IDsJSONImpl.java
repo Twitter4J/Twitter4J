@@ -38,7 +38,7 @@ import java.util.Arrays;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ class IDsJSONImpl extends TwitterResponseImpl implements IDs {
+/*package*/ final class IDsJSONImpl extends TwitterResponseImpl implements IDs {
 
     private int[] ids;
     private long previousCursor = -1;

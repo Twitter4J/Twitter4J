@@ -290,6 +290,8 @@ public interface TwitterListener {
     void gotBlockingUsersIDs(IDs blockingUsersIDs);
 
     /*Spam Reporting Methods*/
+    void reportedSpam(User reportedSpammer) throws TwitterException;
+
     //reportSpam()
 
     /*Saved Searches Methods*/

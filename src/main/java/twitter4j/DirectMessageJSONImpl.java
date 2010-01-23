@@ -37,7 +37,7 @@ import static twitter4j.ParseUtil.*;
  * A data class representing sent/received direct message.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ class DirectMessageJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
+/*package*/ final class DirectMessageJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
     private int id;
     private String text;
     private int senderId;

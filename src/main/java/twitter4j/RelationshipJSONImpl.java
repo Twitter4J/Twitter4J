@@ -38,7 +38,7 @@ import static twitter4j.ParseUtil.*;
  * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">REST API DOCUMENTATION</a>
  * @since Twitter4J 2.1.0
  */
-/*package*/ class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {
+/*package*/ final class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {
 
     private int targetUserId;
     private String targetUserScreenName;

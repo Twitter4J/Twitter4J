@@ -26,14 +26,35 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.TwitterException;
+import twitter4j.User;
+
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-/**
- * Not yet supported.
- * 
- * http://yusuke.homeip.net/jira/browse/TFJ-223
- */
-public interface SpamReportingMethods
-{
+public interface SpamReportingMethods {
+
+    /**
+     * The user specified in the id is blocked by the authenticated user and reported as a spammer.
+     * <br>This method calls http://api.twitter.com/1/report_spam.json
+     *
+     * @param userId The ID of the user you want to report as a spammer.
+     * @return The User reported as a spammer.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-report_spam">Twitter API Wiki / Twitter REST API Method: report_spam</a>
+     * @since Twitter4J 2.1.0
+     */
+    User reportSpam(int userId) throws TwitterException;
+
+    /**
+     * The user specified in the id is blocked by the authenticated user and reported as a spammer.
+     * <br>This method calls http://api.twitter.com/1/report_spam.json
+     *
+     * @param screenName The screen name of the user you want to report as a spammer.
+     * @return The User reported as a spammer.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-report_spam">Twitter API Wiki / Twitter REST API Method: report_spam</a>
+     * @since Twitter4J 2.1.0
+     */
+    User reportSpam(String screenName) throws TwitterException;
 }

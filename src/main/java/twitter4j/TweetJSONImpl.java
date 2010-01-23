@@ -41,7 +41,7 @@ import static twitter4j.ParseUtil.*;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ class TweetJSONImpl implements Tweet, java.io.Serializable {
+/*package*/ final class TweetJSONImpl implements Tweet, java.io.Serializable {
     private String text;
     private int toUserId = -1;
     private String toUser = null;

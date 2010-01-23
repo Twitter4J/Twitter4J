@@ -1251,6 +1251,30 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
         });
     }
 
+    /* Spam Reporting Methods */
+
+    /**
+     * {@inheritDoc}
+     */
+    public void reportSpam(int userId) throws TwitterException{
+        getDispatcher().invokeLater(new AsyncTask(REPORT_SPAM, listener, userId) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.reportedSpam(twitter.reportSpam((Integer)args[0]));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void reportSpam(String screenName) throws TwitterException{
+        getDispatcher().invokeLater(new AsyncTask(REPORT_SPAM, listener, screenName) {
+            public void invoke(TwitterListener listener, Object[] args) throws TwitterException {
+                listener.reportedSpam(twitter.reportSpam((String)args[0]));
+            }
+        });
+    }
+
     /* Help Methods */
 
     /**
@@ -1300,6 +1324,11 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
             this.method = method;
             this.listener = listener;
             this.args = args;
+        }
+        AsyncTask(TwitterMethod method, TwitterListener listener, Object arg) {
+            this.method = method;
+            this.listener = listener;
+            this.args = new Object[]{arg};
         }
 
         abstract void invoke(TwitterListener listener,Object[] args) throws TwitterException;

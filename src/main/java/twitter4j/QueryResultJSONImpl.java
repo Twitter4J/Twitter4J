@@ -38,7 +38,7 @@ import static twitter4j.ParseUtil.*;
  * A data class representing search API response
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ class QueryResultJSONImpl implements QueryResult, java.io.Serializable {
+/*package*/ final class QueryResultJSONImpl implements QueryResult, java.io.Serializable {
 
     private long sinceId;
     private long maxId;

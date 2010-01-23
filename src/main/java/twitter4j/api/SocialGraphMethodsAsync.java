@@ -53,7 +53,7 @@ public interface SocialGraphMethodsAsync {
 	 * Returns an array of numeric IDs for every user the specified user is following.
 	 * <br>This method calls http://api.twitter.com/1/friends/ids%C2%A0%C2%A0
 	 *
-	 * @param userId   Specfies the ID of the user for whom to return the friends list.
+	 * @param userId   Specifies the ID of the user for whom to return the friends list.
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends%C2%A0ids</a>
 	 * @since Twitter4J 2.0.0
 	 */
@@ -84,7 +84,7 @@ public interface SocialGraphMethodsAsync {
 	 * Returns an array of numeric IDs for every user the specified user is following.
 	 * <br>This method calls http://api.twitter.com/1/friends/ids%C2%A0%C2%A0
 	 *
-	 * @param screenName Specfies the screen name of the user for whom to return the friends list.
+	 * @param screenName Specifies the screen name of the user for whom to return the friends list.
 	 * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends%C2%A0ids</a>
 	 * @since Twitter4J 2.0.10
@@ -114,7 +114,7 @@ public interface SocialGraphMethodsAsync {
 	 * Returns an array of numeric IDs for every user the specified user is followed by.
 	 * <br>This method calls http://api.twitter.com/1/followers/ids
 	 *
-	 * @param userId   Specfies the ID of the user for whom to return the followers list.
+	 * @param userId   Specifies the ID of the user for whom to return the followers list.
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers%C2%A0ids</a>
 	 * @since Twitter4J 2.0.0
 	 */
@@ -124,7 +124,7 @@ public interface SocialGraphMethodsAsync {
 	 * Returns an array of numeric IDs for every user the specified user is followed by.
 	 * <br>This method calls http://api.twitter.com/1/followers/ids
 	 *
-	 * @param userId   Specfies the ID of the user for whom to return the followers list.
+	 * @param userId   Specifies the ID of the user for whom to return the followers list.
 	 * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers%C2%A0ids</a>
 	 * @since Twitter4J 2.0.10
@@ -135,7 +135,7 @@ public interface SocialGraphMethodsAsync {
 	 * Returns an array of numeric IDs for every user the specified user is followed by.
 	 * <br>This method calls http://api.twitter.com/1/followers/ids
 	 *
-	 * @param screenName Specfies the screen name of the user for whom to return the followers list.
+	 * @param screenName Specifies the screen name of the user for whom to return the followers list.
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers%C2%A0ids</a>
 	 * @since Twitter4J 2.0.0
 	 */
@@ -145,7 +145,7 @@ public interface SocialGraphMethodsAsync {
 	 * Returns an array of numeric IDs for every user the specified user is followed by.
 	 * <br>This method calls http://api.twitter.com/1/followers/ids
 	 *
-	 * @param screenName Specfies the screen name of the user for whom to return the followers list.
+	 * @param screenName Specifies the screen name of the user for whom to return the followers list.
 	 * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers%C2%A0ids</a>
 	 * @since Twitter4J 2.0.10

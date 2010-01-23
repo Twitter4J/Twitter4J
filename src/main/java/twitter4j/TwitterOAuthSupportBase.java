@@ -5,13 +5,11 @@ import twitter4j.http.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListener, OAuthSupport, java.io.Serializable {
     protected transient HttpClientWrapper http;
 
-    protected List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>();
+    protected RateLimitStatusListener rateLimitStatusListener = null;
     private static final long serialVersionUID = 6960663978976449394L;
 
     TwitterOAuthSupportBase(Configuration conf) {
@@ -48,12 +46,12 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
         http.setHttpResponseListener(this);
     }
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(rateLimitStatusListeners);
+        out.writeObject(rateLimitStatusListener);
     }
 
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
-        rateLimitStatusListeners = (ArrayList<RateLimitStatusListener>)stream.readObject();
+        rateLimitStatusListener = (RateLimitStatusListener)stream.readObject();
         HttpClientWrapper http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
     }
@@ -199,8 +197,8 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
      */
-    public void addRateLimitStatusListener(RateLimitStatusListener listener){
-    	rateLimitStatusListeners.add(listener);
+    public void setRateLimitStatusListener(RateLimitStatusListener listener){
+    	rateLimitStatusListener = listener;
     }
 
     @Override
@@ -211,7 +209,7 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
 
         TwitterOAuthSupportBase that = (TwitterOAuthSupportBase) o;
 
-        if (!rateLimitStatusListeners.equals(that.rateLimitStatusListeners))
+        if (!rateLimitStatusListener.equals(that.rateLimitStatusListener))
             return false;
 
         return true;
@@ -220,31 +218,26 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + rateLimitStatusListeners.hashCode();
+        result = 31 * result + rateLimitStatusListener.hashCode();
         return result;
     }
 
     public void httpResponseReceived(HttpResponseEvent event) {
-        if (0 < (rateLimitStatusListeners.size())) {
+        if (null != rateLimitStatusListener) {
             HttpResponse res = event.getResponse();
             RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
             RateLimitStatusEvent statusEvent = null;
             if (null != rateLimitStatus) {
                 statusEvent = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
-                for (RateLimitStatusListener listener : rateLimitStatusListeners) {
-                    listener.onRateLimitStatus(statusEvent);
-                }
             }
-            if(res.getStatusCode() == HttpClient.EXCEEDED_RATE_LIMIT_QUOTA
+            if (res.getStatusCode() == HttpClient.EXCEEDED_RATE_LIMIT_QUOTA
                     || res.getStatusCode() == HttpClient.SERVICE_UNAVAILABLE){
                 // EXCEEDED_RATE_LIMIT_QUOTA is returned by Rest API
                 // SERVICE_UNAVAILABLE is returned by Search API
                 if (null == statusEvent) {
                     statusEvent = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
                 }
-                for (RateLimitStatusListener listener : rateLimitStatusListeners) {
-                    listener.onRateLimitReached(statusEvent);
-                }
+                rateLimitStatusListener.onRateLimitReached(statusEvent);
             }
         }
     }
