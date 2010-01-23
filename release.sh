@@ -17,10 +17,11 @@ cp -r lib $DIR/
 cp target/twitter4j-core-$1.jar $DIR/
 cp target/twitter4j-core-$1-sources.jar $DIR/
 cp target/twitter4j-core-$1-javadoc.jar $DIR/
-javadoc -windowtitle Twitter4J-$1 -sourcepath src/main/java twitter4j twitter4j.examples twitter4j.api -d Users/yusukey/Dropbox/twitter4j.war javadoc
-mkdir twitter4j-$1/doc/
+mkdir $DIR/javadoc/
+#javadoc -windowtitle Twitter4J-$1 -sourcepath src/main/java twitter4j twitter4j.examples twitter4j.api -d /Users/yusukey/Dropbox/twitter4j.war/javadoc
+cp -r target/apidoc/* $DIR/javadoc
+cp -r target/apidoc/* /Users/yusukey/Dropbox/twitter4j.war/javadoc/
 
-cp -r Users/yusukey/Dropbox/twitter4j.war/* twitter4j-$1/doc/
 cd $DIR/
 find . -name ".svn" -print -exec rm -rf {} ";"
 find . -name ".DS_Store" -print -exec rm -r {} ";"
@@ -34,7 +35,8 @@ cp twitter4j-$1.zip ../twitter4j-site/
 #mvn deploy -Dmaven.test.skip=true
 #cd target
 #rm twitter4j-$1.zip
-cp -r twitter4j-$1.zip /Users/yusukey/Dropbox/twitter4j.war/
+mv twitter4j-$1.zip /Users/yusukey/Dropbox/twitter4j.war/
 
 rm -Rf twitter4j-$1
+rm -Rf twitter4j
 rm pom.$1.xml
