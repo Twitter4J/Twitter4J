@@ -3,7 +3,7 @@ cp pom.xml pom.$1.xml
 sed -i '' "s/<version>.*SNAPSHOT<\/version>/<version>$1<\/version>/g" pom.$1.xml
 sed -i '' "s/version=.*$/version=twitter4j-$1/g" build.properties
 mvn clean
-mvn -f pom.$1.xml install -Dmaven.test.skip=true
+mvn -f pom.$1.xml install deploy -Dmaven.test.skip=true
 DIR=twitter4j-$1
 mkdir $DIR
 cp -r src $DIR/
@@ -14,12 +14,13 @@ cp build.xml $DIR/
 cp LICENSE.txt $DIR/
 cp -r bin $DIR/
 cp -r lib $DIR/
-cp target/twitter4j-$1.jar $DIR/
-cp target/twitter4j-$1-sources.jar $DIR/
-cp target/twitter4j-$1-javadoc.jar $DIR/
-javadoc -windowtitle Twitter4J-$1 -sourcepath src/main/java twitter4j twitter4j.examples twitter4j.api -d ../twitter4j-site/site/javadoc
+cp target/twitter4j-core-$1.jar $DIR/
+cp target/twitter4j-core-$1-sources.jar $DIR/
+cp target/twitter4j-core-$1-javadoc.jar $DIR/
+javadoc -windowtitle Twitter4J-$1 -sourcepath src/main/java twitter4j twitter4j.examples twitter4j.api -d Users/yusukey/Dropbox/twitter4j.war javadoc
 mkdir twitter4j-$1/doc/
-cp -r ../twitter4j-site/site/javadoc/* twitter4j-$1/doc/
+
+cp -r Users/yusukey/Dropbox/twitter4j.war/* twitter4j-$1/doc/
 cd $DIR/
 find . -name ".svn" -print -exec rm -rf {} ";"
 find . -name ".DS_Store" -print -exec rm -r {} ";"
@@ -29,14 +30,11 @@ zip -r ../twitter4j-$1.zip .
 #sed -i '' "s/VERSION/$1/g" setEnv.sh
 #sed -i '' "s/VERSION/$1/g" setEnv.cmd
 cd ..
-cp twitter4j-$1.zip ../twitter4j-site/site/
+cp twitter4j-$1.zip ../twitter4j-site/
 #mvn deploy -Dmaven.test.skip=true
 #cd target
-rm twitter4j-$1.zip
+#rm twitter4j-$1.zip
+cp -r twitter4j-$1.zip /Users/yusukey/Dropbox/twitter4j.war/
+
 rm -Rf twitter4j-$1
 rm pom.$1.xml
-
-#mvn deploy:deploy-file -DgroupId=net.homeip.yusuke -DartifactId=twitter4j -Dversion=$1 -Dpackaging=jar -Dfile=twitter4j-$1.jar -DgeneratePom=true -Durl=file:/Users/yusukey/maven2 -DrepositoryId=yusuke.homeip.net
-#mvn deploy:deploy-file -DgroupId=net.homeip.yusuke -DartifactId=twitter4j -Dversion=$1 -Dpackaging=jar -Dfile=twitter4j-$1.jar -DgeneratePom=true -Durl=file:/Users/yusukey/maven2 -DrepositoryId=yusuke.homeip.net   -Dclassifier=source
-#mvn deploy:deploy-file -DgroupId=net.homeip.yusuke -DartifactId=twitter4j -Dversion=$1 -Dpackaging=jar -Dfile=twitter4j-$1.jar -DgeneratePom=true -Durl=file:/Users/yusukey/maven2 -DrepositoryId=yusuke.homeip.net   -Dclassifier=javadoc
-
