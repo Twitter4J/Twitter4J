@@ -11,9 +11,9 @@ cp build.xml $DIR/
 cp LICENSE.txt $DIR/
 cp -r bin $DIR/
 cp -r lib $DIR/
-cp target/twitter4j-$1.jar $DIR/
-cp target/twitter4j-$1-sources.jar $DIR/
-cp target/twitter4j-$1-javadoc.jar $DIR/
+cp target/twitter4j-core-$1.jar $DIR/
+cp target/twitter4j-core-$1-sources.jar $DIR/
+cp target/twitter4j-core-$1-javadoc.jar $DIR/
 cd $DIR/
 find . -name ".svn" -print -exec rm -rf {} ";"
 find . -name ".DS_Store" -print -exec rm -r {} ";"
