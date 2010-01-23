@@ -31,7 +31,8 @@ import twitter4j.http.Authorization;
 
 /**
  * A factory class for AsyncTwitter.<br>
- * An instance of this class is completely thread safe and can be re-used and used concurrently.
+ * An instance of this class is completely thread safe and can be re-used and used concurrently.<br>
+ * Note that currently AsyncTwitter is NOT compatible with Google App Engine as it is maintaining threads internally.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0

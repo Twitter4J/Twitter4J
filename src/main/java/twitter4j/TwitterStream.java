@@ -40,7 +40,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A java reporesentation of the <a href="http://apiwiki.twitter.com/Streaming-API-Documentation">Twitter Streaming API</a>
+ * A java reporesentation of the <a href="http://apiwiki.twitter.com/Streaming-API-Documentation">Twitter Streaming API</a><br>
+ * Note that this class is NOT compatible with Google App Engine as GAE is not capable of handling requests longer than 30 seconds.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4

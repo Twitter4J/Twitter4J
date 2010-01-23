@@ -112,6 +112,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 //        assertNotNull(user.getProfileTextColor());
     }
 
+    public void testSearchUser() throws TwitterException {
+        async1.searchUsers("Doug Williams",1);
+        waitForResponse();
+        assertTrue(4 < users.size());
+    }
+
     public void testGetUserTimeline_Show() throws Exception {
         async2.getUserTimeline();
         waitForResponse();
@@ -530,6 +536,10 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     /*User Methods*/
     public void gotUserDetail(User user) {
         this.user = user;
+        notifyResponse();
+    }
+    public void searchedUser(ResponseList<User> userList) {
+        this.users = userList;
         notifyResponse();
     }
 

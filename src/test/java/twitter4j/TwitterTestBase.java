@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 
 import java.io.FileInputStream;
 import java.util.Properties;
+import static twitter4j.DAOTest.*;
 
 public class TwitterTestBase extends TestCase {
     public TwitterTestBase(String name) {
@@ -73,13 +74,13 @@ public class TwitterTestBase extends TestCase {
         id1id = Integer.valueOf(p.getProperty("id1id"));
         numberIdId = Integer.valueOf(p.getProperty("numberidid"));
 
-        twitterAPI1 = new TwitterFactory().getInstance(id1.screenName, id1.pass);
-        twitterAPI2 = new TwitterFactory().getInstance(id2.screenName, id2.pass);
-        twitterAPI3 = new TwitterFactory().getInstance(id3.screenName, id3.pass);
-        twitterAPI4 = new TwitterFactory().getInstance(id4.screenName, id4.pass);
-        twitterAPIBestFriend1 = new TwitterFactory().getInstance(bestFriend1.screenName, bestFriend1.pass);
-        twitterAPIBestFriend2 = new TwitterFactory().getInstance(bestFriend2.screenName, bestFriend2.pass);
-        unauthenticated = new Twitter();
+        twitterAPI1 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(id1.screenName, id1.pass));
+        twitterAPI2 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(id2.screenName, id2.pass));
+        twitterAPI3 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(id3.screenName, id3.pass));
+        twitterAPI4 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(id4.screenName, id4.pass));
+        twitterAPIBestFriend1 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(bestFriend1.screenName, bestFriend1.pass));
+        twitterAPIBestFriend2 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(bestFriend2.screenName, bestFriend2.pass));
+        unauthenticated = (Twitter)assertDeserializedFormIsEqual(new Twitter());
         followsOneWay = p.getProperty("followsOneWay");
     }
 

@@ -213,6 +213,20 @@ public class DAOTest extends TwitterTestBase {
         return that;
     }
 
+    public static Object assertDeserializedFormIsNotEqual(Object obj) throws Exception {
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
+        oos.writeObject(obj);
+        byteOutputStream.close();
+        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteOutputStream.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(byteInputStream);
+        Object that = ois.readObject();
+        byteInputStream.close();
+        ois.close();
+        assertFalse(obj.equals(that));
+        return that;
+    }
+
     /**
      *
      * @param obj the object to be asserted

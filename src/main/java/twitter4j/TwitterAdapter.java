@@ -120,6 +120,11 @@ public class TwitterAdapter implements TwitterListener {
     /*User Methods*/
     public void gotUserDetail(User user){
     }
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    public void searchedUser(ResponseList<User> userList) {
+    }
 
     public void gotFriendsStatuses(PagableResponseList<User> users){
     }

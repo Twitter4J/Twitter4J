@@ -55,6 +55,7 @@ import static twitter4j.TwitterMethod.*;
 /**
  * Twitter API with a series of asynchronous APIs.<br>
  * With this class, you can call TwitterAPI asynchronously.<br>
+ * Note that currently this class is NOT compatible with Google App Engine as it is maintaining threads internally.
  * @see twitter4j.AsyncTwitter
  * @see twitter4j.TwitterListener
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -517,6 +518,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
         getDispatcher().invokeLater(new AsyncTask(SHOW_USER, listener, new Object[] {userId}) {
             public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
                 listener.gotUserDetail(twitter.showUser( (Integer) args[0]));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void searchUsers(String query, int page) {
+        getDispatcher().invokeLater(new AsyncTask(SHOW_USER, listener, new Object[] {query, page}) {
+            public void invoke(TwitterListener listener,Object[] args) throws TwitterException {
+                listener.searchedUser(twitter.searchUsers( (String) args[0], (Integer)args[1]));
             }
         });
     }

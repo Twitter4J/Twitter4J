@@ -31,7 +31,8 @@ import twitter4j.http.Authorization;
 
 /**
  * A factory class for TwitterFactory.<br>
- * An instance of this class is completely thread safe and can be re-used and used concurrently.
+ * An instance of this class is completely thread safe and can be re-used and used concurrently.<br>
+ * Note that TwitterStream is NOT compatible with Google App Engine as GAE is not capable of handling requests longer than 30 seconds.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0

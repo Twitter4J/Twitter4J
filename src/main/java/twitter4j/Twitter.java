@@ -491,6 +491,8 @@ public class Twitter extends TwitterOAuthSupportBase
                 + "statuses/retweets/" + statusId + ".json", auth));
     }
 
+    /* User Methods */
+
     /**
      * {@inheritDoc}
      */
@@ -507,7 +509,17 @@ public class Twitter extends TwitterOAuthSupportBase
                 + userId, auth));
     }
 
-    /* User Methods */
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<User> searchUsers(String query, int page) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
+                "users/search.json", new HttpParameter[]{
+                new HttpParameter("q", query),
+                new HttpParameter("per_page", 20),
+                new HttpParameter("page", page)}, auth));
+    }
 
     /**
      * {@inheritDoc}

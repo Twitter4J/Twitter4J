@@ -26,6 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.ResponseList;
+import twitter4j.TwitterException;
+import twitter4j.User;
+
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
@@ -45,6 +49,17 @@ public interface UserMethodsAsync {
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users%C2%A0show</a>
 	 */
 	void showUser(int userId);
+
+    /**
+     * Run a search for users similar to Find People button on Twitter.com; the same results returned by people search on Twitter.com will be returned by using this API (about being listed in the People Search).  It is only possible to retrieve the first 1000 matches from this API.
+     * <br>This method calls http://api.twitter.com/1/users/search.json
+     *
+     * @param query The query to run against people search.
+     * @param page Specifies the page of results to retrieve. Number of statuses page is fixed to 20.
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users-search">Twitter API Wiki / Twitter REST API Method: statuses friends</a>
+     */
+    void searchUsers(String query, int page) throws TwitterException;
 
 	/**
 	 * Returns the specified user's friends, each with current status inline.

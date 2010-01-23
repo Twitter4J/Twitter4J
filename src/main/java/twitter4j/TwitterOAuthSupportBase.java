@@ -46,13 +46,17 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
         http.setHttpResponseListener(this);
     }
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(rateLimitStatusListener);
+        if (rateLimitStatusListener instanceof java.io.Serializable) {
+            out.writeObject(rateLimitStatusListener);
+        } else {
+            out.writeObject(null);
+        }
     }
 
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
         rateLimitStatusListener = (RateLimitStatusListener)stream.readObject();
-        HttpClientWrapper http = new HttpClientWrapper(conf);
+        http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
     }
 
@@ -199,9 +203,6 @@ class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListene
      */
     public void setRateLimitStatusListener(RateLimitStatusListener listener){
     	this.rateLimitStatusListener = listener;
-        System.out.println("setting a listener--------------");
-        System.out.println("rateLimit:"+rateLimitStatusListener);
-        System.out.println("hashCode:"+this.hashCode());
     }
 
     @Override

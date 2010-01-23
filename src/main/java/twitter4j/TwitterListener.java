@@ -112,6 +112,12 @@ public interface TwitterListener {
     /*User Methods*/
     void gotUserDetail(User user);
 
+    /**
+     * @since Twitter4J 2.1.0
+     */
+    void searchedUser(ResponseList<User> userList);
+
+
     void gotFriendsStatuses(PagableResponseList<User> users);
 
     void gotFollowersStatuses(PagableResponseList<User> users);
