@@ -51,7 +51,7 @@ public class TwitterException extends Exception {
 
     public static TwitterException createRateLimitedTwitterException(String msg
             , int statusCode, int retryAfter) {
-        TwitterException te = new TwitterException(msg);
+        TwitterException te = new TwitterException(msg, statusCode);
         te.retryAfter = retryAfter;
         return te;
     }
