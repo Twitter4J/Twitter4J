@@ -56,10 +56,20 @@ public class RequestToken extends OAuthToken implements java.io.Serializable {
         this.oauth = oauth;
     }
 
+    /**
+     * @return access token
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated Use Twitter.getAccessToken()
+     */
     public AccessToken getAccessToken() throws TwitterException {
         return oauth.getOAuthAccessToken();
     }
 
+    /**
+     * @return access token
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @deprecated Use Twitter.getAccessToken()
+     */
     public AccessToken getAccessToken(String oauth_verifier) throws TwitterException {
         return oauth.getOAuthAccessToken(oauth_verifier);
     }

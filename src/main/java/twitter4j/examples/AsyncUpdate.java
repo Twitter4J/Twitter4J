@@ -68,7 +68,7 @@ public class AsyncUpdate {
 
             @Override
             public void onException(TwitterException e, TwitterMethod method) {
-                if (method == TwitterMethod.UPDATE_STATUS) {
+                if (method == UPDATE_STATUS) {
                     e.printStackTrace();
                     synchronized (lock) {
                         lock.notify();

@@ -113,7 +113,7 @@ public final class TwitterMethod implements java.io.Serializable {
     /*User Methods*/
     public static final TwitterMethod SHOW_USER = new TwitterMethod("SHOW_USER");
     public static final TwitterMethod SEARCH_USERS = new TwitterMethod("SEARCH_USERS");
-    public static final TwitterMethod FRIENDS_STATUSES = new TwitterMethod("FRIENDS_STAUSES");
+    public static final TwitterMethod FRIENDS_STATUSES = new TwitterMethod("FRIENDS_STATUSES");
     public static final TwitterMethod FOLLOWERS_STATUSES = new TwitterMethod("FOLLOWERS_STATUSES");
 
     /*List Methods*/
@@ -128,8 +128,8 @@ public final class TwitterMethod implements java.io.Serializable {
 
     /*List Members Methods*/
     public static final TwitterMethod LIST_MEMBERS = new TwitterMethod("LIST_MEMBERS");
-    public static final TwitterMethod ADD_LIST_MEMBER = new TwitterMethod("ADD_LIST_MEMBERS");
-    public static final TwitterMethod DELETE_LIST_MEMBER = new TwitterMethod("DELETE_LIST_MEMBERS");
+    public static final TwitterMethod ADD_LIST_MEMBER = new TwitterMethod("ADD_LIST_MEMBER");
+    public static final TwitterMethod DELETE_LIST_MEMBER = new TwitterMethod("DELETE_LIST_MEMBER");
     public static final TwitterMethod CHECK_LIST_MEMBERSHIP = new TwitterMethod("CHECK_LIST_MEMBERSHIP");
 
     /*List Subscribers Methods*/

@@ -35,6 +35,7 @@ public interface OAuthSupport {
      *
      * @return access token
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @throws IllegalStateException when RequestToken has never been acquired
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.0

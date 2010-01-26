@@ -109,6 +109,7 @@ public class OAuthTest extends TwitterTestUnit {
         // desktop client - requiring pin
         unauthenticated.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         rt = unauthenticated.getOAuthRequestToken();
+        // trying to get an access token without permitting the request token.
         try {
             rt.getAccessToken();
             fail();
@@ -117,6 +118,7 @@ public class OAuthTest extends TwitterTestUnit {
         }
         twitter.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         rt = twitter.getOAuthRequestToken();
+        // trying to get an access token without permitting the request token.
         try {
             twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret());
             fail();
@@ -146,9 +148,17 @@ public class OAuthTest extends TwitterTestUnit {
 
     }
 
+    public void testIllegalStatus() throws Exception {
+        try {
+            new TwitterFactory().getInstance().getOAuthAccessToken();
+            fail("should throw IllegalStateException since request token hasn't been acquired.");
+        } catch (IllegalStateException ignore) {
+        }
+    }
+
     public void testSigninWithTwitter() throws Exception {
         RequestToken rt;
-        Twitter twitter = new Twitter();
+        Twitter twitter = new TwitterFactory().getInstance();
         HttpClient http;
         HttpResponse response;
         String resStr;

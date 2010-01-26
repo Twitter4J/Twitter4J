@@ -91,6 +91,12 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         con.addRequestProperty("Authorization", authorization);
     }
 
+    private void ensureTokenIsAvailable() {
+        if (null == oauthToken) {
+            throw new IllegalStateException("No Token available.");
+        }
+    }
+
     public boolean isEnabled() {
         return null != oauthToken && oauthToken instanceof AccessToken;
     }
@@ -116,6 +122,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      * {@inheritDoc}
      */
     public AccessToken getOAuthAccessToken() throws TwitterException {
+        ensureTokenIsAvailable();
         try {
             oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), this));
             return (AccessToken) oauthToken;
@@ -128,6 +135,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      * {@inheritDoc}
      */
     public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
+        ensureTokenIsAvailable();
         try {
             oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL()
                     , new HttpParameter[]{new HttpParameter("oauth_verifier", oauthVerifier)}, this));

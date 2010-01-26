@@ -314,5 +314,112 @@ public interface TwitterListener {
      * @param method
      */
     void onException(TwitterException te, TwitterMethod method);
+    /*Search API Methods*/
+    TwitterMethod SEARCH = TwitterMethod.SEARCH;
+
+    TwitterMethod TRENDS = TwitterMethod.TRENDS;
+    TwitterMethod CURRENT_TRENDS = TwitterMethod.CURRENT_TRENDS;
+    TwitterMethod DAILY_TRENDS = TwitterMethod.DAILY_TRENDS;
+    TwitterMethod WEEKLY_TRENDS = TwitterMethod.WEEKLY_TRENDS;
+
+    /*Timeline Methods*/
+    TwitterMethod PUBLIC_TIMELINE = TwitterMethod.PUBLIC_TIMELINE;
+    TwitterMethod HOME_TIMELINE = TwitterMethod.HOME_TIMELINE;
+    TwitterMethod FRIENDS_TIMELINE = TwitterMethod.FRIENDS_TIMELINE;
+    TwitterMethod USER_TIMELINE = TwitterMethod.USER_TIMELINE;
+    TwitterMethod MENTIONS = TwitterMethod.MENTIONS;
+    TwitterMethod RETWEETED_BY_ME = TwitterMethod.RETWEETED_BY_ME;
+    TwitterMethod RETWEETED_TO_ME = TwitterMethod.RETWEETED_TO_ME;
+    TwitterMethod RETWEETS_OF_ME = TwitterMethod.RETWEETS_OF_ME;
+
+    /*Status Methods*/
+    TwitterMethod SHOW_STATUS = TwitterMethod.SHOW_STATUS;
+    TwitterMethod UPDATE_STATUS = TwitterMethod.UPDATE_STATUS;
+    TwitterMethod DESTROY_STATUS = TwitterMethod.DESTROY_STATUS;
+    TwitterMethod RETWEET_STATUS = TwitterMethod.RETWEET_STATUS;
+    TwitterMethod RETWEETS = TwitterMethod.RETWEETS;
+
+    /*User Methods*/
+    TwitterMethod SHOW_USER = TwitterMethod.SHOW_USER;
+    TwitterMethod SEARCH_USERS = TwitterMethod.SEARCH_USERS;
+    TwitterMethod FRIENDS_STATUSES = TwitterMethod.FRIENDS_STATUSES;
+    TwitterMethod FOLLOWERS_STATUSES = TwitterMethod.FOLLOWERS_STATUSES;
+
+    /*List Methods*/
+    TwitterMethod CREATE_USER_LIST = TwitterMethod.CREATE_USER_LIST;
+    TwitterMethod UPDATE_USER_LIST = TwitterMethod.UPDATE_USER_LIST;
+    TwitterMethod USER_LISTS = TwitterMethod.USER_LISTS;
+    TwitterMethod SHOW_USER_LIST = TwitterMethod.SHOW_USER_LIST;
+    TwitterMethod DELETE_USER_LIST = TwitterMethod.DELETE_USER_LIST;
+    TwitterMethod USER_LIST_STATUSES = TwitterMethod.USER_LIST_STATUSES;
+    TwitterMethod USER_LIST_MEMBERSHIPS = TwitterMethod.USER_LIST_MEMBERSHIPS;
+    TwitterMethod USER_LIST_SUBSCRIPTIONS = TwitterMethod.USER_LIST_SUBSCRIPTIONS;
+
+    /*List Members Methods*/
+    TwitterMethod LIST_MEMBERS = TwitterMethod.LIST_MEMBERS;
+    TwitterMethod ADD_LIST_MEMBER = TwitterMethod.ADD_LIST_MEMBER;
+    TwitterMethod DELETE_LIST_MEMBER = TwitterMethod.DELETE_LIST_MEMBER;
+    TwitterMethod CHECK_LIST_MEMBERSHIP = TwitterMethod.CHECK_LIST_MEMBERSHIP;
+
+    /*List Subscribers Methods*/
+    TwitterMethod LIST_SUBSCRIBERS = TwitterMethod.LIST_SUBSCRIBERS;
+    TwitterMethod SUBSCRIBE_LIST = TwitterMethod.SUBSCRIBE_LIST;
+    TwitterMethod UNSUBSCRIBE_LIST = TwitterMethod.UNSUBSCRIBE_LIST;
+    TwitterMethod CHECK_LIST_SUBSCRIPTION = TwitterMethod.CHECK_LIST_SUBSCRIPTION;
+
+    /*Direct Message Methods*/
+    TwitterMethod DIRECT_MESSAGES = TwitterMethod.DIRECT_MESSAGES;
+    TwitterMethod SENT_DIRECT_MESSAGES = TwitterMethod.SENT_DIRECT_MESSAGES;
+    TwitterMethod SEND_DIRECT_MESSAGE = TwitterMethod.SEND_DIRECT_MESSAGE;
+    TwitterMethod DESTROY_DIRECT_MESSAGES = TwitterMethod.DESTROY_DIRECT_MESSAGES;
+
+    /*Friendship Methods*/
+    TwitterMethod CREATE_FRIENDSHIP = TwitterMethod.CREATE_FRIENDSHIP;
+    TwitterMethod DESTROY_FRIENDSHIP = TwitterMethod.DESTROY_FRIENDSHIP;
+    TwitterMethod EXISTS_FRIENDSHIP = TwitterMethod.EXISTS_FRIENDSHIP;
+    TwitterMethod SHOW_FRIENDSHIP = TwitterMethod.SHOW_FRIENDSHIP;
+
+    /*Social Graph Methods*/
+    TwitterMethod FRIENDS_IDS = TwitterMethod.FRIENDS_IDS;
+    TwitterMethod FOLLOWERS_IDS = TwitterMethod.FOLLOWERS_IDS;
+
+    /*Account Methods*/
+    //verifyCredentials
+    TwitterMethod RATE_LIMIT_STATUS = TwitterMethod.RATE_LIMIT_STATUS;
+    TwitterMethod UPDATE_DELIVERY_DEVICE = TwitterMethod.UPDATE_DELIVERY_DEVICE;
+    TwitterMethod UPDATE_PROFILE_COLORS = TwitterMethod.UPDATE_PROFILE_COLORS;
+    TwitterMethod UPDATE_PROFILE_IMAGE = TwitterMethod.UPDATE_PROFILE_IMAGE;
+    TwitterMethod UPDATE_PROFILE_BACKGROUND_IMAGE = TwitterMethod.UPDATE_PROFILE_BACKGROUND_IMAGE;
+    TwitterMethod UPDATE_PROFILE = TwitterMethod.UPDATE_PROFILE;
+
+    /*Favorite Methods*/
+    TwitterMethod FAVORITES = TwitterMethod.FAVORITES;
+    TwitterMethod CREATE_FAVORITE = TwitterMethod.CREATE_FAVORITE;
+    TwitterMethod DESTROY_FAVORITE = TwitterMethod.DESTROY_FAVORITE;
+
+    /*Notification Methods*/
+    TwitterMethod ENABLE_NOTIFICATION = TwitterMethod.ENABLE_NOTIFICATION;
+    TwitterMethod DISABLE_NOTIFICATION = TwitterMethod.DISABLE_NOTIFICATION;
+
+    /*Block Methods*/
+    TwitterMethod CREATE_BLOCK = TwitterMethod.CREATE_BLOCK;
+    TwitterMethod DESTROY_BLOCK = TwitterMethod.DESTROY_BLOCK;
+    TwitterMethod EXISTS_BLOCK = TwitterMethod.EXISTS_BLOCK;
+    TwitterMethod BLOCKING_USERS = TwitterMethod.BLOCKING_USERS;
+    TwitterMethod BLOCKING_USERS_IDS = TwitterMethod.BLOCKING_USERS_IDS;
+
+    /*Spam Reporting Methods*/
+    TwitterMethod REPORT_SPAM = TwitterMethod.REPORT_SPAM;
+
+    /*Saved Searches Methods*/
+    //getSavedSearches()
+    //showSavedSearch()
+    //createSavedSearch()
+    //destroySavedSearch()
+
+    /*Local Trends Methods*/
+
+    /*Help Methods*/
+    TwitterMethod TEST = TwitterMethod.TEST;
 
 }
