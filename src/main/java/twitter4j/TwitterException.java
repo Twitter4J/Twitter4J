@@ -82,7 +82,7 @@ public class TwitterException extends Exception {
      * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
      */
     public int getRetryAfter() {
-        if(this.statusCode != 503){
+        if(this.statusCode != 503 && this.statusCode != 420){
             throw new IllegalStateException("Rate limitation is not exceeded");
         }
         return retryAfter;
