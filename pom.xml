@@ -4,9 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-core</artifactId>
+    <version>2.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>twitter4j</name>
-    <version>2.1.0</version>
+    <description>A Java library for the Twitter API</description>
     <url>http://yusuke.homeip.net/twitter4j/</url>
     <licenses>
         <license>
@@ -15,23 +16,66 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <description>A Java library for the Twitter API</description>
+    <scm>
+        <url>http://yusuke.homeip.net/fisheye/browse/twitter4j</url>
+        <connection>scm:git:http://github.com/yusuke/twitter4j/</connection>
+    </scm>
+    <developers>
+        <developer>
+            <id>yusuke</id>
+            <name>Yusuke</name>
+            <email>yusuke@mac.com</email>
+            <url>http://yusuke.homeip.net/diary/</url>
+            <roles>
+                <role>lead</role>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>-9</timezone>
+        </developer>
+    </developers>
     <issueManagement>
         <system>Jira</system>
         <url>http://yusuke.homeip.net/jira/browse/TFJ</url>
     </issueManagement>
-    <scm>
-        <connection>scm:git:http://github.com/yusuke/twitter4j/</connection>
-        <url>http://yusuke.homeip.net/fisheye/browse/twitter4j</url>
-    </scm>
     <distributionManagement>
         <repository>
-            <id>net.homeip.yusuke</id>
-            <name>Yusuke Repository</name>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
             <uniqueVersion>false</uniqueVersion>
-            <url>file:${user.home}/maven2/</url>
+            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/
+            </url>
         </repository>
     </distributionManagement>
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.0-alpha-4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <mailingLists>
         <mailingList>
             <name>Twitter4J</name>
@@ -75,6 +119,11 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.0-beta-9</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
@@ -87,7 +136,8 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF
+                        </manifestFile>
                         <manifest>
                             <addDefaultSpecificationEntries>true
                             </addDefaultSpecificationEntries>
@@ -119,7 +169,8 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <excludePackageNames>twitter4j.org.json,twitter4j.conf,twitter4j.logging,twitter4j.http
+                            <excludePackageNames>
+                                twitter4j.org.json,twitter4j.conf,twitter4j.logging,twitter4j.http
                             </excludePackageNames>
                         </configuration>
                     </execution>
