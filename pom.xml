@@ -16,7 +16,7 @@
     </licenses>
     <scm>
         <url>http://yusuke.homeip.net/fisheye/browse/twitter4j</url>
-        <connection>scm:git:http://github.com/yusuke/twitter4j/</connection>
+        <connection>scm:git://github.com/yusuke/twitter4j.git</connection>
     </scm>
     <developers>
         <developer>
