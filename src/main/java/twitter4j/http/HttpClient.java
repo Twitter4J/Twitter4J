@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.http;
 
 import twitter4j.TwitterException;
+import twitter4j.conf.ConfigurationContext;
 import twitter4j.logging.Logger;
 
 import java.io.BufferedInputStream;
@@ -86,6 +87,11 @@ public class HttpClient implements java.io.Serializable {
             String versionStr = System.getProperty("java.specification.version");
             if (null != versionStr) {
                 isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
+            }
+            if (ConfigurationContext.getInstance().isDalvik()) {
+                // quick and dirty workaround for TFJ-296
+                // it must be a Dndroid/Dalvik/Harmony side issue!!!!
+                System.setProperty("http.keepAlive", "false");
             }
         } catch (AccessControlException ace) {
             isJDK14orEarlier = true;

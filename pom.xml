@@ -46,7 +46,13 @@
             <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/
             </url>
         </repository>
-    </distributionManagement>
+        <snapshotRepository>
+             <id>org.twitter4j</id>
+             <name>twitter4j.org Repository</name>
+             <uniqueVersion>false</uniqueVersion>
+             <url>file:${user.home}/maven2/</url>
+         </snapshotRepository>
+        </distributionManagement>
     <profiles>
         <profile>
             <id>release-sign-artifacts</id>
@@ -133,6 +139,20 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.0-alpha-4</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
@@ -188,4 +208,9 @@
             </plugin>
         </plugins>
     </build>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8
+        </project.reporting.outputEncoding>
+    </properties>
 </project>
