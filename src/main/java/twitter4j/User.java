@@ -101,56 +101,72 @@ public interface User extends TwitterResponse, java.io.Serializable {
     int getFollowersCount();
 
     /**
+     * Returns the current status of the user<br>
+     * This can be null if the instance if from Status.getUser().
+     * @return current status of the user
+     * @since Twitter4J 2.1.1
+     */
+    Status getStatus();
+
+    /**
      * @return created_at or null if the user is protected
      * @since Twitter4J 1.1.0
+     * @deprecated use getStatus().getCreatedAt()
      */
     Date getStatusCreatedAt();
 
     /**
      * @return status id or -1 if the user is protected
+     * @deprecated use getStatus().getId()
      */
     long getStatusId();
 
     /**
      * @return status text or null if the user is protected
+     * @deprecated use getStatus().getText()
      */
     String getStatusText();
 
     /**
      * @return source or null if the user is protected
      * @since 1.1.4
+     * @deprecated use getStatus().getSource()
      */
     String getStatusSource();
 
     /**
      * @return truncated or false if the user is protected
      * @since 1.1.4
+     * @deprecated use getStatus().isTruncated()
      */
     boolean isStatusTruncated();
 
     /**
      * @return in_reply_to_status_id or -1 if the user is protected
      * @since 1.1.4
+     * @deprecated use getStatus().getInReplyToStatusId()
      */
     long getStatusInReplyToStatusId();
 
     /**
      * @return in_reply_to_user_id or -1 if the user is protected
      * @since 1.1.4
+     * @deprecated use getStatus().getInReplyToUserId()
      */
     int getStatusInReplyToUserId();
 
     /**
      * @return favorited or false if the user is protected
      * @since 1.1.4
+     * @deprecated use getStatus().isFavorited()
      */
     boolean isStatusFavorited();
 
     /**
      * @return in_reply_to_screen_name or null if the user is protected
      * @since 1.1.4
+     * @deprecated use getStatus().getInReplyToScreenName()
      */
-
     String getStatusInReplyToScreenName();
 
     String getProfileBackgroundColor();

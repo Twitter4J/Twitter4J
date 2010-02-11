@@ -115,7 +115,8 @@ public interface Status extends TwitterResponse, java.io.Serializable {
     boolean isFavorited();
 
     /**
-     * Return the user
+     * Return the user associated with the status.<br>
+     * This can be null if the instance if from User.getStatus().
      *
      * @return the user
      */
