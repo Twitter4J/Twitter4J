@@ -41,7 +41,7 @@ import static twitter4j.ParseUtil.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
-/*package*/ class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
+/*package*/ final class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
 
     private int id;
     private String name;
@@ -53,15 +53,7 @@ import static twitter4j.ParseUtil.*;
     private boolean isProtected;
     private int followersCount;
 
-    private Date statusCreatedAt;
-    private long statusId = -1;
-    private String statusText = null;
-    private String statusSource = null;
-    private boolean statusTruncated = false;
-    private long statusInReplyToStatusId = -1;
-    private int statusInReplyToUserId = -1;
-    private boolean statusFavorited = false;
-    private String statusInReplyToScreenName = null;
+    private Status status;
 
     private String profileBackgroundColor;
     private String profileTextColor;
@@ -118,16 +110,8 @@ import static twitter4j.ParseUtil.*;
             profileBackgroundTiled = getBoolean("profile_background_tile", json);
             statusesCount = getInt("statuses_count", json);
             if (!json.isNull("status")) {
-                JSONObject status = json.getJSONObject("status");
-                statusCreatedAt = getDate(status.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
-                statusId = status.getLong("id");
-                statusText = status.getString("text");
-                statusSource = status.getString("source");
-                statusTruncated = status.getBoolean("truncated");
-                statusInReplyToStatusId = getLong("in_reply_to_status_id", status);
-                statusInReplyToUserId = getInt("in_reply_to_user_id", status);
-                statusFavorited = status.getBoolean("favorited");
-                statusInReplyToScreenName = status.getString("in_reply_to_screen_name");
+                JSONObject statusJSON = json.getJSONObject("status");
+                status = new StatusJSONImpl(statusJSON);
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
@@ -209,63 +193,63 @@ import static twitter4j.ParseUtil.*;
      * {@inheritDoc}
      */
     public Date getStatusCreatedAt() {
-        return statusCreatedAt;
+        return status.getCreatedAt();
     }
 
     /**
      * {@inheritDoc}
      */
     public long getStatusId() {
-        return statusId;
+        return status.getId();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getStatusText() {
-        return statusText;
+        return status.getText();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getStatusSource() {
-        return statusSource;
+        return status.getSource();
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean isStatusTruncated() {
-        return statusTruncated;
+        return status.isTruncated();
     }
 
     /**
      * {@inheritDoc}
      */
     public long getStatusInReplyToStatusId() {
-        return statusInReplyToStatusId;
+        return status.getInReplyToStatusId();
     }
 
     /**
      * {@inheritDoc}
      */
     public int getStatusInReplyToUserId() {
-        return statusInReplyToUserId;
+        return status.getInReplyToUserId();
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean isStatusFavorited() {
-        return statusFavorited;
+        return status.isFavorited();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getStatusInReplyToScreenName() {
-        return -1 != statusInReplyToUserId ? statusInReplyToScreenName : null;
+        return status.getInReplyToScreenName();
     }
 
     /**
@@ -306,6 +290,14 @@ import static twitter4j.ParseUtil.*;
     public int getFriendsCount() {
         return friendsCount;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Status getStatus() {
+        return status;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -432,15 +424,7 @@ import static twitter4j.ParseUtil.*;
                 ", url='" + url + '\'' +
                 ", isProtected=" + isProtected +
                 ", followersCount=" + followersCount +
-                ", statusCreatedAt=" + statusCreatedAt +
-                ", statusId=" + statusId +
-                ", statusText='" + statusText + '\'' +
-                ", statusSource='" + statusSource + '\'' +
-                ", statusTruncated=" + statusTruncated +
-                ", statusInReplyToStatusId=" + statusInReplyToStatusId +
-                ", statusInReplyToUserId=" + statusInReplyToUserId +
-                ", statusFavorited=" + statusFavorited +
-                ", statusInReplyToScreenName='" + statusInReplyToScreenName + '\'' +
+                ", status=" + status +
                 ", profileBackgroundColor='" + profileBackgroundColor + '\'' +
                 ", profileTextColor='" + profileTextColor + '\'' +
                 ", profileLinkColor='" + profileLinkColor + '\'' +
