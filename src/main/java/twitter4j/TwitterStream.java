@@ -110,13 +110,13 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#firehose">Twitter API Wiki / Streaming API Documentation - firehose</a>
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/firehose">Twitter API Wiki / Streaming API Documentation - firehose</a>
      * @since Twitter4J 2.0.4
      */
-    public void firehose(int count) throws TwitterException {
-        startHandler(new StreamHandlingThread(new Object[]{count}) {
+    public void firehose(final int count) throws TwitterException {
+        startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
-                return getFirehoseStream((Integer) args[0]);
+                return getFirehoseStream(count);
             }
         });
     }
@@ -128,7 +128,7 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#firehose">Twitter API Wiki / Streaming API Documentation - firehose</a>
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/firehose">Twitter API Wiki / Streaming API Documentation - firehose</a>
      * @since Twitter4J 2.0.4
      */
     public StatusStream getFirehoseStream(int count) throws TwitterException {
@@ -143,16 +143,54 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
     }
 
     /**
+     * Starts listening on all public statuses containing links. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the links stream. If your service warrants access to it, we'll contact you.
+     *
+     * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/links">Twitter API Wiki / Streaming API Documentation - links</a>
+     * @since Twitter4J 2.1.1
+     */
+    public void links(final int count) throws TwitterException {
+        startHandler(new StreamHandlingThread() {
+            public StatusStream getStream() throws TwitterException {
+                return getLinksStream(count);
+            }
+        });
+    }
+
+    /**
+     * Returns a status stream of all public statuses containing links. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the links stream. If your service warrants access to it, we'll contact you.
+     *
+     * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/links">Twitter API Wiki / Streaming API Documentation - links</a>
+     * @since Twitter4J 2.1.1
+     */
+    public StatusStream getLinksStream(int count) throws TwitterException {
+        ensureBasicEnabled();
+        try {
+            return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/links.json"
+                    , new HttpParameter[]{new HttpParameter("count"
+                            , String.valueOf(count))}, auth));
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    /**
      * Starts listening on all retweets. The retweet stream is not a generally available resource. Few applications require this level of access. Creative use of a combination of other resources and various access levels can satisfy nearly every application use case. As of 9/11/2009, the site-wide retweet feature has not yet launched, so there are currently few, if any, retweets on this stream.
      *
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#retweet">Twitter API Wiki / Streaming API Documentation - retweet</a>
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/retweet">Twitter API Wiki / Streaming API Documentation - retweet</a>
      * @since Twitter4J 2.0.10
      */
     public void retweet() throws TwitterException {
         ensureBasicEnabled();
-        startHandler(new StreamHandlingThread(new Object[]{}) {
+        startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getRetweetStream();
             }
@@ -165,11 +203,11 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#firehose">Twitter API Wiki / Streaming API Documentation - firehose</a>
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/retweet">Twitter API Wiki / Streaming API Documentation - retweet</a>
      * @since Twitter4J 2.0.10
      */
     public StatusStream getRetweetStream() throws TwitterException {
-        ensureAuthorizationEnabled();
+        ensureBasicEnabled();
         try {
             return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
                     , new HttpParameter[]{}, auth));
@@ -183,12 +221,12 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
      *
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#sample">Twitter API Wiki / Streaming API Documentation - sample</a>
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/sample">Twitter API Wiki / Streaming API Documentation - sample</a>
      * @since Twitter4J 2.0.10
      */
     public void sample() throws TwitterException {
         ensureBasicEnabled();
-        startHandler(new StreamHandlingThread(null) {
+        startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getSampleStream();
             }
@@ -223,13 +261,13 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
      * @param track  Specifies keywords to track.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#filter">Twitter API Wiki / Streaming API Documentation - filter</a>
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
      * @since Twitter4J 2.0.10
      */
-    public void filter(int count, int[] follow, String[] track) throws TwitterException {
-        startHandler(new StreamHandlingThread(new Object[]{count, follow, track}) {
+    public void filter(final int count, final int[] follow, final String[] track) throws TwitterException {
+        startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
-                return getFilterStream((Integer) args[0], (int[]) args[1], (String[]) args[2]);
+                return getFilterStream(count, follow, track);
             }
         });
     }
@@ -241,7 +279,7 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#filter">Twitter API Wiki / Streaming API Documentation - filter</a>
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
      * @since Twitter4J 2.0.10
      */
     public StatusStream getFilterStream(int count, int[] follow, String[] track)
@@ -311,14 +349,12 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
 
     abstract class StreamHandlingThread extends Thread {
         StatusStream stream = null;
-        Object[] args;
         private List<Long> retryHistory;
         private static final String NAME = "Twitter Stream Handling Thread";
         private boolean closed = false;
 
-        StreamHandlingThread(Object[] args) {
+        StreamHandlingThread() {
             super(NAME + "[initializing]");
-            this.args = args;
             retryHistory = new ArrayList<Long>(retryPerMinutes);
         }
 
