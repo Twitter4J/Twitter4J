@@ -139,7 +139,7 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * Returns authenticating user's screen name.<br>
      * This method may internally call verifyCredentials() on the first invocation if<br>
-     * - this instance is authenticated by Basic and email address is supplied instead of screen name
+     * - this instance is authenticated by Basic and email address is supplied instead of screen name, or
      * - this instance is authenticated by OAuth.<br>
      * Note that this method returns a transiently cached (will be lost upon serialization) screen name while it is possible to change a user's screen name.<br>
      *
@@ -171,7 +171,7 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * Returns authenticating user's user id.<br>
      * This method may internally call verifyCredentials() on the first invocation if<br>
-     * - this instance is authenticated by Basic and email address is supplied instead of screen name
+     * - this instance is authenticated by Basic and email address is supplied instead of screen name, or
      * - this instance is authenticated by OAuth.<br>
      *
      * @return the authenticating user's id

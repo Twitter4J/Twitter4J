@@ -755,8 +755,8 @@ public class TwitterTestUnit extends TwitterTestBase {
             SavedSearch ss2 = twitterAPI1.destroySavedSearch(ss1.getId());
             assertEquals(ss1, ss2);
         } catch (TwitterException te) {
-            // sometimes it returns 404 when its out of sync.
-            assertEquals(404, te.getStatusCode());
+            // sometimes it returns 404 or 500 when its out of sync.
+            assertTrue(404 == te.getStatusCode() || 500 == te.getStatusCode());
         }
     }
 
