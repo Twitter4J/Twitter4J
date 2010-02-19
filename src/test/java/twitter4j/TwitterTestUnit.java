@@ -63,14 +63,16 @@ public class TwitterTestUnit extends TwitterTestBase {
         Twitter twitter = new TwitterFactory().getInstance("foo", "bar");
         Twitter deserialized = (Twitter)assertDeserializedFormIsEqual(twitter);
 
-        assertEquals(deserialized.screenName, twitter.screenName);
+        assertEquals(deserialized.getScreenName(), twitter.getScreenName());
         assertEquals(deserialized.auth, twitter.auth);
 
         twitter = new TwitterFactory().getInstance();
         deserialized = (Twitter)assertDeserializedFormIsEqual(twitter);
-        assertEquals(deserialized.screenName, twitter.screenName);
         assertEquals(deserialized.auth, twitter.auth);
-
+    }
+    public void testGetScreenName() throws Exception {
+        assertEquals(id1.screenName, twitterAPI1.getScreenName());
+        assertEquals(id1.id, twitterAPI1.getId());
     }
 
     public void testGetFriendsTimeline() throws Exception {

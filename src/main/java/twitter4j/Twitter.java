@@ -63,7 +63,7 @@ import java.util.List;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Twitter extends TwitterOAuthSupportBase
+public final class Twitter extends TwitterOAuthSupportBase
         implements java.io.Serializable,
         SearchMethods,
         TimelineMethods,
@@ -116,32 +116,6 @@ public class Twitter extends TwitterOAuthSupportBase
         super(conf, auth);
     }
 
-    /**
-     * Returns authenticating user's screen name.<br>
-     * This method automatically retrieves userId using verifyCredentials if the instance is using OAuth based authentication.
-     *
-     * @return the authenticating screen name
-     * @throws TwitterException      when verifyCredentials threw an exception.
-     * @throws IllegalStateException if no credentials are supplied
-     */
-    protected String getScreenName() throws TwitterException, IllegalStateException {
-        if(null != screenName){
-            return screenName;
-        }
-        if (!auth.isEnabled()) {
-            throw new IllegalStateException(
-                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
-        }
-        if (auth instanceof BasicAuthorization) {
-            screenName = ((BasicAuthorization) auth).getUserId();
-            if (-1 != screenName.indexOf("@")) {
-                screenName = null;
-            }
-        }
-        // retrieve the screen name if this instance is authenticated with OAuth or email address
-        return screenName = this.verifyCredentials().getScreenName();
-    }
-
     private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter[] params2){
         if(null != params1 && null != params2){
             HttpParameter[] params = new HttpParameter[params1.length + params2.length];
@@ -157,6 +131,64 @@ public class Twitter extends TwitterOAuthSupportBase
         } else {
             return params2;
         }
+    }
+
+    private transient String screenName = null;
+    private transient int id = 0;
+
+    /**
+     * Returns authenticating user's screen name.<br>
+     * This method may internally call verifyCredentials() on the first invocation if<br>
+     * - this instance is authenticated by Basic and email address is supplied instead of screen name
+     * - this instance is authenticated by OAuth.<br>
+     * Note that this method returns a transiently cached (will be lost upon serialization) screen name while it is possible to change a user's screen name.<br>
+     *
+     * @return the authenticating screen name
+     * @throws TwitterException      when verifyCredentials threw an exception.
+     * @throws IllegalStateException if no credentials are supplied. i.e.) this is an anonymous Twitter instance
+     * @since Twitter4J 2.1.1
+     */
+    public String getScreenName() throws TwitterException, IllegalStateException {
+        if (!auth.isEnabled()) {
+            throw new IllegalStateException(
+                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
+        }
+        if (null == screenName) {
+            if (auth instanceof BasicAuthorization) {
+                screenName = ((BasicAuthorization) auth).getUserId();
+                if (-1 != screenName.indexOf("@")) {
+                    screenName = null;
+                }
+            }
+            if (null == screenName) {
+                // retrieve the screen name if this instance is authenticated with OAuth or email address
+                verifyCredentials();
+            }
+        }
+        return screenName;
+    }
+
+    /**
+     * Returns authenticating user's user id.<br>
+     * This method may internally call verifyCredentials() on the first invocation if<br>
+     * - this instance is authenticated by Basic and email address is supplied instead of screen name
+     * - this instance is authenticated by OAuth.<br>
+     *
+     * @return the authenticating user's id
+     * @throws TwitterException when verifyCredentials threw an exception.
+     * @throws IllegalStateException if no credentials are supplied. i.e.) this is an anonymous Twitter instance
+     * @since Twitter4J 2.1.1
+     */
+    public int getId() throws TwitterException, IllegalStateException {
+        if (!auth.isEnabled()) {
+            throw new IllegalStateException(
+                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
+        }
+        if(0 == id){
+            verifyCredentials();
+        }
+        // retrieve the screen name if this instance is authenticated with OAuth or email address
+        return id;
     }
 
 
@@ -1022,8 +1054,11 @@ public class Twitter extends TwitterOAuthSupportBase
      * {@inheritDoc}
      */
     public User verifyCredentials() throws TwitterException {
-        return new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json"
+        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json"
                 , auth));
+        this.screenName = user.getScreenName();
+        this.id = user.getId();
+        return user;
     }
 
     /**
@@ -1415,8 +1450,6 @@ public class Twitter extends TwitterOAuthSupportBase
     public RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException {
         return getOAuth().getOAuthRequestToken(callbackUrl);
     }
-
-    protected String screenName = null;
 
     /**
      * {@inheritDoc}
