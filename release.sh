@@ -13,6 +13,7 @@ cp build.properties $DIR/
 cp build.xml $DIR/
 cp LICENSE.txt $DIR/
 cp -r bin $DIR/
+cp -r powered-by-badge $DIR/
 cp -r lib $DIR/
 cp target/twitter4j-core-$1.jar $DIR/
 cp target/twitter4j-core-$1-sources.jar $DIR/
