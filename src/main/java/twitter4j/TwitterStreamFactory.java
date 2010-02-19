@@ -27,7 +27,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
+import twitter4j.http.AuthorizationFactory;
 
 /**
  * A factory class for TwitterFactory.<br>
@@ -37,51 +39,78 @@ import twitter4j.http.Authorization;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public class TwitterStreamFactory extends TwitterFactoryBase<TwitterStream>{
+public final class TwitterStreamFactory implements java.io.Serializable{
     private static final long serialVersionUID = 8146074704915782233L;
     private StatusListener listener = null;
+    private final Configuration conf;
 
     /**
-     * {@inheritDoc}
+     * Creates a TwitterStreamFactory with the root configuration.
      */
     public TwitterStreamFactory() {
-        super();
+        this.conf = ConfigurationContext.getInstance();
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a TwitterStreamFactory with a specified status listener
+     * @param listener the listener
      */
     public TwitterStreamFactory(StatusListener listener) {
-        super();
+        this.conf = ConfigurationContext.getInstance();
         this.listener = listener;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    TwitterStreamFactory(Configuration conf) {
-        super(conf);
-    }
 
     /**
-     * {@inheritDoc}
+     * Creates a TwitterStreamFactory with a specified config tree
+     * @param configTreePath the path
      */
     public TwitterStreamFactory(String configTreePath) {
-        super(configTreePath);
+        this.conf = ConfigurationContext.getInstance(configTreePath);
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a TwitterStreamFactory with a specified config tree and a listener
+     * @param configTreePath the path
      */
     public TwitterStreamFactory(String configTreePath, StatusListener listener) {
-        super(configTreePath);
+        this(configTreePath);
         this.listener = listener;
     }
 
+    // implementations for BasicSupportFactory
+
+    /**
+     * Returns a instance.
+     *
+     * @return default singleton instance
+     */
+    public TwitterStream getInstance(){
+        return getInstance(conf);
+    }
+
+    /**
+     * Returns a Basic Authenticated instance.
+     *
+     * @param screenName screen name
+     * @param password password
+     * @return an instance
+     */
+    public TwitterStream getInstance(String screenName, String password){
+        return getInstance(AuthorizationFactory
+                .getBasicAuthorizationInstance(screenName, password));
+    }
+
     /**
      * {@inheritDoc}
      */
-    protected TwitterStream getInstance(Configuration conf, Authorization auth) {
-        return new TwitterStream(conf, auth, listener);
+    public TwitterStream getInstance(Authorization auth){
+        return getInstance(conf,auth);
+    }
+    private TwitterStream getInstance(Configuration conf, Authorization auth) {
+            return new TwitterStream(conf, auth, listener);
+    }
+    private TwitterStream getInstance(Configuration conf) {
+            return new TwitterStream(conf, AuthorizationFactory.getInstance(conf, false), listener);
     }
 }

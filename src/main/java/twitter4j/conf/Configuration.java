@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.conf;
 
+import twitter4j.http.AuthorizationConfiguration;
 import twitter4j.http.HttpClientConfiguration;
 import twitter4j.http.HttpClientWrapperConfiguration;
 
@@ -35,7 +36,10 @@ import java.util.Map;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface Configuration extends HttpClientConfiguration, HttpClientWrapperConfiguration, java.io.Serializable {
+public interface Configuration extends HttpClientConfiguration
+        , HttpClientWrapperConfiguration
+        , AuthorizationConfiguration
+        , java.io.Serializable {
 
     boolean isDalvik();
 

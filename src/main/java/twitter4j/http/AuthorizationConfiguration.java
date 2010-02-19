@@ -24,65 +24,25 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
-
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.Authorization;
-import twitter4j.http.BasicAuthorization;
-import twitter4j.http.NullAuthorization;
+package twitter4j.http;
 
 /**
- * A FactoryBase class which supports Basic Authorization
+ * A static factory class for Authorization.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.1
  */
-abstract class TwitterFactoryBase<T> implements java.io.Serializable {
-    protected final Configuration conf;
+public interface AuthorizationConfiguration {
 
-    /**
-     * Creates a Factory
-     */
-    protected TwitterFactoryBase() {
-        this.conf = ConfigurationContext.getInstance();
-    }
+    String getUser();
 
-    /**
-     * Creates a Factory with a specified config tree path.
-     *
-     * @param configTreePath the path
-     */
-    protected TwitterFactoryBase(String configTreePath) {
-        this.conf = ConfigurationContext.getInstance(configTreePath);
-    }
+    String getPassword();
 
-    protected TwitterFactoryBase(Configuration conf) {
-        this.conf = conf;
-    }
+    String getOAuthConsumerKey();
 
-    /**
-     * Returns a instance.
-     *
-     * @return default singleton instance
-     */
-    public T getInstance() {
-        return getInstance(conf, NullAuthorization.getInstance());
-    }
+    String getOAuthConsumerSecret();
 
-    public T getInstance(Authorization auth) {
-        return getInstance(conf, auth);
-    }
+    String getOAuthAccessToken();
 
-    /**
-     * Returns a Basic Authenticated instance.
-     *
-     * @param screenName screen name 
-     * @param password password
-     * @return an instance
-     */
-    public T getInstance(String screenName, String password) {
-        return getInstance(new BasicAuthorization(screenName, password));
-    }
-
-    protected abstract T getInstance(Configuration conf, Authorization auth);
+    String getOAuthAccessTokenSecret();
 }

@@ -24,42 +24,45 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
+package twitter4j.http;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import twitter4j.conf.ConfigurationTest;
+import twitter4j.conf.Configuration;
 
 /**
+ * A static factory class for Authorization.
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.1
  */
-public class Twitter4JTestSuite extends TestCase {
-//    public static void main(String[] args) {
-//        TestRunner.run(suite());
-//    }
+public final class AuthorizationFactory {
+    public static Authorization getInstance(Configuration conf, boolean supportsOAuth) {
+        Authorization auth = null;
+        String consumerKey = conf.getOAuthConsumerKey();
+        String consumerSecret = conf.getOAuthConsumerSecret();
 
-    public Twitter4JTestSuite(String s) {
-        super(s);
+        if (supportsOAuth && null != consumerKey && null != consumerSecret) {
+            OAuthAuthorization oauth;
+            oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
+            String accessToken = conf.getOAuthAccessToken();
+            String accessTokenSecret = conf.getOAuthAccessTokenSecret();
+            if (null != accessToken && null != accessTokenSecret) {
+                oauth.setOAuthAccessToken(new AccessToken(accessToken, accessTokenSecret));
+            }
+            auth = oauth;
+        } else {
+            String screenName = conf.getUser();
+            String password = conf.getPassword();
+            if (null != screenName && null != password) {
+                auth = new BasicAuthorization(screenName, password);
+            }
+        }
+        if(null == auth){
+            auth = NullAuthorization.getInstance();
+        }
+        return auth;
     }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Twitter4J Test Suite");
-        suite.addTestSuite(ConfigurationTest.class);
-        suite.addTestSuite(twitter4j.http.BASE64EncoderTest.class);
-        suite.addTestSuite(twitter4j.http.HTMLEntityTest.class);
-        suite.addTestSuite(twitter4j.http.HttpClientTest.class);
-        suite.addTestSuite(twitter4j.http.OAuthTest.class);
-        suite.addTestSuite(twitter4j.http.PostParameterTest.class);
-
-        suite.addTestSuite(AsyncTwitterTest.class);
-        suite.addTestSuite(DAOTest.class);
-        suite.addTestSuite(DispatcherTest.class);
-        suite.addTestSuite(PagingTest.class);
-        suite.addTestSuite(SearchAPITest.class);
-        suite.addTestSuite(SpringCompatibilityTest.class);
-        suite.addTestSuite(StreamAPITest.class);
-        suite.addTestSuite(TwitterBasicAuthTest.class);
-        return suite;
+    public static Authorization getBasicAuthorizationInstance(String screenName,
+                                                              String password){
+        return new BasicAuthorization(screenName, password);
     }
 }

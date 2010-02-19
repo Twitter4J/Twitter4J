@@ -27,7 +27,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationContext;
+import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
+import twitter4j.http.AuthorizationFactory;
+import twitter4j.http.BasicAuthorization;
+import twitter4j.http.NullAuthorization;
+import twitter4j.http.OAuthAuthorization;
 
 /**
  * A factory class for AsyncTwitter.<br>
@@ -37,15 +43,16 @@ import twitter4j.http.Authorization;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class AsyncTwitterFactory extends TwitterFactoryOAuthSupportBase<AsyncTwitter> implements java.io.Serializable {
-    private TwitterListener listener;
+public final class AsyncTwitterFactory  implements java.io.Serializable {
+    private final TwitterListener listener;
+    private final Configuration conf;
     private static final long serialVersionUID = -2565686715640816219L;
 
     /**
      * Creates a AsyncTwitterFactory with the root configuration, with no listener. AsyncTwitter instances will not perform callbacks when using this constructor.
      */
     public AsyncTwitterFactory() {
-        super();
+        this.conf = ConfigurationContext.getInstance();
         this.listener = new TwitterAdapter();
     }
 
@@ -54,7 +61,7 @@ public final class AsyncTwitterFactory extends TwitterFactoryOAuthSupportBase<As
      * @param listener listener
      */
     public AsyncTwitterFactory(TwitterListener listener) {
-        super();
+        this.conf = ConfigurationContext.getInstance();
         this.listener = listener;
     }
 
@@ -64,20 +71,88 @@ public final class AsyncTwitterFactory extends TwitterFactoryOAuthSupportBase<As
      * @param listener listener
      */
     public AsyncTwitterFactory(String configTreePath, TwitterListener listener) {
-        super(configTreePath);
+        this.conf = ConfigurationContext.getInstance(configTreePath);
         this.listener = listener;
     }
 
     /**
-     * {@inheritDoc}
+     * Returns a instance.
+     *
+     * @return default singleton instance
      */
-    protected AsyncTwitter getInstance(Configuration conf, Authorization auth) {
+    public AsyncTwitter getInstance() {
+        return getInstance(conf);
+    }
+
+    public AsyncTwitter getInstance(Authorization auth) {
+        return getInstance(conf, auth);
+    }
+
+    /**
+     * Returns a Basic Authenticated instance.
+     *
+     * @param screenName screen name
+     * @param password password
+     * @return an instance
+     */
+    public AsyncTwitter getInstance(String screenName, String password) {
+        return getInstance(new BasicAuthorization(screenName, password));
+    }
+
+    // factory methods for OAuth support
+
+    /**
+     * Returns a OAuth Authenticated instance.
+     *
+     * @param consumerKey consumer key
+     * @param consumerSecret consumer secret
+     * @return an instance
+     */
+    public AsyncTwitter getOAuthAuthorizedInstance(String consumerKey, String consumerSecret) {
+        if (null == consumerKey && null == consumerSecret) {
+            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
+        }
+        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
+        return getInstance(oauth);
+    }
+
+    /**
+     * Returns a OAuth Authenticated instance.
+     *
+     * @param consumerKey consumer key
+     * @param consumerSecret consumer secret
+     * @param accessToken access token
+     * @return an instance
+     */
+    public AsyncTwitter getOAuthAuthorizedInstance(String consumerKey, String consumerSecret, AccessToken accessToken) {
+        if (null == consumerKey && null == consumerSecret) {
+            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
+        }
+        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
+        oauth.setOAuthAccessToken(accessToken);
+        return getInstance(oauth);
+    }
+
+    /**
+     * Returns a OAuth Authenticated instance.<br>
+     * consumer key and consumer Secret must be provided by twitter4j.properties, or system properties.
+     *
+     * @param accessToken access token
+     * @return an instance
+     */
+    public AsyncTwitter getOAuthAuthorizedInstance(AccessToken accessToken) {
+        String consumerKey = conf.getOAuthConsumerKey();
+        String consumerSecret = conf.getOAuthConsumerSecret();
+        if (null == consumerKey && null == consumerSecret) {
+            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
+        }
+        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret, accessToken);
+        return getInstance(oauth);
+    }
+    private AsyncTwitter getInstance(Configuration conf, Authorization auth){
         return new AsyncTwitter(conf, auth, listener);
     }
-    /**
-     * {@inheritDoc}
-     */
-    protected AsyncTwitter getOAuthSupportInstance(Configuration conf, Authorization auth){
-        return new AsyncTwitter(conf, auth, listener);
+    private AsyncTwitter getInstance(Configuration conf){
+        return new AsyncTwitter(conf, AuthorizationFactory.getInstance(conf, true), listener);
     }
 }

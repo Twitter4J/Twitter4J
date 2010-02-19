@@ -90,7 +90,7 @@ public class HttpClient implements java.io.Serializable {
             }
             if (ConfigurationContext.getInstance().isDalvik()) {
                 // quick and dirty workaround for TFJ-296
-                // it must be a Dndroid/Dalvik/Harmony side issue!!!!
+                // it must be an Android/Dalvik/Harmony side issue!!!!
                 System.setProperty("http.keepAlive", "false");
             }
         } catch (AccessControlException ace) {
