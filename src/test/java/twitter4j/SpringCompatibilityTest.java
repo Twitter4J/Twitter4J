@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import twitter4j.conf.ConfigurationContext;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -69,19 +70,23 @@ public class SpringCompatibilityTest extends TestCase {
         AsyncTwitter asyncTwitter = asyncTwitterFactory.getInstance();
         assertTrue(asyncTwitter instanceof AsyncTwitter);
 
-        TwitterStreamFactory twitterStreamFactory = (TwitterStreamFactory)beanFactory.getBean("twitterStreamFactory");
+        TwitterStreamFactory twitterStreamFactory = (TwitterStreamFactory) beanFactory.getBean("twitterStreamFactory");
         TwitterStream twitterStream = twitterStreamFactory.getInstance("test", "test");
         assertTrue(twitterStream instanceof TwitterStream);
     }
+
     public void testTwitterInstantiation() throws Exception {
-        Twitter twitter = (Twitter)beanFactory.getBean("twitter");
+        Twitter twitter = (Twitter) beanFactory.getBean("twitter");
         assertTrue(twitter instanceof Twitter);
 
-        AsyncTwitter asyncTwitter = (AsyncTwitter)beanFactory.getBean("asyncTwitter");
+        AsyncTwitter asyncTwitter = (AsyncTwitter) beanFactory.getBean("asyncTwitter");
         assertTrue(asyncTwitter instanceof AsyncTwitter);
 
-        TwitterStream twitterStream = (TwitterStream)beanFactory.getBean("twitterStream");
-        assertTrue(twitterStream instanceof TwitterStream);
+        try {
+            TwitterStream twitterStream = (TwitterStream) beanFactory.getBean("twitterStream");
+            assertTrue(twitterStream instanceof TwitterStream);
+        } catch (IllegalStateException ignore) {
+        }
     }
 
     private void writeFile(String path, String content) throws IOException {
