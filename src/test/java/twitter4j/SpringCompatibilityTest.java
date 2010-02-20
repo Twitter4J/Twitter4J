@@ -85,7 +85,7 @@ public class SpringCompatibilityTest extends TestCase {
         try {
             TwitterStream twitterStream = (TwitterStream) beanFactory.getBean("twitterStream");
             assertTrue(twitterStream instanceof TwitterStream);
-        } catch (IllegalStateException ignore) {
+        } catch (org.springframework.beans.factory.BeanCreationException ignore) {
         }
     }
 
