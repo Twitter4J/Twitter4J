@@ -87,13 +87,6 @@ abstract class TwitterBase implements java.io.Serializable {
         }
     }
 
-    protected void ensureBasicNotEnabled() {
-        if (!(auth instanceof BasicAuthorization)) {
-            throw new IllegalStateException(
-                    "user ID/password combination not supplied");
-        }
-    }
-
     /**
      * Returns the authorization scheme for this instance.<br>
      * The returned type will be either of BasicAuthorization, OAuthAuthorization, or NullAuthorization
