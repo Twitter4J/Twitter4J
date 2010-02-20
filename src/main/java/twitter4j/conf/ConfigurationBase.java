@@ -27,8 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.conf;
 
 import twitter4j.Version;
-import twitter4j.http.HttpClientConfiguration;
-import twitter4j.http.HttpClientWrapperConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +52,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private int httpStreamingReadTimeout;
     private int httpRetryCount;
-    private int httpRetryIntervalMilliSecs;
+    private int httpRetryIntervalSeconds;
     private String oAuthConsumerKey;
     private String oAuthConsumerSecret;
     private String oAuthAccessToken;
@@ -95,7 +93,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setHttpReadTimeout(120000);
         setHttpStreamingReadTimeout(60*5*1000);
         setHttpRetryCount(0);
-        setHttpRetryIntervalSecs(5);
+        setHttpRetryIntervalSeconds(5);
         setOAuthConsumerKey(null);
         setOAuthConsumerSecret(null);
         setOAuthAccessToken(null);
@@ -273,11 +271,11 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     public final int getHttpRetryIntervalSeconds() {
-        return httpRetryIntervalMilliSecs;
+        return httpRetryIntervalSeconds;
     }
 
-    protected final void setHttpRetryIntervalSecs(int retryIntervalSecs) {
-        this.httpRetryIntervalMilliSecs = retryIntervalSecs * 1000;
+    protected final void setHttpRetryIntervalSeconds(int retryIntervalSeconds) {
+        this.httpRetryIntervalSeconds = retryIntervalSeconds;
     }
 
     // oauth related setter/getters
@@ -412,7 +410,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (httpProxyPort != that.httpProxyPort) return false;
         if (httpReadTimeout != that.httpReadTimeout) return false;
         if (httpRetryCount != that.httpRetryCount) return false;
-        if (httpRetryIntervalMilliSecs != that.httpRetryIntervalMilliSecs) return false;
+        if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
         if (useSSL != that.useSSL) return false;
         if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null)
             return false;
@@ -474,7 +472,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", httpConnectionTimeout=" + httpConnectionTimeout +
                 ", httpReadTimeout=" + httpReadTimeout +
                 ", httpRetryCount=" + httpRetryCount +
-                ", httpRetryIntervalMilliSecs=" + httpRetryIntervalMilliSecs +
+                ", httpRetryIntervalMilliSecs=" + httpRetryIntervalSeconds +
                 ", oAuthConsumerKey='" + oAuthConsumerKey + '\'' +
                 ", oAuthConsumerSecret='" + oAuthConsumerSecret + '\'' +
                 ", oAuthAccessToken='" + oAuthAccessToken + '\'' +

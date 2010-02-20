@@ -244,7 +244,7 @@ class PropertyConfiguration extends ConfigurationBase implements java.io.Seriali
             setHttpRetryCount(getIntProperty(props, prefix, HTTP_RETRY_COUNT));
         }
         if (notNull(props, prefix, HTTP_RETRY_INTERVAL_SECS)) {
-            setHttpRetryIntervalSecs(getIntProperty(props, prefix, HTTP_RETRY_INTERVAL_SECS));
+            setHttpRetryIntervalSeconds(getIntProperty(props, prefix, HTTP_RETRY_INTERVAL_SECS));
         }
         if (notNull(props, prefix, OAUTH_CONSUMER_KEY)) {
             setOAuthConsumerKey(getString(props, prefix, OAUTH_CONSUMER_KEY));
