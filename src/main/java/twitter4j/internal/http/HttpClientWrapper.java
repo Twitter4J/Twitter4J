@@ -29,8 +29,8 @@ package twitter4j.internal.http;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
-import twitter4j.http.HttpResponseEvent;
-import twitter4j.http.HttpResponseListener;
+import twitter4j.internal.http.HttpResponseEvent;
+import twitter4j.internal.http.HttpResponseListener;
 
 import java.util.Map;
 
