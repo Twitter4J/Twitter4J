@@ -41,9 +41,7 @@ public class HttpResponseEvent {
 
     private HttpResponse response;
 
-    /* package */
-
-    HttpResponseEvent(HttpClient source, HttpRequest request, HttpResponse response) {
+    public HttpResponseEvent(HttpClient source, HttpRequest request, HttpResponse response) {
         this.source = source;
         this.request = request;
         this.response = response;
@@ -66,7 +64,7 @@ public class HttpResponseEvent {
     }
 
     public boolean isAuthenticated() {
-        return request.authorization.isEnabled();
+        return request.getAuthorization().isEnabled();
     }
 
     public HttpClient getSource() {

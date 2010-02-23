@@ -34,7 +34,7 @@ import java.util.Map;
  *
  * @author Dan Checkoway - dcheckoway at gmail.com
  */
-final class RequestMethod implements java.io.Serializable {
+public final class RequestMethod implements java.io.Serializable {
     private final String name;
     private static final Map<String, RequestMethod> instances = new HashMap<String, RequestMethod>(5);
 

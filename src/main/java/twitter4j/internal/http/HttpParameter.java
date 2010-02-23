@@ -139,7 +139,7 @@ public class HttpParameter implements Comparable, java.io.Serializable {
         return true;
     }
 
-    /*package*/ static boolean containsFile(HttpParameter[] params) {
+    public static boolean containsFile(HttpParameter[] params) {
         boolean containsFile = false;
         if(null == params){
             return false;

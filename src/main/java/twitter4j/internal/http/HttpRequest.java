@@ -45,6 +45,7 @@ public final class HttpRequest implements java.io.Serializable {
     /*package*/
     final HttpParameter[] httpParams;
     /*package*/
+
     final Authorization authorization;
     /*package*/
     Map<String, String> requestHeaders;
@@ -76,6 +77,10 @@ public final class HttpRequest implements java.io.Serializable {
 
     public String getURL() {
         return url;
+    }
+
+    public Authorization getAuthorization() {
+        return authorization;
     }
 
     @Override
