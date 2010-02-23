@@ -78,6 +78,7 @@ public final class TwitterStreamFactory implements java.io.Serializable{
     /**
      * Creates a TwitterStreamFactory with a specified config tree and a listener.
      * @param configTreePath the path
+     * @param listener the listener
      */
     public TwitterStreamFactory(String configTreePath, StatusListener listener) {
         this(ConfigurationContext.getInstance(configTreePath), listener);
