@@ -72,7 +72,7 @@ import java.net.URISyntaxException;
             subscriberCount = getInt("subscriber_count", json);
             memberCount = getInt("member_count", json);
             uri = getRawString("uri", json);
-            mode = "pubic".equals(getRawString("mode", json));
+            mode = "public".equals(getRawString("mode", json));
         try {
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));

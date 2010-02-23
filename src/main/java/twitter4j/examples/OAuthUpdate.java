@@ -29,6 +29,7 @@ package twitter4j.examples;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import twitter4j.http.AccessToken;
 import twitter4j.http.RequestToken;
 
@@ -49,7 +50,7 @@ public class OAuthUpdate {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = new Twitter();
+            Twitter twitter = new TwitterFactory().getInstance();
             RequestToken requestToken = twitter.getOAuthRequestToken();
             System.out.println("Got request token.");
             System.out.println("Request token: "+ requestToken.getToken());
@@ -66,7 +67,7 @@ public class OAuthUpdate {
                     if(pin.length() > 0){
                         accessToken = twitter.getOAuthAccessToken(requestToken, pin);
                     }else{
-                        accessToken = requestToken.getAccessToken();
+                        accessToken = twitter.getOAuthAccessToken(requestToken);
                     }
                 } catch (TwitterException te) {
                     if(401 == te.getStatusCode()){

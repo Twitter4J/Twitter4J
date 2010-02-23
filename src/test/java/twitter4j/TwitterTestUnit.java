@@ -156,6 +156,7 @@ public class TwitterTestUnit extends TwitterTestBase {
 //        UserList userList;
 //        //ensuring createUserList works in the case an email is specified a userid
 //        userList = twitterAPI3.createUserList("api3 is email", false, null);
+//        assertFalse(userList.isPublic());
 //        twitterAPI3.destroyUserList(userList.getId());
 //        userList = twitterAPI1.createUserList("testpoint1", false, "description1");
 //        assertNotNull(userList);
@@ -163,6 +164,7 @@ public class TwitterTestUnit extends TwitterTestBase {
 //        assertEquals("description1", userList.getDescription());
 //
 //        userList = twitterAPI1.updateUserList(userList.getId(), "testpoint2", true, "description2");
+//        assertTrue(userList.isPublic());
 //        assertNotNull(userList);
 //        assertEquals("testpoint2", userList.getName());
 //        assertEquals("description2", userList.getDescription());

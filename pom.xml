@@ -182,7 +182,7 @@
                         </goals>
                         <configuration>
                             <excludePackageNames>
-                                twitter4j.org.json,twitter4j.conf,twitter4j.logging
+                                twitter4j.org.json,twitter4j.conf,twitter4j.logging,twitter4j.http
                             </excludePackageNames>
                         </configuration>
                     </execution>
