@@ -41,49 +41,67 @@ import twitter4j.http.AuthorizationFactory;
  */
 public final class TwitterStreamFactory implements java.io.Serializable{
     private static final long serialVersionUID = 8146074704915782233L;
-    private StatusListener listener = null;
+    private final StatusListener listener;
     private final Configuration conf;
 
     /**
      * Creates a TwitterStreamFactory with the root configuration.
      */
     public TwitterStreamFactory() {
-        this.conf = ConfigurationContext.getInstance();
+        this((StatusListener) null);
     }
 
     /**
-     * Creates a TwitterStreamFactory with a specified status listener
+     * Creates a TwitterStreamFactory with the given configuration.
+     * @param conf the configuration to use
+     */
+    public TwitterStreamFactory(Configuration conf) {
+        this(conf, null);
+    }
+
+    /**
+     * Creates a TwitterStreamFactory with the root configuration and a specified status listener.
      * @param listener the listener
      */
     public TwitterStreamFactory(StatusListener listener) {
-        this.conf = ConfigurationContext.getInstance();
-        this.listener = listener;
+        this(ConfigurationContext.getInstance(), listener);
     }
 
-
     /**
-     * Creates a TwitterStreamFactory with a specified config tree
+     * Creates a TwitterStreamFactory with a specified config tree.
      * @param configTreePath the path
      */
     public TwitterStreamFactory(String configTreePath) {
-        this.conf = ConfigurationContext.getInstance(configTreePath);
+        this(configTreePath, null);
     }
 
     /**
-     * Creates a TwitterStreamFactory with a specified config tree and a listener
+     * Creates a TwitterStreamFactory with a specified config tree and a listener.
      * @param configTreePath the path
      */
     public TwitterStreamFactory(String configTreePath, StatusListener listener) {
-        this(configTreePath);
+        this(ConfigurationContext.getInstance(configTreePath), listener);
+    }
+
+    /**
+     * Creates a TwitterStreamFactory with the specified config and a listener.
+     * @param conf the configuration to use
+     * @param listener an optional status listener
+     */
+    public TwitterStreamFactory(Configuration conf, StatusListener listener) {
+        if (conf == null) {
+          throw new NullPointerException("configuration cannot be null");
+        }
+        this.conf = conf;
         this.listener = listener;
     }
 
     // implementations for BasicSupportFactory
 
     /**
-     * Returns a instance.
+     * Returns an instance.
      *
-     * @return default singleton instance
+     * @return default instance
      */
     public TwitterStream getInstance(){
         return getInstance(conf);
@@ -105,12 +123,12 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * {@inheritDoc}
      */
     public TwitterStream getInstance(Authorization auth){
-        return getInstance(conf,auth);
+        return getInstance(conf, auth);
     }
     private TwitterStream getInstance(Configuration conf, Authorization auth) {
-            return new TwitterStream(conf, auth, listener);
+        return new TwitterStream(conf, auth, listener);
     }
     private TwitterStream getInstance(Configuration conf) {
-            return new TwitterStream(conf, AuthorizationFactory.getInstance(conf, false), listener);
+        return new TwitterStream(conf, AuthorizationFactory.getInstance(conf, false), listener);
     }
 }
