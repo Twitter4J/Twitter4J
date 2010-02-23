@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.http;
 
 import junit.framework.TestCase;
+import twitter4j.internal.http.HTMLEntity;
 
 public class HTMLEntityTest extends TestCase {
     public HTMLEntityTest(String name){

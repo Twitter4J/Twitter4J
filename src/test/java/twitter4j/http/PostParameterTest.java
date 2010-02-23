@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.http;
 
 import junit.framework.TestCase;
+import twitter4j.internal.http.HttpParameter;
 
 import java.io.File;
 

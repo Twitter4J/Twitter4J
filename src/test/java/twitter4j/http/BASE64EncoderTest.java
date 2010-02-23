@@ -27,6 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.http;
 
 import junit.framework.TestCase;
+import twitter4j.internal.http.BASE64Encoder;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */

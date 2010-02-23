@@ -26,6 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import twitter4j.internal.http.HttpClient;
+import twitter4j.internal.http.HttpRequest;
+import twitter4j.internal.http.HttpResponse;
+
 /**
  * @author Andrew Hedges - andrew.hedges at gmail.com
  */

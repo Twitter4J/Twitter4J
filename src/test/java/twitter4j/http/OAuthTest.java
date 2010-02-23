@@ -31,6 +31,11 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterTestUnit;
 import twitter4j.conf.ConfigurationContext;
+import twitter4j.internal.http.HttpClient;
+import twitter4j.internal.http.HttpParameter;
+import twitter4j.internal.http.HttpRequest;
+import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.http.RequestMethod;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

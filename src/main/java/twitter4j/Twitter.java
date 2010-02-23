@@ -47,7 +47,9 @@ import twitter4j.api.UserMethods;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
-import static twitter4j.http.HttpParameter.*;
+import twitter4j.internal.http.HttpParameter;
+
+import static twitter4j.internal.http.HttpParameter.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;

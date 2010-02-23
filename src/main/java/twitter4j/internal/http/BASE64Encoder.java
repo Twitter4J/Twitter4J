@@ -24,10 +24,10 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.internal.http;
 /**
  * A utility class encodes byte array into String using Base64 encoding scheme.
- * @see twitter4j.http.HttpClient
+ * @see HttpClient
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class BASE64Encoder {

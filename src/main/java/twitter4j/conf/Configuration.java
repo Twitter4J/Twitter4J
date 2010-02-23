@@ -27,8 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.conf;
 
 import twitter4j.http.AuthorizationConfiguration;
-import twitter4j.http.HttpClientConfiguration;
-import twitter4j.http.HttpClientWrapperConfiguration;
+import twitter4j.internal.http.HttpClientConfiguration;
+import twitter4j.internal.http.HttpClientWrapperConfiguration;
 
 import java.util.Map;
 

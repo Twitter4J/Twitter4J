@@ -26,6 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import twitter4j.internal.http.HttpParameter;
+
 import java.net.HttpURLConnection;
 
 /**

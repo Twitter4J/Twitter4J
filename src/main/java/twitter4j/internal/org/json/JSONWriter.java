@@ -1,4 +1,4 @@
-package twitter4j.org.json;
+package twitter4j.internal.org.json;
 
 import java.io.IOException;
 import java.io.Writer;

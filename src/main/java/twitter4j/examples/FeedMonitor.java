@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.http.HttpClient;
-import twitter4j.http.HttpResponse;
+import twitter4j.internal.http.HttpClient;
+import twitter4j.internal.http.HttpResponse;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

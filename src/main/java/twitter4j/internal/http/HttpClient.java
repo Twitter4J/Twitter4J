@@ -24,11 +24,11 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.internal.http;
 
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.logging.Logger;
+import twitter4j.internal.logging.Logger;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -47,7 +47,7 @@ import java.security.AccessControlException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static twitter4j.http.RequestMethod.*;
+import static twitter4j.internal.http.RequestMethod.*;
 
 /**
  * A utility class to handle HTTP request/response.

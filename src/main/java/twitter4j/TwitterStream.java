@@ -29,10 +29,10 @@ package twitter4j;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
-import twitter4j.http.HttpClientWrapper;
-import twitter4j.http.HttpClientWrapperConfiguration;
-import twitter4j.http.HttpParameter;
-import twitter4j.logging.Logger;
+import twitter4j.internal.http.HttpClientWrapper;
+import twitter4j.internal.http.HttpClientWrapperConfiguration;
+import twitter4j.internal.http.HttpParameter;
+import twitter4j.internal.logging.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;

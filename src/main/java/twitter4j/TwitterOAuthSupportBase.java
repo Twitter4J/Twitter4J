@@ -2,6 +2,9 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 import twitter4j.http.*;
+import twitter4j.internal.http.HttpClient;
+import twitter4j.internal.http.HttpClientWrapper;
+import twitter4j.internal.http.HttpResponse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

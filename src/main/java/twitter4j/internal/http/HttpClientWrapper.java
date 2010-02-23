@@ -24,19 +24,21 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.internal.http;
 
 import twitter4j.TwitterException;
-import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
+import twitter4j.http.Authorization;
+import twitter4j.http.HttpResponseEvent;
+import twitter4j.http.HttpResponseListener;
 
 import java.util.Map;
 
-import static twitter4j.http.RequestMethod.DELETE;
-import static twitter4j.http.RequestMethod.GET;
-import static twitter4j.http.RequestMethod.HEAD;
-import static twitter4j.http.RequestMethod.POST;
-import static twitter4j.http.RequestMethod.PUT;
+import static twitter4j.internal.http.RequestMethod.DELETE;
+import static twitter4j.internal.http.RequestMethod.GET;
+import static twitter4j.internal.http.RequestMethod.HEAD;
+import static twitter4j.internal.http.RequestMethod.POST;
+import static twitter4j.internal.http.RequestMethod.PUT;
 
 /**
  * HTTP Client wrapper with handy request methods, ResponseListener mechanism 

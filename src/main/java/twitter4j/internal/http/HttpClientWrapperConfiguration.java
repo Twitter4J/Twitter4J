@@ -24,41 +24,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.logging;
+package twitter4j.internal.http;
 
-import twitter4j.conf.ConfigurationContext;
+import java.util.Map;
 
-/**
- * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.0
- */
-public final class Logger {
-    private static final boolean DEBUG = ConfigurationContext.getInstance().isDebugEnabled();
-    private static final Logger SINGLETON = new Logger();
-    private Logger() {
-        //@todo will wrap SLF4J / commons-logging / jul l8er @TFJ-148
-    }
-
-    public static Logger getLogger(){
-        //@todo detect the class name from the stacktrace @TFJ-148
-        return SINGLETON;
-    }
-
-    public boolean isDebugEnabled() {
-        return DEBUG;
-    }
-
-    public void debug(String message) {
-        if (DEBUG) {
-            //@todo include class name in the message @TFJ-148
-            System.out.println("[" + new java.util.Date() + "]" + message);
-        }
-    }
-
-    public void debug(String message, String message2) {
-        if (DEBUG) {
-            debug(message + message2);
-        }
-    }
-
+public interface HttpClientWrapperConfiguration extends HttpClientConfiguration{
+    /**
+     *
+     * @return request headers
+     */
+    Map<String, String> getRequestHeaders();
 }

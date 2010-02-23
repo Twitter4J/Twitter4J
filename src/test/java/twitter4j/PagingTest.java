@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.http.HttpParameter;
+import twitter4j.internal.http.HttpParameter;
 
 public class PagingTest extends TestCase {
 

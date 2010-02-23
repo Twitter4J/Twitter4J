@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.http;
 
 import twitter4j.TwitterException;
+import twitter4j.internal.http.HttpResponse;
 
 import javax.crypto.spec.SecretKeySpec;
 

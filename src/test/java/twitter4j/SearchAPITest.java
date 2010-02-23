@@ -26,9 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.org.json.JSONObject;
-
-import java.net.URLDecoder;
 import java.util.List;
 import java.util.Date;
 

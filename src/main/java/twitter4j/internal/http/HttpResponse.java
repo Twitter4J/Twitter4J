@@ -24,16 +24,15 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.internal.http;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import twitter4j.conf.Configuration;
 import twitter4j.TwitterException;
-import twitter4j.logging.Logger;
-import twitter4j.org.json.JSONArray;
-import twitter4j.org.json.JSONException;
-import twitter4j.org.json.JSONObject;
+import twitter4j.internal.logging.Logger;
+import twitter4j.internal.org.json.JSONArray;
+import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -175,9 +174,9 @@ public class HttpResponse {
     }
 
     /**
-     * Returns the response body as twitter4j.org.json.JSONObject.<br>
+     * Returns the response body as twitter4j.internal.org.json.JSONObject.<br>
      * Disconnects the internal HttpURLConnection silently.
-     * @return response body as twitter4j.org.json.JSONObject
+     * @return response body as twitter4j.internal.org.json.JSONObject
      * @throws TwitterException
      */
     public JSONObject asJSONObject() throws TwitterException {
@@ -189,9 +188,9 @@ public class HttpResponse {
     }
 
     /**
-     * Returns the response body as twitter4j.org.json.JSONArray.<br>
+     * Returns the response body as twitter4j.internal.org.json.JSONArray.<br>
      * Disconnects the internal HttpURLConnection silently.
-     * @return response body as twitter4j.org.json.JSONArray
+     * @return response body as twitter4j.internal.org.json.JSONArray
      * @throws TwitterException
      */
     public JSONArray asJSONArray() throws TwitterException {
