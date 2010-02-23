@@ -150,11 +150,11 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    public void deletedUserList(UserList userList) {}
+    public void destroyedUserList(UserList userList) {}
     /**
      * @since Twitter4J 2.1.0
      */
-    public void gotUserListStatuses(PagableResponseList<UserList> userLists) {}
+    public void gotUserListStatuses(ResponseList<Status> statuses) {}
     /**
      * @since Twitter4J 2.1.0
      */
@@ -180,7 +180,7 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    public void checkedUserListMembership(PagableResponseList<User> users) {}
+    public void checkedUserListMembership(User user) {}
 
     /*List Subscribers Methods*/
     /**

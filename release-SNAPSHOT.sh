@@ -19,6 +19,7 @@ cd $DIR/
 find . -name ".svn" -print -exec rm -rf {} ";"
 find . -name ".DS_Store" -print -exec rm -r {} ";"
 find . -name ._* -exec rm -r {} ";"
+rm /Users/yusukey/deploy/twitter4j.war/twitter4j-$1.zip
 zip -r /Users/yusukey/deploy/twitter4j.war/twitter4j-$1.zip .
 cd ..
 rm -Rf twitter4j-$1

@@ -34,9 +34,8 @@ import twitter4j.UserList;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface ListSubscribersMethods
-{
-	/**
+public interface ListSubscribersMethods {
+    /**
 	 * Returns the subscribers of the specified list.
 	 * <br>This method calls http://api.twitter.com/1/[user]/[list_id]/subscribers.json
      * @param listOwnerScreenName The screen name of the list owner

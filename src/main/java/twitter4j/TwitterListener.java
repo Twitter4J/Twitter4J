@@ -142,11 +142,11 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    void deletedUserList(UserList userList);
+    void destroyedUserList(UserList userList);
     /**
      * @since Twitter4J 2.1.0
      */
-    void gotUserListStatuses(PagableResponseList<UserList> userLists);
+    void gotUserListStatuses(ResponseList<Status> statuses);
     /**
      * @since Twitter4J 2.1.0
      */
@@ -172,7 +172,7 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.1.0
      */
-    void checkedUserListMembership(PagableResponseList<User> users);
+    void checkedUserListMembership(User users);
 
     /*List Subscribers Methods*/
     /**
@@ -350,7 +350,7 @@ public interface TwitterListener {
     TwitterMethod UPDATE_USER_LIST = TwitterMethod.UPDATE_USER_LIST;
     TwitterMethod USER_LISTS = TwitterMethod.USER_LISTS;
     TwitterMethod SHOW_USER_LIST = TwitterMethod.SHOW_USER_LIST;
-    TwitterMethod DELETE_USER_LIST = TwitterMethod.DELETE_USER_LIST;
+    TwitterMethod DSTROY_USER_LIST = TwitterMethod.DESTROY_USER_LIST;
     TwitterMethod USER_LIST_STATUSES = TwitterMethod.USER_LIST_STATUSES;
     TwitterMethod USER_LIST_MEMBERSHIPS = TwitterMethod.USER_LIST_MEMBERSHIPS;
     TwitterMethod USER_LIST_SUBSCRIPTIONS = TwitterMethod.USER_LIST_SUBSCRIPTIONS;

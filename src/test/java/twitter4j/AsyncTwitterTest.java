@@ -571,12 +571,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.userList = userList;
     }
 
-    public void deletedUserList(UserList userList) {
+    public void destroyedUserList(UserList userList) {
         this.userList = userList;
     }
 
-    public void gotUserListStatuses(PagableResponseList<UserList> userLists) {
-        this.userLists = userLists;
+    public void gotUserListStatuses(ResponseList<Status> statuses) {
+        this.statuses = statuses;
     }
 
     public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
@@ -601,8 +601,8 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.userList = userList;
     }
 
-    public void checkedUserListMembership(PagableResponseList<User> users) {
-        this.users = users;
+    public void checkedUserListMembership(User user) {
+        this.user = user;
     }
 
     /*List Subscribers Methods*/
