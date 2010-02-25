@@ -1,4 +1,6 @@
 target/*
+twitter4j-core/target/*
+twitter4j-examples/target/*
 .DS_Store
 ~$*
 atlassian-ide-plugin.xml

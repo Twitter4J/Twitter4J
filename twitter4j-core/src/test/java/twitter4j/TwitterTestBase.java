@@ -30,6 +30,7 @@ package twitter4j;
 import junit.framework.TestCase;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Properties;
 import static twitter4j.DAOTest.*;
 
@@ -61,7 +62,9 @@ public class TwitterTestBase extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        p.load(new FileInputStream("src/test/resources/test.properties"));
+        InputStream is = TwitterTestBase.class.getResourceAsStream("/test.properties");
+        p.load(is);
+        is.close();
         id1 = new TestUserInfo("id1", p);
         id2 = new TestUserInfo("id2", p);
         id3 = new TestUserInfo("id3", p);
