@@ -188,7 +188,6 @@
                         </goals>
                         <configuration>
                             <excludePackageNames>
-                                twitter4j.internal,twitter4j.conf
                             </excludePackageNames>
                         </configuration>
                     </execution>
