@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
@@ -55,8 +56,9 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
     }
 
     public void testStatusStream() throws Exception {
-        FileInputStream fis = new FileInputStream("src/test/resources/streamingapi-testcase.json");
-        StatusStream stream = new StatusStream(fis);
+        InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-testcase.json");
+        StatusStream stream = new StatusStream(is);
+        is.close();
         stream.next(this);
         assertEquals(6832057002l, deletionNotice.getStatusId());
         assertEquals(18378841, deletionNotice.getUserId());
