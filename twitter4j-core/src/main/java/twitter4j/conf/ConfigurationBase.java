@@ -137,7 +137,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return debug;
     }
 
-    protected void setDebug(boolean debug) {
+    protected final void setDebug(boolean debug) {
         this.debug = debug;
     }
 
@@ -145,7 +145,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return this.userAgent;
     }
 
-    protected void setUserAgent(String userAgent) {
+    protected final void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
         initRequestHeaders();
     }
@@ -154,7 +154,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return source;
     }
 
-    protected void setSource(String source) {
+    protected final void setSource(String source) {
         this.source = source;
         initRequestHeaders();
     }
@@ -163,7 +163,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return user;
     }
 
-    protected void setUser(String user) {
+    protected final void setUser(String user) {
         this.user = user;
     }
 
@@ -171,7 +171,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return password;
     }
 
-    protected void setPassword(String password) {
+    protected final void setPassword(String password) {
         this.password = password;
     }
 
@@ -209,7 +209,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpProxyHost;
     }
 
-    protected void setHttpProxyHost(String proxyHost) {
+    protected final void setHttpProxyHost(String proxyHost) {
         this.httpProxyHost = proxyHost;
     }
 
@@ -217,7 +217,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpProxyUser;
     }
 
-    protected void setHttpProxyUser(String proxyUser) {
+    protected final void setHttpProxyUser(String proxyUser) {
         this.httpProxyUser = proxyUser;
     }
 
@@ -225,7 +225,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpProxyPassword;
     }
 
-    protected void setHttpProxyPassword(String proxyPassword) {
+    protected final void setHttpProxyPassword(String proxyPassword) {
         this.httpProxyPassword = proxyPassword;
     }
 
@@ -233,7 +233,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpProxyPort;
     }
 
-    protected void setHttpProxyPort(int proxyPort) {
+    protected final void setHttpProxyPort(int proxyPort) {
         this.httpProxyPort = proxyPort;
     }
 
@@ -241,7 +241,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpConnectionTimeout;
     }
 
-    protected void setHttpConnectionTimeout(int connectionTimeout) {
+    protected final void setHttpConnectionTimeout(int connectionTimeout) {
         this.httpConnectionTimeout = connectionTimeout;
     }
 
@@ -249,7 +249,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpReadTimeout;
     }
 
-    protected void setHttpReadTimeout(int readTimeout) {
+    protected final void setHttpReadTimeout(int readTimeout) {
         this.httpReadTimeout = readTimeout;
     }
 
@@ -257,7 +257,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpStreamingReadTimeout;
     }
 
-    protected void setHttpStreamingReadTimeout(int httpStreamingReadTimeout) {
+    protected final void setHttpStreamingReadTimeout(int httpStreamingReadTimeout) {
         this.httpStreamingReadTimeout = httpStreamingReadTimeout;
     }
 
@@ -266,7 +266,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpRetryCount;
     }
 
-    protected void setHttpRetryCount(int retryCount) {
+    protected final void setHttpRetryCount(int retryCount) {
         this.httpRetryCount = retryCount;
     }
 
@@ -274,7 +274,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpRetryIntervalSeconds;
     }
 
-    protected void setHttpRetryIntervalSeconds(int retryIntervalSeconds) {
+    protected final void setHttpRetryIntervalSeconds(int retryIntervalSeconds) {
         this.httpRetryIntervalSeconds = retryIntervalSeconds;
     }
 
@@ -284,7 +284,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthConsumerKey;
     }
 
-    protected void setOAuthConsumerKey(String oAuthConsumerKey) {
+    protected final void setOAuthConsumerKey(String oAuthConsumerKey) {
         this.oAuthConsumerKey = oAuthConsumerKey;
     }
 
@@ -292,7 +292,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthConsumerSecret;
     }
 
-    protected void setOAuthConsumerSecret(String oAuthConsumerSecret) {
+    protected final void setOAuthConsumerSecret(String oAuthConsumerSecret) {
         this.oAuthConsumerSecret = oAuthConsumerSecret;
     }
 
@@ -300,7 +300,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAccessToken;
     }
 
-    protected void setOAuthAccessToken(String oAuthAccessToken) {
+    protected final void setOAuthAccessToken(String oAuthAccessToken) {
         this.oAuthAccessToken = oAuthAccessToken;
     }
 
@@ -308,7 +308,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAccessTokenSecret;
     }
 
-    protected void setOAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
+    protected final void setOAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
         this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
     }
 
@@ -316,7 +316,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return asyncNumThreads;
     }
 
-    protected void setAsyncNumThreads(int asyncNumThreads) {
+    protected final void setAsyncNumThreads(int asyncNumThreads) {
         this.asyncNumThreads = asyncNumThreads;
     }
 
@@ -324,7 +324,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return clientVersion;
     }
 
-    protected void setClientVersion(String clientVersion) {
+    protected final void setClientVersion(String clientVersion) {
         this.clientVersion = clientVersion;
         initRequestHeaders();
     }
@@ -333,7 +333,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return clientURL;
     }
 
-    protected void setClientURL(String clientURL) {
+    protected final void setClientURL(String clientURL) {
         this.clientURL = clientURL;
         initRequestHeaders();
     }
@@ -342,7 +342,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return restBaseURL;
     }
 
-    protected void setRestBaseURL(String restBaseURL) {
+    protected final void setRestBaseURL(String restBaseURL) {
         this.restBaseURL = fixURL(useSSL, restBaseURL);
     }
 
@@ -350,7 +350,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return searchBaseURL;
     }
 
-    protected void setSearchBaseURL(String searchBaseURL) {
+    protected final void setSearchBaseURL(String searchBaseURL) {
         // search api tends to fail with SSL as of 12/31/2009
         this.searchBaseURL = fixURL(false, searchBaseURL);
     }
@@ -359,7 +359,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return streamBaseURL;
     }
 
-    protected void setStreamBaseURL(String streamBaseURL) {
+    protected final void setStreamBaseURL(String streamBaseURL) {
         // streaming api doesn't support SSL as of 12/30/2009
         this.streamBaseURL = fixURL(false, streamBaseURL);
     }
@@ -368,7 +368,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthRequestTokenURL;
     }
 
-    protected void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
+    protected final void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
         this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
     }
 
@@ -376,7 +376,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAuthorizationURL;
     }
 
-    protected void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
+    protected final void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
         this.oAuthAuthorizationURL = fixURL(useSSL, oAuthAuthorizationURL);
     }
 
@@ -384,7 +384,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAccessTokenURL;
     }
 
-    protected void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
+    protected final void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
         this.oAuthAccessTokenURL = fixURL(useSSL, oAuthAccessTokenURL);
     }
 
@@ -392,7 +392,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAuthenticationURL;
     }
 
-    protected void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
+    protected final void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
         this.oAuthAuthenticationURL = fixURL(useSSL, oAuthAuthenticationURL);
     }
 
