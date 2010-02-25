@@ -551,7 +551,12 @@ public class TwitterTestUnit extends TwitterTestBase {
             "src/test/resources/t4j.gif",
     };
     public static File getRandomlyChosenFile(){
-        return new File(files[(int) (System.currentTimeMillis() % 6)]);
+        int rand = (int) (System.currentTimeMillis() % 6);
+        File file = new File(files[rand]);
+        if(!file.exists()){
+            file = new File("twitter4j-core/"+ files[rand]);
+        }
+        return file;
     }
 
     public void testFavoriteMethods() throws Exception {
