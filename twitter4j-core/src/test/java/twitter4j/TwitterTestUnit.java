@@ -340,18 +340,14 @@ public class TwitterTestUnit extends TwitterTestBase {
     }
 
     public void testGeoLocation() throws Exception {
-        Status withgeo = twitterAPI1.updateStatus(new java.util.Date().toString() + ": updating geo location", new GeoLocation(12.3456, -34.5678));
+        final double LATITUDE = 12.3456;
+        final double LONGITUDE = -34.5678;
+
+        Status withgeo = twitterAPI1.updateStatus(new java.util.Date().toString() + ": updating geo location", new GeoLocation(LATITUDE, LONGITUDE));
         assertTrue(withgeo.getUser().isGeoEnabled());
-        assertEquals(12.3456, withgeo.getGeoLocation().getLatitude());
-        assertEquals(-34.5678, withgeo.getGeoLocation().getLongitude());
-        assertTrue(twitterAPI1.verifyCredentials().isGeoEnabled());
+        assertEquals(LATITUDE, withgeo.getGeoLocation().getLatitude());
+        assertEquals(LONGITUDE, withgeo.getGeoLocation().getLongitude());
         assertFalse(twitterAPI2.verifyCredentials().isGeoEnabled());
-
-        withgeo = twitterAPI1.showStatus(4512367904l);
-        assertEquals(37.780300, withgeo.getGeoLocation().getLatitude());
-        assertEquals(-122.396900, withgeo.getGeoLocation().getLongitude());
-        assertTrue(withgeo.getUser().isGeoEnabled());
-
     }
 
     public void testGetFriendsStatuses() throws Exception {
