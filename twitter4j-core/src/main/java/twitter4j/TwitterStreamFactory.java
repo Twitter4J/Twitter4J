@@ -123,7 +123,9 @@ public final class TwitterStreamFactory implements java.io.Serializable{
     }
 
     /**
-     * {@inheritDoc}
+     * Returns a instance.
+     *
+     * @return default singleton instance
      */
     public TwitterStream getInstance(Authorization auth){
         return getInstance(conf, auth);
