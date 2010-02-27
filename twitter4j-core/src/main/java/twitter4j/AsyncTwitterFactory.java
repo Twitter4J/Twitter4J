@@ -49,11 +49,37 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
     private static final long serialVersionUID = -2565686715640816219L;
 
     /**
-     * Creates a AsyncTwitterFactory with the root configuration, with no listener. AsyncTwitter instances will not perform callbacks when using this constructor.
+     * Creates an AsyncTwitterFactory with the root configuration, with no listener. AsyncTwitter instances will not perform callbacks when using this constructor.
      */
     public AsyncTwitterFactory() {
-        this.conf = ConfigurationContext.getInstance();
+        this(ConfigurationContext.getInstance());
+    }
+
+    /**
+     * Creates an AsyncTwitterFactory with the given configuration.
+     * @param conf the configuration to use
+     * @since Twitter4J 2.1.1
+     */
+    public AsyncTwitterFactory(Configuration conf) {
+        if (conf == null) {
+            throw new NullPointerException("configuration cannot be null");
+        }
+        this.conf = conf;
         this.listener = new TwitterAdapter();
+    }
+
+    /**
+     * Creates an AsyncTwitterFactory with the given configuration and listener.
+     * @param conf the configuration to use
+     * @param listener the listener to use
+     * @since Twitter4J 2.1.1
+     */
+    public AsyncTwitterFactory(Configuration conf, TwitterListener listener) {
+        if (conf == null) {
+            throw new NullPointerException("configuration cannot be null");
+        }
+        this.conf = conf;
+        this.listener = listener;
     }
 
     /**
@@ -66,7 +92,7 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
     }
 
     /**
-     * Creates a AsyncTwitterFactory with a specified config tree, with given listener
+     * Creates a AsyncTwitterFactory with the specified config tree, with given listener
      * @param configTreePath the path
      * @param listener listener
      */

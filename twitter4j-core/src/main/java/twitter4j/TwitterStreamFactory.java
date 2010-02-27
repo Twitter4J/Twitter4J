@@ -54,6 +54,7 @@ public final class TwitterStreamFactory implements java.io.Serializable{
     /**
      * Creates a TwitterStreamFactory with the given configuration.
      * @param conf the configuration to use
+     * @since Twitter4J 2.1.1
      */
     public TwitterStreamFactory(Configuration conf) {
         this(conf, null);
@@ -88,6 +89,7 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * Creates a TwitterStreamFactory with the specified config and a listener.
      * @param conf the configuration to use
      * @param listener an optional status listener
+     * @since Twitter4J 2.1.1
      */
     public TwitterStreamFactory(Configuration conf, StatusListener listener) {
         if (conf == null) {
