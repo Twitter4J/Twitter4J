@@ -257,7 +257,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return httpStreamingReadTimeout;
     }
 
-    protected void setHttpStreamingReadTimeout(int httpStreamingReadTimeout) {
+    protected final void setHttpStreamingReadTimeout(int httpStreamingReadTimeout) {
         this.httpStreamingReadTimeout = httpStreamingReadTimeout;
     }
 
@@ -300,7 +300,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAccessToken;
     }
 
-    protected void setOAuthAccessToken(String oAuthAccessToken) {
+    protected final void setOAuthAccessToken(String oAuthAccessToken) {
         this.oAuthAccessToken = oAuthAccessToken;
     }
 
@@ -308,7 +308,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAccessTokenSecret;
     }
 
-    protected void setOAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
+    protected final void setOAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
         this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
     }
 
@@ -342,7 +342,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return restBaseURL;
     }
 
-    protected void setRestBaseURL(String restBaseURL) {
+    protected final void setRestBaseURL(String restBaseURL) {
         this.restBaseURL = fixURL(useSSL, restBaseURL);
     }
 
@@ -350,7 +350,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return searchBaseURL;
     }
 
-    protected void setSearchBaseURL(String searchBaseURL) {
+    protected final void setSearchBaseURL(String searchBaseURL) {
         // search api tends to fail with SSL as of 12/31/2009
         this.searchBaseURL = fixURL(false, searchBaseURL);
     }
@@ -359,7 +359,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return streamBaseURL;
     }
 
-    protected void setStreamBaseURL(String streamBaseURL) {
+    protected final void setStreamBaseURL(String streamBaseURL) {
         // streaming api doesn't support SSL as of 12/30/2009
         this.streamBaseURL = fixURL(false, streamBaseURL);
     }
@@ -368,7 +368,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthRequestTokenURL;
     }
 
-    protected void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
+    protected final void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
         this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
     }
 
@@ -376,7 +376,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAuthorizationURL;
     }
 
-    protected void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
+    protected final void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
         this.oAuthAuthorizationURL = fixURL(useSSL, oAuthAuthorizationURL);
     }
 
@@ -384,7 +384,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAccessTokenURL;
     }
 
-    protected void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
+    protected final void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
         this.oAuthAccessTokenURL = fixURL(useSSL, oAuthAccessTokenURL);
     }
 
@@ -392,7 +392,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuthAuthenticationURL;
     }
 
-    protected void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
+    protected final void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
         this.oAuthAuthenticationURL = fixURL(useSSL, oAuthAuthenticationURL);
     }
 
