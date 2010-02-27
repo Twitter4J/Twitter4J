@@ -28,11 +28,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.AccessToken;
-import twitter4j.http.Authorization;
-import twitter4j.http.BasicAuthorization;
-import twitter4j.http.AuthorizationFactory;
-import twitter4j.http.OAuthAuthorization;
+import twitter4j.http.*;
 
 /**
  * A factory class for Twitter.
@@ -49,10 +45,17 @@ public final class TwitterFactory implements java.io.Serializable {
      * Creates a TwitterFactory with the root configuration.
      */
     public TwitterFactory() {
-        this.conf = ConfigurationContext.getInstance();
+        this(ConfigurationContext.getInstance());
     }
 
-    TwitterFactory(Configuration conf) {
+    /**
+     * Creates a TwitterFactory with the given configuration.
+     * @param conf the configuration to use
+     */
+    public TwitterFactory(Configuration conf) {
+        if (conf == null) {
+            throw new NullPointerException("configuration cannot be null");
+        }
         this.conf = conf;
     }
 
@@ -61,8 +64,9 @@ public final class TwitterFactory implements java.io.Serializable {
      * @param configTreePath the path
      */
     public TwitterFactory(String configTreePath) {
-        this.conf = ConfigurationContext.getInstance(configTreePath);
+        this(ConfigurationContext.getInstance(configTreePath));
     }
+
     /**
      * Returns a instance.
      *
@@ -139,8 +143,5 @@ public final class TwitterFactory implements java.io.Serializable {
     }
     private Twitter getInstance(Configuration conf, Authorization auth){
         return new Twitter(conf, auth);
-    }
-    private Twitter getInstance(Configuration conf){
-        return new Twitter(conf, AuthorizationFactory.getInstance(conf, true));
     }
 }
