@@ -28,7 +28,11 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.*;
+import twitter4j.http.AccessToken;
+import twitter4j.http.Authorization;
+import twitter4j.http.AuthorizationFactory;
+import twitter4j.http.BasicAuthorization;
+import twitter4j.http.OAuthAuthorization;
 
 /**
  * A factory class for Twitter.
@@ -51,6 +55,7 @@ public final class TwitterFactory implements java.io.Serializable {
     /**
      * Creates a TwitterFactory with the given configuration.
      * @param conf the configuration to use
+     * @since Twitter4J 2.1.1
      */
     public TwitterFactory(Configuration conf) {
         if (conf == null) {
