@@ -69,18 +69,18 @@ abstract class TwitterBase implements java.io.Serializable {
      * tests if the instance is authenticated by Basic
      * @return returns true if the instance is authenticated by Basic
      */
-    public boolean isBasicAuthEnabled() {
+    public final boolean isBasicAuthEnabled() {
         return auth instanceof BasicAuthorization && auth.isEnabled();
     }
 
-    protected void ensureAuthorizationEnabled() {
+    protected final void ensureAuthorizationEnabled() {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(
                     "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
         }
     }
 
-    protected void ensureBasicEnabled() {
+    protected final void ensureBasicEnabled() {
         if (!(auth instanceof BasicAuthorization)) {
             throw new IllegalStateException(
                     "user ID/password combination not supplied");
@@ -92,7 +92,7 @@ abstract class TwitterBase implements java.io.Serializable {
      * The returned type will be either of BasicAuthorization, OAuthAuthorization, or NullAuthorization
      * @return the authorization scheme for this instance
      */
-    public Authorization getAuthorization(){
+    public final Authorization getAuthorization(){
         return auth;
     }
 

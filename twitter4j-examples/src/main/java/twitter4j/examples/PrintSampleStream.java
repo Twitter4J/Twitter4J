@@ -31,33 +31,38 @@ import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
 
 /**
  * <p>This is a code example of Twitter4J Streaming API support.<br>
- * Usage: java twitter4j.examples.StreamingExample <i>TwitterID</i> <i>TwitterPassword</i><br>
+ * Usage: java twitter4j.examples.PrintSampleStream <i>TwitterScreenName</i> <i>TwitterPassword</i><br>
  * </p>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class StreamingExample implements StatusListener{
+public class PrintSampleStream implements StatusListener{
     /**
-     * Main entry for this application.
+     * Main entry of this application.
      * @param args String[] TwitterID TwitterPassword
      */
     public static void main(String[] args)throws TwitterException {
-        if (args.length < 2) {
-            System.out.println(
-                "Usage: java twitter4j.examples.StreamingExample ID Password");
-            System.exit( -1);
-        }
-        StreamingExample streamingExample = new StreamingExample(args[0], args[1]);
-        streamingExample.startConsuming();
+        PrintSampleStream printSampleStream = new PrintSampleStream(args);
+        printSampleStream.startConsuming();
     }
 
     TwitterStream twitterStream;
 
-    StreamingExample(String id, String password) {
-        twitterStream = new TwitterStream(id, password);
-        twitterStream.setStatusListener(this);
+    PrintSampleStream(String[] args) {
+        try {
+            twitterStream = new TwitterStreamFactory(this).getInstance();
+        } catch (IllegalStateException is) {
+            // screen name / password combination is not in twitter4j.properties
+            if (args.length < 2) {
+                System.out.println(
+                        "Usage: java twitter4j.examples.PrintSampleStream ScreenName Password");
+                System.exit(-1);
+            }
+            twitterStream = new TwitterStreamFactory().getInstance(args[0], args[1]);
+        }
     }
     private void startConsuming() throws TwitterException {
         // sample() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.

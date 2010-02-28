@@ -173,7 +173,7 @@
                         </goals>
                         <configuration>
                             <excludePackageNames>
-                                twitter4j.internal
+                                twitter4j.internal.*
                             </excludePackageNames>
                         </configuration>
                     </execution>
