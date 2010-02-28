@@ -2,7 +2,7 @@ echo off
 SETLOCAL enabledelayedexpansion
 call setEnv.cmd
 
-echo %JAVA_HOME%\bin\java %MEM_ARGS% -classpath "%CLASSPATH%" twitter4j.examples.AsyncUpdate %*
-"%JAVA_HOME%\bin\java" %MEM_ARGS% -classpath "%CLASSPATH%" twitter4j.examples.AsyncUpdate %*
+echo %JAVA% %MEM_ARGS% -classpath "%CLASSPATH%" twitter4j.examples.AsyncUpdate %*
+"%JAVA%" %MEM_ARGS% -classpath "%CLASSPATH%" twitter4j.examples.AsyncUpdate %*
 
 ENDLOCAL
