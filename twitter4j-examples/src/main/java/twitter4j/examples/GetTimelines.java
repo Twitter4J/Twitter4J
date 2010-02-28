@@ -38,7 +38,7 @@ import java.util.List;
  * Usage: java twitter4j.examples.GetTimelines ID Password
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class GetTimelines {
+public final class GetTimelines {
     /**
      * Usage: java twitter4j.examples.GetTimelines ID Password
      * @param args String[]

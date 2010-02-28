@@ -34,40 +34,63 @@ import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 
 /**
- * <p>This is a code example of Twitter4J Streaming API - sample method support.<br>
- * Usage: java twitter4j.examples.PrintSampleStream [<i>TwitterScreenName</i> <i>TwitterPassword</i>]<br>
+ * <p>This is a code example of Twitter4J Streaming API - filter method support.<br>
+ * Usage: java twitter4j.examples.PrintFilterStream [<i>TwitterScreenName</i> <i>TwitterPassword</i> follow(comma separated) track(comma separated)]<br>
  * </p>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class PrintSampleStream implements StatusListener{
+public final class PrintFilterStream implements StatusListener{
     /**
      * Main entry of this application.
      * @param args String[] TwitterID TwitterPassword
      */
     public static void main(String[] args)throws TwitterException {
-        PrintSampleStream printSampleStream = new PrintSampleStream(args);
-        printSampleStream.startConsuming();
+        PrintFilterStream printFilterStream = new PrintFilterStream(args);
+        printFilterStream.startConsuming();
     }
 
     TwitterStream twitterStream;
+    int[] filterArray;
+    String[] trackArray;
 
-    PrintSampleStream(String[] args) {
+    private PrintFilterStream(String[] args) {
+        String filter;
+        String track;
         try {
             twitterStream = new TwitterStreamFactory(this).getInstance();
+            if (args.length < 2) {
+                printUsageAndExit();
+            }
+            filter = args[0];
+            track = args[1];
         } catch (IllegalStateException is) {
             // screen name / password combination is not in twitter4j.properties
-            if (args.length < 2) {
-                System.out.println(
-                        "Usage: java twitter4j.examples.PrintSampleStream [ScreenName Password]");
-                System.exit(-1);
+            if (args.length < 4) {
+                printUsageAndExit();
             }
             twitterStream = new TwitterStreamFactory().getInstance(args[0], args[1]);
+            filter = args[2];
+            track = args[3];
         }
+        String[] filterSplit = filter.split(",");
+        filterArray = new int[filterSplit.length];
+        for(int i=0; i< filterSplit.length; i++){
+            filterArray[i] = Integer.parseInt(filterSplit[i]);
+
+        }
+        String[] trackArray = track.split(",");
     }
+
+    private void printUsageAndExit() {
+            System.out.println(
+                    "Usage: java twitter4j.examples.PrintFilterStream [ScreenName Password] follow(comma separated) track(comma separated)");
+            System.exit(-1);
+    }
+
     private void startConsuming() throws TwitterException {
-        // sample() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
+        // filter() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
         twitterStream.setStatusListener(this);
-        twitterStream.sample();
+        twitterStream.filter(0, filterArray, trackArray);
     }
 
     public void onStatus(Status status) {

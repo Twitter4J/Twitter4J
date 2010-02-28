@@ -8,7 +8,7 @@ set JAVA=java
 
 if not "%JAVA%" == "" set JAVA=%JAVA_HOME%\bin\java
 
-for %%i in (..\lib\*.jar) do set CLASSPATH=!CLASSPATH!;%%i
+for %%i in (lib\*.jar) do set CLASSPATH=!CLASSPATH!;%%i
 for %%i in (..\*.jar) do set CLASSPATH=!CLASSPATH!;%%i
 
 set MEM_ARGS=-Xms30m -Xmx30m

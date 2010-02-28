@@ -36,7 +36,7 @@ import twitter4j.TwitterFactory;
  * Usage: java twitter4j.examples.DirectMessage senderID senderPassword message recipientId
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class SendDirectMessage {
+public final class SendDirectMessage {
     /**
      * Usage: java twitter4j.examples.DirectMessage senderID senderPassword message recipientId
      * @param args String[]

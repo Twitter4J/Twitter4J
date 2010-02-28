@@ -43,7 +43,7 @@ import java.io.InputStreamReader;
  * Usage: java -Dtwitter4j.oauth.consumerKey=[consumer key] -Dtwitter4j.oauth.consumerSecret=[consumer secret] twitter4j.examples.OAuthUpdate [message]
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class OAuthUpdate {
+public final class OAuthUpdate {
     /**
      * Usage: java -Dtwitter4j.oauth.consumerKey=[consumer key] -Dtwitter4j.oauth.consumerSecret=[consumer secret] twitter4j.examples.OAuthUpdate [message]
      * @param args message

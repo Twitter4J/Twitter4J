@@ -37,7 +37,7 @@ import twitter4j.TwitterFactory;
  * </p>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Update {
+public final class Update {
     /**
      * Main entry for this application.
      * @param args String[] TwitterID TwitterPassword StatusString

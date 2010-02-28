@@ -40,7 +40,7 @@ import twitter4j.TwitterMethod;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class AsyncUpdate {
+public final class AsyncUpdate {
     /**
      * Main entry for this application.
      *

@@ -70,7 +70,7 @@ import java.util.Properties;
  * </p>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class FeedMonitor {
+public final class FeedMonitor {
     static Logger log = LoggerFactory.getLogger(FeedMonitor.class);
     /**
      * Main entry point for this application.<br>
