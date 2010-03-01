@@ -32,12 +32,18 @@ package twitter4j.conf;
  * usable configuration.  This configuration builder is useful for clients that wish to configure
  * twitter4j in unit tests or from command line flags for example.
  *
- * @author John Sirois - john.sirois at gamil.com
+ * @author John Sirois - john.sirois at gmail.com
  */
 public final class ConfigurationBuilder {
 
   private ConfigurationBase configurationBean = new ConfigurationBase();
 
+  public ConfigurationBuilder setUseSSL(boolean useSSL) {
+    checkNotBuilt();
+    configurationBean.setUseSSL(useSSL);
+    return this;
+  }
+  
   public ConfigurationBuilder setDebugEnabled(boolean debugEnabled) {
     checkNotBuilt();
     configurationBean.setDebug(debugEnabled);
