@@ -49,5 +49,6 @@ find . -name ".DS_Store" -print -exec rm -r {} ";"
 find . -name ._* -exec rm -r {} ";"
 rm ../twitter4j-$1.zip
 zip -r ../twitter4j-$1.zip .
+cd ..
 rm -Rf $DIR
 

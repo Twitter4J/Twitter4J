@@ -35,14 +35,14 @@ import twitter4j.TwitterStreamFactory;
 
 /**
  * <p>This is a code example of Twitter4J Streaming API - filter method support.<br>
- * Usage: java twitter4j.examples.PrintFilterStream [<i>TwitterScreenName</i> <i>TwitterPassword</i> follow(comma separated) track(comma separated)]<br>
+ * Usage: java twitter4j.examples.PrintFilterStream [<i>TwitterScreenName</i> <i>TwitterPassword</i>] follow(comma separated) track(comma separated)]<br>
  * </p>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class PrintFilterStream implements StatusListener{
     /**
      * Main entry of this application.
-     * @param args String[] TwitterID TwitterPassword
+     * @param args [ScreenName Password] follow(comma separated user ids) track(comma separated filter terms)z
      */
     public static void main(String[] args)throws TwitterException {
         PrintFilterStream printFilterStream = new PrintFilterStream(args);
@@ -83,7 +83,7 @@ public final class PrintFilterStream implements StatusListener{
 
     private void printUsageAndExit() {
             System.out.println(
-                    "Usage: java twitter4j.examples.PrintFilterStream [ScreenName Password] follow(comma separated) track(comma separated)");
+                    "Usage: java twitter4j.examples.PrintFilterStream [ScreenName Password] follow(comma separated user ids) track(comma separated filter terms)");
             System.exit(-1);
     }
 
