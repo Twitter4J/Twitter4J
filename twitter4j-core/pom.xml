@@ -57,7 +57,7 @@
              <uniqueVersion>false</uniqueVersion>
              <url>file:${user.home}/maven2/</url>
          </snapshotRepository>
-        </distributionManagement>
+    </distributionManagement>
     <profiles>
         <profile>
             <id>release-sign-artifacts</id>
