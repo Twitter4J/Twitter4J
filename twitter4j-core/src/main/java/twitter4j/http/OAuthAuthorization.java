@@ -163,7 +163,23 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         this.oauthToken = requestToken;
         return getOAuthAccessToken(oauthVerifier);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AccessToken getOAuthAccessToken(String user, String password) throws TwitterException {
+        try {
+            oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), new HttpParameter[]{
+                new HttpParameter("x_auth_username", user),
+                new HttpParameter("x_auth_password", password),
+                new HttpParameter("x_auth_mode", "client_auth")
+               }, this));
+            return (AccessToken)oauthToken;
+        } catch (TwitterException te) {
+            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+        }
+    }
+    
     /**
      * {@inheritDoc}
      */

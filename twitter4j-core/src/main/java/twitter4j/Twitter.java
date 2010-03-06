@@ -1499,6 +1499,10 @@ public final class Twitter extends TwitterOAuthSupportBase
         return getOAuth().getOAuthAccessToken(new RequestToken(token,tokenSecret));
     }
 
+    public synchronized AccessToken getOAuthAccessTokenXAuth(String user, String password) throws TwitterException {
+        return getOAuth().getOAuthAccessToken(user,password);
+    }
+    
     /**
      * {@inheritDoc}
      */
