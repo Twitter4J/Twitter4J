@@ -57,7 +57,6 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
     public void testStatusStream() throws Exception {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-testcase.json");
         StatusStream stream = new StatusStream(is);
-        is.close();
         stream.next(this);
         assertEquals(6832057002l, deletionNotice.getStatusId());
         assertEquals(18378841, deletionNotice.getUserId());
@@ -69,7 +68,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
         assertEquals(121564, trackLimit);
         stream.next(this);
         assertEquals("ngantuk banget nguap mulu", status.getText());
-        
+        is.close();
     }
 
     public void testSamplePull() throws Exception {
