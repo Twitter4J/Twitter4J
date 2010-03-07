@@ -26,15 +26,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.internal.http.HttpClient;
+import twitter4j.internal.http.HttpClientWrapper;
+import twitter4j.internal.org.json.JSONArray;
+import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -51,6 +63,7 @@ public class DAOTest extends TwitterTestBase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
+
     public void testEmptyJSON() throws Exception {
         HttpClient http = new HttpClient();
 
@@ -73,7 +86,6 @@ public class DAOTest extends TwitterTestBase {
         List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("http://twitter4j.org/en/testcases/trends/daily-empty.json"));
         assertTrue(trends.size() == 0);
         assertDeserializedFormIsEqual(trends);
-
     }
     public void testTweet() throws Exception {
         JSONObject json = new JSONObject("{\"profile_image_url\":\"http://a3.twimg.com/profile_images/554278229/twitterProfilePhoto_normal.jpg\",\"created_at\":\"Thu, 24 Dec 2009 18:30:56 +0000\",\"from_user\":\"pskh\",\"to_user_id\":null,\"text\":\"test\",\"id\":7007483122,\"from_user_id\":215487,\"geo\":{\"type\":\"Point\",\"coordinates\":[37.78029, -122.39697]},\"source\":\"&lt;a href=&quot;http://twitter4j.org/&quot; rel=&quot;nofollow&quot;&gt;Twitter4J&lt;/a&gt;\"}");
@@ -83,6 +95,153 @@ public class DAOTest extends TwitterTestBase {
         assertEquals(37.78029,geo.getLatitude());
         assertEquals(-122.39697,geo.getLongitude());
     }
+
+    public void testLocation() throws Exception {
+        JSONArray array = getJSONArrayFromClassPath("/trends-available.json");
+        ResponseList<Location> locations = LocationJSONImpl.createLocationList(array, null);
+        assertEquals(23,locations.size());
+        Location location = locations.get(0);
+        assertEquals("GB", location.getCountryCode());
+        assertEquals("United Kingdom", location.getCountryName());
+        assertEquals("United Kingdom", location.getName());
+        assertEquals(12, location.getPlaceCode());
+        assertEquals("Country", location.getPlaceName());
+        assertEquals("http://where.yahooapis.com/v1/place/23424975", location.getURL());
+        assertEquals(23424975, location.getWoeid());
+
+        String[] schema = new String[]{"url","country","woeid","placeType/name","placeType/code","name","countryCode"};
+        validateJSONArraySchema("http://api.twitter.com/1/trends/available.json", schema);
+    }
+
+    public void testSchema() throws Exception {
+        JSONObject json = new JSONObject("{\"url\":\"http://where.yahooapis.com/v1/place/23424975\",\"country\":\"United Kingdom\",\"woeid\":23424975,\"placeType\":{\"code\":12,\"name\":\"Country\"},\"name\":\"United Kingdom\",\"countryCode\":\"GB\"}");
+        String[] schema = new String[]{"url", "country", "woeid", "placeType/name", "placeType/code", "name", "countryCode"};
+        validateJSONObjectSchema(json, schema);
+    }
+
+    private void validateJSONObjectSchema(String url, String[] knownNames) throws Exception {
+        validateJSONObjectSchema(getJSONObjectFromGetURL(url),knownNames);
+    }
+    private static void validateJSONObjectSchema(JSONObject json, String[] knownNames) throws JSONException {
+        Map<String, String[]> schemaMap = new HashMap<String, String[]>();
+        List<String> names = new ArrayList<String>();
+        for (int i = 0; i < knownNames.length; i++) {
+            String knownName = knownNames[i];
+            int index;
+            if (-1 != (index = knownName.indexOf("/"))) {
+                String parent = knownName.substring(0, index);
+                String child = knownName.substring(index + 1);
+                String[] array = schemaMap.get(parent);
+                if (null == array) {
+                    schemaMap.put(parent, new String[]{child});
+                } else {
+                    String[] newArray = new String[array.length + 1];
+                    System.arraycopy(array, 0, newArray, 0, array.length);
+                    newArray[newArray.length - 1] = child;
+                    schemaMap.put(parent, newArray);
+                }
+                names.add(parent);
+            } else {
+                names.add(knownName);
+            }
+        }
+
+        Iterator ite = json.keys();
+        while(ite.hasNext()){
+            String name = (String)ite.next();
+            boolean found = false;
+            for (String elementName : names) {
+                if (elementName.equals(name)) {
+                    found = true;
+                    break;
+                }
+                String[] children = schemaMap.get(elementName);
+                if(null != children){
+                    validateJSONObjectSchema(json.getJSONObject(elementName),children);
+                }
+            }
+            if(!found){
+                fail("unknown element:[" + name + "] in "+ json);
+            }
+        }
+    }
+    private void validateJSONArraySchema(String url, String[] knownNames) throws Exception {
+        validateJSONArraySchema(getJSONArrayFromGetURL(url),knownNames);
+    }
+
+    private static void validateJSONArraySchema(JSONArray array, String[] knownNames) throws JSONException {
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject json = array.getJSONObject(i);
+            validateJSONObjectSchema(json, knownNames);
+        }
+    }
+
+    private static JSONArray getJSONArrayFromClassPath(String path) throws Exception {
+        return new JSONArray(getStringFromClassPath(path));
+    }
+
+    private static JSONObject getJSONObjectFromClassPath(String path) throws Exception {
+        return new JSONObject(getStringFromClassPath(path));
+    }
+
+    private JSONObject getJSONObjectFromGetURL(String url) throws Exception {
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setUser(id1.screenName);
+        builder.setPassword(id1.password);
+        return getJSONObjectFromGetURL(url, builder.build());
+    }
+
+    private static JSONObject getJSONObjectFromPostURL(String url, Configuration conf) throws Exception {
+        HttpClientWrapper http = new HttpClientWrapper(conf);
+        return http.post(url).asJSONObject();
+    }
+
+    private JSONObject getJSONObjectFromPostURL(String url) throws Exception {
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setUser(id1.screenName);
+        builder.setPassword(id1.password);
+        return getJSONObjectFromPostURL(url, builder.build());
+    }
+
+    private static JSONObject getJSONObjectFromGetURL(String url, Configuration conf) throws Exception {
+        HttpClientWrapper http = new HttpClientWrapper(conf);
+        return http.get(url).asJSONObject();
+    }
+
+    private JSONArray getJSONArrayFromGetURL(String url) throws Exception {
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setUser(id1.screenName);
+        builder.setPassword(id1.password);
+        return getJSONArrayFromGetURL(url, builder.build());
+    }
+
+
+    private static JSONArray getJSONArrayFromGetURL(String url, Configuration conf) throws Exception {
+        HttpClientWrapper http = new HttpClientWrapper(conf);
+        return http.get(url).asJSONArray();
+    }
+
+    private static String getStringFromClassPath(String path) throws Exception {
+        InputStream is = null;
+        InputStreamReader isr = null;
+        BufferedReader br = null;
+        try {
+            is = DAOTest.class.getResourceAsStream(path);
+            isr = new InputStreamReader(is);
+            br = new BufferedReader(isr);
+            StringBuffer buf = new StringBuffer();
+            String line;
+            while (null != (line = br.readLine())) {
+                buf.append(line);
+            }
+            return buf.toString();
+        } finally {
+            is.close();
+            isr.close();
+            br.close();
+        }
+    }
+
 
     public void testUserAsJSON() throws Exception {
         // single User

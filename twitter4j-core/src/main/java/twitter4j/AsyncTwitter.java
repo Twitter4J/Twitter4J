@@ -1480,7 +1480,33 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
             }
         });
     }
+    /* Saved Searches Methods */
+    /* Local Trend Methods */
 
+    /**
+     * {@inheritDoc}
+	 */
+    public void getAvailableTrends() {
+        getDispatcher().invokeLater(new AsyncTask(AVAILABLE_TRENDS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotAvailableTrends(twitter.getAvailableTrends());
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getAvailableTrends(final GeoLocation location) {
+        getDispatcher().invokeLater(new AsyncTask(AVAILABLE_TRENDS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotAvailableTrends(twitter.getAvailableTrends(location));
+            }
+        });
+    }
+
+    /* Geo Methods */
+    
     /* Help Methods */
 
     /**

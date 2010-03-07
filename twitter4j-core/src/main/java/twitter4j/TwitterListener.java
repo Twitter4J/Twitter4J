@@ -296,7 +296,7 @@ public interface TwitterListener {
     void gotBlockingUsersIDs(IDs blockingUsersIDs);
 
     /*Spam Reporting Methods*/
-    void reportedSpam(User reportedSpammer) throws TwitterException;
+    void reportedSpam(User reportedSpammer);
 
     /*Saved Searches Methods*/
     //getSavedSearches()
@@ -305,6 +305,12 @@ public interface TwitterListener {
     //destroySavedSearch()
 
     /*Local Trends Methods*/
+
+    /**
+     * @param locations the locations
+     * @since Twitter4J 2.1.1
+     */
+    void gotAvailableTrends(ResponseList<Location> locations);
 
     /*Help Methods*/
     void tested(boolean test);
@@ -418,6 +424,7 @@ public interface TwitterListener {
     //destroySavedSearch()
 
     /*Local Trends Methods*/
+    TwitterMethod AVAILABLE_TRENDS = TwitterMethod.AVAILABLE_TRENDS;
 
     /*Help Methods*/
     TwitterMethod TEST = TwitterMethod.TEST;

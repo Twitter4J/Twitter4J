@@ -189,6 +189,7 @@ public final class TwitterMethod implements java.io.Serializable {
     //destroySavedSearch()
 
     /*Local Trends Methods*/
+    public static final TwitterMethod AVAILABLE_TRENDS = new TwitterMethod("AVAILABLE_TRENDS");
 
     /*Help Methods*/
     public static final TwitterMethod TEST = new TwitterMethod("TEST");

@@ -317,7 +317,7 @@ public class TwitterAdapter implements TwitterListener {
 
     /*Spam Reporting Methods*/
 
-    public void reportedSpam(User reportedSpammer) throws TwitterException {
+    public void reportedSpam(User reportedSpammer) {
     }
 
 
@@ -328,6 +328,12 @@ public class TwitterAdapter implements TwitterListener {
     //destroySavedSearch()
 
     /*Local Trends Methods*/
+    /**
+     * @param locations the locations
+     * @since Twitter4J 2.1.1
+     */
+    public void gotAvailableTrends(ResponseList<Location> locations){
+    }
 
     /*Help Methods*/
     public void tested(boolean test){

@@ -65,6 +65,9 @@ import static twitter4j.ParseUtil.*;
     }
 
     static RateLimitStatus createFromResponseHeader(HttpResponse res) {
+        if(null == res){
+            return null;
+        }
         int remainingHits;//"X-RateLimit-Remaining"
         int hourlyLimit;//"X-RateLimit-Limit"
         int resetTimeInSeconds;//not included in the response header. Need to be calculated.

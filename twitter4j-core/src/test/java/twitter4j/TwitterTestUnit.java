@@ -673,6 +673,13 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertEquals(39771963, ids.getIDs()[0]);
     }
 
+    public void testLocalTrendsMethods() throws Exception {
+        ResponseList<Location> locations;
+        locations = twitterAPI1.getAvailableTrends();
+        assertTrue(locations.size() > 0);
+        locations = twitterAPI1.getAvailableTrends(new GeoLocation(0,0));
+        assertTrue(locations.size() > 0);
+    }
 
     RateLimitStatus rateLimitStatus = null;
     boolean accountLimitStatusAcquired;

@@ -86,13 +86,15 @@ public final class Twitter extends TwitterOAuthSupportBase
         LocalTrendsMethods,
         HelpMethods {
     private static final long serialVersionUID = -1486360080128882436L;
-    Twitter(Configuration conf){
+
+    Twitter(Configuration conf) {
         super(conf);
     }
 
 
     /**
      * Creates an unauthenticated Twitter instance
+     *
      * @deprecated use TwitterFactory.getInstance() instead
      */
     public Twitter() {
@@ -110,22 +112,24 @@ public final class Twitter extends TwitterOAuthSupportBase
         super(ConfigurationContext.getInstance(), screenName, password);
     }
     /*package*/
+
     Twitter(Configuration conf, String screenName, String password) {
         super(conf, screenName, password);
     }
     /*package*/
+
     Twitter(Configuration conf, Authorization auth) {
         super(conf, auth);
     }
 
-    private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter[] params2){
-        if(null != params1 && null != params2){
+    private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter[] params2) {
+        if (null != params1 && null != params2) {
             HttpParameter[] params = new HttpParameter[params1.length + params2.length];
-            System.arraycopy(params1,0,params,0,params1.length);
-            System.arraycopy(params2,0,params,params1.length,params2.length);
+            System.arraycopy(params1, 0, params, 0, params1.length);
+            System.arraycopy(params2, 0, params, params1.length, params2.length);
             return params;
         }
-        if(null == params1 && null == params2){
+        if (null == params1 && null == params2) {
             return new HttpParameter[0];
         }
         if (null != params1) {
@@ -177,7 +181,7 @@ public final class Twitter extends TwitterOAuthSupportBase
      * - this instance is authenticated by OAuth.<br>
      *
      * @return the authenticating user's id
-     * @throws TwitterException when verifyCredentials threw an exception.
+     * @throws TwitterException      when verifyCredentials threw an exception.
      * @throws IllegalStateException if no credentials are supplied. i.e.) this is an anonymous Twitter instance
      * @since Twitter4J 2.1.1
      */
@@ -186,7 +190,7 @@ public final class Twitter extends TwitterOAuthSupportBase
             throw new IllegalStateException(
                     "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
         }
-        if(0 == id){
+        if (0 == id) {
             verifyCredentials();
         }
         // retrieve the screen name if this instance is authenticated with OAuth or email address
@@ -329,7 +333,7 @@ public final class Twitter extends TwitterOAuthSupportBase
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)}
-                , paging.asPostParameterArray()), auth));
+                        , paging.asPostParameterArray()), auth));
     }
 
     /**
@@ -340,7 +344,7 @@ public final class Twitter extends TwitterOAuthSupportBase
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)}
-                , paging.asPostParameterArray()), auth));
+                        , paging.asPostParameterArray()), auth));
     }
 
     /**
@@ -494,7 +498,7 @@ public final class Twitter extends TwitterOAuthSupportBase
                 new HttpParameter[]{new HttpParameter("status", status),
                         new HttpParameter("lat", location.getLatitude()),
                         new HttpParameter("long", location.getLongitude()),
-                        new HttpParameter("in_reply_to_status_id",inReplyToStatusId),
+                        new HttpParameter("in_reply_to_status_id", inReplyToStatusId),
                         new HttpParameter("source", conf.getSource())}, auth));
     }
 
@@ -1355,7 +1359,7 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public User reportSpam(int userId) throws TwitterException{
+    public User reportSpam(int userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "report_spam.json?user_id=" + userId, auth));
     }
@@ -1363,7 +1367,7 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public User reportSpam(String screenName) throws TwitterException{
+    public User reportSpam(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "report_spam.json?screenName=" + screenName, auth));
     }
@@ -1404,6 +1408,26 @@ public final class Twitter extends TwitterOAuthSupportBase
         return new SavedSearchJSONImpl(http.post(conf.getRestBaseURL()
                 + "saved_searches/destroy/" + id + ".json", auth));
     }
+    /* Local Trends Mehtods */
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Location> getAvailableTrends() throws TwitterException {
+        return LocationJSONImpl.createLocationList(http.get(conf.getRestBaseURL()
+                + "trends/available.json", auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Location> getAvailableTrends(GeoLocation location) throws TwitterException {
+        return LocationJSONImpl.createLocationList(http.get(conf.getRestBaseURL()
+                + "trends/available.json",
+                new HttpParameter[]{new HttpParameter("lat", location.getLatitude())
+                        ,new HttpParameter("long", location.getLongitude())
+                }, auth));
+    }
 
     /* Help Methods */
 
@@ -1422,23 +1446,24 @@ public final class Twitter extends TwitterOAuthSupportBase
             throw new IllegalStateException(
                     "OAuth consumer key/secret combination not supplied");
         }
-        return (OAuthSupport)auth;
+        return (OAuthSupport) auth;
     }
 
     /**
      * {@inheritDoc}
      */
-    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret){
+    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret) {
         if (auth instanceof NullAuthorization) {
             auth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
-        }else if(auth instanceof BasicAuthorization){
+        } else if (auth instanceof BasicAuthorization) {
             throw new IllegalStateException("Basic authenticated instance.");
-        }else if(auth instanceof OAuthAuthorization){
+        } else if (auth instanceof OAuthAuthorization) {
             throw new IllegalStateException("consumer key/secret pair already set.");
         }
     }
 
     // implementation for OAuthSupport interface
+
     /**
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
@@ -1464,7 +1489,7 @@ public final class Twitter extends TwitterOAuthSupportBase
             auth = AuthorizationFactory.getInstance(conf, true);
             if (auth instanceof OAuthAuthorization) {
                 this.auth = auth;
-                OAuthAuthorization oauthAuth = (OAuthAuthorization)auth;
+                OAuthAuthorization oauthAuth = (OAuthAuthorization) auth;
                 oauthAccessToken = oauthAuth.getOAuthAccessToken(basicAuth.getUserId(), basicAuth.getPassword());
             } else {
                 throw new IllegalStateException("consumer key / secret combination not supplied.");
@@ -1511,7 +1536,7 @@ public final class Twitter extends TwitterOAuthSupportBase
     }
 
     public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        return getOAuth().getOAuthAccessToken(new RequestToken(token,tokenSecret));
+        return getOAuth().getOAuthAccessToken(new RequestToken(token, tokenSecret));
     }
 
     /**
@@ -1525,11 +1550,11 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * Sets the access token
      *
-     * @param token access token
+     * @param token       access token
      * @param tokenSecret access token secret
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      * @since Twitter 2.0.0
      * @deprecated Use Twitter getInstance(AccessToken accessToken)
-     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public void setOAuthAccessToken(String token, String tokenSecret) {
         getOAuth().setOAuthAccessToken(new AccessToken(token, tokenSecret));
@@ -1537,6 +1562,7 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * tests if the instance is authenticated by Basic
+     *
      * @return returns true if the instance is authenticated by Basic
      */
     public boolean isOAuthEnabled() {

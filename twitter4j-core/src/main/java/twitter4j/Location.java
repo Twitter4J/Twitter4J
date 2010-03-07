@@ -26,30 +26,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.internal.http.HttpResponse;
-
-import java.util.ArrayList;
-
 /**
- * List of TwitterResponse.
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class ResponseList<T> extends ArrayList<T>
-        implements TwitterResponse {
-
-    private transient RateLimitStatus rateLimitStatus = null;
-    private static final long serialVersionUID = 5646617841989265312L;
-
-    ResponseList(int size, HttpResponse res) {
-        super(size);
-        this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public RateLimitStatus getRateLimitStatus() {
-        return rateLimitStatus;
-    }
+public interface Location extends java.io.Serializable {
+    int getWoeid();
+    String getCountryName();
+    String getCountryCode();
+    String getPlaceName();
+    int getPlaceCode();
+    String getName();
+    String getURL();
 }

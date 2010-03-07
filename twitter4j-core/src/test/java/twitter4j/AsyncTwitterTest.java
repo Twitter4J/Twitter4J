@@ -36,6 +36,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     private AsyncTwitter async1 = null;
     private AsyncTwitter async2 = null;
+    private ResponseList<Location> locations;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -768,7 +769,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     /*Spam Reporting Methods*/
 
-    public void reportedSpam(User reportedSpammer) throws TwitterException {
+    public void reportedSpam(User reportedSpammer) {
         this.user = reportedSpammer;
         notifyResponse();
     }
@@ -780,6 +781,14 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     //destroySavedSearch()
 
     /*Local Trends Methods*/
+    /**
+     * @param locations the locations
+     * @since Twitter4J 2.1.1
+     */
+    public void gotAvailableTrends(ResponseList<Location> locations){
+        this.locations = locations;
+        notifyResponse();
+    }
 
     /*Help Methods*/
     public void tested(boolean test) {

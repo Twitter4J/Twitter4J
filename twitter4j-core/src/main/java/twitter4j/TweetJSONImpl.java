@@ -29,6 +29,9 @@ package twitter4j;
 import twitter4j.GeoLocation;
 import twitter4j.Tweet;
 import twitter4j.TwitterException;
+import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.org.json.JSONArray;
+import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Date;
@@ -67,7 +70,6 @@ import static twitter4j.ParseUtil.*;
         profileImageUrl = getUnescapedString("profile_image_url", tweet);
         createdAt = getDate("created_at", tweet, "EEE, dd MMM yyyy HH:mm:ss z");
         geoLocation = GeoLocation.getInstance(tweet);
-
     }
 
     /**

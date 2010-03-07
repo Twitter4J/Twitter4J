@@ -26,13 +26,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.GeoLocation;
+import twitter4j.Location;
+import twitter4j.ResponseList;
+import twitter4j.TwitterException;
+
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-/**
- * Not yet supported.
- *
- * http://yusuke.homeip.net/jira/browse/TFJ-233
- */
 public interface LocalTrendsMethodsAsync {
+    /**
+	 * Retrieves the locations that Twitter has trending topic information for. The response is an array of &quot;locations&quot; that encode the location's WOEID (a <a href="http://developer.yahoo.com/geo/geoplanet/">Yahoo! Where On Earth ID</a>) and some other human-readable information such as a canonical name and country the location belongs in.
+	 * <br>This method calls http://api.twitter.com/1/trends/available.json
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-trends-available">Twitter REST API Method: GET /:user/:list_id/members</a>
+	 * @since Twitter4J 2.1.1
+	 */
+    void getAvailableTrends();
+
+    /**
+	 * Retrieves the sorted locations that Twitter has trending topic information for. The response is an array of &quot;locations&quot; that encode the location's WOEID (a <a href="http://developer.yahoo.com/geo/geoplanet/">Yahoo! Where On Earth ID</a>) and some other human-readable information such as a canonical name and country the location belongs in.
+	 * <br>This method calls http://api.twitter.com/1/trends/available.json
+     * @param location the available trend locations will be sorted by distance to the lat and long passed in. The sort is nearest to furthest.
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-trends-available">Twitter REST API Method: GET /:user/:list_id/members</a>
+	 * @since Twitter4J 2.1.1
+	 */
+    void getAvailableTrends(GeoLocation location);
 }
