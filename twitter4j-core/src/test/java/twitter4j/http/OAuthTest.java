@@ -30,6 +30,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterTestUnit;
+import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.http.HttpClient;
 import twitter4j.internal.http.HttpParameter;
@@ -143,7 +144,7 @@ public class OAuthTest extends TwitterTestUnit {
         params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
         params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
-        params[3] = new HttpParameter("session[password]", id1.pass);
+        params[3] = new HttpParameter("session[password]", id1.password);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
         resStr = response.asString();
         String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ", "\n</div>");
@@ -191,7 +192,7 @@ public class OAuthTest extends TwitterTestUnit {
         params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
         params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
-        params[3] = new HttpParameter("session[password]", id1.pass);
+        params[3] = new HttpParameter("session[password]", id1.password);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
 
 //        response = http.post(authorizeURL, params);
@@ -232,7 +233,7 @@ public class OAuthTest extends TwitterTestUnit {
         params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
         params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
-        params[3] = new HttpParameter("session[password]", id1.pass);
+        params[3] = new HttpParameter("session[password]", id1.password);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret());
         assertEquals(at.getScreenName(), id1.screenName);
@@ -273,7 +274,7 @@ public class OAuthTest extends TwitterTestUnit {
         params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
         params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
-        params[3] = new HttpParameter("session[password]", id1.pass);
+        params[3] = new HttpParameter("session[password]", id1.password);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
 //        response = http.post(authorizeURL, params);
         resStr = response.asString();
@@ -393,6 +394,20 @@ public class OAuthTest extends TwitterTestUnit {
         assertEquals("https://example.com/resource", OAuthAuthorization.constructRequestURL("HTTPS://Example.com:443/resource?id=123"));
         assertEquals("https://example.com:8443/resource", OAuthAuthorization.constructRequestURL("HTTPS://Example.com:8443/resource?id=123"));
         assertEquals("https://example.com/resource", OAuthAuthorization.constructRequestURL("HTTPS://Example.com/resource?id=123"));
+    }
+
+    public void testXAuth() throws Exception {
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setOAuthConsumerKey(desktopConsumerKey);
+        builder.setOAuthConsumerSecret(desktopConsumerSecret);
+        Twitter twitter = new TwitterFactory(builder.build()).getInstance(id1.screenName, id2.password);
+        try {
+            twitter.getOAuthAccessToken();
+            fail("expecting TwitterException");
+        } catch (TwitterException te) {
+            // id1 doesn't have access to xAuth
+            assertEquals(401, te.getStatusCode());
+        }
     }
 
     private void trySerializable(Object obj) throws IOException {

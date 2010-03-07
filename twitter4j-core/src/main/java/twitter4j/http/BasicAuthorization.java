@@ -41,6 +41,7 @@ public final class BasicAuthorization implements Authorization, java.io.Serializ
     private static final Logger logger = Logger.getLogger();
 
     private String userId;
+
     private String password;
     private String basic;
     private static final long serialVersionUID = -5861104407848415060L;
@@ -53,6 +54,10 @@ public final class BasicAuthorization implements Authorization, java.io.Serializ
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     private String encodeBasicAuthenticationString() {

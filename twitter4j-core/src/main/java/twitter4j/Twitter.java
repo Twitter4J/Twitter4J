@@ -1456,16 +1456,31 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public AccessToken getOAuthAccessToken() throws TwitterException {
-        AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken();
+    public synchronized AccessToken getOAuthAccessToken() throws TwitterException {
+        Authorization auth = getAuthorization();
+        AccessToken oauthAccessToken;
+        if (auth instanceof BasicAuthorization) {
+            BasicAuthorization basicAuth = (BasicAuthorization) auth;
+            auth = AuthorizationFactory.getInstance(conf, true);
+            if (auth instanceof OAuthAuthorization) {
+                this.auth = auth;
+                OAuthAuthorization oauthAuth = (OAuthAuthorization)auth;
+                oauthAccessToken = oauthAuth.getOAuthAccessToken(basicAuth.getUserId(), basicAuth.getPassword());
+            } else {
+                throw new IllegalStateException("consumer key / secret combination not supplied.");
+            }
+        } else {
+            oauthAccessToken = getOAuth().getOAuthAccessToken();
+        }
         screenName = oauthAccessToken.getScreenName();
+        id = oauthAccessToken.getUserId();
         return oauthAccessToken;
     }
 
     /**
      * {@inheritDoc}
      */
-    public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
+    public synchronized AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken(oauthVerifier);
         screenName = oauthAccessToken.getScreenName();
         return oauthAccessToken;
@@ -1491,7 +1506,7 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void setOAuthAccessToken(AccessToken accessToken) {
+    public synchronized void setOAuthAccessToken(AccessToken accessToken) {
         getOAuth().setOAuthAccessToken(accessToken);
     }
 
@@ -1499,10 +1514,6 @@ public final class Twitter extends TwitterOAuthSupportBase
         return getOAuth().getOAuthAccessToken(new RequestToken(token,tokenSecret));
     }
 
-    public synchronized AccessToken getOAuthAccessTokenXAuth(String user, String password) throws TwitterException {
-        return getOAuth().getOAuthAccessToken(user,password);
-    }
-    
     /**
      * {@inheritDoc}
      */

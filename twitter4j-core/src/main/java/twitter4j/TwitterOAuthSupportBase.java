@@ -91,6 +91,11 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
 
     /**
      * {@inheritDoc}
+     * Basic authenticated instance of this class will try acquiring an AccessToken using xAuth.<br>
+     * In order to get access acquire AccessToken using xAuth, you must apply by sending an email to api@twitter.com — all other applications will receive an HTTP 401 error.  Web-based applications will not be granted access, except on a temporary basis for when they are converting from basic-authentication support to full OAuth support.<br>
+     * Storage of Twitter usernames and passwords is forbidden. By using xAuth, you are required to store only access tokens and access token secrets. If the access token expires or is expunged by a user, you must ask for their login and password again before exchanging the credentials for an access token.
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth">Twitter REST API Method: oauth access_token for xAuth</a>
+     * @throws TwitterException When the client application is not permitted to use xAuth
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public abstract AccessToken getOAuthAccessToken() throws TwitterException;

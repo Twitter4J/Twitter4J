@@ -1498,7 +1498,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     private boolean shutdown = false;
 
     /**
-     * Shuts down internal dispather thread.
+     * Shuts down internal dispatcher thread.
      *
      * @since Twitter4J 2.0.2
      */
@@ -1522,56 +1522,89 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
         return dispatcher;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setOAuthConsumer(String consumerKey, String consumerSecret) {
         twitter.setOAuthConsumer(consumerKey, consumerSecret);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestToken getOAuthRequestToken() throws TwitterException {
         return twitter.getOAuthRequestToken();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException {
         return twitter.getOAuthRequestToken(callbackUrl);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessToken getOAuthAccessToken() throws TwitterException {
         return twitter.getOAuthAccessToken();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         return twitter.getOAuthAccessToken(oauthVerifier);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
         return twitter.getOAuthAccessToken(requestToken);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
         return twitter.getOAuthAccessToken(requestToken, oauthVerifier);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setOAuthAccessToken(AccessToken accessToken) {
         twitter.setOAuthAccessToken(accessToken);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
         return twitter.getOAuthAccessToken(token, tokenSecret);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessToken getOAuthAccessToken(String token, String tokenSecret, String pin) throws TwitterException {
         return twitter.getOAuthAccessToken(token, tokenSecret, pin);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setOAuthAccessToken(String token, String tokenSecret) {
         twitter.setOAuthAccessToken(token, tokenSecret);

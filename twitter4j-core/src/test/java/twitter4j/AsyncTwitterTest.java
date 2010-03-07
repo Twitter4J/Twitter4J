@@ -44,8 +44,8 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     protected void setUp() throws Exception {
         super.setUp();
         AsyncTwitterFactory factory = new AsyncTwitterFactory(this);
-        async1 = factory.getInstance(id1.screenName, id1.pass);
-        async2 = factory.getInstance(id2.screenName, id2.pass);
+        async1 = factory.getInstance(id1.screenName, id1.password);
+        async2 = factory.getInstance(id2.screenName, id2.password);
 
         statuses = null;
         users = null;

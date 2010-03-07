@@ -42,13 +42,11 @@ public class AccessToken extends OAuthToken implements java.io.Serializable {
         this(res.asString());
     }
 
-    // for test unit
     AccessToken(String str) {
         super(str);
         screenName = getParameter("screen_name");
-	String sUserId = getParameter("user_id");
-	if (sUserId != null) userId = Integer.parseInt(sUserId);
-
+        String sUserId = getParameter("user_id");
+        if (sUserId != null) userId = Integer.parseInt(sUserId);
     }
 
     public AccessToken(String token, String tokenSecret) {

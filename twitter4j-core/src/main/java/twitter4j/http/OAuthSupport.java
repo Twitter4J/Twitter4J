@@ -73,26 +73,12 @@ public interface OAuthSupport {
      * @param oauthVerifier OAuth verifier. AKA pin.
      * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth">Twitter REST API Method: oauth access_token for xAuth</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.1.1
      */
     AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException;
 
-    /**
-     * Retrieves an access token associated with the supplied request token and sets userId.
-     *
-     * @param user the user name
-     * @param password the user password
-     * @return access token associated with the supplied request token.
-     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
-     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @since Twitter 2.0.0
-     */
-    AccessToken getOAuthAccessToken(String user, String password) throws TwitterException;
 
-    
     /**
      * Sets the access token
      *

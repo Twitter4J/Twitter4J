@@ -165,18 +165,28 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     }
     
     /**
-     * {@inheritDoc}
+     * Retrieves an access token associated with the supplied screen name and password using xAuth.<br>
+     * In order to get access acquire AccessToken using xAuth, you must apply by sending an email to api@twitter.com — all other applications will receive an HTTP 401 error.  Web-based applications will not be granted access, except on a temporary basis for when they are converting from basic-authentication support to full OAuth support.<br>
+     * Storage of Twitter usernames and passwords is forbidden. By using xAuth, you are required to store only access tokens and access token secrets. If the access token expires or is expunged by a user, you must ask for their login and password again before exchanging the credentials for an access token.
+     *
+     * @param screenName the screen name
+     * @param password the password
+     * @return access token associated with the supplied request token.
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth">Twitter REST API Method: oauth access_token for xAuth</a>
+     * @since Twitter 2.1.1
      */
-    public AccessToken getOAuthAccessToken(String user, String password) throws TwitterException {
+    public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
         try {
             oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), new HttpParameter[]{
-                new HttpParameter("x_auth_username", user),
+                new HttpParameter("x_auth_username", screenName),
                 new HttpParameter("x_auth_password", password),
                 new HttpParameter("x_auth_mode", "client_auth")
                }, this));
             return (AccessToken)oauthToken;
         } catch (TwitterException te) {
-            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
+            throw new TwitterException("The screen name / password combination seems to be invalid.", te, te.getStatusCode());
         }
     }
     
