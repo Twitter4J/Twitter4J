@@ -26,39 +26,60 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.logging;
 
-import twitter4j.conf.ConfigurationContext;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class Logger {
-    private static final boolean DEBUG = ConfigurationContext.getInstance().isDebugEnabled();
-    private static final Logger SINGLETON = new Logger();
-    private Logger() {
-        //@todo will wrap SLF4J / commons-logging / jul l8er @TFJ-148
+public abstract class Logger {
+    private static final Logger SINGLETON;
+
+    static {
+        Logger logger = null;
+
+        // use SLF4J if it's found in the classpath
+        logger = getLogger("org.slf4j.Logger", "twitter4j.internal.logging.SLF4JLogger");
+        // otherwise, use commons-logging if it's found in the classpath
+        if (null == logger) {
+            logger = getLogger("org.apache.commons.logging.Log", "twitter4j.internal.logging.CommonsLoggingLogger");
+        }
+        // otherwise, use log4j if it's found in the classpath
+        if (null == logger) {
+            logger = getLogger("org.apache.log4j.Logger", "twitter4j.internal.logging.Log4JLogger");
+        }
+        // otherwise, use the default logger
+        if (null == logger) {
+            logger = new StdOutLogger();
+        }
+        SINGLETON = logger;
     }
 
-    public static Logger getLogger(){
-        //@todo detect the class name from the stacktrace @TFJ-148
+    private static Logger getLogger(String checkClassName, String implementationClass) {
+        Logger logger = null;
+        try {
+            Class.forName(checkClassName);
+            logger = (Logger) Class.forName(implementationClass).newInstance();
+        } catch (ClassNotFoundException ignore) {
+        } catch (InstantiationException e) {
+            throw new AssertionError(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        }
+        return logger;
+    }
+
+    /**
+     * Static factory method.
+     *
+     * @return singleton logger instance
+     */
+    public static Logger getLogger() {
         return SINGLETON;
     }
 
-    public boolean isDebugEnabled() {
-        return DEBUG;
-    }
+    abstract boolean isDebugEnabled();
 
-    public void debug(String message) {
-        if (DEBUG) {
-            //@todo include class name in the message @TFJ-148
-            System.out.println("[" + new java.util.Date() + "]" + message);
-        }
-    }
+    abstract void debug(String message);
 
-    public void debug(String message, String message2) {
-        if (DEBUG) {
-            debug(message + message2);
-        }
-    }
+    abstract void debug(String message, String message2);
 
 }
