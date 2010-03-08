@@ -32,24 +32,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A data class represents search query.
+ * A data class represents search query.<br>
+ * An instance of this class is NOT thread safe.<br>
+ * Instances can be shared across threads, but should not be mutated while a search is ongoing.
  * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Query {
+public final class Query {
     private String query = null;
     private String lang = null;
+    private String locale = null;
+    private long maxId = -1l;
     private int rpp = -1;
     private int page = -1;
+    private String since = null;
     private long sinceId = -1;
     private String geocode = null;
+    private String until = null;
+
     public Query(){
     }
     public Query(String query){
         this.query = query;
     }
 
+    /**
+     * Returns the specified query
+     * @return query
+     */
     public String getQuery() {
         return query;
     }
@@ -77,6 +88,10 @@ public class Query {
         return this;
     }
 
+    /**
+     * Returns the lang
+     * @return lang
+     */
     public String getLang() {
         return lang;
     }
@@ -100,6 +115,68 @@ public class Query {
         return this;
     }
 
+    /**
+     * Returns the language of the query you are sending (only ja is currently effective). This is intended for language-specific clients and the default should work in the majority of cases.
+     * @return locale
+     * @since Twitter4J 2.1.1
+     */
+    public String getLocale() {
+        return locale;
+    }
+
+    /**
+     * Specify the language of the query you are sending (only ja is currently effective). This is intended for language-specific clients and the default should work in the majority of cases.
+     * @param locale the locale
+     * @since Twitter4J 2.1.1
+     */
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    /**
+     * Specify the language of the query you are sending (only ja is currently effective). This is intended for language-specific clients and the default should work in the majority of cases.
+     * @param locale the locale
+     * @since Twitter4J 2.1.1
+     * @return the instance
+     */
+    public Query locale(String locale) {
+        setLocale(locale);
+        return this;
+    }
+
+    /**
+     * Returns tweets with status ids less than the given id.
+     * @return maxId
+     * @since Twitter4J 2.1.1
+     */
+    public long getMaxId() {
+        return maxId;
+    }
+
+    /**
+     * If specified, returns tweets with status ids less than the given id.
+     * @param maxId maxId
+     * @since Twitter4J 2.1.1
+     */
+    public void setMaxId(long maxId) {
+        this.maxId = maxId;
+    }
+
+    /**
+     * If specified, returns tweets with status ids less than the given id.
+     * @param maxId maxId
+     * @return this instance
+     * @since Twitter4J 2.1.1
+     */
+    public Query maxId(long maxId) {
+        setMaxId(maxId);
+        return this;
+    }
+
+    /**
+     * Returns the number of tweets to return per page, up to a max of 100
+     * @return
+     */
     public int getRpp() {
         return rpp;
     }
@@ -123,6 +200,10 @@ public class Query {
         return this;
     }
 
+    /**
+     * Returns the page number (starting at 1) to return, up to a max of roughly 1500 results
+     * @return the page number (starting at 1) to return
+     */
     public int getPage() {
         return page;
     }
@@ -146,6 +227,39 @@ public class Query {
         return this;
     }
 
+    /**
+     * Returns tweets with since the given date.  Date should be formatted as YYYY-MM-DD
+     * @return since
+     * @since Twitter4J 2.1.1
+     */
+    public String getSince() {
+        return since;
+    }
+
+    /**
+     * If specified, returns tweets with since the given date.  Date should be formatted as YYYY-MM-DD
+     * @param since since
+     * @since Twitter4J 2.1.1
+     */
+    public void setSince(String since) {
+        this.since = since;
+    }
+
+    /**
+     * If specified, returns tweets with since the given date.  Date should be formatted as YYYY-MM-DD
+     * @param since since
+     * @return since
+     * @since Twitter4J 2.1.1
+     */
+    public Query since(String since) {
+        setSince(since);
+        return this;
+    }
+
+    /**
+     * returns sinceId
+     * @return sinceId
+     */
     public long getSinceId() {
         return sinceId;
     }
@@ -169,6 +283,10 @@ public class Query {
         return this;
     }
 
+    /**
+     * Returns the specified geocode
+     * @return geocode
+     */
     public String getGeocode() {
         return geocode;
     }
@@ -200,14 +318,48 @@ public class Query {
         setGeoCode(location, radius, unit);
         return this;
     }
-    public HttpParameter[] asPostParameters(){
+
+    /**
+     * Returns until
+     * @return until
+     * @since Twitter4J 2.1.1
+     */
+    public String getUntil() {
+        return until;
+    }
+
+    /**
+     * If specified, returns tweets with generated before the given date.  Date should be formatted as YYYY-MM-DD
+     * @param until until
+     * @since Twitter4J 2.1.1
+     */
+    public void setUntil(String until) {
+        this.until = until;
+    }
+
+    /**
+     * If specified, returns tweets with generated before the given date.  Date should be formatted as YYYY-MM-DD
+     * @param until until
+     * @return until
+     * @since Twitter4J 2.1.1
+     */
+    public Query until(String until) {
+        setUntil(until);
+        return this;
+    }
+
+    /*package*/ HttpParameter[] asPostParameters(){
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("q", query, params);
         appendParameter("lang", lang, params);
+        appendParameter("locale", locale, params);
+        appendParameter("max_id", maxId, params);
         appendParameter("rpp",rpp , params);
         appendParameter("page", page, params);
+        appendParameter("since",since , params);
         appendParameter("since_id",sinceId , params);
         appendParameter("geocode", geocode, params);
+        appendParameter("untli", until, params);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
@@ -231,6 +383,7 @@ public class Query {
 
         Query query1 = (Query) o;
 
+        if (maxId != query1.maxId) return false;
         if (page != query1.page) return false;
         if (rpp != query1.rpp) return false;
         if (sinceId != query1.sinceId) return false;
@@ -238,7 +391,13 @@ public class Query {
             return false;
         if (lang != null ? !lang.equals(query1.lang) : query1.lang != null)
             return false;
+        if (locale != null ? !locale.equals(query1.locale) : query1.locale != null)
+            return false;
         if (query != null ? !query.equals(query1.query) : query1.query != null)
+            return false;
+        if (since != null ? !since.equals(query1.since) : query1.since != null)
+            return false;
+        if (until != null ? !until.equals(query1.until) : query1.until != null)
             return false;
 
         return true;
@@ -248,10 +407,14 @@ public class Query {
     public int hashCode() {
         int result = query != null ? query.hashCode() : 0;
         result = 31 * result + (lang != null ? lang.hashCode() : 0);
+        result = 31 * result + (locale != null ? locale.hashCode() : 0);
+        result = 31 * result + (int) (maxId ^ (maxId >>> 32));
         result = 31 * result + rpp;
         result = 31 * result + page;
+        result = 31 * result + (since != null ? since.hashCode() : 0);
         result = 31 * result + (int) (sinceId ^ (sinceId >>> 32));
         result = 31 * result + (geocode != null ? geocode.hashCode() : 0);
+        result = 31 * result + (until != null ? until.hashCode() : 0);
         return result;
     }
 
@@ -260,10 +423,14 @@ public class Query {
         return "Query{" +
                 "query='" + query + '\'' +
                 ", lang='" + lang + '\'' +
+                ", locale='" + locale + '\'' +
+                ", maxId=" + maxId +
                 ", rpp=" + rpp +
                 ", page=" + page +
+                ", since='" + since + '\'' +
                 ", sinceId=" + sinceId +
                 ", geocode='" + geocode + '\'' +
+                ", until='" + until + '\'' +
                 '}';
     }
 }
