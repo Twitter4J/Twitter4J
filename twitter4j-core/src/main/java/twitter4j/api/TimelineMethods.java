@@ -43,6 +43,7 @@ public interface TimelineMethods
 	 * @return list of statuses of the Public Timeline
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
+     * @deprecated <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/bf2f245a394cb9d8?hl=en">This method will be deprecated as of April 5th (4/5/10)</a>
 	 */
 	ResponseList<Status> getPublicTimeline()
 			throws TwitterException;
