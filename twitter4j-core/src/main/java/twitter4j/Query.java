@@ -175,7 +175,7 @@ public final class Query {
 
     /**
      * Returns the number of tweets to return per page, up to a max of 100
-     * @return
+     * @return rpp
      */
     public int getRpp() {
         return rpp;
