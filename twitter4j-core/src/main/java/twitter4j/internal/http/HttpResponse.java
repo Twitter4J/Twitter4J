@@ -34,6 +34,7 @@ import twitter4j.internal.logging.LoggerFactory;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.org.json.JSONTokener;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -182,7 +183,7 @@ public class HttpResponse {
      */
     public JSONObject asJSONObject() throws TwitterException {
         try {
-            return new JSONObject(asString());
+            return new JSONObject(new JSONTokener(asReader()));
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
         }
@@ -196,7 +197,7 @@ public class HttpResponse {
      */
     public JSONArray asJSONArray() throws TwitterException {
         try {
-            return new JSONArray(asString());
+            return new JSONArray(new JSONTokener(asReader()));
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
         }
