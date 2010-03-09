@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import twitter4j.TwitterException;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.logging.LoggerFactory;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -51,7 +52,7 @@ import java.util.zip.GZIPInputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class HttpResponse {
-    private static final Logger logger = Logger.getLogger();
+    private static final Logger logger = Logger.getLogger(HttpResponse.class);
 
     private static ThreadLocal<DocumentBuilder> builders =
             new ThreadLocal<DocumentBuilder>() {

@@ -30,35 +30,12 @@ package twitter4j.internal.logging;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
  */
-final class CommonsLoggingLogger extends Logger {
-
-    private final org.apache.commons.logging.Log LOGGER;
-
-    CommonsLoggingLogger(org.apache.commons.logging.Log logger){
-        LOGGER = logger;
-    }
+public abstract class LoggerFactory {
 
     /**
-     * {@inheritDoc}
+     * Returns a logger associated with the specified class.
+     * @param clazz class
+     * @return a logger instance
      */
-    @Override
-    public boolean isDebugEnabled() {
-        return LOGGER.isDebugEnabled();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void debug(String message) {
-        LOGGER.debug(message);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void debug(String message, String message2) {
-        LOGGER.debug(message + message2);
-    }
+    public abstract Logger getLogger(Class clazz);
 }

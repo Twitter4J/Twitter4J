@@ -32,6 +32,7 @@ import twitter4j.internal.http.BASE64Encoder;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.logging.LoggerFactory;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -57,7 +58,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
 
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
-    private static final Logger logger = Logger.getLogger();
+    private static final Logger logger = Logger.getLogger(OAuthAuthorization.class);
     static final long serialVersionUID = -4368426677157998618L;
     private String consumerKey = "";
     private String consumerSecret;

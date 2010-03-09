@@ -33,6 +33,7 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.logging.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ import java.util.Map;
  */
 public class TwitterStream extends TwitterBase implements java.io.Serializable {
     private final HttpClientWrapper http;
-    private static final Logger logger = Logger.getLogger();
+    private static final Logger logger = Logger.getLogger(TwitterStream.class);
 
     private StatusListener statusListener;
     private StreamHandlingThread handler = null;

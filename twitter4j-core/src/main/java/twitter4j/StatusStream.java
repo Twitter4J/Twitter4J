@@ -30,6 +30,7 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.ParseUtil;
 import twitter4j.StatusJSONImpl;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.logging.LoggerFactory;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -43,7 +44,7 @@ import java.io.InputStreamReader;
  * @since Twitter4J 2.0.4
  */
 public class StatusStream {
-    private static final Logger logger = Logger.getLogger();
+    private static final Logger logger = Logger.getLogger(StatusStream.class);
 
     private boolean streamAlive = true;
     private BufferedReader br;

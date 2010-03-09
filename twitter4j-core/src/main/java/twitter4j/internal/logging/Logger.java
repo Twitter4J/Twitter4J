@@ -31,33 +31,33 @@ package twitter4j.internal.logging;
  * @since Twitter4J 2.1.0
  */
 public abstract class Logger {
-    private static final Logger SINGLETON;
+    private static final LoggerFactory LOGGER_FACTORY;
 
     static {
-        Logger logger = null;
+        LoggerFactory loggerFactory = null;
 
         // use SLF4J if it's found in the classpath
-        logger = getLogger("org.slf4j.Logger", "twitter4j.internal.logging.SLF4JLogger");
+        loggerFactory = getLoggerFactory("org.slf4j.Logger", "twitter4j.internal.logging.SLF4JLoggerFactory");
         // otherwise, use commons-logging if it's found in the classpath
-        if (null == logger) {
-            logger = getLogger("org.apache.commons.logging.Log", "twitter4j.internal.logging.CommonsLoggingLogger");
+        if (null == loggerFactory) {
+            loggerFactory = getLoggerFactory("org.apache.commons.logging.Log", "twitter4j.internal.logging.CommonsLoggingLoggerFactory");
         }
         // otherwise, use log4j if it's found in the classpath
-        if (null == logger) {
-            logger = getLogger("org.apache.log4j.Logger", "twitter4j.internal.logging.Log4JLogger");
+        if (null == loggerFactory) {
+            loggerFactory = getLoggerFactory("org.apache.log4j.Logger", "twitter4j.internal.logging.Log4JLoggerFactory");
         }
         // otherwise, use the default logger
-        if (null == logger) {
-            logger = new StdOutLogger();
+        if (null == loggerFactory) {
+            loggerFactory = new StdOutLoggerFactory();
         }
-        SINGLETON = logger;
+        LOGGER_FACTORY = loggerFactory;
     }
 
-    private static Logger getLogger(String checkClassName, String implementationClass) {
-        Logger logger = null;
+    private static LoggerFactory getLoggerFactory(String checkClassName, String implementationClass) {
+        LoggerFactory logger = null;
         try {
             Class.forName(checkClassName);
-            logger = (Logger) Class.forName(implementationClass).newInstance();
+            logger = (LoggerFactory) Class.forName(implementationClass).newInstance();
         } catch (ClassNotFoundException ignore) {
         } catch (InstantiationException e) {
             throw new AssertionError(e);
@@ -68,18 +68,26 @@ public abstract class Logger {
     }
 
     /**
-     * Static factory method.
-     *
-     * @return singleton logger instance
+     * Returns a Logger instance associated with the specified class.
+     * @param clazz class
+     * @return logger instance
      */
-    public static Logger getLogger() {
-        return SINGLETON;
+    public static Logger getLogger(Class clazz){
+        return LOGGER_FACTORY.getLogger(clazz);
     }
 
-    abstract boolean isDebugEnabled();
+    /**
+     * tests if debugging is enabled
+     * @return if debugging is enabled
+     */
+    public abstract boolean isDebugEnabled();
 
-    abstract void debug(String message);
+    /**
+     * 
+     * @param message
+     */
+    public abstract void debug(String message);
 
-    abstract void debug(String message, String message2);
+    public abstract void debug(String message, String message2);
 
 }

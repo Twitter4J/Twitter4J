@@ -29,6 +29,7 @@ package twitter4j.internal.http;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.logging.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -55,7 +56,7 @@ import static twitter4j.internal.http.RequestMethod.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class HttpClient implements java.io.Serializable {
-    private static final Logger logger = Logger.getLogger();
+    private static final Logger logger = Logger.getLogger(HttpClient.class);
     private static final int OK = 200;// OK: Success!
     private static final int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.
     private static final int BAD_REQUEST = 400;// Bad Request: The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.

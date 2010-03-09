@@ -31,20 +31,32 @@ package twitter4j.internal.logging;
  * @since Twitter4J 2.1.1
  */
 final class SLF4JLogger extends Logger {
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger("twitter4j");
+    private final org.slf4j.Logger LOGGER;
+    SLF4JLogger(org.slf4j.Logger logger){
+        LOGGER = logger;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isDebugEnabled() {
         return LOGGER.isDebugEnabled();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void debug(String message) {
         LOGGER.debug(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void debug(String message, String message2) {
-        LOGGER.debug(message + message2);
+        LOGGER.debug(message, message2);
     }
 }
