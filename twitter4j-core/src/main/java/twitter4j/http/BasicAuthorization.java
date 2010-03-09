@@ -97,7 +97,7 @@ public final class BasicAuthorization implements Authorization, java.io.Serializ
     public String toString() {
         return "BasicAuthorization{" +
                 "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
+                ", password='**********'\'" +
                 '}';
     }
 

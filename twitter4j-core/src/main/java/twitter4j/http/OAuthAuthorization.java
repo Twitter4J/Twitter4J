@@ -490,7 +490,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     public String toString() {
         return "OAuthAuthorization{" +
                 "consumerKey='" + consumerKey + '\'' +
-                ", consumerSecret='" + "******************************************" + '\'' +
+                ", consumerSecret='******************************************\'" +
                 ", oauthToken=" + oauthToken +
                 '}';
     }
