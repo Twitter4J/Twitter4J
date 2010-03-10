@@ -6,7 +6,7 @@ import twitter4j.conf.ConfigurationContext;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
  */
-public class StdOutLogger extends Logger{
+final class StdOutLogger extends Logger{
     private static final boolean DEBUG = ConfigurationContext.getInstance().isDebugEnabled();
 
     /**

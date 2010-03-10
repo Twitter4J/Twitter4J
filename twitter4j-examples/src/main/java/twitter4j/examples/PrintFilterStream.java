@@ -78,7 +78,6 @@ public final class PrintFilterStream implements StatusListener{
             filterArray[i] = Integer.parseInt(filterSplit[i]);
 
         }
-        String[] trackArray = track.split(",");
     }
 
     private void printUsageAndExit() {
