@@ -1,5 +1,6 @@
 target/*
 twitter4j-core/target/*
+twitter4j-core/src/test/resources/xauth-test.properties
 twitter4j-examples/target/*
 .DS_Store
 ~$*

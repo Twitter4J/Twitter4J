@@ -38,7 +38,7 @@ import java.util.Set;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
+public final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
     public static final String DEBUG = "debug";
     public static final String SOURCE = "source";
     public static final String HTTP_USER_AGENT = "http.userAgent";
@@ -83,11 +83,21 @@ class PropertyConfiguration extends ConfigurationBase implements java.io.Seriali
     public static final String CLIENT_URL = "clientURL";
     private static final long serialVersionUID = 6458764415636588373L;
 
+    public PropertyConfiguration(InputStream is){
+        super();
+        Properties props = new Properties();
+        loadProperties(props, is);
+        setFieldsWithTreePath(props, "/");
+    }
 
+    public PropertyConfiguration(Properties props){
+        super();
+        setFieldsWithTreePath(props, "/");
+    }
 
     PropertyConfiguration(String treePath) {
         super();
-        Properties props = new Properties();
+        Properties props = null;
         // load from system properties
         try {
             props = (Properties)System.getProperties().clone();

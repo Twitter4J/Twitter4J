@@ -30,8 +30,10 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterTestUnit;
+import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
+import twitter4j.conf.PropertyConfiguration;
 import twitter4j.internal.http.HttpClient;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
@@ -40,8 +42,10 @@ import twitter4j.internal.http.RequestMethod;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -407,6 +411,15 @@ public class OAuthTest extends TwitterTestUnit {
         } catch (TwitterException te) {
             // id1 doesn't have access to xAuth
             assertEquals(401, te.getStatusCode());
+        }
+        InputStream is = OAuthTest.class.getResourceAsStream("/xauth-test.properties");
+        if(null == is){
+            System.out.println("xauth-test.properties not found. skipping xAuth test.");
+        }else{
+            Configuration conf = new PropertyConfiguration(is);
+            twitter = new TwitterFactory(conf).getInstance(id1.screenName, id1.password);
+            AccessToken at = twitter.getOAuthAccessToken();
+            twitter.updateStatus(new Date() + ": xAuth test.");
         }
     }
 
