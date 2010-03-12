@@ -30,7 +30,6 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.ParseUtil;
 import twitter4j.StatusJSONImpl;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.logging.LoggerFactory;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -64,6 +63,12 @@ public class StatusStream {
         this.response = response;
     }
 
+    /**
+     * Reads next status from this stream.
+     * @param listener a StatusListener implementation
+     * @throws TwitterException when the end of the stream has been reached.
+     * @throws IllegalStateException  when the end of the stream had been reached.
+     */
     public void next(StatusListener listener) throws TwitterException {
         if (!streamAlive) {
             throw new IllegalStateException("Stream already closed.");
@@ -71,7 +76,11 @@ public class StatusStream {
         try {
             String line;
             line = br.readLine();
-            if (null != line && line.length() > 0) {
+            if (null == line) {
+                //invalidate this status stream
+                throw new IOException("the end of the stream has been reached");
+            }
+            if (line.length() > 0) {
                 logger.debug("received:", line);
                 try {
                     JSONObject json = new JSONObject(line);
@@ -82,17 +91,17 @@ public class StatusStream {
                     } else if (!json.isNull("limit")) {
                         listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
                     }
-                } catch (JSONException ex) {
-                    listener.onException(ex);
+                } catch (JSONException jsone) {
+                    listener.onException(jsone);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException ioe) {
             try {
                 is.close();
             } catch (IOException ignore) {
             }
             streamAlive = false;
-            throw new TwitterException("Stream closed.", e);
+            throw new TwitterException("Stream closed.", ioe);
         }
 
     }
