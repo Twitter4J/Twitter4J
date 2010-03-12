@@ -36,7 +36,6 @@ public interface TimelineMethodsAsync {
 	 * Returns the 20 most recent statuses from non-protected users who have set a custom user icon. <a href="http://groups.google.com/group/twitter-development-talk/browse_thread/thread/f881564598a947a7#">The public timeline is cached for 60 seconds</a> so requesting it more often than that is a waste of resources.
 	 * <br>This method calls http://api.twitter.com/1/statuses/public_timeline
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses-public_timeline">Twitter API Wiki / Twitter REST API Method: statuses public_timeline</a>
-     * @deprecated <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/bf2f245a394cb9d8?hl=en">This method will be deprecated as of April 5th (4/5/10)</a>
 	 */
 	void getPublicTimeline();
 
