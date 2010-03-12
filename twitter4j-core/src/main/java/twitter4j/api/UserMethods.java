@@ -55,13 +55,34 @@ public interface UserMethods
 	 * <br>This method calls http://api.twitter.com/1/users/show
 	 *
 	 * @param userId the ID of the user for whom to request the detail
-	 * @return User
+	 * @return users
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
 	 * @since Twitter4J 2.1.0
 	 */
 	User showUser(int userId)
 			throws TwitterException;
+
+    /**
+     * Return up to 20 users worth of extended information, specified by screen name. The author's most recent status (if the authenticating user has permission) will be returned inline.  Users can, at most, look up 1000 users in an hour.
+     * <br>This method calls http://api.twitter.com/1/users/lookup.json
+     * @param screenNames Specifies the screen names of the users to return.
+     * @return users
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users-lookup">Twitter API Wiki / Twitter REST API Method: users lookup</a>
+     * @since Twitter4J 2.1.1
+     */
+    ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException;
+
+    /**
+     * Return up to 20 users worth of extended information, specified by either ID. The author's most recent status (if the authenticating user has permission) will be returned inline.  Users can, at most, look up 1000 users in an hour.
+     * <br>This method calls http://api.twitter.com/1/users/lookup.json
+     * @param ids Specifies the screen names of the users to return.
+     * @return users
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users-lookup>Twitter API Wiki / Twitter REST API Method: users lookup</a>
+     * @since Twitter4J 2.1.1
+     */
+    ResponseList<User> lookupUsers(int[] ids) throws TwitterException;
 
     /**
      * Run a search for users similar to Find People button on Twitter.com; the same results returned by people search on Twitter.com will be returned by using this API (about being listed in the People Search).  It is only possible to retrieve the first 1000 matches from this API.

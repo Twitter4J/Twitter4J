@@ -136,6 +136,32 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertEquals(numberIdId, user.getId());
     }
 
+    public void testLookupUsers() throws TwitterException {
+        ResponseList<User> users = twitterAPI1.lookupUsers(new String[]{id1.screenName, id2.screenName});
+        assertEquals(2, users.size());
+        assertContains(users, id1);
+        assertContains(users, id2);
+
+        users = twitterAPI1.lookupUsers(new int[]{id1.id, id2.id});
+        assertEquals(2, users.size());
+        assertContains(users, id1);
+        assertContains(users, id2);
+    }
+
+    private void assertContains(ResponseList<User> users, TestUserInfo user) {
+        boolean found = false;
+        for(User aUser : users){
+            if(aUser.getId() == user.id && aUser.getScreenName().equals(user.screenName)){
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            fail(user.screenName + " not found in the result.");
+        }
+
+    }
+
     public void testSearchUser() throws TwitterException {
         ResponseList<User> users = twitterAPI1.searchUsers("Doug Williams",1);
         assertTrue(4 < users.size());

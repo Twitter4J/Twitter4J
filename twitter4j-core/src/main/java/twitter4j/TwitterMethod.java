@@ -112,6 +112,7 @@ public final class TwitterMethod implements java.io.Serializable {
 
     /*User Methods*/
     public static final TwitterMethod SHOW_USER = new TwitterMethod("SHOW_USER");
+    public static final TwitterMethod LOOKUP_USERS = new TwitterMethod("LOOKUP_USERS");
     public static final TwitterMethod SEARCH_USERS = new TwitterMethod("SEARCH_USERS");
     public static final TwitterMethod FRIENDS_STATUSES = new TwitterMethod("FRIENDS_STATUSES");
     public static final TwitterMethod FOLLOWERS_STATUSES = new TwitterMethod("FOLLOWERS_STATUSES");

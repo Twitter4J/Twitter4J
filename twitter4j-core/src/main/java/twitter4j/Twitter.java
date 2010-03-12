@@ -550,6 +550,40 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException {
+        ensureAuthorizationEnabled();
+        StringBuffer buf = new StringBuffer(screenNames.length * 8);
+        for (String screenName : screenNames) {
+            if (buf.length() != 0) {
+                buf.append(",");
+            }
+            buf.append(screenName);
+        }
+        return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
+                "users/lookup.json", new HttpParameter[]{
+                new HttpParameter("screen_name", buf.toString())}, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<User> lookupUsers(int[] ids) throws TwitterException {
+        ensureAuthorizationEnabled();
+        StringBuffer buf = new StringBuffer(ids.length * 8);
+        for (int id : ids) {
+            if (buf.length() != 0) {
+                buf.append(",");
+            }
+            buf.append(id);
+        }
+        return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
+                "users/lookup.json", new HttpParameter[]{
+                new HttpParameter("user_id", buf.toString())}, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ResponseList<User> searchUsers(String query, int page) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +

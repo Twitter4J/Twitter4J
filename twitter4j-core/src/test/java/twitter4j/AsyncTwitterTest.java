@@ -539,6 +539,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.user = user;
         notifyResponse();
     }
+
+    public void lookedupUsers(ResponseList<User> users) {
+        this.users = users;
+        notifyResponse();
+    }
+
     public void searchedUser(ResponseList<User> userList) {
         this.users = userList;
         notifyResponse();

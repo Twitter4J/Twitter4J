@@ -113,6 +113,11 @@ public interface TwitterListener {
     void gotUserDetail(User user);
 
     /**
+     * @since Twitter4J 2.1.1
+     */
+    void lookedupUsers(ResponseList<User> users);
+
+    /**
      * @since Twitter4J 2.1.0
      */
     void searchedUser(ResponseList<User> userList);
@@ -347,6 +352,7 @@ public interface TwitterListener {
 
     /*User Methods*/
     TwitterMethod SHOW_USER = TwitterMethod.SHOW_USER;
+    TwitterMethod LOOKUP_USERS = TwitterMethod.LOOKUP_USERS;
     TwitterMethod SEARCH_USERS = TwitterMethod.SEARCH_USERS;
     TwitterMethod FRIENDS_STATUSES = TwitterMethod.FRIENDS_STATUSES;
     TwitterMethod FOLLOWERS_STATUSES = TwitterMethod.FOLLOWERS_STATUSES;
