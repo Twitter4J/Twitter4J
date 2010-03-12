@@ -335,12 +335,21 @@ public class TwitterAdapter implements TwitterListener {
     //destroySavedSearch()
 
     /*Local Trends Methods*/
+
     /**
      * @param locations the locations
      * @since Twitter4J 2.1.1
      */
-    public void gotAvailableTrends(ResponseList<Location> locations){
+    public void gotAvailableTrends(ResponseList<Location> locations) {
     }
+
+    /**
+     * @param trends trends
+     * @since Twitter4J 2.1.1
+     */
+    public void gotLocationTrends(Trends trends){
+    }
+
 
     /*Help Methods*/
     public void tested(boolean test){

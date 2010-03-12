@@ -705,6 +705,10 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(locations.size() > 0);
         locations = twitterAPI1.getAvailableTrends(new GeoLocation(0,0));
         assertTrue(locations.size() > 0);
+
+        Trends trends = twitterAPI1.getLocationTrends(locations.get(0).getWoeid());
+        assertEquals(locations.get(0), trends.getLocation());
+        assertTrue(trends.getTrends().length > 0);
     }
 
     RateLimitStatus rateLimitStatus = null;
@@ -717,7 +721,6 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(10 < status.getRemainingHits());
 
         twitterAPI1.setRateLimitStatusListener(new RateLimitStatusListener() {
-
             public void onRateLimitStatus(RateLimitStatusEvent event) {
                 System.out.println("onRateLimitStatus"+event);
                 accountLimitStatusAcquired = event.isAccountRateLimitStatus();

@@ -29,6 +29,7 @@ package twitter4j.api;
 import twitter4j.GeoLocation;
 import twitter4j.Location;
 import twitter4j.ResponseList;
+import twitter4j.Trends;
 import twitter4j.TwitterException;
 
 /**
@@ -51,4 +52,13 @@ public interface LocalTrendsMethodsAsync {
 	 * @since Twitter4J 2.1.1
 	 */
     void getAvailableTrends(GeoLocation location);
+
+    /**
+	 * Retrieves the top 10 trending topics for a specific location Twitter has trending topic information for. The response is an array of "trend" objects that encode the name of the trending topic, the query parameter that can be used to search for the topic on Search, and the direct URL that can be issued against Search. This information is cached for five minutes, and therefore users are discouraged from querying these endpoints faster than once every five minutes.  Global trends information is also available from this API by using a WOEID of 1.
+     * <br>This method calls http://api.twitter.com/1/trends/[woeid].json
+     * @param woeid The WOEID of the location to be querying for
+	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-trends-location">Twitter REST API Method: trends location</a>
+	 * @since Twitter4J 2.1.1
+	 */
+    void getLocationTrends(int woeid);
 }

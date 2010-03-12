@@ -795,6 +795,14 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.locations = locations;
         notifyResponse();
     }
+    /**
+     * @param trends trends
+     * @since Twitter4J 2.1.1
+     */
+    public void gotLocationTrends(Trends trends){
+        this.trends = trends;
+        notifyResponse();
+    }
 
     /*Help Methods*/
     public void tested(boolean test) {

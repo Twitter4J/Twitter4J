@@ -50,6 +50,7 @@ import static twitter4j.ParseUtil.*;
     private Date asOf;
     private Date trendAt;
     private Trend[] trends;
+    private Location location;
     private static final long serialVersionUID = -7151479143843312309L;
 
     public int compareTo(Trends that) {
@@ -58,9 +59,10 @@ import static twitter4j.ParseUtil.*;
 
     /*package*/
 
-    TrendsJSONImpl(Date asOf, Date trendAt, Trend[] trends)
+    TrendsJSONImpl(Date asOf, Location location, Date trendAt, Trend[] trends)
             throws TwitterException {
         this.asOf = asOf;
+        this.location = location;
         this.trendAt = trendAt;
         this.trends = trends;
     }
@@ -74,6 +76,7 @@ import static twitter4j.ParseUtil.*;
         try {
             Date asOf = parseTrendsDate(json.getString("as_of"));
             JSONObject trendsJson = json.getJSONObject("trends");
+            Location location = extractLocation(json, res);
             trends = new ArrayList<Trends>(trendsJson.length());
             Iterator ite = trendsJson.keys();
             while (ite.hasNext()) {
@@ -82,15 +85,15 @@ import static twitter4j.ParseUtil.*;
                 Trend[] trendsArray = jsonArrayToTrendArray(array);
                 if (key.length() == 19) {
                     // current trends
-                    trends.add(new TrendsJSONImpl(asOf, getDate(key
+                    trends.add(new TrendsJSONImpl(asOf, location, getDate(key
                             , "yyyy-MM-dd HH:mm:ss"), trendsArray));
                 } else if (key.length() == 16) {
                     // daily trends
-                    trends.add(new TrendsJSONImpl(asOf, getDate(key
+                    trends.add(new TrendsJSONImpl(asOf, location, getDate(key
                             , "yyyy-MM-dd HH:mm"), trendsArray));
                 } else if (key.length() == 10) {
                     // weekly trends
-                    trends.add(new TrendsJSONImpl(asOf, getDate(key
+                    trends.add(new TrendsJSONImpl(asOf, location, getDate(key
                             , "yyyy-MM-dd"), trendsArray));
                 }
             }
@@ -100,16 +103,35 @@ import static twitter4j.ParseUtil.*;
             throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
         }
     }
-
-    /*package*/
+    private static Location extractLocation(JSONObject json , HttpResponse res) throws TwitterException{
+        if(json.isNull("locations")){
+            return null;
+        }
+        ResponseList<Location> locations = null;
+        try {
+            locations = LocationJSONImpl.createLocationList(json.getJSONArray("locations"), res);
+        } catch (JSONException e) {
+            throw new AssertionError("locations can't be null");
+        }
+        Location location;
+        if(0 != locations.size()){
+            location = locations.get(0);
+        }else{
+            location = null;
+        }
+        return location;
+    }
 
     static Trends createTrends(HttpResponse res) throws TwitterException {
-        JSONObject json = res.asJSONObject();
+        return createTrends(res.asJSONObject(), res);
+    }
+
+    static Trends createTrends(JSONObject json, HttpResponse res) throws TwitterException {
         try {
             Date asOf = parseTrendsDate(json.getString("as_of"));
             JSONArray array = json.getJSONArray("trends");
             Trend[] trendsArray = jsonArrayToTrendArray(array);
-            return new TrendsJSONImpl(asOf, asOf, trendsArray);
+            return new TrendsJSONImpl(asOf, extractLocation(json, res) ,asOf, trendsArray);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
         }
@@ -117,10 +139,15 @@ import static twitter4j.ParseUtil.*;
 
     private static Date parseTrendsDate(String asOfStr) throws TwitterException {
         Date parsed;
-        if (asOfStr.length() == 10) {
-            parsed = new Date(Long.parseLong(asOfStr) * 1000);
-        } else {
-            parsed = getDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
+        switch(asOfStr.length()){
+            case 10:
+                parsed = new Date(Long.parseLong(asOfStr) * 1000);
+                break;
+            case 20:
+                parsed = getDate(asOfStr, "yyyy-mm-dd'T'HH:mm:ss'Z'");
+                break;
+            default:
+                parsed = getDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
         }
         return parsed;
     }
@@ -139,6 +166,13 @@ import static twitter4j.ParseUtil.*;
      */
     public Trend[] getTrends() {
         return this.trends;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Location getLocation() {
+        return location;
     }
 
     /**

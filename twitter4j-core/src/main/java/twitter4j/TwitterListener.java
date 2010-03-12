@@ -317,6 +317,12 @@ public interface TwitterListener {
      */
     void gotAvailableTrends(ResponseList<Location> locations);
 
+    /**
+     * @param trends trends
+     * @since Twitter4J 2.1.1
+     */
+    void gotLocationTrends(Trends trends);
+
     /*Help Methods*/
     void tested(boolean test);
 
@@ -431,6 +437,7 @@ public interface TwitterListener {
 
     /*Local Trends Methods*/
     TwitterMethod AVAILABLE_TRENDS = TwitterMethod.AVAILABLE_TRENDS;
+    TwitterMethod LOCATION_TRENDS =  TwitterMethod.LOCATION_TRENDS;
 
     /*Help Methods*/
     TwitterMethod TEST = TwitterMethod.TEST;

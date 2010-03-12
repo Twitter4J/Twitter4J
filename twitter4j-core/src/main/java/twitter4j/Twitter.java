@@ -48,6 +48,8 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
 import twitter4j.internal.http.HttpParameter;
+import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.org.json.JSONException;
 
 import static twitter4j.internal.http.HttpParameter.*;
 
@@ -1442,7 +1444,7 @@ public final class Twitter extends TwitterOAuthSupportBase
         return new SavedSearchJSONImpl(http.post(conf.getRestBaseURL()
                 + "saved_searches/destroy/" + id + ".json", auth));
     }
-    /* Local Trends Mehtods */
+    /* Local Trends Methods */
 
     /**
      * {@inheritDoc}
@@ -1461,6 +1463,19 @@ public final class Twitter extends TwitterOAuthSupportBase
                 new HttpParameter[]{new HttpParameter("lat", location.getLatitude())
                         ,new HttpParameter("long", location.getLongitude())
                 }, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Trends getLocationTrends(int woeid) throws TwitterException {
+        try {
+            HttpResponse res = http.get(conf.getRestBaseURL()
+                    + "trends/" + woeid + ".json", auth);
+            return TrendsJSONImpl.createTrends(res.asJSONArray().getJSONObject(0), res);
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
     }
 
     /* Help Methods */

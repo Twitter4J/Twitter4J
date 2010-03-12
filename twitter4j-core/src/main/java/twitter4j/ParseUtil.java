@@ -105,7 +105,7 @@ import java.util.TimeZone;
                 return sdf.parse(name);
             }
         } catch (ParseException pe) {
-            throw new TwitterException("Unexpected format(" + name + ") returned from twitter.com");
+            throw new TwitterException("Unexpected date format(" + name + ") returned from twitter.com", pe);
         }
     }
 

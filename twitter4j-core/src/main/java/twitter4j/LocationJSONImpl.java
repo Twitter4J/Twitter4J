@@ -39,13 +39,13 @@ import static twitter4j.ParseUtil.getUnescapedString;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class LocationJSONImpl implements Location {
-    private int woeid;
-    private String countryName;
-    private String countryCode;
-    private String placeName;
-    private int placeCode;
-    private String name;
-    private String url;
+    private final int woeid;
+    private final String countryName;
+    private final String countryCode;
+    private final String placeName;
+    private final int placeCode;
+    private final String name;
+    private final String url;
     private static final long serialVersionUID = 7095092358530897222L;
 
     /*package*/ LocationJSONImpl(JSONObject location) throws TwitterException {
@@ -53,9 +53,14 @@ import static twitter4j.ParseUtil.getUnescapedString;
             woeid = getInt("woeid", location);
             countryName = getUnescapedString("country", location);
             countryCode = getRawString("countryCode", location);
-            JSONObject placeJSON = location.getJSONObject("placeType");
-            placeName = getUnescapedString("name", placeJSON);
-            placeCode = getInt("code", placeJSON);
+            if (!location.isNull("placeType")) {
+                JSONObject placeJSON = location.getJSONObject("placeType");
+                placeName = getUnescapedString("name", placeJSON);
+                placeCode = getInt("code", placeJSON);
+            } else {
+                placeName = null;
+                placeCode = -1;
+            }
             name = getUnescapedString("name", location);
             url = getUnescapedString("url", location);
         } catch (JSONException jsone) {
