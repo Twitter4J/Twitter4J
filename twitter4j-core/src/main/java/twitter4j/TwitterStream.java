@@ -33,7 +33,6 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.logging.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -68,6 +68,18 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
         assertEquals(121564, trackLimit);
         stream.next(this);
         assertEquals("ngantuk banget nguap mulu", status.getText());
+        try {
+            stream.next(this);
+            fail("expecting TwitterException");
+        } catch (TwitterException te) {
+
+        }
+        try {
+            stream.next(this);
+            fail("expecting IllegalStateException");
+        } catch (IllegalStateException ise) {
+
+        }
         is.close();
     }
 

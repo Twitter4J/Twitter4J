@@ -27,8 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.ParseUtil;
-import twitter4j.StatusJSONImpl;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -67,7 +65,7 @@ public class StatusStream {
      * Reads next status from this stream.
      * @param listener a StatusListener implementation
      * @throws TwitterException when the end of the stream has been reached.
-     * @throws IllegalStateException  when the end of the stream had been reached.
+     * @throws IllegalStateException when the end of the stream had been reached.
      */
     public void next(StatusListener listener) throws TwitterException {
         if (!streamAlive) {
