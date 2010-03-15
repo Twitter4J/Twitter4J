@@ -143,13 +143,13 @@ public interface TimelineMethods
 	 * Returns the most recent statuses posted in the last 24 hours from the specified userid.
 	 * <br>This method calls http://api.twitter.com/1/statuses/user_timeline
 	 *
-	 * @param user_id specifies the ID of the user for whom to return the user_timeline
+	 * @param userId specifies the ID of the user for whom to return the user_timeline
 	 * @return the 20 most recent statuses posted in the last 24 hours from the user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-friends_timeline">Twitter API Wiki / Twitter REST API Method: statuses friends_timeline</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	ResponseList<Status> getUserTimeline(int user_id)
+	ResponseList<Status> getUserTimeline(int userId)
 			throws TwitterException;
 
 	/**

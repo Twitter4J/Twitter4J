@@ -50,7 +50,12 @@ import java.util.TimeZone;
         throw new AssertionError();
     }
 
-    private static Map<String, SimpleDateFormat> formatMap = new HashMap<String, SimpleDateFormat>();
+    private static ThreadLocal<Map<String, SimpleDateFormat>> formatMap = new ThreadLocal<Map<String, SimpleDateFormat>>() {
+        @Override
+        protected Map<String, SimpleDateFormat> initialValue() {
+            return new HashMap<String, SimpleDateFormat>();
+        }
+    };
 
     static String getUnescapedString(String str, JSONObject json) {
         return HTMLEntity.unescape(getRawString(str, json));
@@ -93,17 +98,14 @@ import java.util.TimeZone;
     }
 
     static Date getDate(String name, String format) throws TwitterException {
-        SimpleDateFormat sdf = formatMap.get(format);
+        SimpleDateFormat sdf = formatMap.get().get(format);
         if (null == sdf) {
             sdf = new SimpleDateFormat(format, Locale.ENGLISH);
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-            formatMap.put(format, sdf);
+            formatMap.get().put(format, sdf);
         }
         try {
-            synchronized (sdf) {
-                // SimpleDateFormat is not thread safe
-                return sdf.parse(name);
-            }
+            return sdf.parse(name);
         } catch (ParseException pe) {
             throw new TwitterException("Unexpected date format(" + name + ") returned from twitter.com", pe);
         }

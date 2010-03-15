@@ -359,8 +359,8 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public ResponseList<Status> getUserTimeline(int user_id) throws TwitterException {
-        return getUserTimeline(user_id, new Paging());
+    public ResponseList<Status> getUserTimeline(int userId) throws TwitterException {
+        return getUserTimeline(userId, new Paging());
     }
 
     /**

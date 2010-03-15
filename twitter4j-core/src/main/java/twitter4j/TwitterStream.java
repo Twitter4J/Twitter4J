@@ -52,7 +52,7 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
 
     private StatusListener statusListener;
     private StreamHandlingThread handler = null;
-    private int retryPerMinutes = 1;
+
     private static final long serialVersionUID = -762817147320767897L;
 
     /**
@@ -342,53 +342,48 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
         this.statusListener = statusListener;
     }
 
+    /*
+    http://apiwiki.twitter.com/Streaming-API-Documentation#Connecting
+    When a network error (TCP/IP level) is encountered, back off linearly. Perhaps start at 250 milliseconds, double, and cap at 16 seconds
+     */
+    private static final int INITIAL_WAIT = 250;
+    private static final int WAIT_CAP = 16 * 1000;
     abstract class StreamHandlingThread extends Thread {
         StatusStream stream = null;
-        private List<Long> retryHistory;
         private static final String NAME = "Twitter Stream Handling Thread";
         private boolean closed = false;
 
         StreamHandlingThread() {
             super(NAME + "[initializing]");
-            retryHistory = new ArrayList<Long>(retryPerMinutes);
+
         }
 
         public void run() {
+            int timeToSleep = INITIAL_WAIT;
             while (!closed) {
                 try {
-                    // dispose outdated retry history
-                    if (retryHistory.size() > 0) {
-                        if ((System.currentTimeMillis() - retryHistory.get(0)) > 60000) {
-                            retryHistory.remove(0);
-                        }
-                    }
-                    if (retryHistory.size() < retryPerMinutes) {
+                    if (!closed && null == stream) {
                         // try establishing connection
-                        setStatus("[establishing connection]");
-                        while (!closed && null == stream) {
-                            if (retryHistory.size() < retryPerMinutes) {
-                                retryHistory.add(System.currentTimeMillis());
-                                stream = getStream();
-                            }
-                        }
-                    } else if (!closed) {
-                        // exceeded retry limit, wait to a moment not to overload Twitter API
-                        long timeToSleep = 60000 - (System.currentTimeMillis() - retryHistory.get(retryHistory.size() - 1));
-                        setStatus("[retry limit reached. sleeping for " + (timeToSleep / 1000) + " secs]");
-                        try {
-                            Thread.sleep(timeToSleep);
-                        } catch (InterruptedException ignore) {
-                        }
-
-                    }
-                    if (null != stream) {
-                        // stream established
-                        setStatus("[receiving stream]");
+                        setStatus("[Establishing connection]");
+                        stream = getStream();
+                        // connection established successfully
+                        timeToSleep = INITIAL_WAIT;
+                        setStatus("[Receiving stream]");
                         while (!closed) {
                             stream.next(statusListener);
                         }
                     }
                 } catch (TwitterException te) {
+                    // there was a problem establishing the connection, or the connection closed by peer
+                    if (!closed) {
+                        // wait for a moment not to overload Twitter API
+                        setStatus("[Waiting for " + (timeToSleep) + " milliseconds]");
+                        try {
+                            Thread.sleep(timeToSleep);
+                        } catch (InterruptedException ignore) {
+                        }
+                        timeToSleep = Math.min(timeToSleep * 2, WAIT_CAP);
+                    }
                     stream = null;
                     te.printStackTrace();
                     logger.debug(te.getMessage());
