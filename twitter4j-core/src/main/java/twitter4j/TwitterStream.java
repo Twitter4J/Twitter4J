@@ -343,11 +343,17 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
     }
 
     /*
-    http://apiwiki.twitter.com/Streaming-API-Documentation#Connecting
-    When a network error (TCP/IP level) is encountered, back off linearly. Perhaps start at 250 milliseconds, double, and cap at 16 seconds
+     http://apiwiki.twitter.com/Streaming-API-Documentation#Connecting
+     When a network error (TCP/IP level) is encountered, back off linearly. Perhaps start at 250 milliseconds, double, and cap at 16 seconds
+     When a HTTP error (> 200) is returned, back off exponentially.
+     Perhaps start with a 10 second wait, double on each subsequent failure, and finally cap the wait at 240 seconds. Consider sending an alert to a human operator after multiple HTTP errors, as there is probably a client configuration issue that is unlikely to be resolved without human intervention. There's not much point in polling any faster in the face of HTTP error codes and your client is may run afoul of a rate limit.
      */
-    private static final int INITIAL_WAIT = 250;
-    private static final int WAIT_CAP = 16 * 1000;
+    private static final int TCP_ERROR_INITIAL_WAIT = 250;
+    private static final int TCP_ERROR_WAIT_CAP = 16 * 1000;
+
+    private static final int HTTP_ERROR_INITIAL_WAIT = 10 * 1000;
+    private static final int HTTP_ERROR_WAIT_CAP = 240 * 1000;
+
     abstract class StreamHandlingThread extends Thread {
         StatusStream stream = null;
         private static final String NAME = "Twitter Stream Handling Thread";
@@ -359,7 +365,7 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
         }
 
         public void run() {
-            int timeToSleep = INITIAL_WAIT;
+            int timeToSleep = 0;
             while (!closed) {
                 try {
                     if (!closed && null == stream) {
@@ -367,13 +373,18 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
                         setStatus("[Establishing connection]");
                         stream = getStream();
                         // connection established successfully
-                        timeToSleep = INITIAL_WAIT;
+                        timeToSleep = 0;
                         setStatus("[Receiving stream]");
                         while (!closed) {
                             stream.next(statusListener);
                         }
                     }
                 } catch (TwitterException te) {
+                    if(0 == timeToSleep && te.getStatusCode() > 200) {
+                        timeToSleep = HTTP_ERROR_INITIAL_WAIT;
+                    }else{
+                        timeToSleep = TCP_ERROR_INITIAL_WAIT;
+                    }
                     // there was a problem establishing the connection, or the connection closed by peer
                     if (!closed) {
                         // wait for a moment not to overload Twitter API
@@ -382,7 +393,8 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
                             Thread.sleep(timeToSleep);
                         } catch (InterruptedException ignore) {
                         }
-                        timeToSleep = Math.min(timeToSleep * 2, WAIT_CAP);
+                        timeToSleep = Math.min(timeToSleep * 2, (te.getStatusCode() > 200) ? HTTP_ERROR_WAIT_CAP : TCP_ERROR_WAIT_CAP);
+
                     }
                     stream = null;
                     te.printStackTrace();
