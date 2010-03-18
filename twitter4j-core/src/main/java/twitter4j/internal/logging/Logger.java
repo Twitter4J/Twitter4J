@@ -26,18 +26,36 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.logging;
 
+import java.security.AccessControlException;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
 public abstract class Logger {
     private static final LoggerFactory LOGGER_FACTORY;
+    private static final String LOGGER_FACTORY_IMPLEMENTATION = "twitter4j.loggerFactory";
 
     static {
         LoggerFactory loggerFactory = null;
+        try{
+            //-Dtwitter4j.debug=true -Dtwitter4j.loggerFactory=twitter4j.internal.logging.StdOutLoggerFactory
+            String loggerFactoryImpl = System.getProperty(LOGGER_FACTORY_IMPLEMENTATION);
+            loggerFactory = (LoggerFactory) Class.forName(loggerFactoryImpl).newInstance();
+        } catch (ClassNotFoundException ignore) {
+            ignore.printStackTrace();
+        } catch (InstantiationException e) {
+            throw new AssertionError(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (AccessControlException ignore) {
+            ignore.printStackTrace();
+        }
 
         // use SLF4J if it's found in the classpath
-        loggerFactory = getLoggerFactory("org.slf4j.Logger", "twitter4j.internal.logging.SLF4JLoggerFactory");
+        if (null == loggerFactory) {
+            loggerFactory = getLoggerFactory("org.slf4j.Logger", "twitter4j.internal.logging.SLF4JLoggerFactory");
+        }
         // otherwise, use commons-logging if it's found in the classpath
         if (null == loggerFactory) {
             loggerFactory = getLoggerFactory("org.apache.commons.logging.Log", "twitter4j.internal.logging.CommonsLoggingLoggerFactory");
@@ -77,17 +95,60 @@ public abstract class Logger {
     }
 
     /**
-     * tests if debugging is enabled
-     * @return if debugging is enabled
+     * tests if debug level logging is enabled
+     * @return if debug level logging is enabled
      */
     public abstract boolean isDebugEnabled();
 
     /**
-     * 
-     * @param message
+     * tests if info level logging is enabled
+     * @return if info level logging is enabled
+     */
+    public abstract boolean isInfoEnabled();
+
+    /**
+     * tests if warn level logging is enabled
+     * @return if warn level logging is enabled
+     */
+    public abstract boolean isWarnEnabled();
+
+    /**
+     *
+     * @param message message
      */
     public abstract void debug(String message);
 
+    /**
+     *
+     * @param message message
+     * @param message2 message2
+     */
     public abstract void debug(String message, String message2);
+
+    /**
+     *
+     * @param message message
+     */
+    public abstract void info(String message);
+
+    /**
+     *
+     * @param message message
+     * @param message2 message2
+     */
+    public abstract void info(String message, String message2);
+
+    /**
+     *
+     * @param message message
+     */
+    public abstract void warn(String message);
+
+    /**
+     *
+     * @param message message
+     * @param message2 message2
+     */
+    public abstract void warn(String message, String message2);
 
 }

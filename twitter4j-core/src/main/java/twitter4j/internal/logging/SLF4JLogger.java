@@ -48,6 +48,22 @@ final class SLF4JLogger extends Logger {
      * {@inheritDoc}
      */
     @Override
+    public boolean isInfoEnabled() {
+        return LOGGER.isInfoEnabled();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isWarnEnabled() {
+        return LOGGER.isWarnEnabled();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void debug(String message) {
         LOGGER.debug(message);
     }
@@ -57,6 +73,38 @@ final class SLF4JLogger extends Logger {
      */
     @Override
     public void debug(String message, String message2) {
-        LOGGER.debug(message, message2);
+        LOGGER.debug(message + message2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void info(String message) {
+        LOGGER.info(message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void info(String message, String message2) {
+        LOGGER.info(message + message2);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void warn(String message) {
+        LOGGER.warn(message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void warn(String message, String message2) {
+        LOGGER.warn(message + message2);
     }
 }

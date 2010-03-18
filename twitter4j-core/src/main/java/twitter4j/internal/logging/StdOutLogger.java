@@ -21,6 +21,22 @@ final class StdOutLogger extends Logger{
      * {@inheritDoc}
      */
     @Override
+    public boolean isInfoEnabled() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isWarnEnabled() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void debug(String message) {
         if (DEBUG) {
             System.out.println("[" + new java.util.Date() + "]" + message);
@@ -35,5 +51,37 @@ final class StdOutLogger extends Logger{
         if (DEBUG) {
             debug(message + message2);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void info(String message) {
+        System.out.println("[" + new java.util.Date() + "]" + message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void info(String message, String message2) {
+        info(message + message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void warn(String message) {
+        System.out.println("[" + new java.util.Date() + "]" + message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void warn(String message, String message2) {
+        warn(message + message);
     }
 }
