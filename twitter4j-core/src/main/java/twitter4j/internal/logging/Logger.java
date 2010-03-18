@@ -41,15 +41,15 @@ public abstract class Logger {
         try{
             //-Dtwitter4j.debug=true -Dtwitter4j.loggerFactory=twitter4j.internal.logging.StdOutLoggerFactory
             String loggerFactoryImpl = System.getProperty(LOGGER_FACTORY_IMPLEMENTATION);
-            loggerFactory = (LoggerFactory) Class.forName(loggerFactoryImpl).newInstance();
+            if (null != loggerFactoryImpl) {
+                loggerFactory = (LoggerFactory) Class.forName(loggerFactoryImpl).newInstance();
+            }
+        } catch (NoClassDefFoundError ignore) {
         } catch (ClassNotFoundException ignore) {
-            ignore.printStackTrace();
         } catch (InstantiationException e) {
             throw new AssertionError(e);
-        } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
+        } catch (IllegalAccessException ignore) {
         } catch (AccessControlException ignore) {
-            ignore.printStackTrace();
         }
 
         // use SLF4J if it's found in the classpath
