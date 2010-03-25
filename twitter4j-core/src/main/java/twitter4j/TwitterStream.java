@@ -131,14 +131,7 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
      * @since Twitter4J 2.0.4
      */
     public StatusStream getFirehoseStream(int count) throws TwitterException {
-        ensureBasicEnabled();
-        try {
-            return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/firehose.json"
-                    , new HttpParameter[]{new HttpParameter("count"
-                            , String.valueOf(count))}, auth));
-        } catch (IOException e) {
-            throw new TwitterException(e);
-        }
+        return getCountStream("statuses/firehose.json", count);
     }
 
     /**
@@ -168,14 +161,32 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
      * @since Twitter4J 2.1.1
      */
     public StatusStream getLinksStream(int count) throws TwitterException {
-        ensureBasicEnabled();
-        try {
-            return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/links.json"
-                    , new HttpParameter[]{new HttpParameter("count"
-                            , String.valueOf(count))}, auth));
-        } catch (IOException e) {
-            throw new TwitterException(e);
+        return getCountStream("statuses/links.json", count);
+    }
+
+    /**
+     * Starts listening on a tweet stream.
+     * 
+     * @param relativeUrl The relative url of the feed, for example "statuses/firehose.json" for the firehose.
+     * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
+     */
+    public void stream(final String relativeUrl, final int count) {
+      startHandler(new StreamHandlingThread() {
+        public StatusStream getStream() throws TwitterException {
+          return getCountStream(relativeUrl, count);
         }
+      });
+    }
+
+    private StatusStream getCountStream(String relativeUrl, int count) throws TwitterException {
+      ensureBasicEnabled();
+      try {
+          return new StatusStream(http.post(conf.getStreamBaseURL() + relativeUrl
+                  , new HttpParameter[]{new HttpParameter("count"
+                          , String.valueOf(count))}, auth));
+      } catch (IOException e) {
+          throw new TwitterException(e);
+      }
     }
 
     /**
@@ -354,7 +365,7 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
     private static final int HTTP_ERROR_INITIAL_WAIT = 10 * 1000;
     private static final int HTTP_ERROR_WAIT_CAP = 240 * 1000;
 
-    abstract class StreamHandlingThread extends Thread {
+  abstract class StreamHandlingThread extends Thread {
         StatusStream stream = null;
         private static final String NAME = "Twitter Stream Handling Thread";
         private boolean closed = false;
