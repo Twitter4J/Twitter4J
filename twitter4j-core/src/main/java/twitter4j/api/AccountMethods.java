@@ -75,7 +75,7 @@ public interface AccountMethods
 
 
 	/**
-	 * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.  These values are also returned in the getUserDetail() method.
+	 * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.  These values are also returned in the verifyCredentials() method.
 	 * <br>This method calls http://api.twitter.com/1/account/update_profile_colors.json
 	 * @param profileBackgroundColor optional, can be null
 	 * @param profileTextColor optional, can be null

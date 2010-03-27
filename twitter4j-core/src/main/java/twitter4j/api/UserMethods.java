@@ -79,7 +79,7 @@ public interface UserMethods
      * @param ids Specifies the screen names of the users to return.
      * @return users
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users-lookup>Twitter API Wiki / Twitter REST API Method: users lookup</a>
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users-lookup">Twitter API Wiki / Twitter REST API Method: users lookup</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<User> lookupUsers(int[] ids) throws TwitterException;
