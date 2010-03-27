@@ -38,6 +38,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private AsyncTwitter async2 = null;
     private ResponseList<Location> locations;
     private ResponseList<Place> places;
+    private Place place;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -812,6 +813,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
     public void gotReverseGeoCode(ResponseList<Place> places){
         this.places = places;
+        notifyResponse();
+    }
+
+    public void gotGeoDetails(Place place){
+        this.place = place;
         notifyResponse();
     }
 

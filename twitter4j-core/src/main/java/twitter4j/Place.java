@@ -14,5 +14,7 @@ public interface Place extends java.io.Serializable {
     String getFullName();
     String getBoundingBoxType();
     GeoLocation[][] getBoundingBoxCoordinates();
+    String getGeometryType();
+    GeoLocation[][] getGeometryCoordinates();
     Place[] getContainedWithIn();
 }

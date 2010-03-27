@@ -57,4 +57,15 @@ public interface GeoMethods {
      * @since Twitter4J 2.1.1
      */
     ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException;
+
+    /**
+     * Find out more details of a place that was returned from the <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-geo-reverse_geocode">geo/reverse_geocode</a> method.
+     * <br>This method calls http://api.twitter.com/1/geo/id/:id.json
+     * @param id The ID of the location to query about.
+     * @return details of the specified place
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-geo-ID>Twitter API Wiki / Twitter REST API Method: GET geo ID</a>
+     * @since Twitter4J 2.1.1
+     */
+    Place getGeoDetail(String id) throws TwitterException;
 }

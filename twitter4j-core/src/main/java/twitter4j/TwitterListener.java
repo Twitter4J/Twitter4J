@@ -325,6 +325,7 @@ public interface TwitterListener {
     /*Geo Methods*/
     void gotNearByPlaces(ResponseList<Place> places);
     void gotReverseGeoCode(ResponseList<Place> places);
+    void gotGeoDetails(Place place);
 
     /*Help Methods*/
     void tested(boolean test);
@@ -445,6 +446,7 @@ public interface TwitterListener {
     /*Geo Methods*/
     TwitterMethod NEAR_BY_PLACES = TwitterMethod.NEAR_BY_PLACES;
     TwitterMethod REVERSE_GEO_CODE = TwitterMethod.REVERSE_GEO_CODE;
+    TwitterMethod GEO_DETAILS = TwitterMethod.GEO_DETAILS;
 
     /*Help Methods*/
     TwitterMethod TEST = TwitterMethod.TEST;

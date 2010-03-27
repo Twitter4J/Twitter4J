@@ -438,6 +438,9 @@ public class DAOTest extends TwitterTestBase {
         assertEquals(37.78752897,boundingBox[0][2].getLongitude());
         assertEquals(-122.42284884,boundingBox[0][3].getLatitude());
         assertEquals(37.78752897,boundingBox[0][3].getLongitude());
+        assertNull(place.getGeometryType());
+        assertNull(place.getGeometryCoordinates());
+
         Place[] containedWithinArray = place.getContainedWithIn();
         assertEquals(1, containedWithinArray.length);
         Place containedWithin =containedWithinArray[0];
@@ -461,6 +464,15 @@ public class DAOTest extends TwitterTestBase {
         assertEquals(37.83245301,boundingBox[0][2].getLongitude());
         assertEquals(-122.51368188,boundingBox[0][3].getLatitude());
         assertEquals(37.83245301,boundingBox[0][3].getLongitude());
+
+        assertNull(place.getGeometryType());
+        assertNull(place.getGeometryCoordinates());
+
+        place = new PlaceJSONImpl(getJSONObjectFromClassPath("/5a110d312052166f.json"), null);
+        assertNotNull(place.getGeometryType());
+        assertNotNull(place.getGeometryCoordinates());
+
+
     }
 
     public void testDirectMessagesAsJSON() throws Exception {

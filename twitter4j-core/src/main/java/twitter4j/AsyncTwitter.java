@@ -1546,6 +1546,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void getGeoDetail(final String id){
+        getDispatcher().invokeLater(new AsyncTask(GEO_DETAILS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotGeoDetails(twitter.getGeoDetail(id));
+            }
+        });
+    }
+
     /* Help Methods */
 
     /**

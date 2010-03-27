@@ -355,6 +355,8 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotReverseGeoCode(ResponseList<Place> places){
     }
+    public void gotGeoDetails(Place place) {
+    }
 
     /*Help Methods*/
     public void tested(boolean test){

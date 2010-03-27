@@ -48,7 +48,9 @@ public class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io
     private String url;
     private String fullName;
     private String boundingBoxType;
-    private GeoLocation[][] boundingBox;
+    private GeoLocation[][] boundingBoxCoordinates;
+    private String geometryType;
+    private GeoLocation[][] geometryCoordinates;
     private Place[] containedWithIn;
     private static final long serialVersionUID = -2873364341474633812L;
 
@@ -56,8 +58,8 @@ public class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io
         super(res);
         init(res.asJSONObject());
     }
-    PlaceJSONImpl(JSONObject json) throws TwitterException {
-        super();
+    PlaceJSONImpl(JSONObject json, HttpResponse res) throws TwitterException {
+        super(res);
         init(json);
     }
     private void init(JSONObject json) throws TwitterException{
@@ -70,15 +72,25 @@ public class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io
             url = getRawString("url", json);
             fullName = getRawString("full_name", json);
             JSONObject boundingBoxJSON = json.getJSONObject("bounding_box");
-
             boundingBoxType = getRawString("type", boundingBoxJSON);
             JSONArray array = boundingBoxJSON.getJSONArray("coordinates");
-            boundingBox = GeoLocation.coordinatesAsGeoLocationArray(array);
+            boundingBoxCoordinates = GeoLocation.coordinatesAsGeoLocationArray(array);
+
+            if(!json.isNull("geometry")){
+                JSONObject geometryJSON = json.getJSONObject("geometry");
+                geometryType = getRawString("type", geometryJSON);
+                array = geometryJSON.getJSONArray("coordinates");
+                geometryCoordinates = GeoLocation.coordinatesAsGeoLocationArray(array);
+            }else{
+                geometryType = null;
+                geometryCoordinates = null;
+            }
+
             if(!json.isNull("contained_within")){
                 JSONArray containedWithInJSON = json.getJSONArray("contained_within");
                 containedWithIn = new Place[containedWithInJSON.length()];
                 for(int i=0;i<containedWithInJSON.length();i++){
-                containedWithIn[i] = new PlaceJSONImpl(containedWithInJSON.getJSONObject(i));
+                containedWithIn[i] = new PlaceJSONImpl(containedWithInJSON.getJSONObject(i), null);
                 }
             }else{
                 containedWithIn = null;
@@ -103,7 +115,7 @@ public class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io
             ResponseList<Place> places =
                     new ResponseList<Place>(size, res);
             for (int i = 0; i < size; i++) {
-                places.add(new PlaceJSONImpl(list.getJSONObject(i)));
+                places.add(new PlaceJSONImpl(list.getJSONObject(i), null));
             }
             return places;
         } catch (JSONException jsone) {
@@ -138,7 +150,13 @@ public class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io
         return boundingBoxType;
     }
     public GeoLocation[][] getBoundingBoxCoordinates(){
-        return boundingBox;
+        return boundingBoxCoordinates;
+    }
+    public String getGeometryType(){
+        return geometryType;
+    }
+    public GeoLocation[][] getGeometryCoordinates(){
+        return geometryCoordinates;
     }
     public Place[] getContainedWithIn(){
         return containedWithIn;
@@ -160,6 +178,8 @@ public class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io
         if (countryCode != null ? !countryCode.equals(placeJSON.countryCode) : placeJSON.countryCode != null)
             return false;
         if (fullName != null ? !fullName.equals(placeJSON.fullName) : placeJSON.fullName != null)
+            return false;
+        if (geometryType != null ? !geometryType.equals(placeJSON.geometryType) : placeJSON.geometryType != null)
             return false;
         if (id != null ? !id.equals(placeJSON.id) : placeJSON.id != null)
             return false;
@@ -183,6 +203,7 @@ public class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io
         result = 31 * result + (url != null ? url.hashCode() : 0);
         result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
         result = 31 * result + (boundingBoxType != null ? boundingBoxType.hashCode() : 0);
+        result = 31 * result + (geometryType != null ? geometryType.hashCode() : 0);
         result = 31 * result + (containedWithIn != null ? Arrays.hashCode(containedWithIn) : 0);
         return result;
     }
@@ -198,7 +219,9 @@ public class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io
                 ", url='" + url + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", boundingBoxType='" + boundingBoxType + '\'' +
-                ", boundingBox=" + (boundingBox == null ? null : Arrays.asList(boundingBox)) +
+                ", boundingBoxCoordinates=" + (boundingBoxCoordinates == null ? null : Arrays.asList(boundingBoxCoordinates)) +
+                ", geometryType='" + geometryType + '\'' +
+                ", geometryCoordinates=" + (geometryCoordinates == null ? null : Arrays.asList(geometryCoordinates)) +
                 ", containedWithIn=" + (containedWithIn == null ? null : Arrays.asList(containedWithIn)) +
                 '}';
     }
