@@ -798,6 +798,21 @@ public class TwitterTestUnit extends TwitterTestBase {
             assertTrue(404 == te.getStatusCode() || 500 == te.getStatusCode());
         }
     }
+    public void testGeoMethods() throws Exception {
+        GeoQuery query;
+        ResponseList<Place> places;
+        query = new GeoQuery(new GeoLocation(0,0));
+
+        places = twitterAPI1.reverseGeoCode(query);
+        assertEquals(0, places.size());
+
+        query = new GeoQuery(new GeoLocation(37.78215,-122.40060));
+        places = twitterAPI1.reverseGeoCode(query);
+
+        assertTrue(places.size() > 0);
+        places = twitterAPI1.getNearbyPlaces(query);
+        assertTrue(places.size() > 0);
+    }
 
     public void testTest() throws Exception {
         assertTrue(twitterAPI2.test());

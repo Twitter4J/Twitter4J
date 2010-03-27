@@ -322,6 +322,9 @@ public interface TwitterListener {
      * @since Twitter4J 2.1.1
      */
     void gotLocationTrends(Trends trends);
+    /*Geo Methods*/
+    void gotNearByPlaces(ResponseList<Place> places);
+    void gotReverseGeoCode(ResponseList<Place> places);
 
     /*Help Methods*/
     void tested(boolean test);
@@ -438,6 +441,10 @@ public interface TwitterListener {
     /*Local Trends Methods*/
     TwitterMethod AVAILABLE_TRENDS = TwitterMethod.AVAILABLE_TRENDS;
     TwitterMethod LOCATION_TRENDS =  TwitterMethod.LOCATION_TRENDS;
+
+    /*Geo Methods*/
+    TwitterMethod NEAR_BY_PLACES = TwitterMethod.NEAR_BY_PLACES;
+    TwitterMethod REVERSE_GEO_CODE = TwitterMethod.REVERSE_GEO_CODE;
 
     /*Help Methods*/
     TwitterMethod TEST = TwitterMethod.TEST;

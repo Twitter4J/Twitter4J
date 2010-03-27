@@ -37,6 +37,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private AsyncTwitter async1 = null;
     private AsyncTwitter async2 = null;
     private ResponseList<Location> locations;
+    private ResponseList<Place> places;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -801,6 +802,16 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
      */
     public void gotLocationTrends(Trends trends){
         this.trends = trends;
+        notifyResponse();
+    }
+
+    /*Geo Methods*/
+    public void gotNearByPlaces(ResponseList<Place> places){
+        this.places = places;
+        notifyResponse();
+    }
+    public void gotReverseGeoCode(ResponseList<Place> places){
+        this.places = places;
         notifyResponse();
     }
 

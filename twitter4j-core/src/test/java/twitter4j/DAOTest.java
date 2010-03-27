@@ -109,14 +109,85 @@ public class DAOTest extends TwitterTestBase {
         assertEquals("http://where.yahooapis.com/v1/place/23424975", location.getURL());
         assertEquals(23424975, location.getWoeid());
 
-        String[] schema = new String[]{"url","country","woeid","placeType/name","placeType/code","name","countryCode"};
-        validateJSONArraySchema("http://api.twitter.com/1/trends/available.json", schema);
     }
 
     public void testSchema() throws Exception {
-        JSONObject json = new JSONObject("{\"url\":\"http://where.yahooapis.com/v1/place/23424975\",\"country\":\"United Kingdom\",\"woeid\":23424975,\"placeType\":{\"code\":12,\"name\":\"Country\"},\"name\":\"United Kingdom\",\"countryCode\":\"GB\"}");
-        String[] schema = new String[]{"url", "country", "woeid", "placeType/name", "placeType/code", "name", "countryCode"};
-        validateJSONObjectSchema(json, schema);
+        String[] schema;
+        String url;
+
+//        JSONObject json = new JSONObject("{\"a\":\"avalue\",\"b\":\"bvalue\",\"c\":{\"c-1\":12,\"c-2\":\"c-2value\"}}");
+//        schema = new String[]{"a", "b", "c/c-1", "c/c-2"};
+//        validateJSONObjectSchema(json, schema);
+//        try {
+//            schema = new String[]{"a", "b", "c/c-1"};
+//            validateJSONObjectSchema(json, schema);
+//            fail("c/c-2 is missing. expecting AssertionFailedError.");
+//        } catch (AssertionFailedError ignore) {
+//            ignore.printStackTrace();
+//
+//        }
+//        try {
+//            schema = new String[]{"a", "b"};
+//            validateJSONObjectSchema(json, schema);
+//            fail("c is missing. expecting AssertionFailedError.");
+//        } catch (AssertionFailedError ignore) {
+//            ignore.printStackTrace();
+//
+//        }
+//        try {
+//            schema = new String[]{"a", "b","c"};
+//            validateJSONObjectSchema(json, schema);
+//            fail("c/* is missing. expecting AssertionFailedError.");
+//        } catch (AssertionFailedError ignore) {
+//            ignore.printStackTrace();
+//
+//        }
+//        schema = new String[]{"a", "b", "c/*"};
+//        validateJSONObjectSchema(json, schema);
+
+        // Location
+
+//        schema = new String[]{"url","country","woeid","placeType/name","placeType/code","name","countryCode"};
+//        url = "http://api.twitter.com/1/trends/available.json";
+//        validateJSONArraySchema(url, schema);
+        // Place
+        if (!Boolean.valueOf(System.getProperties().getProperty("twitter4j.test.schema"))) {
+            // skipping schema validation
+            return;
+        }
+        schema = new String[]{
+                "result/places/name",
+                "result/places/country_code",
+                "result/places/id",
+                "result/places/country",
+                "result/places/place_type",
+                "result/places/url",
+                "result/places/full_name",
+                "result/places/bounding_box/*",
+                "result/places/contained_within/place_type",
+                "result/places/contained_within/url",
+                "result/places/contained_within/bounding_box/type",
+                "result/places/contained_within/bounding_box/coordinates/*",
+                "result/places/contained_within/full_name",
+                "result/places/contained_within/country_code",
+                "result/places/contained_within/name",
+                "result/places/contained_within/id",
+                "result/places/contained_within/country",
+                "query",
+                "query/type",
+                "query/url",
+                "query/params",
+                "query/params/granularity",
+                "query/params/coordinates",
+                "query/params/coordinates/type",
+                "query/params/coordinates/coordinates",
+                "query/params/coordinates/coordinates/*",
+                "query/params/accuracy",
+        };
+        url = "http://api.twitter.com/1/geo/reverse_geocode.json?lat=37.78215&long=-122.40060";
+        validateJSONObjectSchema(url, schema);
+
+
     }
 
     private void validateJSONObjectSchema(String url, String[] knownNames) throws Exception {
@@ -151,13 +222,18 @@ public class DAOTest extends TwitterTestBase {
             String name = (String)ite.next();
             boolean found = false;
             for (String elementName : names) {
+                Object obj = json.get(name);
+                if (obj instanceof JSONObject || obj instanceof JSONArray) {
+                    String[] children = schemaMap.get(name);
+                    if (null == children) {
+                        fail(elementName+":"+ name + " is not supposed to have any child but has:" + obj);
+                    } else if(!children[0].equals("*")){
+                        validateJSONSchema(obj, children);
+                    }
+                }
                 if (elementName.equals(name)) {
                     found = true;
                     break;
-                }
-                String[] children = schemaMap.get(elementName);
-                if(null != children){
-                    validateJSONObjectSchema(json.getJSONObject(elementName),children);
                 }
             }
             if(!found){
@@ -169,10 +245,22 @@ public class DAOTest extends TwitterTestBase {
         validateJSONArraySchema(getJSONArrayFromGetURL(url),knownNames);
     }
 
+    private static void validateJSONSchema(Object json, String[] knownNames) throws JSONException {
+        if (json instanceof JSONArray) {
+            validateJSONArraySchema((JSONArray) json, knownNames);
+        } else if (json instanceof JSONObject) {
+            validateJSONObjectSchema((JSONObject) json, knownNames);
+        } else {
+            fail("expecting either JSONArray or JSONObject here. Passed:" + json.getClass().getName());
+        }
+    }
     private static void validateJSONArraySchema(JSONArray array, String[] knownNames) throws JSONException {
         for (int i = 0; i < array.length(); i++) {
+            Object obj = array.get(i);
+            if(obj instanceof JSONObject){
             JSONObject json = array.getJSONObject(i);
             validateJSONObjectSchema(json, knownNames);
+            }  
         }
     }
 
@@ -324,6 +412,55 @@ public class DAOTest extends TwitterTestBase {
         assertEquals(6358482, status.getUser().getId());
         assertTrue(status.isRetweet());
         assertDeserializedFormIsEqual(status);
+
+    }
+    public void testPlaceAsJSON() throws Exception {
+        List<Place> places = PlaceJSONImpl.createPlaceList(
+                getJSONObjectFromClassPath("/reverse-geocode.json")
+                        .getJSONObject("result").getJSONArray("places"),null);
+        Place place = places.get(0);
+        assertEquals("SoMa", place.getName());
+        assertEquals("US", place.getCountryCode());
+        assertEquals("2b6ff8c22edd9576", place.getId());
+        assertEquals("", place.getCountry());
+        assertEquals("neighborhood", place.getPlaceType());
+        assertEquals("http://api.twitter.com/1/geo/id/2b6ff8c22edd9576.json", place.getURL());
+        assertEquals("SoMa, San Francisco", place.getFullName());
+        assertEquals("Polygon", place.getBoundingBoxType());
+        GeoLocation[][] boundingBox = place.getBoundingBoxCoordinates();
+        assertEquals(1, boundingBox.length);
+        assertEquals(4, boundingBox[0].length);
+        assertEquals(-122.42284884,boundingBox[0][0].getLatitude());
+        assertEquals(37.76893497,boundingBox[0][0].getLongitude());
+        assertEquals(-122.3964,boundingBox[0][1].getLatitude());
+        assertEquals(37.76893497,boundingBox[0][1].getLongitude());
+        assertEquals(-122.3964,boundingBox[0][2].getLatitude());
+        assertEquals(37.78752897,boundingBox[0][2].getLongitude());
+        assertEquals(-122.42284884,boundingBox[0][3].getLatitude());
+        assertEquals(37.78752897,boundingBox[0][3].getLongitude());
+        Place[] containedWithinArray = place.getContainedWithIn();
+        assertEquals(1, containedWithinArray.length);
+        Place containedWithin =containedWithinArray[0];
+        assertNull(containedWithin.getContainedWithIn());
+        assertEquals("San Francisco", containedWithin.getName());
+        assertEquals("US", containedWithin.getCountryCode());
+        assertEquals("5a110d312052166f", containedWithin.getId());
+        assertEquals("", containedWithin.getCountry());
+        assertEquals("city", containedWithin.getPlaceType());
+        assertEquals("http://api.twitter.com/1/geo/id/5a110d312052166f.json", containedWithin.getURL());
+        assertEquals("San Francisco", containedWithin.getFullName());
+        boundingBox = containedWithin.getBoundingBoxCoordinates();
+        assertEquals("Polygon", place.getBoundingBoxType());
+        assertEquals(1, boundingBox.length);
+        assertEquals(4, boundingBox[0].length);
+        assertEquals(-122.51368188,boundingBox[0][0].getLatitude());
+        assertEquals(37.70813196,boundingBox[0][0].getLongitude());
+        assertEquals(-122.35845384,boundingBox[0][1].getLatitude());
+        assertEquals(37.70813196,boundingBox[0][1].getLongitude());
+        assertEquals(-122.35845384,boundingBox[0][2].getLatitude());
+        assertEquals(37.83245301,boundingBox[0][2].getLongitude());
+        assertEquals(-122.51368188,boundingBox[0][3].getLatitude());
+        assertEquals(37.83245301,boundingBox[0][3].getLongitude());
     }
 
     public void testDirectMessagesAsJSON() throws Exception {

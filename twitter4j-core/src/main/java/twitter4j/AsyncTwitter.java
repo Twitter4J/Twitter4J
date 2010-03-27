@@ -26,24 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.api.AccountMethodsAsync;
-import twitter4j.api.BlockMethodsAsync;
-import twitter4j.api.DirectMessageMethodsAsync;
-import twitter4j.api.FavoriteMethodsAsync;
-import twitter4j.api.FriendshipMethodsAsync;
-import twitter4j.api.HelpMethodsAsync;
-import twitter4j.api.ListMembersMethodsAsync;
-import twitter4j.api.ListMethodsAsync;
-import twitter4j.api.ListSubscribersMethodsAsync;
-import twitter4j.api.LocalTrendsMethodsAsync;
-import twitter4j.api.NotificationMethodsAsync;
-import twitter4j.api.SavedSearchesMethodsAsync;
-import twitter4j.api.SearchMethodsAsync;
-import twitter4j.api.SocialGraphMethodsAsync;
-import twitter4j.api.SpamReportingMethodsAsync;
-import twitter4j.api.StatusMethodsAsync;
-import twitter4j.api.TimelineMethodsAsync;
-import twitter4j.api.UserMethodsAsync;
+import twitter4j.api.*;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
@@ -80,6 +63,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
         SpamReportingMethodsAsync,
         SavedSearchesMethodsAsync,
         LocalTrendsMethodsAsync,
+        GeoMethodsAsync,
         HelpMethodsAsync {
     private static final long serialVersionUID = -2008667933225051907L;
     private Twitter twitter;
@@ -89,7 +73,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
      * Creates a basic authenticated AsyncTwitter instance.
      * @param screenName screen name
      * @param password password
-     * @param listener
+     * @param listener listener
      * @deprecated use new AsyncTwitterFactory.getBasicAuthorizedInstance() instead.
      */
     public AsyncTwitter(String screenName, String password, TwitterListener listener) {
@@ -1539,7 +1523,29 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     }
 
     /* Geo Methods */
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getNearbyPlaces(final GeoQuery query){
+        getDispatcher().invokeLater(new AsyncTask(NEAR_BY_PLACES, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotNearByPlaces(twitter.getNearbyPlaces(query));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void reverseGeoCode(final GeoQuery query){
+        getDispatcher().invokeLater(new AsyncTask(REVERSE_GEO_CODE, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotReverseGeoCode(twitter.reverseGeoCode(query));
+            }
+        });
+    }
+
     /* Help Methods */
 
     /**

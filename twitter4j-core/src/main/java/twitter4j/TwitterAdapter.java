@@ -350,6 +350,11 @@ public class TwitterAdapter implements TwitterListener {
     public void gotLocationTrends(Trends trends){
     }
 
+    /*Geo Methods*/
+    public void gotNearByPlaces(ResponseList<Place> places){
+    }
+    public void gotReverseGeoCode(ResponseList<Place> places){
+    }
 
     /*Help Methods*/
     public void tested(boolean test){

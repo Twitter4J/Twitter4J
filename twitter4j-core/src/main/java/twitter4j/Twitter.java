@@ -26,24 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.api.AccountMethods;
-import twitter4j.api.BlockMethods;
-import twitter4j.api.DirectMessageMethods;
-import twitter4j.api.FavoriteMethods;
-import twitter4j.api.FriendshipMethods;
-import twitter4j.api.HelpMethods;
-import twitter4j.api.ListMembersMethods;
-import twitter4j.api.ListMethods;
-import twitter4j.api.ListSubscribersMethods;
-import twitter4j.api.LocalTrendsMethods;
-import twitter4j.api.NotificationMethods;
-import twitter4j.api.SavedSearchesMethods;
-import twitter4j.api.SearchMethods;
-import twitter4j.api.SocialGraphMethods;
-import twitter4j.api.SpamReportingMethods;
-import twitter4j.api.StatusMethods;
-import twitter4j.api.TimelineMethods;
-import twitter4j.api.UserMethods;
+import twitter4j.api.*;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
@@ -86,6 +69,7 @@ public final class Twitter extends TwitterOAuthSupportBase
         SpamReportingMethods,
         SavedSearchesMethods,
         LocalTrendsMethods,
+        GeoMethods,
         HelpMethods {
     private static final long serialVersionUID = -1486360080128882436L;
 
@@ -108,7 +92,7 @@ public final class Twitter extends TwitterOAuthSupportBase
      *
      * @param screenName the screen name of the user
      * @param password   the password of the user
-     * @deprecated use TwitterFactory.getBasicAuthenticatedInstance(screenName, password) instead
+     * @deprecated use TwitterFactory.getInstance(screenName, password) instead
      */
     public Twitter(String screenName, String password) {
         super(ConfigurationContext.getInstance(), screenName, password);
@@ -205,7 +189,7 @@ public final class Twitter extends TwitterOAuthSupportBase
      */
     public QueryResult search(Query query) throws TwitterException {
         try {
-            return new QueryResultJSONImpl(http.get(conf.getSearchBaseURL() + "search.json", query.asPostParameters(), null));
+            return new QueryResultJSONImpl(http.get(conf.getSearchBaseURL() + "search.json", query.asHttpParameterArray(), null));
         } catch (TwitterException te) {
             if (404 == te.getStatusCode()) {
                 return new QueryResultJSONImpl(query);
@@ -1475,6 +1459,40 @@ public final class Twitter extends TwitterOAuthSupportBase
             return TrendsJSONImpl.createTrends(res.asJSONArray().getJSONObject(0), res);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
+        }
+    }
+
+    /* Geo Methods */
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Place> getNearbyPlaces(GeoQuery query) throws TwitterException {
+        try{
+            return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
+                    + "geo/nearby_places.json", query.asHttpParameterArray(), auth));
+        }catch(TwitterException te){
+            if(te.getStatusCode() == 404){
+                return new ResponseList<Place>(0, null);
+            }else{
+                throw te;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException {
+        try{
+            return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
+                    + "geo/reverse_geocode.json", query.asHttpParameterArray(), auth));
+        }catch(TwitterException te){
+            if(te.getStatusCode() == 404){
+                return new ResponseList<Place>(0, null);
+            }else{
+                throw te;
+            }
         }
     }
 
