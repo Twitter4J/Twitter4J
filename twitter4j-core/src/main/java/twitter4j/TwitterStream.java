@@ -46,7 +46,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public class TwitterStream extends TwitterBase implements java.io.Serializable {
+public final class TwitterStream extends TwitterBase implements java.io.Serializable {
     private final HttpClientWrapper http;
     private static final Logger logger = Logger.getLogger(TwitterStream.class);
 

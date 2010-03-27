@@ -45,7 +45,7 @@ import static twitter4j.TwitterMethod.*;
  * @see twitter4j.TwitterListener
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Serializable,
+public final class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Serializable,
         SearchMethodsAsync,
         TimelineMethodsAsync,
         StatusMethodsAsync,

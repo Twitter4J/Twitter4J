@@ -28,6 +28,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
+import twitter4j.http.AuthorizationFactory;
 import twitter4j.internal.http.HttpClient;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.org.json.JSONArray;
@@ -188,12 +189,59 @@ public class DAOTest extends TwitterTestBase {
         validateJSONObjectSchema(url, schema);
 
 
+        schema = new String[]{
+                "next_cursor",
+                "next_cursor_str",
+                "previous_cursor",
+                "previous_cursor_str",
+                "lists/id",
+                "lists/member_count",
+                "lists/description",
+                "lists/name",
+                "lists/subscriber_count",
+                "lists/slug",
+                "lists/user/*",
+                "lists/uri",
+                "lists/full_name",
+                "lists/mode",
+
+        };
+        url = "http://api.twitter.com/1/twit4j2/lists.json";
+        validateJSONObjectSchema(url, schema);
+
+        schema = new String[]{
+                "id",
+                "member_count",
+                "description",
+                "name",
+                "subscriber_count",
+                "slug",
+                "user/*",
+                "uri",
+                "full_name",
+                "mode",
+
+        };
+        url="http://api.twitter.com/1/twit4j2/lists/9499823.json";
+        UserList userList = new UserListJSONImpl(validateJSONObjectSchema(url, schema));
+        assertEquals("",userList.getDescription());
+        assertEquals("@twit4j2/test",userList.getFullName());
+        assertEquals(9499823,userList.getId());
+        assertEquals(3,userList.getMemberCount());
+        assertEquals("test",userList.getName());
+        assertEquals("test",userList.getSlug());
+        assertEquals(0,userList.getSubscriberCount());
+        assertEquals("/twit4j2/test",userList.getURI().toString());
+        assertNotNull(userList.getUser());
+        assertTrue(userList.isPublic());
     }
 
-    private void validateJSONObjectSchema(String url, String[] knownNames) throws Exception {
-        validateJSONObjectSchema(getJSONObjectFromGetURL(url),knownNames);
+    private JSONObject validateJSONObjectSchema(String url, String[] knownNames) throws Exception {
+        JSONObject json = getJSONObjectFromGetURL(url);
+        validateJSONObjectSchema(json,knownNames);
+        return json;
     }
-    private static void validateJSONObjectSchema(JSONObject json, String[] knownNames) throws JSONException {
+    private static JSONObject validateJSONObjectSchema(JSONObject json, String[] knownNames) throws JSONException {
         Map<String, String[]> schemaMap = new HashMap<String, String[]>();
         List<String> names = new ArrayList<String>();
         for (int i = 0; i < knownNames.length; i++) {
@@ -240,6 +288,7 @@ public class DAOTest extends TwitterTestBase {
                 fail("unknown element:[" + name + "] in "+ json);
             }
         }
+        return json;
     }
     private void validateJSONArraySchema(String url, String[] knownNames) throws Exception {
         validateJSONArraySchema(getJSONArrayFromGetURL(url),knownNames);
@@ -293,7 +342,7 @@ public class DAOTest extends TwitterTestBase {
 
     private static JSONObject getJSONObjectFromGetURL(String url, Configuration conf) throws Exception {
         HttpClientWrapper http = new HttpClientWrapper(conf);
-        return http.get(url).asJSONObject();
+        return http.get(url, AuthorizationFactory.getInstance(conf, false)).asJSONObject();
     }
 
     private JSONArray getJSONArrayFromGetURL(String url) throws Exception {
@@ -377,6 +426,9 @@ public class DAOTest extends TwitterTestBase {
         users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/followers/T4J_hudson.json"));
         assertTrue(users.size() > 0);
         assertDeserializedFormIsEqual(users);
+    }
+    public void testUserListAsJSON() throws Exception {
+        
     }
 
     public void testStatusAsJSON() throws Exception {

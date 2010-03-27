@@ -31,7 +31,7 @@ package twitter4j;
  * In case the Twitter server returned HTTP error code, you can get the HTTP status code using getStatusCode() method.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class TwitterException extends Exception {
+public final class TwitterException extends Exception {
     private int statusCode = -1;
     private int retryAfter;
     private static final long serialVersionUID = -2623309261327598087L;

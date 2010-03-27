@@ -32,7 +32,7 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Twitter API Wiki / Rate limiting</a>
  */
-public class RateLimitStatusEvent extends java.util.EventObject {
+public final class RateLimitStatusEvent extends java.util.EventObject {
 
     private RateLimitStatus rateLimitStatus;
 

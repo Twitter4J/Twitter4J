@@ -40,7 +40,7 @@ import java.io.InputStreamReader;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public class StatusStream {
+public final class StatusStream {
     private static final Logger logger = Logger.getLogger(StatusStream.class);
 
     private boolean streamAlive = true;

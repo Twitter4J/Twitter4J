@@ -32,7 +32,7 @@ import java.util.Date;
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  * @since Twitter4J 2.1.0
  */
-public class TimeSpanUtil {
+public final class TimeSpanUtil {
     private static int ONE_HOUR_IN_SECONDS = 60 * 60;
     private static int ONE_DAY_IN_SECONDS = 24 * ONE_HOUR_IN_SECONDS;
 

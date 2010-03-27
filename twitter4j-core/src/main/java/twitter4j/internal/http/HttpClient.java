@@ -55,7 +55,7 @@ import static twitter4j.internal.http.RequestMethod.*;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class HttpClient implements java.io.Serializable {
+public final class HttpClient implements java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClient.class);
     private static final int OK = 200;// OK: Success!
     private static final int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.

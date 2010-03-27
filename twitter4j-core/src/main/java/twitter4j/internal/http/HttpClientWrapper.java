@@ -45,7 +45,7 @@ import static twitter4j.internal.http.RequestMethod.PUT;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class HttpClientWrapper implements java.io.Serializable {
+public final class HttpClientWrapper implements java.io.Serializable {
     private final HttpClientWrapperConfiguration wrapperConf;
     private HttpClient http;
 
