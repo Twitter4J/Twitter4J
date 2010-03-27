@@ -1512,7 +1512,7 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public Place getGeoDetail(String id) throws TwitterException {
+    public Place getGeoDetails(String id) throws TwitterException {
         return new PlaceJSONImpl(http.get(conf.getRestBaseURL() + "geo/id/" + id
                 + ".json", auth));
     }

@@ -67,5 +67,5 @@ public interface GeoMethods {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-geo-ID>Twitter API Wiki / Twitter REST API Method: GET geo ID</a>
      * @since Twitter4J 2.1.1
      */
-    Place getGeoDetail(String id) throws TwitterException;
+    Place getGeoDetails(String id) throws TwitterException;
 }

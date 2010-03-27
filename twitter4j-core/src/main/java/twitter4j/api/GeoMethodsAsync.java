@@ -35,5 +35,5 @@ public interface GeoMethodsAsync {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-geo-ID>Twitter API Wiki / Twitter REST API Method: GET geo ID</a>
      * @since Twitter4J 2.1.1
      */
-    void getGeoDetail(String id);
+    void getGeoDetails(String id);
 }

@@ -813,7 +813,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(places.size() > 0);
         places = twitterAPI1.getNearbyPlaces(query);
         assertTrue(places.size() > 0);
-        Place place = this.unauthenticated.getGeoDetail("5a110d312052166f");
+        Place place = this.unauthenticated.getGeoDetails("5a110d312052166f");
         assertEquals("San Francisco", place.getFullName());
         assertEquals("California", place.getContainedWithIn()[0].getFullName());
         String sanFrancisco = "5a110d312052166f";
