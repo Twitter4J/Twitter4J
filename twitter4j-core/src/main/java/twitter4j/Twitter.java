@@ -491,6 +491,19 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public Status updateStatus(StatusUpdate latestStatus) throws TwitterException{
+        ensureAuthorizationEnabled();
+        HttpParameter[] array = latestStatus.asHttpParameterArray();
+        HttpParameter[] combined = new HttpParameter[array.length + 1];
+        System.arraycopy(array, 0, combined, 0, array.length);
+        combined[combined.length - 1] = new HttpParameter("source", conf.getSource());
+        return new StatusJSONImpl(http.post(conf.getRestBaseURL()
+                + "statuses/update.json", combined, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Status destroyStatus(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL()

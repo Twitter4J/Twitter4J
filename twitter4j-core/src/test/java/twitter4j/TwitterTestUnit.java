@@ -798,15 +798,16 @@ public class TwitterTestUnit extends TwitterTestBase {
             assertTrue(404 == te.getStatusCode() || 500 == te.getStatusCode());
         }
     }
+
     public void testGeoMethods() throws Exception {
         GeoQuery query;
         ResponseList<Place> places;
-        query = new GeoQuery(new GeoLocation(0,0));
+        query = new GeoQuery(new GeoLocation(0, 0));
 
         places = twitterAPI1.reverseGeoCode(query);
         assertEquals(0, places.size());
 
-        query = new GeoQuery(new GeoLocation(37.78215,-122.40060));
+        query = new GeoQuery(new GeoLocation(37.78215, -122.40060));
         places = twitterAPI1.reverseGeoCode(query);
 
         assertTrue(places.size() > 0);
@@ -815,6 +816,10 @@ public class TwitterTestUnit extends TwitterTestBase {
         Place place = this.unauthenticated.getGeoDetail("5a110d312052166f");
         assertEquals("San Francisco", place.getFullName());
         assertEquals("California", place.getContainedWithIn()[0].getFullName());
+        String sanFrancisco = "5a110d312052166f";
+        Status status = twitterAPI1.updateStatus(new StatusUpdate(new java.util.Date() + " status with place").
+                placeId(sanFrancisco));
+        assertEquals(sanFrancisco, status.getPlace().getId());
     }
 
     public void testTest() throws Exception {

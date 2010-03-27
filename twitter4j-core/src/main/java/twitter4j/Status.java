@@ -107,6 +107,12 @@ public interface Status extends TwitterResponse, java.io.Serializable {
     GeoLocation getGeoLocation();
 
     /**
+     * @return the place attached to the status
+     * @since Twitter4J 2.1.1
+     */
+    Place getPlace();
+
+    /**
      * Test if the status is favorited
      *
      * @return true if favorited

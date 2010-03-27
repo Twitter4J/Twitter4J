@@ -50,6 +50,7 @@ import static twitter4j.ParseUtil.*;
     private boolean isFavorited;
     private String inReplyToScreenName;
     private GeoLocation geoLocation = null;
+    private Place place = null;
 
     private Status retweetedStatus;
     private static final long serialVersionUID = 1608000492860584608L;
@@ -82,6 +83,13 @@ import static twitter4j.ParseUtil.*;
             throw new TwitterException(jsone);
         }
         geoLocation = GeoLocation.getInstance(json);
+        if (!json.isNull("place")) {
+            try {
+                place = new PlaceJSONImpl(json.getJSONObject("place"), null);
+            } catch (JSONException ignore) {
+            }
+        }
+
         if (!json.isNull("retweeted_status")) {
             try {
                 retweetedStatus = new StatusJSONImpl(json.getJSONObject("retweeted_status"));
@@ -179,6 +187,15 @@ import static twitter4j.ParseUtil.*;
     }
 
     /**
+     * Returns the place attached to this status
+     * @return The place attached to this status
+     * @since Twitter4J 2.1.1
+     */
+    public Place getPlace(){
+        return place;
+    }
+
+    /**
      * Test if the status is favorited
      *
      * @return true if favorited
@@ -262,6 +279,7 @@ import static twitter4j.ParseUtil.*;
                 ", isFavorited=" + isFavorited +
                 ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
                 ", geoLocation=" + geoLocation +
+                ", place=" + place +
                 ", retweetedStatus=" + retweetedStatus +
                 ", user=" + user +
                 '}';

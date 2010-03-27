@@ -27,6 +27,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.api;
 
 import twitter4j.GeoLocation;
+import twitter4j.Status;
+import twitter4j.StatusUpdate;
+import twitter4j.TwitterException;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -61,6 +64,7 @@ public interface StatusMethodsAsync {
      * @param location The location that this tweet refers to.
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
+     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
      */
     void updateStatus(String status, GeoLocation location);
 
@@ -73,6 +77,7 @@ public interface StatusMethodsAsync {
 	 * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0update</a>
 	 * @since Twitter4J 2.0.1
+     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
 	 */
 	void updateStatus(String status, long inReplyToStatusId);
 
@@ -86,8 +91,18 @@ public interface StatusMethodsAsync {
      * @param location The location that this tweet refers to.
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
+     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
      */
     void updateStatus(String status, long inReplyToStatusId, GeoLocation location);
+
+    /**
+     * Updates the user's status.
+     * <br>Statuses over 140 characters will be forcibly truncated.
+     * <br>This method calls http://api.twitter.com/1/statuses/update
+     * @param latestStatus the latest status to be updated.
+     * @since Twitter4J 2.1.1
+     */
+    void updateStatus(StatusUpdate latestStatus);
 
 	/**
 	 * Destroys the status specified by the required ID parameter. asynchronously

@@ -478,6 +478,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     /**
      * {@inheritDoc}
      */
+    public void updateStatus(final StatusUpdate latestStatus) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.updatedStatus(twitter.updateStatus(latestStatus));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void destroyStatus(final long statusId) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_STATUS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {

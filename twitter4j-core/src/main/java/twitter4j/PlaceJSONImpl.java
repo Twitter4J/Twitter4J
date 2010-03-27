@@ -162,50 +162,21 @@ public class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io
         return containedWithIn;
     }
 
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PlaceJSONImpl placeJSON = (PlaceJSONImpl) o;
-
-        if (boundingBoxType != null ? !boundingBoxType.equals(placeJSON.boundingBoxType) : placeJSON.boundingBoxType != null)
+    public boolean equals(Object obj) {
+        if (null == obj) {
             return false;
-        if (!Arrays.equals(containedWithIn, placeJSON.containedWithIn))
-            return false;
-        if (country != null ? !country.equals(placeJSON.country) : placeJSON.country != null)
-            return false;
-        if (countryCode != null ? !countryCode.equals(placeJSON.countryCode) : placeJSON.countryCode != null)
-            return false;
-        if (fullName != null ? !fullName.equals(placeJSON.fullName) : placeJSON.fullName != null)
-            return false;
-        if (geometryType != null ? !geometryType.equals(placeJSON.geometryType) : placeJSON.geometryType != null)
-            return false;
-        if (id != null ? !id.equals(placeJSON.id) : placeJSON.id != null)
-            return false;
-        if (name != null ? !name.equals(placeJSON.name) : placeJSON.name != null)
-            return false;
-        if (placeType != null ? !placeType.equals(placeJSON.placeType) : placeJSON.placeType != null)
-            return false;
-        if (url != null ? !url.equals(placeJSON.url) : placeJSON.url != null)
-            return false;
-
-        return true;
+        }
+        if (this == obj) {
+            return true;
+        }
+        return obj instanceof Place && ((Place) obj).getId().equals(this.id);
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + (placeType != null ? placeType.hashCode() : 0);
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
-        result = 31 * result + (boundingBoxType != null ? boundingBoxType.hashCode() : 0);
-        result = 31 * result + (geometryType != null ? geometryType.hashCode() : 0);
-        result = 31 * result + (containedWithIn != null ? Arrays.hashCode(containedWithIn) : 0);
-        return result;
+        return id.hashCode();
     }
 
     @Override
