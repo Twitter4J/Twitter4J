@@ -104,16 +104,22 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
 //        status = null;
 //        twitterStream.filter(0, new int[]{18713}, null);
 //        waitForStatus();
-//        assertNotNull(status);
+
+    //        assertNotNull(status);
 //        assertNotNull(status.getUnescapedString());
 //        assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
 //        twitterStream.cleanup();
 //    }
     public void testFilterTrackPush() throws Exception {
-        twitterStream.filter(0,null, new String[]{"twitter", "iphone"});
+        twitterStream.filter(0, null, new String[]{"twitter", "iphone"});
         waitForStatus();
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
+        this.ex = null;
+        twitterStream.filter(0, null, new String[]{"twitter4j", "ipad"});
+        waitForStatus();
+        assertNull(ex);
+
         twitterStream.cleanup();
     }
 
@@ -192,21 +198,29 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
         }
         notifyResponse();
     }
+
     StatusDeletionNotice deletionNotice;
-//onDeletionNoice
+
+    //onDeletionNoice
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
         this.deletionNotice = statusDeletionNotice;
         System.out.println("got status deletionNotice notification:" + statusDeletionNotice.toString());
+        notifyResponse();
     }
 
     int trackLimit;
-//onTrackLimitNotice
+
+    //onTrackLimitNotice
     public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
         this.trackLimit = numberOfLimitedStatuses;
         System.out.println("got limit notice:" + numberOfLimitedStatuses);
+        notifyResponse();
     }
 
+    Exception ex;
+
     public void onException(Exception ex) {
+        this.ex = ex;
         ex.printStackTrace();
         notifyResponse();
     }

@@ -380,26 +380,28 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
                         }
                     }
                 } catch (TwitterException te) {
-                    if(0 == timeToSleep && te.getStatusCode() > 200) {
-                        timeToSleep = HTTP_ERROR_INITIAL_WAIT;
-                    }else{
-                        timeToSleep = TCP_ERROR_INITIAL_WAIT;
-                    }
-                    // there was a problem establishing the connection, or the connection closed by peer
                     if (!closed) {
-                        // wait for a moment not to overload Twitter API
-                        setStatus("[Waiting for " + (timeToSleep) + " milliseconds]");
-                        try {
-                            Thread.sleep(timeToSleep);
-                        } catch (InterruptedException ignore) {
+                        if (0 == timeToSleep && te.getStatusCode() > 200) {
+                            timeToSleep = HTTP_ERROR_INITIAL_WAIT;
+                        } else {
+                            timeToSleep = TCP_ERROR_INITIAL_WAIT;
                         }
-                        timeToSleep = Math.min(timeToSleep * 2, (te.getStatusCode() > 200) ? HTTP_ERROR_WAIT_CAP : TCP_ERROR_WAIT_CAP);
+                        // there was a problem establishing the connection, or the connection closed by peer
+                        if (!closed) {
+                            // wait for a moment not to overload Twitter API
+                            setStatus("[Waiting for " + (timeToSleep) + " milliseconds]");
+                            try {
+                                Thread.sleep(timeToSleep);
+                            } catch (InterruptedException ignore) {
+                            }
+                            timeToSleep = Math.min(timeToSleep * 2, (te.getStatusCode() > 200) ? HTTP_ERROR_WAIT_CAP : TCP_ERROR_WAIT_CAP);
 
+                        }
+                        stream = null;
+                        logger.debug(te.getMessage());
+                        statusListener.onException(te);
                     }
-                    stream = null;
-                    te.printStackTrace();
-                    logger.debug(te.getMessage());
-                    statusListener.onException(te);
+
                 }
             }
             try {
