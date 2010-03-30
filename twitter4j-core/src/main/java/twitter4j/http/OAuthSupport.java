@@ -31,7 +31,8 @@ public interface OAuthSupport {
     RequestToken getOAuthRequestToken(String callbackURL) throws TwitterException;
 
     /**
-     * Retrieves an access token.
+     * Returns an access token associated with this instance.<br>
+     * If no access token is associated with this instance, this will retrieve a new access token.
      *
      * @return access token
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized

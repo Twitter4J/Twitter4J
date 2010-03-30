@@ -1551,9 +1551,8 @@ public final class Twitter extends TwitterOAuthSupportBase
     }
 
     // implementation for OAuthSupport interface
-
     /**
-     * @throws IllegalStateException when AccessToken has already been retrieved or set
+     * {@inheritDoc}
      */
     public RequestToken getOAuthRequestToken() throws TwitterException {
         return getOAuthRequestToken(null);
@@ -1568,6 +1567,11 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * Basic authenticated instance of this class will try acquiring an AccessToken using xAuth.<br>
+     * In order to get access acquire AccessToken using xAuth, you must apply by sending an email to <a href="mailto:api@twitter.com">api@twitter.com</a> all other applications will receive an HTTP 401 error.  Web-based applications will not be granted access, except on a temporary basis for when they are converting from basic-authentication support to full OAuth support.<br>
+     * Storage of Twitter usernames and passwords is forbidden. By using xAuth, you are required to store only access tokens and access token secrets. If the access token expires or is expunged by a user, you must ask for their login and password again before exchanging the credentials for an access token.
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth">Twitter REST API Method: oauth access_token for xAuth</a>
+     * @throws TwitterException When Twitter service or network is unavailable, when the user has not authorized, or when the client application is not permitted to use xAuth
      */
     public synchronized AccessToken getOAuthAccessToken() throws TwitterException {
         Authorization auth = getAuthorization();
@@ -1592,6 +1596,7 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public synchronized AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken(oauthVerifier);
@@ -1601,6 +1606,7 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
         OAuthSupport oauth = getOAuth();
@@ -1611,6 +1617,7 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
         return getOAuth().getOAuthAccessToken(requestToken, oauthVerifier);
@@ -1618,11 +1625,16 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
      */
     public synchronized void setOAuthAccessToken(AccessToken accessToken) {
         getOAuth().setOAuthAccessToken(accessToken);
     }
 
+    /**
+     * {@inheritDoc}
+     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
+     */
     public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
         return getOAuth().getOAuthAccessToken(new RequestToken(token, tokenSecret));
     }

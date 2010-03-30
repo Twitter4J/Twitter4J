@@ -153,8 +153,11 @@ public class OAuthTest extends TwitterTestUnit {
         resStr = response.asString();
         String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ", "\n</div>");
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret(), pin);
+
         assertEquals(at.getScreenName(), id1.screenName);
         assertEquals(at.getUserId(), 6358482);
+        AccessToken at1 = twitter.getOAuthAccessToken();
+        assertEquals(at, at1);
 
     }
 

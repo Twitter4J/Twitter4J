@@ -127,6 +127,9 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      */
     public AccessToken getOAuthAccessToken() throws TwitterException {
         ensureTokenIsAvailable();
+        if(oauthToken instanceof AccessToken){
+            return (AccessToken)oauthToken;
+        }
         try {
             oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), this));
             return (AccessToken) oauthToken;
