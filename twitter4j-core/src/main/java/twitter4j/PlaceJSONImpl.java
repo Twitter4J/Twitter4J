@@ -71,15 +71,20 @@ public final class PlaceJSONImpl extends TwitterResponseImpl implements Place, j
             placeType = getRawString("place_type", json);
             url = getRawString("url", json);
             fullName = getRawString("full_name", json);
-            JSONObject boundingBoxJSON = json.getJSONObject("bounding_box");
-            boundingBoxType = getRawString("type", boundingBoxJSON);
-            JSONArray array = boundingBoxJSON.getJSONArray("coordinates");
-            boundingBoxCoordinates = GeoLocation.coordinatesAsGeoLocationArray(array);
+            if (!json.isNull("bounding_box")) {
+                JSONObject boundingBoxJSON = json.getJSONObject("bounding_box");
+                boundingBoxType = getRawString("type", boundingBoxJSON);
+                JSONArray array = boundingBoxJSON.getJSONArray("coordinates");
+                boundingBoxCoordinates = GeoLocation.coordinatesAsGeoLocationArray(array);
+            } else {
+                boundingBoxType = null;
+                boundingBoxCoordinates = null;
+            }
 
             if(!json.isNull("geometry")){
                 JSONObject geometryJSON = json.getJSONObject("geometry");
                 geometryType = getRawString("type", geometryJSON);
-                array = geometryJSON.getJSONArray("coordinates");
+                JSONArray array = geometryJSON.getJSONArray("coordinates");
                 geometryCoordinates = GeoLocation.coordinatesAsGeoLocationArray(array);
             }else{
                 geometryType = null;
