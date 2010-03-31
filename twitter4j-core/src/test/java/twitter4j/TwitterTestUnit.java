@@ -166,6 +166,12 @@ public class TwitterTestUnit extends TwitterTestBase {
         ResponseList<User> users = twitterAPI1.searchUsers("Doug Williams",1);
         assertTrue(4 < users.size());
     }
+    public void testSuggestion() throws Exception {
+        ResponseList<Category> categories = twitterAPI1.getSuggestedUserCategories();
+        assertTrue(categories.size() > 0);
+        ResponseList<User> users = twitterAPI1.getUserSuggestions(categories.get(0).getSlug());
+        assertTrue(users.size() > 0);
+    }
 
 
     // list deletion doesn't work now.

@@ -35,8 +35,7 @@ import java.io.File;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface AccountMethods
-{
+public interface AccountMethods {
 	/**
 	 * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not.  Use this method to test if supplied user credentials are valid.
 	 * <br>This method calls http://api.twitter.com/1/account/verify_credentials.json

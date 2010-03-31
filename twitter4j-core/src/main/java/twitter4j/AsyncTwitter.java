@@ -569,11 +569,34 @@ public final class AsyncTwitter extends TwitterOAuthSupportBase implements java.
      * {@inheritDoc}
      */
     public void searchUsers(final String query, final int page) {
-        getDispatcher().invokeLater(new AsyncTask(SHOW_USER, listener) {
+        getDispatcher().invokeLater(new AsyncTask(SEARCH_USERS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.searchedUser(twitter.searchUsers(query, page));
             }
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getSuggestedUserCategories() {
+        getDispatcher().invokeLater(new AsyncTask(SUGGESTED_USER_CATEGORIES, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotSuggestedUserCategories(twitter.getSuggestedUserCategories());
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getUserSuggestions(final String categorySlug) {
+        getDispatcher().invokeLater(new AsyncTask(USER_SUGGESTIONS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotUserSuggestions(twitter.getUserSuggestions(categorySlug));
+            }
+        });
+
     }
 
     /**

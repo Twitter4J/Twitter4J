@@ -381,7 +381,7 @@ import static twitter4j.ParseUtil.*;
     }
     /*package*/ static ResponseList<User> createUserList(HttpResponse res) throws TwitterException {
         try {
-            JSONArray list = res.asJSONArray();
+            JSONArray list = res.asJSONObject().getJSONArray("users");
             int size = list.length();
             ResponseList<User> users =
                     new ResponseList<User>(size, res);

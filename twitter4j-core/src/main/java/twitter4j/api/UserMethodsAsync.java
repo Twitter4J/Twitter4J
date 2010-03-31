@@ -26,9 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
-import twitter4j.ResponseList;
 import twitter4j.TwitterException;
-import twitter4j.User;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -79,6 +77,21 @@ public interface UserMethodsAsync {
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users-search">Twitter API Wiki / Twitter REST API Method: users search</a>
      */
     void searchUsers(String query, int page);
+
+    /**
+     * Access to Twitter's suggested user list.  This returns the list of suggested user categories.  The category can be used in the users/suggestions/category endpoint to get the users in that category.
+     * <br>This method calls http://api.twitter.com/1/users/suggestions.json
+     * @since Twitter4J 2.1.1
+     */
+    void getSuggestedUserCategories();
+
+    /**
+     * Access the users in a given category of the Twitter suggested user list.
+     * <br>This method calls http://api.twitter.com/1/users/suggestions/[slug].json
+     * @param categorySlug slug
+     * @since Twitter4J 2.1.1
+     */
+    void getUserSuggestions(String categorySlug);
 
 	/**
 	 * Returns the specified user's friends, each with current status inline.

@@ -32,8 +32,7 @@ import twitter4j.User;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface NotificationMethods
-{
+public interface NotificationMethods {
 	/**
 	 * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
 	 * <br>This method calls http://api.twitter.com/1/notifications/follow/[id].json

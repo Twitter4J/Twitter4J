@@ -39,6 +39,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private ResponseList<Location> locations;
     private ResponseList<Place> places;
     private Place place;
+    private ResponseList<Category> categories;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -549,6 +550,22 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void searchedUser(ResponseList<User> userList) {
         this.users = userList;
+        notifyResponse();
+    }
+
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    public void gotSuggestedUserCategories(ResponseList<Category> categories) {
+        this.categories = categories;
+        notifyResponse();
+    }
+
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    public void gotUserSuggestions(ResponseList<User> users) {
+        this.users = users;
         notifyResponse();
     }
 

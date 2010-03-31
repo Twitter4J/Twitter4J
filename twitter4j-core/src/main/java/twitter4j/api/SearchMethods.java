@@ -37,8 +37,7 @@ import java.util.List;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface SearchMethods
-{
+public interface SearchMethods {
 	/**
 	 * Returns tweets that match a specified query.
 	 * <br>This method calls http://search.twitter.com/search

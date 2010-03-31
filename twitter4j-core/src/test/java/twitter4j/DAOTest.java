@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import junit.framework.AssertionFailedError;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.http.AuthorizationFactory;
@@ -122,29 +123,30 @@ public class DAOTest extends TwitterTestBase {
 //        try {
 //            schema = new String[]{"a", "b", "c/c-1"};
 //            validateJSONObjectSchema(json, schema);
-//            fail("c/c-2 is missing. expecting AssertionFailedError.");
+//            fail("c/c-2 is missing. expecting an AssertionFailedError.");
 //        } catch (AssertionFailedError ignore) {
-//            ignore.printStackTrace();
-//
+////            ignore.printStackTrace();
 //        }
 //        try {
 //            schema = new String[]{"a", "b"};
 //            validateJSONObjectSchema(json, schema);
-//            fail("c is missing. expecting AssertionFailedError.");
+//            fail("c is missing. expecting an AssertionFailedError.");
 //        } catch (AssertionFailedError ignore) {
-//            ignore.printStackTrace();
-//
+////            ignore.printStackTrace();
 //        }
 //        try {
 //            schema = new String[]{"a", "b","c"};
 //            validateJSONObjectSchema(json, schema);
-//            fail("c/* is missing. expecting AssertionFailedError.");
+//            fail("c/* is missing. expecting an AssertionFailedError.");
 //        } catch (AssertionFailedError ignore) {
-//            ignore.printStackTrace();
-//
+////            ignore.printStackTrace();
 //        }
 //        schema = new String[]{"a", "b", "c/*"};
 //        validateJSONObjectSchema(json, schema);
+//
+//        JSONArray array = new JSONArray("[{\"slug\":\"art-design\",\"name\":\"Art & Design\"},{\"slug\":\"books\",\"name\":\"Books\"}]");
+//        schema = new String[]{"slug", "name"};
+//        validateJSONArraySchema(array, schema);
 
         // Location
 
@@ -156,6 +158,25 @@ public class DAOTest extends TwitterTestBase {
             // skipping schema validation
             return;
         }
+
+        schema = new String[]{
+                "slug",
+                "name",
+        };
+        url="http://api.twitter.com/1/users/suggestions.json";
+        List categories = CategoryJSONImpl.createCategoriesList(validateJSONArraySchema(url, schema), null);
+        assertEquals(20,categories.size());
+
+        schema = new String[]{
+                "slug",
+                "name",
+                "categories/*",
+                "users/*"
+        };
+        url="http://api.twitter.com/1/users/suggestions/art-design.json";
+        validateJSONObjectSchema(url, schema);
+
+
         schema = new String[]{
                 "result/places/name",
                 "result/places/country_code",
@@ -234,6 +255,9 @@ public class DAOTest extends TwitterTestBase {
         assertEquals("/twit4j2/test",userList.getURI().toString());
         assertNotNull(userList.getUser());
         assertTrue(userList.isPublic());
+
+
+
     }
 
     private JSONObject validateJSONObjectSchema(String url, String[] knownNames) throws Exception {
@@ -241,10 +265,18 @@ public class DAOTest extends TwitterTestBase {
         validateJSONObjectSchema(json,knownNames);
         return json;
     }
+
     private static JSONObject validateJSONObjectSchema(JSONObject json, String[] knownNames) throws JSONException {
+        boolean debug = false;
         Map<String, String[]> schemaMap = new HashMap<String, String[]>();
         List<String> names = new ArrayList<String>();
+        if (debug) {
+            System.out.println("validating:" + json);
+        }
         for (int i = 0; i < knownNames.length; i++) {
+            if (debug) {
+                System.out.println("kownName[" + i + "]:" + knownNames[i]);
+            }
             String knownName = knownNames[i];
             int index;
             if (-1 != (index = knownName.indexOf("/"))) {
@@ -266,16 +298,22 @@ public class DAOTest extends TwitterTestBase {
         }
 
         Iterator ite = json.keys();
-        while(ite.hasNext()){
-            String name = (String)ite.next();
+        while (ite.hasNext()) {
+            String name = (String) ite.next();
             boolean found = false;
+            if (debug) {
+                System.out.println("name:" + name);
+            }
             for (String elementName : names) {
+                if (debug) {
+                    System.out.println("elementname:" + elementName);
+                }
                 Object obj = json.get(name);
                 if (obj instanceof JSONObject || obj instanceof JSONArray) {
                     String[] children = schemaMap.get(name);
                     if (null == children) {
-                        fail(elementName+":"+ name + " is not supposed to have any child but has:" + obj);
-                    } else if(!children[0].equals("*")){
+                        fail(elementName + ":" + name + " is not supposed to have any child but has:" + obj);
+                    } else if (!children[0].equals("*")) {
                         validateJSONSchema(obj, children);
                     }
                 }
@@ -290,8 +328,8 @@ public class DAOTest extends TwitterTestBase {
         }
         return json;
     }
-    private void validateJSONArraySchema(String url, String[] knownNames) throws Exception {
-        validateJSONArraySchema(getJSONArrayFromGetURL(url),knownNames);
+    private JSONArray validateJSONArraySchema(String url, String[] knownNames) throws Exception {
+        return validateJSONArraySchema(getJSONArrayFromGetURL(url),knownNames);
     }
 
     private static void validateJSONSchema(Object json, String[] knownNames) throws JSONException {
@@ -303,14 +341,15 @@ public class DAOTest extends TwitterTestBase {
             fail("expecting either JSONArray or JSONObject here. Passed:" + json.getClass().getName());
         }
     }
-    private static void validateJSONArraySchema(JSONArray array, String[] knownNames) throws JSONException {
+    private static JSONArray validateJSONArraySchema(JSONArray array, String[] knownNames) throws JSONException {
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
-            if(obj instanceof JSONObject){
-            JSONObject json = array.getJSONObject(i);
-            validateJSONObjectSchema(json, knownNames);
-            }  
+            if (obj instanceof JSONObject) {
+                JSONObject json = array.getJSONObject(i);
+                validateJSONObjectSchema(json, knownNames);
+            }
         }
+        return array;
     }
 
     private static JSONArray getJSONArrayFromClassPath(String path) throws Exception {
@@ -464,6 +503,15 @@ public class DAOTest extends TwitterTestBase {
         assertEquals(6358482, status.getUser().getId());
         assertTrue(status.isRetweet());
         assertDeserializedFormIsEqual(status);
+
+    }
+
+    public void testCategoryAsJSON() throws Exception {
+        List<Category> categories = CategoryJSONImpl.createCategoriesList(
+                getJSONArrayFromClassPath("/suggestions.json"),null);
+        assertEquals(20, categories.size());
+        assertEquals("art-design", categories.get(0).getSlug());
+        assertEquals("Art & Design", categories.get(0).getName());
 
     }
     public void testPlaceAsJSON() throws Exception {

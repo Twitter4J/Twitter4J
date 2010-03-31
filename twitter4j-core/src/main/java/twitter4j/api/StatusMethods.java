@@ -35,8 +35,7 @@ import twitter4j.TwitterException;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface StatusMethods
-{
+public interface StatusMethods {
 	/**
 	 * Returns a single status, specified by the id parameter. The status's author will be returned inline.
 	 * <br>This method calls http://api.twitter.com/1/statuses/show

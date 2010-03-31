@@ -34,8 +34,7 @@ import twitter4j.TwitterException;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface DirectMessageMethods
-{
+public interface DirectMessageMethods {
 	/**
 	 * Returns a list of the direct messages sent to the authenticating user.
 	 * <br>This method calls http://api.twitter.com/1/direct_messages

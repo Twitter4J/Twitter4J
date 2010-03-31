@@ -122,6 +122,16 @@ public interface TwitterListener {
      */
     void searchedUser(ResponseList<User> userList);
 
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    void gotSuggestedUserCategories(ResponseList<Category> category);
+
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    void gotUserSuggestions(ResponseList<User> users);
+
 
     void gotFriendsStatuses(PagableResponseList<User> users);
 
@@ -364,6 +374,8 @@ public interface TwitterListener {
     TwitterMethod SHOW_USER = TwitterMethod.SHOW_USER;
     TwitterMethod LOOKUP_USERS = TwitterMethod.LOOKUP_USERS;
     TwitterMethod SEARCH_USERS = TwitterMethod.SEARCH_USERS;
+    TwitterMethod SUGGESTED_USER_CATEGORIES = TwitterMethod.SUGGESTED_USER_CATEGORIES;
+    TwitterMethod USER_SUGGESTIONS = TwitterMethod.USER_SUGGESTIONS;
     TwitterMethod FRIENDS_STATUSES = TwitterMethod.FRIENDS_STATUSES;
     TwitterMethod FOLLOWERS_STATUSES = TwitterMethod.FOLLOWERS_STATUSES;
 

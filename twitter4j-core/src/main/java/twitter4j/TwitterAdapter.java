@@ -132,6 +132,17 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void searchedUser(ResponseList<User> userList) {
     }
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    public void gotSuggestedUserCategories(ResponseList<Category> categories) {
+    }
+
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    public void gotUserSuggestions(ResponseList<User> users) {
+    }
 
     public void gotFriendsStatuses(PagableResponseList<User> users){
     }
