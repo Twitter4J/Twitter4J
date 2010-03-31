@@ -604,8 +604,13 @@ public final class Twitter extends TwitterOAuthSupportBase
      * {@inheritDoc}
      */
     public ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException {
-        return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
-                "users/suggestions/" + categorySlug + ".json", auth));
+        HttpResponse res = http.get(conf.getRestBaseURL() + "users/suggestions/"
+                + categorySlug + ".json", auth);
+        try {
+            return UserJSONImpl.createUserList(res.asJSONObject().getJSONArray("users"), res);
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
     }
 
     /**
