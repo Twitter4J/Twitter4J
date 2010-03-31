@@ -23,7 +23,8 @@
     </licenses>
     <scm>
         <url>http://twitter4j.org/fisheye/browse/twitter4j</url>
-        <connection>scm:git:git@github.com:yusuke/twitter4j.git</connection>
+        <connection>scm:git:git://github.com/yusuke/twitter4j.git</connection>
+        <developerConnection>scm:git:git://github.com/yusuke/twitter4j.git</developerConnection>
     </scm>
     <developers>
         <developer>

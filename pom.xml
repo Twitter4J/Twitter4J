@@ -18,7 +18,8 @@
     </licenses>
     <scm>
         <url>http://twitter4j.org/fisheye/browse/twitter4j</url>
-        <connection>scm:git:git@github.com:yusuke/twitter4j.git</connection>
+        <connection>scm:git:git://github.com/yusuke/twitter4j.git</connection>
+        <developerConnection>scm:git:git://github.com/yusuke/twitter4j.git</developerConnection>
     </scm>
     <developers>
         <developer>
@@ -69,6 +70,35 @@
              <url>file:${user.home}/maven2/</url>
          </snapshotRepository>
     </distributionManagement>
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.0-alpha-4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <modules>
         <module>twitter4j-core</module>    
         <module>twitter4j-examples</module>
