@@ -35,7 +35,7 @@ import static twitter4j.DAOTest.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class TwitterTestUnit extends TwitterTestBase {
-
+ 
     public TwitterTestUnit(String name) {
         super(name);
     }
