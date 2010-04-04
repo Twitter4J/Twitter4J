@@ -194,6 +194,8 @@
                 </executions>
                 <configuration>
                     <charset>UTF-8</charset>
+                    <showPackage>false</showPackage>
+                    <showPrivate>false</showPrivate>
                 </configuration>
             </plugin>
             <plugin>
