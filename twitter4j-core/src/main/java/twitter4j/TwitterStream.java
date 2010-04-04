@@ -133,7 +133,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     public StatusStream getFirehoseStream(int count) throws TwitterException {
         ensureBasicEnabled();
         try {
-            return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/firehose.json"
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/firehose.json"
                     , new HttpParameter[]{new HttpParameter("count"
                             , String.valueOf(count))}, auth));
         } catch (IOException e) {
@@ -170,7 +170,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     public StatusStream getLinksStream(int count) throws TwitterException {
         ensureBasicEnabled();
         try {
-            return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/links.json"
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/links.json"
                     , new HttpParameter[]{new HttpParameter("count"
                             , String.valueOf(count))}, auth));
         } catch (IOException e) {
@@ -206,7 +206,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     public StatusStream getRetweetStream() throws TwitterException {
         ensureBasicEnabled();
         try {
-            return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
                     , new HttpParameter[]{}, auth));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -241,7 +241,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     public StatusStream getSampleStream() throws TwitterException {
         ensureBasicEnabled();
         try {
-            return new StatusStream(http.get(conf.getStreamBaseURL() + "statuses/sample.json"
+            return new StatusStreamImpl(http.get(conf.getStreamBaseURL() + "statuses/sample.json"
                     , auth));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -293,7 +293,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
                     , toTrackString(track)));
         }
         try {
-            return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/filter.json"
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/filter.json"
                     , postparams.toArray(new HttpParameter[postparams.size()]), auth));
         } catch (IOException e) {
             throw new TwitterException(e);

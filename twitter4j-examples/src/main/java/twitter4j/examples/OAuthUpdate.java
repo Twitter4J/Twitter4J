@@ -49,6 +49,11 @@ public final class OAuthUpdate {
      * @param args message
      */
     public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println(
+                "Usage: java twitter4j.examples.OAuthUpdate text");
+            System.exit( -1);
+        }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             RequestToken requestToken = twitter.getOAuthRequestToken();
