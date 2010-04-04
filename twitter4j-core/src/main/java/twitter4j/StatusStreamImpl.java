@@ -42,7 +42,7 @@ import java.io.InputStreamReader;
  * @since Twitter4J 2.1.2
  */
 class StatusStreamImpl implements StatusStream {
-    private static final Logger logger = Logger.getLogger(StatusStream.class);
+    private static final Logger logger = Logger.getLogger(StatusStreamImpl.class);
 
     private boolean streamAlive = true;
     private BufferedReader br;
