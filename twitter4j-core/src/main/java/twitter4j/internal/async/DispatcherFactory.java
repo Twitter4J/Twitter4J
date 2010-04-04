@@ -24,85 +24,46 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.conf;
+package twitter4j.internal.async;
 
-import twitter4j.http.AuthorizationConfiguration;
-import twitter4j.internal.async.DispatcherConfiguration;
-import twitter4j.internal.http.HttpClientConfiguration;
-import twitter4j.internal.http.HttpClientWrapperConfiguration;
+import twitter4j.conf.Configuration;
 
-import java.util.Map;
-
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.2
  */
-public interface Configuration extends HttpClientConfiguration
-        , HttpClientWrapperConfiguration
-        , AuthorizationConfiguration
-        , DispatcherConfiguration
-        , java.io.Serializable {
+public final class DispatcherFactory {
+    private String dispatcherImpl;
+    private DispatcherConfiguration conf;
 
-    boolean isDalvik();
+    public DispatcherFactory(DispatcherConfiguration conf) {
+        dispatcherImpl = conf.getDispatcherImpl();
+        this.conf = conf;
+    }
 
-    boolean isDebugEnabled();
-
-    String getUserAgent();
-
-    String getSource();
-
-    String getUser();
-
-    String getPassword();
-
-    Map<String, String> getRequestHeaders();
-
-    // methods for HttpClientConfiguration
-
-    String getHttpProxyHost();
-
-    String getHttpProxyUser();
-
-    String getHttpProxyPassword();
-
-    int getHttpProxyPort();
-
-    int getHttpConnectionTimeout();
-
-    int getHttpReadTimeout();
-
-    int getHttpStreamingReadTimeout();
-
-    int getHttpRetryCount();
-
-    int getHttpRetryIntervalSeconds();
-
-    // oauth related setter/getters
-
-    String getOAuthConsumerKey();
-
-    String getOAuthConsumerSecret();
-
-    String getOAuthAccessToken();
-
-    String getOAuthAccessTokenSecret();
-
-    String getClientVersion();
-
-    String getClientURL();
-
-    String getRestBaseURL();
-
-    String getSearchBaseURL();
-
-    String getStreamBaseURL();
-
-    String getOAuthRequestTokenURL();
-
-    String getOAuthAuthorizationURL();
-
-    String getOAuthAccessTokenURL();
-
-    String getOAuthAuthenticationURL();
-
+    /**
+     * returns a Dispatcher instance.
+     *
+     * @return dispatcher instance
+     */
+    public Dispatcher getInstance() {
+        try {
+            return (Dispatcher) Class.forName(dispatcherImpl)
+                    .getConstructor(DispatcherConfiguration.class).newInstance(conf);
+        } catch (InstantiationException e) {
+            throw new AssertionError(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (ClassNotFoundException e) {
+            throw new AssertionError(e);
+        } catch (ClassCastException e) {
+            throw new AssertionError(e);
+        } catch (NoSuchMethodException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

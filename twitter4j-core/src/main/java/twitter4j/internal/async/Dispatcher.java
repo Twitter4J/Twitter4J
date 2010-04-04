@@ -24,85 +24,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.conf;
-
-import twitter4j.http.AuthorizationConfiguration;
-import twitter4j.internal.async.DispatcherConfiguration;
-import twitter4j.internal.http.HttpClientConfiguration;
-import twitter4j.internal.http.HttpClientWrapperConfiguration;
-
-import java.util.Map;
-
+package twitter4j.internal.async;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface Configuration extends HttpClientConfiguration
-        , HttpClientWrapperConfiguration
-        , AuthorizationConfiguration
-        , DispatcherConfiguration
-        , java.io.Serializable {
+public interface Dispatcher {
 
-    boolean isDalvik();
+    void invokeLater(Runnable task);
 
-    boolean isDebugEnabled();
-
-    String getUserAgent();
-
-    String getSource();
-
-    String getUser();
-
-    String getPassword();
-
-    Map<String, String> getRequestHeaders();
-
-    // methods for HttpClientConfiguration
-
-    String getHttpProxyHost();
-
-    String getHttpProxyUser();
-
-    String getHttpProxyPassword();
-
-    int getHttpProxyPort();
-
-    int getHttpConnectionTimeout();
-
-    int getHttpReadTimeout();
-
-    int getHttpStreamingReadTimeout();
-
-    int getHttpRetryCount();
-
-    int getHttpRetryIntervalSeconds();
-
-    // oauth related setter/getters
-
-    String getOAuthConsumerKey();
-
-    String getOAuthConsumerSecret();
-
-    String getOAuthAccessToken();
-
-    String getOAuthAccessTokenSecret();
-
-    String getClientVersion();
-
-    String getClientURL();
-
-    String getRestBaseURL();
-
-    String getSearchBaseURL();
-
-    String getStreamBaseURL();
-
-    String getOAuthRequestTokenURL();
-
-    String getOAuthAuthorizationURL();
-
-    String getOAuthAccessTokenURL();
-
-    String getOAuthAuthenticationURL();
-
+    void shutdown();
 }

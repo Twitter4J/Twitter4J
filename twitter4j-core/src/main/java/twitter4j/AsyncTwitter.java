@@ -32,6 +32,8 @@ import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.RequestToken;
+import twitter4j.internal.async.DispatcherFactory;
+import twitter4j.internal.async.Dispatcher;
 
 import java.io.File;
 import java.util.Date;
@@ -1627,7 +1629,7 @@ public final class AsyncTwitter extends TwitterOAuthSupportBase implements java.
             throw new IllegalStateException("Already shut down");
         }
         if (null == dispatcher) {
-            dispatcher = new Dispatcher(conf, "Twitter4J Async Dispatcher", ConfigurationContext.getInstance().getAsyncNumThreads());
+            dispatcher = new DispatcherFactory(conf).getInstance();
         }
         return dispatcher;
     }

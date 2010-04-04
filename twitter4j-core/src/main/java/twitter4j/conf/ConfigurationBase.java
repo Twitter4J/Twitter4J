@@ -67,6 +67,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String searchBaseURL;
     private String streamBaseURL;
 
+    private String dispatcherImpl;
 
     private int asyncNumThreads;
 
@@ -112,6 +113,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setRestBaseURL("http://api.twitter.com/1/");
         setSearchBaseURL("http://search.twitter.com/");
         setStreamBaseURL("http://stream.twitter.com/1/");
+
+        setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
         // detecting dalvik (Android platform)
         String dalvikDetected;
@@ -396,25 +399,44 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.oAuthAuthenticationURL = fixURL(useSSL, oAuthAuthenticationURL);
     }
 
+    public String getDispatcherImpl() {
+        return dispatcherImpl;
+    }
+
+    protected final void setDispatcherImpl(String dispatcherImpl) {
+        this.dispatcherImpl = dispatcherImpl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ConfigurationBase)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ConfigurationBase that = (ConfigurationBase) o;
 
         if (IS_DALVIK != that.IS_DALVIK) return false;
         if (asyncNumThreads != that.asyncNumThreads) return false;
-        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
         if (debug != that.debug) return false;
+        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
         if (httpProxyPort != that.httpProxyPort) return false;
         if (httpReadTimeout != that.httpReadTimeout) return false;
         if (httpRetryCount != that.httpRetryCount) return false;
-        if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
+        if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds)
+            return false;
+        if (httpStreamingReadTimeout != that.httpStreamingReadTimeout)
+            return false;
         if (useSSL != that.useSSL) return false;
         if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null)
             return false;
         if (clientVersion != null ? !clientVersion.equals(that.clientVersion) : that.clientVersion != null)
+            return false;
+        if (dispatcherImpl != null ? !dispatcherImpl.equals(that.dispatcherImpl) : that.dispatcherImpl != null)
+            return false;
+        if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
+            return false;
+        if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
+            return false;
+        if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
             return false;
         if (oAuthAccessToken != null ? !oAuthAccessToken.equals(that.oAuthAccessToken) : that.oAuthAccessToken != null)
             return false;
@@ -434,11 +456,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (password != null ? !password.equals(that.password) : that.password != null)
             return false;
-        if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
-            return false;
-        if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
-            return false;
-        if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
+        if (requestHeaders != null ? !requestHeaders.equals(that.requestHeaders) : that.requestHeaders != null)
             return false;
         if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null)
             return false;
@@ -454,41 +472,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
 
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "ConfigurationBase{" +
-                "debug=" + debug +
-                ", source='" + source + '\'' +
-                ", userAgent='" + userAgent + '\'' +
-                ", user='" + user + '\'' +
-                ", password='" + password + '\'' +
-                ", useSSL=" + useSSL +
-                ", httpProxyHost='" + httpProxyHost + '\'' +
-                ", httpProxyUser='" + httpProxyUser + '\'' +
-                ", httpProxyPassword='" + httpProxyPassword + '\'' +
-                ", httpProxyPort=" + httpProxyPort +
-                ", httpConnectionTimeout=" + httpConnectionTimeout +
-                ", httpReadTimeout=" + httpReadTimeout +
-                ", httpRetryCount=" + httpRetryCount +
-                ", httpRetryIntervalMilliSecs=" + httpRetryIntervalSeconds +
-                ", oAuthConsumerKey='" + oAuthConsumerKey + '\'' +
-                ", oAuthConsumerSecret='" + oAuthConsumerSecret + '\'' +
-                ", oAuthAccessToken='" + oAuthAccessToken + '\'' +
-                ", oAuthAccessTokenSecret='" + oAuthAccessTokenSecret + '\'' +
-                ", oAuthRequestTokenURL='" + oAuthRequestTokenURL + '\'' +
-                ", oAuthAuthorizationURL='" + oAuthAuthorizationURL + '\'' +
-                ", oAuthAccessTokenURL='" + oAuthAccessTokenURL + '\'' +
-                ", oAuthAuthenticationURL='" + oAuthAuthenticationURL + '\'' +
-                ", restBaseURL='" + restBaseURL + '\'' +
-                ", searchBaseURL='" + searchBaseURL + '\'' +
-                ", streamBaseURL='" + streamBaseURL + '\'' +
-                ", asyncNumThreads=" + asyncNumThreads +
-                ", clientVersion='" + clientVersion + '\'' +
-                ", clientURL='" + clientURL + '\'' +
-                ", IS_DALVIK=" + IS_DALVIK +
-                '}';
     }
 
     static String fixURL(boolean useSSL, String url) {

@@ -77,6 +77,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
 
     public static final String ASYNC_NUM_THREADS = "async.numThreads";
+    public static final String ASYNC_DISPATCHER_IMPL = "async.dispatherImpl";
 
     // hidden portion
     public static final String CLIENT_VERSION = "clientVersion";
@@ -270,6 +271,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, ASYNC_NUM_THREADS)) {
             setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_NUM_THREADS));
+        }
+        if (notNull(props, prefix, ASYNC_DISPATCHER_IMPL)) {
+            setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_DISPATCHER_IMPL));
         }
         if (notNull(props, prefix, CLIENT_VERSION)) {
             setClientVersion(getString(props, prefix, CLIENT_VERSION));
