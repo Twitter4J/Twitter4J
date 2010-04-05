@@ -76,6 +76,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String clientURL;
 
     public static final String DALVIK = "twitter4j.dalvik";
+    private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1/";
 
     private boolean IS_DALVIK;
     private static final long serialVersionUID = -6610497517837844232L;
@@ -105,14 +106,16 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
 
 
-        setOAuthRequestTokenURL("http://twitter.com/oauth/request_token");
-        setOAuthAuthorizationURL("http://twitter.com/oauth/authorize");
-        setOAuthAccessTokenURL("http://twitter.com/oauth/access_token");
-        setOAuthAuthenticationURL("http://twitter.com/oauth/authenticate");
+        setOAuthRequestTokenURL(fixURL(true, "http://twitter.com/oauth/request_token"));
+        setOAuthAuthorizationURL(fixURL(true, "http://twitter.com/oauth/authorize"));
+        setOAuthAccessTokenURL(fixURL(true, "http://twitter.com/oauth/access_token"));
+        setOAuthAuthenticationURL(fixURL(true, "http://twitter.com/oauth/authenticate"));
 
-        setRestBaseURL("http://api.twitter.com/1/");
-        setSearchBaseURL("http://search.twitter.com/");
-        setStreamBaseURL("http://stream.twitter.com/1/");
+        setRestBaseURL(DEFAULT_REST_BASE_URL);
+        // search api tends to fail with SSL as of 12/31/2009
+        setSearchBaseURL(fixURL(false, "http://search.twitter.com/"));
+        // streaming api doesn't support SSL as of 12/30/2009
+        setStreamBaseURL(fixURL(false, "http://stream.twitter.com/1/"));
 
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
@@ -127,8 +130,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             dalvikDetected = "false";
         }
         IS_DALVIK = Boolean.valueOf(System.getProperty(DALVIK, dalvikDetected));
-
-
     }
 
 
@@ -180,13 +181,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setUseSSL(boolean useSSL) {
         this.useSSL = useSSL;
-        setRestBaseURL(getRestBaseURL());
-        setSearchBaseURL(getSearchBaseURL());
-        setStreamBaseURL(getStreamBaseURL());
-        setOAuthRequestTokenURL(getOAuthRequestTokenURL());
-        setOAuthAuthorizationURL(getOAuthAuthorizationURL());
-        setOAuthAccessTokenURL(getOAuthAccessTokenURL());
-        setOAuthAuthenticationURL(getOAuthAuthenticationURL());
+        fixRestBaseURL();
     }
 
     // method for HttpRequestFactoryConfiguration
@@ -289,6 +284,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthConsumerKey(String oAuthConsumerKey) {
         this.oAuthConsumerKey = oAuthConsumerKey;
+        fixRestBaseURL();
     }
 
     public final String getOAuthConsumerSecret() {
@@ -297,6 +293,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthConsumerSecret(String oAuthConsumerSecret) {
         this.oAuthConsumerSecret = oAuthConsumerSecret;
+        fixRestBaseURL();
     }
 
     public String getOAuthAccessToken() {
@@ -346,7 +343,17 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setRestBaseURL(String restBaseURL) {
-        this.restBaseURL = fixURL(useSSL, restBaseURL);
+        this.restBaseURL = restBaseURL;
+        fixRestBaseURL();
+    }
+    private void fixRestBaseURL() {
+        if (DEFAULT_REST_BASE_URL.equals(fixURL(false, restBaseURL))) {
+            if (null != oAuthConsumerKey && null != oAuthConsumerSecret) {
+                this.restBaseURL = fixURL(false, restBaseURL);
+            } else {
+                this.restBaseURL = fixURL(useSSL, restBaseURL);
+            }
+        }
     }
 
     public String getSearchBaseURL() {
@@ -354,8 +361,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setSearchBaseURL(String searchBaseURL) {
-        // search api tends to fail with SSL as of 12/31/2009
-        this.searchBaseURL = fixURL(false, searchBaseURL);
+        this.searchBaseURL = searchBaseURL;
     }
 
     public String getStreamBaseURL() {
@@ -363,8 +369,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setStreamBaseURL(String streamBaseURL) {
-        // streaming api doesn't support SSL as of 12/30/2009
-        this.streamBaseURL = fixURL(false, streamBaseURL);
+        this.streamBaseURL = streamBaseURL;
     }
 
     public String getOAuthRequestTokenURL() {
@@ -372,7 +377,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
-        this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
+        this.oAuthRequestTokenURL = oAuthRequestTokenURL;
     }
 
     public String getOAuthAuthorizationURL() {
@@ -380,7 +385,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
-        this.oAuthAuthorizationURL = fixURL(useSSL, oAuthAuthorizationURL);
+        this.oAuthAuthorizationURL = oAuthAuthorizationURL;
     }
 
     public String getOAuthAccessTokenURL() {
@@ -388,7 +393,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
-        this.oAuthAccessTokenURL = fixURL(useSSL, oAuthAccessTokenURL);
+        this.oAuthAccessTokenURL = oAuthAccessTokenURL;
     }
 
     public String getOAuthAuthenticationURL() {
@@ -396,7 +401,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
-        this.oAuthAuthenticationURL = fixURL(useSSL, oAuthAuthenticationURL);
+        this.oAuthAuthenticationURL = oAuthAuthenticationURL;
     }
 
     public String getDispatcherImpl() {

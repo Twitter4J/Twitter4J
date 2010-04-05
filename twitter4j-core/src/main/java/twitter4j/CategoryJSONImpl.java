@@ -35,7 +35,7 @@ import twitter4j.internal.org.json.JSONObject;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
  */
-public class CategoryJSONImpl implements Category, java.io.Serializable {
+final class CategoryJSONImpl implements Category, java.io.Serializable {
 
     private String name;
     private String slug;

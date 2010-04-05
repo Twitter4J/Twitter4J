@@ -39,7 +39,7 @@ import static twitter4j.ParseUtil.getRawString;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
  */
-public final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.Serializable {
+final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.Serializable {
     private String name;
     private String countryCode;
     private String id;
