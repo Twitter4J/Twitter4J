@@ -258,7 +258,7 @@ public class ConfigurationTest  extends TestCase {
 
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/");
         conf = new PropertyConfiguration("/");
-        assertEquals("https://somewhere.com/", conf.getRestBaseURL());
+        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
 
     }
 
@@ -268,11 +268,11 @@ public class ConfigurationTest  extends TestCase {
         Configuration conf;
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/");
         conf = new PropertyConfiguration("/");
-        assertEquals("https://somewhere.com/", conf.getRestBaseURL());
+        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere2.com/");
 
         conf = new PropertyConfiguration("/");
-        assertEquals("https://somewhere2.com/", conf.getRestBaseURL());
+        assertEquals("http://somewhere2.com/", conf.getRestBaseURL());
     }
 
     public void testTreeConfiguration() throws Exception {
