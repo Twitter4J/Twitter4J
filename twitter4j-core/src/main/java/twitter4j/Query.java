@@ -360,7 +360,7 @@ public final class Query implements java.io.Serializable {
         appendParameter("since",since , params);
         appendParameter("since_id",sinceId , params);
         appendParameter("geocode", geocode, params);
-        appendParameter("untli", until, params);
+        appendParameter("until", until, params);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
