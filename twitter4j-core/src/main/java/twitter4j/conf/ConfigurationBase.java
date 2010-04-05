@@ -106,16 +106,18 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
 
 
-        setOAuthRequestTokenURL(fixURL(true, "http://twitter.com/oauth/request_token"));
-        setOAuthAuthorizationURL(fixURL(true, "http://twitter.com/oauth/authorize"));
-        setOAuthAccessTokenURL(fixURL(true, "http://twitter.com/oauth/access_token"));
-        setOAuthAuthenticationURL(fixURL(true, "http://twitter.com/oauth/authenticate"));
+        setOAuthRequestTokenURL("https://twitter.com/oauth/request_token");
+        setOAuthAuthorizationURL("https://twitter.com/oauth/authorize");
+        setOAuthAccessTokenURL("https://twitter.com/oauth/access_token");
+        setOAuthAuthenticationURL("https://twitter.com/oauth/authenticate");
 
         setRestBaseURL(DEFAULT_REST_BASE_URL);
         // search api tends to fail with SSL as of 12/31/2009
-        setSearchBaseURL(fixURL(false, "http://search.twitter.com/"));
+        // setSearchBaseURL(fixURL(useSSL, "http://search.twitter.com/"));
+        setSearchBaseURL("http://search.twitter.com/");
         // streaming api doesn't support SSL as of 12/30/2009
-        setStreamBaseURL(fixURL(false, "http://stream.twitter.com/1/"));
+        // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
+        setStreamBaseURL("http://stream.twitter.com/1/");
 
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
