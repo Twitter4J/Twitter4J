@@ -248,7 +248,8 @@ public class ConfigurationTest  extends TestCase {
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
         + "\n" + "twitter4j.http.useSSL=true");
         conf = new PropertyConfiguration("/");
-        assertEquals("https://somewhere.com/", conf.getRestBaseURL());
+        // useSSL doesn't take effect if restBaseURL is explicitly specified.
+        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
         deleteFile("./twitter4j.properties");
         conf = new PropertyConfiguration();
 
