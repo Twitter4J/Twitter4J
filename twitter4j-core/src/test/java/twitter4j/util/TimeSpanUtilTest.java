@@ -24,11 +24,10 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
+package twitter4j.util;
 
 import junit.framework.TestCase;
-
-import java.io.FileInputStream;
+import twitter4j.util.TimeSpanUtil;
 
 public class TimeSpanUtilTest extends TestCase {
     public TimeSpanUtilTest(String name) {
@@ -43,7 +42,7 @@ public class TimeSpanUtilTest extends TestCase {
         super.tearDown();
     }
     private void assertTimeSpanString(String expected, long timeBack){
-        assertEquals(expected,TimeSpanUtil.toTimeSpanString(System.currentTimeMillis() - timeBack));
+        assertEquals(expected, TimeSpanUtil.toTimeSpanString(System.currentTimeMillis() - timeBack));
 
     }
     public void testToTimeSpanString() throws Exception {
