@@ -820,8 +820,8 @@ public class TwitterTestUnit extends TwitterTestBase {
         places = twitterAPI1.getNearbyPlaces(query);
         assertTrue(places.size() > 0);
         Place place = this.unauthenticated.getGeoDetails("5a110d312052166f");
-        assertEquals("San Francisco", place.getFullName());
-        assertEquals("California", place.getContainedWithIn()[0].getFullName());
+        assertEquals("San Francisco, CA", place.getFullName());
+        assertEquals("California, US", place.getContainedWithIn()[0].getFullName());
         String sanFrancisco = "5a110d312052166f";
         Status status = twitterAPI1.updateStatus(new StatusUpdate(new java.util.Date() + " status with place").
                 placeId(sanFrancisco));

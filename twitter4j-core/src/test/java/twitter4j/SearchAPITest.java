@@ -65,7 +65,8 @@ public class SearchAPITest extends TwitterTestBase {
     public void testSearch() throws Exception {
         String queryStr = "test";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Query query = new Query(queryStr).until(format.format(new java.util.Date()));
+        String dateStr = format.format(new java.util.Date());
+        Query query = new Query(queryStr).until(dateStr);
         QueryResult queryResult = unauthenticated.search(query);
         assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
@@ -73,7 +74,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertEquals(15, queryResult.getResultsPerPage());
         assertTrue(0 < queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
-        assertEquals(queryStr, queryResult.getQuery());
+        assertEquals(queryStr + " until:"+ dateStr, queryResult.getQuery());
 
         List<Tweet> tweets = queryResult.getTweets();
         assertTrue(1<=tweets.size());
