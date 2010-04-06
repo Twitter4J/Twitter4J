@@ -309,20 +309,25 @@ public final class HttpClient implements java.io.Serializable {
                         }
                     }
                     if (responseCode != OK) {
-                        if (responseCode == SERVICE_UNAVAILABLE || responseCode == EXCEEDED_RATE_LIMIT_QUOTA){
+                        if (responseCode == EXCEEDED_RATE_LIMIT_QUOTA){
                             // application exceeded the rate limitation
                             // Search API returns Retry-After header that instructs the application when it is safe to continue.
                             // @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
-                            int retryAfter = -1;
                             try {
-                                retryAfter = Integer.valueOf(con.getHeaderField("Retry-After"));
+                                String retryAfterStr = con.getHeaderField("Retry-After");
+                                if (null != retryAfterStr) {
+                                    throw new TwitterException(getCause(responseCode)
+                                            , Integer.valueOf(retryAfterStr), res);
+                                }
                             } catch (NumberFormatException ignore) {
                             }
-                            throw TwitterException.createRateLimitedTwitterException(getCause(responseCode)
-                                    , responseCode, retryAfter);
+                            throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), res);
+                        }
+                        if (responseCode == SERVICE_UNAVAILABLE || responseCode == BAD_REQUEST){
+                            throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), res);
                         }
                         if (responseCode < INTERNAL_SERVER_ERROR || retriedCount == retryCount) {
-                            throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), responseCode);
+                            throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), res);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR
                     } else {
