@@ -24,10 +24,12 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
+package twitter4j.internal.async;
 
 import junit.framework.TestCase;
 import twitter4j.conf.ConfigurationContext;
+import twitter4j.internal.async.Dispatcher;
+import twitter4j.internal.async.DispatcherFactory;
 
 import java.util.Map;
 
@@ -59,9 +61,9 @@ public class DispatcherTest extends TestCase {
             isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
         }
         // this test runs only on JDK1.5 or later since Thread.getAllStackTraces() is available from JDK1.5
-        String name = "test";
+        String name = "Twitter4J Async Dispatcher";
         int threadcount = 1;
-        dispatcher = new Dispatcher(ConfigurationContext.getInstance(), name, threadcount);
+        dispatcher = new DispatcherFactory(ConfigurationContext.getInstance()).getInstance();
         count = 0;
         dispatcher.invokeLater(new IncrementTask());
         dispatcher.invokeLater(new IncrementTask());

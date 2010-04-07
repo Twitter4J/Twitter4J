@@ -26,6 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.internal.http.HttpParameter;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
 
@@ -41,9 +44,29 @@ public class SearchAPITest extends TwitterTestBase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
+    public void testQuery() throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Query query = new Query("test")
+                .until(format.format(new java.util.Date(System.currentTimeMillis() - 3600*24)));
+        HttpParameter[] params = query.asHttpParameterArray();
+        assertTrue(findParameter(params,"q"));
+        assertTrue(findParameter(params,"until"));
+    }
+    private boolean findParameter(HttpParameter[] params, String paramName){
+        boolean found = false;
+        for(HttpParameter param: params){
+            if(paramName.equals(param.getName())){
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
     public void testSearch() throws Exception {
         String queryStr = "test";
-        Query query = new Query(queryStr);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = format.format(new java.util.Date());
+        Query query = new Query(queryStr).until(dateStr);
         QueryResult queryResult = unauthenticated.search(query);
         assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
@@ -51,7 +74,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertEquals(15, queryResult.getResultsPerPage());
         assertTrue(0 < queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
-        assertEquals(queryStr, queryResult.getQuery());
+        assertEquals(queryStr + " until:"+ dateStr, queryResult.getQuery());
 
         List<Tweet> tweets = queryResult.getTweets();
         assertTrue(1<=tweets.size());

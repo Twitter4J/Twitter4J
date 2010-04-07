@@ -35,7 +35,7 @@ import twitter4j.internal.http.HttpResponse;
  * @author Yusuke Yamamoto - yusuke at mac.com
  *         representing unauthorized Request Token which is passed to the service provider when acquiring the authorized Access Token
  */
-public class RequestToken extends OAuthToken implements java.io.Serializable {
+public final class RequestToken extends OAuthToken implements java.io.Serializable {
     private final Configuration conf;
     private OAuthSupport oauth;
     private static final long serialVersionUID = -8214365845469757952L;

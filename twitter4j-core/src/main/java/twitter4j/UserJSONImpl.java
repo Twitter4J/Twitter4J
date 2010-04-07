@@ -380,8 +380,11 @@ import static twitter4j.ParseUtil.*;
         }
     }
     /*package*/ static ResponseList<User> createUserList(HttpResponse res) throws TwitterException {
+        return createUserList(res.asJSONArray(), res);
+    }
+
+    /*package*/ static ResponseList<User> createUserList(JSONArray list, HttpResponse res) throws TwitterException {
         try {
-            JSONArray list = res.asJSONArray();
             int size = list.length();
             ResponseList<User> users =
                     new ResponseList<User>(size, res);

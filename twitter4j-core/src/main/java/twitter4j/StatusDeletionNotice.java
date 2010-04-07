@@ -37,52 +37,8 @@ import twitter4j.internal.org.json.JSONObject;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public class StatusDeletionNotice implements java.io.Serializable {
+public interface StatusDeletionNotice extends java.io.Serializable {
+    long getStatusId();
 
-    private long statusId;
-    private int userId;
-    private static final long serialVersionUID = 1723338404242596062L;
-
-    /*package*/ StatusDeletionNotice(JSONObject json) throws JSONException {
-        //{"delete":{"status":{"id":4821647803,"user_id":16346228}}}
-        JSONObject status = json.getJSONObject("delete").getJSONObject("status");
-        this.statusId = ParseUtil.getLong("id", status);
-        this.userId = ParseUtil.getInt("user_id", status);
-    }
-
-    public long getStatusId() {
-        return statusId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof StatusDeletionNotice)) return false;
-
-        StatusDeletionNotice that = (StatusDeletionNotice) o;
-
-        if (statusId != that.statusId) return false;
-        if (userId != that.userId) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (statusId ^ (statusId >>> 32));
-        result = 31 * result + userId;
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "StatusDeletionNotice{" +
-                "statusId=" + statusId +
-                ", userId=" + userId +
-                '}';
-    }
+    int getUserId();
 }

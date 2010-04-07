@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -70,6 +71,23 @@ public class GeoLocation implements java.io.Serializable{
             throw new TwitterException(jsone);
         }
         return null;
+    }
+
+    /*package*/ static GeoLocation[][] coordinatesAsGeoLocationArray(JSONArray coordinates) throws TwitterException {
+        try {
+            GeoLocation[][] boundingBox = new GeoLocation[coordinates.length()][];
+            for (int i = 0; i < coordinates.length(); i++) {
+                JSONArray array = coordinates.getJSONArray(i);
+                boundingBox[i] = new GeoLocation[array.length()];
+                for (int j = 0; j < array.length(); j++) {
+                    JSONArray coordinate = array.getJSONArray(j);
+                    boundingBox[i][j] = new GeoLocation(coordinate.getDouble(0), coordinate.getDouble(1));
+                }
+            }
+            return boundingBox;
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
     }
 
     /**

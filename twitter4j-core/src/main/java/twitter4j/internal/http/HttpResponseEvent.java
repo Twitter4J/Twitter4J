@@ -30,7 +30,7 @@ package twitter4j.internal.http;
 /**
  * @author Andrew Hedges - andrew.hedges at gmail.com
  */
-public class HttpResponseEvent {
+public final class HttpResponseEvent {
 
     private HttpRequest request;
 

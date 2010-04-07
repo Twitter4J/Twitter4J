@@ -67,6 +67,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String searchBaseURL;
     private String streamBaseURL;
 
+    private String dispatcherImpl;
 
     private int asyncNumThreads;
 
@@ -75,6 +76,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String clientURL;
 
     public static final String DALVIK = "twitter4j.dalvik";
+    private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1/";
 
     private boolean IS_DALVIK;
     private static final long serialVersionUID = -6610497517837844232L;
@@ -104,14 +106,20 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
 
 
-        setOAuthRequestTokenURL("http://twitter.com/oauth/request_token");
-        setOAuthAuthorizationURL("http://twitter.com/oauth/authorize");
-        setOAuthAccessTokenURL("http://twitter.com/oauth/access_token");
-        setOAuthAuthenticationURL("http://twitter.com/oauth/authenticate");
+        setOAuthRequestTokenURL("https://twitter.com/oauth/request_token");
+        setOAuthAuthorizationURL("https://twitter.com/oauth/authorize");
+        setOAuthAccessTokenURL("https://twitter.com/oauth/access_token");
+        setOAuthAuthenticationURL("https://twitter.com/oauth/authenticate");
 
-        setRestBaseURL("http://api.twitter.com/1/");
+        setRestBaseURL(DEFAULT_REST_BASE_URL);
+        // search api tends to fail with SSL as of 12/31/2009
+        // setSearchBaseURL(fixURL(useSSL, "http://search.twitter.com/"));
         setSearchBaseURL("http://search.twitter.com/");
+        // streaming api doesn't support SSL as of 12/30/2009
+        // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
         setStreamBaseURL("http://stream.twitter.com/1/");
+
+        setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
         // detecting dalvik (Android platform)
         String dalvikDetected;
@@ -124,8 +132,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             dalvikDetected = "false";
         }
         IS_DALVIK = Boolean.valueOf(System.getProperty(DALVIK, dalvikDetected));
-
-
     }
 
 
@@ -177,13 +183,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setUseSSL(boolean useSSL) {
         this.useSSL = useSSL;
-        setRestBaseURL(getRestBaseURL());
-        setSearchBaseURL(getSearchBaseURL());
-        setStreamBaseURL(getStreamBaseURL());
-        setOAuthRequestTokenURL(getOAuthRequestTokenURL());
-        setOAuthAuthorizationURL(getOAuthAuthorizationURL());
-        setOAuthAccessTokenURL(getOAuthAccessTokenURL());
-        setOAuthAuthenticationURL(getOAuthAuthenticationURL());
+        fixRestBaseURL();
     }
 
     // method for HttpRequestFactoryConfiguration
@@ -286,6 +286,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthConsumerKey(String oAuthConsumerKey) {
         this.oAuthConsumerKey = oAuthConsumerKey;
+        fixRestBaseURL();
     }
 
     public final String getOAuthConsumerSecret() {
@@ -294,6 +295,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthConsumerSecret(String oAuthConsumerSecret) {
         this.oAuthConsumerSecret = oAuthConsumerSecret;
+        fixRestBaseURL();
     }
 
     public String getOAuthAccessToken() {
@@ -343,7 +345,17 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setRestBaseURL(String restBaseURL) {
-        this.restBaseURL = fixURL(useSSL, restBaseURL);
+        this.restBaseURL = restBaseURL;
+        fixRestBaseURL();
+    }
+    private void fixRestBaseURL() {
+        if (DEFAULT_REST_BASE_URL.equals(fixURL(false, restBaseURL))) {
+            if (null != oAuthConsumerKey && null != oAuthConsumerSecret) {
+                this.restBaseURL = fixURL(false, restBaseURL);
+            } else {
+                this.restBaseURL = fixURL(useSSL, restBaseURL);
+            }
+        }
     }
 
     public String getSearchBaseURL() {
@@ -351,8 +363,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setSearchBaseURL(String searchBaseURL) {
-        // search api tends to fail with SSL as of 12/31/2009
-        this.searchBaseURL = fixURL(false, searchBaseURL);
+        this.searchBaseURL = searchBaseURL;
     }
 
     public String getStreamBaseURL() {
@@ -360,8 +371,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setStreamBaseURL(String streamBaseURL) {
-        // streaming api doesn't support SSL as of 12/30/2009
-        this.streamBaseURL = fixURL(false, streamBaseURL);
+        this.streamBaseURL = streamBaseURL;
     }
 
     public String getOAuthRequestTokenURL() {
@@ -369,7 +379,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
-        this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
+        this.oAuthRequestTokenURL = oAuthRequestTokenURL;
     }
 
     public String getOAuthAuthorizationURL() {
@@ -377,7 +387,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
-        this.oAuthAuthorizationURL = fixURL(useSSL, oAuthAuthorizationURL);
+        this.oAuthAuthorizationURL = oAuthAuthorizationURL;
     }
 
     public String getOAuthAccessTokenURL() {
@@ -385,7 +395,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
-        this.oAuthAccessTokenURL = fixURL(useSSL, oAuthAccessTokenURL);
+        this.oAuthAccessTokenURL = oAuthAccessTokenURL;
     }
 
     public String getOAuthAuthenticationURL() {
@@ -393,28 +403,47 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     protected final void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
-        this.oAuthAuthenticationURL = fixURL(useSSL, oAuthAuthenticationURL);
+        this.oAuthAuthenticationURL = oAuthAuthenticationURL;
+    }
+
+    public String getDispatcherImpl() {
+        return dispatcherImpl;
+    }
+
+    protected final void setDispatcherImpl(String dispatcherImpl) {
+        this.dispatcherImpl = dispatcherImpl;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ConfigurationBase)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ConfigurationBase that = (ConfigurationBase) o;
 
         if (IS_DALVIK != that.IS_DALVIK) return false;
         if (asyncNumThreads != that.asyncNumThreads) return false;
-        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
         if (debug != that.debug) return false;
+        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
         if (httpProxyPort != that.httpProxyPort) return false;
         if (httpReadTimeout != that.httpReadTimeout) return false;
         if (httpRetryCount != that.httpRetryCount) return false;
-        if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
+        if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds)
+            return false;
+        if (httpStreamingReadTimeout != that.httpStreamingReadTimeout)
+            return false;
         if (useSSL != that.useSSL) return false;
         if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null)
             return false;
         if (clientVersion != null ? !clientVersion.equals(that.clientVersion) : that.clientVersion != null)
+            return false;
+        if (dispatcherImpl != null ? !dispatcherImpl.equals(that.dispatcherImpl) : that.dispatcherImpl != null)
+            return false;
+        if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
+            return false;
+        if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
+            return false;
+        if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
             return false;
         if (oAuthAccessToken != null ? !oAuthAccessToken.equals(that.oAuthAccessToken) : that.oAuthAccessToken != null)
             return false;
@@ -434,11 +463,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (password != null ? !password.equals(that.password) : that.password != null)
             return false;
-        if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
-            return false;
-        if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
-            return false;
-        if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
+        if (requestHeaders != null ? !requestHeaders.equals(that.requestHeaders) : that.requestHeaders != null)
             return false;
         if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null)
             return false;
@@ -454,41 +479,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
 
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "ConfigurationBase{" +
-                "debug=" + debug +
-                ", source='" + source + '\'' +
-                ", userAgent='" + userAgent + '\'' +
-                ", user='" + user + '\'' +
-                ", password='" + password + '\'' +
-                ", useSSL=" + useSSL +
-                ", httpProxyHost='" + httpProxyHost + '\'' +
-                ", httpProxyUser='" + httpProxyUser + '\'' +
-                ", httpProxyPassword='" + httpProxyPassword + '\'' +
-                ", httpProxyPort=" + httpProxyPort +
-                ", httpConnectionTimeout=" + httpConnectionTimeout +
-                ", httpReadTimeout=" + httpReadTimeout +
-                ", httpRetryCount=" + httpRetryCount +
-                ", httpRetryIntervalMilliSecs=" + httpRetryIntervalSeconds +
-                ", oAuthConsumerKey='" + oAuthConsumerKey + '\'' +
-                ", oAuthConsumerSecret='" + oAuthConsumerSecret + '\'' +
-                ", oAuthAccessToken='" + oAuthAccessToken + '\'' +
-                ", oAuthAccessTokenSecret='" + oAuthAccessTokenSecret + '\'' +
-                ", oAuthRequestTokenURL='" + oAuthRequestTokenURL + '\'' +
-                ", oAuthAuthorizationURL='" + oAuthAuthorizationURL + '\'' +
-                ", oAuthAccessTokenURL='" + oAuthAccessTokenURL + '\'' +
-                ", oAuthAuthenticationURL='" + oAuthAuthenticationURL + '\'' +
-                ", restBaseURL='" + restBaseURL + '\'' +
-                ", searchBaseURL='" + searchBaseURL + '\'' +
-                ", streamBaseURL='" + streamBaseURL + '\'' +
-                ", asyncNumThreads=" + asyncNumThreads +
-                ", clientVersion='" + clientVersion + '\'' +
-                ", clientURL='" + clientURL + '\'' +
-                ", IS_DALVIK=" + IS_DALVIK +
-                '}';
     }
 
     static String fixURL(boolean useSSL, String url) {

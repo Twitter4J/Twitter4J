@@ -31,8 +31,9 @@ import java.util.Date;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  * @since Twitter4J 2.1.0
+ * @deprecated use twitter4j.util.TimeSpanUtil instead.
  */
-public class TimeSpanUtil {
+public final class TimeSpanUtil {
     private static int ONE_HOUR_IN_SECONDS = 60 * 60;
     private static int ONE_DAY_IN_SECONDS = 24 * ONE_HOUR_IN_SECONDS;
 
@@ -40,16 +41,24 @@ public class TimeSpanUtil {
         throw new AssertionError("not intended to be instantiated.");
     }
 
+    /**
+     * @deprecated use twitter4j.util.TimeSpanUtil instead.
+     */
     public static String toTimeSpanString(Date date) {
         return toTimeSpanString(date.getTime());
     }
 
+    /**
+     * @deprecated use twitter4j.util.TimeSpanUtil instead.
+     */
     public static String toTimeSpanString(long milliseconds) {
         int deltaInSeconds = (int) ((System.currentTimeMillis() - milliseconds) / 1000);
         return toTimeSpanString(deltaInSeconds);
     }
 
-
+    /**
+     * @deprecated use twitter4j.util.TimeSpanUtil instead.
+     */
     public static String toTimeSpanString(int deltaInSeconds) {
         if (deltaInSeconds < 5) {
             return "less than 5 seconds ago";

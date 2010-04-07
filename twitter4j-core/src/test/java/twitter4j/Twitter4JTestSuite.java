@@ -30,6 +30,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import twitter4j.conf.ConfigurationTest;
+import twitter4j.internal.async.DispatcherTest;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

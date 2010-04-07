@@ -26,29 +26,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.api.AccountMethodsAsync;
-import twitter4j.api.BlockMethodsAsync;
-import twitter4j.api.DirectMessageMethodsAsync;
-import twitter4j.api.FavoriteMethodsAsync;
-import twitter4j.api.FriendshipMethodsAsync;
-import twitter4j.api.HelpMethodsAsync;
-import twitter4j.api.ListMembersMethodsAsync;
-import twitter4j.api.ListMethodsAsync;
-import twitter4j.api.ListSubscribersMethodsAsync;
-import twitter4j.api.LocalTrendsMethodsAsync;
-import twitter4j.api.NotificationMethodsAsync;
-import twitter4j.api.SavedSearchesMethodsAsync;
-import twitter4j.api.SearchMethodsAsync;
-import twitter4j.api.SocialGraphMethodsAsync;
-import twitter4j.api.SpamReportingMethodsAsync;
-import twitter4j.api.StatusMethodsAsync;
-import twitter4j.api.TimelineMethodsAsync;
-import twitter4j.api.UserMethodsAsync;
+import twitter4j.api.*;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.RequestToken;
+import twitter4j.internal.async.DispatcherFactory;
+import twitter4j.internal.async.Dispatcher;
 
 import java.io.File;
 import java.util.Date;
@@ -57,7 +42,8 @@ import static twitter4j.TwitterMethod.*;
 /**
  * Twitter API with a series of asynchronous APIs.<br>
  * With this class, you can call TwitterAPI asynchronously.<br>
- * Note that currently this class is NOT compatible with Google App Engine as it is maintaining threads internally.
+ * Note that currently this class is NOT compatible with Google App Engine as it is maintaining threads internally.<br>
+ * Currently this class is not carefully designed to be extended. It is suggested to extend this class only for mock testing purporse.<br>
  * @see twitter4j.AsyncTwitter
  * @see twitter4j.TwitterListener
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -80,6 +66,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
         SpamReportingMethodsAsync,
         SavedSearchesMethodsAsync,
         LocalTrendsMethodsAsync,
+        GeoMethodsAsync,
         HelpMethodsAsync {
     private static final long serialVersionUID = -2008667933225051907L;
     private Twitter twitter;
@@ -89,7 +76,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
      * Creates a basic authenticated AsyncTwitter instance.
      * @param screenName screen name
      * @param password password
-     * @param listener
+     * @param listener listener
      * @deprecated use new AsyncTwitterFactory.getBasicAuthorizedInstance() instead.
      */
     public AsyncTwitter(String screenName, String password, TwitterListener listener) {
@@ -494,6 +481,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     /**
      * {@inheritDoc}
      */
+    public void updateStatus(final StatusUpdate latestStatus) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.updatedStatus(twitter.updateStatus(latestStatus));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void destroyStatus(final long statusId) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_STATUS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
@@ -574,11 +572,34 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
      * {@inheritDoc}
      */
     public void searchUsers(final String query, final int page) {
-        getDispatcher().invokeLater(new AsyncTask(SHOW_USER, listener) {
+        getDispatcher().invokeLater(new AsyncTask(SEARCH_USERS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.searchedUser(twitter.searchUsers(query, page));
             }
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getSuggestedUserCategories() {
+        getDispatcher().invokeLater(new AsyncTask(SUGGESTED_USER_CATEGORIES, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotSuggestedUserCategories(twitter.getSuggestedUserCategories());
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getUserSuggestions(final String categorySlug) {
+        getDispatcher().invokeLater(new AsyncTask(USER_SUGGESTIONS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotUserSuggestions(twitter.getUserSuggestions(categorySlug));
+            }
+        });
+
     }
 
     /**
@@ -1539,7 +1560,40 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     }
 
     /* Geo Methods */
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getNearbyPlaces(final GeoQuery query){
+        getDispatcher().invokeLater(new AsyncTask(NEAR_BY_PLACES, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotNearByPlaces(twitter.getNearbyPlaces(query));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void reverseGeoCode(final GeoQuery query){
+        getDispatcher().invokeLater(new AsyncTask(REVERSE_GEO_CODE, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotReverseGeoCode(twitter.reverseGeoCode(query));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getGeoDetails(final String id){
+        getDispatcher().invokeLater(new AsyncTask(GEO_DETAILS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotGeoDetails(twitter.getGeoDetails(id));
+            }
+        });
+    }
+
     /* Help Methods */
 
     /**
@@ -1576,7 +1630,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
             throw new IllegalStateException("Already shut down");
         }
         if (null == dispatcher) {
-            dispatcher = new Dispatcher(conf, "Twitter4J Async Dispatcher", ConfigurationContext.getInstance().getAsyncNumThreads());
+            dispatcher = new DispatcherFactory(conf).getInstance();
         }
         return dispatcher;
     }
@@ -1607,6 +1661,11 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
 
     /**
      * {@inheritDoc}
+     * Basic authenticated instance of this class will try acquiring an AccessToken using xAuth.<br>
+     * In order to get access acquire AccessToken using xAuth, you must apply by sending an email to <a href="mailto:api@twitter.com">api@twitter.com</a> all other applications will receive an HTTP 401 error.  Web-based applications will not be granted access, except on a temporary basis for when they are converting from basic-authentication support to full OAuth support.<br>
+     * Storage of Twitter usernames and passwords is forbidden. By using xAuth, you are required to store only access tokens and access token secrets. If the access token expires or is expunged by a user, you must ask for their login and password again before exchanging the credentials for an access token.
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth">Twitter REST API Method: oauth access_token for xAuth</a>
+     * @throws TwitterException When Twitter service or network is unavailable, when the user has not authorized, or when the client application is not permitted to use xAuth
      */
     @Override
     public AccessToken getOAuthAccessToken() throws TwitterException {
@@ -1615,6 +1674,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
 
     /**
      * {@inheritDoc}
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     @Override
     public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
@@ -1623,6 +1683,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
 
     /**
      * {@inheritDoc}
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     @Override
     public AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
@@ -1631,6 +1692,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
 
     /**
      * {@inheritDoc}
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     @Override
     public AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
@@ -1639,6 +1701,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
 
     /**
      * {@inheritDoc}
+     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
      */
     @Override
     public void setOAuthAccessToken(AccessToken accessToken) {
@@ -1647,6 +1710,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
 
     /**
      * {@inheritDoc}
+     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
      */
     @Override
     public AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
@@ -1662,7 +1726,13 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the access token
+     *
+     * @param token       access token
+     * @param tokenSecret access token secret
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
+     * @since Twitter 2.0.0
+     * @deprecated Use Twitter getInstance(AccessToken accessToken)
      */
     @Override
     public void setOAuthAccessToken(String token, String tokenSecret) {

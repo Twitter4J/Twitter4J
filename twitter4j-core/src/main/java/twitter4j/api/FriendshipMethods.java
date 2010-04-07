@@ -33,8 +33,7 @@ import twitter4j.User;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface FriendshipMethods
-{
+public interface FriendshipMethods {
 	/**
 	 * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
 	 * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json

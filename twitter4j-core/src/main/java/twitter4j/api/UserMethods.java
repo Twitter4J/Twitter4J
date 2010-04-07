@@ -26,18 +26,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.Category;
 import twitter4j.PagableResponseList;
-import twitter4j.Paging;
 import twitter4j.ResponseList;
-import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface UserMethods
-{
+public interface UserMethods {
 	/**
 	 * Returns extended information of a given user, specified by screen name as per the required id parameter below.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
 	 * <br>This method calls http://api.twitter.com/1/users/show.json
@@ -47,10 +45,9 @@ public interface UserMethods
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
 	 */
-	User showUser(String screenName)
-			throws TwitterException;
+    User showUser(String screenName) throws TwitterException;
 
-	/**
+    /**
 	 * Returns extended information of a given user, specified by ID.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
 	 * <br>This method calls http://api.twitter.com/1/users/show
 	 *
@@ -60,8 +57,7 @@ public interface UserMethods
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users show</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	User showUser(int userId)
-			throws TwitterException;
+    User showUser(int userId) throws TwitterException;
 
     /**
      * Return up to 20 users worth of extended information, specified by screen name. The author's most recent status (if the authenticating user has permission) will be returned inline.  Users can, at most, look up 1000 users in an hour.
@@ -69,6 +65,7 @@ public interface UserMethods
      * @param screenNames Specifies the screen names of the users to return.
      * @return users
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users-lookup">Twitter API Wiki / Twitter REST API Method: users lookup</a>
+     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.1
      */
     ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException;
@@ -79,7 +76,7 @@ public interface UserMethods
      * @param ids Specifies the screen names of the users to return.
      * @return users
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users-lookup>Twitter API Wiki / Twitter REST API Method: users lookup</a>
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users-lookup">Twitter API Wiki / Twitter REST API Method: users lookup</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<User> lookupUsers(int[] ids) throws TwitterException;
@@ -95,6 +92,26 @@ public interface UserMethods
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users-search">Twitter API Wiki / Twitter REST API Method: users search</a>
      */
     ResponseList<User> searchUsers(String query, int page) throws TwitterException;
+
+
+    /**
+     * Access to Twitter's suggested user list.  This returns the list of suggested user categories.  The category can be used in the users/suggestions/category endpoint to get the users in that category.
+     * <br>This method calls http://api.twitter.com/1/users/suggestions.json
+     * @return list of suggested user categories.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.1
+     */
+    ResponseList<Category> getSuggestedUserCategories() throws TwitterException;
+
+    /**
+     * Access the users in a given category of the Twitter suggested user list.
+     * <br>This method calls http://api.twitter.com/1/users/suggestions/[slug].json
+     * @param categorySlug slug
+     * @return list of suggested users
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.1
+     */
+    ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException;
 
     /**
 	 * Returns the specified user's friends, each with current status inline.

@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class Paging implements java.io.Serializable {
+public final class Paging implements java.io.Serializable {
     private int page = -1;
     private int count = -1;
     private long sinceId = -1;

@@ -33,7 +33,7 @@ import java.lang.reflect.InvocationTargetException;
  * By default, twitter4j.conf.PropertyConfigurationFactory will be used and can be changed with -Dtwitter4j.configurationFactory system property.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class ConfigurationContext {
+public final class ConfigurationContext {
     public static final String DEFAULT_CONFIGURATION_FACTORY = "twitter4j.conf.PropertyConfigurationFactory";
     public static final String CONFIGURATION_IMPL = "twitter4j.configurationFactory";
     private static final ConfigurationFactory factory;

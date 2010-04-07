@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import twitter4j.Version;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.PropertyConfiguration;
+import twitter4j.http.RequestToken;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -232,8 +233,6 @@ public class ConfigurationTest  extends TestCase {
         conf = new PropertyConfiguration();
         assertEquals(4321, conf.getHttpReadTimeout());
         deleteFile("./twitter4j.properties");
-        conf = new PropertyConfiguration();
-
     }
 
     public void testSSL() throws Exception {
@@ -249,7 +248,8 @@ public class ConfigurationTest  extends TestCase {
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
         + "\n" + "twitter4j.http.useSSL=true");
         conf = new PropertyConfiguration("/");
-        assertEquals("https://somewhere.com/", conf.getRestBaseURL());
+        // useSSL doesn't take effect if restBaseURL is explicitly specified.
+        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
         deleteFile("./twitter4j.properties");
         conf = new PropertyConfiguration();
 
@@ -258,7 +258,7 @@ public class ConfigurationTest  extends TestCase {
 
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/");
         conf = new PropertyConfiguration("/");
-        assertEquals("https://somewhere.com/", conf.getRestBaseURL());
+        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
 
     }
 
@@ -268,11 +268,11 @@ public class ConfigurationTest  extends TestCase {
         Configuration conf;
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/");
         conf = new PropertyConfiguration("/");
-        assertEquals("https://somewhere.com/", conf.getRestBaseURL());
+        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere2.com/");
 
         conf = new PropertyConfiguration("/");
-        assertEquals("https://somewhere2.com/", conf.getRestBaseURL());
+        assertEquals("http://somewhere2.com/", conf.getRestBaseURL());
     }
 
     public void testTreeConfiguration() throws Exception {
@@ -330,6 +330,50 @@ public class ConfigurationTest  extends TestCase {
 
         deleteFile("./twitter4j.properties");
     }
+
+    public void testConfigurationBuilder() throws Exception {
+        ConfigurationBuilder builder;
+        Configuration conf;
+        builder = new ConfigurationBuilder();
+        conf = builder.build();
+        assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
+        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+
+        builder = new ConfigurationBuilder();
+        builder.setUseSSL(true);
+        conf = builder.build();
+        assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
+        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+
+        builder = new ConfigurationBuilder();
+        builder.setUseSSL(false);
+        conf = builder.build();
+        assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
+        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+
+        builder = new ConfigurationBuilder();
+        builder.setOAuthConsumerKey("key");
+        builder.setOAuthConsumerSecret("secret");
+        conf = builder.build();
+        assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
+        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+
+        RequestToken rt = new RequestToken("key","secret");
+
+        // TFJ-328 RequestToken.getAuthenticationURL()/getAuthorizationURL() should return URLs starting with https:// for security reasons
+        assertTrue(0 == rt.getAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == rt.getAuthorizationURL().indexOf("https://"));
+
+    }
+
     private void writeFile(String path, String content) throws IOException {
         File file = new File(path);
         file.delete();

@@ -52,7 +52,7 @@ import java.util.zip.GZIPInputStream;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class HttpResponse {
+public final class HttpResponse {
     private static final Logger logger = Logger.getLogger(HttpResponse.class);
 
     private static ThreadLocal<DocumentBuilder> builders =

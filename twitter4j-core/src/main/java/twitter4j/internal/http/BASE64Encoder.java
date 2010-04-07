@@ -30,7 +30,7 @@ package twitter4j.internal.http;
  * @see HttpClient
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class BASE64Encoder {
+public final class BASE64Encoder {
     private static final char last2byte = (char) Integer.parseInt("00000011", 2);
     private static final char last4byte = (char) Integer.parseInt("00001111", 2);
     private static final char last6byte = (char) Integer.parseInt("00111111", 2);

@@ -26,34 +26,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.internal.http.HttpResponse;
+
 /**
  * An exception class that will be thrown when TwitterAPI calls are failed.<br>
  * In case the Twitter server returned HTTP error code, you can get the HTTP status code using getStatusCode() method.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class TwitterException extends Exception {
+public final class TwitterException extends Exception implements TwitterResponse {
     private int statusCode = -1;
     private int retryAfter;
+    private RateLimitStatus rateLimitStatus;
     private static final long serialVersionUID = -2623309261327598087L;
 
     public TwitterException(String msg) {
         super(msg);
+        rateLimitStatus = null;
     }
 
     public TwitterException(Exception cause) {
         super(cause);
+        rateLimitStatus = null;
     }
 
-    public TwitterException(String msg, int statusCode) {
+    public TwitterException(String msg, HttpResponse res) {
         super(msg);
-        this.statusCode = statusCode;
+        this.statusCode = res.getStatusCode();
+        this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
     }
 
-    public static TwitterException createRateLimitedTwitterException(String msg
-            , int statusCode, int retryAfter) {
-        TwitterException te = new TwitterException(msg, statusCode);
-        te.retryAfter = retryAfter;
-        return te;
+    public TwitterException(String msg, int retryAfter, HttpResponse res) {
+        this(msg,res);
+        this.retryAfter = retryAfter;
     }
 
     public TwitterException(String msg, Exception cause) {
@@ -68,6 +72,14 @@ public class TwitterException extends Exception {
 
     public int getStatusCode() {
         return this.statusCode;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @since Twitter4J 2.1.2
+     */
+    public RateLimitStatus getRateLimitStatus(){
+        return rateLimitStatus;
     }
 
     /**

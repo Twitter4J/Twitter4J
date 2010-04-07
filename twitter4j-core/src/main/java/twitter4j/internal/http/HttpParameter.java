@@ -34,7 +34,7 @@ import java.util.List;
  * A data class representing HTTP Post parameter
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class HttpParameter implements Comparable, java.io.Serializable {
+public final class HttpParameter implements Comparable, java.io.Serializable {
     String name = null;
     String value = null;
     File file = null;

@@ -37,6 +37,9 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private AsyncTwitter async1 = null;
     private AsyncTwitter async2 = null;
     private ResponseList<Location> locations;
+    private ResponseList<Place> places;
+    private Place place;
+    private ResponseList<Category> categories;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -550,6 +553,22 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    public void gotSuggestedUserCategories(ResponseList<Category> categories) {
+        this.categories = categories;
+        notifyResponse();
+    }
+
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    public void gotUserSuggestions(ResponseList<User> users) {
+        this.users = users;
+        notifyResponse();
+    }
+
     public void gotFriendsStatuses(PagableResponseList<User> users) {
         this.users = users;
         notifyResponse();
@@ -801,6 +820,21 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
      */
     public void gotLocationTrends(Trends trends){
         this.trends = trends;
+        notifyResponse();
+    }
+
+    /*Geo Methods*/
+    public void gotNearByPlaces(ResponseList<Place> places){
+        this.places = places;
+        notifyResponse();
+    }
+    public void gotReverseGeoCode(ResponseList<Place> places){
+        this.places = places;
+        notifyResponse();
+    }
+
+    public void gotGeoDetails(Place place){
+        this.place = place;
         notifyResponse();
     }
 

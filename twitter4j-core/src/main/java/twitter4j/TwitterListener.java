@@ -122,6 +122,16 @@ public interface TwitterListener {
      */
     void searchedUser(ResponseList<User> userList);
 
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    void gotSuggestedUserCategories(ResponseList<Category> category);
+
+    /**
+     * @since Twitter4J 2.1.1
+     */
+    void gotUserSuggestions(ResponseList<User> users);
+
 
     void gotFriendsStatuses(PagableResponseList<User> users);
 
@@ -322,6 +332,10 @@ public interface TwitterListener {
      * @since Twitter4J 2.1.1
      */
     void gotLocationTrends(Trends trends);
+    /*Geo Methods*/
+    void gotNearByPlaces(ResponseList<Place> places);
+    void gotReverseGeoCode(ResponseList<Place> places);
+    void gotGeoDetails(Place place);
 
     /*Help Methods*/
     void tested(boolean test);
@@ -360,6 +374,8 @@ public interface TwitterListener {
     TwitterMethod SHOW_USER = TwitterMethod.SHOW_USER;
     TwitterMethod LOOKUP_USERS = TwitterMethod.LOOKUP_USERS;
     TwitterMethod SEARCH_USERS = TwitterMethod.SEARCH_USERS;
+    TwitterMethod SUGGESTED_USER_CATEGORIES = TwitterMethod.SUGGESTED_USER_CATEGORIES;
+    TwitterMethod USER_SUGGESTIONS = TwitterMethod.USER_SUGGESTIONS;
     TwitterMethod FRIENDS_STATUSES = TwitterMethod.FRIENDS_STATUSES;
     TwitterMethod FOLLOWERS_STATUSES = TwitterMethod.FOLLOWERS_STATUSES;
 
@@ -438,6 +454,11 @@ public interface TwitterListener {
     /*Local Trends Methods*/
     TwitterMethod AVAILABLE_TRENDS = TwitterMethod.AVAILABLE_TRENDS;
     TwitterMethod LOCATION_TRENDS =  TwitterMethod.LOCATION_TRENDS;
+
+    /*Geo Methods*/
+    TwitterMethod NEAR_BY_PLACES = TwitterMethod.NEAR_BY_PLACES;
+    TwitterMethod REVERSE_GEO_CODE = TwitterMethod.REVERSE_GEO_CODE;
+    TwitterMethod GEO_DETAILS = TwitterMethod.GEO_DETAILS;
 
     /*Help Methods*/
     TwitterMethod TEST = TwitterMethod.TEST;

@@ -39,7 +39,7 @@ import java.util.List;
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class Query {
+public final class Query implements java.io.Serializable {
     private String query = null;
     private String lang = null;
     private String locale = null;
@@ -50,6 +50,7 @@ public final class Query {
     private long sinceId = -1;
     private String geocode = null;
     private String until = null;
+    private static final long serialVersionUID = -8108425822233599808L;
 
     public Query(){
     }
@@ -348,7 +349,7 @@ public final class Query {
         return this;
     }
 
-    /*package*/ HttpParameter[] asPostParameters(){
+    /*package*/ HttpParameter[] asHttpParameterArray(){
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("q", query, params);
         appendParameter("lang", lang, params);
@@ -359,7 +360,7 @@ public final class Query {
         appendParameter("since",since , params);
         appendParameter("since_id",sinceId , params);
         appendParameter("geocode", geocode, params);
-        appendParameter("untli", until, params);
+        appendParameter("until", until, params);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }

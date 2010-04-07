@@ -29,13 +29,13 @@ package twitter4j.api;
 import twitter4j.GeoLocation;
 import twitter4j.ResponseList;
 import twitter4j.Status;
+import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface StatusMethods
-{
+public interface StatusMethods {
 	/**
 	 * Returns a single status, specified by the id parameter. The status's author will be returned inline.
 	 * <br>This method calls http://api.twitter.com/1/statuses/show
@@ -72,6 +72,7 @@ public interface StatusMethods
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.10
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
+     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
 	 */
 	Status updateStatus(String status, GeoLocation location) throws TwitterException;
 
@@ -86,6 +87,7 @@ public interface StatusMethods
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.1
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
+     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
 	 */
 	Status updateStatus(String status, long inReplyToStatusId)
 			throws TwitterException;
@@ -102,11 +104,23 @@ public interface StatusMethods
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.10
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
+     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
 	 */
 	Status updateStatus(String status, long inReplyToStatusId, GeoLocation location)
 			throws TwitterException;
 
-	/**
+    /**
+     * Updates the user's status.
+     * <br>Statuses over 140 characters will be forcibly truncated.
+     * <br>This method calls http://api.twitter.com/1/statuses/update
+     * @param latestStatus the latest status to be updated.
+     * @return the latest status
+     * @throws TwitterException
+     * @since Twitter4J 2.1.1
+     */
+    Status updateStatus(StatusUpdate latestStatus) throws TwitterException;
+
+    /**
 	 * Destroys the status specified by the required ID parameter.  The authenticating user must be the author of the specified status.
 	 * <br>This method calls http://api.twitter.com/1/statuses/destroy
 	 *

@@ -34,8 +34,7 @@ import twitter4j.User;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface BlockMethods
-{
+public interface BlockMethods {
 	/**
 	 * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
 	 * <br>This method calls http://api.twitter.com/1/blocks/create/[id].json

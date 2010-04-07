@@ -24,7 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
+package twitter4j.internal.async;
 
 import twitter4j.conf.Configuration;
 
@@ -32,19 +32,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.2
  */
-/*package*/ class Dispatcher {
+final class DispatcherImpl implements Dispatcher{
     private ExecuteThread[] threads;
-    private List<Runnable> q = new LinkedList<Runnable> ();
-    public Dispatcher(Configuration conf, String name){
-        this(conf, name, 1);
-    }
-    public Dispatcher(Configuration conf, String name, int threadCount) {
-        threads = new ExecuteThread[threadCount];
+    private List<Runnable> q = new LinkedList<Runnable>();
+    public DispatcherImpl(DispatcherConfiguration conf) {
+        threads = new ExecuteThread[conf.getAsyncNumThreads()];
         for (int i = 0; i < threads.length; i++) {
-            threads[i] = new ExecuteThread(name,this, i);
+            threads[i] = new ExecuteThread("Twitter4J Async Dispatcher", this, i);
             threads[i].setDaemon(true);
             threads[i].start();
         }
@@ -104,8 +101,8 @@ import java.util.List;
 }
 
 class ExecuteThread extends Thread {
-    Dispatcher q;
-    ExecuteThread(String name, Dispatcher q, int index) {
+    DispatcherImpl q;
+    ExecuteThread(String name, DispatcherImpl q, int index) {
         super(name + "[" + index + "]");
         this.q = q;
     }
@@ -128,4 +125,3 @@ class ExecuteThread extends Thread {
         }
     }
 }
-

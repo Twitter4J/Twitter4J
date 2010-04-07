@@ -33,8 +33,7 @@ import twitter4j.TwitterException;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface FavoriteMethods
-{
+public interface FavoriteMethods {
 	/**
 	 * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
 	 * <br>This method calls http://api.twitter.com/1/favorites.json

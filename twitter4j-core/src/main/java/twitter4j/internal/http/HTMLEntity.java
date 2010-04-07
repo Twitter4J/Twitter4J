@@ -29,7 +29,7 @@ package twitter4j.internal.http;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HTMLEntity {
+public final class HTMLEntity {
     public static String escape(String original) {
         StringBuffer buf = new StringBuffer(original);
         escape(buf);

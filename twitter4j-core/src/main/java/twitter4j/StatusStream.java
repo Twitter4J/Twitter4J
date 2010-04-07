@@ -40,26 +40,7 @@ import java.io.InputStreamReader;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public class StatusStream {
-    private static final Logger logger = Logger.getLogger(StatusStream.class);
-
-    private boolean streamAlive = true;
-    private BufferedReader br;
-    private InputStream is;
-    private HttpResponse response;
-
-    /*package*/
-
-    StatusStream(InputStream stream) throws IOException {
-        this.is = stream;
-        this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-    }
-    /*package*/
-
-    StatusStream(HttpResponse response) throws IOException {
-        this(response.asStream());
-        this.response = response;
-    }
+public interface StatusStream {
 
     /**
      * Reads next status from this stream.
@@ -67,48 +48,7 @@ public class StatusStream {
      * @throws TwitterException when the end of the stream has been reached.
      * @throws IllegalStateException when the end of the stream had been reached.
      */
-    public void next(StatusListener listener) throws TwitterException {
-        if (!streamAlive) {
-            throw new IllegalStateException("Stream already closed.");
-        }
-        try {
-            String line;
-            line = br.readLine();
-            if (null == line) {
-                //invalidate this status stream
-                throw new IOException("the end of the stream has been reached");
-            }
-            if (line.length() > 0) {
-                logger.debug("received:", line);
-                try {
-                    JSONObject json = new JSONObject(line);
-                    if (!json.isNull("text")) {
-                        listener.onStatus(new StatusJSONImpl(json));
-                    } else if (!json.isNull("delete")) {
-                        listener.onDeletionNotice(new StatusDeletionNotice(json));
-                    } else if (!json.isNull("limit")) {
-                        listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
-                    }
-                } catch (JSONException jsone) {
-                    listener.onException(jsone);
-                }
-            }
-        } catch (IOException ioe) {
-            try {
-                is.close();
-            } catch (IOException ignore) {
-            }
-            streamAlive = false;
-            throw new TwitterException("Stream closed.", ioe);
-        }
+    void next(StatusListener listener) throws TwitterException;
 
-    }
-
-    public void close() throws IOException {
-        is.close();
-        br.close();
-        if (null != response) {
-            response.disconnect();
-        }
-    }
+    void close() throws IOException;
 }

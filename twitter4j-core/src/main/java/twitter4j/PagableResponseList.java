@@ -30,11 +30,11 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONObject;
 
 /**
- * CursorSupport'ed ResponseList implementation.
+ * ResponseList with cursor support.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class PagableResponseList<T extends TwitterResponse> extends
+public final class PagableResponseList<T extends TwitterResponse> extends
         ResponseList<T> implements CursorSupport{
     private final long previousCursor;
     private final long nextCursor;

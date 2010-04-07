@@ -69,6 +69,7 @@ public abstract class Logger {
             loggerFactory = new StdOutLoggerFactory();
         }
         LOGGER_FACTORY = loggerFactory;
+        loggerFactory.getLogger(Logger.class).info("Using "+loggerFactory.getClass() + " as logging factory.");
     }
 
     private static LoggerFactory getLoggerFactory(String checkClassName, String implementationClass) {

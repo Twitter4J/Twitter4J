@@ -31,8 +31,7 @@ import twitter4j.TwitterException;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface HelpMethods
-{
+public interface HelpMethods {
 	/**
 	 * Returns the string "ok" in the requested format with a 200 OK HTTP status code.
 	 *

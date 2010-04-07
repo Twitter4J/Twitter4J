@@ -26,24 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.api.AccountMethods;
-import twitter4j.api.BlockMethods;
-import twitter4j.api.DirectMessageMethods;
-import twitter4j.api.FavoriteMethods;
-import twitter4j.api.FriendshipMethods;
-import twitter4j.api.HelpMethods;
-import twitter4j.api.ListMembersMethods;
-import twitter4j.api.ListMethods;
-import twitter4j.api.ListSubscribersMethods;
-import twitter4j.api.LocalTrendsMethods;
-import twitter4j.api.NotificationMethods;
-import twitter4j.api.SavedSearchesMethods;
-import twitter4j.api.SearchMethods;
-import twitter4j.api.SocialGraphMethods;
-import twitter4j.api.SpamReportingMethods;
-import twitter4j.api.StatusMethods;
-import twitter4j.api.TimelineMethods;
-import twitter4j.api.UserMethods;
+import twitter4j.api.*;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
@@ -62,12 +45,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * A java representation of the <a href="http://apiwiki.twitter.com/">Twitter API</a>
- * <br>This class is thread safe and can be cached/re-used and used concurrently.
+ * A java representation of the <a href="http://apiwiki.twitter.com/">Twitter API</a><br>
+ * This class is thread safe and can be cached/re-used and used concurrently.<br>
+ * Currently this class is not carefully designed to be extended. It is suggested to extend this class only for mock testing purporse.<br>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class Twitter extends TwitterOAuthSupportBase
+public class Twitter extends TwitterOAuthSupportBase
         implements java.io.Serializable,
         SearchMethods,
         TimelineMethods,
@@ -86,6 +70,7 @@ public final class Twitter extends TwitterOAuthSupportBase
         SpamReportingMethods,
         SavedSearchesMethods,
         LocalTrendsMethods,
+        GeoMethods,
         HelpMethods {
     private static final long serialVersionUID = -1486360080128882436L;
 
@@ -108,7 +93,7 @@ public final class Twitter extends TwitterOAuthSupportBase
      *
      * @param screenName the screen name of the user
      * @param password   the password of the user
-     * @deprecated use TwitterFactory.getBasicAuthenticatedInstance(screenName, password) instead
+     * @deprecated use TwitterFactory.getInstance(screenName, password) instead
      */
     public Twitter(String screenName, String password) {
         super(ConfigurationContext.getInstance(), screenName, password);
@@ -205,7 +190,7 @@ public final class Twitter extends TwitterOAuthSupportBase
      */
     public QueryResult search(Query query) throws TwitterException {
         try {
-            return new QueryResultJSONImpl(http.get(conf.getSearchBaseURL() + "search.json", query.asPostParameters(), null));
+            return new QueryResultJSONImpl(http.get(conf.getSearchBaseURL() + "search.json", query.asHttpParameterArray(), null));
         } catch (TwitterException te) {
             if (404 == te.getStatusCode()) {
                 return new QueryResultJSONImpl(query);
@@ -507,6 +492,19 @@ public final class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public Status updateStatus(StatusUpdate latestStatus) throws TwitterException{
+        ensureAuthorizationEnabled();
+        HttpParameter[] array = latestStatus.asHttpParameterArray();
+        HttpParameter[] combined = new HttpParameter[array.length + 1];
+        System.arraycopy(array, 0, combined, 0, array.length);
+        combined[combined.length - 1] = new HttpParameter("source", conf.getSource());
+        return new StatusJSONImpl(http.post(conf.getRestBaseURL()
+                + "statuses/update.json", combined, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Status destroyStatus(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL()
@@ -593,6 +591,27 @@ public final class Twitter extends TwitterOAuthSupportBase
                 new HttpParameter("q", query),
                 new HttpParameter("per_page", 20),
                 new HttpParameter("page", page)}, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Category> getSuggestedUserCategories() throws TwitterException {
+        return CategoryJSONImpl.createCategoriesList(http.get(conf.getRestBaseURL() +
+                "users/suggestions.json", auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException {
+        HttpResponse res = http.get(conf.getRestBaseURL() + "users/suggestions/"
+                + categorySlug + ".json", auth);
+        try {
+            return UserJSONImpl.createUserList(res.asJSONObject().getJSONArray("users"), res);
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
     }
 
     /**
@@ -1478,6 +1497,48 @@ public final class Twitter extends TwitterOAuthSupportBase
         }
     }
 
+    /* Geo Methods */
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Place> getNearbyPlaces(GeoQuery query) throws TwitterException {
+        try{
+            return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
+                    + "geo/nearby_places.json", query.asHttpParameterArray(), auth));
+        }catch(TwitterException te){
+            if(te.getStatusCode() == 404){
+                return new ResponseList<Place>(0, null);
+            }else{
+                throw te;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException {
+        try{
+            return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
+                    + "geo/reverse_geocode.json", query.asHttpParameterArray(), auth));
+        }catch(TwitterException te){
+            if(te.getStatusCode() == 404){
+                return new ResponseList<Place>(0, null);
+            }else{
+                throw te;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Place getGeoDetails(String id) throws TwitterException {
+        return new PlaceJSONImpl(http.get(conf.getRestBaseURL() + "geo/id/" + id
+                + ".json", auth));
+    }
+
     /* Help Methods */
 
     /**
@@ -1512,9 +1573,8 @@ public final class Twitter extends TwitterOAuthSupportBase
     }
 
     // implementation for OAuthSupport interface
-
     /**
-     * @throws IllegalStateException when AccessToken has already been retrieved or set
+     * {@inheritDoc}
      */
     public RequestToken getOAuthRequestToken() throws TwitterException {
         return getOAuthRequestToken(null);
@@ -1529,6 +1589,11 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * Basic authenticated instance of this class will try acquiring an AccessToken using xAuth.<br>
+     * In order to get access acquire AccessToken using xAuth, you must apply by sending an email to <a href="mailto:api@twitter.com">api@twitter.com</a> all other applications will receive an HTTP 401 error.  Web-based applications will not be granted access, except on a temporary basis for when they are converting from basic-authentication support to full OAuth support.<br>
+     * Storage of Twitter usernames and passwords is forbidden. By using xAuth, you are required to store only access tokens and access token secrets. If the access token expires or is expunged by a user, you must ask for their login and password again before exchanging the credentials for an access token.
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth">Twitter REST API Method: oauth access_token for xAuth</a>
+     * @throws TwitterException When Twitter service or network is unavailable, when the user has not authorized, or when the client application is not permitted to use xAuth
      */
     public synchronized AccessToken getOAuthAccessToken() throws TwitterException {
         Authorization auth = getAuthorization();
@@ -1553,6 +1618,7 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public synchronized AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken(oauthVerifier);
@@ -1562,6 +1628,7 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
         OAuthSupport oauth = getOAuth();
@@ -1572,6 +1639,7 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
         return getOAuth().getOAuthAccessToken(requestToken, oauthVerifier);
@@ -1579,11 +1647,16 @@ public final class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
+     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
      */
     public synchronized void setOAuthAccessToken(AccessToken accessToken) {
         getOAuth().setOAuthAccessToken(accessToken);
     }
 
+    /**
+     * {@inheritDoc}
+     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
+     */
     public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
         return getOAuth().getOAuthAccessToken(new RequestToken(token, tokenSecret));
     }

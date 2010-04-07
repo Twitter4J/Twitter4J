@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.conf;
 
 import twitter4j.http.AuthorizationConfiguration;
+import twitter4j.internal.async.DispatcherConfiguration;
 import twitter4j.internal.http.HttpClientConfiguration;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 
@@ -39,6 +40,7 @@ import java.util.Map;
 public interface Configuration extends HttpClientConfiguration
         , HttpClientWrapperConfiguration
         , AuthorizationConfiguration
+        , DispatcherConfiguration
         , java.io.Serializable {
 
     boolean isDalvik();
@@ -84,8 +86,6 @@ public interface Configuration extends HttpClientConfiguration
     String getOAuthAccessToken();
 
     String getOAuthAccessTokenSecret();
-
-    int getAsyncNumThreads();
 
     String getClientVersion();
 

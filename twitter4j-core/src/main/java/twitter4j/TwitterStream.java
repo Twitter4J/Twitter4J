@@ -46,7 +46,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public class TwitterStream extends TwitterBase implements java.io.Serializable {
+public final class TwitterStream extends TwitterBase implements java.io.Serializable {
     private final HttpClientWrapper http;
     private static final Logger logger = Logger.getLogger(TwitterStream.class);
 
@@ -166,22 +166,22 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
 
     /**
      * Starts listening on a tweet stream.
-     * 
+     *
      * @param relativeUrl The relative url of the feed, for example "statuses/firehose.json" for the firehose.
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      */
     public void stream(final String relativeUrl, final int count) {
       startHandler(new StreamHandlingThread() {
-        public StatusStream getStream() throws TwitterException {
-          return getCountStream(relativeUrl, count);
-        }
+          public StatusStream getStream() throws TwitterException {
+              return getCountStream(relativeUrl, count);
+          }
       });
     }
 
     private StatusStream getCountStream(String relativeUrl, int count) throws TwitterException {
       ensureBasicEnabled();
       try {
-          return new StatusStream(http.post(conf.getStreamBaseURL() + relativeUrl
+          return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + relativeUrl
                   , new HttpParameter[]{new HttpParameter("count"
                           , String.valueOf(count))}, auth));
       } catch (IOException e) {
@@ -217,7 +217,7 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
     public StatusStream getRetweetStream() throws TwitterException {
         ensureBasicEnabled();
         try {
-            return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
                     , new HttpParameter[]{}, auth));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -252,7 +252,7 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
     public StatusStream getSampleStream() throws TwitterException {
         ensureBasicEnabled();
         try {
-            return new StatusStream(http.get(conf.getStreamBaseURL() + "statuses/sample.json"
+            return new StatusStreamImpl(http.get(conf.getStreamBaseURL() + "statuses/sample.json"
                     , auth));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -261,7 +261,8 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
 
 
     /**
-     * See birddog above. Allows following up to 200 users. Publicly available.
+     * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
+     * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
      *
      * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @param follow Specifies the users, by ID, to receive public tweets from.
@@ -279,7 +280,8 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
     }
 
     /**
-     * Returns stream of public statuses that match one or more filter predicates. At least one predicate parameter, track or follow, must be specified. Both parameters may be specified which allows most clients to use a single connection to the Streaming API.
+     * Returns public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
+     * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
      *
      * @param follow Specifies the users, by ID, to receive public tweets from.
      * @return StatusStream
@@ -302,7 +304,7 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
                     , toTrackString(track)));
         }
         try {
-            return new StatusStream(http.post(conf.getStreamBaseURL() + "statuses/filter.json"
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/filter.json"
                     , postparams.toArray(new HttpParameter[postparams.size()]), auth));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -391,26 +393,28 @@ public class TwitterStream extends TwitterBase implements java.io.Serializable {
                         }
                     }
                 } catch (TwitterException te) {
-                    if(0 == timeToSleep && te.getStatusCode() > 200) {
-                        timeToSleep = HTTP_ERROR_INITIAL_WAIT;
-                    }else{
-                        timeToSleep = TCP_ERROR_INITIAL_WAIT;
-                    }
-                    // there was a problem establishing the connection, or the connection closed by peer
                     if (!closed) {
-                        // wait for a moment not to overload Twitter API
-                        setStatus("[Waiting for " + (timeToSleep) + " milliseconds]");
-                        try {
-                            Thread.sleep(timeToSleep);
-                        } catch (InterruptedException ignore) {
+                        if (0 == timeToSleep && te.getStatusCode() > 200) {
+                            timeToSleep = HTTP_ERROR_INITIAL_WAIT;
+                        } else {
+                            timeToSleep = TCP_ERROR_INITIAL_WAIT;
                         }
-                        timeToSleep = Math.min(timeToSleep * 2, (te.getStatusCode() > 200) ? HTTP_ERROR_WAIT_CAP : TCP_ERROR_WAIT_CAP);
+                        // there was a problem establishing the connection, or the connection closed by peer
+                        if (!closed) {
+                            // wait for a moment not to overload Twitter API
+                            setStatus("[Waiting for " + (timeToSleep) + " milliseconds]");
+                            try {
+                                Thread.sleep(timeToSleep);
+                            } catch (InterruptedException ignore) {
+                            }
+                            timeToSleep = Math.min(timeToSleep * 2, (te.getStatusCode() > 200) ? HTTP_ERROR_WAIT_CAP : TCP_ERROR_WAIT_CAP);
 
+                        }
+                        stream = null;
+                        logger.debug(te.getMessage());
+                        statusListener.onException(te);
                     }
-                    stream = null;
-                    te.printStackTrace();
-                    logger.debug(te.getMessage());
-                    statusListener.onException(te);
+
                 }
             }
             try {
