@@ -65,7 +65,7 @@ public class SearchAPITest extends TwitterTestBase {
     public void testSearch() throws Exception {
         String queryStr = "test";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String dateStr = format.format(new java.util.Date());
+        String dateStr = format.format(new java.util.Date(System.currentTimeMillis() - 24 * 3600 * 1000));
         Query query = new Query(queryStr).until(dateStr);
         QueryResult queryResult = unauthenticated.search(query);
         assertTrue("sinceId", -1 != queryResult.getSinceId());
