@@ -45,12 +45,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * A java representation of the <a href="http://apiwiki.twitter.com/">Twitter API</a>
- * <br>This class is thread safe and can be cached/re-used and used concurrently.
+ * A java representation of the <a href="http://apiwiki.twitter.com/">Twitter API</a><br>
+ * This class is thread safe and can be cached/re-used and used concurrently.<br>
+ * Currently this class is not carefully designed to be extended. It is suggested to extend this class only for mock testing purporse.<br>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class Twitter extends TwitterOAuthSupportBase
+public class Twitter extends TwitterOAuthSupportBase
         implements java.io.Serializable,
         SearchMethods,
         TimelineMethods,

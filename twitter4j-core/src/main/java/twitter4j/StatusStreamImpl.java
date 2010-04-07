@@ -83,7 +83,7 @@ class StatusStreamImpl implements StatusStream {
                     if (!json.isNull("text")) {
                         listener.onStatus(new StatusJSONImpl(json));
                     } else if (!json.isNull("delete")) {
-                        listener.onDeletionNotice(new StatusDeletionNotice(json));
+                        listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
                     } else if (!json.isNull("limit")) {
                         listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
                     }

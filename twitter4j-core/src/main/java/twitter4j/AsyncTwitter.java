@@ -42,12 +42,13 @@ import static twitter4j.TwitterMethod.*;
 /**
  * Twitter API with a series of asynchronous APIs.<br>
  * With this class, you can call TwitterAPI asynchronously.<br>
- * Note that currently this class is NOT compatible with Google App Engine as it is maintaining threads internally.
+ * Note that currently this class is NOT compatible with Google App Engine as it is maintaining threads internally.<br>
+ * Currently this class is not carefully designed to be extended. It is suggested to extend this class only for mock testing purporse.<br>
  * @see twitter4j.AsyncTwitter
  * @see twitter4j.TwitterListener
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Serializable,
+public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Serializable,
         SearchMethodsAsync,
         TimelineMethodsAsync,
         StatusMethodsAsync,
