@@ -166,7 +166,7 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
             RateLimitStatusEvent statusEvent = null;
             if (null != rateLimitStatus) {
                 statusEvent = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
-                if (res.getStatusCode() == HttpClient.EXCEEDED_RATE_LIMIT_QUOTA
+                if (res.getStatusCode() == HttpClient.ENHANCE_YOUR_CLAIM
                         || res.getStatusCode() == HttpClient.SERVICE_UNAVAILABLE) {
                     // EXCEEDED_RATE_LIMIT_QUOTA is returned by Rest API
                     // SERVICE_UNAVAILABLE is returned by Search API

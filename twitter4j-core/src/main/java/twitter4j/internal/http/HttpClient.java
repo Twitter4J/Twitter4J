@@ -29,7 +29,6 @@ package twitter4j.internal.http;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.logging.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -55,22 +54,8 @@ import static twitter4j.internal.http.RequestMethod.*;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class HttpClient implements java.io.Serializable {
+public final class HttpClient implements HttpResponseCode , java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClient.class);
-    private static final int OK = 200;// OK: Success!
-    private static final int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.
-    private static final int BAD_REQUEST = 400;// Bad Request: The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.
-    private static final int NOT_AUTHORIZED = 401;// Not Authorized: Authentication credentials were missing or incorrect.
-    private static final int FORBIDDEN = 403;// Forbidden: The request is understood, but it has been refused.  An accompanying error message will explain why.
-    private static final int NOT_FOUND = 404;// Not Found: The URI requested is invalid or the resource requested, such as a user, does not exists.
-    private static final int NOT_ACCEPTABLE = 406;// Not Acceptable: Returned by the Search API when an invalid format is specified in the request.
-    /**
-     *     @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/3f3b0fd38deb9b0f?hl=en">Search API: new HTTP response code 420 for rate limiting starting 1/18/2010</a>
-     */
-    public static final int EXCEEDED_RATE_LIMIT_QUOTA = 420;// Not registered in RFC.
-    private static final int INTERNAL_SERVER_ERROR = 500;// Internal Server Error: Something is broken.  Please post to the group so the Twitter team can investigate.
-    private static final int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
-    public static final int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
 
     private String proxyHost = null;
     private int proxyPort = -1;
@@ -309,25 +294,12 @@ public final class HttpClient implements java.io.Serializable {
                         }
                     }
                     if (responseCode != OK) {
-                        if (responseCode == EXCEEDED_RATE_LIMIT_QUOTA){
-                            // application exceeded the rate limitation
-                            // Search API returns Retry-After header that instructs the application when it is safe to continue.
-                            // @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
-                            try {
-                                String retryAfterStr = con.getHeaderField("Retry-After");
-                                if (null != retryAfterStr) {
-                                    throw new TwitterException(getCause(responseCode)
-                                            , Integer.valueOf(retryAfterStr), res);
-                                }
-                            } catch (NumberFormatException ignore) {
-                            }
-                            throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), res);
-                        }
-                        if (responseCode == SERVICE_UNAVAILABLE || responseCode == BAD_REQUEST){
-                            throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), res);
-                        }
-                        if (responseCode < INTERNAL_SERVER_ERROR || retriedCount == retryCount) {
-                            throw new TwitterException(getCause(responseCode) + "\n" + res.asString(), res);
+                        if (responseCode == ENHANCE_YOUR_CLAIM ||
+                                responseCode == SERVICE_UNAVAILABLE ||
+                                responseCode == BAD_REQUEST ||
+                                responseCode < INTERNAL_SERVER_ERROR ||
+                                retriedCount == retryCount) {
+                            throw new TwitterException(res.asString(), res);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR
                     } else {
@@ -465,43 +437,4 @@ public final class HttpClient implements java.io.Serializable {
         return result;
     }
 
-
-    private static String getCause(int statusCode) {
-        String cause = null;
-        // http://apiwiki.twitter.com/HTTP-Response-Codes-and-Errors
-        switch (statusCode) {
-            case NOT_MODIFIED:
-                break;
-            case BAD_REQUEST:
-                cause = "The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.";
-                break;
-            case NOT_AUTHORIZED:
-                cause = "Authentication credentials were missing or incorrect.";
-                break;
-            case FORBIDDEN:
-                cause = "The request is understood, but it has been refused.  An accompanying error message will explain why.";
-                break;
-            case NOT_FOUND:
-                cause = "The URI requested is invalid or the resource requested, such as a user, does not exists.";
-                break;
-            case NOT_ACCEPTABLE:
-                cause = "Returned by the Search API when an invalid format is specified in the request.";
-                break;
-            case EXCEEDED_RATE_LIMIT_QUOTA:
-                cause = "The number of requests you have made exceeds the quota afforded by your assigned rate limit.";
-                break;
-            case INTERNAL_SERVER_ERROR:
-                cause = "Something is broken.  Please post to the group so the Twitter team can investigate.";
-                break;
-            case BAD_GATEWAY:
-                cause = "Twitter is down or being upgraded.";
-                break;
-            case SERVICE_UNAVAILABLE:
-                cause = "Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.";
-                break;
-            default:
-                cause = "";
-        }
-        return statusCode + ":" + cause;
-    }
 }
