@@ -72,6 +72,13 @@ public interface User extends TwitterResponse, java.io.Serializable {
     String getDescription();
 
     /**
+     * Tests if the user is enabling contributors
+     * @return if the user is enabling contributors
+     * @since Twitter4J 2.1.2
+     */
+    boolean isContributorsEnabled();
+
+    /**
      * Returns the profile image url of the user
      *
      * @return the profile image url of the user
@@ -192,6 +199,13 @@ public interface User extends TwitterResponse, java.io.Serializable {
     String getProfileBackgroundImageUrl();
 
     boolean isProfileBackgroundTiled();
+
+    /**
+     * Returns the preferred language of the user
+     * @return the preferred language of the user
+     * @since Twitter4J 2.1.2
+     */
+    String getLang();
 
     int getStatusesCount();
 

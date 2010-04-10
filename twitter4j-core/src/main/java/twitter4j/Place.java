@@ -6,6 +6,7 @@ package twitter4j;
  */
 public interface Place extends java.io.Serializable {
     String getName();
+    String getStreetAddress();
     String getCountryCode();
     String getId();
     String getCountry();

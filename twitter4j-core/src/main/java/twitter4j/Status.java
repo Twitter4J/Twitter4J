@@ -107,7 +107,8 @@ public interface Status extends TwitterResponse, java.io.Serializable {
     GeoLocation getGeoLocation();
 
     /**
-     * @return the place attached to the status
+     * Returns the place attached to this status
+     * @return The place attached to this status
      * @since Twitter4J 2.1.1
      */
     Place getPlace();
@@ -137,4 +138,10 @@ public interface Status extends TwitterResponse, java.io.Serializable {
      * @since Twitter4J 2.1.0
      */
     Status getRetweetedStatus();
+
+    /**
+     * Returns an array of contributors, or null if no contributor is associated with this status.
+     * @since Twitter4J 2.1.2
+     */
+    String[] getContributors();
 }

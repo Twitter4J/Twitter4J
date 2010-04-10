@@ -826,6 +826,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         Status status = twitterAPI1.updateStatus(new StatusUpdate(new java.util.Date() + " status with place").
                 placeId(sanFrancisco));
         assertEquals(sanFrancisco, status.getPlace().getId());
+        assertEquals(null, status.getContributors());
     }
 
     public void testTest() throws Exception {

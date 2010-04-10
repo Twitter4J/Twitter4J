@@ -48,6 +48,7 @@ import static twitter4j.ParseUtil.*;
     private String screenName;
     private String location;
     private String description;
+    private boolean isContributorsEnabled;
     private String profileImageUrl;
     private String url;
     private boolean isProtected;
@@ -67,6 +68,7 @@ import static twitter4j.ParseUtil.*;
     private String timeZone;
     private String profileBackgroundImageUrl;
     private boolean profileBackgroundTiled;
+    private String lang;
     private int statusesCount;
     private boolean isGeoEnabled;
     private boolean isVerified;
@@ -89,6 +91,7 @@ import static twitter4j.ParseUtil.*;
             screenName = getRawString("screen_name", json);
             location = getRawString("location", json);
             description = getRawString("description", json);
+            isContributorsEnabled = getBoolean("contributors_enabled", json);
             profileImageUrl = getRawString("profile_image_url", json);
             url = getRawString("url", json);
             isProtected = getBoolean("protected", json);
@@ -108,6 +111,7 @@ import static twitter4j.ParseUtil.*;
             timeZone = getRawString("time_zone", json);
             profileBackgroundImageUrl = getRawString("profile_background_image_url", json);
             profileBackgroundTiled = getBoolean("profile_background_tile", json);
+            lang = getRawString("lang", json);
             statusesCount = getInt("statuses_count", json);
             if (!json.isNull("status")) {
                 JSONObject statusJSON = json.getJSONObject("status");
@@ -151,6 +155,13 @@ import static twitter4j.ParseUtil.*;
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isContributorsEnabled() {
+        return isContributorsEnabled;
     }
 
     /**
@@ -339,6 +350,13 @@ import static twitter4j.ParseUtil.*;
      */
     public boolean isProfileBackgroundTiled() {
         return profileBackgroundTiled;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getLang() {
+        return lang;
     }
 
     /**

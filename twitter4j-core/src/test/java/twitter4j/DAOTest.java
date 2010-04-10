@@ -181,6 +181,7 @@ public class DAOTest extends TwitterTestBase {
 
         schema = new String[]{
                 "result/places/name",
+                "result/places/street_address",
                 "result/places/country_code",
                 "result/places/id",
                 "result/places/country",
@@ -189,6 +190,7 @@ public class DAOTest extends TwitterTestBase {
                 "result/places/full_name",
                 "result/places/bounding_box/*",
                 "result/places/contained_within/place_type",
+                "result/places/contained_within/street_address",
                 "result/places/contained_within/url",
                 "result/places/contained_within/bounding_box/type",
                 "result/places/contained_within/bounding_box/coordinates/*",
@@ -259,7 +261,59 @@ public class DAOTest extends TwitterTestBase {
         assertTrue(userList.isPublic());
 
 
+        schema = new String[]{
+                "favorited",
+                "in_reply_to_status_id",
+                "created_at",
+                "geo",
+                "place",
+                "source",
+                "in_reply_to_screen_name",
+                "in_reply_to_user_id",
+                "coordinates",
+                "truncated",
+                "contributors",
+                "id",
+                "text",
+                "user/*"
 
+        };
+        url="http://api.twitter.com/1/statuses/show/2245071380.json";
+        Status status = new StatusJSONImpl(validateJSONObjectSchema(url, schema));
+
+        schema = new String[]{
+                "profile_background_image_url",
+                "created_at",
+                "friends_count",
+                "profile_link_color",
+                "description",
+                "contributors_enabled",
+                "status/*",
+                "following",
+                "profile_background_tile",
+                "favourites_count",
+                "profile_sidebar_fill_color",
+                "url",
+                "profile_image_url",
+                "geo_enabled",
+                "notifications",
+                "profile_sidebar_border_color",
+                "location",
+                "screen_name",
+                "verified",
+                "time_zone",
+                "profile_background_color",
+                "protected",
+                "name",
+                "profile_text_color",
+                "followers_count",
+                "id",
+                "lang",
+                "statuses_count",
+                "utc_offset"};
+
+        url="http://api.twitter.com/1/users/show/yusukey.json";
+        User user = new UserJSONImpl(validateJSONObjectSchema(url, schema));
     }
 
     private JSONObject validateJSONObjectSchema(String url, String[] knownNames) throws Exception {

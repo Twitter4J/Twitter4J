@@ -34,6 +34,7 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.Arrays;
 
 import static twitter4j.ParseUtil.getRawString;
+import static twitter4j.ParseUtil.getUnescapedString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -41,6 +42,7 @@ import static twitter4j.ParseUtil.getRawString;
  */
 final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.Serializable {
     private String name;
+    private String streetAddress;
     private String countryCode;
     private String id;
     private String country;
@@ -64,7 +66,8 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
     }
     private void init(JSONObject json) throws TwitterException{
         try {
-            name = getRawString("name", json);
+            name = getUnescapedString("name", json);
+            streetAddress = getUnescapedString("street_address", json);
             countryCode = getRawString("country_code", json);
             id = getRawString("id", json);
             country = getRawString("country", json);
@@ -133,6 +136,9 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
     public String getName(){
         return name;
     }
+    public String getStreetAddress(){
+        return streetAddress;
+    }
     public String getCountryCode(){
         return countryCode;
     }
@@ -188,6 +194,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
     public String toString() {
         return "PlaceJSONImpl{" +
                 "name='" + name + '\'' +
+                ", streetAddress='" + streetAddress + '\'' +
                 ", countryCode='" + countryCode + '\'' +
                 ", id='" + id + '\'' +
                 ", country='" + country + '\'' +

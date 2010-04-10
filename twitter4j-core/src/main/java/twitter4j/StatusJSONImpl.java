@@ -31,8 +31,14 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.Date;
-import static twitter4j.ParseUtil.*;
+
+import static twitter4j.ParseUtil.getBoolean;
+import static twitter4j.ParseUtil.getDate;
+import static twitter4j.ParseUtil.getInt;
+import static twitter4j.ParseUtil.getLong;
+import static twitter4j.ParseUtil.getUnescapedString;
 
 /**
  * A data class representing one single status of a user.
@@ -51,6 +57,8 @@ import static twitter4j.ParseUtil.*;
     private String inReplyToScreenName;
     private GeoLocation geoLocation = null;
     private Place place = null;
+
+    private String[] contributors;
 
     private Status retweetedStatus;
     private static final long serialVersionUID = 1608000492860584608L;
@@ -96,41 +104,43 @@ import static twitter4j.ParseUtil.*;
             } catch (JSONException ignore) {
             }
         }
+        if (!json.isNull("contributors")) {
+            try {
+                JSONArray contributorsArray = json.getJSONArray("contributors");
+                contributors = new String[contributorsArray.length()];
+                for(int i=0;i<contributorsArray.length();i++){
+                    contributors[i] = contributorsArray.getString(i);
+                }
+            } catch (JSONException ignore) {
+            }
+        } else{
+            contributors = null;
+        }
     }
 
     /**
-     * Return the created_at
-     *
-     * @return created_at
-     * @since Twitter4J 1.1.0
+     * {@inheritDoc}
      */
     public Date getCreatedAt() {
         return this.createdAt;
     }
 
     /**
-     * Returns the id of the status
-     *
-     * @return the id
+     * {@inheritDoc}
      */
     public long getId() {
         return this.id;
     }
 
     /**
-     * Returns the text of the status
-     *
-     * @return the text
+     * {@inheritDoc}
      */
     public String getText() {
         return this.text;
     }
 
     /**
-     * Returns the source
-     *
-     * @return the source
-     * @since Twitter4J 1.0.4
+     * {@inheritDoc}
      */
     public String getSource() {
         return this.source;
@@ -138,68 +148,56 @@ import static twitter4j.ParseUtil.*;
 
 
     /**
-     * Test if the status is truncated
-     *
-     * @return true if truncated
-     * @since Twitter4J 1.0.4
+     * {@inheritDoc}
      */
     public boolean isTruncated() {
         return isTruncated;
     }
 
     /**
-     * Returns the in_reply_tostatus_id
-     *
-     * @return the in_reply_tostatus_id
-     * @since Twitter4J 1.0.4
+     * {@inheritDoc}
      */
     public long getInReplyToStatusId() {
         return inReplyToStatusId;
     }
 
     /**
-     * Returns the in_reply_user_id
-     *
-     * @return the in_reply_tostatus_id
-     * @since Twitter4J 1.0.4
+     * {@inheritDoc}
      */
     public int getInReplyToUserId() {
         return inReplyToUserId;
     }
 
     /**
-     * Returns the in_reply_to_screen_name
-     *
-     * @return the in_in_reply_to_screen_name
-     * @since Twitter4J 2.0.4
+     * {@inheritDoc}
      */
     public String getInReplyToScreenName() {
         return inReplyToScreenName;
     }
 
     /**
-     * Returns The location that this tweet refers to if available.
-     * @return returns The location that this tweet refers to if available (can be null)
-     * @since Twitter4J 2.1.0
+     * {@inheritDoc}
      */
     public GeoLocation getGeoLocation(){
         return geoLocation;
     }
 
     /**
-     * Returns the place attached to this status
-     * @return The place attached to this status
-     * @since Twitter4J 2.1.1
+     * {@inheritDoc}
      */
     public Place getPlace(){
         return place;
     }
 
     /**
-     * Test if the status is favorited
-     *
-     * @return true if favorited
-     * @since Twitter4J 1.0.4
+     * {@inheritDoc}
+     */
+    public String[] getContributors() {
+        return contributors;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public boolean isFavorited() {
         return isFavorited;
@@ -209,25 +207,21 @@ import static twitter4j.ParseUtil.*;
     private User user = null;
 
     /**
-     * Return the user
-     *
-     * @return the user
+     * {@inheritDoc}
      */
     public User getUser() {
         return user;
     }
 
     /**
-     *
-     * @since Twitter4J 2.0.10
+     * {@inheritDoc}
      */
     public boolean isRetweet(){
         return null != retweetedStatus;
     }
 
     /**
-     *
-     * @since Twitter4J 2.1.0
+     * {@inheritDoc}
      */
     public Status getRetweetedStatus() {
         return retweetedStatus;
@@ -280,6 +274,7 @@ import static twitter4j.ParseUtil.*;
                 ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
                 ", geoLocation=" + geoLocation +
                 ", place=" + place +
+                ", contributors=" + (contributors == null ? null : Arrays.asList(contributors)) +
                 ", retweetedStatus=" + retweetedStatus +
                 ", user=" + user +
                 '}';
