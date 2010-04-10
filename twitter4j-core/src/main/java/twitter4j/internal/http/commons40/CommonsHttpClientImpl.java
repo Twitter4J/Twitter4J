@@ -70,8 +70,11 @@ public class CommonsHttpClientImpl implements twitter4j.internal.http.HttpClient
 
             } else if (req.getMethod() == RequestMethod.POST) {
                 HttpPost post = new HttpPost(req.getURL());
-                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(asNameValuePairList(req), "UTF-8");
-                post.setEntity(entity);
+                List<NameValuePair> nameValuePair = asNameValuePairList(req);
+                if (null != nameValuePair) {
+                    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePair, "UTF-8");
+                    post.setEntity(entity);
+                }
                 commonsRequest = post;
             } else if (req.getMethod() == RequestMethod.DELETE) {
                 commonsRequest = new HttpDelete(composeURL(req));
