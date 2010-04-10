@@ -30,7 +30,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import twitter4j.TwitterException;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.logging.LoggerFactory;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -45,62 +44,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.util.zip.GZIPInputStream;
 
 /**
  * A data class representing HTTP Response
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class HttpResponse {
-    private static final Logger logger = Logger.getLogger(HttpResponse.class);
+public abstract class HttpResponse {
+    private static final Logger logger = Logger.getLogger(HttpResponseImpl.class);
 
     private static ThreadLocal<DocumentBuilder> builders =
             new ThreadLocal<DocumentBuilder>() {
                 @Override
                 protected DocumentBuilder initialValue() {
                     try {
-                        return
-                                DocumentBuilderFactory.newInstance()
-                                        .newDocumentBuilder();
+                        return DocumentBuilderFactory.newInstance()
+                                .newDocumentBuilder();
                     } catch (ParserConfigurationException ex) {
                         throw new ExceptionInInitializerError(ex);
                     }
                 }
             };
 
-    private int statusCode;
+    protected int statusCode;
     private Document responseAsDocument = null;
-    private String responseAsString = null;
-    private InputStream is;
-    private HttpURLConnection con;
+    protected String responseAsString = null;
+    protected InputStream is;
     private boolean streamConsumed = false;
 
-
-    public HttpResponse(HttpURLConnection con) throws IOException {
-        this.con = con;
-        this.statusCode = con.getResponseCode();
-        if(null == (is = con.getErrorStream())){
-            is = con.getInputStream();
-        }
-        if (null != is && "gzip".equals(con.getContentEncoding())) {
-            // the response is gzipped
-            is = new GZIPInputStream(is);
-        }
-    }
-
-    // for test purpose
-    /*package*/ HttpResponse(String content) {
-        this.responseAsString = content;
-    }
-
-    public int getStatusCode() {
+    public final int getStatusCode() {
         return statusCode;
     }
 
-    public String getResponseHeader(String name) {
-        return con.getHeaderField(name);
-    }
+    public abstract String getResponseHeader(String name);
 
     /**
      * Returns the response stream.<br>
@@ -112,7 +88,10 @@ public final class HttpResponse {
      * @throws TwitterException
      * @see #disconnect()
      */
-    public InputStream asStream() {
+    /**
+     * {@inheritDoc}
+     */
+    public final InputStream asStream() {
         if(streamConsumed){
             throw new IllegalStateException("Stream has already been consumed.");
         }
@@ -125,7 +104,7 @@ public final class HttpResponse {
      * @return response body
      * @throws TwitterException
      */
-    public String asString() throws TwitterException{
+    public final String asString() throws TwitterException {
         if(null == responseAsString){
             BufferedReader br;
             try {
@@ -142,7 +121,7 @@ public final class HttpResponse {
                 this.responseAsString = buf.toString();
                 logger.debug(responseAsString);
                 stream.close();
-                con.disconnect();
+                disconnect();
                 streamConsumed = true;
             } catch (NullPointerException npe) {
                 // don't remember in which case npe can be thrown
@@ -160,7 +139,7 @@ public final class HttpResponse {
      * @return response body as org.w3c.dom.Document
      * @throws TwitterException
      */
-    public Document asDocument() throws TwitterException {
+    public final Document asDocument() throws TwitterException {
         if (null == responseAsDocument) {
             try {
                 // it should be faster to read the inputstream directly.
@@ -181,7 +160,7 @@ public final class HttpResponse {
      * @return response body as twitter4j.internal.org.json.JSONObject
      * @throws TwitterException
      */
-    public JSONObject asJSONObject() throws TwitterException {
+    public final JSONObject asJSONObject() throws TwitterException {
         try {
             if (logger.isDebugEnabled()) {
                 return new JSONObject(asString());
@@ -203,7 +182,7 @@ public final class HttpResponse {
      * @return response body as twitter4j.internal.org.json.JSONArray
      * @throws TwitterException
      */
-    public JSONArray asJSONArray() throws TwitterException {
+    public final JSONArray asJSONArray() throws TwitterException {
         try {
             if (logger.isDebugEnabled()) {
                 return new JSONArray(asString());
@@ -220,7 +199,7 @@ public final class HttpResponse {
     }
 
 
-    public InputStreamReader asReader() {
+    public final InputStreamReader asReader() {
         try {
             return new InputStreamReader(is, "UTF-8");
         } catch (java.io.UnsupportedEncodingException uee) {
@@ -228,21 +207,16 @@ public final class HttpResponse {
         }
     }
 
-    public void disconnect(){
-        con.disconnect();
-    }
+    public abstract void disconnect();
 
     @Override
     public String toString() {
-        if(null != responseAsString){
-            return responseAsString;
-        }
-        return "Response{" +
+        return "HttpResponse{" +
                 "statusCode=" + statusCode +
-                ", response=" + responseAsDocument +
-                ", responseString='" + responseAsString + '\'' +
+                ", responseAsDocument=" + responseAsDocument +
+                ", responseAsString='" + responseAsString + '\'' +
                 ", is=" + is +
-                ", con=" + con +
+                ", streamConsumed=" + streamConsumed +
                 '}';
     }
 }

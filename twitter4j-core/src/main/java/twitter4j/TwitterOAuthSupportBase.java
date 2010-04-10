@@ -1,17 +1,23 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.http.*;
-import twitter4j.internal.http.HttpClient;
+import twitter4j.http.AccessToken;
+import twitter4j.http.Authorization;
+import twitter4j.http.NullAuthorization;
+import twitter4j.http.OAuthAuthorization;
+import twitter4j.http.OAuthSupport;
+import twitter4j.http.RequestToken;
+import twitter4j.internal.http.HttpClientFactory;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.http.HttpResponseCode;
 import twitter4j.internal.http.HttpResponseEvent;
 import twitter4j.internal.http.HttpResponseListener;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseListener, OAuthSupport, java.io.Serializable {
+abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseCode, HttpResponseListener, OAuthSupport, java.io.Serializable {
     protected transient HttpClientWrapper http;
 
     protected RateLimitStatusListener rateLimitStatusListener = null;
@@ -166,8 +172,8 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
             RateLimitStatusEvent statusEvent = null;
             if (null != rateLimitStatus) {
                 statusEvent = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
-                if (res.getStatusCode() == HttpClient.ENHANCE_YOUR_CLAIM
-                        || res.getStatusCode() == HttpClient.SERVICE_UNAVAILABLE) {
+                if (res.getStatusCode() == ENHANCE_YOUR_CLAIM
+                        || res.getStatusCode() == SERVICE_UNAVAILABLE) {
                     // EXCEEDED_RATE_LIMIT_QUOTA is returned by Rest API
                     // SERVICE_UNAVAILABLE is returned by Search API
                     rateLimitStatusListener.onRateLimitStatus(statusEvent);

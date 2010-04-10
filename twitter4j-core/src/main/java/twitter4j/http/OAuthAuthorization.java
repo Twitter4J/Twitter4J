@@ -29,8 +29,10 @@ package twitter4j.http;
 import twitter4j.conf.Configuration;
 import twitter4j.TwitterException;
 import twitter4j.internal.http.BASE64Encoder;
+import twitter4j.internal.http.HttpClientFactory;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
+import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.logging.LoggerFactory;
 
@@ -89,10 +91,8 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     }
 
     // implementations for Authorization
-    public void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con) {
-        String authorization = generateAuthorizationHeader(method, url, params, oauthToken);
-        logger.debug("Authorization: " + authorization);
-        con.addRequestProperty("Authorization", authorization);
+    public String getAuthorizationHeader(HttpRequest req) {
+        return generateAuthorizationHeader(req.getMethod().name(), req.getURL(), req.getParameters(), oauthToken);
     }
 
     private void ensureTokenIsAvailable() {

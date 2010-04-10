@@ -104,10 +104,10 @@ public class SearchAPITest extends TwitterTestBase {
         assertEquals(1, queryResult.getPage());
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
 
-        queryStr = "%... 日本語";
+        queryStr = "%... 日本語 " + new Date();
 
-        twitterAPI1.updateStatus("%... 日本語");
-        query = new Query("%... 日本語");
+        twitterAPI1.updateStatus(queryStr);
+        query = new Query(queryStr);
         queryResult = unauthenticated.search(query);
         assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());

@@ -24,52 +24,43 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.internal.http;
 
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpRequest;
-
-import java.io.ObjectStreamException;
-import java.net.HttpURLConnection;
+import twitter4j.internal.http.commons40.CommonsHttpClientImpl;
 
 /**
- * An interface represents credentials.
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.2
  */
-public final class NullAuthorization implements Authorization, java.io.Serializable {
-    private static NullAuthorization SINGLETON = new NullAuthorization();
-    private static final long serialVersionUID = -8748173338942663960L;
+public final class HttpClientFactory {
+    private static boolean useCommonsHttpClient;
 
-    private NullAuthorization() {
+    static {
+        try {
+            // org.apache.http.auth.AuthenticationException was introduced since v4.0
+            Class.forName("org.apache.http.auth.AuthenticationException");
+            // Commons-HttpClient 4.0 is available in the classpath
+            useCommonsHttpClient = true;
+            try {
+                // -Dtwitter4j.useCommonsHttpClient=false to disable using Commons-HttpClient
+                String str = System.getProperty("twitter4j.useCommonsHttpClient");
+                if(null != str){
+                    useCommonsHttpClient = useCommonsHttpClient && Boolean.valueOf(str);
+                }
+            }catch(Exception ignore){
+            }
 
+        } catch (ClassNotFoundException e) {
+            // HttpClient not found
+            useCommonsHttpClient = false;
+        }
     }
 
-    public static NullAuthorization getInstance() {
-        return SINGLETON;
+    public static HttpClient getInstance(HttpClientConfiguration conf) {
+        if (useCommonsHttpClient) {
+            return new CommonsHttpClientImpl(conf);
+        } else {
+            return new HttpClientImpl(conf);
+        }
     }
-
-    public String getAuthorizationHeader(HttpRequest req) {
-        return null;
-    }
-
-    public boolean isEnabled() {
-        return false;
-    }
-
-    /** @noinspection EqualsWhichDoesntCheckParameterClass*/
-    @Override
-    public boolean equals(Object o) {
-        return SINGLETON == o;
-    }
-
-    @Override
-    public String toString() {
-        return "NullAuthentication{SINGLETON}";
-    }
-
-    private Object readResolve() throws ObjectStreamException {
-        return SINGLETON;
-    }
-
 }

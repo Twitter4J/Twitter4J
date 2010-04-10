@@ -56,19 +56,19 @@ public final class HttpClientWrapper implements java.io.Serializable {
     public HttpClientWrapper(HttpClientWrapperConfiguration wrapperConf) {
         this.wrapperConf = wrapperConf;
         requestHeaders = wrapperConf.getRequestHeaders();
-        http = new HttpClient(wrapperConf);
+        http = HttpClientFactory.getInstance(wrapperConf);
     }
     // never used with this project. Just for handiness for those using this class.
     public HttpClientWrapper() {
         this.wrapperConf = ConfigurationContext.getInstance();
         requestHeaders = wrapperConf.getRequestHeaders();
-        http = new HttpClient(wrapperConf);
+        http = HttpClientFactory.getInstance(wrapperConf);
     }
     private HttpResponse request(HttpRequest req) throws TwitterException {
         HttpResponse res = http.request(req);
         //fire HttpResponseEvent
         if (null != httpResponseListener) {
-            httpResponseListener.httpResponseReceived(new HttpResponseEvent(http, req, res));
+            httpResponseListener.httpResponseReceived(new HttpResponseEvent(req, res));
         }
         return res;
     }

@@ -35,6 +35,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.internal.http.HttpClient;
+import twitter4j.internal.http.HttpClientImpl;
 import twitter4j.internal.http.HttpResponse;
 
 import java.io.FileInputStream;
@@ -130,7 +131,7 @@ public final class FeedMonitor {
     private Properties prop = new Properties();
     private String feedurl;
     private Twitter twitter;
-    private HttpClient http = new HttpClient();
+    private HttpClientImpl http = new HttpClientImpl();
     private Date lastUpdate;
     private String fileName;
 

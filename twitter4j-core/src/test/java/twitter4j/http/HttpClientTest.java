@@ -28,6 +28,7 @@ package twitter4j.http;
 
 import twitter4j.TwitterTestBase;
 import twitter4j.internal.http.HttpClient;
+import twitter4j.internal.http.HttpClientImpl;
 
 /**
  * Test case for HttpCient
@@ -43,7 +44,7 @@ public class HttpClientTest extends TwitterTestBase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        client = new HttpClient();
+        client = new HttpClientImpl();
 //        client.setUserId(id1.name);
 //        client.setPassword(id1.pass);
     }

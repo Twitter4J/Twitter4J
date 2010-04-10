@@ -216,8 +216,8 @@ public class TwitterTestUnit extends TwitterTestBase {
         try {
             user = twitterAPI1.checkUserListMembership(id1.screenName, id2.id, userList.getId());
             fail("id2 shouldn't be a member of the userList yet. expecting a TwitterException");
-        } catch (TwitterException ignore) {
-            assertEquals(404, ignore.getStatusCode());
+        } catch (TwitterException te) {
+            assertEquals(404, te.getStatusCode());
         }
         userList = twitterAPI1.addUserListMember(userList.getId(), id2.id);
         userList = twitterAPI1.addUserListMember(userList.getId(), id4.id);
@@ -665,7 +665,7 @@ public class TwitterTestUnit extends TwitterTestBase {
     }
 
     public void testGetMentions() throws Exception {
-        twitterAPI2.updateStatus("@" + id1.screenName + " reply to id1");
+        twitterAPI2.updateStatus("@" + id1.screenName + " reply to id1 " + new java.util.Date());
         List<Status> statuses = twitterAPI1.getMentions();
         assertTrue(statuses.size() > 0);
 

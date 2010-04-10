@@ -34,12 +34,9 @@ public final class HttpResponseEvent {
 
     private HttpRequest request;
 
-    private HttpClient source;
-
     private HttpResponse response;
 
-    public HttpResponseEvent(HttpClient source, HttpRequest request, HttpResponse response) {
-        this.source = source;
+    public HttpResponseEvent(HttpRequest request, HttpResponse response) {
         this.request = request;
         this.response = response;
     }
@@ -62,10 +59,6 @@ public final class HttpResponseEvent {
 
     public boolean isAuthenticated() {
         return request.getAuthorization().isEnabled();
-    }
-
-    public HttpClient getSource() {
-        return source;
     }
 
     @Override

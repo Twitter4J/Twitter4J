@@ -35,6 +35,7 @@ import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
 import twitter4j.internal.http.HttpClient;
+import twitter4j.internal.http.HttpClientImpl;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.http.HttpResponse;
@@ -67,12 +68,12 @@ public class OAuthTest extends TwitterTestUnit {
         super.setUp();
         desktopConsumerSecret = p.getProperty("desktopConsumerSecret");
         desktopConsumerKey = p.getProperty("desktopConsumerKey");
-        HttpClient decktopClient = new HttpClient();
+        HttpClient decktopClient = new HttpClientImpl();
         OAuthSupport desktopClientOAuthAuthentication = new OAuthAuthorization(ConfigurationContext.getInstance(), desktopConsumerKey, desktopConsumerSecret);
 
         browserConsumerSecret = p.getProperty("browserConsumerSecret");
         browserConsumerKey = p.getProperty("browserConsumerKey");
-        HttpClient browserClient = new HttpClient();
+        HttpClient browserClient = new HttpClientImpl();
         OAuthSupport browserClientOAuthAuthentication = new OAuthAuthorization(ConfigurationContext.getInstance(), browserConsumerKey, browserConsumerSecret);
 
 //        consumerSecret = p.getString("browserConsumerSecret");
@@ -107,14 +108,14 @@ public class OAuthTest extends TwitterTestUnit {
     public void testDesktopClient() throws Exception {
         RequestToken rt;
         Twitter twitter = new Twitter();
-        HttpClient http;
+        HttpClientImpl http;
         HttpResponse response;
         String resStr;
         String authorizeURL;
         HttpParameter[] params;
         AccessToken at;
         String cookie;
-        http = new HttpClient();
+        http = new HttpClientImpl();
 
         // desktop client - requiring pin
         unauthenticated.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
@@ -172,14 +173,14 @@ public class OAuthTest extends TwitterTestUnit {
     public void testSigninWithTwitter() throws Exception {
         RequestToken rt;
         Twitter twitter = new TwitterFactory().getInstance();
-        HttpClient http;
+        HttpClientImpl http;
         HttpResponse response;
         String resStr;
         String authorizeURL;
         HttpParameter[] params;
         AccessToken at;
         String cookie;
-        http = new HttpClient();
+        http = new HttpClientImpl();
 
         // browser client - not requiring pin
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
@@ -212,14 +213,14 @@ public class OAuthTest extends TwitterTestUnit {
     public void testBrowserClient() throws Exception {
         RequestToken rt;
         Twitter twitter = new Twitter();
-        HttpClient http;
+        HttpClientImpl http;
         HttpResponse response;
         String resStr;
         String authorizeURL;
         HttpParameter[] params;
         AccessToken at;
         String cookie;
-        http = new HttpClient();
+        http = new HttpClientImpl();
 
         // browser client - not requiring pin
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
@@ -252,20 +253,20 @@ public class OAuthTest extends TwitterTestUnit {
     public void testBrowserClientWithCustomCallback() throws Exception {
         RequestToken rt;
         Twitter twitter = new Twitter();
-        HttpClient http;
+        HttpClientImpl http;
         HttpResponse response;
         String resStr;
         String authorizeURL;
         HttpParameter[] params;
         AccessToken at;
         String cookie;
-        http = new HttpClient();
+        http = new HttpClientImpl();
 
         // browser client - not requiring pin / overriding callback url
         twitter = new Twitter();
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         rt = twitter.getOAuthRequestToken("http://yusuke.homeip.net/twitter4j/custom_callback");
-        http = new HttpClient();
+        http = new HttpClientImpl();
 
         System.out.println("AuthorizationURL: " + rt.getAuthorizationURL());
         response = http.get(rt.getAuthorizationURL());

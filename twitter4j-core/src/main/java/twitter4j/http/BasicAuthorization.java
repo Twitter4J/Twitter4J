@@ -28,6 +28,7 @@ package twitter4j.http;
 
 import twitter4j.internal.http.BASE64Encoder;
 import twitter4j.internal.http.HttpParameter;
+import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.logging.LoggerFactory;
 
@@ -68,9 +69,8 @@ public final class BasicAuthorization implements Authorization, java.io.Serializ
         return null;
     }
 
-    public void setAuthorizationHeader(String method, String url, HttpParameter[] params, HttpURLConnection con) {
-        logger.debug("Authorization: Basic ************************");
-        con.addRequestProperty("Authorization", basic);
+    public String getAuthorizationHeader(HttpRequest req) {
+        return basic;
     }
 
     public boolean isEnabled() {

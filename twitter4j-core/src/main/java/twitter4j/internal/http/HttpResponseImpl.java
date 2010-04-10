@@ -24,52 +24,44 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.internal.http;
 
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpRequest;
-
-import java.io.ObjectStreamException;
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.zip.GZIPInputStream;
 
 /**
- * An interface represents credentials.
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.2
  */
-public final class NullAuthorization implements Authorization, java.io.Serializable {
-    private static NullAuthorization SINGLETON = new NullAuthorization();
-    private static final long serialVersionUID = -8748173338942663960L;
+public class HttpResponseImpl extends HttpResponse {
+    private HttpURLConnection con;
 
-    private NullAuthorization() {
-
+    HttpResponseImpl(HttpURLConnection con) throws IOException {
+        this.con = con;
+        this.statusCode = con.getResponseCode();
+        if(null == (is = con.getErrorStream())){
+            is = con.getInputStream();
+        }
+        if (null != is && "gzip".equals(con.getContentEncoding())) {
+            // the response is gzipped
+            is = new GZIPInputStream(is);
+        }
     }
 
-    public static NullAuthorization getInstance() {
-        return SINGLETON;
+    // for test purpose
+    /*package*/ HttpResponseImpl(String content) {
+        this.responseAsString = content;
     }
 
-    public String getAuthorizationHeader(HttpRequest req) {
-        return null;
+    public String getResponseHeader(String name) {
+        return con.getHeaderField(name);
     }
 
-    public boolean isEnabled() {
-        return false;
+    /**
+     * {@inheritDoc}
+     */
+    public void disconnect(){
+        con.disconnect();
     }
-
-    /** @noinspection EqualsWhichDoesntCheckParameterClass*/
-    @Override
-    public boolean equals(Object o) {
-        return SINGLETON == o;
-    }
-
-    @Override
-    public String toString() {
-        return "NullAuthentication{SINGLETON}";
-    }
-
-    private Object readResolve() throws ObjectStreamException {
-        return SINGLETON;
-    }
-
 }

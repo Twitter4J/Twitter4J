@@ -31,6 +31,8 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.http.AuthorizationFactory;
 import twitter4j.internal.http.HttpClient;
+import twitter4j.internal.http.HttpClientFactory;
+import twitter4j.internal.http.HttpClientImpl;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
@@ -67,7 +69,7 @@ public class DAOTest extends TwitterTestBase {
     }
 
     public void testEmptyJSON() throws Exception {
-        HttpClient http = new HttpClient();
+        HttpClientImpl http = new HttpClientImpl();
 
         // empty User list
         List<User> users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"));
@@ -421,7 +423,7 @@ public class DAOTest extends TwitterTestBase {
 
     public void testUserAsJSON() throws Exception {
         // single User
-        HttpClient http = new HttpClient();
+        HttpClientWrapper http = new HttpClientWrapper();
         User user = new UserJSONImpl(http.get("http://twitter4j.org/en/testcases/users/show/twit4j.json"));
         assertTrue(user.isGeoEnabled());
         assertFalse(user.isVerified());
@@ -472,7 +474,7 @@ public class DAOTest extends TwitterTestBase {
 
     public void testStatusAsJSON() throws Exception {
         // single Status
-        HttpClient http = new HttpClient();
+        HttpClientImpl http = new HttpClientImpl();
         List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/public_timeline.json"));
         Status status = statuses.get(0);
         assertEquals(new Date(1259041785000l), status.getCreatedAt());
@@ -490,7 +492,7 @@ public class DAOTest extends TwitterTestBase {
 
     public void testRetweetStatusAsJSON() throws Exception {
         // single Status
-        HttpClient http = new HttpClient();
+        HttpClientImpl http = new HttpClientImpl();
         Status status = new StatusJSONImpl(http.get("http://twitter4j.org/en/testcases/statuses/retweet/6010814202.json"));
         assertEquals(new Date(1259078050000l), status.getCreatedAt());
         assertEquals(6011259778l, status.getId());
@@ -576,7 +578,7 @@ public class DAOTest extends TwitterTestBase {
     }
 
     public void testDirectMessagesAsJSON() throws Exception {
-        HttpClient http = new HttpClient();
+        HttpClientImpl http = new HttpClientImpl();
         List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/direct_messages.json"));
         DirectMessage dm = directMessages.get(0);
         assertEquals(new java.util.Date(1248177356000l),dm.getCreatedAt());

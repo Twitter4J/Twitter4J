@@ -24,52 +24,46 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.internal.http.commons40;
 
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpRequest;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
 
-import java.io.ObjectStreamException;
-import java.net.HttpURLConnection;
+import java.io.IOException;
+import java.util.zip.GZIPInputStream;
 
 /**
- * An interface represents credentials.
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.2
  */
-public final class NullAuthorization implements Authorization, java.io.Serializable {
-    private static NullAuthorization SINGLETON = new NullAuthorization();
-    private static final long serialVersionUID = -8748173338942663960L;
+final class CommonsHttpResponseImpl extends twitter4j.internal.http.HttpResponse {
+    private HttpResponse res;
 
-    private NullAuthorization() {
-
+    CommonsHttpResponseImpl(HttpResponse res) throws IOException {
+        this.res = res;
+        is = res.getEntity().getContent();
+        statusCode = res.getStatusLine().getStatusCode();
+        if (null != is && "gzip".equals(getResponseHeader("Content-Encoding"))) {
+            // the response is gzipped
+            is = new GZIPInputStream(is);
+        }
     }
 
-    public static NullAuthorization getInstance() {
-        return SINGLETON;
+    /**
+     * {@inheritDoc}
+     */
+    public final String getResponseHeader(String name) {
+        Header[] headers = res.getHeaders(name);
+        if (null != headers && headers.length > 0) {
+            return headers[0].getValue();
+        } else {
+            return null;
+        }
     }
 
-    public String getAuthorizationHeader(HttpRequest req) {
-        return null;
+    /**
+     * {@inheritDoc}
+     */
+    public void disconnect() {
     }
-
-    public boolean isEnabled() {
-        return false;
-    }
-
-    /** @noinspection EqualsWhichDoesntCheckParameterClass*/
-    @Override
-    public boolean equals(Object o) {
-        return SINGLETON == o;
-    }
-
-    @Override
-    public String toString() {
-        return "NullAuthentication{SINGLETON}";
-    }
-
-    private Object readResolve() throws ObjectStreamException {
-        return SINGLETON;
-    }
-
 }
