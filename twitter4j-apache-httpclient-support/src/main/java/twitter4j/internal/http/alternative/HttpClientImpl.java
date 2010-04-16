@@ -24,7 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.internal.http.commons40;
+package twitter4j.internal.http.alternative;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -36,8 +36,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreProtocolPNames;
 import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpClientConfiguration;
 import twitter4j.internal.http.HttpParameter;
@@ -50,19 +54,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * HttpClient implementation for Apache HttpClient 4.0.x
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-public class CommonsHttpClientImpl implements twitter4j.internal.http.HttpClient {
-    private HttpClientConfiguration conf;
+public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
+    private final HttpClientConfiguration conf;
+    private final HttpClient client;
 
-    public CommonsHttpClientImpl(HttpClientConfiguration conf) {
+    public HttpClientImpl(HttpClientConfiguration conf) {
         this.conf = conf;
+        DefaultHttpClient client =  new DefaultHttpClient();
+        // @todo configure the HttpClient instance
+        this.client = client;
     }
 
     public twitter4j.internal.http.HttpResponse request(twitter4j.internal.http.HttpRequest req) throws TwitterException {
         try {
-            HttpClient client = new DefaultHttpClient();
             HttpRequestBase commonsRequest = null;
 
             if (req.getMethod() == RequestMethod.GET) {
@@ -70,11 +78,35 @@ public class CommonsHttpClientImpl implements twitter4j.internal.http.HttpClient
 
             } else if (req.getMethod() == RequestMethod.POST) {
                 HttpPost post = new HttpPost(req.getURL());
-                List<NameValuePair> nameValuePair = asNameValuePairList(req);
-                if (null != nameValuePair) {
-                    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePair, "UTF-8");
-                    post.setEntity(entity);
+                // parameter has a file?
+                boolean hasFile = false;
+                if (null != req.getParameters()) {
+                    for (HttpParameter parameter : req.getParameters()) {
+                        if (parameter.isFile()) {
+                            hasFile = true;
+                            break;
+                        }
+                    }
+                    if (!hasFile) {
+                        List<NameValuePair> nameValuePair = asNameValuePairList(req);
+                        if (null != nameValuePair) {
+                            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePair, "UTF-8");
+                            post.setEntity(entity);
+                        }
+                    } else {
+                        MultipartEntity me = new MultipartEntity();
+                        for (HttpParameter parameter : req.getParameters()) {
+                            if (parameter.isFile()) {
+                                me.addPart(parameter.getName(), new FileBody(parameter.getFile(), parameter.getContentType()));
+                            } else {
+                                me.addPart(parameter.getName(), new StringBody(parameter.getValue()));
+                            }
+                        }
+                        post.setEntity(me);
+
+                    }
                 }
+                post.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
                 commonsRequest = post;
             } else if (req.getMethod() == RequestMethod.DELETE) {
                 commonsRequest = new HttpDelete(composeURL(req));
@@ -95,7 +127,7 @@ public class CommonsHttpClientImpl implements twitter4j.internal.http.HttpClient
                 commonsRequest.addHeader("Authorization", authorizationHeader);
             }
 
-            CommonsHttpResponseImpl res = new CommonsHttpResponseImpl(client.execute(commonsRequest));
+            ApacheHttpClientHttpResponseImpl res = new ApacheHttpClientHttpResponseImpl(client.execute(commonsRequest));
             if(200 != res.getStatusCode()){
                 throw new TwitterException(res.asString() ,res);
             }

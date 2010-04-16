@@ -24,38 +24,46 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples;
+package twitter4j.internal.http.alternative;
 
-import twitter4j.DirectMessage;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+
+import java.io.IOException;
+import java.util.zip.GZIPInputStream;
 
 /**
- * Example application that sends a message to specified Twitter-er from specified account.<br>
- * Usage: java twitter4j.examples.DirectMessage senderID senderPassword message recipientId
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.2
  */
-public final class SendDirectMessage {
+final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.HttpResponse {
+    private HttpResponse res;
+
+    ApacheHttpClientHttpResponseImpl(HttpResponse res) throws IOException {
+        this.res = res;
+        is = res.getEntity().getContent();
+        statusCode = res.getStatusLine().getStatusCode();
+        if (null != is && "gzip".equals(getResponseHeader("Content-Encoding"))) {
+            // the response is gzipped
+            is = new GZIPInputStream(is);
+        }
+    }
+
     /**
-     * Usage: java twitter4j.examples.DirectMessage senderID senderPassword message recipientId
-     * @param args String[]
+     * {@inheritDoc}
      */
-    public static void main(String[] args) {
-        if (args.length < 4) {
-            System.out.println("No TwitterID/Password specified.");
-            System.out.println("Usage: java twitter4j.examples.DirectMessage senderScreenName senderPassword recipientScreenName message");
-            System.exit( -1);
+    public final String getResponseHeader(String name) {
+        Header[] headers = res.getHeaders(name);
+        if (null != headers && headers.length > 0) {
+            return headers[0].getValue();
+        } else {
+            return null;
         }
-        Twitter twitter = new TwitterFactory().getInstance(args[0], args[1]);
-        try {
-            DirectMessage message = twitter.sendDirectMessage(args[2], args[3]);
-            System.out.println("Direct message successfully sent to " +
-                               message.getRecipientScreenName());
-            System.exit(0);
-        } catch (TwitterException te) {
-            System.out.println("Failed to send message: " + te.getMessage());
-            System.exit( -1);
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void disconnect() {
     }
 }

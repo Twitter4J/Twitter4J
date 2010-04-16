@@ -26,41 +26,47 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.http;
 
-import twitter4j.internal.http.commons40.CommonsHttpClientImpl;
+import sun.jvm.hotspot.utilities.AssertionFailure;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
 public final class HttpClientFactory {
-    private static boolean useCommonsHttpClient;
+    private static final Constructor HTTP_CLIENT_CONSTRUCTOR;
 
     static {
+        Class clazz = null;
         try {
-            // org.apache.http.auth.AuthenticationException was introduced since v4.0
-            Class.forName("org.apache.http.auth.AuthenticationException");
-            // Commons-HttpClient 4.0 is available in the classpath
-            useCommonsHttpClient = true;
+            clazz = Class.forName("twitter4j.internal.http.alternative.HttpClientImpl");
+        } catch (ClassNotFoundException ignore) {
+        }
+        if (null == clazz) {
             try {
-                // -Dtwitter4j.useCommonsHttpClient=false to disable using Commons-HttpClient
-                String str = System.getProperty("twitter4j.useCommonsHttpClient");
-                if(null != str){
-                    useCommonsHttpClient = useCommonsHttpClient && Boolean.valueOf(str);
-                }
-            }catch(Exception ignore){
+                clazz = Class.forName("twitter4j.internal.http.HttpClientImpl");
+            } catch (ClassNotFoundException cnfe) {
+                throw new AssertionFailure(cnfe.getMessage());
             }
-
-        } catch (ClassNotFoundException e) {
-            // HttpClient not found
-            useCommonsHttpClient = false;
+        }
+        try {
+            HTTP_CLIENT_CONSTRUCTOR = clazz.getConstructor(HttpClientConfiguration.class);
+        } catch (NoSuchMethodException nsme) {
+            throw new AssertionFailure(nsme.getMessage());
         }
     }
 
     public static HttpClient getInstance(HttpClientConfiguration conf) {
-        if (useCommonsHttpClient) {
-            return new CommonsHttpClientImpl(conf);
-        } else {
-            return new HttpClientImpl(conf);
+        try {
+            return (HttpClient) HTTP_CLIENT_CONSTRUCTOR.newInstance(conf);
+        } catch (InstantiationException e) {
+            throw new AssertionFailure(e.getMessage());
+        } catch (IllegalAccessException e) {
+            throw new AssertionFailure(e.getMessage());
+        } catch (InvocationTargetException e) {
+            throw new AssertionFailure(e.getMessage());
         }
     }
 }

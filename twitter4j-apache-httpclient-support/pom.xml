@@ -7,15 +7,15 @@
     </parent>
 
     <groupId>org.twitter4j</groupId>
-    <artifactId>twitter4j-core</artifactId>
+    <artifactId>twitter4j-apache-httpclient-support</artifactId>
     <version>2.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>twitter4j-core</name>
-    <description>A Java library for the Twitter API</description>
+    <name>twitter4j-apache-httpclient-support</name>
+    <description>Twitter4J optional component adds Apache HttpClient support</description>
     <url>http://twitter4j.org/</url>
     <licenses>
         <license>
-            <name>BSD style</name>
+            <name>BSD</name>
             <url>http://twitter4j.org/en/LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
@@ -30,7 +30,7 @@
             <id>yusuke</id>
             <name>Yusuke</name>
             <email>yusuke@mac.com</email>
-            <url>http://yusuke.homeip.net/blog/</url>
+            <url>http://yusuke.homeip.net/</url>
             <roles>
                 <role>lead</role>
                 <role>architect</role>
@@ -105,28 +105,27 @@
     </mailingLists>
     <dependencies>
         <dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-core</artifactId>
+            <version>2.1.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-            <version>2.5.6</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>nlog4j</artifactId>
-            <version>1.2.25</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>[4.0,)</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging-api</artifactId>
-            <version>1.1</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>[4.0,)</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>

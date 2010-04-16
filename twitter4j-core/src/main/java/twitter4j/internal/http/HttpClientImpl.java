@@ -240,9 +240,9 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                             for (HttpParameter param : req.getParameters()) {
                                 if (param.isFile()) {
                                     write(out, boundary + "\r\n");
-                                    write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"; filename=\"" + param.file.getName() + "\"\r\n");
+                                    write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"; filename=\"" + param.getFile().getName() + "\"\r\n");
                                     write(out, "Content-Type: " + param.getContentType() + "\r\n\r\n");
-                                    BufferedInputStream in = new BufferedInputStream(new FileInputStream(param.file));
+                                    BufferedInputStream in = new BufferedInputStream(new FileInputStream(param.getFile()));
                                     int buff = 0;
                                     while ((buff = in.read()) != -1) {
                                         out.write(buff);
@@ -251,10 +251,10 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                                     in.close();
                                 } else {
                                     write(out, boundary + "\r\n");
-                                    write(out, "Content-Disposition: form-data; name=\"" + param.name + "\"\r\n");
+                                    write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"\r\n");
                                     write(out, "Content-Type: text/plain; charset=UTF-8\r\n\r\n");
-                                    logger.debug(param.value);
-                                    out.write(encode(param.value).getBytes("UTF-8"));
+                                    logger.debug(param.getValue());
+                                    out.write(encode(param.getValue()).getBytes("UTF-8"));
                                     write(out, "\r\n");
                                 }
                             }

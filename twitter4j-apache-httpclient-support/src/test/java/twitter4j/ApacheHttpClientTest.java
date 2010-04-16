@@ -24,46 +24,61 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.internal.http.commons40;
+package twitter4j;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
+import junit.framework.TestCase;
 
-import java.io.IOException;
-import java.util.zip.GZIPInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.util.Properties;
+
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.2
  */
-final class CommonsHttpResponseImpl extends twitter4j.internal.http.HttpResponse {
-    private HttpResponse res;
+public class ApacheHttpClientTest extends TestCase {
 
-    CommonsHttpResponseImpl(HttpResponse res) throws IOException {
-        this.res = res;
-        is = res.getEntity().getContent();
-        statusCode = res.getStatusLine().getStatusCode();
-        if (null != is && "gzip".equals(getResponseHeader("Content-Encoding"))) {
-            // the response is gzipped
-            is = new GZIPInputStream(is);
+    public ApacheHttpClientTest(String name) {
+        super(name);
+    }
+
+    protected Twitter twitterAPI1;
+    protected Properties p = new Properties();
+
+    protected TestUserInfo id1;
+
+    protected class TestUserInfo {
+        public String screenName;
+        public String password;
+        public int id;
+
+        TestUserInfo(String screenName) {
+            this.screenName = p.getProperty(screenName);
+            this.password = p.getProperty(screenName + "pass");
+            this.id = Integer.valueOf(p.getProperty(screenName + "id"));
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public final String getResponseHeader(String name) {
-        Header[] headers = res.getHeaders(name);
-        if (null != headers && headers.length > 0) {
-            return headers[0].getValue();
-        } else {
-            return null;
-        }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        InputStream is = ApacheHttpClientTest.class.getResourceAsStream("/test.properties");
+        p.load(is);
+        is.close();
+        id1 = new TestUserInfo("id1");
+
+        twitterAPI1 = new TwitterFactory().getInstance(id1.screenName, id1.password);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void disconnect() {
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+    public void testBasic() throws Exception {
+        //get
+        twitterAPI1.verifyCredentials();
+        //post
+        twitterAPI1.updateStatus(new StatusUpdate(new java.util.Date() + " test"));
+        //multipart-post
+        twitterAPI1.updateProfileBackgroundImage(new File("src/test/resources/t4j-reverse.gif"),false);
     }
 }

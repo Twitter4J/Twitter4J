@@ -51,7 +51,7 @@ public class TwitterTestBase extends TestCase {
         public String password;
         public int id;
 
-        TestUserInfo(String screenName, Properties props) {
+        TestUserInfo(String screenName) {
             this.screenName = p.getProperty(screenName);
             this.password = p.getProperty(screenName + "pass");
             this.id = Integer.valueOf(p.getProperty(screenName + "id"));
@@ -64,12 +64,12 @@ public class TwitterTestBase extends TestCase {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/test.properties");
         p.load(is);
         is.close();
-        id1 = new TestUserInfo("id1", p);
-        id2 = new TestUserInfo("id2", p);
-        id3 = new TestUserInfo("id3", p);
-        id4 = new TestUserInfo("id4", p);
-        bestFriend1 = new TestUserInfo("bestFriend1", p);
-        bestFriend2 = new TestUserInfo("bestFriend2", p);
+        id1 = new TestUserInfo("id1");
+        id2 = new TestUserInfo("id2");
+        id3 = new TestUserInfo("id3");
+        id4 = new TestUserInfo("id4");
+        bestFriend1 = new TestUserInfo("bestFriend1");
+        bestFriend2 = new TestUserInfo("bestFriend2");
 
         numberId = p.getProperty("numberid");
         numberPass = p.getProperty("numberpass");

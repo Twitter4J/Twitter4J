@@ -35,9 +35,9 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class HttpParameter implements Comparable, java.io.Serializable {
-    String name = null;
-    String value = null;
-    File file = null;
+    private String name = null;
+    private String value = null;
+    private File file = null;
     private static final long serialVersionUID = -8708108746980739212L;
 
     public HttpParameter(String name, String value) {
@@ -75,6 +75,11 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
     public String getValue(){
         return value;
     }
+
+    public File getFile() {
+        return file;
+    }
+
     public boolean isFile(){
         return null != file;
     }

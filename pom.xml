@@ -98,6 +98,7 @@
         </profile>
     </profiles>
     <modules>
+        <module>twitter4j-apache-httpclient-support</module>    
         <module>twitter4j-core</module>    
         <module>twitter4j-examples</module>
     </modules>
