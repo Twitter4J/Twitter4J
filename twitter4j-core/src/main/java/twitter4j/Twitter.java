@@ -1025,6 +1025,22 @@ public class Twitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public IDs getIncomingFriendships(long cursor) throws TwitterException {
+        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "friendships/incoming.json?cursor=" + cursor, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IDs getOutgoingFriendships(long cursor) throws TwitterException {
+        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor, auth));
+    }
+
+    /* Social Graph Methods */
+
+    /**
+     * {@inheritDoc}
+     */
     public IDs getFriendsIDs() throws TwitterException {
         return getFriendsIDs(-1l);
     }

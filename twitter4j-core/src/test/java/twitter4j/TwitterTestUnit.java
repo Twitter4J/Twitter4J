@@ -398,6 +398,54 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertNotNull("friendsStatuses", users);
     }
 
+    public void testRelationship() throws Exception {
+        //  TESTING PRECONDITIONS:
+        //  1) id1 is followed by "followsOneWay", but not following "followsOneWay"
+        Relationship rel1 = twitterAPI1.showFriendship(id1.screenName, followsOneWay);
+
+        // test second precondition
+        assertNotNull(rel1);
+        assertTrue(rel1.isSourceFollowedByTarget());
+        assertFalse(rel1.isSourceFollowingTarget());
+        assertTrue(rel1.isTargetFollowingSource());
+        assertFalse(rel1.isTargetFollowedBySource());
+
+        //  2) best_friend1 is following and followed by best_friend2
+        Relationship rel2 = twitterAPI1.showFriendship(bestFriend1.screenName, bestFriend2.screenName);
+
+        // test second precondition
+        assertNotNull(rel2);
+        assertTrue(rel2.isSourceFollowedByTarget());
+        assertTrue(rel2.isSourceFollowingTarget());
+        assertTrue(rel2.isTargetFollowingSource());
+        assertTrue(rel2.isTargetFollowedBySource());
+
+        // test equality
+        Relationship rel3 = twitterAPI1.showFriendship(id1.screenName, followsOneWay);
+        assertEquals(rel1, rel3);
+        assertFalse(rel1.equals(rel2));
+    }
+
+    private void assertIDExsits(String assertion, IDs ids, int idToFind) {
+        boolean found = false;
+        for (int id : ids.getIDs()) {
+            if (id == idToFind) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(assertion, found);
+    }
+
+
+    public void testFriendships() throws Exception {
+        IDs ids;
+        ids = twitterAPI4.getIncomingFriendships(-1);
+        assertTrue(ids.getIDs().length > 0);
+        ids = twitterAPI2.getOutgoingFriendships(-1);
+        assertTrue(ids.getIDs().length > 0);
+    }
+
     public void testSocialGraphMethods() throws Exception {
         IDs ids;
         ids = twitterAPI1.getFriendsIDs();
@@ -452,44 +500,6 @@ public class TwitterTestUnit extends TwitterTestBase {
     }
 
 
-    public void testRelationship() throws Exception {
-        //  TESTING PRECONDITIONS:
-        //  1) id1 is followed by "followsOneWay", but not following "followsOneWay"
-        Relationship rel1 = twitterAPI1.showFriendship(id1.screenName, followsOneWay);
-
-        // test second precondition
-        assertNotNull(rel1);
-        assertTrue(rel1.isSourceFollowedByTarget());
-        assertFalse(rel1.isSourceFollowingTarget());
-        assertTrue(rel1.isTargetFollowingSource());
-        assertFalse(rel1.isTargetFollowedBySource());
-
-        //  2) best_friend1 is following and followed by best_friend2
-        Relationship rel2 = twitterAPI1.showFriendship(bestFriend1.screenName, bestFriend2.screenName);
-
-        // test second precondition
-        assertNotNull(rel2);
-        assertTrue(rel2.isSourceFollowedByTarget());
-        assertTrue(rel2.isSourceFollowingTarget());
-        assertTrue(rel2.isTargetFollowingSource());
-        assertTrue(rel2.isTargetFollowedBySource());
-
-        // test equality
-        Relationship rel3 = twitterAPI1.showFriendship(id1.screenName, followsOneWay);
-        assertEquals(rel1, rel3);
-        assertFalse(rel1.equals(rel2));
-    }
-
-    private void assertIDExsits(String assertion, IDs ids, int idToFind) {
-        boolean found = false;
-        for (int id : ids.getIDs()) {
-            if (id == idToFind) {
-                found = true;
-                break;
-            }
-        }
-        assertTrue(assertion, found);
-    }
 
     public void testAccountMethods() throws Exception {
         User original = twitterAPI1.verifyCredentials();

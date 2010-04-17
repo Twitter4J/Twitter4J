@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.IDs;
 import twitter4j.Relationship;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -154,4 +155,24 @@ public interface FriendshipMethods {
 	 */
 	Relationship showFriendship(int sourceId, int targetId)
 			throws TwitterException;
+
+    /**
+     * Returns an array of numeric IDs for every user who has a pending request to follow the authenticating user.
+     * <br>This method calls http://api.twitter.com/1/friendships/incoming.json
+     *
+     * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
+     * @return an array of numeric IDs for every user who has a pending request to follow the authenticating user.
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    IDs getIncomingFriendships(long cursor) throws TwitterException;
+
+    /**
+     * Returns an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
+     * <br>This method calls http://api.twitter.com/1/friendships/outgoing.json
+     *
+     * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
+     * @return an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    IDs getOutgoingFriendships(long cursor) throws TwitterException;
 }
