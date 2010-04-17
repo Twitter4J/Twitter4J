@@ -26,8 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.http;
 
-import sun.jvm.hotspot.utilities.AssertionFailure;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -48,13 +46,13 @@ public final class HttpClientFactory {
             try {
                 clazz = Class.forName("twitter4j.internal.http.HttpClientImpl");
             } catch (ClassNotFoundException cnfe) {
-                throw new AssertionFailure(cnfe.getMessage());
+                throw new AssertionError(cnfe);
             }
         }
         try {
             HTTP_CLIENT_CONSTRUCTOR = clazz.getConstructor(HttpClientConfiguration.class);
         } catch (NoSuchMethodException nsme) {
-            throw new AssertionFailure(nsme.getMessage());
+            throw new AssertionError(nsme);
         }
     }
 
@@ -62,11 +60,11 @@ public final class HttpClientFactory {
         try {
             return (HttpClient) HTTP_CLIENT_CONSTRUCTOR.newInstance(conf);
         } catch (InstantiationException e) {
-            throw new AssertionFailure(e.getMessage());
+            throw new AssertionError(e);
         } catch (IllegalAccessException e) {
-            throw new AssertionFailure(e.getMessage());
+            throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionFailure(e.getMessage());
+            throw new AssertionError(e);
         }
     }
 }
