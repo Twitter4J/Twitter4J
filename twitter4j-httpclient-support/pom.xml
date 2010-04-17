@@ -7,10 +7,10 @@
     </parent>
 
     <groupId>org.twitter4j</groupId>
-    <artifactId>twitter4j-apache-httpclient-support</artifactId>
+    <artifactId>twitter4j-httpclient-support</artifactId>
     <version>2.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>twitter4j-apache-httpclient-support</name>
+    <name>twitter4j-httpclient-support</name>
     <description>Twitter4J optional component adds Apache HttpClient support</description>
     <url>http://twitter4j.org/</url>
     <licenses>
@@ -184,11 +184,13 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+<!--
                         <configuration>
                             <excludePackageNames>
                                 twitter4j.internal.*
                             </excludePackageNames>
                         </configuration>
+-->
                     </execution>
                 </executions>
                 <configuration>
