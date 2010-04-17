@@ -96,6 +96,38 @@ import static twitter4j.ParseUtil.*;
         return new RateLimitStatusJSONImpl(hourlyLimit, remainingHits, resetTimeInSeconds, resetTime);
     }
 
+    static RateLimitStatus createFeatureSpecificRateLimitStatusFromResponseHeader(HttpResponse res) {
+        if(null == res){
+            return null;
+        }
+        int remainingHits;//"X-FeatureRateLimit-Remaining"
+        int hourlyLimit;//"X-FeatureRateLimit-Limit"
+        int resetTimeInSeconds;//not included in the response header. Need to be calculated.
+        Date resetTime;//new Date("X-FeatureRateLimit-Reset")
+
+        String limit = res.getResponseHeader("X-FeatureRateLimit-Limit");
+        if (null != limit) {
+            hourlyLimit = Integer.parseInt(limit);
+        } else {
+            return null;
+        }
+        String remaining = res.getResponseHeader("X-FeatureRateLimit-Remaining");
+        if (null != remaining) {
+            remainingHits = Integer.parseInt(remaining);
+        } else {
+            return null;
+        }
+        String reset = res.getResponseHeader("X-FeatureRateLimit-Reset");
+        if (null != reset) {
+            long longReset = Long.parseLong(reset);
+            resetTimeInSeconds = (int) (longReset / 1000);
+            resetTime = new Date(longReset * 1000);
+        } else {
+            return null;
+        }
+        return new RateLimitStatusJSONImpl(hourlyLimit, remainingHits, resetTimeInSeconds, resetTime);
+    }
+
     /**
      * {@inheritDoc}
      */

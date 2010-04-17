@@ -39,11 +39,13 @@ public class ResponseList<T> extends ArrayList<T>
         implements TwitterResponse {
 
     private transient RateLimitStatus rateLimitStatus = null;
+    private transient RateLimitStatus featureSpecificRateLimitStatus = null;
     private static final long serialVersionUID = 5646617841989265312L;
 
     ResponseList(int size, HttpResponse res) {
         super(size);
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+        this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
     }
 
     /**
@@ -52,4 +54,17 @@ public class ResponseList<T> extends ArrayList<T>
     public RateLimitStatus getRateLimitStatus() {
         return rateLimitStatus;
     }
+
+    /**
+     * Returns the current feature-specific rate limit status if available.<br>
+     * This method is available in conjunction with Twitter#searchUsers()<br>
+     *
+     * @return current rate limit status
+     * @since Twitter4J 2.1.2
+     * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
+     */
+    public RateLimitStatus getFeatureSpecificRateLimitStatus() {
+        return featureSpecificRateLimitStatus;
+    }
+
 }

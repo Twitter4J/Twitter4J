@@ -146,6 +146,7 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertEquals(2, users.size());
         assertContains(users, id1);
         assertContains(users, id2);
+        assertNull(users.getFeatureSpecificRateLimitStatus());
     }
 
     private void assertContains(ResponseList<User> users, TestUserInfo user) {
@@ -165,6 +166,7 @@ public class TwitterTestUnit extends TwitterTestBase {
     public void testSearchUser() throws TwitterException {
         ResponseList<User> users = twitterAPI1.searchUsers("Doug Williams",1);
         assertTrue(4 < users.size());
+        assertNotNull(users.getFeatureSpecificRateLimitStatus());
     }
     public void testSuggestion() throws Exception {
         ResponseList<Category> categories = twitterAPI1.getSuggestedUserCategories();

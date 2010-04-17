@@ -39,6 +39,7 @@ public final class TwitterException extends Exception implements TwitterResponse
     private int statusCode = -1;
     private int retryAfter;
     private RateLimitStatus rateLimitStatus;
+    private RateLimitStatus featureSpecificRateLimitStatus = null;
     private static final long serialVersionUID = -2623309261327598087L;
 
     public TwitterException(String msg) {
@@ -68,6 +69,7 @@ public final class TwitterException extends Exception implements TwitterResponse
         }
         this.statusCode = res.getStatusCode();
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+        this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
     }
 
     public TwitterException(String msg, Exception cause) {
@@ -91,6 +93,18 @@ public final class TwitterException extends Exception implements TwitterResponse
      */
     public RateLimitStatus getRateLimitStatus() {
         return rateLimitStatus;
+    }
+
+    /**
+     * Returns the current feature-specific rate limit status if available.<br>
+     * This method is available in conjunction with Twitter#searchUsers()<br>
+     *
+     * @return current rate limit status
+     * @since Twitter4J 2.1.2
+     * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
+     */
+    public RateLimitStatus getFeatureSpecificRateLimitStatus() {
+        return featureSpecificRateLimitStatus;
     }
 
     /**

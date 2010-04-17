@@ -55,9 +55,4 @@ import twitter4j.internal.http.HttpResponse;
     public RateLimitStatus getRateLimitStatus() {
         return rateLimitStatus;
     }
-
-    public void setRateLimitStatus(RateLimitStatus rateLimitStatus) {
-        this.rateLimitStatus = rateLimitStatus;
-    }
-
 }
