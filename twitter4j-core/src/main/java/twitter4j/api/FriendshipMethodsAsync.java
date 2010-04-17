@@ -26,6 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.IDs;
+import twitter4j.TwitterException;
+
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
@@ -124,4 +127,22 @@ public interface FriendshipMethodsAsync {
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API Wiki / Twitter REST API Method: friendships show</a>
 	 */
 	void showFriendship(int sourceId, int targetId);
+
+    /**
+     * Returns an array of numeric IDs for every user who has a pending request to follow the authenticating user.
+     * <br>This method calls http://api.twitter.com/1/friendships/incoming.json
+     *
+     * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
+     * @since Twitter4J 2.1.2
+     */
+    void getIncomingFriendships(long cursor);
+
+    /**
+     * Returns an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
+     * <br>This method calls http://api.twitter.com/1/friendships/outgoing.json
+     *
+     * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
+     * @since Twitter4J 2.1.2
+     */
+    void getOutgoingFriendships(long cursor);
 }

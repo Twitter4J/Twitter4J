@@ -65,9 +65,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         super.tearDown();
     }
 
-
-
-
     public void testGetPublicTimeline() throws Exception {
         async1.getPublicTimeline();
         waitForResponse();
@@ -690,6 +687,21 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
      */
     public void gotShowFriendship(Relationship relationship) {
         this.relationship = relationship;
+        notifyResponse();
+    }
+    /**
+     * @since Twitter4J 2.1.2
+     */
+    public void gotIncomingFriendships(IDs ids) {
+        this.ids = ids;
+        notifyResponse();
+    }
+    /**
+     * @since Twitter4J 2.1.2
+     */
+    public void gotOutgoingFriendships(IDs ids) {
+        this.ids = ids;
+        notifyResponse();
     }
 
     /*Social Graph Methods*/

@@ -1075,6 +1075,31 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     /**
      * {@inheritDoc}
      */
+    public void getIncomingFriendships(final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(INCOMING_FRIENDSHIPS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotIncomingFriendships(twitter.getIncomingFriendships(cursor));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getOutgoingFriendships(final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(OUTGOING_FRIENDSHIPS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotOutgoingFriendships(twitter.getOutgoingFriendships(cursor));
+            }
+        });
+    }
+
+
+    /* Social Graph Methods */
+
+    /**
+     * {@inheritDoc}
+     */
     public void getFriendsIDs() {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {

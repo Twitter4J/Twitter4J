@@ -163,6 +163,7 @@ public interface FriendshipMethods {
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
      * @return an array of numeric IDs for every user who has a pending request to follow the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.2
      */
     IDs getIncomingFriendships(long cursor) throws TwitterException;
 
@@ -173,6 +174,7 @@ public interface FriendshipMethods {
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
      * @return an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
      * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.2
      */
     IDs getOutgoingFriendships(long cursor) throws TwitterException;
 }

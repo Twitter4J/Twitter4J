@@ -239,6 +239,16 @@ public interface TwitterListener {
      */
     void gotShowFriendship(Relationship relationship);
 
+    /**
+     * @since Twitter4J 2.1.2
+     */
+    void gotIncomingFriendships(IDs ids);
+
+    /**
+     * @since Twitter4J 2.1.2
+     */
+    void gotOutgoingFriendships(IDs ids);
+
     /*Social Graph Methods*/
     void gotFriendsIDs(IDs ids);
 
@@ -412,6 +422,8 @@ public interface TwitterListener {
     TwitterMethod DESTROY_FRIENDSHIP = TwitterMethod.DESTROY_FRIENDSHIP;
     TwitterMethod EXISTS_FRIENDSHIP = TwitterMethod.EXISTS_FRIENDSHIP;
     TwitterMethod SHOW_FRIENDSHIP = TwitterMethod.SHOW_FRIENDSHIP;
+    TwitterMethod INCOMING_FRIENDSHIP = TwitterMethod.INCOMING_FRIENDSHIPS;
+    TwitterMethod OUTGOING_FRIENDSHIPS = TwitterMethod.OUTGOING_FRIENDSHIPS;
 
     /*Social Graph Methods*/
     TwitterMethod FRIENDS_IDS = TwitterMethod.FRIENDS_IDS;
