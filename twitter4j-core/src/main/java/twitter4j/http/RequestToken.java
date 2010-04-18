@@ -60,26 +60,32 @@ public final class RequestToken extends OAuthToken implements java.io.Serializab
     /**
      * @return access token
      * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use Twitter.getAccessToken()
+     * @deprecated Use {@link twitter4j.Twitter#getOAuthAccessToken()} instead
      */
     public AccessToken getAccessToken() throws TwitterException {
         return oauth.getOAuthAccessToken();
     }
 
     /**
+     * @param oauth_verifier oauth verifier
      * @return access token
      * @throws TwitterException when Twitter service or network is unavailable
-     * @deprecated Use Twitter.getAccessToken()
+     * @deprecated Use {@link twitter4j.Twitter#getOAuthAccessToken()} instead
      */
     public AccessToken getAccessToken(String oauth_verifier) throws TwitterException {
         return oauth.getOAuthAccessToken(oauth_verifier);
     }
 
+    /**
+     * @return authorization URL
+     * since Twitter4J 2.0.0
+     */
     public String getAuthorizationURL() {
         return conf.getOAuthAuthorizationURL() + "?oauth_token=" + getToken();
     }
 
     /**
+     * @return authentication URL
      * since Twitter4J 2.0.10
      */
     public String getAuthenticationURL() {

@@ -88,9 +88,6 @@ public abstract class HttpResponse {
      * @throws TwitterException
      * @see #disconnect()
      */
-    /**
-     * {@inheritDoc}
-     */
     public final InputStream asStream() {
         if(streamConsumed){
             throw new IllegalStateException("Stream has already been consumed.");

@@ -118,61 +118,61 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     /**
      * @return created_at or null if the user is protected
      * @since Twitter4J 1.1.0
-     * @deprecated use getStatus().getCreatedAt()
+     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getCreatedAt() .getCreatedAt()}
      */
     Date getStatusCreatedAt();
 
     /**
      * @return status id or -1 if the user is protected
-     * @deprecated use getStatus().getId()
+     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getId() .getId()}
      */
     long getStatusId();
 
     /**
      * @return status text or null if the user is protected
-     * @deprecated use getStatus().getText()
+     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getText() .getText()}
      */
     String getStatusText();
 
     /**
      * @return source or null if the user is protected
      * @since 1.1.4
-     * @deprecated use getStatus().getSource()
+     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getSource() .getSource()}
      */
     String getStatusSource();
 
     /**
      * @return truncated or false if the user is protected
      * @since 1.1.4
-     * @deprecated use getStatus().isTruncated()
+     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#isTruncated() .isTruncated()}
      */
     boolean isStatusTruncated();
 
     /**
      * @return in_reply_to_status_id or -1 if the user is protected
      * @since 1.1.4
-     * @deprecated use getStatus().getInReplyToStatusId()
+     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getInReplyToStatusId() .getInReplyToStatusId()}
      */
     long getStatusInReplyToStatusId();
 
     /**
      * @return in_reply_to_user_id or -1 if the user is protected
      * @since 1.1.4
-     * @deprecated use getStatus().getInReplyToUserId()
+     * @deprecated Use {@link #getStatus()}{@link Status#getInReplyToUserId() .getInReplyToUserId()}
      */
     int getStatusInReplyToUserId();
 
     /**
      * @return favorited or false if the user is protected
      * @since 1.1.4
-     * @deprecated use getStatus().isFavorited()
+     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#isFavorited() .isFavorited()}
      */
     boolean isStatusFavorited();
 
     /**
      * @return in_reply_to_screen_name or null if the user is protected
      * @since 1.1.4
-     * @deprecated use getStatus().getInReplyToScreenName()
+     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getInReplyToScreenName() .getInReplyToScreenName()}
      */
     String getStatusInReplyToScreenName();
 

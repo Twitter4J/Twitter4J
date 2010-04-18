@@ -35,12 +35,10 @@ import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.logging.Logger;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
- * A java reporesentation of the <a href="http://apiwiki.twitter.com/Streaming-API-Documentation">Twitter Streaming API</a><br>
+ * A java representation of the <a href="http://apiwiki.twitter.com/Streaming-API-Documentation">Twitter Streaming API</a><br>
  * Note that this class is NOT compatible with Google App Engine as GAE is not capable of handling requests longer than 30 seconds.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -58,7 +56,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     /**
      * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
      * since Twitter4J 2.0.10
-     * @deprecated use new TwitterStreamFactory.getInstance() instead.
+     * @deprecated use {@link TwitterStreamFactory#getInstance()} instead.
      */
     public TwitterStream() {
         super(ConfigurationContext.getInstance());
@@ -71,7 +69,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * since Twitter4J 2.0.10
      * @param screenName screen name
      * @param password password
-     * @deprecated use new TwitterStreamFactory.getInstance() instead.
+     * @deprecated use {@link TwitterStreamFactory#getInstance()} instead.
      */
     public TwitterStream(String screenName, String password) {
         super(ConfigurationContext.getInstance(), screenName, password);
@@ -85,7 +83,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @param screenName screen name
      * @param password password
      * @param listener listener
-     * @deprecated use new TwitterStreamFactory.getInstance() instead.
+     * @deprecated use {@link TwitterStreamFactory#getInstance()} instead.
      */
     public TwitterStream(String screenName, String password, StatusListener listener) {
         super(ConfigurationContext.getInstance(), screenName, password);
@@ -299,7 +297,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
      * @since Twitter4J 2.0.10
-     * @deprecated use #filter(FilterQuery) instead
+     * @deprecated use {@link #filter(FilterQuery)} instead
      */
     public void filter(final int count, final int[] follow, final String[] track) {
         startHandler(new StreamHandlingThread() {
@@ -319,7 +317,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
      * @since Twitter4J 2.0.10
-     * @deprecated use #getFilterStream(FilterQuery) instead
+     * @deprecated use {@link #getFilterStream(FilterQuery)} instead
      */
     public StatusStream getFilterStream(int count, int[] follow, String[] track)
             throws TwitterException {

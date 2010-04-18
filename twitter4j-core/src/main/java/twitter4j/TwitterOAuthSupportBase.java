@@ -78,7 +78,7 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
      * @param consumerSecret OAuth consumer secret
      * @since Twitter 2.0.0
      * @throws IllegalStateException when OAuth consumer has already been set, or the instance is using basic authorization
-     * @deprecated Use TwitterFactory.getInstance(String consumerKey, String consumerSecret)
+     * @deprecated Use {@link TwitterFactory#getInstance(twitter4j.conf.Configuration, twitter4j.http.Authorization)} instead
      */
     public abstract void setOAuthConsumer(String consumerKey, String consumerSecret);
 
@@ -110,7 +110,7 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
      * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.8
-     * @deprecated Use getOAuthAccessToken(RequestToken requestToken, String oauthVerifier)
+     * @deprecated Use {@link #getOAuthAccessToken(twitter4j.http.RequestToken, String)} instead
      */
     public abstract AccessToken getOAuthAccessToken(String token
             , String tokenSecret, String pin) throws TwitterException;
@@ -121,7 +121,7 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
      * @param token access token
      * @param tokenSecret access token secret
      * @since Twitter 2.0.0
-     * @deprecated Use Twitter getInstance(AccessToken accessToken)
+     * @deprecated Use {@link TwitterFactory#getInstance(twitter4j.http.Authorization)} instead
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public abstract void setOAuthAccessToken(String token, String tokenSecret);

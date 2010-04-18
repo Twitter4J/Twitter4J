@@ -64,7 +64,7 @@ public interface StatusMethodsAsync {
      * @param location The location that this tweet refers to.
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
-     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
+     * @deprecated use {@link #updateStatus(StatusUpdate)} instead.
      */
     void updateStatus(String status, GeoLocation location);
 
@@ -77,7 +77,7 @@ public interface StatusMethodsAsync {
 	 * @param inReplyToStatusId The ID of an existing status that the status to be posted is in reply to.  This implicitly sets the in_reply_to_user_id attribute of the resulting status to the user ID of the message being replied to.  Invalid/missing status IDs will be ignored.
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0update</a>
 	 * @since Twitter4J 2.0.1
-     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
+     * @deprecated use {@link #updateStatus(StatusUpdate)} instead.
 	 */
 	void updateStatus(String status, long inReplyToStatusId);
 
@@ -91,7 +91,7 @@ public interface StatusMethodsAsync {
      * @param location The location that this tweet refers to.
      * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
-     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
+     * @deprecated use {@link #updateStatus(StatusUpdate)} instead.
      */
     void updateStatus(String status, long inReplyToStatusId, GeoLocation location);
 

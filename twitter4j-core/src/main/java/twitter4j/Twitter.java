@@ -82,7 +82,7 @@ public class Twitter extends TwitterOAuthSupportBase
     /**
      * Creates an unauthenticated Twitter instance
      *
-     * @deprecated use TwitterFactory.getInstance() instead
+     * @deprecated use {@link TwitterFactory#getInstance()} instead
      */
     public Twitter() {
         super(ConfigurationContext.getInstance());
@@ -93,7 +93,7 @@ public class Twitter extends TwitterOAuthSupportBase
      *
      * @param screenName the screen name of the user
      * @param password   the password of the user
-     * @deprecated use TwitterFactory.getInstance(screenName, password) instead
+     * @deprecated use {@link TwitterFactory#getInstance(String,String)} instead
      */
     public Twitter(String screenName, String password) {
         super(ConfigurationContext.getInstance(), screenName, password);
@@ -1663,7 +1663,7 @@ public class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
-     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
+     * @deprecated Use {@link TwitterFactory#getInstance(twitter4j.http.Authorization)} instead
      */
     public synchronized void setOAuthAccessToken(AccessToken accessToken) {
         getOAuth().setOAuthAccessToken(accessToken);
@@ -1671,7 +1671,7 @@ public class Twitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
-     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
+     * @deprecated Use {@link TwitterFactory#getInstance(twitter4j.http.Authorization)} instead
      */
     public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
         return getOAuth().getOAuthAccessToken(new RequestToken(token, tokenSecret));
@@ -1692,7 +1692,7 @@ public class Twitter extends TwitterOAuthSupportBase
      * @param tokenSecret access token secret
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      * @since Twitter 2.0.0
-     * @deprecated Use Twitter getInstance(AccessToken accessToken)
+     * @deprecated Use {@link TwitterFactory#getInstance(twitter4j.http.Authorization)} instead
      */
     public void setOAuthAccessToken(String token, String tokenSecret) {
         getOAuth().setOAuthAccessToken(new AccessToken(token, tokenSecret));

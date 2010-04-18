@@ -77,7 +77,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
      * @param screenName screen name
      * @param password password
      * @param listener listener
-     * @deprecated use new AsyncTwitterFactory.getBasicAuthorizedInstance() instead.
+     * @deprecated use {@link AsyncTwitterFactory#getInstance(String,String)} instead.
      */
     public AsyncTwitter(String screenName, String password, TwitterListener listener) {
         super(ConfigurationContext.getInstance(), screenName, password);
@@ -1726,7 +1726,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
 
     /**
      * {@inheritDoc}
-     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
+     * @deprecated Use {@link AsyncTwitterFactory#getInstance(Authorization)}
      */
     @Override
     public void setOAuthAccessToken(AccessToken accessToken) {
@@ -1735,7 +1735,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
 
     /**
      * {@inheritDoc}
-     * @deprecated Use TwitterFactory.getInstance(AccessToken accessToken)
+     * @deprecated Use {@link AsyncTwitterFactory#getInstance(Authorization)}
      */
     @Override
     public AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
@@ -1757,7 +1757,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
      * @param tokenSecret access token secret
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      * @since Twitter 2.0.0
-     * @deprecated Use Twitter getInstance(AccessToken accessToken)
+     * @deprecated Use {@link AsyncTwitterFactory#getInstance(Authorization)}
      */
     @Override
     public void setOAuthAccessToken(String token, String tokenSecret) {

@@ -72,7 +72,7 @@ public interface StatusMethods {
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.10
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
-     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
+     * @deprecated use {@link #updateStatus(StatusUpdate)} instead.
 	 */
 	Status updateStatus(String status, GeoLocation location) throws TwitterException;
 
@@ -87,7 +87,7 @@ public interface StatusMethods {
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.1
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
-     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
+     * @deprecated use {@link #updateStatus(StatusUpdate)} instead.
 	 */
 	Status updateStatus(String status, long inReplyToStatusId)
 			throws TwitterException;
@@ -104,7 +104,7 @@ public interface StatusMethods {
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.10
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">Twitter API Wiki / Twitter REST API Method: statuses update</a>
-     * @deprecated use updateStatus(StatusUpdate latestStatus) instead.
+     * @deprecated use {@link #updateStatus(StatusUpdate)} instead.
 	 */
 	Status updateStatus(String status, long inReplyToStatusId, GeoLocation location)
 			throws TwitterException;
@@ -115,7 +115,7 @@ public interface StatusMethods {
      * <br>This method calls http://api.twitter.com/1/statuses/update
      * @param latestStatus the latest status to be updated.
      * @return the latest status
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.1
      */
     Status updateStatus(StatusUpdate latestStatus) throws TwitterException;

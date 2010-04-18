@@ -42,14 +42,14 @@ public final class TimeSpanUtil {
     }
 
     /**
-     * @deprecated use twitter4j.util.TimeSpanUtil instead.
+     * @deprecated use {@link twitter4j.util.TimeSpanUtil#toTimeSpanString(java.util.Date)} instead.
      */
     public static String toTimeSpanString(Date date) {
         return toTimeSpanString(date.getTime());
     }
 
     /**
-     * @deprecated use twitter4j.util.TimeSpanUtil instead.
+     * @deprecated use {@link twitter4j.util.TimeSpanUtil#toTimeSpanString(long)} instead.
      */
     public static String toTimeSpanString(long milliseconds) {
         int deltaInSeconds = (int) ((System.currentTimeMillis() - milliseconds) / 1000);
@@ -57,7 +57,7 @@ public final class TimeSpanUtil {
     }
 
     /**
-     * @deprecated use twitter4j.util.TimeSpanUtil instead.
+     * @deprecated use {@link twitter4j.util.TimeSpanUtil#toTimeSpanString(int)} instead.
      */
     public static String toTimeSpanString(int deltaInSeconds) {
         if (deltaInSeconds < 5) {
