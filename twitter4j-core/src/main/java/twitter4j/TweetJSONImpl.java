@@ -72,6 +72,16 @@ import static twitter4j.ParseUtil.*;
         geoLocation = GeoLocation.getInstance(tweet);
     }
 
+    public int compareTo(Tweet that) {
+        long delta = this.id - that.getId();
+        if (delta < Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        } else if (delta > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return (int) delta;
+    }
+
     /**
      * {@inheritDoc}
      */

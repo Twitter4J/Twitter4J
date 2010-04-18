@@ -107,6 +107,11 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
     }
+
+    public int compareTo(Place that) {
+        return this.id.compareTo(that.getId());
+    }
+
     /*package*/ static ResponseList<Place> createPlaceList(HttpResponse res) throws TwitterException {
         JSONObject json = null;
         try {

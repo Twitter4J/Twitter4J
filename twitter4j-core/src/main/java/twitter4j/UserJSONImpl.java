@@ -122,6 +122,10 @@ import static twitter4j.ParseUtil.*;
         }
     }
 
+    public int compareTo(User that) {
+        return this.id - that.getId();
+    }
+
     /**
      * {@inheritDoc}
      */

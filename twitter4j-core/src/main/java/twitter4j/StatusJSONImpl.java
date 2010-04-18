@@ -118,6 +118,16 @@ import static twitter4j.ParseUtil.getUnescapedString;
         }
     }
 
+    public int compareTo(Status that) {
+        long delta = this.id - that.getId();
+        if (delta < Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        } else if (delta > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return (int) delta;
+    }
+
     /**
      * {@inheritDoc}
      */

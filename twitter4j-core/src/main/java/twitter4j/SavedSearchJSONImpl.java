@@ -79,6 +79,10 @@ import static twitter4j.ParseUtil.*;
             id = getInt("id", savedSearch);
     }
 
+    public int compareTo(SavedSearch that) {
+        return this.id - that.getId();
+    }
+
     /**
      * {@inheritDoc}
      */

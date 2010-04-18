@@ -33,7 +33,7 @@ import java.util.Date;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface Tweet extends java.io.Serializable {
+public interface Tweet extends Comparable<Tweet>, java.io.Serializable {
     /**
      * returns the text
      *

@@ -34,7 +34,7 @@ import java.net.URI;
  * @author Dan Checkoway - dcheckoway at gmail.com
  * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-id">REST API Documentation - Basic list information element</a>
  */
-public interface UserList extends TwitterResponse, java.io.Serializable {
+public interface UserList extends Comparable<UserList>, TwitterResponse, java.io.Serializable {
     /**
      * Returns the id of the list
      *

@@ -35,7 +35,7 @@ import java.util.Date;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
-public interface User extends TwitterResponse, java.io.Serializable {
+public interface User extends Comparable<User>, TwitterResponse, java.io.Serializable {
     /**
      * Returns the id of the user
      *

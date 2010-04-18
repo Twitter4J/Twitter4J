@@ -54,6 +54,16 @@ class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializ
         return userId;
     }
 
+    public int compareTo(StatusDeletionNotice that) {
+        long delta = this.statusId - that.getStatusId();
+        if (delta < Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        } else if (delta > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return (int) delta;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

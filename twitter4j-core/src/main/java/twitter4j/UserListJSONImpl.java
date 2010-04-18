@@ -82,6 +82,10 @@ import java.net.URISyntaxException;
         }
     }
 
+    public int compareTo(UserList that) {
+        return this.id - that.getId();
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -34,7 +34,7 @@ import java.util.Date;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.8
  */
-public interface SavedSearch extends TwitterResponse, java.io.Serializable {
+public interface SavedSearch extends  Comparable<SavedSearch>, TwitterResponse, java.io.Serializable {
     Date getCreatedAt();
 
     String getQuery();

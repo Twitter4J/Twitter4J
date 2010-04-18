@@ -33,7 +33,7 @@ import java.util.Date;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface Status extends TwitterResponse, java.io.Serializable {
+public interface Status extends Comparable<Status>, TwitterResponse, java.io.Serializable {
     /**
      * Return the created_at
      *
