@@ -207,7 +207,7 @@ public abstract class HttpResponse {
         }
     }
 
-    public abstract void disconnect();
+    public abstract void disconnect() throws IOException;
 
     @Override
     public String toString() {

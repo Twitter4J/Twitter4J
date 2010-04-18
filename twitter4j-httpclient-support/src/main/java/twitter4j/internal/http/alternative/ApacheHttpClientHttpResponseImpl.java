@@ -64,6 +64,7 @@ final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.Htt
     /**
      * {@inheritDoc}
      */
-    public void disconnect() {
+    public void disconnect() throws IOException {
+        res.getEntity().consumeContent();
     }
 }

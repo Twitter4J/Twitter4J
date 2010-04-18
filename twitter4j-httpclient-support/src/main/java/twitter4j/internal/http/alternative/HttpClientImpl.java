@@ -60,12 +60,7 @@ import java.util.Map;
  */
 public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
     private final HttpClientConfiguration conf;
-    private final ThreadLocal<HttpClient> client = new ThreadLocal<HttpClient>() {
-        @Override
-        protected HttpClient initialValue() {
-            return new DefaultHttpClient();
-        }
-    };
+    private final HttpClient client = new DefaultHttpClient();
 
     public HttpClientImpl(HttpClientConfiguration conf) {
         this.conf = conf;
@@ -129,7 +124,7 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
                 commonsRequest.addHeader("Authorization", authorizationHeader);
             }
 
-            ApacheHttpClientHttpResponseImpl res = new ApacheHttpClientHttpResponseImpl(client.get().execute(commonsRequest));
+            ApacheHttpClientHttpResponseImpl res = new ApacheHttpClientHttpResponseImpl(client.execute(commonsRequest));
             if(200 != res.getStatusCode()){
                 throw new TwitterException(res.asString() ,res);
             }
