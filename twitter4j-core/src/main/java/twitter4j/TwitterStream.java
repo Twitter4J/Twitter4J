@@ -248,6 +248,46 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         }
     }
 
+    /**
+     * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
+     * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
+     *
+     * @param query Filter query
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
+     * @since Twitter4J 2.1.2
+     */
+    public void filter(final FilterQuery query) throws TwitterException {
+        startHandler(new StreamHandlingThread() {
+            public StatusStream getStream() throws TwitterException {
+                return getFilterStream(query);
+            }
+        });
+    }
+
+
+    /**
+     * Returns public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
+     * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
+     *
+     * @param query Filter query
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
+     * @since Twitter4J 2.1.2
+     */
+    public StatusStream getFilterStream(FilterQuery query) throws TwitterException {
+        ensureBasicEnabled();
+        try {
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL()
+                    + "statuses/filter.json"
+                    , query.asHttpParameterArray(), auth));
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
+    }
+
 
     /**
      * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
@@ -259,6 +299,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
      * @since Twitter4J 2.0.10
+     * @deprecated use #filter(FilterQuery) instead
      */
     public void filter(final int count, final int[] follow, final String[] track) {
         startHandler(new StreamHandlingThread() {
@@ -278,49 +319,13 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @see twitter4j.StatusStream
      * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
      * @since Twitter4J 2.0.10
+     * @deprecated use #getFilterStream(FilterQuery) instead
      */
     public StatusStream getFilterStream(int count, int[] follow, String[] track)
             throws TwitterException {
-        ensureBasicEnabled();
-        List<HttpParameter> postparams = new ArrayList<HttpParameter>();
-        postparams.add(new HttpParameter("count", count));
-        if (null != follow && follow.length > 0) {
-            postparams.add(new HttpParameter("follow"
-                    , toFollowString(follow)));
-        }
-        if (null != track && track.length > 0) {
-            postparams.add(new HttpParameter("track"
-                    , toTrackString(track)));
-        }
-        try {
-            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/filter.json"
-                    , postparams.toArray(new HttpParameter[postparams.size()]), auth));
-        } catch (IOException e) {
-            throw new TwitterException(e);
-        }
+        return getFilterStream(new FilterQuery(count, follow, track, null));
     }
 
-    private String toFollowString(int[] follows) {
-        StringBuffer buf = new StringBuffer(11 * follows.length);
-        for (int follow : follows) {
-            if (0 != buf.length()) {
-                buf.append(",");
-            }
-            buf.append(follow);
-        }
-        return buf.toString();
-    }
-
-    private String toTrackString(final String[] keywords) {
-        final StringBuffer buf = new StringBuffer(20 * keywords.length * 4);
-        for (String keyword : keywords) {
-            if (0 != buf.length()) {
-                buf.append(",");
-            }
-            buf.append(keyword);
-        }
-        return buf.toString();
-    }
 
     private synchronized void startHandler(StreamHandlingThread handler) {
         cleanup();

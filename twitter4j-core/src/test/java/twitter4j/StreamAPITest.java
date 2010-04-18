@@ -111,12 +111,12 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
 //        twitterStream.cleanup();
 //    }
     public void testFilterTrackPush() throws Exception {
-        twitterStream.filter(0, null, new String[]{"twitter", "iphone"});
+        twitterStream.filter(new FilterQuery(0, null, new String[]{"twitter", "iphone"}));
         waitForStatus();
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
         this.ex = null;
-        twitterStream.filter(0, null, new String[]{"twitter4j", "ipad"});
+        twitterStream.filter(new FilterQuery(0, null).track(new String[]{"twitter4j", "ipad"}));
         waitForStatus();
         assertNull(ex);
 
