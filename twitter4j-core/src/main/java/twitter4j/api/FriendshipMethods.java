@@ -164,6 +164,7 @@ public interface FriendshipMethods {
      * @return an array of numeric IDs for every user who has a pending request to follow the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-incoming">Twitter API Wiki / Twitter REST API Method: friendships incoming</a>
      */
     IDs getIncomingFriendships(long cursor) throws TwitterException;
 
@@ -175,6 +176,7 @@ public interface FriendshipMethods {
      * @return an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-outgoing">Twitter API Wiki / Twitter REST API Method: friendships outgoing</a>
      */
     IDs getOutgoingFriendships(long cursor) throws TwitterException;
 }

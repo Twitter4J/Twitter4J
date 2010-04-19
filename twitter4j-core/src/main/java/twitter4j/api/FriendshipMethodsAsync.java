@@ -134,6 +134,7 @@ public interface FriendshipMethodsAsync {
      *
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
      * @since Twitter4J 2.1.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-incoming">Twitter API Wiki / Twitter REST API Method: friendships incoming</a>
      */
     void getIncomingFriendships(long cursor);
 
@@ -143,6 +144,7 @@ public interface FriendshipMethodsAsync {
      *
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
      * @since Twitter4J 2.1.2
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-outgoing">Twitter API Wiki / Twitter REST API Method: friendships outgoing</a>
      */
     void getOutgoingFriendships(long cursor);
 }

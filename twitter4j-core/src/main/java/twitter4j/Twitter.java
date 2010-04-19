@@ -1026,6 +1026,7 @@ public class Twitter extends TwitterOAuthSupportBase
      * {@inheritDoc}
      */
     public IDs getIncomingFriendships(long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
         return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "friendships/incoming.json?cursor=" + cursor, auth));
     }
 
@@ -1033,6 +1034,7 @@ public class Twitter extends TwitterOAuthSupportBase
      * {@inheritDoc}
      */
     public IDs getOutgoingFriendships(long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
         return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor, auth));
     }
 
