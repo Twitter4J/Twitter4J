@@ -53,4 +53,15 @@ public interface StatusListener {
     void onTrackLimitationNotice(int numberOfLimitedStatuses);
 
     void onException(Exception ex);
+    
+    void onFriendList (int [] friendIds);
+    
+    void onFavorite (int source, int target, long targetObject);
+    void onUnfavorite (int source, int target, long targetObject);
+    
+    void onFollow (int source, int target);
+    void onUnfollow (int source, int target);
+    
+    void onRetweet (int source, int target, long targetObject);
+    void onUnretweet (int source, int target, long targetObject);
 }

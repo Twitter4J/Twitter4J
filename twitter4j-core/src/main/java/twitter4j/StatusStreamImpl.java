@@ -28,6 +28,7 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -81,11 +82,65 @@ class StatusStreamImpl implements StatusStream {
                 try {
                     JSONObject json = new JSONObject(line);
                     if (!json.isNull("text")) {
+                        // the status could be filtered here: ATM the user stream returns statuses' containing activity the API doesn't return
+                        //  eg replies to people you don't follow
+                        
                         listener.onStatus(new StatusJSONImpl(json));
                     } else if (!json.isNull("delete")) {
                         listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
                     } else if (!json.isNull("limit")) {
                         listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
+                    }
+                    else if (!json.isNull ("friends")) {
+                        JSONArray friends = json.getJSONArray ("friends");
+                        int [] friendIds = new int [friends.length ()];
+                        for (int i = 0; i < friendIds.length; ++i)
+                            friendIds[i] = friends.getInt (i);
+                        
+                        listener.onFriendList (friendIds);
+                    }
+                    else if (!json.isNull ("event")) {
+                        String event = json.getString ("event");
+                        int source = json.getJSONObject ("source").getInt ("id");
+                        int target = json.getJSONObject ("target").getInt ("id");
+                        
+                        if ("favorite".equals (event))
+                        {
+//                            System.out.println ("fav: " + line);
+                            
+                            long targetObject = json.getJSONObject ("target_object").getLong ("id");
+                            listener.onFavorite (source, target, targetObject);
+                            
+                        }
+                        else if ("unfavorite".equals (event))
+                        {
+//                            System.out.println ("Unfavoriting event: " + line);
+                            
+                            long targetObject = json.getJSONObject ("target_object").getLong ("id");
+                            listener.onUnfavorite (source, target, targetObject);
+                        }
+                        else if ("retweet".equals (event))
+                        {
+//                            System.out.println ("Retweet event: " + line);
+                            
+                            // note: retweet events also show up as statuses
+                        }
+                        else if ("follow".equals (event))
+                        {
+//                            System.out.println ("Follow event: " + line);
+                            
+                            listener.onFollow (source, target);
+                        }
+                        else if ("unfollow".equals (event))
+                        {
+                            System.out.println ("Unfollow event: " + line);
+                            
+                            listener.onFollow (source, target);
+                        }
+                    }
+                    else {
+                        // tmp: just checking what kind of unknown event we're receiving on this stream
+                        System.out.println ("Received unknown event: " + line);
                     }
                 } catch (JSONException jsone) {
                     listener.onException(jsone);
