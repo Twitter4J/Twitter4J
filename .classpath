@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="twitter4j/internal/logging/SLF4JLogger.java|twitter4j/internal/logging/SLF4JLoggerFactory.java|twitter4j/internal/logging/CommonsLoggingLogger.java|twitter4j/internal/logging/CommonsLoggingLoggerFactory.java|twitter4j/internal/logging/Log4JLogger.java|twitter4j/internal/logging/Log4JLoggerFactory.java" kind="src" path="twitter4j-core/src/main/java"/>
+	<classpathentry excluding="twitter4j/examples/FeedMonitor.java" kind="src" path="twitter4j-examples/src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
