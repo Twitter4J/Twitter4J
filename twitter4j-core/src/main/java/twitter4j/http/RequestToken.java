@@ -92,24 +92,4 @@ public final class RequestToken extends OAuthToken implements java.io.Serializab
         return conf.getOAuthAuthenticationURL() + "?oauth_token=" + getToken();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        RequestToken that = (RequestToken) o;
-
-        if (oauth != null ? !oauth.equals(that.oauth) : that.oauth != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (oauth != null ? oauth.hashCode() : 0);
-        return result;
-    }
 }
