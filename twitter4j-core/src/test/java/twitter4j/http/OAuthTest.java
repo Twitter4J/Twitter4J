@@ -120,6 +120,7 @@ public class OAuthTest extends TwitterTestUnit {
         // desktop client - requiring pin
         unauthenticated.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         rt = unauthenticated.getOAuthRequestToken();
+        rt.hashCode();
         // trying to get an access token without permitting the request token.
         try {
             rt.getAccessToken();
