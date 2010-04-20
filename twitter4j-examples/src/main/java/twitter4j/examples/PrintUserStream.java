@@ -132,6 +132,13 @@ public final class PrintUserStream implements StatusListener
             System.out.print ("[Out of band] ");
 
         User user = status.getUser ();
+        if (user == null)
+        {
+            System.out.println ("NULL user ! - " + status); // temporary glitch, unfortunately I wasn't able to capture the bad statuses
+            // but that means that there probably needs to be a validation process before notifying listeners
+            return;
+        }
+        
         System.out.println (user.getName () + " [" + user.getScreenName () + "] : " + status.getText ());
     }
 
