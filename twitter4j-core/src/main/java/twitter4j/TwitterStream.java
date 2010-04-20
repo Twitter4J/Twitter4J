@@ -386,10 +386,12 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
                     }
                 } catch (TwitterException te) {
                     if (!closed) {
-                        if (0 == timeToSleep && te.getStatusCode() > 200) {
-                            timeToSleep = HTTP_ERROR_INITIAL_WAIT;
-                        } else {
-                            timeToSleep = TCP_ERROR_INITIAL_WAIT;
+                        if (0 == timeToSleep) {
+                            if (te.getStatusCode() > 200) {
+                                timeToSleep = HTTP_ERROR_INITIAL_WAIT;
+                            } else {
+                                timeToSleep = TCP_ERROR_INITIAL_WAIT;
+                            }
                         }
                         // there was a problem establishing the connection, or the connection closed by peer
                         if (!closed) {
