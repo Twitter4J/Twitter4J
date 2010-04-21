@@ -26,6 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.http;
 
+import twitter4j.internal.logging.Logger;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -35,6 +37,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public final class HttpClientFactory {
     private static final Constructor HTTP_CLIENT_CONSTRUCTOR;
+    private static final Logger logger = Logger.getLogger(HttpClientFactory.class);
 
     static {
         Class clazz = null;
@@ -49,6 +52,7 @@ public final class HttpClientFactory {
                 throw new AssertionError(cnfe);
             }
         }
+        logger.info("Use " + clazz.getName() + " as HttpClient implementation.");
         try {
             HTTP_CLIENT_CONSTRUCTOR = clazz.getConstructor(HttpClientConfiguration.class);
         } catch (NoSuchMethodException nsme) {
