@@ -48,6 +48,7 @@ import twitter4j.http.AccessToken;
  * </p>
  * 
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @author Remy Rakic - remy dot rakic at gmail.com
  */
 public final class PrintUserStream implements StatusListener
 {
@@ -71,19 +72,21 @@ public final class PrintUserStream implements StatusListener
         twitter = new TwitterFactory().getOAuthAuthorizedInstance (conf.getOAuthConsumerKey (), conf.getOAuthConsumerSecret (),
                   new AccessToken (conf.getOAuthAccessToken (), conf.getOAuthAccessTokenSecret ()));
           
-        new Timer (5 * 60 * 1000, new ActionListener ()
+        Timer t = new Timer (5 * 60 * 1000, new ActionListener ()
         {
             @Override
             public void actionPerformed (ActionEvent e)
             {
                 System.out.println ("");
             }
-        }).start ();
+        });
+        
+        t.start ();
     }
 
     private void startConsuming () throws TwitterException
     {
-        // user() method internally creates a thread which manipulates
+        // the user() method internally creates a thread which manipulates
         // TwitterStream and calls these adequate listener methods continuously.
         twitterStream.setStatusListener (this);
         twitterStream.user ();
@@ -145,17 +148,17 @@ public final class PrintUserStream implements StatusListener
         System.out.println ("DM from " + dm.getSenderScreenName () + " to " + dm.getRecipientScreenName () + ": " + dm.getText ());
     }
 
-    public void onDeletionNotice (StatusDeletionNotice statusDeletionNotice)
+    public void onDeletionNotice (StatusDeletionNotice notice)
     {
-        if (statusDeletionNotice == null)
+        if (notice == null)
         {
             System.out.println ("Deletion notice is null!");
             return;
         }
         
-        User user = friend (statusDeletionNotice.getUserId ());
+        User user = friend (notice.getUserId ());
         System.out.println (user.getName () + " [" + user.getScreenName () + "] deleted the tweet " 
-                + statusDeletionNotice.getStatusId ());
+                + notice.getStatusId ());
     }
 
     public void onTrackLimitationNotice (int numberOfLimitedStatuses)
@@ -232,7 +235,7 @@ public final class PrintUserStream implements StatusListener
     {
     }
     
-    // Preventing the null users in most situations
+    // Preventing the null users in most situations, only used in when there's problems in the stream
     private static class NullUser implements User
     {
         @Override
