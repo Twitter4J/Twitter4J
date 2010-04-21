@@ -56,4 +56,9 @@ public class StatusAdapter implements StatusListener
     public void onUnretweet (int source, int target, long targetObject)
     {
     }
+    
+    @Override
+    public void onDirectMessage (DirectMessage directMessage)
+    {
+    }
 }

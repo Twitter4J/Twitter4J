@@ -64,4 +64,5 @@ public interface StatusListener {
     
     void onRetweet (int source, int target, long targetObject);
     void onUnretweet (int source, int target, long targetObject);
+    void onDirectMessage (DirectMessage directMessage);
 }

@@ -26,29 +26,31 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package twitter4j.examples;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.ref.SoftReference;
+import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Timer;
+
 import twitter4j.*;
+import twitter4j.conf.Configuration;
+import twitter4j.conf.PropertyConfiguration;
+import twitter4j.http.AccessToken;
 
 /**
  * <p>
  * This is a code example of Twitter4J Streaming API - user stream.<br>
- * Usage: java twitter4j.examples.PrintUserStream [<i>TwitterScreenName</i>
- * <i>TwitterPassword</i>]<br>
+ * Usage: java twitter4j.examples.PrintUserStream. Needs a valid twitter4j.properties file with Basic Auth _and_ OAuth properties set<br>
  * </p>
  * 
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class PrintUserStream implements StatusListener
 {
-    /**
-     * Main entry of this application.
-     * 
-     * @param args
-     *            String[] TwitterID TwitterPassword
-     */
     public static void main (String [] args) throws TwitterException
     {
         PrintUserStream printSampleStream = new PrintUserStream (args);
@@ -62,22 +64,21 @@ public final class PrintUserStream implements StatusListener
     
     PrintUserStream (String [] args)
     {
-        try
+        Configuration conf = new PropertyConfiguration (getClass ().getResourceAsStream ("twitter4j.properties"));
+        
+        twitterStream = new TwitterStreamFactory ().getInstance (conf.getUser (), conf.getPassword ());
+        
+        twitter = new TwitterFactory().getOAuthAuthorizedInstance (conf.getOAuthConsumerKey (), conf.getOAuthConsumerSecret (),
+                  new AccessToken (conf.getOAuthAccessToken (), conf.getOAuthAccessTokenSecret ()));
+          
+        new Timer (5 * 60 * 1000, new ActionListener ()
         {
-            twitterStream = new TwitterStreamFactory (this).getInstance ();
-        }
-        catch (IllegalStateException is)
-        {
-            // screen name / password combination is not in twitter4j.properties
-            if (args.length < 2)
+            @Override
+            public void actionPerformed (ActionEvent e)
             {
-                System.out.println ("Usage: java twitter4j.examples.PrintUserStream [ScreenName Password]");
-                System.exit (-1);
+                System.out.println ("");
             }
-            
-            twitterStream = new TwitterStreamFactory ().getInstance (args[0], args[1]);
-            twitter = new TwitterFactory().getInstance (args[0], args[1]);
-        }
+        }).start ();
     }
 
     private void startConsuming () throws TwitterException
@@ -122,6 +123,8 @@ public final class PrintUserStream implements StatusListener
             }
         }
         
+        if (friend == null)
+            return new NullUser();
         return friend;
     }
     
@@ -132,19 +135,24 @@ public final class PrintUserStream implements StatusListener
             System.out.print ("[Out of band] ");
 
         User user = status.getUser ();
-        if (user == null)
-        {
-            System.out.println ("NULL user ! - " + status); // temporary glitch, unfortunately I wasn't able to capture the bad statuses
-            // but that means that there probably needs to be a validation process before notifying listeners
-            return;
-        }
         
         System.out.println (user.getName () + " [" + user.getScreenName () + "] : " + status.getText ());
     }
 
+    @Override
+    public void onDirectMessage (DirectMessage dm)
+    {
+        System.out.println ("DM from " + dm.getSenderScreenName () + " to " + dm.getRecipientScreenName () + ": " + dm.getText ());
+    }
 
     public void onDeletionNotice (StatusDeletionNotice statusDeletionNotice)
     {
+        if (statusDeletionNotice == null)
+        {
+            System.out.println ("Deletion notice is null!");
+            return;
+        }
+        
         User user = friend (statusDeletionNotice.getUserId ());
         System.out.println (user.getName () + " [" + user.getScreenName () + "] deleted the tweet " 
                 + statusDeletionNotice.getStatusId ());
@@ -193,7 +201,7 @@ public final class PrintUserStream implements StatusListener
             e.printStackTrace();
         }
     }
-
+    
     @Override
     public void onFollow (int source, int target)
     {
@@ -222,5 +230,238 @@ public final class PrintUserStream implements StatusListener
     @Override
     public void onUnretweet (int source, int target, long targetObject)
     {
+    }
+    
+    // Preventing the null users in most situations
+    private static class NullUser implements User
+    {
+        @Override
+        public Date getCreatedAt ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getDescription ()
+        {
+            return null;
+        }
+
+        @Override
+        public int getFavouritesCount ()
+        {
+            return 0;
+        }
+
+        @Override
+        public int getFollowersCount ()
+        {
+            return 0;
+        }
+
+        @Override
+        public int getFriendsCount ()
+        {
+            return 0;
+        }
+
+        @Override
+        public int getId ()
+        {
+            return 0;
+        }
+
+        @Override
+        public String getLang ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getLocation ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getName ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getProfileBackgroundColor ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getProfileBackgroundImageUrl ()
+        {
+            return null;
+        }
+
+        @Override
+        public URL getProfileImageURL ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getProfileLinkColor ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getProfileSidebarBorderColor ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getProfileSidebarFillColor ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getProfileTextColor ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getScreenName ()
+        {
+            return null;
+        }
+
+        @Override
+        public Status getStatus ()
+        {
+            return null;
+        }
+
+        @Override
+        public Date getStatusCreatedAt ()
+        {
+            return null;
+        }
+
+        @Override
+        public long getStatusId ()
+        {
+            return 0;
+        }
+
+        @Override
+        public String getStatusInReplyToScreenName ()
+        {
+            return null;
+        }
+
+        @Override
+        public long getStatusInReplyToStatusId ()
+        {
+            return 0;
+        }
+
+        @Override
+        public int getStatusInReplyToUserId ()
+        {
+            return 0;
+        }
+
+        @Override
+        public String getStatusSource ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getStatusText ()
+        {
+            return null;
+        }
+
+        @Override
+        public int getStatusesCount ()
+        {
+            return 0;
+        }
+
+        @Override
+        public String getTimeZone ()
+        {
+            return null;
+        }
+
+        @Override
+        public URL getURL ()
+        {
+            return null;
+        }
+
+        @Override
+        public int getUtcOffset ()
+        {
+            return 0;
+        }
+
+        @Override
+        public boolean isContributorsEnabled ()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean isGeoEnabled ()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean isProfileBackgroundTiled ()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean isProtected ()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean isStatusFavorited ()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean isStatusTruncated ()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean isVerified ()
+        {
+            return false;
+        }
+
+        @Override
+        public int compareTo (User o)
+        {
+            return 0;
+        }
+
+        @Override
+        public RateLimitStatus getRateLimitStatus ()
+        {
+            return null;
+        }
+        
     }
 }

@@ -81,9 +81,11 @@ class StatusStreamImpl implements StatusStream {
                 logger.debug("received:", line);
                 try {
                     JSONObject json = new JSONObject(line);
-                    if (!json.isNull("text")) {
+                    if (!json.isNull ("sender")) {
+                        listener.onDirectMessage (new DirectMessageJSONImpl (json));
+                    } else if (!json.isNull("text")) {
                         // the status could be filtered here: ATM the user stream returns statuses' containing activity the API doesn't return
-                        //  eg replies to people you don't follow
+                        //  eg replies to people you don't follow. At one point it'll be handled by Twitter.
                         
                         listener.onStatus(new StatusJSONImpl(json));
                     } else if (!json.isNull("delete")) {
@@ -110,7 +112,6 @@ class StatusStreamImpl implements StatusStream {
                             
                             long targetObject = json.getJSONObject ("target_object").getLong ("id");
                             listener.onFavorite (source, target, targetObject);
-                            
                         }
                         else if ("unfavorite".equals (event))
                         {
