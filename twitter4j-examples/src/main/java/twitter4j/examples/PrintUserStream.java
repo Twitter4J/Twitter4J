@@ -58,12 +58,13 @@ public final class PrintUserStream implements StatusListener
         printSampleStream.startConsuming ();
     }
 
-    TwitterStream twitterStream;
+    private TwitterStream twitterStream;
     
     // used for getting status and user info, for favoriting, following and unfollowing events
-    Twitter twitter;
+    private Twitter twitter;
+    private User currentUser;
     
-    PrintUserStream (String [] args)
+    public PrintUserStream (String [] args)
     {
         Configuration conf = new PropertyConfiguration (getClass ().getResourceAsStream ("twitter4j.properties"));
         
@@ -71,7 +72,18 @@ public final class PrintUserStream implements StatusListener
         
         twitter = new TwitterFactory().getOAuthAuthorizedInstance (conf.getOAuthConsumerKey (), conf.getOAuthConsumerSecret (),
                   new AccessToken (conf.getOAuthAccessToken (), conf.getOAuthAccessTokenSecret ()));
-          
+        
+        try
+        {
+            currentUser = twitter.verifyCredentials ();
+        }
+        catch (TwitterException e)
+        {
+            System.out.println ("Unexpected exception caught while trying to retrieve the current user: " + e);
+            e.printStackTrace();
+            System.exit (-1);
+        }
+        
         Timer t = new Timer (5 * 60 * 1000, new ActionListener ()
         {
             @Override
@@ -102,6 +114,8 @@ public final class PrintUserStream implements StatusListener
         friends = new HashMap<Integer, SoftReference<User>> ();
         for (int id : friendIds)
             friends.put (id, null);
+        
+        friends.put (currentUser.getId (), new SoftReference<User> (currentUser));
     }
     
     private User friend (int id)
