@@ -84,9 +84,6 @@ class StatusStreamImpl implements StatusStream {
                     if (!json.isNull ("sender")) {
                         listener.onDirectMessage (new DirectMessageJSONImpl (json));
                     } else if (!json.isNull("text")) {
-                        // the status could be filtered here: ATM the user stream returns statuses' containing activity the API doesn't return
-                        //  eg replies to people you don't follow. At one point it'll be handled by Twitter.
-                        
                         listener.onStatus(new StatusJSONImpl(json));
                     } else if (!json.isNull("delete")) {
                         listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
@@ -108,22 +105,16 @@ class StatusStreamImpl implements StatusStream {
                         
                         if ("favorite".equals (event))
                         {
-//                            System.out.println ("fav: " + line);
-                            
                             long targetObject = json.getJSONObject ("target_object").getLong ("id");
                             listener.onFavorite (source, target, targetObject);
                         }
                         else if ("unfavorite".equals (event))
                         {
-//                            System.out.println ("Unfavoriting event: " + line);
-                            
                             long targetObject = json.getJSONObject ("target_object").getLong ("id");
                             listener.onUnfavorite (source, target, targetObject);
                         }
                         else if ("retweet".equals (event))
                         {
-//                            System.out.println ("Retweet event: " + line);
-                            
                             // note: retweet events also show up as statuses
                             
                             long targetObject = json.getJSONObject ("target_object").getLong ("id");
@@ -131,14 +122,10 @@ class StatusStreamImpl implements StatusStream {
                         }
                         else if ("follow".equals (event))
                         {
-//                            System.out.println ("Follow event: " + line);
-                            
                             listener.onFollow (source, target);
                         }
                         else if ("unfollow".equals (event))
                         {
-//                            System.out.println ("Unfollow event: " + line);
-                            
                             listener.onUnfollow (source, target);
                         }
                     }
