@@ -16,20 +16,20 @@ public abstract class ImageUpload
 {
     public abstract String upload (File image) throws TwitterException;
     
-    /** Returns an image uploader to Twitpic. Only handles BasicAuth right now*/
+    /** Returns an image uploader to Twitpic. Only handles BasicAuth right now */
     public static ImageUpload getTwitpicUploader (Twitter twitter) throws TwitterException
     {
         return getTwitpicUploader (twitter.getAuthorization ());
     }
     
-    /** Returns an image uploader to Twitpic. Only handles BasicAuth right now*/
+    /** Returns an image uploader to Twitpic. Only handles BasicAuth right now */
     public static ImageUpload getTwitpicUploader (Authorization auth)
     {
         ensureBasicEnabled (auth);
         return getTwitpicUploader ((BasicAuthorization) auth);
     }
     
-    /** Returns an image uploader to Twitpic. Only handles BasicAuth right now*/
+    /** Returns a BasicAuth image uploader to Twitpic */
     public static ImageUpload getTwitpicUploader (BasicAuthorization auth)
     {
         return new TwitpicBasicAuthUploader (auth);
@@ -47,19 +47,19 @@ public abstract class ImageUpload
         return getYFrogUploader ((BasicAuthorization) auth);
     }
     
-    /** Returns a BasicAuth image uploader to YFrog. */
+    /** Returns a BasicAuth image uploader to YFrog */
     public static ImageUpload getYFrogUploader (String userId, String password)
     {
         return getYFrogUploader (new BasicAuthorization (userId, password));
     }
     
-    /** Returns a BasicAuth image uploader to YFrog. */
+    /** Returns a BasicAuth image uploader to YFrog */
     public static ImageUpload getYFrogUploader (BasicAuthorization auth)
     {
         return new YFrogBasicAuthUploader (auth);
     }
     
-    /** Returns an OAuth image uploader to YFrog. */
+    /** Returns an OAuth image uploader to YFrog */
     public static ImageUpload getYFrogUploader (String userId, OAuthAuthorization auth)
     {
         return new YFrogOAuthUploader (userId, auth);
@@ -94,7 +94,7 @@ public abstract class ImageUpload
             // step 1 - generate verification URL
             String signedVerifyCredentialsURL = generateSignedVerifyCredentialsURL ();
             
-            // step 2 - upload the file
+            // step 2 - generate HTTP parameters
             HttpParameter[] params =
             {
                 new HttpParameter ("auth", "oauth"),
@@ -103,10 +103,11 @@ public abstract class ImageUpload
                 new HttpParameter ("media", image)
             };
             
+            // step 3 - upload the file
             HttpClientWrapper client = new HttpClientWrapper ();
             HttpResponse httpResponse = client.post (YFROG_UPLOAD_URL, params);
             
-            // step 3 - check the result
+            // step 4 - check the response
             int statusCode = httpResponse.getStatusCode ();
             if (statusCode != 200)
                 throw new TwitterException ("YFrog image upload returned invalid status code", httpResponse);
@@ -149,6 +150,7 @@ public abstract class ImageUpload
         @Override
         public String upload (File image) throws TwitterException
         {
+            // step 1 - generate HTTP parameters
             HttpParameter[] params =
             {
                 new HttpParameter ("username", auth.getUserId ()),
@@ -156,10 +158,11 @@ public abstract class ImageUpload
                 new HttpParameter ("media", image)
             };
             
+            // step 2 - upload the file
             HttpClientWrapper client = new HttpClientWrapper ();
             HttpResponse httpResponse = client.post (YFROG_UPLOAD_URL, params);
             
-            // step 3 - check the result
+            // step 3 - check the response
             int statusCode = httpResponse.getStatusCode ();
             if (statusCode != 200)
                 throw new TwitterException ("YFrog image upload returned invalid status code", httpResponse);
@@ -196,6 +199,7 @@ public abstract class ImageUpload
         @Override
         public String upload (File image) throws TwitterException
         {
+            // step 1 - generate HTTP parameters
             HttpParameter[] params =
             {
                 new HttpParameter ("username", auth.getUserId ()),
@@ -203,10 +207,11 @@ public abstract class ImageUpload
                 new HttpParameter ("media", image)
             };
             
+            // step 2 - upload the file
             HttpClientWrapper client = new HttpClientWrapper ();
             HttpResponse httpResponse = client.post (TWITPIC_UPLOAD_URL, params);
             
-            // step 3 - check the result
+            // step 3 - check the response
             int statusCode = httpResponse.getStatusCode ();
             if (statusCode != 200)
                 throw new TwitterException ("Twitpic image upload returned invalid status code", httpResponse);
