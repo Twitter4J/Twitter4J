@@ -329,7 +329,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      * 6.	<br>
      *
      * @param params parameters to be normalized and concatenated
-     * @return nomarized and concatenated parameters
+     * @return normalized and concatenated parameters
      * @see <a href="http://oauth.net/core/1.0#rfc.section.9.1.1">OAuth Core - 9.1.1.  Normalize Request Parameters</a>
      */
     public static String normalizeRequestParameters(HttpParameter[] params) {
