@@ -353,8 +353,8 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     }
 
     /**
-     * @param httpParams parameters to be enocded and concatenated
-     * @return eoncoded string
+     * @param httpParams parameters to be encoded and concatenated
+     * @return encoded string
      * @see <a href="http://wiki.oauth.net/TestCases">OAuth / TestCases</a>
      * @see <a href="http://groups.google.com/group/oauth/browse_thread/thread/a8398d0521f4ae3d/9d79b698ab217df2?hl=en&lnk=gst&q=space+encoding#9d79b698ab217df2">Space encoding - OAuth | Google Groups</a>
      */
