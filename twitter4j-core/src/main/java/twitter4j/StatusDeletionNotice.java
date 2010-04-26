@@ -27,8 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 
 
 /**

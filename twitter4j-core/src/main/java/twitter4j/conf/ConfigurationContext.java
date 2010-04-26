@@ -26,7 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.conf;
 
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Static factory of Configuration. This class wraps ConfigurationFactory implementations.<br>

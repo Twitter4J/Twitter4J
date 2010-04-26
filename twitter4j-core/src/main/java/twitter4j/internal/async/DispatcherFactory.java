@@ -26,8 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.async;
 
-import twitter4j.conf.Configuration;
-
 import java.lang.reflect.InvocationTargetException;
 
 /**
