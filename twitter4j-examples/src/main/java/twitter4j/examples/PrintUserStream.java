@@ -155,7 +155,7 @@ public final class PrintUserStream implements StatusListener
     {
         int replyTo = status.getInReplyToUserId ();
         if (replyTo > 0 && !friends.containsKey (replyTo))
-            System.out.print ("[Out of band] ");
+            System.out.print ("[Out of band] "); // I've temporarily labeled "out of bands" messages that are sent to people you don't follow
 
         User user = status.getUser ();
         
@@ -172,7 +172,7 @@ public final class PrintUserStream implements StatusListener
     {
         if (notice == null)
         {
-            System.out.println ("Deletion notice is null!");
+            System.out.println ("Deletion notice is null!"); // there's a problem in the stream, should be done before notification
             return;
         }
         
@@ -194,35 +194,27 @@ public final class PrintUserStream implements StatusListener
     @Override
     public void onFavorite (int source, int target, long targetObject)
     {
-        try
-        {
-            Status rt = twitter.showStatus (targetObject);
-            User user = friend (source);
-            
-            System.out.println (user.getName () + " [" + user.getScreenName () + "] favorited "
-                    + rt.getUser ().getName () + "'s [" + rt.getUser ().getScreenName () + "] tweet: " + rt.getText ());
-        }
-        catch (TwitterException e)
-        {
-            e.printStackTrace();
-        }
+        User user = friend (source);
+        Status rt = status (targetObject);
+        
+        System.out.print (user.getName () + " [" + user.getScreenName () + "] favorited ");
+        if (rt == null)
+            System.out.println ("a protected tweet");
+        else
+            System.out.println (rt.getUser ().getName () + "'s [" + rt.getUser ().getScreenName () + "] tweet: " + rt.getText ());
     }
 
     @Override
     public void onUnfavorite (int source, int target, long targetObject)
     {
-        try
-        {
-            Status rt = twitter.showStatus (targetObject);
-            User user = friend (source);
-            
-            System.out.println (user.getName () + " [" + user.getScreenName () + "] unfavorited "
-                    + rt.getUser ().getName () + "'s [" + rt.getUser ().getScreenName () + "] tweet: " + rt.getText ());
-        }
-        catch (TwitterException e)
-        {
-            e.printStackTrace();
-        }
+        User user = friend (source);
+        Status rt = status (targetObject);
+        
+        System.out.print (user.getName () + " [" + user.getScreenName () + "] unfavorited ");
+        if (rt == null)
+            System.out.println ("a protected tweet");
+        else
+            System.out.println (rt.getUser ().getName () + "'s [" + rt.getUser ().getScreenName () + "] tweet: " + rt.getText ());
     }
     
     @Override
@@ -255,6 +247,21 @@ public final class PrintUserStream implements StatusListener
     public void onRetweet (int source, int target, long targetObject)
     {
         
+    }
+    
+    private Status status (long id)
+    {
+        try
+        {
+            return twitter.showStatus (id);
+        }
+        catch (TwitterException e)
+        {
+            if (e.getStatusCode () != 403) // forbidden
+                e.printStackTrace();
+        }
+        
+        return null;
     }
     
     // Preventing the null users in most situations, only used in when there's problems in the stream
