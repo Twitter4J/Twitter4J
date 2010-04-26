@@ -254,7 +254,8 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"\r\n");
                                     write(out, "Content-Type: text/plain; charset=UTF-8\r\n\r\n");
                                     logger.debug(param.getValue());
-                                    out.write(encode(param.getValue()).getBytes("UTF-8"));
+//                                    out.write(encode(param.getValue()).getBytes("UTF-8"));
+                                    out.write(param.getValue().getBytes("UTF-8"));
                                     write(out, "\r\n");
                                 }
                             }
