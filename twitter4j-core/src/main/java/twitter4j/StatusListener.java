@@ -63,6 +63,6 @@ public interface StatusListener {
     void onUnfollow (int source, int target);
     
     void onRetweet (int source, int target, long targetObject);
-    void onUnretweet (int source, int target, long targetObject);
+    
     void onDirectMessage (DirectMessage directMessage);
 }

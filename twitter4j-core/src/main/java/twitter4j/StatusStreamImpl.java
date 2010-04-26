@@ -125,6 +125,9 @@ class StatusStreamImpl implements StatusStream {
 //                            System.out.println ("Retweet event: " + line);
                             
                             // note: retweet events also show up as statuses
+                            
+                            long targetObject = json.getJSONObject ("target_object").getLong ("id");
+                            listener.onRetweet (source, target, targetObject);
                         }
                         else if ("follow".equals (event))
                         {
