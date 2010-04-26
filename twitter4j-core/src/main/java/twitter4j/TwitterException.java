@@ -182,7 +182,8 @@ public final class TwitterException extends Exception implements TwitterResponse
     @Override
     public String toString() {
         return "TwitterException{" +
-                "statusCode=" + statusCode +
+                "message=" + getMessage () +
+                ", statusCode=" + statusCode +
                 ", retryAfter=" + retryAfter +
                 ", rateLimitStatus=" + rateLimitStatus +
                 '}';
