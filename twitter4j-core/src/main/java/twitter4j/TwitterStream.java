@@ -247,7 +247,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     }
 
     public void user () {
-        ensureBasicEnabled();
+        ensureBasicEnabled(); // for now, the user will switch to OAuth at some point in the future
         startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getUserStream();

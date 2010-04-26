@@ -134,9 +134,9 @@ class StatusStreamImpl implements StatusStream {
                         }
                         else if ("unfollow".equals (event))
                         {
-                            System.out.println ("Unfollow event: " + line);
+//                            System.out.println ("Unfollow event: " + line);
                             
-                            listener.onFollow (source, target);
+                            listener.onUnfollow (source, target);
                         }
                     }
                     else {

@@ -63,6 +63,7 @@ public final class PrintUserStream implements StatusListener
     // used for getting status and user info, for favoriting, following and unfollowing events
     private Twitter twitter;
     private User currentUser;
+    private int currentUserId;
     
     public PrintUserStream (String [] args)
     {
@@ -76,6 +77,7 @@ public final class PrintUserStream implements StatusListener
         try
         {
             currentUser = twitter.verifyCredentials ();
+            currentUserId = currentUser.getId ();
         }
         catch (TwitterException e)
         {
@@ -141,7 +143,11 @@ public final class PrintUserStream implements StatusListener
         }
         
         if (friend == null)
+        {
+            System.out.println ("User id " + id + " lookup failed");
             return new NullUser();
+        }
+        
         return friend;
     }
     
@@ -227,6 +233,9 @@ public final class PrintUserStream implements StatusListener
         
         System.out.println (user.getName () + " [" + user.getScreenName () + "] started following "
                 + friend.getName () + " [" + friend.getScreenName () +"]");
+        
+        if (source == currentUserId && friend != null)
+            friends.put (target, new SoftReference<User> (friend));
     }
     
     @Override
@@ -237,16 +246,15 @@ public final class PrintUserStream implements StatusListener
         
         System.out.println (user.getName () + " [" + user.getScreenName () + "] unfollowed "
                 + friend.getName () + " [" + friend.getScreenName () +"]");
+        
+        if (source == currentUserId)
+            friends.remove (target);
     }
     
     @Override
     public void onRetweet (int source, int target, long targetObject)
     {
-    }
-    
-    @Override
-    public void onUnretweet (int source, int target, long targetObject)
-    {
+        
     }
     
     // Preventing the null users in most situations, only used in when there's problems in the stream
