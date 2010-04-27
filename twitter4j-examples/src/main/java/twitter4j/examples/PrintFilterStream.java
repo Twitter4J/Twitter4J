@@ -26,12 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.examples;
 
-import twitter4j.Status;
-import twitter4j.StatusDeletionNotice;
-import twitter4j.StatusListener;
-import twitter4j.TwitterException;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
+import twitter4j.*;
 
 /**
  * <p>This is a code example of Twitter4J Streaming API - filter method support.<br>
@@ -39,7 +34,7 @@ import twitter4j.TwitterStreamFactory;
  * </p>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class PrintFilterStream implements StatusListener{
+public final class PrintFilterStream extends StatusAdapter {
     /**
      * Main entry of this application.
      * @param args [ScreenName Password] follow(comma separated user ids) track(comma separated filter terms)z

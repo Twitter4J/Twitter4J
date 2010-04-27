@@ -26,10 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
-import twitter4j.Query;
-import twitter4j.TwitterListener;
-
 import java.util.Date;
+
+import twitter4j.Query;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com

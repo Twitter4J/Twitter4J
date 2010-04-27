@@ -29,17 +29,14 @@ package twitter4j.http;
 import twitter4j.conf.Configuration;
 import twitter4j.TwitterException;
 import twitter4j.internal.http.BASE64Encoder;
-import twitter4j.internal.http.HttpClientFactory;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.logging.LoggerFactory;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
@@ -271,6 +268,35 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         return generateAuthorizationHeader(method, url, params, String.valueOf(nonce), String.valueOf(timestamp), token);
     }
 
+    public List<HttpParameter> generateOAuthSignatureHttpParams (String method, String url) {
+        long timestamp = System.currentTimeMillis() / 1000;
+        long nonce = timestamp + RAND.nextInt();
+        
+        List<HttpParameter> oauthHeaderParams = new ArrayList<HttpParameter>(5);
+        oauthHeaderParams.add(new HttpParameter("oauth_consumer_key", consumerKey));
+        oauthHeaderParams.add(OAUTH_SIGNATURE_METHOD);
+        oauthHeaderParams.add(new HttpParameter("oauth_timestamp", timestamp));
+        oauthHeaderParams.add(new HttpParameter("oauth_nonce", nonce));
+        oauthHeaderParams.add(new HttpParameter("oauth_version", "1.0"));
+        if (null != oauthToken) {
+            oauthHeaderParams.add(new HttpParameter("oauth_token", oauthToken.getToken()));
+        }
+        
+        List<HttpParameter> signatureBaseParams = new ArrayList<HttpParameter> (oauthHeaderParams.size());
+        signatureBaseParams.addAll(oauthHeaderParams);
+        parseGetParameters (url, signatureBaseParams);
+        
+        StringBuffer base = new StringBuffer (method).append("&")
+                .append(encode(constructRequestURL(url))).append("&");
+        base.append(encode (normalizeRequestParameters(signatureBaseParams)));
+
+        String oauthBaseString = base.toString();
+        String signature = generateSignature (oauthBaseString, oauthToken);
+
+        oauthHeaderParams.add (new HttpParameter("oauth_signature", signature));
+        
+        return oauthHeaderParams;
+    }
 
     /**
      * Computes RFC 2104-compliant HMAC signature.
@@ -329,7 +355,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      * 6.	<br>
      *
      * @param params parameters to be normalized and concatenated
-     * @return nomarized and concatenated parameters
+     * @return normalized and concatenated parameters
      * @see <a href="http://oauth.net/core/1.0#rfc.section.9.1.1">OAuth Core - 9.1.1.  Normalize Request Parameters</a>
      */
     public static String normalizeRequestParameters(HttpParameter[] params) {
@@ -353,8 +379,8 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     }
 
     /**
-     * @param httpParams parameters to be enocded and concatenated
-     * @return eoncoded string
+     * @param httpParams parameters to be encoded and concatenated
+     * @return encoded string
      * @see <a href="http://wiki.oauth.net/TestCases">OAuth / TestCases</a>
      * @see <a href="http://groups.google.com/group/oauth/browse_thread/thread/a8398d0521f4ae3d/9d79b698ab217df2?hl=en&lnk=gst&q=space+encoding#9d79b698ab217df2">Space encoding - OAuth | Google Groups</a>
      */

@@ -104,5 +104,7 @@ public interface Configuration extends HttpClientConfiguration
     String getOAuthAccessTokenURL();
 
     String getOAuthAuthenticationURL();
+    
+    String getUserStreamBaseURL();
 
 }
