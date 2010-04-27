@@ -359,6 +359,8 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     private static final int HTTP_ERROR_INITIAL_WAIT = 10 * 1000;
     private static final int HTTP_ERROR_WAIT_CAP = 240 * 1000;
 
+    private static final int NO_WAIT = 0;
+
     abstract class StreamHandlingThread extends Thread {
         StatusStream stream = null;
         private static final String NAME = "Twitter Stream Handling Thread";
@@ -370,7 +372,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         }
 
         public void run() {
-            int timeToSleep = 0;
+            int timeToSleep = NO_WAIT;
             while (!closed) {
                 try {
                     if (!closed && null == stream) {
@@ -378,7 +380,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
                         setStatus("[Establishing connection]");
                         stream = getStream();
                         // connection established successfully
-                        timeToSleep = 0;
+                        timeToSleep = NO_WAIT;
                         setStatus("[Receiving stream]");
                         while (!closed) {
                             stream.next(statusListener);
@@ -386,7 +388,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
                     }
                 } catch (TwitterException te) {
                     if (!closed) {
-                        if (0 == timeToSleep) {
+                        if (NO_WAIT == timeToSleep) {
                             if (te.getStatusCode() > 200) {
                                 timeToSleep = HTTP_ERROR_INITIAL_WAIT;
                             } else {
@@ -418,7 +420,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         }
 
         public synchronized void close() throws IOException {
-            setStatus("[disposing thread]");
+            setStatus("[Disposing thread]");
             closed = true;
         }
 
