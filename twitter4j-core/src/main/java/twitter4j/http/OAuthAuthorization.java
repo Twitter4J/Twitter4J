@@ -127,12 +127,8 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         if(oauthToken instanceof AccessToken){
             return (AccessToken)oauthToken;
         }
-        try {
-            oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), this));
-            return (AccessToken) oauthToken;
-        } catch (TwitterException te) {
-            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
-        }
+        oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), this));
+        return (AccessToken) oauthToken;
     }
 
     /**
@@ -140,13 +136,9 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      */
     public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         ensureTokenIsAvailable();
-        try {
-            oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL()
-                    , new HttpParameter[]{new HttpParameter("oauth_verifier", oauthVerifier)}, this));
-            return (AccessToken) oauthToken;
-        } catch (TwitterException te) {
-            throw new TwitterException("The user has not given access to the account.", te, te.getStatusCode());
-        }
+        oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL()
+                , new HttpParameter[]{new HttpParameter("oauth_verifier", oauthVerifier)}, this));
+        return (AccessToken) oauthToken;
     }
 
     /**
