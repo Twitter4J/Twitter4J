@@ -130,6 +130,10 @@ public final class StatusUpdate implements java.io.Serializable {
         params.add(new HttpParameter(name, String.valueOf(value)));
     }
 
+    private void appendParameter(String name, long value, List<HttpParameter> params) {
+        params.add(new HttpParameter(name, String.valueOf(value)));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
