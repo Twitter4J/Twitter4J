@@ -104,6 +104,9 @@ import java.util.TimeZone;
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             formatMap.get().put(format, sdf);
         }
+        if (name == null) {
+            return null;
+        }
         try {
             return sdf.parse(name);
         } catch (ParseException pe) {
