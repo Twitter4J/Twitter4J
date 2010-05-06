@@ -97,7 +97,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         super(conf, auth);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         this.statusListener = listener;
-        ensureBasicEnabled();
+        // ensureBasicEnabled();
     }
 
     /* Streaming API */
@@ -247,7 +247,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     }
 
     public void user () {
-        ensureBasicEnabled(); // for now, the user stream will switch to OAuth at some point in the future
+        ensureAuthorizationEnabled ();
         startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getUserStream();
@@ -256,7 +256,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     }
     
     public StatusStream getUserStream() throws TwitterException {
-        ensureBasicEnabled();
+        ensureAuthorizationEnabled ();
         try {
             return new StatusStreamImpl(http.get(conf.getUserStreamBaseURL () + "user.json"
                     , auth));

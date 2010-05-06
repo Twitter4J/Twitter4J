@@ -28,27 +28,27 @@ public class StatusAdapter implements StatusListener
     }
 
     @Override
-    public void onFavorite (int source, int target, long targetObject)
+    public void onFavorite (User source, User target, Status targetObject)
     {
     }
 
     @Override
-    public void onFollow (int source, int target)
+    public void onFollow (User source, User target)
     {
     }
 
     @Override
-    public void onUnfavorite (int source, int target, long targetObject)
+    public void onUnfavorite (User source, User target, Status targetObject)
     {
     }
 
     @Override
-    public void onRetweet (int source, int target, long targetObject)
+    public void onRetweet (User source, User target, Status targetObject)
     {
     }
 
     @Override
-    public void onUnfollow (int source, int target)
+    public void onUnfollow (User source, User target)
     {
     }
 

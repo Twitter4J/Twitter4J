@@ -81,14 +81,21 @@ class StatusStreamImpl implements StatusStream {
                 logger.debug("received:", line);
                 try {
                     JSONObject json = new JSONObject(line);
-                    if (!json.isNull ("sender")) {
-                        listener.onDirectMessage (new DirectMessageJSONImpl (json));
-                    } else if (!json.isNull("text")) {
+                    if (!json.isNull("text")) {
                         listener.onStatus(new StatusJSONImpl(json));
-                    } else if (!json.isNull("delete")) {
+                    }
+                    else if (!json.isNull ("direct_message")) {
+                        listener.onDirectMessage (new DirectMessageJSONImpl (json.getJSONObject ("direct_message")));
+                    }
+                    else if (!json.isNull("delete")) {
+                        System.out.println ("Deletion notice: " + line); // tmp: just checking if the deletion notice is hydrated or not
                         listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
                     } else if (!json.isNull("limit")) {
                         listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
+                    }
+                    else if (!json.isNull ("scrub_geo")) {
+                        // Not implemented yet
+                        System.out.println ("Geo-tagging deletion notice (not implemented yet): " + line);
                     }
                     else if (!json.isNull ("friends")) {
                         JSONArray friends = json.getJSONArray ("friends");
@@ -100,33 +107,29 @@ class StatusStreamImpl implements StatusStream {
                     }
                     else if (!json.isNull ("event")) {
                         String event = json.getString ("event");
-                        int source = json.getJSONObject ("source").getInt ("id");
-                        int target = json.getJSONObject ("target").getInt ("id");
+                        User source = new UserJSONImpl (json.getJSONObject ("source"));
+                        User target = new UserJSONImpl (json.getJSONObject ("target"));
                         
-                        if ("favorite".equals (event))
-                        {
-                            long targetObject = json.getJSONObject ("target_object").getLong ("id");
-                            listener.onFavorite (source, target, targetObject);
-                        }
-                        else if ("unfavorite".equals (event))
-                        {
-                            long targetObject = json.getJSONObject ("target_object").getLong ("id");
-                            listener.onUnfavorite (source, target, targetObject);
-                        }
-                        else if ("retweet".equals (event))
-                        {
-                            // note: retweet events also show up as statuses
+                        if ("follow".equals (event) || "unfollow".equals (event)) {
+                            if ("follow".equals (event)) {
+                                listener.onFollow (source, target);
+                            } else {
+                                listener.onUnfollow (source, target);
+                            }
+                        } else {
+                            Status targetObject = new StatusJSONImpl (json.getJSONObject ("target_object"));
                             
-                            long targetObject = json.getJSONObject ("target_object").getLong ("id");
-                            listener.onRetweet (source, target, targetObject);
-                        }
-                        else if ("follow".equals (event))
-                        {
-                            listener.onFollow (source, target);
-                        }
-                        else if ("unfollow".equals (event))
-                        {
-                            listener.onUnfollow (source, target);
+                            if ("favorite".equals (event)) {
+                                listener.onFavorite (source, target, targetObject);
+                            } else if ("unfavorite".equals (event)) {
+                                listener.onUnfavorite (source, target, targetObject);
+                            } else if ("retweet".equals (event)) {
+                                // note: retweet events also show up as statuses
+                                listener.onRetweet (source, target, targetObject);
+                            } else {
+                                // tmp: just checking what kind of unknown social event we're receiving on this stream
+                                System.out.println ("Received unknown social event type '" + event + "': " + line);
+                            }
                         }
                     }
                     else {

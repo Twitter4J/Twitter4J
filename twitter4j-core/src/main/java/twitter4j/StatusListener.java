@@ -56,13 +56,13 @@ public interface StatusListener {
     
     void onFriendList (int [] friendIds);
     
-    void onFavorite (int source, int target, long targetObject);
-    void onUnfavorite (int source, int target, long targetObject);
+    void onFavorite (User source, User target, Status favoritedStatus);
+    void onUnfavorite (User source, User target, Status unfavoritedStatus);
     
-    void onFollow (int source, int target);
-    void onUnfollow (int source, int target);
+    void onFollow (User source, User target);
+    void onUnfollow (User source, User target);
     
-    void onRetweet (int source, int target, long targetObject);
+    void onRetweet (User source, User target, Status retweetedStatus);
     
     void onDirectMessage (DirectMessage directMessage);
 }
