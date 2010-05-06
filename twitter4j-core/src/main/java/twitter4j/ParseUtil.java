@@ -90,7 +90,7 @@ import java.util.TimeZone;
 
     static Date getDate(String name, JSONObject json, String format) throws TwitterException {
         String dateStr = getUnescapedString(name, json);
-        if ("null".equals(dateStr)) {
+        if ("null".equals(dateStr) || null == dateStr) {
             return null;
         } else {
             return getDate(dateStr, format);
@@ -103,9 +103,6 @@ import java.util.TimeZone;
             sdf = new SimpleDateFormat(format, Locale.ENGLISH);
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             formatMap.get().put(format, sdf);
-        }
-        if (name == null) {
-            return null;
         }
         try {
             return sdf.parse(name);

@@ -105,7 +105,7 @@ import static twitter4j.ParseUtil.*;
             profileSidebarFillColor = getRawString("profile_sidebar_fill_color", json);
             profileSidebarBorderColor = getRawString("profile_sidebar_border_color", json);
             friendsCount = getInt("friends_count", json);
-            createdAt = getDate(getRawString ("created_at", json), "EEE MMM dd HH:mm:ss z yyyy");
+            createdAt = getDate("created_at", json, "EEE MMM dd HH:mm:ss z yyyy");
             favouritesCount = getInt("favourites_count", json);
             utcOffset = getInt("utc_offset", json);
             timeZone = getRawString("time_zone", json);
