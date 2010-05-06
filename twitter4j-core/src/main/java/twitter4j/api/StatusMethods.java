@@ -26,11 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
-import twitter4j.GeoLocation;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.StatusUpdate;
-import twitter4j.TwitterException;
+import twitter4j.*;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -158,4 +154,48 @@ public interface StatusMethods {
 	 */
 	ResponseList<Status> getRetweets(long statusId)
 			throws TwitterException;
+
+    /**
+     * Show user objects of up to 100 members who retweeted the status represented by id
+     * <br>This method calls http://api.twitter.com/1/statuses/id/retweeted_by
+     * @param statusId The ID of the status you want to get retweeters of
+     * @return the list of users who retweeted your status
+     * @throws TwitterException
+     */
+    ResponseList<User> getRetweetedBy(long statusId)
+            throws TwitterException;
+
+    /**
+     * Show user objects of up to 100 members who retweeted the status represented by id
+     * <br>This method calls http://api.twitter.com/1/statuses/id/retweeted_by
+     * @param statusId The ID of the status you want to get retweeters of
+     * @param paging specify your paging requirements
+     * @return the list of users who retweeted your status
+     * @throws TwitterException
+     */
+    ResponseList<User> getRetweetedBy(long statusId, Paging paging)
+            throws TwitterException;
+
+    /**
+     * Show user ids of up to 100 users who retweeted the status represented by id
+     * <br />This method calls http://api.twitter.com/1/statuses/id/retweeted_by/ids.format
+     * @param statusId The ID of the status you want to get retweeters of
+     * @return IDs of users who retweeted the stats
+     * @throws TwitterException
+     */
+    IDs getRetweetedByIDs(long statusId)
+            throws TwitterException;
+
+    /**
+     * Show user ids of up to 100 users who retweeted the status represented by id
+     * <br />This method calls http://api.twitter.com/1/statuses/id/retweeted_by/ids.format
+     * @param statusId The ID of the status you want to get retweeters of
+     * @param paging specify your paging requirements
+     * @return IDs of users who retweeted the stats
+     * @throws TwitterException
+     */
+    IDs getRetweetedByIDs(long statusId, Paging paging)
+            throws TwitterException;
+
+    
 }
