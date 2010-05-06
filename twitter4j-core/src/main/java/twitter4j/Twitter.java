@@ -1478,7 +1478,7 @@ public class Twitter extends TwitterOAuthSupportBase
      */
     public User reportSpam(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new UserJSONImpl(http.post(conf.getRestBaseURL() + "report_spam.json?screenName=" + screenName, auth));
+        return new UserJSONImpl(http.post(conf.getRestBaseURL() + "report_spam.json?screen_name=" + screenName, auth));
     }
 
     /* Saved Searches Methods */
