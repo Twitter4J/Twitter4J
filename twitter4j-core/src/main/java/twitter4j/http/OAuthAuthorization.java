@@ -198,9 +198,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         this.oauthToken = accessToken;
     }
 
-    /*package*/
-
-    String generateAuthorizationHeader(String method, String url, HttpParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
+    /*package*/ String generateAuthorizationHeader(String method, String url, HttpParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
         if (null == params) {
             params = new HttpParameter[0];
         }
@@ -228,7 +226,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         logger.debug("OAuth signature: ", signature);
 
         oauthHeaderParams.add(new HttpParameter("oauth_signature", signature));
-        return "OAuth " + encodeParameters(oauthHeaderParams, ",", true);
+        return "OAuth " + encodeParameters(oauthHeaderParams, ", ", true);
     }
 
     private void parseGetParameters(String url, List<HttpParameter> signatureBaseParams) {
@@ -289,10 +287,10 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         StringBuffer base = new StringBuffer (method).append("&")
                 .append(encode(constructRequestURL(url))).append("&");
         base.append(encode (normalizeRequestParameters(signatureBaseParams)));
-
+        
         String oauthBaseString = base.toString();
         String signature = generateSignature (oauthBaseString, oauthToken);
-
+        
         oauthHeaderParams.add (new HttpParameter("oauth_signature", signature));
         
         return oauthHeaderParams;

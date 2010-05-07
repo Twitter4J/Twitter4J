@@ -71,7 +71,7 @@ public final class PrintUserStream implements StatusListener
         OAuthAuthorization auth = new OAuthAuthorization (ConfigurationContext.getInstance (), conf.getOAuthConsumerKey (), conf.getOAuthConsumerSecret (),
                   new AccessToken (conf.getOAuthAccessToken (), conf.getOAuthAccessTokenSecret ()));
         
-        twitterStream = new TwitterStreamFactory ().getInstance (conf.getUser (), conf.getPassword ());
+        twitterStream = new TwitterStreamFactory ().getInstance (auth);
         twitter = new TwitterFactory().getInstance (auth);
         
         try
@@ -122,7 +122,7 @@ public final class PrintUserStream implements StatusListener
     {
         int replyTo = status.getInReplyToUserId ();
         if (replyTo > 0 && !friends.contains (replyTo))
-            System.out.print ("[Out of band] "); // I've temporarily labeled "out of bands" messages that are sent to people you don't follow
+            System.out.print ("[Out of band] "); // I've temporarily labeled "out of band" messages that are sent to people you don't follow
 
         User user = status.getUser ();
         
@@ -137,15 +137,26 @@ public final class PrintUserStream implements StatusListener
 
     public void onDeletionNotice (StatusDeletionNotice notice)
     {
-//        if (notice == null)
-//        {
-//            System.out.println ("Deletion notice is null!"); // there's a problem in the stream, should be done before notification
-//            return;
-//        }
-//        
-//        User user = friend (notice.getUserId ());
-//        System.out.println (user.getName () + " [" + user.getScreenName () + "] deleted the tweet " 
-//                + notice.getStatusId ());
+        User user = friend (notice.getUserId ());
+        if (user == null)
+            return;
+        System.out.println (user.getName () + " [" + user.getScreenName () + "] deleted the tweet " 
+                + notice.getStatusId ());
+    }
+
+    private User friend (int userId)
+    {
+        try
+        {
+            return twitter.showUser (userId);
+        }
+        catch (TwitterException e)
+        {
+            System.out.println ("Unexpected exception caught while trying to show user " + userId + ": " + e);
+            e.printStackTrace();
+        }
+        
+        return null;
     }
 
     public void onTrackLimitationNotice (int numberOfLimitedStatuses)

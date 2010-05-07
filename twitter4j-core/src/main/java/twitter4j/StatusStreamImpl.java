@@ -88,9 +88,9 @@ class StatusStreamImpl implements StatusStream {
                         listener.onDirectMessage (new DirectMessageJSONImpl (json.getJSONObject ("direct_message")));
                     }
                     else if (!json.isNull("delete")) {
-                        System.out.println ("Deletion notice: " + line); // tmp: just checking if the deletion notice is hydrated or not
                         listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
-                    } else if (!json.isNull("limit")) {
+                    }
+                    else if (!json.isNull("limit")) {
                         listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
                     }
                     else if (!json.isNull ("scrub_geo")) {
