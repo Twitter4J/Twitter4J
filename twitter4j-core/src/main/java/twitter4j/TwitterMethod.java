@@ -160,7 +160,7 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod FOLLOWERS_IDS = new TwitterMethod("FOLLOWERS_IDS");
 
     /*Account Methods*/
-    //verifyCredentials
+    public static final TwitterMethod VERIFY_CREDENTIALS = new TwitterMethod("VERIFY_CREDENTIALS");
     public static final TwitterMethod RATE_LIMIT_STATUS = new TwitterMethod("RATE_LIMIT_STATUS");
     public static final TwitterMethod UPDATE_DELIVERY_DEVICE = new TwitterMethod("UPDATE_DELIVERY_DEVICE");
     public static final TwitterMethod UPDATE_PROFILE_COLORS = new TwitterMethod("UPDATE_PROFILE_COLORS");

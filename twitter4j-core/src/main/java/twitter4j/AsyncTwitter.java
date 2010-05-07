@@ -1234,6 +1234,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     /**
      * {@inheritDoc}
      */
+    public void verifyCredentials() throws TwitterException {
+        getDispatcher().invokeLater(new AsyncTask(VERIFY_CREDENTIALS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.verifiedCredentials(twitter.verifyCredentials());
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void updateProfile(final String name, final String email, final String url
             , final String location, final String description) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE, listener) {

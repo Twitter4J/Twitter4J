@@ -255,6 +255,9 @@ public interface TwitterListener {
     void gotFollowersIDs(IDs ids);
 
     /*Account Methods*/
+    
+    void verifiedCredentials(User user);
+    
     void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
 
     void updatedDeliveryDevice(User user);
@@ -430,7 +433,7 @@ public interface TwitterListener {
     TwitterMethod FOLLOWERS_IDS = TwitterMethod.FOLLOWERS_IDS;
 
     /*Account Methods*/
-    //verifyCredentials
+    TwitterMethod VERIFY_CREDENTIALS = TwitterMethod.VERIFY_CREDENTIALS;
     TwitterMethod RATE_LIMIT_STATUS = TwitterMethod.RATE_LIMIT_STATUS;
     TwitterMethod UPDATE_DELIVERY_DEVICE = TwitterMethod.UPDATE_DELIVERY_DEVICE;
     TwitterMethod UPDATE_PROFILE_COLORS = TwitterMethod.UPDATE_PROFILE_COLORS;

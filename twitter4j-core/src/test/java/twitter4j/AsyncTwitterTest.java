@@ -213,17 +213,31 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertTrue(assertion, found);
     }
     public void testAccountMethods() throws Exception{
-        User original = twitterAPI1.verifyCredentials();
 
+        async1.verifyCredentials();
+        waitForResponse();
+        assertNotNull(user);
+        assertNotNull(user.getName());
+        assertNotNull(user.getURL());
+        assertNotNull(user.getLocation());
+        assertNotNull(user.getDescription());
+
+        String oldName, oldURL, oldLocation, oldDescription;
+        oldName = user.getName();
+        oldURL = user.getURL().toString();
+        oldLocation = user.getLocation();
+        oldDescription = user.getDescription();
+        
         String newName, newURL, newLocation, newDescription;
         String neu = "new";
-        newName = original.getName() + neu;
-        newURL = original.getURL() + neu;
-        newLocation = original.getLocation()+neu;
-        newDescription = original.getDescription()+neu;
+        newName = user.getName() + neu;
+        newURL = user.getURL() + neu;
+        newLocation = user.getLocation()+neu;
+        newDescription = user.getDescription()+neu;
 
         async1.updateProfile(
                 newName, null, newURL, newLocation, newDescription);
+    	
         waitForResponse();
         assertEquals(newName, user.getName());
         assertEquals(newURL, user.getURL().toString());
@@ -231,8 +245,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertEquals(newDescription, user.getDescription());
 
         //revert the profile
-        async1.updateProfile(original.getName()
-                , null, original.getURL().toString(), original.getLocation(), original.getDescription());
+        async1.updateProfile(oldName, null, oldURL, oldLocation, oldDescription);
         waitForResponse();
 
         async1.existsFriendship(bestFriend1.screenName,bestFriend2.screenName);
@@ -716,12 +729,18 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     /*Account Methods*/
+    
     public void gotRateLimitStatus(RateLimitStatus status){
         this.rateLimitStatus = status;
         notifyResponse();
     }
 
-    public void updatedDeliveryDevice(User user) {
+	public void verifiedCredentials(User user) {
+        this.user = user;
+        notifyResponse();
+	}
+
+	public void updatedDeliveryDevice(User user) {
         this.user = user;
         notifyResponse();
     }

@@ -273,6 +273,9 @@ public class TwitterAdapter implements TwitterListener {
 
     /*Account Methods*/
 
+	public void verifiedCredentials(User user) {
+	}
+	
     public void gotRateLimitStatus(RateLimitStatus status) {
     }
 
