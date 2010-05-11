@@ -28,7 +28,12 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.*;
+import twitter4j.http.AccessToken;
+import twitter4j.http.Authorization;
+import twitter4j.http.AuthorizationFactory;
+import twitter4j.http.BasicAuthorization;
+import twitter4j.http.OAuthAuthorization;
+
 
 /**
  * A factory class for AsyncTwitter.<br>

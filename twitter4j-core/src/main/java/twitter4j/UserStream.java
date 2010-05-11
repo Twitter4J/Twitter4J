@@ -26,16 +26,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-
+import java.io.IOException;
 
 /**
- * A data class representing Status deletionNotice<br>
- * Clients are urged to honor deletionNotice requests and discard deleted statuses immediately. At times, status deletionNotice messages may arrive before the status. Even in this case, the late arriving status should be deleted from your backing store.
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.0
+ * @since Twitter4J 2.1.3
  */
-public interface StatusDeletionNotice extends Comparable<StatusDeletionNotice>, java.io.Serializable {
-    long getStatusId();
+public interface UserStream extends StatusStream{
+    /**
+     * Reads next element from this stream.
+     * @param listener a UserStreamListener implementation
+     * @throws TwitterException when the end of the stream has been reached.
+     * @throws IllegalStateException when the end of the stream had been reached.
+     */
+    void next(UserStreamListener listener) throws TwitterException;
 
-    int getUserId();
+    void close() throws IOException;
 }

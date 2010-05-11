@@ -26,16 +26,58 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-
-
 /**
- * A data class representing Status deletionNotice<br>
- * Clients are urged to honor deletionNotice requests and discard deleted statuses immediately. At times, status deletionNotice messages may arrive before the status. Even in this case, the late arriving status should be deleted from your backing store.
- * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.0
+ * @author Remy Rakic at gmail.com
+ * @since Twitter4J 2.1.3
  */
-public interface StatusDeletionNotice extends Comparable<StatusDeletionNotice>, java.io.Serializable {
-    long getStatusId();
+public interface UserStreamListener extends StatusListener {
+    /**
+     * @param friendIds
+     * @since Twitter4J 2.1.3
+     */
+    void onFriendList(int[] friendIds);
 
-    int getUserId();
+    /**
+     * @param source
+     * @param target
+     * @param targetObject
+     * @since Twitter4J 2.1.3
+     */
+    void onFavorite(int source, int target, long targetObject);
+
+    /**
+     * @param source
+     * @param target
+     * @param targetObject
+     * @since Twitter4J 2.1.3
+     */
+    void onUnfavorite(int source, int target, long targetObject);
+
+    /**
+     * @param source
+     * @param target
+     * @since Twitter4J 2.1.3
+     */
+    void onFollow(int source, int target);
+
+    /**
+     * @param source
+     * @param target
+     * @since Twitter4J 2.1.3
+     */
+    void onUnfollow(int source, int target);
+
+    /**
+     * @param source
+     * @param target
+     * @param targetObject
+     * @since Twitter4J 2.1.3
+     */
+    void onRetweet(int source, int target, long targetObject);
+
+    /**
+     * @param directMessage
+     * @since Twitter4J 2.1.3
+     */
+    void onDirectMessage(DirectMessage directMessage);
 }

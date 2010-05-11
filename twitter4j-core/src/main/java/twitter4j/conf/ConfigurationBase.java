@@ -376,7 +376,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.streamBaseURL = streamBaseURL;
     }
 
-    @Override
     public String getUserStreamBaseURL () {
         return userStreamBaseURL;
     }

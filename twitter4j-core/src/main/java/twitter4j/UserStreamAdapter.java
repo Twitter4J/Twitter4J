@@ -26,16 +26,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-
-
 /**
- * A data class representing Status deletionNotice<br>
- * Clients are urged to honor deletionNotice requests and discard deleted statuses immediately. At times, status deletionNotice messages may arrive before the status. Even in this case, the late arriving status should be deleted from your backing store.
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.0
+ * @since Twitter4J 2.1.3
  */
-public interface StatusDeletionNotice extends Comparable<StatusDeletionNotice>, java.io.Serializable {
-    long getStatusId();
+public class UserStreamAdapter extends StatusAdapter implements UserStreamListener {
+    public void onFriendList(int[] friendIds) {
+    }
+    public void onFavorite(int source, int target, long targetObject) {
+    }
 
-    int getUserId();
+    public void onFollow(int source, int target) {
+    }
+
+    public void onUnfavorite(int source, int target, long targetObject) {
+    }
+
+    public void onRetweet(int source, int target, long targetObject) {
+    }
+
+    public void onUnfollow(int source, int target) {
+    }
+
+    public void onDirectMessage(DirectMessage directMessage) {
+    }
 }

@@ -46,454 +46,342 @@ import twitter4j.http.AccessToken;
  * This is a code example of Twitter4J Streaming API - user stream.<br>
  * Usage: java twitter4j.examples.PrintUserStream. Needs a valid twitter4j.properties file with Basic Auth _and_ OAuth properties set<br>
  * </p>
- * 
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @author Remy Rakic - remy dot rakic at gmail.com
  */
-public final class PrintUserStream implements StatusListener
-{
-    public static void main (String [] args) throws TwitterException
-    {
-        PrintUserStream printSampleStream = new PrintUserStream (args);
-        printSampleStream.startConsuming ();
+public final class PrintUserStream implements StatusListener {
+    public static void main(String[] args) throws TwitterException {
+        PrintUserStream printSampleStream = new PrintUserStream(args);
+        printSampleStream.startConsuming();
     }
 
     private TwitterStream twitterStream;
-    
+
     // used for getting status and user info, for favoriting, following and unfollowing events
     private Twitter twitter;
     private User currentUser;
     private int currentUserId;
-    
-    public PrintUserStream (String [] args)
-    {
-        Configuration conf = new PropertyConfiguration (getClass ().getResourceAsStream ("twitter4j.properties"));
-        
-        twitterStream = new TwitterStreamFactory ().getInstance (conf.getUser (), conf.getPassword ());
-        
-        twitter = new TwitterFactory().getOAuthAuthorizedInstance (conf.getOAuthConsumerKey (), conf.getOAuthConsumerSecret (),
-                  new AccessToken (conf.getOAuthAccessToken (), conf.getOAuthAccessTokenSecret ()));
-        
-        try
-        {
-            currentUser = twitter.verifyCredentials ();
-            currentUserId = currentUser.getId ();
+
+    public PrintUserStream(String[] args) {
+        Configuration conf = new PropertyConfiguration(getClass().getResourceAsStream("twitter4j.properties"));
+
+        twitterStream = new TwitterStreamFactory().getInstance(conf.getUser(), conf.getPassword());
+
+        twitter = new TwitterFactory().getOAuthAuthorizedInstance(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret(),
+                new AccessToken(conf.getOAuthAccessToken(), conf.getOAuthAccessTokenSecret()));
+
+        try {
+            currentUser = twitter.verifyCredentials();
+            currentUserId = currentUser.getId();
         }
-        catch (TwitterException e)
-        {
-            System.out.println ("Unexpected exception caught while trying to retrieve the current user: " + e);
+        catch (TwitterException e) {
+            System.out.println("Unexpected exception caught while trying to retrieve the current user: " + e);
             e.printStackTrace();
-            System.exit (-1);
+            System.exit(-1);
         }
-        
-        Timer t = new Timer (5 * 60 * 1000, new ActionListener ()
-        {
-            @Override
-            public void actionPerformed (ActionEvent e)
-            {
-                System.out.println ("");
+
+        Timer t = new Timer(5 * 60 * 1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("");
             }
         });
-        
-        t.start ();
+
+        t.start();
     }
 
-    private void startConsuming () throws TwitterException
-    {
+    private void startConsuming() throws TwitterException {
         // the user() method internally creates a thread which manipulates
         // TwitterStream and calls these adequate listener methods continuously.
-        twitterStream.setStatusListener (this);
-        twitterStream.user ();
+        twitterStream.setStatusListener(this);
+        twitterStream.user();
     }
 
     private Map<Integer, SoftReference<User>> friends;
-    
-    @Override
-    public void onFriendList (int [] friendIds)
-    {
-        System.out.println ("Received friends list - Following " + friendIds.length + " people");
 
-        friends = new HashMap<Integer, SoftReference<User>> ();
+    public void onFriendList(int[] friendIds) {
+        System.out.println("Received friends list - Following " + friendIds.length + " people");
+
+        friends = new HashMap<Integer, SoftReference<User>>();
         for (int id : friendIds)
-            friends.put (id, null);
-        
-        friends.put (currentUser.getId (), new SoftReference<User> (currentUser));
+            friends.put(id, null);
+
+        friends.put(currentUser.getId(), new SoftReference<User>(currentUser));
     }
-    
-    private User friend (int id)
-    {
+
+    private User friend(int id) {
         User friend = null;
-        
-        SoftReference<User> ref = friends.get (id); 
-        
+
+        SoftReference<User> ref = friends.get(id);
+
         if (ref != null)
-            friend = ref.get ();
-        
-        if (friend == null)
-        {
-            try
-            {
-                friend = twitter.showUser (id);
-                friends.put (id, new SoftReference<User> (friend));
+            friend = ref.get();
+
+        if (friend == null) {
+            try {
+                friend = twitter.showUser(id);
+                friends.put(id, new SoftReference<User>(friend));
             }
-            catch (TwitterException e)
-            {
+            catch (TwitterException e) {
                 e.printStackTrace();
             }
         }
-        
-        if (friend == null)
-        {
-            System.out.println ("User id " + id + " lookup failed");
+
+        if (friend == null) {
+            System.out.println("User id " + id + " lookup failed");
             return new NullUser();
         }
-        
+
         return friend;
     }
-    
-    public void onStatus (Status status)
-    {
-        int replyTo = status.getInReplyToUserId ();
-        if (replyTo > 0 && !friends.containsKey (replyTo))
-            System.out.print ("[Out of band] "); // I've temporarily labeled "out of bands" messages that are sent to people you don't follow
 
-        User user = status.getUser ();
-        
-        System.out.println (user.getName () + " [" + user.getScreenName () + "] : " + status.getText ());
+    public void onStatus(Status status) {
+        int replyTo = status.getInReplyToUserId();
+        if (replyTo > 0 && !friends.containsKey(replyTo))
+            System.out.print("[Out of band] "); // I've temporarily labeled "out of bands" messages that are sent to people you don't follow
+
+        User user = status.getUser();
+
+        System.out.println(user.getName() + " [" + user.getScreenName() + "] : " + status.getText());
     }
 
-    @Override
-    public void onDirectMessage (DirectMessage dm)
-    {
-        System.out.println ("DM from " + dm.getSenderScreenName () + " to " + dm.getRecipientScreenName () + ": " + dm.getText ());
+    public void onDirectMessage(DirectMessage dm) {
+        System.out.println("DM from " + dm.getSenderScreenName() + " to " + dm.getRecipientScreenName() + ": " + dm.getText());
     }
 
-    public void onDeletionNotice (StatusDeletionNotice notice)
-    {
-        if (notice == null)
-        {
-            System.out.println ("Deletion notice is null!"); // there's a problem in the stream, should be done before notification
+    public void onDeletionNotice(StatusDeletionNotice notice) {
+        if (notice == null) {
+            System.out.println("Deletion notice is null!"); // there's a problem in the stream, should be done before notification
             return;
         }
-        
-        User user = friend (notice.getUserId ());
-        System.out.println (user.getName () + " [" + user.getScreenName () + "] deleted the tweet " 
-                + notice.getStatusId ());
+
+        User user = friend(notice.getUserId());
+        System.out.println(user.getName() + " [" + user.getScreenName() + "] deleted the tweet "
+                + notice.getStatusId());
     }
 
-    public void onTrackLimitationNotice (int numberOfLimitedStatuses)
-    {
-        System.out.println ("track limitation: " + numberOfLimitedStatuses);
+    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
+        System.out.println("track limitation: " + numberOfLimitedStatuses);
     }
 
-    public void onException (Exception ex)
-    {
-        ex.printStackTrace ();
+    public void onException(Exception ex) {
+        ex.printStackTrace();
     }
 
-    @Override
-    public void onFavorite (int source, int target, long targetObject)
-    {
-        User user = friend (source);
-        Status rt = status (targetObject);
-        
-        System.out.print (user.getName () + " [" + user.getScreenName () + "] favorited ");
+    public void onFavorite(int source, int target, long targetObject) {
+        User user = friend(source);
+        Status rt = status(targetObject);
+
+        System.out.print(user.getName() + " [" + user.getScreenName() + "] favorited ");
         if (rt == null)
-            System.out.println ("a protected tweet");
+            System.out.println("a protected tweet");
         else
-            System.out.println (rt.getUser ().getName () + "'s [" + rt.getUser ().getScreenName () + "] tweet: " + rt.getText ());
+            System.out.println(rt.getUser().getName() + "'s [" + rt.getUser().getScreenName() + "] tweet: " + rt.getText());
     }
 
-    @Override
-    public void onUnfavorite (int source, int target, long targetObject)
-    {
-        User user = friend (source);
-        Status rt = status (targetObject);
-        
-        System.out.print (user.getName () + " [" + user.getScreenName () + "] unfavorited ");
+    public void onUnfavorite(int source, int target, long targetObject) {
+        User user = friend(source);
+        Status rt = status(targetObject);
+
+        System.out.print(user.getName() + " [" + user.getScreenName() + "] unfavorited ");
         if (rt == null)
-            System.out.println ("a protected tweet");
+            System.out.println("a protected tweet");
         else
-            System.out.println (rt.getUser ().getName () + "'s [" + rt.getUser ().getScreenName () + "] tweet: " + rt.getText ());
+            System.out.println(rt.getUser().getName() + "'s [" + rt.getUser().getScreenName() + "] tweet: " + rt.getText());
     }
-    
-    @Override
-    public void onFollow (int source, int target)
-    {
-        User user = friend (source);
-        User friend = friend (target);
-        
-        System.out.println (user.getName () + " [" + user.getScreenName () + "] started following "
-                + friend.getName () + " [" + friend.getScreenName () +"]");
-        
+
+    public void onFollow(int source, int target) {
+        User user = friend(source);
+        User friend = friend(target);
+
+        System.out.println(user.getName() + " [" + user.getScreenName() + "] started following "
+                + friend.getName() + " [" + friend.getScreenName() + "]");
+
         if (source == currentUserId && friend != null)
-            friends.put (target, new SoftReference<User> (friend));
+            friends.put(target, new SoftReference<User>(friend));
     }
-    
-    @Override
-    public void onUnfollow (int source, int target)
-    {
-        User user = friend (source);
-        User friend = friend (target);
-        
-        System.out.println (user.getName () + " [" + user.getScreenName () + "] unfollowed "
-                + friend.getName () + " [" + friend.getScreenName () +"]");
-        
+
+    public void onUnfollow(int source, int target) {
+        User user = friend(source);
+        User friend = friend(target);
+
+        System.out.println(user.getName() + " [" + user.getScreenName() + "] unfollowed "
+                + friend.getName() + " [" + friend.getScreenName() + "]");
+
         if (source == currentUserId)
-            friends.remove (target);
+            friends.remove(target);
     }
-    
-    @Override
-    public void onRetweet (int source, int target, long targetObject)
-    {
-        
+
+    public void onRetweet(int source, int target, long targetObject) {
+
     }
-    
-    private Status status (long id)
-    {
-        try
-        {
-            return twitter.showStatus (id);
+
+    private Status status(long id) {
+        try {
+            return twitter.showStatus(id);
         }
-        catch (TwitterException e)
-        {
-            if (e.getStatusCode () != 403) // forbidden
+        catch (TwitterException e) {
+            if (e.getStatusCode() != 403) // forbidden
                 e.printStackTrace();
         }
-        
+
         return null;
     }
-    
+
     // Preventing the null users in most situations, only used in when there's problems in the stream
-    private static class NullUser implements User
-    {
-        @Override
-        public Date getCreatedAt ()
-        {
+
+    private static class NullUser implements User {
+        public Date getCreatedAt() {
             return null;
         }
 
-        @Override
-        public String getDescription ()
-        {
+        public String getDescription() {
             return null;
         }
 
-        @Override
-        public int getFavouritesCount ()
-        {
+        public int getFavouritesCount() {
             return 0;
         }
 
-        @Override
-        public int getFollowersCount ()
-        {
+        public int getFollowersCount() {
             return 0;
         }
 
-        @Override
-        public int getFriendsCount ()
-        {
+        public int getFriendsCount() {
             return 0;
         }
 
-        @Override
-        public int getId ()
-        {
+        public int getId() {
             return 0;
         }
 
-        @Override
-        public String getLang ()
-        {
+        public String getLang() {
             return null;
         }
 
-        @Override
-        public String getLocation ()
-        {
+        public String getLocation() {
             return null;
         }
 
-        @Override
-        public String getName ()
-        {
+        public String getName() {
             return null;
         }
 
-        @Override
-        public String getProfileBackgroundColor ()
-        {
+        public String getProfileBackgroundColor() {
             return null;
         }
 
-        @Override
-        public String getProfileBackgroundImageUrl ()
-        {
+        public String getProfileBackgroundImageUrl() {
             return null;
         }
 
-        @Override
-        public URL getProfileImageURL ()
-        {
+        public URL getProfileImageURL() {
             return null;
         }
 
-        @Override
-        public String getProfileLinkColor ()
-        {
+        public String getProfileLinkColor() {
             return null;
         }
 
-        @Override
-        public String getProfileSidebarBorderColor ()
-        {
+        public String getProfileSidebarBorderColor() {
             return null;
         }
 
-        @Override
-        public String getProfileSidebarFillColor ()
-        {
+        public String getProfileSidebarFillColor() {
             return null;
         }
 
-        @Override
-        public String getProfileTextColor ()
-        {
+        public String getProfileTextColor() {
             return null;
         }
 
-        @Override
-        public String getScreenName ()
-        {
+        public String getScreenName() {
             return null;
         }
 
-        @Override
-        public Status getStatus ()
-        {
+        public Status getStatus() {
             return null;
         }
 
-        @Override
-        public Date getStatusCreatedAt ()
-        {
+        public Date getStatusCreatedAt() {
             return null;
         }
 
-        @Override
-        public long getStatusId ()
-        {
+        public long getStatusId() {
             return 0;
         }
 
-        @Override
-        public String getStatusInReplyToScreenName ()
-        {
+        public String getStatusInReplyToScreenName() {
             return null;
         }
 
-        @Override
-        public long getStatusInReplyToStatusId ()
-        {
+        public long getStatusInReplyToStatusId() {
             return 0;
         }
 
-        @Override
-        public int getStatusInReplyToUserId ()
-        {
+        public int getStatusInReplyToUserId() {
             return 0;
         }
 
-        @Override
-        public String getStatusSource ()
-        {
+        public String getStatusSource() {
             return null;
         }
 
-        @Override
-        public String getStatusText ()
-        {
+        public String getStatusText() {
             return null;
         }
 
-        @Override
-        public int getStatusesCount ()
-        {
+        public int getStatusesCount() {
             return 0;
         }
 
-        @Override
-        public String getTimeZone ()
-        {
+        public String getTimeZone() {
             return null;
         }
 
-        @Override
-        public URL getURL ()
-        {
+        public URL getURL() {
             return null;
         }
 
-        @Override
-        public int getUtcOffset ()
-        {
+        public int getUtcOffset() {
             return 0;
         }
 
-        @Override
-        public boolean isContributorsEnabled ()
-        {
+        public boolean isContributorsEnabled() {
             return false;
         }
 
-        @Override
-        public boolean isGeoEnabled ()
-        {
+        public boolean isGeoEnabled() {
             return false;
         }
 
-        @Override
-        public boolean isProfileBackgroundTiled ()
-        {
+        public boolean isProfileBackgroundTiled() {
             return false;
         }
 
-        @Override
-        public boolean isProtected ()
-        {
+        public boolean isProtected() {
             return false;
         }
 
-        @Override
-        public boolean isStatusFavorited ()
-        {
+        public boolean isStatusFavorited() {
             return false;
         }
 
-        @Override
-        public boolean isStatusTruncated ()
-        {
+        public boolean isStatusTruncated() {
             return false;
         }
 
-        @Override
-        public boolean isVerified ()
-        {
+        public boolean isVerified() {
             return false;
         }
 
-        @Override
-        public int compareTo (User o)
-        {
+        public int compareTo(User o) {
             return 0;
         }
 
-        @Override
-        public RateLimitStatus getRateLimitStatus ()
-        {
+        public RateLimitStatus getRateLimitStatus() {
             return null;
         }
-        
+
     }
 }
