@@ -26,10 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
-import twitter4j.PagableResponseList;
-import twitter4j.TwitterException;
-import twitter4j.User;
-import twitter4j.UserList;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */

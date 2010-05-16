@@ -26,17 +26,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.GeoLocation;
-import twitter4j.Tweet;
-import twitter4j.TwitterException;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
+import static twitter4j.ParseUtil.getDate;
+import static twitter4j.ParseUtil.getInt;
+import static twitter4j.ParseUtil.getLong;
+import static twitter4j.ParseUtil.getRawString;
+import static twitter4j.ParseUtil.getUnescapedString;
 
 import java.util.Date;
 
-import static twitter4j.ParseUtil.*;
+import twitter4j.internal.org.json.JSONObject;
 
 /**
  * A data class representing a Tweet in the search response

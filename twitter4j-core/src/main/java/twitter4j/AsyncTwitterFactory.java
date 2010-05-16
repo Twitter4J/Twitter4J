@@ -32,8 +32,8 @@ import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.AuthorizationFactory;
 import twitter4j.http.BasicAuthorization;
-import twitter4j.http.NullAuthorization;
 import twitter4j.http.OAuthAuthorization;
+
 
 /**
  * A factory class for AsyncTwitter.<br>

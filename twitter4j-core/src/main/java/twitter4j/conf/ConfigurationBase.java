@@ -66,7 +66,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String restBaseURL;
     private String searchBaseURL;
     private String streamBaseURL;
-
+    private String userStreamBaseURL;
+    
     private String dispatcherImpl;
 
     private int asyncNumThreads;
@@ -118,7 +119,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         // streaming api doesn't support SSL as of 12/30/2009
         // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
         setStreamBaseURL("http://stream.twitter.com/1/");
-
+        setUserStreamBaseURL("http://chirpstream.twitter.com/2b/");
+        
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
         // detecting dalvik (Android platform)
@@ -374,6 +376,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.streamBaseURL = streamBaseURL;
     }
 
+    public String getUserStreamBaseURL () {
+        return userStreamBaseURL;
+    }
+    
+    protected final void setUserStreamBaseURL (String userStreamBaseURL) {
+        this.userStreamBaseURL = userStreamBaseURL;
+    }
+    
     public String getOAuthRequestTokenURL() {
         return oAuthRequestTokenURL;
     }

@@ -24,38 +24,30 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.api;
-
-import twitter4j.TwitterException;
+package twitter4j;
 
 /**
- * @author Joern Huxhorn - jhuxhorn at googlemail.com
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.3
  */
-/**
- * Not yet supported.
- *
- * http://yusuke.homeip.net/jira/browse/TFJ-223
- */
-public interface SpamReportingMethodsAsync {
-    /**
-     * The user specified in the id is blocked by the authenticated user and reported as a spammer.
-     * <br>This method calls http://api.twitter.com/1/report_spam.json
-     *
-     * @param userId The ID of the user you want to report as a spammer.
-     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-report_spam">Twitter API Wiki / Twitter REST API Method: report_spam</a>
-     * @since Twitter4J 2.1.0
-     */
-    void reportSpam(int userId) throws TwitterException;
+public class UserStreamAdapter extends StatusAdapter implements UserStreamListener {
+    public void onFriendList(int[] friendIds) {
+    }
+    public void onFavorite(int source, int target, long targetObject) {
+    }
 
-    /**
-     * The user specified in the id is blocked by the authenticated user and reported as a spammer.
-     * <br>This method calls http://api.twitter.com/1/report_spam.json
-     *
-     * @param screenName The screen name of the user you want to report as a spammer.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-report_spam">Twitter API Wiki / Twitter REST API Method: report_spam</a>
-     * @since Twitter4J 2.1.0
-     */
-    void reportSpam(String screenName) throws TwitterException;
+    public void onFollow(int source, int target) {
+    }
+
+    public void onUnfavorite(int source, int target, long targetObject) {
+    }
+
+    public void onRetweet(int source, int target, long targetObject) {
+    }
+
+    public void onUnfollow(int source, int target) {
+    }
+
+    public void onDirectMessage(DirectMessage directMessage) {
+    }
 }

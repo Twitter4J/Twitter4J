@@ -5,6 +5,8 @@ twitter4j-core/src/test/resources/xauth-test.properties
 twitter4j-examples/target/*
 .DS_Store
 ~$*
+.classpath
+.project
 atlassian-ide-plugin.xml
 *.iml
 *.ipr

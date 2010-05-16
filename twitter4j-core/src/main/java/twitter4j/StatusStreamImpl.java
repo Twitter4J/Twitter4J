@@ -28,6 +28,7 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -41,7 +42,7 @@ import java.io.InputStreamReader;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-class StatusStreamImpl implements StatusStream {
+class StatusStreamImpl implements StatusStream, UserStream {
     private static final Logger logger = Logger.getLogger(StatusStreamImpl.class);
 
     private boolean streamAlive = true;
@@ -65,7 +66,18 @@ class StatusStreamImpl implements StatusStream {
     /**
      * {@inheritDoc}
      */
+    public void next(UserStreamListener listener) throws TwitterException {
+        handleNextElement(listener, listener);
+    }
+
+    private static final UserStreamAdapter nullAdapter = new UserStreamAdapter();
+    /**
+     * {@inheritDoc}
+     */
     public void next(StatusListener listener) throws TwitterException {
+        handleNextElement(listener, nullAdapter);
+    }
+    private void handleNextElement(StatusListener listener, UserStreamListener userStreamListener) throws TwitterException {
         if (!streamAlive) {
             throw new IllegalStateException("Stream already closed.");
         }
@@ -80,12 +92,45 @@ class StatusStreamImpl implements StatusStream {
                 logger.debug("received:", line);
                 try {
                     JSONObject json = new JSONObject(line);
-                    if (!json.isNull("text")) {
-                        listener.onStatus(new StatusJSONImpl(json));
+                    if (!json.isNull ("sender")) {
+                        userStreamListener.onDirectMessage (new DirectMessageJSONImpl (json));
+                    } else if (!json.isNull("text")) {
+                        userStreamListener.onStatus(new StatusJSONImpl(json));
                     } else if (!json.isNull("delete")) {
                         listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
                     } else if (!json.isNull("limit")) {
                         listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
+                    } else if (!json.isNull("friends")) {
+                        JSONArray friends = json.getJSONArray("friends");
+                        int[] friendIds = new int[friends.length()];
+                        for (int i = 0; i < friendIds.length; ++i)
+                            friendIds[i] = friends.getInt(i);
+
+                        userStreamListener.onFriendList(friendIds);
+                    } else if (!json.isNull("event")) {
+                        String event = json.getString("event");
+                        int source = json.getJSONObject("source").getInt("id");
+                        int target = json.getJSONObject("target").getInt("id");
+
+                        if ("favorite".equals(event)) {
+                            long targetObject = json.getJSONObject("target_object").getLong("id");
+                            userStreamListener.onFavorite(source, target, targetObject);
+                        } else if ("unfavorite".equals(event)) {
+                            long targetObject = json.getJSONObject("target_object").getLong("id");
+                            userStreamListener.onUnfavorite(source, target, targetObject);
+                        } else if ("retweet".equals(event)) {
+                            // note: retweet events also show up as statuses
+
+                            long targetObject = json.getJSONObject("target_object").getLong("id");
+                            userStreamListener.onRetweet(source, target, targetObject);
+                        } else if ("follow".equals(event)) {
+                            userStreamListener.onFollow(source, target);
+                        } else if ("unfollow".equals(event)) {
+                            userStreamListener.onUnfollow(source, target);
+                        }
+                    } else {
+                        // tmp: just checking what kind of unknown event we're receiving on this stream
+                        logger.info("Received unknown event: " + line);
                     }
                 } catch (JSONException jsone) {
                     listener.onException(jsone);

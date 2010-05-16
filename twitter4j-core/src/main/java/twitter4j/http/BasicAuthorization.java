@@ -27,12 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.http;
 
 import twitter4j.internal.http.BASE64Encoder;
-import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.logging.LoggerFactory;
-
-import java.net.HttpURLConnection;
 
 /**
  * An authentication implementation implements Basic authentication

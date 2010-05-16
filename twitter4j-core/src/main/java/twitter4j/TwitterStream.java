@@ -246,6 +246,29 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         }
     }
 
+    public void user() {
+        ensureBasicEnabled(); // for now, the user stream will switch to OAuth at some point in the future
+        startHandler(new StreamHandlingThread<UserStream>() {
+            public UserStream getStream() throws TwitterException {
+                return getUserStream();
+            }
+        });
+    }
+    
+    public UserStream getUserStream() throws TwitterException {
+        ensureBasicEnabled();
+        if (!(statusListener instanceof UserStreamListener)) {
+            logger.warn("Use of UserStreamListener is suggested.");
+        }
+        try {
+            return new StatusStreamImpl(http.get(conf.getUserStreamBaseURL () + "user.json"
+                    , auth));
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    
     /**
      * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
      * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
@@ -347,6 +370,10 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         this.statusListener = statusListener;
     }
 
+    public void setUserStreamListener(UserStreamListener statusListener) {
+        this.statusListener = statusListener;
+    }
+
     /*
      http://apiwiki.twitter.com/Streaming-API-Documentation#Connecting
      When a network error (TCP/IP level) is encountered, back off linearly. Perhaps start at 250 milliseconds, double, and cap at 16 seconds
@@ -361,8 +388,8 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
 
     private static final int NO_WAIT = 0;
 
-    abstract class StreamHandlingThread extends Thread {
-        StatusStream stream = null;
+    abstract class StreamHandlingThread<T extends StatusStream> extends Thread {
+        T stream = null;
         private static final String NAME = "Twitter Stream Handling Thread";
         private boolean closed = false;
 
@@ -430,7 +457,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
             logger.debug(actualMessage);
         }
 
-        abstract StatusStream getStream() throws TwitterException;
+        abstract T getStream() throws TwitterException;
 
     }
 }

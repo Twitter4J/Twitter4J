@@ -1,21 +1,11 @@
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-import twitter4j.http.AccessToken;
-import twitter4j.http.Authorization;
-import twitter4j.http.NullAuthorization;
-import twitter4j.http.OAuthAuthorization;
-import twitter4j.http.OAuthSupport;
-import twitter4j.http.RequestToken;
-import twitter4j.internal.http.HttpClientFactory;
-import twitter4j.internal.http.HttpClientWrapper;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.http.HttpResponseCode;
-import twitter4j.internal.http.HttpResponseEvent;
-import twitter4j.internal.http.HttpResponseListener;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
+import twitter4j.conf.Configuration;
+import twitter4j.http.*;
+import twitter4j.internal.http.*;
 
 abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseCode, HttpResponseListener, OAuthSupport, java.io.Serializable {
     protected transient HttpClientWrapper http;
