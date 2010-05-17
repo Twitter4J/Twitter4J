@@ -65,4 +65,9 @@ public interface StatusListener {
     void onRetweet (User source, User target, Status retweetedStatus);
     
     void onDirectMessage (DirectMessage directMessage);
+    
+    void onUserSubscribedToList (User subscriber, User listOwner, UserList list);
+    void onUserCreatedList (User listOwner, UserList list);
+    void onUserUpdatedList (User listOwner, UserList list);
+    void onUserDestroyedList (User listOwner, UserList list);
 }

@@ -201,6 +201,35 @@ public final class PrintUserStream implements StatusListener
     }
     
     @Override
+    public void onUserSubscribedToList (User subscriber, User listOwner, UserList list)
+    {
+        System.out.println (subscriber.getName () + " [" + subscriber.getScreenName () + "] subscribed to "
+                + listOwner.getName () + "'s [" + listOwner.getScreenName () +"] list: " + list.getName ()
+                + " [" + list.getFullName () + "]");
+    }
+    
+    @Override
+    public void onUserCreatedList (User listOwner, UserList list)
+    {
+        System.out.println (listOwner.getName () + " [" + listOwner.getScreenName () + "] created list: " + list.getName ()
+                + " [" + list.getFullName () + "]");
+    }
+
+    @Override
+    public void onUserUpdatedList (User listOwner, UserList list)
+    {
+        System.out.println (listOwner.getName () + " [" + listOwner.getScreenName () + "] updated list: " + list.getName ()
+                + " [" + list.getFullName () + "]");
+    }
+    
+    @Override
+    public void onUserDestroyedList (User listOwner, UserList list)
+    {
+        System.out.println (listOwner.getName () + " [" + listOwner.getScreenName () + "] destroyed list: " + list.getName ()
+                + " [" + list.getFullName () + "]");
+    }
+    
+    @Override
     public void onRetweet (User source, User target, Status retweetedStatus)
     {
         

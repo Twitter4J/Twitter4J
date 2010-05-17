@@ -56,4 +56,24 @@ public class StatusAdapter implements StatusListener
     public void onDirectMessage (DirectMessage directMessage)
     {
     }
+
+    @Override
+    public void onUserSubscribedToList (User subscriber, User listOwner, UserList list)
+    {
+    }
+
+    @Override
+    public void onUserCreatedList (User listOwner, UserList list)
+    {
+    }
+
+    @Override
+    public void onUserDestroyedList (User listOwner, UserList list)
+    {
+    }
+
+    @Override
+    public void onUserUpdatedList (User listOwner, UserList list)
+    {
+    }
 }

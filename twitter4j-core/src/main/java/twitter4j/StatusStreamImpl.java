@@ -116,6 +116,18 @@ class StatusStreamImpl implements StatusStream {
                             } else {
                                 listener.onUnfollow (source, target);
                             }
+                        } else if (event.startsWith ("list_")) {
+                            UserList targetObject = new UserListJSONImpl (json.getJSONObject ("target_object"));
+                            
+                            if ("list_user_subscribed".equals (event)) {
+                                listener.onUserSubscribedToList (source, target, targetObject);
+                            } else if ("list_created".equals (event)) {
+                                listener.onUserCreatedList (source, targetObject);
+                            } else if ("list_updated".equals (event)) {
+                                listener.onUserUpdatedList (source, targetObject);
+                            } else if ("list_destroyed".equals (event)) {
+                                listener.onUserDestroyedList (source, targetObject);
+                            }
                         } else {
                             Status targetObject = new StatusJSONImpl (json.getJSONObject ("target_object"));
                             
