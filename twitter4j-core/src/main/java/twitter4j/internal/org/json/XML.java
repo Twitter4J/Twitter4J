@@ -330,7 +330,7 @@ public class XML {
         JSONArray    ja;
         JSONObject   jo;
         String       k;
-        Iterator     keys;
+        Iterator<?>     keys;
         int          len;
         String       s;
         Object       v;

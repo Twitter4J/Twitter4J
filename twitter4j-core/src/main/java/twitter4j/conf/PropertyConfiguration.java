@@ -163,7 +163,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     private void normalize(Properties props) {
-        Set keys = props.keySet();
+        Set<?> keys = props.keySet();
         ArrayList<String> toBeNormalized = new ArrayList<String>(10);
         for (Object key : keys) {
             String keyStr = (String) key;

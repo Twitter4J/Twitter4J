@@ -36,11 +36,11 @@ import java.lang.reflect.InvocationTargetException;
  * @since Twitter4J 2.1.2
  */
 public final class HttpClientFactory {
-    private static final Constructor HTTP_CLIENT_CONSTRUCTOR;
+    private static final Constructor<?> HTTP_CLIENT_CONSTRUCTOR;
     private static final Logger logger = Logger.getLogger(HttpClientFactory.class);
 
     static {
-        Class clazz = null;
+        Class<?> clazz = null;
         try {
             clazz = Class.forName("twitter4j.internal.http.alternative.HttpClientImpl");
         } catch (ClassNotFoundException ignore) {

@@ -28,7 +28,6 @@ package twitter4j.http;
 
 import twitter4j.internal.http.BASE64Encoder;
 import twitter4j.internal.http.HttpRequest;
-import twitter4j.internal.logging.Logger;
 
 /**
  * An authentication implementation implements Basic authentication
@@ -36,7 +35,6 @@ import twitter4j.internal.logging.Logger;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class BasicAuthorization implements Authorization, java.io.Serializable {
-    private static final Logger logger = Logger.getLogger(BasicAuthorization.class);
 
     private String userId;
 
