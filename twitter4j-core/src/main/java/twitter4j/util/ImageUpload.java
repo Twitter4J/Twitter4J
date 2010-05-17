@@ -242,7 +242,7 @@ public abstract class ImageUpload
             try
             {
                 JSONObject json = new JSONObject (response);
-                if (json.has ("url"))
+                if (! json.isNull ("url"))
                     return json.getString ("url");
             }
             catch (JSONException e)
