@@ -226,7 +226,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         logger.debug("OAuth signature: ", signature);
 
         oauthHeaderParams.add(new HttpParameter("oauth_signature", signature));
-        return "OAuth " + encodeParameters(oauthHeaderParams, ", ", true);
+        return "OAuth " + encodeParameters(oauthHeaderParams, ",", true);
     }
 
     private void parseGetParameters(String url, List<HttpParameter> signatureBaseParams) {
