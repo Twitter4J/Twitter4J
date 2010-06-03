@@ -110,13 +110,16 @@ class StatusStreamImpl implements StatusStream {
                         User source = new UserJSONImpl (json.getJSONObject ("source"));
                         User target = new UserJSONImpl (json.getJSONObject ("target"));
                         
-                        if ("follow".equals (event) || "unfollow".equals (event)) {
-                            if ("follow".equals (event)) {
-                                listener.onFollow (source, target);
-                            } else {
-                                listener.onUnfollow (source, target);
-                            }
-                        } else if (event.startsWith ("list_")) {
+                        if ("follow".equals (event) || "unfollow".equals (event))
+                        {
+                            listener.onFollow (source, target);
+                        }
+                        else if ("unfollow".equals (event))
+                        {
+                            listener.onUnfollow (source, target);
+                        }
+                        else if (event.startsWith ("list_"))
+                        {
                             UserList targetObject = new UserListJSONImpl (json.getJSONObject ("target_object"));
                             
                             if ("list_user_subscribed".equals (event)) {
@@ -128,7 +131,17 @@ class StatusStreamImpl implements StatusStream {
                             } else if ("list_destroyed".equals (event)) {
                                 listener.onUserDestroyedList (source, targetObject);
                             }
-                        } else {
+                        }
+                        else if ("block".equals (event))
+                        {
+                            listener.onBlock (source, target);
+                        }
+                        else if ("unblock".equals (event))
+                        {
+                            listener.onUnblock (source, target);
+                        }
+                        else
+                        {
                             Status targetObject = new StatusJSONImpl (json.getJSONObject ("target_object"));
                             
                             if ("favorite".equals (event)) {
@@ -144,19 +157,28 @@ class StatusStreamImpl implements StatusStream {
                             }
                         }
                     }
-                    else {
+                    else
+                    {
                         // tmp: just checking what kind of unknown event we're receiving on this stream
                         System.out.println ("Received unknown event: " + line);
                     }
-                } catch (JSONException jsone) {
+                }
+                catch (JSONException jsone)
+                {
                     listener.onException(jsone);
                 }
             }
-        } catch (IOException ioe) {
-            try {
+        }
+        catch (IOException ioe)
+        {
+            try
+            {
                 is.close();
-            } catch (IOException ignore) {
             }
+            catch (IOException ignore)
+            {
+            }
+            
             streamAlive = false;
             throw new TwitterException("Stream closed.", ioe);
         }

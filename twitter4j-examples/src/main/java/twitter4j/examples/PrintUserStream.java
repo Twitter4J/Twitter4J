@@ -121,7 +121,7 @@ public final class PrintUserStream implements StatusListener
     public void onStatus (Status status)
     {
         int replyTo = status.getInReplyToUserId ();
-        if (replyTo > 0 && !friends.contains (replyTo))
+        if (replyTo > 0 && !friends.contains (replyTo) && currentUserId != replyTo)
             System.out.print ("[Out of band] "); // I've temporarily labeled "out of band" messages that are sent to people you don't follow
 
         User user = status.getUser ();
@@ -232,6 +232,19 @@ public final class PrintUserStream implements StatusListener
     @Override
     public void onRetweet (User source, User target, Status retweetedStatus)
     {
-        
+    }
+    
+    @Override
+    public void onBlock (User source, User target)
+    {
+        System.out.println (source.getName () + " [" + source.getScreenName () + "] blocked "
+                + target.getName () + " [" + target.getScreenName () +"]");
+    }
+    
+    @Override
+    public void onUnblock (User source, User target)
+    {
+        System.out.println (source.getName () + " [" + source.getScreenName () + "] unblocked "
+                + target.getName () + " [" + target.getScreenName () +"]");
     }
 }

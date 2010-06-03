@@ -76,4 +76,14 @@ public class StatusAdapter implements StatusListener
     public void onUserUpdatedList (User listOwner, UserList list)
     {
     }
+
+    @Override
+    public void onBlock (User source, User target)
+    {
+    }
+
+    @Override
+    public void onUnblock (User source, User target)
+    {
+    }
 }

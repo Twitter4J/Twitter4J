@@ -70,4 +70,7 @@ public interface StatusListener {
     void onUserCreatedList (User listOwner, UserList list);
     void onUserUpdatedList (User listOwner, UserList list);
     void onUserDestroyedList (User listOwner, UserList list);
+    
+    void onBlock (User source, User target);
+    void onUnblock (User source, User target);
 }
