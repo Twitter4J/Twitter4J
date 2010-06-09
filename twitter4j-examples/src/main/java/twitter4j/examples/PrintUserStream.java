@@ -61,7 +61,6 @@ public final class PrintUserStream implements StatusListener
     
     // used for getting user info
     private Twitter twitter;
-    private User currentUser;
     private int currentUserId;
     
     public PrintUserStream (String [] args)
@@ -76,14 +75,13 @@ public final class PrintUserStream implements StatusListener
         
         try
         {
-            currentUser = twitter.verifyCredentials ();
+            User currentUser = twitter.verifyCredentials ();
             currentUserId = currentUser.getId ();
         }
         catch (TwitterException e)
         {
             System.out.println ("Unexpected exception caught while trying to retrieve the current user: " + e);
             e.printStackTrace();
-            System.exit (-1);
         }
         
         Timer t = new Timer (5 * 60 * 1000, new ActionListener ()
