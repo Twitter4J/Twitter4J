@@ -56,6 +56,15 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
         http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
     }
+
+    /**
+     * Free resources associated with this instance,
+     * should be called on all instances constructed.
+     */
+    public void shutdown() {
+      if (http != null) http.shutdown();
+    }
+
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         if (rateLimitStatusListener instanceof java.io.Serializable) {
             out.writeObject(rateLimitStatusListener);
@@ -141,7 +150,7 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
      */
     public void setRateLimitStatusListener(RateLimitStatusListener listener){
-    	this.rateLimitStatusListener = listener;
+      this.rateLimitStatusListener = listener;
     }
 
     @Override

@@ -96,6 +96,9 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         setRetryIntervalSeconds(conf.getHttpRetryIntervalSeconds());
     }
 
+    public void shutdown() {
+    }
+
     private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<HttpClientConfiguration, HttpClient>(1);
 
     public static HttpClient getInstance(HttpClientConfiguration conf) {

@@ -81,6 +81,10 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
         client = new DefaultHttpClient(cm);
     }
 
+    public void shutdown() {
+      client.getConnectionManager().shutdown();
+    }
+
     public twitter4j.internal.http.HttpResponse request(twitter4j.internal.http.HttpRequest req) throws TwitterException {
         try {
             HttpRequestBase commonsRequest = null;
