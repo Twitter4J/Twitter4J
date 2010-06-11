@@ -128,6 +128,18 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setHttpMaxTotalConnections(int httpMaxTotalConnections) {
+      checkNotBuilt();
+      configurationBean.setHttpMaxTotalConnections(httpMaxTotalConnections);
+      return this;
+    }
+
+    public ConfigurationBuilder setHttpDefaultMaxPerRoute(int httpDefaultMaxPerRoute) {
+      checkNotBuilt();
+      configurationBean.setHttpDefaultMaxPerRoute(httpDefaultMaxPerRoute);
+      return this;
+    }
+
     public ConfigurationBuilder setOAuthConsumerKey(String oAuthConsumerKey) {
         checkNotBuilt();
         configurationBean.setOAuthConsumerKey(oAuthConsumerKey);

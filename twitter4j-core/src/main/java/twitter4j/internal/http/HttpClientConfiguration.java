@@ -46,4 +46,8 @@ public interface HttpClientConfiguration {
     int getHttpRetryCount();
 
     int getHttpRetryIntervalSeconds();
+
+    int getHttpMaxTotalConnections();
+
+    int getHttpDefaultMaxPerRoute();
 }

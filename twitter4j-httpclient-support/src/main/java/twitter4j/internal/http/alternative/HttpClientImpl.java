@@ -36,10 +36,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreProtocolPNames;
 import twitter4j.TwitterException;
@@ -60,10 +65,20 @@ import java.util.Map;
  */
 public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
     private final HttpClientConfiguration conf;
-    private final HttpClient client = new DefaultHttpClient();
+    private final HttpClient client;
 
     public HttpClientImpl(HttpClientConfiguration conf) {
         this.conf = conf;
+
+        SchemeRegistry schemeRegistry = new SchemeRegistry();
+        schemeRegistry.register(
+                 new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
+        schemeRegistry.register(
+                 new Scheme("https", 443, SSLSocketFactory.getSocketFactory()));
+        ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
+        cm.setMaxTotalConnections(conf.getHttpMaxTotalConnections());
+        cm.setDefaultMaxPerRoute(conf.getHttpDefaultMaxPerRoute());
+        client = new DefaultHttpClient(cm);
     }
 
     public twitter4j.internal.http.HttpResponse request(twitter4j.internal.http.HttpRequest req) throws TwitterException {
