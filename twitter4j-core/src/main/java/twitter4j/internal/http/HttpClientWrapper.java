@@ -42,7 +42,7 @@ import static twitter4j.internal.http.RequestMethod.POST;
 import static twitter4j.internal.http.RequestMethod.PUT;
 
 /**
- * HTTP Client wrapper with handy request methods, ResponseListener mechanism 
+ * HTTP Client wrapper with handy request methods, ResponseListener mechanism
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -64,6 +64,9 @@ public final class HttpClientWrapper implements java.io.Serializable {
         this.wrapperConf = ConfigurationContext.getInstance();
         requestHeaders = wrapperConf.getRequestHeaders();
         http = HttpClientFactory.getInstance(wrapperConf);
+    }
+    public void shutdown() {
+      http.shutdown();
     }
     private HttpResponse request(HttpRequest req) throws TwitterException {
         HttpResponse res = http.request(req);
