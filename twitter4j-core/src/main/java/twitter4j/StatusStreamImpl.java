@@ -105,23 +105,21 @@ class StatusStreamImpl implements StatusStream, UserStream {
                         int[] friendIds = new int[friends.length()];
                         for (int i = 0; i < friendIds.length; ++i)
                             friendIds[i] = friends.getInt(i);
-
                         userStreamListener.onFriendList(friendIds);
                     } else if (!json.isNull("event")) {
                         String event = json.getString("event");
-                        int source = json.getJSONObject("source").getInt("id");
-                        int target = json.getJSONObject("target").getInt("id");
+                        User source = new UserJSONImpl(json.getJSONObject("source"));
+                        User target = new UserJSONImpl(json.getJSONObject("target"));
 
                         if ("favorite".equals(event)) {
-                            long targetObject = json.getJSONObject("target_object").getLong("id");
+                            Status targetObject = new StatusJSONImpl(json.getJSONObject("target_object"));
                             userStreamListener.onFavorite(source, target, targetObject);
                         } else if ("unfavorite".equals(event)) {
-                            long targetObject = json.getJSONObject("target_object").getLong("id");
+                            Status targetObject = new StatusJSONImpl(json.getJSONObject("target_object"));
                             userStreamListener.onUnfavorite(source, target, targetObject);
                         } else if ("retweet".equals(event)) {
                             // note: retweet events also show up as statuses
-
-                            long targetObject = json.getJSONObject("target_object").getLong("id");
+                            Status targetObject = new StatusJSONImpl(json.getJSONObject("target_object"));
                             userStreamListener.onRetweet(source, target, targetObject);
                         } else if ("follow".equals(event)) {
                             userStreamListener.onFollow(source, target);

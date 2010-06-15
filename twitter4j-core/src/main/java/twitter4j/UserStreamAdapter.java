@@ -33,19 +33,19 @@ package twitter4j;
 public class UserStreamAdapter extends StatusAdapter implements UserStreamListener {
     public void onFriendList(int[] friendIds) {
     }
-    public void onFavorite(int source, int target, long targetObject) {
+    public void onFavorite(User source, User target, Status targetObject) {
     }
 
-    public void onFollow(int source, int target) {
+    public void onFollow(User source, User target) {
     }
 
-    public void onUnfavorite(int source, int target, long targetObject) {
+    public void onUnfavorite(User source, User target, Status targetObject) {
     }
 
-    public void onRetweet(int source, int target, long targetObject) {
+    public void onRetweet(User source, User target, Status targetObject) {
     }
 
-    public void onUnfollow(int source, int target) {
+    public void onUnfollow(User source, User target) {
     }
 
     public void onDirectMessage(DirectMessage directMessage) {

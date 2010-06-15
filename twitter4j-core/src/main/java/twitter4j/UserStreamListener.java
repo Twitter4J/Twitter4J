@@ -43,7 +43,7 @@ public interface UserStreamListener extends StatusListener {
      * @param targetObject
      * @since Twitter4J 2.1.3
      */
-    void onFavorite(int source, int target, long targetObject);
+    void onFavorite(User source, User target, Status targetObject);
 
     /**
      * @param source
@@ -51,21 +51,21 @@ public interface UserStreamListener extends StatusListener {
      * @param targetObject
      * @since Twitter4J 2.1.3
      */
-    void onUnfavorite(int source, int target, long targetObject);
+    void onUnfavorite(User source, User target, Status targetObject);
 
     /**
      * @param source
      * @param target
      * @since Twitter4J 2.1.3
      */
-    void onFollow(int source, int target);
+    void onFollow(User source, User target);
 
     /**
      * @param source
      * @param target
      * @since Twitter4J 2.1.3
      */
-    void onUnfollow(int source, int target);
+    void onUnfollow(User source, User target);
 
     /**
      * @param source
@@ -73,7 +73,7 @@ public interface UserStreamListener extends StatusListener {
      * @param targetObject
      * @since Twitter4J 2.1.3
      */
-    void onRetweet(int source, int target, long targetObject);
+    void onRetweet(User source, User target, Status targetObject);
 
     /**
      * @param directMessage

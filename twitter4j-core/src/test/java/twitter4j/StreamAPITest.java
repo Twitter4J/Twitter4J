@@ -31,10 +31,15 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
-public class StreamAPITest extends TwitterTestBase implements StatusListener {
+public class StreamAPITest extends TwitterTestBase implements StatusListener,UserStreamListener {
     protected TwitterStream twitterStream = null;
     protected Twitter protectedTwitter = null;
     protected Properties p = new Properties();
+    private int[] friendIds;
+    private User source;
+    private User target;
+    private Status targetObject;
+    private DirectMessage directMessage;
 
     public StreamAPITest(String name) {
         super(name);
@@ -53,6 +58,42 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
+
+    public void testUserStream() throws Exception {
+
+        twitterStream.setUserStreamListener(this);
+        twitterStream.user();
+        Status status = twitterAPI1.updateStatus(new Date() + ": test");
+        twitterAPI2.createFavorite(status.getId());
+        Thread.sleep(2000);
+//        assertEquals(this.status.getId(), status.getId());
+        assertEquals(source.getId(), id2.id);
+        assertEquals(target.getId(), id1.id);
+        assertEquals(targetObject, status);
+
+        clearObjects();
+        twitterAPI2.destroyFavorite(status.getId());
+        Thread.sleep(2000);
+        assertEquals(source.getId(), id2.id);
+        assertEquals(target.getId(), id1.id);
+        assertEquals(targetObject, status);
+        
+        clearObjects();
+        twitterAPI2.retweetStatus(status.getId());
+        Thread.sleep(2000);
+        assertEquals(source.getId(), id2.id);
+        assertEquals(target.getId(), id1.id);
+        assertEquals(targetObject, status);
+
+        assertNotNull(friendIds);
+    }
+
+    private void clearObjects() {
+        source = null;
+        target = null;
+        targetObject = null;
+    }
+
 
     public void testStatusStream() throws Exception {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-testcase.json");
@@ -121,6 +162,48 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener {
         assertNull(ex);
 
         twitterStream.cleanup();
+    }
+
+    public void onFriendList(int[] friendIds) {
+        System.out.println("onFriendList");
+        this.friendIds = friendIds;
+    }
+
+    public void onFavorite(User source, User target, Status targetObject) {
+        System.out.println("onFavorite");
+        this.source = source;
+        this.target = target;
+        this.targetObject = targetObject;
+    }
+
+    public void onUnfavorite(User source, User target, Status targetObject) {
+        System.out.println("onUnfavorite");
+        this.source = source;
+        this.target = target;
+        this.targetObject = targetObject;
+    }
+
+    public void onFollow(User source, User target) {
+        System.out.println("onFollow");
+        this.source = source;
+        this.target = target;
+    }
+
+    public void onUnfollow(User source, User target) {
+        System.out.println("onUnfollow");
+        this.source = source;
+        this.target = target;
+    }
+
+    public void onRetweet(User source, User target, Status targetObject) {
+        System.out.println("onRetweet");
+        this.source = source;
+        this.target = target;
+        this.targetObject = targetObject;
+    }
+
+    public void onDirectMessage(DirectMessage directMessage) {
+        this.directMessage = directMessage;
     }
 
     class TestThread extends Thread {

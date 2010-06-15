@@ -248,7 +248,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
 
     public void user() {
         ensureBasicEnabled(); // for now, the user stream will switch to OAuth at some point in the future
-        startHandler(new StreamHandlingThread<UserStream>() {
+        startHandler(new StreamHandlingThread(true) {
             public UserStream getStream() throws TwitterException {
                 return getUserStream();
             }
@@ -357,6 +357,18 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         this.handler.start();
     }
 
+    private synchronized void startUserStreamHandler(StreamHandlingThread handler) {
+        cleanup();
+        if (null == statusListener) {
+            throw new IllegalStateException("UserStreamListener is not set.");
+        }
+        if (!(statusListener instanceof UserStreamListener)) {
+            throw new IllegalStateException("UserStreamListener is not set.");
+        }
+        this.handler = handler;
+        this.handler.start();
+    }
+
     public synchronized void cleanup() {
         if (null != handler) {
             try {
@@ -388,13 +400,20 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
 
     private static final int NO_WAIT = 0;
 
-    abstract class StreamHandlingThread<T extends StatusStream> extends Thread {
-        T stream = null;
+    abstract class StreamHandlingThread extends Thread {
+        private StatusStream stream = null;
+        private UserStreamListener userStreamListener;
+        private final boolean handleUserStream;
         private static final String NAME = "Twitter Stream Handling Thread";
         private boolean closed = false;
 
         StreamHandlingThread() {
+            this(false);
+        }
+
+        StreamHandlingThread(boolean handleUserStream) {
             super(NAME + "[initializing]");
+            this.handleUserStream = handleUserStream;
 
         }
 
@@ -410,7 +429,11 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
                         timeToSleep = NO_WAIT;
                         setStatus("[Receiving stream]");
                         while (!closed) {
-                            stream.next(statusListener);
+                            if(handleUserStream){
+                                ((UserStream)stream).next((UserStreamListener)statusListener);
+                            }else{
+                                stream.next(statusListener);
+                            }
                         }
                     }
                 } catch (TwitterException te) {
@@ -457,7 +480,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
             logger.debug(actualMessage);
         }
 
-        abstract T getStream() throws TwitterException;
+        abstract StatusStream getStream() throws TwitterException;
 
     }
 }
