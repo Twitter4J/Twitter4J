@@ -50,4 +50,10 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
 
     public void onDirectMessage(DirectMessage directMessage) {
     }
+
+    public void onBlock(User source, User target) {
+    }
+
+    public void onUnblock(User source, User target) {
+    }
 }

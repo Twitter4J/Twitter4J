@@ -168,8 +168,8 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @param relativeUrl The relative url of the feed, for example "statuses/firehose.json" for the firehose.
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      */
-    public void stream(final String relativeUrl, final int count) {
-      startHandler(new StreamHandlingThread() {
+    public void stream(final String relativeUrl, final int count, final boolean handleUserStream) {
+      startHandler(new StreamHandlingThread(handleUserStream) {
           public StatusStream getStream() throws TwitterException {
               return getCountStream(relativeUrl, count);
           }

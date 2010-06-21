@@ -125,7 +125,11 @@ class StatusStreamImpl implements StatusStream, UserStream {
                             userStreamListener.onFollow(source, target);
                         } else if ("unfollow".equals(event)) {
                             userStreamListener.onUnfollow(source, target);
-                        }
+                        } else if ("block".equals(event)) {
+			    userStreamListener.onBlock(source, target);
+			} else if ("unblock".equals(event)) {
+			    userStreamListener.onUnblock(source, target);
+			}
                     } else {
                         // tmp: just checking what kind of unknown event we're receiving on this stream
                         logger.info("Received unknown event: " + line);
