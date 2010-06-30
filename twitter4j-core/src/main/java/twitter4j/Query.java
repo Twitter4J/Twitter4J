@@ -357,8 +357,8 @@ public final class Query implements java.io.Serializable {
      * popular: return only the most popular results in the response.
      */
     public final static String MIXED = "mixed";
-	public final static String POPULAR = "popular";
-	public final static String RECENT = "recent";
+    public final static String POPULAR = "popular";
+    public final static String RECENT = "recent";
     
     /**
      * Returns resultType
@@ -376,7 +376,7 @@ public final class Query implements java.io.Serializable {
      */
     public void setResultType(String resultType) {
         this.resultType = resultType;
-	}
+    }
 
     /**
      * If specified, returns tweets included popular or real time or both in the responce
