@@ -36,6 +36,7 @@ import java.util.List;
  * An instance of this class is NOT thread safe.<br>
  * Instances can be shared across threads, but should not be mutated while a search is ongoing.
  * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
+ * @see <a href="http://dev.twitter.com/doc/get/search">Twitter API / Recent Search API Documentation</a>
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -50,6 +51,7 @@ public final class Query implements java.io.Serializable {
     private long sinceId = -1;
     private String geocode = null;
     private String until = null;
+    private String resultType = null;
     private static final long serialVersionUID = -8108425822233599808L;
 
     public Query(){
@@ -341,11 +343,49 @@ public final class Query implements java.io.Serializable {
     /**
      * If specified, returns tweets with generated before the given date.  Date should be formatted as YYYY-MM-DD
      * @param until until
-     * @return until
+     * @return the instance
      * @since Twitter4J 2.1.1
      */
     public Query until(String until) {
         setUntil(until);
+        return this;
+    }
+
+    /**
+     * mixed: Include both popular and real time results in the response.
+     * recent: return only the most recent results in the response
+     * popular: return only the most popular results in the response.
+     */
+    public final static String MIXED = "mixed";
+	public final static String POPULAR = "popular";
+	public final static String RECENT = "recent";
+    
+    /**
+     * Returns resultType
+     * @return the resultType
+     * @since Twitter4J 2.1.3
+     */
+    public String getResultType() {
+        return resultType;
+    }
+
+    /**
+     * Default value is Query.MIXED if parameter not specified
+     * @param resultType Query.MIXED or Query.POPULAR or Query.RECENT
+     * @since Twitter4J 2.1.3
+     */
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
+	}
+
+    /**
+     * If specified, returns tweets included popular or real time or both in the responce
+     * @param resultType resultType
+     * @return the instance
+     * @since Twitter4J 2.1.3
+     */
+    public Query resultType(String resultType) {
+        setResultType(resultType);
         return this;
     }
 
@@ -361,6 +401,7 @@ public final class Query implements java.io.Serializable {
         appendParameter("since_id",sinceId , params);
         appendParameter("geocode", geocode, params);
         appendParameter("until", until, params);
+        appendParameter("resultType", resultType, params);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
@@ -400,6 +441,8 @@ public final class Query implements java.io.Serializable {
             return false;
         if (until != null ? !until.equals(query1.until) : query1.until != null)
             return false;
+        if (resultType != null ? !resultType.equals(query1.resultType) : query1.resultType != null)
+            return false;
 
         return true;
     }
@@ -416,6 +459,7 @@ public final class Query implements java.io.Serializable {
         result = 31 * result + (int) (sinceId ^ (sinceId >>> 32));
         result = 31 * result + (geocode != null ? geocode.hashCode() : 0);
         result = 31 * result + (until != null ? until.hashCode() : 0);
+        result = 31 * result + (resultType != null ? resultType.hashCode() : 0);
         return result;
     }
 
@@ -432,6 +476,7 @@ public final class Query implements java.io.Serializable {
                 ", sinceId=" + sinceId +
                 ", geocode='" + geocode + '\'' +
                 ", until='" + until + '\'' +
+                ", resultType='" + resultType + '\'' +
                 '}';
     }
 }
