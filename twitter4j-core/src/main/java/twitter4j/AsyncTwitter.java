@@ -1234,7 +1234,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     /**
      * {@inheritDoc}
      */
-    public void verifyCredentials() throws TwitterException {
+    public void verifyCredentials() {
         getDispatcher().invokeLater(new AsyncTask(VERIFY_CREDENTIALS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.verifiedCredentials(twitter.verifyCredentials());
