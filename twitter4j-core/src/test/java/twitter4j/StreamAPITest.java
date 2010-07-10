@@ -195,6 +195,19 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
         this.target = target;
     }
 
+    public void onBlock(User source, User target) {
+        System.out.println("onBlock");
+        this.source = source;
+        this.target = target;
+    }
+
+    public void onUnblock(User source, User target) {
+        System.out.println("onUnblock");
+        this.source = source;
+        this.target = target;
+    }
+
+
     public void onRetweet(User source, User target, Status targetObject) {
         System.out.println("onRetweet");
         this.source = source;

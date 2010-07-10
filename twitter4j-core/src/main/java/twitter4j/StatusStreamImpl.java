@@ -95,7 +95,7 @@ class StatusStreamImpl implements StatusStream, UserStream {
                     if (!json.isNull ("sender")) {
                         userStreamListener.onDirectMessage (new DirectMessageJSONImpl (json));
                     } else if (!json.isNull("text")) {
-                        userStreamListener.onStatus(new StatusJSONImpl(json));
+                        listener.onStatus(new StatusJSONImpl(json));
                     } else if (!json.isNull("delete")) {
                         listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
                     } else if (!json.isNull("limit")) {
