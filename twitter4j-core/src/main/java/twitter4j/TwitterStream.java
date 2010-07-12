@@ -441,7 +441,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
                         if (NO_WAIT == timeToSleep) {
                             if (te.getStatusCode() > 200) {
                                 timeToSleep = HTTP_ERROR_INITIAL_WAIT;
-                            } else {
+                            } else if (0 == timeToSleep) {
                                 timeToSleep = TCP_ERROR_INITIAL_WAIT;
                             }
                         }
