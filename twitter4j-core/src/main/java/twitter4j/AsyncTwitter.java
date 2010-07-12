@@ -521,7 +521,51 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
             }
         });
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetedBy(final long statusId) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotRetweetedBy(twitter.getRetweetedBy(statusId));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetedBy(final long statusId, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotRetweetedBy(twitter.getRetweetedBy(statusId, paging));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetedByIDs(final long statusId) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY_IDS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotRetweetedByIDs(twitter.getRetweetedByIDs(statusId));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetedByIDs(final long statusId, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY_IDS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotRetweetedByIDs(twitter.getRetweetedByIDs(statusId, paging));
+            }
+        });
+    }
+
     /* User Methods */
 
     /**

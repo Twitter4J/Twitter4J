@@ -845,6 +845,9 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(twitterAPI2.test());
     }
 
+    /**
+     * @since Twitter4J 2.1.3
+     */
     public void testRetweetedBy() throws Exception {
 
         // this is the test status id used in the api docs

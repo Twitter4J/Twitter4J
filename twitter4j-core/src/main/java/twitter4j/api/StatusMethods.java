@@ -26,7 +26,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
-import twitter4j.*;
+import twitter4j.GeoLocation;
+import twitter4j.IDs;
+import twitter4j.Paging;
+import twitter4j.ResponseList;
+import twitter4j.Status;
+import twitter4j.StatusUpdate;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -126,10 +133,9 @@ public interface StatusMethods {
 	 * @since 1.0.5
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: statuses destroy</a>
 	 */
-	Status destroyStatus(long statusId)
-			throws TwitterException;
+    Status destroyStatus(long statusId) throws TwitterException;
 
-	/**
+    /**
 	 * Retweets a tweet. Requires the id parameter of the tweet you are retweeting. Returns the original tweet with retweet details embedded.
 	 * <br>This method calls http://api.twitter.com/1/statuses/retweet
 	 *
@@ -139,10 +145,9 @@ public interface StatusMethods {
 	 * @since Twitter4J 2.0.10
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweet">Twitter API Wiki / Twitter REST API Method: statuses retweet</a>
 	 */
-	Status retweetStatus(long statusId)
-			throws TwitterException;
+    Status retweetStatus(long statusId) throws TwitterException;
 
-	/**
+    /**
 	 * Returns up to 100 of the first retweets of a given tweet.
 	 * <br>This method calls http://api.twitter.com/1/statuses/retweets
 	 *
@@ -152,18 +157,18 @@ public interface StatusMethods {
 	 * @since Twitter4J 2.0.10
 	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-retweets">Twitter API Wiki / Twitter REST API Method: statuses retweets</a>
 	 */
-	ResponseList<Status> getRetweets(long statusId)
-			throws TwitterException;
+    ResponseList<Status> getRetweets(long statusId) throws TwitterException;
 
     /**
      * Show user objects of up to 100 members who retweeted the status represented by id
      * <br>This method calls http://api.twitter.com/1/statuses/id/retweeted_by
      * @param statusId The ID of the status you want to get retweeters of
      * @return the list of users who retweeted your status
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.3
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-statuses-id-retweeted_by">Twitter API Wiki / Twitter REST API Method: GET statuses id retweeted_by</a>
      */
-    ResponseList<User> getRetweetedBy(long statusId)
-            throws TwitterException;
+    ResponseList<User> getRetweetedBy(long statusId) throws TwitterException;
 
     /**
      * Show user objects of up to 100 members who retweeted the status represented by id
@@ -171,7 +176,9 @@ public interface StatusMethods {
      * @param statusId The ID of the status you want to get retweeters of
      * @param paging specify your paging requirements
      * @return the list of users who retweeted your status
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.3
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-statuses-id-retweeted_by">Twitter API Wiki / Twitter REST API Method: GET statuses id retweeted_by</a>
      */
     ResponseList<User> getRetweetedBy(long statusId, Paging paging)
             throws TwitterException;
@@ -181,10 +188,11 @@ public interface StatusMethods {
      * <br />This method calls http://api.twitter.com/1/statuses/id/retweeted_by/ids.format
      * @param statusId The ID of the status you want to get retweeters of
      * @return IDs of users who retweeted the stats
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.3
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-statuses-id-retweeted_by-ids">Twitter API Wiki / Twitter REST API Method: GET statuses id retweeted_by ids</a>
      */
-    IDs getRetweetedByIDs(long statusId)
-            throws TwitterException;
+    IDs getRetweetedByIDs(long statusId) throws TwitterException;
 
     /**
      * Show user ids of up to 100 users who retweeted the status represented by id
@@ -192,10 +200,9 @@ public interface StatusMethods {
      * @param statusId The ID of the status you want to get retweeters of
      * @param paging specify your paging requirements
      * @return IDs of users who retweeted the stats
-     * @throws TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.3
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-statuses-id-retweeted_by-ids">Twitter API Wiki / Twitter REST API Method: GET statuses id retweeted_by ids</a>
      */
-    IDs getRetweetedByIDs(long statusId, Paging paging)
-            throws TwitterException;
-
-    
+    IDs getRetweetedByIDs(long statusId, Paging paging) throws TwitterException;
 }

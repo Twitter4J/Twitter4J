@@ -109,6 +109,16 @@ public interface TwitterListener {
      */
     void gotRetweets(ResponseList<Status> retweets);
 
+    /**
+     * @since Twitter4J 2.1.3
+     */
+    void gotRetweetedBy(ResponseList<User> users);
+
+    /**
+     * @since Twitter4J 2.1.3
+     */
+    void gotRetweetedByIDs(IDs ids);
+
     /*User Methods*/
     void gotUserDetail(User user);
 
@@ -382,6 +392,9 @@ public interface TwitterListener {
     TwitterMethod DESTROY_STATUS = TwitterMethod.DESTROY_STATUS;
     TwitterMethod RETWEET_STATUS = TwitterMethod.RETWEET_STATUS;
     TwitterMethod RETWEETS = TwitterMethod.RETWEETS;
+    TwitterMethod RETWEETED_BY = TwitterMethod.RETWEETED_BY;
+    TwitterMethod RETWEETED_BY_IDS = TwitterMethod.RETWEETED_BY_IDS;
+
 
     /*User Methods*/
     TwitterMethod SHOW_USER = TwitterMethod.SHOW_USER;
