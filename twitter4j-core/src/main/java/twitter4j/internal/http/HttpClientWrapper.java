@@ -32,6 +32,7 @@ import twitter4j.http.Authorization;
 import twitter4j.internal.http.HttpResponseEvent;
 import twitter4j.internal.http.HttpResponseListener;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static twitter4j.internal.http.RequestMethod.DELETE;
@@ -103,6 +104,14 @@ public final class HttpClientWrapper implements java.io.Serializable {
         return request(new HttpRequest(POST, url, parameters, null, this.requestHeaders));
     }
 
+    public HttpResponse post(String url, HttpParameter[] parameters, Map<String, String> requestHeaders) throws TwitterException {
+        Map<String, String> headers = new HashMap<String, String> (this.requestHeaders);
+        if (requestHeaders != null)
+            headers.putAll (requestHeaders);
+        
+        return request(new HttpRequest(POST, url, parameters, null, headers));
+    }
+    
     public HttpResponse post(String url, Authorization authorization) throws TwitterException{
         return request(new HttpRequest(POST, url, null, authorization, this.requestHeaders));
     }

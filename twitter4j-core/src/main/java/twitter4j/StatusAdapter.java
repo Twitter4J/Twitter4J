@@ -37,7 +37,6 @@ public class StatusAdapter implements StatusListener {
     public void onException(Exception ex) {
     }
 
-
     public void onStatus(Status status) {
     }
 

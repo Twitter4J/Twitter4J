@@ -9,15 +9,15 @@ import twitter4j.util.ImageUpload;
 
 /**
  * Sample of the ImageUpload utility class. Uploads an image to Twitpic with BasicAuth credentials.
- *  Usage java twitter4j.examples.TwitpicImageUpload <user id> <password> <image file to upload>.
+ *  Usage java twitter4j.examples.TwitpicBasicAuthImageUpload <user id> <password> <image file to upload>.
  *  
  */
-public class TwitpicImageUpload
+public class TwitpicBasicAuthImageUpload
 {
     public static void main (String [] args) throws TwitterException, FileNotFoundException
     {
         if (args.length != 3)
-            throw new IllegalArgumentException ("Usage java twitter4j.examples.TwitpicImageUpload <user id> <password> <image file to upload>");
+            throw new IllegalArgumentException ("Usage java twitter4j.examples.TwitpicBasicAuthImageUpload <user id> <password> <image file to upload>");
         
         File image = new File (args[2]);
         if (! image.exists ())

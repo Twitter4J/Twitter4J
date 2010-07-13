@@ -96,10 +96,18 @@ class StatusStreamImpl implements StatusStream, UserStream {
                         userStreamListener.onDirectMessage (new DirectMessageJSONImpl (json));
                     } else if (!json.isNull("text")) {
                         listener.onStatus(new StatusJSONImpl(json));
-                    } else if (!json.isNull("delete")) {
+                    }
+                    else if (!json.isNull ("direct_message")) {
+                        userStreamListener.onDirectMessage (new DirectMessageJSONImpl (json.getJSONObject ("direct_message")));
+                    }
+                    else if (!json.isNull("delete")) {
                         listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
-                    } else if (!json.isNull("limit")) {
+                    }
+                    else if (!json.isNull("limit")) {
                         listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
+                    } else if (!json.isNull ("scrub_geo")) {
+                            // Not implemented yet
+                            System.out.println ("Geo-tagging deletion notice (not implemented yet): " + line);
                     } else if (!json.isNull("friends")) {
                         JSONArray friends = json.getJSONArray("friends");
                         int[] friendIds = new int[friends.length()];
@@ -125,20 +133,59 @@ class StatusStreamImpl implements StatusStream, UserStream {
                             userStreamListener.onFollow(source, target);
                         } else if ("unfollow".equals(event)) {
                             userStreamListener.onUnfollow(source, target);
-                        }
-                    } else {
+                        } else if (event.startsWith ("list_"))
+                         {
+                             UserList targetObject = new UserListJSONImpl (json.getJSONObject ("target_object"));
+
+                             if ("list_user_subscribed".equals (event)) {
+                                 userStreamListener.onUserSubscribedToList (source, target, targetObject);
+                             } else if ("list_created".equals (event)) {
+                                 userStreamListener.onUserCreatedList (source, targetObject);
+                             } else if ("list_updated".equals (event)) {
+                                 userStreamListener.onUserUpdatedList (source, targetObject);
+                             } else if ("list_destroyed".equals (event)) {
+                                 userStreamListener.onUserDestroyedList (source, targetObject);
+                             }
+                         } else if ("block".equals(event)) {
+                           userStreamListener.onBlock (source, target);
+                         } else if ("unblock".equals (event)) {
+                             userStreamListener.onUnblock (source, target);
+                         } else {
+                             Status targetObject = new StatusJSONImpl (json.getJSONObject ("target_object"));
+
+                             if ("favorite".equals (event)) {
+                                 userStreamListener.onFavorite (source, target, targetObject);
+                             } else if ("unfavorite".equals (event)) {
+                                 userStreamListener.onUnfavorite (source, target, targetObject);
+                             } else if ("retweet".equals (event)) {
+                                 // note: retweet events also show up as statuses
+                                 userStreamListener.onRetweet (source, target, targetObject);
+                             } else {
+                                 // tmp: just checking what kind of unknown social event we're receiving on this stream
+                                 logger.info("Received unknown social event type '" + event + "': " + line);
+                             }
+                         }
+                     } else {
                         // tmp: just checking what kind of unknown event we're receiving on this stream
                         logger.info("Received unknown event: " + line);
                     }
-                } catch (JSONException jsone) {
+                }
+                catch (JSONException jsone)
+                {
                     listener.onException(jsone);
                 }
             }
-        } catch (IOException ioe) {
-            try {
+        }
+        catch (IOException ioe)
+        {
+            try
+            {
                 is.close();
-            } catch (IOException ignore) {
             }
+            catch (IOException ignore)
+            {
+            }
+            
             streamAlive = false;
             throw new TwitterException("Stream closed.", ioe);
         }

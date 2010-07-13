@@ -198,9 +198,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
         this.oauthToken = accessToken;
     }
 
-    /*package*/
-
-    String generateAuthorizationHeader(String method, String url, HttpParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
+    /*package*/ String generateAuthorizationHeader(String method, String url, HttpParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
         if (null == params) {
             params = new HttpParameter[0];
         }

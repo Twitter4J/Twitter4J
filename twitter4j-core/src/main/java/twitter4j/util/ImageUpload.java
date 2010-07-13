@@ -1,7 +1,9 @@
 package twitter4j.util;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -11,23 +13,28 @@ import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
 
-public abstract class ImageUpload {
-    public abstract String upload(File image) throws TwitterException;
-
-    /**
-     * Returns an image uploader to Twitpic. Only handles BasicAuth right now
+public abstract class ImageUpload
+{
+    public static String DEFAULT_TWITPIC_API_KEY = null;
+    
+    public abstract String upload (File image) throws TwitterException;
+    
+    
+    /** Returns an image uploader to Twitpic. Handles both BasicAuth and OAuth.
+     *  Note: When using OAuth, the Twitpic API Key needs to be specified, either with the field ImageUpload.DEFAULT_TWITPIC_API_KEY,
+     *   or using the getTwitpicUploader (String twitpicAPIKey, OAuthAuthorization auth) method
      */
-    public static ImageUpload getTwitpicUploader(Twitter twitter) throws TwitterException {
-        return getTwitpicUploader(twitter.getAuthorization());
-    }
-
-    /**
-     * Returns an image uploader to Twitpic. Only handles BasicAuth right now
-     */
-    public static ImageUpload getTwitpicUploader(Authorization auth) {
-        ensureBasicEnabled(auth);
-        return getTwitpicUploader((BasicAuthorization) auth);
+    public static ImageUpload getTwitpicUploader (Twitter twitter) throws TwitterException
+    {
+        Authorization auth = twitter.getAuthorization ();
+        if (auth instanceof OAuthAuthorization)
+            return getTwitpicUploader (DEFAULT_TWITPIC_API_KEY, (OAuthAuthorization) auth);
+        
+        ensureBasicEnabled (auth);
+        return getTwitpicUploader ((BasicAuthorization) auth);
     }
 
     /**
@@ -37,31 +44,28 @@ public abstract class ImageUpload {
         return new TwitpicBasicAuthUploader(auth);
     }
 
-
-    /**
-     * Returns an image uploader to YFrog. Handles both BasicAuth and OAuth
-     */
-    public static ImageUpload getYFrogUploader(Twitter twitter) throws TwitterException {
-        Authorization auth = twitter.getAuthorization();
+    /** Returns an OAuth image uploader to Twitpic */
+    public static ImageUpload getTwitpicUploader (String twitpicAPIKey, OAuthAuthorization auth)
+    {
+        return new TwitpicOAuthUploader (twitpicAPIKey, auth);
+    }
+    
+    
+    /** Returns an image uploader to YFrog. Handles both BasicAuth and OAuth */
+    public static ImageUpload getYFrogUploader (Twitter twitter) throws TwitterException
+    {
+        Authorization auth = twitter.getAuthorization ();
         if (auth instanceof OAuthAuthorization)
-            return getYFrogUploader(twitter.getScreenName(), (OAuthAuthorization) twitter.getAuthorization());
-
-        ensureBasicEnabled(auth);
-        return getYFrogUploader((BasicAuthorization) auth);
+            return getYFrogUploader (twitter.getScreenName (), (OAuthAuthorization) auth);
+        
+        ensureBasicEnabled (auth);
+        return getYFrogUploader ((BasicAuthorization) auth);
     }
-
-    /**
-     * Returns a BasicAuth image uploader to YFrog
-     */
-    public static ImageUpload getYFrogUploader(String userId, String password) {
-        return getYFrogUploader(new BasicAuthorization(userId, password));
-    }
-
-    /**
-     * Returns a BasicAuth image uploader to YFrog
-     */
-    public static ImageUpload getYFrogUploader(BasicAuthorization auth) {
-        return new YFrogBasicAuthUploader(auth);
+    
+    /** Returns a BasicAuth image uploader to YFrog */
+    public static ImageUpload getYFrogUploader (BasicAuthorization auth)
+    {
+        return new YFrogBasicAuthUploader (auth);
     }
 
     /**
@@ -178,7 +182,76 @@ public abstract class ImageUpload {
         }
     }
 
-    private static class TwitpicBasicAuthUploader extends ImageUpload {
+    // Described at http://dev.twitpic.com/docs/2/upload/
+    private static class TwitpicOAuthUploader extends ImageUpload
+    {
+        private String twitpicAPIKey;
+        private OAuthAuthorization auth;
+        
+        // uses the secure upload URL, not the one specified in the Twitpic FAQ
+        private static final String TWITPIC_UPLOAD_URL = "https://twitpic.com/api/2/upload.json";
+        private static final String TWITTER_VERIFY_CREDENTIALS = "https://api.twitter.com/1/account/verify_credentials.json";
+        
+        public TwitpicOAuthUploader (String twitpicAPIKey, OAuthAuthorization auth)
+        {
+            if (twitpicAPIKey == null || "".equals (twitpicAPIKey))
+                throw new IllegalArgumentException ("The Twitpic API Key supplied to the OAuth image uploader can't be null or empty");
+            
+            this.twitpicAPIKey = twitpicAPIKey;
+            this.auth = auth;
+        }
+
+        @Override
+        public String upload (File image) throws TwitterException
+        {
+            // step 1 - generate HTTP request headers
+            String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader ();
+            
+            Map<String, String> headers = new HashMap<String, String> ();
+            headers.put ("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS);
+            headers.put ("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
+            
+            // step 2 - generate HTTP parameters
+            HttpParameter[] params =
+            {
+                new HttpParameter ("key", twitpicAPIKey),
+                new HttpParameter ("media", image)
+            };
+            
+            // step 3 - upload the file
+            HttpClientWrapper client = new HttpClientWrapper ();
+            HttpResponse httpResponse = client.post (TWITPIC_UPLOAD_URL, params, headers);
+            
+            // step 4 - check the response
+            int statusCode = httpResponse.getStatusCode ();
+            if (statusCode != 200)
+                throw new TwitterException ("Twitpic image upload returned invalid status code", httpResponse);
+            
+            String response = httpResponse.asString ();
+            
+            try
+            {
+                JSONObject json = new JSONObject (response);
+                if (! json.isNull ("url"))
+                    return json.getString ("url");
+            }
+            catch (JSONException e)
+            {
+                throw new TwitterException ("Invalid Twitpic response: " + response, e);
+            }
+            
+            throw new TwitterException ("Unknown Twitpic response", httpResponse);
+        }
+        
+        private String generateVerifyCredentialsAuthorizationHeader ()
+        {
+            List<HttpParameter> oauthSignatureParams = auth.generateOAuthSignatureHttpParams ("GET", TWITTER_VERIFY_CREDENTIALS);
+            return "OAuth realm=\"http://api.twitter.com/\"," + OAuthAuthorization.encodeParameters (oauthSignatureParams, ",", true);
+        }
+    }
+    
+    private static class TwitpicBasicAuthUploader extends ImageUpload
+    {
         private BasicAuthorization auth;
 
         // uses the secure upload URL, not the one specified in the Twitpic FAQ

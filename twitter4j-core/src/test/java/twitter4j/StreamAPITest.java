@@ -41,6 +41,10 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
     private Status targetObject;
     private DirectMessage directMessage;
 
+    private User subscriber;
+    private User listOwner;
+    private UserList list;
+
     public StreamAPITest(String name) {
         super(name);
     }
@@ -305,6 +309,43 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
     public void onException(Exception ex) {
         this.ex = ex;
         ex.printStackTrace();
+        notifyResponse();
+    }
+
+    public void onUserSubscribedToList(User subscriber, User listOwner, UserList list) {
+        this.subscriber = subscriber;
+        this.listOwner = listOwner;
+        this.list = list;
+        notifyResponse();
+    }
+
+    public void onUserCreatedList(User listOwner, UserList list) {
+        this.listOwner = listOwner;
+        this.list = list;
+        notifyResponse();
+    }
+
+    public void onUserUpdatedList(User listOwner, UserList list) {
+        this.listOwner = listOwner;
+        this.list = list;
+        notifyResponse();
+    }
+
+    public void onUserDestroyedList(User listOwner, UserList list) {
+        this.listOwner = listOwner;
+        this.list = list;
+        notifyResponse();
+    }
+
+    public void onBlock(User source, User target) {
+        this.source = source;
+        this.target = target;
+        notifyResponse();
+    }
+
+    public void onUnblock(User source, User target) {
+        this.source = source;
+        this.target = target;
         notifyResponse();
     }
 }
