@@ -58,7 +58,7 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public boolean isWarnEnabled() {
-        return LOGGER.isWarnEnabled();
+        return LOGGER.isEnabledFor(org.apache.log4j.Level.WARN);
     }
 
     /**
