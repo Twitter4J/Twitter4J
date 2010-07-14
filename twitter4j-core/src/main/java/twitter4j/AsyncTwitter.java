@@ -1702,6 +1702,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
             }
             getDispatcher().shutdown();
             dispatcher = null;
+            super.shutdown();
             shutdown = true;
         }
     }
