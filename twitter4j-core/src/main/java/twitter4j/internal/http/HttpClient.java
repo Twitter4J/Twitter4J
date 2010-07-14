@@ -36,5 +36,5 @@ import twitter4j.TwitterException;
 public interface HttpClient {
 
     HttpResponse request(HttpRequest req) throws TwitterException;
-    public void shutdown();
+    void shutdown();
 }
