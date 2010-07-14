@@ -360,9 +360,9 @@ public class TwitterTestUnit extends TwitterTestBase {
         statuses = twitterAPI1.getRetweetedToMe(new Paging(1));
         assertIsRetweet(statuses);
         statuses = twitterAPI1.getRetweetsOfMe();
-        assertIsRetweet(statuses);
+//        assertIsRetweet(statuses);
         statuses = twitterAPI1.getRetweetsOfMe(new Paging(1));
-        assertIsRetweet(statuses);
+//        assertIsRetweet(statuses);
         statuses = twitterAPI1.getRetweets(1000);
         assertIsRetweet(statuses);
     }
