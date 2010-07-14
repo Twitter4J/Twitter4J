@@ -336,7 +336,7 @@ public class ConfigurationTest  extends TestCase {
         Configuration conf;
         builder = new ConfigurationBuilder();
         conf = builder.build();
-        assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
+        assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
