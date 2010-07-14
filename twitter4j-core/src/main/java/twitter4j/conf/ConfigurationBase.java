@@ -87,7 +87,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setSource("Twitter4J");
         setUser(null);
         setPassword(null);
-        setUseSSL(true);
+        setUseSSL(false);
         setHttpProxyHost(null);
         setHttpProxyUser(null);
         setHttpProxyPassword(null);
