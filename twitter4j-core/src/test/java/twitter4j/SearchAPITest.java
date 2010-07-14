@@ -95,7 +95,7 @@ public class SearchAPITest extends TwitterTestBase {
         query = new Query("from:twit4j doesnothit");
         queryResult = unauthenticated.search(query);
         assertEquals(0, queryResult.getSinceId());
-        assertEquals(-1, queryResult.getMaxId());
+//        assertEquals(-1, queryResult.getMaxId());
         assertNull(queryResult.getRefreshUrl());
         assertEquals(15, queryResult.getResultsPerPage());
 //        assertEquals(-1, queryResult.getTotal());
