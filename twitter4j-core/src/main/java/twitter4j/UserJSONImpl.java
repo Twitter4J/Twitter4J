@@ -390,7 +390,7 @@ import static twitter4j.ParseUtil.*;
             JSONArray list = json.getJSONArray("users");
             int size = list.length();
             PagableResponseList<User> users =
-                    new PagableResponseList<User>(size, json, res);
+                    new PagableResponseListImpl<User>(size, json, res);
             for (int i = 0; i < size; i++) {
                 users.add(new UserJSONImpl(list.getJSONObject(i)));
             }
@@ -409,7 +409,7 @@ import static twitter4j.ParseUtil.*;
         try {
             int size = list.length();
             ResponseList<User> users =
-                    new ResponseList<User>(size, res);
+                    new ResponseListImpl<User>(size, res);
             for (int i = 0; i < size; i++) {
                 users.add(new UserJSONImpl(list.getJSONObject(i)));
             }

@@ -1562,7 +1562,7 @@ public class Twitter extends TwitterOAuthSupportBase
                     + "geo/nearby_places.json", query.asHttpParameterArray(), auth));
         }catch(TwitterException te){
             if(te.getStatusCode() == 404){
-                return new ResponseList<Place>(0, null);
+                return new ResponseListImpl<Place>(0, null);
             }else{
                 throw te;
             }
@@ -1578,7 +1578,7 @@ public class Twitter extends TwitterOAuthSupportBase
                     + "geo/reverse_geocode.json", query.asHttpParameterArray(), auth));
         }catch(TwitterException te){
             if(te.getStatusCode() == 404){
-                return new ResponseList<Place>(0, null);
+                return new ResponseListImpl<Place>(0, null);
             }else{
                 throw te;
             }

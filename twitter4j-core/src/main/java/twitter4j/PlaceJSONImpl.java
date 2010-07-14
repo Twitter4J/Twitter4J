@@ -126,7 +126,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         try {
             int size = list.length();
             ResponseList<Place> places =
-                    new ResponseList<Place>(size, res);
+                    new ResponseListImpl<Place>(size, res);
             for (int i = 0; i < size; i++) {
                 places.add(new PlaceJSONImpl(list.getJSONObject(i), null));
             }

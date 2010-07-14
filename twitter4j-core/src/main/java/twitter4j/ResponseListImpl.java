@@ -26,18 +26,36 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.internal.http.HttpResponse;
+
+import java.util.ArrayList;
+
 /**
- * ResponseList with cursor support.
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.3
  */
-public interface PagableResponseList<T extends TwitterResponse> extends ResponseList<T>, CursorSupport {
-    boolean hasPrevious();
+class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
+    private transient RateLimitStatus rateLimitStatus = null;
+    private transient RateLimitStatus featureSpecificRateLimitStatus = null;
+    private static final long serialVersionUID = 5646617841989265312L;
 
-    long getPreviousCursor();
+    ResponseListImpl(int size, HttpResponse res) {
+        super(size);
+        this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+        this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
+    }
 
-    boolean hasNext();
+    /**
+     * {@inheritDoc}
+     */
+    public RateLimitStatus getRateLimitStatus() {
+        return rateLimitStatus;
+    }
 
-    long getNextCursor();
-
+    /**
+     * {@inheritDoc}
+     */
+    public RateLimitStatus getFeatureSpecificRateLimitStatus() {
+        return featureSpecificRateLimitStatus;
+    }
 }

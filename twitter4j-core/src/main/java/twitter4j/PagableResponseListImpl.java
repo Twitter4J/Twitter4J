@@ -26,18 +26,50 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.org.json.JSONObject;
+
 /**
- * ResponseList with cursor support.
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.3
  */
-public interface PagableResponseList<T extends TwitterResponse> extends ResponseList<T>, CursorSupport {
-    boolean hasPrevious();
+class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResponseList {
+    private final long previousCursor;
+    private final long nextCursor;
+    private static final long serialVersionUID = 1531950333538983361L;
 
-    long getPreviousCursor();
+    PagableResponseListImpl(int size, JSONObject json, HttpResponse res) {
+        super(size, res);
+        this.previousCursor = ParseUtil.getLong("previous_cursor", json);
+        this.nextCursor = ParseUtil.getLong("next_cursor", json);
+    }
 
-    boolean hasNext();
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasPrevious() {
+        return 0 != previousCursor;
+    }
 
-    long getNextCursor();
+    /**
+     * {@inheritDoc}
+     */
+    public long getPreviousCursor() {
+        return previousCursor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasNext() {
+        return 0 != nextCursor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public long getNextCursor() {
+        return nextCursor;
+    }
 
 }

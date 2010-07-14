@@ -166,7 +166,7 @@ import java.net.URISyntaxException;
             JSONArray list = json.getJSONArray("lists");
             int size = list.length();
             PagableResponseList<UserList> users =
-                    new PagableResponseList<UserList>(size, json, res);
+                    new PagableResponseListImpl<UserList>(size, json, res);
             for (int i = 0; i < size; i++) {
                 users.add(new UserListJSONImpl(list.getJSONObject(i)));
             }

@@ -61,7 +61,7 @@ import static twitter4j.ParseUtil.*;
             JSONArray json = res.asJSONArray();
             ResponseList<SavedSearch> savedSearches;
             try {
-                savedSearches = new ResponseList<SavedSearch>(json.length(), res);
+                savedSearches = new ResponseListImpl<SavedSearch>(json.length(), res);
                 for(int i=0;i<json.length();i++){
                     savedSearches.add(new SavedSearchJSONImpl(json.getJSONObject(i)));
                 }

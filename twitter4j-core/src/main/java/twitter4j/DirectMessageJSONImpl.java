@@ -142,7 +142,7 @@ import static twitter4j.ParseUtil.*;
         try {
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            ResponseList<DirectMessage> directMessages = new ResponseList<DirectMessage>(size, res);
+            ResponseList<DirectMessage> directMessages = new ResponseListImpl<DirectMessage>(size, res);
             for (int i = 0; i < size; i++) {
                 directMessages.add(new DirectMessageJSONImpl(list.getJSONObject(i)));
             }

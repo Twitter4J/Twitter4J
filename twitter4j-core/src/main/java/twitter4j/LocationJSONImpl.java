@@ -76,7 +76,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
         try {
             int size = list.length();
             ResponseList<Location> locations =
-                    new ResponseList<Location>(size, null);
+                    new ResponseListImpl<Location>(size, null);
             for (int i = 0; i < size; i++) {
                 locations.add(new LocationJSONImpl(list.getJSONObject(i)));
             }

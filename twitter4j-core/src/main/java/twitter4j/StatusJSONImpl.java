@@ -241,7 +241,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
         try {
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            ResponseList<Status> statuses = new ResponseList<Status>(size, res);
+            ResponseList<Status> statuses = new ResponseListImpl<Status>(size, res);
             for (int i = 0; i < size; i++) {
                 statuses.add(new StatusJSONImpl(list.getJSONObject(i)));
             }
