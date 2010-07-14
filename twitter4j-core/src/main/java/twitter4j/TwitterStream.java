@@ -257,7 +257,12 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         }
     }
 
-    public void user() {
+    /**
+     * User Stream is currently in beta.<br>
+     * Read through and follow the doc! Do not release products using UserStream during the preview / beta period.
+     * @see <a href="http://apiwiki.twitter.com/ChirpUserStreams">Twitter API Wiki / ChirpUserStreams</a>
+     */
+   public void user() {
         ensureAuthorizationEnabled ();
         startHandler(new StreamHandlingThread(true) {
             public UserStream getStream() throws TwitterException {
@@ -265,7 +270,14 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
             }
         });
     }
-    
+
+    /**
+     * User Stream is currently in beta.<br>
+     * Read through and follow the doc! Do not release products using UserStream during the preview / beta period.
+     * @return UserStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://apiwiki.twitter.com/ChirpUserStreams">Twitter API Wiki / ChirpUserStreams</a>
+     */
     public UserStream getUserStream() throws TwitterException {
                 ensureAuthorizationEnabled ();
         if (!(statusListener instanceof UserStreamListener)) {
@@ -278,7 +290,6 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
             throw new TwitterException(e);
         }
     }
-
     
     /**
      * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
