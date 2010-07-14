@@ -524,6 +524,15 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
     public int getHttpRetryIntervalSeconds() {
         return nestedConf.getHttpRetryIntervalSeconds();
     }
+
+    public int getHttpMaxTotalConnections() {
+      return nestedConf.getHttpMaxTotalConnections();
+    }
+
+    public int getHttpDefaultMaxPerRoute() {
+      return nestedConf.getHttpDefaultMaxPerRoute();
+    }
+
     public Map<String, String> getRequestHeaders() {
         return nestedConf.getRequestHeaders();
     }

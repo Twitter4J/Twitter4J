@@ -60,6 +60,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String HTTP_RETRY_COUNT = "http.retryCount";
     public static final String HTTP_RETRY_INTERVAL_SECS = "http.retryIntervalSecs";
 
+    public static final String HTTP_MAX_TOTAL_CONNECTIONS = "http.maxTotalConnections";
+    public static final String HTTP_DEFAULT_MAX_PER_ROUTE = "http.defaultMaxPerRoute";
+
     public static final String OAUTH_CONSUMER_KEY = "oauth.consumerKey";
     public static final String OAUTH_CONSUMER_SECRET = "oauth.consumerSecret";
     public static final String OAUTH_ACCESS_TOKEN = "oauth.accessToken";
@@ -256,6 +259,12 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, HTTP_RETRY_INTERVAL_SECS)) {
             setHttpRetryIntervalSeconds(getIntProperty(props, prefix, HTTP_RETRY_INTERVAL_SECS));
+        }
+        if (notNull(props, prefix, HTTP_MAX_TOTAL_CONNECTIONS)) {
+          setHttpMaxTotalConnections(getIntProperty(props, prefix, HTTP_MAX_TOTAL_CONNECTIONS));
+        }
+        if (notNull(props, prefix, HTTP_DEFAULT_MAX_PER_ROUTE)) {
+          setHttpDefaultMaxPerRoute(getIntProperty(props, prefix, HTTP_DEFAULT_MAX_PER_ROUTE));
         }
         if (notNull(props, prefix, OAUTH_CONSUMER_KEY)) {
             setOAuthConsumerKey(getString(props, prefix, OAUTH_CONSUMER_KEY));

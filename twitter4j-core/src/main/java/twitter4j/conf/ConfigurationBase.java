@@ -53,6 +53,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private int httpStreamingReadTimeout;
     private int httpRetryCount;
     private int httpRetryIntervalSeconds;
+    private int maxTotalConnections;
+    private int defaultMaxPerRoute;
     private String oAuthConsumerKey;
     private String oAuthConsumerSecret;
     private String oAuthAccessToken;
@@ -97,6 +99,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setHttpStreamingReadTimeout(60*5*1000);
         setHttpRetryCount(0);
         setHttpRetryIntervalSeconds(5);
+        setHttpMaxTotalConnections(20);
+        setHttpDefaultMaxPerRoute(2);
         setOAuthConsumerKey(null);
         setOAuthConsumerSecret(null);
         setOAuthAccessToken(null);
@@ -278,6 +282,22 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setHttpRetryIntervalSeconds(int retryIntervalSeconds) {
         this.httpRetryIntervalSeconds = retryIntervalSeconds;
+    }
+
+    public final int getHttpMaxTotalConnections() {
+      return maxTotalConnections;
+    }
+
+    protected final void setHttpMaxTotalConnections(int maxTotalConnections) {
+      this.maxTotalConnections = maxTotalConnections;
+    }
+
+    public final int getHttpDefaultMaxPerRoute() {
+      return defaultMaxPerRoute;
+    }
+
+    protected final void setHttpDefaultMaxPerRoute(int defaultMaxPerRoute) {
+      this.defaultMaxPerRoute = defaultMaxPerRoute;
     }
 
     // oauth related setter/getters
