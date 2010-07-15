@@ -52,7 +52,7 @@ public final class HttpClientFactory {
                 throw new AssertionError(cnfe);
             }
         }
-        logger.info("Use " + clazz.getName() + " as HttpClient implementation.");
+        logger.info("Will use " + clazz.getName() + " as HttpClient implementation.");
         try {
             HTTP_CLIENT_CONSTRUCTOR = clazz.getConstructor(HttpClientConfiguration.class);
         } catch (NoSuchMethodException nsme) {

@@ -363,8 +363,9 @@ public class TwitterTestUnit extends TwitterTestBase {
 //        assertIsRetweet(statuses);
         statuses = twitterAPI1.getRetweetsOfMe(new Paging(1));
 //        assertIsRetweet(statuses);
-        statuses = twitterAPI1.getRetweets(1000);
+        statuses = twitterAPI1.getRetweets(18594701629l);
         assertIsRetweet(statuses);
+        assertTrue(20 < statuses.size());
     }
 
     private void assertIsRetweet(List<Status> statuses) {
