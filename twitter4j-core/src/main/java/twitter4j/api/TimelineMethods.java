@@ -66,7 +66,7 @@ public interface TimelineMethods {
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return list of the home Timeline
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-home_timeline">Twitter API Wiki / Twitter REST API Method: statuses home_timeline</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/home_timeline">GET statuses/home_timeline | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
     ResponseList<Status> getHomeTimeline(Paging paging) throws TwitterException;
