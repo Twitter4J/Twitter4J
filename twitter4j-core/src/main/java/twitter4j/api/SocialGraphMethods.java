@@ -39,7 +39,7 @@ public interface SocialGraphMethods {
      *
      * @return an array of numeric IDs for every user the authenticating user is following
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
      */
     IDs getFriendsIDs() throws TwitterException;
@@ -51,7 +51,7 @@ public interface SocialGraphMethods {
      * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the authenticating user is following
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
     IDs getFriendsIDs(long cursor) throws TwitterException;
@@ -64,7 +64,7 @@ public interface SocialGraphMethods {
      * @param userId Specifies the ID of the user for whom to return the friends list.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
      */
     IDs getFriendsIDs(int userId) throws TwitterException;
@@ -77,7 +77,7 @@ public interface SocialGraphMethods {
      * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friends%C2%A0ids">Twitter API Wiki / Twitter REST API Method: friends ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
     IDs getFriendsIDs(int userId, long cursor) throws TwitterException;
@@ -89,7 +89,7 @@ public interface SocialGraphMethods {
      * @param screenName Specifies the screen name of the user for whom to return the friends list.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
      */
     IDs getFriendsIDs(String screenName) throws TwitterException;
@@ -102,7 +102,7 @@ public interface SocialGraphMethods {
      * @param cursor     Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/REST-API-Documentation#friends/ids">Twitter API Wiki / REST API Documentation - Social Graph Methods - friends/ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
     IDs getFriendsIDs(String screenName, long cursor) throws TwitterException;
@@ -113,7 +113,7 @@ public interface SocialGraphMethods {
      *
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
      */
     IDs getFollowersIDs() throws TwitterException;
@@ -125,7 +125,7 @@ public interface SocialGraphMethods {
      * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
     IDs getFollowersIDs(long cursor) throws TwitterException;
@@ -137,7 +137,7 @@ public interface SocialGraphMethods {
      * @param userId Specifies the ID of the user for whom to return the followers list.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
      */
     IDs getFollowersIDs(int userId) throws TwitterException;
@@ -150,7 +150,7 @@ public interface SocialGraphMethods {
      * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
     IDs getFollowersIDs(int userId, long cursor) throws TwitterException;
@@ -162,7 +162,7 @@ public interface SocialGraphMethods {
      * @param screenName Specifies the screen name of the user for whom to return the followers list.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
      */
     IDs getFollowersIDs(String screenName) throws TwitterException;
@@ -175,7 +175,7 @@ public interface SocialGraphMethods {
      * @param cursor     Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-followers%C2%A0ids">Twitter API Wiki / Twitter REST API Method: followers ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
     IDs getFollowersIDs(String screenName, long cursor) throws TwitterException;

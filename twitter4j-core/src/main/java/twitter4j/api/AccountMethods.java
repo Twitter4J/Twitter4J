@@ -43,7 +43,7 @@ public interface AccountMethods {
 	 * @return user
 	 * @since Twitter4J 2.0.0
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable, or if supplied credential is wrong (TwitterException.getStatusCode() == 401)
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0verify_credentials">Twitter API Wiki / Twitter REST API Method: account verify_credentials</a>
+     * @see <a href="http://dev.twitter.com/doc/get/account/verify_credentials">GET account/verify_credentials | dev.twitter.com</a>
      */
     User verifyCredentials() throws TwitterException;
 
@@ -54,27 +54,26 @@ public interface AccountMethods {
 	 * @return the rate limit status
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 1.1.4
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
+     * @see <a href="http://dev.twitter.com/doc/get/account/rate_limit_status">GET account/rate_limit_status | dev.twitter.com</a>
 	 */
 	RateLimitStatus getRateLimitStatus()
 			throws TwitterException;
 
 	/**
-	 * Sets which device Twitter delivers updates to for the authenticating user.  Sending none as the device parameter will disable IM or SMS updates.
+     * Sets which device Twitter delivers updates to for the authenticating user. Sending none as the device parameter will disable IM or SMS updates.
 	 * <br>This method calls http://api.twitter.com/1/account/update_delivery_device.json
 	 *
 	 * @param device new Delivery device. Must be one of: IM, SMS, NONE.
 	 * @return the updated user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 1.0.4
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_delivery_device">Twitter API Wiki / Twitter REST API Method: account update_delivery_device</a>
+     * @see <a href="http://dev.twitter.com/doc/post/account/update_delivery_device">POST account/update_delivery_device | dev.twitter.com</a>
 	 */
 	User updateDeliveryDevice(Device device)
 			throws TwitterException;
 
-
 	/**
-	 * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.  These values are also returned in the verifyCredentials() method.
+     * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexidecimal value, and may be either three or six characters (ex: #fff or #ffffff).
 	 * <br>This method calls http://api.twitter.com/1/account/update_profile_colors.json
 	 * @param profileBackgroundColor optional, can be null
 	 * @param profileTextColor optional, can be null
@@ -84,7 +83,7 @@ public interface AccountMethods {
 	 * @return the updated user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile_colors">Twitter API Wiki / Twitter REST API Method: account update_profile_colors</a>
+     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_colors">POST account/update_profile_colors | dev.twitter.com</a>
 	 */
 	User updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor)
 			throws TwitterException;
@@ -98,12 +97,11 @@ public interface AccountMethods {
 	 *  or when the specified file is not found (FileNotFoundException will be nested),
 	 *  or when the specified file object in not representing a file (IOException will be nested)
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile_image">Twitter API Wiki / Twitter REST API Method: account update_profile_image</a>
+     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_image">POST account/update_profile_image | dev.twitter.com</a>
 	 */
-	User updateProfileImage(File image)
-			throws TwitterException;
+    User updateProfileImage(File image) throws TwitterException;
 
-	/**
+    /**
 	 * Updates the authenticating user's profile background image.
 	 * <br>This method calls http://api.twitter.com/1/account/update_profile_background_image.json
 	 * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forceably scaled down.
@@ -113,7 +111,7 @@ public interface AccountMethods {
 	 *  or when the specified file is not found (FileNotFoundException will be nested),
 	 *  or when the specified file object in not representing a file (IOException will be nested)
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile_background_image">Twitter API Wiki / Twitter REST API Method: account update_profile_background_image</a>
+     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_background_image">POST account/update_profile_background_image | dev.twitter.com</a>
 	 */
 	User updateProfileBackgroundImage(File image, boolean tile)
 			throws TwitterException;
@@ -130,7 +128,7 @@ public interface AccountMethods {
 	 * @return the updated user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0update_profile">Twitter REST API Documentation &gt; Account Methods &gt; account/update_location</a>
+     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile">POST account/update_profile | dev.twitter.com</a>
 	 */
 	User updateProfile(String name, String email, String url, String location, String description)
 			throws TwitterException;

@@ -12,7 +12,7 @@ public interface OAuthSupport {
      *
      * @return generated request token.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ">Twitter API Wiki - OAuth FAQ</a>
+     * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
      * @since Twitter 2.0.0
      */
@@ -24,7 +24,7 @@ public interface OAuthSupport {
      * @param callbackURL callback URL
      * @return generated request token
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ">Twitter API Wiki - OAuth FAQ</a>
+     * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
      * @since Twitter 2.0.0
      */
@@ -37,7 +37,7 @@ public interface OAuthSupport {
      * @return access token
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @throws IllegalStateException when RequestToken has never been acquired
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
+     * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.0
      */
@@ -49,7 +49,7 @@ public interface OAuthSupport {
      * @param oauthVerifier OAuth verifier. AKA pin.
      * @return access token
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
+     * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.0
      */
@@ -61,7 +61,7 @@ public interface OAuthSupport {
      * @param requestToken the request token
      * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
+     * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
      * @since Twitter 2.0.0
      */

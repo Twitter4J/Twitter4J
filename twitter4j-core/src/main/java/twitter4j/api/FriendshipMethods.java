@@ -36,32 +36,35 @@ import twitter4j.User;
  */
 public interface FriendshipMethods {
 	/**
-	 * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * Allows the authenticating users to follow the user specified in the ID parameter.<br>
+     * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user an HTTP 403 will be returned.
 	 * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
 	 *
 	 * @param screenName the screen name of the user to be befriended
 	 * @return the befriended user
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.1
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
 	 */
 	User createFriendship(String screenName)
 			throws TwitterException;
 
 	/**
-	 * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * Allows the authenticating users to follow the user specified in the ID parameter.<br>
+     * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user an HTTP 403 will be returned.
 	 * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
 	 *
 	 * @param userId the ID of the user to be befriended
 	 * @return the befriended user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
 	 */
 	User createFriendship(int userId)
 			throws TwitterException;
 	/**
-	 * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * Allows the authenticating users to follow the user specified in the ID parameter.<br>
+     * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user an HTTP 403 will be returned.
 	 * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
 	 *
 	 * @param screenName the screen name of the user to be befriended
@@ -69,13 +72,14 @@ public interface FriendshipMethods {
 	 * @return the befriended user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
 	 */
 	User createFriendship(String screenName, boolean follow)
 			throws TwitterException;
 
 	/**
-	 * Befriends the user specified in the ID parameter as the authenticating user.  Returns the befriended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * Allows the authenticating users to follow the user specified in the ID parameter.<br>
+     * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user an HTTP 403 will be returned.
 	 * <br>This method calls http://api.twitter.com/1/friendships/create/[id].json
 	 *
 	 * @param userId the ID of the user to be befriended
@@ -83,39 +87,41 @@ public interface FriendshipMethods {
 	 * @return the befriended user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0create">Twitter API Wiki / Twitter REST API Method: friendships create</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
 	 */
 	User createFriendship(int userId, boolean follow)
 			throws TwitterException;
 
 	/**
-	 * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * Allows the authenticating users to unfollow the user specified in the ID parameter.<br>
+     * Returns the unfollowed user in the requested format when successful. Returns a string describing the failure condition when unsuccessful.
 	 * <br>This method calls http://api.twitter.com/1/friendships/destroy/[id].json
 	 *
 	 * @param screenName the screen name of the user for whom to request a list of friends
 	 * @return User
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.1
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: friendships destroy</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/destroy">POST friendships/destroy | dev.twitter.com</a>
 	 */
 	User destroyFriendship(String screenName)
 			throws TwitterException;
 
 	/**
-	 * Discontinues friendship with the user specified in the ID parameter as the authenticating user.  Returns the un-friended user in the requested format when successful.  Returns a string describing the failure condition when unsuccessful.
+     * Allows the authenticating users to unfollow the user specified in the ID parameter.<br>
+     * Returns the unfollowed user in the requested format when successful. Returns a string describing the failure condition when unsuccessful.
 	 * <br>This method calls http://api.twitter.com/1/friendships/destroy/[id].json
 	 *
 	 * @param userId the ID of the user for whom to request a list of friends
 	 * @return User
 	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: friendships destroy</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/destroy">POST friendships/destroy | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.0
 	 */
 	User destroyFriendship(int userId)
 			throws TwitterException;
 
 	/**
-	 * Tests if a friendship exists between two users.
+     * Tests for the existence of friendship between two users. Will return true if user_a follows user_b, otherwise will return false.
 	 * <br>This method calls http://api.twitter.com/1/friendships/exists.json
 	 *
 	 * @param userA The ID or screen_name of the first user to test friendship for.
@@ -123,13 +129,13 @@ public interface FriendshipMethods {
 	 * @return if a friendship exists between two users.
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.1
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-exists">Twitter API Wiki / Twitter REST API Method: friendships exists</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friendships/exists">GET friendships/exists | dev.twitter.com</a>
 	 */
 	boolean existsFriendship(String userA, String userB)
 			throws TwitterException;
 
 	/**
-	 * Gets the detailed relationship status between a source user and a target user
+     * Returns detailed information about the relationship between two users.
 	 * <br>This method calls http://api.twitter.com/1/friendships/show.json
 	 * @param sourceScreenName the screen name of the source user
 	 * @param targetScreenName the screen name of the target user
@@ -137,13 +143,13 @@ public interface FriendshipMethods {
 	 *
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API Wiki / Twitter REST API Method: friendships show</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friendships/show">GET friendships/show | dev.twitter.com</a>
 	 */
 	Relationship showFriendship(String sourceScreenName, String targetScreenName)
 			throws TwitterException;
 
 	/**
-	 * Gets the detailed relationship status between a source user and a target user
+     * Returns detailed information about the relationship between two users.
 	 * <br>This method calls http://api.twitter.com/1/friendships/show.json
 	 *
 	 * @param sourceId the screen ID of the source user
@@ -151,7 +157,7 @@ public interface FriendshipMethods {
 	 * @return Relationship
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">Twitter API Wiki / Twitter REST API Method: friendships show</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friendships/show">GET friendships/show | dev.twitter.com</a>
 	 */
 	Relationship showFriendship(int sourceId, int targetId)
 			throws TwitterException;
@@ -164,7 +170,7 @@ public interface FriendshipMethods {
      * @return an array of numeric IDs for every user who has a pending request to follow the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.2
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-incoming">Twitter API Wiki / Twitter REST API Method: friendships incoming</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friendships/incoming">GET friendships/incoming | dev.twitter.com</a>
      */
     IDs getIncomingFriendships(long cursor) throws TwitterException;
 
@@ -176,7 +182,7 @@ public interface FriendshipMethods {
      * @return an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.2
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-outgoing">Twitter API Wiki / Twitter REST API Method: friendships outgoing</a>
+     * @see <a href="http://dev.twitter.com/doc/get/friendships/outgoing">GET friendships/outgoing | dev.twitter.com</a>
      */
     IDs getOutgoingFriendships(long cursor) throws TwitterException;
 }

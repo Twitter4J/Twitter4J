@@ -47,7 +47,8 @@ public interface ResponseList<T> extends TwitterResponse, List<T> {
      *
      * @return current rate limit status
      * @since Twitter4J 2.1.2
-     * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
+     * @see <a href="http://dev.twitter.com/pages/rate-limiting">Rate Limiting | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/pages/rate_limiting_faq">Rate Limiting FAQ | dev.twitter.com</a>
      */
     public RateLimitStatus getFeatureSpecificRateLimitStatus();
 

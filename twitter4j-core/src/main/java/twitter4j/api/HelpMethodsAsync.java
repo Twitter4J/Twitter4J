@@ -35,7 +35,7 @@ public interface HelpMethodsAsync {
 	 * <br>This method calls http://api.twitter.com/1/help/test
 	 *
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-help%C2%A0test">Twitter API Wiki / Twitter REST API Method: help%C2%A0test</a>
+     * @see <a href="http://dev.twitter.com/doc/get/help/test">GET help/test | dev.twitter.com</a>
 	 */
 	void test();
 }

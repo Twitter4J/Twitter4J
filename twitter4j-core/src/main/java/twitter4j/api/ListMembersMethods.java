@@ -43,7 +43,7 @@ public interface ListMembersMethods {
 	 * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
 	 * @return the members of the specified list.
 	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-members">Twitter REST API Method: GET /:user/:list_id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/members">GET :user/:list_id/members | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.0
 	 */
 	PagableResponseList<User> getUserListMembers(String listOwnerScreenName, int listId, long cursor)
@@ -56,26 +56,25 @@ public interface ListMembersMethods {
 	 * @param userId The id of the user to add as a member of the list.
 	 * @return the updated list
 	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-list-members">Twitter REST API Method: POST /:user/:id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/post/:user/:list_id/members">POST :user/:list_id/members | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	UserList addUserListMember(int listId, int userId)
-			throws TwitterException;
+    UserList addUserListMember(int listId, int userId) throws TwitterException;
 
-	/**
+    /**
 	 * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
 	 * <br>This method calls http://api.twitter.com/1/[listOwner]/[listId]/members.json
 	 * @param listId The id of the list.
 	 * @param userId The screen name of the member you wish to remove from the list.
 	 * @return the updated list
 	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-DELETE-list-members">Twitter REST API Method: DELETE /:user/:list_id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/delete/:user/:id/members">DELETE :user/:id/members | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.0
 	 */
-	UserList deleteUserListMember(int listId, int userId)
-			throws TwitterException;
+    UserList deleteUserListMember(int listId, int userId)
+            throws TwitterException;
 
-	/**
+    /**
 	 * Check if a user is a member of the specified list.<br>
 	 * <br>This method calls http://api.twitter.com/1/[listOwner]/[listId]/members/id.json
      * @param listOwnerScreenName The screen name of the list owner
@@ -84,7 +83,7 @@ public interface ListMembersMethods {
 	 * @return the updated list
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * , or the user is not a member of the specified list(TwitterException.getStatusCode() returns 404 in that case.)
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-members-id">Twitter REST API Method:  GET /:user/:list_id/members/:id</a>
+     * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/members/:id">GET :user/:list_id/members/:id | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.0
 	 */
 	User checkUserListMembership(String listOwnerScreenName, int listId, int userId)

@@ -35,7 +35,7 @@ public interface DirectMessageMethodsAsync {
     /**
 	 * Returns a list of the direct messages sent to the authenticating user.
 	 * <br>This method calls http://api.twitter.com/1/direct_messages
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
+     * @see <a href="http://dev.twitter.com/doc/get/direct_messages">GET direct_messages | dev.twitter.com</a>
 	 */
 	void getDirectMessages();
 
@@ -44,14 +44,14 @@ public interface DirectMessageMethodsAsync {
 	 * <br>This method calls http://api.twitter.com/1/direct_messages
 	 * @param paging controls pagination
 	 * @since Twitter4J 2.0.1
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages">Twitter API Wiki / Twitter REST API Method: direct_messages</a>
+     * @see <a href="http://dev.twitter.com/doc/get/direct_messages">GET direct_messages | dev.twitter.com</a>
 	 */
 	void getDirectMessages(Paging paging);
 
 	/**
 	 * Returns a list of the direct messages sent by the authenticating user.
 	 * <br>This method calls http://api.twitter.com/1/direct_messages/sent
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0sent</a>
+     * @see <a href="http://dev.twitter.com/doc/get/direct_messages/sent">GET direct_messages/sent | dev.twitter.com</a>
 	 */
 	void getSentDirectMessages();
 
@@ -60,7 +60,7 @@ public interface DirectMessageMethodsAsync {
 	 * <br>This method calls http://api.twitter.com/1/direct_messages/sent
 	 * @param paging controls pagination
 	 * @since Twitter4J 2.0.1
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0sent">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0sent</a>
+     * @see <a href="http://dev.twitter.com/doc/get/direct_messages/sent">GET direct_messages/sent | dev.twitter.com</a>
 	 */
 	void getSentDirectMessages(Paging paging);
 
@@ -70,7 +70,7 @@ public interface DirectMessageMethodsAsync {
 	 * <br>This method calls http://api.twitter.com/1/direct_messages/new
 	 * @param screenName the screen name of the user to whom send the direct message
 	 * @param text The text of your direct message.
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0new">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0new</a>
+     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/new">POST direct_messages/new | dev.twitter.com</a>
 	 */
 	void sendDirectMessage(String screenName, String text);
 
@@ -80,16 +80,16 @@ public interface DirectMessageMethodsAsync {
 	 * <br>This method calls http://api.twitter.com/1/direct_messages/new
 	 * @param userId the screen name of the user to whom send the direct message
 	 * @param text The text of your direct message.
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0new">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0new</a>
+     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/new">POST direct_messages/new | dev.twitter.com</a>
 	 * @since Twitter4j 2.1.0
 	 */
 	void sendDirectMessage(int userId, String text);
 
 	/**
-	 * Delete specified direct message
+     * Destroys the direct message specified in the required ID parameter. The authenticating user must be the recipient of the specified direct message.
 	 * <br>This method calls http://api.twitter.com/1/direct_messages/destroy
 	 * @param id int
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-direct_messages%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: direct_messages%C2%A0destroy</a>
+     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy">POST direct_messages/destroy | dev.twitter.com</a>
 	 * @since Twitter4J 2.0.1
 	 */
 	void destroyDirectMessage(int id);

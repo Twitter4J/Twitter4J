@@ -40,95 +40,89 @@ import java.util.List;
 public interface SearchMethods {
 	/**
 	 * Returns tweets that match a specified query.
-	 * <br>This method calls http://search.twitter.com/search
+	 * <br>This method calls http://search.twitter.com/search.json
 	 * @param query - the search condition
 	 * @return the result
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 1.1.7
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search">Twitter API Wiki / Twitter Search API Method: search</a>
+     * @see <a href="http://dev.twitter.com/doc/get/search">GET search | dev.twitter.com</a>
+     * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
 	 */
-	QueryResult search(Query query)
-			throws TwitterException;
+    QueryResult search(Query query) throws TwitterException;
 
-	/**
-	 * Returns the top ten topics that are currently trending on Twitter.  The response includes the time of the request, the name of each trend, and the url to the <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
-	 * <br>This method calls http://search.twitter.com/trends
+    /**
+     * Returns the top ten topics that are currently trending on Twitter. The response includes the time of the request, the name of each trend, and the url to the Twitter Search results page for that topic.
+	 * <br>This method calls http://search.twitter.com/trends.json
 	 * @return the result
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends">GET trends | dev.twitter.com</a>
 	 */
-	Trends getTrends()
-			throws TwitterException;
+    Trends getTrends() throws TwitterException;
 
-	/**
-	 * Returns the current top 10 trending topics on Twitter.  The response includes the time of the request, the name of each trending topic, and query used on <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
-	 * <br>This method calls http://search.twitter.com/trends/current
+    /**
+     * Returns the current top 10 trending topics on Twitter. The response includes the time of the request, the name of each trending topic, and query used on Twitter Search results page for that topic.
+	 * <br>This method calls http://search.twitter.com/trends/current.json
 	 * @return the result
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/current">GET trends/current | dev.twitter.com</a>
 	 */
-	Trends getCurrentTrends()
-			throws TwitterException;
+    Trends getCurrentTrends() throws TwitterException;
 
-	/**
-	 * Returns the current top 10 trending topics on Twitter.  The response includes the time of the request, the name of each trending topic, and query used on <a href="http://search.twitter.com/">Twitter Search</a> results page for that topic.
-	 * <br>This method calls http://search.twitter.com/trends/current
+    /**
+     * Returns the current top 10 trending topics on Twitter. The response includes the time of the request, the name of each trending topic, and query used on Twitter Search results page for that topic.
+	 * <br>This method calls http://search.twitter.com/trends/current.json
 	 * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
 	 * @return the result
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends">Twitter Search API Method: trends</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/current">GET trends/current | dev.twitter.com</a>
 	 */
-	Trends getCurrentTrends(boolean excludeHashTags)
-			throws TwitterException;
+    Trends getCurrentTrends(boolean excludeHashTags) throws TwitterException;
 
-
-	/**
-	 * Returns the top 20 trending topics for each hour in a given day.
-	 * <br>This method calls http://search.twitter.com/trends/daily
+    /**
+     * Returns the top 20 trending topics for each hour in a given day.
+	 * <br>This method calls http://search.twitter.com/trends/daily.json
 	 * @return the result
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-daily">Twitter Search API Method: trends daily</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/daily">GET trends/daily | dev.twitter.com</a>
 	 */
-	List<Trends> getDailyTrends()
-			throws TwitterException;
+    List<Trends> getDailyTrends() throws TwitterException;
 
-	/**
-	 * Returns the top 20 trending topics for each hour in a given day.
-	 * <br>This method calls http://search.twitter.com/trends/daily
+    /**
+     * Returns the top 20 trending topics for each hour in a given day.
+	 * <br>This method calls http://search.twitter.com/trends/daily.json
 	 * @param date Permits specifying a start date for the report.
 	 * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
 	 * @return the result
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-daily">Twitter Search API Method: trends daily</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/daily">GET trends/daily | dev.twitter.com</a>
 	 */
 	List<Trends> getDailyTrends(Date date, boolean excludeHashTags)
 			throws TwitterException;
 
 	/**
-	 * Returns the top 30 trending topics for each day in a given week.
-	 * <br>This method calls http://search.twitter.com/trends/weekly
+     * Returns the top 30 trending topics for each day in a given week.
+	 * <br>This method calls http://search.twitter.com/trends/weekly.json
 	 * @return the result
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-weekly">Twitter Search API Method: trends weekly</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/weekly">GET trends/weekly | dev.twitter.com</a>
 	 */
-	List<Trends> getWeeklyTrends()
-			throws TwitterException;
+    List<Trends> getWeeklyTrends() throws TwitterException;
 
-	/**
+    /**
 	 * Returns the top 30 trending topics for each day in a given week.
-	 * <br>This method calls http://search.twitter.com/trends/weekly
+	 * <br>This method calls http://search.twitter.com/trends/weekly.json
 	 * @param date Permits specifying a start date for the report.
 	 * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
 	 * @return the result
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-trends-weekly">Twitter Search API Method: trends weekly</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/weekly">GET trends/weekly | dev.twitter.com</a>
 	 */
 	List<Trends> getWeeklyTrends(Date date, boolean excludeHashTags)
 			throws TwitterException;

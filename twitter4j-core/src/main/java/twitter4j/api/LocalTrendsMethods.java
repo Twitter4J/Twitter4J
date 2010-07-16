@@ -41,7 +41,7 @@ public interface LocalTrendsMethods {
 	 * <br>This method calls http://api.twitter.com/1/trends/available.json
 	 * @return the locations
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-trends-available">Twitter REST API Method: GET /:user/:list_id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/available">GET trends/available | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.1
 	 */
     ResponseList<Location> getAvailableTrends() throws TwitterException;
@@ -52,18 +52,18 @@ public interface LocalTrendsMethods {
      * @param location the available trend locations will be sorted by distance to the lat and long passed in. The sort is nearest to furthest.
      * @return the locations
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-trends-available">Twitter REST API Method: GET /:user/:list_id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/available">GET trends/available | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.1
 	 */
     ResponseList<Location> getAvailableTrends(GeoLocation location) throws TwitterException;
 
     /**
 	 * Returns the top 10 trending topics for a specific location Twitter has trending topic information for. The response is an array of "trend" objects that encode the name of the trending topic, the query parameter that can be used to search for the topic on Search, and the direct URL that can be issued against Search. This information is cached for five minutes, and therefore users are discouraged from querying these endpoints faster than once every five minutes.  Global trends information is also available from this API by using a WOEID of 1.
-     * <br>This method calls http://api.twitter.com/1/trends/[woeid].json
+     * <br>This method calls http://api.twitter.com/1/trends/:woeid.json
      * @param woeid The WOEID of the location to be querying for
      * @return trends
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-trends-location">Twitter REST API Method: trends location</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/location/:woeid">GET trends/location/:woeid | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.1
 	 */
     Trends getLocationTrends(int woeid) throws TwitterException;

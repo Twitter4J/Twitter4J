@@ -33,175 +33,179 @@ import twitter4j.TwitterException;
  */
 public interface UserMethodsAsync {
 	/**
-	 * Retrieves extended information of a given user, specified by screen name.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
-	 * <br>This method calls http://api.twitter.com/1/users/show
+     * Returns extended information of a given user, specified by ID or screen name as per the required id parameter. The author's most recent status will be returned inline.
+     * <br>This method calls http://api.twitter.com/1/users/show.json
 	 * @param screenName the screen name of the user for whom to request the detail
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users%C2%A0show</a>
+     * @see <a href="http://dev.twitter.com/doc/get/users/show">GET users/show | dev.twitter.com</a>
 	 */
 	void showUser(String screenName);
 
 	/**
-	 * Retrieves extended information of a given user, specified by screen name.  This information includes design settings, so third party developers can theme their widgets according to a given user's preferences.
-	 * <br>This method calls http://api.twitter.com/1/users/show
+     * Returns extended information of a given user, specified by ID or screen name as per the required id parameter. The author's most recent status will be returned inline.
+     * <br>This method calls http://api.twitter.com/1/users/show.json
 	 * @param userId the ID of the user for whom to request the retrieve
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users%C2%A0show">Twitter API Wiki / Twitter REST API Method: users%C2%A0show</a>
+     * @see <a href="http://dev.twitter.com/doc/get/users/show">GET users/show | dev.twitter.com</a>
 	 */
 	void showUser(int userId);
 
     /**
-     * Retrieves up to 20 users worth of extended information, specified by screen name. The author's most recent status (if the authenticating user has permission) will be returned inline.  Users can, at most, look up 1000 users in an hour.
+     * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
      * <br>This method calls http://api.twitter.com/1/users/lookup.json
      * @param screenNames Specifies the screen names of the users to retrieve.
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users-lookup">Twitter API Wiki / Twitter REST API Method: users lookup</a>
+     * @see <a href="http://dev.twitter.com/doc/get/users/lookup">GET users/lookup | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
     void lookupUsers(String[] screenNames);
 
     /**
-     * Retrieves up to 20 users worth of extended information, specified by either ID. The author's most recent status (if the authenticating user has permission) will be returned inline.  Users can, at most, look up 1000 users in an hour.
+     * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
      * <br>This method calls http://api.twitter.com/1/users/lookup.json
      * @param ids Specifies the screen names of the users to retrieve.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-users-lookup>Twitter API Wiki / Twitter REST API Method: users lookup</a>
+     * @see <a href="http://dev.twitter.com/doc/get/users/lookup">GET users/lookup | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
     void lookupUsers(int[] ids);
 
     /**
-     * Run a search for users similar to Find People button on Twitter.com; the same results returned by people search on Twitter.com will be returned by using this API (about being listed in the People Search).  It is only possible to retrieve the first 1000 matches from this API.
+     * Run a search for users similar to the Find People button on Twitter.com; the same results returned by people search on Twitter.com will be returned by using this API.<br>
+     * Usage note: It is only possible to retrieve the first 1000 matches from this API.
      * <br>This method calls http://api.twitter.com/1/users/search.json
      *
      * @param query The query to run against people search.
      * @param page Specifies the page of results to retrieve. Number of statuses per page is fixed to 20.
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-users-search">Twitter API Wiki / Twitter REST API Method: users search</a>
+     * @see <a href="http://dev.twitter.com/doc/get/users/search">GET users/search | dev.twitter.com</a>
      */
     void searchUsers(String query, int page);
 
     /**
-     * Access to Twitter's suggested user list.  This returns the list of suggested user categories.  The category can be used in the users/suggestions/category endpoint to get the users in that category.
+     * Access to Twitter's suggested user list. This returns the list of suggested user categories. The category can be used in the users/suggestions/category endpoint to get the users in that category.
      * <br>This method calls http://api.twitter.com/1/users/suggestions.json
      * @since Twitter4J 2.1.1
+     * @see <a href="http://dev.twitter.com/doc/get/users/suggestions">GET users/suggestions | dev.twitter.com</a>
      */
     void getSuggestedUserCategories();
 
     /**
-     * Access the users in a given category of the Twitter suggested user list.
-     * <br>This method calls http://api.twitter.com/1/users/suggestions/[slug].json
+     * Access the users in a given category of the Twitter suggested user list.<br>
+     * It is recommended that end clients cache this data for no more than one hour.
+     * <br>This method calls http://api.twitter.com/1/users/suggestions/:slug.json
      * @param categorySlug slug
      * @since Twitter4J 2.1.1
+     * @see <a href="http://dev.twitter.com/doc/get/users/suggestions/slug">GET users/suggestions/slug | dev.twitter.com</a>
      */
     void getUserSuggestions(String categorySlug);
 
 	/**
 	 * Returns the specified user's friends, each with current status inline.
 	 * <br>This method calls http://api.twitter.com/1/statuses/friends
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
 	 * @since Twitter4J 2.0.9
 	 */
 	void getFriendsStatuses();
 
 	/**
-	 * Returns the specified user's friends, each with current status inline.
+     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
 	 * <br>This method calls http://api.twitter.com/1/statuses/friends
 	 * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
 	 * @since Twitter4J 2.0.9
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
 	 */
 	void getFriendsStatuses(long cursor);
 
 	/**
-	 * Returns the specified user's friends, each with current status inline.
+     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
 	 * <br>This method calls http://api.twitter.com/1/statuses/friends
 	 * @param screenName the screen name of the user for whom to request a list of friends
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
 	 * @since Twitter4J 2.0.9
 	 */
 	void getFriendsStatuses(String screenName);
 
 	/**
-	 * Returns the specified user's friends, each with current status inline.
+     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
 	 * <br>This method calls http://api.twitter.com/1/statuses/friends
 	 * @param userId the ID of the user for whom to request a list of friends
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.0
 	 */
 	void getFriendsStatuses(int userId);
 
 	/**
-	 * Returns the specified user's friends, each with current status inline.
+     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
 	 * <br>This method calls http://api.twitter.com/1/statuses/friends
 	 * @param screenName the screen name of the user for whom to request a list of friends
 	 * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
 	 * @since Twitter4J 2.0.9
 	 */
 	void getFriendsStatuses(String screenName, long cursor);
 
 	/**
-	 * Returns the specified user's friends, each with current status inline.
+     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
 	 * <br>This method calls http://api.twitter.com/1/statuses/friends
 	 * @param userId the screen name of the user for whom to request a list of friends
 	 * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0friends">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0friends</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.0
 	 */
 	void getFriendsStatuses(int userId, long cursor);
 
 	/**
 	 * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-	 * <br>This method calls http://api.twitter.com/1/statuses/followers
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+	 * <br>This method calls http://api.twitter.com/1/statuses/followers.json
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
 	 * @since Twitter4J 2.0.9
 	 */
 	void getFollowersStatuses();
 
 	/**
 	 * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-	 * <br>This method calls http://api.twitter.com/1/statuses/followers
+	 * <br>This method calls http://api.twitter.com/1/statuses/followers.json
 	 * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
 	 * @since Twitter4J 2.0.9
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
 	 */
 	void getFollowersStatuses(long cursor);
 
 	/**
 	 * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-	 * <br>This method calls http://api.twitter.com/1/statuses/followers
+	 * <br>This method calls http://api.twitter.com/1/statuses/followers.json
 	 *
 	 * @param screenName The screen name of the user for whom to request a list of followers.
 	 * @since Twitter4J 2.0.9
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
 	 */
 	void getFollowersStatuses(String screenName);
 
 	/**
 	 * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-	 * <br>This method calls http://api.twitter.com/1/statuses/followers
+	 * <br>This method calls http://api.twitter.com/1/statuses/followers.json
 	 *
 	 * @param userId The ID of the user for whom to request a list of followers.
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
 	 */
 	void getFollowersStatuses(int userId);
 
 	/**
 	 * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-	 * <br>This method calls http://api.twitter.com/1/statuses/followers
+	 * <br>This method calls http://api.twitter.com/1/statuses/followers.json
 	 * @param screenName The screen name of the user for whom to request a list of followers.
 	 * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
 	 * @since Twitter4J 2.0.9
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
 	 */
 	void getFollowersStatuses(String screenName, long cursor);
 
 	/**
 	 * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-	 * <br>This method calls http://api.twitter.com/1/statuses/followers
+	 * <br>This method calls http://api.twitter.com/1/statuses/followers.json
 	 * @param userId The ID of the user for whom to request a list of followers.
 	 * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-statuses%C2%A0followers">Twitter API Wiki / Twitter REST API Method: statuses%C2%A0followers</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
 	 */
 	void getFollowersStatuses(int userId, long cursor);
 }

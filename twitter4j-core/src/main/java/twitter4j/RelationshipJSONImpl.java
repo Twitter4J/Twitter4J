@@ -35,7 +35,7 @@ import static twitter4j.ParseUtil.*;
 /**
  * A data class that has detailed information about a relationship between two users
  * @author Perry Sakkaris - psakkaris at gmail.com
- * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-friendships-show">REST API DOCUMENTATION</a>
+ * @see <a href="http://dev.twitter.com/doc/get/friendships/show">GET friendships/show | dev.twitter.com</a>
  * @since Twitter4J 2.1.0
  */
 /*package*/ final class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {

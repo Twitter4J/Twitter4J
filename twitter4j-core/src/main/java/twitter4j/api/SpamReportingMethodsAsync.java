@@ -43,7 +43,7 @@ public interface SpamReportingMethodsAsync {
      *
      * @param userId The ID of the user you want to report as a spammer.
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-report_spam">Twitter API Wiki / Twitter REST API Method: report_spam</a>
+     * @see <a href="http://dev.twitter.com/doc/post/report_spam">POST report_spam | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
     void reportSpam(int userId) throws TwitterException;
@@ -54,7 +54,7 @@ public interface SpamReportingMethodsAsync {
      *
      * @param screenName The screen name of the user you want to report as a spammer.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-report_spam">Twitter API Wiki / Twitter REST API Method: report_spam</a>
+     * @see <a href="http://dev.twitter.com/doc/post/report_spam">POST report_spam | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
     void reportSpam(String screenName) throws TwitterException;

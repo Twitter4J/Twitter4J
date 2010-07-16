@@ -32,41 +32,41 @@ package twitter4j.api;
 public interface NotificationMethodsAsync {
 	/**
 	 * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
-	 * <br>This method calls http://api.twitter.com/1/notifications/follow
+     * <br>This method calls http://api.twitter.com/1/notifications/follow.json
 	 *
 	 * @param screenName Specifies the screen name of the user to follow with device updates.
 	 * @since Twitter4J 2.0.1
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0follow</a>
+     * @see <a href="http://dev.twitter.com/doc/post/notifications/follow">POST notifications/follow | dev.twitter.com</a>
 	 */
 	void enableNotification(String screenName);
 
 	/**
 	 * Enables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
-	 * <br>This method calls http://api.twitter.com/1/notifications/follow
+     * <br>This method calls http://api.twitter.com/1/notifications/follow.json
 	 *
 	 * @param userId Specifies the ID of the user to follow with device updates.
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0follow">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0follow</a>
+     * @see <a href="http://dev.twitter.com/doc/post/notifications/follow">POST notifications/follow | dev.twitter.com</a>
 	 */
 	void enableNotification(int userId);
 
 	/**
 	 * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
-	 * <br>This method calls http://api.twitter.com/1/notifications/leave
+     * <br>This method calls http://api.twitter.com/1/notifications/leave.json
 	 *
 	 * @param screenName Specifies the screen name of the user to disable device notifications.
 	 * @since Twitter4J 2.0.1
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0leave</a>
+     * @see <a href="http://dev.twitter.com/doc/post/notifications/leave">POST notifications/leave | dev.twitter.com</a>
 	 */
 	void disableNotification(String screenName);
 
 	/**
 	 * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
-	 * <br>This method calls http://api.twitter.com/1/notifications/leave
+     * <br>This method calls http://api.twitter.com/1/notifications/leave.json
 	 *
 	 * @param userId Specifies the ID of the user to disable device notifications.
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-notifications%C2%A0leave">Twitter API Wiki / Twitter REST API Method: notifications%C2%A0leave</a>
+     * @see <a href="http://dev.twitter.com/doc/post/notifications/leave">POST notifications/leave | dev.twitter.com</a>
 	 */
 	void disableNotification(int userId);
 }

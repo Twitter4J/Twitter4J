@@ -36,7 +36,7 @@ public interface ListMembersMethodsAsync {
      * @param listOwnerScreenName The screen name of the list owner
      * @param listId The id of the list
      * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-members">Twitter REST API Method: GET /:user/:list_id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/members">GET :user/:list_id/members | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
     void getUserListMembers(String listOwnerScreenName, int listId, long cursor);
@@ -46,7 +46,7 @@ public interface ListMembersMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/[listOwner]/[listId]/members.json
      * @param listId The id of the list.
      * @param userId The id of the user to add as a member of the list.
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-POST-list-members">Twitter REST API Method: POST /:user/:id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/post/:user/:list_id/members">POST :user/:list_id/members | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
     void addUserListMember(int listId, int userId);
@@ -56,7 +56,7 @@ public interface ListMembersMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/[listOwner]/[listId]/members.json
      * @param listId The id of the list.
      * @param userId The screen name of the member you wish to remove from the list.
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-DELETE-list-members">Twitter REST API Method: DELETE /:user/:list_id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/delete/:user/:id/members">DELETE :user/:id/members | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
     void deleteUserListMember(int listId, int userId);
@@ -67,7 +67,7 @@ public interface ListMembersMethodsAsync {
      * @param listOwnerScreenName The screen name of the list owner
      * @param listId The id of the list.
      * @param userId The id of the user who you want to know is a member or not of the specified list.
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-members-id">Twitter REST API Method:  GET /:user/:list_id/members/:id</a>
+     * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/members/:id">GET :user/:list_id/members/:id | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
     void checkUserListMembership(String listOwnerScreenName, int listId, int userId);

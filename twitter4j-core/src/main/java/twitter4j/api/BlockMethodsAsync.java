@@ -36,7 +36,7 @@ public interface BlockMethodsAsync {
 	 *
 	 * @param screenName the screen_name of the user to block
 	 * @since Twitter4J 2.0.1
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-blocks%C2%A0create">Twitter API Wiki / Twitter REST API Method: blocks%C2%A0create</a>
+     * @see <a href="http://dev.twitter.com/doc/post/blocks/create">POST blocks/create | dev.twitter.com</a>
 	 */
 	void createBlock(String screenName);
 
@@ -46,9 +46,9 @@ public interface BlockMethodsAsync {
 	 *
 	 * @param userId the screen_name of the user to block
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-blocks%C2%A0create">Twitter API Wiki / Twitter REST API Method: blocks%C2%A0create</a>
+     * @see <a href="http://dev.twitter.com/doc/post/blocks/create">POST blocks/create | dev.twitter.com</a>
 	 */
-	void createBlockAsync(int userId);
+	void createBlock(int userId);
 
 	/**
 	 * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
@@ -56,7 +56,7 @@ public interface BlockMethodsAsync {
 	 *
 	 * @param screenName the screen_name of the user to block
 	 * @since Twitter4J 2.0.1
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-blocks%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: blocks%C2%A0destroy</a>
+     * @see <a href="http://dev.twitter.com/doc/post/blocks/destroy">POST blocks/destroy | dev.twitter.com</a>
 	 */
 	void destroyBlock(String screenName);
 
@@ -66,27 +66,27 @@ public interface BlockMethodsAsync {
 	 *
 	 * @param userId the ID of the user to block
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method:-blocks%C2%A0destroy">Twitter API Wiki / Twitter REST API Method: blocks%C2%A0destroy</a>
+     * @see <a href="http://dev.twitter.com/doc/post/blocks/destroy">POST blocks/destroy | dev.twitter.com</a>
 	 */
 	void destroyBlock(int userId);
 
 	/**
-	 * Tests if a friendship exists between two users.
+     * Returns if the authenticating user is blocking a target user. Will return the blocked user's object if a block exists, and error with a HTTP 404 response code otherwise.
 	 * <br>This method calls http://api.twitter.com/1/blocks/exists/id.xml
 	 *
 	 * @param screenName The screen_name of the potentially blocked user.
 	 * @since Twitter4J 2.0.4
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-exists">Twitter API Wiki / Twitter REST API Method: blocks exists</a>
+     * @see <a href="http://dev.twitter.com/doc/get/blocks/exists">GET blocks/exists | dev.twitter.com</a>
 	 */
 	void existsBlock(String screenName);
 
 	/**
-	 * Tests if a friendship exists between two users.
+     * Returns if the authenticating user is blocking a target user. Will return the blocked user's object if a block exists, and error with a HTTP 404 response code otherwise.
 	 * <br>This method calls http://api.twitter.com/1/blocks/exists/id.xml
 	 *
 	 * @param userId The ID of the potentially blocked user.
 	 * @since Twitter4J 2.1.0
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-exists">Twitter API Wiki / Twitter REST API Method: blocks exists</a>
+     * @see <a href="http://dev.twitter.com/doc/get/blocks/exists">GET blocks/exists | dev.twitter.com</a>
 	 */
 	void existsBlock(int userId);
 
@@ -95,7 +95,7 @@ public interface BlockMethodsAsync {
 	 * <br>This method calls http://api.twitter.com/1/blocks/blocking.xml
 	 *
 	 * @since Twitter4J 2.0.4
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
+     * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking">GET blocks/blocking | dev.twitter.com</a>
 	 */
 	void getBlockingUsers();
 
@@ -105,7 +105,7 @@ public interface BlockMethodsAsync {
 	 *
 	 * @param page the number of page
 	 * @since Twitter4J 2.0.4
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking">Twitter API Wiki / Twitter REST API Method: blocks blocking</a>
+     * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking">GET blocks/blocking | dev.twitter.com</a>
 	 */
 	void getBlockingUsers(int page);
 
@@ -113,7 +113,7 @@ public interface BlockMethodsAsync {
 	 * Returns an array of numeric user ids the authenticating user is blocking.
 	 * <br>This method calls http://api.twitter.com/1/blocks/blocking/ids
 	 * @since Twitter4J 2.0.4
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-blocks-blocking-ids">Twitter API Wiki / Twitter REST API Method: blocks blocking ids</a>
+     * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking/ids">GET blocks/blocking/ids | dev.twitter.com</a>
 	 */
 	void getBlockingUsersIDs();
 }

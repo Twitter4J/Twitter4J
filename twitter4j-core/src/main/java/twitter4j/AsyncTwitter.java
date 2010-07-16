@@ -1495,7 +1495,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase implements java.io.Ser
     /**
      * {@inheritDoc}
      */
-    public void createBlockAsync(final int userId) {
+    public void createBlock(final int userId) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_BLOCK, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.createdBlock(twitter.createBlock(userId));

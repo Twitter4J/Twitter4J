@@ -35,8 +35,7 @@ import java.util.List;
  * A data class represents search query.<br>
  * An instance of this class is NOT thread safe.<br>
  * Instances can be shared across threads, but should not be mutated while a search is ongoing.
- * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
- * @see <a href="http://dev.twitter.com/doc/get/search">Twitter API / Recent Search API Documentation</a>
+ * @see <a href="http://dev.twitter.com/doc/get/search">GET search | dev.twitter.com</a>
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -71,7 +70,7 @@ public final class Query implements java.io.Serializable {
     /**
      * Sets the query string
      * @param query the query string
-     * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
+     * @see <a href="http://dev.twitter.com/doc/get/search">GET search | dev.twitter.com</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      */
     public void setQuery(String query) {
@@ -82,7 +81,7 @@ public final class Query implements java.io.Serializable {
      * Sets the query string
      * @param query the query string
      * @return the instance
-     * @see <a href="http://apiwiki.twitter.com/Search-API-Documentation">Twitter API / Search API Documentation</a>
+     * @see <a href="http://dev.twitter.com/doc/get/search">GET search | dev.twitter.com</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      * @since Twitter4J 2.1.0
      */

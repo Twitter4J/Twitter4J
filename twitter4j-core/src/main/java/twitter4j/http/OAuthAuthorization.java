@@ -166,7 +166,7 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      * @param password the password
      * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
-     * @see <a href="http://apiwiki.twitter.com/OAuth-FAQ#Howlongdoesanaccesstokenlast">Twitter API Wiki - How long does an access token last?</a>
+     * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth">Twitter REST API Method: oauth access_token for xAuth</a>
      * @since Twitter 2.1.1
      */

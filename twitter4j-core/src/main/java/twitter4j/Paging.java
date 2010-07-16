@@ -54,7 +54,7 @@ public final class Paging implements java.io.Serializable {
 
     static final String COUNT = "count";
     // somewhat GET list statuses requires "per_page" instead of "count"
-    // @see http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-statuses
+    // @see <a href="http://dev.twitter.com/doc/get/:user/lists/:id/statuses">GET :user/lists/:id/statuses | dev.twitter.com</a>
     static final String PER_PAGE = "per_page";
 
     /*package*/ List<HttpParameter> asPostParameterList() {

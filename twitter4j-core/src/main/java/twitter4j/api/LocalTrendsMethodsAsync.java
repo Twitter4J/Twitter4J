@@ -35,7 +35,7 @@ public interface LocalTrendsMethodsAsync {
     /**
 	 * Retrieves the locations that Twitter has trending topic information for. The response is an array of &quot;locations&quot; that encode the location's WOEID (a <a href="http://developer.yahoo.com/geo/geoplanet/">Yahoo! Where On Earth ID</a>) and some other human-readable information such as a canonical name and country the location belongs in.
 	 * <br>This method calls http://api.twitter.com/1/trends/available.json
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-trends-available">Twitter REST API Method: GET /:user/:list_id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/available">GET trends/available | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.1
 	 */
     void getAvailableTrends();
@@ -44,16 +44,16 @@ public interface LocalTrendsMethodsAsync {
 	 * Retrieves the sorted locations that Twitter has trending topic information for. The response is an array of &quot;locations&quot; that encode the location's WOEID (a <a href="http://developer.yahoo.com/geo/geoplanet/">Yahoo! Where On Earth ID</a>) and some other human-readable information such as a canonical name and country the location belongs in.
 	 * <br>This method calls http://api.twitter.com/1/trends/available.json
      * @param location the available trend locations will be sorted by distance to the lat and long passed in. The sort is nearest to furthest.
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-trends-available">Twitter REST API Method: GET /:user/:list_id/members</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/available">GET trends/available | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.1
 	 */
     void getAvailableTrends(GeoLocation location);
 
     /**
 	 * Retrieves the top 10 trending topics for a specific location Twitter has trending topic information for. The response is an array of "trend" objects that encode the name of the trending topic, the query parameter that can be used to search for the topic on Search, and the direct URL that can be issued against Search. This information is cached for five minutes, and therefore users are discouraged from querying these endpoints faster than once every five minutes.  Global trends information is also available from this API by using a WOEID of 1.
-     * <br>This method calls http://api.twitter.com/1/trends/[woeid].json
+     * <br>This method calls http://api.twitter.com/1/trends/:woeid.json
      * @param woeid The WOEID of the location to be querying for
-	 * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-trends-location">Twitter REST API Method: trends location</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/location/:woeid">GET trends/location/:woeid | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.1
 	 */
     void getLocationTrends(int woeid);
