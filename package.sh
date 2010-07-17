@@ -41,6 +41,8 @@ cp ~/.m2/repository/rome/rome/0.9/rome-0.9.jar $DIR/bin/lib
 cp ~/.m2/repository/org/slf4j/slf4j-api/1.4.3/slf4j-api-1.4.3.jar $DIR/bin/lib
 
 cp twitter4j-core/target/twitter4j-core-$1.jar $DIR/
+cp twitter4j-core/target/twitter4j-core-$1-sources.jar $DIR/twitter4j-core/
+cp twitter4j-core/target/twitter4j-core-$1-javadoc.jar $DIR/twitter4j-core/
 mkdir $DIR/twitter4j-core/javadoc/
 unzip twitter4j-core/target/twitter4j-core-$1-javadoc.jar -d $DIR/twitter4j-core/javadoc/
 
@@ -48,7 +50,9 @@ cp twitter4j-examples/target/twitter4j-examples-$1.jar $DIR/
 mkdir $DIR/twitter4j-examples/javadoc/
 unzip twitter4j-examples/target/twitter4j-examples-$1-javadoc.jar -d $DIR/twitter4j-examples/javadoc/
 
-cp twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1.jar $DIR/
+cp twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1-javadoc.jar $DIR/twitter4j-httpclient-support/
+cp twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1-sources.jar $DIR/twitter4j-httpclient-support/
+cp twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1.jar $DIR/twitter4j-httpclient-support/
 mkdir $DIR/twitter4j-httpclient-support/javadoc/
 unzip twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1-javadoc.jar -d $DIR/twitter4j-httpclient-support/javadoc/
 
