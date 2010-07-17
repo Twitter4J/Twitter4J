@@ -85,14 +85,12 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
         clearObjects();
         twitterAPI2.retweetStatus(status.getId());
         Thread.sleep(2000);
-        assertEquals(source.getId(), id2.id);
-        assertEquals(target.getId(), id1.id);
-        assertEquals(targetObject, status);
-
-        assertNotNull(friendIds);
+        assertNotNull(this.status);
+        assertEquals(this.status.getRetweetedStatus(), status);
     }
 
     private void clearObjects() {
+        status = null;
         source = null;
         target = null;
         targetObject = null;
@@ -287,15 +285,6 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
 //        System.out.println(status.getCreatedAt() + ":" + status.getText() + " from:" + status.getSource());
-        if(status.getText().startsWith("RT")){
-            Status retweetedStatus = status.getRetweetedStatus();
-            System.out.println("got a retweet!: id:" + status.getId());
-            if(null != retweetedStatus){
-                System.out.println("it's an official retweet:" + status.toString());
-            } else {
-                System.out.println("it's not an official retweet:" + status.toString());
-            }
-        }
         notifyResponse();
     }
 
