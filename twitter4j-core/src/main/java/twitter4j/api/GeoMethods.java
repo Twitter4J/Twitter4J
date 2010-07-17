@@ -43,6 +43,7 @@ public interface GeoMethods {
      * @return places (cities and neighborhoods) that can be attached to a statuses/update
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-geo-nearby_places">Twitter API Wiki / Twitter REST API Method: GET geo nearby_places</a>
+     * @deprecated <a href="http://code.google.com/p/twitter-api/issues/detail?id=1754">Issue 1754</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<Place> getNearbyPlaces(GeoQuery query) throws TwitterException;
