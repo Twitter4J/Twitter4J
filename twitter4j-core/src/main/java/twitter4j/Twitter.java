@@ -271,7 +271,7 @@ public class Twitter extends TwitterOAuthSupportBase
     public ResponseList<Status> getPublicTimeline() throws
             TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
-                "statuses/public_timeline.json", auth));
+                "statuses/public_timeline.json?include_rts=true", auth));
     }
 
     /**
@@ -298,7 +298,7 @@ public class Twitter extends TwitterOAuthSupportBase
     public ResponseList<Status> getFriendsTimeline() throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + "statuses/friends_timeline.json", auth));
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + "statuses/friends_timeline.json?include_rts=true", auth));
     }
 
     /**
@@ -308,7 +308,7 @@ public class Twitter extends TwitterOAuthSupportBase
             TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
-                + "statuses/friends_timeline.json", paging.asPostParameterArray(), auth));
+                + "statuses/friends_timeline.json?include_rts=true", paging.asPostParameterArray(), auth));
     }
 
 
@@ -319,7 +319,8 @@ public class Twitter extends TwitterOAuthSupportBase
             throws TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/user_timeline.json",
-                mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)}
+                mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)
+                        , new HttpParameter("include_rts", "true")}
                         , paging.asPostParameterArray()), auth));
     }
 
@@ -330,7 +331,8 @@ public class Twitter extends TwitterOAuthSupportBase
             throws TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/user_timeline.json",
-                mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)}
+                mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)
+                        , new HttpParameter("include_rts", "true")}
                         , paging.asPostParameterArray()), auth));
     }
 
@@ -363,7 +365,9 @@ public class Twitter extends TwitterOAuthSupportBase
             TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
-                "statuses/user_timeline.json", paging.asPostParameterArray(), auth));
+                "statuses/user_timeline.json",
+                mergeParameters(new HttpParameter[]{new HttpParameter("include_rts", "true")}
+                        , paging.asPostParameterArray()), auth));
     }
 
     /**
@@ -372,7 +376,7 @@ public class Twitter extends TwitterOAuthSupportBase
     public ResponseList<Status> getMentions() throws TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
-                "statuses/mentions.json", auth));
+                "statuses/mentions.json?include_rts=true", auth));
     }
 
     /**
@@ -381,7 +385,7 @@ public class Twitter extends TwitterOAuthSupportBase
     public ResponseList<Status> getMentions(Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
-                + "statuses/mentions.json", paging.asPostParameterArray(), auth));
+                + "statuses/mentions.json?include_rts=true", paging.asPostParameterArray(), auth));
     }
 
     /**
