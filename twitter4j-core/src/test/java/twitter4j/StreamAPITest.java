@@ -314,26 +314,26 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
         notifyResponse();
     }
 
-    public void onSubscribedUserList(User subscriber, User listOwner, UserList list) {
+    public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
         this.subscriber = subscriber;
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();
     }
 
-    public void onCreatedUserList(User listOwner, UserList list) {
+    public void onUserListCreated(User listOwner, UserList list) {
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();
     }
 
-    public void onUpdatedUserList(User listOwner, UserList list) {
+    public void onUserListUpdated(User listOwner, UserList list) {
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();
     }
 
-    public void onDestroyedUserList(User listOwner, UserList list) {
+    public void onUserListDestroyed(User listOwner, UserList list) {
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();

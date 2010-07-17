@@ -135,13 +135,13 @@ class StatusStreamImpl implements StatusStream, UserStream {
                             UserList targetObject = new UserListJSONImpl (json.getJSONObject ("target_object"));
 
                              if ("list_user_subscribed".equals (event)) {
-                                 userStreamListener.onSubscribedUserList(source, target, targetObject);
+                                 userStreamListener.onUserListSubscribed(source, target, targetObject);
                              } else if ("list_created".equals (event)) {
-                                 userStreamListener.onCreatedUserList(source, targetObject);
+                                 userStreamListener.onUserListCreated(source, targetObject);
                              } else if ("list_updated".equals (event)) {
-                                 userStreamListener.onUpdatedUserList(source, targetObject);
+                                 userStreamListener.onUserListUpdated(source, targetObject);
                              } else if ("list_destroyed".equals (event)) {
-                                 userStreamListener.onDestroyedUserList(source, targetObject);
+                                 userStreamListener.onUserListDestroyed(source, targetObject);
                              }
                          } else if ("block".equals(event)) {
                            userStreamListener.onBlock (source, target);
