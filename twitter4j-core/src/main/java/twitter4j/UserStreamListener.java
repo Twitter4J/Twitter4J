@@ -87,28 +87,28 @@ public interface UserStreamListener extends StatusListener {
      * @param list
      * @since Twitter4J 2.1.3
      */
-    void onUserSubscribedToList(User subscriber, User listOwner, UserList list);
+    void onSubscribedUserList(User subscriber, User listOwner, UserList list);
 
     /**
      * @param listOwner
      * @param list
      * @since Twitter4J 2.1.3
      */
-    void onUserCreatedList(User listOwner, UserList list);
+    void onCreatedUserList(User listOwner, UserList list);
 
     /**
      * @param listOwner
      * @param list
      * @since Twitter4J 2.1.3
      */
-    void onUserUpdatedList(User listOwner, UserList list);
+    void onUpdatedUserList(User listOwner, UserList list);
 
     /**
      * @param listOwner
      * @param list
      * @since Twitter4J 2.1.3
      */
-    void onUserDestroyedList(User listOwner, UserList list);
+    void onDestroyedUserList(User listOwner, UserList list);
 
     /**
      * @param source
