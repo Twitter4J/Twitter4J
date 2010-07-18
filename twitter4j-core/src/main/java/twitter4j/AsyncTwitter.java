@@ -51,7 +51,7 @@ import static twitter4j.TwitterMethod.*;
 public class AsyncTwitter extends TwitterOAuthSupportBase
         implements java.io.Serializable,
         SearchMethodsAsync,
-        TrendsMethods,
+        TrendsMethodsAsync,
         TimelineMethodsAsync,
         StatusMethodsAsync,
         UserMethodsAsync,
