@@ -39,6 +39,23 @@ import twitter4j.User;
  */
 public interface StatusMethodsAsync {
     /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets_of_me">GET statuses/retweets_of_me | dev.twitter.com</a>
+     */
+    void getRetweetsOfMe();
+
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
+     * @param paging controls pagination
+     * @since Twitter4J 2.0.10
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets_of_me">GET statuses/retweets_of_me | dev.twitter.com</a>
+     */
+    void getRetweetsOfMe(Paging paging);
+
+    /**
      * Returns a single status, specified by the id parameter below. The status's author will be returned inline.
 	 * <br>This method calls http://api.twitter.com/1/statuses/show
 	 * @param id int

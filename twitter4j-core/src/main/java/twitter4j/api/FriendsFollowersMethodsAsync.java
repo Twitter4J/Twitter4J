@@ -29,7 +29,7 @@ package twitter4j.api;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface SocialGraphMethodsAsync {
+public interface FriendsFollowersMethodsAsync {
 	/**
 	 * Returns an array of numeric IDs for every user the authenticating user is following.
      * <br>This method calls http://api.twitter.com/1/friends/ids.json

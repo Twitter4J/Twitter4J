@@ -32,7 +32,7 @@ import twitter4j.TwitterException;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface SocialGraphMethods {
+public interface FriendsFollowersMethods {
     /**
      * Returns an array of numeric IDs for every user the authenticating user is following.
      * <br>This method calls http://api.twitter.com/1/friends/ids.json

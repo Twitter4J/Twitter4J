@@ -54,6 +54,7 @@ import java.util.List;
 public class Twitter extends TwitterOAuthSupportBase
         implements java.io.Serializable,
         SearchMethods,
+        TrendsMethods,
         TimelineMethods,
         StatusMethods,
         UserMethods,
@@ -62,7 +63,7 @@ public class Twitter extends TwitterOAuthSupportBase
         ListSubscribersMethods,
         DirectMessageMethods,
         FriendshipMethods,
-        SocialGraphMethods,
+        FriendsFollowersMethods,
         AccountMethods,
         FavoriteMethods,
         NotificationMethods,
