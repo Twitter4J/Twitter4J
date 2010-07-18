@@ -309,7 +309,10 @@ public class Twitter extends TwitterOAuthSupportBase
             TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
-                + "statuses/friends_timeline.json?include_rts=true", paging.asPostParameterArray(), auth));
+                + "statuses/friends_timeline.json",
+                mergeParameters(new HttpParameter[]{new HttpParameter("include_rts", "true")}
+                        , paging.asPostParameterArray()), auth));
+
     }
 
 
@@ -386,7 +389,9 @@ public class Twitter extends TwitterOAuthSupportBase
     public ResponseList<Status> getMentions(Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
-                + "statuses/mentions.json?include_rts=true", paging.asPostParameterArray(), auth));
+                + "statuses/mentions.json",
+                mergeParameters(new HttpParameter[]{new HttpParameter("include_rts", "true")}
+                        , paging.asPostParameterArray()), auth));
     }
 
     /**
