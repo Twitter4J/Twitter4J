@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.internal.http;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
     private String name = null;
     private String value = null;
     private File file = null;
+    private InputStream fileBody = null;
     private static final long serialVersionUID = -8708108746980739212L;
 
     public HttpParameter(String name, String value) {
@@ -47,6 +49,12 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
     public HttpParameter(String name, File file) {
         this.name = name;
         this.file = file;
+    }
+
+    public HttpParameter(String name, String fileName, InputStream fileBody) {
+        this.name = name;
+        this.file = new File(fileName);
+        this.fileBody = fileBody;
     }
 
     public HttpParameter(String name, int value) {
@@ -80,8 +88,16 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         return file;
     }
 
+    public InputStream getFileBody(){
+    	return fileBody;
+    }
+
     public boolean isFile(){
         return null != file;
+    }
+
+    public boolean hasFileBody(){
+        return null != fileBody;
     }
 
     private static final String JPEG = "image/jpeg";
@@ -137,6 +153,8 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
 
         if (file != null ? !file.equals(that.file) : that.file != null)
             return false;
+        if (fileBody != null ? !fileBody.equals(that.fileBody) : that.fileBody != null)
+            return false;
         if (!name.equals(that.name)) return false;
         if (value != null ? !value.equals(that.value) : that.value != null)
             return false;
@@ -190,6 +208,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         int result = name.hashCode();
         result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + (file != null ? file.hashCode() : 0);
+        result = 31 * result + (fileBody != null ? fileBody.hashCode() : 0);
         return result;
     }
 
@@ -199,6 +218,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
                 "name='" + name + '\'' +
                 ", value='" + value + '\'' +
                 ", file=" + file +
+                ", fileBody=" + fileBody +
                 '}';
     }
 

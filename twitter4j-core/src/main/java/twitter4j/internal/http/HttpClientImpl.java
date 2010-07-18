@@ -245,7 +245,9 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                                     write(out, boundary + "\r\n");
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"; filename=\"" + param.getFile().getName() + "\"\r\n");
                                     write(out, "Content-Type: " + param.getContentType() + "\r\n\r\n");
-                                    BufferedInputStream in = new BufferedInputStream(new FileInputStream(param.getFile()));
+                                    BufferedInputStream in = new BufferedInputStream(
+                                    		param.hasFileBody() ? param.getFileBody() :new FileInputStream(param.getFile())
+                                    		);
                                     int buff = 0;
                                     while ((buff = in.read()) != -1) {
                                         out.write(buff);
