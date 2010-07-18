@@ -1,6 +1,7 @@
 package twitter4j.util;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ public abstract class ImageUpload
     public static String DEFAULT_TWITPIC_API_KEY = null;
     
     public abstract String upload (File image) throws TwitterException;
+    public abstract String upload (String imageFileName, InputStream imageBody) throws TwitterException;
     
     
     /** Returns an image uploader to Twitpic. Handles both BasicAuth and OAuth.
@@ -101,14 +103,30 @@ public abstract class ImageUpload
             String signedVerifyCredentialsURL = generateSignedVerifyCredentialsURL();
 
             // step 2 - generate HTTP parameters
-            HttpParameter[] params =
-                    {
-                            new HttpParameter("auth", "oauth"),
-                            new HttpParameter("username", user),
-                            new HttpParameter("verify_url", signedVerifyCredentialsURL),
-                            new HttpParameter("media", image)
+            HttpParameter[] params = {
+                    new HttpParameter("auth", "oauth"),
+                    new HttpParameter("username", user),
+                    new HttpParameter("verify_url", signedVerifyCredentialsURL),
+                    new HttpParameter("media", image)                
                     };
+            return upload(params);
+        }
 
+        public String upload(String imageFileName, InputStream imageBody) throws TwitterException {
+            // step 1 - generate verification URL
+            String signedVerifyCredentialsURL = generateSignedVerifyCredentialsURL();
+
+            // step 2 - generate HTTP parameters
+            HttpParameter[] params = {
+                    new HttpParameter("auth", "oauth"),
+                    new HttpParameter("username", user),
+                    new HttpParameter("verify_url", signedVerifyCredentialsURL),
+                    new HttpParameter("media", imageFileName, imageBody)
+                    };
+            return upload(params);
+        }
+
+        private String upload(HttpParameter[] params) throws TwitterException {
             // step 3 - upload the file
             HttpClientWrapper client = new HttpClientWrapper();
             HttpResponse httpResponse = client.post(YFROG_UPLOAD_URL, params);
@@ -157,7 +175,22 @@ public abstract class ImageUpload
                             new HttpParameter("password", auth.getPassword()),
                             new HttpParameter("media", image)
                     };
+            return upload(params);
+        }
 
+        @Override
+        public String upload(String imageFileName, InputStream imageBody) throws TwitterException {
+            // step 1 - generate HTTP parameters
+            HttpParameter[] params =
+                    {
+                            new HttpParameter("username", auth.getUserId()),
+                            new HttpParameter("password", auth.getPassword()),
+                            new HttpParameter("media", imageFileName, imageBody)
+                    };
+            return upload(params);
+        }
+
+        private String upload(HttpParameter[] params) throws TwitterException {
             // step 2 - upload the file
             HttpClientWrapper client = new HttpClientWrapper();
             HttpResponse httpResponse = client.post(YFROG_UPLOAD_URL, params);
@@ -204,6 +237,31 @@ public abstract class ImageUpload
         @Override
         public String upload (File image) throws TwitterException
         {
+            // step 2 - generate HTTP parameters
+            HttpParameter[] params =
+            {
+                new HttpParameter ("key", twitpicAPIKey),
+                new HttpParameter ("media", image)
+            };
+
+            return upload(params);
+        }
+
+        @Override
+        public String upload (String imageFileName, InputStream imageBody) throws TwitterException
+        {
+            // step 2 - generate HTTP parameters
+            HttpParameter[] params =
+            {
+                new HttpParameter ("key", twitpicAPIKey),
+                new HttpParameter ("media", imageFileName, imageBody)
+            };
+
+            return upload(params);
+        }
+
+        private String upload (HttpParameter[] params) throws TwitterException
+        {
             // step 1 - generate HTTP request headers
             String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader ();
             
@@ -211,12 +269,6 @@ public abstract class ImageUpload
             headers.put ("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS);
             headers.put ("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
             
-            // step 2 - generate HTTP parameters
-            HttpParameter[] params =
-            {
-                new HttpParameter ("key", twitpicAPIKey),
-                new HttpParameter ("media", image)
-            };
             
             // step 3 - upload the file
             HttpClientWrapper client = new HttpClientWrapper ();
@@ -270,7 +322,24 @@ public abstract class ImageUpload
                             new HttpParameter("password", auth.getPassword()),
                             new HttpParameter("media", image)
                     };
+            
+            return upload(params);
+        }
 
+        @Override
+        public String upload(String imageFileName, InputStream imageBody) throws TwitterException {
+            // step 1 - generate HTTP parameters
+            HttpParameter[] params =
+                    {
+                            new HttpParameter("username", auth.getUserId()),
+                            new HttpParameter("password", auth.getPassword()),
+                            new HttpParameter("media", imageFileName, imageBody)
+                    };
+            
+            return upload(params);
+        }
+
+        private String upload(HttpParameter[] params) throws TwitterException {
             // step 2 - upload the file
             HttpClientWrapper client = new HttpClientWrapper();
             HttpResponse httpResponse = client.post(TWITPIC_UPLOAD_URL, params);
