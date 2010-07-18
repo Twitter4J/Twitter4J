@@ -44,7 +44,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public final class TwitterStream extends TwitterBase implements java.io.Serializable {
+public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements java.io.Serializable {
     private final HttpClientWrapper http;
     private static final Logger logger = Logger.getLogger(TwitterStream.class);
 
@@ -61,7 +61,6 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     public TwitterStream() {
         super(ConfigurationContext.getInstance());
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
-        ensureBasicEnabled();
     }
 
     /**
@@ -74,7 +73,6 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     public TwitterStream(String screenName, String password) {
         super(ConfigurationContext.getInstance(), screenName, password);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
-        ensureBasicEnabled();
     }
 
     /**
@@ -89,7 +87,6 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         super(ConfigurationContext.getInstance(), screenName, password);
         this.statusListener = listener;
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
-        ensureBasicEnabled();
     }
 
     /*package*/
@@ -97,7 +94,6 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
         super(conf, auth);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
         this.statusListener = listener;
-        // ensureBasicEnabled();
     }
 
     /* Streaming API */
@@ -111,6 +107,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.0.4
      */
     public void firehose(final int count) {
+        ensureAuthorizationEnabled();
         startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getFirehoseStream(count);
@@ -129,6 +126,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.0.4
      */
     public StatusStream getFirehoseStream(int count) throws TwitterException {
+        ensureAuthorizationEnabled();
         return getCountStream("statuses/firehose.json", count);
     }
 
@@ -141,6 +139,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.1.1
      */
     public void links(final int count) {
+        ensureAuthorizationEnabled();
         startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getLinksStream(count);
@@ -159,6 +158,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.1.1
      */
     public StatusStream getLinksStream(int count) throws TwitterException {
+        ensureAuthorizationEnabled();
         return getCountStream("statuses/links.json", count);
     }
 
@@ -169,6 +169,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      */
     public void stream(final String relativeUrl, final int count, final boolean handleUserStream) {
+        ensureAuthorizationEnabled();
       startHandler(new StreamHandlingThread(handleUserStream) {
           public StatusStream getStream() throws TwitterException {
               return getCountStream(relativeUrl, count);
@@ -177,6 +178,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
     }
 
     private StatusStream getCountStream(String relativeUrl, int count) throws TwitterException {
+        ensureAuthorizationEnabled();
       ensureBasicEnabled();
       try {
           return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + relativeUrl
@@ -195,7 +197,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.0.10
      */
     public void retweet() {
-        ensureBasicEnabled();
+        ensureAuthorizationEnabled();
         startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getRetweetStream();
@@ -213,7 +215,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.0.10
      */
     public StatusStream getRetweetStream() throws TwitterException {
-        ensureBasicEnabled();
+        ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
                     , new HttpParameter[]{}, auth));
@@ -230,7 +232,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.0.10
      */
     public void sample() {
-        ensureBasicEnabled();
+        ensureAuthorizationEnabled();
         startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getSampleStream();
@@ -248,7 +250,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.0.10
      */
     public StatusStream getSampleStream() throws TwitterException {
-        ensureBasicEnabled();
+        ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.get(conf.getStreamBaseURL() + "statuses/sample.json"
                     , auth));
@@ -263,7 +265,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @see <a href="http://apiwiki.twitter.com/ChirpUserStreams">Twitter API Wiki / ChirpUserStreams</a>
      */
    public void user() {
-        ensureAuthorizationEnabled ();
+        ensureAuthorizationEnabled();
         startHandler(new StreamHandlingThread(true) {
             public UserStream getStream() throws TwitterException {
                 return getUserStream();
@@ -279,7 +281,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @see <a href="http://apiwiki.twitter.com/ChirpUserStreams">Twitter API Wiki / ChirpUserStreams</a>
      */
     public UserStream getUserStream() throws TwitterException {
-                ensureAuthorizationEnabled ();
+        ensureAuthorizationEnabled();
         if (!(statusListener instanceof UserStreamListener)) {
             logger.warn("Use of UserStreamListener is suggested.");
         }
@@ -301,6 +303,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.1.2
      */
     public void filter(final FilterQuery query) throws TwitterException {
+        ensureAuthorizationEnabled();
         startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getFilterStream(query);
@@ -321,7 +324,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @since Twitter4J 2.1.2
      */
     public StatusStream getFilterStream(FilterQuery query) throws TwitterException {
-        ensureBasicEnabled();
+        ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.post(conf.getStreamBaseURL()
                     + "statuses/filter.json"
@@ -345,6 +348,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      * @deprecated use {@link #filter(FilterQuery)} instead
      */
     public void filter(final int count, final int[] follow, final String[] track) {
+        ensureAuthorizationEnabled();
         startHandler(new StreamHandlingThread() {
             public StatusStream getStream() throws TwitterException {
                 return getFilterStream(count, follow, track);
@@ -366,6 +370,7 @@ public final class TwitterStream extends TwitterBase implements java.io.Serializ
      */
     public StatusStream getFilterStream(int count, int[] follow, String[] track)
             throws TwitterException {
+        ensureAuthorizationEnabled();
         return getFilterStream(new FilterQuery(count, follow, track, null));
     }
 

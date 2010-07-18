@@ -26,9 +26,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import twitter4j.StatusStream;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.TwitterStream;
 import twitter4j.TwitterTestUnit;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -58,6 +60,7 @@ public class OAuthTest extends TwitterTestUnit {
     private String desktopConsumerKey;
     private String browserConsumerSecret;
     private String browserConsumerKey;
+    TwitterStream twitterStream = new TwitterStream();
 
     public OAuthTest(String name) {
         super(name);
@@ -92,6 +95,9 @@ public class OAuthTest extends TwitterTestUnit {
         twitterAPI2.setOAuthAccessToken(new AccessToken(id2token, id2tokenSecret));
 
         unauthenticated = new Twitter();
+        twitterStream.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+        twitterStream.setOAuthAccessToken(new AccessToken(id2token, id2tokenSecret));
+
     }
 
     public void testDeterministic() throws Exception {
@@ -103,6 +109,10 @@ public class OAuthTest extends TwitterTestUnit {
         Twitter twitter2 = new Twitter();
         twitter2.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         assertEquals(twitter1, twitter2);
+    }
+    public void testStreaming() throws Exception {
+        StatusStream stream = twitterStream.getSampleStream();
+        stream.close();
     }
 
     public void testDesktopClient() throws Exception {
