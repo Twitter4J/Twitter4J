@@ -61,6 +61,14 @@ public final class AuthorizationFactory {
         }
         return auth;
     }
+
+    /**
+     *
+     * @param screenName screen name
+     * @param password password
+     * @return authorization instance
+     * @deprecated The @twitterapi team will be shutting off basic authentication on the Twitter API. All applications, by this date, need to switch to using OAuth. <a href="http://dev.twitter.com/announcements">Read more »</a>
+     */
     public static Authorization getBasicAuthorizationInstance(String screenName,
                                                               String password){
         return new BasicAuthorization(screenName, password);
