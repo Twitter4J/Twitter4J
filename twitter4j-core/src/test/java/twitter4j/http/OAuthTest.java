@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -431,11 +432,18 @@ public class OAuthTest extends TwitterTestUnit {
         if(null == is){
             System.out.println("xauth-test.properties not found. skipping xAuth test.");
         }else{
-            Configuration conf = new PropertyConfiguration(is);
+            Properties props = new Properties();
+            props.load(is);
+            Configuration conf = new PropertyConfiguration(props);
             twitter = new TwitterFactory(conf).getInstance(id1.screenName, id1.password);
             AccessToken at = twitter.getOAuthAccessToken();
             twitter.updateStatus(new Date() + ": xAuth test.");
+
+            twitter = new TwitterFactory().getInstance(id1.screenName, id1.password);
+            twitter.setOAuthConsumer(conf.getOAuthConsumerKey(),conf.getOAuthConsumerSecret());
+            twitter.getOAuthAccessToken();
         }
+
     }
 
     private void trySerializable(Object obj) throws IOException {

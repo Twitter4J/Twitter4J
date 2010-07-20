@@ -36,6 +36,7 @@ import twitter4j.http.NullAuthorization;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.http.OAuthSupport;
 import twitter4j.http.RequestToken;
+import twitter4j.internal.http.XAuthAuthorization;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -109,7 +110,14 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
                 throw new IllegalStateException("consumer key / secret combination not supplied.");
             }
         } else {
+            if (auth instanceof XAuthAuthorization) {
+                XAuthAuthorization xauth = (XAuthAuthorization) auth;
+                this.auth = xauth;
+                OAuthAuthorization oauthAuth = new OAuthAuthorization(conf, xauth.getConsumerKey(), xauth.getConsumerSecret());
+                oauthAccessToken = oauthAuth.getOAuthAccessToken(xauth.getUserId(), xauth.getPassword());
+            }else{
             oauthAccessToken = getOAuth().getOAuthAccessToken();
+            }
         }
         screenName = oauthAccessToken.getScreenName();
         id = oauthAccessToken.getUserId();
@@ -188,19 +196,6 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret) {
-        if (auth instanceof NullAuthorization) {
-            auth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
-        } else if (auth instanceof BasicAuthorization) {
-            throw new IllegalStateException("Basic authenticated instance.");
-        } else if (auth instanceof OAuthAuthorization) {
-            throw new IllegalStateException("consumer key/secret pair already set.");
-        }
-    }
-
-    /**
      * tests if the instance is authenticated by Basic
      *
      * @return returns true if the instance is authenticated by Basic
@@ -217,6 +212,21 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
                     "OAuth consumer key/secret combination not supplied");
         }
         return (OAuthSupport) auth;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret) {
+        if (auth instanceof NullAuthorization) {
+            auth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
+        } else if (auth instanceof BasicAuthorization) {
+            XAuthAuthorization xauth = new XAuthAuthorization((BasicAuthorization)auth);
+            xauth.setOAuthConsumer(consumerKey, consumerSecret);
+            auth = xauth;
+        } else if (auth instanceof OAuthAuthorization) {
+            throw new IllegalStateException("consumer key/secret pair already set.");
+        }
     }
 
 }

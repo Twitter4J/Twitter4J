@@ -65,6 +65,9 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
     private OAuthToken oauthToken = null;
 
     // constructors
+    public OAuthAuthorization(Configuration conf) {
+        this(conf, conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
+    }
 
     public OAuthAuthorization(Configuration conf, String consumerKey, String consumerSecret) {
         this.conf = conf;
