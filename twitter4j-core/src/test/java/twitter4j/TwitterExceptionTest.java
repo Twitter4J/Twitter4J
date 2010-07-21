@@ -26,43 +26,42 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import twitter4j.conf.ConfigurationTest;
-import twitter4j.internal.async.DispatcherTest;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.3
  */
-public class Twitter4JTestSuite extends TestCase {
-//    public static void main(String[] args) {
-//        TestRunner.run(suite());
-//    }
-
-    public Twitter4JTestSuite(String s) {
-        super(s);
+public class TwitterExceptionTest extends TestCase {
+    public TwitterExceptionTest(String name){
+        super(name);
     }
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Twitter4J Test Suite");
-        suite.addTestSuite(ConfigurationTest.class);
-        suite.addTestSuite(twitter4j.http.BASE64EncoderTest.class);
-        suite.addTestSuite(twitter4j.http.HTMLEntityTest.class);
-        suite.addTestSuite(twitter4j.http.HttpClientTest.class);
-        suite.addTestSuite(twitter4j.http.OAuthTest.class);
-        suite.addTestSuite(twitter4j.http.PostParameterTest.class);
-
-        suite.addTestSuite(AsyncTwitterTest.class);
-        suite.addTestSuite(DAOTest.class);
-        suite.addTestSuite(DispatcherTest.class);
-        suite.addTestSuite(PagingTest.class);
-        suite.addTestSuite(SearchAPITest.class);
-        suite.addTestSuite(SpringCompatibilityTest.class);
-        suite.addTestSuite(StreamAPITest.class);
-        suite.addTestSuite(TwitterBasicAuthTest.class);
-        suite.addTestSuite(TwitterExceptionTest.class);
-
-        return suite;
+    protected void setUp() throws Exception {
+        super.setUp();
     }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    public void testException() throws Exception {
+        TwitterException te1, te2, te3;
+        te1 = new TwitterException("test");
+        te2 = new TwitterException("test");
+        te3 = new TwitterException(te1);
+
+        assertFalse(te1.getExceptionCode().equals(te2.getExceptionCode()));
+        assertEquals(17, te1.getExceptionCode().length());
+
+        String code1 = te1.getExceptionCode();
+
+        String code2 = te2.getExceptionCode();
+
+        assertEquals(35, te3.getExceptionCode().length());
+
+        assertFalse(code1.equals(code2));
+        te3.printStackTrace();
+    }
+
 }
