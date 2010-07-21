@@ -49,6 +49,9 @@ public final class TwitterException extends Exception implements TwitterResponse
 
     public TwitterException(Exception cause) {
         super(cause);
+        if(cause instanceof TwitterException){
+            ((TwitterException)cause).setNested();
+        }
         rateLimitStatus = null;
     }
 
@@ -156,6 +159,24 @@ public final class TwitterException extends Exception implements TwitterResponse
         return statusCode == 404;
     }
 
+    private final static String[] FILTER = new String[]{"twitter4j"};
+    /**
+     * Returns a hexadecimal representation of this exception stacktrace.<br>
+     * An exception code is a hexadecimal representation of the stacktrace which enables it easier to Google known issues.<br>
+     * Format : XX:YY[-XX:YY]<br>
+     * Where XX is a hash code of stacktrace including line number<br>
+     * YY is a hash code of stacktrace excluding line number<br>
+     * [-XX:YY] will appear when this instance a root cause
+     * @return a hexadecimal representation of this exception stacktrace
+     */
+    public String getExceptionCode() {
+        return new ExceptionDiagnosis(this, FILTER).asHexString();
+    }
+    boolean nested = false;
+    void setNested(){
+        nested = true;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -182,13 +203,13 @@ public final class TwitterException extends Exception implements TwitterResponse
     @Override
     public String toString() {
         return "TwitterException{" +
-                "message=" + getMessage () +
-                ", statusCode=" + statusCode +
+                (nested ? "" : "exceptionCode=[" + getExceptionCode() + "], ") +
+                "statusCode=" + statusCode +
                 ", retryAfter=" + retryAfter +
                 ", rateLimitStatus=" + rateLimitStatus +
+                ", version=" + Version.getVersion() +
                 '}';
     }
-
 
     private static String getCause(HttpResponse res) {
         int statusCode = res.getStatusCode();
