@@ -52,6 +52,7 @@ import twitter4j.internal.org.json.JSONObject;
     private String source;
     private String profileImageUrl;
     private Date createdAt;
+    private String location;
 
     private GeoLocation geoLocation = null;
     private static final long serialVersionUID = 4299736733993211587L;
@@ -67,6 +68,7 @@ import twitter4j.internal.org.json.JSONObject;
         source = getUnescapedString("source", tweet);
         profileImageUrl = getUnescapedString("profile_image_url", tweet);
         createdAt = getDate("created_at", tweet, "EEE, dd MMM yyyy HH:mm:ss z");
+        location = getRawString("location", tweet);
         geoLocation = GeoLocation.getInstance(tweet);
     }
 
@@ -155,6 +157,13 @@ import twitter4j.internal.org.json.JSONObject;
      */
     public GeoLocation getGeoLocation() {
         return geoLocation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getLocation() {
+        return location;
     }
 
     @Override
