@@ -114,4 +114,13 @@ public interface Tweet extends Comparable<Tweet>, java.io.Serializable {
      */
     GeoLocation getGeoLocation();
 
+    /**
+     * Returns the textual location where this tweet was posted. This location
+     * is useful when no GeoLocation information is available, but must be translated
+     * to coordinates via a GeoQuery.
+     * 
+     * @return The textual location where this tweet was posted
+     */
+    String getLocation();
+
 }
