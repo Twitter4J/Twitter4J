@@ -298,7 +298,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                             }
                         }
                     }
-                    if (responseCode != OK) {
+                    if (responseCode < OK && MULTIPLE_CHOICES <= responseCode) {
                         if (responseCode == ENHANCE_YOUR_CLAIM ||
                                 responseCode == SERVICE_UNAVAILABLE ||
                                 responseCode == BAD_REQUEST ||
