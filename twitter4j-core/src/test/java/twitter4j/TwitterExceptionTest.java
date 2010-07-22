@@ -61,7 +61,6 @@ public class TwitterExceptionTest extends TestCase {
         assertEquals(35, te3.getExceptionCode().length());
 
         assertFalse(code1.equals(code2));
-        te3.printStackTrace();
     }
 
 }

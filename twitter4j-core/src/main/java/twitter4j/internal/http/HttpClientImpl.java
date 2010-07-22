@@ -354,12 +354,16 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
      * @param connection    HttpURLConnection
      */
     private void setHeaders(HttpRequest req, HttpURLConnection connection) {
-        logger.debug("Request: ");
-        logger.debug(req.getMethod().name() + " ", req.getURL());
+        if (logger.isDebugEnabled()) {
+            logger.debug("Request: ");
+            logger.debug(req.getMethod().name() + " ", req.getURL());
+        }
 
         String authorizationHeader;
         if (null != req.getAuthorization() && null != (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req))) {
-            logger.debug("Authorization: ", authorizationHeader);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Authorization: ", maskString(authorizationHeader));
+            }
             connection.addRequestProperty("Authorization", authorizationHeader);
         }
         if (null != req.getRequestHeaders()) {
@@ -370,12 +374,22 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         }
     }
 
+    private String maskString(String str) {
+        StringBuffer buf = new StringBuffer(str.length());
+        for(int i=0;i<str.length();i++){
+            buf.append("*");
+        }
+        return buf.toString();
+    }
+
     private HttpURLConnection getConnection(String url) throws IOException {
         HttpURLConnection con = null;
         if (proxyHost != null && !proxyHost.equals("")) {
             if (proxyAuthUser != null && !proxyAuthUser.equals("")) {
-                logger.debug("Proxy AuthUser: " + proxyAuthUser);
-                logger.debug("Proxy AuthPassword: " + proxyAuthPassword);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Proxy AuthUser: " + proxyAuthUser);
+                    logger.debug("Proxy AuthPassword: " + maskString(proxyAuthPassword));
+                }
                 Authenticator.setDefault(new Authenticator() {
                     @Override
                     protected PasswordAuthentication

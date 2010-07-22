@@ -628,6 +628,10 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(actualReturn.size() > 60);
         actualReturn = twitterAPI2.getFollowersStatuses("yusukey", actualReturn.getNextCursor());
         assertTrue(actualReturn.size() > 10);
+        // - Issue 1572: Lists previous cursor returns empty results
+        // http://code.google.com/p/twitter-api/issues/detail?id=1572
+//        actualReturn = twitterAPI2.getFollowersStatuses("yusukey", actualReturn.getPreviousCursor());
+//        assertTrue(actualReturn.size() > 10);
     }
 
     public void testDirectMessages() throws Exception {
