@@ -101,8 +101,9 @@ public abstract class HttpResponse {
     public final String asString() throws TwitterException {
         if(null == responseAsString){
             BufferedReader br;
+            InputStream stream = null;
             try {
-                InputStream stream = asStream();
+                stream = asStream();
                 if (null == stream) {
                     return null;
                 }
@@ -115,15 +116,20 @@ public abstract class HttpResponse {
                 this.responseAsString = buf.toString();
                 logger.debug(responseAsString);
                 stream.close();
-                disconnect();
                 streamConsumed = true;
             } catch (NullPointerException npe) {
-                disconnectForcibly();
                 // don't remember in which case npe can be thrown
                 throw new TwitterException(npe.getMessage(), npe);
             } catch (IOException ioe) {
-                disconnectForcibly();
                 throw new TwitterException(ioe.getMessage(), ioe);
+            }finally{
+                if(null != stream){
+                    try {
+                        stream.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+                disconnectForcibly();
             }
         }
         return responseAsString;
@@ -141,13 +147,12 @@ public abstract class HttpResponse {
                 // it should be faster to read the inputstream directly.
                 // but makes it difficult to troubleshoot
                 this.responseAsDocument = builders.get().parse(new ByteArrayInputStream(asString().getBytes("UTF-8")));
-                disconnect();
             } catch (SAXException saxe) {
-                disconnectForcibly();
                 throw new TwitterException("The response body was not well-formed:\n" + responseAsString, saxe);
             } catch (IOException ioe) {
-                disconnectForcibly();
                 throw new TwitterException("There's something with the connection.", ioe);
+            }finally{
+                disconnectForcibly();
             }
         }
         return responseAsDocument;
@@ -161,23 +166,27 @@ public abstract class HttpResponse {
      */
     public final JSONObject asJSONObject() throws TwitterException {
         JSONObject json = null;
+        InputStreamReader reader = null;
         try {
             if (logger.isDebugEnabled()) {
                 json =  new JSONObject(asString());
             } else {
-                json = new JSONObject(new JSONTokener(asReader()));
+                reader = asReader();
+                json = new JSONObject(new JSONTokener(reader));
             }
-            disconnect();
         } catch (JSONException jsone) {
             if (logger.isDebugEnabled()) {
                 throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
             } else {
                 throw new TwitterException(jsone.getMessage(), jsone);
             }
-        } catch (IOException ioe) {
-            disconnectForcibly();
-            throw new TwitterException("There's something with the connection.", ioe);
         }finally {
+            if(null != reader){
+                try{
+                    reader.close();
+                } catch (IOException ignore) {
+                }
+            }
             disconnectForcibly();
         }
         return json;
@@ -191,23 +200,28 @@ public abstract class HttpResponse {
      */
     public final JSONArray asJSONArray() throws TwitterException {
         JSONArray json = null;
+        InputStreamReader reader = null;
         try {
             if (logger.isDebugEnabled()) {
                 json = new JSONArray(asString());
             } else {
-                json = new JSONArray(new JSONTokener(asReader()));
+                reader = asReader();
+                json = new JSONArray(new JSONTokener(reader));
             }
-            disconnect();
         } catch (JSONException jsone) {
-            disconnectForcibly();
             if (logger.isDebugEnabled()) {
                 throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
             } else {
                 throw new TwitterException(jsone.getMessage(), jsone);
             }
-        } catch (IOException ioe) {
+        }finally{
+            if(null != reader){
+                try{
+                    reader.close();
+                } catch (IOException ignore) {
+                }
+            }
             disconnectForcibly();
-            throw new TwitterException("There's something with the connection.", ioe);
         }
         return json;
     }
@@ -224,7 +238,7 @@ public abstract class HttpResponse {
     private void disconnectForcibly() {
         try{
             disconnect();
-        }catch(IOException ignore){
+        }catch(Exception ignore){
         }
     }
 
