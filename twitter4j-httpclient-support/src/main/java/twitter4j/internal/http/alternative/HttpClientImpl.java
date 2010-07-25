@@ -26,7 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.http.alternative;
 
+import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
@@ -36,6 +39,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -52,6 +56,8 @@ import twitter4j.internal.http.HttpClientConfiguration;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.http.RequestMethod;
+import twitter4j.internal.logging.Logger;
+import twitter4j.internal.util.StringUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,10 +66,12 @@ import java.util.Map;
 
 /**
  * HttpClient implementation for Apache HttpClient 4.0.x
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
 public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
+    private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
     private final HttpClientConfiguration conf;
     private final HttpClient client;
 
@@ -72,17 +80,34 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
 
         SchemeRegistry schemeRegistry = new SchemeRegistry();
         schemeRegistry.register(
-                 new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
+                new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
         schemeRegistry.register(
-                 new Scheme("https", 443, SSLSocketFactory.getSocketFactory()));
+                new Scheme("https", 443, SSLSocketFactory.getSocketFactory()));
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
         cm.setMaxTotalConnections(conf.getHttpMaxTotalConnections());
         cm.setDefaultMaxPerRoute(conf.getHttpDefaultMaxPerRoute());
-        client = new DefaultHttpClient(cm);
+        DefaultHttpClient client = new DefaultHttpClient(cm);
+
+
+        if (conf.getHttpProxyHost() != null && !conf.getHttpProxyHost().equals("")) {
+            HttpHost proxy = new HttpHost(conf.getHttpProxyHost(), conf.getHttpProxyPort());
+            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+
+            if (conf.getHttpProxyUser() != null && !conf.getHttpProxyUser().equals("")) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Proxy AuthUser: " + conf.getHttpProxyUser());
+                    logger.debug("Proxy AuthPassword: " + StringUtil.maskString(conf.getHttpProxyPassword()));
+                }
+                client.getCredentialsProvider().setCredentials(
+                        new AuthScope(conf.getHttpProxyHost(), conf.getHttpProxyPort()),
+                        new UsernamePasswordCredentials(conf.getHttpProxyUser(), conf.getHttpProxyPassword()));
+            }
+        }
+        this.client = client;
     }
 
     public void shutdown() {
-      client.getConnectionManager().shutdown();
+        client.getConnectionManager().shutdown();
     }
 
     public twitter4j.internal.http.HttpResponse request(twitter4j.internal.http.HttpRequest req) throws TwitterException {
@@ -144,15 +169,16 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
             }
 
             ApacheHttpClientHttpResponseImpl res = new ApacheHttpClientHttpResponseImpl(client.execute(commonsRequest));
-            if(200 != res.getStatusCode()){
-                throw new TwitterException(res.asString() ,res);
+            if (200 != res.getStatusCode()) {
+                throw new TwitterException(res.asString(), res);
             }
             return res;
         } catch (IOException e) {
             throw new TwitterException(e);
         }
     }
-    private String composeURL(HttpRequest req){
+
+    private String composeURL(HttpRequest req) {
         List<NameValuePair> params = asNameValuePairList(req);
         if (null != params) {
             return req.getURL() + "?" + URLEncodedUtils.format(params, "UTF-8");
@@ -160,14 +186,15 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
             return req.getURL();
         }
     }
-    private List<NameValuePair> asNameValuePairList(HttpRequest req){
+
+    private List<NameValuePair> asNameValuePairList(HttpRequest req) {
         if (null != req.getParameters() && req.getParameters().length > 0) {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             for (HttpParameter parameter : req.getParameters()) {
                 params.add(new BasicNameValuePair(parameter.getName(), parameter.getValue()));
             }
             return params;
-        }else{
+        } else {
             return null;
         }
     }
