@@ -29,6 +29,7 @@ package twitter4j.internal.http;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.util.StringUtil;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -362,7 +363,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         String authorizationHeader;
         if (null != req.getAuthorization() && null != (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req))) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Authorization: ", maskString(authorizationHeader));
+                logger.debug("Authorization: ", StringUtil.maskString(authorizationHeader));
             }
             connection.addRequestProperty("Authorization", authorizationHeader);
         }
@@ -374,21 +375,13 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         }
     }
 
-    private String maskString(String str) {
-        StringBuffer buf = new StringBuffer(str.length());
-        for(int i=0;i<str.length();i++){
-            buf.append("*");
-        }
-        return buf.toString();
-    }
-
     private HttpURLConnection getConnection(String url) throws IOException {
         HttpURLConnection con = null;
         if (proxyHost != null && !proxyHost.equals("")) {
             if (proxyAuthUser != null && !proxyAuthUser.equals("")) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Proxy AuthUser: " + proxyAuthUser);
-                    logger.debug("Proxy AuthPassword: " + maskString(proxyAuthPassword));
+                    logger.debug("Proxy AuthPassword: " + StringUtil.maskString(proxyAuthPassword));
                 }
                 Authenticator.setDefault(new Authenticator() {
                     @Override
