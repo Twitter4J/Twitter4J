@@ -9,9 +9,11 @@ import twitter4j.util.ImageUpload;
 
 /**
  * Sample of the ImageUpload utility class. Uploads an image to Twitpic with BasicAuth credentials.
- *  Usage java twitter4j.examples.TwitpicBasicAuthImageUpload <user id> <password> <image file to upload>.
- *  
+ * Usage java twitter4j.examples.TwitpicBasicAuthImageUpload <user id> <password> <image file to upload>.
+ * @author Rémy Rakic - remy.rakic at gmail.com
+ * @since Twitter4J 2.1.3
  */
+
 public class TwitpicBasicAuthImageUpload
 {
     public static void main (String [] args) throws TwitterException, FileNotFoundException

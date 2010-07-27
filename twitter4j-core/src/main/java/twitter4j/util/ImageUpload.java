@@ -46,6 +46,7 @@ import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
 /**
+ * @author Rémy Rakic - remy.rakic at gmail.com
  * @since Twitter4J 2.1.3
  */
 public abstract class ImageUpload {

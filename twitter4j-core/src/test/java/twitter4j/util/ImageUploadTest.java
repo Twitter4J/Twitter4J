@@ -33,6 +33,10 @@ import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.OAuthAuthorization;
 
+/**
+ * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
+ * @since Twitter4J 2.1.4
+ */
 public class ImageUploadTest extends TwitterTestBase {
     public ImageUploadTest(String name) {
         super(name);
