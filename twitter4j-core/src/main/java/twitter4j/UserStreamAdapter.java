@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 /**
- * @author Yusuke Yamamoto - yusuke at mac.com
+ * @author Rémy Rakic at gmail.com
  * @since Twitter4J 2.1.3
  */
 public class UserStreamAdapter extends StatusAdapter implements UserStreamListener {

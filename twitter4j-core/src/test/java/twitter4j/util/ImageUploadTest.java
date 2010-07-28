@@ -70,5 +70,5 @@ public class ImageUploadTest extends TwitterTestBase{
     private String twitpicApiKey;
     private String tweetPhotoApiKey;
     private String fileName = "t4j.jpeg";
-    private String message = "Twitter4J画像アップロードテスト";
+    private String message = "Twitter4J image upload test";
 }
