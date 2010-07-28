@@ -47,7 +47,7 @@ import twitter4j.http.OAuthAuthorization;
  * </p>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @author Remy Rakic - remy dot rakic at gmail.com
+ * @author Rémy Rakic - remy dot rakic at gmail.com
  */
 public final class PrintUserStream implements StatusListener
 {

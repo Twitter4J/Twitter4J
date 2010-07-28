@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 /**
- * @author Remy Rakic at gmail.com
+ * @author Rémy Rakic at gmail.com
  * @since Twitter4J 2.1.3
  */
 public interface UserStreamListener extends StatusListener {
