@@ -491,7 +491,9 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                 }
             }
             try {
-                this.stream.close();
+                if (null != this.stream) {
+                    this.stream.close();
+                }
             } catch (IOException ignore) {
             }
         }
