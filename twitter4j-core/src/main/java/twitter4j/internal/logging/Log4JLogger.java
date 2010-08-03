@@ -66,7 +66,7 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public void debug(String message) {
-        LOGGER.debug(message);
+        LOGGER.debug((Object)message);
     }
 
     /**
@@ -74,15 +74,14 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public void debug(String message, String message2) {
-        LOGGER.debug(message + message2);
+        debug(message + message2);
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
     public void info(String message) {
-        LOGGER.info(message);
+        LOGGER.info((Object)message);
     }
 
     /**
@@ -90,7 +89,7 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public void info(String message, String message2) {
-        LOGGER.info(message + message2);
+        info(message + message2);
     }
 
     /**
@@ -98,7 +97,7 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public void warn(String message) {
-        LOGGER.warn(message);
+        LOGGER.warn((Object)message);
     }
 
     /**
@@ -106,6 +105,6 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public void warn(String message, String message2) {
-        LOGGER.warn(message + message2);
+        warn(message + message2);
     }
 }

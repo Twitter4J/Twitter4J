@@ -118,8 +118,8 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>nlog4j</artifactId>
-            <version>1.2.25</version>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.8</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -127,6 +127,13 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging-api</artifactId>
             <version>1.1</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.9</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
