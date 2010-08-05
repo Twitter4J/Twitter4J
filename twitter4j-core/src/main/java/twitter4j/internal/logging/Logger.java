@@ -51,10 +51,15 @@ public abstract class Logger {
         } catch (IllegalAccessException ignore) {
         } catch (AccessControlException ignore) {
         }
-
         // use SLF4J if it's found in the classpath
         if (null == loggerFactory) {
-            loggerFactory = getLoggerFactory("org.slf4j.Logger", "twitter4j.internal.logging.SLF4JLoggerFactory");
+            try {
+                // To use SLF4J, StaticLoggerBinder should be existing in the classpath
+                // http://www.slf4j.org/codes.html#StaticLoggerBinder
+                Class.forName("org.slf4j.impl.StaticLoggerBinder");
+                loggerFactory = getLoggerFactory("org.slf4j.Logger", "twitter4j.internal.logging.SLF4JLoggerFactory");
+            } catch (ClassNotFoundException ignore) {
+            }
         }
         // otherwise, use commons-logging if it's found in the classpath
         if (null == loggerFactory) {
