@@ -79,6 +79,12 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String clientURL;
 
     public static final String DALVIK = "twitter4j.dalvik";
+
+    private static final String DEFAULT_OAUTH_REQUEST_TOKEN_URL = "http://twitter.com/oauth/request_token";
+    private static final String DEFAULT_OAUTH_AUTHORIZATION_URL = "http://twitter.com/oauth/authorize";
+    private static final String DEFAULT_OAUTH_ACCESS_TOKEN_URL = "http://twitter.com/oauth/access_token";
+    private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "http://twitter.com/oauth/authenticate";
+
     private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1/";
 
     private boolean IS_DALVIK;
@@ -111,10 +117,10 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
 
 
-        setOAuthRequestTokenURL("https://twitter.com/oauth/request_token");
-        setOAuthAuthorizationURL("https://twitter.com/oauth/authorize");
-        setOAuthAccessTokenURL("https://twitter.com/oauth/access_token");
-        setOAuthAuthenticationURL("https://twitter.com/oauth/authenticate");
+        setOAuthRequestTokenURL(DEFAULT_OAUTH_REQUEST_TOKEN_URL);
+        setOAuthAuthorizationURL(DEFAULT_OAUTH_AUTHORIZATION_URL);
+        setOAuthAccessTokenURL(DEFAULT_OAUTH_ACCESS_TOKEN_URL);
+        setOAuthAuthenticationURL(DEFAULT_OAUTH_AUTHENTICATION_URL);
 
         setRestBaseURL(DEFAULT_REST_BASE_URL);
         // search api tends to fail with SSL as of 12/31/2009
@@ -378,6 +384,18 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 this.restBaseURL = fixURL(useSSL, restBaseURL);
             }
         }
+        if (DEFAULT_OAUTH_ACCESS_TOKEN_URL.equals(fixURL(false, oAuthAccessTokenURL))) {
+            this.oAuthAccessTokenURL = fixURL(useSSL, oAuthAccessTokenURL);
+        }
+        if (DEFAULT_OAUTH_AUTHENTICATION_URL.equals(fixURL(false, oAuthAuthenticationURL))) {
+            this.oAuthAuthenticationURL = fixURL(useSSL, oAuthAuthenticationURL);
+        }
+        if (DEFAULT_OAUTH_AUTHORIZATION_URL.equals(fixURL(false, oAuthAuthorizationURL))) {
+            this.oAuthAuthorizationURL = fixURL(useSSL, oAuthAuthorizationURL);
+        }
+        if (DEFAULT_OAUTH_REQUEST_TOKEN_URL.equals(fixURL(false, oAuthRequestTokenURL))) {
+            this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
+        }
     }
 
     public String getSearchBaseURL() {
@@ -410,6 +428,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
         this.oAuthRequestTokenURL = oAuthRequestTokenURL;
+        fixRestBaseURL();
     }
 
     public String getOAuthAuthorizationURL() {
@@ -418,6 +437,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
         this.oAuthAuthorizationURL = oAuthAuthorizationURL;
+        fixRestBaseURL();
     }
 
     public String getOAuthAccessTokenURL() {
@@ -426,6 +446,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
         this.oAuthAccessTokenURL = oAuthAccessTokenURL;
+        fixRestBaseURL();
     }
 
     public String getOAuthAuthenticationURL() {
@@ -434,6 +455,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
         this.oAuthAuthenticationURL = oAuthAuthenticationURL;
+        fixRestBaseURL();
     }
 
     public String getDispatcherImpl() {

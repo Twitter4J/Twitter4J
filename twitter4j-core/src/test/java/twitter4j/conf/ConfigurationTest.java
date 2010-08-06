@@ -338,8 +338,10 @@ public class ConfigurationTest  extends TestCase {
         conf = builder.build();
         assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
 
         builder = new ConfigurationBuilder();
         builder.setUseSSL(true);
@@ -348,14 +350,18 @@ public class ConfigurationTest  extends TestCase {
         assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         builder = new ConfigurationBuilder();
         builder.setUseSSL(false);
         conf = builder.build();
         assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
 
         builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey("key");
@@ -363,15 +369,18 @@ public class ConfigurationTest  extends TestCase {
         conf = builder.build();
         assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
 
         RequestToken rt = new RequestToken("key","secret");
 
         // TFJ-328 RequestToken.getAuthenticationURL()/getAuthorizationURL() should return URLs starting with https:// for security reasons
-        assertTrue(0 == rt.getAuthenticationURL().indexOf("https://"));
-        assertTrue(0 == rt.getAuthorizationURL().indexOf("https://"));
-
+        assertTrue(0 == rt.getAuthenticationURL().indexOf("http://"));
+        assertTrue(0 == rt.getAuthorizationURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
     }
 
     private void writeFile(String path, String content) throws IOException {
