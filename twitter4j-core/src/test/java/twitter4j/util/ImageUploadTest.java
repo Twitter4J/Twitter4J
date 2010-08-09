@@ -48,8 +48,8 @@ public class ImageUploadTest extends TwitterTestBase {
         screenName = p.getProperty("id1");
         oauthAuthorization = new OAuthAuthorization(
                 ConfigurationContext.getInstance()
-                , p.getProperty("browserConsumerKey")
-                , p.getProperty("browserConsumerSecret")
+                , p.getProperty("desktopConsumerKey")
+                , p.getProperty("desktopConsumerSecret")
                 , new AccessToken(
                         p.getProperty("id1.oauth_token")
                         , p.getProperty("id1.oauth_token_secret")
