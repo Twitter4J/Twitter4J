@@ -74,7 +74,7 @@ public class DispatcherTest extends TestCase {
         }
         assertEquals(3, count);
         dispatcher.shutdown();
-        Thread.sleep(500);
+        Thread.sleep(1000);
         if (!isJDK14orEarlier) {
             assertFalse(existsThread(name));
         }
