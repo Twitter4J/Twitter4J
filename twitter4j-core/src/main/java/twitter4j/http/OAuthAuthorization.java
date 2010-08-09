@@ -175,7 +175,13 @@ public final class OAuthAuthorization implements Authorization, java.io.Serializ
      */
     public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
         try {
-            oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), new HttpParameter[]{
+            String url = conf.getOAuthAccessTokenURL();
+            if(0 == url.indexOf("http://")){
+                // SSL is required
+                // @see http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth
+                url = "https://" + url.substring(7);
+            }
+            oauthToken = new AccessToken(http.post(url, new HttpParameter[]{
                 new HttpParameter("x_auth_username", screenName),
                 new HttpParameter("x_auth_password", password),
                 new HttpParameter("x_auth_mode", "client_auth")
