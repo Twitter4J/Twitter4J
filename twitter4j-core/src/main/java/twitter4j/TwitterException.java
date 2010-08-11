@@ -35,7 +35,7 @@ import twitter4j.internal.http.HttpResponseCode;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class TwitterException extends Exception implements TwitterResponse, HttpResponseCode {
+public class TwitterException extends Exception implements TwitterResponse, HttpResponseCode {
     private int statusCode = -1;
     private int retryAfter;
     private RateLimitStatus rateLimitStatus;
