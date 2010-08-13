@@ -34,7 +34,7 @@ import twitter4j.internal.http.HttpRequest;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class BasicAuthorization implements Authorization, java.io.Serializable {
+public class BasicAuthorization implements Authorization, java.io.Serializable {
 
     private String userId;
 

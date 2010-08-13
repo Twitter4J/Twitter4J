@@ -51,7 +51,7 @@ import java.util.Random;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
-public final class OAuthAuthorization implements Authorization, java.io.Serializable, OAuthSupport {
+public class OAuthAuthorization implements Authorization, java.io.Serializable, OAuthSupport {
     private final Configuration conf;
     private transient static HttpClientWrapper http;
 
