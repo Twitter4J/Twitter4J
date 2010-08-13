@@ -35,7 +35,7 @@ import twitter4j.internal.http.HttpRequest;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class NullAuthorization implements Authorization, java.io.Serializable {
+public class NullAuthorization implements Authorization, java.io.Serializable {
     private static NullAuthorization SINGLETON = new NullAuthorization();
     private static final long serialVersionUID = -8748173338942663960L;
 
