@@ -62,7 +62,7 @@ public class DispatcherTest extends TestCase {
         }
         // this test runs only on JDK1.5 or later since Thread.getAllStackTraces() is available from JDK1.5
         String name = "Twitter4J Async Dispatcher";
-        int threadcount = 1;
+        int threadcount = countThread(name);
         dispatcher = new DispatcherFactory(ConfigurationContext.getInstance()).getInstance();
         count = 0;
         dispatcher.invokeLater(new IncrementTask());
@@ -70,26 +70,25 @@ public class DispatcherTest extends TestCase {
         dispatcher.invokeLater(new IncrementTask());
         Thread.sleep(300);
         if (!isJDK14orEarlier) {
-            assertTrue(existsThread(name));
+            assertTrue((threadcount + 1) == countThread(name));
         }
         assertEquals(3, count);
         dispatcher.shutdown();
         Thread.sleep(1000);
         if (!isJDK14orEarlier) {
-            assertFalse(existsThread(name));
+            assertTrue(threadcount == countThread(name));
         }
     }
 
-    private boolean existsThread(String name) {
-        boolean exists = false;
+    private int countThread(String name) {
+        int count = 0;
         Map<Thread, StackTraceElement[]> allThreads = Thread.getAllStackTraces();
         for (Thread thread : allThreads.keySet()) {
             if (-1 != thread.getName().indexOf(name)) {
-                exists = true;
-                break;
+                count++;
             }
         }
-        return exists;
+        return count;
     }
 
     class IncrementTask implements Runnable {
