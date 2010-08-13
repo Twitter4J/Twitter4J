@@ -79,6 +79,20 @@ public interface OAuthSupport {
      */
     AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException;
 
+    /**
+     * Retrieves an access token associated with the supplied screen name and password using xAuth.<br>
+     * In order to get access acquire AccessToken using xAuth, you must apply by sending an email to api@twitter.com — all other applications will receive an HTTP 401 error.  Web-based applications will not be granted access, except on a temporary basis for when they are converting from basic-authentication support to full OAuth support.<br>
+     * Storage of Twitter usernames and passwords is forbidden. By using xAuth, you are required to store only access tokens and access token secrets. If the access token expires or is expunged by a user, you must ask for their login and password again before exchanging the credentials for an access token.
+     *
+     * @param screenName the screen name
+     * @param password the password
+     * @return access token associated with the supplied request token.
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth">Twitter REST API Method: oauth access_token for xAuth</a>
+     * @since Twitter 2.1.1
+     */
+    AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException;
 
     /**
      * Sets the access token
