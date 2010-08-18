@@ -144,4 +144,10 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      * @since Twitter4J 2.1.2
      */
     String[] getContributors();
+
+    /**
+     * Returns the annotations, or null if no annotations are associated with this status.
+     * @since Twitter4J 2.1.4
+     */
+    Annotations getAnnotations();
 }

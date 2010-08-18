@@ -26,10 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import twitter4j.internal.http.HttpParameter;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -42,6 +42,7 @@ public final class StatusUpdate implements java.io.Serializable {
     private GeoLocation location = null;
     private String placeId = null;
     private boolean displayCoordinates = true;
+    private Annotations annotations = null;
     private static final long serialVersionUID = -3595502688477609916L;
 
     public StatusUpdate(String status){
@@ -101,7 +102,33 @@ public final class StatusUpdate implements java.io.Serializable {
         setDisplayCoordinates(displayCoordinates);
         return this;
     }
-    /*package*/ HttpParameter[] asHttpParameterArray(){
+        
+    public Annotations getAnnotations() {
+		return annotations;
+	}
+
+	public void setAnnotations(Annotations annotations) {
+		this.annotations = annotations;
+	}
+	
+	public StatusUpdate annotations(Annotations annotations) {
+		setAnnotations(annotations);
+        return this;
+	}
+
+	public void addAnnotation(Annotation annotation) {
+		if (null == annotations) {
+			this.annotations = new Annotations();
+		}
+		this.annotations.addAnnotation(annotation);
+	}
+	
+	public StatusUpdate annotation(Annotation annotation) {
+		addAnnotation(annotation);
+        return this;
+	}
+	
+	/*package*/ HttpParameter[] asHttpParameterArray(){
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("status", status, params);
         if(-1 != inReplyToStatusId){
@@ -115,6 +142,9 @@ public final class StatusUpdate implements java.io.Serializable {
         appendParameter("place_id", placeId, params);
         if (!displayCoordinates) {
             appendParameter("display_coordinates", "false", params);
+        }
+        if ((null != annotations) && (!annotations.isEmpty())) {
+        	appendParameter("annotations", annotations.asParameterValue(), params);
         }
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
@@ -133,7 +163,7 @@ public final class StatusUpdate implements java.io.Serializable {
     private void appendParameter(String name, long value, List<HttpParameter> params) {
         params.add(new HttpParameter(name, String.valueOf(value)));
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -147,6 +177,8 @@ public final class StatusUpdate implements java.io.Serializable {
             return false;
         if (placeId != null ? !placeId.equals(that.placeId) : that.placeId != null)
             return false;
+        if (annotations != null ? !annotations.equals(that.annotations) : that.annotations != null)
+            return false;
         if (!status.equals(that.status)) return false;
 
         return true;
@@ -159,6 +191,7 @@ public final class StatusUpdate implements java.io.Serializable {
         result = 31 * result + (location != null ? location.hashCode() : 0);
         result = 31 * result + (placeId != null ? placeId.hashCode() : 0);
         result = 31 * result + (displayCoordinates ? 1 : 0);
+        result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
         return result;
     }
 
@@ -170,6 +203,7 @@ public final class StatusUpdate implements java.io.Serializable {
                 ", location=" + location +
                 ", placeId='" + placeId + '\'' +
                 ", displayCoordinates=" + displayCoordinates +
+                ", annotations=" + annotations +
                 '}';
     }
 }

@@ -59,6 +59,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
     private Place place = null;
 
     private String[] contributors;
+    private Annotations annotations = null;
 
     private Status retweetedStatus;
     private static final long serialVersionUID = 1608000492860584608L;
@@ -115,6 +116,13 @@ import static twitter4j.ParseUtil.getUnescapedString;
             }
         } else{
             contributors = null;
+        }
+        if (!json.isNull("annotations")) {
+            try {
+                JSONArray annotationsArray = json.getJSONArray("annotations");
+                annotations = new Annotations(annotationsArray);
+            } catch (JSONException ignore) {
+            }
         }
     }
 
@@ -206,7 +214,15 @@ import static twitter4j.ParseUtil.getUnescapedString;
         return contributors;
     }
 
-    /**
+    
+	/**
+     * {@inheritDoc}
+     */
+    public Annotations getAnnotations() {
+		return annotations;
+	}
+
+	/**
      * {@inheritDoc}
      */
     public boolean isFavorited() {
@@ -285,6 +301,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
                 ", geoLocation=" + geoLocation +
                 ", place=" + place +
                 ", contributors=" + (contributors == null ? null : Arrays.asList(contributors)) +
+                ", annotations=" + annotations +
                 ", retweetedStatus=" + retweetedStatus +
                 ", user=" + user +
                 '}';
