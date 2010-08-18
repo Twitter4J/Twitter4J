@@ -2,6 +2,23 @@ Twitter Annotations
 
 by Roy Reshef - royreshef @ gmail.com
 
+
+UPDATE 2010-08-18, 15:30 EST
+
+Unfortunately Twitter is really putting on hold annotations. I asked them 
+(@twitterapi, @raffi, @noradio) yesterday and today multiple times to 
+whitelist @twit4j for annotations (so that the unit test can  run smoothly).
+I hoped they will realize that Twitter4J is used by  many Java developers and
+it's not just "another application". I got no reaction, and it wasn't enabled. 
+Eventually I logged into @twit4j account itself to send a request on behalf 
+of that account to @twitterapi. And then I finally got the answer 
+(http://twitter.com/twitterapi/status/21513861799): 
+
+@twit4j Sorry, we're not enabling annotations for additional accounts 
+at this time. We'll let folks know when we're ready. ^TS 
+
+ORIGINAL README DOCUMENT, 2010-08-18 03:00 EST
+
 Added support for Twitter Annotations:
 
 1. Files created
