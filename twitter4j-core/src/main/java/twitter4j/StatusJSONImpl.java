@@ -57,6 +57,8 @@ import static twitter4j.ParseUtil.getUnescapedString;
     private String inReplyToScreenName;
     private GeoLocation geoLocation = null;
     private Place place = null;
+    private long retweetCount;
+    private boolean wasRetweetedByMe;
 
     private String[] contributors;
 
@@ -83,6 +85,8 @@ import static twitter4j.ParseUtil.getUnescapedString;
         inReplyToUserId = getInt("in_reply_to_user_id", json);
         isFavorited = getBoolean("favorited", json);
         inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
+        retweetCount = getLong("retweet_count", json);
+        wasRetweetedByMe = getBoolean("retweeted", json);
         try {
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
@@ -235,6 +239,20 @@ import static twitter4j.ParseUtil.getUnescapedString;
      */
     public Status getRetweetedStatus() {
         return retweetedStatus;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public long getRetweetCount() {
+        return retweetCount;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean wasRetweetedByMe() {
+        return wasRetweetedByMe;
     }
 
     /*package*/ static ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {

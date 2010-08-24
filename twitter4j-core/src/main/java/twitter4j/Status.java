@@ -144,4 +144,20 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      * @since Twitter4J 2.1.2
      */
     String[] getContributors();
+
+    /**
+     * Returns the number of times this tweet has been retweeted, or -1 when the tweet was
+     * created before this feature was enabled.
+     *
+     * @return the retweet count.
+     */
+    long getRetweetCount();
+
+    /**
+     * Returns true if the authenticating user has retweeted this tweet, or false when the tweet was
+     * created before this feature was enabled.
+     *
+     * @return whether the authenticating user has retweeted this tweet.
+     */
+    boolean wasRetweetedByMe();
 }

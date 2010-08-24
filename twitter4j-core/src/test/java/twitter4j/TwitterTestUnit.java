@@ -335,7 +335,9 @@ public class TwitterTestUnit extends TwitterTestBase {
         status2 = unauthenticated.showStatus(7185737372l);
         assertEquals("\\u5e30%u5e30 <%}& foobar",status2.getText());
 
-
+        status = twitterAPI2.showStatus(1000l);
+        assertTrue(-1 <= status.getRetweetCount());
+        assertFalse(status.wasRetweetedByMe());
     }
 
     public void testStatusMethods() throws Exception {
