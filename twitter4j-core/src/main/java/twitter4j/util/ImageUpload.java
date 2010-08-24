@@ -28,6 +28,17 @@ public abstract class ImageUpload
     public abstract String upload (String imageFileName, InputStream imageBody) throws TwitterException;
     public abstract String upload (String imageFileName, InputStream imageBody, String message) throws TwitterException;
     
+    /** Returns an OAuth image uploader to img.ly */
+    public static ImageUpload getImgLyUploader (OAuthAuthorization auth)
+    {
+        return new ImgLyOAuthUploader (auth);
+    }
+    
+    /** Returns an OAuth image uploader to Twitgoo */
+    public static ImageUpload getTwitgooUploader(OAuthAuthorization auth)
+    {
+        return new TwitgooOAuthUploader (auth);
+    }
     
     /** Returns an image uploader to Twitpic. Handles both BasicAuth and OAuth.
      *  Note: When using OAuth, the Twitpic API Key needs to be specified, either with the field ImageUpload.DEFAULT_TWITPIC_API_KEY,
@@ -60,6 +71,12 @@ public abstract class ImageUpload
     public static ImageUpload getTweetPhotoUploader (String tweetPhotoAPIKey, OAuthAuthorization auth)
     {
         return new TweetPhotoOAuthUploader (tweetPhotoAPIKey, auth);
+    }
+    
+    /** Returns an OAuth image uploader to TweetPhoto */
+    public static ImageUpload getTweetPhoto2Uploader (String tweetPhotoAPIKey, OAuthAuthorization auth)
+    {
+        return new TweetPhoto2OAuthUploader (tweetPhotoAPIKey, auth);
     }
     
     /** Returns an image uploader to YFrog. Handles both BasicAuth and OAuth */
@@ -435,7 +452,8 @@ public abstract class ImageUpload
         }
     }
 
-    // Described at http://dev.twitpic.com/docs/2/upload/
+    // Described at http://groups.google.com/group/tweetphoto/web/multipart-form-data-upload
+    //  and http://groups.google.com/group/tweetphoto/web/oauth-echo
     public static class TweetPhotoOAuthUploader extends ImageUpload
     {
         private String tweetPhotoAPIKey;
@@ -524,6 +542,307 @@ public abstract class ImageUpload
             }
 
             throw new TwitterException ("Unknown TweetPhoto response", httpResponse);
+        }
+        
+        private String generateVerifyCredentialsAuthorizationHeader ()
+        {
+            List<HttpParameter> oauthSignatureParams = auth.generateOAuthSignatureHttpParams ("GET", TWITTER_VERIFY_CREDENTIALS);
+            return "OAuth realm=\"http://api.twitter.com/\"," + OAuthAuthorization.encodeParameters (oauthSignatureParams, ",", true);
+        }
+    }
+   
+    // Described at http://groups.google.com/group/tweetphoto/web/upload-v2-0-api
+    //  and http://groups.google.com/group/tweetphoto/web/oauth-echo
+    public static class TweetPhoto2OAuthUploader extends ImageUpload
+    {
+        private String tweetPhotoAPIKey;
+        private OAuthAuthorization auth;
+        
+        // uses the secure upload URL, not the one specified in the Twitpic FAQ
+        private static final String TWEETPHOTO_UPLOAD_URL = "https://tweetphotoapi.com/api/tpapi.svc/upload2";
+        private static final String TWITTER_VERIFY_CREDENTIALS = "https://api.twitter.com/1/account/verify_credentials.xml";
+        
+        public TweetPhoto2OAuthUploader (String tweetPhotoAPIKey, OAuthAuthorization auth)
+        {
+            if (tweetPhotoAPIKey == null || "".equals (tweetPhotoAPIKey))
+                throw new IllegalArgumentException ("The TweetPhoto API Key supplied to the OAuth image uploader can't be null or empty");
+            
+            this.tweetPhotoAPIKey = tweetPhotoAPIKey;
+            this.auth = auth;
+        }
+
+        @Override
+        public String upload (File image) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", image)
+                    });
+        }
+
+        @Override
+        public String upload (File image, String message) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", image),
+                    new HttpParameter ("message", message)
+                    });
+        }
+
+        @Override
+        public String upload (String imageFileName, InputStream imageBody) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", imageFileName, imageBody),
+                    });
+        }
+
+        @Override
+        public String upload (String imageFileName, InputStream imageBody, String message) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", imageFileName, imageBody),
+                    new HttpParameter ("message", message)
+                    });
+        }
+
+        private String upload (HttpParameter[] additionalParams) throws TwitterException
+        {
+            // step 1 - generate HTTP request headers
+            String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader ();
+            
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put ("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS);
+            headers.put ("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
+            headers.put("TPLAT", Double.toString(convert(34, 55, 37.50)));
+            headers.put("TPLONG", Double.toString(convert(135, 45, 37.94)));
+            
+            // step 2 - generate HTTP parameters
+            HttpParameter[] params = {
+                    new HttpParameter ("api_key", tweetPhotoAPIKey),
+                    };
+            params = appendHttpParameters(params, additionalParams);
+
+            // step 3 - upload the file
+            HttpClientWrapper client = new HttpClientWrapper ();
+            HttpResponse httpResponse = client.post (TWEETPHOTO_UPLOAD_URL, params, headers);
+            
+            // step 4 - check the response
+            int statusCode = httpResponse.getStatusCode ();
+            if (statusCode != 201)
+                throw new TwitterException ("Twitpic image upload returned invalid status code", httpResponse);
+            
+            String response = httpResponse.asString ();
+            
+            if (response.contains("<Error><ErrorCode>")) {
+                String error = response.substring(response.indexOf("<ErrorCode>") + "<ErrorCode>".length(), response.lastIndexOf("</ErrorCode>"));
+                throw new TwitterException("TweetPhoto image upload failed with this error message: " + error, httpResponse);
+            }
+            if (response.contains("<Status>OK</Status>")) {
+                String media = response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
+                return media;
+            }
+
+            throw new TwitterException ("Unknown TweetPhoto response", httpResponse);
+        }
+        
+    	private double convert(int xdo, int xhun, double xbyou){
+    		return xdo + ( xhun * 60 + xbyou )/3600;
+    	}
+       private String generateVerifyCredentialsAuthorizationHeader ()
+        {
+            List<HttpParameter> oauthSignatureParams = auth.generateOAuthSignatureHttpParams ("GET", TWITTER_VERIFY_CREDENTIALS);
+            return "OAuth realm=\"http://api.twitter.com/\"," + OAuthAuthorization.encodeParameters (oauthSignatureParams, ",", true);
+        }
+    }
+   
+    // Described at http://dev.twitpic.com/docs/2/upload/
+    public static class ImgLyOAuthUploader extends ImageUpload
+    {
+        private OAuthAuthorization auth;
+        
+        // uses the secure upload URL, not the one specified in the Twitpic FAQ
+        private static final String IMGLY_UPLOAD_URL = "http://img.ly/api/2/upload.json";
+        private static final String TWITTER_VERIFY_CREDENTIALS = "https://api.twitter.com/1/account/verify_credentials.json";
+        
+        public ImgLyOAuthUploader (OAuthAuthorization auth)
+        {
+            this.auth = auth;
+        }
+
+        @Override
+        public String upload (File image) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", image)
+                    });
+        }
+
+        @Override
+        public String upload (File image, String message) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", image),
+                    new HttpParameter ("message", message)
+                    });
+        }
+
+        @Override
+        public String upload (String imageFileName, InputStream imageBody) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", imageFileName, imageBody),
+                    });
+        }
+
+        @Override
+        public String upload (String imageFileName, InputStream imageBody, String message) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", imageFileName, imageBody),
+                    new HttpParameter ("message", message)
+                    });
+        }
+
+        private String upload (HttpParameter[] additionalParams) throws TwitterException
+        {
+            // step 1 - generate HTTP request headers
+            String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader ();
+            
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put ("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS);
+            headers.put ("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
+            
+            // step 2 - generate HTTP parameters
+            HttpParameter[] params = {
+                    };
+            params = appendHttpParameters(params, additionalParams);
+
+            // step 3 - upload the file
+            HttpClientWrapper client = new HttpClientWrapper ();
+            HttpResponse httpResponse = client.post (IMGLY_UPLOAD_URL, params, headers);
+            
+            // step 4 - check the response
+            int statusCode = httpResponse.getStatusCode ();
+            if (statusCode != 200)
+                throw new TwitterException ("ImgLy image upload returned invalid status code", httpResponse);
+            
+            String response = httpResponse.asString ();
+            
+            try
+            {
+                JSONObject json = new JSONObject (response);
+                if (! json.isNull ("url"))
+                    return json.getString ("url");
+            }
+            catch (JSONException e)
+            {
+                throw new TwitterException ("Invalid ImgLy response: " + response, e);
+            }
+            
+            throw new TwitterException ("Unknown ImgLy response", httpResponse);
+        }
+        
+        private String generateVerifyCredentialsAuthorizationHeader ()
+        {
+            List<HttpParameter> oauthSignatureParams = auth.generateOAuthSignatureHttpParams ("GET", TWITTER_VERIFY_CREDENTIALS);
+            return "OAuth realm=\"http://api.twitter.com/\"," + OAuthAuthorization.encodeParameters (oauthSignatureParams, ",", true);
+        }
+    }
+   
+    public static class TwitgooOAuthUploader extends ImageUpload
+    {
+        private OAuthAuthorization auth;
+        
+        // uses the secure upload URL, not the one specified in the Twitpic FAQ
+        private static final String TWITGOO_UPLOAD_URL = "http://twitgoo.com/api/uploadAndPost";
+        private static final String TWITTER_VERIFY_CREDENTIALS = "https://api.twitter.com/1/account/verify_credentials.json";
+        
+        public TwitgooOAuthUploader(OAuthAuthorization auth)
+        {
+            this.auth = auth;
+        }
+
+        @Override
+        public String upload (File image) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", image)
+                    });
+        }
+
+        @Override
+        public String upload (File image, String message) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", image),
+                    new HttpParameter ("message", message)
+                    });
+        }
+
+        @Override
+        public String upload (String imageFileName, InputStream imageBody) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", imageFileName, imageBody),
+                    });
+        }
+
+        @Override
+        public String upload (String imageFileName, InputStream imageBody, String message) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", imageFileName, imageBody),
+                    new HttpParameter ("message", message)
+                    });
+        }
+
+        private String upload (HttpParameter[] additionalParams) throws TwitterException
+        {
+            // step 1 - generate HTTP request headers
+            String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader ();
+            
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put ("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS);
+            headers.put ("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
+            
+            // step 2 - generate HTTP parameters
+            HttpParameter[] params = {
+            		new HttpParameter("no_twitter_post", "1")
+                    };
+            params = appendHttpParameters(params, additionalParams);
+
+            // step 3 - upload the file
+            HttpClientWrapper client = new HttpClientWrapper ();
+            HttpResponse httpResponse = client.post (TWITGOO_UPLOAD_URL, params, headers);
+            
+            // step 4 - check the response
+            int statusCode = httpResponse.getStatusCode ();
+            if (statusCode != 200)
+                throw new TwitterException ("Twitgoo image upload returned invalid status code", httpResponse);
+            
+            String response = httpResponse.asString ();
+            if(response.contains("<rsp status=\"ok\">")){
+            	String h = "<mediaurl>";
+            	int i = response.indexOf(h);
+            	if(i != -1){
+	            	int j = response.indexOf("</mediaurl>", i + h.length());
+	            	if(j != -1){
+		            	return response.substring(i + h.length(), j);
+	            	}
+            	}
+            } else if(response.contains("<rsp status=\"fail\">")){
+            	String h = "msg=\"";
+            	int i = response.indexOf(h);
+            	if(i != -1){
+	            	int j = response.indexOf("\"", i + h.length());
+	            	if(j != -1){
+		            	String msg = response.substring(i + h.length(), j);
+		                throw new TwitterException ("Invalid Twitgoo response: " + msg);
+	            	}
+            	}
+            }
+            
+            throw new TwitterException ("Unknown Twitgoo response", httpResponse);
         }
         
         private String generateVerifyCredentialsAuthorizationHeader ()
