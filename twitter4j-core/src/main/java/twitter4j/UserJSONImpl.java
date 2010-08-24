@@ -73,6 +73,8 @@ import static twitter4j.ParseUtil.*;
     private boolean isGeoEnabled;
     private boolean isVerified;
     private boolean isFollowing;
+    private long listedCount;
+    private boolean isFollowRequestSent;
     private static final long serialVersionUID = -6345893237975349030L;
 
     /*package*/UserJSONImpl(HttpResponse res) throws TwitterException {
@@ -115,6 +117,8 @@ import static twitter4j.ParseUtil.*;
             profileBackgroundTiled = getBoolean("profile_background_tile", json);
             lang = getRawString("lang", json);
             statusesCount = getInt("statuses_count", json);
+            listedCount = getLong("listed_count", json);
+            isFollowRequestSent = getBoolean("follow_request_sent", json);
             if (!json.isNull("status")) {
                 JSONObject statusJSON = json.getJSONObject("status");
                 status = new StatusJSONImpl(statusJSON);
@@ -391,6 +395,20 @@ import static twitter4j.ParseUtil.*;
      */
     public boolean isFollowing() {
         return isFollowing;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public long getListedCount() {
+        return listedCount;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFollowRequestSent() {
+        return isFollowRequestSent;
     }
 
     /*package*/ static PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException {

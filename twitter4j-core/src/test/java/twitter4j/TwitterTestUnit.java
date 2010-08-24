@@ -124,6 +124,9 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertFalse(user.isStatusFavorited());
         assertNull(user.getStatusInReplyToScreenName());
 
+        assertTrue(1 < user.getListedCount());
+        assertFalse(user.isFollowRequestSent());
+
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
         unauthenticated.showUser("twit4jnoupdate");
