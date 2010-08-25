@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import static twitter4j.DAOTest.*;
@@ -885,5 +886,22 @@ public class TwitterTestUnit extends TwitterTestBase {
         ids = twitterAPI1.getRetweetedByIDs(testStatusId, paging);
         assertTrue(ids.getIDs().length == 1);
         assertEquals(ids.getIDs()[0], 5933482);
+    }
+
+    public void testEntities() throws Exception {
+        Status status = twitterAPI2.showStatus(22035985122L);
+        assertEquals(2, status.getUserMentions().length);
+        assertEquals(1, status.getURLs().length);
+
+        User user1 = status.getUserMentions()[0];
+        assertEquals(20263710, user1.getId());
+        assertEquals("rabois", user1.getScreenName());
+        assertEquals("Keith Rabois", user1.getName());
+        assertEquals(new URL("http://j.mp/cHv0VS"), status.getURLs()[0]);
+
+        status = twitterAPI2.showStatus(22043496385L);
+        assertEquals(2, status.getHashtags().length);
+        assertEquals("pilaf", status.getHashtags()[0]);
+        assertEquals("recipe", status.getHashtags()[1]);
     }
 }

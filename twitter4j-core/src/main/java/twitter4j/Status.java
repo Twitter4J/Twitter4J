@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import java.net.URL;
 import java.util.Date;
 
 /**
@@ -160,4 +161,26 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      * @return whether the authenticating user has retweeted this tweet.
      */
     boolean wasRetweetedByMe();
+
+    /**
+     * Returns an array of users mentioned in the tweet, or null if no users were mentioned.
+     * Note that these users only have data for ID, screen name, and name.
+     *
+     * @return An array of users mentioned in the tweet.
+     */
+    User[] getUserMentions();
+
+    /**
+     * Returns an array of URLs mentioned in the tweet, or null if no URLs were mentioned.
+     *
+     * @return An array of URLs mentioned in the tweet.
+     */
+    URL[] getURLs();
+
+    /**
+     * Returns an array of hashtags mentioned in the tweet, or null if no hashtags were mentioned.
+     *
+     * @return An array of users mentioned in the tweet.
+     */
+    String[] getHashtags();
 }
