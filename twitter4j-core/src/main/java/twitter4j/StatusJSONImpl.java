@@ -253,7 +253,6 @@ import static twitter4j.ParseUtil.getUnescapedString;
         }
     }
 
-
     @Override
     public int hashCode() {
         return (int) id;

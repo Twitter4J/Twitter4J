@@ -220,6 +220,4 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @since Twitter4J 2.0.10
      */
     boolean isVerified();
-
-    boolean isFollowing();
 }

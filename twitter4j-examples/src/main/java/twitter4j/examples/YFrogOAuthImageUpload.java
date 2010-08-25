@@ -14,7 +14,9 @@ import twitter4j.util.ImageUpload;
 
 /**
  * Sample of the ImageUpload utility class. Uploads an image to YFrog with OAuth credentials specified in a properties file.
- *  Usage: java twitter4j.examples.YFrogOAuthImageUpload <location of the twitter4j properties file> <image file to upload>.
+ * Usage: java twitter4j.examples.YFrogOAuthImageUpload <location of the twitter4j properties file> <image file to upload>.
+ * @author Rémy Rakic - remy.rakic at gmail.com
+ * @since Twitter4J 2.1.3
  */
 public class YFrogOAuthImageUpload
 {
