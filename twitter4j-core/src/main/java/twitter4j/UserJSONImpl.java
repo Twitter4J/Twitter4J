@@ -73,6 +73,7 @@ import static twitter4j.ParseUtil.*;
     private boolean isGeoEnabled;
     private boolean isVerified;
     private boolean isFollowing;
+    private int listedCount;
     private static final long serialVersionUID = -6345893237975349030L;
 
     /*package*/UserJSONImpl(HttpResponse res) throws TwitterException {
@@ -100,6 +101,7 @@ import static twitter4j.ParseUtil.*;
             isVerified = getBoolean("verified", json);
             isFollowing = getBoolean("following", json);
             followersCount = getInt("followers_count", json);
+            listedCount = getInt("listed_count", json);
 
             profileBackgroundColor = getRawString("profile_background_color", json);
             profileTextColor = getRawString("profile_text_color", json);
@@ -391,6 +393,13 @@ import static twitter4j.ParseUtil.*;
      */
     public boolean isFollowing() {
         return isFollowing;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getListedCount() {
+        return listedCount;
     }
 
     /*package*/ static PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException {

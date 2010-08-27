@@ -222,4 +222,6 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     boolean isVerified();
 
     boolean isFollowing();
+
+    int getListedCount();
 }
