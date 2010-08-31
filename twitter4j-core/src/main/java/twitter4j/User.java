@@ -229,7 +229,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      *
      * @return the number of public lists the user is listed on.
      */
-    long getListedCount();
+    int getListedCount();
 
     /**
      * Returns true if the authenticating user has requested to follow this user,
