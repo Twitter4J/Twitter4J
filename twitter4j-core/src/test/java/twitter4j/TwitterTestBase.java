@@ -51,11 +51,15 @@ public class TwitterTestBase extends TestCase {
         public String screenName;
         public String password;
         public int id;
+        public String accessToken;
+        public String accessTokenSecret;
 
         TestUserInfo(String screenName) {
             this.screenName = p.getProperty(screenName);
             this.password = p.getProperty(screenName + "pass");
             this.id = Integer.valueOf(p.getProperty(screenName + "id"));
+            this.accessToken = p.getProperty(screenName+".oauth_token");
+            this.accessTokenSecret = p.getProperty(screenName+".oauth_token_secret");
         }
     }
     protected String desktopConsumerSecret;
@@ -86,39 +90,27 @@ public class TwitterTestBase extends TestCase {
 
         twitterAPI1 = new TwitterFactory().getInstance();
         twitterAPI1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        String id1token = p.getProperty("id1.oauth_token");
-        String id1tokenSecret = p.getProperty("id1.oauth_token_secret");
-        twitterAPI1.setOAuthAccessToken(new AccessToken(id1token, id1tokenSecret));
+        twitterAPI1.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
 
         twitterAPI2 = new Twitter();
         twitterAPI2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        String id2token = p.getProperty("id2.oauth_token");
-        String id2tokenSecret = p.getProperty("id2.oauth_token_secret");
-        twitterAPI2.setOAuthAccessToken(new AccessToken(id2token, id2tokenSecret));
+        twitterAPI2.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
 
         twitterAPI3 = new Twitter();
         twitterAPI3.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        String id3token = p.getProperty("id3.oauth_token");
-        String id3tokenSecret = p.getProperty("id3.oauth_token_secret");
-        twitterAPI3.setOAuthAccessToken(new AccessToken(id3token, id3tokenSecret));
+        twitterAPI3.setOAuthAccessToken(new AccessToken(id3.accessToken, id3.accessTokenSecret));
 
         twitterAPI4 = new Twitter();
         twitterAPI4.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        String id4token = p.getProperty("id4.oauth_token");
-        String id4tokenSecret = p.getProperty("id4.oauth_token_secret");
-        twitterAPI4.setOAuthAccessToken(new AccessToken(id4token, id4tokenSecret));
+        twitterAPI4.setOAuthAccessToken(new AccessToken(id4.accessToken, id4.accessTokenSecret));
 
         twitterAPIBestFriend1 = new Twitter();
         twitterAPIBestFriend1.setOAuthConsumer(desktopConsumerKey,desktopConsumerSecret);
-        String bestfriend1token = p.getProperty("bestFriend1.oauth_token");
-        String bestfriend1tokenSecret = p.getProperty("bestFriend1.oauth_token_secret");
-        twitterAPIBestFriend1.setOAuthAccessToken(new AccessToken(bestfriend1token, bestfriend1tokenSecret));
+        twitterAPIBestFriend1.setOAuthAccessToken(new AccessToken(bestFriend1.accessToken, bestFriend1.accessTokenSecret));
 
         twitterAPIBestFriend2 = new Twitter();
         twitterAPIBestFriend2.setOAuthConsumer(desktopConsumerKey,desktopConsumerSecret);
-        String bestfriend2token = p.getProperty("bestFriend2.oauth_token");
-        String bestfriend2tokenSecret = p.getProperty("bestFriend2.oauth_token_secret");
-        twitterAPIBestFriend2.setOAuthAccessToken(new AccessToken(bestfriend2token, bestfriend2tokenSecret));
+        twitterAPIBestFriend2.setOAuthAccessToken(new AccessToken(bestFriend2.accessToken, bestFriend2.accessTokenSecret));
 
 
         unauthenticated = new Twitter();
