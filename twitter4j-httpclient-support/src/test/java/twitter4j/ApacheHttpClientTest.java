@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import junit.framework.TestCase;
+import twitter4j.http.AccessToken;
 
 import java.io.File;
 import java.io.InputStream;
@@ -41,40 +42,27 @@ public class ApacheHttpClientTest extends TestCase {
     public ApacheHttpClientTest(String name) {
         super(name);
     }
-
-    protected Twitter twitterAPI1;
-    protected Properties p = new Properties();
-
-    protected TestUserInfo id1;
-
-    protected class TestUserInfo {
-        public String screenName;
-        public String password;
-        public int id;
-
-        TestUserInfo(String screenName) {
-            this.screenName = p.getProperty(screenName);
-            this.password = p.getProperty(screenName + "pass");
-            this.id = Integer.valueOf(p.getProperty(screenName + "id"));
-        }
-    }
-
+    Twitter twitterAPI1 = null;
 
     protected void setUp() throws Exception {
         super.setUp();
+        Properties p = new Properties();
+
         InputStream is = ApacheHttpClientTest.class.getResourceAsStream("/test.properties");
         p.load(is);
         is.close();
-        id1 = new TestUserInfo("id1");
 
-        twitterAPI1 = new TwitterFactory().getInstance(id1.screenName, id1.password);
+        twitterAPI1 = new TwitterFactory().getInstance();
+        twitterAPI1.setOAuthConsumer(p.getProperty("desktopConsumerKey"),p.getProperty("desktopConsumerSecret"));
+        twitterAPI1.setOAuthAccessToken(new AccessToken(p.getProperty("id1.oauth_token"), p.getProperty("id1.oauth_token_secret")));
+
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
         twitterAPI1.shutdown();
     }
-    public void testBasic() throws Exception {
+    public void testOAuth() throws Exception {
         //get
         twitterAPI1.verifyCredentials();
         //post
