@@ -62,6 +62,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     private String consumerKey = "";
     private String consumerSecret;
 
+    private String realm = null;
+
     private OAuthToken oauthToken = null;
 
     // constructors
@@ -189,6 +191,17 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         this.oauthToken = accessToken;
     }
 
+    /**
+     * Sets the OAuth realm
+     *
+     * @param realm OAuth realm
+     * @since Twitter 2.1.4
+     */
+    public void setOAuthRealm(String realm) {
+        this.realm = realm;
+    }
+
+
     /*package*/ String generateAuthorizationHeader(String method, String url, HttpParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
         if (null == params) {
             params = new HttpParameter[0];
@@ -217,6 +230,11 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         logger.debug("OAuth signature: ", signature);
 
         oauthHeaderParams.add(new HttpParameter("oauth_signature", signature));
+
+        // http://oauth.net/core/1.0/#rfc.section.9.1.1
+        if (null != realm) {
+            oauthHeaderParams.add(new HttpParameter("realm", realm));
+        }
         return "OAuth " + encodeParameters(oauthHeaderParams, ",", true);
     }
 

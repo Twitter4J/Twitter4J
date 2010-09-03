@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import junit.framework.TestCase;
+import twitter4j.http.AccessToken;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -57,13 +58,20 @@ public class TwitterTestBase extends TestCase {
             this.id = Integer.valueOf(p.getProperty(screenName + "id"));
         }
     }
-
+    protected String desktopConsumerSecret;
+    protected String desktopConsumerKey;
+    protected String browserConsumerSecret;
+    protected String browserConsumerKey;
 
     protected void setUp() throws Exception {
         super.setUp();
         InputStream is = TwitterTestBase.class.getResourceAsStream("/test.properties");
         p.load(is);
         is.close();
+
+        desktopConsumerSecret = p.getProperty("desktopConsumerSecret");
+        desktopConsumerKey = p.getProperty("desktopConsumerKey");
+
         id1 = new TestUserInfo("id1");
         id2 = new TestUserInfo("id2");
         id3 = new TestUserInfo("id3");
@@ -76,13 +84,45 @@ public class TwitterTestBase extends TestCase {
         id1id = Integer.valueOf(p.getProperty("id1id"));
         numberIdId = Integer.valueOf(p.getProperty("numberidid"));
 
-        twitterAPI1 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(id1.screenName, id1.password));
-        twitterAPI2 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(id2.screenName, id2.password));
-        twitterAPI3 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(id3.screenName, id3.password));
-        twitterAPI4 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(id4.screenName, id4.password));
-        twitterAPIBestFriend1 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(bestFriend1.screenName, bestFriend1.password));
-        twitterAPIBestFriend2 = (Twitter)assertDeserializedFormIsEqual(new TwitterFactory().getInstance(bestFriend2.screenName, bestFriend2.password));
-        unauthenticated = (Twitter)assertDeserializedFormIsEqual(new Twitter());
+        twitterAPI1 = new TwitterFactory().getInstance();
+        twitterAPI1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+        String id1token = p.getProperty("id1.oauth_token");
+        String id1tokenSecret = p.getProperty("id1.oauth_token_secret");
+        twitterAPI1.setOAuthAccessToken(new AccessToken(id1token, id1tokenSecret));
+
+        twitterAPI2 = new Twitter();
+        twitterAPI2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+        String id2token = p.getProperty("id2.oauth_token");
+        String id2tokenSecret = p.getProperty("id2.oauth_token_secret");
+        twitterAPI2.setOAuthAccessToken(new AccessToken(id2token, id2tokenSecret));
+
+        twitterAPI3 = new Twitter();
+        twitterAPI3.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+        String id3token = p.getProperty("id3.oauth_token");
+        String id3tokenSecret = p.getProperty("id3.oauth_token_secret");
+        twitterAPI3.setOAuthAccessToken(new AccessToken(id3token, id3tokenSecret));
+
+        twitterAPI4 = new Twitter();
+        twitterAPI4.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+        String id4token = p.getProperty("id4.oauth_token");
+        String id4tokenSecret = p.getProperty("id4.oauth_token_secret");
+        twitterAPI4.setOAuthAccessToken(new AccessToken(id4token, id4tokenSecret));
+
+        twitterAPIBestFriend1 = new Twitter();
+        twitterAPIBestFriend1.setOAuthConsumer(desktopConsumerKey,desktopConsumerSecret);
+        String bestfriend1token = p.getProperty("bestFriend1.oauth_token");
+        String bestfriend1tokenSecret = p.getProperty("bestFriend1.oauth_token_secret");
+        twitterAPIBestFriend1.setOAuthAccessToken(new AccessToken(bestfriend1token, bestfriend1tokenSecret));
+
+        twitterAPIBestFriend2 = new Twitter();
+        twitterAPIBestFriend2.setOAuthConsumer(desktopConsumerKey,desktopConsumerSecret);
+        String bestfriend2token = p.getProperty("bestFriend2.oauth_token");
+        String bestfriend2tokenSecret = p.getProperty("bestFriend2.oauth_token_secret");
+        twitterAPIBestFriend2.setOAuthAccessToken(new AccessToken(bestfriend2token, bestfriend2tokenSecret));
+
+
+        unauthenticated = new Twitter();
+
         followsOneWay = p.getProperty("followsOneWay");
     }
 

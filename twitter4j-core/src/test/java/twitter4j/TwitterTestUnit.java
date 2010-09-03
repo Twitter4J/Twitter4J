@@ -126,13 +126,13 @@ public class TwitterTestUnit extends TwitterTestBase {
 
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
-        unauthenticated.showUser("twit4jnoupdate");
+        twitterAPI1.showUser("twit4jnoupdate");
         twitterAPI1.showUser("tigertest");
 
-        user = unauthenticated.showUser(numberId);
+        user = twitterAPI1.showUser(numberId);
         assertEquals(numberIdId, user.getId());
 
-        user = unauthenticated.showUser(numberIdId);
+        user = twitterAPI1.showUser(numberIdId);
         assertEquals(numberIdId, user.getId());
     }
 
@@ -302,21 +302,29 @@ public class TwitterTestUnit extends TwitterTestBase {
         List<Status> statuses;
         statuses = twitterAPI1.getUserTimeline();
         assertTrue("size", 0 < statuses.size());
-        statuses = unauthenticated.getUserTimeline("1000");
-        assertTrue("size", 0 < statuses.size());
-        assertEquals(9737332,statuses.get(0).getUser().getId());
-        statuses = unauthenticated.getUserTimeline(1000);
-        assertTrue("size", 0 < statuses.size());
-        assertEquals(1000,statuses.get(0).getUser().getId());
+        try {
+            statuses = unauthenticated.getUserTimeline("1000");
+            assertTrue("size", 0 < statuses.size());
+            assertEquals(9737332, statuses.get(0).getUser().getId());
+            statuses = unauthenticated.getUserTimeline(1000);
+            assertTrue("size", 0 < statuses.size());
+            assertEquals(1000, statuses.get(0).getUser().getId());
+
+            statuses = unauthenticated.getUserTimeline(id1.screenName, new Paging().count(10));
+            assertTrue("size", 0 < statuses.size());
+            statuses = unauthenticated.getUserTimeline(id1.screenName, new Paging(999383469l));
+            assertTrue("size", 0 < statuses.size());
+        } catch (TwitterException te) {
+            // is being rate limited
+            assertEquals(400, te.getStatusCode());
+        }
 
         statuses = twitterAPI1.getUserTimeline(new Paging(999383469l));
         assertTrue("size", 0 < statuses.size());
-        statuses = unauthenticated.getUserTimeline(id1.screenName, new Paging().count(10));
-        assertTrue("size", 0 < statuses.size());
         statuses = twitterAPI1.getUserTimeline(new Paging(999383469l).count(15));
         assertTrue("size", 0 < statuses.size());
-        statuses = unauthenticated.getUserTimeline(id1.screenName, new Paging(999383469l));
-        assertTrue("size", 0 < statuses.size());
+
+
 
         statuses = twitterAPI1.getUserTimeline(new Paging(1).count(30));
         List<Status> statuses2 = twitterAPI1.getUserTimeline(new Paging(2).count(15));
@@ -326,16 +334,18 @@ public class TwitterTestUnit extends TwitterTestBase {
     public void testShowStatus() throws Exception {
         Status status = twitterAPI2.showStatus(1000l);
         assertEquals(52, status.getUser().getId());
-        Status status2 = unauthenticated.showStatus(1000l);
-        assertEquals(52, status2.getUser().getId());
-        assertNotNull(status.getRateLimitStatus());
+        try {
+            Status status2 = unauthenticated.showStatus(1000l);
+            assertEquals(52, status2.getUser().getId());
+            assertNotNull(status.getRateLimitStatus());
 
-        status2 = unauthenticated.showStatus(999383469l);
-        assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3", status2.getText());
-        status2 = unauthenticated.showStatus(7185737372l);
-        assertEquals("\\u5e30%u5e30 <%}& foobar",status2.getText());
-
-
+            status2 = unauthenticated.showStatus(999383469l);
+            assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3", status2.getText());
+            status2 = unauthenticated.showStatus(7185737372l);
+            assertEquals("\\u5e30%u5e30 <%}& foobar", status2.getText());
+        } catch (TwitterException te) {
+            assertEquals(400, te.getStatusCode());
+        }
     }
 
     public void testStatusMethods() throws Exception {
@@ -397,8 +407,13 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertNotNull("friendsStatuses", users);
         assertEquals(id1.screenName, users.get(0).getScreenName());
 
-        users = unauthenticated.getFriendsStatuses("yusukey");
-        assertNotNull("friendsStatuses", users);
+        try {
+            users = unauthenticated.getFriendsStatuses("yusukey");
+            assertNotNull("friendsStatuses", users);
+        } catch (TwitterException te) {
+            // is being rate limited
+            assertEquals(400, te.getStatusCode());
+        }
     }
 
     public void testRelationship() throws Exception {
@@ -536,6 +551,8 @@ public class TwitterTestUnit extends TwitterTestBase {
         }
 
         twitterAPI1.updateDeliveryDevice(Device.SMS);
+        System.out.println("1---:" + bestFriend1.screenName);
+        System.out.println("2---:" + bestFriend2.screenName);
         assertTrue(twitterAPIBestFriend1.existsFriendship(bestFriend1.screenName, bestFriend2.screenName));
         assertFalse(twitterAPI1.existsFriendship(id1.screenName, "al3x"));
 
@@ -781,15 +798,20 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(previous.getRemainingHits() > rateLimitStatus.getRemainingHits());
         assertEquals(previous.getHourlyLimit(), rateLimitStatus.getHourlyLimit());
 
-        unauthenticated.getPublicTimeline();
-        assertFalse(accountLimitStatusAcquired);
-        assertTrue(ipLimitStatusAcquired);
-        previous = rateLimitStatus;
-        unauthenticated.getPublicTimeline();
-        assertFalse(accountLimitStatusAcquired);
-        assertTrue(ipLimitStatusAcquired);
-        assertTrue(previous.getRemainingHits() > rateLimitStatus.getRemainingHits());
-        assertEquals(previous.getHourlyLimit(), rateLimitStatus.getHourlyLimit());
+        try {
+            unauthenticated.getPublicTimeline();
+            assertFalse(accountLimitStatusAcquired);
+            assertTrue(ipLimitStatusAcquired);
+            previous = rateLimitStatus;
+            unauthenticated.getPublicTimeline();
+            assertFalse(accountLimitStatusAcquired);
+            assertTrue(ipLimitStatusAcquired);
+            assertTrue(previous.getRemainingHits() > rateLimitStatus.getRemainingHits());
+            assertEquals(previous.getHourlyLimit(), rateLimitStatus.getHourlyLimit());
+        } catch (TwitterException te) {
+            // is being rate limited;
+            assertEquals(400, te.getStatusCode());
+        }
     }
 
     /* Spam Reporting Methods */
@@ -836,9 +858,14 @@ public class TwitterTestUnit extends TwitterTestBase {
         assertTrue(places.size() > 0);
         places = twitterAPI1.getNearbyPlaces(query);
         assertTrue(places.size() > 0);
-        Place place = this.unauthenticated.getGeoDetails("5a110d312052166f");
-        assertEquals("San Francisco, CA", place.getFullName());
-        assertEquals("California, US", place.getContainedWithIn()[0].getFullName());
+        try{
+            Place place = this.unauthenticated.getGeoDetails("5a110d312052166f");
+            assertEquals("San Francisco, CA", place.getFullName());
+            assertEquals("California, US", place.getContainedWithIn()[0].getFullName());
+        } catch (TwitterException te) {
+            // is being rate limited
+            assertEquals(400, te.getStatusCode());
+        }
         String sanFrancisco = "5a110d312052166f";
         Status status = twitterAPI1.updateStatus(new StatusUpdate(new java.util.Date() + " status with place").
                 placeId(sanFrancisco));

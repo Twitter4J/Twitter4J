@@ -26,11 +26,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
+import junit.framework.TestCase;
 import twitter4j.StatusStream;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
+import twitter4j.TwitterTestBase;
 import twitter4j.TwitterTestUnit;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -56,11 +58,8 @@ import java.util.Properties;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class OAuthTest extends TwitterTestUnit {
-    private String desktopConsumerSecret;
-    private String desktopConsumerKey;
-    private String browserConsumerSecret;
-    private String browserConsumerKey;
+public class OAuthTest extends TwitterTestBase {
+
     TwitterStream twitterStream = new TwitterStream();
 
     public OAuthTest(String name) {
@@ -70,32 +69,10 @@ public class OAuthTest extends TwitterTestUnit {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        desktopConsumerSecret = p.getProperty("desktopConsumerSecret");
-        desktopConsumerKey = p.getProperty("desktopConsumerKey");
-        HttpClient decktopClient = new HttpClientImpl();
-        OAuthSupport desktopClientOAuthAuthentication = new OAuthAuthorization(ConfigurationContext.getInstance(), desktopConsumerKey, desktopConsumerSecret);
 
-        browserConsumerSecret = p.getProperty("browserConsumerSecret");
-        browserConsumerKey = p.getProperty("browserConsumerKey");
-        HttpClient browserClient = new HttpClientImpl();
-        OAuthSupport browserClientOAuthAuthentication = new OAuthAuthorization(ConfigurationContext.getInstance(), browserConsumerKey, browserConsumerSecret);
-
-//        consumerSecret = p.getString("browserConsumerSecret");
-//        consumerKey = p.getString("browserConsumerKey");
-
-        twitterAPI1 = new TwitterFactory().getInstance();
-        twitterAPI1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        String id1token = p.getProperty("id1.oauth_token");
-        String id1tokenSecret = p.getProperty("id1.oauth_token_secret");
-        twitterAPI1.setOAuthAccessToken(new AccessToken(id1token, id1tokenSecret));
-
-        twitterAPI2 = new Twitter();
-        twitterAPI2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         String id2token = p.getProperty("id2.oauth_token");
         String id2tokenSecret = p.getProperty("id2.oauth_token_secret");
-        twitterAPI2.setOAuthAccessToken(new AccessToken(id2token, id2tokenSecret));
 
-        unauthenticated = new Twitter();
         twitterStream.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         twitterStream.setOAuthAccessToken(new AccessToken(id2token, id2tokenSecret));
 

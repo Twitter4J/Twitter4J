@@ -63,7 +63,6 @@ public class Twitter4JTestSuite extends TestCase {
         suite.addTestSuite(SearchAPITest.class);
         suite.addTestSuite(SpringCompatibilityTest.class);
         suite.addTestSuite(StreamAPITest.class);
-        suite.addTestSuite(TwitterBasicAuthTest.class);
         suite.addTestSuite(TwitterExceptionTest.class);
 
         return suite;
