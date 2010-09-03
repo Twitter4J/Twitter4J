@@ -7,6 +7,8 @@ twitter4j-examples/target/*
 ~$*
 .classpath
 .project
+.settings
+reports/*
 atlassian-ide-plugin.xml
 *.iml
 *.ipr

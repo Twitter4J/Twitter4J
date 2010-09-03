@@ -45,12 +45,14 @@
 
     <target name="compile" depends="prepare">
         <javac fork="true" srcdir="${src}" destdir="${build}/classes"
-               deprecation="true" debug="true" target="jsr14" source="1.5">
+               deprecation="true" debug="true" target="jsr14" source="1.5"
+               encoding="UTF-8">
             <include name="**/*.java"/>
             <classpath refid="project.class.path"/>
         </javac>
         <javac srcdir="${test}" destdir="${build}/testclasses"
-               deprecation="true" debug="true" target="jsr14" source="1.5">
+               deprecation="true" debug="true" target="jsr14" source="1.5"
+               encoding="UTF-8">
             <include name="**/*.java"/>
             <classpath refid="project.class.path"/>
         </javac>
@@ -105,7 +107,7 @@
                  destdir="${doc}"
                  windowtitle="${projectName}"
                  author="true"
-                Locale="en_US"
+                 Locale="en_US"
                  docencoding="UTF-8"
                  version="true">
         </javadoc>
