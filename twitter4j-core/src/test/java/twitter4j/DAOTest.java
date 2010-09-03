@@ -29,7 +29,9 @@ package twitter4j;
 import junit.framework.AssertionFailedError;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
+import twitter4j.http.AccessToken;
 import twitter4j.http.AuthorizationFactory;
+import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpClient;
 import twitter4j.internal.http.HttpClientFactory;
 import twitter4j.internal.http.HttpClientImpl;
@@ -435,9 +437,9 @@ public class DAOTest extends TwitterTestBase {
         return getJSONObjectFromPostURL(url, builder.build());
     }
 
-    private static JSONObject getJSONObjectFromGetURL(String url, Configuration conf) throws Exception {
+    private JSONObject getJSONObjectFromGetURL(String url, Configuration conf) throws Exception {
         HttpClientWrapper http = new HttpClientWrapper(conf);
-        return http.get(url, AuthorizationFactory.getInstance(conf, false)).asJSONObject();
+        return http.get(url, getOAuthOuthorization(conf)).asJSONObject();
     }
 
     private JSONArray getJSONArrayFromGetURL(String url) throws Exception {
@@ -448,9 +450,14 @@ public class DAOTest extends TwitterTestBase {
     }
 
 
-    private static JSONArray getJSONArrayFromGetURL(String url, Configuration conf) throws Exception {
+    private JSONArray getJSONArrayFromGetURL(String url, Configuration conf) throws Exception {
         HttpClientWrapper http = new HttpClientWrapper(conf);
-        return http.get(url).asJSONArray();
+        return http.get(url, getOAuthOuthorization(conf)).asJSONArray();
+    }
+    private OAuthAuthorization getOAuthOuthorization(Configuration conf){
+        OAuthAuthorization oauth = new OAuthAuthorization(conf, desktopConsumerKey,desktopConsumerSecret);
+        oauth.setOAuthAccessToken(new AccessToken(id1.accessToken,id1.accessTokenSecret));
+        return oauth;
     }
 
     private static String getStringFromClassPath(String path) throws Exception {
