@@ -75,6 +75,8 @@ public class TwitterTestBase extends TestCase {
 
         desktopConsumerSecret = p.getProperty("desktopConsumerSecret");
         desktopConsumerKey = p.getProperty("desktopConsumerKey");
+        browserConsumerSecret = p.getProperty("browserConsumerSecret");
+        browserConsumerKey = p.getProperty("browserConsumerKey");
 
         id1 = new TestUserInfo("id1");
         id2 = new TestUserInfo("id2");

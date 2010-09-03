@@ -218,6 +218,12 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
      * {@inheritDoc}
      */
     public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret) {
+        if(null == consumerKey){
+            throw new NullPointerException("consumer key is null");
+        }
+        if(null == consumerSecret){
+            throw new NullPointerException("consumer secret is null");
+        }
         if (auth instanceof NullAuthorization) {
             auth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
         } else if (auth instanceof BasicAuthorization) {
