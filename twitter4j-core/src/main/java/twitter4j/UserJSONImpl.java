@@ -100,7 +100,6 @@ import static twitter4j.ParseUtil.*;
             isProtected = getBoolean("protected", json);
             isGeoEnabled = getBoolean("geo_enabled", json);
             isVerified = getBoolean("verified", json);
-            isFollowing = getBoolean("following", json);
             followersCount = getInt("followers_count", json);
             listedCount = getInt("listed_count", json);
 
@@ -493,7 +492,6 @@ import static twitter4j.ParseUtil.*;
                 ", statusesCount=" + statusesCount +
                 ", geoEnabled=" + isGeoEnabled +
                 ", verified=" + isVerified +
-                ", following=" + isFollowing +
                 '}';
     }
 }

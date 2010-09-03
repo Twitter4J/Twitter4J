@@ -95,6 +95,30 @@ public class ImageUploadTest extends TwitterTestBase {
         }
     }
 
+    public void testImgLyOAuthUploader() throws Exception {
+        InputStream is = getClass().getResourceAsStream("/" + fileName);
+        try {
+            String url = ImageUpload.getImgLyUploader(
+                    oauthAuthorization
+            ).upload(fileName, is, message);
+            assertTrue(url.length() > 0);
+        } finally {
+            is.close();
+        }
+    }
+
+    public void testTwitgooOAuthUploader() throws Exception {
+        InputStream is = getClass().getResourceAsStream("/" + fileName);
+        try {
+            String url = ImageUpload.getTwitgooUploader(
+                    oauthAuthorization
+            ).upload(fileName, is, message);
+            assertTrue(url.length() > 0);
+        } finally {
+            is.close();
+        }
+    }
+
     private OAuthAuthorization oauthAuthorization;
     private String screenName;
     private String twitpicApiKey;
