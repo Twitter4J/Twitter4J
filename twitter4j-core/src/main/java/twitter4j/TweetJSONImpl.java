@@ -34,6 +34,8 @@ import static twitter4j.ParseUtil.getUnescapedString;
 
 import java.util.Date;
 
+import twitter4j.internal.org.json.JSONArray;
+import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
 /**
@@ -55,6 +57,7 @@ import twitter4j.internal.org.json.JSONObject;
     private String location;
 
     private GeoLocation geoLocation = null;
+    private Annotations annotations = null;
     private static final long serialVersionUID = 4299736733993211587L;
 
     /*package*/ TweetJSONImpl(JSONObject tweet) throws TwitterException {
@@ -70,6 +73,13 @@ import twitter4j.internal.org.json.JSONObject;
         createdAt = getDate("created_at", tweet, "EEE, dd MMM yyyy HH:mm:ss z");
         location = getRawString("location", tweet);
         geoLocation = GeoLocation.getInstance(tweet);
+        if (!tweet.isNull("annotations")) {
+            try {
+                JSONArray annotationsArray = tweet.getJSONArray("annotations");
+                annotations = new Annotations(annotationsArray);
+            } catch (JSONException ignore) {
+            }
+        }
     }
 
     public int compareTo(Tweet that) {
@@ -165,6 +175,13 @@ import twitter4j.internal.org.json.JSONObject;
     public String getLocation() {
         return location;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Annotations getAnnotations() {
+    	return annotations;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -191,6 +208,7 @@ import twitter4j.internal.org.json.JSONObject;
         result = 31 * result + profileImageUrl.hashCode();
         result = 31 * result + createdAt.hashCode();
         result = 31 * result + (geoLocation != null ? geoLocation.hashCode() : 0);
+        result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
         return result;
     }
 
@@ -208,6 +226,7 @@ import twitter4j.internal.org.json.JSONObject;
                 ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", createdAt=" + createdAt +
                 ", geoLocation=" + geoLocation +
+                ", annotations=" + annotations +
                 '}';
     }
 }

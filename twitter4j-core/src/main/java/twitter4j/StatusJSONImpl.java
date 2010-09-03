@@ -63,6 +63,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
     private boolean wasRetweetedByMe;
 
     private String[] contributors;
+    private Annotations annotations = null;
 
     private Status retweetedStatus;
     private User[] userMentions;
@@ -151,6 +152,13 @@ import static twitter4j.ParseUtil.getUnescapedString;
                 for(int i=0;i<hashtagsArray.length();i++){
                     hashtags[i] = hashtagsArray.getJSONObject(i).getString("text");
                 }
+            } catch (JSONException ignore) {
+            }
+        }
+        if (!json.isNull("annotations")) {
+            try {
+                JSONArray annotationsArray = json.getJSONArray("annotations");
+                annotations = new Annotations(annotationsArray);
             } catch (JSONException ignore) {
             }
         }
@@ -244,7 +252,15 @@ import static twitter4j.ParseUtil.getUnescapedString;
         return contributors;
     }
 
-    /**
+    
+	/**
+     * {@inheritDoc}
+     */
+    public Annotations getAnnotations() {
+		return annotations;
+	}
+
+	/**
      * {@inheritDoc}
      */
     public boolean isFavorited() {
@@ -358,6 +374,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
                 ", geoLocation=" + geoLocation +
                 ", place=" + place +
                 ", contributors=" + (contributors == null ? null : Arrays.asList(contributors)) +
+                ", annotations=" + annotations +
                 ", retweetedStatus=" + retweetedStatus +
                 ", user=" + user +
                 '}';
