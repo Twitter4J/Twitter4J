@@ -321,7 +321,8 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)
-                        , new HttpParameter("include_rts", "true")}
+                        , new HttpParameter("include_rts", "true")
+                        , new HttpParameter("include_entities", "true")}
                         , paging.asPostParameterArray()), auth));
     }
 
@@ -333,7 +334,8 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)
-                        , new HttpParameter("include_rts", "true")}
+                        , new HttpParameter("include_rts", "true")
+                        , new HttpParameter("include_entities", "true")}
                         , paging.asPostParameterArray()), auth));
     }
 
@@ -485,7 +487,9 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public Status showStatus(long id) throws TwitterException {
-        return new StatusJSONImpl(http.get(conf.getRestBaseURL() + "statuses/show/" + id + ".json", auth));
+        return new StatusJSONImpl(http.get(conf.getRestBaseURL() + "statuses/show/" + id + ".json",
+                new HttpParameter[] { new HttpParameter("include_entities", "true") },
+                auth));
     }
 
     /**

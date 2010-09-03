@@ -166,6 +166,26 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
         twitterStream.cleanup();
     }
 
+    public void testFilterIncludesEntities() throws Exception {
+        this.ex = null;
+
+        FilterQuery query = new FilterQuery(0, null, new String[]{"http", "#", "@"});
+        query.setIncludeEntities(true);
+        twitterStream.filter(query);
+
+        boolean sawURL, sawMention, sawHashtag;
+        do {
+            waitForStatus();
+            sawURL = status.getURLs().length > 0;
+            sawMention = status.getUserMentions().length > 0;
+            sawHashtag = status.getHashtags().length > 0;
+        } while (!sawURL || !sawMention || !sawHashtag);
+
+        assertNull(ex);
+
+        twitterStream.cleanup();
+    }
+
     public void onFriendList(int[] friendIds) {
         System.out.println("onFriendList");
         this.friendIds = friendIds;
