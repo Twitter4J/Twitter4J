@@ -161,7 +161,7 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      * @return whether the authenticating user has retweeted this tweet.
      * @since Twitter4J 2.1.4
      */
-    boolean wasRetweetedByMe();
+    boolean isRetweetedByMe();
 
     /**
      * Returns an array of users mentioned in the tweet, or null if no users were mentioned.

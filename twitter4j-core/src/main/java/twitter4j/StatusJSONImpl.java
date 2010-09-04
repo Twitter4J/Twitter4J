@@ -301,7 +301,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public boolean wasRetweetedByMe() {
+    public boolean isRetweetedByMe() {
         return wasRetweetedByMe;
     }
 

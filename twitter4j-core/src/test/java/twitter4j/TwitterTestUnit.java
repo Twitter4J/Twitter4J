@@ -355,7 +355,7 @@ public class TwitterTestUnit extends TwitterTestBase {
 
         status = twitterAPI2.showStatus(1000l);
         assertTrue(-1 <= status.getRetweetCount());
-        assertFalse(status.wasRetweetedByMe());
+        assertFalse(status.isRetweetedByMe());
     }
 
     public void testStatusMethods() throws Exception {
