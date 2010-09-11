@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
-public class StreamAPITest extends TwitterTestBase implements StatusListener, UserStreamListener {
+public class StreamAPITest extends TwitterTestBase implements StatusListener,UserStreamListener {
     protected TwitterStream twitterStream = null;
     protected Twitter protectedTwitter = null;
     protected Properties p = new Properties();
