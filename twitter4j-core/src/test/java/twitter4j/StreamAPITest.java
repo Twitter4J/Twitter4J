@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
-public class StreamAPITest extends TwitterTestBase implements StatusListener,UserStreamListener {
+public class StreamAPITest extends TwitterTestBase implements StatusListener, UserStreamListener {
     protected TwitterStream twitterStream = null;
     protected Twitter protectedTwitter = null;
     protected Properties p = new Properties();
@@ -96,6 +96,29 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
         targetObject = null;
     }
 
+    public void testUserStreamEventTypes() throws Exception {
+        InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-event-testcase.json");
+        UserStream stream = new StatusStreamImpl(is);
+
+        source = null;
+        target = null;
+        ex = null;
+
+        stream.next(this);
+        assertEquals(23456789, source.getId());
+        assertEquals(12345678, target.getId());
+        assertNull(ex);
+
+        source = null;
+        target = null;
+        ex = null;
+
+        // This one is an unknown event type.  We should safely ignore it.
+        stream.next(this);
+        assertNull(source);
+        assertNull(target);
+        assertNull(ex);
+    }
 
     public void testStatusStream() throws Exception {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-testcase.json");

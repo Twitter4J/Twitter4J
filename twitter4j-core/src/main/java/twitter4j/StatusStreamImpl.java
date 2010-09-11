@@ -148,19 +148,7 @@ class StatusStreamImpl implements StatusStream, UserStream {
                          } else if ("unblock".equals (event)) {
                              userStreamListener.onUnblock (source, target);
                          } else {
-                             Status targetObject = new StatusJSONImpl (json.getJSONObject ("target_object"));
-
-                             if ("favorite".equals (event)) {
-                                 userStreamListener.onFavorite (source, target, targetObject);
-                             } else if ("unfavorite".equals (event)) {
-                                 userStreamListener.onUnfavorite (source, target, targetObject);
-                             } else if ("retweet".equals (event)) {
-                                 // note: retweet events also show up as statuses
-                                 userStreamListener.onRetweet (source, target, targetObject);
-                             } else {
-                                 // tmp: just checking what kind of unknown social event we're receiving on this stream
-                                 logger.info("Received unknown social event type '" + event + "': " + line);
-                             }
+                             logger.info("Received unknown event type '" + event + "': " + line);
                          }
                      } else {
                         // tmp: just checking what kind of unknown event we're receiving on this stream
