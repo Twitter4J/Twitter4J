@@ -466,6 +466,9 @@ public class DAOTest extends TwitterTestBase {
         BufferedReader br = null;
         try {
             is = DAOTest.class.getResourceAsStream(path);
+            if(is == null){
+                throw new IllegalStateException(path + " not found.");
+            }
             isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
             StringBuffer buf = new StringBuffer();
@@ -475,9 +478,11 @@ public class DAOTest extends TwitterTestBase {
             }
             return buf.toString();
         } finally {
-            is.close();
-            isr.close();
-            br.close();
+            if (null != is) {
+                is.close();
+                isr.close();
+                br.close();
+            }
         }
     }
 
@@ -709,5 +714,10 @@ public class DAOTest extends TwitterTestBase {
         Object that = assertDeserializedFormIsEqual(obj);
         assertTrue(obj == that);
         return that;
+    }
+    public void testStatusJSONImplSupportsMoreThan100RetweetedStatus() throws Exception {
+        UserJSONImpl user = new UserJSONImpl(new JSONObject(getStringFromClassPath("/24696018620.json")));
+        assertNotNull(user.getStatus());
+        assertNotNull(user.getStatus().getRetweetCount());
     }
 }

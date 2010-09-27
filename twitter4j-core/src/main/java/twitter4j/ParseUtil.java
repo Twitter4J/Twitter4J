@@ -122,13 +122,21 @@ import java.util.TimeZone;
 
 
     static long getLong(String name, JSONObject json) {
-        String str2 = getRawString(name, json);
-        if (null == str2 || "".equals(str2) || "null".equals(str2)) {
+        return getLong(getRawString(name, json));
+    }
+
+    static long getLong(String str) {
+        if (null == str || "".equals(str) || "null".equals(str)) {
             return -1;
         } else {
-            return Long.valueOf(str2);
+            // some count over 100 will be expressed as "100+"
+            if(str.endsWith("+")){
+                str = str.substring(0, str.length() - 1);
+            }
+            return Long.valueOf(str);
         }
     }
+
     static double getDouble(String name, JSONObject json) {
         String str2 = getRawString(name, json);
         if (null == str2 || "".equals(str2) || "null".equals(str2)) {
