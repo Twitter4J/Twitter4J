@@ -32,7 +32,7 @@ import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Date;
-import static twitter4j.ParseUtil.*;
+import static twitter4j.internal.util.ParseUtil.*;
 /**
  * A data class representing a Saved Search
  *

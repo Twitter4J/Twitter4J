@@ -28,6 +28,7 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.util.ParseUtil;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

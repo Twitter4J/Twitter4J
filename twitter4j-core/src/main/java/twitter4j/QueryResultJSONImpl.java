@@ -33,7 +33,7 @@ import twitter4j.internal.org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import static twitter4j.ParseUtil.*;
+import static twitter4j.internal.util.ParseUtil.*;
 /**
  * A data class representing search API response
  * @author Yusuke Yamamoto - yusuke at mac.com

@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import static twitter4j.ParseUtil.*;
+import static twitter4j.internal.util.ParseUtil.*;
 
 /**
  * A data class representing Trends.

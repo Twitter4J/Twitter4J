@@ -31,9 +31,9 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import static twitter4j.ParseUtil.getInt;
-import static twitter4j.ParseUtil.getRawString;
-import static twitter4j.ParseUtil.getUnescapedString;
+import static twitter4j.internal.util.ParseUtil.getInt;
+import static twitter4j.internal.util.ParseUtil.getRawString;
+import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

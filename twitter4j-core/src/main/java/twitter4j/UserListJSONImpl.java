@@ -30,7 +30,7 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import static twitter4j.ParseUtil.*;
+import static twitter4j.internal.util.ParseUtil.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 

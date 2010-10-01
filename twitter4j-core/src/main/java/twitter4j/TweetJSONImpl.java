@@ -26,11 +26,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import static twitter4j.ParseUtil.getDate;
-import static twitter4j.ParseUtil.getInt;
-import static twitter4j.ParseUtil.getLong;
-import static twitter4j.ParseUtil.getRawString;
-import static twitter4j.ParseUtil.getUnescapedString;
+import static twitter4j.internal.util.ParseUtil.getDate;
+import static twitter4j.internal.util.ParseUtil.getInt;
+import static twitter4j.internal.util.ParseUtil.getLong;
+import static twitter4j.internal.util.ParseUtil.getRawString;
+import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
 import java.util.Date;
 

@@ -31,6 +31,7 @@ import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.util.ParseUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;

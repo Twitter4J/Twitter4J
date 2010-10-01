@@ -24,8 +24,9 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
+package twitter4j.internal.util;
 
+import twitter4j.TwitterException;
 import twitter4j.internal.http.HTMLEntity;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -44,7 +45,7 @@ import java.util.TimeZone;
  * A tiny parse utility class.
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ final class ParseUtil {
+public final class ParseUtil {
     private ParseUtil() {
         // should never be instantiated
         throw new AssertionError();
@@ -57,11 +58,11 @@ import java.util.TimeZone;
         }
     };
 
-    static String getUnescapedString(String str, JSONObject json) {
+    public static String getUnescapedString(String str, JSONObject json) {
         return HTMLEntity.unescape(getRawString(str, json));
     }
 
-    static String getRawString(String name, JSONObject json) {
+    public static String getRawString(String name, JSONObject json) {
         try {
             if (json.isNull(name)) {
                 return null;
@@ -73,7 +74,7 @@ import java.util.TimeZone;
         }
     }
 
-    static String getURLDecodedString(String name, JSONObject json) {
+    public static String getURLDecodedString(String name, JSONObject json) {
         String returnValue = getRawString(name, json);
         if (null != returnValue) {
             try {
@@ -84,11 +85,11 @@ import java.util.TimeZone;
         return returnValue;
     }
 
-    static Date getDate(String name, JSONObject json) throws TwitterException {
+    public static Date getDate(String name, JSONObject json) throws TwitterException {
         return getDate(name, json, "EEE MMM d HH:mm:ss z yyyy");
     }
 
-    static Date getDate(String name, JSONObject json, String format) throws TwitterException {
+    public static Date getDate(String name, JSONObject json, String format) throws TwitterException {
         String dateStr = getUnescapedString(name, json);
         if ("null".equals(dateStr) || null == dateStr) {
             return null;
@@ -97,7 +98,7 @@ import java.util.TimeZone;
         }
     }
 
-    static Date getDate(String name, String format) throws TwitterException {
+    public static Date getDate(String name, String format) throws TwitterException {
         SimpleDateFormat sdf = formatMap.get().get(format);
         if (null == sdf) {
             sdf = new SimpleDateFormat(format, Locale.ENGLISH);
@@ -111,7 +112,7 @@ import java.util.TimeZone;
         }
     }
 
-    static int getInt(String name, JSONObject elem) {
+    public static int getInt(String name, JSONObject elem) {
         String str2 = getRawString(name, elem);
         if (null == str2 || "".equals(str2) || "null".equals(str2)) {
             return -1;
@@ -121,11 +122,11 @@ import java.util.TimeZone;
     }
 
 
-    static long getLong(String name, JSONObject json) {
+    public static long getLong(String name, JSONObject json) {
         return getLong(getRawString(name, json));
     }
 
-    static long getLong(String str) {
+    public static long getLong(String str) {
         if (null == str || "".equals(str) || "null".equals(str)) {
             return -1;
         } else {
@@ -137,7 +138,7 @@ import java.util.TimeZone;
         }
     }
 
-    static double getDouble(String name, JSONObject json) {
+    public static double getDouble(String name, JSONObject json) {
         String str2 = getRawString(name, json);
         if (null == str2 || "".equals(str2) || "null".equals(str2)) {
             return -1;
@@ -146,7 +147,7 @@ import java.util.TimeZone;
         }
     }
 
-    static boolean getBoolean(String name, JSONObject json) {
+    public static boolean getBoolean(String name, JSONObject json) {
         String str = getRawString(name, json);
         if (null == str || "null".equals(str)) {
             return false;

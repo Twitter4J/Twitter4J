@@ -31,7 +31,7 @@ import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.org.json.JSONException;
 
 
-import static twitter4j.ParseUtil.*;
+import static twitter4j.internal.util.ParseUtil.*;
 /**
  * A data class that has detailed information about a relationship between two users
  * @author Perry Sakkaris - psakkaris at gmail.com

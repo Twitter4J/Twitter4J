@@ -32,6 +32,7 @@ import twitter4j.Version;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.PropertyConfiguration;
 import twitter4j.http.RequestToken;
+import twitter4j.internal.util.StringUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -67,6 +68,14 @@ public class ConfigurationTest  extends TestCase {
         assertNull(ConfigurationBase.fixURL(false, null));
         assertNull(ConfigurationBase.fixURL(true, null));
     }
+
+    public void testSprit() throws Exception {
+       String original = "foo/bar";
+        String[] split = StringUtil.split(original,"/");
+        assertEquals("foo",split[0]);
+        assertEquals("bar",split[1]);
+        assertEquals(2,split.length);
+      }
 
     public void testConfiguration() throws Exception {
         ConfigurationBase conf = new PropertyConfiguration();

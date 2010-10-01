@@ -26,12 +26,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.conf;
 
+import twitter4j.internal.util.StringUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -193,7 +196,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
      */
     private void setFieldsWithTreePath(Properties props, String treePath) {
         setFieldsWithPrefix(props, "");
-        String[] splitArray = treePath.split("/");
+        String[] splitArray = StringUtil.split(treePath, "/");
         String prefix = null;
         for (String split : splitArray) {
             if (!"".equals(split)) {

@@ -26,6 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.4
@@ -41,5 +44,29 @@ public class StringUtil {
             buf.append("*");
         }
         return buf.toString();
+    }
+
+    // for JDK1.4 compatibility
+    public static String[] split(String str, String separator){
+        String[] returnValue;
+        int index;
+        if(-1 == str.indexOf(separator)){
+            returnValue = new String[0];
+        }else{
+            List<String> strList = new ArrayList<String>();
+            int oldIndex = 0;
+            while (-1 != (index = str.indexOf(separator, oldIndex))) {
+                String subStr = str.substring(oldIndex, index);
+                strList.add(subStr);
+                oldIndex = index + separator.length();
+            }
+            if(oldIndex != str.length()){
+                strList.add(str.substring(oldIndex));
+            }
+            returnValue = strList.toArray(new String[strList.size()]);
+        }
+
+        return returnValue;
+
     }
 }

@@ -33,8 +33,8 @@ import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Arrays;
 
-import static twitter4j.ParseUtil.getRawString;
-import static twitter4j.ParseUtil.getUnescapedString;
+import static twitter4j.internal.util.ParseUtil.getRawString;
+import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
