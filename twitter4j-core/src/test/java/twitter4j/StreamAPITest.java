@@ -27,11 +27,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.http.AccessToken;
+
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
-public class StreamAPITest extends TwitterTestBase implements StatusListener,UserStreamListener {
+public class StreamAPITest extends TwitterTestBase implements StatusListener, UserStreamListener {
     protected TwitterStream twitterStream = null;
     protected Twitter protectedTwitter = null;
     protected Properties p = new Properties();
@@ -53,7 +55,10 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
 
     protected void setUp() throws Exception {
         super.setUp();
-        twitterStream = new TwitterStream(id1.screenName, id1.password, this);
+        twitterStream = new TwitterStreamFactory().getInstance();
+        twitterStream.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+        twitterStream.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
+
         protectedTwitter = new TwitterFactory().getInstance(id4.screenName, id4.password);
         this.status = null;
         this.deletionNotice = null;
@@ -64,12 +69,17 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
     }
 
     public void testUserStream() throws Exception {
+        try {
+            twitterAPI1.createFriendship(id2.id);
+        } catch (TwitterException ignore) {
+        }
 
         twitterStream.setUserStreamListener(this);
         twitterStream.user();
+        Thread.sleep(2000);
         Status status = twitterAPI1.updateStatus(new Date() + ": test");
         twitterAPI2.createFavorite(status.getId());
-        Thread.sleep(2000);
+        waitForNotification();
 //        assertEquals(this.status.getId(), status.getId());
         assertEquals(source.getId(), id2.id);
         assertEquals(target.getId(), id1.id);
@@ -77,14 +87,14 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
 
         clearObjects();
         twitterAPI2.destroyFavorite(status.getId());
-        Thread.sleep(2000);
+        waitForNotification();
         assertEquals(source.getId(), id2.id);
         assertEquals(target.getId(), id1.id);
         assertEquals(targetObject, status);
 
         clearObjects();
         twitterAPI2.retweetStatus(status.getId());
-        Thread.sleep(2000);
+        waitForNotification();
         assertNotNull(this.status);
         assertEquals(this.status.getRetweetedStatus(), status);
     }
@@ -189,6 +199,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
     public void onFriendList(int[] friendIds) {
         System.out.println("onFriendList");
         this.friendIds = friendIds;
+        notifyResponse();
     }
 
     public void onFavorite(User source, User target, Status targetObject) {
@@ -196,6 +207,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
         this.source = source;
         this.target = target;
         this.targetObject = targetObject;
+        notifyResponse();
     }
 
     public void onUnfavorite(User source, User target, Status targetObject) {
@@ -203,30 +215,35 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
         this.source = source;
         this.target = target;
         this.targetObject = targetObject;
+        notifyResponse();
     }
 
     public void onFollow(User source, User target) {
         System.out.println("onFollow");
         this.source = source;
         this.target = target;
+        notifyResponse();
     }
 
     public void onUnfollow(User source, User target) {
         System.out.println("onUnfollow");
         this.source = source;
         this.target = target;
+        notifyResponse();
     }
 
     public void onBlock(User source, User target) {
         System.out.println("onBlock");
         this.source = source;
         this.target = target;
+        notifyResponse();
     }
 
     public void onUnblock(User source, User target) {
         System.out.println("onUnblock");
         this.source = source;
         this.target = target;
+        notifyResponse();
     }
 
 
@@ -235,10 +252,12 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
         this.source = source;
         this.target = target;
         this.targetObject = targetObject;
+        notifyResponse();
     }
 
     public void onDirectMessage(DirectMessage directMessage) {
         this.directMessage = directMessage;
+        notifyResponse();
     }
 
     class TestThread extends Thread {
@@ -291,6 +310,15 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener,Use
     private synchronized void waitForStatus() {
         try {
             this.wait(Integer.MAX_VALUE);
+            System.out.println("notified.");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private synchronized void waitForNotification() {
+        try {
+            this.wait(2000);
             System.out.println("notified.");
         } catch (InterruptedException e) {
             e.printStackTrace();
