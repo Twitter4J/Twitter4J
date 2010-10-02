@@ -214,11 +214,11 @@ public abstract class ImageUpload {
             }
 
             String response = httpResponse.asString();
-            if (response.contains("<rsp stat=\"fail\">")) {
+            if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
                 String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
                 throw new TwitterException("YFrog image upload failed with this error message: " + error, httpResponse);
             }
-            if (response.contains("<rsp stat=\"ok\">")) {
+            if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
                 String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
                 return media;
             }
@@ -299,12 +299,12 @@ public abstract class ImageUpload {
                 throw new TwitterException("YFrog image upload returned invalid status code", httpResponse);
 
             String response = httpResponse.asString();
-            if (response.contains("<rsp stat=\"fail\">")) {
+            if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
                 String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
                 throw new TwitterException("YFrog image upload failed with this error message: " + error, httpResponse);
             }
 
-            if (response.contains("<rsp stat=\"ok\">")) {
+            if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
                 String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
                 return media;
             }
@@ -462,12 +462,12 @@ public abstract class ImageUpload {
                 throw new TwitterException("Twitpic image upload returned invalid status code", httpResponse);
 
             String response = httpResponse.asString();
-            if (response.contains("<rsp stat=\"fail\">")) {
+            if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
                 String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
                 throw new TwitterException("Twitpic image upload failed with this error message: " + error, httpResponse);
             }
 
-            if (response.contains("<rsp stat=\"ok\">")) {
+            if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
                 String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
                 return media;
             }
@@ -550,11 +550,11 @@ public abstract class ImageUpload {
 
             String response = httpResponse.asString();
 
-            if (response.contains("<Error><ErrorCode>")) {
+            if (-1 != response.indexOf("<Error><ErrorCode>")) {
                 String error = response.substring(response.indexOf("<ErrorCode>") + "<ErrorCode>".length(), response.lastIndexOf("</ErrorCode>"));
                 throw new TwitterException("TweetPhoto image upload failed with this error message: " + error, httpResponse);
             }
-            if (response.contains("<Status>OK</Status>")) {
+            if (-1 != response.indexOf("<Status>OK</Status>")) {
                 String media = response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
                 return media;
             }
@@ -734,7 +734,7 @@ public abstract class ImageUpload {
                 throw new TwitterException ("Twitgoo image upload returned invalid status code", httpResponse);
             
             String response = httpResponse.asString ();
-            if(response.contains("<rsp status=\"ok\">")){
+            if(-1 != response.indexOf("<rsp status=\"ok\">")){
             	String h = "<mediaurl>";
             	int i = response.indexOf(h);
             	if(i != -1){
@@ -743,7 +743,7 @@ public abstract class ImageUpload {
 		            	return response.substring(i + h.length(), j);
 	            	}
             	}
-            } else if(response.contains("<rsp status=\"fail\">")){
+            } else if(-1 != response.indexOf("<rsp status=\"fail\">")){
             	String h = "msg=\"";
             	int i = response.indexOf(h);
             	if(i != -1){
