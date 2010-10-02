@@ -82,6 +82,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     public void testGetFriendsTimeline() throws Exception {
         async1.getFriendsTimeline();
         waitForResponse();
+        assertNotNull(statuses);
         assertTrue(statuses.size() > 0);
 
         assertDeserializedFormIsEqual(statuses);
