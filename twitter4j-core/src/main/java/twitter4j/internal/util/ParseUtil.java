@@ -133,6 +133,7 @@ public final class ParseUtil {
             // some count over 100 will be expressed as "100+"
             if(str.endsWith("+")){
                 str = str.substring(0, str.length() - 1);
+                return Long.valueOf(str) + 1;
             }
             return Long.valueOf(str);
         }
