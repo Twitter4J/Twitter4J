@@ -58,6 +58,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
         twitterStream = new TwitterStreamFactory().getInstance();
         twitterStream.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         twitterStream.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
+        twitterStream.setUserStreamListener(this);
 
         protectedTwitter = new TwitterFactory().getInstance(id4.screenName, id4.password);
         this.status = null;
@@ -74,7 +75,6 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
         } catch (TwitterException ignore) {
         }
 
-        twitterStream.setUserStreamListener(this);
         twitterStream.user();
         Thread.sleep(2000);
         Status status = twitterAPI1.updateStatus(new Date() + ": test");
