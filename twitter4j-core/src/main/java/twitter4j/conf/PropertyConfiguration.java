@@ -80,6 +80,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String REST_BASE_URL = "restBaseURL";
     public static final String SEARCH_BASE_URL = "searchBaseURL";
     public static final String STREAM_BASE_URL = "streamBaseURL";
+    public static final String USER_STREAM_BASE_URL = "userStreamBaseURL";
 
 
     public static final String ASYNC_NUM_THREADS = "async.numThreads";
@@ -323,6 +324,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
         if (notNull(props, prefix, STREAM_BASE_URL)) {
             setStreamBaseURL(getString(props, prefix, STREAM_BASE_URL));
+        }
+        if (notNull(props, prefix, USER_STREAM_BASE_URL)) {
+            setUserStreamBaseURL(getString(props, prefix, USER_STREAM_BASE_URL));
         }
     }
 
