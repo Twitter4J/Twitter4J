@@ -390,6 +390,14 @@ public class ConfigurationTest  extends TestCase {
         assertTrue(0 == rt.getAuthorizationURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
+
+        // disable SSL
+        writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
+        + "\n" + "twitter4j.debug=true");
+        conf = new ConfigurationBuilder().build();
+        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
+        assertTrue(conf.isDebugEnabled());
+        deleteFile("./twitter4j.properties");
     }
 
     private void writeFile(String path, String content) throws IOException {
