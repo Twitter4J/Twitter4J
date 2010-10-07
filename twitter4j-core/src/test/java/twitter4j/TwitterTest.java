@@ -194,10 +194,6 @@ public class TwitterTest extends TwitterTestBase {
 
         /*List Methods*/
         UserList userList;
-        //ensuring createUserList works in the case an email is specified a userid
-        userList = twitterAPI3.createUserList("api3 is email", false, null);
-        assertFalse(userList.isPublic());
-        twitterAPI3.destroyUserList(userList.getId());
         userList = twitterAPI1.createUserList("testpoint1", false, "description1");
         assertNotNull(userList);
         assertEquals("testpoint1", userList.getName());
