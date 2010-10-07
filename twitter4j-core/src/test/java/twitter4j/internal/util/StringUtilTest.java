@@ -26,49 +26,31 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import junit.framework.TestCase;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.4
+ * @since Twitter4J 2.1.6
  */
-public class StringUtil {
-    private StringUtil() {
-        throw new AssertionError();
+public class StringUtilTest extends TestCase {
+    public void testMaskString() throws Exception {
+        assertEquals("******", StringUtil.maskString("foobar"));
     }
 
-    public static String maskString(String str) {
-        StringBuffer buf = new StringBuffer(str.length());
-        for (int i = 0; i < str.length(); i++) {
-            buf.append("*");
-        }
-        return buf.toString();
-    }
+    public void testSplit() throws Exception {
+        String[] expected = new String[]{"foo", "bar"};
+        String[] actual = StringUtil.split("foo,bar", ",");
+        assertEquals(expected[0], actual[0]);
+        assertEquals(expected[1], actual[1]);
 
-    // for JDK1.4 compatibility
+        expected = new String[]{"foo", "bar", "hoge"};
+        actual = StringUtil.split("foo,bar,hoge", ",");
+        assertEquals(expected[0], actual[0]);
+        assertEquals(expected[1], actual[1]);
+        assertEquals(expected[2], actual[2]);
 
-    public static String[] split(String str, String separator) {
-        String[] returnValue;
-        int index = str.indexOf(separator);
-        if (index == -1) {
-            returnValue = new String[]{str};
-        } else {
-            List<String> strList = new ArrayList<String>();
-            int oldIndex = 0;
-            while (index != -1) {
-                String subStr = str.substring(oldIndex, index);
-                strList.add(subStr);
-                oldIndex = index + separator.length();
-                index = str.indexOf(separator, oldIndex);
-            }
-            if (oldIndex != str.length()) {
-                strList.add(str.substring(oldIndex));
-            }
-            returnValue = strList.toArray(new String[strList.size()]);
-        }
-
-        return returnValue;
-
+        expected = new String[]{"foobar"};
+        actual = StringUtil.split("foobar", ",");
+        assertEquals(expected[0], actual[0]);
     }
 }
