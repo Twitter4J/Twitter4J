@@ -405,24 +405,24 @@ public class TwitterTest extends TwitterTestBase {
         assertFalse(twitterAPI2.verifyCredentials().isGeoEnabled());
     }
 
-    public void testAnnotations() throws Exception {
-    	final String failMessage = 
-    		"Annotations were not added to the status, please make sure that your account is whitelisted for Annotations by Twitter";
-    	Annotation annotation = new Annotation("review");
-    	annotation.attribute("content", "Yahoo! landing page").
-    		attribute("url", "http://yahoo.com").attribute("rating", "0.6");
-    	
-    	StatusUpdate update = new StatusUpdate(new java.util.Date().toString() + ": annotated status");
-    	update.addAnnotation(annotation);
-    	
-        Status withAnnos = twitterAPI1.updateStatus(update);
-        Annotations annotations = withAnnos.getAnnotations();
-        assertNotNull(failMessage, annotations);
-        
-        List<Annotation> annos = annotations.getAnnotations();
-        assertEquals(1, annos.size());
-        assertEquals(annotation, annos.get(0));
-    }
+//    public void testAnnotations() throws Exception {
+//    	final String failMessage =
+//    		"Annotations were not added to the status, please make sure that your account is whitelisted for Annotations by Twitter";
+//    	Annotation annotation = new Annotation("review");
+//    	annotation.attribute("content", "Yahoo! landing page").
+//    		attribute("url", "http://yahoo.com").attribute("rating", "0.6");
+//
+//    	StatusUpdate update = new StatusUpdate(new java.util.Date().toString() + ": annotated status");
+//    	update.addAnnotation(annotation);
+//
+//        Status withAnnos = twitterAPI1.updateStatus(update);
+//        Annotations annotations = withAnnos.getAnnotations();
+//        assertNotNull(failMessage, annotations);
+//
+//        List<Annotation> annos = annotations.getAnnotations();
+//        assertEquals(1, annos.size());
+//        assertEquals(annotation, annos.get(0));
+//    }
     
     public void testGetFriendsStatuses() throws Exception {
         PagableResponseList<User> users = twitterAPI1.getFriendsStatuses();
