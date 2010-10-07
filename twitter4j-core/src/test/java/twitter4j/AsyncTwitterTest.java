@@ -186,14 +186,13 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         waitForResponse();
         int yusukey = 4933401;
         assertIDExsits("twit4j is following yusukey", ids, yusukey);
-        int JBossNewsJP = 28074579;
-        int RedHatNewsJP = 28074306;
-        async1.getFriendsIDs(JBossNewsJP);
+        int ryunosukey = 48528137;
+        async1.getFriendsIDs(ryunosukey);
         waitForResponse();
-        assertIDExsits("JBossNewsJP is following RedHatNewsJP", ids, RedHatNewsJP);
-        async1.getFriendsIDs("RedHatNewsJP");
+        assertEquals("ryunosukey is not following anyone", 0, ids.getIDs().length);
+        async1.getFriendsIDs("yusukey");
         waitForResponse();
-        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074579);
+        assertIDExsits("yusukey is following ryunosukey", ids, ryunosukey);
 
         try {
             twitterAPI2.createFriendship(id1.screenName);
@@ -202,12 +201,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.getFollowersIDs();
         waitForResponse();
         assertIDExsits("twit4j2(6377362) is following twit4j(6358482)", ids, 6377362);
-        async1.getFollowersIDs(28074579);
+        async1.getFollowersIDs(ryunosukey);
         waitForResponse();
-        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
-        async1.getFollowersIDs("JBossNewsJP");
+        assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
+        async1.getFollowersIDs("ryunosukey");
         waitForResponse();
-        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
+        assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
     }
 
     private void assertIDExsits(String assertion, IDs ids, int idToFind){

@@ -498,12 +498,11 @@ public class TwitterTestUnit extends TwitterTestBase {
         ids = twitterAPI1.getFriendsIDs();
         int yusukey = 4933401;
         assertIDExsits("twit4j is following yusukey", ids, yusukey);
-        int JBossNewsJP = 28074579;
-        int RedHatNewsJP = 28074306;
-        ids = twitterAPI1.getFriendsIDs(JBossNewsJP);
-        assertIDExsits("JBossNewsJP is following RedHatNewsJP", ids, RedHatNewsJP);
-        ids = twitterAPI1.getFriendsIDs("RedHatNewsJP");
-        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074579);
+        int ryunosukey = 48528137;
+        ids = twitterAPI1.getFriendsIDs(ryunosukey);
+        assertEquals("ryunosukey is not following anyone", 0, ids.getIDs().length);
+        ids = twitterAPI1.getFriendsIDs("yusukey");
+        assertIDExsits("yusukey is following ryunosukey", ids, ryunosukey);
         IDs obamaFollowers;
         obamaFollowers = twitterAPI1.getFollowersIDs("barackobama");
         assertTrue(obamaFollowers.hasNext());
@@ -540,10 +539,10 @@ public class TwitterTestUnit extends TwitterTestBase {
         }
         ids = twitterAPI1.getFollowersIDs();
         assertIDExsits("twit4j2 is following twit4j", ids, 6377362);
-        ids = twitterAPI1.getFollowersIDs(28074579);
-        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
-        ids = twitterAPI1.getFollowersIDs("JBossNewsJP");
-        assertIDExsits("RedHatNewsJP is following JBossNewsJP", ids, 28074306);
+        ids = twitterAPI1.getFollowersIDs(ryunosukey);
+        assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
+        ids = twitterAPI1.getFollowersIDs("ryunosukey");
+        assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
     }
 
 
