@@ -578,7 +578,6 @@ public class TwitterTest extends TwitterTestBase {
         } catch (TwitterException te) {
         }
 
-        twitterAPI1.updateDeliveryDevice(Device.SMS);
         assertTrue(twitterAPIBestFriend1.existsFriendship(bestFriend1.screenName, bestFriend2.screenName));
         assertFalse(twitterAPI1.existsFriendship(id1.screenName, "al3x"));
 
