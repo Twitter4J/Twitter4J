@@ -74,6 +74,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private int asyncNumThreads;
 
+    private boolean includeRTsEnabled;
+
     // hidden portion
     private String clientVersion;
     private String clientURL;
@@ -92,6 +94,19 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean IS_DALVIK;
     private static final long serialVersionUID = -6610497517837844232L;
+
+    static String dalvikDetected;
+    static {
+        // detecting dalvik (Android platform)
+        try {
+            // dalvik.system.VMRuntime class should be existing on Android platform.
+            // @see http://developer.android.com/reference/dalvik/system/VMRuntime.html
+            Class.forName("dalvik.system.VMRuntime");
+            dalvikDetected = "true";
+        } catch (ClassNotFoundException cnfe) {
+            dalvikDetected = "false";
+        }
+    }
 
     protected ConfigurationBase() {
         setDebug(false);
@@ -119,6 +134,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setClientURL("http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
         setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
 
+        setIncludeRTsEnbled(true);
+
 
         setOAuthRequestTokenURL(DEFAULT_OAUTH_REQUEST_TOKEN_URL);
         setOAuthAuthorizationURL(DEFAULT_OAUTH_AUTHORIZATION_URL);
@@ -136,16 +153,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
-        // detecting dalvik (Android platform)
-        String dalvikDetected;
-        try {
-            // dalvik.system.VMRuntime class should be existing on Android platform.
-            // @see http://developer.android.com/reference/dalvik/system/VMRuntime.html
-            Class.forName("dalvik.system.VMRuntime");
-            dalvikDetected = "true";
-        } catch (ClassNotFoundException cnfe) {
-            dalvikDetected = "false";
-        }
+        setIncludeRTsEnbled(true);
         IS_DALVIK = Boolean.valueOf(System.getProperty(DALVIK, dalvikDetected));
     }
 
@@ -467,6 +475,13 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setDispatcherImpl(String dispatcherImpl) {
         this.dispatcherImpl = dispatcherImpl;
+    }
+    public boolean isIncludeRTsEnabled() {
+        return this.includeRTsEnabled;
+    }
+
+    protected final void setIncludeRTsEnbled(boolean enabled) {
+        this.includeRTsEnabled = enabled;
     }
 
     @Override
