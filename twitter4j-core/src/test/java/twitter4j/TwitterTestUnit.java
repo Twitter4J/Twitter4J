@@ -579,8 +579,6 @@ public class TwitterTestUnit extends TwitterTestBase {
         }
 
         twitterAPI1.updateDeliveryDevice(Device.SMS);
-        System.out.println("1---:" + bestFriend1.screenName);
-        System.out.println("2---:" + bestFriend2.screenName);
         assertTrue(twitterAPIBestFriend1.existsFriendship(bestFriend1.screenName, bestFriend2.screenName));
         assertFalse(twitterAPI1.existsFriendship(id1.screenName, "al3x"));
 
