@@ -636,7 +636,15 @@ public class DAOTest extends TwitterTestBase {
         assertNotNull(place.getGeometryType());
         assertNotNull(place.getGeometryCoordinates());
 
+        // Test that a geo object with geometry type "Point" works.
+        place = new PlaceJSONImpl(getJSONObjectFromClassPath("/3c6797665e2d42eb.json"), null);
+        assertEquals(place.getGeometryType(), "Point");
+        assertNotNull(place.getGeometryCoordinates());
 
+        place = new PlaceJSONImpl(getJSONObjectFromClassPath("/c3f37afa9efcf94b.json"), null);
+        // MultiPolygon is not supported by twitter4j yet, so we set geometryType to null
+        assertNull(place.getGeometryType());
+        assertNull(place.getGeometryCoordinates());
     }
 
     public void testDirectMessagesAsJSON() throws Exception {
