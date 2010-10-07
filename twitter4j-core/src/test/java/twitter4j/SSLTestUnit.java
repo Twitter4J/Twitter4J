@@ -29,7 +29,7 @@ package twitter4j;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class SSLTestUnit extends TwitterTestUnit {
+public class SSLTestUnit extends TwitterTest {
     public SSLTestUnit(String name) {
         super(name);
     }

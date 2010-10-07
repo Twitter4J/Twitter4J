@@ -26,19 +26,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-import junit.framework.TestCase;
 import twitter4j.StatusStream;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterTestBase;
-import twitter4j.TwitterTestUnit;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
-import twitter4j.internal.http.HttpClient;
 import twitter4j.internal.http.HttpClientImpl;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;

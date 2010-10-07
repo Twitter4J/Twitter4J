@@ -159,11 +159,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
     public void testAccountProfileImageUpdates() throws Exception {
         te = null;
-        async1.updateProfileImage(TwitterTestUnit.getRandomlyChosenFile());
+        async1.updateProfileImage(TwitterTest.getRandomlyChosenFile());
         waitForResponse();
         assertNull(te);
         // tile randomly
-        async1.updateProfileBackgroundImage(TwitterTestUnit.getRandomlyChosenFile(),
+        async1.updateProfileBackgroundImage(TwitterTest.getRandomlyChosenFile(),
                 (5 < System.currentTimeMillis() % 5));
         waitForResponse();
         assertNull(te);

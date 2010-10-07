@@ -37,9 +37,9 @@ import java.util.List;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class TwitterTestUnit extends TwitterTestBase {
+public class TwitterTest extends TwitterTestBase {
 
-    public TwitterTestUnit(String name) {
+    public TwitterTest(String name) {
         super(name);
     }
 
