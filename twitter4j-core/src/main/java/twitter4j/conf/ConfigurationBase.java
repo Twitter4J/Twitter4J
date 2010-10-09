@@ -76,6 +76,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean includeRTsEnabled;
 
+    private boolean userStreamRepliesAllEnabled;
+
     // hidden portion
     private String clientVersion;
     private String clientURL;
@@ -154,6 +156,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
         setIncludeRTsEnbled(true);
+        setUserStreamRepliesAllEnabled(false);
         IS_DALVIK = Boolean.valueOf(System.getProperty(DALVIK, dalvikDetected));
     }
 
@@ -483,72 +486,97 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     protected final void setIncludeRTsEnbled(boolean enabled) {
         this.includeRTsEnabled = enabled;
     }
+    public boolean isUserStreamRepliesAllEnabled() {
+        return this.userStreamRepliesAllEnabled;
+    }
+
+    protected final void setUserStreamRepliesAllEnabled(boolean enabled) {
+        this.userStreamRepliesAllEnabled = enabled;
+    }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public int hashCode() {
+        int result = (debug ? 1 : 0);
+        result = 31 * result + (source != null ? source.hashCode() : 0);
+        result = 31 * result + (userAgent != null ? userAgent.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (useSSL ? 1 : 0);
+        result = 31 * result + (httpProxyHost != null ? httpProxyHost.hashCode() : 0);
+        result = 31 * result + (httpProxyUser != null ? httpProxyUser.hashCode() : 0);
+        result = 31 * result + (httpProxyPassword != null ? httpProxyPassword.hashCode() : 0);
+        result = 31 * result + httpProxyPort;
+        result = 31 * result + httpConnectionTimeout;
+        result = 31 * result + httpReadTimeout;
+        result = 31 * result + httpStreamingReadTimeout;
+        result = 31 * result + httpRetryCount;
+        result = 31 * result + httpRetryIntervalSeconds;
+        result = 31 * result + maxTotalConnections;
+        result = 31 * result + defaultMaxPerRoute;
+        result = 31 * result + (oAuthConsumerKey != null ? oAuthConsumerKey.hashCode() : 0);
+        result = 31 * result + (oAuthConsumerSecret != null ? oAuthConsumerSecret.hashCode() : 0);
+        result = 31 * result + (oAuthAccessToken != null ? oAuthAccessToken.hashCode() : 0);
+        result = 31 * result + (oAuthAccessTokenSecret != null ? oAuthAccessTokenSecret.hashCode() : 0);
+        result = 31 * result + (oAuthRequestTokenURL != null ? oAuthRequestTokenURL.hashCode() : 0);
+        result = 31 * result + (oAuthAuthorizationURL != null ? oAuthAuthorizationURL.hashCode() : 0);
+        result = 31 * result + (oAuthAccessTokenURL != null ? oAuthAccessTokenURL.hashCode() : 0);
+        result = 31 * result + (oAuthAuthenticationURL != null ? oAuthAuthenticationURL.hashCode() : 0);
+        result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
+        result = 31 * result + (searchBaseURL != null ? searchBaseURL.hashCode() : 0);
+        result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
+        result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
+        result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
+        result = 31 * result + asyncNumThreads;
+        result = 31 * result + (includeRTsEnabled ? 1 : 0);
+        result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
+        result = 31 * result + (clientVersion != null ? clientVersion.hashCode() : 0);
+        result = 31 * result + (clientURL != null ? clientURL.hashCode() : 0);
+        result = 31 * result + (IS_DALVIK ? 1 : 0);
+        result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
+        return result;
+    }
 
-        ConfigurationBase that = (ConfigurationBase) o;
-
-        if (IS_DALVIK != that.IS_DALVIK) return false;
-        if (asyncNumThreads != that.asyncNumThreads) return false;
-        if (debug != that.debug) return false;
-        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
-        if (httpProxyPort != that.httpProxyPort) return false;
-        if (httpReadTimeout != that.httpReadTimeout) return false;
-        if (httpRetryCount != that.httpRetryCount) return false;
-        if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds)
-            return false;
-        if (httpStreamingReadTimeout != that.httpStreamingReadTimeout)
-            return false;
-        if (useSSL != that.useSSL) return false;
-        if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null)
-            return false;
-        if (clientVersion != null ? !clientVersion.equals(that.clientVersion) : that.clientVersion != null)
-            return false;
-        if (dispatcherImpl != null ? !dispatcherImpl.equals(that.dispatcherImpl) : that.dispatcherImpl != null)
-            return false;
-        if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
-            return false;
-        if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
-            return false;
-        if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
-            return false;
-        if (oAuthAccessToken != null ? !oAuthAccessToken.equals(that.oAuthAccessToken) : that.oAuthAccessToken != null)
-            return false;
-        if (oAuthAccessTokenSecret != null ? !oAuthAccessTokenSecret.equals(that.oAuthAccessTokenSecret) : that.oAuthAccessTokenSecret != null)
-            return false;
-        if (oAuthAccessTokenURL != null ? !oAuthAccessTokenURL.equals(that.oAuthAccessTokenURL) : that.oAuthAccessTokenURL != null)
-            return false;
-        if (oAuthAuthenticationURL != null ? !oAuthAuthenticationURL.equals(that.oAuthAuthenticationURL) : that.oAuthAuthenticationURL != null)
-            return false;
-        if (oAuthAuthorizationURL != null ? !oAuthAuthorizationURL.equals(that.oAuthAuthorizationURL) : that.oAuthAuthorizationURL != null)
-            return false;
-        if (oAuthConsumerKey != null ? !oAuthConsumerKey.equals(that.oAuthConsumerKey) : that.oAuthConsumerKey != null)
-            return false;
-        if (oAuthConsumerSecret != null ? !oAuthConsumerSecret.equals(that.oAuthConsumerSecret) : that.oAuthConsumerSecret != null)
-            return false;
-        if (oAuthRequestTokenURL != null ? !oAuthRequestTokenURL.equals(that.oAuthRequestTokenURL) : that.oAuthRequestTokenURL != null)
-            return false;
-        if (password != null ? !password.equals(that.password) : that.password != null)
-            return false;
-        if (requestHeaders != null ? !requestHeaders.equals(that.requestHeaders) : that.requestHeaders != null)
-            return false;
-        if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null)
-            return false;
-        if (searchBaseURL != null ? !searchBaseURL.equals(that.searchBaseURL) : that.searchBaseURL != null)
-            return false;
-        if (source != null ? !source.equals(that.source) : that.source != null)
-            return false;
-        if (streamBaseURL != null ? !streamBaseURL.equals(that.streamBaseURL) : that.streamBaseURL != null)
-            return false;
-        if (user != null ? !user.equals(that.user) : that.user != null)
-            return false;
-        if (userAgent != null ? !userAgent.equals(that.userAgent) : that.userAgent != null)
-            return false;
-
-        return true;
+    @Override
+    public String toString() {
+        return "ConfigurationBase{" +
+                "debug=" + debug +
+                ", source='" + source + '\'' +
+                ", userAgent='" + userAgent + '\'' +
+                ", user='" + user + '\'' +
+                ", password='" + password + '\'' +
+                ", useSSL=" + useSSL +
+                ", httpProxyHost='" + httpProxyHost + '\'' +
+                ", httpProxyUser='" + httpProxyUser + '\'' +
+                ", httpProxyPassword='" + httpProxyPassword + '\'' +
+                ", httpProxyPort=" + httpProxyPort +
+                ", httpConnectionTimeout=" + httpConnectionTimeout +
+                ", httpReadTimeout=" + httpReadTimeout +
+                ", httpStreamingReadTimeout=" + httpStreamingReadTimeout +
+                ", httpRetryCount=" + httpRetryCount +
+                ", httpRetryIntervalSeconds=" + httpRetryIntervalSeconds +
+                ", maxTotalConnections=" + maxTotalConnections +
+                ", defaultMaxPerRoute=" + defaultMaxPerRoute +
+                ", oAuthConsumerKey='" + oAuthConsumerKey + '\'' +
+                ", oAuthConsumerSecret='" + oAuthConsumerSecret + '\'' +
+                ", oAuthAccessToken='" + oAuthAccessToken + '\'' +
+                ", oAuthAccessTokenSecret='" + oAuthAccessTokenSecret + '\'' +
+                ", oAuthRequestTokenURL='" + oAuthRequestTokenURL + '\'' +
+                ", oAuthAuthorizationURL='" + oAuthAuthorizationURL + '\'' +
+                ", oAuthAccessTokenURL='" + oAuthAccessTokenURL + '\'' +
+                ", oAuthAuthenticationURL='" + oAuthAuthenticationURL + '\'' +
+                ", restBaseURL='" + restBaseURL + '\'' +
+                ", searchBaseURL='" + searchBaseURL + '\'' +
+                ", streamBaseURL='" + streamBaseURL + '\'' +
+                ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
+                ", dispatcherImpl='" + dispatcherImpl + '\'' +
+                ", asyncNumThreads=" + asyncNumThreads +
+                ", includeRTsEnabled=" + includeRTsEnabled +
+                ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +
+                ", clientVersion='" + clientVersion + '\'' +
+                ", clientURL='" + clientURL + '\'' +
+                ", IS_DALVIK=" + IS_DALVIK +
+                ", requestHeaders=" + requestHeaders +
+                '}';
     }
 
     static String fixURL(boolean useSSL, String url) {

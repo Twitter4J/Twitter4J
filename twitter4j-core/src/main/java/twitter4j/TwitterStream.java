@@ -287,6 +287,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
         }
         try {
             return new StatusStreamImpl(http.get(conf.getUserStreamBaseURL () + "user.json"
+                    + (conf.isUserStreamRepliesAllEnabled() ? "?replies=all" : "")
                     , auth));
         } catch (IOException e) {
             throw new TwitterException(e);
