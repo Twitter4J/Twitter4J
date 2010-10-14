@@ -770,6 +770,14 @@ public class TwitterTest extends TwitterTestBase {
         Trends trends = twitterAPI1.getLocationTrends(locations.get(0).getWoeid());
         assertEquals(locations.get(0), trends.getLocation());
         assertTrue(trends.getTrends().length > 0);
+
+        try {
+            trends = twitterAPI1.getLocationTrends(2345889/*woeid of Tokyo*/);
+            fail("should fail.");
+        } catch (Exception ignore) {
+        }
+        assertEquals(locations.get(0), trends.getLocation());
+        assertTrue(trends.getTrends().length > 0);
     }
 
     RateLimitStatus rateLimitStatus = null;

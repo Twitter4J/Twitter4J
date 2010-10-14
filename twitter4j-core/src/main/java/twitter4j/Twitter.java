@@ -32,6 +32,7 @@ import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 
 import static twitter4j.internal.http.HttpParameter.*;
@@ -1556,7 +1557,14 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         try {
             HttpResponse res = http.get(conf.getRestBaseURL()
                     + "trends/" + woeid + ".json", auth);
-            return TrendsJSONImpl.createTrends(res.asJSONArray().getJSONObject(0), res);
+            JSONArray array = res.asJSONArray();
+            if (array.length() > 0) {
+                return TrendsJSONImpl.createTrends(res.asJSONArray().getJSONObject(0), res);
+            }
+            else{
+                throw new TwitterException("No trends found on woeid-" + woeid + "\n", res);
+            }
+            
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
