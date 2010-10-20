@@ -49,7 +49,8 @@ public abstract class Logger {
         } catch (InstantiationException e) {
             throw new AssertionError(e);
         } catch (IllegalAccessException ignore) {
-        } catch (AccessControlException ignore) {
+        } catch (SecurityException ignore) {
+            // Unsigned applets are not allowed to access System properties
         }
         // use SLF4J if it's found in the classpath
         if (null == loggerFactory) {

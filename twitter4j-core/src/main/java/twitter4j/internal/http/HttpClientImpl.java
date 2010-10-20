@@ -79,7 +79,8 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                 // it must be an Android/Dalvik/Harmony side issue!!!!
                 System.setProperty("http.keepAlive", "false");
             }
-        } catch (AccessControlException ace) {
+        }catch(SecurityException ignore){
+            // Unsigned applets are not allowed to access System properties
             isJDK14orEarlier = true;
         }
     }

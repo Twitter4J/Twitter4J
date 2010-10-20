@@ -157,7 +157,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         setIncludeRTsEnbled(true);
         setUserStreamRepliesAllEnabled(false);
-        IS_DALVIK = Boolean.valueOf(System.getProperty(DALVIK, dalvikDetected));
+        String isDalvik;
+        try {
+            isDalvik = System.getProperty(DALVIK, dalvikDetected);
+        }catch(SecurityException ignore){
+            // Unsigned applets are not allowed to access System properties
+            isDalvik = dalvikDetected;
+        }
+        IS_DALVIK = Boolean.valueOf(isDalvik);
     }
 
 

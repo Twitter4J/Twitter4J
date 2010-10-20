@@ -107,12 +107,12 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     PropertyConfiguration(String treePath) {
         super();
-        Properties props = null;
+        Properties props;
         // load from system properties
         try {
             props = (Properties)System.getProperties().clone();
             normalize(props);
-        } catch (AccessControlException ace) {
+        }catch(SecurityException ignore){
             // Unsigned applets are not allowed to access System properties
             props = new Properties();
         }
