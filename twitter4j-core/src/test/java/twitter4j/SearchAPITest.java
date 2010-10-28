@@ -117,10 +117,10 @@ public class SearchAPITest extends TwitterTestBase {
         queryResult = unauthenticated.search(query);
         assertTrue(0 <= queryResult.getTweets().size());
 
-        query = new Query("from:beastieboys");
+        query = new Query("from:twit4j");
         query.setSinceId(1671199128);
         queryResult = unauthenticated.search(query);
-        assertEquals(0, queryResult.getTweets().size());
+        assertTrue(0 < queryResult.getTweets().size());
 
         query = new Query("\\u5e30%u5e30 <%}& foobar").rpp(100).page(1);
         QueryResult result = twitterAPI1.search(query);
