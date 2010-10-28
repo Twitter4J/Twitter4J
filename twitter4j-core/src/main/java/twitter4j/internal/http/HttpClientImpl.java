@@ -96,6 +96,9 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         setReadTimeout(conf.getHttpReadTimeout());
         setRetryCount(conf.getHttpRetryCount());
         setRetryIntervalSeconds(conf.getHttpRetryIntervalSeconds());
+        if(isProxyConfigured() && isJDK14orEarlier){
+            logger.warn("HTTP Proxy is not supported on JDK1.4 or earlier. Try twitter4j-httpclient-supoprt artifact");
+        }
     }
 
     public void shutdown() {
@@ -378,7 +381,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
 
     private HttpURLConnection getConnection(String url) throws IOException {
         HttpURLConnection con = null;
-        if (proxyHost != null && !proxyHost.equals("")) {
+        if (isProxyConfigured() && !isJDK14orEarlier) {
             if (proxyAuthUser != null && !proxyAuthUser.equals("")) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Proxy AuthUser: " + proxyAuthUser);
@@ -415,6 +418,10 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
             con.setReadTimeout(readTimeout);
         }
         return con;
+    }
+
+    private boolean isProxyConfigured(){
+        return proxyHost != null && !proxyHost.equals("");
     }
 
     @Override
