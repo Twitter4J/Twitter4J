@@ -81,9 +81,9 @@ public interface UserMethodsAsync {
 
     /**
      * Access to Twitter's suggested user list. This returns the list of suggested user categories. The category can be used in the users/suggestions/category endpoint to get the users in that category.
-     * <br>This method calls http://api.twitter.com/1/users/suggestions.json
+     * <br>This method calls http://api.twitter.com/1/users/suggestions/:slug.json
      * @since Twitter4J 2.1.1
-     * @see <a href="http://dev.twitter.com/doc/get/users/suggestions">GET users/suggestions | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/get/users/suggestions/:slug">GET users/suggestions/:slug | dev.twitter.com</a>
      */
     void getSuggestedUserCategories();
 

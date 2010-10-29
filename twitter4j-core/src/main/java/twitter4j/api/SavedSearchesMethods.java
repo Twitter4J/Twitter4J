@@ -53,7 +53,7 @@ public interface SavedSearchesMethods
 	 * @return the data for a saved search
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.8
-     * @see <a href="http://dev.twitter.com/doc/get/saved_searches/show">GET saved_searches/show | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/get/saved_searches/show/:id">GET saved_searches/show/:id | dev.twitter.com</a>
 	 */
     SavedSearch showSavedSearch(int id) throws TwitterException;
 
@@ -76,7 +76,7 @@ public interface SavedSearchesMethods
 	 * @return the data for a destroyed saved search
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.8
-     * @see <a href="http://dev.twitter.com/doc/post/saved_searches/destroy">POST saved_searches/destroy | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/saved_searches/destroy/:id">POST saved_searches/destroy/:id | dev.twitter.com</a>
 	 */
 	SavedSearch destroySavedSearch(int id)
 			throws TwitterException;

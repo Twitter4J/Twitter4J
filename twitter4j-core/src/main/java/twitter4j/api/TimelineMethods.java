@@ -245,4 +245,28 @@ public interface TimelineMethods {
      * @since Twitter4J 2.0.10
      */
     ResponseList<Status> getRetweetedToMe(Paging paging) throws TwitterException;
+
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
+     *
+     * @return the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets_of_me">GET statuses/retweets_of_me | dev.twitter.com</a>
+     * @since Twitter4J 2.0.10
+     */
+    ResponseList<Status> getRetweetsOfMe() throws TwitterException;
+
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
+     *
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @return the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets_of_me">GET statuses/retweets_of_me | dev.twitter.com</a>
+     * @since Twitter4J 2.0.10
+     */
+    ResponseList<Status> getRetweetsOfMe(Paging paging) throws TwitterException;
+
 }

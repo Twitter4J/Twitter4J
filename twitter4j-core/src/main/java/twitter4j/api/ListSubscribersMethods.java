@@ -69,7 +69,7 @@ public interface ListSubscribersMethods {
 	 * @param listId The id of the list.
 	 * @return the updated list
 	 * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/delete/:user/:id/subscribers">DELETE :user/:id/subscribers | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/delete/:user/:list_id/subscribers">DELETE :user/:list_id/subscribers | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.0
 	 */
 	UserList unsubscribeUserList(String listOwnerScreenName, int listId)

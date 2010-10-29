@@ -118,7 +118,7 @@ public interface DirectMessageMethods {
 	 * @param id the ID of the direct message to destroy
 	 * @return the deleted direct message
 	 * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy">POST direct_messages/destroy | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | dev.twitter.com</a>
 	 * @since Twitter4J 2.0.1
 	 */
 	DirectMessage destroyDirectMessage(int id)

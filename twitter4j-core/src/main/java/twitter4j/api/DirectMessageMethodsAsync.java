@@ -89,7 +89,7 @@ public interface DirectMessageMethodsAsync {
      * Destroys the direct message specified in the required ID parameter. The authenticating user must be the recipient of the specified direct message.
 	 * <br>This method calls http://api.twitter.com/1/direct_messages/destroy
 	 * @param id int
-     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy">POST direct_messages/destroy | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | dev.twitter.com</a>
 	 * @since Twitter4J 2.0.1
 	 */
 	void destroyDirectMessage(int id);

@@ -44,7 +44,7 @@ public interface FriendshipMethods {
 	 * @return the befriended user
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.1
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
 	 */
 	User createFriendship(String screenName)
 			throws TwitterException;
@@ -58,7 +58,7 @@ public interface FriendshipMethods {
 	 * @return the befriended user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.1.0
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
 	 */
 	User createFriendship(int userId)
 			throws TwitterException;
@@ -72,7 +72,7 @@ public interface FriendshipMethods {
 	 * @return the befriended user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.2
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
 	 */
 	User createFriendship(String screenName, boolean follow)
 			throws TwitterException;
@@ -87,7 +87,7 @@ public interface FriendshipMethods {
 	 * @return the befriended user
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.1.0
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
 	 */
 	User createFriendship(int userId, boolean follow)
 			throws TwitterException;

@@ -68,7 +68,7 @@ public interface ListMembersMethods {
 	 * @param userId The screen name of the member you wish to remove from the list.
 	 * @return the updated list
 	 * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/delete/:user/:id/members">DELETE :user/:id/members | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/delete/:user/:list_id/members">DELETE :user/:id/members | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.0
 	 */
     UserList deleteUserListMember(int listId, int userId)

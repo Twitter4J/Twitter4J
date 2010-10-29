@@ -56,7 +56,7 @@ public interface ListMembersMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/[listOwner]/[listId]/members.json
      * @param listId The id of the list.
      * @param userId The screen name of the member you wish to remove from the list.
-     * @see <a href="http://dev.twitter.com/doc/delete/:user/:id/members">DELETE :user/:id/members | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/delete/:user/:list_id/members">DELETE :user/:id/members | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
     void deleteUserListMember(int listId, int userId);

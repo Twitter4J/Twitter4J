@@ -63,7 +63,7 @@ public interface LocalTrendsMethods {
      * @param woeid The WOEID of the location to be querying for
      * @return trends
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/location/:woeid">GET trends/location/:woeid | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/get/trends/:woeid">GET trends/:woeid | dev.twitter.com</a>
 	 * @since Twitter4J 2.1.1
 	 */
     Trends getLocationTrends(int woeid) throws TwitterException;

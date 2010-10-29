@@ -38,7 +38,7 @@ public interface FriendshipMethodsAsync {
 	 *
 	 * @param screenName the screen name of the user to be befriended
 	 * @since Twitter4J 2.0.1
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
 	 */
 	void createFriendship(String screenName);
 
@@ -49,7 +49,7 @@ public interface FriendshipMethodsAsync {
 	 *
 	 * @param userId the ID of the user to be befriended
 	 * @since Twitter4J 2.1.0
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
 	 */
 	void createFriendship(int userId);
 
@@ -61,7 +61,7 @@ public interface FriendshipMethodsAsync {
 	 * @param screenName the screen name of the user to be befriended
 	 * @param follow Enable notifications for the target user in addition to becoming friends.
 	 * @since Twitter4J 2.0.1
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
 	 */
 	void createFriendship(String screenName, boolean follow);
 
@@ -73,7 +73,7 @@ public interface FriendshipMethodsAsync {
 	 * @param userId the ID of the user to be befriended
 	 * @param follow Enable notifications for the target user in addition to becoming friends.
 	 * @since Twitter4J 2.1.0
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create/:id">POST friendships/create/:id | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
 	 */
 	void createFriendship(int userId, boolean follow);
 

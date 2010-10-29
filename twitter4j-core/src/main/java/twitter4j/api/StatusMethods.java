@@ -39,29 +39,6 @@ import twitter4j.User;
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
 public interface StatusMethods {
-    /**
-     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
-     *
-     * @return the 20 most recent tweets of the authenticated user that have been retweeted by others.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets_of_me">GET statuses/retweets_of_me | dev.twitter.com</a>
-     * @since Twitter4J 2.0.10
-     */
-    ResponseList<Status> getRetweetsOfMe() throws TwitterException;
-
-    /**
-     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
-     *
-     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
-     * @return the 20 most recent tweets of the authenticated user that have been retweeted by others.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets_of_me">GET statuses/retweets_of_me | dev.twitter.com</a>
-     * @since Twitter4J 2.0.10
-     */
-    ResponseList<Status> getRetweetsOfMe(Paging paging) throws TwitterException;
-
 	/**
      * Returns a single status, specified by the id parameter below. The status's author will be returned inline.
 	 * <br>This method calls http://api.twitter.com/1/statuses/show
@@ -70,7 +47,7 @@ public interface StatusMethods {
 	 * @return a single status
 	 * @throws twitter4j.TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.1
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/show">GET statuses/show | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/show/:id">GET statuses/show/:id | dev.twitter.com</a>
 	 */
 	Status showStatus(long id) throws TwitterException;
 
@@ -151,7 +128,7 @@ public interface StatusMethods {
 	 * @return the deleted status
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since 1.0.5
-     * @see <a href="http://dev.twitter.com/doc/post/statuses/destroy">POST statuses/destroy | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/post/statuses/destroy/:id">POST statuses/destroy/:id | dev.twitter.com</a>
 	 */
     Status destroyStatus(long statusId) throws TwitterException;
 
@@ -175,13 +152,13 @@ public interface StatusMethods {
 	 * @return the retweets of a given tweet
 	 * @throws TwitterException when Twitter service or network is unavailable
 	 * @since Twitter4J 2.0.10
-	 * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets">Tweets Resources › statuses/retweets</a>
+	 * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets/:id">Tweets Resources › statuses/retweets/:id</a>
 	 */
     ResponseList<Status> getRetweets(long statusId) throws TwitterException;
 
     /**
      * Show user objects of up to 100 members who retweeted the status.
-     * <br>This method calls http://api.twitter.com/1/statuses/id/retweeted_by
+     * <br>This method calls http://api.twitter.com/1/statuses/:id/retweeted_by
      * @param statusId The ID of the status you want to get retweeters of
      * @return the list of users who retweeted your status
      * @throws TwitterException when Twitter service or network is unavailable
@@ -192,7 +169,7 @@ public interface StatusMethods {
 
     /**
      * Show user objects of up to 100 members who retweeted the status.
-     * <br>This method calls http://api.twitter.com/1/statuses/id/retweeted_by
+     * <br>This method calls http://api.twitter.com/1/statuses/:id/retweeted_by
      * @param statusId The ID of the status you want to get retweeters of
      * @param paging specify your paging requirements
      * @return the list of users who retweeted your status
@@ -205,7 +182,7 @@ public interface StatusMethods {
 
     /**
      * Show user ids of up to 100 users who retweeted the status represented by id
-     * <br />This method calls http://api.twitter.com/1/statuses/id/retweeted_by/ids.format
+     * <br />This method calls http://api.twitter.com/1/statuses/:id/retweeted_by/ids.format
      * @param statusId The ID of the status you want to get retweeters of
      * @return IDs of users who retweeted the stats
      * @throws TwitterException when Twitter service or network is unavailable
@@ -216,7 +193,7 @@ public interface StatusMethods {
 
     /**
      * Show user ids of up to 100 users who retweeted the status.
-     * <br />This method calls http://api.twitter.com/1/statuses/id/retweeted_by/ids.format
+     * <br />This method calls http://api.twitter.com/1/statuses/:id/retweeted_by/ids.format
      * @param statusId The ID of the status you want to get retweeters of
      * @param paging specify your paging requirements
      * @return IDs of users who retweeted the stats

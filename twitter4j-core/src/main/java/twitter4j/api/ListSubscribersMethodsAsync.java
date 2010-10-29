@@ -57,7 +57,7 @@ public interface ListSubscribersMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/:listOwner/:listId/subscribers.json
      * @param listOwnerScreenName The screen name of the list owner
      * @param listId The id of the list.
-     * @see <a href="http://dev.twitter.com/doc/delete/:user/:id/subscribers">DELETE :user/:id/subscribers | dev.twitter.com</a>
+     * @see <a href="http://dev.twitter.com/doc/delete/:user/:list_id/subscribers">DELETE :user/:list_id/subscribers | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
     void unsubscribeUserList(String listOwnerScreenName, int listId);
