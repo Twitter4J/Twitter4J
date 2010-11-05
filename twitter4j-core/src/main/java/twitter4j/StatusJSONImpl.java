@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -47,6 +48,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
+    private static final Logger logger = Logger.getLogger(StatusJSONImpl.class);
 
     private Date createdAt;
     private long id;
@@ -106,6 +108,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
             try {
                 place = new PlaceJSONImpl(json.getJSONObject("place"), null);
             } catch (JSONException ignore) {
+                ignore.printStackTrace();
+                logger.warn("failed to parse place:" + json);
             }
         }
 
@@ -113,6 +117,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
             try {
                 retweetedStatus = new StatusJSONImpl(json.getJSONObject("retweeted_status"));
             } catch (JSONException ignore) {
+                ignore.printStackTrace();
+                logger.warn("failed to parse retweeted_status:" + json);
             }
         }
         if (!json.isNull("contributors")) {
@@ -123,6 +129,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                     contributors[i] = contributorsArray.getString(i);
                 }
             } catch (JSONException ignore) {
+                ignore.printStackTrace();
+                logger.warn("failed to parse contributors:" + json);
             }
         } else{
             contributors = null;

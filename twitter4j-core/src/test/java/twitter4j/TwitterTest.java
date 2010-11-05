@@ -383,11 +383,16 @@ public class TwitterTest extends TwitterTestBase {
         statuses = twitterAPI1.getRetweets(18594701629l);
         assertIsRetweet(statuses);
         assertTrue(20 < statuses.size());
+
+        List<User> users = twitterAPI1.getRetweetedBy(statuses.get(0).getRetweetedStatus().getId());
+        assertNotNull(users);
+        assertTrue(users.size() > 1);
+
     }
 
     private void assertIsRetweet(List<Status> statuses) {
         for(Status status : statuses){
-            assertTrue(status.isRetweet());
+            assertTrue(status.getText().startsWith("RT "));
         }
     }
 
@@ -905,36 +910,6 @@ public class TwitterTest extends TwitterTestBase {
 
     public void testTest() throws Exception {
         assertTrue(twitterAPI2.test());
-    }
-
-    /**
-     * @since Twitter4J 2.1.3
-     */
-    public void testRetweetedBy() throws Exception {
-
-        // this is the test status id used in the api docs
-        final long testStatusId = 9548214222l;
-        ResponseList<User> users;
-
-        users = twitterAPI1.getRetweetedBy(testStatusId);
-        assertNotNull(users);
-        assertTrue(users.size() > 1);
-        assertEquals("anilparmar", users.get(0).getScreenName());
-
-        Paging paging = new Paging();
-        paging.setPage(3);
-        paging.setCount(1);
-
-        users = twitterAPI1.getRetweetedBy(testStatusId, paging);
-        assertTrue(users.size() >= 0);
-
-        IDs ids = twitterAPI1.getRetweetedByIDs(testStatusId);
-        assertNotNull(ids);
-        assertTrue(ids.getIDs().length > 0);
-        assertEquals(ids.getIDs()[0], 16758065);
-
-        ids = twitterAPI1.getRetweetedByIDs(testStatusId, paging);
-        assertTrue(ids.getIDs().length >= 0);
     }
 
     public void testEntities() throws Exception {
