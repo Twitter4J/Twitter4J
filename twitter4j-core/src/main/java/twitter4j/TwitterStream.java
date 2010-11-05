@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * A java representation of the <a href="http://apiwiki.twitter.com/Streaming-API-Documentation">Twitter Streaming API</a><br>
+ * A java representation of the <a href="http://dev.twitter.com/pages/streaming_api_methods">Streaming API: Methods</a><br>
  * Note that this class is NOT compatible with Google App Engine as GAE is not capable of handling requests longer than 30 seconds.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -103,7 +103,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      *
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/firehose">Twitter API Wiki / Streaming API Documentation - firehose</a>
+     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-firehose">Streaming API: Methods statuses/firehose</a>
      * @since Twitter4J 2.0.4
      */
     public void firehose(final int count) {
@@ -122,7 +122,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/firehose">Twitter API Wiki / Streaming API Documentation - firehose</a>
+     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-firehose">Streaming API: Methods statuses/firehose</a>
      * @since Twitter4J 2.0.4
      */
     public StatusStream getFirehoseStream(int count) throws TwitterException {
@@ -135,7 +135,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      *
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/links">Twitter API Wiki / Streaming API Documentation - links</a>
+     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-links">Streaming API: Methods statuses/links</a>
      * @since Twitter4J 2.1.1
      */
     public void links(final int count) {
@@ -154,7 +154,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/links">Twitter API Wiki / Streaming API Documentation - links</a>
+     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-links">Streaming API: Methods statuses/links</a>
      * @since Twitter4J 2.1.1
      */
     public StatusStream getLinksStream(int count) throws TwitterException {
@@ -193,7 +193,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      * Starts listening on all retweets. The retweet stream is not a generally available resource. Few applications require this level of access. Creative use of a combination of other resources and various access levels can satisfy nearly every application use case. As of 9/11/2009, the site-wide retweet feature has not yet launched, so there are currently few, if any, retweets on this stream.
      *
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/retweet">Twitter API Wiki / Streaming API Documentation - retweet</a>
+     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-retweet">Streaming API: Methods statuses/retweet</a>
      * @since Twitter4J 2.0.10
      */
     public void retweet() {
@@ -211,8 +211,8 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/retweet">Twitter API Wiki / Streaming API Documentation - retweet</a>
-     * @since Twitter4J 2.0.10
+     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-retweet">Streaming API: Methods statuses/retweet</a>
+      * @since Twitter4J 2.0.10
      */
     public StatusStream getRetweetStream() throws TwitterException {
         ensureAuthorizationEnabled();
@@ -228,7 +228,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      * Starts listening on random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
      *
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/sample">Twitter API Wiki / Streaming API Documentation - sample</a>
+     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-sample">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
      */
     public void sample() {
@@ -246,7 +246,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#Sampling">Twitter API Wiki / Streaming API Documentation - Sampling</a>
+     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-sample">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
      */
     public StatusStream getSampleStream() throws TwitterException {
@@ -260,9 +260,8 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     }
 
     /**
-     * User Stream is currently in beta.<br>
-     * Read through and follow the doc! Do not release products using UserStream during the preview / beta period.
-     * @see <a href="http://apiwiki.twitter.com/ChirpUserStreams">Twitter API Wiki / ChirpUserStreams</a>
+     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
+     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
      */
    public void user() {
         ensureAuthorizationEnabled();
@@ -274,11 +273,10 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     }
 
     /**
-     * User Stream is currently in beta.<br>
-     * Read through and follow the doc! Do not release products using UserStream during the preview / beta period.
+     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
      * @return UserStream
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://apiwiki.twitter.com/ChirpUserStreams">Twitter API Wiki / ChirpUserStreams</a>
+     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
      */
     public UserStream getUserStream() throws TwitterException {
         ensureAuthorizationEnabled();
@@ -300,7 +298,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      *
      * @param query Filter query
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
+     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-filter">Streaming API: Methods statuses/filter</a>
      * @since Twitter4J 2.1.2
      */
     public void filter(final FilterQuery query) throws TwitterException {
@@ -377,7 +375,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
 
     private synchronized void startHandler(StreamHandlingThread handler) {
-        cleanup();
+        cleanUp();
         if (null == statusListener) {
             throw new IllegalStateException("StatusListener is not set.");
         }
@@ -386,7 +384,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     }
 
     private synchronized void startUserStreamHandler(StreamHandlingThread handler) {
-        cleanup();
+        cleanUp();
         if (null == statusListener) {
             throw new IllegalStateException("UserStreamListener is not set.");
         }
@@ -397,13 +395,23 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
         this.handler.start();
     }
 
-    public synchronized void cleanup() {
+    /**
+     * start closing internal stream consuming thread
+     */
+    public synchronized void cleanUp(){
         if (null != handler) {
             try {
                 handler.close();
             } catch (IOException ignore) {
             }
         }
+    }
+
+    /**
+     * @deprecated use #cleanUp instead
+     */
+    public void cleanup() {
+        cleanUp();
     }
 
     public void setStatusListener(StatusListener statusListener) {
