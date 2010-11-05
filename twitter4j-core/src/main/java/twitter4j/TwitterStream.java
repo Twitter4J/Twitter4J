@@ -35,6 +35,8 @@ import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.logging.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +50,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     private final HttpClientWrapper http;
     private static final Logger logger = Logger.getLogger(TwitterStream.class);
 
-    private StatusListener statusListener;
+    private List<StatusListener> statusListeners = new ArrayList<StatusListener>(0);
     private StreamHandlingThread handler = null;
 
     private static final long serialVersionUID = -762817147320767897L;
@@ -85,7 +87,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public TwitterStream(String screenName, String password, StatusListener listener) {
         super(ConfigurationContext.getInstance(), screenName, password);
-        this.statusListener = listener;
+        this.statusListeners.add(listener);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
     }
 
@@ -93,7 +95,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     TwitterStream(Configuration conf, Authorization auth, StatusListener listener) {
         super(conf, auth);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
-        this.statusListener = listener;
+        this.statusListeners.add(listener);
     }
 
     /* Streaming API */
@@ -280,7 +282,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public UserStream getUserStream() throws TwitterException {
         ensureAuthorizationEnabled();
-        if (!(statusListener instanceof UserStreamListener)) {
+        if (!(statusListeners instanceof UserStreamListener)) {
             logger.warn("Use of UserStreamListener is suggested.");
         }
         try {
@@ -376,7 +378,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
     private synchronized void startHandler(StreamHandlingThread handler) {
         cleanUp();
-        if (null == statusListener) {
+        if (null == statusListeners) {
             throw new IllegalStateException("StatusListener is not set.");
         }
         this.handler = handler;
@@ -385,10 +387,10 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
     private synchronized void startUserStreamHandler(StreamHandlingThread handler) {
         cleanUp();
-        if (null == statusListener) {
+        if (null == statusListeners) {
             throw new IllegalStateException("UserStreamListener is not set.");
         }
-        if (!(statusListener instanceof UserStreamListener)) {
+        if (!(statusListeners instanceof UserStreamListener)) {
             throw new IllegalStateException("UserStreamListener is not set.");
         }
         this.handler = handler;
@@ -414,12 +416,42 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
         cleanUp();
     }
 
-    public void setStatusListener(StatusListener statusListener) {
-        this.statusListener = statusListener;
+    /**
+     * Clear existing listeners and sets a StatusListener
+     * @param statusListeners listener to be set
+     * @deprecated use #addStatusListener instead.
+     */
+    public void setStatusListener(StatusListener statusListeners) {
+        this.statusListeners.clear();
+        addStatusListener(statusListeners);
     }
 
-    public void setUserStreamListener(UserStreamListener statusListener) {
-        this.statusListener = statusListener;
+    /**
+     *
+     * @param statusListener listener to be added
+     * @since Twitter4J 2.1.7
+     */
+    public void addStatusListener(StatusListener statusListener) {
+        this.statusListeners.add(statusListener);
+    }
+
+    /**
+     * Clear existing listeners and sets a UserStreamListener
+     * @param userStreamListener listener to be set
+     * @deprecated use #addStatusListener instead
+     */
+    public void setUserStreamListener(UserStreamListener userStreamListener) {
+        this.statusListeners.clear();
+        addUserStreamListener(userStreamListener);
+    }
+
+    /**
+     *
+     * @param userStreamListener listener to be added
+     * @since Twitter4J 2.1.7
+     */
+    public void addUserStreamListener(UserStreamListener userStreamListener){
+        this.statusListeners.add(userStreamListener);
     }
 
     /*
@@ -437,9 +469,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     private static final int NO_WAIT = 0;
 
     abstract class StreamHandlingThread extends Thread {
-        private StatusStream stream = null;
-        private UserStreamListener userStreamListener;
-        private final boolean handleUserStream;
+        private StatusStreamImpl stream = null;
         private static final String NAME = "Twitter Stream Handling Thread";
         private boolean closed = false;
 
@@ -449,8 +479,6 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
         StreamHandlingThread(boolean handleUserStream) {
             super(NAME + "[initializing]");
-            this.handleUserStream = handleUserStream;
-
         }
 
         public void run() {
@@ -460,16 +488,12 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                     if (!closed && null == stream) {
                         // try establishing connection
                         setStatus("[Establishing connection]");
-                        stream = getStream();
+                        stream = (StatusStreamImpl)getStream();
                         // connection established successfully
                         timeToSleep = NO_WAIT;
                         setStatus("[Receiving stream]");
                         while (!closed) {
-                            if(handleUserStream){
-                                ((UserStream)stream).next((UserStreamListener)statusListener);
-                            }else{
-                                stream.next(statusListener);
-                            }
+                            stream.next(statusListeners);
                         }
                     }
                 } catch (TwitterException te) {
@@ -494,7 +518,9 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                         }
                         stream = null;
                         logger.debug(te.getMessage());
-                        statusListener.onException(te);
+                        for (StatusListener statusListener : statusListeners){
+                            statusListener.onException(te);
+                        }
                     }
 
                 }

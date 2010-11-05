@@ -94,8 +94,8 @@ public final class PrintUserStream implements StatusListener
     private void startConsuming() throws TwitterException {
         // the user() method internally creates a thread which manipulates
         // TwitterStream and calls these adequate listener methods continuously.
-        twitterStream.setStatusListener (this);
-        twitterStream.user ();
+        twitterStream.setStatusListener(this);
+        twitterStream.user();
     }
 
     private Set<Integer> friends;
