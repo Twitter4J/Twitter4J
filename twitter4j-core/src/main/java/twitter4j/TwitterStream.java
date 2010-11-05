@@ -87,15 +87,19 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public TwitterStream(String screenName, String password, StatusListener listener) {
         super(ConfigurationContext.getInstance(), screenName, password);
-        this.statusListeners.add(listener);
+        if (null != listener) {
+            this.statusListeners.add(listener);
+        }
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
     }
 
     /*package*/
     TwitterStream(Configuration conf, Authorization auth, StatusListener listener) {
         super(conf, auth);
+        if (null != listener) {
+            this.statusListeners.add(listener);
+        }
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
-        this.statusListeners.add(listener);
     }
 
     /* Streaming API */
@@ -418,12 +422,12 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
     /**
      * Clear existing listeners and sets a StatusListener
-     * @param statusListeners listener to be set
+     * @param statusListener listener to be set
      * @deprecated use #addStatusListener instead.
      */
-    public void setStatusListener(StatusListener statusListeners) {
+    public void setStatusListener(StatusListener statusListener) {
         this.statusListeners.clear();
-        addStatusListener(statusListeners);
+        addStatusListener(statusListener);
     }
 
     /**
