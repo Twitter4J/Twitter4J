@@ -241,8 +241,11 @@ class StatusStreamImpl implements StatusStream, UserStream {
                 is.close();
             } catch (IOException ignore) {
             }
+            boolean isUnexceptedException = streamAlive;
             streamAlive = false;
-            throw new TwitterException("Stream closed.", ioe);
+            if(isUnexceptedException){
+                throw new TwitterException("Stream closed.", ioe);
+            }
         }
     }
 
@@ -250,6 +253,7 @@ class StatusStreamImpl implements StatusStream, UserStream {
      * {@inheritDoc}
      */
     public void close() throws IOException {
+        streamAlive = false;
         is.close();
         br.close();
         if (null != response) {

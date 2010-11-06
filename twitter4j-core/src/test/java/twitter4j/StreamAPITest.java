@@ -186,7 +186,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
     public void testSamplePush() throws Exception {
         twitterStream.sample();
         waitForStatus();
-        assertNotNull(status.getText());
+        assertTrue(null != status || null != deletionNotice);
         twitterStream.cleanUp();
     }
 

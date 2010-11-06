@@ -525,7 +525,18 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                         timeToSleep = NO_WAIT;
                         setStatus("[Receiving stream]");
                         while (!closed) {
-                            stream.next(statusListeners);
+                            try {
+                                stream.next(statusListeners);
+                            } catch (IllegalStateException ise) {
+                                connected = false;
+                                for (ConnectionLifeCycleListener listener : lifeCycleListeners){
+                                    try{
+                                        listener.onDisconnect();
+                                    }catch (Exception e){
+                                        logger.warn(e.getMessage());
+                                    }
+                                }
+                            }
                         }
                     }
                 } catch (TwitterException te) {
