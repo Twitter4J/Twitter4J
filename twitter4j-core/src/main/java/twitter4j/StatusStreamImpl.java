@@ -239,7 +239,6 @@ class StatusStreamImpl implements StatusStream, UserStream {
                 is.close();
             } catch (IOException ignore) {
             }
-
             streamAlive = false;
             throw new TwitterException("Stream closed.", ioe);
         }

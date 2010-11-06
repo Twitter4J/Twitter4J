@@ -33,7 +33,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
-public class StreamAPITest extends TwitterTestBase implements StatusListener, UserStreamListener {
+public class StreamAPITest extends TwitterTestBase implements StatusListener, UserStreamListener, ConnectionLifeCycleListener {
     protected TwitterStream twitterStream = null;
     protected Twitter protectedTwitter = null;
     protected Properties p = new Properties();
@@ -74,9 +74,17 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
             twitterAPI1.createFriendship(id2.id);
         } catch (TwitterException ignore) {
         }
+        twitterStream.addConnectionLifeCycleListener(this);
+        assertFalse(onConnectCalled);
+        assertFalse(onDisconnectCalled);
+        assertFalse(onCleanUpCalled);
 
         twitterStream.user();
         Thread.sleep(2000);
+        assertTrue(onConnectCalled);
+        assertFalse(onDisconnectCalled);
+        assertFalse(onCleanUpCalled);
+
         Status status = twitterAPI1.updateStatus(new Date() + ": test");
         twitterAPI2.createFavorite(status.getId());
         waitForNotification();
@@ -97,6 +105,13 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
         waitForNotification();
         assertNotNull(this.status);
         assertEquals(this.status.getRetweetedStatus(), status);
+        twitterStream.cleanUp();
+        Thread.sleep(1000);
+
+        assertTrue(onConnectCalled);
+        assertTrue(onDisconnectCalled);
+        assertTrue(onCleanUpCalled);
+
     }
 
     private void clearObjects() {
@@ -281,6 +296,21 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
     public void onDirectMessage(DirectMessage directMessage) {
         this.directMessage = directMessage;
         notifyResponse();
+    }
+    boolean onConnectCalled = false;
+    boolean onDisconnectCalled = false;
+    boolean onCleanUpCalled = false;
+
+    public void onConnect() {
+        onConnectCalled = true;
+    }
+
+    public void onDisconnect() {
+        onDisconnectCalled = true;
+    }
+
+    public void onCleanUp() {
+        onCleanUpCalled = true;
     }
 
     class TestThread extends Thread {

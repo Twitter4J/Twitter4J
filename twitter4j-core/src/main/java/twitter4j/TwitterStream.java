@@ -51,6 +51,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     private static final Logger logger = Logger.getLogger(TwitterStream.class);
 
     private List<StatusListener> statusListeners = new ArrayList<StatusListener>(0);
+    private List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<ConnectionLifeCycleListener>(0);
     private StreamHandlingThread handler = null;
 
     private static final long serialVersionUID = -762817147320767897L;
@@ -286,7 +287,15 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public UserStream getUserStream() throws TwitterException {
         ensureAuthorizationEnabled();
-        if (!(statusListeners instanceof UserStreamListener)) {
+        boolean userStreamListenerFound = false;
+        for (StatusListener listener : statusListeners){
+            if (listener instanceof UserStreamListener) {
+                userStreamListenerFound = true;
+                break;
+            }
+
+        }
+        if (!userStreamListenerFound) {
             logger.warn("Use of UserStreamListener is suggested.");
         }
         try {
@@ -402,7 +411,8 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     }
 
     /**
-     * start closing internal stream consuming thread
+     * shutdown internal stream consuming thread
+     * @since Twitter4J 2.1.7
      */
     public synchronized void cleanUp(){
         if (null != handler) {
@@ -437,6 +447,15 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public void addStatusListener(StatusListener statusListener) {
         this.statusListeners.add(statusListener);
+    }
+
+    /**
+     * Adds a ConnectionLifeCycleListener
+     * @param listener listener to be added
+     * @since Twitter4J 2.1.7
+     */
+    public void addConnectionLifeCycleListener(ConnectionLifeCycleListener listener) {
+        this.lifeCycleListeners.add(listener);
     }
 
     /**
@@ -487,12 +506,21 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
         public void run() {
             int timeToSleep = NO_WAIT;
+            boolean connected = false;
             while (!closed) {
                 try {
                     if (!closed && null == stream) {
                         // try establishing connection
                         setStatus("[Establishing connection]");
                         stream = (StatusStreamImpl)getStream();
+                        connected = true;
+                        for (ConnectionLifeCycleListener listener : lifeCycleListeners){
+                            try{
+                                listener.onConnect();
+                            }catch (Exception e){
+                                logger.warn(e.getMessage());
+                            }
+                        }
                         // connection established successfully
                         timeToSleep = NO_WAIT;
                         setStatus("[Receiving stream]");
@@ -507,6 +535,15 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                                 timeToSleep = HTTP_ERROR_INITIAL_WAIT;
                             } else if (0 == timeToSleep) {
                                 timeToSleep = TCP_ERROR_INITIAL_WAIT;
+                            }
+                        }
+                        if (connected) {
+                            for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
+                                try {
+                                    listener.onDisconnect();
+                                } catch (Exception e) {
+                                    logger.warn(e.getMessage());
+                                }
                             }
                         }
                         // there was a problem establishing the connection, or the connection closed by peer
@@ -525,20 +562,37 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                         for (StatusListener statusListener : statusListeners){
                             statusListener.onException(te);
                         }
+                        connected = false;
                     }
-
                 }
             }
             try {
-                if (null != this.stream) {
+                if (null != this.stream && connected) {
                     this.stream.close();
+                    for (ConnectionLifeCycleListener listener : lifeCycleListeners){
+                        try{
+                            listener.onDisconnect();
+                        }catch (Exception e){
+                            logger.warn(e.getMessage());
+                        }
+                    }
                 }
             } catch (IOException ignore) {
+            }
+            for (ConnectionLifeCycleListener listener : lifeCycleListeners){
+                try{
+                    listener.onCleanUp();
+                }catch (Exception e){
+                    logger.warn(e.getMessage());
+                }
             }
         }
 
         public synchronized void close() throws IOException {
             setStatus("[Disposing thread]");
+            if(null != stream){
+                stream.close();
+            }
             closed = true;
         }
 
