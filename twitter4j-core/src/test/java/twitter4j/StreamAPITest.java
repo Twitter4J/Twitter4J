@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.http.AccessToken;
+import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -186,8 +187,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
         twitterStream.sample();
         waitForStatus();
         assertNotNull(status.getText());
-        assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
-        twitterStream.cleanup();
+        twitterStream.cleanUp();
     }
 
 //    public void testFilterFollowPush() throws Exception {
@@ -211,7 +211,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
         waitForStatus();
         assertNull(ex);
 
-        twitterStream.cleanup();
+        twitterStream.cleanUp();
     }
 
     public void testFilterIncludesEntities() throws Exception {
@@ -231,7 +231,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
 
         assertNull(ex);
 
-        twitterStream.cleanup();
+        twitterStream.cleanUp();
     }
 
     public void onFriendList(int[] friendIds) {
@@ -382,6 +382,13 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
 
     public void onStatus(Status status) {
         this.status = status;
+        String json = DataObjectFactory.getRawJSON(status);
+        try {
+            Status statusFromJSON = DataObjectFactory.createStatus(json);
+            assertEquals(status, statusFromJSON);
+        } catch (TwitterException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 //        System.out.println("got status from stream:" + status.toString());
         assertNotNull(status.getText());
 //        System.out.println(status.getCreatedAt() + ":" + status.getText() + " from:" + status.getSource());

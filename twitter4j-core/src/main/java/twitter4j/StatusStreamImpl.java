@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
@@ -100,6 +101,7 @@ class StatusStreamImpl implements StatusStream, UserStream {
                 throw new IOException("the end of the stream has been reached");
             }
             if (line.length() > 0) {
+                DataObjectFactoryUtil.clearThreadLocalMap();
                 logger.debug("received:", line);
                 try {
                     JSONObject json = new JSONObject(line);
@@ -111,7 +113,7 @@ class StatusStreamImpl implements StatusStream, UserStream {
                         }
                     } else if (!json.isNull("text")) {
                         for (StatusListener listener : listeners) {
-                            listener.onStatus(new StatusJSONImpl(json));
+                            listener.onStatus(DataObjectFactoryUtil.registerJSONObject(new StatusJSONImpl(json), json));
                         }
                     } else if (!json.isNull("direct_message")) {
                         for (StatusListener listener : listeners) {
