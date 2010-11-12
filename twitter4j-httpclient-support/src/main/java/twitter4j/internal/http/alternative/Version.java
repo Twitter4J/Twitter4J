@@ -30,7 +30,7 @@ package twitter4j.internal.http.alternative;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class Version {
-    private static final String VERSION = "2.1.7-SNAPSHOT";
+    private static final String VERSION = "2.1.7-SNAPSHOT(build: 50b588eaa8b0f8c4e0f22977acb55b514b5875c2)";
     private static final String TITLE = "Twitter4J Apache HttpClient support";
 
     private Version(){
