@@ -1674,6 +1674,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     }
 
     /* Geo Methods */
+    /**
+     * {@inheritDoc}
+     */
+    public void searchPlaces(final GeoQuery query){
+        getDispatcher().invokeLater(new AsyncTask(SEARCH_PLACES, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.searchedPlaces(twitter.searchPlaces(query));
+            }
+        });
+    }
+
 
     /**
      * {@inheritDoc}

@@ -202,6 +202,7 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod LOCATION_TRENDS = new TwitterMethod("LOCATION_TRENDS");
 
     /*Geo Methods*/
+    public static final TwitterMethod SEARCH_PLACES = new TwitterMethod("SEARCH_PLACES");
     public static final TwitterMethod NEAR_BY_PLACES = new TwitterMethod("NEAR_BY_PLACES");
     public static final TwitterMethod REVERSE_GEO_CODE = new TwitterMethod("REVERSE_GEO_CODE");
     public static final TwitterMethod GEO_DETAILS = new TwitterMethod("GEO_DETAILS");

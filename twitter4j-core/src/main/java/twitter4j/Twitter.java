@@ -1589,6 +1589,22 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Place> searchPlaces(GeoQuery query) throws TwitterException {
+        try{
+            return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
+                    + "geo/search.json", query.asHttpParameterArray(), auth));
+        }catch(TwitterException te){
+            if(te.getStatusCode() == 404){
+                return new ResponseListImpl<Place>(0, null);
+            }else{
+                throw te;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ResponseList<Place> getNearbyPlaces(GeoQuery query) throws TwitterException {
         try{
             return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
