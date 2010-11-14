@@ -1605,6 +1605,32 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Place> getSimilarPlaces(GeoLocation location, String name, String containedWithin, String streetAddress) throws TwitterException {
+        List<HttpParameter> params = new ArrayList<HttpParameter>(3);
+        params.add(new HttpParameter("lat", location.getLatitude()));
+        params.add(new HttpParameter("long", location.getLongitude()));
+        params.add(new HttpParameter("name", name));
+        if (null != containedWithin) {
+            params.add(new HttpParameter("contained_within", containedWithin));
+        }
+        if (null != containedWithin) {
+            params.add(new HttpParameter("attribute:street_address", streetAddress));
+        }
+        try {
+            return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
+                    + "geo/similar_places.json", params.toArray(new HttpParameter[params.size()]), auth));
+        } catch (TwitterException te) {
+            if (te.getStatusCode() == 404) {
+                return new ResponseListImpl<Place>(0, null);
+            } else {
+                throw te;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ResponseList<Place> getNearbyPlaces(GeoQuery query) throws TwitterException {
         try{
             return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()

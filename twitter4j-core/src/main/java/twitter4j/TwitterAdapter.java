@@ -400,8 +400,18 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     /*Geo Methods*/
+    /**
+     * @since Twitter4J 2.1.7
+     */
     public void searchedPlaces(ResponseList<Place> places) {
     }
+
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    public void gotSimilarPlaces(ResponseList<Place> places) {
+    }
+
     public void gotNearByPlaces(ResponseList<Place> places){
     }
     public void gotReverseGeoCode(ResponseList<Place> places){

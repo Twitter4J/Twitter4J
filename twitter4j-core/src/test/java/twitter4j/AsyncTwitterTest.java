@@ -893,12 +893,18 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    /*Geo Methods*/
     public void searchedPlaces(ResponseList<Place> places) {
         this.places = places;
         notifyResponse();
     }
 
-    /*Geo Methods*/
+    public void gotSimilarPlaces(ResponseList<Place> places) {
+        this.places = places;
+        notifyResponse();
+    }
+
+
     public void gotNearByPlaces(ResponseList<Place> places){
         this.places = places;
         notifyResponse();

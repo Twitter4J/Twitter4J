@@ -26,10 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
-import twitter4j.GeoQuery;
-import twitter4j.Place;
-import twitter4j.ResponseList;
-import twitter4j.TwitterException;
+import twitter4j.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -40,6 +37,7 @@ public interface GeoMethods {
      * Search for places that can be attached to a statuses/update. Given a latitude and a longitude pair, an IP address, or a name, this request will return a list of all the valid places that can be used as the place_id when updating a status.
      * <br>Conceptually, a query can be made from the user's location, retrieve a list of places, have the user validate the location he or she is at, and then send the ID of this location with a call to statuses/update.
      * <br>This is the recommended method to use find places that can be attached to statuses/update. Unlike geo/reverse_geocode which provides raw data access, this endpoint can potentially re-order places with regards to the user who is authenticated. This approach is also preferred for interactive place matching with the user.
+     * <br>This method calls http://api.twitter.com/1/geo/search.json
      * @param query search query
      * @return places (cities and neighborhoods) that can be attached to a statuses/update
      * @throws TwitterException when Twitter service or network is unavailable
@@ -47,6 +45,21 @@ public interface GeoMethods {
      * @since Twitter4J 2.1.7
      */
     ResponseList<Place> searchPlaces(GeoQuery query) throws TwitterException;
+
+    /**
+     * Locates places near the given coordinates which are similar in name.
+     * <br>Conceptually you would use this method to get a list of known places to choose from first. Then, if the desired place doesn't exist, make a request to post/geo/place to create a new one.
+     * <br>The token contained in the response is the token needed to be able to create a new place.
+     * <br>This method calls http://api.twitter.com/1/geo/similar_places.json
+     * @param location The latitude and longitude to search around.
+     * @param name The name a place is known as.
+     * @param containedWithin optional: the place_id which you would like to restrict the search results to. Setting this value means only places within the given place_id will be found.
+     * @param streetAddress optional: This parameter searches for places which have this given street address. There are other well-known, and application specific attributes available. Custom attributes are also permitted. Learn more about Place Attributes.
+     * @return places (cities and neighborhoods) that can be attached to a statuses/update
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.7
+     */
+    ResponseList<Place> getSimilarPlaces(GeoLocation location, String name, String containedWithin, String streetAddress) throws TwitterException;
 
     /**
      * Search for places (cities and neighborhoods) that can be attached to a <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">statuses/update</a>.  Given a latitude and a longitude pair, or an IP address, return a list of all the valid cities and neighborhoods that can be used as a place_id when updating a status.  Conceptually, a query can be made from the user's location, retrieve a list of places, have the user validate the location he or she is at, and then send the ID of this location up with a call to <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update">statuses/update</a>.

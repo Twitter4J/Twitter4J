@@ -1685,6 +1685,15 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         });
     }
 
+    public void getSimilarPlaces(final GeoLocation location, final String name, final String containedWithin
+            , final String streetAddress) {
+        getDispatcher().invokeLater(new AsyncTask(SIMILAR_PLACES, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotSimilarPlaces(twitter.getSimilarPlaces(location, name, containedWithin, streetAddress));
+            }
+        });
+    }
+
 
     /**
      * {@inheritDoc}

@@ -899,9 +899,15 @@ public class TwitterTest extends TwitterTestBase {
 
         assertTrue(places.size() > 0);
         places = twitterAPI1.getNearbyPlaces(query);
+        for(Place place : places){
+            System.out.println(place.getName());
+        }
         assertTrue(places.size() > 0);
         places = twitterAPI1.searchPlaces(query);
         assertTrue(places.size() > 0);
+        places = twitterAPI1.getSimilarPlaces(new GeoLocation(37.78215, -122.40060), "SoMa", null, null);
+        assertTrue(places.size() > 0);
+
         try{
             Place place = this.unauthenticated.getGeoDetails("5a110d312052166f");
             assertEquals("San Francisco, CA", place.getFullName());
