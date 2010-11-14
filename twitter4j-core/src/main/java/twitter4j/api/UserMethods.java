@@ -123,6 +123,7 @@ public interface UserMethods {
      * @param size Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: BIGGER - 73px by 73px NORMAL - 48px by 48px MINI - 24px by 24px
      * @return stream
      * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/get/users/profile_image/:screen_name">GET users/profile_image/:screen_name | dev.twitter.com</a>
      * @since Twitter4J 2.1.7
      */
     InputStream getProfileImage(String screenName, ImageSize size) throws TwitterException;

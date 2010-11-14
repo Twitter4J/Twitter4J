@@ -913,6 +913,10 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(sanFrancisco, status.getPlace().getId());
         assertEquals(null, status.getContributors());
     }
+    public void testLegalResources() throws Exception{
+        assertNotNull(twitterAPI1.getTermsOfService());
+        assertNotNull(twitterAPI1.getPrivacyPolicy());
+    }
 
     public void testTest() throws Exception {
         assertTrue(twitterAPI2.test());

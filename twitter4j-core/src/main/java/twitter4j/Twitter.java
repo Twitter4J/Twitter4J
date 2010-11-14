@@ -32,6 +32,7 @@ import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 
@@ -76,6 +77,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         SavedSearchesMethods,
         LocalTrendsMethods,
         GeoMethods,
+        LegalResources,
         HelpMethods {
     private static final long serialVersionUID = -1486360080128882436L;
 
@@ -1621,6 +1623,29 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public Place getGeoDetails(String id) throws TwitterException {
         return new PlaceJSONImpl(http.get(conf.getRestBaseURL() + "geo/id/" + id
                 + ".json", auth));
+    }
+
+    /* Legal Resources */
+    /**
+     * {@inheritDoc}
+     */
+    public String getTermsOfService() throws TwitterException {
+        try {
+            return http.get(conf.getRestBaseURL() + "legal/tos.json", auth).asJSONObject().getString("tos");
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getPrivacyPolicy() throws TwitterException {
+        try {
+            return http.get(conf.getRestBaseURL() + "legal/privacy.json", auth).asJSONObject().getString("privacy");
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /* Help Methods */

@@ -69,6 +69,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         SavedSearchesMethodsAsync,
         LocalTrendsMethodsAsync,
         GeoMethodsAsync,
+        LegalResourcesAsync,
         HelpMethodsAsync {
     private static final long serialVersionUID = -2008667933225051907L;
     private Twitter twitter;
@@ -1682,6 +1683,28 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         getDispatcher().invokeLater(new AsyncTask(GEO_DETAILS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.gotGeoDetails(twitter.getGeoDetails(id));
+            }
+        });
+    }
+    /* Leagl Resources */
+    /**
+     * {@inheritDoc}
+     */
+    public void getTermsOfService() throws TwitterException {
+        getDispatcher().invokeLater(new AsyncTask(TERMS_OF_SERVICE, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotTermsOfService(twitter.getTermsOfService());
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getPrivacyPolicy() throws TwitterException {
+        getDispatcher().invokeLater(new AsyncTask(PRIVACY_POLICY, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotPrivacyPolicy(twitter.getPrivacyPolicy());
             }
         });
     }

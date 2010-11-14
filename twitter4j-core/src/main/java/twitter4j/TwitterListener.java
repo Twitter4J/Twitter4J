@@ -366,6 +366,18 @@ public interface TwitterListener {
     void gotReverseGeoCode(ResponseList<Place> places);
     void gotGeoDetails(Place place);
 
+    /* Legal Resources*/
+
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    void gotTermsOfService(String tof);
+
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    void gotPrivacyPolicy(String privacyPolicy);
+
     /*Help Methods*/
     void tested(boolean test);
 
@@ -408,6 +420,7 @@ public interface TwitterListener {
     TwitterMethod SEARCH_USERS = TwitterMethod.SEARCH_USERS;
     TwitterMethod SUGGESTED_USER_CATEGORIES = TwitterMethod.SUGGESTED_USER_CATEGORIES;
     TwitterMethod USER_SUGGESTIONS = TwitterMethod.USER_SUGGESTIONS;
+    TwitterMethod PROFILE_IMAGE = TwitterMethod.PROFILE_IMAGE;
     TwitterMethod FRIENDS_STATUSES = TwitterMethod.FRIENDS_STATUSES;
     TwitterMethod FOLLOWERS_STATUSES = TwitterMethod.FOLLOWERS_STATUSES;
 
@@ -493,6 +506,10 @@ public interface TwitterListener {
     TwitterMethod NEAR_BY_PLACES = TwitterMethod.NEAR_BY_PLACES;
     TwitterMethod REVERSE_GEO_CODE = TwitterMethod.REVERSE_GEO_CODE;
     TwitterMethod GEO_DETAILS = TwitterMethod.GEO_DETAILS;
+
+    /* Regal Resources */
+    TwitterMethod TERMS_OF_SERVICE = TwitterMethod.TERMS_OF_SERVICE;
+    TwitterMethod PRIVACY_POLICY = TwitterMethod.PRIVACY_POLICY;
 
     /*Help Methods*/
     TwitterMethod TEST = TwitterMethod.TEST;

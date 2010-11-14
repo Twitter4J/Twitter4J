@@ -28,6 +28,7 @@ package twitter4j;
 
 import twitter4j.http.AccessToken;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import static twitter4j.DAOTest.*;
@@ -606,6 +607,13 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    public void gotProfileImage(InputStream is){
+        notifyResponse();
+    }
+
     public void gotFriendsStatuses(PagableResponseList<User> users) {
         this.users = users;
         notifyResponse();
@@ -893,6 +901,21 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void gotGeoDetails(Place place){
         this.place = place;
+        notifyResponse();
+    }
+
+    /* Legal Resources */
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    public void gotTermsOfService(String str){
+        notifyResponse();
+    }
+
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    public void gotPrivacyPolicy(String str){
         notifyResponse();
     }
 

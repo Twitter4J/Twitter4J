@@ -401,6 +401,21 @@ public class TwitterAdapter implements TwitterListener {
     public void gotGeoDetails(Place place) {
     }
 
+    /* Legal Resources*/
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    public void gotTermsOfService(String tof) {
+
+    }
+
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    public void gotPrivacyPolicy(String privacyPolicy) {
+
+    }
+
     /*Help Methods*/
     public void tested(boolean test){
     }
