@@ -197,6 +197,10 @@ public interface TwitterListener {
      */
     void addedUserListMember(UserList userList);
     /**
+     * @since Twitter4J 2.1.7
+     */
+    void addedUserListMembers(UserList userList);
+    /**
      * @since Twitter4J 2.1.0
      */
     void deletedUserListMember(UserList userList);
@@ -437,6 +441,7 @@ public interface TwitterListener {
     /*List Members Methods*/
     TwitterMethod LIST_MEMBERS = TwitterMethod.LIST_MEMBERS;
     TwitterMethod ADD_LIST_MEMBER = TwitterMethod.ADD_LIST_MEMBER;
+    TwitterMethod ADD_LIST_MEMBERS = TwitterMethod.ADD_LIST_MEMBERS;
     TwitterMethod DELETE_LIST_MEMBER = TwitterMethod.DELETE_LIST_MEMBER;
     TwitterMethod CHECK_LIST_MEMBERSHIP = TwitterMethod.CHECK_LIST_MEMBERSHIP;
 

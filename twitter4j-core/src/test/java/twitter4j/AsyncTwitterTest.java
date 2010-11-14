@@ -668,6 +668,10 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.userList = userList;
     }
 
+    public void addedUserListMembers(UserList userList) {
+        this.userList = userList;
+    }
+
     public void deletedUserListMember(UserList userList) {
         this.userList = userList;
     }

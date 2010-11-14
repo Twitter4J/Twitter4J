@@ -886,6 +886,27 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public void addUserListMembers(final int listId, final int[] userIds) {
+        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBERS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.addedUserListMembers(twitter.addUserListMembers(listId, userIds));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addUserListMembers(final int listId, final String[] screenNames) {
+        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBERS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.addedUserListMembers(twitter.addUserListMembers(listId, screenNames));
+            }
+        });
+    }
+    /**
+     * {@inheritDoc}
+     */
     public void deleteUserListMember(final int listId, final int userId){
         getDispatcher().invokeLater(new AsyncTask(DELETE_LIST_MEMBER, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
@@ -1690,7 +1711,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getTermsOfService() throws TwitterException {
+    public void getTermsOfService() {
         getDispatcher().invokeLater(new AsyncTask(TERMS_OF_SERVICE, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.gotTermsOfService(twitter.getTermsOfService());
@@ -1701,7 +1722,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getPrivacyPolicy() throws TwitterException {
+    public void getPrivacyPolicy() {
         getDispatcher().invokeLater(new AsyncTask(PRIVACY_POLICY, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.gotPrivacyPolicy(twitter.getPrivacyPolicy());

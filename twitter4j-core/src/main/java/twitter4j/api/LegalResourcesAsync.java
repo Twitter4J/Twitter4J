@@ -36,18 +36,16 @@ public interface LegalResourcesAsync {
     /**
      * Returns Twitter's' Terms of Service.
      * <br>This method calls http://api.twitter.com/1/legal/tos.json
-     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/legal/tos">GET legal/tos | dev.twitter.com</a>
      * @since Twitter4J 2.1.7
      */
-    void getTermsOfService() throws TwitterException;
+    void getTermsOfService();
 
     /**
      * Returns Twitter's Privacy Policy.
      * <br>This method calls http://api.twitter.com/1/legal/privacy.json
-     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/legal/privacy">GET legal/privacy | dev.twitter.com</a>
      * @since Twitter4J 2.1.7
      */
-    void getPrivacyPolicy() throws TwitterException;
+    void getPrivacyPolicy();
 }

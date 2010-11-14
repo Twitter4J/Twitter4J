@@ -32,7 +32,6 @@ import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.*;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 
@@ -42,8 +41,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -605,16 +602,9 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException {
         ensureAuthorizationEnabled();
-        StringBuffer buf = new StringBuffer(screenNames.length * 8);
-        for (String screenName : screenNames) {
-            if (buf.length() != 0) {
-                buf.append(",");
-            }
-            buf.append(screenName);
-        }
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
                 "users/lookup.json", new HttpParameter[]{
-                new HttpParameter("screen_name", buf.toString())}, auth));
+                new HttpParameter("screen_name", toCommaSeparatedString(screenNames))}, auth));
     }
 
     /**
@@ -622,16 +612,9 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public ResponseList<User> lookupUsers(int[] ids) throws TwitterException {
         ensureAuthorizationEnabled();
-        StringBuffer buf = new StringBuffer(ids.length * 8);
-        for (int id : ids) {
-            if (buf.length() != 0) {
-                buf.append(",");
-            }
-            buf.append(id);
-        }
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
                 "users/lookup.json", new HttpParameter[]{
-                new HttpParameter("user_id", buf.toString())}, auth));
+                new HttpParameter("user_id", toCommaSeparatedString(ids))}, auth));
     }
 
     /**
@@ -876,6 +859,24 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
                 "/" + listId + "/members.json?id=" + userId, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public UserList addUserListMembers(int listId, int[] userIds) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
+                "/" + listId + "/members/create_all.json?user_id=" + toCommaSeparatedString(userIds), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
+                "/" + listId + "/members/create_all.json?screen_name=" + toCommaSeparatedString(screenNames), auth));
     }
 
     /**
@@ -1658,6 +1659,26 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
                 asString().indexOf("ok");
     }
 
+    private static String toCommaSeparatedString(String[] strArray){
+        StringBuffer buf = new StringBuffer(strArray.length * 8);
+        for (String value : strArray) {
+            if (buf.length() != 0) {
+                buf.append(",");
+            }
+            buf.append(value);
+        }
+        return buf.toString();
+    }
+    private static String toCommaSeparatedString(int[] strArray){
+        StringBuffer buf = new StringBuffer(strArray.length * 8);
+        for (int value : strArray) {
+            if (buf.length() != 0) {
+                buf.append(",");
+            }
+            buf.append(value);
+        }
+        return buf.toString();
+    }
 
     @Override
     public String toString() {

@@ -231,7 +231,8 @@ public class TwitterTest extends TwitterTestBase {
             assertEquals(404, te.getStatusCode());
         }
         userList = twitterAPI1.addUserListMember(userList.getId(), id2.id);
-        userList = twitterAPI1.addUserListMember(userList.getId(), id4.id);
+        userList = twitterAPI1.addUserListMembers(userList.getId(), new int[]{id4.id,id3.id});
+        userList = twitterAPI1.addUserListMembers(userList.getId(), new String[]{"akr", "yusukey"});
         assertNotNull(userList);
 
         List<User> users = twitterAPI1.getUserListMembers(id1.screenName, userList.getId(), -1);
