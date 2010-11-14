@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -153,6 +154,12 @@ public class TwitterAdapter implements TwitterListener {
      * @since Twitter4J 2.1.1
      */
     public void gotUserSuggestions(ResponseList<User> users) {
+    }
+
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    public void gotProfileImage(InputStream is) {
     }
 
     public void gotFriendsStatuses(PagableResponseList<User> users){

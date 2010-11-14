@@ -58,7 +58,7 @@
             <id>sonatype-nexus-staging</id>
             <name>Nexus Release Repository</name>
             <uniqueVersion>false</uniqueVersion>
-            <url>file:/Users/yusukey/maven2/
+            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/
             </url>
         </repository>
         <snapshotRepository>

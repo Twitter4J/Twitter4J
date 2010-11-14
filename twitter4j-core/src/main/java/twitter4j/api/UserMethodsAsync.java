@@ -26,7 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.ImageSize;
 import twitter4j.TwitterException;
+
+import java.io.InputStream;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -96,6 +99,16 @@ public interface UserMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/users/suggestions/slug">GET users/suggestions/slug | dev.twitter.com</a>
      */
     void getUserSuggestions(String categorySlug);
+
+    /**
+     * Access the profile image in various sizes for the user with the indicated screen_name. If no size is provided the normal image is returned. This resource does not return JSON or XML, but instead returns a 302 redirect to the actual image resource.
+     * This method should only be used by application developers to lookup or check the profile image URL for a user. This method must not be used as the image source URL presented to users of your application.
+     * <br>This method calls http://api.twitter.com/1/users/profile_image/:screen_name.json
+     * @param screenName The screen name of the user for whom to return results for.
+     * @param size Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: BIGGER - 73px by 73px NORMAL - 48px by 48px MINI - 24px by 24px
+     * @since Twitter4J 2.1.7
+     */
+    void getProfileImage(String screenName, ImageSize size);
 
 	/**
 	 * Returns the specified user's friends, each with current status inline.

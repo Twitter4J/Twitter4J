@@ -24,28 +24,67 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.internal.http.alternative;
+package twitter4j;
+
+import java.io.ObjectStreamException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.7
  */
-public final class Version {
-    private static final String VERSION = "2.1.7-SNAPSHOT";
-    private static final String TITLE = "Twitter4J Apache HttpClient support";
+public class ImageSize implements java.io.Serializable {
 
-    private Version(){
+    private static final Map<String, ImageSize> instances = new HashMap<String, ImageSize>();
+
+    public static final ImageSize BIGGER = new ImageSize("bigger");
+    public static final ImageSize NORMAL = new ImageSize("normal");
+    public static final ImageSize MINI = new ImageSize("mini");
+    private static final long serialVersionUID = 3363026523372848987L;
+
+    private final String name;
+
+    private ImageSize() {
         throw new AssertionError();
     }
 
-    public static String getVersion(){
-        return VERSION;
+    private ImageSize(String name) {
+        this.name = name;
+        instances.put(name, this);
     }
 
-    /**
-     * prints the version string
-     * @param args will be just ignored.
-     */
-    public static void main(String[] args) {
-        System.out.println(TITLE +" " + VERSION);
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ImageSize imageSize = (ImageSize) o;
+
+        if (!name.equals(imageSize.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    private static ImageSize getInstance(String name) {
+        return instances.get(name);
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        return getInstance(name);
     }
 }

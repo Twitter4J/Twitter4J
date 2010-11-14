@@ -40,6 +40,9 @@ import static twitter4j.internal.http.HttpParameter.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -660,6 +663,14 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public InputStream getProfileImage(String screenName, ImageSize size) throws TwitterException {
+        return http.get(conf.getRestBaseURL() + "users/profile_image/"
+                + screenName + ".json?size="+size.getName(), auth).asStream();
     }
 
     /**

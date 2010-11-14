@@ -26,11 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
-import twitter4j.Category;
-import twitter4j.PagableResponseList;
-import twitter4j.ResponseList;
-import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.*;
+
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -115,6 +114,18 @@ public interface UserMethods {
      * @since Twitter4J 2.1.1
      */
     ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException;
+
+    /**
+     * Access the profile image in various sizes for the user with the indicated screen_name. If no size is provided the normal image is returned. This resource does not return JSON or XML, but instead returns a 302 redirect to the actual image resource.
+     * This method should only be used by application developers to lookup or check the profile image URL for a user. This method must not be used as the image source URL presented to users of your application.
+     * <br>This method calls http://api.twitter.com/1/users/profile_image/:screen_name.json
+     * @param screenName The screen name of the user for whom to return results for.
+     * @param size Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: BIGGER - 73px by 73px NORMAL - 48px by 48px MINI - 24px by 24px
+     * @return stream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.7
+     */
+    InputStream getProfileImage(String screenName, ImageSize size) throws TwitterException;
 
     /**
      * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)

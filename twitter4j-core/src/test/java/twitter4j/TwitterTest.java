@@ -30,6 +30,7 @@ import static twitter4j.DAOTest.assertDeserializedFormIsEqual;
 import static twitter4j.DAOTest.assertDeserializedFormIsNotEqual;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -180,6 +181,11 @@ public class TwitterTest extends TwitterTestBase {
         assertTrue(categories.size() > 0);
         ResponseList<User> users = twitterAPI1.getUserSuggestions(categories.get(0).getSlug());
         assertTrue(users.size() > 0);
+    }
+    public void testProfileImage() throws Exception {
+        InputStream is = twitterAPI1.getProfileImage(id1.screenName, ImageSize.BIGGER);
+        assertNotNull(is);
+        is.close();
     }
 
 
