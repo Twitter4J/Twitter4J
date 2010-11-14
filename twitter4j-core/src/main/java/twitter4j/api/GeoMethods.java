@@ -96,4 +96,20 @@ public interface GeoMethods {
      * @since Twitter4J 2.1.1
      */
     Place getGeoDetails(String id) throws TwitterException;
+
+    /**
+     * Creates a new place at the given latitude and longitude.
+     * <br>This method calls http://api.twitter.com/1/geo/place.json
+     * @param name The name a place is known as.
+     * @param containedWithin The place_id within which the new place can be found. Try and be as close as possible with the containing place. For example, for a room in a building, set the contained_within as the building place_id.
+     * @param token The token found in the response from geo/similar_places.
+     * @param location The latitude and longitude the place is located at.
+     * @param streetAddress optional: This parameter searches for places which have this given street address. There are other well-known, and application specific attributes available. Custom attributes are also permitted. Learn more about Place Attributes.
+     * @return the created place
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/post/geo/place">POST geo/place | dev.twitter.com</a>
+     * @since Twitter4J 2.1.7
+     */
+    Place createPlace(String name, String containedWithin, String token, GeoLocation location, String streetAddress)
+            throws TwitterException;
 }

@@ -371,6 +371,7 @@ public interface TwitterListener {
     void gotNearByPlaces(ResponseList<Place> places);
     void gotReverseGeoCode(ResponseList<Place> places);
     void gotGeoDetails(Place place);
+    void createdPlace(Place place);
 
     /* Legal Resources*/
 
@@ -515,6 +516,7 @@ public interface TwitterListener {
     TwitterMethod NEAR_BY_PLACES = TwitterMethod.NEAR_BY_PLACES;
     TwitterMethod REVERSE_GEO_CODE = TwitterMethod.REVERSE_GEO_CODE;
     TwitterMethod GEO_DETAILS = TwitterMethod.GEO_DETAILS;
+    TwitterMethod CREATE_PLACE = TwitterMethod.CREATE_PLACE;
 
     /* Regal Resources */
     TwitterMethod TERMS_OF_SERVICE = TwitterMethod.TERMS_OF_SERVICE;

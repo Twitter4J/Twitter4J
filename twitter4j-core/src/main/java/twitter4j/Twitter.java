@@ -1613,7 +1613,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         if (null != containedWithin) {
             params.add(new HttpParameter("contained_within", containedWithin));
         }
-        if (null != containedWithin) {
+        if (null != streetAddress) {
             params.add(new HttpParameter("attribute:street_address", streetAddress));
         }
         try {
@@ -1666,6 +1666,24 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public Place getGeoDetails(String id) throws TwitterException {
         return new PlaceJSONImpl(http.get(conf.getRestBaseURL() + "geo/id/" + id
                 + ".json", auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Place createPlace(String name, String containedWithin, String token, GeoLocation location, String streetAddress) throws TwitterException {
+        ensureAuthorizationEnabled();
+        List<HttpParameter> params = new ArrayList<HttpParameter>(3);
+        params.add(new HttpParameter("name", name));
+        params.add(new HttpParameter("contained_within", containedWithin));
+        params.add(new HttpParameter("token", token));
+        params.add(new HttpParameter("lat", location.getLatitude()));
+        params.add(new HttpParameter("long", location.getLongitude()));
+        if (null != streetAddress) {
+            params.add(new HttpParameter("attribute:street_address", streetAddress));
+        }
+        return new PlaceJSONImpl(http.get(conf.getRestBaseURL() + "geo/place.json"
+                , params.toArray(new HttpParameter[params.size()]), auth));
     }
 
     /* Legal Resources */

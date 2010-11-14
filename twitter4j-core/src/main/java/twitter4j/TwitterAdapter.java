@@ -418,6 +418,11 @@ public class TwitterAdapter implements TwitterListener {
     }
     public void gotGeoDetails(Place place) {
     }
+    /**
+     * @since Twitter4J 2.1.7
+     */
+    public void createdPlace(Place place) {
+    }
 
     /* Legal Resources*/
     /**

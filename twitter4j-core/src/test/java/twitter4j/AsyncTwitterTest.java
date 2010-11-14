@@ -919,6 +919,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    public void createdPlace(Place place) {
+        this.place = place;
+        notifyResponse();
+    }
+
     /* Legal Resources */
     /**
      * @since Twitter4J 2.1.7

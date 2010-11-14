@@ -1727,6 +1727,15 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
             }
         });
     }
+
+    public void createPlace(final String name, final String containedWithin, final String token
+            , final GeoLocation location, final String streetAddress) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_PLACE, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.createdPlace(twitter.createPlace(name, containedWithin, token, location, streetAddress));
+            }
+        });
+    }
     /* Leagl Resources */
     /**
      * {@inheritDoc}
