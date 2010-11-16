@@ -1,4 +1,5 @@
 target/*
+twitter4j.properties
 twitter4j-httpclient-support/target/*
 twitter4j-core/target/*
 twitter4j-core/src/test/resources/xauth-test.properties
