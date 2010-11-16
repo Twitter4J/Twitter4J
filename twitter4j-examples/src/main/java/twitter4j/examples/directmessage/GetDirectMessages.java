@@ -24,43 +24,40 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples;
+package twitter4j.examples.directmessage;
 
-import twitter4j.DirectMessage;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 
 import java.util.List;
 
 /**
- * Example application that gets recent direct messages from specified account.<br>
- * Usage: java twitter4j.examples.GetDirectMessages ID Password
+ * Example application that gets all direct messages sent to the specified account in twitter4j.properties.<br>
+ * Usage: java twitter4j.examples.GetDirectMessages
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class GetDirectMessages {
     /**
-     * Usage: java twitter4j.examples.GetDirectMessages ID Password
+     * Usage: java twitter4j.examples.GetDirectMessages
+     *
      * @param args String[]
      */
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("No TwitterID/Password specified.");
-            System.out.println(
-                "Usage: java twitter4j.examples.GetDirectMessages ID Password");
-            System.exit( -1);
-        }
-        Twitter twitter = new TwitterFactory().getInstance(args[0], args[1]);
+        Twitter twitter = new TwitterFactory().getInstance();
         try {
-            List<DirectMessage> messages = twitter.getDirectMessages();
-            for (DirectMessage message : messages) {
-                System.out.println("Sender:" + message.getSenderScreenName());
-                System.out.println("Text:" + message.getText() + "\n");
-            }
+            Paging paging = new Paging(1);
+            List<DirectMessage> messages;
+            do {
+                messages = twitter.getDirectMessages(paging);
+                for (DirectMessage message : messages) {
+                    System.out.println("From: @" + message.getSenderScreenName() + " " + message.getText());
+                }
+                paging.setPage(paging.getPage() + 1);
+            } while (messages.size() > 0);
             System.exit(0);
         } catch (TwitterException te) {
             System.out.println("Failed to get messages: " + te.getMessage());
-            System.exit( -1);
+            System.exit(-1);
         }
     }
 }

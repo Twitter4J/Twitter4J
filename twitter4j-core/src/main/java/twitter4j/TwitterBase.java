@@ -76,14 +76,14 @@ abstract class TwitterBase implements java.io.Serializable {
     protected final void ensureAuthorizationEnabled() {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(
-                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
+                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied. See http://twitter4j.org/configuration.html for the detail.");
         }
     }
 
     protected final void ensureBasicEnabled() {
         if (!(auth instanceof BasicAuthorization)) {
             throw new IllegalStateException(
-                    "user ID/password combination not supplied");
+                    "user ID/password combination not supplied. See http://twitter4j.org/configuration.html for the detail.");
         }
     }
 
