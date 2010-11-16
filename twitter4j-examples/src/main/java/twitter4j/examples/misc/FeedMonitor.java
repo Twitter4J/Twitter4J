@@ -24,7 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples;
+package twitter4j.examples.misc;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.io.FeedException;
@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.internal.http.HttpClient;
 import twitter4j.internal.http.HttpClientImpl;
 import twitter4j.internal.http.HttpResponse;
 

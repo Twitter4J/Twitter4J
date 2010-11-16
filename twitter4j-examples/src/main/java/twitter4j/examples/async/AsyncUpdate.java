@@ -24,7 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples;
+package twitter4j.examples.async;
 
 import twitter4j.AsyncTwitter;
 import twitter4j.AsyncTwitterFactory;
@@ -51,9 +51,9 @@ public final class AsyncUpdate {
     static Object lock = new Object();
 
     public static void main(String[] args) throws InterruptedException {
-        if (args.length < 3) {
+        if (args.length < 1) {
             System.out.println(
-                    "Usage: java twitter4j.examples.AsyncUpdate ID Password text");
+                    "Usage: java twitter4j.examples.AsyncUpdate text");
             System.exit(-1);
         }
         AsyncTwitterFactory factory = new AsyncTwitterFactory(new TwitterAdapter() {
@@ -81,8 +81,8 @@ public final class AsyncUpdate {
                 }
             }
         });
-        AsyncTwitter twitter = factory.getInstance(args[0], args[1]);
-        twitter.updateStatus(args[2]);
+        AsyncTwitter twitter = factory.getInstance();
+        twitter.updateStatus(args[0]);
         synchronized (lock) {
             lock.wait();
         }

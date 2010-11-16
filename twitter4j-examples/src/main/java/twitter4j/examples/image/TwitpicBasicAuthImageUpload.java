@@ -1,4 +1,4 @@
-package twitter4j.examples;
+package twitter4j.examples.image;
 
 import java.io.File;
 import java.io.FileNotFoundException;
