@@ -318,20 +318,19 @@ public class OAuthTest extends TwitterTestBase {
 
     public void testEncodeParameter() throws Exception {
         //http://wiki.oauth.net/TestCases
-        assertEquals("abcABC123", OAuthAuthorization.encode("abcABC123"));
-        assertEquals("-._~", OAuthAuthorization.encode("-._~"));
-        assertEquals("%25", OAuthAuthorization.encode("%"));
-        assertEquals("%2B", OAuthAuthorization.encode("+"));
-        assertEquals("%26%3D%2A", OAuthAuthorization.encode("&=*"));
-        assertEquals("%0A", OAuthAuthorization.encode("\n"));
-        assertEquals("%20", OAuthAuthorization.encode("\u0020"));
-        assertEquals("%7F", OAuthAuthorization.encode("\u007F"));
-        assertEquals("%C2%80", OAuthAuthorization.encode("\u0080"));
-        assertEquals("%E3%80%81", OAuthAuthorization.encode("\u3001"));
+        assertEquals("abcABC123", HttpParameter.encode("abcABC123"));
+        assertEquals("-._~", HttpParameter.encode("-._~"));
+        assertEquals("%25", HttpParameter.encode("%"));
+        assertEquals("%2B", HttpParameter.encode("+"));
+        assertEquals("%26%3D%2A", HttpParameter.encode("&=*"));
+        assertEquals("%0A", HttpParameter.encode("\n"));
+        assertEquals("%20", HttpParameter.encode("\u0020"));
+        assertEquals("%7F", HttpParameter.encode("\u007F"));
+        assertEquals("%C2%80", HttpParameter.encode("\u0080"));
+        assertEquals("%E3%80%81", HttpParameter.encode("\u3001"));
 
         String unreserved = "abcdefghijklmnopqrstuvwzyxABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";
-        assertEquals(unreserved, OAuthAuthorization.encode(unreserved));
-
+        assertEquals(unreserved, HttpParameter.encode(unreserved));
     }
 
     public void testNormalizeRequestParameters() throws Exception {

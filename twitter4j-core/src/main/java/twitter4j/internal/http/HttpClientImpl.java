@@ -43,7 +43,6 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.security.AccessControlException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
