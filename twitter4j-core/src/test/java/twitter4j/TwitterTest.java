@@ -391,10 +391,14 @@ public class TwitterTest extends TwitterTestBase {
         assertIsRetweet(statuses);
         assertTrue(20 < statuses.size());
 
-        List<User> users = twitterAPI1.getRetweetedBy(statuses.get(0).getRetweetedStatus().getId());
-        assertNotNull(users);
-        assertTrue(users.size() > 1);
-
+        for(Status status: statuses){
+            if(null != status.getRetweetedStatus()){
+                List<User> users = twitterAPI1.getRetweetedBy(status.getRetweetedStatus().getId());
+                assertNotNull(users);
+                assertTrue(users.size() > 1);
+                break;
+            }
+        }
     }
 
     private void assertIsRetweet(List<Status> statuses) {

@@ -207,7 +207,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
         this.ex = null;
-        twitterStream.filter(new FilterQuery(0, null).track(new String[]{"twitter4j", "ipad"}));
+        twitterStream.filter(new FilterQuery(0, null).track(new String[]{"twitter4j java", "ipad"}));
         waitForStatus();
         assertNull(ex);
 

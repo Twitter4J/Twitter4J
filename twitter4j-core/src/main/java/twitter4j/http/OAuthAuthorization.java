@@ -223,8 +223,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         }
         parseGetParameters(url, signatureBaseParams);
         StringBuffer base = new StringBuffer(method).append("&")
-                .append(encode(constructRequestURL(url))).append("&");
-        base.append(encode(normalizeRequestParameters(signatureBaseParams)));
+                .append(HttpParameter.encode(constructRequestURL(url))).append("&");
+        base.append(HttpParameter.encode(normalizeRequestParameters(signatureBaseParams)));
         String oauthBaseString = base.toString();
         logger.debug("OAuth base string: ", oauthBaseString);
         String signature = generateSignature(oauthBaseString, otoken);
@@ -295,8 +295,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         parseGetParameters (url, signatureBaseParams);
         
         StringBuffer base = new StringBuffer (method).append("&")
-                .append(encode(constructRequestURL(url))).append("&");
-        base.append(encode (normalizeRequestParameters(signatureBaseParams)));
+                .append(HttpParameter.encode(constructRequestURL(url))).append("&");
+        base.append(HttpParameter.encode (normalizeRequestParameters(signatureBaseParams)));
 
         String oauthBaseString = base.toString();
         String signature = generateSignature (oauthBaseString, oauthToken);
@@ -320,12 +320,12 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
             Mac mac = Mac.getInstance(HMAC_SHA1);
             SecretKeySpec spec;
             if (null == token) {
-                String oauthSignature = encode(consumerSecret) + "&";
+                String oauthSignature = HttpParameter.encode(consumerSecret) + "&";
                 spec = new SecretKeySpec(oauthSignature.getBytes(), HMAC_SHA1);
             } else {
                 spec = token.getSecretKeySpec();
                 if (null == spec) {
-                    String oauthSignature = encode(consumerSecret) + "&" + encode(token.getTokenSecret());
+                    String oauthSignature = HttpParameter.encode(consumerSecret) + "&" + HttpParameter.encode(token.getTokenSecret());
                     spec = new SecretKeySpec(oauthSignature.getBytes(), HMAC_SHA1);
                     token.setSecretKeySpec(spec);
                 }
@@ -406,48 +406,16 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
                     }
                     buf.append(splitter);
                 }
-                buf.append(encode(param.getName())).append("=");
+                buf.append(HttpParameter.encode(param.getName())).append("=");
                 if (quot) {
                     buf.append("\"");
                 }
-                buf.append(encode(param.getValue()));
+                buf.append(HttpParameter.encode(param.getValue()));
             }
         }
         if (buf.length() != 0) {
             if (quot) {
                 buf.append("\"");
-            }
-        }
-        return buf.toString();
-    }
-
-    /**
-     * @param value string to be encoded
-     * @return encoded string
-     * @see <a href="http://wiki.oauth.net/TestCases">OAuth / TestCases</a>
-     * @see <a href="http://groups.google.com/group/oauth/browse_thread/thread/a8398d0521f4ae3d/9d79b698ab217df2?hl=en&lnk=gst&q=space+encoding#9d79b698ab217df2">Space encoding - OAuth | Google Groups</a>
-     * @see <a href="http://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax - 2.1. Percent-Encoding</a>
-     */
-    public static String encode(String value) {
-        String encoded = null;
-        try {
-            encoded = URLEncoder.encode(value, "UTF-8");
-        } catch (UnsupportedEncodingException ignore) {
-        }
-        StringBuffer buf = new StringBuffer(encoded.length());
-        char focus;
-        for (int i = 0; i < encoded.length(); i++) {
-            focus = encoded.charAt(i);
-            if (focus == '*') {
-                buf.append("%2A");
-            } else if (focus == '+') {
-                buf.append("%20");
-            } else if (focus == '%' && (i + 1) < encoded.length()
-                    && encoded.charAt(i + 1) == '7' && encoded.charAt(i + 2) == 'E') {
-                buf.append('~');
-                i += 2;
-            } else {
-                buf.append(focus);
             }
         }
         return buf.toString();
