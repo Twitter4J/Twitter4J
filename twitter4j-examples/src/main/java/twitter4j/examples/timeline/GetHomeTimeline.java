@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class GetHomeTimeline {
     /**
-     * Usage: java twitter4j.examples.GetHomeTimeline
+     * Usage: java twitter4j.examples.timeline.GetHomeTimeline
      *
      * @param args String[]
      */

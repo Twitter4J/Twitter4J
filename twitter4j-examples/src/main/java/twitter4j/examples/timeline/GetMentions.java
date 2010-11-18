@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class GetMentions {
     /**
-     * Usage: java twitter4j.examples.GetMentions
+     * Usage: java twitter4j.examples.timeline.GetMentions
      *
      * @param args String[]
      */
