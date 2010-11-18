@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class GetFriendsTimeline {
     /**
-     * Usage: java twitter4j.examples.GetFriendsTimeline
+     * Usage: java twitter4j.examples.timeline.GetFriendsTimeline
      *
      * @param args String[]
      */

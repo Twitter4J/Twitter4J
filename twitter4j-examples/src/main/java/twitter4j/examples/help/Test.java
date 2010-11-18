@@ -24,46 +24,29 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.timeline;
+package twitter4j.examples.help;
 
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.User;
-
-import java.util.List;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */
-public class GetRetweetedToMe {
+public class Test{
     /**
-     * Usage: java twitter4j.examples.timeline.GetRetweetedToMe
+     * Usage: java twitter4j.examples.help.Test
      *
      * @param args String[]
      */
     public static void main(String[] args) {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            User user = null;
-            try {
-                user = twitter.verifyCredentials();
-            } catch (TwitterException te) {
-                System.out.println("Failed to verify credentials.");
-                System.out.println("Run getAccessToken.sh/cmd to configure twitter4j.properties.");
-                System.exit(-1);
-            }
-            List<Status> statuses = twitter.getRetweetedToMe();
-            System.out.println("Showing retweets in @" + user.getScreenName() + "'s timeline.");
-            for (Status status : statuses) {
-                System.out.println(status.getUser().getName() + ":" +
-                        status.getText());
-            }
+            System.out.println(twitter.test() ? "Ok" : "something went wrong");
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get timeline: " + te.getMessage());
+            System.out.println("Failed to call test method: " + te.getMessage());
             System.exit(-1);
         }
     }

@@ -40,7 +40,7 @@ import java.util.List;
  */
 public final class GetPublicTimeline {
     /**
-     * Usage: java twitter4j.examples.GetPublicTimeline
+     * Usage: java twitter4j.examples.timeline.GetPublicTimeline
      * @param args String[]
      */
     public static void main(String[] args) {
