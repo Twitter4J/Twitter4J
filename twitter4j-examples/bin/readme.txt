@@ -2,6 +2,7 @@ timeline/ - Timeline resources examples
 tweets/ -Tweets Resources examples
 directmessage/ - Direct Message resources examples
 stream/ - Streamed Tweets resources examples
+spamreporting - Spam Reporting resource examples
 legal/ - Regal resources examples
 help/ - Help resources examples
 async/ - Async API examples
