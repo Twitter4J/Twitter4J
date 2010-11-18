@@ -3,7 +3,7 @@ SETLOCAL enabledelayedexpansion
 cd ..
 call setEnv.cmd
 
-echo %JAVA% %MEM_ARGS% -classpath "%CLASSPATH%" twitter4j.examples.stream.PrintFiltetrStream %*
+echo on
 "%JAVA%" %MEM_ARGS% -classpath "%CLASSPATH%" twitter4j.examples.stream.PrintFilterStream %*
 
 ENDLOCAL
