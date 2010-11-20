@@ -24,39 +24,48 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.timeline;
+package twitter4j.examples.search;
 
-import twitter4j.Status;
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Tweet;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.http.AccessToken;
+import twitter4j.http.RequestToken;
 
+import java.io.*;
 import java.util.List;
+import java.util.Properties;
 
 /**
- * Example application that gets public, user and friend timeline using specified account.<br>
- * Usage: java twitter4j.examples.GetPublicTimeline
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.7
  */
-public final class GetPublicTimeline {
+public class SearchTweets {
     /**
-     * Usage: java twitter4j.examples.timeline.GetPublicTimeline
-     * @param args String[]
+     * Usage: java twitter4j.examples.search SearchTweets [query]
+     *
+     * @param args
      */
     public static void main(String[] args) {
+        if(args.length < 1){
+            System.out.println("java twitter4j.examples.search SearchTweets [query]");
+            System.exit(-1);
+        }
         Twitter twitter = new TwitterFactory().getInstance();
-        System.out.println("Showing public timeline.");
         try {
-            List<Status> statuses = twitter.getPublicTimeline();
-            for (Status status : statuses) {
-                System.out.println(status.getUser().getName() + ":" +
-                                   status.getText());
+            QueryResult result = twitter.search(new Query(args[0]));
+            List<Tweet> tweets = result.getTweets();
+            for (Tweet tweet : tweets) {
+                System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText());
             }
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get timeline: " + te.getMessage());
-            System.exit( -1);
+            System.out.println("Failed to search tweets: " + te.getMessage());
+            System.exit(-1);
         }
     }
 }
