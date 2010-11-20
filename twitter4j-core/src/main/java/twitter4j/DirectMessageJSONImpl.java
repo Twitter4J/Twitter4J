@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -50,7 +51,10 @@ import static twitter4j.internal.util.ParseUtil.*;
 
     /*package*/DirectMessageJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
-        init(res.asJSONObject());
+        JSONObject json = res.asJSONObject();
+        init(json);
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        DataObjectFactoryUtil.registerJSONObject(this, json);
     }
     /*package*/DirectMessageJSONImpl(JSONObject json) throws TwitterException {
         init(json);
@@ -140,12 +144,17 @@ import static twitter4j.internal.util.ParseUtil.*;
 
     /*package*/ static ResponseList<DirectMessage> createDirectMessageList(HttpResponse res) throws TwitterException {
         try {
+            DataObjectFactoryUtil.clearThreadLocalMap();
             JSONArray list = res.asJSONArray();
             int size = list.length();
             ResponseList<DirectMessage> directMessages = new ResponseListImpl<DirectMessage>(size, res);
             for (int i = 0; i < size; i++) {
-                directMessages.add(new DirectMessageJSONImpl(list.getJSONObject(i)));
+                JSONObject json = list.getJSONObject(i);
+                DirectMessage directMessage = new DirectMessageJSONImpl(json);
+                directMessages.add(directMessage);
+                DataObjectFactoryUtil.registerJSONObject(directMessage, json);
             }
+            DataObjectFactoryUtil.registerJSONObject(directMessages, list);
             return directMessages;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

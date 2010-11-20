@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -78,7 +79,10 @@ import static twitter4j.internal.util.ParseUtil.*;
 
     /*package*/UserJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
-        init(res.asJSONObject());
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        JSONObject json = res.asJSONObject();
+        init(json);
+        DataObjectFactoryUtil.registerJSONObject(this, json);
     }
 
     /*package*/UserJSONImpl(JSONObject json) throws TwitterException {
@@ -405,14 +409,19 @@ import static twitter4j.internal.util.ParseUtil.*;
 
     /*package*/ static PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException {
         try {
+            DataObjectFactoryUtil.clearThreadLocalMap();
             JSONObject json = res.asJSONObject();
             JSONArray list = json.getJSONArray("users");
             int size = list.length();
             PagableResponseList<User> users =
                     new PagableResponseListImpl<User>(size, json, res);
             for (int i = 0; i < size; i++) {
-                users.add(new UserJSONImpl(list.getJSONObject(i)));
+                JSONObject userJson = list.getJSONObject(i);
+                User user = new UserJSONImpl(userJson);
+                DataObjectFactoryUtil.registerJSONObject(user, userJson);
+                users.add(user);
             }
+            DataObjectFactoryUtil.registerJSONObject(users, json);
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -426,12 +435,17 @@ import static twitter4j.internal.util.ParseUtil.*;
 
     /*package*/ static ResponseList<User> createUserList(JSONArray list, HttpResponse res) throws TwitterException {
         try {
+            DataObjectFactoryUtil.clearThreadLocalMap();
             int size = list.length();
             ResponseList<User> users =
                     new ResponseListImpl<User>(size, res);
             for (int i = 0; i < size; i++) {
-                users.add(new UserJSONImpl(list.getJSONObject(i)));
+                JSONObject json = list.getJSONObject(i);
+                User user = new UserJSONImpl(json);
+                users.add(user);
+                DataObjectFactoryUtil.registerJSONObject(user, json);
             }
+            DataObjectFactoryUtil.registerJSONObject(users, list);
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

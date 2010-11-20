@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.org.json.JSONException;
 
@@ -52,7 +53,10 @@ import static twitter4j.internal.util.ParseUtil.*;
 
     /*package*/ RelationshipJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
-        init(res.asJSONObject());
+        JSONObject json = res.asJSONObject();
+        init(json);
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        DataObjectFactoryUtil.registerJSONObject(this, json);
     }
 
     /*package*/ RelationshipJSONImpl(JSONObject json) throws TwitterException {

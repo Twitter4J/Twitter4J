@@ -27,9 +27,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.json.DataObjectFactory;
+
 import static twitter4j.internal.util.ParseUtil.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -55,7 +58,10 @@ import java.net.URISyntaxException;
 
     /*package*/ UserListJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
-        init(res.asJSONObject());
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        JSONObject json = res.asJSONObject();
+        init(json);
+        DataObjectFactoryUtil.registerJSONObject(this,json);
     }
 
     /*package*/ UserListJSONImpl(JSONObject json) throws TwitterException {
@@ -162,14 +168,19 @@ import java.net.URISyntaxException;
 
     /*package*/ static PagableResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException {
         try {
+            DataObjectFactoryUtil.clearThreadLocalMap();
             JSONObject json = res.asJSONObject();
             JSONArray list = json.getJSONArray("lists");
             int size = list.length();
             PagableResponseList<UserList> users =
                     new PagableResponseListImpl<UserList>(size, json, res);
             for (int i = 0; i < size; i++) {
-                users.add(new UserListJSONImpl(list.getJSONObject(i)));
+                JSONObject userListJson = list.getJSONObject(i);
+                UserList userList = new UserListJSONImpl(userListJson);
+                users.add(userList);
+                DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
             }
+            DataObjectFactoryUtil.registerJSONObject(users, json);
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
