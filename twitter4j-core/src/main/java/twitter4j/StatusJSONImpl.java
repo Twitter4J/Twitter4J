@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
@@ -76,7 +77,10 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
     /*package*/StatusJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
-        init(res.asJSONObject());
+        JSONObject json = res.asJSONObject();
+        init(json);
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        DataObjectFactoryUtil.registerJSONObject(this, json);
     }
 
     /*package*/ StatusJSONImpl(JSONObject json) throws TwitterException, JSONException {
@@ -106,7 +110,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         geoLocation = GeoLocation.getInstance(json);
         if (!json.isNull("place")) {
             try {
-                place = new PlaceJSONImpl(json.getJSONObject("place"), null);
+                place = new PlaceJSONImpl(json.getJSONObject("place"));
             } catch (JSONException ignore) {
                 ignore.printStackTrace();
                 logger.warn("failed to parse place:" + json);
@@ -336,12 +340,17 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
     /*package*/ static ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
         try {
+            DataObjectFactoryUtil.clearThreadLocalMap();
             JSONArray list = res.asJSONArray();
             int size = list.length();
             ResponseList<Status> statuses = new ResponseListImpl<Status>(size, res);
             for (int i = 0; i < size; i++) {
-                statuses.add(new StatusJSONImpl(list.getJSONObject(i)));
+                JSONObject json = list.getJSONObject(i);
+                Status status = new StatusJSONImpl(json);
+                DataObjectFactoryUtil.registerJSONObject(status, json);
+                statuses.add(status);
             }
+            DataObjectFactoryUtil.registerJSONObject(statuses, list);
             return statuses;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

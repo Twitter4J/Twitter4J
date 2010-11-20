@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -57,9 +58,42 @@ import static twitter4j.internal.util.ParseUtil.*;
         return this.trendAt.compareTo(that.getTrendAt());
     }
 
-    /*package*/
+    TrendsJSONImpl(HttpResponse res) throws TwitterException {
+        String jsonStr = res.asString();
+        init(res.asString());
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        DataObjectFactoryUtil.registerJSONObject(this, jsonStr);
+    }
 
-    TrendsJSONImpl(Date asOf, Location location, Date trendAt, Trend[] trends)
+    TrendsJSONImpl(String jsonStr) throws TwitterException {
+        init(jsonStr);
+    }
+
+    void init(String jsonStr) throws TwitterException {
+        try {
+            JSONObject json;
+            if (jsonStr.startsWith("[")) {
+                JSONArray array = new JSONArray(jsonStr);
+                if (array.length() > 0) {
+                    json = array.getJSONObject(0);
+                } else{
+                    throw new TwitterException("No trends found on the specified woeid");
+                }
+            } else {
+                json = new JSONObject(jsonStr);
+            }
+            this.asOf = parseTrendsDate(json.getString("as_of"));
+            this.location = extractLocation(json);
+            JSONArray array = json.getJSONArray("trends");
+            this.trendAt = asOf;
+            this.trends = jsonArrayToTrendArray(array);
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone.getMessage(), jsone);
+        }
+    }
+
+
+    /*package*/ TrendsJSONImpl(Date asOf, Location location, Date trendAt, Trend[] trends)
             throws TwitterException {
         this.asOf = asOf;
         this.location = location;
@@ -67,16 +101,14 @@ import static twitter4j.internal.util.ParseUtil.*;
         this.trends = trends;
     }
 
-    /*package*/
-
-    static List<Trends> createTrendsList(HttpResponse res) throws
+    /*package*/ static List<Trends> createTrendsList(HttpResponse res) throws
             TwitterException {
         JSONObject json = res.asJSONObject();
         List<Trends> trends;
         try {
             Date asOf = parseTrendsDate(json.getString("as_of"));
             JSONObject trendsJson = json.getJSONObject("trends");
-            Location location = extractLocation(json, res);
+            Location location = extractLocation(json);
             trends = new ArrayList<Trends>(trendsJson.length());
             Iterator ite = trendsJson.keys();
             while (ite.hasNext()) {
@@ -103,13 +135,13 @@ import static twitter4j.internal.util.ParseUtil.*;
             throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
         }
     }
-    private static Location extractLocation(JSONObject json , HttpResponse res) throws TwitterException{
+    private static Location extractLocation(JSONObject json) throws TwitterException{
         if(json.isNull("locations")){
             return null;
         }
         ResponseList<Location> locations = null;
         try {
-            locations = LocationJSONImpl.createLocationList(json.getJSONArray("locations"), res);
+            locations = LocationJSONImpl.createLocationList(json.getJSONArray("locations"));
         } catch (JSONException e) {
             throw new AssertionError("locations can't be null");
         }
@@ -122,20 +154,6 @@ import static twitter4j.internal.util.ParseUtil.*;
         return location;
     }
 
-    static Trends createTrends(HttpResponse res) throws TwitterException {
-        return createTrends(res.asJSONObject(), res);
-    }
-
-    static Trends createTrends(JSONObject json, HttpResponse res) throws TwitterException {
-        try {
-            Date asOf = parseTrendsDate(json.getString("as_of"));
-            JSONArray array = json.getJSONArray("trends");
-            Trend[] trendsArray = jsonArrayToTrendArray(array);
-            return new TrendsJSONImpl(asOf, extractLocation(json, res) ,asOf, trendsArray);
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
-        }
-    }
 
     private static Date parseTrendsDate(String asOfStr) throws TwitterException {
         Date parsed;

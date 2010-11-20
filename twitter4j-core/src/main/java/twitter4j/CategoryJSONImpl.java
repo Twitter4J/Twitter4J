@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -46,18 +47,31 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
         this.slug = slug;
     }
 
+    CategoryJSONImpl(JSONObject json) throws JSONException {
+        init(json);
+    }
+
+    void init(JSONObject json) throws JSONException {
+        this.name = json.getString("name");
+        this.slug = json.getString("slug");
+    }
+
     public static ResponseList<Category> createCategoriesList(HttpResponse res) throws TwitterException {
         return createCategoriesList(res.asJSONArray(), res);
     }
 
     public static ResponseList<Category> createCategoriesList(JSONArray array, HttpResponse res) throws TwitterException {
         try {
+            DataObjectFactoryUtil.clearThreadLocalMap();
             ResponseList<Category> categories =
                     new ResponseListImpl<Category>(array.length(), res);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject json = array.getJSONObject(i);
-                categories.add(new CategoryJSONImpl(json.getString("name"), json.getString("slug")));
+                Category category = new CategoryJSONImpl(json);
+                categories.add(category);
+                DataObjectFactoryUtil.registerJSONObject(category, json);
             }
+            DataObjectFactoryUtil.registerJSONObject(categories, array);
             return categories;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

@@ -29,13 +29,15 @@ package twitter4j;
 import twitter4j.api.*;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.*;
+import twitter4j.http.Authorization;
+import twitter4j.http.BasicAuthorization;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 
 import static twitter4j.internal.http.HttpParameter.*;
+import static twitter4j.internal.json.DataObjectFactoryUtil.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -205,7 +207,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public Trends getTrends() throws TwitterException {
-        return TrendsJSONImpl.createTrends(http.get(conf.getSearchBaseURL() + "trends.json"));
+        return new TrendsJSONImpl(http.get(conf.getSearchBaseURL() + "trends.json"));
     }
 
     /**
@@ -473,7 +475,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public IDs getRetweetedByIDs(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return IDsJSONImpl.getBlockIDs(http.get(conf.getRestBaseURL()
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL()
                 + "statuses/" + statusId + "/retweeted_by/ids.json", auth));
     }
 
@@ -482,7 +484,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public IDs getRetweetedByIDs(long statusId, Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
-        return IDsJSONImpl.getBlockIDs(http.get(conf.getRestBaseURL()
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL()
                 + "statuses/" + statusId + "/retweeted_by/ids.json",paging.asPostParameterArray(), auth));    
     }
 
@@ -1089,7 +1091,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public IDs getIncomingFriendships(long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "friendships/incoming.json?cursor=" + cursor, auth));
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friendships/incoming.json?cursor=" + cursor, auth));
     }
 
     /**
@@ -1097,7 +1099,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public IDs getOutgoingFriendships(long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor, auth));
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor, auth));
     }
 
     /* Social Graph Methods */
@@ -1113,7 +1115,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public IDs getFriendsIDs(long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "friends/ids.json?cursor=" + cursor, auth));
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friends/ids.json?cursor=" + cursor, auth));
     }
 
     /**
@@ -1127,7 +1129,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public IDs getFriendsIDs(int userId, long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "friends/ids.json?user_id=" + userId +
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friends/ids.json?user_id=" + userId +
                 "&cursor=" + cursor, auth));
     }
 
@@ -1142,7 +1144,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public IDs getFriendsIDs(String screenName, long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "friends/ids.json?screen_name=" + screenName
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friends/ids.json?screen_name=" + screenName
                 + "&cursor=" + cursor, auth));
     }
 
@@ -1157,7 +1159,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public IDs getFollowersIDs(long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "followers/ids.json?cursor=" + cursor
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "followers/ids.json?cursor=" + cursor
                 , auth));
     }
 
@@ -1172,7 +1174,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public IDs getFollowersIDs(int userId, long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "followers/ids.json?user_id=" + userId
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "followers/ids.json?user_id=" + userId
                 + "&cursor=" + cursor, auth));
     }
 
@@ -1187,7 +1189,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public IDs getFollowersIDs(String screenName, long cursor) throws TwitterException {
-        return IDsJSONImpl.getFriendsIDs(http.get(conf.getRestBaseURL() + "followers/ids.json?screen_name="
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "followers/ids.json?screen_name="
                 + screenName + "&cursor=" + cursor, auth));
     }
 
@@ -1222,7 +1224,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public RateLimitStatus getRateLimitStatus() throws TwitterException {
-        return RateLimitStatusJSONImpl.createFromJSONResponse(http.get(conf.getRestBaseURL() + "account/rate_limit_status.json", auth));
+        return new RateLimitStatusJSONImpl(http.get(conf.getRestBaseURL() + "account/rate_limit_status.json", auth));
     }
 
     /**
@@ -1486,7 +1488,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public IDs getBlockingUsersIDs() throws TwitterException {
         ensureAuthorizationEnabled();
-        return IDsJSONImpl.getBlockIDs(http.get(conf.getRestBaseURL() + "blocks/blocking/ids.json", auth));
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "blocks/blocking/ids.json", auth));
     }
 
     /* Spam Reporting Methods */
@@ -1568,20 +1570,8 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public Trends getLocationTrends(int woeid) throws TwitterException {
-        try {
-            HttpResponse res = http.get(conf.getRestBaseURL()
-                    + "trends/" + woeid + ".json", auth);
-            JSONArray array = res.asJSONArray();
-            if (array.length() > 0) {
-                return TrendsJSONImpl.createTrends(res.asJSONArray().getJSONObject(0), res);
-            }
-            else{
-                throw new TwitterException("No trends found on woeid-" + woeid + "\n", res);
-            }
-            
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
+        return new TrendsJSONImpl(http.get(conf.getRestBaseURL()
+                + "trends/" + woeid + ".json", auth));
     }
 
     /* Geo Methods */

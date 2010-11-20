@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Date;
@@ -56,12 +57,22 @@ import static twitter4j.internal.util.ParseUtil.*;
         this.secondsUntilReset = (int) ((resetTime.getTime() - System.currentTimeMillis()) / 1000);
     }
 
-    static RateLimitStatus createFromJSONResponse(HttpResponse res) throws TwitterException {
+    RateLimitStatusJSONImpl(HttpResponse res) throws TwitterException {
         JSONObject json = res.asJSONObject();
-        return new RateLimitStatusJSONImpl(getInt("hourly_limit", json),
-                getInt("remaining_hits", json),
-                getInt("reset_time_in_seconds", json),
-                getDate("reset_time", json, "EEE MMM d HH:mm:ss Z yyyy"));
+        init(json);
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        DataObjectFactoryUtil.registerJSONObject(this, json);
+
+    }
+    RateLimitStatusJSONImpl(JSONObject json) throws TwitterException {
+        init(json);
+    }
+    void init(JSONObject json) throws TwitterException {
+        this.hourlyLimit = getInt("hourly_limit", json);
+        this.remainingHits =        getInt("remaining_hits", json);
+        this.resetTime =        getDate("reset_time", json, "EEE MMM d HH:mm:ss Z yyyy");
+        this.resetTimeInSeconds = getInt("reset_time_in_seconds", json);
+        this.secondsUntilReset = (int) ((resetTime.getTime() - System.currentTimeMillis()) / 1000);
     }
 
     static RateLimitStatus createFromResponseHeader(HttpResponse res) {

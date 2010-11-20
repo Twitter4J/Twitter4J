@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -58,10 +59,17 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
 
     /*package*/ PlaceJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
-        init(res.asJSONObject());
+        JSONObject json = res.asJSONObject();
+        init(json);
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        DataObjectFactoryUtil.registerJSONObject(this, json);
     }
     PlaceJSONImpl(JSONObject json, HttpResponse res) throws TwitterException {
         super(res);
+        init(json);
+    }
+    PlaceJSONImpl(JSONObject json) throws TwitterException {
+        super();
         init(json);
     }
     private void init(JSONObject json) throws TwitterException{
@@ -107,7 +115,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
                 JSONArray containedWithInJSON = json.getJSONArray("contained_within");
                 containedWithIn = new Place[containedWithInJSON.length()];
                 for(int i=0;i<containedWithInJSON.length();i++){
-                containedWithIn[i] = new PlaceJSONImpl(containedWithInJSON.getJSONObject(i), null);
+                containedWithIn[i] = new PlaceJSONImpl(containedWithInJSON.getJSONObject(i));
                 }
             }else{
                 containedWithIn = null;
@@ -132,13 +140,18 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
     }
 
     /*package*/ static ResponseList<Place> createPlaceList(JSONArray list, HttpResponse res) throws TwitterException {
+        DataObjectFactoryUtil.clearThreadLocalMap();
         try {
             int size = list.length();
             ResponseList<Place> places =
                     new ResponseListImpl<Place>(size, res);
             for (int i = 0; i < size; i++) {
-                places.add(new PlaceJSONImpl(list.getJSONObject(i), null));
+                JSONObject json = list.getJSONObject(i);
+                Place place = new PlaceJSONImpl(json);
+                places.add(place);
+                DataObjectFactoryUtil.registerJSONObject(place, json);
             }
+            DataObjectFactoryUtil.registerJSONObject(places, list);
             return places;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
