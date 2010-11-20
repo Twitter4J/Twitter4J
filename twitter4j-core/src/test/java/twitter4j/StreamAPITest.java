@@ -422,6 +422,9 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
     }
 
     public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         this.subscriber = subscriber;
         this.listOwner = listOwner;
         this.list = list;
@@ -429,18 +432,27 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
     }
 
     public void onUserListCreated(User listOwner, UserList list) {
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();
     }
 
     public void onUserListUpdated(User listOwner, UserList list) {
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();
     }
 
     public void onUserListDestroyed(User listOwner, UserList list) {
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();
