@@ -24,44 +24,68 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.tweets;
+package twitter4j.examples.user;
 
-import twitter4j.Status;
+import twitter4j.ImageSize;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
-import java.util.List;
+import java.awt.image.ImagingOpException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
- * Shows up to 100 of the first retweets of a given tweet.
+ * Gets specified user's profile image.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class GetRetweets {
+public final class GetProfileImage {
     /**
-     * Usage: java twitter4j.examples.tweets.GetRetweets [status id]
+     * Usage: java twitter4j.examples.user.GetProfileImage [screen name]
      *
      * @param args message
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.tweets.GetRetweets [status id]");
+            System.out.println(
+                    "Usage: java twitter4j.examples.user.GetProfileImage [screen name]");
             System.exit(-1);
         }
-        System.out.println("Showing  up to 100 of the first retweets of the status id - [" + args[0] + "].");
+        InputStream is = null;
+        FileOutputStream fos = null;
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            List<Status> statuses = twitter.getRetweets(Long.parseLong(args[0]));
-            for (Status status : statuses) {
-                System.out.println(status.getUser().getScreenName() + " - " + status.getText());
+            is = twitter.getProfileImage(args[0], ImageSize.NORMAL);
+            fos = new FileOutputStream(args[0]+".jpg");
+            int read;
+            while(-1 != (read = is.read()) ){
+                fos.write(read);
             }
-            System.out.println("done.");
+            System.out.println("Successfully got profile image [" + args[0] + "].");
             System.exit(0);
-        } catch (TwitterException te) {
-            te.printStackTrace();
-            System.out.println("Failed to get timeline: " + te.getMessage());
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+            System.out.println("Failed to get profile image: " + ioe.getMessage());
             System.exit(-1);
+        }catch (TwitterException te) {
+            te.printStackTrace();
+            System.out.println("Failed to get profile image: " + te.getMessage());
+            System.exit(-1);
+        }finally{
+            if(null != is){
+                try{
+                    is.close();
+                }catch(IOException ignore){
+                }
+            }
+            if(null != fos){
+                try{
+                    fos.close();
+                }catch(IOException ignore){
+                }
+            }
         }
     }
 }

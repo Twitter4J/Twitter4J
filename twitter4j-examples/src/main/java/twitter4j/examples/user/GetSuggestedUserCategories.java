@@ -24,43 +24,38 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.tweets;
+package twitter4j.examples.user;
 
-import twitter4j.Status;
+import twitter4j.Category;
+import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
-import java.util.List;
-
 /**
- * Shows up to 100 of the first retweets of a given tweet.
+ * Shows authenticated user's suggested user categories.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class GetRetweets {
+public final class GetSuggestedUserCategories {
     /**
-     * Usage: java twitter4j.examples.tweets.GetRetweets [status id]
+     * Usage: java twitter4j.examples.user.GetSuggestedUserCategories
      *
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.tweets.GetRetweets [status id]");
-            System.exit(-1);
-        }
-        System.out.println("Showing  up to 100 of the first retweets of the status id - [" + args[0] + "].");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            List<Status> statuses = twitter.getRetweets(Long.parseLong(args[0]));
-            for (Status status : statuses) {
-                System.out.println(status.getUser().getScreenName() + " - " + status.getText());
+            System.out.println("Showing @" + args[0] + "'s suggested user categories.");
+            ResponseList<Category> categories = twitter.getSuggestedUserCategories();
+            for(Category category : categories){
+                System.out.println(category.getName() + ":" + category.getSlug());
             }
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get timeline: " + te.getMessage());
+            System.out.println("Failed to get suggested categories: " + te.getMessage());
             System.exit(-1);
         }
     }

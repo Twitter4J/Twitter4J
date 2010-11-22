@@ -43,8 +43,7 @@ public final class DestroyStatus {
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println(
-                    "Usage: java twitter4j.examples.tweets.DestroyStatus [status id]");
+            System.out.println("Usage: java twitter4j.examples.tweets.DestroyStatus [status id]");
             System.exit(-1);
         }
         try {
@@ -53,6 +52,7 @@ public final class DestroyStatus {
             System.out.println("Successfully deleted status [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to delete status: " + te.getMessage());
             System.exit(-1);
         }

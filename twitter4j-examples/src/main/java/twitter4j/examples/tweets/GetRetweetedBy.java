@@ -66,6 +66,7 @@ public final class GetRetweetedBy {
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to retweeted users: " + te.getMessage());
             System.exit(-1);
         }

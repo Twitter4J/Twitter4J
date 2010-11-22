@@ -48,13 +48,14 @@ public final class ShowStatus {
                     "Usage: java twitter4j.examples.tweets.ShowStatus [status id]");
             System.exit(-1);
         }
-        System.out.println("Show the status id - [" + args[0] + "].");
+        System.out.println("Showing the status id - [" + args[0] + "].");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             Status status = twitter.showStatus(Long.parseLong(args[0]));
             System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to get timeline: " + te.getMessage());
             System.exit(-1);
         }

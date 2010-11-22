@@ -24,43 +24,52 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.tweets;
+package twitter4j.examples.user;
 
-import twitter4j.Status;
+import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-
-import java.util.List;
+import twitter4j.User;
 
 /**
- * Shows up to 100 of the first retweets of a given tweet.
+ * Shows the specified user's friends.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class GetRetweets {
+public final class GetFriendsStatuses {
     /**
-     * Usage: java twitter4j.examples.tweets.GetRetweets [status id]
+     * Usage: java twitter4j.examples.user.GetFriendsStatuses [status id]
      *
      * @param args message
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.tweets.GetRetweets [status id]");
+            System.out.println(
+                    "Usage: java twitter4j.examples.user.GetFriendsStatuses [status id]");
             System.exit(-1);
         }
-        System.out.println("Showing  up to 100 of the first retweets of the status id - [" + args[0] + "].");
+        System.out.println("Showing @" + args[0] + "'s friends.");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            List<Status> statuses = twitter.getRetweets(Long.parseLong(args[0]));
-            for (Status status : statuses) {
-                System.out.println(status.getUser().getScreenName() + " - " + status.getText());
-            }
+            long cursor = -1;
+            PagableResponseList<User> users;
+            do{
+                users = twitter.getFriendsStatuses(args[0], cursor);
+                for (User user : users) {
+                    if(null != user.getStatus()){
+                        System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());
+                    }else{
+                        // the user is protected
+                        System.out.println("@"+ user.getScreenName());
+                    }
+                }
+            }while((cursor = users.getNextCursor()) != 0);
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get timeline: " + te.getMessage());
+            System.out.println("Failed to show friends: " + te.getMessage());
             System.exit(-1);
         }
     }
