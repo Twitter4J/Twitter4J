@@ -841,10 +841,10 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getUserListMemberships(final String listOwnerScreenName, final long cursor){
+    public void getUserListMemberships(final String listMemberScreenName, final long cursor){
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_MEMBERSHIPS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
-                listener.gotUserListMemberships(twitter.getUserListMemberships(listOwnerScreenName, cursor));
+                listener.gotUserListMemberships(twitter.getUserListMemberships(listMemberScreenName, cursor));
             }
         });
     }
