@@ -88,9 +88,11 @@ public final class UpdateStatus {
             System.out.println("Successfully updated the status to [" + status.getText() + "].");
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to get timeline: " + te.getMessage());
             System.exit( -1);
         } catch (IOException ioe) {
+            ioe.printStackTrace();
             System.out.println("Failed to read the system input.");
             System.exit( -1);
         }

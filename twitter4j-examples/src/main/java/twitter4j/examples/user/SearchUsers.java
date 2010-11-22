@@ -24,43 +24,53 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.tweets;
+package twitter4j.examples.user;
 
-import twitter4j.Status;
+import twitter4j.Paging;
+import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-
-import java.util.List;
+import twitter4j.User;
 
 /**
- * Shows up to 100 of the first retweets of a given tweet.
+ * Destroys specified status.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class GetRetweets {
+public final class SearchUsers {
     /**
-     * Usage: java twitter4j.examples.tweets.GetRetweets [status id]
+     * Usage: java twitter4j.examples.user.SearchUsers [query]
      *
      * @param args message
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.tweets.GetRetweets [status id]");
+            System.out.println(
+                    "Usage: java twitter4j.examples.user.SearchUsers [query]");
             System.exit(-1);
         }
-        System.out.println("Showing  up to 100 of the first retweets of the status id - [" + args[0] + "].");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            List<Status> statuses = twitter.getRetweets(Long.parseLong(args[0]));
-            for (Status status : statuses) {
-                System.out.println(status.getUser().getScreenName() + " - " + status.getText());
-            }
+            int page = 1;
+            ResponseList<User> users;
+            do{
+                users = twitter.searchUsers(args[0], page);
+                for (User user : users) {
+                    if (null != user.getStatus()) {
+                        System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());
+                    } else {
+                        // the user is protected
+                        System.out.println("@" + user.getScreenName());
+                    }
+                }
+                page++;
+            } while (users.size() != 0 && page < 50);
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get timeline: " + te.getMessage());
+            System.out.println("Failed to search users: " + te.getMessage());
             System.exit(-1);
         }
     }
