@@ -1,6 +1,6 @@
 #/bin/sh
 cd ..
 . ./setEnv.sh
-
-echo $JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.stream.PrintUserStream $@
-$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.stream.PrintUserStream $@
+RUN_CMD="$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.stream.PrintUserStream $@"
+echo $RUN_CMD
+exec $RUN_CMD

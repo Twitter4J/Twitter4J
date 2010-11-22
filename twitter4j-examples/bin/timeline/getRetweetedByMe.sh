@@ -1,6 +1,6 @@
 #/bin/sh
 cd ..
 . ./setEnv.sh
-
-echo $JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.timeline.GetRetweetedByMe "$@"
-$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.timeline.GetRetweetedByMe "$@"
+RUN_CMD="$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.timeline.GetRetweetedByMe $@"
+echo $RUN_CMD
+exec $RUN_CMD
