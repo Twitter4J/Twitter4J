@@ -86,7 +86,7 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
         schemeRegistry.register(
                 new Scheme("https", 443, SSLSocketFactory.getSocketFactory()));
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
-        cm.setMaxTotalConnections(conf.getHttpMaxTotalConnections());
+        cm.setMaxTotal(conf.getHttpMaxTotalConnections());
         cm.setDefaultMaxPerRoute(conf.getHttpDefaultMaxPerRoute());
         DefaultHttpClient client = new DefaultHttpClient(cm);
         HttpParams params = client.getParams();
