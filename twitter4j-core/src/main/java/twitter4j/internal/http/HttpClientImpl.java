@@ -229,7 +229,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
             try {
-                HttpURLConnection con = null;
+                HttpURLConnection con;
                 OutputStream os = null;
                 try {
                     con = getConnection(req.getURL());
@@ -302,7 +302,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                             }
                         }
                     }
-                    if (responseCode < OK || MULTIPLE_CHOICES <= responseCode) {
+                    if (responseCode < OK || (responseCode != FOUND && MULTIPLE_CHOICES <= responseCode)) {
                         if (responseCode == ENHANCE_YOUR_CLAIM ||
                                 responseCode == SERVICE_UNAVAILABLE ||
                                 responseCode == BAD_REQUEST ||
@@ -416,6 +416,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         if (readTimeout > 0 && !isJDK14orEarlier) {
             con.setReadTimeout(readTimeout);
         }
+        con.setInstanceFollowRedirects(false);
         return con;
     }
 

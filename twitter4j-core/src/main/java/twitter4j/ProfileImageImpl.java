@@ -24,39 +24,24 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.user;
+package twitter4j;
 
-import twitter4j.ProfileImage;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.internal.http.HttpResponse;
 
 /**
- * Gets specified user's profile image.
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.7
  */
-public final class GetProfileImage {
-    /**
-     * Usage: java twitter4j.examples.user.GetProfileImage [screen name]
-     *
-     * @param args message
-     */
-    public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.user.GetProfileImage [screen name]");
-            System.exit(-1);
-        }
-        try {
-            Twitter twitter = new TwitterFactory().getInstance();
-            ProfileImage image = twitter.getProfileImage(args[0], ProfileImage.NORMAL);
-            System.out.println(image.getURL());
-            System.out.println("Successfully got profile image URL of [" + args[0] + "].");
-            System.exit(0);
-        }catch (TwitterException te) {
-            te.printStackTrace();
-            System.out.println("Failed to get profile image: " + te.getMessage());
-            System.exit(-1);
-        }
+class ProfileImageImpl extends TwitterResponseImpl implements ProfileImage {
+    private static final long serialVersionUID = -3710458112877311569L;
+    private String url;
+
+    ProfileImageImpl(HttpResponse res) {
+        super(res);
+        url = res.getResponseHeader("Location");
+    }
+
+    public String getURL() {
+        return url;
     }
 }

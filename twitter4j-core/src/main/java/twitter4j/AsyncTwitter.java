@@ -651,7 +651,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getProfileImage(final String screenName, final ImageSize size) {
+    public void getProfileImage(final String screenName, final ProfileImage.ImageSize size) {
         getDispatcher().invokeLater(new AsyncTask(PROFILE_IMAGE, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.gotProfileImage(twitter.getProfileImage(screenName, size));

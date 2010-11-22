@@ -34,13 +34,16 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */
-public class ImageSize implements java.io.Serializable {
+public interface ProfileImage extends TwitterResponse, java.io.Serializable {
+    String getURL();
+    ImageSize BIGGER = new ImageSize("bigger");
+    ImageSize NORMAL = new ImageSize("normal");
+    ImageSize MINI = new ImageSize("mini");
+
+    static class ImageSize implements java.io.Serializable {
 
     private static final Map<String, ImageSize> instances = new HashMap<String, ImageSize>();
 
-    public static final ImageSize BIGGER = new ImageSize("bigger");
-    public static final ImageSize NORMAL = new ImageSize("normal");
-    public static final ImageSize MINI = new ImageSize("mini");
     private static final long serialVersionUID = 3363026523372848987L;
 
     private final String name;
@@ -87,4 +90,5 @@ public class ImageSize implements java.io.Serializable {
     private Object readResolve() throws ObjectStreamException {
         return getInstance(name);
     }
+}
 }

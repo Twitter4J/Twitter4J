@@ -655,9 +655,9 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public InputStream getProfileImage(String screenName, ImageSize size) throws TwitterException {
-        return http.get(conf.getRestBaseURL() + "users/profile_image/"
-                + screenName + ".json?size="+size.getName(), auth).asStream();
+    public ProfileImage getProfileImage(String screenName, ProfileImage.ImageSize size) throws TwitterException {
+        return new ProfileImageImpl(http.get(conf.getRestBaseURL() + "users/profile_image/"
+                + screenName + ".json?size="+size.getName(), auth));
     }
 
     /**

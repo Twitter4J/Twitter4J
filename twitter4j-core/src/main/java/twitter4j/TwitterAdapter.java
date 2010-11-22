@@ -159,7 +159,7 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.1.7
      */
-    public void gotProfileImage(InputStream is) {
+    public void gotProfileImage(ProfileImage image) {
     }
 
     public void gotFriendsStatuses(PagableResponseList<User> users){

@@ -210,10 +210,8 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
     }
     public void testProfileImage() throws Exception {
-        InputStream is = twitterAPI1.getProfileImage(id1.screenName, ImageSize.BIGGER);
-        assertNull(DataObjectFactory.getRawJSON(is));
-        assertNotNull(is);
-        is.close();
+        ProfileImage image = twitterAPI1.getProfileImage(id1.screenName, ProfileImage.BIGGER);
+        assertNotNull(image.getURL());
     }
 
 

@@ -32,7 +32,8 @@ package twitter4j.internal.http;
  */
 public interface HttpResponseCode {
     int OK = 200;// OK: Success!
-    int MULTIPLE_CHOICES = 300;// 
+    int MULTIPLE_CHOICES = 300;//
+    int FOUND = 302;//
     int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.
     int BAD_REQUEST = 400;// Bad Request: The request was invalid. An accompanying error message will explain why. This is the status code will be returned during rate limiting.
     int UNAUTHORIZED = 401;// Not Authorized: Authentication credentials were missing or incorrect.
