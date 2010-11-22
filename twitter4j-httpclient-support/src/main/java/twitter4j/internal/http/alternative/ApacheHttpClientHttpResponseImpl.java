@@ -27,9 +27,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.internal.http.alternative;
 
 import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -59,6 +64,24 @@ final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.Htt
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Map<String, List<String>> getResponseHeaderFields() {
+        Header[] headers = res.getAllHeaders();
+        Map<String, List<String>> maps = new HashMap<String, List<String>>();
+        for(Header header : headers){
+            HeaderElement[] elements = header.getElements();
+            for(HeaderElement element : elements){
+                List<String> values;
+                if(null == (values = maps.get(element.getName()))){
+                    values = new ArrayList<String>(1);
+                    maps.put(element.getName(), values);
+                }
+                values.add(element.getValue());
+            }
+        }
+        return maps;
     }
 
     /**

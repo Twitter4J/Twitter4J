@@ -27,6 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.internal.http;
 
 import java.io.*;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -74,6 +76,7 @@ public abstract class HttpResponse {
     }
 
     public abstract String getResponseHeader(String name);
+    public abstract Map<String, List<String>> getResponseHeaderFields();
 
     /**
      * Returns the response stream.<br>
