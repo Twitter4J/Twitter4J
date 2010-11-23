@@ -24,43 +24,39 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.favorite;
+package twitter4j.examples.block;
 
-import twitter4j.Status;
+import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.User;
 
 import java.util.List;
 
 /**
- * Lists favorited statuses
+ * List blocking user ids.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class GetFavorites {
+public final class GetBlockingUsersIDs {
     /**
-     * Usage: java twitter4j.examples.favorite.GetFavorites
+     * Usage: java twitter4j.examples.block.GetBlockingUsersIDs
      *
      * @param args message
      */
     public static void main(String[] args) {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            int page = 1;
-            List<Status> statuses;
-            do {
-                statuses = twitter.getFavorites(page);
-                for (Status status : statuses) {
-                    System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
-                }
-                page++;
-            } while (statuses.size() > 0 && page < 10);
+            IDs ids = twitter.getBlockingUsersIDs();
+            for (int id : ids.getIDs()) {
+                System.out.println(id);
+            }
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get favorites: " + te.getMessage());
+            System.out.println("Failed to get blocking user ids: " + te.getMessage());
             System.exit(-1);
         }
     }
