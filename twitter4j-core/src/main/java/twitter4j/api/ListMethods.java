@@ -127,14 +127,14 @@ public interface ListMethods {
      * List the lists the specified user has been added to.
      * <br>This method calls http://api.twitter.com/1/:user/lists/memberships.json
      *
-     * @param listOwnerScreenName The screen name of the list owner
+     * @param listMemberScreenName The screen name of the list member
      * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/:user/lists/memberships">GET :user/lists/memberships | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    PagableResponseList<UserList> getUserListMemberships(String listOwnerScreenName, long cursor)
+    PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor)
             throws TwitterException;
 
     /**

@@ -33,16 +33,13 @@ import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 
 import static twitter4j.internal.http.HttpParameter.*;
-import static twitter4j.internal.json.DataObjectFactoryUtil.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -655,9 +652,9 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public InputStream getProfileImage(String screenName, ImageSize size) throws TwitterException {
-        return http.get(conf.getRestBaseURL() + "users/profile_image/"
-                + screenName + ".json?size="+size.getName(), auth).asStream();
+    public ProfileImage getProfileImage(String screenName, ProfileImage.ImageSize size) throws TwitterException {
+        return new ProfileImageImpl(http.get(conf.getRestBaseURL() + "users/profile_image/"
+                + screenName + ".json?size="+size.getName(), auth));
     }
 
     /**
@@ -827,10 +824,10 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<UserList> getUserListMemberships(String listOwnerScreenName, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL() +
-                listOwnerScreenName + "/lists/memberships.json?cursor=" + cursor, auth));
+                listMemberScreenName + "/lists/memberships.json?cursor=" + cursor, auth));
     }
 
     /**

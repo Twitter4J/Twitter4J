@@ -24,51 +24,24 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.internal.http;
+package twitter4j;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.GZIPInputStream;
+import twitter4j.internal.http.HttpResponse;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.2
+ * @since Twitter4J 2.1.7
  */
-public class HttpResponseImpl extends HttpResponse {
-    private HttpURLConnection con;
+class ProfileImageImpl extends TwitterResponseImpl implements ProfileImage {
+    private static final long serialVersionUID = -3710458112877311569L;
+    private String url;
 
-    HttpResponseImpl(HttpURLConnection con) throws IOException {
-        this.con = con;
-        this.statusCode = con.getResponseCode();
-        if(null == (is = con.getErrorStream())){
-            is = con.getInputStream();
-        }
-        if (null != is && "gzip".equals(con.getContentEncoding())) {
-            // the response is gzipped
-            is = new GZIPInputStream(is);
-        }
+    ProfileImageImpl(HttpResponse res) {
+        super(res);
+        url = res.getResponseHeader("Location");
     }
 
-    // for test purpose
-    /*package*/ HttpResponseImpl(String content) {
-        this.responseAsString = content;
-    }
-
-    public String getResponseHeader(String name) {
-        return con.getHeaderField(name);
-    }
-
-    @Override
-    public Map<String, List<String>> getResponseHeaderFields() {
-        return con.getHeaderFields();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void disconnect(){
-        con.disconnect();
+    public String getURL() {
+        return url;
     }
 }

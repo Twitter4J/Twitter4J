@@ -29,6 +29,9 @@ package twitter4j;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseCode;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * An exception class that will be thrown when TwitterAPI calls are failed.<br>
  * In case the Twitter server returned HTTP error code, you can get the HTTP status code using getStatusCode() method.
@@ -41,6 +44,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     private RateLimitStatus rateLimitStatus;
     private RateLimitStatus featureSpecificRateLimitStatus = null;
     private static final long serialVersionUID = -2623309261327598087L;
+    private Map<String, List<String>> responseHeaderFields = null;
 
     public TwitterException(String msg) {
         super(msg);
@@ -69,11 +73,13 @@ public class TwitterException extends Exception implements TwitterResponse, Http
             } catch (NumberFormatException ignore) {
                 this.retryAfter = -1;
             }
+            responseHeaderFields = res.getResponseHeaderFields();
         }
         this.statusCode = res.getStatusCode();
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
         this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
     }
+
 
     public TwitterException(String msg, Exception cause) {
         super(msg, cause);
@@ -87,6 +93,17 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     public int getStatusCode() {
         return this.statusCode;
+    }
+
+    public String getResponseHeader(String name) {
+        String value = null;
+        if (null != responseHeaderFields) {
+            List<String> header = responseHeaderFields.get(name);
+            if (header.size() > 0) {
+                value = header.get(0);
+            }
+        }
+        return value;
     }
 
     /**
