@@ -54,7 +54,7 @@ public final class PrintUserStream implements UserStreamListener {
     private Twitter twitter;
     private int currentUserId;
 
-    private  PrintUserStream() {
+    private PrintUserStream() {
         twitterStream = new TwitterStreamFactory(this).getInstance();
         twitter = new TwitterFactory().getInstance();
 
