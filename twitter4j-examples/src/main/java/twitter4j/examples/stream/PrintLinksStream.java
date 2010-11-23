@@ -24,16 +24,50 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
+package twitter4j.examples.stream;
+
+import twitter4j.Status;
+import twitter4j.StatusAdapter;
+import twitter4j.StatusDeletionNotice;
+import twitter4j.TwitterException;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */
-public interface SimilarPlaces extends ResponseList<Place>{
+public class PrintLinksStream  extends StatusAdapter {
     /**
-     * Returns the token needed to be able to create a new place  with {@link twitter4j.api.GeoMethods#createPlace(String, String, String, GeoLocation, String)}.
-     * @return token the token needed to be able to create a new place with {@link twitter4j.api.GeoMethods#createPlace(String, String, String, GeoLocation, String)}
+     * Main entry of this application.
+     * @param args
      */
-    String getToken();
+    public static void main(String[] args)throws TwitterException {
+        PrintLinksStream printLinksStream = new PrintLinksStream();
+        printLinksStream.startConsuming();
+    }
+
+    private TwitterStream twitterStream;
+
+    private PrintLinksStream() {
+        twitterStream = new TwitterStreamFactory(this).getInstance();
+    }
+    private void startConsuming() throws TwitterException {
+        // links() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
+        twitterStream.links(0);
+    }
+
+    public void onStatus(Status status) {
+        System.out.println(status.getUser().getName() + " : " + status.getText());
+    }
+
+    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+    }
+
+    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
+    }
+
+    public void onException(Exception ex) {
+        ex.printStackTrace();
+    }
 }

@@ -177,23 +177,21 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public void stream(final String relativeUrl, final int count, final boolean handleUserStream) {
         ensureAuthorizationEnabled();
-      startHandler(new StreamHandlingThread(handleUserStream) {
-          public StatusStream getStream() throws TwitterException {
-              return getCountStream(relativeUrl, count);
-          }
-      });
+        startHandler(new StreamHandlingThread(handleUserStream) {
+            public StatusStream getStream() throws TwitterException {
+                return getCountStream(relativeUrl, count);
+            }
+        });
     }
 
     private StatusStream getCountStream(String relativeUrl, int count) throws TwitterException {
         ensureAuthorizationEnabled();
-      ensureBasicEnabled();
-      try {
-          return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + relativeUrl
-                  , new HttpParameter[]{new HttpParameter("count"
-                          , String.valueOf(count))}, auth));
-      } catch (IOException e) {
-          throw new TwitterException(e);
-      }
+        try {
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + relativeUrl
+                    , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))}, auth));
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -542,6 +540,11 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                 } catch (TwitterException te) {
                     if (!closed) {
                         if (NO_WAIT == timeToSleep) {
+                            if(te.getStatusCode() == 403){
+                                logger.warn("This account is not in required role.");
+                                closed = true;
+                                break;
+                            }
                             if (te.getStatusCode() > 200) {
                                 timeToSleep = HTTP_ERROR_INITIAL_WAIT;
                             } else if (0 == timeToSleep) {
