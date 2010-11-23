@@ -367,7 +367,7 @@ public interface TwitterListener {
     void gotLocationTrends(Trends trends);
     /*Geo Methods*/
     void searchedPlaces(ResponseList<Place> places);
-    void gotSimilarPlaces(ResponseList<Place> places);
+    void gotSimilarPlaces(SimilarPlaces places);
     void gotNearByPlaces(ResponseList<Place> places);
     void gotReverseGeoCode(ResponseList<Place> places);
     void gotGeoDetails(Place place);

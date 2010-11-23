@@ -42,7 +42,7 @@ import java.util.Set;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @author Rémy Rakic - remy dot rakic at gmail.com
  */
-public final class PrintUserStream implements StatusListener {
+public final class PrintUserStream implements UserStreamListener {
     public static void main(String[] args) throws TwitterException {
         PrintUserStream printSampleStream = new PrintUserStream();
         printSampleStream.startConsuming();
@@ -54,8 +54,8 @@ public final class PrintUserStream implements StatusListener {
     private Twitter twitter;
     private int currentUserId;
 
-    public PrintUserStream() {
-        twitterStream = new TwitterStreamFactory().getInstance();
+    private  PrintUserStream() {
+        twitterStream = new TwitterStreamFactory(this).getInstance();
         twitter = new TwitterFactory().getInstance();
 
         try {
@@ -70,7 +70,6 @@ public final class PrintUserStream implements StatusListener {
     private void startConsuming() throws TwitterException {
         // the user() method internally creates a thread which manipulates
         // TwitterStream and calls these adequate listener methods continuously.
-        twitterStream.setStatusListener(this);
         twitterStream.user();
     }
 
@@ -97,6 +96,22 @@ public final class PrintUserStream implements StatusListener {
 
     public void onDirectMessage(DirectMessage dm) {
         System.out.println("DM from " + dm.getSenderScreenName() + " to " + dm.getRecipientScreenName() + ": " + dm.getText());
+    }
+
+    public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
+        System.out.println("List subscribed " + list.getName());
+    }
+
+    public void onUserListCreated(User listOwner, UserList list) {
+        System.out.println("List created " + list.getName());
+    }
+
+    public void onUserListUpdated(User listOwner, UserList list) {
+        System.out.println("List updated " + list.getName());
+    }
+
+    public void onUserListDestroyed(User listOwner, UserList list) {
+        System.out.println("List destroyed " + list.getName());
     }
 
     public void onDeletionNotice(StatusDeletionNotice notice) {

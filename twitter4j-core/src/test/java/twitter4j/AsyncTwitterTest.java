@@ -899,7 +899,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
-    public void gotSimilarPlaces(ResponseList<Place> places) {
+    public void gotSimilarPlaces(SimilarPlaces places) {
         this.places = places;
         notifyResponse();
     }

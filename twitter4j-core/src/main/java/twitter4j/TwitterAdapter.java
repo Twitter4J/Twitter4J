@@ -409,7 +409,7 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.1.7
      */
-    public void gotSimilarPlaces(ResponseList<Place> places) {
+    public void gotSimilarPlaces(SimilarPlaces places) {
     }
 
     public void gotNearByPlaces(ResponseList<Place> places){

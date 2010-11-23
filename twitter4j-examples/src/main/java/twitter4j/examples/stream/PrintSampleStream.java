@@ -30,38 +30,27 @@ import twitter4j.*;
 
 /**
  * <p>This is a code example of Twitter4J Streaming API - sample method support.<br>
- * Usage: java twitter4j.examples.PrintSampleStream [<i>TwitterScreenName</i> <i>TwitterPassword</i>]<br>
+ * Usage: java twitter4j.examples.PrintSampleStream<br>
  * </p>
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class PrintSampleStream extends StatusAdapter {
     /**
      * Main entry of this application.
-     * @param args String[] TwitterID TwitterPassword
+     * @param args
      */
     public static void main(String[] args)throws TwitterException {
-        PrintSampleStream printSampleStream = new PrintSampleStream(args);
+        PrintSampleStream printSampleStream = new PrintSampleStream();
         printSampleStream.startConsuming();
     }
 
-    TwitterStream twitterStream;
+    private TwitterStream twitterStream;
 
-    PrintSampleStream(String[] args) {
-        try {
-            twitterStream = new TwitterStreamFactory(this).getInstance();
-        } catch (IllegalStateException is) {
-            // screen name / password combination is not in twitter4j.properties
-            if (args.length < 2) {
-                System.out.println(
-                        "Usage: java twitter4j.examples.PrintSampleStream [ScreenName Password]");
-                System.exit(-1);
-            }
-            twitterStream = new TwitterStreamFactory().getInstance(args[0], args[1]);
-        }
+    private PrintSampleStream() {
+        twitterStream = new TwitterStreamFactory(this).getInstance();
     }
     private void startConsuming() throws TwitterException {
         // sample() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
-        twitterStream.setStatusListener(this);
         twitterStream.sample();
     }
 
