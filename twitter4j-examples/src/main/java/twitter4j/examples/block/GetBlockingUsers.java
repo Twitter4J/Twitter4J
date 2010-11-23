@@ -24,23 +24,23 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.favorite;
+package twitter4j.examples.block;
 
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.User;
 
 import java.util.List;
 
 /**
- * Lists favorited statuses
+ * Lists blocking users.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class GetFavorites {
+public final class GetBlockingUsers {
     /**
-     * Usage: java twitter4j.examples.favorite.GetFavorites
+     * Usage: java twitter4j.examples.block.GetBlockingUsers
      *
      * @param args message
      */
@@ -48,19 +48,21 @@ public final class GetFavorites {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             int page = 1;
-            List<Status> statuses;
+            List<User> users;
             do {
-                statuses = twitter.getFavorites(page);
-                for (Status status : statuses) {
-                    System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+                users = twitter.getBlockingUsers(page);
+                for (User user : users) {
+                    System.out.println("@" + user.getScreenName());
                 }
                 page++;
-            } while (statuses.size() > 0 && page < 10);
+                // this code ends up in an infinite loop due to the issue 1988
+                // http://code.google.com/p/twitter-api/issues/detail?id=1988
+            } while (users.size() > 0);
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get favorites: " + te.getMessage());
+            System.out.println("Failed to get blocking users: " + te.getMessage());
             System.exit(-1);
         }
     }

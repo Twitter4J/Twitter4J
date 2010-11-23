@@ -24,43 +24,35 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.favorite;
+package twitter4j.examples.block;
 
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
-import java.util.List;
-
 /**
- * Lists favorited statuses
+ * Checks the existence of block to the specified user.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class GetFavorites {
+public final class ExistsBlock {
     /**
-     * Usage: java twitter4j.examples.favorite.GetFavorites
+     * Usage: java twitter4j.examples.block.ExistsBlock [screen name]
      *
      * @param args message
      */
     public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("Usage: java twitter4j.examples.block.ExistsBlock [screen name]");
+            System.exit(-1);
+        }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            int page = 1;
-            List<Status> statuses;
-            do {
-                statuses = twitter.getFavorites(page);
-                for (Status status : statuses) {
-                    System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
-                }
-                page++;
-            } while (statuses.size() > 0 && page < 10);
-            System.out.println("done.");
+            System.out.println("Is blocking @" + args[0] + ": " + twitter.existsBlock(args[0]));
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get favorites: " + te.getMessage());
+            System.out.println("Failed to check block existence: " + te.getMessage());
             System.exit(-1);
         }
     }
