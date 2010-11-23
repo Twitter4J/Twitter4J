@@ -24,48 +24,36 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.listmembers;
+package twitter4j.examples.listsubscribers;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.User;
-import twitter4j.UserList;
 
 /**
- * Checks list membership.
+ * Unsubscribes specified list.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class CheckUserListMembership {
+public final class UnsubscribeUserList {
     /**
-     * Usage: java twitter4j.examples.listmembers.CheckUserListMembership [list owner screen name] [list id] [user id]
+     * Usage: java twitter4j.examples.listsubscribers.UnsubscribeUserList [list owner screen name] [list id]
      *
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.listmembers.CheckUserListMembership [list owner screen name] [list id] [user id]");
+        if (args.length < 2) {
+            System.out.println("Usage: java twitter4j.examples.listsubscribers.UnsubscribeUserList [list owner screen name] [list id]");
             System.exit(-1);
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            int listId = Integer.parseInt(args[1]);
-            UserList list = twitter.showUserList(args[0], listId);
-            int userId = Integer.parseInt(args[2]);
-            User user = twitter.showUser(userId);
-            try {
-                twitter.checkUserListMembership(args[0], listId, userId);
-                System.out.println("@" + user.getScreenName() + " is in the list:" + list.getName());
-            } catch (TwitterException te) {
-                if (te.getStatusCode() == 404) {
-                    System.out.println("@" + user.getScreenName() + " is not in the list:" + list.getName());
-                }
-            }
+            twitter.unsubscribeUserList(args[0], Integer.parseInt(args[1]));
+            System.out.println("Successfully unsubscribed the list.");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to check user membership: " + te.getMessage());
+            System.out.println("Failed to unsubscribe the list: " + te.getMessage());
             System.exit(-1);
         }
     }
