@@ -104,7 +104,7 @@ public class DAOTest extends TwitterTestBase {
 
     public void testLocation() throws Exception {
         JSONArray array = getJSONArrayFromClassPath("/trends-available.json");
-        ResponseList<Location> locations = LocationJSONImpl.createLocationList(array, null);
+        ResponseList<Location> locations = LocationJSONImpl.createLocationList(array);
         assertEquals(23,locations.size());
         Location location = locations.get(0);
         assertEquals("GB", location.getCountryCode());

@@ -651,7 +651,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getProfileImage(final String screenName, final ImageSize size) {
+    public void getProfileImage(final String screenName, final ProfileImage.ImageSize size) {
         getDispatcher().invokeLater(new AsyncTask(PROFILE_IMAGE, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.gotProfileImage(twitter.getProfileImage(screenName, size));
@@ -841,10 +841,10 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getUserListMemberships(final String listOwnerScreenName, final long cursor){
+    public void getUserListMemberships(final String listMemberScreenName, final long cursor){
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_MEMBERSHIPS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
-                listener.gotUserListMemberships(twitter.getUserListMemberships(listOwnerScreenName, cursor));
+                listener.gotUserListMemberships(twitter.getUserListMemberships(listMemberScreenName, cursor));
             }
         });
     }

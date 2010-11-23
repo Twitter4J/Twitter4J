@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
-import twitter4j.ImageSize;
+import twitter4j.ProfileImage;
 import twitter4j.TwitterException;
 
 import java.io.InputStream;
@@ -109,7 +109,7 @@ public interface UserMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/users/profile_image/:screen_name">GET users/profile_image/:screen_name | dev.twitter.com</a>
      * @since Twitter4J 2.1.7
      */
-    void getProfileImage(String screenName, ImageSize size);
+    void getProfileImage(String screenName, ProfileImage.ImageSize size);
 
 	/**
 	 * Returns the specified user's friends, each with current status inline.

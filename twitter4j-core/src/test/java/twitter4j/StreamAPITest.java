@@ -207,7 +207,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
         this.ex = null;
-        twitterStream.filter(new FilterQuery(0, null).track(new String[]{"twitter4j", "ipad"}));
+        twitterStream.filter(new FilterQuery(0, null).track(new String[]{"twitter4j java", "ipad"}));
         waitForStatus();
         assertNull(ex);
 
@@ -422,6 +422,9 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
     }
 
     public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         this.subscriber = subscriber;
         this.listOwner = listOwner;
         this.list = list;
@@ -429,18 +432,27 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
     }
 
     public void onUserListCreated(User listOwner, UserList list) {
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();
     }
 
     public void onUserListUpdated(User listOwner, UserList list) {
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();
     }
 
     public void onUserListDestroyed(User listOwner, UserList list) {
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         this.listOwner = listOwner;
         this.list = list;
         notifyResponse();

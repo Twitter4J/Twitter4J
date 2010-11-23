@@ -80,7 +80,7 @@ public class DataObjectFactoryUtil {
      */
     public static <T> T registerJSONObject(T key, Object json) {
         try {
-            Class[] clazz = REGISTER_JSON_OBJECT.getParameterTypes();
+//            Class[] clazz = REGISTER_JSON_OBJECT.getParameterTypes();
             return (T) REGISTER_JSON_OBJECT.invoke(null, key, json);
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);

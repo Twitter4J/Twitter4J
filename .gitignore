@@ -1,3 +1,4 @@
+statuses/*
 target/*
 twitter4j.properties
 twitter4j-httpclient-support/target/*

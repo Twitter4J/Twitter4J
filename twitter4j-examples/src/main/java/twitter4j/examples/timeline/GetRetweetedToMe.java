@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class GetRetweetedToMe {
     /**
-     * Usage: java twitter4j.examples.GetRetweetedToMe
+     * Usage: java twitter4j.examples.timeline.GetRetweetedToMe
      *
      * @param args String[]
      */

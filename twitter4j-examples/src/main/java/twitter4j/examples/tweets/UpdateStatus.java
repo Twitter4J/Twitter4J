@@ -40,16 +40,18 @@ import java.io.InputStreamReader;
 /**
  * Example application that uses OAuth method to acquire access to your account.<br>
  * This application illustrates how to use OAuth method with Twitter4J.<br>
+ * Usage: java twitter4j.examples.tweets.UpdateStatus [message]
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class UpdateStatus {
     /**
-     * Usage: java twitter4j.examples.tweets.UpdateStatus [text]
+     * Usage: java twitter4j.examples.tweets.UpdateStatus [message]
      * @param args message
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.tweets.UpdateStatus [text]");
+            System.out.println(
+                "Usage: java twitter4j.examples.OAuthUpdate text");
             System.exit( -1);
         }
         try {

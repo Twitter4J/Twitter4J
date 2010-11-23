@@ -35,7 +35,6 @@ import java.util.List;
 
 /**
  * Example application that gets public, user and friend timeline using specified account.<br>
- * Usage: java twitter4j.examples.GetPublicTimeline
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class GetPublicTimeline {

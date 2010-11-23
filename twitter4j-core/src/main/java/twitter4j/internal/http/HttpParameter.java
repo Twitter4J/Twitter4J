@@ -28,6 +28,7 @@ package twitter4j.internal.http;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -244,13 +245,41 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
             if (j != 0) {
                 buf.append("&");
             }
-            try {
-                buf.append(URLEncoder.encode(httpParams[j].name, "UTF-8"))
-                        .append("=").append(URLEncoder.encode(httpParams[j].value, "UTF-8"));
-            } catch (java.io.UnsupportedEncodingException neverHappen) {
+            buf.append(encode(httpParams[j].name))
+                    .append("=").append(encode(httpParams[j].value));
+        }
+        return buf.toString();
+    }
+
+    /**
+     * @param value string to be encoded
+     * @return encoded string
+     * @see <a href="http://wiki.oauth.net/TestCases">OAuth / TestCases</a>
+     * @see <a href="http://groups.google.com/group/oauth/browse_thread/thread/a8398d0521f4ae3d/9d79b698ab217df2?hl=en&lnk=gst&q=space+encoding#9d79b698ab217df2">Space encoding - OAuth | Google Groups</a>
+     * @see <a href="http://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax - 2.1. Percent-Encoding</a>
+     */
+    public static String encode(String value) {
+        String encoded = null;
+        try {
+            encoded = URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException ignore) {
+        }
+        StringBuffer buf = new StringBuffer(encoded.length());
+        char focus;
+        for (int i = 0; i < encoded.length(); i++) {
+            focus = encoded.charAt(i);
+            if (focus == '*') {
+                buf.append("%2A");
+            } else if (focus == '+') {
+                buf.append("%20");
+            } else if (focus == '%' && (i + 1) < encoded.length()
+                    && encoded.charAt(i + 1) == '7' && encoded.charAt(i + 2) == 'E') {
+                buf.append('~');
+                i += 2;
+            } else {
+                buf.append(focus);
             }
         }
         return buf.toString();
-
     }
 }

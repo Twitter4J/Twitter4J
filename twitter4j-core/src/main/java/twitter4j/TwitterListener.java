@@ -146,7 +146,7 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.1.7
      */
-    void gotProfileImage(InputStream is);
+    void gotProfileImage(ProfileImage image);
 
 
     void gotFriendsStatuses(PagableResponseList<User> users);

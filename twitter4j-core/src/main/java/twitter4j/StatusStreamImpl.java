@@ -43,6 +43,7 @@ import java.util.List;
 
 /**
  * StatusStream implementation. This class is NOT intended to be extended but left non-final for the ease of mock testing.
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
@@ -105,7 +106,7 @@ class StatusStreamImpl implements StatusStream, UserStream {
                 logger.debug("received:", line);
                 try {
                     JSONObject json = new JSONObject(line);
-                    if (!json.isNull ("sender")) {
+                    if (!json.isNull("sender")) {
                         for (StatusListener listener : listeners) {
                             if (listener instanceof UserStreamListener) {
                                 ((UserStreamListener) listener).onDirectMessage(new DirectMessageJSONImpl(json));
@@ -118,21 +119,23 @@ class StatusStreamImpl implements StatusStream, UserStream {
                     } else if (!json.isNull("direct_message")) {
                         for (StatusListener listener : listeners) {
                             if (listener instanceof UserStreamListener) {
-                                ((UserStreamListener) listener).onDirectMessage(new DirectMessageJSONImpl(json.getJSONObject("direct_message")));
+                                JSONObject directMessageJSON = json.getJSONObject("direct_message");
+                                DirectMessage directMessage = new DirectMessageJSONImpl(directMessageJSON);
+                                DataObjectFactoryUtil.registerJSONObject(directMessage, directMessageJSON);
+                                ((UserStreamListener) listener).onDirectMessage(directMessage);
                             }
                         }
                     } else if (!json.isNull("delete")) {
                         for (StatusListener listener : listeners) {
                             listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
                         }
-                    }
-                    else if (!json.isNull("limit")) {
+                    } else if (!json.isNull("limit")) {
                         for (StatusListener listener : listeners) {
                             listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
                         }
-                    } else if (!json.isNull ("scrub_geo")) {
-                            // Not implemented yet
-                            System.out.println ("Geo-tagging deletion notice (not implemented yet): " + line);
+                    } else if (!json.isNull("scrub_geo")) {
+                        // Not implemented yet
+                        System.out.println("Geo-tagging deletion notice (not implemented yet): " + line);
                     } else if (!json.isNull("friends")) {
                         JSONArray friends = json.getJSONArray("friends");
                         int[] friendIds = new int[friends.length()];
@@ -146,18 +149,21 @@ class StatusStreamImpl implements StatusStream, UserStream {
                         }
                     } else if (!json.isNull("event")) {
                         String event = json.getString("event");
-                        User source = new UserJSONImpl(json.getJSONObject("source"));
-                        User target = new UserJSONImpl(json.getJSONObject("target"));
-
+                        JSONObject sourceJSON = json.getJSONObject("source");
+                        JSONObject targetJSON = json.getJSONObject("target");
+                        User source = new UserJSONImpl(sourceJSON);
+                        User target = new UserJSONImpl(targetJSON);
+                        DataObjectFactoryUtil.registerJSONObject(source, sourceJSON);
+                        DataObjectFactoryUtil.registerJSONObject(target, targetJSON);
                         if ("favorite".equals(event)) {
-                            Status targetObject = new StatusJSONImpl(json.getJSONObject("target_object"));
+                            Status targetObject = extractTargetObject(json);
                             for (StatusListener listener : listeners) {
                                 if (listener instanceof UserStreamListener) {
                                     ((UserStreamListener) listener).onFavorite(source, target, targetObject);
                                 }
                             }
                         } else if ("unfavorite".equals(event)) {
-                            Status targetObject = new StatusJSONImpl(json.getJSONObject("target_object"));
+                            Status targetObject = extractTargetObject(json);
                             for (StatusListener listener : listeners) {
                                 if (listener instanceof UserStreamListener) {
                                     ((UserStreamListener) listener).onUnfavorite(source, target, targetObject);
@@ -165,7 +171,7 @@ class StatusStreamImpl implements StatusStream, UserStream {
                             }
                         } else if ("retweet".equals(event)) {
                             // note: retweet events also show up as statuses
-                            Status targetObject = new StatusJSONImpl(json.getJSONObject("target_object"));
+                            Status targetObject = extractTargetObject(json);
                             for (StatusListener listener : listeners) {
                                 if (listener instanceof UserStreamListener) {
                                     ((UserStreamListener) listener).onRetweet(source, target, targetObject);
@@ -184,49 +190,50 @@ class StatusStreamImpl implements StatusStream, UserStream {
                                 }
                             }
                         } else if (event.startsWith("list_")) {
-                            UserList targetObject = new UserListJSONImpl (json.getJSONObject ("target_object"));
-
-                             if ("list_user_subscribed".equals (event)) {
-                                 for (StatusListener listener : listeners) {
-                                     if (listener instanceof UserStreamListener) {
-                                         ((UserStreamListener) listener).onUserListSubscribed(source, target, targetObject);
-                                     }
-                                 }
-                             } else if ("list_created".equals (event)) {
-                                 for (StatusListener listener : listeners) {
-                                     if (listener instanceof UserStreamListener) {
-                                         ((UserStreamListener) listener).onUserListCreated(source, targetObject);
-                                     }
-                                 }
-                             } else if ("list_updated".equals (event)) {
-                                 for (StatusListener listener : listeners) {
-                                     if (listener instanceof UserStreamListener) {
-                                         ((UserStreamListener) listener).onUserListUpdated(source, targetObject);
-                                     }
-                                 }
-                             } else if ("list_destroyed".equals (event)) {
-                                 for (StatusListener listener : listeners) {
-                                     if (listener instanceof UserStreamListener) {
-                                         ((UserStreamListener) listener).onUserListDestroyed(source, targetObject);
-                                     }
-                                 }
-                             }
-                         } else if ("block".equals(event)) {
+                            JSONObject targetObjectJSON = json.getJSONObject("target_object");
+                            UserList targetObject = new UserListJSONImpl(targetObjectJSON);
+                            DataObjectFactoryUtil.registerJSONObject(targetObject, targetObjectJSON);
+                            if ("list_user_subscribed".equals(event)) {
+                                for (StatusListener listener : listeners) {
+                                    if (listener instanceof UserStreamListener) {
+                                        ((UserStreamListener) listener).onUserListSubscribed(source, target, targetObject);
+                                    }
+                                }
+                            } else if ("list_created".equals(event)) {
+                                for (StatusListener listener : listeners) {
+                                    if (listener instanceof UserStreamListener) {
+                                        ((UserStreamListener) listener).onUserListCreated(source, targetObject);
+                                    }
+                                }
+                            } else if ("list_updated".equals(event)) {
+                                for (StatusListener listener : listeners) {
+                                    if (listener instanceof UserStreamListener) {
+                                        ((UserStreamListener) listener).onUserListUpdated(source, targetObject);
+                                    }
+                                }
+                            } else if ("list_destroyed".equals(event)) {
+                                for (StatusListener listener : listeners) {
+                                    if (listener instanceof UserStreamListener) {
+                                        ((UserStreamListener) listener).onUserListDestroyed(source, targetObject);
+                                    }
+                                }
+                            }
+                        } else if ("block".equals(event)) {
                             for (StatusListener listener : listeners) {
                                 if (listener instanceof UserStreamListener) {
                                     ((UserStreamListener) listener).onBlock(source, target);
                                 }
                             }
-                        } else if ("unblock".equals (event)) {
+                        } else if ("unblock".equals(event)) {
                             for (StatusListener listener : listeners) {
                                 if (listener instanceof UserStreamListener) {
                                     ((UserStreamListener) listener).onUnblock(source, target);
                                 }
                             }
                         } else {
-                             logger.info("Received unknown event type '" + event + "': " + line);
-                         }
-                     } else {
+                            logger.info("Received unknown event type '" + event + "': " + line);
+                        }
+                    } else {
                         // tmp: just checking what kind of unknown event we're receiving on this stream
                         logger.info("Received unknown event: " + line);
                     }
@@ -243,11 +250,19 @@ class StatusStreamImpl implements StatusStream, UserStream {
             }
             boolean isUnexceptedException = streamAlive;
             streamAlive = false;
-            if(isUnexceptedException){
+            if (isUnexceptedException) {
                 throw new TwitterException("Stream closed.", ioe);
             }
         }
     }
+
+    Status extractTargetObject(JSONObject json) throws JSONException, TwitterException {
+        JSONObject statusJSON = json.getJSONObject("target_object");
+        Status targetObject = new StatusJSONImpl(statusJSON);
+        DataObjectFactoryUtil.registerJSONObject(targetObject, statusJSON);
+        return targetObject;
+    }
+
 
     /**
      * {@inheritDoc}

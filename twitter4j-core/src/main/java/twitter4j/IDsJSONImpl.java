@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -46,50 +47,75 @@ import java.util.Arrays;
     private long nextCursor = -1;
     private static final long serialVersionUID = -6585026560164704953L;
 
-    private IDsJSONImpl(HttpResponse res) throws TwitterException {
+    /*package*/ IDsJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
+        String json = res.asString();
+        init(json);
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        DataObjectFactoryUtil.registerJSONObject(this, json);
     }
-    /*package*/ static IDs getFriendsIDs(HttpResponse res) throws TwitterException {
-        IDsJSONImpl friendsIDs = new IDsJSONImpl(res);
-        JSONObject json = res.asJSONObject();
+
+    /*package*/ IDsJSONImpl(String json) throws TwitterException {
+        init(json);
+    }
+    private void init(String jsonStr) throws TwitterException {
+
         JSONArray idList;
         try {
-            idList = json.getJSONArray("ids");
-            friendsIDs.ids = new int[idList.length()];
-            for (int i = 0; i < idList.length(); i++) {
-                try {
-                    friendsIDs.ids[i] = Integer.parseInt(idList.getString(i));
-                } catch (NumberFormatException nfe) {
-                    throw new TwitterException("Twitter API returned malformed response: " + json, nfe);
+            if (jsonStr.startsWith("{")) {
+                JSONObject json = new JSONObject(jsonStr);
+                idList = json.getJSONArray("ids");
+                ids = new int[idList.length()];
+                for (int i = 0; i < idList.length(); i++) {
+                    try {
+                        ids[i] = Integer.parseInt(idList.getString(i));
+                    } catch (NumberFormatException nfe) {
+                        throw new TwitterException("Twitter API returned malformed response: " + json, nfe);
+                    }
                 }
-            }
-            friendsIDs.previousCursor = ParseUtil.getLong("previous_cursor", json);
-            friendsIDs.nextCursor = ParseUtil.getLong("next_cursor", json);
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-        return friendsIDs;
-    }
-
-
-    /*package*/ static IDs getBlockIDs(HttpResponse res) throws TwitterException {
-        IDsJSONImpl blockIDs = new IDsJSONImpl(res);
-        JSONArray idList = null;
-        try {
-            idList = res.asJSONArray();
-            blockIDs.ids = new int[idList.length()];
-            for (int i = 0; i < idList.length(); i++) {
-                try {
-                    blockIDs.ids[i] = Integer.parseInt(idList.getString(i));
-                } catch (NumberFormatException nfe) {
-                    throw new TwitterException("Twitter API returned malformed response: " + idList, nfe);
+                previousCursor = ParseUtil.getLong("previous_cursor", json);
+                nextCursor = ParseUtil.getLong("next_cursor", json);
+            } else {
+                idList = new JSONArray(jsonStr);
+                ids = new int[idList.length()];
+                for (int i = 0; i < idList.length(); i++) {
+                    try {
+                        ids[i] = Integer.parseInt(idList.getString(i));
+                    } catch (NumberFormatException nfe) {
+                        throw new TwitterException("Twitter API returned malformed response: " + idList, nfe);
+                    }
                 }
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-        return blockIDs;
+
+
     }
+//    /*package*/ static IDs getFriendsIDs(HttpResponse res) throws TwitterException {
+//        IDsJSONImpl friendsIDs = new IDsJSONImpl(res);
+//        return friendsIDs;
+//    }
+//
+//
+//    /*package*/ static IDs getBlockIDs(HttpResponse res) throws TwitterException {
+//        IDsJSONImpl blockIDs = new IDsJSONImpl(res);
+//        JSONArray idList = null;
+//        try {
+//            idList = res.asJSONArray();
+//            blockIDs.ids = new int[idList.length()];
+//            for (int i = 0; i < idList.length(); i++) {
+//                try {
+//                    blockIDs.ids[i] = Integer.parseInt(idList.getString(i));
+//                } catch (NumberFormatException nfe) {
+//                    throw new TwitterException("Twitter API returned malformed response: " + idList, nfe);
+//                }
+//            }
+//        } catch (JSONException jsone) {
+//            throw new TwitterException(jsone);
+//        }
+//        return blockIDs;
+//    }
 
     /**
      * {@inheritDoc}
