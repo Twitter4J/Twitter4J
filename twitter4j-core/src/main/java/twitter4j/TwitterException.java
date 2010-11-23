@@ -73,8 +73,8 @@ public class TwitterException extends Exception implements TwitterResponse, Http
             } catch (NumberFormatException ignore) {
                 this.retryAfter = -1;
             }
-            responseHeaderFields = res.getResponseHeaderFields();
         }
+        this.responseHeaderFields = res.getResponseHeaderFields();
         this.statusCode = res.getStatusCode();
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
         this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
