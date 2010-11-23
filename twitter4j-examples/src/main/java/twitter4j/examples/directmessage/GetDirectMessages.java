@@ -32,13 +32,12 @@ import java.util.List;
 
 /**
  * Example application that gets all direct messages sent to the specified account in twitter4j.properties.<br>
- * Usage: java twitter4j.examples.GetDirectMessages
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class GetDirectMessages {
     /**
-     * Usage: java twitter4j.examples.GetDirectMessages
+     * Usage: java twitter4j.examples.directmessage.GetDirectMessages
      *
      * @param args String[]
      */

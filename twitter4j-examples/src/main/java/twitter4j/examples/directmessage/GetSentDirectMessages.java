@@ -27,35 +27,43 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.examples.directmessage;
 
 import twitter4j.DirectMessage;
+import twitter4j.Paging;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.User;
+
+import java.util.List;
 
 /**
- * Example application that sends a message to specified Twitter-er from specified account.<br>
+ * Lists sent direct messages.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class SendDirectMessage {
+public final class GetSentDirectMessages {
     /**
-     * Usage: java twitter4j.examples.directMessage.DirectMessage [recipient screen name] [message]
+     * Usage: java twitter4j.examples.directmessages.GetSentDirectMessages
      *
-     * @param args String[]
+     * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 4) {
-            System.out.println("No TwitterID/Password specified.");
-            System.out.println("Usage: java twitter4j.examples.directmessage.DirectMessage [recipient screen name] [message]");
-            System.exit(-1);
-        }
-        Twitter twitter = new TwitterFactory().getInstance();
         try {
-            DirectMessage message = twitter.sendDirectMessage(args[0], args[1]);
-            System.out.println("Direct message successfully sent to " +
-                    message.getRecipientScreenName());
+            Twitter twitter = new TwitterFactory().getInstance();
+            Paging page = new Paging(1);
+            List<DirectMessage> directMessages;
+            do {
+                directMessages = twitter.getSentDirectMessages(page);
+                for (DirectMessage directMessage : directMessages) {
+                    System.out.println("To: @" + directMessage.getRecipientScreenName() + " - "
+                            + directMessage.getText());
+                }
+                page.setPage(page.getPage() + 1);
+            } while (directMessages.size() > 0 && page.getPage() < 10);
+            System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
-            System.out.println("Failed to send a direct message: " + te.getMessage());
+            te.printStackTrace();
+            System.out.println("Failed to get sent messages: " + te.getMessage());
             System.exit(-1);
         }
     }
