@@ -26,10 +26,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.examples.user;
 
-import twitter4j.ProfileImage;
+import twitter4j.ImageSize;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+
+import java.awt.image.ImagingOpException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Gets specified user's profile image.
@@ -44,19 +49,43 @@ public final class GetProfileImage {
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.user.GetProfileImage [screen name]");
+            System.out.println(
+                    "Usage: java twitter4j.examples.user.GetProfileImage [screen name]");
             System.exit(-1);
         }
+        InputStream is = null;
+        FileOutputStream fos = null;
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            ProfileImage image = twitter.getProfileImage(args[0], ProfileImage.NORMAL);
-            System.out.println(image.getURL());
-            System.out.println("Successfully got profile image URL of [" + args[0] + "].");
+            is = twitter.getProfileImage(args[0], ImageSize.NORMAL);
+            fos = new FileOutputStream(args[0]+".jpg");
+            int read;
+            while(-1 != (read = is.read()) ){
+                fos.write(read);
+            }
+            System.out.println("Successfully got profile image [" + args[0] + "].");
             System.exit(0);
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+            System.out.println("Failed to get profile image: " + ioe.getMessage());
+            System.exit(-1);
         }catch (TwitterException te) {
             te.printStackTrace();
             System.out.println("Failed to get profile image: " + te.getMessage());
             System.exit(-1);
+        }finally{
+            if(null != is){
+                try{
+                    is.close();
+                }catch(IOException ignore){
+                }
+            }
+            if(null != fos){
+                try{
+                    fos.close();
+                }catch(IOException ignore){
+                }
+            }
         }
     }
 }

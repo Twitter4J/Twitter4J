@@ -51,7 +51,7 @@ public final class GetRetweetedByIds {
             System.out.println("Usage: java twitter4j.examples.tweets.GetRetweetedByIds [status id]");
             System.exit(-1);
         }
-        System.out.println("Show user ids of up to 100 users who retweeted the status id - [" + args[0] + "].");
+        System.out.println("Showing user ids of up to 100 users who retweeted the status id - [" + args[0] + "].");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             Paging page = new Paging(1).count(100);
@@ -66,6 +66,7 @@ public final class GetRetweetedByIds {
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to get timeline: " + te.getMessage());
             System.exit(-1);
         }

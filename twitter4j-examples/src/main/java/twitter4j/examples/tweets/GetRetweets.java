@@ -59,6 +59,7 @@ public final class GetRetweets {
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to get timeline: " + te.getMessage());
             System.exit(-1);
         }

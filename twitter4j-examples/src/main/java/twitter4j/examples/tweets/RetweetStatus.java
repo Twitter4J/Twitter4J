@@ -46,13 +46,14 @@ public final class RetweetStatus {
             System.out.println("Usage: java twitter4j.examples.tweets.RetweetStatus [status id]");
             System.exit(-1);
         }
-        System.out.println("Retweet the status id - [" + args[0] + "].");
+        System.out.println("Retweeting the status id - [" + args[0] + "].");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             twitter.retweetStatus(Long.parseLong(args[0]));
             System.out.println("Successfully retweeted status [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to retweet: " + te.getMessage());
             System.exit(-1);
         }
