@@ -24,39 +24,43 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.friendship;
+package twitter4j.examples.geo;
 
-import twitter4j.IDs;
+import twitter4j.Place;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
 /**
- * Destroys specified status.
+ * Shows specified place's detailed information
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class GetOutgoingFriendships {
+public final class GetGeoDetails {
     /**
-     * Usage: java twitter4j.examples.friendship.GetOutgoingFriendships
+     * Usage: java twitter4j.examples.geo.GetGeoDetails [place id]
      *
      * @param args message
      */
     public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("Usage: java twitter4j.examples.geo.GetGeoDetails [place id]");
+            System.exit(-1);
+        }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            long cursor = -1;
-            IDs ids;
-            do {
-                ids = twitter.getOutgoingFriendships(cursor);
-                for (int id : ids.getIDs()) {
-                    System.out.println(id);
-                }
-            } while ((cursor = ids.getNextCursor()) != 0);
+            Place place = twitter.getGeoDetails(args[0]);
+            System.out.println("name: " + place.getName());
+            System.out.println("country: " + place.getCountry());
+            System.out.println("country code: " + place.getCountryCode());
+            System.out.println("full name: " + place.getFullName());
+            System.out.println("id: " + place.getId());
+            System.out.println("place type: " + place.getPlaceType());
+            System.out.println("street address: " + place.getStreetAddress());
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get outgoing friendships: " + te.getMessage());
+            System.out.println("Failed to retrieve geo details: " + te.getMessage());
             System.exit(-1);
         }
     }

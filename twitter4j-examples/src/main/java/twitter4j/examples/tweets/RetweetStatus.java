@@ -31,7 +31,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
 /**
- * Retweet specified status.
+ * Retweets specified status.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */

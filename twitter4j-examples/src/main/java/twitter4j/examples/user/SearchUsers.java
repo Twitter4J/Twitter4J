@@ -34,7 +34,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.User;
 
 /**
- * Destroys specified status.
+ * Search users with the specified query.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */

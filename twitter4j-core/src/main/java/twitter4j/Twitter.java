@@ -455,7 +455,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public ResponseList<User> getRetweetedBy(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL()
-                + "statuses/" + statusId + "/retweeted_by.json", auth));
+                + "statuses/" + statusId + "/retweeted_by.json?count=100", auth));
     }
 
     /**
@@ -473,7 +473,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public IDs getRetweetedByIDs(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new IDsJSONImpl(http.get(conf.getRestBaseURL()
-                + "statuses/" + statusId + "/retweeted_by/ids.json", auth));
+                + "statuses/" + statusId + "/retweeted_by/ids.json?count=100", auth));
     }
 
     /**
@@ -482,7 +482,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public IDs getRetweetedByIDs(long statusId, Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
         return new IDsJSONImpl(http.get(conf.getRestBaseURL()
-                + "statuses/" + statusId + "/retweeted_by/ids.json",paging.asPostParameterArray(), auth));    
+                + "statuses/" + statusId + "/retweeted_by/ids.json",paging.asPostParameterArray(), auth));
     }
 
     /**

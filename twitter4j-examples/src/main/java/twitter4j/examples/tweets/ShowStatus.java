@@ -32,7 +32,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
 /**
- * Destroys specified status.
+ * Shows one single status.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -44,11 +44,9 @@ public final class ShowStatus {
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println(
-                    "Usage: java twitter4j.examples.tweets.ShowStatus [status id]");
+            System.out.println("Usage: java twitter4j.examples.tweets.ShowStatus [status id]");
             System.exit(-1);
         }
-        System.out.println("Showing the status id - [" + args[0] + "].");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             Status status = twitter.showStatus(Long.parseLong(args[0]));
@@ -56,7 +54,7 @@ public final class ShowStatus {
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get timeline: " + te.getMessage());
+            System.out.println("Failed to show status: " + te.getMessage());
             System.exit(-1);
         }
     }
