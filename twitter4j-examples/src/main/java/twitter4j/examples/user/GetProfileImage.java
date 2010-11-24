@@ -38,22 +38,33 @@ import twitter4j.TwitterFactory;
  */
 public final class GetProfileImage {
     /**
-     * Usage: java twitter4j.examples.user.GetProfileImage [screen name]
+     * Usage: java twitter4j.examples.user.GetProfileImage [screen name] ['mini', 'normal' or 'bigger']
      *
      * @param args message
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.user.GetProfileImage [screen name]");
+            System.out.println("Usage: java twitter4j.examples.user.GetProfileImage [screen name] ['mini', 'normal' or 'bigger']");
             System.exit(-1);
+        }
+        ProfileImage.ImageSize imageSize = ProfileImage.NORMAL;
+        if (args.length >= 2) {
+            String sizeArg = args[1].toLowerCase();
+            if ("mini".equals(sizeArg)) {
+                imageSize = ProfileImage.MINI;
+            } else if ("normal".equals(sizeArg)) {
+                imageSize = ProfileImage.NORMAL;
+            } else if ("bigger".equals(sizeArg)) {
+                imageSize = ProfileImage.BIGGER;
+            }
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            ProfileImage image = twitter.getProfileImage(args[0], ProfileImage.NORMAL);
+            ProfileImage image = twitter.getProfileImage(args[0], imageSize);
             System.out.println(image.getURL());
-            System.out.println("Successfully got profile image URL of [" + args[0] + "].");
+            System.out.println("Successfully got profile image URL of [@" + args[0] + "].");
             System.exit(0);
-        }catch (TwitterException te) {
+        } catch (TwitterException te) {
             te.printStackTrace();
             System.out.println("Failed to get profile image: " + te.getMessage());
             System.exit(-1);
