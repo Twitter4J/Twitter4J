@@ -45,8 +45,7 @@ public final class SearchUsers {
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println(
-                    "Usage: java twitter4j.examples.user.SearchUsers [query]");
+            System.out.println( "Usage: java twitter4j.examples.user.SearchUsers [query]");
             System.exit(-1);
         }
         try {

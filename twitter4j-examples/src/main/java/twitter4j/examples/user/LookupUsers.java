@@ -60,7 +60,7 @@ public final class LookupUsers {
                     System.out.println("@"+ user.getScreenName());
                 }
             }
-            System.out.println("Successfully deleted status [" + args[0] + "].");
+            System.out.println("Successfully looked up users [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
