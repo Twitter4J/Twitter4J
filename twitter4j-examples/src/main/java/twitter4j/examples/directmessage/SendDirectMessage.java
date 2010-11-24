@@ -43,16 +43,14 @@ public final class SendDirectMessage {
      * @param args String[]
      */
     public static void main(String[] args) {
-        if (args.length < 4) {
-            System.out.println("No TwitterID/Password specified.");
+        if (args.length < 2) {
             System.out.println("Usage: java twitter4j.examples.directmessage.DirectMessage [recipient screen name] [message]");
             System.exit(-1);
         }
         Twitter twitter = new TwitterFactory().getInstance();
         try {
             DirectMessage message = twitter.sendDirectMessage(args[0], args[1]);
-            System.out.println("Direct message successfully sent to " +
-                    message.getRecipientScreenName());
+            System.out.println("Direct message successfully sent to " + message.getRecipientScreenName());
             System.exit(0);
         } catch (TwitterException te) {
             System.out.println("Failed to send a direct message: " + te.getMessage());

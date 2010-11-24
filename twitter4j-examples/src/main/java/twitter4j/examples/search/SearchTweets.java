@@ -45,13 +45,13 @@ import java.util.Properties;
  */
 public class SearchTweets {
     /**
-     * Usage: java twitter4j.examples.search SearchTweets [query]
+     * Usage: java twitter4j.examples.search.SearchTweets [query]
      *
      * @param args
      */
     public static void main(String[] args) {
         if(args.length < 1){
-            System.out.println("java twitter4j.examples.search SearchTweets [query]");
+            System.out.println("java twitter4j.examples.search.SearchTweets [query]");
             System.exit(-1);
         }
         Twitter twitter = new TwitterFactory().getInstance();
