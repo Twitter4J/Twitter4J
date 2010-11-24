@@ -56,7 +56,7 @@ public final class UpdateDeliveryDevice {
             try {
                 Twitter twitter = new TwitterFactory().getInstance();
                 twitter.updateDeliveryDevice(device);
-                System.out.println("Successfully deleted status [" + args[0] + "].");
+                System.out.println("Successfully updated device to [" + args[0] + "].");
                 System.exit(0);
             } catch (TwitterException te) {
                 te.printStackTrace();
