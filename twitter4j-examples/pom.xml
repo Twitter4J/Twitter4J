@@ -115,20 +115,6 @@
             <version>3.8.2</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>nlog4j</artifactId>
-            <version>1.2.25</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>rome</groupId>
-            <artifactId>rome</artifactId>
-            <version>0.9</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>

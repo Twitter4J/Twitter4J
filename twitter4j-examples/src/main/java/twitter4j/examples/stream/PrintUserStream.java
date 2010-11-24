@@ -91,7 +91,7 @@ public final class PrintUserStream implements UserStreamListener {
 //
         User user = status.getUser();
 
-        System.out.println(user.getName() + " [" + user.getScreenName() + "] : " + status.getText());
+        System.out.println("@" + user.getScreenName() + " - " + status.getText());
     }
 
     public void onDirectMessage(DirectMessage dm) {
@@ -116,10 +116,10 @@ public final class PrintUserStream implements UserStreamListener {
 
     public void onDeletionNotice(StatusDeletionNotice notice) {
         User user = friend(notice.getUserId());
-        if (user == null)
+        if (user == null){
             return;
-        System.out.println(user.getName() + " [" + user.getScreenName() + "] deleted the tweet "
-                + notice.getStatusId());
+        }
+        System.out.println("@" + user.getScreenName() + " deleted the tweet " + notice.getStatusId());
     }
 
     private User friend(int userId) {
