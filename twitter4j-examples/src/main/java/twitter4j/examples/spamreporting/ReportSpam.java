@@ -41,6 +41,10 @@ public class ReportSpam{
      * @param args String[]
      */
     public static void main(String[] args) {
+        if(args.length < 1){
+            System.out.println("java twitter4j.examples.spamreporting.ReportSpam [screen name]");
+            System.exit(-1);
+        }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             System.out.println(twitter.reportSpam(args[0]));

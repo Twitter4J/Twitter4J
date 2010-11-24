@@ -52,8 +52,7 @@ public final class AsyncUpdate {
 
     public static void main(String[] args) throws InterruptedException {
         if (args.length < 1) {
-            System.out.println(
-                    "Usage: java twitter4j.examples.AsyncUpdate text");
+            System.out.println("Usage: java twitter4j.examples.AsyncUpdate text");
             System.exit(-1);
         }
         AsyncTwitterFactory factory = new AsyncTwitterFactory(new TwitterAdapter() {

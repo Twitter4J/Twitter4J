@@ -45,8 +45,7 @@ public final class GetUserSuggestions {
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println(
-                    "Usage: java twitter4j.examples.user.GetUserSuggestions [slug]");
+            System.out.println("Usage: java twitter4j.examples.user.GetUserSuggestions [slug]");
             System.exit(-1);
         }
         System.out.println("Showing suggested users in " + args[0] + " category.");

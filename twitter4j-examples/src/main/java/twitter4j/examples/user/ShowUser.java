@@ -44,8 +44,7 @@ public final class ShowUser {
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println(
-                    "Usage: java twitter4j.examples.user.ShowUser [screen name]");
+            System.out.println("Usage: java twitter4j.examples.user.ShowUser [screen name]");
             System.exit(-1);
         }
         try {
