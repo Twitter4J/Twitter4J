@@ -49,7 +49,7 @@ public final class GetUserSuggestions {
                     "Usage: java twitter4j.examples.user.GetUserSuggestions [slug]");
             System.exit(-1);
         }
-        System.out.println("Showing @" + args[0] + "'s suggested users in " + args[0] + " category.");
+        System.out.println("Showing suggested users in " + args[0] + " category.");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             ResponseList<User> users = twitter.getUserSuggestions(args[0]);
