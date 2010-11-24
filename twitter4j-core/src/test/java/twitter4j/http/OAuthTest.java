@@ -140,6 +140,12 @@ public class OAuthTest extends TwitterTestBase {
         resStr = response.asString();
         String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ", "\n</div>");
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret(), pin);
+        try {
+            twitter.getOAuthRequestToken();
+        }catch(TwitterException te){
+            fail("expecting IllegalStateException as access token is already available.");
+        }catch(IllegalStateException expected){}
+
 
         assertEquals(at.getScreenName(), id1.screenName);
         assertEquals(at.getUserId(), 6358482);
