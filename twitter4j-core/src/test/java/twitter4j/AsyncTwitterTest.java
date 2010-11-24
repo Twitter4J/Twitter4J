@@ -241,7 +241,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         oldURL = user.getURL().toString();
         oldLocation = user.getLocation();
         oldDescription = user.getDescription();
-        
+
         String newName, newURL, newLocation, newDescription;
         String neu = "new";
         newName = user.getName() + neu;
@@ -251,7 +251,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
         async1.updateProfile(
                 newName, null, newURL, newLocation, newDescription);
-    	
+
         waitForResponse();
         assertEquals(newName, user.getName());
         assertEquals(newURL, user.getURL().toString());
@@ -610,7 +610,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     /**
      * @since Twitter4J 2.1.7
      */
-    public void gotProfileImage(InputStream is){
+    public void gotProfileImage(ProfileImage image){
         notifyResponse();
     }
 
@@ -768,7 +768,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     /*Account Methods*/
-    
+
     public void gotRateLimitStatus(RateLimitStatus status){
         this.rateLimitStatus = status;
         notifyResponse();
