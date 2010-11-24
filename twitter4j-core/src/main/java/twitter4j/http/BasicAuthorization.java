@@ -67,6 +67,9 @@ public class BasicAuthorization implements Authorization, java.io.Serializable {
         return basic;
     }
 
+    /**
+     * #{inheritDoc}
+     */
     public boolean isEnabled() {
         return true;
     }

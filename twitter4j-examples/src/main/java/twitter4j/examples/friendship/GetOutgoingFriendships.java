@@ -32,7 +32,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
 /**
- * Destroys specified status.
+ * Shows outgoing friendship ids.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */

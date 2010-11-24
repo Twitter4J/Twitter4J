@@ -176,6 +176,7 @@ public interface StatusMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.3
      * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | dev.twitter.com</a>
+     * @deprecated use {@link StatusMethods#getRetweetedBy(long)} instead.
      */
     ResponseList<User> getRetweetedBy(long statusId, Paging paging)
             throws TwitterException;
@@ -200,6 +201,7 @@ public interface StatusMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.3
      * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | dev.twitter.com</a>
+     * @deprecated use {@link StatusMethods#getRetweetedByIDs(long)} instead.
      */
     IDs getRetweetedByIDs(long statusId, Paging paging) throws TwitterException;
 }

@@ -47,22 +47,16 @@ public final class GetRetweetedBy {
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println(
-                    "Usage: java twitter4j.examples.tweets.GetRetweetedBy [status id]");
+            System.out.println("Usage: java twitter4j.examples.tweets.GetRetweetedBy [status id]");
             System.exit(-1);
         }
         System.out.println("Showing users who retweeted status id - [" + args[0] + "].");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            Paging page = new Paging(1);
-            List<User> users;
-            do {
-                users = twitter.getRetweetedBy(Long.parseLong(args[0]), page);
-                for (User user : users) {
-                    System.out.println("@" + user.getScreenName());
-                }
-                page.setPage(page.getPage() + 1);
-            } while (users.size() > 0);
+            List<User> users = twitter.getRetweetedBy(Long.parseLong(args[0]));
+            for (User user : users) {
+                System.out.println("@" + user.getScreenName());
+            }
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {

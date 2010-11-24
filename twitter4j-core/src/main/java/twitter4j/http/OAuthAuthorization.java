@@ -104,6 +104,9 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         }
     }
 
+    /**
+     * #{inheritDoc}
+     */
     public boolean isEnabled() {
         return null != oauthToken && oauthToken instanceof AccessToken;
     }

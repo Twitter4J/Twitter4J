@@ -33,7 +33,6 @@ import twitter4j.TwitterFactory;
 
 /**
  * Shows specified place's detailed information
- * Destroys specified status.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */

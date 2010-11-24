@@ -26,7 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.examples.user;
 
-import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -34,7 +33,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.User;
 
 /**
- * Destroys specified status.
+ * Search users with the specified query.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */

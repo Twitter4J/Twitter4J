@@ -152,6 +152,7 @@ public interface StatusMethodsAsync {
      * @param paging specify your paging requirements
      * @since Twitter4J 2.1.3
      * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | dev.twitter.com</a>
+     * @deprecated use {@link StatusMethods#getRetweetedBy(long)} instead.
      */
     void getRetweetedBy(long statusId, Paging paging);
 
@@ -171,6 +172,7 @@ public interface StatusMethodsAsync {
      * @param paging specify your paging requirements
      * @since Twitter4J 2.1.3
      * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | dev.twitter.com</a>
+     * @deprecated use {@link StatusMethodsAsync#getRetweetedByIDs(long)} instead.
      */
     void getRetweetedByIDs(long statusId, Paging paging);
 }
