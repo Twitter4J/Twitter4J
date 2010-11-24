@@ -46,20 +46,13 @@ public class GetHomeTimeline {
      */
     public static void main(String[] args) {
         try {
+            // gets Twitter instance with default credentials
             Twitter twitter = new TwitterFactory().getInstance();
-            User user = null;
-            try {
-                user = twitter.verifyCredentials();
-            } catch (TwitterException te) {
-                System.out.println("Failed to verify credentials.");
-                System.out.println("Run getAccessToken.sh/cmd to configure twitter4j.properties.");
-                System.exit(-1);
-            }
+            User user = twitter.verifyCredentials();
             List<Status> statuses = twitter.getHomeTimeline();
             System.out.println("Showing @" + user.getScreenName() + "'s home timeline.");
             for (Status status : statuses) {
-                System.out.println(status.getUser().getName() + ":" +
-                        status.getText());
+                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             }
         } catch (TwitterException te) {
             te.printStackTrace();

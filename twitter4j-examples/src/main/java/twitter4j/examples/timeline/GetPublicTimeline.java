@@ -35,28 +35,29 @@ import java.util.List;
 
 /**
  * Example application that gets public, user and friend timeline using specified account.<br>
- * Usage: java twitter4j.examples.GetPublicTimeline
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class GetPublicTimeline {
     /**
      * Usage: java twitter4j.examples.timeline.GetPublicTimeline
+     *
      * @param args String[]
      */
     public static void main(String[] args) {
+        // gets Twitter instance with default credentials
         Twitter twitter = new TwitterFactory().getInstance();
-        System.out.println("Showing public timeline.");
         try {
             List<Status> statuses = twitter.getPublicTimeline();
+            System.out.println("Showing public timeline.");
             for (Status status : statuses) {
-                System.out.println(status.getUser().getName() + ":" +
-                                   status.getText());
+                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             }
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
             System.out.println("Failed to get timeline: " + te.getMessage());
-            System.exit( -1);
+            System.exit(-1);
         }
     }
 }
