@@ -12,6 +12,7 @@ public interface OAuthSupport {
      *
      * @return generated request token.
      * @throws TwitterException when Twitter service or network is unavailable
+     * @throws IllegalStateException access token is already available
      * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
      * @since Twitter 2.0.0
@@ -24,6 +25,7 @@ public interface OAuthSupport {
      * @param callbackURL callback URL
      * @return generated request token
      * @throws TwitterException when Twitter service or network is unavailable
+     * @throws IllegalStateException access token is already available
      * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
      * @since Twitter 2.0.0
