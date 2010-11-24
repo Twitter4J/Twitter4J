@@ -44,7 +44,7 @@ public final class GetUserListMembers {
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 1) {
+        if (args.length < 2) {
             System.out.println("Usage: java twitter4j.examples.listmembers.GetUserListMembers [list owner screen name] [list id]");
             System.exit(-1);
         }
