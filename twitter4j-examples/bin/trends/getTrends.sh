@@ -2,5 +2,6 @@
 cd ..
 . ./setEnv.sh
 
-echo $JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.tweets.UpdateStatus "$@"
-$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.tweets.UpdateStatus "$@"
+RUN_CMD="$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.trends.GetTrends $@"
+echo $RUN_CMD
+exec $RUN_CMD
