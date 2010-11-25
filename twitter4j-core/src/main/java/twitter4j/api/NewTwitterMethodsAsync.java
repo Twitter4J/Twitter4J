@@ -3,7 +3,6 @@ package twitter4j.api;
 import twitter4j.TwitterException;
 
 public interface NewTwitterMethodsAsync {
-
     /**
      * If available, returns an array of replies and mentions related to the specified Tweet. There is no guarantee there will be any replies or mentions in the response. This method is only available to users who have access to #newtwitter.
      * <br>This method calls http://api.twitter.com/1/related_results/show/:id
