@@ -39,7 +39,7 @@ import twitter4j.internal.org.json.JSONObject;
  * A data class representing related_results API response
  * @author Mocel - mocel at guma.jp
  */
-/*package*/ final class RelatedResultsJSONImpl implements RelatedResults, java.io.Serializable {
+/*package*/ final class RelatedResultsJSONImpl extends TwitterResponseImpl implements RelatedResults, java.io.Serializable {
 
     private static final String TWEETS_WITH_CONVERSATION = "TweetsWithConversation";
     private static final String TWEETS_WITH_REPLY = "TweetsWithReply";
@@ -48,13 +48,24 @@ import twitter4j.internal.org.json.JSONObject;
 
     private Map<String, ResponseList<Status>> tweetsMap;
 
-    /* package */ public RelatedResultsJSONImpl(HttpResponse res) throws TwitterException {
+    /* package */ RelatedResultsJSONImpl(HttpResponse res) throws TwitterException {
+        super(res);
         DataObjectFactoryUtil.clearThreadLocalMap();
-        JSONArray list = res.asJSONArray();
-        Map<String, ResponseList<Status>> tweetsMap = new HashMap<String, ResponseList<Status>>(2);
+        JSONArray jsonArray = res.asJSONArray();
+        init(jsonArray, res, true);
+
+    }
+    /* package */ RelatedResultsJSONImpl(JSONArray jsonArray) throws TwitterException {
+        super();
+        init(jsonArray, null, false);
+
+    }
+
+    private void init(JSONArray jsonArray, HttpResponse res, boolean registerRawJSON) throws TwitterException {
+        tweetsMap = new HashMap<String, ResponseList<Status>>(2);
         try {
-            for (int i = 0, listLen = list.length(); i < listLen; ++i) {
-                JSONObject o = list.getJSONObject(i);
+            for (int i = 0, listLen = jsonArray.length(); i < listLen; ++i) {
+                JSONObject o = jsonArray.getJSONObject(i);
                 if (! "Tweet".equals(o.getString("resultType"))) {
                     continue;
                 }
@@ -75,13 +86,15 @@ import twitter4j.internal.org.json.JSONObject;
                 for (int j = 0, resultsLen = results.length(); j < resultsLen; ++j) {
                     JSONObject json = results.getJSONObject(j).getJSONObject("value");
                     Status status = new StatusJSONImpl(json);
-                    DataObjectFactoryUtil.registerJSONObject(status, json);
+                    if(registerRawJSON){
+                        DataObjectFactoryUtil.registerJSONObject(status, json);
+                    }
                     statuses.add(status);
                 }
-                DataObjectFactoryUtil.registerJSONObject(statuses, results);
+                if(registerRawJSON){
+                    DataObjectFactoryUtil.registerJSONObject(statuses, results);
+                }
             }
-//            DataObjectFactoryUtil.registerJSONObject(this, list);
-            this.tweetsMap = tweetsMap;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -91,21 +104,36 @@ import twitter4j.internal.org.json.JSONObject;
      * {@inheritDoc}
      */
     public ResponseList<Status> getTweetsWithConversation() {
-        return this.tweetsMap.get(TWEETS_WITH_CONVERSATION);
+        ResponseList<Status> statuses = this.tweetsMap.get(TWEETS_WITH_CONVERSATION);
+        if (null != statuses) {
+            return statuses;
+        } else {
+            return new ResponseListImpl<Status>(0, null);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getTweetsWithReply() {
-        return this.tweetsMap.get(TWEETS_WITH_REPLY);
+        ResponseList<Status> statuses = this.tweetsMap.get(TWEETS_WITH_REPLY);
+        if (null != statuses) {
+            return statuses;
+        } else {
+            return new ResponseListImpl<Status>(0, null);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getTweetsFromUser() {
-        return this.tweetsMap.get(TWEETS_FROM_USER);
+        ResponseList<Status> statuses = this.tweetsMap.get(TWEETS_FROM_USER);
+        if (null != statuses) {
+            return statuses;
+        } else {
+            return new ResponseListImpl<Status>(0, null);
+        }
     }
 
     @Override

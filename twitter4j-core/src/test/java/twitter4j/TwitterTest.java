@@ -1191,7 +1191,21 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testRelatedResults() throws Exception {
-        assertNotNull(twitterAPI1.getRelatedResults(999383469l));
+        RelatedResults relatedResults = twitterAPI1.getRelatedResults(999383469l);
+        assertNotNull(relatedResults);
+        ResponseList<Status> statuses;
+        statuses = relatedResults.getTweetsFromUser();
+        if(statuses.size() > 0){
+            assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
+        }
+        statuses = relatedResults.getTweetsWithConversation();
+        if(statuses.size() > 0){
+            assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
+        }
+        statuses = relatedResults.getTweetsWithReply();
+        if(statuses.size() > 0){
+            assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
+        }
     }
 
     public void testTest() throws Exception {
