@@ -49,7 +49,7 @@ public final class DisableNotification {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             twitter.disableNotification(args[0]);
-            System.out.println("Successfully disabled notification of [" + args[0] + "].");
+            System.out.println("Successfully disabled notification for [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

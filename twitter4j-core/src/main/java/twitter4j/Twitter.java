@@ -1207,9 +1207,17 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public User updateProfile(String name, String email, String url
             , String location, String description) throws TwitterException {
         ensureAuthorizationEnabled();
-        List<HttpParameter> profile = new ArrayList<HttpParameter>(5);
+        return updateProfile(name, url, location, description);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public User updateProfile(String name, String url
+            , String location, String description) throws TwitterException {
+        ensureAuthorizationEnabled();
+        List<HttpParameter> profile = new ArrayList<HttpParameter>(4);
         addParameterToList(profile, "name", name);
-        addParameterToList(profile, "email", email);
         addParameterToList(profile, "url", url);
         addParameterToList(profile, "location", location);
         addParameterToList(profile, "description", description);
