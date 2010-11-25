@@ -26,7 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -389,7 +388,7 @@ public interface TwitterListener {
 
     void gotRelatedResults(RelatedResults relatedResults);
 
-        /*Help Methods*/
+    /*Help Methods*/
     void tested(boolean test);
 
     /**
