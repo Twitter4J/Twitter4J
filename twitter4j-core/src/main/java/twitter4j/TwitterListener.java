@@ -275,9 +275,9 @@ public interface TwitterListener {
     void gotFollowersIDs(IDs ids);
 
     /*Account Methods*/
-    
+
     void verifiedCredentials(User user);
-    
+
     void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
 
     void updatedDeliveryDevice(User user);
@@ -332,7 +332,7 @@ public interface TwitterListener {
      * @since Twitter4J 2.0.4
      */
     void gotExistsBlock(boolean blockExists);
-    
+
     /**
      * @since Twitter4J 2.0.4
      */
@@ -384,6 +384,10 @@ public interface TwitterListener {
      * @since Twitter4J 2.1.7
      */
     void gotPrivacyPolicy(String privacyPolicy);
+
+    /* #newtwitter Methods */
+
+    void gotRelatedResults(RelatedResults relatedResults);
 
     /*Help Methods*/
     void tested(boolean test);
@@ -521,6 +525,9 @@ public interface TwitterListener {
     /* Regal Resources */
     TwitterMethod TERMS_OF_SERVICE = TwitterMethod.TERMS_OF_SERVICE;
     TwitterMethod PRIVACY_POLICY = TwitterMethod.PRIVACY_POLICY;
+
+    /* #newtwitter Methods */
+    TwitterMethod RELATED_RESULT = TwitterMethod.RELATED_RESULTS;
 
     /*Help Methods*/
     TwitterMethod TEST = TwitterMethod.TEST;

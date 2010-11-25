@@ -1191,6 +1191,10 @@ public class TwitterTest extends TwitterTestBase {
         assertNotNull(twitterAPI1.getPrivacyPolicy());
     }
 
+    public void testRelatedResults() throws Exception {
+        assertNotNull(twitterAPI1.getRelatedResults(999383469l));
+    }
+
     public void testTest() throws Exception {
         assertTrue(twitterAPI2.test());
     }

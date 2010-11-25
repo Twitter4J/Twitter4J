@@ -469,6 +469,8 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private List<Trends> trendsList;
     private Trends trends;
     private boolean blockExists;
+    private RelatedResults relatedResults;
+
     /*Search API Methods*/
     public void searched(QueryResult result) {
         this.queryResult = result;
@@ -936,6 +938,16 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
      * @since Twitter4J 2.1.7
      */
     public void gotPrivacyPolicy(String str){
+        notifyResponse();
+    }
+
+    /* #newtwitter Methods */
+
+    /**
+     *
+     */
+    public void gotRelatedResults(RelatedResults relatedResults) {
+        this.relatedResults = relatedResults;
         notifyResponse();
     }
 

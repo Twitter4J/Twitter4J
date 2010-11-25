@@ -264,7 +264,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         return contributors;
     }
 
-    
+
 	/**
      * {@inheritDoc}
      */

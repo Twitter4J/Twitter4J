@@ -97,7 +97,4 @@ public class DispatcherTest extends TestCase {
             count++;
         }
     }
-
-    ;
-
 }
