@@ -32,6 +32,7 @@ import java.util.Map;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
+ * @deprecated {@link twitter4j.Twitter#updateDeliveryDevice(Device)} has been deprecated
  */
 public final class Device implements java.io.Serializable {
     private static final long serialVersionUID = -258215809702057490L;
