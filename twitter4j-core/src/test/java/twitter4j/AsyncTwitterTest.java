@@ -249,7 +249,8 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         newLocation = user.getLocation()+neu;
         newDescription = user.getDescription()+neu;
 
-        async1.updateProfile(newName, newURL, newLocation, newDescription);
+        async1.updateProfile(
+                newName, null, newURL, newLocation, newDescription);
 
         waitForResponse();
         assertEquals(newName, user.getName());
@@ -258,7 +259,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertEquals(newDescription, user.getDescription());
 
         //revert the profile
-        async1.updateProfile(oldName, oldURL, oldLocation, oldDescription);
+        async1.updateProfile(oldName, null, oldURL, oldLocation, oldDescription);
         waitForResponse();
 
         bestFriend1Async.existsFriendship(bestFriend1.screenName,bestFriend2.screenName);

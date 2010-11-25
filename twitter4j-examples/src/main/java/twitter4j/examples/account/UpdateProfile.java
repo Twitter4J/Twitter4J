@@ -37,7 +37,7 @@ import twitter4j.TwitterFactory;
  */
 public final class UpdateProfile {
     /**
-     * Usage: java twitter4j.examples.account.UpdateProfile [name] [url] [location] [description]
+     * Usage: java twitter4j.examples.account.UpdateProfile [name] [email] [url] [location] [description]
      *
      * @param args message
      */
@@ -48,7 +48,7 @@ public final class UpdateProfile {
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            twitter.updateProfile(args[0], args[1], args[2], args[3]);
+            twitter.updateProfile(args[0], null, args[1], args[2], args[3]);
             System.out.println("Successfully updated profile.");
             System.exit(0);
         } catch (TwitterException te) {

@@ -57,7 +57,7 @@ public final class GetBlockingUsers {
                 page++;
                 // this code ends up in an infinite loop due to the issue 1988
                 // http://code.google.com/p/twitter-api/issues/detail?id=1988
-            } while (users.size() > 0 && page <= 10);
+            } while (users.size() > 0);
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
