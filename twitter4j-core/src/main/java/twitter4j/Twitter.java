@@ -74,6 +74,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         LocalTrendsMethods,
         GeoMethods,
         LegalResources,
+        NewTwitterMethods,
         HelpMethods {
     private static final long serialVersionUID = -1486360080128882436L;
 
@@ -482,7 +483,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public IDs getRetweetedByIDs(long statusId, Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
         return new IDsJSONImpl(http.get(conf.getRestBaseURL()
-                + "statuses/" + statusId + "/retweeted_by/ids.json",paging.asPostParameterArray(), auth));    
+                + "statuses/" + statusId + "/retweeted_by/ids.json",paging.asPostParameterArray(), auth));
     }
 
     /**
@@ -1694,6 +1695,17 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
+    }
+
+    /* #newtwitter Methods */
+
+    /**
+     * {@inheritDoc}
+     */
+    public RelatedResults getRelatedResults(long statusId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new RelatedResultsJSONImpl(http.get(conf.getRestBaseURL() + "related_results/show/"
+                + Long.toString(statusId) + ".json", auth));
     }
 
     /* Help Methods */

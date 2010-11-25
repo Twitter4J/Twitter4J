@@ -299,7 +299,7 @@ public class TwitterAdapter implements TwitterListener {
 
 	public void verifiedCredentials(User user) {
 	}
-	
+
     public void gotRateLimitStatus(RateLimitStatus status) {
     }
 
@@ -437,6 +437,14 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void gotPrivacyPolicy(String privacyPolicy) {
 
+    }
+
+    /* #newtwitter Methods */
+
+    /**
+     *
+     */
+    public void gotRelatedResults(RelatedResults relatedResults) {
     }
 
     /*Help Methods*/

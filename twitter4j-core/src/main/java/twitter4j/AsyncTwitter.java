@@ -70,6 +70,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         LocalTrendsMethodsAsync,
         GeoMethodsAsync,
         LegalResourcesAsync,
+        NewTwitterMethodsAsync,
         HelpMethodsAsync {
     private static final long serialVersionUID = -2008667933225051907L;
     private Twitter twitter;
@@ -1763,6 +1764,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         getDispatcher().invokeLater(new AsyncTask(PRIVACY_POLICY, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.gotPrivacyPolicy(twitter.getPrivacyPolicy());
+            }
+        });
+    }
+
+    /* #newtwitter Methods */
+
+    public void getRelatedResults(final long statusId) throws TwitterException {
+        getDispatcher().invokeLater(new AsyncTask(RELATED_RESULTS, listener) {
+            @Override
+            void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotRelatedResults(twitter.getRelatedResults(statusId));
             }
         });
     }

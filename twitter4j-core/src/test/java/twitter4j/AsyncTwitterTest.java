@@ -241,7 +241,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         oldURL = user.getURL().toString();
         oldLocation = user.getLocation();
         oldDescription = user.getDescription();
-        
+
         String newName, newURL, newLocation, newDescription;
         String neu = "new";
         newName = user.getName() + neu;
@@ -468,6 +468,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private List<Trends> trendsList;
     private Trends trends;
     private boolean blockExists;
+    private RelatedResults relatedResults;
     /*Search API Methods*/
     public void searched(QueryResult result) {
         this.queryResult = result;
@@ -767,7 +768,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     /*Account Methods*/
-    
+
     public void gotRateLimitStatus(RateLimitStatus status){
         this.rateLimitStatus = status;
         notifyResponse();
@@ -935,6 +936,16 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
      * @since Twitter4J 2.1.7
      */
     public void gotPrivacyPolicy(String str){
+        notifyResponse();
+    }
+
+    /* #newtwitter Methods */
+
+    /**
+     *
+     */
+    public void gotRelatedResults(RelatedResults relatedResults) {
+        this.relatedResults = relatedResults;
         notifyResponse();
     }
 

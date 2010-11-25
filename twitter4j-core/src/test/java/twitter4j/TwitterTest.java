@@ -36,7 +36,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
- 
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -1188,6 +1188,10 @@ public class TwitterTest extends TwitterTestBase {
     public void testLegalResources() throws Exception{
         assertNotNull(twitterAPI1.getTermsOfService());
         assertNotNull(twitterAPI1.getPrivacyPolicy());
+    }
+
+    public void testRelatedResults() throws Exception {
+        assertNotNull(twitterAPI1.getRelatedResults(999383469l));
     }
 
     public void testTest() throws Exception {
