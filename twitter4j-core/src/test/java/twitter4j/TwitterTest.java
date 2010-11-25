@@ -731,7 +731,7 @@ public class TwitterTest extends TwitterTestBase {
         if (original.getScreenName().endsWith("new") ||
                 original.getName().endsWith("new")) {
             original = twitterAPI1.updateProfile(
-                    "twit4j", null, "http://yusuke.homeip.net/twitter4j/"
+                    "twit4j", "http://yusuke.homeip.net/twitter4j/"
                     , "location:", "Hi there, I do test a lot!new");
 
         }
@@ -743,12 +743,11 @@ public class TwitterTest extends TwitterTestBase {
         newDescription = original.getDescription() + neu;
 
         User altered = twitterAPI1.updateProfile(
-                newName, null, newURL, newLocation, newDescription);
+                newName, newURL, newLocation, newDescription);
         assertNotNull(DataObjectFactory.getRawJSON(altered));
         assertEquals(original, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(original)));
         assertEquals(altered, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(altered)));
-        twitterAPI1.updateProfile(original.getName()
-                , null, original.getURL().toString(), original.getLocation(), original.getDescription());
+        twitterAPI1.updateProfile(original.getName(), original.getURL().toString(), original.getLocation(), original.getDescription());
         assertEquals(newName, altered.getName());
         assertEquals(newURL, altered.getURL().toString());
         assertEquals(newLocation, altered.getLocation());

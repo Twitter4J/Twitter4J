@@ -49,7 +49,7 @@ public final class EnableNotification {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             twitter.enableNotification(args[0]);
-            System.out.println("Successfully enabled notification of [" + args[0] + "].");
+            System.out.println("Successfully enabled notification for [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

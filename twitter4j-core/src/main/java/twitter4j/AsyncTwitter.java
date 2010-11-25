@@ -1325,9 +1325,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
      */
     public void updateProfile(final String name, final String email, final String url
             , final String location, final String description) {
+        updateProfile(name, url, location, description);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void updateProfile(final String name, final String url
+            , final String location, final String description) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
-                listener.updatedProfile(twitter.updateProfile(name, email, url,
+                listener.updatedProfile(twitter.updateProfile(name, url,
                         location, description));
             }
         });
