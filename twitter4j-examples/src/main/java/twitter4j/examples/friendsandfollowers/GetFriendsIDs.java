@@ -47,6 +47,7 @@ public final class GetFriendsIDs {
             Twitter twitter = new TwitterFactory().getInstance();
             long cursor = -1;
             IDs ids;
+            System.out.println("Listing following ids.");
             do {
                 ids = twitter.getFriendsIDs(cursor);
                 for (int id : ids.getIDs()) {

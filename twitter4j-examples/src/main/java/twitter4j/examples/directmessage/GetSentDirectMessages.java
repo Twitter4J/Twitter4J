@@ -31,7 +31,6 @@ import twitter4j.Paging;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.User;
 
 import java.util.List;
 
@@ -53,9 +52,9 @@ public final class GetSentDirectMessages {
             List<DirectMessage> directMessages;
             do {
                 directMessages = twitter.getSentDirectMessages(page);
-                for (DirectMessage directMessage : directMessages) {
-                    System.out.println("To: @" + directMessage.getRecipientScreenName() + " - "
-                            + directMessage.getText());
+                for (DirectMessage message : directMessages) {
+                    System.out.println("To: @" + message.getRecipientScreenName() + " id:" + message.getId() + " - "
+                            + message.getText());
                 }
                 page.setPage(page.getPage() + 1);
             } while (directMessages.size() > 0 && page.getPage() < 10);

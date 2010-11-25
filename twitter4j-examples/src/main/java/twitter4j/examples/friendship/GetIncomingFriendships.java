@@ -49,6 +49,7 @@ public final class GetIncomingFriendships {
             Twitter twitter = new TwitterFactory().getInstance();
             long cursor = -1;
             IDs ids;
+            System.out.println("Showing incoming pending follow request(s).");
             do {
                 ids = twitter.getIncomingFriendships(cursor);
                 for (int id : ids.getIDs()) {

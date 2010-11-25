@@ -42,13 +42,13 @@ public final class UpdateProfile {
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 5) {
-            System.out.println("Usage: java twitter4j.examples.account.UpdateProfile [name] [email] [url] [location] [description]");
+        if (args.length < 4) {
+            System.out.println("Usage: java twitter4j.examples.account.UpdateProfile [name] [url] [location] [description]");
             System.exit(-1);
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            twitter.updateProfile(args[0], args[1], args[2], args[3], args[4]);
+            twitter.updateProfile(args[0], null, args[1], args[2], args[3]);
             System.out.println("Successfully updated profile.");
             System.exit(0);
         } catch (TwitterException te) {
