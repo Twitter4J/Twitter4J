@@ -48,8 +48,8 @@ public final class ExistsFriendship {
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            System.out.println("Existence of friendship between @" + args[0] + " and @" + args[1]
-                    + twitter.existsFriendship(args[0], args[1]));
+            boolean isAFollowingB = twitter.existsFriendship(args[0], args[1]);
+            System.out.println("@" + args[0] + (isAFollowingB ? " is" : " isn't") + " following @" + args[1]);
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

@@ -49,10 +49,12 @@ public class GetDirectMessages {
             do {
                 messages = twitter.getDirectMessages(paging);
                 for (DirectMessage message : messages) {
-                    System.out.println("From: @" + message.getSenderScreenName() + " " + message.getText());
+                    System.out.println("From: @" + message.getSenderScreenName() + " id:" + message.getId() + " - "
+                            + message.getText());
                 }
                 paging.setPage(paging.getPage() + 1);
-            } while (messages.size() > 0);
+            } while (messages.size() > 0 && paging.getPage() < 10);
+            System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
             System.out.println("Failed to get messages: " + te.getMessage());
