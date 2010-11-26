@@ -1670,7 +1670,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         if (null != streetAddress) {
             params.add(new HttpParameter("attribute:street_address", streetAddress));
         }
-        return new PlaceJSONImpl(http.get(conf.getRestBaseURL() + "geo/place.json"
+        return new PlaceJSONImpl(http.post(conf.getRestBaseURL() + "geo/place.json"
                 , params.toArray(new HttpParameter[params.size()]), auth));
     }
 

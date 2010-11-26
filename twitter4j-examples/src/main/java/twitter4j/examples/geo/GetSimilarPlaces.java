@@ -65,6 +65,13 @@ public final class GetSimilarPlaces {
             } else {
                 for (Place place : places) {
                     System.out.println("id: " + place.getId() + " name: " + place.getFullName() + " name: " + place.getFullName());
+                    Place[] containedWithinArray = place.getContainedWithIn();
+                    if (null != containedWithinArray && containedWithinArray.length != 0) {
+                        System.out.println("  contained within:");
+                        for (Place containedWithinPlace : containedWithinArray) {
+                            System.out.println("  id: " + containedWithinPlace.getId() + " name: " + containedWithinPlace.getFullName());
+                        }
+                    }
                 }
             }
             System.exit(0);

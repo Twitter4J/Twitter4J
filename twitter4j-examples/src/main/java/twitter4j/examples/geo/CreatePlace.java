@@ -55,7 +55,7 @@ public final class CreatePlace {
             String token = args[2];
             GeoLocation location = new GeoLocation(Double.parseDouble(args[3]), Double.parseDouble(args[4]));
             String streetAddress = null;
-            if (args.length >= 5) {
+            if (args.length >= 6) {
                 streetAddress = args[5];
             }
             Place place = twitter.createPlace(name, containedWithin, token, location, streetAddress);
