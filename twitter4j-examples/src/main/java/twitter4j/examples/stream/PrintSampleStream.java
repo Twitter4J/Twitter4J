@@ -40,31 +40,12 @@ public final class PrintSampleStream extends StatusAdapter {
      * @param args
      */
     public static void main(String[] args)throws TwitterException {
-        PrintSampleStream printSampleStream = new PrintSampleStream();
-        printSampleStream.startConsuming();
-    }
-
-    private TwitterStream twitterStream;
-
-    private PrintSampleStream() {
-        twitterStream = new TwitterStreamFactory(this).getInstance();
-    }
-    private void startConsuming() throws TwitterException {
-        // sample() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
+        StatusListener listener = new StatusAdapter() {
+            public void onStatus(Status status) {
+                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+            }
+        };
+        TwitterStream twitterStream = new TwitterStreamFactory(listener).getInstance();
         twitterStream.sample();
-    }
-
-    public void onStatus(Status status) {
-        System.out.println(status.getUser().getName() + " : " + status.getText());
-    }
-
-    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-    }
-
-    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-    }
-
-    public void onException(Exception ex) {
-        ex.printStackTrace();
     }
 }

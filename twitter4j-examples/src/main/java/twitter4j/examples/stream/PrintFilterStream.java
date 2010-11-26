@@ -28,66 +28,71 @@ package twitter4j.examples.stream;
 
 import twitter4j.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * <p>This is a code example of Twitter4J Streaming API - filter method support.<br>
- * Usage: java twitter4j.examples.PrintFilterStream [<i>TwitterScreenName</i> <i>TwitterPassword</i>] follow(comma separated) track(comma separated)]<br>
+ * Usage: java twitter4j.examples.stream.PrintFilterStream [follow(comma separated numerical user ids)] [track(comma separated filter terms)]<br>
  * </p>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class PrintFilterStream extends StatusAdapter {
+public final class PrintFilterStream {
     /**
      * Main entry of this application.
      *
      * @param args follow(comma separated user ids) track(comma separated filter terms)
+     * @throws twitter4j.TwitterException
      */
     public static void main(String[] args) throws TwitterException {
-        PrintFilterStream printFilterStream = new PrintFilterStream(args);
-        printFilterStream.startConsuming();
-    }
-
-    private TwitterStream twitterStream;
-    private int[] filterArray;
-    private String[] trackArray;
-
-    private PrintFilterStream(String[] args) {
-        twitterStream = new TwitterStreamFactory(this).getInstance();
-        if (args.length < 2) {
-            printUsageAndExit();
+        if (args.length < 1) {
+            System.out.println("Usage: java twitter4j.examples.PrintFilterStream [follow(comma separated numerical user ids)] [track(comma separated filter terms)]");
+            System.exit(-1);
         }
-        String filter = args[0];
-        String track = args[1];
-        String[] filterSplit = filter.split(",");
-        filterArray = new int[filterSplit.length];
-        for (int i = 0; i < filterSplit.length; i++) {
-            filterArray[i] = Integer.parseInt(filterSplit[i]);
+
+        StatusListener listener = new StatusAdapter() {
+            public void onStatus(Status status) {
+                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+            }
+        };
+
+        TwitterStream twitterStream = new TwitterStreamFactory(listener).getInstance();
+        ArrayList<Integer> follow = new ArrayList<Integer>();
+        System.out.println(follow.size());
+        ArrayList<String> track = new ArrayList<String>();
+        for (String arg : args) {
+            if (isNumericalArgument(arg)) {
+                for (String id : arg.split(",")) {
+                    follow.add(Integer.parseInt(id));
+                }
+            } else {
+                track.addAll(Arrays.asList(arg.split(",")));
+            }
         }
-        trackArray = track.split(",");
-    }
+        System.out.println(follow.size());
+        int[] followArray = new int[follow.size()];
+        for (int i = 0; i < follow.size(); i++) {
+            System.out.println(follow.size());
+            followArray[i] = follow.get(i);
+        }
+        String[] trackArray = track.toArray(new String[track.size()]);
 
-    private void printUsageAndExit() {
-        System.out.println(
-                "Usage: java twitter4j.examples.PrintFilterStream [ScreenName Password] follow(comma separated user ids) track(comma separated filter terms)");
-        System.exit(-1);
-    }
-
-    private void startConsuming() throws TwitterException {
         // filter() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
-        twitterStream.setStatusListener(this);
-        twitterStream.filter(0, filterArray, trackArray);
+        twitterStream.filter(new FilterQuery(0, followArray, trackArray));
     }
 
-    public void onStatus(Status status) {
-        System.out.println(status.getUser().getName() + " : " + status.getText());
-    }
-
-    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-    }
-
-    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-    }
-
-    public void onException(Exception ex) {
-        ex.printStackTrace();
+    private static boolean isNumericalArgument(String argument) {
+        String args[] = argument.split(",");
+        boolean isNumericalArgument = true;
+        for (String arg : args) {
+            try {
+                Integer.parseInt(arg);
+            } catch (NumberFormatException nfe) {
+                isNumericalArgument = false;
+                break;
+            }
+        }
+        return isNumericalArgument;
     }
 }

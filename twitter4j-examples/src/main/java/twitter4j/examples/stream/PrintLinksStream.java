@@ -29,6 +29,7 @@ package twitter4j.examples.stream;
 import twitter4j.Status;
 import twitter4j.StatusAdapter;
 import twitter4j.StatusDeletionNotice;
+import twitter4j.StatusListener;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
@@ -43,31 +44,12 @@ public class PrintLinksStream  extends StatusAdapter {
      * @param args
      */
     public static void main(String[] args)throws TwitterException {
-        PrintLinksStream printLinksStream = new PrintLinksStream();
-        printLinksStream.startConsuming();
-    }
-
-    private TwitterStream twitterStream;
-
-    private PrintLinksStream() {
-        twitterStream = new TwitterStreamFactory(this).getInstance();
-    }
-    private void startConsuming() throws TwitterException {
-        // links() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
+        StatusListener listener = new StatusAdapter() {
+            public void onStatus(Status status) {
+                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+            }
+        };
+        TwitterStream twitterStream = new TwitterStreamFactory(listener).getInstance();
         twitterStream.links(0);
-    }
-
-    public void onStatus(Status status) {
-        System.out.println(status.getUser().getName() + " : " + status.getText());
-    }
-
-    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-    }
-
-    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-    }
-
-    public void onException(Exception ex) {
-        ex.printStackTrace();
     }
 }

@@ -29,6 +29,7 @@ package twitter4j.examples.stream;
 import twitter4j.Status;
 import twitter4j.StatusAdapter;
 import twitter4j.StatusDeletionNotice;
+import twitter4j.StatusListener;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
@@ -37,37 +38,19 @@ import twitter4j.TwitterStreamFactory;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */
-public class PrintFirehoseStream  extends StatusAdapter {
+public class PrintFirehoseStream {
     /**
      * Main entry of this application.
+     *
      * @param args
      */
-    public static void main(String[] args)throws TwitterException {
-        PrintFirehoseStream printFirehoseStream = new PrintFirehoseStream();
-        printFirehoseStream.startConsuming();
-    }
-
-    private TwitterStream twitterStream;
-
-    private PrintFirehoseStream() {
-        twitterStream = new TwitterStreamFactory(this).getInstance();
-    }
-    private void startConsuming() throws TwitterException {
-        // firehose() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
+    public static void main(String[] args) throws TwitterException {
+        StatusListener listener = new StatusAdapter() {
+            public void onStatus(Status status) {
+                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+            }
+        };
+        TwitterStream twitterStream = new TwitterStreamFactory(listener).getInstance();
         twitterStream.firehose(0);
-    }
-
-    public void onStatus(Status status) {
-        System.out.println(status.getUser().getName() + " : " + status.getText());
-    }
-
-    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-    }
-
-    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-    }
-
-    public void onException(Exception ex) {
-        ex.printStackTrace();
     }
 }

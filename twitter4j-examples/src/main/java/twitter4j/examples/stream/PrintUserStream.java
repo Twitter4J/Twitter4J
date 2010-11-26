@@ -31,8 +31,6 @@ import twitter4j.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
-
 /**
  * <p>
  * This is a code example of Twitter4J Streaming API - user stream.<br>
