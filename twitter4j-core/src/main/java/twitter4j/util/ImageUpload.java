@@ -137,6 +137,14 @@ public abstract class ImageUpload {
         return new TwitgooOAuthUploader (auth);
     }
 
+    /**
+     * Returns an OAuth image uploader to Twipple
+     */
+    public static ImageUpload getTwippleUploader (OAuthAuthorization auth) {
+        return new TwippleUploader(auth);
+    }
+
+
     private static void ensureBasicEnabled(Authorization auth) {
         if (!(auth instanceof BasicAuthorization)) {
             throw new IllegalStateException(
@@ -764,7 +772,87 @@ public abstract class ImageUpload {
             return "OAuth realm=\"http://api.twitter.com/\"," + OAuthAuthorization.encodeParameters (oauthSignatureParams, ",", true);
         }
     }
-   
+
+    private static class TwippleUploader extends ImageUpload {
+        //TwipplePhoto not support record message at post time
+        private OAuthAuthorization auth;
+
+        private static final String TWIPPLE_UPLOAD_URL = "http://p.twipple.jp/api/upload";
+        private static final String TWITTER_VERIFY_CREDENTIALS = "https://api.twitter.com/1/account/verify_credentials.xml";
+
+        public TwippleUploader(OAuthAuthorization auth) {
+            this.auth = auth;
+        }
+
+        @Override
+        public String upload (File image) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", image)
+                    });
+        }
+
+        @Override
+        public String upload (File image, String message) throws TwitterException
+        {
+        // do not send message
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", image)
+                    });
+        }
+
+        @Override
+        public String upload (String imageFileName, InputStream imageBody) throws TwitterException
+        {
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", imageFileName, imageBody),
+                    });
+        }
+
+        @Override
+        public String upload (String imageFileName, InputStream imageBody, String message) throws TwitterException
+        {
+        // do not send message
+            return upload(new HttpParameter[]{
+                    new HttpParameter ("media", imageFileName, imageBody)
+                    });
+        }
+
+        private String upload(HttpParameter[] additionalParams) throws TwitterException {
+            String signedVerifyCredentialsURL = generateSignedVerifyCredentialsURL();
+
+            HttpParameter[] params = {
+                    new HttpParameter("verify_url", signedVerifyCredentialsURL),
+            };
+            params = appendHttpParameters(params, additionalParams);
+
+            HttpClientWrapper client = new HttpClientWrapper();
+            HttpResponse httpResponse = client.post(TWIPPLE_UPLOAD_URL, params);
+
+            int statusCode = httpResponse.getStatusCode();
+            if (statusCode != 200) {
+                throw new TwitterException("Twipple image upload returned invalid status code", httpResponse);
+            }
+
+            String response = httpResponse.asString();
+            if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
+                String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
+                throw new TwitterException("Twipple image upload failed with this error message: " + error, httpResponse);
+            }
+            if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
+                String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
+                return media;
+            }
+
+            throw new TwitterException("Unknown Twipple response", httpResponse);
+        }
+
+        private String generateSignedVerifyCredentialsURL() {
+            List<HttpParameter> oauthSignatureParams = auth.generateOAuthSignatureHttpParams("GET", TWITTER_VERIFY_CREDENTIALS);
+            return TWITTER_VERIFY_CREDENTIALS + "?" + OAuthAuthorization.encodeParameters(oauthSignatureParams);
+        }
+    }
+
     private static HttpParameter[] appendHttpParameters(HttpParameter[] src, HttpParameter[] dst) {
         int srcLen = src.length;
         int dstLen = dst.length;

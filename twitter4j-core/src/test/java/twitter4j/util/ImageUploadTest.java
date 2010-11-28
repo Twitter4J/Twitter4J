@@ -119,6 +119,18 @@ public class ImageUploadTest extends TwitterTestBase {
         }
     }
 
+    public void testTwippleUploader() throws Exception {
+        InputStream is = getClass().getResourceAsStream("/" + fileName);
+        try {
+            String url = ImageUpload.getTwippleUploader(
+                    oauthAuthorization
+            ).upload(fileName, is);
+            assertTrue(url.length() > 0);
+        } finally {
+            is.close();
+        }
+    }
+
     private OAuthAuthorization oauthAuthorization;
     private String screenName;
     private String twitpicApiKey;
