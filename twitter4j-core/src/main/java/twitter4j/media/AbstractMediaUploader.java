@@ -24,7 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.pics;
+package twitter4j.media;
 
 import java.io.File;
 import java.io.InputStream;
@@ -45,7 +45,7 @@ import twitter4j.internal.logging.Logger;
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public abstract class AbstractImageUploader implements ImageUploader {
+public abstract class AbstractMediaUploader implements MediaUploader {
     public static final String TWITTER_VERIFY_CREDENTIALS_JSON = "https://api.twitter.com/1/account/verify_credentials.json";
     public static final String TWITTER_VERIFY_CREDENTIALS_XML  = "https://api.twitter.com/1/account/verify_credentials.xml";
     
@@ -57,46 +57,46 @@ public abstract class AbstractImageUploader implements ImageUploader {
     protected HttpParameter message = null;
     protected Map<String, String> headers = new HashMap<String, String>();
     protected HttpResponse httpResponse = null;
-    protected static final Logger logger = Logger.getLogger(AbstractImageUploader.class);
+    protected static final Logger logger = Logger.getLogger(AbstractMediaUploader.class);
 
-    public abstract void preUp() throws TwitterException, ImageUploadException;
-    public abstract String postUp() throws TwitterException, ImageUploadException;
+    public abstract void preUp() throws TwitterException, MediaUploadException, UnsupportedMediaException;
+    public abstract String postUp() throws TwitterException, MediaUploadException;
 
-    public AbstractImageUploader(OAuthAuthorization oauth) {
+    public AbstractMediaUploader(OAuthAuthorization oauth) {
         this.oauth = oauth;
     }
 
-    public AbstractImageUploader(String apiKey, OAuthAuthorization oauth) {
+    public AbstractMediaUploader(String apiKey, OAuthAuthorization oauth) {
         this.apiKey = apiKey;
         this.oauth = oauth;
     }
 
-    public String upload(String imageFileName, InputStream imageBody) throws TwitterException, ImageUploadException {
+    public String upload(String imageFileName, InputStream imageBody) throws TwitterException, MediaUploadException, UnsupportedMediaException {
         this.image = new HttpParameter("media", imageFileName, imageBody);
         return upload();
     }
-    public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException, ImageUploadException {
+    public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException, MediaUploadException, UnsupportedMediaException {
         this.image = new HttpParameter("media", imageFileName, imageBody);
         this.message = new HttpParameter("message", message);
         return upload();
     }
-    public String upload(File file, String message) throws TwitterException, ImageUploadException {
+    public String upload(File file, String message) throws TwitterException, MediaUploadException, UnsupportedMediaException {
         this.image = new HttpParameter("media", file);
         this.message = new HttpParameter("message", message);
         return upload();
     }
-    public String upload(File file) throws TwitterException, ImageUploadException {
+    public String upload(File file) throws TwitterException, MediaUploadException, UnsupportedMediaException {
         this.image = new HttpParameter("media", file);
         return upload();
     }
 
-    public String upload() throws TwitterException, ImageUploadException {
+    public String upload() throws TwitterException, MediaUploadException, UnsupportedMediaException {
         preUp();
         if (this.postParameter == null) {
-            throw new ImageUploadException("Incomplete implementation. dosnt build postParameter");
+            throw new MediaUploadException("Incomplete implementation. dosnt build postParameter");
         }
         if (this.uploadUrl == null) {
-            throw new ImageUploadException("Incomplete implementation. not set uploadUrl");
+            throw new MediaUploadException("Incomplete implementation. not set uploadUrl");
         }
 
 

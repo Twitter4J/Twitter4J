@@ -24,18 +24,15 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.pics;
+package twitter4j.media;
 
 /**
- * @author Rémy Rakic - remy.rakic at gmail.com
- * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class ImageUploadException extends Exception {
-    public ImageUploadException(String string) {
-        super(string);
-    }
-
-    private static final long serialVersionUID = 2699758381712123676L;
+public class UnsupportedMediaException extends Exception {
+	private static final long serialVersionUID = 7427846563812830631L;
+	public UnsupportedMediaException(String message) {
+		super(message);
+	}
 }

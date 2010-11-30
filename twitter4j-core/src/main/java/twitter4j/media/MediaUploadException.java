@@ -24,12 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.pics;
-
-import java.io.File;
-import java.io.InputStream;
-
-import twitter4j.TwitterException;
+package twitter4j.media;
 
 /**
  * @author Rémy Rakic - remy.rakic at gmail.com
@@ -37,9 +32,10 @@ import twitter4j.TwitterException;
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public interface ImageUploader {
-    public String upload(File image, String message) throws TwitterException, ImageUploadException;
-    public String upload(File image) throws TwitterException, ImageUploadException;
-    public String upload(String imageFileName, InputStream imageBody) throws TwitterException, ImageUploadException;
-    public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException, ImageUploadException;
+public class MediaUploadException extends Exception {
+    public MediaUploadException(String string) {
+        super(string);
+    }
+
+    private static final long serialVersionUID = 2699758381712123676L;
 }

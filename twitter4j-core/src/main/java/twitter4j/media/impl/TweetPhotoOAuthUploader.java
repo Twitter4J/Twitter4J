@@ -24,59 +24,63 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.pics.impl;
+package twitter4j.media.impl;
 
-import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.pics.AbstractImageUploader;
-import twitter4j.pics.ImageUploadException;
+import twitter4j.media.AbstractMediaUploader;
+import twitter4j.media.MediaUploadException;
 
 /**
- * @author Rémy Rakic - remy.rakic at gmail.com
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class YFrogOAuthUploader extends AbstractImageUploader {
+public class TweetPhotoOAuthUploader extends AbstractMediaUploader {
+// Described at http://groups.google.com/group/tweetphoto/web/multipart-form-data-upload
+//  and http://groups.google.com/group/tweetphoto/web/oauth-echo
 
-    public YFrogOAuthUploader(OAuthAuthorization oauth) {
+    public TweetPhotoOAuthUploader(OAuthAuthorization oauth) {
         super(oauth);
+        throw new IllegalArgumentException("The TweetPhoto API Key supplied to the OAuth image uploader can't be null or empty");
+    }
+
+    public TweetPhotoOAuthUploader(String apiKey, OAuthAuthorization oauth) {
+        super(apiKey, oauth);
+        this.uploadUrl = "http://tweetphotoapi.com/api/upload.aspx";//"https://tweetphotoapi.com/api/tpapi.svc/upload2";
     }
 
     @Override
-    public String postUp() throws TwitterException, ImageUploadException {
+    public String postUp() throws TwitterException, MediaUploadException {
         int statusCode = httpResponse.getStatusCode();
-        if (statusCode != 200) {
-            throw new TwitterException("YFrog image upload returned invalid status code", httpResponse);
-        }
+        if (statusCode != 201)
+            throw new TwitterException("TweetPhoto image upload returned invalid status code", httpResponse);
 
         String response = httpResponse.asString();
-        if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
-            String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
-            throw new TwitterException("YFrog image upload failed with this error message: " + error, httpResponse);
+
+        if (-1 != response.indexOf("<Error><ErrorCode>")) {
+            String error = response.substring(response.indexOf("<ErrorCode>") + "<ErrorCode>".length(), response.lastIndexOf("</ErrorCode>"));
+            throw new TwitterException("TweetPhoto image upload failed with this error message: " + error, httpResponse);
         }
-        if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
-            String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
+        if (-1 != response.indexOf("<Status>OK</Status>")) {
+            String media = response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
             return media;
         }
 
-        throw new TwitterException("Unknown YFrog response", httpResponse);
+        throw new TwitterException("Unknown TweetPhoto response", httpResponse);
     }
 
     @Override
-    public void preUp() throws TwitterException, ImageUploadException {
-        uploadUrl = "https://yfrog.com/api/upload";
-        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML);
-        Twitter tw = new TwitterFactory().getInstance(this.oauth);
+    public void preUp() throws TwitterException, MediaUploadException {
+        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_XML);
+
+        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_XML);
+        headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
 
         HttpParameter[] params = {
-                new HttpParameter("auth", "oauth"),
-                new HttpParameter("username", tw.verifyCredentials().getScreenName()),
-                new HttpParameter("verify_url", signedVerifyCredentialsURL),
-                this.image,
+                new HttpParameter("api_key", apiKey),
+                this.image
         };
         if (message != null) {
             params = appendHttpParameters(new HttpParameter[]{

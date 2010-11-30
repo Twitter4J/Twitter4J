@@ -24,62 +24,58 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.pics.impl;
+package twitter4j.media.impl;
 
 import twitter4j.TwitterException;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.pics.AbstractImageUploader;
-import twitter4j.pics.ImageUploadException;
+import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
+import twitter4j.media.AbstractMediaUploader;
+import twitter4j.media.MediaUploadException;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class TweetPhotoOAuthUploader extends AbstractImageUploader {
-// Described at http://groups.google.com/group/tweetphoto/web/multipart-form-data-upload
-//  and http://groups.google.com/group/tweetphoto/web/oauth-echo
+public class ImgLyOAuthUploader extends AbstractMediaUploader {
 
-    public TweetPhotoOAuthUploader(OAuthAuthorization oauth) {
+    public ImgLyOAuthUploader(OAuthAuthorization oauth) {
         super(oauth);
-        throw new IllegalArgumentException("The TweetPhoto API Key supplied to the OAuth image uploader can't be null or empty");
-    }
-
-    public TweetPhotoOAuthUploader(String apiKey, OAuthAuthorization oauth) {
-        super(apiKey, oauth);
-        this.uploadUrl = "http://tweetphotoapi.com/api/upload.aspx";//"https://tweetphotoapi.com/api/tpapi.svc/upload2";
     }
 
     @Override
-    public String postUp() throws TwitterException, ImageUploadException {
-        int statusCode = httpResponse.getStatusCode();
-        if (statusCode != 201)
-            throw new TwitterException("TweetPhoto image upload returned invalid status code", httpResponse);
+    public String postUp() throws TwitterException, MediaUploadException {
+        int statusCode = httpResponse.getStatusCode ();
+        if (statusCode != 200)
+            throw new TwitterException ("ImgLy image upload returned invalid status code", httpResponse);
 
-        String response = httpResponse.asString();
+        String response = httpResponse.asString ();
 
-        if (-1 != response.indexOf("<Error><ErrorCode>")) {
-            String error = response.substring(response.indexOf("<ErrorCode>") + "<ErrorCode>".length(), response.lastIndexOf("</ErrorCode>"));
-            throw new TwitterException("TweetPhoto image upload failed with this error message: " + error, httpResponse);
+        try
+        {
+            JSONObject json = new JSONObject (response);
+            if (! json.isNull ("url"))
+                return json.getString ("url");
         }
-        if (-1 != response.indexOf("<Status>OK</Status>")) {
-            String media = response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
-            return media;
+        catch (JSONException e)
+        {
+            throw new TwitterException ("Invalid ImgLy response: " + response, e);
         }
 
-        throw new TwitterException("Unknown TweetPhoto response", httpResponse);
+        throw new TwitterException ("Unknown ImgLy response", httpResponse);
     }
 
     @Override
-    public void preUp() throws TwitterException, ImageUploadException {
-        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_XML);
+    public void preUp() throws TwitterException, MediaUploadException {
+        uploadUrl = "http://img.ly/api/2/upload.json";
+        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_JSON);
 
-        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_XML);
+        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON);
         headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
 
         HttpParameter[] params = {
-                new HttpParameter("api_key", apiKey),
                 this.image
         };
         if (message != null) {

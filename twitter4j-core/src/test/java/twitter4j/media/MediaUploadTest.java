@@ -24,7 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.pics;
+package twitter4j.media;
 
 import java.io.InputStream;
 
@@ -32,20 +32,20 @@ import twitter4j.TwitterTestBase;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.OAuthAuthorization;
-import twitter4j.pics.impl.ImgLyOAuthUploader;
-import twitter4j.pics.impl.TweetPhotoOAuthUploader;
-import twitter4j.pics.impl.TwippleUploader;
-import twitter4j.pics.impl.TwitgooOAuthUploader;
-import twitter4j.pics.impl.TwitpicOAuthUploader;
-import twitter4j.pics.impl.YFrogOAuthUploader;
+import twitter4j.media.impl.ImgLyOAuthUploader;
+import twitter4j.media.impl.TweetPhotoOAuthUploader;
+import twitter4j.media.impl.TwippleUploader;
+import twitter4j.media.impl.TwitgooOAuthUploader;
+import twitter4j.media.impl.TwitpicOAuthUploader;
+import twitter4j.media.impl.YFrogOAuthUploader;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class ImageUploadTest extends TwitterTestBase {
-    public ImageUploadTest(String name) {
+public class MediaUploadTest extends TwitterTestBase {
+    public MediaUploadTest(String name) {
         super(name);
     }
 

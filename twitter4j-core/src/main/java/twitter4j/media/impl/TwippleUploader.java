@@ -24,70 +24,53 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.pics.impl;
+package twitter4j.media.impl;
 
 import twitter4j.TwitterException;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
-import twitter4j.pics.AbstractImageUploader;
-import twitter4j.pics.ImageUploadException;
+import twitter4j.media.AbstractMediaUploader;
+import twitter4j.media.MediaUploadException;
 
 /**
- * @author Rémy Rakic - remy.rakic at gmail.com
- * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class TwitpicOAuthUploader extends AbstractImageUploader {
+public class TwippleUploader extends AbstractMediaUploader {
 
-    public TwitpicOAuthUploader(OAuthAuthorization oauth) {
+    public TwippleUploader(OAuthAuthorization oauth) {
         super(oauth);
-        throw new IllegalArgumentException("The Twitpic API Key supplied to the OAuth image uploader can't be null or empty");
     }
-    public TwitpicOAuthUploader(String apiKey, OAuthAuthorization oauth) {
-        super(apiKey, oauth);
-    }
-
 
     @Override
-    public String postUp() throws TwitterException, ImageUploadException {
+    public String postUp() throws TwitterException, MediaUploadException {
         int statusCode = httpResponse.getStatusCode();
-        if (statusCode != 200)
-            throw new TwitterException("Twitpic image upload returned invalid status code", httpResponse);
+        if (statusCode != 200) {
+            throw new TwitterException("Twipple image upload returned invalid status code", httpResponse);
+        }
 
         String response = httpResponse.asString();
-
-        try {
-            JSONObject json = new JSONObject(response);
-            if (!json.isNull("url"))
-                return json.getString("url");
+        if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
+            String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
+            throw new TwitterException("Twipple image upload failed with this error message: " + error, httpResponse);
         }
-        catch (JSONException e) {
-            throw new TwitterException("Invalid Twitpic response: " + response, e);
+        if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
+            String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
+            return media;
         }
 
-        throw new TwitterException("Unknown Twitpic response", httpResponse);
+        throw new TwitterException("Unknown Twipple response", httpResponse);
     }
 
     @Override
-    public void preUp() throws TwitterException, ImageUploadException {
-        uploadUrl = "https://twitpic.com/api/2/upload.json";
-        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_JSON);
-
-        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON);
-        headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
+    public void preUp() throws TwitterException, MediaUploadException {
+        uploadUrl = "http://p.twipple.jp/api/upload";
+        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML);
 
         HttpParameter[] params = {
-                new HttpParameter("key", apiKey),
+                new HttpParameter("verify_url", signedVerifyCredentialsURL),
                 this.image
         };
-        if (message != null) {
-            params = appendHttpParameters(new HttpParameter[]{
-                    this.message
-            }, params);
-        }
         this.postParameter = params;
     }
 }

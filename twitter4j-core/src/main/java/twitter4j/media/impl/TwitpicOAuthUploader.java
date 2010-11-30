@@ -24,58 +24,63 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.pics.impl;
+package twitter4j.media.impl;
 
 import twitter4j.TwitterException;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.pics.AbstractImageUploader;
-import twitter4j.pics.ImageUploadException;
+import twitter4j.media.AbstractMediaUploader;
+import twitter4j.media.MediaUploadException;
 
 /**
+ * @author Rémy Rakic - remy.rakic at gmail.com
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class ImgLyOAuthUploader extends AbstractImageUploader {
+public class TwitpicOAuthUploader extends AbstractMediaUploader {
 
-    public ImgLyOAuthUploader(OAuthAuthorization oauth) {
+    public TwitpicOAuthUploader(OAuthAuthorization oauth) {
         super(oauth);
+        throw new IllegalArgumentException("The Twitpic API Key supplied to the OAuth image uploader can't be null or empty");
+    }
+    public TwitpicOAuthUploader(String apiKey, OAuthAuthorization oauth) {
+        super(apiKey, oauth);
     }
 
+
     @Override
-    public String postUp() throws TwitterException, ImageUploadException {
-        int statusCode = httpResponse.getStatusCode ();
+    public String postUp() throws TwitterException, MediaUploadException {
+        int statusCode = httpResponse.getStatusCode();
         if (statusCode != 200)
-            throw new TwitterException ("ImgLy image upload returned invalid status code", httpResponse);
+            throw new TwitterException("Twitpic image upload returned invalid status code", httpResponse);
 
-        String response = httpResponse.asString ();
+        String response = httpResponse.asString();
 
-        try
-        {
-            JSONObject json = new JSONObject (response);
-            if (! json.isNull ("url"))
-                return json.getString ("url");
+        try {
+            JSONObject json = new JSONObject(response);
+            if (!json.isNull("url"))
+                return json.getString("url");
         }
-        catch (JSONException e)
-        {
-            throw new TwitterException ("Invalid ImgLy response: " + response, e);
+        catch (JSONException e) {
+            throw new TwitterException("Invalid Twitpic response: " + response, e);
         }
 
-        throw new TwitterException ("Unknown ImgLy response", httpResponse);
+        throw new TwitterException("Unknown Twitpic response", httpResponse);
     }
 
     @Override
-    public void preUp() throws TwitterException, ImageUploadException {
-        uploadUrl = "http://img.ly/api/2/upload.json";
+    public void preUp() throws TwitterException, MediaUploadException {
+        uploadUrl = "https://twitpic.com/api/2/upload.json";
         String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_JSON);
 
         headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON);
         headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
 
         HttpParameter[] params = {
+                new HttpParameter("key", apiKey),
                 this.image
         };
         if (message != null) {
