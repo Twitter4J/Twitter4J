@@ -26,6 +26,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.pics;
 
+/**
+ * @author Rémy Rakic - remy.rakic at gmail.com
+ * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
+ * @author withgod - noname at withgod.jp
+ * @since Twitter4J 2.1.8
+ */
 public class ImageUploadException extends Exception {
     public ImageUploadException(String string) {
         super(string);

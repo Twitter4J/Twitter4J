@@ -32,6 +32,10 @@ import twitter4j.internal.http.HttpParameter;
 import twitter4j.pics.AbstractImageUploader;
 import twitter4j.pics.ImageUploadException;
 
+/**
+ * @author withgod - noname at withgod.jp
+ * @since Twitter4J 2.1.8
+ */
 public class TwippleUploader extends AbstractImageUploader {
 
     public TwippleUploader(OAuthAuthorization oauth) {

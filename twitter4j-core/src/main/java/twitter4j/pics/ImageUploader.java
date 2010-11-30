@@ -31,6 +31,12 @@ import java.io.InputStream;
 
 import twitter4j.TwitterException;
 
+/**
+ * @author Rémy Rakic - remy.rakic at gmail.com
+ * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
+ * @author withgod - noname at withgod.jp
+ * @since Twitter4J 2.1.8
+ */
 public interface ImageUploader {
     public String upload(File image, String message) throws TwitterException, ImageUploadException;
     public String upload(File image) throws TwitterException, ImageUploadException;

@@ -34,6 +34,11 @@ import twitter4j.internal.org.json.JSONObject;
 import twitter4j.pics.AbstractImageUploader;
 import twitter4j.pics.ImageUploadException;
 
+/**
+ * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
+ * @author withgod - noname at withgod.jp
+ * @since Twitter4J 2.1.8
+ */
 public class ImgLyOAuthUploader extends AbstractImageUploader {
 
     public ImgLyOAuthUploader(OAuthAuthorization oauth) {

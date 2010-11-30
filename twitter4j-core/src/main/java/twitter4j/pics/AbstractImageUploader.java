@@ -39,6 +39,12 @@ import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.logging.Logger;
 
+/**
+ * @author Rémy Rakic - remy.rakic at gmail.com
+ * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
+ * @author withgod - noname at withgod.jp
+ * @since Twitter4J 2.1.8
+ */
 public abstract class AbstractImageUploader implements ImageUploader {
     public static final String TWITTER_VERIFY_CREDENTIALS_JSON = "https://api.twitter.com/1/account/verify_credentials.json";
     public static final String TWITTER_VERIFY_CREDENTIALS_XML  = "https://api.twitter.com/1/account/verify_credentials.xml";

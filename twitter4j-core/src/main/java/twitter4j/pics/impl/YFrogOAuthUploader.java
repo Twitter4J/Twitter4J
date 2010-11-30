@@ -34,6 +34,12 @@ import twitter4j.internal.http.HttpParameter;
 import twitter4j.pics.AbstractImageUploader;
 import twitter4j.pics.ImageUploadException;
 
+/**
+ * @author Rémy Rakic - remy.rakic at gmail.com
+ * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
+ * @author withgod - noname at withgod.jp
+ * @since Twitter4J 2.1.8
+ */
 public class YFrogOAuthUploader extends AbstractImageUploader {
 
     public YFrogOAuthUploader(OAuthAuthorization oauth) {

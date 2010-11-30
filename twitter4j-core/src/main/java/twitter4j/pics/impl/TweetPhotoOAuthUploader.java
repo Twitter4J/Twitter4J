@@ -32,9 +32,14 @@ import twitter4j.internal.http.HttpParameter;
 import twitter4j.pics.AbstractImageUploader;
 import twitter4j.pics.ImageUploadException;
 
+/**
+ * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
+ * @author withgod - noname at withgod.jp
+ * @since Twitter4J 2.1.8
+ */
+public class TweetPhotoOAuthUploader extends AbstractImageUploader {
 // Described at http://groups.google.com/group/tweetphoto/web/multipart-form-data-upload
 //  and http://groups.google.com/group/tweetphoto/web/oauth-echo
-public class TweetPhotoOAuthUploader extends AbstractImageUploader {
 
     public TweetPhotoOAuthUploader(OAuthAuthorization oauth) {
         super(oauth);
