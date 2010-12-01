@@ -1,6 +1,6 @@
 statuses/*
 target/*
-twitter4j.properties
+/twitter4j.properties
 twitter4j-httpclient-support/target/*
 twitter4j-media-support/target/*
 twitter4j-core/target/*
