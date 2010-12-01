@@ -26,21 +26,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.media;
 
-import twitter4j.Twitter;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
+import twitter4j.http.AuthorizationFactory;
 import twitter4j.http.OAuthAuthorization;
 
-import static twitter4j.media.ImageUploader.*;
+import static twitter4j.media.MediaProvider.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
 public final class ImageUploaderFactory {
-    private final Provider defaultProvider;
+    private final Configuration conf;
+    private final MediaProvider defaultMediaProvider;
     private final String apiKey;
+    private final OAuthAuthorization oauth;
 
     /**
      * Creates an ImageUploaderFactory with default configuration
@@ -55,55 +57,54 @@ public final class ImageUploaderFactory {
     public ImageUploaderFactory(Configuration conf) {
         String mediaProvider = conf.getMediaProvider().toLowerCase();
         if ("imgly".equals(mediaProvider)) {
-            defaultProvider = IMG_LY;
+            defaultMediaProvider = IMG_LY;
         } else if ("twipple".equals(mediaProvider)) {
-            defaultProvider = TWIPPLE;
+            defaultMediaProvider = TWIPPLE;
         } else if ("twitgoo".equals(mediaProvider)) {
-            defaultProvider = TWITGOO;
+            defaultMediaProvider = TWITGOO;
         } else if ("twitpic".equals(mediaProvider)) {
-            defaultProvider = TWITPIC;
+            defaultMediaProvider = TWITPIC;
         } else if ("yfrog".equals(mediaProvider)) {
-            defaultProvider = YFROG;
+            defaultMediaProvider = YFROG;
         } else {
             throw new IllegalArgumentException("unsupported media provider:" + mediaProvider);
         }
+        this.conf = conf;
         apiKey = conf.getMediaProviderAPIKey();
-    }
-
-    /**
-     *
-     * @param twitter
-     * @return
-     */
-    public ImageUploader getInstance(Twitter twitter) {
-        return getInstance(twitter, defaultProvider);
-    }
-
-    /**
-     *
-     * @param twitter
-     * @param provider
-     * @return
-     */
-    public ImageUploader getInstance(Twitter twitter, Provider provider) {
-        Authorization authorization = twitter.getAuthorization();
+        Authorization authorization = AuthorizationFactory.getInstance(conf, true);
         if (!(authorization instanceof OAuthAuthorization)) {
-            throw new IllegalArgumentException("OAuth authorized instance is required.");
+            throw new IllegalArgumentException("OAuth authorization is required.");
         }
-        OAuthAuthorization oauth = (OAuthAuthorization) authorization;
+        oauth = (OAuthAuthorization) authorization;
+    }
 
-        if (provider == IMG_LY) {
-            return new ImgLyUploader(oauth);
-        } else if (provider == TWEET_PHOTO) {
-            return new TweetPhotoUploader(apiKey, oauth);
-        } else if (provider == TWIPPLE) {
-            return new TwippleUploader(oauth);
-        } else if (provider == TWITGOO) {
-            return new TwitgooUploader(oauth);
-        } else if (provider == TWITPIC) {
-            return new TwitpicUploader(apiKey, oauth);
-        } else if (provider == YFROG) {
-            return new YFrogUploader(oauth);
+    /**
+     * Returns an ImageUploader instance associated with the default media provider
+     * @return ImageUploader
+     */
+    public ImageUploader getInstance() {
+        return getInstance(defaultMediaProvider);
+    }
+
+    /**
+     * Returns an ImageUploader instance associated with the specified media provider
+     * @param mediaProvider media provider
+     * @return ImageUploader
+     */
+    public ImageUploader getInstance(MediaProvider mediaProvider) {
+
+        if (mediaProvider == IMG_LY) {
+            return new ImgLyUploader(conf, oauth);
+        } else if (mediaProvider == TWEET_PHOTO) {
+            return new TweetPhotoUploader(conf, apiKey, oauth);
+        } else if (mediaProvider == TWIPPLE) {
+            return new TwippleUploader(conf, oauth);
+        } else if (mediaProvider == TWITGOO) {
+            return new TwitgooUploader(conf, oauth);
+        } else if (mediaProvider == TWITPIC) {
+            return new TwitpicUploader(conf, apiKey, oauth);
+        } else if (mediaProvider == YFROG) {
+            return new YFrogUploader(conf, oauth);
         } else {
             throw new AssertionError("Unknown provider");
         }

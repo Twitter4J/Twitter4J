@@ -32,21 +32,27 @@ import java.util.Map;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.7
+ * @since Twitter4J 2.1.8
  */
-public class Provider implements java.io.Serializable {
+public class MediaProvider implements java.io.Serializable {
     private static final long serialVersionUID = -258215809702057490L;
 
-    private static final Map<String, Provider> instances = new HashMap<String, Provider>();
+    private static final Map<String, MediaProvider> instances = new HashMap<String, MediaProvider>();
 
+    public static MediaProvider IMG_LY = new MediaProvider("IMG_LY");
+    public static MediaProvider TWEET_PHOTO = new MediaProvider("TWEET_PHOTO");
+    public static MediaProvider TWIPPLE = new MediaProvider("TWIPPLE");
+    public static MediaProvider TWITGOO= new MediaProvider("TWITGOO");
+    public static MediaProvider TWITPIC = new MediaProvider("TWITPIC");
+    public static MediaProvider YFROG = new MediaProvider("YFLOG");
 
     private final String name;
 
-    private Provider() {
+    private MediaProvider() {
         throw new AssertionError();
     }
 
-    Provider(String name) {
+    MediaProvider(String name) {
         this.name = name;
         instances.put(name, this);
     }
@@ -60,7 +66,7 @@ public class Provider implements java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Provider device = (Provider) o;
+        MediaProvider device = (MediaProvider) o;
 
         if (!name.equals(device.name)) return false;
 
@@ -77,7 +83,7 @@ public class Provider implements java.io.Serializable {
         return name;
     }
 
-    private static Provider getInstance(String name) {
+    private static MediaProvider getInstance(String name) {
         return instances.get(name);
     }
 

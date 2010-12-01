@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.media;
 
 import twitter4j.TwitterException;
+import twitter4j.conf.Configuration;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.org.json.JSONException;
@@ -39,8 +40,8 @@ import twitter4j.internal.org.json.JSONObject;
  */
 class ImgLyUploader extends AbstractImageUploaderImpl {
 
-    public ImgLyUploader(OAuthAuthorization oauth) {
-        super(oauth);
+    public ImgLyUploader(Configuration conf, OAuthAuthorization oauth) {
+        super(conf, oauth);
     }
 
     @Override

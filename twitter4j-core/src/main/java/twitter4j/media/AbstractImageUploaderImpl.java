@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import twitter4j.TwitterException;
+import twitter4j.conf.Configuration;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
@@ -49,6 +50,8 @@ abstract class AbstractImageUploaderImpl implements ImageUploader {
     public static final String TWITTER_VERIFY_CREDENTIALS_JSON = "https://api.twitter.com/1/account/verify_credentials.json";
     public static final String TWITTER_VERIFY_CREDENTIALS_XML  = "https://api.twitter.com/1/account/verify_credentials.xml";
 
+    private HttpClientWrapper client;
+
     protected String apiKey = null;
     protected OAuthAuthorization oauth = null;
     protected String uploadUrl = null;
@@ -59,13 +62,14 @@ abstract class AbstractImageUploaderImpl implements ImageUploader {
     protected HttpResponse httpResponse = null;
     protected static final Logger logger = Logger.getLogger(AbstractImageUploaderImpl.class);
 
-    AbstractImageUploaderImpl(OAuthAuthorization oauth) {
+    AbstractImageUploaderImpl(Configuration conf, OAuthAuthorization oauth) {
         this.oauth = oauth;
+        client = new HttpClientWrapper(conf);
     }
 
-    public AbstractImageUploaderImpl(String apiKey, OAuthAuthorization oauth) {
+    public AbstractImageUploaderImpl(Configuration conf, String apiKey, OAuthAuthorization oauth) {
+        this(conf, oauth);
         this.apiKey = apiKey;
-        this.oauth = oauth;
     }
 
     public String upload(String imageFileName, InputStream imageBody) throws TwitterException {
@@ -96,7 +100,6 @@ abstract class AbstractImageUploaderImpl implements ImageUploader {
             throw new AssertionError("Incomplete implementation. uploadUrl is not set.");
         }
 
-        HttpClientWrapper client = new HttpClientWrapper();
         httpResponse = client.post(uploadUrl, postParameter, headers);
 
         String mediaUrl = postUpload();

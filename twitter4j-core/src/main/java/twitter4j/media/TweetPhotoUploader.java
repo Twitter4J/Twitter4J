@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.media;
 
 import twitter4j.TwitterException;
+import twitter4j.conf.Configuration;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
 
@@ -39,8 +40,8 @@ class TweetPhotoUploader extends AbstractImageUploaderImpl {
 // Described at http://groups.google.com/group/tweetphoto/web/multipart-form-data-upload
 //  and http://groups.google.com/group/tweetphoto/web/oauth-echo
 
-    public TweetPhotoUploader(String apiKey, OAuthAuthorization oauth) {
-        super(apiKey, oauth);
+    public TweetPhotoUploader(Configuration conf, String apiKey, OAuthAuthorization oauth) {
+        super(conf, apiKey, oauth);
         this.uploadUrl = "http://tweetphotoapi.com/api/upload.aspx";//"https://tweetphotoapi.com/api/tpapi.svc/upload2";
     }
 

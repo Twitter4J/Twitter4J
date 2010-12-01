@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.media;
 
 import twitter4j.TwitterException;
+import twitter4j.conf.Configuration;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
 
@@ -37,8 +38,8 @@ import twitter4j.internal.http.HttpParameter;
  */
 class TwitgooUploader extends AbstractImageUploaderImpl {
 
-    public TwitgooUploader(OAuthAuthorization oauth) {
-        super(oauth);
+    public TwitgooUploader(Configuration conf, OAuthAuthorization oauth) {
+        super(conf, oauth);
     }
 
 

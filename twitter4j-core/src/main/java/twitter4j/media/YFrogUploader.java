@@ -29,6 +29,7 @@ package twitter4j.media;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.conf.Configuration;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
 
@@ -40,8 +41,8 @@ import twitter4j.internal.http.HttpParameter;
  */
 class YFrogUploader extends AbstractImageUploaderImpl {
 
-    public YFrogUploader(OAuthAuthorization oauth) {
-        super(oauth);
+    public YFrogUploader(Configuration conf, OAuthAuthorization oauth) {
+        super(conf, oauth);
     }
 
     @Override

@@ -42,11 +42,4 @@ public interface ImageUploader {
     public String upload(File image) throws TwitterException;
     public String upload(String imageFileName, InputStream imageBody) throws TwitterException;
     public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException;
-
-    Provider IMG_LY = new Provider("IMG_LY");
-    Provider TWEET_PHOTO = new Provider("TWEET_PHOTO");
-    Provider TWIPPLE = new Provider("TWIPPLE");
-    Provider TWITGOO= new Provider("TWITGOO");
-    Provider TWITPIC = new Provider("TWITPIC");
-    Provider YFROG = new Provider("YFLOG");
 }

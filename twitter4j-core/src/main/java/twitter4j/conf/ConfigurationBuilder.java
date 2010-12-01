@@ -257,7 +257,7 @@ public final class ConfigurationBuilder {
 
     public ConfigurationBuilder setMediaProviderAPIKey(String mediaProviderAPIKey) {
         checkNotBuilt();
-        configurationBean.setMediaProvider(mediaProviderAPIKey);
+        configurationBean.setMediaProviderAPIKey(mediaProviderAPIKey);
         return this;
     }
 
