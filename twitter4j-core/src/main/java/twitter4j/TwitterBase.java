@@ -108,6 +108,15 @@ abstract class TwitterBase implements java.io.Serializable {
         return true;
     }
 
+    /**
+     * Returns the configuration associated with this instance
+     * @return configuration associated with this instance
+     * @since Twitter4J 2.1.8
+     */
+    public Configuration getConfiguration(){
+        return this.conf;
+    }
+
     @Override
     public int hashCode() {
         return auth != null ? auth.hashCode() : 0;

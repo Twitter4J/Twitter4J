@@ -78,6 +78,10 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean userStreamRepliesAllEnabled;
 
+    private String mediaProvider;
+
+    private String mediaProviderAPIKey;
+
     // hidden portion
     private String clientVersion;
     private String clientURL;
@@ -165,6 +169,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             isDalvik = dalvikDetected;
         }
         IS_DALVIK = Boolean.valueOf(isDalvik);
+
+        setMediaProvider("YFROG");
+        setMediaProviderAPIKey(null);
     }
 
 
@@ -501,6 +508,22 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.userStreamRepliesAllEnabled = enabled;
     }
 
+    public String getMediaProvider(){
+        return this.mediaProvider;
+    }
+
+    protected final void setMediaProvider(String mediaProvider){
+        this.mediaProvider = mediaProvider;
+    }
+
+    public String getMediaProviderAPIKey(){
+        return this.mediaProviderAPIKey;
+    }
+
+    protected final void setMediaProviderAPIKey(String mediaProviderAPIKey){
+        this.mediaProviderAPIKey = mediaProviderAPIKey;
+    }
+
     @Override
     public int hashCode() {
         int result = (debug ? 1 : 0);
@@ -540,6 +563,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (clientURL != null ? clientURL.hashCode() : 0);
         result = 31 * result + (IS_DALVIK ? 1 : 0);
         result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
+        result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
+        result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
         return result;
     }
 
@@ -583,6 +608,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", clientURL='" + clientURL + '\'' +
                 ", IS_DALVIK=" + IS_DALVIK +
                 ", requestHeaders=" + requestHeaders +
+                ", mediaProvider=" + mediaProvider +
+                ", mediaProviderAPIKey=" + mediaProviderAPIKey +
                 '}';
     }
 

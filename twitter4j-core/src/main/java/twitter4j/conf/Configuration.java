@@ -114,4 +114,8 @@ public interface Configuration extends HttpClientConfiguration
     boolean isIncludeRTsEnabled();
 
     boolean isUserStreamRepliesAllEnabled();
+
+    String getMediaProvider();
+
+    String getMediaProviderAPIKey();
 }

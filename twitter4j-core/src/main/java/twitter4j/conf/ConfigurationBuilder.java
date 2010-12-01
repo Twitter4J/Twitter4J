@@ -249,6 +249,18 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setMediaProvider(String mediaProvider) {
+        checkNotBuilt();
+        configurationBean.setMediaProvider(mediaProvider);
+        return this;
+    }
+
+    public ConfigurationBuilder setMediaProviderAPIKey(String mediaProviderAPIKey) {
+        checkNotBuilt();
+        configurationBean.setMediaProviderAPIKey(mediaProviderAPIKey);
+        return this;
+    }
+
     public Configuration build() {
         checkNotBuilt();
         try {
