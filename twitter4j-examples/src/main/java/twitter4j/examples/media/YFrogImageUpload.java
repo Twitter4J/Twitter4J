@@ -24,39 +24,46 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.examples.image;
-
-import java.io.File;
-import java.io.FileNotFoundException;
+package twitter4j.examples.media;
 
 import twitter4j.TwitterException;
-import twitter4j.http.BasicAuthorization;
-import twitter4j.util.ImageUpload;
+import twitter4j.media.ImageUploader;
+import twitter4j.media.ImageUploaderFactory;
+import twitter4j.media.MediaProvider;
+
+import java.io.File;
 
 /**
- * Sample of the ImageUpload utility class. Uploads an image to Twitpic with BasicAuth credentials.
- * Usage java twitter4j.examples.TwitpicBasicAuthImageUpload <user id> <password> <image file to upload>.
+ * Sample of the ImageUploader interface. Uploads an image to YFrog with OAuth credentials specified in a properties file.
  *
  * @author Rémy Rakic - remy.rakic at gmail.com
- * @since Twitter4J 2.1.3
+ * @author Yusuke Yamamoto - yusuke at mac.com
  */
-
-public class TwitpicBasicAuthImageUpload {
-    public static void main(String[] args) throws TwitterException, FileNotFoundException {
-        if (args.length != 3) {
-            throw new IllegalArgumentException("Usage java twitter4j.examples.TwitpicBasicAuthImageUpload <user id> <password> <image file to upload>");
+public final class YFrogImageUpload {
+    /**
+     * Usage: java twitter4j.examples.media.YFrogImageUpload [image file path] [message]
+     *
+     * @param args message
+     */
+    public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("Usage: java twitter4j.examples.media.YFrogImageUpload [image file path] [message]");
+            System.exit(-1);
         }
-
-        File image = new File(args[2]);
-        if (!image.exists()) {
-            throw new FileNotFoundException("The image to upload " + image.getAbsolutePath() + " does not exist");
+        try {
+            ImageUploader uploader = new ImageUploaderFactory().getInstance(MediaProvider.YFROG);
+            String url;
+            if(args.length >= 2){
+                url = uploader.upload(new File(args[0]), args[1]);
+            } else {
+                url = uploader.upload(new File(args[0]));
+            }
+            System.out.println("Successfully uploaded image to YFrog at " + url);
+            System.exit(0);
+        } catch (TwitterException te) {
+            te.printStackTrace();
+            System.out.println("Failed to upload the image: " + te.getMessage());
+            System.exit(-1);
         }
-
-        ImageUpload upload = ImageUpload.getTwitpicUploader(new BasicAuthorization(args[0], args[1]));
-        // note: if you wanted to use YFrog with basic auth you'd use ImageUpload.getYFrogUploader
-
-        String url = upload.upload(image);
-
-        System.out.println("Successfully uploaded image to Twitpic at " + url);
     }
 }

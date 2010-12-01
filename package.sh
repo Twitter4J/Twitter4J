@@ -6,6 +6,8 @@ cd ../twitter4j-examples
 mvn clean package -Dmaven.test.skip=true
 cd ../twitter4j-httpclient-support
 mvn clean package -Dmaven.test.skip=true
+cd ../twitter4j-media-support
+mvn clean package -Dmaven.test.skip=true
 cd ..
 
 DIR=twitter4j-$1
@@ -26,7 +28,9 @@ mkdir $DIR/twitter4j-httpclient-support
 cp -r twitter4j-httpclient-support/src $DIR/twitter4j-httpclient-support/
 cp twitter4j-httpclient-support/pom.xml $DIR/twitter4j-httpclient-support/
 
-
+mkdir $DIR/twitter4j-media-support
+cp -r twitter4j-media-support/src $DIR/twitter4j-media-support/
+cp twitter4j-media-support/pom.xml $DIR/twitter4j-media-support/
 
 cp pom.xml $DIR/pom.xml
 cp LICENSE.txt $DIR/
@@ -46,6 +50,12 @@ cp twitter4j-core/target/twitter4j-core-$1-javadoc.jar $DIR/twitter4j-core/
 mkdir $DIR/twitter4j-core/javadoc/
 unzip twitter4j-core/target/twitter4j-core-$1-javadoc.jar -d $DIR/twitter4j-core/javadoc/
 
+cp twitter4j-media-support/target/twitter4j-media-support-$1.jar $DIR/
+cp twitter4j-media-support/target/twitter4j-media-support-$1-sources.jar $DIR/twitter4j-media-support/
+cp twitter4j-media-support/target/twitter4j-media-support-$1-javadoc.jar $DIR/twitter4j-media-support/
+mkdir $DIR/twitter4j-media-support/javadoc/
+unzip twitter4j-media-support/target/twitter4j-media-support-$1-javadoc.jar -d $DIR/twitter4j-media-support/javadoc/
+
 cp twitter4j-examples/target/twitter4j-examples-$1.jar $DIR/
 mkdir $DIR/twitter4j-examples/javadoc/
 unzip twitter4j-examples/target/twitter4j-examples-$1-javadoc.jar -d $DIR/twitter4j-examples/javadoc/
@@ -53,8 +63,8 @@ unzip twitter4j-examples/target/twitter4j-examples-$1-javadoc.jar -d $DIR/twitte
 cp twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1-javadoc.jar $DIR/twitter4j-httpclient-support/
 cp twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1-sources.jar $DIR/twitter4j-httpclient-support/
 cp twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1.jar $DIR/twitter4j-httpclient-support/
-mkdir $DIR/twitter4j-httpclient-support/javadoc/
-unzip twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1-javadoc.jar -d $DIR/twitter4j-httpclient-support/javadoc/
+#mkdir $DIR/twitter4j-httpclient-support/javadoc/
+#unzip twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1-javadoc.jar -d $DIR/twitter4j-httpclient-support/javadoc/
 
 
 cd $DIR/
