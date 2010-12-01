@@ -88,6 +88,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String INCLUDE_RTS = "includeRTs";
     public static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
 
+    public static final String MEDIA_PROVIDER = "media.provier";
+    public static final String MEDIA_PROVIDER_API_KEY = "media.provierAPIKey";
+
     // hidden portion
     public static final String CLIENT_VERSION = "clientVersion";
     public static final String CLIENT_URL = "clientURL";
@@ -335,6 +338,12 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, STREAM_USER_REPLIES_ALL)) {
             setUserStreamRepliesAllEnabled(getBoolean(props, prefix, STREAM_USER_REPLIES_ALL));
+        }
+        if (notNull(props, prefix, MEDIA_PROVIDER)) {
+            setMediaProvider(getString(props, prefix, MEDIA_PROVIDER));
+        }
+        if (notNull(props, prefix, MEDIA_PROVIDER_API_KEY)) {
+            setMediaProviderAPIKey(getString(props, prefix, MEDIA_PROVIDER_API_KEY));
         }
     }
 

@@ -24,35 +24,28 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.media.impl;
+package twitter4j.media;
 
 import twitter4j.TwitterException;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.media.AbstractMediaUploader;
-import twitter4j.media.MediaUploadException;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class TweetPhotoOAuthUploader extends AbstractMediaUploader {
+class TweetPhotoUploader extends AbstractImageUploaderImpl {
 // Described at http://groups.google.com/group/tweetphoto/web/multipart-form-data-upload
 //  and http://groups.google.com/group/tweetphoto/web/oauth-echo
 
-    public TweetPhotoOAuthUploader(OAuthAuthorization oauth) {
-        super(oauth);
-        throw new IllegalArgumentException("The TweetPhoto API Key supplied to the OAuth image uploader can't be null or empty");
-    }
-
-    public TweetPhotoOAuthUploader(String apiKey, OAuthAuthorization oauth) {
+    public TweetPhotoUploader(String apiKey, OAuthAuthorization oauth) {
         super(apiKey, oauth);
         this.uploadUrl = "http://tweetphotoapi.com/api/upload.aspx";//"https://tweetphotoapi.com/api/tpapi.svc/upload2";
     }
 
     @Override
-    public String postUp() throws TwitterException, MediaUploadException {
+    protected String postUpload() throws TwitterException {
         int statusCode = httpResponse.getStatusCode();
         if (statusCode != 201)
             throw new TwitterException("TweetPhoto image upload returned invalid status code", httpResponse);
@@ -64,15 +57,14 @@ public class TweetPhotoOAuthUploader extends AbstractMediaUploader {
             throw new TwitterException("TweetPhoto image upload failed with this error message: " + error, httpResponse);
         }
         if (-1 != response.indexOf("<Status>OK</Status>")) {
-            String media = response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
-            return media;
+            return response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
         }
 
         throw new TwitterException("Unknown TweetPhoto response", httpResponse);
     }
 
     @Override
-    public void preUp() throws TwitterException, MediaUploadException {
+    protected void preUpload() throws TwitterException {
         String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_XML);
 
         headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_XML);
@@ -84,8 +76,7 @@ public class TweetPhotoOAuthUploader extends AbstractMediaUploader {
         };
         if (message != null) {
             params = appendHttpParameters(new HttpParameter[]{
-                    this.message
-            }, params);
+                    this.message}, params);
         }
         this.postParameter = params;
     }

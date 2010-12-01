@@ -32,12 +32,6 @@ import twitter4j.TwitterTestBase;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.OAuthAuthorization;
-import twitter4j.media.impl.ImgLyOAuthUploader;
-import twitter4j.media.impl.TweetPhotoOAuthUploader;
-import twitter4j.media.impl.TwippleUploader;
-import twitter4j.media.impl.TwitgooOAuthUploader;
-import twitter4j.media.impl.TwitpicOAuthUploader;
-import twitter4j.media.impl.YFrogOAuthUploader;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
@@ -68,7 +62,7 @@ public class MediaUploadTest extends TwitterTestBase {
     public void testTwitPicOAuthUploader() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
-            String url = new TwitpicOAuthUploader(twitpicApiKey, oauthAuthorization).upload(fileName, is, message);
+            String url = new TwitpicUploader(twitpicApiKey, oauthAuthorization).upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();
@@ -78,7 +72,7 @@ public class MediaUploadTest extends TwitterTestBase {
     public void testYFrogOAuthUploader() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
-            String url = new YFrogOAuthUploader(oauthAuthorization).upload(fileName, is, message);
+            String url = new YFrogUploader(oauthAuthorization).upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();
@@ -88,7 +82,7 @@ public class MediaUploadTest extends TwitterTestBase {
     public void testTweetPhotoOAuthUploader() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
-            String url = new TweetPhotoOAuthUploader(tweetPhotoApiKey, oauthAuthorization).upload(fileName, is, message);
+            String url = new TweetPhotoUploader(tweetPhotoApiKey, oauthAuthorization).upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();
@@ -98,7 +92,7 @@ public class MediaUploadTest extends TwitterTestBase {
     public void testImgLyOAuthUploader() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
-            String url = new ImgLyOAuthUploader(oauthAuthorization).upload(fileName, is, message);
+            String url = new ImgLyUploader(oauthAuthorization).upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();
@@ -108,7 +102,7 @@ public class MediaUploadTest extends TwitterTestBase {
     public void testTwitgooOAuthUploader() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
-            String url = new TwitgooOAuthUploader(oauthAuthorization).upload(fileName, is, message);
+            String url = new TwitgooUploader(oauthAuthorization).upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();

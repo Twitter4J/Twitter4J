@@ -48,6 +48,7 @@ import twitter4j.internal.org.json.JSONObject;
 /**
  * @author Rémy Rakic - remy.rakic at gmail.com
  * @since Twitter4J 2.1.3
+ * @deprecated use {@link twitter4j.media.ImageUploader} and {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
  */
 public abstract class ImageUpload {
     public static String DEFAULT_TWITPIC_API_KEY = null;
@@ -66,7 +67,7 @@ public abstract class ImageUpload {
      * Returns an image uploader to Twitpic. Handles both BasicAuth and OAuth.
      * Note: When using OAuth, the Twitpic API Key needs to be specified, either with the field ImageUpload.DEFAULT_TWITPIC_API_KEY,
      * or using the getTwitpicUploader (String twitpicAPIKey, OAuthAuthorization auth) method
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getTwitpicUploader(Twitter twitter) throws TwitterException {
         Authorization auth = twitter.getAuthorization();
@@ -79,7 +80,7 @@ public abstract class ImageUpload {
 
     /**
      * Returns a BasicAuth image uploader to Twitpic
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getTwitpicUploader(BasicAuthorization auth) {
         return new TwitpicBasicAuthUploader(auth);
@@ -87,7 +88,7 @@ public abstract class ImageUpload {
 
     /**
      * Returns an OAuth image uploader to Twitpic
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getTwitpicUploader(String twitpicAPIKey, OAuthAuthorization auth) {
         return new TwitpicOAuthUploader(twitpicAPIKey, auth);
@@ -95,7 +96,7 @@ public abstract class ImageUpload {
 
     /**
      * Returns an OAuth image uploader to TweetPhoto
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getTweetPhotoUploader(String tweetPhotoAPIKey, OAuthAuthorization auth) {
         return new TweetPhotoOAuthUploader(tweetPhotoAPIKey, auth);
@@ -103,7 +104,7 @@ public abstract class ImageUpload {
 
     /**
      * Returns an image uploader to YFrog. Handles both BasicAuth and OAuth
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getYFrogUploader(Twitter twitter) throws TwitterException {
         Authorization auth = twitter.getAuthorization();
@@ -116,7 +117,7 @@ public abstract class ImageUpload {
 
     /**
      * Returns a BasicAuth image uploader to YFrog
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getYFrogUploader(BasicAuthorization auth) {
         return new YFrogBasicAuthUploader(auth);
@@ -124,7 +125,7 @@ public abstract class ImageUpload {
 
     /**
      * Returns an OAuth image uploader to YFrog
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getYFrogUploader(String userId, OAuthAuthorization auth) {
         return new YFrogOAuthUploader(userId, auth);
@@ -132,7 +133,7 @@ public abstract class ImageUpload {
 
     /**
      * Returns an OAuth image uploader to img.ly
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getImgLyUploader (OAuthAuthorization auth) {
         return new ImgLyOAuthUploader (auth);
@@ -140,7 +141,7 @@ public abstract class ImageUpload {
 
     /**
      * Returns an OAuth image uploader to Twitgoo
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getTwitgooUploader(OAuthAuthorization auth) {
         return new TwitgooOAuthUploader (auth);
@@ -148,12 +149,11 @@ public abstract class ImageUpload {
 
     /**
      * Returns an OAuth image uploader to Twipple
-     * @deprecated
+     * @deprecated use {@link twitter4j.media.ImageUploaderFactory#getInstance(twitter4j.Twitter)} instead
      */
     public static ImageUpload getTwippleUploader (OAuthAuthorization auth) {
         return new TwippleUploader(auth);
     }
-
 
     private static void ensureBasicEnabled(Authorization auth) {
         if (!(auth instanceof BasicAuthorization)) {

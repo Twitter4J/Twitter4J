@@ -24,58 +24,65 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.media.impl;
+package twitter4j.media;
 
 import twitter4j.TwitterException;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
-import twitter4j.media.AbstractMediaUploader;
-import twitter4j.media.MediaUploadException;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class ImgLyOAuthUploader extends AbstractMediaUploader {
+class TwitgooUploader extends AbstractImageUploaderImpl {
 
-    public ImgLyOAuthUploader(OAuthAuthorization oauth) {
+    public TwitgooUploader(OAuthAuthorization oauth) {
         super(oauth);
     }
 
+
     @Override
-    public String postUp() throws TwitterException, MediaUploadException {
+    protected String postUpload() throws TwitterException {
         int statusCode = httpResponse.getStatusCode ();
         if (statusCode != 200)
-            throw new TwitterException ("ImgLy image upload returned invalid status code", httpResponse);
-
+            throw new TwitterException ("Twitgoo image upload returned invalid status code", httpResponse);
+        
         String response = httpResponse.asString ();
-
-        try
-        {
-            JSONObject json = new JSONObject (response);
-            if (! json.isNull ("url"))
-                return json.getString ("url");
+        if(-1 != response.indexOf("<rsp status=\"ok\">")){
+            String h = "<mediaurl>";
+            int i = response.indexOf(h);
+            if(i != -1){
+                int j = response.indexOf("</mediaurl>", i + h.length());
+                if(j != -1){
+                    return response.substring(i + h.length(), j);
+                }
+            }
+        } else if(-1 != response.indexOf("<rsp status=\"fail\">")){
+            String h = "msg=\"";
+            int i = response.indexOf(h);
+            if(i != -1){
+                int j = response.indexOf("\"", i + h.length());
+                if(j != -1){
+                    String msg = response.substring(i + h.length(), j);
+                    throw new TwitterException ("Invalid Twitgoo response: " + msg);
+                }
+            }
         }
-        catch (JSONException e)
-        {
-            throw new TwitterException ("Invalid ImgLy response: " + response, e);
-        }
-
-        throw new TwitterException ("Unknown ImgLy response", httpResponse);
+        
+        throw new TwitterException ("Unknown Twitgoo response", httpResponse);
     }
 
     @Override
-    public void preUp() throws TwitterException, MediaUploadException {
-        uploadUrl = "http://img.ly/api/2/upload.json";
+    protected void preUpload() throws TwitterException {
+        uploadUrl = "http://twitgoo.com/api/uploadAndPost";
         String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_JSON);
 
         headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON);
         headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
 
         HttpParameter[] params = {
+                new HttpParameter("no_twitter_post", "1"),
                 this.image
         };
         if (message != null) {

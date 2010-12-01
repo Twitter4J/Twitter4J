@@ -24,65 +24,49 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.media.impl;
+package twitter4j.media;
 
-import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.media.AbstractMediaUploader;
-import twitter4j.media.MediaUploadException;
 
 /**
- * @author Rémy Rakic - remy.rakic at gmail.com
- * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class YFrogOAuthUploader extends AbstractMediaUploader {
+class TwippleUploader extends AbstractImageUploaderImpl {
 
-    public YFrogOAuthUploader(OAuthAuthorization oauth) {
+    public TwippleUploader(OAuthAuthorization oauth) {
         super(oauth);
     }
 
     @Override
-    public String postUp() throws TwitterException, MediaUploadException {
+    protected String postUpload() throws TwitterException {
         int statusCode = httpResponse.getStatusCode();
         if (statusCode != 200) {
-            throw new TwitterException("YFrog image upload returned invalid status code", httpResponse);
+            throw new TwitterException("Twipple image upload returned invalid status code", httpResponse);
         }
 
         String response = httpResponse.asString();
         if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
             String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
-            throw new TwitterException("YFrog image upload failed with this error message: " + error, httpResponse);
+            throw new TwitterException("Twipple image upload failed with this error message: " + error, httpResponse);
         }
         if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
-            String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
-            return media;
+            return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
         }
 
-        throw new TwitterException("Unknown YFrog response", httpResponse);
+        throw new TwitterException("Unknown Twipple response", httpResponse);
     }
 
     @Override
-    public void preUp() throws TwitterException, MediaUploadException {
-        uploadUrl = "https://yfrog.com/api/upload";
+    protected void preUpload() throws TwitterException {
+        uploadUrl = "http://p.twipple.jp/api/upload";
         String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML);
-        Twitter tw = new TwitterFactory().getInstance(this.oauth);
 
         HttpParameter[] params = {
-                new HttpParameter("auth", "oauth"),
-                new HttpParameter("username", tw.verifyCredentials().getScreenName()),
                 new HttpParameter("verify_url", signedVerifyCredentialsURL),
-                this.image,
-        };
-        if (message != null) {
-            params = appendHttpParameters(new HttpParameter[]{
-                    this.message
-            }, params);
-        }
+                this.image};
         this.postParameter = params;
     }
 }

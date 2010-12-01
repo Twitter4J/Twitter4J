@@ -26,16 +26,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.media;
 
+import java.io.File;
+import java.io.InputStream;
+
+import twitter4j.TwitterException;
+
 /**
  * @author Rémy Rakic - remy.rakic at gmail.com
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class MediaUploadException extends Exception {
-    public MediaUploadException(String string) {
-        super(string);
-    }
+public interface ImageUploader {
+    public String upload(File image, String message) throws TwitterException;
+    public String upload(File image) throws TwitterException;
+    public String upload(String imageFileName, InputStream imageBody) throws TwitterException;
+    public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException;
 
-    private static final long serialVersionUID = 2699758381712123676L;
+    Provider IMG_LY = new Provider("IMG_LY");
+    Provider TWEET_PHOTO = new Provider("TWEET_PHOTO");
+    Provider TWIPPLE = new Provider("TWIPPLE");
+    Provider TWITGOO= new Provider("TWITGOO");
+    Provider TWITPIC = new Provider("TWITPIC");
+    Provider YFROG = new Provider("YFLOG");
 }

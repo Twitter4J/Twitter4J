@@ -26,13 +26,63 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.media;
 
+import java.io.ObjectStreamException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * @author withgod - noname at withgod.jp
- * @since Twitter4J 2.1.8
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.7
  */
-public class UnsupportedMediaException extends Exception {
-	private static final long serialVersionUID = 7427846563812830631L;
-	public UnsupportedMediaException(String message) {
-		super(message);
-	}
+public class Provider implements java.io.Serializable {
+    private static final long serialVersionUID = -258215809702057490L;
+
+    private static final Map<String, Provider> instances = new HashMap<String, Provider>();
+
+
+    private final String name;
+
+    private Provider() {
+        throw new AssertionError();
+    }
+
+    Provider(String name) {
+        this.name = name;
+        instances.put(name, this);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Provider device = (Provider) o;
+
+        if (!name.equals(device.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    private static Provider getInstance(String name) {
+        return instances.get(name);
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        return getInstance(name);
+    }
+
 }

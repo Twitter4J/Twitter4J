@@ -45,10 +45,10 @@ import twitter4j.internal.logging.Logger;
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public abstract class AbstractMediaUploader implements MediaUploader {
+abstract class AbstractImageUploaderImpl implements ImageUploader {
     public static final String TWITTER_VERIFY_CREDENTIALS_JSON = "https://api.twitter.com/1/account/verify_credentials.json";
     public static final String TWITTER_VERIFY_CREDENTIALS_XML  = "https://api.twitter.com/1/account/verify_credentials.xml";
-    
+
     protected String apiKey = null;
     protected OAuthAuthorization oauth = null;
     protected String uploadUrl = null;
@@ -57,57 +57,56 @@ public abstract class AbstractMediaUploader implements MediaUploader {
     protected HttpParameter message = null;
     protected Map<String, String> headers = new HashMap<String, String>();
     protected HttpResponse httpResponse = null;
-    protected static final Logger logger = Logger.getLogger(AbstractMediaUploader.class);
+    protected static final Logger logger = Logger.getLogger(AbstractImageUploaderImpl.class);
 
-    public abstract void preUp() throws TwitterException, MediaUploadException, UnsupportedMediaException;
-    public abstract String postUp() throws TwitterException, MediaUploadException;
-
-    public AbstractMediaUploader(OAuthAuthorization oauth) {
+    AbstractImageUploaderImpl(OAuthAuthorization oauth) {
         this.oauth = oauth;
     }
 
-    public AbstractMediaUploader(String apiKey, OAuthAuthorization oauth) {
+    public AbstractImageUploaderImpl(String apiKey, OAuthAuthorization oauth) {
         this.apiKey = apiKey;
         this.oauth = oauth;
     }
 
-    public String upload(String imageFileName, InputStream imageBody) throws TwitterException, MediaUploadException, UnsupportedMediaException {
+    public String upload(String imageFileName, InputStream imageBody) throws TwitterException {
         this.image = new HttpParameter("media", imageFileName, imageBody);
         return upload();
     }
-    public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException, MediaUploadException, UnsupportedMediaException {
+    public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException {
         this.image = new HttpParameter("media", imageFileName, imageBody);
         this.message = new HttpParameter("message", message);
         return upload();
     }
-    public String upload(File file, String message) throws TwitterException, MediaUploadException, UnsupportedMediaException {
+    public String upload(File file, String message) throws TwitterException {
         this.image = new HttpParameter("media", file);
         this.message = new HttpParameter("message", message);
         return upload();
     }
-    public String upload(File file) throws TwitterException, MediaUploadException, UnsupportedMediaException {
+    public String upload(File file) throws TwitterException {
         this.image = new HttpParameter("media", file);
         return upload();
     }
 
-    public String upload() throws TwitterException, MediaUploadException, UnsupportedMediaException {
-        preUp();
+    public String upload() throws TwitterException {
+        preUpload();
         if (this.postParameter == null) {
-            throw new MediaUploadException("Incomplete implementation. dosnt build postParameter");
+            throw new AssertionError("Incomplete implementation. postParameter is not set.");
         }
         if (this.uploadUrl == null) {
-            throw new MediaUploadException("Incomplete implementation. not set uploadUrl");
+            throw new AssertionError("Incomplete implementation. uploadUrl is not set.");
         }
-
 
         HttpClientWrapper client = new HttpClientWrapper();
         httpResponse = client.post(uploadUrl, postParameter, headers);
 
-        String mediaUrl = postUp();
+        String mediaUrl = postUpload();
         logger.debug("uploaded url [" + mediaUrl + "]");
         
         return mediaUrl;
     }
+
+    protected abstract void preUpload() throws TwitterException;
+    protected abstract String postUpload() throws TwitterException;
 
     protected HttpParameter[] appendHttpParameters(HttpParameter[] src, HttpParameter[] dst) {
         int srcLen = src.length;
@@ -131,6 +130,4 @@ public abstract class AbstractMediaUploader implements MediaUploader {
         List<HttpParameter> oauthSignatureParams = oauth.generateOAuthSignatureHttpParams("GET", verifyCredentialsUrl);
         return verifyCredentialsUrl + "?" + OAuthAuthorization.encodeParameters(oauthSignatureParams);
     }
-
-    
 }
