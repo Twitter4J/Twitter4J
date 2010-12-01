@@ -27,42 +27,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.media;
 
 import java.io.InputStream;
+import java.util.Properties;
 
-import twitter4j.TwitterTestBase;
+import junit.framework.TestCase;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.AccessToken;
-import twitter4j.http.OAuthAuthorization;
-import twitter4j.util.ImageUpload;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class MediaUploadTest extends TwitterTestBase {
+public class MediaUploadTest extends TestCase {
     public MediaUploadTest(String name) {
         super(name);
+
     }
+    private String fileName = "t4j.jpeg";
+    private String message = "Twitter4J image upload test";
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
     }
     private Configuration getConfiguration(String apiKey){
-        return new ConfigurationBuilder()
-                .setOAuthConsumerKey(p.getProperty("desktopConsumerKey"))
-                .setOAuthConsumerSecret(p.getProperty("desktopConsumerSecret"))
-                .setOAuthAccessToken(p.getProperty("id1.oauth_token"))
-                .setOAuthAccessTokenSecret(p.getProperty("id1.oauth_token_secret"))
-                .setMediaProviderAPIKey(apiKey).build();
+        return new ConfigurationBuilder().setMediaProviderAPIKey(apiKey).build();
     }
 
     public void testTwitPicOAuthUploader() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
-            ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration(p.getProperty("twitpic.apiKey")));
+            ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
             ImageUploader uploader = factory.getInstance(MediaProvider.TWITPIC);
             String url = uploader.upload(fileName, is, message);
             assertTrue(url.length() > 0);
@@ -86,7 +81,7 @@ public class MediaUploadTest extends TwitterTestBase {
     public void testTweetPhotoOAuthUploader() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
-            ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration(p.getProperty("tweetPhoto.apiKey")));
+            ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("b30d6580-46ce-49a1-b469-31777a326938"));
             ImageUploader uploader = factory.getInstance(MediaProvider.TWEET_PHOTO);
             String url = uploader.upload(fileName, is, message);
             assertTrue(url.length() > 0);
@@ -131,6 +126,4 @@ public class MediaUploadTest extends TwitterTestBase {
         }
     }
 
-    private String fileName = "t4j.jpeg";
-    private String message = "Twitter4J image upload test";
 }
