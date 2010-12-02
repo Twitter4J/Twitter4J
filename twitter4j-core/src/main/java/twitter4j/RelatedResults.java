@@ -30,7 +30,7 @@ package twitter4j;
  * @author Mocel - mocel at guma.jp
  * @since Twitter4J 2.1.8
  */
-public interface RelatedResults extends java.io.Serializable {
+public interface RelatedResults extends TwitterResponse, java.io.Serializable {
 
     /**
      * Returns the 8 or less statuses with conversation
