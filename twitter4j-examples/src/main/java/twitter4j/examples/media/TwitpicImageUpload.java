@@ -29,7 +29,7 @@ package twitter4j.examples.media;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.media.ImageUploader;
+import twitter4j.media.ImageUpload;
 import twitter4j.media.ImageUploaderFactory;
 import twitter4j.media.MediaProvider;
 
@@ -43,7 +43,7 @@ import java.io.File;
  */
 public final class TwitpicImageUpload {
     /**
-     * Usage: java twitter4j.examples.media.TweetPhotoImageUpload [API key] [message]
+     * Usage: java twitter4j.examples.media.TwitpicImageUpload [API key] [message]
      *
      * @param args message
      */
@@ -54,12 +54,12 @@ public final class TwitpicImageUpload {
         }
         try {
             Configuration conf = new ConfigurationBuilder().setMediaProviderAPIKey(args[0]).build();
-            ImageUploader uploader = new ImageUploaderFactory(conf).getInstance(MediaProvider.TWEET_PHOTO);
+            ImageUpload upload = new ImageUploaderFactory(conf).getInstance(MediaProvider.PLIXI);
             String url;
             if(args.length >= 3){
-                url = uploader.upload(new File(args[1]), args[2]);
+                url = upload.upload(new File(args[1]), args[2]);
             } else {
-                url = uploader.upload(new File(args[1]));
+                url = upload.upload(new File(args[1]));
             }
             System.out.println("Successfully uploaded image to Twitpic at " + url);
             System.exit(0);

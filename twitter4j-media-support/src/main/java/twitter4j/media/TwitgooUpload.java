@@ -32,42 +32,65 @@ import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
 
 /**
+ * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-class TwippleUploader extends AbstractImageUploaderImpl {
+class TwitgooUpload extends AbstractImageUploadImpl {
 
-    public TwippleUploader(Configuration conf, OAuthAuthorization oauth) {
+    public TwitgooUpload(Configuration conf, OAuthAuthorization oauth) {
         super(conf, oauth);
     }
 
+
     @Override
     protected String postUpload() throws TwitterException {
-        int statusCode = httpResponse.getStatusCode();
-        if (statusCode != 200) {
-            throw new TwitterException("Twipple image upload returned invalid status code", httpResponse);
+        int statusCode = httpResponse.getStatusCode ();
+        if (statusCode != 200)
+            throw new TwitterException ("Twitgoo image upload returned invalid status code", httpResponse);
+        
+        String response = httpResponse.asString ();
+        if(-1 != response.indexOf("<rsp status=\"ok\">")){
+            String h = "<mediaurl>";
+            int i = response.indexOf(h);
+            if(i != -1){
+                int j = response.indexOf("</mediaurl>", i + h.length());
+                if(j != -1){
+                    return response.substring(i + h.length(), j);
+                }
+            }
+        } else if(-1 != response.indexOf("<rsp status=\"fail\">")){
+            String h = "msg=\"";
+            int i = response.indexOf(h);
+            if(i != -1){
+                int j = response.indexOf("\"", i + h.length());
+                if(j != -1){
+                    String msg = response.substring(i + h.length(), j);
+                    throw new TwitterException ("Invalid Twitgoo response: " + msg);
+                }
+            }
         }
-
-        String response = httpResponse.asString();
-        if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
-            String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
-            throw new TwitterException("Twipple image upload failed with this error message: " + error, httpResponse);
-        }
-        if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
-            return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
-        }
-
-        throw new TwitterException("Unknown Twipple response", httpResponse);
+        
+        throw new TwitterException ("Unknown Twitgoo response", httpResponse);
     }
 
     @Override
     protected void preUpload() throws TwitterException {
-        uploadUrl = "http://p.twipple.jp/api/upload";
-        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML);
+        uploadUrl = "http://twitgoo.com/api/uploadAndPost";
+        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_JSON);
+
+        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON);
+        headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
 
         HttpParameter[] params = {
-                new HttpParameter("verify_url", signedVerifyCredentialsURL),
-                this.image};
+                new HttpParameter("no_twitter_post", "1"),
+                this.image
+        };
+        if (message != null) {
+            params = appendHttpParameters(new HttpParameter[]{
+                    this.message
+            }, params);
+        }
         this.postParameter = params;
     }
 }

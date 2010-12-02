@@ -29,39 +29,39 @@ package twitter4j.examples.media;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.media.ImageUploader;
+import twitter4j.media.ImageUpload;
 import twitter4j.media.ImageUploaderFactory;
 import twitter4j.media.MediaProvider;
 
 import java.io.File;
 
 /**
- * Sample of the ImageUploader interface. Uploads an image to TweetPhoto with OAuth credentials specified in a properties file.
+ * Sample of the ImageUploader interface. Uploads an image to Plixi with OAuth credentials specified in a properties file.
  *
  * @author Rémy Rakic - remy.rakic at gmail.com
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class TweetPhotoImageUpload {
+public final class PlixiImageUpload {
     /**
-     * Usage: java twitter4j.examples.media.TweetPhotoImageUpload [image file path] [message]
+     * Usage: java twitter4j.examples.media.PlixiImageUpload [image file path] [message]
      *
      * @param args message
      */
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("Usage: java twitter4j.examples.media.TweetPhotoImageUpload [API key] [image file path] [message]");
+            System.out.println("Usage: java twitter4j.examples.media.PlixiImageUpload [API key] [image file path] [message]");
             System.exit(-1);
         }
         try {
             Configuration conf = new ConfigurationBuilder().setMediaProviderAPIKey(args[0]).build();
-            ImageUploader uploader = new ImageUploaderFactory(conf).getInstance(MediaProvider.TWEET_PHOTO);
+            ImageUpload upload = new ImageUploaderFactory(conf).getInstance(MediaProvider.PLIXI);
             String url;
             if(args.length >= 3){
-                url = uploader.upload(new File(args[1]), args[2]);
+                url = upload.upload(new File(args[1]), args[2]);
             } else {
-                url = uploader.upload(new File(args[1]));
+                url = upload.upload(new File(args[1]));
             }
-            System.out.println("Successfully uploaded image to TweetPhoto at " + url);
+            System.out.println("Successfully uploaded image to Plixi at " + url);
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

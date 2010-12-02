@@ -40,7 +40,7 @@ public class MediaProvider implements java.io.Serializable {
     private static final Map<String, MediaProvider> instances = new HashMap<String, MediaProvider>();
 
     public static MediaProvider IMG_LY = new MediaProvider("IMG_LY");
-    public static MediaProvider TWEET_PHOTO = new MediaProvider("TWEET_PHOTO");
+    public static MediaProvider PLIXI = new MediaProvider("PLIXI");
     public static MediaProvider TWIPPLE = new MediaProvider("TWIPPLE");
     public static MediaProvider TWITGOO= new MediaProvider("TWITGOO");
     public static MediaProvider TWITPIC = new MediaProvider("TWITPIC");

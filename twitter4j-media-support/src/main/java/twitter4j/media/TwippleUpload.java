@@ -30,52 +30,44 @@ import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.http.OAuthAuthorization;
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 
 /**
- * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-class ImgLyUploader extends AbstractImageUploaderImpl {
+class TwippleUpload extends AbstractImageUploadImpl {
 
-    public ImgLyUploader(Configuration conf, OAuthAuthorization oauth) {
+    public TwippleUpload(Configuration conf, OAuthAuthorization oauth) {
         super(conf, oauth);
     }
 
     @Override
     protected String postUpload() throws TwitterException {
         int statusCode = httpResponse.getStatusCode();
-        if (statusCode != 200)
-            throw new TwitterException("ImgLy image upload returned invalid status code", httpResponse);
-
-        String response = httpResponse.asString();
-
-        try {
-            JSONObject json = new JSONObject(response);
-            if (!json.isNull("url"))
-                return json.getString("url");
-        } catch (JSONException e) {
-            throw new TwitterException("Invalid ImgLy response: " + response, e);
+        if (statusCode != 200) {
+            throw new TwitterException("Twipple image upload returned invalid status code", httpResponse);
         }
 
-        throw new TwitterException("Unknown ImgLy response", httpResponse);
+        String response = httpResponse.asString();
+        if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
+            String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
+            throw new TwitterException("Twipple image upload failed with this error message: " + error, httpResponse);
+        }
+        if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
+            return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
+        }
+
+        throw new TwitterException("Unknown Twipple response", httpResponse);
     }
 
     @Override
     protected void preUpload() throws TwitterException {
-        uploadUrl = "http://img.ly/api/2/upload.json";
-        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_JSON);
+        uploadUrl = "http://p.twipple.jp/api/upload";
+        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML);
 
-        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON);
-        headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
-
-        HttpParameter[] params = {this.image};
-        if (message != null) {
-            params = appendHttpParameters(new HttpParameter[]{
-                    this.message}, params);
-        }
+        HttpParameter[] params = {
+                new HttpParameter("verify_url", signedVerifyCredentialsURL),
+                this.image};
         this.postParameter = params;
     }
 }

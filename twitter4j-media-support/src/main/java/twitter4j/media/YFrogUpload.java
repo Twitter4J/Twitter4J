@@ -39,9 +39,9 @@ import twitter4j.internal.http.HttpParameter;
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-class YFrogUploader extends AbstractImageUploaderImpl {
+class YFrogUpload extends AbstractImageUploadImpl {
 
-    public YFrogUploader(Configuration conf, OAuthAuthorization oauth) {
+    public YFrogUpload(Configuration conf, OAuthAuthorization oauth) {
         super(conf, oauth);
     }
 

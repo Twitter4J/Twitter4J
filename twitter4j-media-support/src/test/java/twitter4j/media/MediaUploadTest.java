@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.media;
 
 import java.io.InputStream;
-import java.util.Properties;
 
 import junit.framework.TestCase;
 import twitter4j.conf.Configuration;
@@ -54,72 +53,72 @@ public class MediaUploadTest extends TestCase {
         return new ConfigurationBuilder().setMediaProviderAPIKey(apiKey).build();
     }
 
-    public void testTwitPicOAuthUploader() throws Exception {
+    public void testTwitPicOAuthUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
             ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
-            ImageUploader uploader = factory.getInstance(MediaProvider.TWITPIC);
-            String url = uploader.upload(fileName, is, message);
+            ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
+            String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();
         }
     }
 
-    public void testYFrogOAuthUploader() throws Exception {
+    public void testYFrogUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
             ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration(null));
-            ImageUploader uploader = factory.getInstance(MediaProvider.YFROG);
-            String url = uploader.upload(fileName, is, message);
+            ImageUpload upload = factory.getInstance(MediaProvider.YFROG);
+            String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();
         }
     }
 
-    public void testTweetPhotoOAuthUploader() throws Exception {
+    public void testPlixiUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
             ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("b30d6580-46ce-49a1-b469-31777a326938"));
-            ImageUploader uploader = factory.getInstance(MediaProvider.TWEET_PHOTO);
-            String url = uploader.upload(fileName, is, message);
+            ImageUpload upload = factory.getInstance(MediaProvider.PLIXI);
+            String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();
         }
     }
 
-    public void testImgLyOAuthUploader() throws Exception {
+    public void testImgLyUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
             ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration(null));
-            ImageUploader uploader = factory.getInstance(MediaProvider.IMG_LY);
-            String url = uploader.upload(fileName, is, message);
+            ImageUpload upload = factory.getInstance(MediaProvider.IMG_LY);
+            String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();
         }
     }
 
-    public void testTwitgooOAuthUploader() throws Exception {
+    public void testTwitgooUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
             ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration(null));
-            ImageUploader uploader = factory.getInstance(MediaProvider.TWITGOO);
-            String url = uploader.upload(fileName, is, message);
+            ImageUpload upload = factory.getInstance(MediaProvider.TWITGOO);
+            String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
             is.close();
         }
     }
 
-    public void testTwippleUploader() throws Exception {
+    public void testTwippleUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
             ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration(null));
-            ImageUploader uploader = factory.getInstance(MediaProvider.TWIPPLE);
-            String url = uploader.upload(fileName, is);
+            ImageUpload upload = factory.getInstance(MediaProvider.TWIPPLE);
+            String url = upload.upload(fileName, is);
             assertTrue(url.length() > 0);
         } finally {
             is.close();

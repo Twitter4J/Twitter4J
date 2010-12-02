@@ -36,32 +36,32 @@ import twitter4j.internal.http.HttpParameter;
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-class TweetPhotoUploader extends AbstractImageUploaderImpl {
+class PlixiUpload extends AbstractImageUploadImpl {
 // Described at http://groups.google.com/group/tweetphoto/web/multipart-form-data-upload
 //  and http://groups.google.com/group/tweetphoto/web/oauth-echo
 
-    public TweetPhotoUploader(Configuration conf, String apiKey, OAuthAuthorization oauth) {
+    public PlixiUpload(Configuration conf, String apiKey, OAuthAuthorization oauth) {
         super(conf, apiKey, oauth);
-        this.uploadUrl = "http://tweetphotoapi.com/api/upload.aspx";//"https://tweetphotoapi.com/api/tpapi.svc/upload2";
+        this.uploadUrl = "http://api.plixi.com/api/upload.aspx";//"https://api.plixi.com/api/tpapi.svc/upload2";
     }
 
     @Override
     protected String postUpload() throws TwitterException {
         int statusCode = httpResponse.getStatusCode();
         if (statusCode != 201)
-            throw new TwitterException("TweetPhoto image upload returned invalid status code", httpResponse);
+            throw new TwitterException("Plixi image upload returned invalid status code", httpResponse);
 
         String response = httpResponse.asString();
 
         if (-1 != response.indexOf("<Error><ErrorCode>")) {
             String error = response.substring(response.indexOf("<ErrorCode>") + "<ErrorCode>".length(), response.lastIndexOf("</ErrorCode>"));
-            throw new TwitterException("TweetPhoto image upload failed with this error message: " + error, httpResponse);
+            throw new TwitterException("Plixi image upload failed with this error message: " + error, httpResponse);
         }
         if (-1 != response.indexOf("<Status>OK</Status>")) {
             return response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
         }
 
-        throw new TwitterException("Unknown TweetPhoto response", httpResponse);
+        throw new TwitterException("Unknown Plixi response", httpResponse);
     }
 
     @Override

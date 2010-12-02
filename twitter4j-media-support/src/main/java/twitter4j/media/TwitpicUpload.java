@@ -39,9 +39,9 @@ import twitter4j.internal.org.json.JSONObject;
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-class TwitpicUploader extends AbstractImageUploaderImpl {
+class TwitpicUpload extends AbstractImageUploadImpl {
 
-    public TwitpicUploader(Configuration conf, String apiKey, OAuthAuthorization oauth) {
+    public TwitpicUpload(Configuration conf, String apiKey, OAuthAuthorization oauth) {
         super(conf, apiKey, oauth);
     }
 

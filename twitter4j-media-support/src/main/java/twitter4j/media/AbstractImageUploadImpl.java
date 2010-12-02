@@ -46,7 +46,7 @@ import twitter4j.internal.logging.Logger;
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-abstract class AbstractImageUploaderImpl implements ImageUploader {
+abstract class AbstractImageUploadImpl implements ImageUpload {
     public static final String TWITTER_VERIFY_CREDENTIALS_JSON = "https://api.twitter.com/1/account/verify_credentials.json";
     public static final String TWITTER_VERIFY_CREDENTIALS_XML  = "https://api.twitter.com/1/account/verify_credentials.xml";
 
@@ -60,14 +60,14 @@ abstract class AbstractImageUploaderImpl implements ImageUploader {
     protected HttpParameter message = null;
     protected Map<String, String> headers = new HashMap<String, String>();
     protected HttpResponse httpResponse = null;
-    protected static final Logger logger = Logger.getLogger(AbstractImageUploaderImpl.class);
+    protected static final Logger logger = Logger.getLogger(AbstractImageUploadImpl.class);
 
-    AbstractImageUploaderImpl(Configuration conf, OAuthAuthorization oauth) {
+    AbstractImageUploadImpl(Configuration conf, OAuthAuthorization oauth) {
         this.oauth = oauth;
         client = new HttpClientWrapper(conf);
     }
 
-    public AbstractImageUploaderImpl(Configuration conf, String apiKey, OAuthAuthorization oauth) {
+    public AbstractImageUploadImpl(Configuration conf, String apiKey, OAuthAuthorization oauth) {
         this(conf, oauth);
         this.apiKey = apiKey;
     }

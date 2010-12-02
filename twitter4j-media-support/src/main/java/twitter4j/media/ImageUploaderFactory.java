@@ -82,7 +82,7 @@ public final class ImageUploaderFactory {
      * Returns an ImageUploader instance associated with the default media provider
      * @return ImageUploader
      */
-    public ImageUploader getInstance() {
+    public ImageUpload getInstance() {
         return getInstance(defaultMediaProvider);
     }
 
@@ -91,20 +91,20 @@ public final class ImageUploaderFactory {
      * @param mediaProvider media provider
      * @return ImageUploader
      */
-    public ImageUploader getInstance(MediaProvider mediaProvider) {
+    public ImageUpload getInstance(MediaProvider mediaProvider) {
 
         if (mediaProvider == IMG_LY) {
-            return new ImgLyUploader(conf, oauth);
-        } else if (mediaProvider == TWEET_PHOTO) {
-            return new TweetPhotoUploader(conf, apiKey, oauth);
+            return new ImgLyUpload(conf, oauth);
+        } else if (mediaProvider == PLIXI) {
+            return new PlixiUpload(conf, apiKey, oauth);
         } else if (mediaProvider == TWIPPLE) {
-            return new TwippleUploader(conf, oauth);
+            return new TwippleUpload(conf, oauth);
         } else if (mediaProvider == TWITGOO) {
-            return new TwitgooUploader(conf, oauth);
+            return new TwitgooUpload(conf, oauth);
         } else if (mediaProvider == TWITPIC) {
-            return new TwitpicUploader(conf, apiKey, oauth);
+            return new TwitpicUpload(conf, apiKey, oauth);
         } else if (mediaProvider == YFROG) {
-            return new YFrogUploader(conf, oauth);
+            return new YFrogUpload(conf, oauth);
         } else {
             throw new AssertionError("Unknown provider");
         }

@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.examples.media;
 
 import twitter4j.TwitterException;
-import twitter4j.media.ImageUploader;
+import twitter4j.media.ImageUpload;
 import twitter4j.media.ImageUploaderFactory;
 import twitter4j.media.MediaProvider;
 
@@ -51,12 +51,12 @@ public final class ImgLyImageUpload {
             System.exit(-1);
         }
         try {
-            ImageUploader uploader = new ImageUploaderFactory().getInstance(MediaProvider.IMG_LY);
+            ImageUpload upload = new ImageUploaderFactory().getInstance(MediaProvider.IMG_LY);
             String url;
             if(args.length >= 2){
-                url = uploader.upload(new File(args[0]), args[1]);
+                url = upload.upload(new File(args[0]), args[1]);
             } else {
-                url = uploader.upload(new File(args[0]));
+                url = upload.upload(new File(args[0]));
             }
             System.out.println("Successfully uploaded image to img.ly at " + url);
             System.exit(0);

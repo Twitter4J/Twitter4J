@@ -37,7 +37,7 @@ import twitter4j.TwitterException;
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public interface ImageUploader {
+public interface ImageUpload {
     public String upload(File image, String message) throws TwitterException;
     public String upload(File image) throws TwitterException;
     public String upload(String imageFileName, InputStream imageBody) throws TwitterException;
