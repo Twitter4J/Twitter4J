@@ -213,6 +213,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setSiteStreamBaseURL (String siteStreamBaseURL) {
+        checkNotBuilt();
+        configurationBean.setSiteStreamBaseURL(siteStreamBaseURL);
+        return this;
+    }
+
     public ConfigurationBuilder setAsyncNumThreads(int asyncNumThreads) {
         checkNotBuilt();
         configurationBean.setAsyncNumThreads(asyncNumThreads);

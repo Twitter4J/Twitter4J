@@ -111,6 +111,8 @@ public interface Configuration extends HttpClientConfiguration
     
     String getUserStreamBaseURL();
 
+    String getSiteStreamBaseURL();
+
     boolean isIncludeRTsEnabled();
 
     boolean isUserStreamRepliesAllEnabled();

@@ -69,7 +69,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String searchBaseURL;
     private String streamBaseURL;
     private String userStreamBaseURL;
-    
+    private String siteStreamBaseURL;
+
     private String dispatcherImpl;
 
     private int asyncNumThreads;
@@ -97,6 +98,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final String DEFAULT_SEARCH_BASE_URL = "http://search.twitter.com/";
     private static final String DEFAULT_STREAM_BASE_URL = "http://stream.twitter.com/1/";
     private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/2/";
+    private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://betastream.twitter.com/2b/";
 
     private boolean IS_DALVIK;
     private static final long serialVersionUID = -6610497517837844232L;
@@ -156,7 +158,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
         setStreamBaseURL(DEFAULT_STREAM_BASE_URL);
         setUserStreamBaseURL(DEFAULT_USER_STREAM_BASE_URL);
-        
+        setSiteStreamBaseURL(DEFAULT_SITE_STREAM_BASE_URL);
+
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
         setIncludeRTsEnbled(true);
@@ -445,11 +448,19 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     public String getUserStreamBaseURL () {
         return userStreamBaseURL;
     }
-    
-    protected final void setUserStreamBaseURL (String userStreamBaseURL) {
-        this.userStreamBaseURL = userStreamBaseURL;
+
+    protected final void setUserStreamBaseURL (String siteStreamBaseURL) {
+        this.userStreamBaseURL = siteStreamBaseURL;
     }
-    
+
+    public String getSiteStreamBaseURL () {
+        return siteStreamBaseURL;
+    }
+
+    protected final void setSiteStreamBaseURL (String siteStreamBaseURL) {
+        this.siteStreamBaseURL = siteStreamBaseURL;
+    }
+
     public String getOAuthRequestTokenURL() {
         return oAuthRequestTokenURL;
     }
@@ -555,6 +566,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (searchBaseURL != null ? searchBaseURL.hashCode() : 0);
         result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
         result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
+        result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
         result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
         result = 31 * result + (includeRTsEnabled ? 1 : 0);
@@ -600,6 +612,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", searchBaseURL='" + searchBaseURL + '\'' +
                 ", streamBaseURL='" + streamBaseURL + '\'' +
                 ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
+                ", siteStreamBaseURL='" + siteStreamBaseURL + '\'' +
                 ", dispatcherImpl='" + dispatcherImpl + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
                 ", includeRTsEnabled=" + includeRTsEnabled +
