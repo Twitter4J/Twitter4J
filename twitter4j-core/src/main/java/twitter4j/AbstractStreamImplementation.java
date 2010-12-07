@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -35,13 +36,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-abstract class AbstractStatusStream {
+abstract class AbstractStreamImplementation {
     protected static final Logger logger = Logger.getLogger(StatusStreamImpl.class);
 
     private boolean streamAlive = true;
@@ -50,13 +50,13 @@ abstract class AbstractStatusStream {
     private HttpResponse response;
     /*package*/
 
-    AbstractStatusStream(InputStream stream) throws IOException {
+    AbstractStreamImplementation(InputStream stream) throws IOException {
         this.is = stream;
         this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
     }
     /*package*/
 
-    AbstractStatusStream(HttpResponse response) throws IOException {
+    AbstractStreamImplementation(HttpResponse response) throws IOException {
         this(response.asStream());
         this.response = response;
     }
@@ -181,4 +181,10 @@ abstract class AbstractStatusStream {
         if (null != response) {
             response.disconnect();
         }
-    }}
+    }
+    protected Status asStatus(JSONObject json) throws TwitterException{
+        Status status = new StatusJSONImpl(json);
+        DataObjectFactoryUtil.registerJSONObject(status, json);
+        return status;
+    }
+}

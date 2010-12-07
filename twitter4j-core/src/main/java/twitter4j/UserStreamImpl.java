@@ -34,19 +34,21 @@ import twitter4j.internal.org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-public class UserStreamImpl extends StatusStreamImpl implements UserStream{
+class UserStreamImpl extends AbstractStreamImplementation implements UserStream{
     /*package*/ UserStreamImpl(InputStream stream) throws IOException {
         super(stream);
     }
     /*package*/ UserStreamImpl(HttpResponse response) throws IOException {
         super(response);
     }
+
+    private StreamListener[] listeners;
+    private String line;
 
     /**
      * {@inheritDoc}
@@ -57,6 +59,17 @@ public class UserStreamImpl extends StatusStreamImpl implements UserStream{
         this.listeners = list;
         handleNextElement();
     }
+    public void next(StreamListener[] listeners) throws TwitterException{
+        this.listeners = listeners;
+        handleNextElement();
+    }
+
+    protected String parseLine(String line){
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        this.line = line;
+        return line;
+    }
+
     @Override
     protected void onSender(JSONObject json) throws TwitterException{
         for (StreamListener listener : listeners) {
@@ -176,6 +189,12 @@ public class UserStreamImpl extends StatusStreamImpl implements UserStream{
         }
     }
 
+    @Override
+    public void onException(Exception e) {
+        for (StreamListener listener : listeners) {
+            listener.onException(e);
+        }
+    }
     private User asUser(JSONObject json) throws TwitterException{
         User user = new UserJSONImpl(json);
         DataObjectFactoryUtil.registerJSONObject(user, json);

@@ -41,9 +41,7 @@ import java.io.InputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-class StatusStreamImpl extends AbstractStatusStream implements StatusStream {
-    protected String line;
-
+class StatusStreamImpl extends AbstractStreamImplementation implements StatusStream {
     /*package*/
 
     StatusStreamImpl(InputStream stream) throws IOException {
@@ -55,7 +53,9 @@ class StatusStreamImpl extends AbstractStatusStream implements StatusStream {
         super(response);
     }
 
-    protected StreamListener[] listeners;
+    private String line;
+
+    private StreamListener[] listeners;
 
     /**
      * Reads next status from this stream.
@@ -105,11 +105,4 @@ class StatusStreamImpl extends AbstractStatusStream implements StatusStream {
             listener.onException(e);
         }
     }
-
-    protected Status asStatus(JSONObject json) throws TwitterException{
-        Status status = new StatusJSONImpl(json);
-        DataObjectFactoryUtil.registerJSONObject(status, json);
-        return status;
-    }
-
 }
