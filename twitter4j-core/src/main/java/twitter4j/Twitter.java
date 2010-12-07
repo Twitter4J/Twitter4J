@@ -529,7 +529,6 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL() + "statuses/update.json",
                 new HttpParameter[]{new HttpParameter("status", status)
-                        , new HttpParameter("source", conf.getSource())
                         , INCLUDE_ENTITIES}, auth));
     }
 
@@ -542,7 +541,6 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
                 new HttpParameter[]{new HttpParameter("status", status),
                         new HttpParameter("lat", location.getLatitude()),
                         new HttpParameter("long", location.getLongitude()),
-                        new HttpParameter("source", conf.getSource()),
                         INCLUDE_ENTITIES}, auth));
     }
 
@@ -554,7 +552,6 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         return new StatusJSONImpl(http.post(conf.getRestBaseURL() + "statuses/update.json",
                 new HttpParameter[]{new HttpParameter("status", status)
                         , new HttpParameter("in_reply_to_status_id", inReplyToStatusId)
-                        , new HttpParameter("source", conf.getSource())
                         , INCLUDE_ENTITIES}, auth));
     }
 
@@ -565,11 +562,10 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
             , GeoLocation location) throws TwitterException {
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL() + "statuses/update.json",
-                new HttpParameter[]{new HttpParameter("status", status),
-                        new HttpParameter("lat", location.getLatitude()),
-                        new HttpParameter("long", location.getLongitude()),
-                        new HttpParameter("in_reply_to_status_id", inReplyToStatusId),
-                        new HttpParameter("source", conf.getSource())
+                new HttpParameter[]{new HttpParameter("status", status)
+                        , new HttpParameter("lat", location.getLatitude())
+                        , new HttpParameter("long", location.getLongitude())
+                        , new HttpParameter("in_reply_to_status_id", inReplyToStatusId)
                         , INCLUDE_ENTITIES}, auth));
     }
 
@@ -599,9 +595,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public Status retweetStatus(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL()
-                + "statuses/retweet/" + statusId + ".json",
-                new HttpParameter[]{new HttpParameter("source", conf.getSource())
-                        , INCLUDE_ENTITIES}, auth));
+                + "statuses/retweet/" + statusId + ".json?include_entities=true", auth));
     }
 
     /**

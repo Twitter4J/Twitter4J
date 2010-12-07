@@ -172,9 +172,6 @@ abstract class AbstractStreamImplementation {
 
     protected void onException(Exception e){}
 
-    /**
-     * {@inheritDoc}
-     */
     public void close() throws IOException {
         streamAlive = false;
         is.close();

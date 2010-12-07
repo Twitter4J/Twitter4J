@@ -50,6 +50,13 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    /**
+     *
+     * @param source source
+     * @return this instance
+     * @deprecated source parameter is no longer supported.
+     */
+
     public ConfigurationBuilder setSource(String source) {
         checkNotBuilt();
         configurationBean.setSource(source);

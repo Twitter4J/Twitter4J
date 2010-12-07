@@ -49,6 +49,11 @@ public interface Configuration extends HttpClientConfiguration
 
     String getUserAgent();
 
+    /**
+     * @return source
+     * @deprecated source parameter is no longer supported.
+     */
+
     String getSource();
 
     String getUser();

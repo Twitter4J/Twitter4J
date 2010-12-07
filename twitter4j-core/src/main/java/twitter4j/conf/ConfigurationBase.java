@@ -538,7 +538,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     @Override
     public int hashCode() {
         int result = (debug ? 1 : 0);
-        result = 31 * result + (source != null ? source.hashCode() : 0);
         result = 31 * result + (userAgent != null ? userAgent.hashCode() : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
@@ -584,7 +583,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     public String toString() {
         return "ConfigurationBase{" +
                 "debug=" + debug +
-                ", source='" + source + '\'' +
                 ", userAgent='" + userAgent + '\'' +
                 ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
