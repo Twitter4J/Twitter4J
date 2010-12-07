@@ -71,7 +71,7 @@ public final class HTMLEntity {
                 break;
             }
             semicolonIndex = original.indexOf(";", index);
-            if (-1 != semicolonIndex && 10 > (semicolonIndex - index)) {
+            if (-1 != semicolonIndex) {
                 escaped = original.substring(index, semicolonIndex + 1);
                 entity = escapeEntityMap.get(escaped);
                 if (null != entity) {
