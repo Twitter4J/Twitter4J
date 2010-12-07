@@ -22,7 +22,6 @@ mkdir $DIR/twitter4j-examples
 cp -r twitter4j-examples/src $DIR/twitter4j-examples/
 cp twitter4j-examples/pom.xml $DIR/twitter4j-examples/
 cp -r twitter4j-examples/bin $DIR/
-cp twitter4j-examples/feedmonitor.properties $DIR/twitter4j-examples/
 
 #mkdir $DIR/twitter4j-httpclient-support
 #cp -r twitter4j-httpclient-support/src $DIR/twitter4j-httpclient-support/
@@ -35,14 +34,6 @@ cp twitter4j-media-support/pom.xml $DIR/twitter4j-media-support/
 cp pom.xml $DIR/pom.xml
 cp LICENSE.txt $DIR/
 cp -r powered-by-badge $DIR/
-
-mkdir $DIR/bin/lib
-#cp ~/.m2/repository/jdom/jdom/1.0/jdom-1.0.jar $DIR/bin/lib
-#cp ~/.m2/repository/junit/junit/3.8.2/junit-3.8.2.jar $DIR/bin/lib
-#cp ~/.m2/repository/ch/qos/logback/logback-classic/0.9.9/logback-classic-0.9.9.jar $DIR/bin/lib
-#cp ~/.m2/repository/ch/qos/logback/logback-core/0.9.9/logback-core-0.9.9.jar $DIR/bin/lib
-#cp ~/.m2/repository/rome/rome/0.9/rome-0.9.jar $DIR/bin/lib
-#cp ~/.m2/repository/org/slf4j/slf4j-api/1.5.8/slf4j-api-1.5.8.jar $DIR/bin/lib
 
 mkdir $DIR/twitter4j-core/javadoc/
 unzip twitter4j-core/target/twitter4j-core-$1-javadoc.jar -d $DIR/twitter4j-core/javadoc/
@@ -70,4 +61,3 @@ rm ../twitter4j-$1.zip
 zip -r ../twitter4j-$1.zip .
 cd ..
 rm -Rf $DIR
-

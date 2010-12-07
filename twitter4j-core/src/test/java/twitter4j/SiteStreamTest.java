@@ -284,10 +284,6 @@ public class SiteStreamTest extends TwitterTestBase implements SiteStreamListene
         notifyResponse();
     }
 
-    public void onStatus(Status status) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
     public void onException(Exception ex) {
         received.add(new Object[]{ex});
         notifyResponse();

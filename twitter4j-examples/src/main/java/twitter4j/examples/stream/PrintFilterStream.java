@@ -59,7 +59,6 @@ public final class PrintFilterStream {
 
         TwitterStream twitterStream = new TwitterStreamFactory(listener).getInstance();
         ArrayList<Integer> follow = new ArrayList<Integer>();
-        System.out.println(follow.size());
         ArrayList<String> track = new ArrayList<String>();
         for (String arg : args) {
             if (isNumericalArgument(arg)) {
@@ -70,10 +69,8 @@ public final class PrintFilterStream {
                 track.addAll(Arrays.asList(arg.split(",")));
             }
         }
-        System.out.println(follow.size());
         int[] followArray = new int[follow.size()];
         for (int i = 0; i < follow.size(); i++) {
-            System.out.println(follow.size());
             followArray[i] = follow.get(i);
         }
         String[] trackArray = track.toArray(new String[track.size()]);

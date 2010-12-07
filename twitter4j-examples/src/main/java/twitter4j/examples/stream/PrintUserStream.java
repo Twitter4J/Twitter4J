@@ -40,159 +40,104 @@ import java.util.Set;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @author Rémy Rakic - remy dot rakic at gmail.com
  */
-public final class PrintUserStream implements UserStreamListener {
+public final class PrintUserStream {
     public static void main(String[] args) throws TwitterException {
-        PrintUserStream printSampleStream = new PrintUserStream();
-        printSampleStream.startConsuming();
-    }
-
-    private TwitterStream twitterStream;
-
-    // used for getting user info
-    private Twitter twitter;
-    private int currentUserId;
-
-    private PrintUserStream() {
-        twitterStream = new TwitterStreamFactory(this).getInstance();
-        twitter = new TwitterFactory().getInstance();
-
-        try {
-            User currentUser = twitter.verifyCredentials();
-            currentUserId = currentUser.getId();
-        } catch (TwitterException e) {
-            System.out.println("Unexpected exception caught while trying to retrieve the current user: " + e);
-            e.printStackTrace();
-        }
-    }
-
-    private void startConsuming() throws TwitterException {
-        // the user() method internally creates a thread which manipulates
-        // TwitterStream and calls these adequate listener methods continuously.
+        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
+        twitterStream.addListener(listener);
+        // user() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
         twitterStream.user();
     }
 
-    private Set<Integer> friends;
-
-    public void onFriendList(int[] friendIds) {
-        System.out.println("Received friends list - Following " + friendIds.length + " people");
-
-        friends = new HashSet<Integer>(friendIds.length);
-        for (int id : friendIds)
-            friends.add(id);
-    }
-
-    public void onStatus(Status status) {
-//        int replyTo = status.getInReplyToUserId();
-//        if (replyTo > 0 && !friends.contains(replyTo) && currentUserId != replyTo){
-//            System.out.print("[Out of band] "); // I've temporarily labeled "out of band" messages that are sent to people you don't follow
-//        }
-//
-        User user = status.getUser();
-
-        System.out.println("@" + user.getScreenName() + " - " + status.getText());
-    }
-
-    public void onDirectMessage(DirectMessage dm) {
-        System.out.println("DM from " + dm.getSenderScreenName() + " to " + dm.getRecipientScreenName() + ": " + dm.getText());
-    }
-
-    public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
-        System.out.println("List subscribed " + list.getName());
-    }
-
-    public void onUserListCreated(User listOwner, UserList list) {
-        System.out.println("List created " + list.getName());
-    }
-
-    public void onUserListUpdated(User listOwner, UserList list) {
-        System.out.println("List updated " + list.getName());
-    }
-
-    public void onUserListDestroyed(User listOwner, UserList list) {
-        System.out.println("List destroyed " + list.getName());
-    }
-
-    public void onDeletionNotice(StatusDeletionNotice notice) {
-        User user = friend(notice.getUserId());
-        if (user == null){
-            return;
-        }
-        System.out.println("@" + user.getScreenName() + " deleted the tweet " + notice.getStatusId());
-    }
-
-    private User friend(int userId) {
-        try {
-            return twitter.showUser(userId);
-        } catch (TwitterException e) {
-            System.out.println("Unexpected exception caught while trying to show user " + userId + ": " + e);
-            e.printStackTrace();
+    static UserStreamListener listener = new UserStreamListener() {
+        public void onStatus(Status status) {
+            System.out.println("onStatus @" + status.getUser().getScreenName() + " - " + status.getText());
         }
 
-        return null;
-    }
+        public void onFriendList(int[] friendIds) {
+            System.out.print("onFriendList");
+            for (int friendId : friendIds) {
+                System.out.print(" " + friendId);
+            }
+            System.out.println();
+        }
 
-    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-        System.out.println("track limitation: " + numberOfLimitedStatuses);
-    }
+        public void onFavorite(User source, User target, Status targetObject) {
+            System.out.println("onFavorite source:@"
+                    + source.getScreenName() + " target:@"
+                    + target.getScreenName() + " @"
+                    + targetObject.getUser().getScreenName() + " - "
+                    + targetObject.getText());
+        }
 
-    public void onException(Exception ex) {
-        ex.printStackTrace();
-    }
+        public void onUnfavorite(User source, User target, Status targetObject) {
+            System.out.println("onUnFavorite source:@"
+                    + source.getScreenName() + " target:@"
+                    + target.getScreenName() + " @"
+                    + targetObject.getUser().getScreenName()
+                    + " - " + targetObject.getText());
+        }
 
-    public void onFavorite(User source, User target, Status favoritedStatus) {
-        System.out.println(source.getName() + " [" + source.getScreenName() + "] favorited "
-                + target.getName() + "'s [" + target.getScreenName() + "] tweet: " + favoritedStatus.getText());
-    }
+        public void onFollow(User source, User target) {
+            System.out.println("onFollow source:@"
+                    + source.getScreenName() + " target:@"
+                    + target.getScreenName());
+        }
 
-    public void onUnfavorite(User source, User target, Status unfavoritedStatus) {
-        System.out.println(source.getName() + " [" + source.getScreenName() + "] unfavorited "
-                + target.getName() + "'s [" + target.getScreenName() + "] tweet: " + unfavoritedStatus.getText());
-    }
+        public void onUnfollow(User source, User target) {
+            System.out.println("onUnfollow source:@"
+                    + source.getScreenName() + " target:@"
+                    + target.getScreenName());
+        }
 
-    public void onFollow(User source, User target) {
-        System.out.println(source.getName() + " [" + source.getScreenName() + "] started following "
-                + target.getName() + " [" + target.getScreenName() + "]");
-    }
+        public void onRetweet(User source, User target, Status targetObject) {
+            System.out.println("onRetweet @"
+                    + targetObject.getUser().getScreenName() + " - "
+                    + targetObject.getText());
+        }
 
-    public void onUnfollow(User source, User target) {
-        System.out.println(source.getName() + " [" + source.getScreenName() + "] unfollowed "
-                + target.getName() + " [" + target.getScreenName() + "]");
+        public void onDirectMessage(DirectMessage directMessage) {
+            System.out.println("onDirectMessage text:"
+                    + directMessage.getText());
+        }
 
-        if (source.getId() == currentUserId)
-            friends.remove(target);
-    }
+        public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
+            System.out.println("onUserListSubscribed subscriber:@"
+                    + subscriber.getScreenName()
+                    + " listOwner:@" + listOwner.getScreenName()
+                    + " list:" + list.getName());
+        }
 
-    public void onUserSubscribedToList(User subscriber, User listOwner, UserList list) {
-        System.out.println(subscriber.getName() + " [" + subscriber.getScreenName() + "] subscribed to "
-                + listOwner.getName() + "'s [" + listOwner.getScreenName() + "] list: " + list.getName()
-                + " [" + list.getFullName() + "]");
-    }
+        public void onUserListCreated(User listOwner, UserList list) {
+            System.out.println("onUserListCreated  listOwner:@"
+                    + listOwner.getScreenName()
+                    + " list:" + list.getName());
+        }
 
-    public void onUserCreatedList(User listOwner, UserList list) {
-        System.out.println(listOwner.getName() + " [" + listOwner.getScreenName() + "] created list: " + list.getName()
-                + " [" + list.getFullName() + "]");
-    }
+        public void onUserListUpdated(User listOwner, UserList list) {
+            System.out.println("onUserListUpdated  listOwner:@"
+                    + listOwner.getScreenName()
+                    + " list:" + list.getName());
+        }
 
-    public void onUserUpdatedList(User listOwner, UserList list) {
-        System.out.println(listOwner.getName() + " [" + listOwner.getScreenName() + "] updated list: " + list.getName()
-                + " [" + list.getFullName() + "]");
-    }
+        public void onUserListDestroyed(User listOwner, UserList list) {
+            System.out.println("onUserListDestroyed  listOwner:@"
+                    + listOwner.getScreenName()
+                    + " list:" + list.getName());
+        }
 
-    public void onUserDestroyedList(User listOwner, UserList list) {
-        System.out.println(listOwner.getName() + " [" + listOwner.getScreenName() + "] destroyed list: " + list.getName()
-                + " [" + list.getFullName() + "]");
-    }
+        public void onBlock(User source, User target) {
+            System.out.println("onBlock source:@" + source.getScreenName()
+                    + " target:@" + target.getScreenName());
+        }
 
-    public void onRetweet(User source, User target, Status retweetedStatus) {
-    }
+        public void onUnblock(User source, User target) {
+            System.out.println("onUnblock source:@" + source.getScreenName()
+                    + " target:@" + target.getScreenName());
+        }
 
-    public void onBlock(User source, User target) {
-        System.out.println(source.getName() + " [" + source.getScreenName() + "] blocked "
-                + target.getName() + " [" + target.getScreenName() + "]");
-    }
-
-    public void onUnblock(User source, User target) {
-        System.out.println(source.getName() + " [" + source.getScreenName() + "] unblocked "
-                + target.getName() + " [" + target.getScreenName() + "]");
-    }
+        public void onException(Exception ex) {
+            ex.printStackTrace();
+            System.out.println("onException:" + ex.getMessage());
+        }
+    };
 }
