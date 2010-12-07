@@ -43,40 +43,40 @@ public interface UserStreamListener extends StreamListener {
     /**
      * @param source
      * @param target
-     * @param targetObject
+     * @param favoritedStatus
      * @since Twitter4J 2.1.3
      */
-    void onFavorite(User source, User target, Status targetObject);
+    void onFavorite(User source, User target, Status favoritedStatus);
 
     /**
      * @param source
      * @param target
-     * @param targetObject
+     * @param unfavoritedStatus
      * @since Twitter4J 2.1.3
      */
-    void onUnfavorite(User source, User target, Status targetObject);
+    void onUnfavorite(User source, User target, Status unfavoritedStatus);
+
+    /**
+     * @param source
+     * @param followedUser
+     * @since Twitter4J 2.1.3
+     */
+    void onFollow(User source, User followedUser);
+
+    /**
+     * @param source
+     * @param unfollowedUser
+     * @since Twitter4J 2.1.3
+     */
+    void onUnfollow(User source, User unfollowedUser);
 
     /**
      * @param source
      * @param target
+     * @param retweetedStatus
      * @since Twitter4J 2.1.3
      */
-    void onFollow(User source, User target);
-
-    /**
-     * @param source
-     * @param target
-     * @since Twitter4J 2.1.3
-     */
-    void onUnfollow(User source, User target);
-
-    /**
-     * @param source
-     * @param target
-     * @param targetObject
-     * @since Twitter4J 2.1.3
-     */
-    void onRetweet(User source, User target, Status targetObject);
+    void onRetweet(User source, User target, Status retweetedStatus);
 
     /**
      * @param directMessage
@@ -115,15 +115,15 @@ public interface UserStreamListener extends StreamListener {
 
     /**
      * @param source
-     * @param target
+     * @param blockedUser
      * @since Twitter4J 2.1.3
      */
-    void onBlock(User source, User target);
+    void onBlock(User source, User blockedUser);
 
     /**
      * @param source
-     * @param target
+     * @param unblockedUser
      * @since Twitter4J 2.1.3
      */
-    void onUnblock(User source, User target);
+    void onUnblock(User source, User unblockedUser);
 }

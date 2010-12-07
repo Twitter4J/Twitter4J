@@ -27,14 +27,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-import twitter4j.conf.PropertyConfiguration;
 import twitter4j.http.AccessToken;
 import twitter4j.json.DataObjectFactory;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Properties;
 
@@ -245,56 +241,56 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
         notifyResponse();
     }
 
-    public void onFavorite(User source, User target, Status targetObject) {
+    public void onFavorite(User source, User target, Status favoritedStatus) {
         System.out.println("onFavorite");
         this.source = source;
         this.target = target;
-        this.targetObject = targetObject;
+        this.targetObject = favoritedStatus;
         notifyResponse();
     }
 
-    public void onUnfavorite(User source, User target, Status targetObject) {
+    public void onUnfavorite(User source, User target, Status unfavoritedStatus) {
         System.out.println("onUnfavorite");
         this.source = source;
         this.target = target;
-        this.targetObject = targetObject;
+        this.targetObject = unfavoritedStatus;
         notifyResponse();
     }
 
-    public void onFollow(User source, User target) {
+    public void onFollow(User source, User followedUser) {
         System.out.println("onFollow");
         this.source = source;
-        this.target = target;
+        this.target = followedUser;
         notifyResponse();
     }
 
-    public void onUnfollow(User source, User target) {
+    public void onUnfollow(User source, User unfollowedUser) {
         System.out.println("onUnfollow");
         this.source = source;
-        this.target = target;
+        this.target = unfollowedUser;
         notifyResponse();
     }
 
-    public void onBlock(User source, User target) {
+    public void onBlock(User source, User blockedUser) {
         System.out.println("onBlock");
         this.source = source;
-        this.target = target;
+        this.target = blockedUser;
         notifyResponse();
     }
 
-    public void onUnblock(User source, User target) {
+    public void onUnblock(User source, User unblockedUser) {
         System.out.println("onUnblock");
         this.source = source;
-        this.target = target;
+        this.target = unblockedUser;
         notifyResponse();
     }
 
 
-    public void onRetweet(User source, User target, Status targetObject) {
+    public void onRetweet(User source, User target, Status retweetedStatus) {
         System.out.println("onRetweet");
         this.source = source;
         this.target = target;
-        this.targetObject = targetObject;
+        this.targetObject = retweetedStatus;
         notifyResponse();
     }
 

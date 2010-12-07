@@ -332,14 +332,14 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         ensureOAuthEnabled();
         ensureListenerIsSet();
         for (StreamListener listener : streamListeners) {
-            if (!(listener instanceof SiteStreamListener)) {
+            if (!(listener instanceof SiteStreamsListener)) {
                 throw new IllegalStateException("Only SiteStreamListener is supported. found: " + listener.getClass());
             }
         }
         startHandler(new TwitterStreamConsumer() {
             public StreamImplementation getStream() throws TwitterException {
                 try {
-                    return new SiteStreamImpl(ConfigurationContext.getInstance(), getSiteStream(withFollowings, follow));
+                    return new SiteStreamsImpl(ConfigurationContext.getInstance(), getSiteStream(withFollowings, follow));
                 } catch (IOException e) {
                     throw new TwitterException(e);
                 }
@@ -559,7 +559,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      * @param listener
      * @since Twitter4J 2.1.8
      */
-    public void addListener(SiteStreamListener listener) {
+    public void addListener(SiteStreamsListener listener) {
         addListener((StreamListener) listener);
     }
 

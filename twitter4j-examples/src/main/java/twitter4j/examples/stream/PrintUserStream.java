@@ -28,9 +28,6 @@ package twitter4j.examples.stream;
 
 import twitter4j.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * <p>
  * This is a code example of Twitter4J Streaming API - user stream.<br>
@@ -61,38 +58,38 @@ public final class PrintUserStream {
             System.out.println();
         }
 
-        public void onFavorite(User source, User target, Status targetObject) {
+        public void onFavorite(User source, User target, Status favoritedStatus) {
             System.out.println("onFavorite source:@"
                     + source.getScreenName() + " target:@"
                     + target.getScreenName() + " @"
-                    + targetObject.getUser().getScreenName() + " - "
-                    + targetObject.getText());
+                    + favoritedStatus.getUser().getScreenName() + " - "
+                    + favoritedStatus.getText());
         }
 
-        public void onUnfavorite(User source, User target, Status targetObject) {
+        public void onUnfavorite(User source, User target, Status unfavoritedStatus) {
             System.out.println("onUnFavorite source:@"
                     + source.getScreenName() + " target:@"
                     + target.getScreenName() + " @"
-                    + targetObject.getUser().getScreenName()
-                    + " - " + targetObject.getText());
+                    + unfavoritedStatus.getUser().getScreenName()
+                    + " - " + unfavoritedStatus.getText());
         }
 
-        public void onFollow(User source, User target) {
+        public void onFollow(User source, User followedUser) {
             System.out.println("onFollow source:@"
                     + source.getScreenName() + " target:@"
-                    + target.getScreenName());
+                    + followedUser.getScreenName());
         }
 
-        public void onUnfollow(User source, User target) {
+        public void onUnfollow(User source, User unfollowedUser) {
             System.out.println("onUnfollow source:@"
                     + source.getScreenName() + " target:@"
-                    + target.getScreenName());
+                    + unfollowedUser.getScreenName());
         }
 
-        public void onRetweet(User source, User target, Status targetObject) {
+        public void onRetweet(User source, User target, Status retweetedStatus) {
             System.out.println("onRetweet @"
-                    + targetObject.getUser().getScreenName() + " - "
-                    + targetObject.getText());
+                    + retweetedStatus.getUser().getScreenName() + " - "
+                    + retweetedStatus.getText());
         }
 
         public void onDirectMessage(DirectMessage directMessage) {
@@ -125,14 +122,14 @@ public final class PrintUserStream {
                     + " list:" + list.getName());
         }
 
-        public void onBlock(User source, User target) {
+        public void onBlock(User source, User blockedUser) {
             System.out.println("onBlock source:@" + source.getScreenName()
-                    + " target:@" + target.getScreenName());
+                    + " target:@" + blockedUser.getScreenName());
         }
 
-        public void onUnblock(User source, User target) {
+        public void onUnblock(User source, User unblockedUser) {
             System.out.println("onUnblock source:@" + source.getScreenName()
-                    + " target:@" + target.getScreenName());
+                    + " target:@" + unblockedUser.getScreenName());
         }
 
         public void onException(Exception ex) {

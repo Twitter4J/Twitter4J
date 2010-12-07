@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.examples.stream;
 
 import twitter4j.DirectMessage;
-import twitter4j.SiteStreamListener;
+import twitter4j.SiteStreamsListener;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
@@ -37,12 +37,12 @@ import twitter4j.UserList;
 
 /**
  * <p>This is a code example of Twitter4J Streaming API - Site Streams support.<br>
- * Usage: java twitter4j.examples.stream.PrintSiteStream [follow(comma separated numerical user ids)]<br>
+ * Usage: java twitter4j.examples.stream.PrintSiteStreams [follow(comma separated numerical user ids)]<br>
  * </p>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class PrintSiteStream {
+public final class PrintSiteStreams {
     /**
      * Main entry of this application.
      *
@@ -51,7 +51,7 @@ public final class PrintSiteStream {
      */
     public static void main(String[] args) throws TwitterException {
         if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.PrintSiteStream [follow(comma separated numerical user ids)]");
+            System.out.println("Usage: java twitter4j.examples.PrintSiteStreams [follow(comma separated numerical user ids)]");
             System.exit(-1);
         }
 
@@ -68,7 +68,7 @@ public final class PrintSiteStream {
         twitterStream.site(true, followArray);
     }
 
-    static SiteStreamListener listener = new SiteStreamListener() {
+    static SiteStreamsListener listener = new SiteStreamsListener() {
         public void onStatus(int forUser, Status status) {
             System.out.println("onStatus for_user:" + forUser + " @" + status.getUser().getScreenName() + " - " + status.getText());
         }
@@ -81,26 +81,26 @@ public final class PrintSiteStream {
             System.out.println();
         }
 
-        public void onFavorite(int forUser, User source, User target, Status targetObject) {
+        public void onFavorite(int forUser, User source, User target, Status favoritedStatus) {
             System.out.println("onFavorite for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
                     + target.getScreenName() + " @"
-                    + targetObject.getUser().getScreenName() + " - "
-                    + targetObject.getText());
+                    + favoritedStatus.getUser().getScreenName() + " - "
+                    + favoritedStatus.getText());
         }
 
-        public void onUnfavorite(int forUser, User source, User target, Status targetObject) {
+        public void onUnfavorite(int forUser, User source, User target, Status unfavoritedStatus) {
             System.out.println("onUnFavorite for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
                     + target.getScreenName() + " @"
-                    + targetObject.getUser().getScreenName()
-                    + " - " + targetObject.getText());
+                    + unfavoritedStatus.getUser().getScreenName()
+                    + " - " + unfavoritedStatus.getText());
         }
 
-        public void onFollow(int forUser, User source, User target) {
+        public void onFollow(int forUser, User source, User followedUser) {
             System.out.println("onFollow for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
-                    + target.getScreenName());
+                    + followedUser.getScreenName());
         }
 
         public void onDirectMessage(int forUser, DirectMessage directMessage) {
@@ -133,16 +133,16 @@ public final class PrintSiteStream {
                     + " list:" + list.getName());
         }
 
-        public void onBlock(int forUser, User source, User target) {
+        public void onBlock(int forUser, User source, User blockedUser) {
             System.out.println("onBlock for_user:" + forUser
                     + " source:@" + source.getScreenName()
-                    + " target:@" + target.getScreenName());
+                    + " target:@" + blockedUser.getScreenName());
         }
 
-        public void onUnblock(int forUser, User source, User target) {
+        public void onUnblock(int forUser, User source, User unblockedUser) {
             System.out.println("onUnblock for_user:" + forUser
                     + " source:@" + source.getScreenName()
-                    + " target:@" + target.getScreenName());
+                    + " target:@" + unblockedUser.getScreenName());
         }
 
         public void onException(Exception ex) {

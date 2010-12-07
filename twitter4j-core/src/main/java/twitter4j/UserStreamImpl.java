@@ -28,7 +28,6 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
-import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -86,10 +85,8 @@ class UserStreamImpl extends AbstractStreamImplementation implements UserStream{
 
     @Override
     protected void onDirectMessage(JSONObject json) throws TwitterException, JSONException {
+        DirectMessage directMessage = asDirectMessage(json);
         for (StreamListener listener : listeners) {
-            JSONObject directMessageJSON = json.getJSONObject("direct_message");
-            DirectMessage directMessage = new DirectMessageJSONImpl(directMessageJSON);
-            DataObjectFactoryUtil.registerJSONObject(directMessage, directMessageJSON);
             ((UserStreamListener) listener).onDirectMessage(directMessage);
         }
     }
@@ -102,11 +99,7 @@ class UserStreamImpl extends AbstractStreamImplementation implements UserStream{
 
     @Override
     protected void onFriends(JSONObject json) throws TwitterException ,JSONException{
-        JSONArray friends = json.getJSONArray("friends");
-        int[] friendIds = new int[friends.length()];
-        for (int i = 0; i < friendIds.length; ++i) {
-            friendIds[i] = friends.getInt(i);
-        }
+        int[] friendIds = asFriendList(json);
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onFriendList(friendIds);
         }
@@ -194,17 +187,6 @@ class UserStreamImpl extends AbstractStreamImplementation implements UserStream{
         for (StreamListener listener : listeners) {
             listener.onException(e);
         }
-    }
-    private User asUser(JSONObject json) throws TwitterException{
-        User user = new UserJSONImpl(json);
-        DataObjectFactoryUtil.registerJSONObject(user, json);
-        return user;
-    }
-
-    private UserList asUserList(JSONObject json) throws TwitterException{
-        UserList userList = new UserListJSONImpl(json);
-        DataObjectFactoryUtil.registerJSONObject(userList, json);
-        return userList;
     }
 }
 

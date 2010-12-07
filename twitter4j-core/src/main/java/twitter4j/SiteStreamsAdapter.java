@@ -1,4 +1,4 @@
-/*
+package twitter4j;/*
 Copyright (c) 2007-2010, Yusuke Yamamoto
 All rights reserved.
 
@@ -24,53 +24,46 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j;
 
 /**
- * @author Rémy Rakic at gmail.com
- * @since Twitter4J 2.1.3
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.8
  */
-public class UserStreamAdapter implements UserStreamListener {
-    public void onStatus(Status status) {
+public class SiteStreamsAdapter implements SiteStreamsListener {
+    public void onStatus(int forUser, Status status) {
     }
 
-    public void onFriendList(int[] friendIds) {
+    public void onFriendList(int forUser, int[] friendIds) {
     }
 
-    public void onFavorite(User source, User target, Status favoritedStatus) {
+    public void onFavorite(int forUser, User source, User target, Status favoritedStatus) {
     }
 
-    public void onFollow(User source, User followedUser) {
+    public void onUnfavorite(int forUser, User source, User target, Status unfavoritedStatus) {
     }
 
-    public void onUnfavorite(User source, User target, Status unfavoritedStatus) {
+    public void onFollow(int forUser, User source, User followedUser) {
     }
 
-    public void onRetweet(User source, User target, Status retweetedStatus) {
+    public void onDirectMessage(int forUser, DirectMessage directMessage) {
     }
 
-    public void onUnfollow(User source, User unfollowedUser) {
+    public void onUserListSubscribed(int forUser, User subscriber, User listOwner, UserList list) {
     }
 
-    public void onDirectMessage(DirectMessage directMessage) {
+    public void onUserListCreated(int forUser, User listOwner, UserList list) {
     }
 
-    public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
+    public void onUserListUpdated(int forUser, User listOwner, UserList list) {
     }
 
-    public void onUserListCreated(User listOwner, UserList list) {
+    public void onUserListDestroyed(int forUser, User listOwner, UserList list) {
     }
 
-    public void onUserListUpdated(User listOwner, UserList list) {
+    public void onBlock(int forUser, User source, User blockedUser) {
     }
 
-    public void onUserListDestroyed(User listOwner, UserList list) {
-    }
-
-    public void onBlock(User source, User blockedUser) {
-    }
-
-    public void onUnblock(User source, User unblockedUser) {
+    public void onUnblock(int forUser, User source, User unblockedUser) {
     }
 
     public void onException(Exception ex) {

@@ -30,7 +30,7 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-public interface SiteStreamListener extends StreamListener {
+public interface SiteStreamsListener extends StreamListener {
     void onStatus(int forUser, Status status);
 
     /**
@@ -41,35 +41,23 @@ public interface SiteStreamListener extends StreamListener {
     /**
      * @param source
      * @param target
-     * @param targetObject
+     * @param favoritedStatus
      */
-    void onFavorite(int forUser, User source, User target, Status targetObject);
+    void onFavorite(int forUser, User source, User target, Status favoritedStatus);
 
     /**
      * @param source
      * @param target
-     * @param targetObject
+     * @param unfavoritedStatus
      */
-    void onUnfavorite(int forUser, User source, User target, Status targetObject);
+    void onUnfavorite(int forUser, User source, User target, Status unfavoritedStatus);
 
     /**
      * @param source
-     * @param target
+     * @param followedUser
      */
-    void onFollow(int forUser, User source, User target);
+    void onFollow(int forUser, User source, User followedUser);
 
-//    /**
-//     * @param source
-//     * @param target
-//     */
-//    void onUnfollow(int forUser, User source, User target);
-//
-//    /**
-//     * @param source
-//     * @param target
-//     * @param targetObject
-//     */
-//    void onRetweet(int forUser, User source, User target, Status targetObject);
 
     /**
      * @param directMessage
@@ -103,15 +91,15 @@ public interface SiteStreamListener extends StreamListener {
 
     /**
      * @param source
-     * @param target
+     * @param blockedUser
      */
-    void onBlock(int forUser, User source, User target);
+    void onBlock(int forUser, User source, User blockedUser);
 
     /**
      * @param source
-     * @param target
+     * @param unblockedUser
      */
-    void onUnblock(int forUser, User source, User target);
+    void onUnblock(int forUser, User source, User unblockedUser);
 
     void onException(Exception ex);
 }

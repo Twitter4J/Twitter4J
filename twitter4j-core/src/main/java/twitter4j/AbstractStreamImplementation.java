@@ -29,6 +29,7 @@ package twitter4j;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -186,5 +187,38 @@ abstract class AbstractStreamImplementation {
         Status status = new StatusJSONImpl(json);
         DataObjectFactoryUtil.registerJSONObject(status, json);
         return status;
+    }
+    protected DirectMessage asDirectMessage(JSONObject json) throws TwitterException{
+        DirectMessage directMessage = null;
+        try {
+            directMessage = new DirectMessageJSONImpl(json.getJSONObject("direct_message"));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+        DataObjectFactoryUtil.registerJSONObject(directMessage, json);
+        return directMessage;
+    }
+    protected int[] asFriendList(JSONObject json) throws TwitterException {
+        JSONArray friends = null;
+        try {
+            friends = json.getJSONArray("friends");
+            int[] friendIds = new int[friends.length()];
+            for (int i = 0; i < friendIds.length; ++i) {
+                friendIds[i] = friends.getInt(i);
+            }
+            return friendIds;
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+    }
+    protected User asUser(JSONObject json) throws TwitterException{
+        User user = new UserJSONImpl(json);
+        DataObjectFactoryUtil.registerJSONObject(user, json);
+        return user;
+    }
+    protected UserList asUserList(JSONObject json) throws TwitterException{
+        UserList userList = new UserListJSONImpl(json);
+        DataObjectFactoryUtil.registerJSONObject(userList, json);
+        return userList;
     }
 }
