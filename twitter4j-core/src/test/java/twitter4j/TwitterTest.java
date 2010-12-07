@@ -440,10 +440,10 @@ public class TwitterTest extends TwitterTestBase {
             assertNotNull(DataObjectFactory.getRawJSON(status2));
             assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
             assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3", status2.getText());
-            status2 = unauthenticated.showStatus(7185737372l);
+            status2 = unauthenticated.showStatus(12029015787307008l);
             assertNotNull(DataObjectFactory.getRawJSON(status2));
             assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
-            assertEquals("\\u5e30%u5e30 <%}& foobar", status2.getText());
+            assertEquals("\\u5e30%u5e30 <%}& foobar <&Cynthia>", status2.getText());
         } catch (TwitterException te) {
             assertEquals(400, te.getStatusCode());
         }
