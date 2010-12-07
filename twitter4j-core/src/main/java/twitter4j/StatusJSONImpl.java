@@ -83,7 +83,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         DataObjectFactoryUtil.registerJSONObject(this, json);
     }
 
-    /*package*/ StatusJSONImpl(JSONObject json) throws TwitterException, JSONException {
+    /*package*/ StatusJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }

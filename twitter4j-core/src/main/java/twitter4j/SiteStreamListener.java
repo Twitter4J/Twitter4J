@@ -27,103 +27,91 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 /**
- * @author Rémy Rakic at gmail.com
- * @since Twitter4J 2.1.3
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.8
  */
-public interface UserStreamListener extends StreamListener {
-
-    void onStatus(Status status);
+public interface SiteStreamListener extends StreamListener {
+    void onStatus(int forUser, Status status);
 
     /**
      * @param friendIds
-     * @since Twitter4J 2.1.3
      */
-    void onFriendList(int[] friendIds);
+    void onFriendList(int forUser, int[] friendIds);
 
     /**
      * @param source
      * @param target
      * @param targetObject
-     * @since Twitter4J 2.1.3
      */
-    void onFavorite(User source, User target, Status targetObject);
+    void onFavorite(int forUser, User source, User target, Status targetObject);
 
     /**
      * @param source
      * @param target
      * @param targetObject
-     * @since Twitter4J 2.1.3
      */
-    void onUnfavorite(User source, User target, Status targetObject);
+    void onUnfavorite(int forUser, User source, User target, Status targetObject);
 
     /**
      * @param source
      * @param target
-     * @since Twitter4J 2.1.3
      */
-    void onFollow(User source, User target);
+    void onFollow(int forUser, User source, User target);
 
-    /**
-     * @param source
-     * @param target
-     * @since Twitter4J 2.1.3
-     */
-    void onUnfollow(User source, User target);
-
-    /**
-     * @param source
-     * @param target
-     * @param targetObject
-     * @since Twitter4J 2.1.3
-     */
-    void onRetweet(User source, User target, Status targetObject);
+//    /**
+//     * @param source
+//     * @param target
+//     */
+//    void onUnfollow(int forUser, User source, User target);
+//
+//    /**
+//     * @param source
+//     * @param target
+//     * @param targetObject
+//     */
+//    void onRetweet(int forUser, User source, User target, Status targetObject);
 
     /**
      * @param directMessage
-     * @since Twitter4J 2.1.3
      */
-    void onDirectMessage(DirectMessage directMessage);
+    void onDirectMessage(int forUser, DirectMessage directMessage);
 
     /**
      * @param subscriber
      * @param listOwner
      * @param list
-     * @since Twitter4J 2.1.3
      */
-    void onUserListSubscribed(User subscriber, User listOwner, UserList list);
+    void onUserListSubscribed(int forUser, User subscriber, User listOwner, UserList list);
 
     /**
      * @param listOwner
      * @param list
-     * @since Twitter4J 2.1.3
      */
-    void onUserListCreated(User listOwner, UserList list);
+    void onUserListCreated(int forUser, User listOwner, UserList list);
 
     /**
      * @param listOwner
      * @param list
-     * @since Twitter4J 2.1.3
      */
-    void onUserListUpdated(User listOwner, UserList list);
+    void onUserListUpdated(int forUser, User listOwner, UserList list);
 
     /**
      * @param listOwner
      * @param list
-     * @since Twitter4J 2.1.3
      */
-    void onUserListDestroyed(User listOwner, UserList list);
+    void onUserListDestroyed(int forUser, User listOwner, UserList list);
 
     /**
      * @param source
      * @param target
-     * @since Twitter4J 2.1.3
      */
-    void onBlock(User source, User target);
+    void onBlock(int forUser, User source, User target);
 
     /**
      * @param source
      * @param target
-     * @since Twitter4J 2.1.3
      */
-    void onUnblock(User source, User target);
+    void onUnblock(int forUser, User source, User target);
+
+    void onException(Exception ex);
 }

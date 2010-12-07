@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.internal.http.HttpParameter;
+import twitter4j.internal.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -151,7 +152,7 @@ public final class FilterQuery implements java.io.Serializable {
         params.add(new HttpParameter("count", count));
         if (null != follow && follow.length > 0) {
             params.add(new HttpParameter("follow"
-                    , toFollowString(follow)));
+                    , StringUtil.join(follow)));
         }
         if (null != track && track.length > 0) {
             params.add(new HttpParameter("track"
@@ -178,16 +179,6 @@ public final class FilterQuery implements java.io.Serializable {
             buf.append(keywords[c][0]);
             buf.append(",");
             buf.append(keywords[c][1]);
-        }
-        return buf.toString();
-    }
-    private String toFollowString(int[] follows) {
-        StringBuffer buf = new StringBuffer(11 * follows.length);
-        for (int follow : follows) {
-            if (0 != buf.length()) {
-                buf.append(",");
-            }
-            buf.append(follow);
         }
         return buf.toString();
     }

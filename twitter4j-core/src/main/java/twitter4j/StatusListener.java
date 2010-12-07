@@ -31,7 +31,7 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public interface StatusListener {
+public interface StatusListener extends StreamListener {
     void onStatus(Status status);
 
     /**
@@ -54,6 +54,4 @@ public interface StatusListener {
      * @since Twitter4J 2.1.0
      */
     void onTrackLimitationNotice(int numberOfLimitedStatuses);
-
-    void onException(Exception ex);
 }

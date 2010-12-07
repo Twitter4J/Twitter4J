@@ -105,8 +105,12 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     public PropertyConfiguration(Properties props){
+        this(props, "/");
+    }
+
+    public PropertyConfiguration(Properties props, String treePath){
         super();
-        setFieldsWithTreePath(props, "/");
+        setFieldsWithTreePath(props, treePath);
     }
 
     PropertyConfiguration(String treePath) {

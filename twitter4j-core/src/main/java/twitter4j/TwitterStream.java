@@ -33,8 +33,10 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.logging.Logger;
+import twitter4j.internal.util.StringUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,19 +48,19 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements java.io.Serializable {
+public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
+    private static final long serialVersionUID = 5529611191443189901L;
     private final HttpClientWrapper http;
     private static final Logger logger = Logger.getLogger(TwitterStream.class);
 
-    private List<StatusListener> statusListeners = new ArrayList<StatusListener>(0);
+    private StreamListener[] streamListeners = new StreamListener[0];
     private List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<ConnectionLifeCycleListener>(0);
-    private StreamHandlingThread handler = null;
-
-    private static final long serialVersionUID = -762817147320767897L;
+    private TwitterStreamConsumer handler = null;
 
     /**
      * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
      * since Twitter4J 2.0.10
+     *
      * @deprecated use {@link TwitterStreamFactory#getInstance()} instead.
      */
     public TwitterStream() {
@@ -69,8 +71,9 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     /**
      * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
      * since Twitter4J 2.0.10
+     *
      * @param screenName screen name
-     * @param password password
+     * @param password   password
      * @deprecated use {@link TwitterStreamFactory#getInstance()} instead.
      */
     public TwitterStream(String screenName, String password) {
@@ -81,24 +84,25 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     /**
      * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
      * since Twitter4J 2.0.10
+     *
      * @param screenName screen name
-     * @param password password
-     * @param listener listener
+     * @param password   password
+     * @param listener   listener
      * @deprecated use {@link TwitterStreamFactory#getInstance()} instead.
      */
-    public TwitterStream(String screenName, String password, StatusListener listener) {
+    public TwitterStream(String screenName, String password, StreamListener listener) {
         super(ConfigurationContext.getInstance(), screenName, password);
         if (null != listener) {
-            this.statusListeners.add(listener);
+            addListener(listener);
         }
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
     }
 
     /*package*/
-    TwitterStream(Configuration conf, Authorization auth, StatusListener listener) {
+    TwitterStream(Configuration conf, Authorization auth, StreamListener listener) {
         super(conf, auth);
         if (null != listener) {
-            this.statusListeners.add(listener);
+            addListener(listener);
         }
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
     }
@@ -115,7 +119,9 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public void firehose(final int count) {
         ensureAuthorizationEnabled();
-        startHandler(new StreamHandlingThread() {
+        ensureListenerIsSet();
+        ensureStatusStreamListenerIsSet();
+        startHandler(new TwitterStreamConsumer() {
             public StatusStream getStream() throws TwitterException {
                 return getFirehoseStream(count);
             }
@@ -147,7 +153,9 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public void links(final int count) {
         ensureAuthorizationEnabled();
-        startHandler(new StreamHandlingThread() {
+        ensureListenerIsSet();
+        ensureStatusStreamListenerIsSet();
+        startHandler(new TwitterStreamConsumer() {
             public StatusStream getStream() throws TwitterException {
                 return getLinksStream(count);
             }
@@ -173,11 +181,14 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      * Starts listening on a tweet stream.
      *
      * @param relativeUrl The relative url of the feed, for example "statuses/firehose.json" for the firehose.
-     * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @param count       Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @deprecated
      */
     public void stream(final String relativeUrl, final int count, final boolean handleUserStream) {
         ensureAuthorizationEnabled();
-        startHandler(new StreamHandlingThread(handleUserStream) {
+        ensureListenerIsSet();
+        ensureStatusStreamListenerIsSet();
+        startHandler(new TwitterStreamConsumer() {
             public StatusStream getStream() throws TwitterException {
                 return getCountStream(relativeUrl, count);
             }
@@ -203,7 +214,9 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public void retweet() {
         ensureAuthorizationEnabled();
-        startHandler(new StreamHandlingThread() {
+        ensureListenerIsSet();
+        ensureStatusStreamListenerIsSet();
+        startHandler(new TwitterStreamConsumer() {
             public StatusStream getStream() throws TwitterException {
                 return getRetweetStream();
             }
@@ -217,7 +230,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
      * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-retweet">Streaming API: Methods statuses/retweet</a>
-      * @since Twitter4J 2.0.10
+     * @since Twitter4J 2.0.10
      */
     public StatusStream getRetweetStream() throws TwitterException {
         ensureAuthorizationEnabled();
@@ -238,7 +251,9 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public void sample() {
         ensureAuthorizationEnabled();
-        startHandler(new StreamHandlingThread() {
+        ensureListenerIsSet();
+        ensureStatusStreamListenerIsSet();
+        startHandler(new TwitterStreamConsumer() {
             public StatusStream getStream() throws TwitterException {
                 return getSampleStream();
             }
@@ -266,11 +281,19 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
     /**
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
+     *
      * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
+     * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
      */
-   public void user() {
+    public void user() {
         ensureAuthorizationEnabled();
-        startHandler(new StreamHandlingThread(true) {
+        ensureListenerIsSet();
+        for (StreamListener listener : streamListeners) {
+            if (!(listener instanceof UserStreamListener)) {
+                throw new IllegalStateException("Only UserStreamListener is supported. found: " + listener.getClass());
+            }
+        }
+        startHandler(new TwitterStreamConsumer() {
             public UserStream getStream() throws TwitterException {
                 return getUserStream();
             }
@@ -279,32 +302,60 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
     /**
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
+     *
      * @return UserStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
      */
     public UserStream getUserStream() throws TwitterException {
         ensureAuthorizationEnabled();
-        boolean userStreamListenerFound = false;
-        for (StatusListener listener : statusListeners){
-            if (listener instanceof UserStreamListener) {
-                userStreamListenerFound = true;
-                break;
-            }
-
-        }
-        if (!userStreamListenerFound) {
-            logger.warn("Use of UserStreamListener is suggested.");
-        }
         try {
-            return new StatusStreamImpl(http.get(conf.getUserStreamBaseURL () + "user.json"
+            return new UserStreamImpl(http.get(conf.getUserStreamBaseURL() + "user.json"
                     + (conf.isUserStreamRepliesAllEnabled() ? "?replies=all" : "")
                     , auth));
         } catch (IOException e) {
             throw new TwitterException(e);
         }
     }
-    
+
+    /**
+     * Site Streams, a new feature on the Streaming API, is now available for beta testing. Site Streams allows services, such as web sites or mobile push services, to receive real-time updates for a large number of users without any of the hassles of managing REST API rate limits. The initial version delivers events created by, or directed to, users that have shared their OAuth token with your application. The following events are streamed immediately, and without rate limits: Home Timelines, Mentions Timelines, User Timelines, Direct Messages, Mentions, Follows, Favorites, Tweets, Retweets, Profile changes, and List changes.
+     * The following limitations must be respected during the beta period. These limitations may be changed with little advance notice. We intend to increase or remove these various limitations as we move from beta test into full production:<br>
+     * Limit the follow count to 100 users per stream. Clients must occasionally compact users onto a smaller number of connections to minimize the total number of connections outstanding.<br>
+     * Open no more than 25 new connections per second and exponentially back-off on errors.
+     * @param withFollowings whether to receive status updates from people following
+     * @param follow         an array of users to include in the stream
+     * @see <a href="http://dev.twitter.com/pages/site_streams">Site Streams | dev.twitter.com</a>
+     * @since Twitter4J 2.1.8
+     */
+    public void site(final boolean withFollowings, final int[] follow) {
+        ensureOAuthEnabled();
+        ensureListenerIsSet();
+        for (StreamListener listener : streamListeners) {
+            if (!(listener instanceof SiteStreamListener)) {
+                throw new IllegalStateException("Only SiteStreamListener is supported. found: " + listener.getClass());
+            }
+        }
+        startHandler(new TwitterStreamConsumer() {
+            public StreamImplementation getStream() throws TwitterException {
+                try {
+                    return new SiteStreamImpl(ConfigurationContext.getInstance(), getSiteStream(withFollowings, follow));
+                } catch (IOException e) {
+                    throw new TwitterException(e);
+                }
+            }
+        });
+    }
+
+    InputStream getSiteStream(boolean withFollowings, int[] follow) throws TwitterException {
+        ensureOAuthEnabled();
+        return http.post(conf.getSiteStreamBaseURL() + "site.json",
+                new HttpParameter[]{
+                        new HttpParameter("with", withFollowings ? "followings" : "user")
+                        , new HttpParameter("follow", StringUtil.join(follow))}
+                , auth).asStream();
+    }
+
     /**
      * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
      * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
@@ -316,13 +367,14 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public void filter(final FilterQuery query) throws TwitterException {
         ensureAuthorizationEnabled();
-        startHandler(new StreamHandlingThread() {
+        ensureListenerIsSet();
+        ensureStatusStreamListenerIsSet();
+        startHandler(new TwitterStreamConsumer() {
             public StatusStream getStream() throws TwitterException {
                 return getFilterStream(query);
             }
         });
     }
-
 
     /**
      * Returns public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
@@ -346,7 +398,6 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
         }
     }
 
-
     /**
      * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
      * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
@@ -361,7 +412,9 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
      */
     public void filter(final int count, final int[] follow, final String[] track) {
         ensureAuthorizationEnabled();
-        startHandler(new StreamHandlingThread() {
+        ensureListenerIsSet();
+        ensureStatusStreamListenerIsSet();
+        startHandler(new TwitterStreamConsumer() {
             public StatusStream getStream() throws TwitterException {
                 return getFilterStream(count, follow, track);
             }
@@ -386,23 +439,30 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
         return getFilterStream(new FilterQuery(count, follow, track, null));
     }
 
+    /**
+     * check if any listener is set. Throws IllegalStateException if no listener is set.
+     * @throws IllegalStateException when no listener is set.
+     */
 
-    private synchronized void startHandler(StreamHandlingThread handler) {
-        cleanUp();
-        if (null == statusListeners) {
-            throw new IllegalStateException("StatusListener is not set.");
+    private void ensureListenerIsSet(){
+        if(streamListeners.length == 0){
+            throw new IllegalStateException("No listener is set.");
         }
-        this.handler = handler;
-        this.handler.start();
     }
 
-    private synchronized void startUserStreamHandler(StreamHandlingThread handler) {
-        cleanUp();
-        if (null == statusListeners) {
-            throw new IllegalStateException("UserStreamListener is not set.");
+    private void ensureStatusStreamListenerIsSet(){
+        for (StreamListener listener : streamListeners) {
+            if (!(listener instanceof StatusListener)) {
+                throw new IllegalStateException("Only StatusListener is supported. found: " + listener.getClass());
+            }
         }
-        if (!(statusListeners instanceof UserStreamListener)) {
-            throw new IllegalStateException("UserStreamListener is not set.");
+    }
+
+
+    private synchronized void startHandler(TwitterStreamConsumer handler) {
+        cleanUp();
+        if (streamListeners.length == 0) {
+            throw new IllegalStateException("StatusListener is not set.");
         }
         this.handler = handler;
         this.handler.start();
@@ -410,9 +470,10 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
     /**
      * shutdown internal stream consuming thread
+     *
      * @since Twitter4J 2.1.7
      */
-    public synchronized void cleanUp(){
+    public synchronized void cleanUp() {
         if (null != handler) {
             try {
                 handler.close();
@@ -429,26 +490,8 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     }
 
     /**
-     * Clear existing listeners and sets a StatusListener
-     * @param statusListener listener to be set
-     * @deprecated use #addStatusListener instead.
-     */
-    public void setStatusListener(StatusListener statusListener) {
-        this.statusListeners.clear();
-        addStatusListener(statusListener);
-    }
-
-    /**
-     *
-     * @param statusListener listener to be added
-     * @since Twitter4J 2.1.7
-     */
-    public void addStatusListener(StatusListener statusListener) {
-        this.statusListeners.add(statusListener);
-    }
-
-    /**
      * Adds a ConnectionLifeCycleListener
+     *
      * @param listener listener to be added
      * @since Twitter4J 2.1.7
      */
@@ -457,22 +500,74 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
     }
 
     /**
-     * Clear existing listeners and sets a UserStreamListener
-     * @param userStreamListener listener to be set
-     * @deprecated use #addStatusListener instead
+     * Clear existing listeners and sets a StatusListener
+     *
+     * @param listener listener to be set
+     * @deprecated use {@link #addListener(StatusListener)} instead.
      */
-    public void setUserStreamListener(UserStreamListener userStreamListener) {
-        this.statusListeners.clear();
-        addUserStreamListener(userStreamListener);
+    public void setStatusListener(StatusListener listener) {
+        this.streamListeners = new StreamListener[1];
+        this.streamListeners[0] = listener;
     }
 
     /**
+     * @param statusListener listener to be added
+     * @since Twitter4J 2.1.7
+     * @deprecated use {@link #addListener(StatusListener)} instead.
+     */
+    public void addStatusListener(StatusListener statusListener) {
+        addListener((StreamListener) statusListener);
+    }
+
+    /**
+     * Clear existing listeners and sets a UserStreamListener
      *
+     * @param listener listener to be set
+     * @deprecated use {@link #addListener(UserStreamListener)} instead.
+     */
+    public void setUserStreamListener(UserStreamListener listener) {
+        this.streamListeners = new StreamListener[1];
+        this.streamListeners[0] = listener;
+    }
+
+    /**
      * @param userStreamListener listener to be added
      * @since Twitter4J 2.1.7
+     * @deprecated use {@link #addListener(UserStreamListener)} instead.
      */
-    public void addUserStreamListener(UserStreamListener userStreamListener){
-        this.statusListeners.add(userStreamListener);
+    public void addUserStreamListener(UserStreamListener userStreamListener) {
+        addListener((StreamListener) userStreamListener);
+    }
+
+    /**
+     * @param listener
+     * @since Twitter4J 2.1.8
+     */
+    public void addListener(UserStreamListener listener) {
+        addListener((StreamListener) listener);
+    }
+
+    /**
+     * @param listener
+     * @since Twitter4J 2.1.8
+     */
+    public void addListener(StatusListener listener) {
+        addListener((StreamListener) listener);
+    }
+
+    /**
+     * @param listener
+     * @since Twitter4J 2.1.8
+     */
+    public void addListener(SiteStreamListener listener) {
+        addListener((StreamListener) listener);
+    }
+
+    private synchronized void addListener(StreamListener listener) {
+        StreamListener[] newListeners = new StreamListener[this.streamListeners.length + 1];
+        System.arraycopy(this.streamListeners, 0, newListeners, 0, this.streamListeners.length);
+        newListeners[newListeners.length - 1] = listener;
+        this.streamListeners = newListeners;
     }
 
     /*
@@ -489,17 +584,16 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
     private static final int NO_WAIT = 0;
 
-    abstract class StreamHandlingThread extends Thread {
-        private StatusStreamImpl stream = null;
-        private static final String NAME = "Twitter Stream Handling Thread";
+    static int count = 0;
+
+    abstract class TwitterStreamConsumer extends Thread {
+        private StreamImplementation stream = null;
+        private final String NAME = "Twitter Stream consumer-" + (++count);
         private boolean closed = false;
 
-        StreamHandlingThread() {
-            this(false);
-        }
-
-        StreamHandlingThread(boolean handleUserStream) {
-            super(NAME + "[initializing]");
+        TwitterStreamConsumer() {
+            super();
+            setName(NAME + "[initializing]");
         }
 
         public void run() {
@@ -510,12 +604,12 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                     if (!closed && null == stream) {
                         // try establishing connection
                         setStatus("[Establishing connection]");
-                        stream = (StatusStreamImpl)getStream();
+                        stream = getStream();
                         connected = true;
-                        for (ConnectionLifeCycleListener listener : lifeCycleListeners){
-                            try{
+                        for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
+                            try {
                                 listener.onConnect();
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 logger.warn(e.getMessage());
                             }
                         }
@@ -524,13 +618,13 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                         setStatus("[Receiving stream]");
                         while (!closed) {
                             try {
-                                stream.next(statusListeners);
+                                stream.next(streamListeners);
                             } catch (IllegalStateException ise) {
                                 connected = false;
-                                for (ConnectionLifeCycleListener listener : lifeCycleListeners){
-                                    try{
+                                for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
+                                    try {
                                         listener.onDisconnect();
-                                    }catch (Exception e){
+                                    } catch (Exception e) {
                                         logger.warn(e.getMessage());
                                     }
                                 }
@@ -540,7 +634,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                 } catch (TwitterException te) {
                     if (!closed) {
                         if (NO_WAIT == timeToSleep) {
-                            if(te.getStatusCode() == 403){
+                            if (te.getStatusCode() == 403) {
                                 logger.warn("This account is not in required role.");
                                 closed = true;
                                 break;
@@ -573,7 +667,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
                         }
                         stream = null;
                         logger.debug(te.getMessage());
-                        for (StatusListener statusListener : statusListeners){
+                        for (StreamListener statusListener : streamListeners) {
                             statusListener.onException(te);
                         }
                         connected = false;
@@ -583,20 +677,20 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
             try {
                 if (null != this.stream && connected) {
                     this.stream.close();
-                    for (ConnectionLifeCycleListener listener : lifeCycleListeners){
-                        try{
+                    for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
+                        try {
                             listener.onDisconnect();
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             logger.warn(e.getMessage());
                         }
                     }
                 }
             } catch (IOException ignore) {
             }
-            for (ConnectionLifeCycleListener listener : lifeCycleListeners){
-                try{
+            for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
+                try {
                     listener.onCleanUp();
-                }catch (Exception e){
+                } catch (Exception e) {
                     logger.warn(e.getMessage());
                 }
             }
@@ -604,7 +698,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
 
         public synchronized void close() throws IOException {
             setStatus("[Disposing thread]");
-            if(null != stream){
+            if (null != stream) {
                 stream.close();
             }
             closed = true;
@@ -616,7 +710,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl implements 
             logger.debug(actualMessage);
         }
 
-        abstract StatusStream getStream() throws TwitterException;
+        abstract StreamImplementation getStream() throws TwitterException;
 
     }
 }
@@ -662,11 +756,11 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
     }
 
     public int getHttpMaxTotalConnections() {
-      return nestedConf.getHttpMaxTotalConnections();
+        return nestedConf.getHttpMaxTotalConnections();
     }
 
     public int getHttpDefaultMaxPerRoute() {
-      return nestedConf.getHttpDefaultMaxPerRoute();
+        return nestedConf.getHttpDefaultMaxPerRoute();
     }
 
     public Map<String, String> getRequestHeaders() {

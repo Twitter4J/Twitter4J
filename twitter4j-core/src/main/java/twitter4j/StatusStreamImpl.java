@@ -28,18 +28,12 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
-import twitter4j.internal.logging.Logger;
-import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.util.ParseUtil;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * StatusStream implementation. This class is NOT intended to be extended but left non-final for the ease of mock testing.
@@ -47,232 +41,75 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-class StatusStreamImpl implements StatusStream, UserStream {
-    private static final Logger logger = Logger.getLogger(StatusStreamImpl.class);
-
-    private boolean streamAlive = true;
-    private BufferedReader br;
-    private InputStream is;
-    private HttpResponse response;
+class StatusStreamImpl extends AbstractStatusStream implements StatusStream {
+    protected String line;
 
     /*package*/
 
     StatusStreamImpl(InputStream stream) throws IOException {
-        this.is = stream;
-        this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+        super(stream);
     }
     /*package*/
 
     StatusStreamImpl(HttpResponse response) throws IOException {
-        this(response.asStream());
-        this.response = response;
+        super(response);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void next(UserStreamListener listener) throws TwitterException {
-        ArrayList<StatusListener> list = new ArrayList<StatusListener>(1);
-        list.add(listener);
-        handleNextElement(list);
-    }
+    protected StreamListener[] listeners;
 
     /**
-     * {@inheritDoc}
+     * Reads next status from this stream.
+     * @param listener a StatusListener implementation
+     * @throws TwitterException when the end of the stream has been reached.
+     * @throws IllegalStateException when the end of the stream had been reached.
      */
     public void next(StatusListener listener) throws TwitterException {
-        ArrayList<StatusListener> list = new ArrayList<StatusListener>(1);
-        list.add(listener);
-        handleNextElement(list);
+        StreamListener[] list = new StreamListener[1];
+        list[0] = listener;
+        this.listeners = list;
+        handleNextElement();
+    }
+    public void next(StreamListener[] listeners) throws TwitterException{
+        this.listeners = listeners;
+        handleNextElement();
     }
 
-    void next(List<StatusListener> listeners) throws TwitterException {
-        handleNextElement(listeners);
+    protected String parseLine(String line){
+        DataObjectFactoryUtil.clearThreadLocalMap();
+        this.line = line;
+        return line;
     }
 
-    private void handleNextElement(List<StatusListener> listeners) throws TwitterException {
-        if (!streamAlive) {
-            throw new IllegalStateException("Stream already closed.");
+    @Override
+    protected void onText(JSONObject json) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((StatusListener)listener).onStatus(asStatus(json));
         }
-        try {
-            String line;
-            line = br.readLine();
-            if (null == line) {
-                //invalidate this status stream
-                throw new IOException("the end of the stream has been reached");
-            }
-            if (line.length() > 0) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
-                logger.debug("received:", line);
-                try {
-                    JSONObject json = new JSONObject(line);
-                    if (!json.isNull("sender")) {
-                        for (StatusListener listener : listeners) {
-                            if (listener instanceof UserStreamListener) {
-                                ((UserStreamListener) listener).onDirectMessage(new DirectMessageJSONImpl(json));
-                            }
-                        }
-                    } else if (!json.isNull("text")) {
-                        for (StatusListener listener : listeners) {
-                            listener.onStatus(DataObjectFactoryUtil.registerJSONObject(new StatusJSONImpl(json), json));
-                        }
-                    } else if (!json.isNull("direct_message")) {
-                        for (StatusListener listener : listeners) {
-                            if (listener instanceof UserStreamListener) {
-                                JSONObject directMessageJSON = json.getJSONObject("direct_message");
-                                DirectMessage directMessage = new DirectMessageJSONImpl(directMessageJSON);
-                                DataObjectFactoryUtil.registerJSONObject(directMessage, directMessageJSON);
-                                ((UserStreamListener) listener).onDirectMessage(directMessage);
-                            }
-                        }
-                    } else if (!json.isNull("delete")) {
-                        for (StatusListener listener : listeners) {
-                            listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
-                        }
-                    } else if (!json.isNull("limit")) {
-                        for (StatusListener listener : listeners) {
-                            listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
-                        }
-                    } else if (!json.isNull("scrub_geo")) {
-                        // Not implemented yet
-                        System.out.println("Geo-tagging deletion notice (not implemented yet): " + line);
-                    } else if (!json.isNull("friends")) {
-                        JSONArray friends = json.getJSONArray("friends");
-                        int[] friendIds = new int[friends.length()];
-                        for (int i = 0; i < friendIds.length; ++i) {
-                            friendIds[i] = friends.getInt(i);
-                        }
-                        for (StatusListener listener : listeners) {
-                            if (listener instanceof UserStreamListener) {
-                                ((UserStreamListener) listener).onFriendList(friendIds);
-                            }
-                        }
-                    } else if (!json.isNull("event")) {
-                        String event = json.getString("event");
-                        JSONObject sourceJSON = json.getJSONObject("source");
-                        JSONObject targetJSON = json.getJSONObject("target");
-                        User source = new UserJSONImpl(sourceJSON);
-                        User target = new UserJSONImpl(targetJSON);
-                        DataObjectFactoryUtil.registerJSONObject(source, sourceJSON);
-                        DataObjectFactoryUtil.registerJSONObject(target, targetJSON);
-                        if ("favorite".equals(event)) {
-                            Status targetObject = extractTargetObject(json);
-                            for (StatusListener listener : listeners) {
-                                if (listener instanceof UserStreamListener) {
-                                    ((UserStreamListener) listener).onFavorite(source, target, targetObject);
-                                }
-                            }
-                        } else if ("unfavorite".equals(event)) {
-                            Status targetObject = extractTargetObject(json);
-                            for (StatusListener listener : listeners) {
-                                if (listener instanceof UserStreamListener) {
-                                    ((UserStreamListener) listener).onUnfavorite(source, target, targetObject);
-                                }
-                            }
-                        } else if ("retweet".equals(event)) {
-                            // note: retweet events also show up as statuses
-                            Status targetObject = extractTargetObject(json);
-                            for (StatusListener listener : listeners) {
-                                if (listener instanceof UserStreamListener) {
-                                    ((UserStreamListener) listener).onRetweet(source, target, targetObject);
-                                }
-                            }
-                        } else if ("follow".equals(event)) {
-                            for (StatusListener listener : listeners) {
-                                if (listener instanceof UserStreamListener) {
-                                    ((UserStreamListener) listener).onFollow(source, target);
-                                }
-                            }
-                        } else if ("unfollow".equals(event)) {
-                            for (StatusListener listener : listeners) {
-                                if (listener instanceof UserStreamListener) {
-                                    ((UserStreamListener) listener).onUnfollow(source, target);
-                                }
-                            }
-                        } else if (event.startsWith("list_")) {
-                            JSONObject targetObjectJSON = json.getJSONObject("target_object");
-                            UserList targetObject = new UserListJSONImpl(targetObjectJSON);
-                            DataObjectFactoryUtil.registerJSONObject(targetObject, targetObjectJSON);
-                            if ("list_user_subscribed".equals(event)) {
-                                for (StatusListener listener : listeners) {
-                                    if (listener instanceof UserStreamListener) {
-                                        ((UserStreamListener) listener).onUserListSubscribed(source, target, targetObject);
-                                    }
-                                }
-                            } else if ("list_created".equals(event)) {
-                                for (StatusListener listener : listeners) {
-                                    if (listener instanceof UserStreamListener) {
-                                        ((UserStreamListener) listener).onUserListCreated(source, targetObject);
-                                    }
-                                }
-                            } else if ("list_updated".equals(event)) {
-                                for (StatusListener listener : listeners) {
-                                    if (listener instanceof UserStreamListener) {
-                                        ((UserStreamListener) listener).onUserListUpdated(source, targetObject);
-                                    }
-                                }
-                            } else if ("list_destroyed".equals(event)) {
-                                for (StatusListener listener : listeners) {
-                                    if (listener instanceof UserStreamListener) {
-                                        ((UserStreamListener) listener).onUserListDestroyed(source, targetObject);
-                                    }
-                                }
-                            }
-                        } else if ("block".equals(event)) {
-                            for (StatusListener listener : listeners) {
-                                if (listener instanceof UserStreamListener) {
-                                    ((UserStreamListener) listener).onBlock(source, target);
-                                }
-                            }
-                        } else if ("unblock".equals(event)) {
-                            for (StatusListener listener : listeners) {
-                                if (listener instanceof UserStreamListener) {
-                                    ((UserStreamListener) listener).onUnblock(source, target);
-                                }
-                            }
-                        } else {
-                            logger.info("Received unknown event type '" + event + "': " + line);
-                        }
-                    } else {
-                        // tmp: just checking what kind of unknown event we're receiving on this stream
-                        logger.info("Received unknown event: " + line);
-                    }
-                } catch (JSONException jsone) {
-                    for (StatusListener listener : listeners) {
-                        listener.onException(jsone);
-                    }
-                }
-            }
-        } catch (IOException ioe) {
-            try {
-                is.close();
-            } catch (IOException ignore) {
-            }
-            boolean isUnexceptedException = streamAlive;
-            streamAlive = false;
-            if (isUnexceptedException) {
-                throw new TwitterException("Stream closed.", ioe);
-            }
+    }
+    @Override
+    protected void onDelete(JSONObject json) throws TwitterException, JSONException {
+        for (StreamListener listener : listeners) {
+            ((StatusListener)listener).onDeletionNotice(new StatusDeletionNoticeImpl(json));
+        }
+    }
+    @Override
+    protected void onLimit(JSONObject json) throws TwitterException, JSONException {
+        for (StreamListener listener : listeners) {
+            ((StatusListener)listener).onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
         }
     }
 
-    Status extractTargetObject(JSONObject json) throws JSONException, TwitterException {
-        JSONObject statusJSON = json.getJSONObject("target_object");
-        Status targetObject = new StatusJSONImpl(statusJSON);
-        DataObjectFactoryUtil.registerJSONObject(targetObject, statusJSON);
-        return targetObject;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void close() throws IOException {
-        streamAlive = false;
-        is.close();
-        br.close();
-        if (null != response) {
-            response.disconnect();
+    @Override
+    public void onException(Exception e) {
+        for (StreamListener listener : listeners) {
+            listener.onException(e);
         }
     }
+
+    protected Status asStatus(JSONObject json) throws TwitterException{
+        Status status = new StatusJSONImpl(json);
+        DataObjectFactoryUtil.registerJSONObject(status, json);
+        return status;
+    }
+
 }

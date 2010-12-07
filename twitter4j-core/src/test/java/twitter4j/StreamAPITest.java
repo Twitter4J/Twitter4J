@@ -27,10 +27,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.conf.Configuration;
+import twitter4j.conf.PropertyConfiguration;
 import twitter4j.http.AccessToken;
 import twitter4j.json.DataObjectFactory;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Properties;
 
@@ -124,7 +128,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
 
     public void testUserStreamEventTypes() throws Exception {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-event-testcase.json");
-        UserStream stream = new StatusStreamImpl(is);
+        UserStream stream = new UserStreamImpl(is);
 
         source = null;
         target = null;
@@ -233,6 +237,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Us
 
         twitterStream.cleanUp();
     }
+
 
     public void onFriendList(int[] friendIds) {
         System.out.println("onFriendList");

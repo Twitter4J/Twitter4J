@@ -69,6 +69,16 @@ public class StringUtil {
         }
 
         return returnValue;
+    }
 
+    public static String join(int[] follows) {
+        StringBuffer buf = new StringBuffer(11 * follows.length);
+        for (int follow : follows) {
+            if (0 != buf.length()) {
+                buf.append(",");
+            }
+            buf.append(follow);
+        }
+        return buf.toString();
     }
 }

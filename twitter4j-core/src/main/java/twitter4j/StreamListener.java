@@ -27,52 +27,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 /**
- * @author Rémy Rakic at gmail.com
- * @since Twitter4J 2.1.3
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.1.8
  */
-public class UserStreamAdapter implements UserStreamListener {
-    public void onStatus(Status status) {
-    }
-
-    public void onFriendList(int[] friendIds) {
-    }
-
-    public void onFavorite(User source, User target, Status targetObject) {
-    }
-
-    public void onFollow(User source, User target) {
-    }
-
-    public void onUnfavorite(User source, User target, Status targetObject) {
-    }
-
-    public void onRetweet(User source, User target, Status targetObject) {
-    }
-
-    public void onUnfollow(User source, User target) {
-    }
-
-    public void onDirectMessage(DirectMessage directMessage) {
-    }
-
-    public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
-    }
-
-    public void onUserListCreated(User listOwner, UserList list) {
-    }
-
-    public void onUserListUpdated(User listOwner, UserList list) {
-    }
-
-    public void onUserListDestroyed(User listOwner, UserList list) {
-    }
-
-    public void onBlock(User source, User target) {
-    }
-
-    public void onUnblock(User source, User target) {
-    }
-
-    public void onException(Exception ex) {
-    }
+interface StreamListener {
+    void onException(Exception ex);
 }

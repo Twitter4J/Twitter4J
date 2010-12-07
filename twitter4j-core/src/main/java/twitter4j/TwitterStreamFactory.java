@@ -43,7 +43,7 @@ import twitter4j.http.OAuthAuthorization;
  */
 public final class TwitterStreamFactory implements java.io.Serializable{
     private static final long serialVersionUID = 8146074704915782233L;
-    private final StatusListener listener;
+    private final StreamListener listener;
     private final Configuration conf;
 
     /**
@@ -59,14 +59,25 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * @since Twitter4J 2.1.1
      */
     public TwitterStreamFactory(Configuration conf) {
-        this(conf, null);
+        this(conf, (StatusListener)null);
     }
 
     /**
      * Creates a TwitterStreamFactory with the root configuration and a specified status listener.
      * @param listener the listener
+     * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
      */
     public TwitterStreamFactory(StatusListener listener) {
+        this(ConfigurationContext.getInstance(), listener);
+    }
+
+    /**
+     * Creates a TwitterStreamFactory with the root configuration and a specified status listener.
+     * @param listener the listener
+     * @since Twitter4J 2.1.8
+     * @deprecated use {@link TwitterStream#addListener(UserStreamListener)}} instead.
+     */
+    public TwitterStreamFactory(UserStreamListener listener) {
         this(ConfigurationContext.getInstance(), listener);
     }
 
@@ -75,15 +86,27 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * @param configTreePath the path
      */
     public TwitterStreamFactory(String configTreePath) {
-        this(configTreePath, null);
+        this(configTreePath, (StatusListener)null);
     }
 
     /**
      * Creates a TwitterStreamFactory with a specified config tree and a listener.
      * @param configTreePath the path
      * @param listener the listener
+     * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
      */
     public TwitterStreamFactory(String configTreePath, StatusListener listener) {
+        this(ConfigurationContext.getInstance(configTreePath), listener);
+    }
+
+    /**
+     * Creates a TwitterStreamFactory with a specified config tree and a listener.
+     * @param configTreePath the path
+     * @param listener the listener
+     * @since Twitter4J 2.1.8
+     * @deprecated use {@link TwitterStream#addListener(UserStreamListener)}} instead.
+     */
+    public TwitterStreamFactory(String configTreePath, UserStreamListener listener) {
         this(ConfigurationContext.getInstance(configTreePath), listener);
     }
 
@@ -92,8 +115,24 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * @param conf the configuration to use
      * @param listener an optional status listener
      * @since Twitter4J 2.1.1
+     * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
      */
     public TwitterStreamFactory(Configuration conf, StatusListener listener) {
+        if (conf == null) {
+          throw new NullPointerException("configuration cannot be null");
+        }
+        this.conf = conf;
+        this.listener = listener;
+    }
+
+    /**
+     * Creates a TwitterStreamFactory with the specified config and a listener.
+     * @param conf the configuration to use
+     * @param listener an optional status listener
+     * @since Twitter4J 2.1.8
+     * @deprecated use {@link TwitterStream#addListener(UserStreamListener)} instead.
+     */
+    public TwitterStreamFactory(Configuration conf, UserStreamListener listener) {
         if (conf == null) {
           throw new NullPointerException("configuration cannot be null");
         }

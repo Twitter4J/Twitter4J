@@ -30,6 +30,7 @@ import twitter4j.conf.Configuration;
 import twitter4j.http.Authorization;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.http.NullAuthorization;
+import twitter4j.http.OAuthAuthorization;
 
 /**
  * Base class of Twitter / AsyncTwitter / TwitterStream supports Basic Authorization.
@@ -80,10 +81,10 @@ abstract class TwitterBase implements java.io.Serializable {
         }
     }
 
-    protected final void ensureBasicEnabled() {
-        if (!(auth instanceof BasicAuthorization)) {
+    protected final void ensureOAuthEnabled() {
+        if (!(auth instanceof OAuthAuthorization)) {
             throw new IllegalStateException(
-                    "Authentication credentials are missing. See http://twitter4j.org/configuration.html for the detail.");
+                    "OAuth required. Authentication credentials are missing. See http://twitter4j.org/configuration.html for the detail.");
         }
     }
 
