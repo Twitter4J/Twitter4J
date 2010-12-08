@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import junit.framework.TestCase;
+import twitter4j.conf.PropertyConfiguration;
 import twitter4j.http.AccessToken;
 
 import java.io.File;
@@ -46,16 +47,7 @@ public class ApacheHttpClientTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        Properties p = new Properties();
-
-        InputStream is = ApacheHttpClientTest.class.getResourceAsStream("/test.properties");
-        p.load(is);
-        is.close();
-
         twitterAPI1 = new TwitterFactory().getInstance();
-        twitterAPI1.setOAuthConsumer(p.getProperty("desktopConsumerKey"),p.getProperty("desktopConsumerSecret"));
-        twitterAPI1.setOAuthAccessToken(new AccessToken(p.getProperty("id1.oauth_token"), p.getProperty("id1.oauth_token_secret")));
-
     }
 
     protected void tearDown() throws Exception {
