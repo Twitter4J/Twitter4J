@@ -4,6 +4,6 @@ cd ..
 call setEnv.cmd
 
 echo on
-"%JAVA%" %MEM_ARGS% -classpath "%CLASSPATH%" twitter4j.examples.timeline.GetRetweetsOfMe %*
+"%JAVA_HOME%\bin\java" %MEM_ARGS% -classpath "%CLASSPATH%" twitter4j.examples.timeline.GetRetweetsOfMe %*
 
 ENDLOCAL
