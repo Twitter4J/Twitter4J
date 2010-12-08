@@ -32,11 +32,12 @@ import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.RequestToken;
-import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.internal.async.Dispatcher;
+import twitter4j.internal.async.DispatcherFactory;
 
 import java.io.File;
 import java.util.Date;
+
 import static twitter4j.TwitterMethod.*;
 
 /**
@@ -1887,7 +1888,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
-     * @deprecated Use {@link AsyncTwitterFactory#getInstance(Authorization)}
      */
     @Override
     public void setOAuthAccessToken(AccessToken accessToken) {
