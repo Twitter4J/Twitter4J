@@ -208,6 +208,6 @@ public final class TwitterStreamFactory implements java.io.Serializable{
         return new TwitterStream(conf, auth, listener);
     }
     private TwitterStream getInstance(Configuration conf) {
-        return new TwitterStream(conf, AuthorizationFactory.getInstance(conf, false), listener);
+        return new TwitterStream(conf, AuthorizationFactory.getInstance(conf, true), listener);
     }
 }

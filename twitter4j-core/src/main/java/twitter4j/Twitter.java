@@ -30,6 +30,7 @@ import twitter4j.api.*;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
+import twitter4j.http.AuthorizationFactory;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
@@ -79,7 +80,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     private static final long serialVersionUID = -1486360080128882436L;
 
     Twitter(Configuration conf) {
-        super(conf);
+        this(conf, AuthorizationFactory.getInstance(conf, true));
     }
 
 

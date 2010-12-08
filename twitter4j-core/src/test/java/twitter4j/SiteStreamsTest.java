@@ -46,6 +46,14 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         super(name);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
     public void testStream() throws Exception {
         InputStream is = SiteStreamsTest.class.getResourceAsStream("/sitestream-testcase.json");
         SiteStreamsImpl siteStreams = new SiteStreamsImpl(ConfigurationContext.getInstance(), is);
@@ -154,10 +162,12 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             try {
                 twit4j.createFriendship(6377362);
+                waitForStatus();
             } catch (TwitterException ignore) {
             }
             try {
                 twit4j2.createFriendship(6358482);
+                waitForStatus();
             } catch (TwitterException ignore) {
             }
 

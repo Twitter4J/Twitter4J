@@ -67,11 +67,8 @@ public class OAuthTest extends TwitterTestBase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        String id2token = p.getProperty("id2.oauth_token");
-        String id2tokenSecret = p.getProperty("id2.oauth_token_secret");
-
         twitterStream.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        twitterStream.setOAuthAccessToken(new AccessToken(id2token, id2tokenSecret));
+        twitterStream.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
 
     }
 

@@ -28,7 +28,6 @@ package twitter4j;
 
 import twitter4j.http.AccessToken;
 
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import static twitter4j.DAOTest.*;
@@ -172,7 +171,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
 
     public void testFavorite() throws Exception {
-        Status status = twitterAPI1.updateStatus(new Date().toString());
+        Status status = twitter1.updateStatus(new Date().toString());
         async2.createFavorite(status.getId());
         waitForResponse();
         assertEquals(status, this.status);
@@ -202,7 +201,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertIDExsits("yusukey is following ryunosukey", ids, ryunosukey);
 
         try {
-            twitterAPI2.createFriendship(id1.screenName);
+            twitter2.createFriendship(id1.screenName);
         } catch (TwitterException te) {
         }
         async1.getFollowersIDs();
@@ -354,7 +353,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         waitForResponse();
         assertEquals("", "@" + id1.screenName + " " + date, status.getText());
         assertEquals("", id, status.getInReplyToStatusId());
-        assertEquals(twitterAPI1.verifyCredentials().getId(), status.getInReplyToUserId());
+        assertEquals(twitter1.verifyCredentials().getId(), status.getInReplyToUserId());
 
 
         id = status.getId();
@@ -436,7 +435,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void testFollowLeave() throws Exception {
         try {
-            twitterAPI1.disableNotification("twit4jprotected");
+            twitter1.disableNotification("twit4jprotected");
         } catch (TwitterException te) {
         }
         te = null;

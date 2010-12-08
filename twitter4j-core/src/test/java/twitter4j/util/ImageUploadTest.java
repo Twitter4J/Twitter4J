@@ -45,14 +45,14 @@ public class ImageUploadTest extends TwitterTestBase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        screenName = p.getProperty("id1");
+        screenName = id1.screenName;
         oauthAuthorization = new OAuthAuthorization(
                 ConfigurationContext.getInstance()
-                , p.getProperty("desktopConsumerKey")
-                , p.getProperty("desktopConsumerSecret")
+                , p.getProperty("oauth.consumerKey")
+                , p.getProperty("oauth.consumerSecret")
                 , new AccessToken(
-                        p.getProperty("id1.oauth_token")
-                        , p.getProperty("id1.oauth_token_secret")
+                        p.getProperty("id1.oauth.accessToken")
+                        , p.getProperty("id1.oauth.accessTokenSecret")
                 )
         );
         twitpicApiKey = p.getProperty("twitpic.apiKey");

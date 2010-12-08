@@ -107,7 +107,7 @@ public class SearchAPITest extends TwitterTestBase {
 
         queryStr = "%... 日本語 ";
 
-        twitterAPI1.updateStatus(queryStr + new Date());
+        twitter1.updateStatus(queryStr + new Date());
         query = new Query(queryStr);
         queryResult = unauthenticated.search(query);
         assertEquals(queryStr, queryResult.getQuery());
@@ -123,7 +123,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertTrue(0 < queryResult.getTweets().size());
 
         query = new Query("\\u5e30%u5e30 <%}& foobar").rpp(100).page(1);
-        QueryResult result = twitterAPI1.search(query);
+        QueryResult result = twitter1.search(query);
     }
 
     public void testTrends() throws Exception{

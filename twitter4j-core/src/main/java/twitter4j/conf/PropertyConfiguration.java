@@ -43,7 +43,6 @@ import java.util.Set;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
-    private static final Logger logger = Logger.getLogger(PropertyConfiguration.class);
 
     public static final String DEBUG = "debug";
     public static final String SOURCE = "source";
@@ -230,7 +229,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
 
         if (notNull(props, prefix, SOURCE)) {
-            logger.info("source parameter is no longer supported.");
             setSource(getString(props, prefix, SOURCE));
         }
 

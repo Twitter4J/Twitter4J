@@ -28,24 +28,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.http.AccessToken;
+import twitter4j.conf.Configuration;
+import twitter4j.conf.PropertyConfiguration;
 
 import java.io.InputStream;
 import java.util.Properties;
-import static twitter4j.DAOTest.*;
 
 public class TwitterTestBase extends TestCase {
     public TwitterTestBase(String name) {
         super(name);
     }
 
-    protected Twitter twitterAPI1, twitterAPI2, twitterAPI3, twitterAPI4,
+    protected Twitter twitter1, twitter2, twitter3,
             unauthenticated, twitterAPIBestFriend1, twitterAPIBestFriend2;
     protected Properties p = new Properties();
 
     protected String numberId, numberPass, followsOneWay;
-    protected int id1id, numberIdId;
-    protected TestUserInfo id1, id2, id3, id4,bestFriend1, bestFriend2;
+    protected int numberIdId;
+    protected TestUserInfo id1, id2, id4, bestFriend1, bestFriend2;
+    protected Configuration conf1, conf2, conf3;
 
     protected class TestUserInfo {
         public String screenName;
@@ -55,13 +56,14 @@ public class TwitterTestBase extends TestCase {
         public String accessTokenSecret;
 
         TestUserInfo(String screenName) {
-            this.screenName = p.getProperty(screenName);
-            this.password = p.getProperty(screenName + "pass");
-            this.id = Integer.valueOf(p.getProperty(screenName + "id"));
-            this.accessToken = p.getProperty(screenName+".oauth_token");
-            this.accessTokenSecret = p.getProperty(screenName+".oauth_token_secret");
+            this.screenName = p.getProperty(screenName + ".user");
+            this.password = p.getProperty(screenName + ".password");
+            this.id = Integer.valueOf(p.getProperty(screenName + ".id"));
+            this.accessToken = p.getProperty(screenName + ".oauth.accessToken");
+            this.accessTokenSecret = p.getProperty(screenName + ".oauth.accessTokenSecret");
         }
     }
+
     protected String desktopConsumerSecret;
     protected String desktopConsumerKey;
     protected String browserConsumerSecret;
@@ -73,49 +75,38 @@ public class TwitterTestBase extends TestCase {
         p.load(is);
         is.close();
 
-        desktopConsumerSecret = p.getProperty("desktopConsumerSecret");
-        desktopConsumerKey = p.getProperty("desktopConsumerKey");
-        browserConsumerSecret = p.getProperty("browserConsumerSecret");
-        browserConsumerKey = p.getProperty("browserConsumerKey");
+        desktopConsumerSecret = p.getProperty("oauth.consumerSecret");
+        desktopConsumerKey = p.getProperty("oauth.consumerKey");
+        browserConsumerSecret = p.getProperty("browser.oauth.consumerSecret");
+        browserConsumerKey = p.getProperty("browser.oauth.consumerKey");
 
+        conf1 = new PropertyConfiguration(p, "/id1");
         id1 = new TestUserInfo("id1");
+        conf2 = new PropertyConfiguration(p, "/id2");
         id2 = new TestUserInfo("id2");
-        id3 = new TestUserInfo("id3");
-        id4 = new TestUserInfo("id4");
+        conf3 = new PropertyConfiguration(p, "/id3");
+        id4 = new TestUserInfo("id3");
+        Configuration bestFriend1Conf = new PropertyConfiguration(p, "/bestFriend1");
         bestFriend1 = new TestUserInfo("bestFriend1");
+        Configuration bestFriend2Conf = new PropertyConfiguration(p, "/bestFriend2");
         bestFriend2 = new TestUserInfo("bestFriend2");
 
-        numberId = p.getProperty("numberid");
-        numberPass = p.getProperty("numberpass");
-        id1id = Integer.valueOf(p.getProperty("id1id"));
-        numberIdId = Integer.valueOf(p.getProperty("numberidid"));
+        numberId = p.getProperty("numberid.user");
+        numberPass = p.getProperty("numberid.password");
+//        id1id = Integer.valueOf(p.getProperty("id1id"));
+        numberIdId = Integer.valueOf(p.getProperty("numberid.id"));
 
-        twitterAPI1 = new TwitterFactory().getInstance();
-        twitterAPI1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        twitterAPI1.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
+        twitter1 = new TwitterFactory(conf1).getInstance();
 
-        twitterAPI2 = new Twitter();
-        twitterAPI2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        twitterAPI2.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
+        twitter2 = new TwitterFactory(conf2).getInstance();
 
-        twitterAPI3 = new Twitter();
-        twitterAPI3.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        twitterAPI3.setOAuthAccessToken(new AccessToken(id3.accessToken, id3.accessTokenSecret));
+        twitter3 = new TwitterFactory(conf3).getInstance();
 
-        twitterAPI4 = new Twitter();
-        twitterAPI4.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        twitterAPI4.setOAuthAccessToken(new AccessToken(id4.accessToken, id4.accessTokenSecret));
+        twitterAPIBestFriend1 = new TwitterFactory(bestFriend1Conf).getInstance();
 
-        twitterAPIBestFriend1 = new Twitter();
-        twitterAPIBestFriend1.setOAuthConsumer(desktopConsumerKey,desktopConsumerSecret);
-        twitterAPIBestFriend1.setOAuthAccessToken(new AccessToken(bestFriend1.accessToken, bestFriend1.accessTokenSecret));
+        twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
 
-        twitterAPIBestFriend2 = new Twitter();
-        twitterAPIBestFriend2.setOAuthConsumer(desktopConsumerKey,desktopConsumerSecret);
-        twitterAPIBestFriend2.setOAuthAccessToken(new AccessToken(bestFriend2.accessToken, bestFriend2.accessTokenSecret));
-
-
-        unauthenticated = new Twitter();
+        unauthenticated = new TwitterFactory().getInstance();
 
         followsOneWay = p.getProperty("followsOneWay");
     }

@@ -68,8 +68,8 @@ public class AuthorizationTest extends TwitterTestBase {
     public void testOAuthInstance() throws Exception {
         String consumerSecret;
         String consumerKey;
-        consumerSecret = p.getProperty("browserConsumerSecret");
-        consumerKey = p.getProperty("browserConsumerKey");
+        consumerSecret = p.getProperty("browser.oauth.consumerSecret");
+        consumerKey = p.getProperty("browser.oauth.consumerSecret");
 
         Twitter twitter = new TwitterFactory().getOAuthAuthorizedInstance(consumerKey, consumerSecret);
         assertFalse(twitter.isBasicAuthEnabled());
