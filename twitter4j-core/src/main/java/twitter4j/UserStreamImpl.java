@@ -38,16 +38,13 @@ import java.io.InputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-class UserStreamImpl extends AbstractStreamImplementation implements UserStream{
+class UserStreamImpl extends StatusStreamImpl implements UserStream{
     /*package*/ UserStreamImpl(InputStream stream) throws IOException {
         super(stream);
     }
     /*package*/ UserStreamImpl(HttpResponse response) throws IOException {
         super(response);
     }
-
-    private StreamListener[] listeners;
-    private String line;
 
     /**
      * {@inheritDoc}
@@ -73,20 +70,6 @@ class UserStreamImpl extends AbstractStreamImplementation implements UserStream{
     protected void onSender(JSONObject json) throws TwitterException{
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onDirectMessage(new DirectMessageJSONImpl(json));
-        }
-    }
-
-    @Override
-    protected void onStatus(JSONObject json) throws TwitterException{
-        for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onStatus(asStatus(json));
-        }
-    }
-
-    @Override
-    protected void onDelete(JSONObject json) throws TwitterException, JSONException{
-        for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onDeletionNotice(new StatusDeletionNoticeImpl(json));
         }
     }
 

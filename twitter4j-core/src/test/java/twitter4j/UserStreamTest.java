@@ -197,6 +197,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 //        assertReceived(TwitterMethod.RETWEET_STATUS);
         assertReceived(TwitterMethod.SEND_DIRECT_MESSAGE);
         assertReceived(TwitterMethod.DESTROY_STATUS);
+        assertReceived(TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
         assertReceived(TwitterMethod.SUBSCRIBE_LIST);
         assertReceived(TwitterMethod.CREATE_USER_LIST);
@@ -241,6 +242,10 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice){
         received.add(new Object[]{TwitterMethod.DESTROY_STATUS, statusDeletionNotice});
+        notifyResponse();
+    }
+    public void onDeletionNotice(int directMessageId, int userId){
+        received.add(new Object[]{TwitterMethod.DESTROY_DIRECT_MESSAGE, userId});
         notifyResponse();
     }
     public void onTrackLimitationNotice(int numberOfLimitedStatuses){

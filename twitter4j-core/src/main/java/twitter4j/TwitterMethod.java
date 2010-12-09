@@ -149,7 +149,7 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod DIRECT_MESSAGES = new TwitterMethod("DIRECT_MESSAGES");
     public static final TwitterMethod SENT_DIRECT_MESSAGES = new TwitterMethod("SENT_DIRECT_MESSAGES");
     public static final TwitterMethod SEND_DIRECT_MESSAGE = new TwitterMethod("SEND_DIRECT_MESSAGE");
-    public static final TwitterMethod DESTROY_DIRECT_MESSAGES = new TwitterMethod("DESTROY_DIRECT_MESSAGES");
+    public static final TwitterMethod DESTROY_DIRECT_MESSAGE = new TwitterMethod("DESTROY_DIRECT_MESSAGE");
 
     /*Friendship Methods*/
     public static final TwitterMethod CREATE_FRIENDSHIP = new TwitterMethod("CREATE_FRIENDSHIP");

@@ -36,6 +36,10 @@ public class UserStreamAdapter implements UserStreamListener {
 
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
     }
+
+    public void onDeletionNotice(int directMeesageId, int userId) {
+    }
+
     public void onTrackLimitationNotice(int numberOfLimitedStatuses){
     }
 

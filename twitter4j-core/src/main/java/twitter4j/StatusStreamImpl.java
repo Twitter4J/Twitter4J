@@ -53,9 +53,9 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
         super(response);
     }
 
-    private String line;
+    protected String line;
 
-    private StreamListener[] listeners;
+    protected StreamListener[] listeners;
 
     /**
      * Reads next status from this stream.
@@ -89,7 +89,16 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     @Override
     protected void onDelete(JSONObject json) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
-            ((StatusListener)listener).onDeletionNotice(new StatusDeletionNoticeImpl(json));
+            JSONObject deletionNotice = json.getJSONObject("delete");
+            if(deletionNotice.has("status")){
+                ((StatusListener)listener).onDeletionNotice(new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
+            }else{
+                JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
+                ((StatusListener)listener).onDeletionNotice(ParseUtil.getInt("id", directMessage)
+                        ,ParseUtil.getInt("user_id", directMessage));
+            }
+
+
         }
     }
     @Override

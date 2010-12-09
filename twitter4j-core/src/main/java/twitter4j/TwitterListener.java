@@ -461,7 +461,7 @@ public interface TwitterListener {
     TwitterMethod DIRECT_MESSAGES = TwitterMethod.DIRECT_MESSAGES;
     TwitterMethod SENT_DIRECT_MESSAGES = TwitterMethod.SENT_DIRECT_MESSAGES;
     TwitterMethod SEND_DIRECT_MESSAGE = TwitterMethod.SEND_DIRECT_MESSAGE;
-    TwitterMethod DESTROY_DIRECT_MESSAGES = TwitterMethod.DESTROY_DIRECT_MESSAGES;
+    TwitterMethod DESTROY_DIRECT_MESSAGE = TwitterMethod.DESTROY_DIRECT_MESSAGE;
 
     /*Friendship Methods*/
     TwitterMethod CREATE_FRIENDSHIP = TwitterMethod.CREATE_FRIENDSHIP;
