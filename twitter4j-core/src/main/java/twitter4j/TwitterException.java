@@ -46,8 +46,8 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     private static final long serialVersionUID = -2623309261327598087L;
     private Map<String, List<String>> responseHeaderFields = null;
 
-    public TwitterException(String msg) {
-        super(msg);
+    public TwitterException(String message) {
+        super(message);
         rateLimitStatus = null;
     }
 
@@ -59,8 +59,8 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         rateLimitStatus = null;
     }
 
-    public TwitterException(String msg, HttpResponse res) {
-        super(getCause(res) + "\n" + msg);
+    public TwitterException(String message, HttpResponse res) {
+        super(getCause(res) + "\n" + message);
         if (res.getStatusCode() == ENHANCE_YOUR_CLAIM) {
             // application exceeded the rate limitation
             // Search API returns Retry-After header that instructs the application when it is safe to continue.
@@ -80,6 +80,27 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
     }
 
+    /**
+     *
+     * @param message message
+     * @param retryAfter retry-after
+     * @param responseHeaderFields response header fields
+     * @param statusCode status code
+     * @param rateLimitStatus rate limit status
+     * @param featureSpecificLateLimitStatus feature specific rate limit status
+     * @since Twitter4J 2.1.9
+     */
+    public TwitterException(String message, int retryAfter
+            , Map<String, List<String>> responseHeaderFields
+            , int statusCode, RateLimitStatus rateLimitStatus
+            , RateLimitStatus featureSpecificLateLimitStatus) {
+        super(message);
+        this.retryAfter = retryAfter;
+        this.responseHeaderFields = responseHeaderFields;
+        this.statusCode = statusCode;
+        this.rateLimitStatus = rateLimitStatus;
+        this.featureSpecificRateLimitStatus = featureSpecificLateLimitStatus;
+    }
 
     public TwitterException(String msg, Exception cause) {
         super(msg, cause);
