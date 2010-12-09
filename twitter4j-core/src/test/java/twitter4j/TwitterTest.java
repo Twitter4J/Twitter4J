@@ -135,7 +135,7 @@ public class TwitterTest extends TwitterTestBase {
         assertFalse(user.isStatusFavorited());
         assertNull(user.getStatusInReplyToScreenName());
 
-        assertTrue(1 < user.getListedCount());
+        assertTrue(1 <= user.getListedCount());
         assertFalse(user.isFollowRequestSent());
 
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
