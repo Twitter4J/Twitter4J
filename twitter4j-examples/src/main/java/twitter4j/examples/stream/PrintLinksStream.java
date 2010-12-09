@@ -44,9 +44,21 @@ public class PrintLinksStream  extends StatusAdapter {
      * @param args
      */
     public static void main(String[] args)throws TwitterException {
-        StatusListener listener = new StatusAdapter() {
+        StatusListener listener = new StatusListener() {
             public void onStatus(Status status) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+            }
+
+            public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+                System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
+            }
+
+            public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
+                System.out.println("Got track limitation notice:" + numberOfLimitedStatuses);
+            }
+
+            public void onException(Exception ex) {
+                ex.printStackTrace();
             }
         };
         TwitterStream twitterStream = new TwitterStreamFactory(listener).getInstance();

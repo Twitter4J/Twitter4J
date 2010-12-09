@@ -137,9 +137,11 @@ public class GetAccessToken {
             System.out.println("Successfully stored access token to " + file.getAbsolutePath()+ ".");
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to get accessToken: " + te.getMessage());
             System.exit( -1);
         } catch (IOException ioe) {
+            ioe.printStackTrace();
             System.out.println("Failed to read the system input.");
             System.exit( -1);
         }

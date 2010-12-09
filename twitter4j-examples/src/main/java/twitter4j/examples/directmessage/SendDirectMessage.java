@@ -53,6 +53,7 @@ public final class SendDirectMessage {
             System.out.println("Direct message successfully sent to " + message.getRecipientScreenName());
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to send a direct message: " + te.getMessage());
             System.exit(-1);
         }

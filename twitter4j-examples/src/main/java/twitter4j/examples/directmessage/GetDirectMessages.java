@@ -57,6 +57,7 @@ public class GetDirectMessages {
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
+            te.printStackTrace();
             System.out.println("Failed to get messages: " + te.getMessage());
             System.exit(-1);
         }
