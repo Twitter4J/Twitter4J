@@ -31,10 +31,13 @@ package twitter4j;
  * @since Twitter4J 2.1.3
  */
 public class StatusAdapter implements StatusListener {
+    public void onException(Exception ex) {
+    }
+
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
     }
 
-    public void onException(Exception ex) {
+    public void onDeletionNotice(int directMessageId, int userId) {
     }
 
     public void onStatus(Status status) {
