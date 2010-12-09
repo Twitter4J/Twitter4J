@@ -50,16 +50,20 @@ public final class PrintUserStream {
             System.out.println("onStatus @" + status.getUser().getScreenName() + " - " + status.getText());
         }
 
+        public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+            System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
+        }
+
+        public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
+            System.out.println("Got a track limitation notice:" + numberOfLimitedStatuses);
+        }
+
         public void onFriendList(int[] friendIds) {
             System.out.print("onFriendList");
             for (int friendId : friendIds) {
                 System.out.print(" " + friendId);
             }
             System.out.println();
-        }
-
-        public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-            System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
         }
 
         public void onFavorite(User source, User target, Status favoritedStatus) {

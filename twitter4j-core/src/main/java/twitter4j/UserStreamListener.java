@@ -44,6 +44,18 @@ public interface UserStreamListener extends StreamListener {
     void onDeletionNotice(StatusDeletionNotice statusDeletionNotice);
 
     /**
+     * This notice will be sent each time a limited stream becomes unlimited.<br>
+     * If this number is high and or rapidly increasing, it is an indication that your predicate is too broad, and you should consider a predicate with higher selectivity.
+     *
+     * @param numberOfLimitedStatuses an enumeration of statuses that matched the track predicate but were administratively limited.
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#TrackLimiting">Streaming API Documentation - Track Limiting</a>
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#ParsingResponses">- Parsing Responses</a>
+     * @see <a href="http://groups.google.co.jp/group/twitter-development-talk/browse_thread/thread/15d0504b3dd7b939">Twitter Development Talk - Track API Limit message meaning</a>
+     * @since Twitter4J 2.1.0
+     */
+    void onTrackLimitationNotice(int numberOfLimitedStatuses);
+
+    /**
      * @param friendIds
      * @since Twitter4J 2.1.3
      */

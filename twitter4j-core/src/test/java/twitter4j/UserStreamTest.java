@@ -101,7 +101,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 
         //twit4j: 6358482
         //twit4j2: 6377362
-        twitterStream.user();
+        twitterStream.user(new String[]{"BAh7CToPY3JlYXR"});
         //expecting onFriendList for twit4j and twit4j2
         waitForStatus();
         waitForStatus();
@@ -128,6 +128,8 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         twitter1.destroyFriendship(6377362);
         waitForStatus();
 
+        status = twitter2.updateStatus("somerandometext " + new Date());
+        waitForStatus();
         // follow twit4j2
         twitter1.createFriendship(6377362);
         waitForStatus();
@@ -171,6 +173,18 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         waitForStatus();
         twitter1.destroyUserList(list.getId());
         waitForStatus();
+
+        // confirm if tracking term is effective
+        boolean found = false;
+        for (Object[] event : this.received) {
+            if ("onstatus".equals(event[0])) {
+                Status status1 = (Status)event[1];
+                if(-1 != status1.getText().indexOf("somerandometext"));
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
 
         assertReceived("onstatus");
         assertReceived("onfriendlist");
@@ -227,6 +241,10 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice){
         received.add(new Object[]{TwitterMethod.DESTROY_STATUS, statusDeletionNotice});
+        notifyResponse();
+    }
+    public void onTrackLimitationNotice(int numberOfLimitedStatuses){
+        received.add(new Object[]{"tracklimitation", numberOfLimitedStatuses});
         notifyResponse();
     }
 

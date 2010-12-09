@@ -156,7 +156,7 @@ public final class FilterQuery implements java.io.Serializable {
         }
         if (null != track && track.length > 0) {
             params.add(new HttpParameter("track"
-                    , toTrackString(track)));
+                    , StringUtil.join(track)));
         }
         if (null != locations && locations.length > 0) {
             params.add(new HttpParameter("locations"
@@ -179,17 +179,6 @@ public final class FilterQuery implements java.io.Serializable {
             buf.append(keywords[c][0]);
             buf.append(",");
             buf.append(keywords[c][1]);
-        }
-        return buf.toString();
-    }
-
-    private String toTrackString(final String[] keywords) {
-        final StringBuffer buf = new StringBuffer(20 * keywords.length * 4);
-        for (String keyword : keywords) {
-            if (0 != buf.length()) {
-                buf.append(",");
-            }
-            buf.append(keyword);
         }
         return buf.toString();
     }

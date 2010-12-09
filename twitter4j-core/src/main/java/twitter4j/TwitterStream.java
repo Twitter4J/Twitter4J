@@ -286,6 +286,18 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
      */
     public void user() {
+        user(null);
+    }
+
+    /**
+     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
+     *
+     * @param track keywords to track
+     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
+     * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
+     * @since Twitter4J 2.1.9
+     */
+    public void user(final String[] track) {
         ensureAuthorizationEnabled();
         ensureListenerIsSet();
         for (StreamListener listener : streamListeners) {
@@ -295,7 +307,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         }
         startHandler(new TwitterStreamConsumer() {
             public UserStream getStream() throws TwitterException {
-                return getUserStream();
+                return getUserStream(track);
             }
         });
     }
@@ -308,10 +320,30 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
      */
     public UserStream getUserStream() throws TwitterException {
+        return getUserStream(null);
+    }
+
+    /**
+     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
+     *
+     * @param track keywords to track
+     * @return UserStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
+     * @since Twitter4J 2.1.9
+     */
+    public UserStream getUserStream(String[] track) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new UserStreamImpl(http.get(conf.getUserStreamBaseURL() + "user.json"
-                    + (conf.isUserStreamRepliesAllEnabled() ? "?replies=all" : "")
+            List<HttpParameter> params = new ArrayList<HttpParameter>();
+            if(conf.isUserStreamRepliesAllEnabled()){
+                params.add(new HttpParameter("replies","all"));
+            }
+            if(null != track){
+                params.add(new HttpParameter("track", StringUtil.join(track)));
+            }
+            return new UserStreamImpl(http.post(conf.getUserStreamBaseURL() + "user.json"
+                    ,params.toArray(new HttpParameter[params.size()])
                     , auth));
         } catch (IOException e) {
             throw new TwitterException(e);
