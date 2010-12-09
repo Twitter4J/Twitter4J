@@ -126,14 +126,16 @@ public class TwitterTest extends TwitterTestBase {
         assertNotNull(user.getProfileTextColor());
 
         assertTrue(1 < user.getFollowersCount());
-        assertNotNull(user.getStatusCreatedAt());
-        assertNotNull(user.getStatusText());
-        assertNotNull(user.getStatusSource());
-        assertFalse(user.isStatusFavorited());
-        assertEquals(-1, user.getStatusInReplyToStatusId());
-        assertEquals(-1, user.getStatusInReplyToUserId());
-        assertFalse(user.isStatusFavorited());
-        assertNull(user.getStatusInReplyToScreenName());
+        if (null != user.getStatus()) {
+            assertNotNull(user.getStatusCreatedAt());
+            assertNotNull(user.getStatusText());
+            assertNotNull(user.getStatusSource());
+            assertFalse(user.isStatusFavorited());
+            assertEquals(-1, user.getStatusInReplyToStatusId());
+            assertEquals(-1, user.getStatusInReplyToUserId());
+            assertFalse(user.isStatusFavorited());
+            assertNull(user.getStatusInReplyToScreenName());
+        }
 
         assertTrue(1 <= user.getListedCount());
         assertFalse(user.isFollowRequestSent());
@@ -272,7 +274,7 @@ public class TwitterTest extends TwitterTestBase {
         userList = twitter1.addUserListMember(userList.getId(), id2.id);
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(DataObjectFactory.getRawJSON(userList));
-        userList = twitter1.addUserListMembers(userList.getId(), new int[]{id4.id,id2.id});
+        userList = twitter1.addUserListMembers(userList.getId(), new int[]{id3.id,id2.id});
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(DataObjectFactory.getRawJSON(userList));
         userList = twitter1.addUserListMembers(userList.getId(), new String[]{"akr", "yusukey"});
@@ -296,10 +298,10 @@ public class TwitterTest extends TwitterTestBase {
         //
 //        assertEquals(1, userList.getMemberCount());
 
-        user = twitter1.checkUserListMembership(id1.screenName, userList.getId(), id4.id);
+        user = twitter1.checkUserListMembership(id1.screenName, userList.getId(), id3.id);
         assertNotNull(DataObjectFactory.getRawJSON(user));
         assertEquals(user, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user)));
-        assertEquals(id4.id, user.getId());
+        assertEquals(id3.id, user.getId());
 
         userLists = twitter1.getUserListMemberships(id1.screenName, -1l);
         assertNotNull(DataObjectFactory.getRawJSON(userLists));
@@ -345,16 +347,16 @@ public class TwitterTest extends TwitterTestBase {
 //        assertEquals(1, users.size()); //only id4 should be subscribing the userList
         assertTrue(0 <= users.size()); // workarounding issue 1300
         try {
-            user = twitter1.checkUserListSubscription(id1.screenName, userList.getId(), id4.id);
+            user = twitter1.checkUserListSubscription(id1.screenName, userList.getId(), id3.id);
             assertNotNull(DataObjectFactory.getRawJSON(user));
             assertEquals(user, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user)));
-            assertEquals(id4.id, user.getId());
+            assertEquals(id3.id, user.getId());
         } catch (TwitterException te) {
             // workarounding issue 1300
             assertEquals(404, te.getStatusCode());
         }
 
-        userLists = twitter1.getUserListSubscriptions(id4.screenName, -1l);
+        userLists = twitter1.getUserListSubscriptions(id3.screenName, -1l);
         assertNotNull(userLists);
         if (userLists.size() > 0) {
             assertEquals(userLists.get(0), DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userLists.get(0))));

@@ -85,7 +85,7 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         }
     }
 
-    protected void onText(final JSONObject json) throws TwitterException {
+    protected void onStatus(final JSONObject json) throws TwitterException {
         dispatcher.invokeLater(new SiteStreamEvent(forUser) {
             public void run() {
                 try {

@@ -77,9 +77,16 @@ class UserStreamImpl extends AbstractStreamImplementation implements UserStream{
     }
 
     @Override
-    protected void onText(JSONObject json) throws TwitterException{
+    protected void onStatus(JSONObject json) throws TwitterException{
         for (StreamListener listener : listeners) {
-            ((UserStreamListener)listener).onStatus(asStatus(json));
+            ((UserStreamListener) listener).onStatus(asStatus(json));
+        }
+    }
+
+    @Override
+    protected void onDelete(JSONObject json) throws TwitterException, JSONException{
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onDeletionNotice(new StatusDeletionNoticeImpl(json));
         }
     }
 

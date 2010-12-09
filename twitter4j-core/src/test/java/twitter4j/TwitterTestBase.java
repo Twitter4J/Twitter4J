@@ -45,7 +45,7 @@ public class TwitterTestBase extends TestCase {
 
     protected String numberId, numberPass, followsOneWay;
     protected int numberIdId;
-    protected TestUserInfo id1, id2, id4, bestFriend1, bestFriend2;
+    protected TestUserInfo id1, id2, id3, bestFriend1, bestFriend2;
     protected Configuration conf1, conf2, conf3;
 
     protected class TestUserInfo {
@@ -85,7 +85,7 @@ public class TwitterTestBase extends TestCase {
         conf2 = new PropertyConfiguration(p, "/id2");
         id2 = new TestUserInfo("id2");
         conf3 = new PropertyConfiguration(p, "/id3");
-        id4 = new TestUserInfo("id3");
+        id3 = new TestUserInfo("id3");
         Configuration bestFriend1Conf = new PropertyConfiguration(p, "/bestFriend1");
         bestFriend1 = new TestUserInfo("bestFriend1");
         Configuration bestFriend2Conf = new PropertyConfiguration(p, "/bestFriend2");

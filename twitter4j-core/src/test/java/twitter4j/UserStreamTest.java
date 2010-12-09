@@ -109,8 +109,6 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         Status status = twitter2.updateStatus("@twit4j " + new Date());
         //expecting onStatus for twit4j from twit4j
         waitForStatus();
-        assertReceived("onstatus");
-        assertReceived("onfriendlist");
 
         twitter1.createFavorite(status.getId());
         waitForStatus();
@@ -135,7 +133,15 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         waitForStatus();
 
         twitter1.retweetStatus(status.getId());
-        twitter1.sendDirectMessage(6377362, "test " + new Date());
+        waitForStatus();
+        DirectMessage dm = twitter1.sendDirectMessage(6377362, "test " + new Date());
+        waitForStatus();
+
+        twitter2.destroyStatus(status.getId());
+        waitForStatus();
+
+        twitter1.destroyDirectMessage(dm.getId());
+        waitForStatus();
 
         // block twit4j
         twitter1.createBlock(6377362);
@@ -166,6 +172,8 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         twitter1.destroyUserList(list.getId());
         waitForStatus();
 
+        assertReceived("onstatus");
+        assertReceived("onfriendlist");
         assertReceived(TwitterMethod.CREATE_FAVORITE);
         assertReceived(TwitterMethod.DESTROY_FAVORITE);
         // http://groups.google.com/group/twitter-development-talk/browse_thread/thread/d29c5bd56c49c23c#
@@ -174,6 +182,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         // http://groups.google.com/group/twitter-development-talk/browse_thread/thread/d29c5bd56c49c23c#
 //        assertReceived(TwitterMethod.RETWEET_STATUS);
         assertReceived(TwitterMethod.SEND_DIRECT_MESSAGE);
+        assertReceived(TwitterMethod.DESTROY_STATUS);
 
         assertReceived(TwitterMethod.SUBSCRIBE_LIST);
         assertReceived(TwitterMethod.CREATE_USER_LIST);
@@ -214,6 +223,10 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     public void onStatus(Status status) {
         received.add(new Object[]{"onstatus", status});
         assertNotNull(DataObjectFactory.getRawJSON(status));
+        notifyResponse();
+    }
+    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice){
+        received.add(new Object[]{TwitterMethod.DESTROY_STATUS, statusDeletionNotice});
         notifyResponse();
     }
 

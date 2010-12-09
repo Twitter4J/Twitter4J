@@ -31,7 +31,6 @@ import twitter4j.http.AccessToken;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Properties;
 
 public class StreamAPITest extends TwitterTestBase implements StatusListener, ConnectionLifeCycleListener {
@@ -52,7 +51,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         twitterStream.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
         twitterStream.addListener(this);
 
-        protectedTwitter = new TwitterFactory().getInstance(id4.screenName, id4.password);
+        protectedTwitter = new TwitterFactory().getInstance(id3.screenName, id3.password);
         this.status = null;
         this.deletionNotice = null;
     }

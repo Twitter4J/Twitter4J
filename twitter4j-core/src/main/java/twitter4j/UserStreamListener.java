@@ -35,6 +35,15 @@ public interface UserStreamListener extends StreamListener {
     void onStatus(Status status);
 
     /**
+     * Called upon deletionNotice notices. Clients are urged to honor deletionNotice requests and discard deleted statuses immediately. At times, status deletionNotice messages may arrive before the status. Even in this case, the late arriving status should be deleted from your backing store.
+     *
+     * @param statusDeletionNotice the deletionNotice notice
+     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#ParsingResponses">Streaming API Documentation - Parsing Responses</a>
+     * @since Twitter4J 2.1.0
+     */
+    void onDeletionNotice(StatusDeletionNotice statusDeletionNotice);
+
+    /**
      * @param friendIds
      * @since Twitter4J 2.1.3
      */

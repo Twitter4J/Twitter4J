@@ -81,7 +81,7 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     }
 
     @Override
-    protected void onText(JSONObject json) throws TwitterException {
+    protected void onStatus(JSONObject json) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((StatusListener)listener).onStatus(asStatus(json));
         }

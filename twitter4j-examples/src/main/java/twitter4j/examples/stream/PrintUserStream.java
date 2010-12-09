@@ -58,6 +58,10 @@ public final class PrintUserStream {
             System.out.println();
         }
 
+        public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+            System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
+        }
+
         public void onFavorite(User source, User target, Status favoritedStatus) {
             System.out.println("onFavorite source:@"
                     + source.getScreenName() + " target:@"

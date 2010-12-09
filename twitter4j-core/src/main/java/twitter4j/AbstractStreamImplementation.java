@@ -84,7 +84,7 @@ abstract class AbstractStreamImplementation {
                     if (!json.isNull("sender")) {
                         onSender(json);
                     } else if (!json.isNull("text")) {
-                        onText(json);
+                        onStatus(json);
                     } else if (!json.isNull("direct_message")) {
                         onDirectMessage(json);
                     } else if (!json.isNull("delete")) {
@@ -152,7 +152,7 @@ abstract class AbstractStreamImplementation {
     }
 
     protected void onSender(JSONObject json) throws TwitterException {}
-    protected void onText(JSONObject json) throws TwitterException {}
+    protected void onStatus(JSONObject json) throws TwitterException {}
     protected void onDirectMessage(JSONObject json) throws TwitterException , JSONException{}
     protected void onDelete(JSONObject json) throws TwitterException , JSONException{}
     protected void onLimit(JSONObject json) throws TwitterException , JSONException{}

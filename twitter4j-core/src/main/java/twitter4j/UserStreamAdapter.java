@@ -34,6 +34,9 @@ public class UserStreamAdapter implements UserStreamListener {
     public void onStatus(Status status) {
     }
 
+    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+    }
+
     public void onFriendList(int[] friendIds) {
     }
 
