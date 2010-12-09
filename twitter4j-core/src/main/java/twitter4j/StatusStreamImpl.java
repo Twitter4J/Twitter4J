@@ -94,11 +94,9 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
                 ((StatusListener)listener).onDeletionNotice(new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
             }else{
                 JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
-                ((StatusListener)listener).onDeletionNotice(ParseUtil.getInt("id", directMessage)
+                ((UserStreamListener)listener).onDeletionNotice(ParseUtil.getInt("id", directMessage)
                         ,ParseUtil.getInt("user_id", directMessage));
             }
-
-
         }
     }
     @Override

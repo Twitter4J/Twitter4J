@@ -30,19 +30,7 @@ package twitter4j;
  * @author Rémy Rakic at gmail.com
  * @since Twitter4J 2.1.3
  */
-public class UserStreamAdapter implements UserStreamListener {
-    public void onStatus(Status status) {
-    }
-
-    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-    }
-
-    public void onDeletionNotice(int directMeesageId, int userId) {
-    }
-
-    public void onTrackLimitationNotice(int numberOfLimitedStatuses){
-    }
-
+public class UserStreamAdapter extends StatusAdapter {
     public void onFriendList(int[] friendIds) {
     }
 

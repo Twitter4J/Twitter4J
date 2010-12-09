@@ -43,8 +43,6 @@ public interface StatusListener extends StreamListener {
      */
     void onDeletionNotice(StatusDeletionNotice statusDeletionNotice);
 
-    void onDeletionNotice(int directMessageId, int userId);
-
     /**
      * This notice will be sent each time a limited stream becomes unlimited.<br>
      * If this number is high and or rapidly increasing, it is an indication that your predicate is too broad, and you should consider a predicate with higher selectivity.

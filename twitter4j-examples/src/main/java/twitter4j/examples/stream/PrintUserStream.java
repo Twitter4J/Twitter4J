@@ -54,6 +54,10 @@ public final class PrintUserStream {
             System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
         }
 
+        public void onDeletionNotice(int directMessageId, int userId){
+            System.out.println("Got a direct message deletion notice id:" + directMessageId);
+        }
+
         public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
             System.out.println("Got a track limitation notice:" + numberOfLimitedStatuses);
         }
