@@ -64,6 +64,10 @@ public final class PrintFilterStream {
                 System.out.println("Got track limitation notice:" + numberOfLimitedStatuses);
             }
 
+            public void onScrubGeo(int userId, long upToStatusId) {
+                System.out.println("Got scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);
+            }
+
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }

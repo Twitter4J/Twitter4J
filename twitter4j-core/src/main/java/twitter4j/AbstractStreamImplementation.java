@@ -61,9 +61,11 @@ abstract class AbstractStreamImplementation {
         this(response.asStream());
         this.response = response;
     }
-    protected String parseLine(String line){
+
+    protected String parseLine(String line) {
         return line;
     }
+
     abstract void next(StreamListener[] listeners) throws TwitterException;
 
     protected void handleNextElement() throws TwitterException {
@@ -93,8 +95,6 @@ abstract class AbstractStreamImplementation {
                         onLimit(json);
                     } else if (!json.isNull("scrub_geo")) {
                         onScrubGeo(json);
-                        // Not implemented yet
-                        System.out.println("Geo-tagging deletion notice (not implemented yet): " + line);
                     } else if (!json.isNull("friends")) {
                         onFriends(json);
                     } else if (!json.isNull("event")) {
@@ -110,8 +110,6 @@ abstract class AbstractStreamImplementation {
                             onRetweet(sourceJSON, targetJSON, json.getJSONObject("target_object"));
                         } else if ("follow".equals(event)) {
                             onFollow(sourceJSON, targetJSON);
-                        } else if ("unfollow".equals(event)) {
-                            onUnfollow(sourceJSON, targetJSON);
                         } else if (event.startsWith("list_")) {
                             if ("list_user_subscribed".equals(event)) {
                                 JSONObject targetObjectJSON = json.getJSONObject("target_object");
@@ -151,26 +149,59 @@ abstract class AbstractStreamImplementation {
         }
     }
 
-    protected void onSender(JSONObject json) throws TwitterException {}
-    protected void onStatus(JSONObject json) throws TwitterException {}
-    protected void onDirectMessage(JSONObject json) throws TwitterException , JSONException{}
-    protected void onDelete(JSONObject json) throws TwitterException , JSONException{}
-    protected void onLimit(JSONObject json) throws TwitterException , JSONException{}
-    protected void onScrubGeo(JSONObject json) throws TwitterException {}
-    protected void onFriends(JSONObject json) throws TwitterException  ,JSONException{}
-    protected void onFavorite(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {}
-    protected void onUnfavorite(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {}
-    protected void onRetweet(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {}
-    protected void onFollow(JSONObject source, JSONObject target) throws TwitterException {}
-    protected void onUnfollow(JSONObject source, JSONObject target) throws TwitterException {}
-    protected void onUserListSubscribed(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException , JSONException{}
-    protected void onUserListCreated(JSONObject source, JSONObject userList) throws TwitterException , JSONException{}
-    protected void onUserListUpdated(JSONObject source, JSONObject userList) throws TwitterException, JSONException {}
-    protected void onUserListDestroyed(JSONObject source, JSONObject userList) throws TwitterException {}
-    protected void onBlock(JSONObject source, JSONObject target) throws TwitterException {}
-    protected void onUnblock(JSONObject source, JSONObject target) throws TwitterException {}
+    protected void onSender(JSONObject json) throws TwitterException {
+    }
 
-    protected void onException(Exception e){}
+    protected void onStatus(JSONObject json) throws TwitterException {
+    }
+
+    protected void onDirectMessage(JSONObject json) throws TwitterException, JSONException {
+    }
+
+    protected void onDelete(JSONObject json) throws TwitterException, JSONException {
+    }
+
+    protected void onLimit(JSONObject json) throws TwitterException, JSONException {
+    }
+
+    protected void onScrubGeo(JSONObject json) throws TwitterException, JSONException {
+    }
+
+    protected void onFriends(JSONObject json) throws TwitterException, JSONException {
+    }
+
+    protected void onFavorite(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {
+    }
+
+    protected void onUnfavorite(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {
+    }
+
+    protected void onRetweet(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {
+    }
+
+    protected void onFollow(JSONObject source, JSONObject target) throws TwitterException {
+    }
+
+    protected void onUserListSubscribed(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    }
+
+    protected void onUserListCreated(JSONObject source, JSONObject userList) throws TwitterException, JSONException {
+    }
+
+    protected void onUserListUpdated(JSONObject source, JSONObject userList) throws TwitterException, JSONException {
+    }
+
+    protected void onUserListDestroyed(JSONObject source, JSONObject userList) throws TwitterException {
+    }
+
+    protected void onBlock(JSONObject source, JSONObject target) throws TwitterException {
+    }
+
+    protected void onUnblock(JSONObject source, JSONObject target) throws TwitterException {
+    }
+
+    protected void onException(Exception e) {
+    }
 
     public void close() throws IOException {
         streamAlive = false;
@@ -180,12 +211,14 @@ abstract class AbstractStreamImplementation {
             response.disconnect();
         }
     }
-    protected Status asStatus(JSONObject json) throws TwitterException{
+
+    protected Status asStatus(JSONObject json) throws TwitterException {
         Status status = new StatusJSONImpl(json);
         DataObjectFactoryUtil.registerJSONObject(status, json);
         return status;
     }
-    protected DirectMessage asDirectMessage(JSONObject json) throws TwitterException{
+
+    protected DirectMessage asDirectMessage(JSONObject json) throws TwitterException {
         DirectMessage directMessage = null;
         try {
             directMessage = new DirectMessageJSONImpl(json.getJSONObject("direct_message"));
@@ -195,6 +228,7 @@ abstract class AbstractStreamImplementation {
         DataObjectFactoryUtil.registerJSONObject(directMessage, json);
         return directMessage;
     }
+
     protected int[] asFriendList(JSONObject json) throws TwitterException {
         JSONArray friends = null;
         try {
@@ -208,12 +242,14 @@ abstract class AbstractStreamImplementation {
             throw new TwitterException(e);
         }
     }
-    protected User asUser(JSONObject json) throws TwitterException{
+
+    protected User asUser(JSONObject json) throws TwitterException {
         User user = new UserJSONImpl(json);
         DataObjectFactoryUtil.registerJSONObject(user, json);
         return user;
     }
-    protected UserList asUserList(JSONObject json) throws TwitterException{
+
+    protected UserList asUserList(JSONObject json) throws TwitterException {
         UserList userList = new UserListJSONImpl(json);
         DataObjectFactoryUtil.registerJSONObject(userList, json);
         return userList;

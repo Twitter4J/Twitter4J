@@ -54,8 +54,16 @@ public final class PrintUserStream {
             System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
         }
 
+        public void onDeletionNotice(int directMessageId, int userId){
+            System.out.println("Got a direct message deletion notice id:" + directMessageId);
+        }
+
         public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
             System.out.println("Got a track limitation notice:" + numberOfLimitedStatuses);
+        }
+
+        public void onScrubGeo(int userId, long upToStatusId) {
+            System.out.println("Got scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);
         }
 
         public void onFriendList(int[] friendIds) {
@@ -86,12 +94,6 @@ public final class PrintUserStream {
             System.out.println("onFollow source:@"
                     + source.getScreenName() + " target:@"
                     + followedUser.getScreenName());
-        }
-
-        public void onUnfollow(User source, User unfollowedUser) {
-            System.out.println("onUnfollow source:@"
-                    + source.getScreenName() + " target:@"
-                    + unfollowedUser.getScreenName());
         }
 
         public void onRetweet(User source, User target, Status retweetedStatus) {

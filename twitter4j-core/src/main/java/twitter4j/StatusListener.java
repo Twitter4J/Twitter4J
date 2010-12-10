@@ -43,8 +43,6 @@ public interface StatusListener extends StreamListener {
      */
     void onDeletionNotice(StatusDeletionNotice statusDeletionNotice);
 
-    void onDeletionNotice(int directMessageId, int userId);
-
     /**
      * This notice will be sent each time a limited stream becomes unlimited.<br>
      * If this number is high and or rapidly increasing, it is an indication that your predicate is too broad, and you should consider a predicate with higher selectivity.
@@ -56,4 +54,12 @@ public interface StatusListener extends StreamListener {
      * @since Twitter4J 2.1.0
      */
     void onTrackLimitationNotice(int numberOfLimitedStatuses);
+
+    /**
+     * Called upon location deletion messages. Clients are urged to honor deletion requests and remove appropriate geolocation information from both the display and your backing store immediately. Note that in some cases the location deletion message may arrive before a tweet that lies within the deletion range arrives. You should still strip the location data.
+     * @param userId user id
+     * @param upToStatusId up to status id
+     * @since Twitter4J 2.1.9
+     */
+    void onScrubGeo(int userId, long upToStatusId);
 }
