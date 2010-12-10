@@ -190,8 +190,6 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         assertReceived("onfriendlist");
         assertReceived(TwitterMethod.CREATE_FAVORITE);
         assertReceived(TwitterMethod.DESTROY_FAVORITE);
-        // http://groups.google.com/group/twitter-development-talk/browse_thread/thread/d29c5bd56c49c23c#
-//        assertReceived(TwitterMethod.DESTROY_FRIENDSHIP);
         assertReceived(TwitterMethod.CREATE_FRIENDSHIP);
         // http://groups.google.com/group/twitter-development-talk/browse_thread/thread/d29c5bd56c49c23c#
 //        assertReceived(TwitterMethod.RETWEET_STATUS);
@@ -275,18 +273,12 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onFollow(User source, User followedUser) {
+        System.out.println("onfollow");
+        this.source = source;
+        this.target = followedUser;
         received.add(new Object[]{TwitterMethod.CREATE_FRIENDSHIP, source, followedUser});
         assertNotNull(DataObjectFactory.getRawJSON(source));
         assertNotNull(DataObjectFactory.getRawJSON(followedUser));
-        notifyResponse();
-    }
-
-    public void onUnfollow(User source, User unfollowedUser) {
-        received.add(new Object[]{TwitterMethod.DESTROY_FRIENDSHIP, source, unfollowedUser});
-        this.source = source;
-        this.target = unfollowedUser;
-        assertNotNull(DataObjectFactory.getRawJSON(source));
-        assertNotNull(DataObjectFactory.getRawJSON(unfollowedUser));
         notifyResponse();
     }
 

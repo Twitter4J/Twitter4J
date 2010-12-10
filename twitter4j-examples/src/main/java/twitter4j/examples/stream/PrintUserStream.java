@@ -92,12 +92,6 @@ public final class PrintUserStream {
                     + followedUser.getScreenName());
         }
 
-        public void onUnfollow(User source, User unfollowedUser) {
-            System.out.println("onUnfollow source:@"
-                    + source.getScreenName() + " target:@"
-                    + unfollowedUser.getScreenName());
-        }
-
         public void onRetweet(User source, User target, Status retweetedStatus) {
             System.out.println("onRetweet @"
                     + retweetedStatus.getUser().getScreenName() + " - "

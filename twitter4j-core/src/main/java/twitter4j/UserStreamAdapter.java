@@ -30,7 +30,7 @@ package twitter4j;
  * @author Rémy Rakic at gmail.com
  * @since Twitter4J 2.1.3
  */
-public class UserStreamAdapter extends StatusAdapter {
+public class UserStreamAdapter extends StatusAdapter implements UserStreamListener{
     public void onFriendList(int[] friendIds) {
     }
 
@@ -44,9 +44,6 @@ public class UserStreamAdapter extends StatusAdapter {
     }
 
     public void onRetweet(User source, User target, Status retweetedStatus) {
-    }
-
-    public void onUnfollow(User source, User unfollowedUser) {
     }
 
     public void onDirectMessage(DirectMessage directMessage) {

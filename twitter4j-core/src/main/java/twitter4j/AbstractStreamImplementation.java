@@ -110,8 +110,6 @@ abstract class AbstractStreamImplementation {
                             onRetweet(sourceJSON, targetJSON, json.getJSONObject("target_object"));
                         } else if ("follow".equals(event)) {
                             onFollow(sourceJSON, targetJSON);
-                        } else if ("unfollow".equals(event)) {
-                            onUnfollow(sourceJSON, targetJSON);
                         } else if (event.startsWith("list_")) {
                             if ("list_user_subscribed".equals(event)) {
                                 JSONObject targetObjectJSON = json.getJSONObject("target_object");
@@ -162,7 +160,6 @@ abstract class AbstractStreamImplementation {
     protected void onUnfavorite(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {}
     protected void onRetweet(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {}
     protected void onFollow(JSONObject source, JSONObject target) throws TwitterException {}
-    protected void onUnfollow(JSONObject source, JSONObject target) throws TwitterException {}
     protected void onUserListSubscribed(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException , JSONException{}
     protected void onUserListCreated(JSONObject source, JSONObject userList) throws TwitterException , JSONException{}
     protected void onUserListUpdated(JSONObject source, JSONObject userList) throws TwitterException, JSONException {}

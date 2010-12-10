@@ -124,13 +124,6 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream{
     }
 
     @Override
-    protected void onUnfollow(JSONObject source, JSONObject target) throws TwitterException {
-        for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onUnfollow(asUser(source), asUser(target));
-        }
-    }
-
-    @Override
     protected void onUserListSubscribed(JSONObject source, JSONObject owner, JSONObject target) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onUserListSubscribed(asUser(source), asUser(owner), asUserList(target));
