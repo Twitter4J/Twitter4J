@@ -251,6 +251,11 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
 
+    public void onScrubGeo(int userId, long upToStatusId) {
+        received.add(new Object[]{"scrubgeo", userId, upToStatusId});
+        notifyResponse();
+    }
+
     public void onFriendList(int[] friendIds) {
         received.add(new Object[]{"onfriendlist", friendIds});
         notifyResponse();

@@ -37,6 +37,8 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     protected TwitterStream twitterStream = null;
     protected Twitter protectedTwitter = null;
     protected Properties p = new Properties();
+    private int userId;
+    private long upToStatusId;
 
     public StreamAPITest(String name) {
         super(name);
@@ -74,6 +76,9 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         assertEquals(121564, trackLimit);
         stream.next(this);
         assertEquals("ngantuk banget nguap mulu", status.getText());
+        stream.next(this);
+        assertEquals(14090452, userId);
+        assertEquals(23260136625l, upToStatusId);
         try {
             stream.next(this);
             fail("expecting TwitterException");
@@ -252,6 +257,13 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
         this.trackLimit = numberOfLimitedStatuses;
         System.out.println("got limit notice:" + numberOfLimitedStatuses);
+        notifyResponse();
+    }
+
+    public void onScrubGeo(int userId, long upToStatusId) {
+        this.userId = userId;
+        this.upToStatusId = upToStatusId;
+        System.out.println("got onScrubGeo");
         notifyResponse();
     }
 

@@ -95,7 +95,7 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
             }else{
                 JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
                 ((UserStreamListener)listener).onDeletionNotice(ParseUtil.getInt("id", directMessage)
-                        ,ParseUtil.getInt("user_id", directMessage));
+                        , ParseUtil.getInt("user_id", directMessage));
             }
         }
     }
@@ -104,6 +104,16 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
         for (StreamListener listener : listeners) {
             ((StatusListener)listener).onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
         }
+    }
+
+    @Override
+    protected void onScrubGeo(JSONObject json) throws TwitterException, JSONException {
+        JSONObject scrubGeo = json.getJSONObject("scrub_geo");
+        for (StreamListener listener : listeners) {
+            ((StatusListener) listener).onScrubGeo(ParseUtil.getInt("user_id", scrubGeo)
+                    , ParseUtil.getLong("up_to_status_id", scrubGeo));
+        }
+
     }
 
     @Override

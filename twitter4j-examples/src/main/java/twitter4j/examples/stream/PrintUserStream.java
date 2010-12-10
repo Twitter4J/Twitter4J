@@ -62,6 +62,10 @@ public final class PrintUserStream {
             System.out.println("Got a track limitation notice:" + numberOfLimitedStatuses);
         }
 
+        public void onScrubGeo(int userId, long upToStatusId) {
+            System.out.println("Got scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);
+        }
+
         public void onFriendList(int[] friendIds) {
             System.out.print("onFriendList");
             for (int friendId : friendIds) {
