@@ -660,6 +660,8 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                                         logger.warn(e.getMessage());
                                     }
                                 }
+                            } catch (Exception e) {
+                              logger.warn("Unhandled exception during stream processing: " + e);
                             }
                         }
                     }
