@@ -125,8 +125,6 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             Status status = twit4j2.updateStatus("@twit4j " + new Date());
             //expecting onStatus for twit4j from twit4j
             waitForStatus();
-            assertReceived("onstatus");
-            assertReceived("onfriendlist");
 
             twit4j.createFavorite(status.getId());
             waitForStatus();
@@ -184,6 +182,8 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             twit4j.destroyUserList(list.getId());
             waitForStatus();
 
+            assertReceived("onstatus");
+            assertReceived("onfriendlist");
             assertReceived(TwitterMethod.CREATE_FAVORITE);
             assertReceived(TwitterMethod.DESTROY_FAVORITE);
 //            assertReceived(TwitterMethod.DESTROY_FRIENDSHIP);
