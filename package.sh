@@ -37,12 +37,18 @@ cp -r powered-by-badge $DIR/
 
 mkdir $DIR/twitter4j-core/javadoc/
 unzip twitter4j-core/target/twitter4j-core-$1-javadoc.jar -d $DIR/twitter4j-core/javadoc/
+cp twitter4j-core/target/twitter4j-core-$1-javadoc.jar -d $DIR/twitter4j-core/
+cp twitter4j-core/target/twitter4j-core-$1-sources.jar -d $DIR/twitter4j-core/
 
 mkdir $DIR/twitter4j-media-support/javadoc/
 unzip twitter4j-media-support/target/twitter4j-media-support-$1-javadoc.jar -d $DIR/twitter4j-media-support/javadoc/
+cp twitter4j-media-support/target/twitter4j-media-support-$1-javadoc.jar -d $DIR/twitter4j-media-support/
+cp twitter4j-media-support/target/twitter4j-media-support-$1-sources.jar -d $DIR/twitter4j-media-support/
 
 mkdir $DIR/twitter4j-examples/javadoc/
 unzip twitter4j-examples/target/twitter4j-examples-$1-javadoc.jar -d $DIR/twitter4j-examples/javadoc/
+cp twitter4j-examples/target/twitter4j-examples-$1-javadoc.jar -d $DIR/twitter4j-examples/
+cp twitter4j-examples/target/twitter4j-examples-$1-sources.jar -d $DIR/twitter4j-examples/
 
 #cp twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1.jar $DIR/twitter4j-httpclient-support/
 #mkdir $DIR/twitter4j-httpclient-support/javadoc/
