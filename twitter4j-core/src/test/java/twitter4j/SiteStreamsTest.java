@@ -29,6 +29,7 @@ package twitter4j;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
+import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
@@ -56,7 +57,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
     public void testStream() throws Exception {
         InputStream is = SiteStreamsTest.class.getResourceAsStream("/sitestream-testcase.json");
-        SiteStreamsImpl siteStreams = new SiteStreamsImpl(ConfigurationContext.getInstance(), is);
+        SiteStreamsImpl siteStreams = new SiteStreamsImpl(new DispatcherFactory(ConfigurationContext.getInstance()).getInstance(), is);
         SiteStreamsListener[] listeners = new SiteStreamsListener[1];
         listeners[0] = this;
         received.clear();

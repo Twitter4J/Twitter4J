@@ -1801,7 +1801,9 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
      *
      * @since Twitter4J 2.0.2
      */
+    @Override
     public void shutdown(){
+        super.shutdown();
         synchronized (AsyncTwitter.class) {
             if (shutdown) {
                 throw new IllegalStateException("Already shut down");

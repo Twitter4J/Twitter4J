@@ -29,6 +29,8 @@ package twitter4j;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
+import twitter4j.internal.async.Dispatcher;
+import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 import twitter4j.internal.http.HttpParameter;
@@ -371,12 +373,43 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         startHandler(new TwitterStreamConsumer() {
             public StreamImplementation getStream() throws TwitterException {
                 try {
-                    return new SiteStreamsImpl(ConfigurationContext.getInstance(), getSiteStream(withFollowings, follow));
+                    return new SiteStreamsImpl(dispatcher, getSiteStream(withFollowings, follow));
                 } catch (IOException e) {
                     throw new TwitterException(e);
                 }
             }
         });
+    }
+    private Dispatcher getDispatcher(){
+        if(shutdown){
+            throw new IllegalStateException("Already shut down");
+        }
+        if (null == dispatcher) {
+            dispatcher = new DispatcherFactory(conf).getInstance();
+        }
+        return dispatcher;
+    }
+    private static transient Dispatcher dispatcher;
+    private boolean shutdown = false;
+
+    /**
+     * Shuts down internal dispatcher thread used by site stream.
+     *
+     * @since Twitter4J 2.1.9
+     */
+    @Override
+    public void shutdown(){
+        super.shutdown();
+        cleanUp();
+        synchronized (AsyncTwitter.class) {
+            if (shutdown) {
+                throw new IllegalStateException("Already shut down");
+            }
+            getDispatcher().shutdown();
+            dispatcher = null;
+            super.shutdown();
+            shutdown = true;
+        }
     }
 
     InputStream getSiteStream(boolean withFollowings, int[] follow) throws TwitterException {

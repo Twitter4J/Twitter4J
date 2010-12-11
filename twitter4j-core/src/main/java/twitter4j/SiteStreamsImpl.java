@@ -46,14 +46,14 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
 
     SiteStreamsListener listener;
 
-    /*package*/ SiteStreamsImpl(Configuration conf, InputStream stream) throws IOException {
+    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, InputStream stream) throws IOException {
         super(stream);
-        dispatcher = new DispatcherFactory(conf).getInstance();
+        this.dispatcher = dispatcher;
     }
 
-    /*package*/ SiteStreamsImpl(Configuration conf, HttpResponse response) throws IOException {
+    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, HttpResponse response) throws IOException {
         super(response);
-        dispatcher = new DispatcherFactory(conf).getInstance();
+        this.dispatcher = dispatcher;
     }
 
     public void next(StreamListener[] listeners) throws TwitterException {
