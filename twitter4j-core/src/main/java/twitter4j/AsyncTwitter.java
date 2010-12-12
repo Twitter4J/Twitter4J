@@ -1808,9 +1808,10 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
             if (shutdown) {
                 throw new IllegalStateException("Already shut down");
             }
-            getDispatcher().shutdown();
-            dispatcher = null;
-            super.shutdown();
+            if(dispatcher != null){
+                dispatcher.shutdown();
+                dispatcher = null;
+            }
             shutdown = true;
         }
     }

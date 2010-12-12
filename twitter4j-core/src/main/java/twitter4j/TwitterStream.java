@@ -373,7 +373,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         startHandler(new TwitterStreamConsumer() {
             public StreamImplementation getStream() throws TwitterException {
                 try {
-                    return new SiteStreamsImpl(dispatcher, getSiteStream(withFollowings, follow));
+                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow));
                 } catch (IOException e) {
                     throw new TwitterException(e);
                 }
@@ -401,13 +401,14 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     public void shutdown(){
         super.shutdown();
         cleanUp();
-        synchronized (AsyncTwitter.class) {
+        synchronized (TwitterStream.class) {
             if (shutdown) {
                 throw new IllegalStateException("Already shut down");
             }
-            getDispatcher().shutdown();
-            dispatcher = null;
-            super.shutdown();
+            if(dispatcher != null){
+                dispatcher.shutdown();
+                dispatcher = null;
+            }
             shutdown = true;
         }
     }
@@ -694,7 +695,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                                     }
                                 }
                             } catch (Exception e) {
-                              logger.warn("Unhandled exception during stream processing: " + e);
+                                stream.onException(e);
                             }
                         }
                     }

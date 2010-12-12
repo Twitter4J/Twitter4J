@@ -333,6 +333,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
     public void onException(Exception ex) {
         received.add(new Object[]{ex});
+        ex.printStackTrace();
         notifyResponse();
     }
 }
