@@ -148,7 +148,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             twit4j.retweetStatus(status.getId());
             waitForStatus();
-            twit4j.sendDirectMessage(6377362, "test " + new Date());
+            twit4j.sendDirectMessage(42419133, "test " + new Date());
             waitForStatus();
 
             // block twit4j
