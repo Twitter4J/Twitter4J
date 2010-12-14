@@ -33,7 +33,6 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
@@ -157,7 +156,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 urlEntities = new URLEntity[len];
                 for(int i=0;i<len;i++){
                     urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
-                    urls[i] = urlEntities[i].getUrl();
+                    urls[i] = urlEntities[i].getURL();
                 }
 
                 JSONArray hashtagsArray = entities.getJSONArray("hashtags");

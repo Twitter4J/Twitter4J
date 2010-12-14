@@ -41,26 +41,33 @@ public interface URLEntity extends java.io.Serializable {
      *
      * @return the mentioned URL
      */
-    URL getUrl();
+    URL getURL();
 
     /**
      * Returns the expanded URL if mentioned URL is shorten.
      *
      * @return the expanded URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
      */
-    URL getExpandedUrl();
+    URL getExpandedURL();
+
+    /**
+     * Returns the display URL if mentioned URL is shorten.
+     *
+     * @return the display URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
+     */
+    String getDisplayURL();
 
     /**
      * Returns the index of the start character of the URL mentioned in the tweet.
      *
      * @return the index of the start character of the URL mentioned in the tweet, or -1 if no URL was mentioned.
      */
-    int getIndex();
+    int getStart();
 
     /**
      * Returns the index of the end character of the URL mentioned in the tweet.
      *
      * @return the index of the end character of the URL mentioned in the tweet, or -1 if no URL was mentioned.
      */
-    int getEndIndex();
+    int getEnd();
 }

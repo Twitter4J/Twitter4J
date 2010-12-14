@@ -102,6 +102,27 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testShowUser() throws Exception {
+//        List<Status> statuses;
+//        Configuration conf;
+//        String screenName = "twitterapi";
+//        conf = new ConfigurationBuilder().setIncludeEntitiesEnabled(true).build();
+//        unauthenticated = new TwitterFactory(conf).getInstance();
+//        statuses = unauthenticated.getUserTimeline(screenName);
+//        System.out.println(statuses.size());
+//        for(Status status : statuses){
+//            System.out.println(status.getCreatedAt()+":"+ status.getText());
+//        }
+//        List<Status> oldstatuses = statuses;
+//        conf = new ConfigurationBuilder().setIncludeEntitiesEnabled(false).build();
+//        unauthenticated = new TwitterFactory(conf).getInstance();
+//        statuses = unauthenticated.getUserTimeline(screenName);
+//        System.out.println(statuses.size());
+//        for(Status status : statuses){
+//            System.out.println(status.getCreatedAt()+":"+ status.getText());
+//        }
+//        assertEquals(oldstatuses.get(0).getId(), statuses.get(0).getId());
+//        assertEquals(oldstatuses.size(), statuses.size());
+
         User user = twitter1.showUser(id1.screenName);
         assertEquals(id1.screenName, user.getScreenName());
         assertNotNull(user.getLocation());
@@ -456,10 +477,18 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testStatusMethods() throws Exception {
-        String date = new java.util.Date().toString() + "test";
+        String date = new java.util.Date().toString() + "test http://t.co/chEeJss";
         Status status = twitter1.updateStatus(date);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+        URLEntity[] entities = status.getURLEntities();
+        assertEquals(1, entities.length);
+        System.out.println(entities[0]);
+        assertEquals("http://t.co/chEeJss", entities[0].getURL().toString());
+        assertEquals("http://samuraism.jp/cgi-bin/is01.cgi", entities[0].getExpandedURL().toString());
+        assertEquals("samuraism.jp/cgi-bin/is01.c\u2026", entities[0].getDisplayURL());
+        assertTrue(0 < entities[0].getStart());
+        assertTrue(entities[0].getStart() < entities[0].getEnd());
 
         assertEquals(date, status.getText());
         Status status2 = twitter2.updateStatus("@" + id1.screenName + " " + date, status.getId());

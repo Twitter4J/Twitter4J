@@ -177,6 +177,7 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      *
      * @return An array of URLs mentioned in the tweet.
      * @since Twitter4J 2.1.4
+     * @deprecated use {@link #getURLEntities()} instead.
      */
     URL[] getURLs();
 

@@ -41,10 +41,11 @@ import twitter4j.internal.org.json.JSONObject;
  */
 /* package */ final class URLEntityJSONImpl implements URLEntity {
 
-    private int index = -1;
-    private int endIndex = -1;
+    private int start = -1;
+    private int end = -1;
     private URL url;
-    private URL expandedUrl;
+    private URL expandedURL;
+    private String displayURL;
 
     private static final long serialVersionUID = 1165188478018146676L;
 
@@ -56,19 +57,22 @@ import twitter4j.internal.org.json.JSONObject;
     private void init(JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
-            this.index = indicesArray.getInt(0);
-            this.endIndex = indicesArray.getInt(1);
+            this.start = indicesArray.getInt(0);
+            this.end = indicesArray.getInt(1);
 
             try {
                 this.url = new URL(json.getString("url"));
             } catch (MalformedURLException ignore) {
             }
 
-            if (! json.isNull("expanded_url")) {
+            if (!json.isNull("expanded_url")) {
                 try {
-                    this.expandedUrl = new URL(json.getString("expanded_url"));
+                    this.expandedURL = new URL(json.getString("expanded_url"));
                 } catch (MalformedURLException ignore) {
                 }
+            }
+            if (!json.isNull("display_url")) {
+                this.displayURL = json.getString("display_url");
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -78,84 +82,75 @@ import twitter4j.internal.org.json.JSONObject;
     /**
      * {@inheritDoc}
      */
-    @Override
-    public URL getUrl() {
+    public URL getURL() {
         return url;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public URL getExpandedUrl() {
-        return expandedUrl;
+    public URL getExpandedURL() {
+        return expandedURL;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public int getIndex() {
-        return index;
+    public String getDisplayURL() {
+        return displayURL;
     }
 
     /**
      * {@inheritDoc}
      */
+    public int getStart() {
+        return start;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getEnd() {
+        return end;
+    }
+
     @Override
-    public int getEndIndex() {
-        return endIndex;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        URLEntityJSONImpl that = (URLEntityJSONImpl) o;
+
+        if (end != that.end) return false;
+        if (start != that.start) return false;
+        if (displayURL != null ? !displayURL.equals(that.displayURL) : that.displayURL != null)
+            return false;
+        if (expandedURL != null ? !expandedURL.equals(that.expandedURL) : that.expandedURL != null)
+            return false;
+        if (url != null ? !url.equals(that.url) : that.url != null)
+            return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 17;
-        result = prime * result + index;
-        result = prime * result + endIndex;
-        result = prime * result + ((url == null) ? 0 : url.hashCode());
-        result = prime * result + ((expandedUrl == null) ? 0 : expandedUrl.hashCode());
+        int result = start;
+        result = 31 * result + end;
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (expandedURL != null ? expandedURL.hashCode() : 0);
+        result = 31 * result + (displayURL != null ? displayURL.hashCode() : 0);
         return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof URLEntityJSONImpl) {
-            URLEntityJSONImpl other = (URLEntityJSONImpl) obj;
-            if (index != other.index) {
-                return false;
-            }
-            if (endIndex != other.endIndex) {
-                return false;
-            }
-            if (url == null) {
-                if (other.url != null) {
-                    return false;
-                }
-            } else if (! url.equals(other.url)) {
-                return false;
-            }
-            if (expandedUrl == null) {
-                if (other.expandedUrl != null) {
-                    return false;
-                }
-            } else if (! expandedUrl.equals(other.expandedUrl)) {
-                return false;
-            }
-
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public String toString() {
-        return "URLEntityJSONImpl{startIndex=" + index +
-                ",endIndex=" + endIndex +
+        return "URLEntityJSONImpl{" +
+                "index=" + start +
+                ", endIndex=" + end +
                 ", url=" + url +
-                ", expandedUrl=" + expandedUrl + '}';
+                ", expandedURL=" + expandedURL +
+                ", displayURL=" + displayURL +
+                '}';
     }
 }
