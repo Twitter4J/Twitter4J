@@ -26,9 +26,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.media;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import junit.framework.TestCase;
+import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -71,14 +74,15 @@ public class MediaUploadTest extends TestCase {
     }
 
     public void testNonexistingFileUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
-            ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
-            String url = upload.upload(null, is, message);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
+
+        ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
+        ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
+        try{
+        String url = upload.upload(new File("foobar"));
+        }catch(TwitterException te){
+            if(!(te.getCause() instanceof FileNotFoundException)){
+                fail("expecting FileNotFoundException");
+            }
         }
     }
 

@@ -100,18 +100,22 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             Twitter twit4j2 = new TwitterFactory(twit4j2Conf).getInstance();
             try {
                 twit4j.destroyBlock(6377362);
+                waitForStatus();
             } catch (TwitterException ignore) {
             }
             try {
                 twit4j2.destroyBlock(6358482);
+                waitForStatus();
             } catch (TwitterException ignore) {
             }
             try {
                 twit4j.createFriendship(6377362);
+                waitForStatus();
             } catch (TwitterException ignore) {
             }
             try {
                 twit4j2.createFriendship(6358482);
+                waitForStatus();
             } catch (TwitterException ignore) {
             }
 
@@ -134,7 +138,6 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             // unfollow twit4j
             twit4j2.destroyFriendship(6358482);
-            waitForStatus();
 
             // follow twit4j
             twit4j2.createFriendship(6358482);
@@ -142,14 +145,15 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             // unfollow twit4j2
             twit4j.destroyFriendship(6377362);
-            waitForStatus();
 
             // follow twit4j2
             twit4j.createFriendship(6377362);
             waitForStatus();
 
             twit4j.retweetStatus(status.getId());
+            waitForStatus();
             twit4j.sendDirectMessage(6377362, "test " + new Date());
+            waitForStatus();
 
             // block twit4j
             twit4j2.createBlock(6358482);
