@@ -53,6 +53,35 @@ public class MediaUploadTest extends TestCase {
         return new ConfigurationBuilder().setMediaProviderAPIKey(apiKey).build();
     }
 
+    public void testProviders() throws Exception{
+        Configuration conf;
+        ImageUploaderFactory factory;
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.getName()).build();
+        factory = new ImageUploaderFactory(conf);
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.PLIXI.getName()).build();
+        factory = new ImageUploaderFactory(conf);
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.getName()).build();
+        factory = new ImageUploaderFactory(conf);
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITGOO.getName()).build();
+        factory = new ImageUploaderFactory(conf);
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITPIC.getName()).build();
+        factory = new ImageUploaderFactory(conf);
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.YFROG.getName()).build();
+        factory = new ImageUploaderFactory(conf);
+    }
+
+    public void testNonexistingFileUpload() throws Exception {
+        InputStream is = getClass().getResourceAsStream("/" + fileName);
+        try {
+            ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
+            ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
+            String url = upload.upload(null, is, message);
+            assertTrue(url.length() > 0);
+        } finally {
+            is.close();
+        }
+    }
+
     public void testTwitPicOAuthUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {

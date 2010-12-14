@@ -56,8 +56,10 @@ public final class ImageUploaderFactory {
      */
     public ImageUploaderFactory(Configuration conf) {
         String mediaProvider = conf.getMediaProvider().toLowerCase();
-        if ("imgly".equals(mediaProvider)) {
+        if ("imgly".equals(mediaProvider) || "img_ly".equals(mediaProvider)) {
             defaultMediaProvider = IMG_LY;
+        } else if ("plixi".equals(mediaProvider)) {
+            defaultMediaProvider = PLIXI;
         } else if ("twipple".equals(mediaProvider)) {
             defaultMediaProvider = TWIPPLE;
         } else if ("twitgoo".equals(mediaProvider)) {
