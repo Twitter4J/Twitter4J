@@ -181,6 +181,14 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
     URL[] getURLs();
 
     /**
+     * Returns an array if URLEntity mentioned in the tweet, or null if no URLs were mentioned.
+     *
+     * @return An array of URLEntity mentioned in the tweet.
+     * @since Twitter4J 2.1.9
+     */
+    URLEntity[] getURLEntities();
+
+    /**
      * Returns an array of hashtags mentioned in the tweet, or null if no hashtags were mentioned.
      *
      * @return An array of users mentioned in the tweet.
