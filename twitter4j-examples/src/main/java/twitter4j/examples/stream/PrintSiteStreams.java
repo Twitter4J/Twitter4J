@@ -29,6 +29,7 @@ package twitter4j.examples.stream;
 import twitter4j.DirectMessage;
 import twitter4j.SiteStreamsListener;
 import twitter4j.Status;
+import twitter4j.StatusDeletionNotice;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
@@ -73,6 +74,11 @@ public final class PrintSiteStreams {
             System.out.println("onStatus for_user:" + forUser + " @" + status.getUser().getScreenName() + " - " + status.getText());
         }
 
+        public void onDeletionNotice(int forUser, StatusDeletionNotice statusDeletionNotice) {
+            System.out.println("Got a status deletion notice for_user:"
+                    + forUser + " id:" + statusDeletionNotice.getStatusId());
+        }
+
         public void onFriendList(int forUser, int[] friendIds) {
             System.out.print("onFriendList for_user:" + forUser);
             for(int friendId : friendIds){
@@ -108,6 +114,11 @@ public final class PrintSiteStreams {
                     + directMessage.getText());
         }
 
+        public void onDeletionNotice(int forUser, int directMessageId, int userId) {
+            System.out.println("Got a direct message deletion notice for_user:"
+                    + forUser + " id:" + directMessageId);
+        }
+
         public void onUserListSubscribed(int forUser, User subscriber, User listOwner, UserList list) {
             System.out.println("onUserListSubscribed for_user:" + forUser
                     + " subscriber:@" + subscriber.getScreenName()
@@ -131,6 +142,11 @@ public final class PrintSiteStreams {
             System.out.println("onUserListDestroyed for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
+        }
+
+        public void onUserProfileUpdated(int forUser, User updatedUser) {
+            System.out.println("onUserProfileUpdated for_user:" + forUser
+                    + " user:@" + updatedUser.getScreenName());
         }
 
         public void onBlock(int forUser, User source, User blockedUser) {

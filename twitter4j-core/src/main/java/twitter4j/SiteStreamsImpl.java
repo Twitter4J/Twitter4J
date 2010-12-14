@@ -30,6 +30,7 @@ import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.util.ParseUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,7 +96,27 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         });
     }
 
-    protected void onDirectMessage(final JSONObject json) throws TwitterException, JSONException {
+    @Override
+    protected void onDelete(final JSONObject json) {
+        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
+            public void run() {
+                try {
+                    JSONObject deletionNotice = json.getJSONObject("delete");
+                    if(deletionNotice.has("status")){
+                        listener.onDeletionNotice(FOR_USER, new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
+                    }else{
+                        JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
+                        listener.onDeletionNotice(FOR_USER, ParseUtil.getInt("id", directMessage)
+                                , ParseUtil.getInt("user_id", directMessage));
+                    }
+                } catch (JSONException jsone) {
+                    listener.onException(jsone);
+                }
+            }
+        });
+    }
+
+    protected void onDirectMessage(final JSONObject json) {
         dispatcher.invokeLater(new SiteStreamEvent(forUser) {
             public void run() {
                 try {

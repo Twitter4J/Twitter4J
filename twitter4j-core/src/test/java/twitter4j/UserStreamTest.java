@@ -250,7 +250,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
     public void onDeletionNotice(int directMessageId, int userId){
-        received.add(new Object[]{TwitterMethod.DESTROY_DIRECT_MESSAGE, userId});
+        received.add(new Object[]{TwitterMethod.DESTROY_DIRECT_MESSAGE, directMessageId, userId});
         notifyResponse();
     }
     public void onTrackLimitationNotice(int numberOfLimitedStatuses){

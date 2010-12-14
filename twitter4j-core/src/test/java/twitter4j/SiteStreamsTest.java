@@ -148,7 +148,13 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             twit4j.retweetStatus(status.getId());
             waitForStatus();
-            twit4j.sendDirectMessage(42419133, "test " + new Date());
+            DirectMessage dm = twit4j.sendDirectMessage(42419133, "test " + new Date());
+            waitForStatus();
+
+            twitter2.destroyStatus(status.getId());
+            waitForStatus();
+
+            twitter1.destroyDirectMessage(dm.getId());
             waitForStatus();
 
             // block twit4j
@@ -192,8 +198,8 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 //            assertReceived(TwitterMethod.RETWEET_STATUS);
             assertReceived("onDirectMessage",TwitterMethod.SEND_DIRECT_MESSAGE);
 
-//            assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
-//            assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
+            assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
+            assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
             assertReceived("onUserListSubscribed", TwitterMethod.SUBSCRIBE_LIST);
             assertReceived("onUserListCreated", TwitterMethod.CREATE_USER_LIST);
@@ -257,6 +263,15 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
     public void onStatus(int forUser, Status status) {
         received.add(new Object[]{"onstatus", forUser, status});
         assertNotNull(DataObjectFactory.getRawJSON(status));
+        notifyResponse();
+    }
+
+    public void onDeletionNotice(int forUser, StatusDeletionNotice statusDeletionNotice){
+        received.add(new Object[]{TwitterMethod.DESTROY_STATUS, forUser, statusDeletionNotice});
+        notifyResponse();
+    }
+    public void onDeletionNotice(int forUser, int directMessageId, int userId){
+        received.add(new Object[]{TwitterMethod.DESTROY_DIRECT_MESSAGE, forUser, directMessageId, userId});
         notifyResponse();
     }
 

@@ -132,6 +132,10 @@ public final class PrintUserStream {
                     + " list:" + list.getName());
         }
 
+        public void onUserProfileUpdated(User updatedUser) {
+            System.out.println("onUserProfileUpdated user:@" + updatedUser.getScreenName());
+        }
+
         public void onBlock(User source, User blockedUser) {
             System.out.println("onBlock source:@" + source.getScreenName()
                     + " target:@" + blockedUser.getScreenName());

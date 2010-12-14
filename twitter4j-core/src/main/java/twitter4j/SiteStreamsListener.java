@@ -33,6 +33,8 @@ package twitter4j;
 public interface SiteStreamsListener extends StreamListener {
     void onStatus(int forUser, Status status);
 
+    void onDeletionNotice(int forUser, StatusDeletionNotice statusDeletionNotice);
+
     /**
      * @param friendIds
      */
@@ -64,6 +66,8 @@ public interface SiteStreamsListener extends StreamListener {
      */
     void onDirectMessage(int forUser, DirectMessage directMessage);
 
+    void onDeletionNotice(int forUser, int directMessageId, int userId);
+
     /**
      * @param subscriber
      * @param listOwner
@@ -88,7 +92,6 @@ public interface SiteStreamsListener extends StreamListener {
      * @param list
      */
     void onUserListDestroyed(int forUser, User listOwner, UserList list);
-
 
     /**
      * @param updatedUser updated user

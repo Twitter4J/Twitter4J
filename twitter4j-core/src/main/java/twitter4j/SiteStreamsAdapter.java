@@ -33,6 +33,9 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     public void onStatus(int forUser, Status status) {
     }
 
+    public void onDeletionNotice(int forUser, StatusDeletionNotice statusDeletionNotice) {
+    }
+
     public void onFriendList(int forUser, int[] friendIds) {
     }
 
@@ -46,6 +49,9 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     }
 
     public void onDirectMessage(int forUser, DirectMessage directMessage) {
+    }
+
+    public void onDeletionNotice(int forUser, int directMessageId, int userId) {
     }
 
     public void onUserListSubscribed(int forUser, User subscriber, User listOwner, UserList list) {
