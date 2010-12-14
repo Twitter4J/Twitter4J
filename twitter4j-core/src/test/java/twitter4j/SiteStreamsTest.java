@@ -184,29 +184,31 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             twit4j.destroyUserList(list.getId());
             waitForStatus();
 
-            assertReceived("onstatus");
-            assertReceived("onfriendlist");
-            assertReceived(TwitterMethod.CREATE_FAVORITE);
-            assertReceived(TwitterMethod.DESTROY_FAVORITE);
-//            assertReceived(TwitterMethod.DESTROY_FRIENDSHIP);
-            assertReceived(TwitterMethod.CREATE_FRIENDSHIP);
+            assertReceived("onstatus","onstatus");
+            assertReceived("onfriendlist","onfriendlist");
+            assertReceived("onFavorite", TwitterMethod.CREATE_FAVORITE);
+            assertReceived("onUnfavorite", TwitterMethod.DESTROY_FAVORITE);
+            assertReceived("onFollow", TwitterMethod.CREATE_FRIENDSHIP);
 //            assertReceived(TwitterMethod.RETWEET_STATUS);
-            assertReceived(TwitterMethod.SEND_DIRECT_MESSAGE);
+            assertReceived("onDirectMessage",TwitterMethod.SEND_DIRECT_MESSAGE);
 
-            assertReceived(TwitterMethod.SUBSCRIBE_LIST);
-            assertReceived(TwitterMethod.CREATE_USER_LIST);
-            assertReceived(TwitterMethod.UPDATE_USER_LIST);
-            assertReceived(TwitterMethod.DESTROY_USER_LIST);
+//            assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
+//            assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
+
+            assertReceived("onUserListSubscribed", TwitterMethod.SUBSCRIBE_LIST);
+            assertReceived("onUserListCreated", TwitterMethod.CREATE_USER_LIST);
+            assertReceived("onUserListUpdated", TwitterMethod.UPDATE_USER_LIST);
+            assertReceived("onUserListDestoyed", TwitterMethod.DESTROY_USER_LIST);
 
 
-            assertReceived(TwitterMethod.UPDATE_PROFILE);
+            assertReceived("onUserProfileUpdated", TwitterMethod.UPDATE_PROFILE);
 
-            assertReceived(TwitterMethod.CREATE_BLOCK);
-            assertReceived(TwitterMethod.DESTROY_BLOCK);
+            assertReceived("onBlock", TwitterMethod.CREATE_BLOCK);
+            assertReceived("onUnblock", TwitterMethod.DESTROY_BLOCK);
         }
     }
 
-    private void assertReceived(Object obj) {
+    private void assertReceived(String assertion, Object obj) {
         boolean received = false;
         for (Object[] event : this.received) {
             if (obj.equals(event[0])) {
@@ -214,7 +216,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
                 break;
             }
         }
-        assertTrue(received);
+        assertTrue(assertion, received);
     }
 
 //    public void testSiteStreamPull() throws Exception {
