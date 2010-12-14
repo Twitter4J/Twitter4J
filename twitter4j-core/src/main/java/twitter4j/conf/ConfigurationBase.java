@@ -77,6 +77,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean includeRTsEnabled;
 
+    private boolean includeEntitiesEnabled;
+
     private boolean userStreamRepliesAllEnabled;
 
     private String mediaProvider;
@@ -143,6 +145,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
 
         setIncludeRTsEnbled(true);
+
+        setIncludeEntitiesEnbled(true);
 
 
         setOAuthRequestTokenURL(DEFAULT_OAUTH_REQUEST_TOKEN_URL);
@@ -511,6 +515,13 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     protected final void setIncludeRTsEnbled(boolean enabled) {
         this.includeRTsEnabled = enabled;
     }
+    public boolean isIncludeEntitiesEnabled() {
+        return this.includeEntitiesEnabled;
+    }
+
+    protected final void setIncludeEntitiesEnbled(boolean enabled) {
+        this.includeEntitiesEnabled = enabled;
+    }
     public boolean isUserStreamRepliesAllEnabled() {
         return this.userStreamRepliesAllEnabled;
     }
@@ -614,6 +625,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", dispatcherImpl='" + dispatcherImpl + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
                 ", includeRTsEnabled=" + includeRTsEnabled +
+                ", includeEntitiesEnabled=" + includeEntitiesEnabled +
                 ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +
                 ", clientVersion='" + clientVersion + '\'' +
                 ", clientURL='" + clientURL + '\'' +

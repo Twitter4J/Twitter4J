@@ -256,6 +256,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setEntitiesEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setIncludeEntitiesEnbled(enabled);
+        return this;
+    }
+
     public ConfigurationBuilder setUserStreamRepliesAllEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setUserStreamRepliesAllEnabled(enabled);

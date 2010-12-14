@@ -77,9 +77,9 @@ public class MediaUploadTest extends TestCase {
 
         ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
         ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
-        try{
-        String url = upload.upload(new File("foobar"));
-        }catch(TwitterException te){
+        try {
+            String url = upload.upload(new File("foobar"));
+        } catch (TwitterException te) {
             if(!(te.getCause() instanceof FileNotFoundException)){
                 fail("expecting FileNotFoundException");
             }

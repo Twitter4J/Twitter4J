@@ -120,6 +120,8 @@ public interface Configuration extends HttpClientConfiguration
 
     boolean isIncludeRTsEnabled();
 
+    boolean isIncludeEntitiesEnabled();
+
     boolean isUserStreamRepliesAllEnabled();
 
     String getMediaProvider();

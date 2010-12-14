@@ -85,10 +85,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertTrue(-1 !=  tweets.get(0).getId());
 //        assertNotNull(tweets.get(0).getIsoLanguageCode());
         String profileImageURL = tweets.get(0).getProfileImageUrl();
-        assertTrue(-1 != profileImageURL.toLowerCase().indexOf(".jpg")
-                || -1 != profileImageURL.toLowerCase().indexOf(".jpeg")
-                || -1 != profileImageURL.toLowerCase().indexOf(".png")
-                || -1 != profileImageURL.toLowerCase().indexOf(".gif"));
+        assertNotNull(profileImageURL);
         String source = tweets.get(0).getSource();
         assertTrue(-1 != source.indexOf("<a href=\"") || "web".equals(source) || "API".equals(source));
 

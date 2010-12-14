@@ -155,10 +155,12 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 
         try {
             twitter1.createFriendship(6377362);
+            waitForStatus();
         } catch (TwitterException ignore) {
         }
         try {
             twitter2.createFriendship(6358482);
+            waitForStatus();
         } catch (TwitterException ignore) {
         }
 

@@ -100,22 +100,18 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             Twitter twit4j2 = new TwitterFactory(twit4j2Conf).getInstance();
             try {
                 twit4j.destroyBlock(6377362);
-                waitForStatus();
             } catch (TwitterException ignore) {
             }
             try {
                 twit4j2.destroyBlock(6358482);
-                waitForStatus();
             } catch (TwitterException ignore) {
             }
             try {
                 twit4j.createFriendship(6377362);
-                waitForStatus();
             } catch (TwitterException ignore) {
             }
             try {
                 twit4j2.createFriendship(6358482);
-                waitForStatus();
             } catch (TwitterException ignore) {
             }
 
