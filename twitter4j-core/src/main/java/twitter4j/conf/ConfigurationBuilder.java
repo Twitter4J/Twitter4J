@@ -256,7 +256,7 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder setEntitiesEnabled(boolean enabled) {
+    public ConfigurationBuilder setIncludeEntitiesEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeEntitiesEnbled(enabled);
         return this;
