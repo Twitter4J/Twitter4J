@@ -121,6 +121,8 @@ abstract class AbstractStreamImplementation {
                             } else if ("list_destroyed".equals(event)) {
                                 onUserListDestroyed(sourceJSON, targetJSON);
                             }
+                        } else if ("user_update".equals(event)) {
+                            onUserUpdate(sourceJSON, targetJSON);
                         } else if ("block".equals(event)) {
                             onBlock(sourceJSON, targetJSON);
                         } else if ("unblock".equals(event)) {
@@ -192,6 +194,9 @@ abstract class AbstractStreamImplementation {
     }
 
     protected void onUserListDestroyed(JSONObject source, JSONObject userList) throws TwitterException {
+    }
+
+    protected void onUserUpdate(JSONObject source, JSONObject target) throws TwitterException {
     }
 
     protected void onBlock(JSONObject source, JSONObject target) throws TwitterException {

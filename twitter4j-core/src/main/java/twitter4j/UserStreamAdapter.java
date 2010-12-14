@@ -61,6 +61,9 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     public void onUserListDestroyed(User listOwner, UserList list) {
     }
 
+    public void onUserProfileUpdated(User updatedUser) {
+    }
+
     public void onBlock(User source, User blockedUser) {
     }
 

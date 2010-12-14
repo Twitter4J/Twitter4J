@@ -106,6 +106,12 @@ public interface UserStreamListener extends StatusListener {
     void onUserListDestroyed(User listOwner, UserList list);
 
     /**
+     * @param updatedUser updated user
+     * @since Twitter4J 2.1.9
+     */
+    void onUserProfileUpdated(User updatedUser);
+
+    /**
      * @param source
      * @param blockedUser
      * @since Twitter4J 2.1.3

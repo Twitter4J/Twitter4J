@@ -163,6 +163,8 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
             waitForStatus();
         } catch (TwitterException ignore) {
         }
+        twitter1.updateProfile(null,null,new Date().toString(),null);
+        waitForStatus();
 
         UserList list = twitter1.createUserList("test", true, "desctription");
         waitForStatus();
@@ -204,6 +206,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         assertReceived(TwitterMethod.UPDATE_USER_LIST);
         assertReceived(TwitterMethod.DESTROY_USER_LIST);
 
+        assertReceived(TwitterMethod.UPDATE_PROFILE);
 
         assertReceived(TwitterMethod.CREATE_BLOCK);
         assertReceived(TwitterMethod.DESTROY_BLOCK);
@@ -328,6 +331,12 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));
+    }
+
+    public void onUserProfileUpdated(User updatedUser) {
+        received.add(new Object[]{TwitterMethod.UPDATE_PROFILE, updatedUser});
+        assertNotNull(DataObjectFactory.getRawJSON(updatedUser));
+        notifyResponse();
     }
 
     public void onBlock(User source, User blockedUser) {

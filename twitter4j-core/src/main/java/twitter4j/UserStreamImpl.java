@@ -152,6 +152,13 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream{
     }
 
     @Override
+    protected void onUserUpdate(JSONObject source, JSONObject target) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onUserProfileUpdated(asUser(source));
+        }
+    }
+
+    @Override
     protected void onBlock(JSONObject source, JSONObject target) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onBlock(asUser(source), asUser(target));

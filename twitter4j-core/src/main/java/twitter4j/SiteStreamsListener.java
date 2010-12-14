@@ -89,6 +89,13 @@ public interface SiteStreamsListener extends StreamListener {
      */
     void onUserListDestroyed(int forUser, User listOwner, UserList list);
 
+
+    /**
+     * @param updatedUser updated user
+     * @since Twitter4J 2.1.9
+     */
+    void onUserProfileUpdated(int forUser, User updatedUser);
+
     /**
      * @param source
      * @param blockedUser

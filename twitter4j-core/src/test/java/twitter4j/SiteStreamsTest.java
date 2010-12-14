@@ -169,6 +169,8 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
                 waitForStatus();
             } catch (TwitterException ignore) {
             }
+            twitter1.updateProfile(null,null,new Date().toString(),null);
+            waitForStatus();
 
             UserList list = twit4j.createUserList("test", true, "desctription");
             waitForStatus();
@@ -196,6 +198,8 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             assertReceived(TwitterMethod.UPDATE_USER_LIST);
             assertReceived(TwitterMethod.DESTROY_USER_LIST);
 
+
+            assertReceived(TwitterMethod.UPDATE_PROFILE);
 
             assertReceived(TwitterMethod.CREATE_BLOCK);
             assertReceived(TwitterMethod.DESTROY_BLOCK);
@@ -315,6 +319,12 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         notifyResponse();
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));
+    }
+
+    public void onUserProfileUpdated(int forUser, User updatedUser) {
+        received.add(new Object[]{TwitterMethod.UPDATE_PROFILE, forUser, updatedUser});
+        assertNotNull(DataObjectFactory.getRawJSON(updatedUser));
+        notifyResponse();
     }
 
     public void onBlock(int forUser, User source, User blockedUser) {

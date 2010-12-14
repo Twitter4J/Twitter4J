@@ -60,6 +60,9 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     public void onUserListDestroyed(int forUser, User listOwner, UserList list) {
     }
 
+    public void onUserProfileUpdated(int forUser, User updatedUser) {
+    }
+
     public void onBlock(int forUser, User source, User blockedUser) {
     }
 

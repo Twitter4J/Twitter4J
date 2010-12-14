@@ -26,9 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import twitter4j.conf.Configuration;
 import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -204,6 +202,18 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
                 try {
                     listener.onUserListDestroyed(FOR_USER, asUser(source)
                             , asUserList(userList));
+                } catch (TwitterException te) {
+                    listener.onException(te);
+                }
+            }
+        });
+    }
+
+    protected void onUserUpdate(final JSONObject source, final JSONObject target) throws TwitterException {
+        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
+            public void run() {
+                try {
+                    listener.onUserProfileUpdated(FOR_USER, asUser(source));
                 } catch (TwitterException te) {
                     listener.onException(te);
                 }
