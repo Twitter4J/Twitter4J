@@ -71,6 +71,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private Status retweetedStatus;
     private User[] userMentions;
     private URL[] urls;
+    private URLEntity[] urlEntities;
     private String[] hashtags;
 
     private static final long serialVersionUID = 1608000492860584608L;
@@ -144,24 +145,25 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 JSONObject entities = json.getJSONObject("entities");
 
                 JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
-                userMentions = new User[userMentionsArray.length()];
-                for(int i=0;i<userMentionsArray.length();i++){
+                int len = userMentionsArray.length();
+                userMentions = new User[len];
+                for(int i=0;i<len;i++){
                     userMentions[i] = new UserJSONImpl(userMentionsArray.getJSONObject(i));
                 }
 
-                JSONArray urlArray = entities.getJSONArray("urls");
-                urls = new URL[urlArray.length()];
-                for(int i=0;i<urlArray.length();i++){
-                    try {
-                        urls[i] = new URL(urlArray.getJSONObject(i).getString("url"));
-                    } catch (MalformedURLException e) {
-                        urls[i] = null;
-                    }
+                JSONArray urlsArray = entities.getJSONArray("urls");
+                len = urlsArray.length();
+                urls = new URL[len];
+                urlEntities = new URLEntity[len];
+                for(int i=0;i<len;i++){
+                    urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                    urls[i] = urlEntities[i].getUrl();
                 }
 
                 JSONArray hashtagsArray = entities.getJSONArray("hashtags");
-                hashtags = new String[hashtagsArray.length()];
-                for(int i=0;i<hashtagsArray.length();i++){
+                len = hashtagsArray.length();
+                hashtags = new String[len];
+                for(int i=0;i<len;i++){
                     hashtags[i] = hashtagsArray.getJSONObject(i).getString("text");
                 }
             } catch (JSONException ignore) {
@@ -264,7 +266,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         return contributors;
     }
 
-    
+
 	/**
      * {@inheritDoc}
      */
@@ -334,6 +336,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    public URLEntity[] getURLEntities() {
+        return urlEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String[] getHashtags() {
         return hashtags;
     }
@@ -392,6 +401,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 ", contributors=" + (contributors == null ? null : Arrays.asList(contributors)) +
                 ", annotations=" + annotations +
                 ", retweetedStatus=" + retweetedStatus +
+                ", urls=" + (urlEntities == null ? null : Arrays.toString(urlEntities)) +
+                ", hashtags=" + (hashtags == null ? null : Arrays.toString(hashtags)) +
                 ", user=" + user +
                 '}';
     }
