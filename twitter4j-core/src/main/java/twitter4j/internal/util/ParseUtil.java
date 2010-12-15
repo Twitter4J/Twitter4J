@@ -112,15 +112,21 @@ public final class ParseUtil {
         }
     }
 
-    public static int getInt(String name, JSONObject elem) {
-        String str2 = getRawString(name, elem);
-        if (null == str2 || "".equals(str2) || "null".equals(str2)) {
+    public static int getInt(String name, JSONObject json) {
+        return getInt(getRawString(name, json));
+    }
+    public static int getInt(String str){
+        if (null == str || "".equals(str) || "null".equals(str)) {
             return -1;
         } else {
-            return Integer.valueOf(str2);
+            try {
+                return Integer.valueOf(str);
+            } catch (NumberFormatException nfe) {
+                // workaround for the API side issue http://twitter4j.org/jira/browse/TFJ-484
+                return -1;
+            }
         }
     }
-
 
     public static long getLong(String name, JSONObject json) {
         return getLong(getRawString(name, json));

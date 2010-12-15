@@ -48,4 +48,7 @@ public class ParseUtilTest extends TestCase {
     public void testParseLongReturns101(){
         assertEquals(101, ParseUtil.getLong("100+"));
     }
+    public void testParseIntOverflow(){
+        assertEquals(-1, ParseUtil.getInt("4294967295"));
+    }
 }
