@@ -747,7 +747,7 @@ public class TwitterTest extends TwitterTestBase {
         String neu = "new";
         newName = original.getName() + neu;
         newURL = original.getURL() + neu;
-        newLocation = original.getLocation() + neu;
+        newLocation = new Date().toString();
         newDescription = original.getDescription() + neu;
 
         User altered = twitter1.updateProfile(
