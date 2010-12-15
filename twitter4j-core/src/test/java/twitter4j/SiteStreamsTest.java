@@ -309,7 +309,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         notifyResponse();
     }
 
-    public void onUserListSubscribed(int forUser, User subscriber, User listOwner, UserList list) {
+    public void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.SUBSCRIBE_LIST, forUser, subscriber, listOwner, list});
         assertNotNull(DataObjectFactory.getRawJSON(subscriber));
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
@@ -317,28 +317,28 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         notifyResponse();
     }
 
-    public void onUserListCreated(int forUser, User listOwner, UserList list) {
+    public void onUserListCreation(int forUser, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.CREATE_USER_LIST, forUser, listOwner, list});
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
-    public void onUserListUpdated(int forUser, User listOwner, UserList list) {
+    public void onUserListUpdate(int forUser, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.UPDATE_USER_LIST, forUser, listOwner, list});
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
-    public void onUserListDestroyed(int forUser, User listOwner, UserList list) {
+    public void onUserListDeletion(int forUser, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.DESTROY_USER_LIST, forUser, listOwner, list});
         notifyResponse();
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));
     }
 
-    public void onUserProfileUpdated(int forUser, User updatedUser) {
+    public void onUserProfileUpdate(int forUser, User updatedUser) {
         received.add(new Object[]{TwitterMethod.UPDATE_PROFILE, forUser, updatedUser});
         assertNotNull(DataObjectFactory.getRawJSON(updatedUser));
         notifyResponse();

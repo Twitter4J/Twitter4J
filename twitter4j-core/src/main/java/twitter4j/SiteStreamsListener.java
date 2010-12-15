@@ -73,31 +73,31 @@ public interface SiteStreamsListener extends StreamListener {
      * @param listOwner
      * @param list
      */
-    void onUserListSubscribed(int forUser, User subscriber, User listOwner, UserList list);
+    void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list);
 
     /**
      * @param listOwner
      * @param list
      */
-    void onUserListCreated(int forUser, User listOwner, UserList list);
+    void onUserListCreation(int forUser, User listOwner, UserList list);
 
     /**
      * @param listOwner
      * @param list
      */
-    void onUserListUpdated(int forUser, User listOwner, UserList list);
+    void onUserListUpdate(int forUser, User listOwner, UserList list);
 
     /**
      * @param listOwner
      * @param list
      */
-    void onUserListDestroyed(int forUser, User listOwner, UserList list);
+    void onUserListDeletion(int forUser, User listOwner, UserList list);
 
     /**
      * @param updatedUser updated user
      * @since Twitter4J 2.1.9
      */
-    void onUserProfileUpdated(int forUser, User updatedUser);
+    void onUserProfileUpdate(int forUser, User updatedUser);
 
     /**
      * @param source

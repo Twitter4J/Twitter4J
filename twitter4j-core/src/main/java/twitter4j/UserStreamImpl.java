@@ -126,35 +126,35 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream{
     @Override
     protected void onUserListSubscribed(JSONObject source, JSONObject owner, JSONObject target) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onUserListSubscribed(asUser(source), asUser(owner), asUserList(target));
+            ((UserStreamListener) listener).onUserListSubscription(asUser(source), asUser(owner), asUserList(target));
         }
     }
 
     @Override
     protected void onUserListCreated(JSONObject source, JSONObject target) throws TwitterException , JSONException{
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onUserListCreated(asUser(source), asUserList(target));
+            ((UserStreamListener) listener).onUserListCreation(asUser(source), asUserList(target));
         }
     }
 
     @Override
     protected void onUserListUpdated(JSONObject source, JSONObject target) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onUserListUpdated(asUser(source), asUserList(target));
+            ((UserStreamListener) listener).onUserListUpdate(asUser(source), asUserList(target));
         }
     }
 
     @Override
     protected void onUserListDestroyed(JSONObject source, JSONObject target) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onUserListDestroyed(asUser(source), asUserList(target));
+            ((UserStreamListener) listener).onUserListDeletion(asUser(source), asUserList(target));
         }
     }
 
     @Override
     protected void onUserUpdate(JSONObject source, JSONObject target) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onUserProfileUpdated(asUser(source));
+            ((UserStreamListener) listener).onUserProfileUpdate(asUser(source));
         }
     }
 

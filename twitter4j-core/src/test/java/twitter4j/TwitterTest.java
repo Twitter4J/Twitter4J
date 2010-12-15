@@ -102,27 +102,6 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testShowUser() throws Exception {
-//        List<Status> statuses;
-//        Configuration conf;
-//        String screenName = "twitterapi";
-//        conf = new ConfigurationBuilder().setIncludeEntitiesEnabled(true).build();
-//        unauthenticated = new TwitterFactory(conf).getInstance();
-//        statuses = unauthenticated.getUserTimeline(screenName);
-//        System.out.println(statuses.size());
-//        for(Status status : statuses){
-//            System.out.println(status.getCreatedAt()+":"+ status.getText());
-//        }
-//        List<Status> oldstatuses = statuses;
-//        conf = new ConfigurationBuilder().setIncludeEntitiesEnabled(false).build();
-//        unauthenticated = new TwitterFactory(conf).getInstance();
-//        statuses = unauthenticated.getUserTimeline(screenName);
-//        System.out.println(statuses.size());
-//        for(Status status : statuses){
-//            System.out.println(status.getCreatedAt()+":"+ status.getText());
-//        }
-//        assertEquals(oldstatuses.get(0).getId(), statuses.get(0).getId());
-//        assertEquals(oldstatuses.size(), statuses.size());
-
         User user = twitter1.showUser(id1.screenName);
         assertEquals(id1.screenName, user.getScreenName());
         assertNotNull(user.getLocation());

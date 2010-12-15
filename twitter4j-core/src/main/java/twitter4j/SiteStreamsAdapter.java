@@ -54,19 +54,19 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     public void onDeletionNotice(int forUser, int directMessageId, int userId) {
     }
 
-    public void onUserListSubscribed(int forUser, User subscriber, User listOwner, UserList list) {
+    public void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list) {
     }
 
-    public void onUserListCreated(int forUser, User listOwner, UserList list) {
+    public void onUserListCreation(int forUser, User listOwner, UserList list) {
     }
 
-    public void onUserListUpdated(int forUser, User listOwner, UserList list) {
+    public void onUserListUpdate(int forUser, User listOwner, UserList list) {
     }
 
-    public void onUserListDestroyed(int forUser, User listOwner, UserList list) {
+    public void onUserListDeletion(int forUser, User listOwner, UserList list) {
     }
 
-    public void onUserProfileUpdated(int forUser, User updatedUser) {
+    public void onUserProfileUpdate(int forUser, User updatedUser) {
     }
 
     public void onBlock(int forUser, User source, User blockedUser) {

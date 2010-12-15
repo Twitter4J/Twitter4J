@@ -306,7 +306,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
 
-    public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
+    public void onUserListSubscription(User subscriber, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.SUBSCRIBE_LIST, subscriber, listOwner, list});
         assertNotNull(DataObjectFactory.getRawJSON(subscriber));
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
@@ -314,28 +314,28 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
 
-    public void onUserListCreated(User listOwner, UserList list) {
+    public void onUserListCreation(User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.CREATE_USER_LIST, listOwner, list});
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
-    public void onUserListUpdated(User listOwner, UserList list) {
+    public void onUserListUpdate(User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.UPDATE_USER_LIST, listOwner, list});
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
-    public void onUserListDestroyed(User listOwner, UserList list) {
+    public void onUserListDeletion(User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.DESTROY_USER_LIST, listOwner, list});
         notifyResponse();
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));
     }
 
-    public void onUserProfileUpdated(User updatedUser) {
+    public void onUserProfileUpdate(User updatedUser) {
         received.add(new Object[]{TwitterMethod.UPDATE_PROFILE, updatedUser});
         assertNotNull(DataObjectFactory.getRawJSON(updatedUser));
         notifyResponse();

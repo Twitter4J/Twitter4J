@@ -119,32 +119,32 @@ public final class PrintSiteStreams {
                     + forUser + " id:" + directMessageId);
         }
 
-        public void onUserListSubscribed(int forUser, User subscriber, User listOwner, UserList list) {
+        public void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list) {
             System.out.println("onUserListSubscribed for_user:" + forUser
                     + " subscriber:@" + subscriber.getScreenName()
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListCreated(int forUser, User listOwner, UserList list) {
+        public void onUserListCreation(int forUser, User listOwner, UserList list) {
             System.out.println("onUserListCreated for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListUpdated(int forUser, User listOwner, UserList list) {
+        public void onUserListUpdate(int forUser, User listOwner, UserList list) {
             System.out.println("onUserListUpdated for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListDestroyed(int forUser, User listOwner, UserList list) {
+        public void onUserListDeletion(int forUser, User listOwner, UserList list) {
             System.out.println("onUserListDestroyed for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserProfileUpdated(int forUser, User updatedUser) {
+        public void onUserProfileUpdate(int forUser, User updatedUser) {
             System.out.println("onUserProfileUpdated for_user:" + forUser
                     + " user:@" + updatedUser.getScreenName());
         }

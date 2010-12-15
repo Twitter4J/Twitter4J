@@ -49,19 +49,19 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     public void onDirectMessage(DirectMessage directMessage) {
     }
 
-    public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
+    public void onUserListSubscription(User subscriber, User listOwner, UserList list) {
     }
 
-    public void onUserListCreated(User listOwner, UserList list) {
+    public void onUserListCreation(User listOwner, UserList list) {
     }
 
-    public void onUserListUpdated(User listOwner, UserList list) {
+    public void onUserListUpdate(User listOwner, UserList list) {
     }
 
-    public void onUserListDestroyed(User listOwner, UserList list) {
+    public void onUserListDeletion(User listOwner, UserList list) {
     }
 
-    public void onUserProfileUpdated(User updatedUser) {
+    public void onUserProfileUpdate(User updatedUser) {
     }
 
     public void onBlock(User source, User blockedUser) {

@@ -182,7 +182,7 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         dispatcher.invokeLater(new SiteStreamEvent(forUser) {
             public void run() {
                 try {
-                    listener.onUserListSubscribed(FOR_USER, asUser(source)
+                    listener.onUserListSubscription(FOR_USER, asUser(source)
                             , asUser(owner), asUserList(userList));
                 } catch (TwitterException te) {
                     listener.onException(te);
@@ -195,7 +195,7 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         dispatcher.invokeLater(new SiteStreamEvent(forUser) {
             public void run() {
                 try {
-                    listener.onUserListCreated(FOR_USER, asUser(source)
+                    listener.onUserListCreation(FOR_USER, asUser(source)
                             , asUserList(userList));
                 } catch (TwitterException te) {
                     listener.onException(te);
@@ -208,7 +208,7 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         dispatcher.invokeLater(new SiteStreamEvent(forUser) {
             public void run() {
                 try {
-                    listener.onUserListUpdated(FOR_USER, asUser(source)
+                    listener.onUserListUpdate(FOR_USER, asUser(source)
                             , asUserList(userList));
                 } catch (TwitterException te) {
                     listener.onException(te);
@@ -221,7 +221,7 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         dispatcher.invokeLater(new SiteStreamEvent(forUser) {
             public void run() {
                 try {
-                    listener.onUserListDestroyed(FOR_USER, asUser(source)
+                    listener.onUserListDeletion(FOR_USER, asUser(source)
                             , asUserList(userList));
                 } catch (TwitterException te) {
                     listener.onException(te);
@@ -234,7 +234,7 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         dispatcher.invokeLater(new SiteStreamEvent(forUser) {
             public void run() {
                 try {
-                    listener.onUserProfileUpdated(FOR_USER, asUser(source));
+                    listener.onUserProfileUpdate(FOR_USER, asUser(source));
                 } catch (TwitterException te) {
                     listener.onException(te);
                 }

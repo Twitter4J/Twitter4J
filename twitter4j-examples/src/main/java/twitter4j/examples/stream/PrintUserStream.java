@@ -107,32 +107,32 @@ public final class PrintUserStream {
                     + directMessage.getText());
         }
 
-        public void onUserListSubscribed(User subscriber, User listOwner, UserList list) {
+        public void onUserListSubscription(User subscriber, User listOwner, UserList list) {
             System.out.println("onUserListSubscribed subscriber:@"
                     + subscriber.getScreenName()
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListCreated(User listOwner, UserList list) {
+        public void onUserListCreation(User listOwner, UserList list) {
             System.out.println("onUserListCreated  listOwner:@"
                     + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListUpdated(User listOwner, UserList list) {
+        public void onUserListUpdate(User listOwner, UserList list) {
             System.out.println("onUserListUpdated  listOwner:@"
                     + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListDestroyed(User listOwner, UserList list) {
+        public void onUserListDeletion(User listOwner, UserList list) {
             System.out.println("onUserListDestroyed  listOwner:@"
                     + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserProfileUpdated(User updatedUser) {
+        public void onUserProfileUpdate(User updatedUser) {
             System.out.println("onUserProfileUpdated user:@" + updatedUser.getScreenName());
         }
 
