@@ -105,4 +105,10 @@ public interface UserList extends Comparable<UserList>, TwitterResponse, java.io
      */
     User getUser();
 
+    /**
+     * Returns if the authenticated user is following the list
+     *
+     * @return if the authenticated user is following the list
+     */
+    boolean isFollowing();
 }

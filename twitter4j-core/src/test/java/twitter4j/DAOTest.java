@@ -186,6 +186,7 @@ public class DAOTest extends TwitterTestBase {
         schema = new String[]{
                 "result/places/name",
                 "result/places/street_address",
+                "result/places/attributes/*",
                 "result/places/country_code",
                 "result/places/id",
                 "result/places/country",
@@ -194,6 +195,7 @@ public class DAOTest extends TwitterTestBase {
                 "result/places/full_name",
                 "result/places/bounding_box/*",
                 "result/places/contained_within/place_type",
+                "result/places/contained_within/attributes/*",
                 "result/places/contained_within/street_address",
                 "result/places/contained_within/url",
                 "result/places/contained_within/bounding_box/type",
@@ -224,6 +226,7 @@ public class DAOTest extends TwitterTestBase {
                 "previous_cursor",
                 "previous_cursor_str",
                 "lists/id",
+                "lists/id_str",
                 "lists/member_count",
                 "lists/description",
                 "lists/name",
@@ -233,6 +236,7 @@ public class DAOTest extends TwitterTestBase {
                 "lists/uri",
                 "lists/full_name",
                 "lists/mode",
+                "lists/following",
 
         };
         url = "http://api.twitter.com/1/twit4j2/lists.json";
@@ -240,6 +244,7 @@ public class DAOTest extends TwitterTestBase {
 
         schema = new String[]{
                 "id",
+                "id_str",
                 "member_count",
                 "description",
                 "name",
@@ -249,6 +254,7 @@ public class DAOTest extends TwitterTestBase {
                 "uri",
                 "full_name",
                 "mode",
+                "following",
 
         };
         url="http://api.twitter.com/1/twit4j2/lists/9499823.json";
@@ -256,13 +262,14 @@ public class DAOTest extends TwitterTestBase {
         assertEquals("",userList.getDescription());
         assertEquals("@twit4j2/test",userList.getFullName());
         assertEquals(9499823,userList.getId());
-        assertEquals(3,userList.getMemberCount());
+        assertTrue(1 < userList.getMemberCount());
         assertEquals("test",userList.getName());
         assertEquals("test",userList.getSlug());
         assertEquals(0,userList.getSubscriberCount());
         assertEquals("/twit4j2/test",userList.getURI().toString());
         assertNotNull(userList.getUser());
         assertTrue(userList.isPublic());
+        assertFalse(userList.isFollowing());
 
 
         schema = new String[]{
@@ -335,7 +342,7 @@ public class DAOTest extends TwitterTestBase {
         }
         for (int i = 0; i < knownNames.length; i++) {
             if (debug) {
-                System.out.println("kownName[" + i + "]:" + knownNames[i]);
+                System.out.println("knownName[" + i + "]:" + knownNames[i]);
             }
             String knownName = knownNames[i];
             int index;
@@ -697,7 +704,7 @@ public class DAOTest extends TwitterTestBase {
         Object that = ois.readObject();
         byteInputStream.close();
         ois.close();
-        assertEquals(obj,that);
+        assertEquals(obj, that);
         return that;
     }
 

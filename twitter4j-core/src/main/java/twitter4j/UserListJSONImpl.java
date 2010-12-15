@@ -31,7 +31,6 @@ import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.json.DataObjectFactory;
 
 import static twitter4j.internal.util.ParseUtil.*;
 import java.net.URI;
@@ -54,6 +53,7 @@ import java.net.URISyntaxException;
     private String uri;
     private boolean mode;
     private User user;
+    private boolean following;
     private static final long serialVersionUID = -6345893237975349030L;
 
     /*package*/ UserListJSONImpl(HttpResponse res) throws TwitterException {
@@ -70,15 +70,17 @@ import java.net.URISyntaxException;
     }
 
     private void init(JSONObject json) throws TwitterException {
-            id = getInt("id", json);
-            name = getRawString("name", json);
-            fullName = getRawString("full_name", json);
-            slug = getRawString("slug", json);
-            description = getRawString("description", json);
-            subscriberCount = getInt("subscriber_count", json);
-            memberCount = getInt("member_count", json);
-            uri = getRawString("uri", json);
-            mode = "public".equals(getRawString("mode", json));
+        id = getInt("id", json);
+        name = getRawString("name", json);
+        fullName = getRawString("full_name", json);
+        slug = getRawString("slug", json);
+        description = getRawString("description", json);
+        subscriberCount = getInt("subscriber_count", json);
+        memberCount = getInt("member_count", json);
+        uri = getRawString("uri", json);
+        mode = "public".equals(getRawString("mode", json));
+        following = getBoolean("following", json);
+
         try {
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
@@ -158,7 +160,14 @@ import java.net.URISyntaxException;
     public boolean isPublic() {
         return mode;
     }
-        
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFollowing() {
+        return following;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -216,8 +225,9 @@ import java.net.URISyntaxException;
                 ", subscriberCount=" + subscriberCount +
                 ", memberCount=" + memberCount +
                 ", uri='" + uri + '\'' +
-                ", mode='" + mode + '\'' +
+                ", mode=" + mode +
                 ", user=" + user +
+                ", following=" + following +
                 '}';
     }
 }
