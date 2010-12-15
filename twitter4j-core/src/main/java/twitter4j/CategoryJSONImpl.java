@@ -31,6 +31,7 @@ import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.util.ParseUtil;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -40,12 +41,8 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
 
     private String name;
     private String slug;
+    private int size;
     private static final long serialVersionUID = -6703617743623288566L;
-
-    CategoryJSONImpl(String name, String slug){
-        this.name = name;
-        this.slug = slug;
-    }
 
     CategoryJSONImpl(JSONObject json) throws JSONException {
         init(json);
@@ -54,6 +51,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
     void init(JSONObject json) throws JSONException {
         this.name = json.getString("name");
         this.slug = json.getString("slug");
+        this.size = ParseUtil.getInt("size", json);
     }
 
     public static ResponseList<Category> createCategoriesList(HttpResponse res) throws TwitterException {
@@ -86,6 +84,15 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
         return slug;
     }
 
+    /**
+     *
+     * @return
+     * @since Twitter4J 2.1.9
+     */
+    public int getSize() {
+        return size;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,6 +100,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
 
         CategoryJSONImpl that = (CategoryJSONImpl) o;
 
+        if (size != that.size) return false;
         if (name != null ? !name.equals(that.name) : that.name != null)
             return false;
         if (slug != null ? !slug.equals(that.slug) : that.slug != null)
@@ -105,6 +113,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (slug != null ? slug.hashCode() : 0);
+        result = 31 * result + size;
         return result;
     }
 
@@ -113,6 +122,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
         return "CategoryJSONImpl{" +
                 "name='" + name + '\'' +
                 ", slug='" + slug + '\'' +
+                ", size=" + size +
                 '}';
     }
 }

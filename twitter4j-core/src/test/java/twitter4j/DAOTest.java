@@ -166,6 +166,7 @@ public class DAOTest extends TwitterTestBase {
         schema = new String[]{
                 "slug",
                 "name",
+                "size",
         };
         url="http://api.twitter.com/1/users/suggestions.json";
         List categories = CategoryJSONImpl.createCategoriesList(validateJSONArraySchema(url, schema), null);
@@ -174,6 +175,7 @@ public class DAOTest extends TwitterTestBase {
         schema = new String[]{
                 "slug",
                 "name",
+                "size",
                 "categories/*",
                 "users/*"
         };
@@ -581,6 +583,7 @@ public class DAOTest extends TwitterTestBase {
         assertEquals(20, categories.size());
         assertEquals("art-design", categories.get(0).getSlug());
         assertEquals("Art & Design", categories.get(0).getName());
+        assertTrue(0 < categories.get(0).getSize());
 
     }
     public void testPlaceAsJSON() throws Exception {
