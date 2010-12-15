@@ -271,6 +271,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertEquals("0ff", user.getProfileLinkColor());
         assertEquals("0f0", user.getProfileSidebarFillColor());
         assertEquals("f0f", user.getProfileSidebarBorderColor());
+        assertTrue(user.isProfileUseBackgroundImage());
         async1.updateProfileColors("f0f", "f00", "f0f", "0ff", "0f0");
         waitForResponse();
         assertEquals("f0f", user.getProfileBackgroundColor());

@@ -186,6 +186,8 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     String getProfileSidebarBorderColor();
 
+    boolean isProfileUseBackgroundImage();
+
     int getFriendsCount();
 
     Date getCreatedAt();

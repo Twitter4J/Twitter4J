@@ -62,6 +62,7 @@ import static twitter4j.internal.util.ParseUtil.*;
     private String profileLinkColor;
     private String profileSidebarFillColor;
     private String profileSidebarBorderColor;
+    private boolean profileUseBackgroundImage;
     private int friendsCount;
     private Date createdAt;
     private int favouritesCount;
@@ -111,6 +112,7 @@ import static twitter4j.internal.util.ParseUtil.*;
             profileLinkColor = getRawString("profile_link_color", json);
             profileSidebarFillColor = getRawString("profile_sidebar_fill_color", json);
             profileSidebarBorderColor = getRawString("profile_sidebar_border_color", json);
+            profileUseBackgroundImage = getBoolean("profile_use_background_image", json);
             friendsCount = getInt("friends_count", json);
             createdAt = getDate("created_at", json, "EEE MMM dd HH:mm:ss z yyyy");
             favouritesCount = getInt("favourites_count", json);
@@ -306,6 +308,13 @@ import static twitter4j.internal.util.ParseUtil.*;
      */
     public String getProfileSidebarBorderColor() {
         return profileSidebarBorderColor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isProfileUseBackgroundImage() {
+        return profileUseBackgroundImage;
     }
 
     /**

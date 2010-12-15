@@ -275,18 +275,23 @@ public class DAOTest extends TwitterTestBase {
         schema = new String[]{
                 "favorited",
                 "in_reply_to_status_id",
+                "in_reply_to_status_id_str",
                 "created_at",
                 "geo",
                 "place",
                 "source",
                 "in_reply_to_screen_name",
                 "in_reply_to_user_id",
+                "in_reply_to_user_id_str",
                 "coordinates",
                 "truncated",
                 "contributors",
                 "id",
+                "id_str",
                 "text",
-                "user/*"
+                "user/*",
+                "retweeted",
+                "retweet_count"
 
         };
         url="http://api.twitter.com/1/statuses/show/2245071380.json";
@@ -314,13 +319,16 @@ public class DAOTest extends TwitterTestBase {
                 "verified",
                 "time_zone",
                 "profile_background_color",
+                "profile_use_background_image",
                 "protected",
                 "name",
                 "profile_text_color",
                 "followers_count",
                 "id",
+                "id_str",
                 "lang",
                 "statuses_count",
+                "follow_request_sent",
                 "utc_offset"};
 
         url="http://api.twitter.com/1/users/show/yusukey.json";
