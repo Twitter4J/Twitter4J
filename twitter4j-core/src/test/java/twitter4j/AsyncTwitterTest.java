@@ -245,7 +245,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         String neu = "new";
         newName = user.getName() + neu;
         newURL = user.getURL() + neu;
-        newLocation = user.getLocation()+neu;
+        newLocation = new Date().toString();
         newDescription = user.getDescription()+neu;
 
         async1.updateProfile(newName, newURL, newLocation, newDescription);
