@@ -779,6 +779,9 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals("0ff", eu.getProfileLinkColor());
         assertEquals("0f0", eu.getProfileSidebarFillColor());
         assertEquals("f0f", eu.getProfileSidebarBorderColor());
+        assertTrue(eu.isProfileUseBackgroundImage());
+        assertFalse(eu.isShowAllInlineMedia());
+        assertTrue(0 <= eu.getListedCount());
         eu = twitter1.updateProfileColors("f0f", "f00", "f0f", "0ff", "0f0");
         assertNotNull(DataObjectFactory.getRawJSON(eu));
         assertEquals(eu, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(eu)));

@@ -329,7 +329,10 @@ public class DAOTest extends TwitterTestBase {
                 "lang",
                 "statuses_count",
                 "follow_request_sent",
-                "utc_offset"};
+                "utc_offset",
+                "listed_count",
+                "is_translator",
+                "show_all_inline_media"};
 
         url="http://api.twitter.com/1/users/show/yusukey.json";
         User user = new UserJSONImpl(validateJSONObjectSchema(url, schema));

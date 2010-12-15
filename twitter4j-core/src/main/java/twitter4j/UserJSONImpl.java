@@ -63,6 +63,7 @@ import static twitter4j.internal.util.ParseUtil.*;
     private String profileSidebarFillColor;
     private String profileSidebarBorderColor;
     private boolean profileUseBackgroundImage;
+    private boolean showAllInlineMedia;
     private int friendsCount;
     private Date createdAt;
     private int favouritesCount;
@@ -74,6 +75,7 @@ import static twitter4j.internal.util.ParseUtil.*;
     private int statusesCount;
     private boolean isGeoEnabled;
     private boolean isVerified;
+    private boolean translator;
     private int listedCount;
     private boolean isFollowRequestSent;
     private static final long serialVersionUID = -6345893237975349030L;
@@ -104,6 +106,7 @@ import static twitter4j.internal.util.ParseUtil.*;
             isProtected = getBoolean("protected", json);
             isGeoEnabled = getBoolean("geo_enabled", json);
             isVerified = getBoolean("verified", json);
+            translator = getBoolean("is_translator", json);
             followersCount = getInt("followers_count", json);
             listedCount = getInt("listed_count", json);
 
@@ -113,6 +116,7 @@ import static twitter4j.internal.util.ParseUtil.*;
             profileSidebarFillColor = getRawString("profile_sidebar_fill_color", json);
             profileSidebarBorderColor = getRawString("profile_sidebar_border_color", json);
             profileUseBackgroundImage = getBoolean("profile_use_background_image", json);
+            showAllInlineMedia = getBoolean("show_all_inline_media", json);
             friendsCount = getInt("friends_count", json);
             createdAt = getDate("created_at", json, "EEE MMM dd HH:mm:ss z yyyy");
             favouritesCount = getInt("favourites_count", json);
@@ -320,6 +324,13 @@ import static twitter4j.internal.util.ParseUtil.*;
     /**
      * {@inheritDoc}
      */
+    public boolean isShowAllInlineMedia() {
+        return showAllInlineMedia;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getFriendsCount() {
         return friendsCount;
     }
@@ -405,6 +416,13 @@ import static twitter4j.internal.util.ParseUtil.*;
     /**
      * {@inheritDoc}
      */
+    public boolean isTranslator() {
+        return translator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getListedCount() {
         return listedCount;
     }
@@ -482,11 +500,12 @@ import static twitter4j.internal.util.ParseUtil.*;
     @Override
     public String toString() {
         return "UserJSONImpl{" +
-                ", id=" + id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", screenName='" + screenName + '\'' +
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
+                ", isContributorsEnabled=" + isContributorsEnabled +
                 ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", url='" + url + '\'' +
                 ", isProtected=" + isProtected +
@@ -497,16 +516,22 @@ import static twitter4j.internal.util.ParseUtil.*;
                 ", profileLinkColor='" + profileLinkColor + '\'' +
                 ", profileSidebarFillColor='" + profileSidebarFillColor + '\'' +
                 ", profileSidebarBorderColor='" + profileSidebarBorderColor + '\'' +
+                ", profileUseBackgroundImage=" + profileUseBackgroundImage +
+                ", showAllInlineMedia=" + showAllInlineMedia +
                 ", friendsCount=" + friendsCount +
                 ", createdAt=" + createdAt +
                 ", favouritesCount=" + favouritesCount +
                 ", utcOffset=" + utcOffset +
                 ", timeZone='" + timeZone + '\'' +
                 ", profileBackgroundImageUrl='" + profileBackgroundImageUrl + '\'' +
-                ", profileBackgroundTile='" + profileBackgroundTiled + '\'' +
+                ", profileBackgroundTiled=" + profileBackgroundTiled +
+                ", lang='" + lang + '\'' +
                 ", statusesCount=" + statusesCount +
-                ", geoEnabled=" + isGeoEnabled +
-                ", verified=" + isVerified +
+                ", isGeoEnabled=" + isGeoEnabled +
+                ", isVerified=" + isVerified +
+                ", translator=" + translator +
+                ", listedCount=" + listedCount +
+                ", isFollowRequestSent=" + isFollowRequestSent +
                 '}';
     }
 }
