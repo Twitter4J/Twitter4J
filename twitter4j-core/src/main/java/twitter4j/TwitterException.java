@@ -28,6 +28,8 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseCode;
+import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
@@ -47,12 +49,12 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     private Map<String, List<String>> responseHeaderFields = null;
 
     public TwitterException(String message) {
-        super(message);
+        super(decode(message));
         rateLimitStatus = null;
     }
 
     public TwitterException(Exception cause) {
-        super(cause);
+        super(decode(cause.getMessage()),cause);
         if(cause instanceof TwitterException){
             ((TwitterException)cause).setNested();
         }
@@ -60,7 +62,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     public TwitterException(String message, HttpResponse res) {
-        super(getCause(res) + "\n" + message);
+        super(getCause(res) + "\n" + decode(message));
         if (res.getStatusCode() == ENHANCE_YOUR_CLAIM) {
             // application exceeded the rate limitation
             // Search API returns Retry-After header that instructs the application when it is safe to continue.
@@ -94,7 +96,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
             , Map<String, List<String>> responseHeaderFields
             , int statusCode, RateLimitStatus rateLimitStatus
             , RateLimitStatus featureSpecificLateLimitStatus) {
-        super(message);
+        super(decode(message));
         this.retryAfter = retryAfter;
         this.responseHeaderFields = responseHeaderFields;
         this.statusCode = statusCode;
@@ -103,13 +105,31 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     public TwitterException(String msg, Exception cause) {
-        super(msg, cause);
+        super(decode(msg), cause);
     }
 
     public TwitterException(String msg, Exception cause, int statusCode) {
-        super(msg, cause);
+        super(decode(msg), cause);
         this.statusCode = statusCode;
 
+    }
+
+    private static String decode(String str){
+        StringBuffer value = new StringBuffer(str.length());
+        try {
+            JSONObject json = new JSONObject(str);
+            if(!json.isNull("error")){
+                value.append("error - ").append(json.getString("error"))
+                        .append("\n");
+            }
+            if(!json.isNull("request")){
+                value.append("request - ").append(json.getString("request"))
+                        .append("\n");
+            }
+        } catch (JSONException e) {
+            value.append(str);
+        }
+        return value.toString();
     }
 
     public int getStatusCode() {
