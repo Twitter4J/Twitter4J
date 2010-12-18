@@ -558,7 +558,7 @@ public class JSONObject {
     public int getInt(String key) throws JSONException {
         Object o = get(key);
         return o instanceof Number ?
-                ((Number)o).intValue() : (int)getDouble(key);
+                ((Number)o).intValue() : Integer.parseInt((String)get(key));
     }
 
 
@@ -610,7 +610,7 @@ public class JSONObject {
     public long getLong(String key) throws JSONException {
         Object o = get(key);
         return o instanceof Number ?
-                ((Number)o).longValue() : (long)getDouble(key);
+                ((Number)o).longValue() : Long.parseLong((String)get(key));
     }
 
 
