@@ -28,7 +28,7 @@ SOFTWARE.
  * The XMLTokener extends the JSONTokener to provide additional methods
  * for the parsing of XML texts.
  * @author JSON.org
- * @version 2008-09-18
+ * @version 2010-01-30
  */
 public class XMLTokener extends JSONTokener {
 
@@ -66,7 +66,7 @@ public class XMLTokener extends JSONTokener {
         StringBuffer sb = new StringBuffer();
         for (;;) {
             c = next();
-            if (c == 0) {
+            if (end()) {
                 throw syntaxError("Unclosed CDATA");
             }
             sb.append(c);

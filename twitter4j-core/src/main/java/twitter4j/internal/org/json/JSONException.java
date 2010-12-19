@@ -1,12 +1,16 @@
 package twitter4j.internal.org.json;
 
 /**
- * The JSONException is thrown by the JSON.org classes then things are amiss.
+ * The JSONException is thrown by the JSON.org classes when things are amiss.
  * @author JSON.org
  * @version 2008-09-18
  */
 public class JSONException extends Exception {
-    private Throwable cause;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 0;
+	private Throwable cause;
 
     /**
      * Constructs a JSONException with an explanatory message.

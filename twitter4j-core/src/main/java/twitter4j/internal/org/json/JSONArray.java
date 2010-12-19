@@ -73,12 +73,12 @@ import java.util.Map;
  *     <code>false</code>, or <code>null</code>.</li>
  * <li>Values can be separated by <code>;</code> <small>(semicolon)</small> as
  *     well as by <code>,</code> <small>(comma)</small>.</li>
- * <li>Numbers may have the <code>0-</code> <small>(octal)</small> or
+ * <li>Numbers may have the 
  *     <code>0x-</code> <small>(hex)</small> prefix.</li>
  * </ul>
 
  * @author JSON.org
- * @version 2008-09-18
+ * @version 2009-04-14
  */
 public class JSONArray {
 
@@ -163,23 +163,12 @@ public class JSONArray {
      * @param collection     A Collection.
      */
     public JSONArray(Collection collection) {
-        this.myArrayList = (collection == null) ?
-            new ArrayList() :
-            new ArrayList(collection);
-    }
-
-    /**
-     * Construct a JSONArray from a collection of beans.
-     * The collection should have Java Beans.
-     * 
-     * @throws JSONException If not an array.
-     */
-
-    public JSONArray(Collection collection,boolean includeSuperClass) {
 		this.myArrayList = new ArrayList();
-		if(collection != null) {
-			for (Iterator iter = collection.iterator(); iter.hasNext();) {
-				this.myArrayList.add(new JSONObject(iter.next(),includeSuperClass));	
+		if (collection != null) {
+			Iterator iter = collection.iterator();
+			while (iter.hasNext()) {
+			    Object o = iter.next();
+                this.myArrayList.add(JSONObject.wrap(o));  
 			}
 		}
     }
@@ -194,33 +183,15 @@ public class JSONArray {
         if (array.getClass().isArray()) {
             int length = Array.getLength(array);
             for (int i = 0; i < length; i += 1) {
-                this.put(Array.get(array, i));
+                this.put(JSONObject.wrap(Array.get(array, i)));
             }
         } else {
-            throw new JSONException("JSONArray initial value should be a string or collection or array.");
+            throw new JSONException(
+"JSONArray initial value should be a string or collection or array.");
         }
     }
 
-    /**
-     * Construct a JSONArray from an array with a bean.
-     * The array should have Java Beans.
-     * 
-     * @throws JSONException If not an array.
-     */
-    public JSONArray(Object array,boolean includeSuperClass) throws JSONException {
-        this();
-        if (array.getClass().isArray()) {
-            int length = Array.getLength(array);
-            for (int i = 0; i < length; i += 1) {
-                this.put(new JSONObject(Array.get(array, i),includeSuperClass));
-            }
-        } else {
-            throw new JSONException("JSONArray initial value should be a string or collection or array.");
-        }
-    }
-
-    
-    
+     
     /**
      * Get the object value associated with an index.
      * @param index
@@ -792,6 +763,19 @@ public class JSONArray {
             put(value);
         }
         return this;
+    }
+    
+    
+    /**
+     * Remove an index and close the hole.
+     * @param index The index of the element to be removed.
+     * @return The value that was associated with the index,
+     * or null if there was no value.
+     */
+    public Object remove(int index) {
+    	Object o = opt(index);
+        this.myArrayList.remove(index);
+        return o;
     }
 
 

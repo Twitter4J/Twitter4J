@@ -33,7 +33,7 @@ SOFTWARE.
 public class HTTPTokener extends JSONTokener {
 
     /**
-     * Construct an XMLTokener from a string.
+     * Construct an HTTPTokener from a string.
      * @param s A source string.
      */
     public HTTPTokener(String s) {

@@ -54,7 +54,7 @@ SOFTWARE.
  * <p>
  * This can sometimes be easier than using a JSONObject to build a string.
  * @author JSON.org
- * @version 2008-09-18
+ * @version 2010-03-11
  */
 public class JSONWriter {
     private static final int maxdepth = 20;
@@ -157,8 +157,8 @@ public class JSONWriter {
      */
     private JSONWriter end(char m, char c) throws JSONException {
         if (this.mode != m) {
-            throw new JSONException(m == 'o' ? "Misplaced endObject." :
-                "Misplaced endArray.");
+            throw new JSONException(m == 'a' ? "Misplaced endArray." : 
+            		"Misplaced endObject.");
         }
         this.pop(m);
         try {
@@ -204,10 +204,10 @@ public class JSONWriter {
         }
         if (this.mode == 'k') {
             try {
+                stack[top - 1].putOnce(s, Boolean.TRUE);
                 if (this.comma) {
                     this.writer.write(',');
                 }
-                stack[top - 1].putOnce(s, Boolean.TRUE);
                 this.writer.write(JSONObject.quote(s));
                 this.writer.write(':');
                 this.comma = false;

@@ -10,7 +10,7 @@ import java.io.StringWriter;
  * It is just a casual test tool.
  */
 public class Test {
-
+	
     /**
      * Entry point.
      * @param args
@@ -20,6 +20,7 @@ public class Test {
         JSONArray a;
         JSONObject j;
         JSONStringer jj;
+        Object o;
         String s;
         
 /** 
@@ -69,11 +70,38 @@ public class Test {
             }
         }      
         
+
     	Obj obj = new Obj("A beany object", 42, true);
         
         try {     
+            s = "[0.1]";
+            a = new JSONArray(s);
+            System.out.println(a.toString());
+            System.out.println("");
+            
             j = XML.toJSONObject("<![CDATA[This is a collection of test patterns and examples for org.json.]]>  Ignore the stuff past the end.  ");
             System.out.println(j.toString());
+            System.out.println("");
+            
+            j = new JSONObject();
+            o = null;
+            j.put("booga", o);
+            j.put("wooga", JSONObject.NULL);
+            System.out.println(j.toString());
+            System.out.println("");
+           
+            j = new JSONObject();
+            j.increment("two");
+            j.increment("two");
+            System.out.println(j.toString());
+            System.out.println("");
+            
+            
+            s = "<test><blank></blank><empty/></test>";
+            j = XML.toJSONObject(s);
+            System.out.println(j.toString(2));
+            System.out.println(XML.toString(j));
+            System.out.println("");
 
             s = "{     \"list of lists\" : [         [1, 2, 3],         [4, 5, 6],     ] }";
             j = new JSONObject(s);
@@ -364,10 +392,14 @@ public class Test {
             System.out.println(j.toString());
             System.out.println("");
 
-            a = CDL.toJSONArray("No quotes, 'Single Quotes', \"Double Quotes\"\n1,'2',\"3\"\n,'It is \"good,\"', \"It works.\"\n\n");
+            a = CDL.toJSONArray("Comma delimited list test, '\"Strip\"Quotes', 'quote, comma', No quotes, 'Single Quotes', \"Double Quotes\"\n1,'2',\"3\"\n,'It is \"good,\"', \"It works.\"\n\n");
 
-            System.out.println(CDL.toString(a));
+            s = CDL.toString(a);
+            System.out.println(s);
             System.out.println("");
+            System.out.println(a.toString(4));
+            System.out.println("");
+            a = CDL.toJSONArray(s);
             System.out.println(a.toString(4));
             System.out.println("");
 
@@ -398,15 +430,15 @@ public class Test {
             System.out.println("int    " + j.getInt("int"));
             System.out.println("long   " + j.getInt("long"));
             System.out.println("longer " + j.getInt("longer"));
-            System.out.println("double " + j.getInt("double"));
-            System.out.println("string " + j.getInt("string"));
+            //System.out.println("double " + j.getInt("double"));
+            //System.out.println("string " + j.getInt("string"));
 
             System.out.println("\ngetLong");
             System.out.println("int    " + j.getLong("int"));
             System.out.println("long   " + j.getLong("long"));
             System.out.println("longer " + j.getLong("longer"));
-            System.out.println("double " + j.getLong("double"));
-            System.out.println("string " + j.getLong("string"));
+            //System.out.println("double " + j.getLong("double"));
+            //System.out.println("string " + j.getLong("string"));
 
             System.out.println("\ngetDouble");
             System.out.println("int    " + j.getDouble("int"));
@@ -491,10 +523,32 @@ public class Test {
             System.out.println(ja.toString(4));
             System.out.println(JSONML.toString(ja));
             System.out.println("");
+            
+            s = "<Root><MsgType type=\"node\"><BatchType type=\"string\">111111111111111</BatchType></MsgType></Root>";
+            j = JSONML.toJSONObject(s);
+            System.out.println(j);
+            ja = JSONML.toJSONArray(s);
+            System.out.println(ja);
           
             
             System.out.println("\nTesting Exceptions: ");
 
+            System.out.print("Exception: ");
+            try {
+                a = new JSONArray("[\n\r\n\r}");
+                System.out.println(a.toString());
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            
+            System.out.print("Exception: ");
+            try {
+                a = new JSONArray("<\n\r\n\r      ");
+                System.out.println(a.toString());
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            
             System.out.print("Exception: ");
             try {
                 a = new JSONArray();
