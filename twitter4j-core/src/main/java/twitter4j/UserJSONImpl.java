@@ -108,7 +108,6 @@ import static twitter4j.internal.util.ParseUtil.*;
             isVerified = getBoolean("verified", json);
             translator = getBoolean("is_translator", json);
             followersCount = getInt("followers_count", json);
-            listedCount = getInt("listed_count", json);
 
             profileBackgroundColor = getRawString("profile_background_color", json);
             profileTextColor = getRawString("profile_text_color", json);
