@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONException;
@@ -44,13 +45,13 @@ import java.io.InputStream;
 class StatusStreamImpl extends AbstractStreamImplementation implements StatusStream {
     /*package*/
 
-    StatusStreamImpl(InputStream stream) throws IOException {
-        super(stream);
+    StatusStreamImpl(Dispatcher dispatcher, InputStream stream) throws IOException {
+        super(dispatcher, stream);
     }
     /*package*/
 
-    StatusStreamImpl(HttpResponse response) throws IOException {
-        super(response);
+    StatusStreamImpl(Dispatcher dispatcher, HttpResponse response) throws IOException {
+        super(dispatcher, response);
     }
 
     protected String line;

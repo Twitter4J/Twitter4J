@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
@@ -57,13 +58,14 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 
     public void testUserStreamEventTypes() throws Exception {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-event-testcase.json");
-        UserStream stream = new UserStreamImpl(is);
+        UserStream stream = new UserStreamImpl(new DispatcherFactory().getInstance(), is);
 
         source = null;
         target = null;
         ex = null;
 
         stream.next(this);
+        waitForStatus();
         assertEquals(23456789, source.getId());
         assertEquals(12345678, target.getId());
         assertNull(ex);
@@ -74,6 +76,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 
         // This one is an unknown event type.  We should safely ignore it.
         stream.next(this);
+        waitForStatus();
         assertNull(source);
         assertNull(target);
         assertNull(ex);

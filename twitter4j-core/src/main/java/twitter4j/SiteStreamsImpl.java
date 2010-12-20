@@ -32,6 +32,9 @@ import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.util.ParseUtil;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -40,19 +43,15 @@ import java.io.InputStream;
  * @since Twitter4J 2.1.8
  */
 class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImplementation, StreamListener {
-    private int forUser;
-    private final Dispatcher dispatcher;
 
     SiteStreamsListener listener;
 
     /*package*/ SiteStreamsImpl(Dispatcher dispatcher, InputStream stream) throws IOException {
-        super(stream);
-        this.dispatcher = dispatcher;
+        super(dispatcher, stream);
     }
 
     /*package*/ SiteStreamsImpl(Dispatcher dispatcher, HttpResponse response) throws IOException {
-        super(response);
-        this.dispatcher = dispatcher;
+        super(dispatcher, response);
     }
 
     public void next(StreamListener[] listeners) throws TwitterException {
@@ -68,210 +67,92 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         // in the documentation for_user is not quoted, but actually it is quoted
         // n
         if (line.charAt(12) == '"') {
-            forUser = Integer.parseInt(line.substring(13, userIdEnd - 1));
+            forUser.set(Integer.parseInt(line.substring(13, userIdEnd - 1)));
             return line.substring(userIdEnd + 11, line.length() - 1);
         } else {
-            forUser = Integer.parseInt(line.substring(12, userIdEnd));
+            forUser.set(Integer.parseInt(line.substring(12, userIdEnd)));
             return line.substring(userIdEnd + 11, line.length() - 1);
         }
     }
 
-    abstract class SiteStreamEvent implements Runnable {
-        final int FOR_USER;
-
-        SiteStreamEvent(int forUser) {
-            FOR_USER = forUser;
-        }
-    }
+    private static ThreadLocal<Integer> forUser =
+            new ThreadLocal<Integer>() {
+                @Override
+                protected Integer initialValue() {
+                    return new Integer(0);
+                }
+            };
 
     protected void onStatus(final JSONObject json) throws TwitterException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onStatus(FOR_USER, asStatus(json));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onStatus(forUser.get(), asStatus(json));
     }
 
     @Override
-    protected void onDelete(final JSONObject json) {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    JSONObject deletionNotice = json.getJSONObject("delete");
-                    if(deletionNotice.has("status")){
-                        listener.onDeletionNotice(FOR_USER, new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
-                    }else{
-                        JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
-                        listener.onDeletionNotice(FOR_USER, ParseUtil.getInt("id", directMessage)
-                                , ParseUtil.getInt("user_id", directMessage));
-                    }
-                } catch (JSONException jsone) {
-                    listener.onException(jsone);
-                }
-            }
-        });
+    protected void onDelete(final JSONObject json) throws JSONException{
+        JSONObject deletionNotice = json.getJSONObject("delete");
+        if (deletionNotice.has("status")) {
+            listener.onDeletionNotice(forUser.get(), new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
+        } else {
+            JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
+            listener.onDeletionNotice(forUser.get(), ParseUtil.getInt("id", directMessage)
+                    , ParseUtil.getInt("user_id", directMessage));
+        }
     }
 
-    protected void onDirectMessage(final JSONObject json) {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onDirectMessage(FOR_USER, asDirectMessage(json));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+    protected void onDirectMessage(final JSONObject json) throws TwitterException {
+        listener.onDirectMessage(forUser.get(), asDirectMessage(json));
     }
 
     protected void onFriends(final JSONObject json) throws TwitterException, JSONException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onFriendList(FOR_USER, asFriendList(json));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onFriendList(forUser.get(), asFriendList(json));
     }
 
     protected void onFavorite(final JSONObject source, final JSONObject target, final JSONObject targetObject) throws TwitterException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onFavorite(FOR_USER, asUser(source), asUser(target)
-                            , asStatus(targetObject));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onFavorite(forUser.get(), asUser(source), asUser(target), asStatus(targetObject));
     }
 
     protected void onUnfavorite(final JSONObject source, final JSONObject target, final JSONObject targetObject) throws TwitterException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onUnfavorite(FOR_USER, asUser(source)
-                            , asUser(target), asStatus(targetObject));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onUnfavorite(forUser.get(), asUser(source)
+                , asUser(target), asStatus(targetObject));
     }
 
     protected void onFollow(final JSONObject source, final JSONObject target) throws TwitterException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onFollow(FOR_USER, asUser(source), asUser(target));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onFollow(forUser.get(), asUser(source), asUser(target));
     }
 
     protected void onUserListSubscribed(final JSONObject source, final JSONObject owner, final JSONObject userList) throws TwitterException, JSONException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onUserListSubscription(FOR_USER, asUser(source)
-                            , asUser(owner), asUserList(userList));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onUserListSubscription(forUser.get(), asUser(source)
+                , asUser(owner), asUserList(userList));
     }
 
     protected void onUserListCreated(final JSONObject source, final JSONObject userList) throws TwitterException, JSONException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onUserListCreation(FOR_USER, asUser(source)
-                            , asUserList(userList));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onUserListCreation(forUser.get(), asUser(source)
+                , asUserList(userList));
     }
 
     protected void onUserListUpdated(final JSONObject source, final JSONObject userList) throws TwitterException, JSONException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onUserListUpdate(FOR_USER, asUser(source)
-                            , asUserList(userList));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onUserListUpdate(forUser.get(), asUser(source)
+                , asUserList(userList));
     }
 
     protected void onUserListDestroyed(final JSONObject source, final JSONObject userList) throws TwitterException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onUserListDeletion(FOR_USER, asUser(source)
-                            , asUserList(userList));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onUserListDeletion(forUser.get(), asUser(source)
+                , asUserList(userList));
     }
 
     protected void onUserUpdate(final JSONObject source, final JSONObject target) throws TwitterException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onUserProfileUpdate(FOR_USER, asUser(source));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onUserProfileUpdate(forUser.get(), asUser(source));
     }
 
     protected void onBlock(final JSONObject source, final JSONObject target) throws TwitterException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onBlock(FOR_USER, asUser(source), asUser(target));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onBlock(forUser.get(), asUser(source), asUser(target));
     }
 
     protected void onUnblock(final JSONObject source, final JSONObject target) throws TwitterException {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                try {
-                    listener.onUnblock(FOR_USER, asUser(source), asUser(target));
-                } catch (TwitterException te) {
-                    listener.onException(te);
-                }
-            }
-        });
+        listener.onUnblock(forUser.get(), asUser(source), asUser(target));
     }
 
     public void onException(final Exception ex) {
-        dispatcher.invokeLater(new SiteStreamEvent(forUser) {
-            public void run() {
-                listener.onException(ex);
-            }
-
-        });
+        listener.onException(ex);
     }
 }

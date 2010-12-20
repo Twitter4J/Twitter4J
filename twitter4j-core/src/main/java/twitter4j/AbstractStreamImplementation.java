@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.logging.Logger;
@@ -49,21 +50,32 @@ abstract class AbstractStreamImplementation {
     private BufferedReader br;
     private InputStream is;
     private HttpResponse response;
+    protected final Dispatcher dispatcher;
+
     /*package*/
 
-    AbstractStreamImplementation(InputStream stream) throws IOException {
+    AbstractStreamImplementation(Dispatcher dispatcher, InputStream stream) throws IOException {
         this.is = stream;
         this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+        this.dispatcher = dispatcher;
     }
     /*package*/
 
-    AbstractStreamImplementation(HttpResponse response) throws IOException {
-        this(response.asStream());
+    AbstractStreamImplementation(Dispatcher dispatcher, HttpResponse response) throws IOException {
+        this(dispatcher, response.asStream());
         this.response = response;
     }
 
     protected String parseLine(String line) {
         return line;
+    }
+
+    abstract class StreamEvent implements Runnable {
+        String line;
+
+        StreamEvent(String line) {
+            this.line = line;
+        }
     }
 
     abstract void next(StreamListener[] listeners) throws TwitterException;
@@ -73,71 +85,76 @@ abstract class AbstractStreamImplementation {
             throw new IllegalStateException("Stream already closed.");
         }
         try {
-            String line;
-            line = parseLine(br.readLine());
+            String line = br.readLine();
             if (null == line) {
                 //invalidate this status stream
                 throw new IOException("the end of the stream has been reached");
             }
-            if (line.length() > 0) {
-                logger.debug("received:", line);
-                try {
-                    JSONObject json = new JSONObject(line);
-                    if (!json.isNull("sender")) {
-                        onSender(json);
-                    } else if (!json.isNull("text")) {
-                        onStatus(json);
-                    } else if (!json.isNull("direct_message")) {
-                        onDirectMessage(json);
-                    } else if (!json.isNull("delete")) {
-                        onDelete(json);
-                    } else if (!json.isNull("limit")) {
-                        onLimit(json);
-                    } else if (!json.isNull("scrub_geo")) {
-                        onScrubGeo(json);
-                    } else if (!json.isNull("friends")) {
-                        onFriends(json);
-                    } else if (!json.isNull("event")) {
-                        String event = json.getString("event");
-                        JSONObject sourceJSON = json.getJSONObject("source");
-                        JSONObject targetJSON = json.getJSONObject("target");
-                        if ("favorite".equals(event)) {
-                            onFavorite(sourceJSON, targetJSON, json.getJSONObject("target_object"));
-                        } else if ("unfavorite".equals(event)) {
-                            onUnfavorite(sourceJSON, targetJSON, json.getJSONObject("target_object"));
-                        } else if ("retweet".equals(event)) {
-                            // note: retweet events also show up as statuses
-                            onRetweet(sourceJSON, targetJSON, json.getJSONObject("target_object"));
-                        } else if ("follow".equals(event)) {
-                            onFollow(sourceJSON, targetJSON);
-                        } else if (event.startsWith("list_")) {
-                            if ("list_user_subscribed".equals(event)) {
-                                JSONObject targetObjectJSON = json.getJSONObject("target_object");
-                                onUserListSubscribed(sourceJSON, targetJSON, targetObjectJSON);
-                            } else if ("list_created".equals(event)) {
-                                onUserListCreated(sourceJSON, targetJSON);
-                            } else if ("list_updated".equals(event)) {
-                                onUserListUpdated(sourceJSON, targetJSON);
-                            } else if ("list_destroyed".equals(event)) {
-                                onUserListDestroyed(sourceJSON, targetJSON);
+            dispatcher.invokeLater(new StreamEvent(line) {
+                public void run() {
+                    line = parseLine(line);
+                    if (line.length() > 0) {
+                        logger.debug("received:", line);
+                        try {
+                            JSONObject json = new JSONObject(line);
+                            if (!json.isNull("sender")) {
+                                onSender(json);
+                            } else if (!json.isNull("text")) {
+                                onStatus(json);
+                            } else if (!json.isNull("direct_message")) {
+                                onDirectMessage(json);
+                            } else if (!json.isNull("delete")) {
+                                onDelete(json);
+                            } else if (!json.isNull("limit")) {
+                                onLimit(json);
+                            } else if (!json.isNull("scrub_geo")) {
+                                onScrubGeo(json);
+                            } else if (!json.isNull("friends")) {
+                                onFriends(json);
+                            } else if (!json.isNull("event")) {
+                                String event = json.getString("event");
+                                JSONObject sourceJSON = json.getJSONObject("source");
+                                JSONObject targetJSON = json.getJSONObject("target");
+                                if ("favorite".equals(event)) {
+                                    onFavorite(sourceJSON, targetJSON, json.getJSONObject("target_object"));
+                                } else if ("unfavorite".equals(event)) {
+                                    onUnfavorite(sourceJSON, targetJSON, json.getJSONObject("target_object"));
+                                } else if ("retweet".equals(event)) {
+                                    // note: retweet events also show up as statuses
+                                    onRetweet(sourceJSON, targetJSON, json.getJSONObject("target_object"));
+                                } else if ("follow".equals(event)) {
+                                    onFollow(sourceJSON, targetJSON);
+                                } else if (event.startsWith("list_")) {
+                                    if ("list_user_subscribed".equals(event)) {
+                                        JSONObject targetObjectJSON = json.getJSONObject("target_object");
+                                        onUserListSubscribed(sourceJSON, targetJSON, targetObjectJSON);
+                                    } else if ("list_created".equals(event)) {
+                                        onUserListCreated(sourceJSON, targetJSON);
+                                    } else if ("list_updated".equals(event)) {
+                                        onUserListUpdated(sourceJSON, targetJSON);
+                                    } else if ("list_destroyed".equals(event)) {
+                                        onUserListDestroyed(sourceJSON, targetJSON);
+                                    }
+                                } else if ("user_update".equals(event)) {
+                                    onUserUpdate(sourceJSON, targetJSON);
+                                } else if ("block".equals(event)) {
+                                    onBlock(sourceJSON, targetJSON);
+                                } else if ("unblock".equals(event)) {
+                                    onUnblock(sourceJSON, targetJSON);
+                                } else {
+                                    logger.info("Received unknown event type '" + event + "': " + line);
+                                }
+                            } else {
+                                // tmp: just checking what kind of unknown event we're receiving on this stream
+                                logger.info("Received unknown event: " + line);
                             }
-                        } else if ("user_update".equals(event)) {
-                            onUserUpdate(sourceJSON, targetJSON);
-                        } else if ("block".equals(event)) {
-                            onBlock(sourceJSON, targetJSON);
-                        } else if ("unblock".equals(event)) {
-                            onUnblock(sourceJSON, targetJSON);
-                        } else {
-                            logger.info("Received unknown event type '" + event + "': " + line);
+                        } catch (Exception ex) {
+                            onException(ex);
                         }
-                    } else {
-                        // tmp: just checking what kind of unknown event we're receiving on this stream
-                        logger.info("Received unknown event: " + line);
                     }
-                } catch (JSONException jsone) {
-                    onException(jsone);
                 }
-            }
+            });
+
         } catch (IOException ioe) {
             try {
                 is.close();
@@ -259,4 +276,5 @@ abstract class AbstractStreamImplementation {
         DataObjectFactoryUtil.registerJSONObject(userList, json);
         return userList;
     }
+
 }

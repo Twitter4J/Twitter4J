@@ -200,7 +200,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     private StatusStream getCountStream(String relativeUrl, int count) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + relativeUrl
+            return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + relativeUrl
                     , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))}, auth));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -237,7 +237,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     public StatusStream getRetweetStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
+            return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
                     , new HttpParameter[]{}, auth));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -274,7 +274,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     public StatusStream getSampleStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(http.get(conf.getStreamBaseURL() + "statuses/sample.json"
+            return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json"
                     , auth));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -344,7 +344,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
             if(null != track){
                 params.add(new HttpParameter("track", StringUtil.join(track)));
             }
-            return new UserStreamImpl(http.post(conf.getUserStreamBaseURL() + "user.json"
+            return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
                     ,params.toArray(new HttpParameter[params.size()])
                     , auth));
         } catch (IOException e) {
@@ -456,7 +456,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     public StatusStream getFilterStream(FilterQuery query) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(http.post(conf.getStreamBaseURL()
+            return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL()
                     + "statuses/filter.json"
                     , query.asHttpParameterArray(), auth));
         } catch (IOException e) {

@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j;
 
 import twitter4j.http.AccessToken;
+import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
@@ -64,29 +65,37 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     public void testStatusStream() throws Exception {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-testcase.json");
-        StatusStream stream = new StatusStreamImpl(is);
+        StatusStream stream = new StatusStreamImpl(new DispatcherFactory().getInstance(), is);
         stream.next(this);
+        waitForNotification();
         assertEquals(6832057002l, deletionNotice.getStatusId());
         assertEquals(18378841, deletionNotice.getUserId());
         stream.next(this);
+        waitForNotification();
         assertEquals("aaa minha irma ta enchendo aki querendo entra --'", status.getText());
         stream.next(this);
+        waitForNotification();
         assertEquals("Acho retartado ter que esperar para usar o script de novo, por isso só uso o Twitter Followers, o site da empresa é: http://bit.ly/5tNlDp", status.getText());
         stream.next(this);
+        waitForNotification();
         assertEquals(121564, trackLimit);
         stream.next(this);
+        waitForNotification();
         assertEquals("ngantuk banget nguap mulu", status.getText());
         stream.next(this);
+        waitForNotification();
         assertEquals(14090452, userId);
         assertEquals(23260136625l, upToStatusId);
         try {
             stream.next(this);
+            waitForNotification();
             fail("expecting TwitterException");
         } catch (TwitterException te) {
 
         }
         try {
             stream.next(this);
+            waitForNotification();
             fail("expecting IllegalStateException");
         } catch (IllegalStateException ise) {
 
