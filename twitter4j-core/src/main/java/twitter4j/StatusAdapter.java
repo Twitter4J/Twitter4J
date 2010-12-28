@@ -35,8 +35,6 @@ public class StatusAdapter implements StatusListener {
     }
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
     }
-    public void onDeletionNotice(int directMessageId, int userId) {
-    }
     public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
     }
     public void onScrubGeo(int userId, long upToStatusId) {
