@@ -33,6 +33,7 @@ import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.json.JSONObjectType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -97,53 +98,44 @@ abstract class AbstractStreamImplementation {
                         logger.debug("received:", line);
                         try {
                             JSONObject json = new JSONObject(line);
-                            if (!json.isNull("sender")) {
+                            JSONObjectType jsonObjectType = JSONObjectType.determine(json);
+                            if (JSONObjectType.SENDER == jsonObjectType) {
                                 onSender(json);
-                            } else if (!json.isNull("text")) {
+                            } else if (JSONObjectType.STATUS == jsonObjectType) {
                                 onStatus(json);
-                            } else if (!json.isNull("direct_message")) {
+                            } else if (JSONObjectType.DIRECT_MESSAGE == jsonObjectType) {
                                 onDirectMessage(json);
-                            } else if (!json.isNull("delete")) {
+                            } else if (JSONObjectType.DELETE == jsonObjectType) {
                                 onDelete(json);
-                            } else if (!json.isNull("limit")) {
+                            } else if (JSONObjectType.LIMIT == jsonObjectType) {
                                 onLimit(json);
-                            } else if (!json.isNull("scrub_geo")) {
+                            } else if (JSONObjectType.SCRUB_GEO == jsonObjectType) {
                                 onScrubGeo(json);
-                            } else if (!json.isNull("friends")) {
+                            } else if (JSONObjectType.FRIENDS == jsonObjectType) {
                                 onFriends(json);
-                            } else if (!json.isNull("event")) {
-                                String event = json.getString("event");
-                                JSONObject sourceJSON = json.getJSONObject("source");
-                                JSONObject targetJSON = json.getJSONObject("target");
-                                if ("favorite".equals(event)) {
-                                    onFavorite(sourceJSON, targetJSON, json.getJSONObject("target_object"));
-                                } else if ("unfavorite".equals(event)) {
-                                    onUnfavorite(sourceJSON, targetJSON, json.getJSONObject("target_object"));
-                                } else if ("retweet".equals(event)) {
-                                    // note: retweet events also show up as statuses
-                                    onRetweet(sourceJSON, targetJSON, json.getJSONObject("target_object"));
-                                } else if ("follow".equals(event)) {
-                                    onFollow(sourceJSON, targetJSON);
-                                } else if (event.startsWith("list_")) {
-                                    if ("list_user_subscribed".equals(event)) {
-                                        JSONObject targetObjectJSON = json.getJSONObject("target_object");
-                                        onUserListSubscribed(sourceJSON, targetJSON, targetObjectJSON);
-                                    } else if ("list_created".equals(event)) {
-                                        onUserListCreated(sourceJSON, targetJSON);
-                                    } else if ("list_updated".equals(event)) {
-                                        onUserListUpdated(sourceJSON, targetJSON);
-                                    } else if ("list_destroyed".equals(event)) {
-                                        onUserListDestroyed(sourceJSON, targetJSON);
-                                    }
-                                } else if ("user_update".equals(event)) {
-                                    onUserUpdate(sourceJSON, targetJSON);
-                                } else if ("block".equals(event)) {
-                                    onBlock(sourceJSON, targetJSON);
-                                } else if ("unblock".equals(event)) {
-                                    onUnblock(sourceJSON, targetJSON);
-                                } else {
-                                    logger.info("Received unknown event type '" + event + "': " + line);
-                                }
+                            } else if (JSONObjectType.FAVORITE == jsonObjectType) {
+                                onFavorite(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
+                            } else if (JSONObjectType.UNFAVORITE == jsonObjectType) {
+                                onUnfavorite(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
+                            } else if (JSONObjectType.RETWEET == jsonObjectType) {
+                                // note: retweet events also show up as statuses
+                                onRetweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
+                            } else if (JSONObjectType.FOLLOW == jsonObjectType) {
+                                onFollow(json.getJSONObject("source"), json.getJSONObject("target"));
+                            } else if (JSONObjectType.USER_LIST_SUBSCRIBED == jsonObjectType) {
+                                onUserListSubscribed(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
+                            } else if (JSONObjectType.USER_LIST_CREATED == jsonObjectType) {
+                                onUserListCreated(json.getJSONObject("source"), json.getJSONObject("target"));
+                            } else if (JSONObjectType.USER_LIST_UPDATED == jsonObjectType) {
+                                onUserListUpdated(json.getJSONObject("source"), json.getJSONObject("target"));
+                            } else if (JSONObjectType.USER_LIST_DESTROYED == jsonObjectType) {
+                                onUserListDestroyed(json.getJSONObject("source"), json.getJSONObject("target"));
+                            } else if (JSONObjectType.USER_UPDATE == jsonObjectType) {
+                                onUserUpdate(json.getJSONObject("source"), json.getJSONObject("target"));
+                            } else if (JSONObjectType.BLOCK == jsonObjectType) {
+                                onBlock(json.getJSONObject("source"), json.getJSONObject("target"));
+                            } else if (JSONObjectType.UNBLOCK == jsonObjectType) {
+                                onUnblock(json.getJSONObject("source"), json.getJSONObject("target"));
                             } else {
                                 // tmp: just checking what kind of unknown event we're receiving on this stream
                                 logger.info("Received unknown event: " + line);

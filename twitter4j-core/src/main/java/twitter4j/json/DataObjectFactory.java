@@ -61,6 +61,7 @@ public final class DataObjectFactory {
     private static final Constructor<Location> locationConstructor;
     private static final Constructor<UserList> userListConstructor;
     private static final Constructor<RelatedResults> relatedResultsConstructor;
+    private static final Constructor<StatusDeletionNotice> statusDeletionNoticeConstructor;
     static {
         try {
             statusConstructor = (Constructor<Status>) Class.forName("twitter4j.StatusJSONImpl").getDeclaredConstructor(JSONObject.class);
@@ -107,6 +108,9 @@ public final class DataObjectFactory {
 
             relatedResultsConstructor = (Constructor<RelatedResults>) Class.forName("twitter4j.RelatedResultsJSONImpl").getDeclaredConstructor(JSONArray.class);
             relatedResultsConstructor.setAccessible(true);
+            
+            statusDeletionNoticeConstructor = (Constructor<StatusDeletionNotice>) Class.forName("twitter4j.StatusDeletionNoticeImpl").getDeclaredConstructor(JSONObject.class);
+            statusDeletionNoticeConstructor.setAccessible(true);
         } catch (NoSuchMethodException e) {
             throw new ExceptionInInitializerError(e);
         } catch (ClassNotFoundException e) {
@@ -465,6 +469,58 @@ public final class DataObjectFactory {
         }
     }
 
+    /**
+     * Construct an object from rawJSON string.  This method may be called
+     * when you do not know what a given raw JSON string contains.  It will
+     * do the work of determining what type of object the JSON represents,
+     * and constructing the respective object type.  For example, if the JSON
+     * contents represents a Status, then a Status will be returned.  If it
+     * represents a deletion notice, then a StatusDeletionNotice will be
+     * returned.  The caller can simply use instanceof to handle the returned
+     * object as applicable.
+     * NOTE: the raw JSONObject will be returned in cases where there isn't
+     * a discrete respective object type that can be constructed.  That way,
+     * the caller can at least have access to the JSON itself.
+     * @param rawJSON raw JSON form as String
+     * @return the respective constructed object, or the JSONObject in the
+     * case where we cannot determine the object type.
+     * @throws TwitterException when provided string is not a valid JSON string.
+     * @since Twitter4J 2.1.9
+     */
+    public static Object createObject(String rawJSON) throws TwitterException {
+        try {
+            JSONObject json = new JSONObject(rawJSON);
+            JSONObjectType jsonObjectType = JSONObjectType.determine(json);
+            if (JSONObjectType.SENDER == jsonObjectType) {
+                return registerJSONObject(directMessageConstructor.newInstance(json.getJSONObject("direct_message")), json);
+            } else if (JSONObjectType.STATUS == jsonObjectType) {
+                return registerJSONObject(statusConstructor.newInstance(json), json);
+            } else if (JSONObjectType.DIRECT_MESSAGE == jsonObjectType) {
+                return registerJSONObject(directMessageConstructor.newInstance(json.getJSONObject("direct_message")), json);
+            } else if (JSONObjectType.DELETE == jsonObjectType) {
+                return registerJSONObject(statusDeletionNoticeConstructor.newInstance(json.getJSONObject("delete").getJSONObject("status")), json);
+            } else if (JSONObjectType.LIMIT == jsonObjectType) {
+                // TODO: Perhaps there should be a TrackLimitationNotice object?
+                // The onTrackLimitationNotice method could take that as an arg.
+                return json;
+            } else if (JSONObjectType.SCRUB_GEO == jsonObjectType) {
+                // TODO: Perhaps there should be a ScrubGeo object?
+                // The onScrubGeo method could take that as an arg.
+                return json;
+            } else {
+                // The object type is unrecognized...just return the json
+                return json;
+            }
+        } catch (InstantiationException e) {
+            throw new TwitterException(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new AssertionError(e);
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+    }
 
     /**
      * clear raw JSON forms associated with the current thread.<br>
