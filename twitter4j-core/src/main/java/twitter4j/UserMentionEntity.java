@@ -26,31 +26,47 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import java.io.Serializable;
+
 /**
- * A data interface representing one single Hashtag entity.
+ * A data interface representing one single user mention entity.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-public interface HashtagEntity extends java.io.Serializable{
+public interface UserMentionEntity extends Serializable {
     /**
-     * Returns the text of the hashtag without #.
+     * Returns the name mentioned in the status.
      *
-     * @return the text of the hashtag
+     * @return the name mentioned in the status
      */
-    String getText();
+    String getName();
 
     /**
-     * Returns the index of the start character of the hashtag.
+     * Returns the screen name mentioned in the status.
      *
-     * @return the index of the start character of the hashtag
+     * @return the screen name mentioned in the status
+     */
+    String getScreenName();
+
+    /**
+     * Returns the user id mentioned in the status.
+     *
+     * @return the user id mentioned in the status
+     */
+    int getId();
+
+    /**
+     * Returns the index of the start character of the user mention.
+     *
+     * @return the index of the start character of the user mention
      */
     int getStart();
 
     /**
-     * Returns the index of the end character of the hashtag.
+     * Returns the index of the end character of the user mention.
      *
-     * @return the index of the end character of the hashtag
+     * @return the index of the end character of the user mention
      */
     int getEnd();
 }

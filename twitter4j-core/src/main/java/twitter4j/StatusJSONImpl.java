@@ -69,6 +69,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
     private Status retweetedStatus;
     private User[] userMentions;
+    private UserMentionEntity[] userMentionEntities;
     private URL[] urls;
     private URLEntity[] urlEntities;
     private String[] hashtags;
@@ -147,7 +148,9 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
                 int len = userMentionsArray.length();
                 userMentions = new User[len];
+                userMentionEntities = new UserMentionEntity[len];
                 for(int i=0;i<len;i++){
+                    userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
                     userMentions[i] = new UserJSONImpl(userMentionsArray.getJSONObject(i));
                 }
 
@@ -331,6 +334,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    public UserMentionEntity[] getUserMentionEntities() {
+        return userMentionEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public URL[] getURLs() {
         return urls;
     }
@@ -407,11 +417,17 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
                 ", geoLocation=" + geoLocation +
                 ", place=" + place +
+                ", retweetCount=" + retweetCount +
+                ", wasRetweetedByMe=" + wasRetweetedByMe +
                 ", contributors=" + (contributors == null ? null : Arrays.asList(contributors)) +
                 ", annotations=" + annotations +
                 ", retweetedStatus=" + retweetedStatus +
-                ", urls=" + (urlEntities == null ? null : Arrays.toString(urlEntities)) +
-                ", hashtags=" + (hashtags == null ? null : Arrays.toString(hashtags)) +
+                ", userMentions=" + (userMentions == null ? null : Arrays.asList(userMentions)) +
+                ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
+                ", urls=" + (urls == null ? null : Arrays.asList(urls)) +
+                ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
+                ", hashtags=" + (hashtags == null ? null : Arrays.asList(hashtags)) +
+                ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
                 ", user=" + user +
                 '}';
     }

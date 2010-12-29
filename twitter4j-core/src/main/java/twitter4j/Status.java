@@ -169,8 +169,17 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      *
      * @return An array of users mentioned in the tweet.
      * @since Twitter4J 2.1.4
+     * @deprecated use {@link #getUserMentionEntities()} instead.
      */
     User[] getUserMentions();
+
+    /**
+     * Returns an array of user mentions in the tweet, or null if no users were mentioned.
+     *
+     * @return An array of user mention entities in the tweet.
+     * @since Twitter4J 2.1.9
+     */
+    UserMentionEntity[] getUserMentionEntities();
 
     /**
      * Returns an array of URLs mentioned in the tweet, or null if no URLs were mentioned.

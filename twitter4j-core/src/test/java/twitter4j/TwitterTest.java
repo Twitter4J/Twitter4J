@@ -32,7 +32,6 @@ import static twitter4j.DAOTest.assertDeserializedFormIsEqual;
 import static twitter4j.DAOTest.assertDeserializedFormIsNotEqual;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
@@ -1229,11 +1228,13 @@ public class TwitterTest extends TwitterTestBase {
         assertTrue(0 < entities[0].getStart());
         assertTrue(entities[0].getStart() < entities[0].getEnd());
 
-        User[] user1 = status.getUserMentions();
-        assertEquals(1, user1.length);
-        assertEquals(id2.id, user1[0].getId());
-        assertEquals("twit4j2", user1[0].getScreenName());
-        assertEquals("twit4j2 name", user1[0].getName());
+        UserMentionEntity[] userMentions = status.getUserMentionEntities();
+        assertEquals(1, userMentions.length);
+        assertEquals(id2.id, userMentions[0].getId());
+        assertEquals("twit4j2", userMentions[0].getScreenName());
+        assertEquals("twit4j2 name", userMentions[0].getName());
+        assertEquals(53, userMentions[0].getStart());
+        assertEquals(61, userMentions[0].getEnd());
 
         HashtagEntity[] hashtags = status.getHashtagEntities();
         assertEquals(1, hashtags.length);
