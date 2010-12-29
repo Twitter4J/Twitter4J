@@ -34,24 +34,35 @@ import twitter4j.internal.org.json.JSONObject;
  * @since Twitter4J 2.1.9
  */
 public final class JSONObjectType {
-    public static final JSONObjectType SENDER = new JSONObjectType();
-    public static final JSONObjectType STATUS = new JSONObjectType();
-    public static final JSONObjectType DIRECT_MESSAGE = new JSONObjectType();
-    public static final JSONObjectType DELETE = new JSONObjectType();
-    public static final JSONObjectType LIMIT = new JSONObjectType();
-    public static final JSONObjectType SCRUB_GEO = new JSONObjectType();
-    public static final JSONObjectType FRIENDS = new JSONObjectType();
-    public static final JSONObjectType FAVORITE = new JSONObjectType();
-    public static final JSONObjectType UNFAVORITE = new JSONObjectType();
-    public static final JSONObjectType RETWEET = new JSONObjectType();
-    public static final JSONObjectType FOLLOW = new JSONObjectType();
-    public static final JSONObjectType USER_LIST_SUBSCRIBED = new JSONObjectType();
-    public static final JSONObjectType USER_LIST_CREATED = new JSONObjectType();
-    public static final JSONObjectType USER_LIST_UPDATED = new JSONObjectType();
-    public static final JSONObjectType USER_LIST_DESTROYED = new JSONObjectType();
-    public static final JSONObjectType USER_UPDATE = new JSONObjectType();
-    public static final JSONObjectType BLOCK = new JSONObjectType();
-    public static final JSONObjectType UNBLOCK = new JSONObjectType();
+    public static final JSONObjectType SENDER = new JSONObjectType("SENDER");
+    public static final JSONObjectType STATUS = new JSONObjectType("STATUS");
+    public static final JSONObjectType DIRECT_MESSAGE = new JSONObjectType("DIRECT_MESSAGE");
+    public static final JSONObjectType DELETE = new JSONObjectType("DELETE");
+    public static final JSONObjectType LIMIT = new JSONObjectType("LIMIT");
+    public static final JSONObjectType SCRUB_GEO = new JSONObjectType("SCRUB_GEO");
+    public static final JSONObjectType FRIENDS = new JSONObjectType("FRIENDS");
+    public static final JSONObjectType FAVORITE = new JSONObjectType("FAVORITE");
+    public static final JSONObjectType UNFAVORITE = new JSONObjectType("UNFAVORITE");
+    public static final JSONObjectType RETWEET = new JSONObjectType("RETWEET");
+    public static final JSONObjectType FOLLOW = new JSONObjectType("FOLLOW");
+    public static final JSONObjectType USER_LIST_SUBSCRIBED = new JSONObjectType("USER_LIST_SUBSCRIBED");
+    public static final JSONObjectType USER_LIST_CREATED = new JSONObjectType("USER_LIST_CREATED");
+    public static final JSONObjectType USER_LIST_UPDATED = new JSONObjectType("USER_LIST_UPDATED");
+    public static final JSONObjectType USER_LIST_DESTROYED = new JSONObjectType("USER_LIST_DESTROYED");
+    public static final JSONObjectType USER_UPDATE = new JSONObjectType("USER_UPDATE");
+    public static final JSONObjectType BLOCK = new JSONObjectType("BLOCK");
+    public static final JSONObjectType UNBLOCK = new JSONObjectType("UNBLOCK");
+
+    private final String name;
+    
+    private JSONObjectType(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 
     /**
      * Determine the respective object type for a given JSONObject.  This
