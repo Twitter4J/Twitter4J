@@ -31,6 +31,7 @@ import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.AuthorizationFactory;
+import twitter4j.http.BasicAuthorization;
 import twitter4j.http.OAuthAuthorization;
 
 /**
@@ -50,7 +51,7 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * Creates a TwitterStreamFactory with the root configuration.
      */
     public TwitterStreamFactory() {
-        this((StatusListener) null);
+        this(ConfigurationContext.getInstance());
     }
 
     /**
@@ -59,7 +60,8 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * @since Twitter4J 2.1.1
      */
     public TwitterStreamFactory(Configuration conf) {
-        this(conf, (StatusListener)null);
+        this.conf = conf;
+        this.listener = null;
     }
 
     /**
@@ -68,7 +70,8 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
      */
     public TwitterStreamFactory(StatusListener listener) {
-        this(ConfigurationContext.getInstance(), listener);
+        this.conf = ConfigurationContext.getInstance();
+        this.listener = listener;
     }
 
     /**
@@ -78,7 +81,8 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * @deprecated use {@link TwitterStream#addListener(UserStreamListener)}} instead.
      */
     public TwitterStreamFactory(UserStreamListener listener) {
-        this(ConfigurationContext.getInstance(), listener);
+        this.conf = ConfigurationContext.getInstance();
+        this.listener = listener;
     }
 
     /**
@@ -152,17 +156,33 @@ public final class TwitterStreamFactory implements java.io.Serializable{
     }
 
     /**
-     * Returns a Basic Authenticated instance.
+     * Returns an XAuth Authenticated instance.
      *
      * @param screenName screen name
      * @param password password
      * @return an instance
      */
     public TwitterStream getInstance(String screenName, String password){
-        return getInstance(AuthorizationFactory
-                .getBasicAuthorizationInstance(screenName, password));
+        return getInstance(conf, new BasicAuthorization(screenName, password));
     }
 
+    /**
+     * Returns a OAuth Authenticated instance.<br>
+     * consumer key and consumer Secret must be provided by twitter4j.properties, or system properties.
+     * Unlike {@link TwitterStream#setOAuthAccessToken(twitter4j.http.AccessToken)}, this factory method potentially returns a cached instance.
+     *
+     * @param accessToken access token
+     * @return an instance
+     */
+    public TwitterStream getInstance(AccessToken accessToken) {
+        String consumerKey = conf.getOAuthConsumerKey();
+        String consumerSecret = conf.getOAuthConsumerSecret();
+        if (null == consumerKey && null == consumerSecret) {
+            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
+        }
+        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret, accessToken);
+        return getInstance(conf, oauth);
+    }
 
     /**
      * Returns a OAuth Authenticated instance.
@@ -170,13 +190,14 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * @param consumerKey consumer key
      * @param consumerSecret consumer secret
      * @return an instance
+     * @deprecated use {@link TwitterStream#setOAuthConsumer(String, String)}
      */
     public TwitterStream getOAuthAuthorizedInstance(String consumerKey, String consumerSecret) {
         if (null == consumerKey && null == consumerSecret) {
             throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
         }
         OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
-        return getInstance(oauth);
+        return getInstance(conf, oauth);
     }
 
     /**
@@ -185,21 +206,17 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      *
      * @param accessToken access token
      * @return an instance
+     * @deprecated use {@link #getInstance(twitter4j.http.AccessToken)} instead
      */
     public TwitterStream getOAuthAuthorizedInstance(AccessToken accessToken) {
-        String consumerKey = conf.getOAuthConsumerKey();
-        String consumerSecret = conf.getOAuthConsumerSecret();
-        if (null == consumerKey && null == consumerSecret) {
-            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
-        }
-        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret, accessToken);
-        return getInstance(oauth);
+        return getInstance(accessToken);
     }
 
     /**
      * Returns a instance.
      *
      * @return default singleton instance
+     * @deprecated
      */
     public TwitterStream getInstance(Authorization auth){
         return getInstance(conf, auth);

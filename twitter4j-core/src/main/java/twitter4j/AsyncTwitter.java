@@ -74,8 +74,8 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         NewTwitterMethodsAsync,
         HelpMethodsAsync {
     private static final long serialVersionUID = -2008667933225051907L;
-    private Twitter twitter;
-    private TwitterListener listener;
+    private final Twitter twitter;
+    private final TwitterListener listener;
 
     /**
      * Creates a basic authenticated AsyncTwitter instance.
@@ -86,7 +86,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
      */
     public AsyncTwitter(String screenName, String password, TwitterListener listener) {
         super(ConfigurationContext.getInstance(), screenName, password);
-        twitter = new TwitterFactory().getInstance(auth);
+        twitter = new TwitterFactory(ConfigurationContext.getInstance()).getInstance(screenName, password);
         this.listener = listener;
     }
 
@@ -1911,7 +1911,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
      */
     @Override
     public AccessToken getOAuthAccessToken(String token, String tokenSecret, String pin) throws TwitterException {
-        return twitter.getOAuthAccessToken(token, tokenSecret, pin);
+        return twitter.getOAuthAccessToken(new RequestToken(token, tokenSecret), pin);
     }
 
     /**

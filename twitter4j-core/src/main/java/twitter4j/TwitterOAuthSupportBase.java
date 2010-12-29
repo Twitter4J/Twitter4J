@@ -77,7 +77,6 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
      * @param consumerSecret OAuth consumer secret
      * @since Twitter 2.0.0
      * @throws IllegalStateException when OAuth consumer has already been set, or the instance is using basic authorization
-     * @deprecated Use {@link TwitterFactory#getInstance(twitter4j.conf.Configuration, twitter4j.http.Authorization)} instead
      */
     public abstract void setOAuthConsumer(String consumerKey, String consumerSecret);
 

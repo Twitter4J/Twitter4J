@@ -166,8 +166,6 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
 
     /**
      * {@inheritDoc}
-     *
-     * @deprecated Use {@link TwitterFactory#getInstance(twitter4j.http.Authorization)} instead
      */
     public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
         return getOAuth().getOAuthAccessToken(new RequestToken(token, tokenSecret));
