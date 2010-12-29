@@ -456,18 +456,10 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testStatusMethods() throws Exception {
-        String date = new java.util.Date().toString() + "test http://t.co/chEeJss";
+        String date = new java.util.Date().toString() + "test http://t.co/chEeJss @twit4j2 #twitter4jtest";
         Status status = twitter1.updateStatus(date);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
-        URLEntity[] entities = status.getURLEntities();
-        assertEquals(1, entities.length);
-        System.out.println(entities[0]);
-        assertEquals("http://t.co/chEeJss", entities[0].getURL().toString());
-        assertEquals("http://samuraism.jp/cgi-bin/is01.cgi", entities[0].getExpandedURL().toString());
-        assertEquals("samuraism.jp/cgi-bin/is01.c\u2026", entities[0].getDisplayURL());
-        assertTrue(0 < entities[0].getStart());
-        assertTrue(entities[0].getStart() < entities[0].getEnd());
 
         assertEquals(date, status.getText());
         Status status2 = twitter2.updateStatus("@" + id1.screenName + " " + date, status.getId());
@@ -475,7 +467,7 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
         assertEquals("@" + id1.screenName + " " + date, status2.getText());
         assertEquals(status.getId(), status2.getInReplyToStatusId());
-        assertEquals(twitter1.verifyCredentials().getId(), status2.getInReplyToUserId());
+        assertEquals(id1.id, status2.getInReplyToUserId());
         status = twitter1.destroyStatus(status.getId());
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
@@ -1224,23 +1216,26 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testEntities() throws Exception {
-        Status status = twitter2.showStatus(22035985122L);
+        Status status = twitter2.showStatus(20098389530120192l);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
-        assertEquals(2, status.getUserMentions().length);
-        assertEquals(1, status.getURLs().length);
 
-        User user1 = status.getUserMentions()[0];
-        assertEquals(20263710, user1.getId());
-        assertEquals("rabois", user1.getScreenName());
-        assertEquals("Keith Rabois", user1.getName());
-        assertEquals(new URL("http://j.mp/cHv0VS"), status.getURLs()[0]);
+        URLEntity[] entities = status.getURLEntities();
+        assertEquals(1, entities.length);
+        System.out.println(entities[0]);
+        assertEquals("http://t.co/chEeJss", entities[0].getURL().toString());
+        assertEquals("http://samuraism.jp/cgi-bin/is01.cgi", entities[0].getExpandedURL().toString());
+        assertEquals("samuraism.jp/cgi-bin/is01.c\u2026", entities[0].getDisplayURL());
+        assertTrue(0 < entities[0].getStart());
+        assertTrue(entities[0].getStart() < entities[0].getEnd());
 
-        status = twitter2.showStatus(22043496385L);
-        assertNotNull(DataObjectFactory.getRawJSON(status));
-        assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
-        assertEquals(2, status.getHashtags().length);
-        assertEquals("pilaf", status.getHashtags()[0]);
-        assertEquals("recipe", status.getHashtags()[1]);
+        User[] user1 = status.getUserMentions();
+        assertEquals(1, user1.length);
+        assertEquals(id2.id, user1[0].getId());
+        assertEquals("twit4j2", user1[0].getScreenName());
+        assertEquals("twit4j2 name", user1[0].getName());
+
+        assertEquals(1, status.getHashtags().length);
+        assertEquals("twitter4jtest", status.getHashtags()[0]);
     }
 }

@@ -146,7 +146,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         setIncludeRTsEnbled(true);
 
-        setIncludeEntitiesEnbled(true);
+        setIncludeEntitiesEnbled(false);
 
 
         setOAuthRequestTokenURL(DEFAULT_OAUTH_REQUEST_TOKEN_URL);

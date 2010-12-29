@@ -44,6 +44,7 @@ oauth.consumerKey=
 oauth.consumerSecret=
 browser.oauth.consumerKey=
 browser.oauth.consumerSecret=
+includeEntities=true
 
 twitpic.apiKey=
 tweetPhoto.apiKey=
