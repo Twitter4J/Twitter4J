@@ -1235,7 +1235,10 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals("twit4j2", user1[0].getScreenName());
         assertEquals("twit4j2 name", user1[0].getName());
 
-        assertEquals(1, status.getHashtags().length);
-        assertEquals("twitter4jtest", status.getHashtags()[0]);
+        HashtagEntity[] hashtags = status.getHashtagEntities();
+        assertEquals(1, hashtags.length);
+        assertEquals("twitter4jtest", hashtags[0].getText());
+        assertEquals(62, hashtags[0].getStart());
+        assertEquals(76, hashtags[0].getEnd());
     }
 }

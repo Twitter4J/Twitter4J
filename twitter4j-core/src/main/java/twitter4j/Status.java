@@ -194,8 +194,17 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      *
      * @return An array of users mentioned in the tweet.
      * @since Twitter4J 2.1.4
+     * @deprecated use {@link #getHashtagEntities()} instead.
      */
     String[] getHashtags();
+
+    /**
+     * Returns an array if hashtag mentioned in the tweet, or null if no hashtag were mentioned.
+     *
+     * @return An array of Hashtag mentioned in the tweet.
+     * @since Twitter4J 2.1.9
+     */
+    HashtagEntity[] getHashtagEntities();
 
     /**
      * Returns the annotations, or null if no annotations are associated with this status.

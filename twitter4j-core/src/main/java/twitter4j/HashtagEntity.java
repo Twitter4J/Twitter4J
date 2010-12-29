@@ -29,45 +29,30 @@ package twitter4j;
 import java.net.URL;
 
 /**
- * A data interface representing one single URL entity.
+ * A data class representing one single Hashtag entity.
  *
- * @author Mocel - mocel at guma.jp
+ * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-public interface URLEntity extends java.io.Serializable {
-
+public interface HashtagEntity extends java.io.Serializable{
     /**
-     * Returns the URL mentioned in the tweet.
+     * Returns the text of the hashtag without #.
      *
-     * @return the mentioned URL
+     * @return the text of the hashtag
      */
-    URL getURL();
+    String getText();
 
     /**
-     * Returns the expanded URL if mentioned URL is shorten.
+     * Returns the index of the start character of the hashtag.
      *
-     * @return the expanded URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
-     */
-    URL getExpandedURL();
-
-    /**
-     * Returns the display URL if mentioned URL is shorten.
-     *
-     * @return the display URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
-     */
-    String getDisplayURL();
-
-    /**
-     * Returns the index of the start character of the URL mentioned in the tweet.
-     *
-     * @return the index of the start character of the URL mentioned in the tweet
+     * @return the index of the start character of the hashtag
      */
     int getStart();
 
     /**
-     * Returns the index of the end character of the URL mentioned in the tweet.
+     * Returns the index of the end character of the hashtag.
      *
-     * @return the index of the end character of the URL mentioned in the tweet
+     * @return the index of the end character of the hashtag
      */
     int getEnd();
 }

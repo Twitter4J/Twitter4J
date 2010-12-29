@@ -72,6 +72,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private URL[] urls;
     private URLEntity[] urlEntities;
     private String[] hashtags;
+    private HashtagEntity[] hashtagEntities;
 
     private static final long serialVersionUID = 1608000492860584608L;
 
@@ -162,7 +163,9 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 JSONArray hashtagsArray = entities.getJSONArray("hashtags");
                 len = hashtagsArray.length();
                 hashtags = new String[len];
+                hashtagEntities = new HashtagEntity[len];
                 for(int i=0;i<len;i++){
+                    hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
                     hashtags[i] = hashtagsArray.getJSONObject(i).getString("text");
                 }
             } catch (JSONException ignore) {
@@ -344,6 +347,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
      */
     public String[] getHashtags() {
         return hashtags;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public HashtagEntity[] getHashtagEntities() {
+        return hashtagEntities;
     }
 
     /*package*/ static ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {

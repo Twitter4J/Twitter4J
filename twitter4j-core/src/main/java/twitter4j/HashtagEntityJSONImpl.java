@@ -26,48 +26,58 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import java.net.URL;
+import twitter4j.internal.org.json.JSONArray;
+import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
 
 /**
- * A data interface representing one single URL entity.
- *
- * @author Mocel - mocel at guma.jp
+ * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-public interface URLEntity extends java.io.Serializable {
+public class HashtagEntityJSONImpl implements HashtagEntity {
+    private static final long serialVersionUID = 4068992372784813200L;
+    private int start = -1;
+    private int end = -1;
+    private String text;
+
+
+    /* package */ HashtagEntityJSONImpl(JSONObject json) throws TwitterException {
+        super();
+        init(json);
+    }
+
+    private void init(JSONObject json) throws TwitterException {
+        try {
+            JSONArray indicesArray = json.getJSONArray("indices");
+            this.start = indicesArray.getInt(0);
+            this.end = indicesArray.getInt(1);
+
+            if (!json.isNull("text")) {
+                this.text = json.getString("text");
+            }
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
+    }
 
     /**
-     * Returns the URL mentioned in the tweet.
-     *
-     * @return the mentioned URL
+     * {@inheritDoc}
      */
-    URL getURL();
+    public String getText() {
+        return text;
+    }
 
     /**
-     * Returns the expanded URL if mentioned URL is shorten.
-     *
-     * @return the expanded URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
+     * {@inheritDoc}
      */
-    URL getExpandedURL();
+    public int getStart() {
+        return start;
+    }
 
     /**
-     * Returns the display URL if mentioned URL is shorten.
-     *
-     * @return the display URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
+     * {@inheritDoc}
      */
-    String getDisplayURL();
-
-    /**
-     * Returns the index of the start character of the URL mentioned in the tweet.
-     *
-     * @return the index of the start character of the URL mentioned in the tweet
-     */
-    int getStart();
-
-    /**
-     * Returns the index of the end character of the URL mentioned in the tweet.
-     *
-     * @return the index of the end character of the URL mentioned in the tweet
-     */
-    int getEnd();
+    public int getEnd() {
+        return end;
+    }
 }

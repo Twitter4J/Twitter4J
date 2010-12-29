@@ -34,7 +34,7 @@ import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
 /**
- * A data class representing one single of a URL entity.
+ * A data class representing one single URL entity.
  *
  * @author Mocel - mocel at guma.jp
  * @since Twitter4J 2.1.9
@@ -146,8 +146,8 @@ import twitter4j.internal.org.json.JSONObject;
     @Override
     public String toString() {
         return "URLEntityJSONImpl{" +
-                "index=" + start +
-                ", endIndex=" + end +
+                "start=" + start +
+                ", end=" + end +
                 ", url=" + url +
                 ", expandedURL=" + expandedURL +
                 ", displayURL=" + displayURL +
