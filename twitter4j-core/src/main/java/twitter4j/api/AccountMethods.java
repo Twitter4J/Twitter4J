@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.AccountTotals;
 import twitter4j.Device;
 import twitter4j.RateLimitStatus;
 import twitter4j.TwitterException;
@@ -149,4 +150,12 @@ public interface AccountMethods {
     User updateProfile(String name, String url, String location, String description)
             throws TwitterException;
 
+    /**
+     * Returns the current count of friends, followers, updates (statuses) and favorites of the authenticating user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/account/totals.json
+     * @return the current count of friends, followers, updates (statuses) and favorites of the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
+     */
+    AccountTotals getAccountTotals() throws TwitterException;
 }

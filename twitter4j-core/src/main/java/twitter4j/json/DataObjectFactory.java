@@ -62,6 +62,7 @@ public final class DataObjectFactory {
     private static final Constructor<UserList> userListConstructor;
     private static final Constructor<RelatedResults> relatedResultsConstructor;
     private static final Constructor<StatusDeletionNotice> statusDeletionNoticeConstructor;
+    private static final Constructor<AccountTotals> accountTotalsConstructor;
     static {
         try {
             statusConstructor = (Constructor<Status>) Class.forName("twitter4j.StatusJSONImpl").getDeclaredConstructor(JSONObject.class);
@@ -111,6 +112,9 @@ public final class DataObjectFactory {
             
             statusDeletionNoticeConstructor = (Constructor<StatusDeletionNotice>) Class.forName("twitter4j.StatusDeletionNoticeImpl").getDeclaredConstructor(JSONObject.class);
             statusDeletionNoticeConstructor.setAccessible(true);
+
+            accountTotalsConstructor = (Constructor<AccountTotals>) Class.forName("twitter4j.AccountTotalsJSONImpl").getDeclaredConstructor(JSONObject.class);
+            accountTotalsConstructor.setAccessible(true);
         } catch (NoSuchMethodException e) {
             throw new ExceptionInInitializerError(e);
         } catch (ClassNotFoundException e) {
@@ -178,6 +182,28 @@ public final class DataObjectFactory {
         try {
             JSONObject json = new JSONObject(rawJSON);
             return userConstructor.newInstance(json);
+        } catch (InstantiationException e) {
+            throw new TwitterException(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new AssertionError(e);
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    /**
+     * Constructs an AccountTotals object from rawJSON string.
+     * @param rawJSON raw JSON form as String
+     * @return AccountTotals
+     * @throws TwitterException when provided string is not a valid JSON string.
+     * @since Twitter4J 2.1.9
+     */
+    public static AccountTotals createAccountTotals(String rawJSON) throws TwitterException {
+        try {
+            JSONObject json = new JSONObject(rawJSON);
+            return accountTotalsConstructor.newInstance(json);
         } catch (InstantiationException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {

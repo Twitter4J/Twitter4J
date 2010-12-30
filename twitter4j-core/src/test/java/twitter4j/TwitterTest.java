@@ -773,14 +773,6 @@ public class TwitterTest extends TwitterTestBase {
         assertTrue(eu.isProfileUseBackgroundImage());
         assertFalse(eu.isShowAllInlineMedia());
         assertTrue(0 <= eu.getListedCount());
-        eu = twitter1.updateProfileColors("f0f", "f00", "f0f", "0ff", "0f0");
-        assertNotNull(DataObjectFactory.getRawJSON(eu));
-        assertEquals(eu, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(eu)));
-        assertEquals("f0f", eu.getProfileBackgroundColor());
-        assertEquals("f00", eu.getProfileTextColor());
-        assertEquals("f0f", eu.getProfileLinkColor());
-        assertEquals("0ff", eu.getProfileSidebarFillColor());
-        assertEquals("0f0", eu.getProfileSidebarBorderColor());
         eu = twitter1.updateProfileColors("87bc44", "9ae4e8", "000000", "0000ff", "e0ff92");
         assertNotNull(DataObjectFactory.getRawJSON(eu));
         assertEquals(eu, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(eu)));
@@ -789,30 +781,14 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals("000000", eu.getProfileLinkColor());
         assertEquals("0000ff", eu.getProfileSidebarFillColor());
         assertEquals("e0ff92", eu.getProfileSidebarBorderColor());
-        eu = twitter1.updateProfileColors("f0f", null, "f0f", null, "0f0");
-        assertNotNull(DataObjectFactory.getRawJSON(eu));
-        assertEquals(eu, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(eu)));
-        assertEquals("f0f", eu.getProfileBackgroundColor());
-        assertEquals("9ae4e8", eu.getProfileTextColor());
-        assertEquals("f0f", eu.getProfileLinkColor());
-        assertEquals("0000ff", eu.getProfileSidebarFillColor());
-        assertEquals("0f0", eu.getProfileSidebarBorderColor());
-        eu = twitter1.updateProfileColors(null, "f00", null, "0ff", null);
-        assertNotNull(DataObjectFactory.getRawJSON(eu));
-        assertEquals(eu, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(eu)));
-        assertEquals("f0f", eu.getProfileBackgroundColor());
-        assertEquals("f00", eu.getProfileTextColor());
-        assertEquals("f0f", eu.getProfileLinkColor());
-        assertEquals("0ff", eu.getProfileSidebarFillColor());
-        assertEquals("0f0", eu.getProfileSidebarBorderColor());
-        eu = twitter1.updateProfileColors("9ae4e8", "000000", "0000ff", "e0ff92", "87bc44");
-        assertNotNull(DataObjectFactory.getRawJSON(eu));
-        assertEquals(eu, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(eu)));
-        assertEquals("9ae4e8", eu.getProfileBackgroundColor());
-        assertEquals("000000", eu.getProfileTextColor());
-        assertEquals("0000ff", eu.getProfileLinkColor());
-        assertEquals("e0ff92", eu.getProfileSidebarFillColor());
-        assertEquals("87bc44", eu.getProfileSidebarBorderColor());
+
+        AccountTotals totals = twitter1.getAccountTotals();
+        assertTrue(0 < totals.getFavorites());
+        assertTrue(0 < totals.getFollowers());
+        assertTrue(0 < totals.getFriends());
+        assertTrue(0 < totals.getUpdates());
+        assertEquals(totals, DataObjectFactory.createAccountTotals(DataObjectFactory.getRawJSON(totals)));
+
     }
 
     public void testAccountProfileImageUpdates() throws Exception {

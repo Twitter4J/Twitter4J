@@ -161,6 +161,7 @@ public abstract class HttpResponse {
         return responseAsDocument;
     }
 
+    private JSONObject json = null;
     /**
      * Returns the response body as twitter4j.internal.org.json.JSONObject.<br>
      * Disconnects the internal HttpURLConnection silently.
@@ -168,29 +169,30 @@ public abstract class HttpResponse {
      * @throws TwitterException
      */
     public final JSONObject asJSONObject() throws TwitterException {
-        JSONObject json = null;
-        InputStreamReader reader = null;
-        try {
-            if (logger.isDebugEnabled()) {
-                json =  new JSONObject(asString());
-            } else {
-                reader = asReader();
-                json = new JSONObject(new JSONTokener(reader));
-            }
-        } catch (JSONException jsone) {
-            if (logger.isDebugEnabled()) {
-                throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
-            } else {
-                throw new TwitterException(jsone.getMessage(), jsone);
-            }
-        }finally {
-            if(null != reader){
-                try{
-                    reader.close();
-                } catch (IOException ignore) {
+        if (null == json) {
+            InputStreamReader reader = null;
+            try {
+                if (logger.isDebugEnabled()) {
+                    json = new JSONObject(asString());
+                } else {
+                    reader = asReader();
+                    json = new JSONObject(new JSONTokener(reader));
                 }
+            } catch (JSONException jsone) {
+                if (logger.isDebugEnabled()) {
+                    throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
+                } else {
+                    throw new TwitterException(jsone.getMessage(), jsone);
+                }
+            } finally {
+                if (null != reader) {
+                    try {
+                        reader.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+                disconnectForcibly();
             }
-            disconnectForcibly();
         }
         return json;
     }
