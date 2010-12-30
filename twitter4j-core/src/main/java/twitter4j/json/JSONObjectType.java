@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.json;
 
+import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -33,7 +34,9 @@ import twitter4j.internal.org.json.JSONObject;
  * @author Dan Checkoway - dcheckoway at gmail.com
  * @since Twitter4J 2.1.9
  */
-public final class JSONObjectType {
+public final class JSONObjectType implements java.io.Serializable {
+    private static final Logger logger = Logger.getLogger(JSONObjectType.class);
+
     public static final JSONObjectType SENDER = new JSONObjectType("SENDER");
     public static final JSONObjectType STATUS = new JSONObjectType("STATUS");
     public static final JSONObjectType DIRECT_MESSAGE = new JSONObjectType("DIRECT_MESSAGE");
@@ -52,15 +55,19 @@ public final class JSONObjectType {
     public static final JSONObjectType USER_UPDATE = new JSONObjectType("USER_UPDATE");
     public static final JSONObjectType BLOCK = new JSONObjectType("BLOCK");
     public static final JSONObjectType UNBLOCK = new JSONObjectType("UNBLOCK");
+    private static final long serialVersionUID = -4487565183481849892L;
 
     private final String name;
-    
+
+    private JSONObjectType() {
+        throw new AssertionError();
+    }
+
     private JSONObjectType(String name) {
         this.name = name;
     }
-    
-    @Override
-    public String toString() {
+
+    public String getName() {
         return name;
     }
 
@@ -70,10 +77,10 @@ public final class JSONObjectType {
      * represents.  This is useful when processing JSON events of mixed type
      * from a stream, in which case you may need to know what type of object
      * to construct, or how to handle the event properly.
-     * @param the JSONObject whose type should be determined
+     * @param json the JSONObject whose type should be determined
      * @return the determined JSONObjectType, or null if not recognized
      */
-    public static JSONObjectType determine(JSONObject json) throws JSONException {
+    public static JSONObjectType determine(JSONObject json){
         // This code originally lived in AbstractStreamImplementation.
         // I've moved it in here to expose it as a public encapsulation of
         // the object type determination logic.
@@ -92,34 +99,65 @@ public final class JSONObjectType {
         } else if (!json.isNull("friends")) {
             return FRIENDS;
         } else if (!json.isNull("event")) {
-            String event = json.getString("event");
-            if ("favorite".equals(event)) {
-                return FAVORITE;
-            } else if ("unfavorite".equals(event)) {
-                return UNFAVORITE;
-            } else if ("retweet".equals(event)) {
-                // note: retweet events also show up as statuses
-                return RETWEET;
-            } else if ("follow".equals(event)) {
-                return FOLLOW;
-            } else if (event.startsWith("list_")) {
-                if ("list_user_subscribed".equals(event)) {
-                    return USER_LIST_SUBSCRIBED;
-                } else if ("list_created".equals(event)) {
-                    return USER_LIST_CREATED;
-                } else if ("list_updated".equals(event)) {
-                    return USER_LIST_UPDATED;
-                } else if ("list_destroyed".equals(event)) {
-                    return USER_LIST_DESTROYED;
+            String event;
+            try {
+                event = json.getString("event");
+                if ("favorite".equals(event)) {
+                    return FAVORITE;
+                } else if ("unfavorite".equals(event)) {
+                    return UNFAVORITE;
+                } else if ("retweet".equals(event)) {
+                    // note: retweet events also show up as statuses
+                    return RETWEET;
+                } else if ("follow".equals(event)) {
+                    return FOLLOW;
+                } else if (event.startsWith("list_")) {
+                    if ("list_user_subscribed".equals(event)) {
+                        return USER_LIST_SUBSCRIBED;
+                    } else if ("list_created".equals(event)) {
+                        return USER_LIST_CREATED;
+                    } else if ("list_updated".equals(event)) {
+                        return USER_LIST_UPDATED;
+                    } else if ("list_destroyed".equals(event)) {
+                        return USER_LIST_DESTROYED;
+                    }
+                } else if ("user_update".equals(event)) {
+                    return USER_UPDATE;
+                } else if ("block".equals(event)) {
+                    return BLOCK;
+                } else if ("unblock".equals(event)) {
+                    return UNBLOCK;
                 }
-            } else if ("user_update".equals(event)) {
-                return USER_UPDATE;
-            } else if ("block".equals(event)) {
-                return BLOCK;
-            } else if ("unblock".equals(event)) {
-                return UNBLOCK;
+            } catch (JSONException jsone) {
+                try {
+                    logger.warn("Failed to get event element: ", json.toString(2));
+                } catch (JSONException ignore) {
+                }
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JSONObjectType that = (JSONObjectType) o;
+
+        if (name != null ? !name.equals(that.name) : that.name != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
