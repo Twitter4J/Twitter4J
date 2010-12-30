@@ -43,6 +43,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private ResponseList<Place> places;
     private Place place;
     private ResponseList<Category> categories;
+    private AccountTotals totals;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -785,6 +786,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void updatedProfileColors(User user){
         this.user = user;
+        notifyResponse();
+    }
+
+    public void gotAccountTotals(AccountTotals totals){
+        this.totals = totals;
         notifyResponse();
     }
 

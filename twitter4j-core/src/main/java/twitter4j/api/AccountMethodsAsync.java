@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.AccountTotals;
 import twitter4j.Device;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -121,4 +122,11 @@ public interface AccountMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/account/update_profile">POST account/update_profile | dev.twitter.com</a>
      */
     void updateProfile(String name, String url, String location, String description);
+
+    /**
+     * Returns the current count of friends, followers, updates (statuses) and favorites of the authenticating user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/account/totals.json
+     */
+    void getAccountTotals();
 }

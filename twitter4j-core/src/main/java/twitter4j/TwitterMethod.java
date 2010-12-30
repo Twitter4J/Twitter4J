@@ -171,6 +171,7 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod UPDATE_PROFILE_IMAGE = new TwitterMethod("UPDATE_PROFILE_IMAGE");
     public static final TwitterMethod UPDATE_PROFILE_BACKGROUND_IMAGE = new TwitterMethod("UPDATE_PROFILE_BACKGROUND_IMAGE");
     public static final TwitterMethod UPDATE_PROFILE = new TwitterMethod("UPDATE_PROFILE");
+    public static final TwitterMethod ACCOUNT_TOTALS = new TwitterMethod("ACCOUNT_TOTALS");
 
     /*Favorite Methods*/
     public static final TwitterMethod FAVORITES = new TwitterMethod("FAVORITES");
