@@ -330,7 +330,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
             TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
-                + "statuses/friends_timeline.json?include_entities"
+                + "statuses/friends_timeline.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled(), auth));
     }
 
