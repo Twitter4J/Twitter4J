@@ -35,6 +35,7 @@ import twitter4j.http.BasicAuthorization;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.util.StringUtil;
 
 import static twitter4j.internal.http.HttpParameter.*;
 
@@ -1178,6 +1179,22 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public IDs getOutgoingFriendships(long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
         return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Friendship> lookupFriendships(String[] screenNames) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?screen_name=" + StringUtil.join(screenNames), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Friendship> lookupFriendships(int[] ids) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?user_id=" + StringUtil.join(ids), auth));
     }
 
     /* Social Graph Methods */

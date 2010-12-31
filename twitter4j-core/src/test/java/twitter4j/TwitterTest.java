@@ -32,6 +32,7 @@ import static twitter4j.DAOTest.assertDeserializedFormIsEqual;
 import static twitter4j.DAOTest.assertDeserializedFormIsNotEqual;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -618,6 +619,19 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(rel3, DataObjectFactory.createRelationship(DataObjectFactory.getRawJSON(rel3)));
         assertEquals(rel1, rel3);
         assertFalse(rel1.equals(rel2));
+
+        ResponseList<Friendship> friendshipList = twitter1.lookupFriendships(new String[]{"barakobama", id2.screenName, id3.screenName});
+
+        assertEquals(3, friendshipList.size());
+        assertEquals("barakobama", friendshipList.get(0).getScreenName());
+        assertFalse(friendshipList.get(0).isFollowing());
+        assertFalse(friendshipList.get(0).isFollowedBy());
+        assertEquals(id3.screenName, friendshipList.get(2).getScreenName());
+        assertTrue(friendshipList.get(2).isFollowing());
+        assertTrue(friendshipList.get(2).isFollowedBy());
+        friendshipList = twitter1.lookupFriendships(new int[]{id2.id, id3.id});
+        assertEquals(2, friendshipList.size());
+
     }
 
     private void assertIDExsits(String assertion, IDs ids, int idToFind) {

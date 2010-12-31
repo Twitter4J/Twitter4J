@@ -277,6 +277,11 @@ public interface TwitterListener {
 
     void gotFollowersIDs(IDs ids);
 
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    void lookedupFriendships(ResponseList<Friendship> friendships);
+
     /*Account Methods*/
 
     void verifiedCredentials(User user);
@@ -486,6 +491,7 @@ public interface TwitterListener {
     TwitterMethod SHOW_FRIENDSHIP = TwitterMethod.SHOW_FRIENDSHIP;
     TwitterMethod INCOMING_FRIENDSHIP = TwitterMethod.INCOMING_FRIENDSHIPS;
     TwitterMethod OUTGOING_FRIENDSHIPS = TwitterMethod.OUTGOING_FRIENDSHIPS;
+    TwitterMethod LOOKUP_FRIENDSHIPS = TwitterMethod.LOOKUP_FRIENDSHIPS;
 
     /*Social Graph Methods*/
     TwitterMethod FRIENDS_IDS = TwitterMethod.FRIENDS_IDS;

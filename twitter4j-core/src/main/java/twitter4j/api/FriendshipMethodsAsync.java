@@ -27,6 +27,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.api;
 
 
+import twitter4j.Friendship;
+import twitter4j.ResponseList;
+import twitter4j.TwitterException;
+
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
@@ -151,4 +155,25 @@ public interface FriendshipMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/friendships/outgoing">GET friendships/outgoing | dev.twitter.com</a>
      */
     void getOutgoingFriendships(long cursor);
+
+    /**
+     * Returns the relationship of the authenticating user to the specified users.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/friendships/lookup.json
+     * @param screenNames array of the screen names to lookup
+     *
+     * @since Twitter4J 2.1.9
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     */
+    void lookupFriendships(String[] screenNames);
+
+    /**
+     * Returns the relationship of the authenticating user to the specified users.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/friendships/lookup.json
+     * @param ids array of the ids to lookup
+     * @since Twitter4J 2.1.9
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     */
+    void lookupFriendships(int[] ids);
 }

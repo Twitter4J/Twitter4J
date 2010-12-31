@@ -28,6 +28,7 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
+import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.org.json.JSONException;
 
@@ -39,32 +40,30 @@ import static twitter4j.internal.util.ParseUtil.*;
  * @see <a href="http://dev.twitter.com/doc/get/friendships/show">GET friendships/show | dev.twitter.com</a>
  * @since Twitter4J 2.1.0
  */
-/*package*/ final class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {
+/*package*/ class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {
 
-    private int targetUserId;
-    private String targetUserScreenName;
-    private boolean sourceBlockingTarget;
-    private boolean sourceNotificationsEnabled;
-    private boolean sourceFollowingTarget;
-    private boolean sourceFollowedByTarget;
-    private int sourceUserId;
-    private String sourceUserScreenName;
+    private final int targetUserId;
+    private final String targetUserScreenName;
+    private final boolean sourceBlockingTarget;
+    private final boolean sourceNotificationsEnabled;
+    private final boolean sourceFollowingTarget;
+    private final boolean sourceFollowedByTarget;
+    private final int sourceUserId;
+    private final String sourceUserScreenName;
     private static final long serialVersionUID = 697705345506281849L;
 
     /*package*/ RelationshipJSONImpl(HttpResponse res) throws TwitterException {
-        super(res);
-        JSONObject json = res.asJSONObject();
-        init(json);
+        this(res, res.asJSONObject());
         DataObjectFactoryUtil.clearThreadLocalMap();
-        DataObjectFactoryUtil.registerJSONObject(this, json);
+        DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
     }
 
     /*package*/ RelationshipJSONImpl(JSONObject json) throws TwitterException {
-        super();
-        init(json);
+        this(null, json);
     }
 
-    private void init(JSONObject json) throws TwitterException {
+    /*package*/ RelationshipJSONImpl(HttpResponse res, JSONObject json) throws TwitterException {
+        super(res);
         try {
             JSONObject relationship = json.getJSONObject("relationship");
             JSONObject sourceJson = relationship.getJSONObject("source");
@@ -81,6 +80,28 @@ import static twitter4j.internal.util.ParseUtil.*;
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
     }
+
+    /*package*/ static ResponseList<Relationship> createRelationshipList(HttpResponse res) throws TwitterException {
+        try {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+            JSONArray list = res.asJSONArray();
+            int size = list.length();
+            ResponseList<Relationship> relationships = new ResponseListImpl<Relationship>(size, res);
+            for (int i = 0; i < size; i++) {
+                JSONObject json = list.getJSONObject(i);
+                Relationship relationship = new RelationshipJSONImpl(json);
+                DataObjectFactoryUtil.registerJSONObject(relationship, json);
+                relationships.add(relationship);
+            }
+            DataObjectFactoryUtil.registerJSONObject(relationships, list);
+            return relationships;
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        } catch (TwitterException te) {
+            throw te;
+        }
+    }
+
 
     /**
      * {@inheritDoc}

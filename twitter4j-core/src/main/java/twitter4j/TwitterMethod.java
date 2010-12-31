@@ -159,6 +159,7 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod SHOW_FRIENDSHIP = new TwitterMethod("SHOW_FRIENDSHIP");
     public static final TwitterMethod INCOMING_FRIENDSHIPS = new TwitterMethod("INCOMING_FRIENDSHIPS");
     public static final TwitterMethod OUTGOING_FRIENDSHIPS = new TwitterMethod("OUTGOING_FRIENDSHIPS");
+    public static final TwitterMethod LOOKUP_FRIENDSHIPS = new TwitterMethod("LOOKUP_FRIENDSHIPS");
 
     /*Social Graph Methods*/
     public static final TwitterMethod FRIENDS_IDS = new TwitterMethod("FRIENDS_IDS");

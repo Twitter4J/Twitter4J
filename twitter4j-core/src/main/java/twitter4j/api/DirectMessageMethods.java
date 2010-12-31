@@ -126,6 +126,7 @@ public interface DirectMessageMethods {
 
     /**
      * Returns a single direct message, specified by an id parameter.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
      * <br>This method calls http://api.twitter.com/1/direct_messages/show/:id.json
      *
      * @param id message id
