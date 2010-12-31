@@ -1315,6 +1315,14 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public AccountSettings getAccountSettings() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new AccountSettingsJSONImpl(http.get(conf.getRestBaseURL() + "account/settings.json", auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public User updateDeliveryDevice(Device device) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "account/update_delivery_device.json", new HttpParameter[]{new HttpParameter("device", device.getName())}, auth));

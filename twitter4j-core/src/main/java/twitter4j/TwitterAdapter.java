@@ -314,6 +314,11 @@ public class TwitterAdapter implements TwitterListener {
     public void gotAccountTotals(AccountTotals totals) {
     }
     /**
+     * @since Twitter4J 2.1.9
+     */
+    public void gotAccountSettings(AccountSettings settings) {
+    }
+    /**
      * @since Twitter4J 2.1.0
      */
     public void updatedProfileImage(User user) {

@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.AccountSettings;
 import twitter4j.AccountTotals;
 import twitter4j.Device;
 import twitter4j.TwitterException;
@@ -129,4 +130,12 @@ public interface AccountMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/account/totals.json
      */
     void getAccountTotals();
+
+    /**
+     * Returns the current trend, geo and sleep time information for the authenticating user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/account/settings.json
+     * @since Twitter4J 2.1.9
+     */
+    void getAccountSettings();
 }

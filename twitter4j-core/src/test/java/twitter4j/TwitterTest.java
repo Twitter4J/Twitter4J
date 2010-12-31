@@ -789,6 +789,13 @@ public class TwitterTest extends TwitterTestBase {
         assertTrue(0 < totals.getUpdates());
         assertEquals(totals, DataObjectFactory.createAccountTotals(DataObjectFactory.getRawJSON(totals)));
 
+        AccountSettings settings = twitter1.getAccountSettings();
+        assertFalse(settings.isSleepTimeEnabled());
+        assertNull(settings.getSleepStartTime());
+        assertNull(settings.getSleepEndTime());
+        assertTrue(settings.isGeoEnabled());
+        Location[] locations = settings.getTrendLocations();
+        assertTrue(0 < locations.length);
     }
 
     public void testAccountProfileImageUpdates() throws Exception {

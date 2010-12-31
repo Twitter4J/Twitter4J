@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.AccountSettings;
 import twitter4j.AccountTotals;
 import twitter4j.Device;
 import twitter4j.RateLimitStatus;
@@ -156,6 +157,17 @@ public interface AccountMethods {
      * <br>This method calls http://api.twitter.com/1/account/totals.json
      * @return the current count of friends, followers, updates (statuses) and favorites of the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.9
      */
     AccountTotals getAccountTotals() throws TwitterException;
+
+    /**
+     * Returns the current trend, geo and sleep time information for the authenticating user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/account/settings.json
+     * @return the current trend, geo and sleep time information for the authenticating user.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.9
+     */
+    AccountSettings getAccountSettings() throws TwitterException;
 }

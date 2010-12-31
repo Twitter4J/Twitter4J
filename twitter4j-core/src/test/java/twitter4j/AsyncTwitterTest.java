@@ -44,6 +44,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private Place place;
     private ResponseList<Category> categories;
     private AccountTotals totals;
+    private AccountSettings settings;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -791,6 +792,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void gotAccountTotals(AccountTotals totals){
         this.totals = totals;
+        notifyResponse();
+    }
+
+    public void gotAccountSettings(AccountSettings settings){
+        this.settings = settings;
         notifyResponse();
     }
 

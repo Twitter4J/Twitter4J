@@ -675,6 +675,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public void getAccountSettings() {
+        getDispatcher().invokeLater(new AsyncTask(ACCOUNT_SETTINGS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotAccountSettings(twitter.getAccountSettings());
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void getFriendsStatuses() {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
