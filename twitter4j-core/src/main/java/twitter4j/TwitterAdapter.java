@@ -254,7 +254,11 @@ public class TwitterAdapter implements TwitterListener {
      */
     public void destroyedDirectMessage(DirectMessage message){
     }
-
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    public void gotDirectMessage(DirectMessage message){
+    }
     /*Friendship Methods*/
     /**
      * @since Twitter4J 2.0.1

@@ -1078,6 +1078,19 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public void getDirectMessage(final int id) {
+        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGE, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotDirectMessage(twitter.getDirectMessage(id));
+            }
+        });
+    }
+
+    /*Friendship Methods*/
+
+    /**
+     * {@inheritDoc}
+     */
     public void createFriendship(final String screenName) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_FRIENDSHIP, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {

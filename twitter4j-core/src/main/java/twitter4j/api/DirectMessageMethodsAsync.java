@@ -26,7 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.api;
 
+import twitter4j.DirectMessage;
 import twitter4j.Paging;
+import twitter4j.TwitterException;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -93,4 +95,14 @@ public interface DirectMessageMethodsAsync {
 	 * @since Twitter4J 2.0.1
 	 */
 	void destroyDirectMessage(int id);
+
+    /**
+     * Returns a single direct message, specified by an id parameter.
+     * <br>This method calls http://api.twitter.com/1/direct_messages/show/:id.json
+     *
+     * @param id message id
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @since Twitter4J 2.1.9
+     */
+    void getDirectMessage(int id);
 }

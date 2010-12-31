@@ -234,6 +234,10 @@ public interface TwitterListener {
     void sentDirectMessage(DirectMessage message);
 
     /**
+     * @since Twitter4J 2.1.9
+     */
+    void gotDirectMessage(DirectMessage message);
+    /**
      * @since Twitter4J 2.0.1
      */
     void destroyedDirectMessage(DirectMessage message);

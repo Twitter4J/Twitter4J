@@ -1077,6 +1077,16 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public DirectMessage getDirectMessage(int id) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new DirectMessageJSONImpl(http.get(conf.getRestBaseURL()
+                + "direct_messages/show/" + id + ".json?include_entities="
+                + conf.isIncludeEntitiesEnabled(), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public User createFriendship(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/create.json?include_entities="

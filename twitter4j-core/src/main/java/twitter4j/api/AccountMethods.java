@@ -157,6 +157,7 @@ public interface AccountMethods {
      * <br>This method calls http://api.twitter.com/1/account/totals.json
      * @return the current count of friends, followers, updates (statuses) and favorites of the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
     AccountTotals getAccountTotals() throws TwitterException;
@@ -167,6 +168,7 @@ public interface AccountMethods {
      * <br>This method calls http://api.twitter.com/1/account/settings.json
      * @return the current trend, geo and sleep time information for the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
     AccountSettings getAccountSettings() throws TwitterException;

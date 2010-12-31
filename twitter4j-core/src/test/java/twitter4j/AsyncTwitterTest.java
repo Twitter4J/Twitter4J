@@ -720,6 +720,10 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    public void gotDirectMessage(DirectMessage message) {
+        this.message = message;
+        notifyResponse();
+    }
     /*Friendship Methods*/
     public void createdFriendship(User user) {
         this.user = user;
