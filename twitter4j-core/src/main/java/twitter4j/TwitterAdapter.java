@@ -291,9 +291,14 @@ public class TwitterAdapter implements TwitterListener {
     public void gotOutgoingFriendships(IDs ids) {
     }
     /**
-     * @since Twitter4J 2.1.2
+     * @since Twitter4J 2.1.9
      */
     public void lookedupFriendships(ResponseList<Friendship> friendships) {
+    }
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    public void updatedFriendship(Relationship relationship) {
     }
     /*Social Graph Methods*/
     public void gotFriendsIDs(IDs ids){

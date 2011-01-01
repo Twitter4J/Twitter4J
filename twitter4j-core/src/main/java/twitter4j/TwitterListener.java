@@ -282,6 +282,11 @@ public interface TwitterListener {
      */
     void lookedupFriendships(ResponseList<Friendship> friendships);
 
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    void updatedFriendship(Relationship relationship);
+
     /*Account Methods*/
 
     void verifiedCredentials(User user);
@@ -492,6 +497,7 @@ public interface TwitterListener {
     TwitterMethod INCOMING_FRIENDSHIP = TwitterMethod.INCOMING_FRIENDSHIPS;
     TwitterMethod OUTGOING_FRIENDSHIPS = TwitterMethod.OUTGOING_FRIENDSHIPS;
     TwitterMethod LOOKUP_FRIENDSHIPS = TwitterMethod.LOOKUP_FRIENDSHIPS;
+    TwitterMethod UPDATE_FRIENDSHIP = TwitterMethod.UPDATE_FRIENDSHIP;
 
     /*Social Graph Methods*/
     TwitterMethod FRIENDS_IDS = TwitterMethod.FRIENDS_IDS;

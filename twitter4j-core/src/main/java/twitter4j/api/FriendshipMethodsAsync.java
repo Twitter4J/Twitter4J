@@ -28,6 +28,7 @@ package twitter4j.api;
 
 
 import twitter4j.Friendship;
+import twitter4j.Relationship;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 
@@ -176,4 +177,33 @@ public interface FriendshipMethodsAsync {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      */
     void lookupFriendships(int[] ids);
+
+
+    /**
+     * Allows you to enable or disable retweets and device notifications from the specified user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/friendships/update.json
+     * @param screenName screen name to update
+     * @param enableDeviceNotification set true to enable device notification
+     * @param retweets set true to enable retweets
+     *
+     * @since Twitter4J 2.1.9
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     */
+    void updateFriendship(String screenName, boolean enableDeviceNotification
+            , boolean retweets);
+
+    /**
+     * Allows you to enable or disable retweets and device notifications from the specified user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/friendships/update.json
+     * @param userId user id to update
+     * @param enableDeviceNotification set true to enable device notification
+     * @param retweets set true to enable retweets
+     *
+     * @since Twitter4J 2.1.9
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     */
+    void updateFriendship(int userId, boolean enableDeviceNotification
+            , boolean retweets);
 }

@@ -45,6 +45,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private ResponseList<Category> categories;
     private AccountTotals totals;
     private AccountSettings settings;
+    private ResponseList<Friendship> friendships;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -769,6 +770,17 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void gotFollowersIDs(IDs ids){
         this.ids = ids;
+        notifyResponse();
+    }
+
+    public void lookedupFriendships(ResponseList<Friendship> friendships){
+        this.friendships = friendships;
+        notifyResponse();
+    }
+
+
+    public void updatedFriendship(Relationship relationship){
+        this.relationship = relationship;
         notifyResponse();
     }
 

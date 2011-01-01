@@ -1231,6 +1231,32 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void updateFriendship(final String screenName
+            , final boolean enableDeviceNotification, final boolean retweet) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_FRIENDSHIP, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.updatedFriendship(twitter.updateFriendship(screenName
+                        , enableDeviceNotification, retweet));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void updateFriendship(final int userId
+            , final boolean enableDeviceNotification, final boolean retweet) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_FRIENDSHIP, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.updatedFriendship(twitter.updateFriendship(userId
+                        , enableDeviceNotification, retweet));
+            }
+        });
+    }
+
     /* Social Graph Methods */
 
     /**

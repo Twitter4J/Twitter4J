@@ -632,6 +632,11 @@ public class TwitterTest extends TwitterTestBase {
         friendshipList = twitter1.lookupFriendships(new int[]{id2.id, id3.id});
         assertEquals(2, friendshipList.size());
 
+        Relationship relationship = twitter1.updateFriendship(id3.screenName,true,true);
+        assertEquals(id3.screenName, relationship.getTargetUserScreenName());
+
+        relationship = twitter1.updateFriendship(id3.id,true,true);
+        assertEquals(id3.screenName, relationship.getTargetUserScreenName());
     }
 
     private void assertIDExsits(String assertion, IDs ids, int idToFind) {

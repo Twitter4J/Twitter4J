@@ -215,4 +215,36 @@ public interface FriendshipMethods {
      */
     ResponseList<Friendship> lookupFriendships(int[] ids)
             throws TwitterException;
+
+    /**
+     * Allows you to enable or disable retweets and device notifications from the specified user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/friendships/update.json
+     * @param screenName screen name to update
+     * @param enableDeviceNotification set true to enable device notification
+     * @param retweets set true to enable retweets
+     * @return Relationship
+     *
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.9
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     */
+    Relationship updateFriendship(String screenName, boolean enableDeviceNotification
+            , boolean retweets) throws TwitterException;
+
+    /**
+     * Allows you to enable or disable retweets and device notifications from the specified user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/friendships/update.json
+     * @param userId user id to update
+     * @param enableDeviceNotification set true to enable device notification
+     * @param retweets set true to enable retweets
+     * @return Relationship
+     *
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.9
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     */
+    Relationship updateFriendship(int userId, boolean enableDeviceNotification
+            , boolean retweets) throws TwitterException;
 }

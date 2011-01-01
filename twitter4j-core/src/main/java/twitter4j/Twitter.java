@@ -1197,6 +1197,34 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?user_id=" + StringUtil.join(ids), auth));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Relationship updateFriendship(String screenName, boolean enableDeviceNotification
+            , boolean retweets) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new RelationshipJSONImpl(http.post(conf.getRestBaseURL() + "friendships/update.json",
+                new HttpParameter[]{
+                        new HttpParameter("screen_name", screenName),
+                        new HttpParameter("device", enableDeviceNotification),
+                        new HttpParameter("retweets", enableDeviceNotification)
+                }, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Relationship updateFriendship(int userId, boolean enableDeviceNotification
+            , boolean retweets) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new RelationshipJSONImpl(http.post(conf.getRestBaseURL() + "friendships/update.json",
+                new HttpParameter[]{
+                        new HttpParameter("user_id", userId),
+                        new HttpParameter("device", enableDeviceNotification),
+                        new HttpParameter("retweets", enableDeviceNotification)
+                }, auth));
+    }
+
     /* Social Graph Methods */
 
     /**
