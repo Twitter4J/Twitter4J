@@ -848,7 +848,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL() +
+        return UserListJSONImpl.createPagableUserListList(http.get(conf.getRestBaseURL() +
                 listOwnerScreenName + "/lists.json?cursor=" + cursor, auth));
     }
 
@@ -884,7 +884,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL() +
+        return UserListJSONImpl.createPagableUserListList(http.get(conf.getRestBaseURL() +
                 listMemberScreenName + "/lists/memberships.json?cursor=" + cursor, auth));
     }
 
@@ -893,8 +893,26 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL() +
+        return UserListJSONImpl.createPagableUserListList(http.get(conf.getRestBaseURL() +
                 listOwnerScreenName + "/lists/subscriptions.json?cursor=" + cursor, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<UserList> getAllUserLists(String screenName)
+            throws TwitterException{
+        return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL()
+                + "lists/all.json?screen_name=" + screenName, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<UserList> getAllUserLists(int userId)
+            throws TwitterException{
+        return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL()
+                + "lists/all.json?user_id=" + userId, auth));
     }
 
     /*List Members Methods*/

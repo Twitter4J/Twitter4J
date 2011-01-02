@@ -185,6 +185,10 @@ public interface TwitterListener {
      * @since Twitter4J 2.1.0
      */
     void gotUserListSubscriptions(PagableResponseList<UserList> userLists);
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    void gotAllUserLists(ResponseList<UserList> lists);
 
     /*List Members Methods*/
     /**
@@ -469,6 +473,7 @@ public interface TwitterListener {
     TwitterMethod USER_LIST_STATUSES = TwitterMethod.USER_LIST_STATUSES;
     TwitterMethod USER_LIST_MEMBERSHIPS = TwitterMethod.USER_LIST_MEMBERSHIPS;
     TwitterMethod USER_LIST_SUBSCRIPTIONS = TwitterMethod.USER_LIST_SUBSCRIPTIONS;
+    TwitterMethod ALL_USER_LISTS = TwitterMethod.ALL_USER_LISTS;
 
     /*List Members Methods*/
     TwitterMethod LIST_MEMBERS = TwitterMethod.LIST_MEMBERS;

@@ -27,6 +27,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.api;
 
 import twitter4j.Paging;
+import twitter4j.ResponseList;
+import twitter4j.TwitterException;
+import twitter4j.UserList;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -122,4 +125,24 @@ public interface ListMethodsAsync {
      * @since Twitter4J 2.1.1
      */
 	void getUserListSubscriptions(String listOwnerScreenName, long cursor);
+
+    /**
+     * Returns all lists the authenticating or specified user subscribes to, including their own.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/lists/all.json
+     *
+     * @param screenName screen name to look up
+     * @since Twitter4J 2.1.9
+     */
+    void getAllSubscribingUserLists(String screenName);
+
+    /**
+     * Returns all lists the authenticating or specified user subscribes to, including their own.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/lists/all.json
+     *
+     * @param userId user id to look up
+     * @since Twitter4J 2.1.9
+     */
+    void getAllSubscribingUserLists(int userId);
 }

@@ -46,6 +46,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private AccountTotals totals;
     private AccountSettings settings;
     private ResponseList<Friendship> friendships;
+    private ResponseList<UserList> userLists;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -459,7 +460,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private User user = null;
     private boolean test;
     private UserList userList;
-    private PagableResponseList<UserList> userLists;
+    private PagableResponseList<UserList> pagableUserLists;
     private Relationship relationship;
     private DirectMessage message = null;
     private TwitterException te = null;
@@ -630,34 +631,47 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void createdUserList(UserList userList) {
         this.userList = userList;
+        notifyResponse();
     }
 
     public void updatedUserList(UserList userList) {
         this.userList = userList;
+        notifyResponse();
     }
 
     public void gotUserLists(PagableResponseList<UserList> userLists) {
-        this.userLists = userLists;
+        this.pagableUserLists = userLists;
+        notifyResponse();
     }
 
     public void gotShowUserList(UserList userList) {
         this.userList = userList;
+        notifyResponse();
     }
 
     public void destroyedUserList(UserList userList) {
         this.userList = userList;
+        notifyResponse();
     }
 
     public void gotUserListStatuses(ResponseList<Status> statuses) {
         this.statuses = statuses;
+        notifyResponse();
     }
 
     public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
-        this.userLists = userLists;
+        this.pagableUserLists = userLists;
+        notifyResponse();
     }
 
     public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {
+        this.pagableUserLists = userLists;
+        notifyResponse();
+    }
+
+    public void gotAllUserLists(ResponseList<UserList> userLists) {
         this.userLists = userLists;
+        notifyResponse();
     }
 
     /*List Members Methods*/

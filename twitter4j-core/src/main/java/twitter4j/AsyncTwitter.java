@@ -884,6 +884,28 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void getAllSubscribingUserLists(final String screenName) {
+        getDispatcher().invokeLater(new AsyncTask(ALL_USER_LISTS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotAllUserLists(twitter.getAllUserLists(screenName));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getAllSubscribingUserLists(final int userId) {
+        getDispatcher().invokeLater(new AsyncTask(ALL_USER_LISTS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotAllUserLists(twitter.getAllUserLists(userId));
+            }
+        });
+    }
+
     /*List Members Methods*/
     /**
      * {@inheritDoc}

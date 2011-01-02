@@ -149,5 +149,31 @@ public interface ListMethods {
      * @since Twitter4J 2.1.0
      */
 	PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor)
-			throws TwitterException;
+            throws TwitterException;
+
+    /**
+     * Returns all lists the authenticating or specified user subscribes to, including their own.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/lists/all.json
+     *
+     * @param screenName screen name to look up
+     * @return list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.9
+     */
+    ResponseList<UserList> getAllUserLists(String screenName)
+            throws TwitterException;
+
+    /**
+     * Returns all lists the authenticating or specified user subscribes to, including their own.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/lists/all.json
+     *
+     * @param userId user id to look up
+     * @return list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 2.1.9
+     */
+    ResponseList<UserList> getAllUserLists(int userId)
+            throws TwitterException;
 }

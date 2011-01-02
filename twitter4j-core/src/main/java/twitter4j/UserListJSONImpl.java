@@ -175,7 +175,7 @@ import java.net.URISyntaxException;
         return user;
     }
 
-    /*package*/ static PagableResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException {
+    /*package*/ static PagableResponseList<UserList> createPagableUserListList(HttpResponse res) throws TwitterException {
         try {
             DataObjectFactoryUtil.clearThreadLocalMap();
             JSONObject json = res.asJSONObject();
@@ -190,6 +190,28 @@ import java.net.URISyntaxException;
                 DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
             }
             DataObjectFactoryUtil.registerJSONObject(users, json);
+            return users;
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        } catch (TwitterException te) {
+            throw te;
+        }
+    }
+
+    /*package*/ static ResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException {
+        try {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+            JSONArray list = res.asJSONArray();
+            int size = list.length();
+            ResponseList<UserList> users =
+                    new ResponseListImpl<UserList>(size, res);
+            for (int i = 0; i < size; i++) {
+                JSONObject userListJson = list.getJSONObject(i);
+                UserList userList = new UserListJSONImpl(userListJson);
+                users.add(userList);
+                DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
+            }
+            DataObjectFactoryUtil.registerJSONObject(users, list);
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

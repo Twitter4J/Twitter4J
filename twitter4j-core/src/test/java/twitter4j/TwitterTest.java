@@ -32,7 +32,6 @@ import static twitter4j.DAOTest.assertDeserializedFormIsEqual;
 import static twitter4j.DAOTest.assertDeserializedFormIsNotEqual;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -267,6 +266,11 @@ public class TwitterTest extends TwitterTestBase {
         assertNull(DataObjectFactory.getRawJSON(userList));
         assertNotNull(statuses);
 
+        ResponseList<UserList> lists = twitter1.getAllUserLists(id1.id);
+        assertTrue(0 < lists.size());
+        lists = twitter1.getAllUserLists("yusukey");
+        assertTrue(0 < lists.size());
+
         /*List Member Methods*/
         User user = null;
         try {
@@ -281,7 +285,7 @@ public class TwitterTest extends TwitterTestBase {
         userList = twitter1.addUserListMembers(userList.getId(), new int[]{id3.id, id2.id});
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(DataObjectFactory.getRawJSON(userList));
-        userList = twitter1.addUserListMembers(userList.getId(), new String[]{"akr", "yusukey"});
+        userList = twitter1.addUserListMembers(userList.getId(), new String[]{"akr", "yusukey" });
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(DataObjectFactory.getRawJSON(userList));
         assertNotNull(userList);

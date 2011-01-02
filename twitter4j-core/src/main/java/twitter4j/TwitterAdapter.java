@@ -199,6 +199,10 @@ public class TwitterAdapter implements TwitterListener {
      * @since Twitter4J 2.1.0
      */
     public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {}
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    public void gotAllUserLists(ResponseList<UserList> lists) {}
 
     /*List Members Methods*/
     /**
