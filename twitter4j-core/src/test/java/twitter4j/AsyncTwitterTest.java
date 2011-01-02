@@ -620,6 +620,14 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     /**
+     * @since Twitter4J 2.1.9
+     */
+    public void gotMemberSuggestions(ResponseList<User> users) {
+        this.users = users;
+        notifyResponse();
+    }
+
+    /**
      * @since Twitter4J 2.1.7
      */
     public void gotProfileImage(ProfileImage image){

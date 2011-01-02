@@ -748,6 +748,15 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public ResponseList<User> getMemberSuggestions(String categorySlug) throws TwitterException {
+        HttpResponse res = http.get(conf.getRestBaseURL() + "users/suggestions/"
+                + categorySlug + "/members.json", auth);
+        return UserJSONImpl.createUserList(res.asJSONArray(), res);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ProfileImage getProfileImage(String screenName, ProfileImage.ImageSize size) throws TwitterException {
         return new ProfileImageImpl(http.get(conf.getRestBaseURL() + "users/profile_image/"
                 + screenName + ".json?size="+size.getName(), auth));

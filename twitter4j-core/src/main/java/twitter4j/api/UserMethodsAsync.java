@@ -27,7 +27,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.api;
 
 import twitter4j.ProfileImage;
+import twitter4j.ResponseList;
 import twitter4j.TwitterException;
+import twitter4j.User;
 
 import java.io.InputStream;
 
@@ -99,6 +101,16 @@ public interface UserMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/users/suggestions/slug">GET users/suggestions/slug | dev.twitter.com</a>
      */
     void getUserSuggestions(String categorySlug);
+
+    /**
+     * Access the users in a given category of the Twitter suggested user list and return their most recent status if they are not a protected user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/users/suggestions/:slug/members.json
+     * @param categorySlug slug
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @since Twitter4J 2.1.9
+     */
+    void getMemberSuggestions(String categorySlug);
 
     /**
      * Access the profile image in various sizes for the user with the indicated screen_name. If no size is provided the normal image is returned. This resource does not return JSON or XML, but instead returns a 302 redirect to the actual image resource.

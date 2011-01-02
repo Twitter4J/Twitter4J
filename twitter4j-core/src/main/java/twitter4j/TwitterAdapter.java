@@ -169,6 +169,12 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     /**
+     * @since Twitter4J 2.1.9
+     */
+    public void gotMemberSuggestions(ResponseList<User> users) {
+    }
+
+    /**
      * @since Twitter4J 2.1.7
      */
     public void gotProfileImage(ProfileImage image) {

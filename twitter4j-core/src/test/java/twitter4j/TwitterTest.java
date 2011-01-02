@@ -208,6 +208,14 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(categories.get(0), DataObjectFactory.createCategory(DataObjectFactory.getRawJSON(categories.get(0))));
         ResponseList<User> users = twitter1.getUserSuggestions(categories.get(0).getSlug());
         assertTrue(users.size() > 0);
+        assertNull(users.get(0).getStatus());
+        assertNotNull(DataObjectFactory.getRawJSON(users));
+        assertNotNull(DataObjectFactory.getRawJSON(users.get(0)));
+        assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
+
+        users = twitter1.getMemberSuggestions(categories.get(0).getSlug());
+        assertTrue(users.size() > 0);
+        assertNotNull(users.get(0).getStatus());
         assertNotNull(DataObjectFactory.getRawJSON(users));
         assertNotNull(DataObjectFactory.getRawJSON(users.get(0)));
         assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));

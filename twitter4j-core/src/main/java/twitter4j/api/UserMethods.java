@@ -116,6 +116,18 @@ public interface UserMethods {
     ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException;
 
     /**
+     * Access the users in a given category of the Twitter suggested user list and return their most recent status if they are not a protected user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/users/suggestions/:slug/members.json
+     * @param categorySlug slug
+     * @return list of suggested users
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @since Twitter4J 2.1.9
+     */
+    ResponseList<User> getMemberSuggestions(String categorySlug) throws TwitterException;
+
+    /**
      * Access the profile image in various sizes for the user with the indicated screen_name. If no size is provided the normal image is returned. This resource does not return JSON or XML, but instead returns a 302 redirect to the actual image resource.
      * This method should only be used by application developers to lookup or check the profile image URL for a user. This method must not be used as the image source URL presented to users of your application.
      * <br>This method calls http://api.twitter.com/1/users/profile_image/:screen_name.json

@@ -150,6 +150,11 @@ public interface TwitterListener {
     void gotUserSuggestions(ResponseList<User> users);
 
     /**
+     * @since Twitter4J 2.1.9
+     */
+    void gotMemberSuggestions(ResponseList<User> users);
+
+    /**
      * @since Twitter4J 2.1.7
      */
     void gotProfileImage(ProfileImage image);
@@ -469,6 +474,7 @@ public interface TwitterListener {
     TwitterMethod SEARCH_USERS = TwitterMethod.SEARCH_USERS;
     TwitterMethod SUGGESTED_USER_CATEGORIES = TwitterMethod.SUGGESTED_USER_CATEGORIES;
     TwitterMethod USER_SUGGESTIONS = TwitterMethod.USER_SUGGESTIONS;
+    TwitterMethod MEMBER_SUGGESTIONS = TwitterMethod.MEMBER_SUGGESTIONS;
     TwitterMethod PROFILE_IMAGE = TwitterMethod.PROFILE_IMAGE;
     TwitterMethod FRIENDS_STATUSES = TwitterMethod.FRIENDS_STATUSES;
     TwitterMethod FOLLOWERS_STATUSES = TwitterMethod.FOLLOWERS_STATUSES;

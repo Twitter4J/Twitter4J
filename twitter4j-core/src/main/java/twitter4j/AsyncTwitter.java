@@ -697,6 +697,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public void getMemberSuggestions(final String categorySlug) {
+        getDispatcher().invokeLater(new AsyncTask(MEMBER_SUGGESTIONS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotMemberSuggestions(twitter.getMemberSuggestions(categorySlug));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void getProfileImage(final String screenName, final ProfileImage.ImageSize size) {
         getDispatcher().invokeLater(new AsyncTask(PROFILE_IMAGE, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
