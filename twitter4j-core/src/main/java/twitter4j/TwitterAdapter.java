@@ -293,7 +293,7 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.1.9
      */
-    public void lookedupFriendships(ResponseList<Friendship> friendships) {
+    public void lookedUpFriendships(ResponseList<Friendship> friendships) {
     }
     /**
      * @since Twitter4J 2.1.9

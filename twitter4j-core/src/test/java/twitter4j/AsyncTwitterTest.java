@@ -773,7 +773,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
-    public void lookedupFriendships(ResponseList<Friendship> friendships){
+    public void lookedUpFriendships(ResponseList<Friendship> friendships){
         this.friendships = friendships;
         notifyResponse();
     }

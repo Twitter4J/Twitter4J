@@ -280,7 +280,7 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.1.9
      */
-    void lookedupFriendships(ResponseList<Friendship> friendships);
+    void lookedUpFriendships(ResponseList<Friendship> friendships);
 
     /**
      * @since Twitter4J 2.1.9
