@@ -431,6 +431,50 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public void getRetweetedByUser(final String screenName, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY_USER, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotRetweetedByUser(twitter.getRetweetedByUser(screenName, paging));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetedByUser(final int userId, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY_USER, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotRetweetedByUser(twitter.getRetweetedByUser(userId, paging));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetedToUser(final String screenName, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_TO_USER, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotRetweetedToUser(twitter.getRetweetedToUser(screenName, paging));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetedToUser(final int userId, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETED_TO_USER, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotRetweetedToUser(twitter.getRetweetedToUser(userId, paging));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void showStatus(final long id) {
         getDispatcher().invokeLater(new AsyncTask(SHOW_STATUS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {

@@ -494,6 +494,50 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Status> getRetweetedToUser(String screenName, Paging paging) throws TwitterException {
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
+                "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
+                , new HttpParameter[]{
+                        new HttpParameter("screen_name", screenName)
+                        ,INCLUDE_ENTITIES}), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getRetweetedToUser(int userId, Paging paging) throws TwitterException {
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
+                "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
+                , new HttpParameter[]{
+                        new HttpParameter("user_id", userId)
+                        ,INCLUDE_ENTITIES}), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getRetweetedByUser(String screenName, Paging paging) throws TwitterException {
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
+                "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
+                , new HttpParameter[]{
+                        new HttpParameter("screen_name", screenName)
+                        ,INCLUDE_ENTITIES}), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getRetweetedByUser(int userId, Paging paging) throws TwitterException {
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
+                "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
+                , new HttpParameter[]{
+                        new HttpParameter("user_id", userId)
+                        ,INCLUDE_ENTITIES}), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public ResponseList<User> getRetweetedBy(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL()

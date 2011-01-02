@@ -269,4 +269,63 @@ public interface TimelineMethods {
      */
     ResponseList<Status> getRetweetsOfMe(Paging paging) throws TwitterException;
 
+    /**
+     * Returns the 20 most recent retweets posted by users the specified user follows. This method is identical to statuses/retweeted_to_me except you can choose the user to view.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_to_user
+     *
+     * @param screenName the user to view
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @return the 20 most recent retweets posted by the authenticating user's friends.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @since Twitter4J 2.1.9
+     */
+    ResponseList<Status> getRetweetedToUser(String screenName, Paging paging)
+            throws TwitterException;
+
+    /**
+     * Returns the 20 most recent retweets posted by users the specified user follows. This method is identical to statuses/retweeted_to_me except you can choose the user to view.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_to_user
+     *
+     * @param userId the user to view
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @return the 20 most recent retweets posted by the authenticating user's friends.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @since Twitter4J 2.1.9
+     */
+    ResponseList<Status> getRetweetedToUser(int userId, Paging paging)
+            throws TwitterException;
+
+    /**
+     * Returns the 20 most recent retweets posted by the specified user. This method is identical to statuses/retweeted_by_me except you can choose the user to view.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_user
+     *
+     * @param screenName the user to view
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @return the 20 most recent retweets posted by the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @since Twitter4J 2.0.10
+     */
+    ResponseList<Status> getRetweetedByUser(String screenName, Paging paging)
+            throws TwitterException;
+
+    /**
+     * Returns the 20 most recent retweets posted by the specified user. This method is identical to statuses/retweeted_by_me except you can choose the user to view.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_user
+     *
+     * @param userId the user to view
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @return the 20 most recent retweets posted by the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @since Twitter4J 2.0.10
+     */
+    ResponseList<Status> getRetweetedByUser(int userId, Paging paging)
+            throws TwitterException;
 }

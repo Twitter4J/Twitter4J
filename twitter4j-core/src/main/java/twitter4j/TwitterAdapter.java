@@ -97,6 +97,18 @@ public class TwitterAdapter implements TwitterListener {
     public void gotRetweetsOfMe(ResponseList<Status> statuses) {
     }
 
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    public void gotRetweetedByUser(ResponseList<Status> statuses) {
+    }
+
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    public void gotRetweetedToUser(ResponseList<Status> statuses) {
+    }
+
     /*Status Methods*/
     /**
      * @since Twitter4J 2.0.1

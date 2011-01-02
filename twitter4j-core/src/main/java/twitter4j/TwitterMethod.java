@@ -102,6 +102,8 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod RETWEETED_BY_ME = new TwitterMethod("RETWEETED_BY_ME");
     public static final TwitterMethod RETWEETED_TO_ME = new TwitterMethod("RETWEETED_TO_ME");
     public static final TwitterMethod RETWEETS_OF_ME = new TwitterMethod("RETWEETS_OF_ME");
+    public static final TwitterMethod RETWEETED_BY_USER = new TwitterMethod("RETWEETED_BY_USER");
+    public static final TwitterMethod RETWEETED_TO_USER = new TwitterMethod("RETWEETED_TO_USER");
 
     /*Status Methods*/
     public static final TwitterMethod SHOW_STATUS = new TwitterMethod("SHOW_STATUS");

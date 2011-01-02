@@ -532,6 +532,15 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.statuses = statuses;
         notifyResponse();
     }
+    public void gotRetweetedByUser(ResponseList<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
+
+    public void gotRetweetedToUser(ResponseList<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
 
     /*Status Methods*/
     public void gotShowStatus(Status status) {

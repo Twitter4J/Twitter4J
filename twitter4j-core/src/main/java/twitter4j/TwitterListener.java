@@ -87,7 +87,14 @@ public interface TwitterListener {
      * @since Twitter4J 2.0.10
      */
     void gotRetweetsOfMe(ResponseList<Status> statuses);
-
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    void gotRetweetedByUser(ResponseList<Status> statuses);
+    /**
+     * @since Twitter4J 2.1.9
+     */
+    void gotRetweetedToUser(ResponseList<Status> statuses);
 
     /*Status Methods*/
     /**
@@ -443,6 +450,8 @@ public interface TwitterListener {
     TwitterMethod RETWEETED_BY_ME = TwitterMethod.RETWEETED_BY_ME;
     TwitterMethod RETWEETED_TO_ME = TwitterMethod.RETWEETED_TO_ME;
     TwitterMethod RETWEETS_OF_ME = TwitterMethod.RETWEETS_OF_ME;
+    TwitterMethod RETWEETED_BY_USER = TwitterMethod.RETWEETED_BY_USER;
+    TwitterMethod RETWEETED_TO_USER = TwitterMethod.RETWEETED_TO_USER;
 
     /*Status Methods*/
     TwitterMethod SHOW_STATUS = TwitterMethod.SHOW_STATUS;
