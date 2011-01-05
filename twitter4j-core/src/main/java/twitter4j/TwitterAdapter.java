@@ -337,9 +337,6 @@ public class TwitterAdapter implements TwitterListener {
     public void gotRateLimitStatus(RateLimitStatus status) {
     }
 
-    public void updatedDeliveryDevice(User user) {
-    }
-
     public void updatedProfileColors(User user) {
     }
     /**

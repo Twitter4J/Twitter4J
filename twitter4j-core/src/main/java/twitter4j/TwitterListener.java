@@ -309,8 +309,6 @@ public interface TwitterListener {
 
     void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
 
-    void updatedDeliveryDevice(User user);
-
     void updatedProfileColors(User user);
 
     /**
@@ -526,7 +524,6 @@ public interface TwitterListener {
     /*Account Methods*/
     TwitterMethod VERIFY_CREDENTIALS = TwitterMethod.VERIFY_CREDENTIALS;
     TwitterMethod RATE_LIMIT_STATUS = TwitterMethod.RATE_LIMIT_STATUS;
-    TwitterMethod UPDATE_DELIVERY_DEVICE = TwitterMethod.UPDATE_DELIVERY_DEVICE;
     TwitterMethod UPDATE_PROFILE_COLORS = TwitterMethod.UPDATE_PROFILE_COLORS;
     TwitterMethod UPDATE_PROFILE_IMAGE = TwitterMethod.UPDATE_PROFILE_IMAGE;
     TwitterMethod UPDATE_PROFILE_BACKGROUND_IMAGE = TwitterMethod.UPDATE_PROFILE_BACKGROUND_IMAGE;

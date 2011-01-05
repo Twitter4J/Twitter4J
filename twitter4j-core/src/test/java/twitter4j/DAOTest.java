@@ -694,11 +694,6 @@ public class DAOTest extends TwitterTestBase {
         assertDeserializedFormIsSingleton(TwitterMethod.BLOCKING_USERS);
     }
 
-    public void testDevice() throws Exception {
-        assertDeserializedFormIsSingleton(Device.SMS);
-        assertDeserializedFormIsSingleton(Device.NONE);
-    }
-
     /**
      *
      * @param obj the object to be asserted

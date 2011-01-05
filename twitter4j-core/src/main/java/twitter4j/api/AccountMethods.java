@@ -28,7 +28,6 @@ package twitter4j.api;
 
 import twitter4j.AccountSettings;
 import twitter4j.AccountTotals;
-import twitter4j.Device;
 import twitter4j.RateLimitStatus;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -59,19 +58,6 @@ public interface AccountMethods {
      * @see <a href="http://dev.twitter.com/doc/get/account/rate_limit_status">GET account/rate_limit_status | dev.twitter.com</a>
 	 */
     RateLimitStatus getRateLimitStatus() throws TwitterException;
-
-    /**
-     * Sets which device Twitter delivers updates to for the authenticating user. Sending none as the device parameter will disable IM or SMS updates.
-	 * <br>This method calls http://api.twitter.com/1/account/update_delivery_device.json
-	 *
-	 * @param device new Delivery device. Must be one of: IM, SMS, NONE.
-	 * @return the updated user
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 1.0.4
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_delivery_device">POST account/update_delivery_device | dev.twitter.com</a>
-     * @deprecated This endpoint is deprecated and should no longer be used.
-	 */
-    User updateDeliveryDevice(Device device) throws TwitterException;
 
     /**
      * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexidecimal value, and may be either three or six characters (ex: #fff or #ffffff).

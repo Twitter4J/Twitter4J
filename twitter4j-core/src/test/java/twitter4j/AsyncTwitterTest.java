@@ -827,11 +827,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
 	}
 
-	public void updatedDeliveryDevice(User user) {
-        this.user = user;
-        notifyResponse();
-    }
-
     public void updatedProfileColors(User user){
         this.user = user;
         notifyResponse();

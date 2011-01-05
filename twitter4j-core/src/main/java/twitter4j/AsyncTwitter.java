@@ -1516,17 +1516,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void updateDeliveryDevice(final Device device) {
-        getDispatcher().invokeLater(new AsyncTask(UPDATE_DELIVERY_DEVICE, listener) {
-            public void invoke(TwitterListener listener) throws TwitterException {
-                listener.updatedDeliveryDevice(twitter.updateDeliveryDevice(device));
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void updateProfileColors(
             final String profileBackgroundColor, final String profileTextColor,
             final String profileLinkColor, final String profileSidebarFillColor,
