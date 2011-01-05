@@ -27,12 +27,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.util;
 
 import junit.framework.TestCase;
-import twitter4j.util.TimeSpanUtil;
+
+import java.util.Locale;
 
 public class TimeSpanUtilTest extends TestCase {
     public TimeSpanUtilTest(String name) {
         super(name);
     }
+
+    int second = 1000;
+    int minute = second * 60;
+    int hour = minute * 60;
+
+    TimeSpanUtil util;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -41,25 +48,96 @@ public class TimeSpanUtilTest extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
-    private void assertTimeSpanString(String expected, long timeBack){
-        assertEquals(expected, TimeSpanUtil.toTimeSpanString(System.currentTimeMillis() - timeBack));
+
+    private void assertTimeSpanString(String expected, long time) {
+        assertEquals(expected, util.toTimeSpanString(time));
 
     }
-    public void testToTimeSpanString() throws Exception {
-        int second = 1000;
-        int minute = second * 60;
-        int hour = minute * 60;
-        int day = hour * 24;
-        assertTimeSpanString("less than 5 seconds ago", second * 4);
-        assertTimeSpanString("less than 10 seconds ago", second * 7);
-        assertTimeSpanString("less than 20 seconds ago", second * 19);
-        assertTimeSpanString("half a minute ago", second * 31);
-        assertTimeSpanString("less than a minute ago", second * 58);
-        assertTimeSpanString("1 minute ago", second * 61);
-        assertTimeSpanString("3 minutes ago", minute * 3);
-        assertTimeSpanString("about an hour ago", hour * 1);
-        assertTimeSpanString("about 3 hours ago", hour * 3);
-        assertTimeSpanString("1 day ago", day * 1);
-        assertTimeSpanString("4 days ago", day * 4);
+
+    public void testItalian() throws Exception {
+        util = new TimeSpanUtil(Locale.ITALIAN);
+        assertTimeSpanString("Ora", System.currentTimeMillis() - second * 1);
+        assertTimeSpanString("4 secondi fa", System.currentTimeMillis() - second * 4);
+        assertTimeSpanString("1 minuto fa", System.currentTimeMillis() - second * 61);
+        assertTimeSpanString("3 minuti fa", System.currentTimeMillis() - minute * 3);
+        assertTimeSpanString("1 ora fa", System.currentTimeMillis() - hour * 1);
+        assertTimeSpanString("3 ore fa", System.currentTimeMillis() - hour * 3);
+        assertTimeSpanString("4 gen", 1294068301798l);
+        assertTimeSpanString("1 gen", 1293809388354l);
+        assertTimeSpanString("18 dic 09", 1261143946000l);
+    }
+
+    public void testSpanish() throws Exception {
+        Locale[] locales = Locale.getAvailableLocales();
+        Locale locale = null;
+        for (Locale loc : locales) {
+            if ("es".equals(loc.getLanguage())) {
+                locale = loc;
+            }
+        }
+        util = new TimeSpanUtil(locale);
+        assertTimeSpanString("Ahora", System.currentTimeMillis() - second * 1);
+        assertTimeSpanString("hace 4 segundos", System.currentTimeMillis() - second * 4);
+        assertTimeSpanString("hace 1 munito", System.currentTimeMillis() - second * 61);
+        assertTimeSpanString("hace 3 munitos", System.currentTimeMillis() - minute * 3);
+        assertTimeSpanString("hace 1 hora", System.currentTimeMillis() - hour * 1);
+        assertTimeSpanString("hace 3 horas", System.currentTimeMillis() - hour * 3);
+        assertTimeSpanString("4 ene", 1294068301798l);
+        assertTimeSpanString("1 ene", 1293809388354l);
+        assertTimeSpanString("18 dic 09", 1261143946000l);
+    }
+
+    public void testEnglish() throws Exception {
+        util = new TimeSpanUtil(Locale.ENGLISH);
+        assertTimeSpanString("now", System.currentTimeMillis() - second * 1);
+        assertTimeSpanString("4 seconds ago", System.currentTimeMillis() - second * 4);
+        assertTimeSpanString("58 seconds ago", System.currentTimeMillis() - second * 58);
+        assertTimeSpanString("1 minute ago", System.currentTimeMillis() - second * 61);
+        assertTimeSpanString("3 minutes ago", System.currentTimeMillis() - minute * 3);
+        assertTimeSpanString("1 hour ago", System.currentTimeMillis() - hour * 1);
+        assertTimeSpanString("3 hours ago", System.currentTimeMillis() - hour * 3);
+        assertTimeSpanString("4 Jan", 1294068301798l);
+        assertTimeSpanString("1 Jan", 1293809388354l);
+        assertTimeSpanString("18 Dec 09", 1261143946000l);
+    }
+
+    public void testFrench() throws Exception {
+        util = new TimeSpanUtil(Locale.FRENCH);
+        assertTimeSpanString("Maintenant", System.currentTimeMillis() - second * 1);
+        assertTimeSpanString("Il y a 4 secondes", System.currentTimeMillis() - second * 4);
+        assertTimeSpanString("Il y a 1 minute", System.currentTimeMillis() - second * 61);
+        assertTimeSpanString("Il y a 3 minutes", System.currentTimeMillis() - minute * 3);
+        assertTimeSpanString("Il y a 1 heure", System.currentTimeMillis() - hour * 1);
+        assertTimeSpanString("Il y a 3 heures", System.currentTimeMillis() - hour * 3);
+        assertTimeSpanString("4 janv.", 1294068301798l);
+        assertTimeSpanString("1 janv.", 1293809388354l);
+        assertTimeSpanString("18 déc. 09", 1261143946000l);
+    }
+
+    public void testGerman() throws Exception {
+        util = new TimeSpanUtil(Locale.GERMAN);
+        assertTimeSpanString("Jetzt", System.currentTimeMillis() - second * 1);
+        assertTimeSpanString("vor 4 Sekunden", System.currentTimeMillis() - second * 4);
+        assertTimeSpanString("vor 1 Minute", System.currentTimeMillis() - second * 61);
+        assertTimeSpanString("vor 3 Minuten", System.currentTimeMillis() - minute * 3);
+        assertTimeSpanString("vor 1 Stunde", System.currentTimeMillis() - hour * 1);
+        assertTimeSpanString("vor 3 Stunden", System.currentTimeMillis() - hour * 3);
+        assertTimeSpanString("4 Jan", 1294068301798l);
+        assertTimeSpanString("1 Jan", 1293809388354l);
+        assertTimeSpanString("18 Dez 09", 1261143946000l);
+    }
+
+    public void testJapanese() throws Exception {
+        util = new TimeSpanUtil(Locale.JAPANESE);
+        assertTimeSpanString("今", System.currentTimeMillis() - second * 1);
+        assertTimeSpanString("4秒前", System.currentTimeMillis() - second * 4);
+        assertTimeSpanString("58秒前", System.currentTimeMillis() - second * 58);
+        assertTimeSpanString("1分前", System.currentTimeMillis() - second * 61);
+        assertTimeSpanString("3分前", System.currentTimeMillis() - minute * 3);
+        assertTimeSpanString("1時間前", System.currentTimeMillis() - hour * 1);
+        assertTimeSpanString("3時間前", System.currentTimeMillis() - hour * 3);
+        assertTimeSpanString("1月4日", 1294068301798l);
+        assertTimeSpanString("1月1日", 1293809388354l);
+        assertTimeSpanString("09年12月18日", 1261143946000l);
     }
 }

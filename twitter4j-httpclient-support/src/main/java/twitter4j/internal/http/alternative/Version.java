@@ -30,7 +30,7 @@ package twitter4j.internal.http.alternative;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class Version {
-    private static final String VERSION = "2.1.9";
+    private static final String VERSION = "2.1.10-SNAPSHOT";
     private static final String TITLE = "Twitter4J Apache HttpClient support";
 
     private Version(){
@@ -46,6 +46,6 @@ public final class Version {
      * @param args will be just ignored.
      */
     public static void main(String[] args) {
-        System.out.println(TITLE +" " + VERSION);
+        System.out.println(TITLE + " " + VERSION);
     }
 }
