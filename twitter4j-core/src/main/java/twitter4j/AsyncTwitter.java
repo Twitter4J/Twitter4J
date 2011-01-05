@@ -1155,10 +1155,10 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getDirectMessage(final int id) {
+    public void showDirectMessage(final int id) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGE, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
-                listener.gotDirectMessage(twitter.getDirectMessage(id));
+                listener.gotDirectMessage(twitter.showDirectMessage(id));
             }
         });
     }

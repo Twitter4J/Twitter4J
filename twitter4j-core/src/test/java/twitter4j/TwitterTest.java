@@ -938,7 +938,7 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(actualReturnList.get(0), DataObjectFactory.createDirectMessage(DataObjectFactory.getRawJSON(actualReturnList.get(0))));
         assertTrue(1 <= actualReturnList.size());
 
-        actualReturn = twitter1.getDirectMessage(actualReturnList.get(0).getId());
+        actualReturn = twitter1.showDirectMessage(actualReturnList.get(0).getId());
         assertNotNull(DataObjectFactory.getRawJSON(actualReturn));
         assertEquals(actualReturn, DataObjectFactory.createDirectMessage(DataObjectFactory.getRawJSON(actualReturn)));
         assertEquals(actualReturnList.get(0).getId(), actualReturn.getId());

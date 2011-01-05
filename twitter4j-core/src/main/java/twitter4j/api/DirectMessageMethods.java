@@ -135,5 +135,5 @@ public interface DirectMessageMethods {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    DirectMessage getDirectMessage(int id) throws TwitterException;
+    DirectMessage showDirectMessage(int id) throws TwitterException;
 }

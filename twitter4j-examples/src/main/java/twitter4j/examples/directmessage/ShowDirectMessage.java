@@ -28,27 +28,25 @@ package twitter4j.examples.directmessage;
 
 import twitter4j.*;
 
-import java.util.List;
-
 /**
  * Example application that gets a specified direct message.<br>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class GetDirectMessage {
+public class ShowDirectMessage {
     /**
-     * Usage: java twitter4j.examples.directmessage.GetDirectMessage [message id]
+     * Usage: java twitter4j.examples.directmessage.ShowDirectMessage [message id]
      *
      * @param args String[]
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            System.out.println("Usage: java twitter4j.examples.directmessage.GetDirectMessage [message id]");
+            System.out.println("Usage: java twitter4j.examples.directmessage.ShowDirectMessage [message id]");
             System.exit(-1);
         }
         Twitter twitter = new TwitterFactory().getInstance();
         try {
-            DirectMessage message = twitter.getDirectMessage(Integer.parseInt(args[0]));
+            DirectMessage message = twitter.showDirectMessage(Integer.parseInt(args[0]));
             System.out.println("From: @" + message.getSenderScreenName() + " id:" + message.getId() + " - "
                     + message.getText());
             System.exit(0);
