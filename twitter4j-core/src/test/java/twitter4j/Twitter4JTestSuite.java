@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import twitter4j.conf.ConfigurationTest;
 import twitter4j.internal.async.DispatcherTest;
+import twitter4j.util.TimeSpanConverterTest;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -54,7 +55,7 @@ public class Twitter4JTestSuite extends TestCase {
         suite.addTestSuite(twitter4j.http.PostParameterTest.class);
         suite.addTestSuite(twitter4j.util.CharacterUtilTest.class);
         suite.addTestSuite(twitter4j.util.ImageUploadTest.class);
-        suite.addTestSuite(twitter4j.util.TimeSpanUtilTest.class);
+        suite.addTestSuite(TimeSpanConverterTest.class);
 
         suite.addTestSuite(AsyncTwitterTest.class);
         suite.addTestSuite(DAOTest.class);

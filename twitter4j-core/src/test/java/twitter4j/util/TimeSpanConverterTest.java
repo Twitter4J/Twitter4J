@@ -30,8 +30,8 @@ import junit.framework.TestCase;
 
 import java.util.Locale;
 
-public class TimeSpanUtilTest extends TestCase {
-    public TimeSpanUtilTest(String name) {
+public class TimeSpanConverterTest extends TestCase {
+    public TimeSpanConverterTest(String name) {
         super(name);
     }
 
@@ -39,7 +39,7 @@ public class TimeSpanUtilTest extends TestCase {
     int minute = second * 60;
     int hour = minute * 60;
 
-    TimeSpanUtil util;
+    TimeSpanConverter converter;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -50,12 +50,12 @@ public class TimeSpanUtilTest extends TestCase {
     }
 
     private void assertTimeSpanString(String expected, long time) {
-        assertEquals(expected, util.toTimeSpanString(time));
+        assertEquals(expected, converter.toTimeSpanString(time));
 
     }
 
     public void testItalian() throws Exception {
-        util = new TimeSpanUtil(Locale.ITALIAN);
+        converter = new TimeSpanConverter(Locale.ITALIAN);
         assertTimeSpanString("Ora", System.currentTimeMillis() - second * 1);
         assertTimeSpanString("4 secondi fa", System.currentTimeMillis() - second * 4);
         assertTimeSpanString("1 minuto fa", System.currentTimeMillis() - second * 61);
@@ -75,7 +75,7 @@ public class TimeSpanUtilTest extends TestCase {
                 locale = loc;
             }
         }
-        util = new TimeSpanUtil(locale);
+        converter = new TimeSpanConverter(locale);
         assertTimeSpanString("Ahora", System.currentTimeMillis() - second * 1);
         assertTimeSpanString("hace 4 segundos", System.currentTimeMillis() - second * 4);
         assertTimeSpanString("hace 1 munito", System.currentTimeMillis() - second * 61);
@@ -88,7 +88,7 @@ public class TimeSpanUtilTest extends TestCase {
     }
 
     public void testEnglish() throws Exception {
-        util = new TimeSpanUtil(Locale.ENGLISH);
+        converter = new TimeSpanConverter(Locale.ENGLISH);
         assertTimeSpanString("now", System.currentTimeMillis() - second * 1);
         assertTimeSpanString("4 seconds ago", System.currentTimeMillis() - second * 4);
         assertTimeSpanString("58 seconds ago", System.currentTimeMillis() - second * 58);
@@ -102,7 +102,7 @@ public class TimeSpanUtilTest extends TestCase {
     }
 
     public void testFrench() throws Exception {
-        util = new TimeSpanUtil(Locale.FRENCH);
+        converter = new TimeSpanConverter(Locale.FRENCH);
         assertTimeSpanString("Maintenant", System.currentTimeMillis() - second * 1);
         assertTimeSpanString("Il y a 4 secondes", System.currentTimeMillis() - second * 4);
         assertTimeSpanString("Il y a 1 minute", System.currentTimeMillis() - second * 61);
@@ -115,7 +115,7 @@ public class TimeSpanUtilTest extends TestCase {
     }
 
     public void testGerman() throws Exception {
-        util = new TimeSpanUtil(Locale.GERMAN);
+        converter = new TimeSpanConverter(Locale.GERMAN);
         assertTimeSpanString("Jetzt", System.currentTimeMillis() - second * 1);
         assertTimeSpanString("vor 4 Sekunden", System.currentTimeMillis() - second * 4);
         assertTimeSpanString("vor 1 Minute", System.currentTimeMillis() - second * 61);
@@ -128,7 +128,7 @@ public class TimeSpanUtilTest extends TestCase {
     }
 
     public void testJapanese() throws Exception {
-        util = new TimeSpanUtil(Locale.JAPANESE);
+        converter = new TimeSpanConverter(Locale.JAPANESE);
         assertTimeSpanString("今", System.currentTimeMillis() - second * 1);
         assertTimeSpanString("4秒前", System.currentTimeMillis() - second * 4);
         assertTimeSpanString("58秒前", System.currentTimeMillis() - second * 58);

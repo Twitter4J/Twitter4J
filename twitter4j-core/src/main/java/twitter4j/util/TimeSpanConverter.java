@@ -37,7 +37,7 @@ import java.util.Locale;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class TimeSpanUtil implements Serializable {
+public final class TimeSpanConverter implements Serializable {
     private static final int ONE_HOUR_IN_SECONDS = 60 * 60;
     private static final int ONE_DAY_IN_SECONDS = 24 * ONE_HOUR_IN_SECONDS;
     private static final int ONE_MONTH_IN_SECONDS = 30 * ONE_DAY_IN_SECONDS;
@@ -56,7 +56,7 @@ public final class TimeSpanUtil implements Serializable {
     /**
      * Constructs an instance with default locale
      */
-    public TimeSpanUtil() {
+    public TimeSpanConverter() {
         this(Locale.getDefault());
     }
 
@@ -65,7 +65,7 @@ public final class TimeSpanUtil implements Serializable {
      *
      * @param locale locale
      */
-    public TimeSpanUtil(Locale locale) {
+    public TimeSpanConverter(Locale locale) {
         String language = locale.getLanguage();
         if ("it".equals(language)) {
             formats[NOW] = new MessageFormat("Ora");
