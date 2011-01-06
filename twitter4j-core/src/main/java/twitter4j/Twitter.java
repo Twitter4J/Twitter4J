@@ -1138,7 +1138,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public DirectMessage destroyDirectMessage(int id) throws
+    public DirectMessage destroyDirectMessage(long id) throws
             TwitterException {
         ensureAuthorizationEnabled();
         return new DirectMessageJSONImpl(http.post(conf.getRestBaseURL() +
@@ -1149,7 +1149,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public DirectMessage showDirectMessage(int id) throws TwitterException {
+    public DirectMessage showDirectMessage(long id) throws TwitterException {
         ensureAuthorizationEnabled();
         return new DirectMessageJSONImpl(http.get(conf.getRestBaseURL()
                 + "direct_messages/show/" + id + ".json?include_entities="

@@ -26,14 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import junit.framework.AssertionFailedError;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.http.AccessToken;
-import twitter4j.http.AuthorizationFactory;
 import twitter4j.http.OAuthAuthorization;
-import twitter4j.internal.http.HttpClient;
-import twitter4j.internal.http.HttpClientFactory;
 import twitter4j.internal.http.HttpClientImpl;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.org.json.JSONArray;

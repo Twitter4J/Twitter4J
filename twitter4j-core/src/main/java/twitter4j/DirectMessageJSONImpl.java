@@ -39,7 +39,7 @@ import static twitter4j.internal.util.ParseUtil.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class DirectMessageJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
-    private int id;
+    private long id;
     private String text;
     private int senderId;
     private int recipientId;
@@ -60,7 +60,7 @@ import static twitter4j.internal.util.ParseUtil.*;
         init(json);
     }
     private void init(JSONObject json) throws TwitterException{
-        id = getInt("id", json);
+        id = getLong("id", json);
         text = getUnescapedString("text", json);
         senderId = getInt("sender_id", json);
         recipientId = getInt("recipient_id", json);
@@ -78,7 +78,7 @@ import static twitter4j.internal.util.ParseUtil.*;
     /**
      * {@inheritDoc}
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -165,7 +165,7 @@ import static twitter4j.internal.util.ParseUtil.*;
 
     @Override
     public int hashCode() {
-        return id;
+        return (int)id;
     }
 
     @Override

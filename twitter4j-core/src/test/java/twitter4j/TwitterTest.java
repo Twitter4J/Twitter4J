@@ -927,6 +927,7 @@ public class TwitterTest extends TwitterTestBase {
     public void testDirectMessages() throws Exception {
         String expectedReturn = new Date() + ":directmessage test";
         DirectMessage actualReturn = twitter1.sendDirectMessage("twit4jnoupdate", expectedReturn);
+        assertTrue(0<=actualReturn.getId());
         assertNotNull(DataObjectFactory.getRawJSON(actualReturn));
         assertEquals(actualReturn, DataObjectFactory.createDirectMessage(DataObjectFactory.getRawJSON(actualReturn)));
         assertEquals(expectedReturn, actualReturn.getText());

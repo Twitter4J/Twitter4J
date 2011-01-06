@@ -54,7 +54,7 @@ public final class PrintUserStream {
             System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
         }
 
-        public void onDeletionNotice(int directMessageId, int userId){
+        public void onDeletionNotice(long directMessageId, int userId){
             System.out.println("Got a direct message deletion notice id:" + directMessageId);
         }
 

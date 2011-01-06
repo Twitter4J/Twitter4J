@@ -1144,7 +1144,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void destroyDirectMessage(final int id) {
+    public void destroyDirectMessage(final long id) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_DIRECT_MESSAGE, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.destroyedDirectMessage(twitter.destroyDirectMessage(id));
@@ -1155,7 +1155,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void showDirectMessage(final int id) {
+    public void showDirectMessage(final long id) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGE, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.gotDirectMessage(twitter.showDirectMessage(id));

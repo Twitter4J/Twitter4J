@@ -121,7 +121,7 @@ public interface DirectMessageMethods {
      * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | dev.twitter.com</a>
 	 * @since Twitter4J 2.0.1
 	 */
-	DirectMessage destroyDirectMessage(int id)
+	DirectMessage destroyDirectMessage(long id)
 			throws TwitterException;
 
     /**
@@ -135,5 +135,5 @@ public interface DirectMessageMethods {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    DirectMessage showDirectMessage(int id) throws TwitterException;
+    DirectMessage showDirectMessage(long id) throws TwitterException;
 }

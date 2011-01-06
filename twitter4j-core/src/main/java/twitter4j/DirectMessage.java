@@ -33,7 +33,7 @@ import java.util.Date;
  */
 public interface DirectMessage extends TwitterResponse, java.io.Serializable {
 
-    int getId();
+    long getId();
 
     String getText();
 
