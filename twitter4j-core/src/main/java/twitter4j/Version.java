@@ -30,7 +30,7 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class Version {
-    private static final String VERSION = "2.1.10-SNAPSHOT";
+    private static final String VERSION = "2.1.10";
     private static final String TITLE = "Twitter4J";
 
     private Version(){
