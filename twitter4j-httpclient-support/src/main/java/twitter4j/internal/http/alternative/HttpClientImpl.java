@@ -172,7 +172,7 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
                 commonsRequest.addHeader("Authorization", authorizationHeader);
             }
 
-            ApacheHttpClientHttpResponseImpl res = new ApacheHttpClientHttpResponseImpl(client.execute(commonsRequest));
+            ApacheHttpClientHttpResponseImpl res = new ApacheHttpClientHttpResponseImpl(client.execute(commonsRequest), conf);
             if (200 != res.getStatusCode()) {
                 throw new TwitterException(res.asString(), res);
             }

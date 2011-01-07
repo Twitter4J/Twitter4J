@@ -39,10 +39,11 @@ import java.util.zip.GZIPInputStream;
 public class HttpResponseImpl extends HttpResponse {
     private HttpURLConnection con;
 
-    HttpResponseImpl(HttpURLConnection con) throws IOException {
+    HttpResponseImpl(HttpURLConnection con, HttpClientConfiguration conf) throws IOException {
+        super(conf);
         this.con = con;
         this.statusCode = con.getResponseCode();
-        if(null == (is = con.getErrorStream())){
+        if (null == (is = con.getErrorStream())) {
             is = con.getInputStream();
         }
         if (null != is && "gzip".equals(con.getContentEncoding())) {
@@ -53,6 +54,7 @@ public class HttpResponseImpl extends HttpResponse {
 
     // for test purpose
     /*package*/ HttpResponseImpl(String content) {
+        super();
         this.responseAsString = content;
     }
 
@@ -68,7 +70,7 @@ public class HttpResponseImpl extends HttpResponse {
     /**
      * {@inheritDoc}
      */
-    public void disconnect(){
+    public void disconnect() {
         con.disconnect();
     }
 }

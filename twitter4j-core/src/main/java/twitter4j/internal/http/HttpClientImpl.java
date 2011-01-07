@@ -65,6 +65,8 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
     private int retryCount = 0;
     private int retryIntervalSeconds = 5 * 1000;
     private static boolean isJDK14orEarlier = false;
+    private final HttpClientConfiguration CONF;
+
     private static final long serialVersionUID = -8819171414069621503L;
 
     static {
@@ -78,15 +80,18 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                 // it must be an Android/Dalvik/Harmony side issue!!!!
                 System.setProperty("http.keepAlive", "false");
             }
-        }catch(SecurityException ignore){
+        } catch (SecurityException ignore) {
             // Unsigned applets are not allowed to access System properties
             isJDK14orEarlier = true;
         }
     }
 
     public HttpClientImpl() {
+        this.CONF = ConfigurationContext.getInstance();
     }
+
     public HttpClientImpl(HttpClientConfiguration conf) {
+        this.CONF = conf;
         setProxyHost(conf.getHttpProxyHost());
         setProxyPort(conf.getHttpProxyPort());
         setProxyAuthUser(conf.getHttpProxyUser());
@@ -95,7 +100,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         setReadTimeout(conf.getHttpReadTimeout());
         setRetryCount(conf.getHttpRetryCount());
         setRetryIntervalSeconds(conf.getHttpRetryIntervalSeconds());
-        if(isProxyConfigured() && isJDK14orEarlier){
+        if (isProxyConfigured() && isJDK14orEarlier) {
             logger.warn("HTTP Proxy is not supported on JDK1.4 or earlier. Try twitter4j-httpclient-supoprt artifact");
         }
     }
@@ -250,8 +255,8 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"; filename=\"" + param.getFile().getName() + "\"\r\n");
                                     write(out, "Content-Type: " + param.getContentType() + "\r\n\r\n");
                                     BufferedInputStream in = new BufferedInputStream(
-                                    		param.hasFileBody() ? param.getFileBody() :new FileInputStream(param.getFile())
-                                    		);
+                                            param.hasFileBody() ? param.getFileBody() : new FileInputStream(param.getFile())
+                                    );
                                     int buff = 0;
                                     while ((buff = in.read()) != -1) {
                                         out.write(buff);
@@ -286,7 +291,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                         os.flush();
                         os.close();
                     }
-                    res = new HttpResponseImpl(con);
+                    res = new HttpResponseImpl(con, CONF);
                     responseCode = con.getResponseCode();
                     if (logger.isDebugEnabled()) {
                         logger.debug("Response: ");
@@ -353,8 +358,9 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
 
     /**
      * sets HTTP headers
-     * @param req The request
-     * @param connection    HttpURLConnection
+     *
+     * @param req        The request
+     * @param connection HttpURLConnection
      */
     private void setHeaders(HttpRequest req, HttpURLConnection connection) {
         if (logger.isDebugEnabled()) {
@@ -419,7 +425,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         return con;
     }
 
-    private boolean isProxyConfigured(){
+    private boolean isProxyConfigured() {
         return proxyHost != null && !proxyHost.equals("");
     }
 

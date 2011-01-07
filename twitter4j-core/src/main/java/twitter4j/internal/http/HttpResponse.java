@@ -26,23 +26,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.internal.http;
 
-import java.io.*;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
 import twitter4j.TwitterException;
+import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.org.json.JSONTokener;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A data class representing HTTP Response
@@ -51,22 +48,17 @@ import twitter4j.internal.org.json.JSONTokener;
  */
 public abstract class HttpResponse {
     private static final Logger logger = Logger.getLogger(HttpResponseImpl.class);
+    protected final HttpClientConfiguration CONF;
 
-    private static ThreadLocal<DocumentBuilder> builders =
-            new ThreadLocal<DocumentBuilder>() {
-                @Override
-                protected DocumentBuilder initialValue() {
-                    try {
-                        return DocumentBuilderFactory.newInstance()
-                                .newDocumentBuilder();
-                    } catch (ParserConfigurationException ex) {
-                        throw new ExceptionInInitializerError(ex);
-                    }
-                }
-            };
+    HttpResponse() {
+        this.CONF = ConfigurationContext.getInstance();
+    }
+
+    public HttpResponse(HttpClientConfiguration conf) {
+        this.CONF = conf;
+    }
 
     protected int statusCode;
-    private Document responseAsDocument = null;
     protected String responseAsString = null;
     protected InputStream is;
     private boolean streamConsumed = false;
@@ -76,20 +68,22 @@ public abstract class HttpResponse {
     }
 
     public abstract String getResponseHeader(String name);
+
     public abstract Map<String, List<String>> getResponseHeaderFields();
 
     /**
      * Returns the response stream.<br>
      * This method cannot be called after calling asString() or asDcoument()<br>
      * It is suggested to call disconnect() after consuming the stream.
-     *
+     * <p/>
      * Disconnects the internal HttpURLConnection silently.
+     *
      * @return response body stream
      * @throws TwitterException
      * @see #disconnect()
      */
     public final InputStream asStream() {
-        if(streamConsumed){
+        if (streamConsumed) {
             throw new IllegalStateException("Stream has already been consumed.");
         }
         return is;
@@ -98,11 +92,12 @@ public abstract class HttpResponse {
     /**
      * Returns the response body as string.<br>
      * Disconnects the internal HttpURLConnection silently.
+     *
      * @return response body
      * @throws TwitterException
      */
     public final String asString() throws TwitterException {
-        if(null == responseAsString){
+        if (null == responseAsString) {
             BufferedReader br;
             InputStream stream = null;
             try {
@@ -125,8 +120,8 @@ public abstract class HttpResponse {
                 throw new TwitterException(npe.getMessage(), npe);
             } catch (IOException ioe) {
                 throw new TwitterException(ioe.getMessage(), ioe);
-            }finally{
-                if(null != stream){
+            } finally {
+                if (null != stream) {
                     try {
                         stream.close();
                     } catch (IOException ignore) {
@@ -138,33 +133,12 @@ public abstract class HttpResponse {
         return responseAsString;
     }
 
-    /**
-     * Returns the response body as org.w3c.dom.Document.<br>
-     * Disconnects the internal HttpURLConnection silently.
-     * @return response body as org.w3c.dom.Document
-     * @throws TwitterException
-     */
-    public final Document asDocument() throws TwitterException {
-        if (null == responseAsDocument) {
-            try {
-                // it should be faster to read the inputstream directly.
-                // but makes it difficult to troubleshoot
-                this.responseAsDocument = builders.get().parse(new ByteArrayInputStream(asString().getBytes("UTF-8")));
-            } catch (SAXException saxe) {
-                throw new TwitterException("The response body was not well-formed:\n" + responseAsString, saxe);
-            } catch (IOException ioe) {
-                throw new TwitterException("There's something with the connection.", ioe);
-            }finally{
-                disconnectForcibly();
-            }
-        }
-        return responseAsDocument;
-    }
-
     private JSONObject json = null;
+
     /**
      * Returns the response body as twitter4j.internal.org.json.JSONObject.<br>
      * Disconnects the internal HttpURLConnection silently.
+     *
      * @return response body as twitter4j.internal.org.json.JSONObject
      * @throws TwitterException
      */
@@ -173,7 +147,13 @@ public abstract class HttpResponse {
             InputStreamReader reader = null;
             try {
                 if (logger.isDebugEnabled()) {
-                    json = new JSONObject(asString());
+                    if (CONF.isPrettyDebugEnabled()) {
+                        reader = asReader();
+                        json = new JSONObject(new JSONTokener(reader));
+                        logger.debug(json.toString(1));
+                    } else {
+                        json = new JSONObject(asString());
+                    }
                 } else {
                     reader = asReader();
                     json = new JSONObject(new JSONTokener(reader));
@@ -200,6 +180,7 @@ public abstract class HttpResponse {
     /**
      * Returns the response body as twitter4j.internal.org.json.JSONArray.<br>
      * Disconnects the internal HttpURLConnection silently.
+     *
      * @return response body as twitter4j.internal.org.json.JSONArray
      * @throws TwitterException
      */
@@ -208,7 +189,13 @@ public abstract class HttpResponse {
         InputStreamReader reader = null;
         try {
             if (logger.isDebugEnabled()) {
-                json = new JSONArray(asString());
+                if (CONF.isPrettyDebugEnabled()) {
+                    reader = asReader();
+                    json = new JSONArray(new JSONTokener(reader));
+                    logger.debug(json.toString(1));
+                } else {
+                    json = new JSONArray(asString());
+                }
             } else {
                 reader = asReader();
                 json = new JSONArray(new JSONTokener(reader));
@@ -219,9 +206,9 @@ public abstract class HttpResponse {
             } else {
                 throw new TwitterException(jsone.getMessage(), jsone);
             }
-        }finally{
-            if(null != reader){
-                try{
+        } finally {
+            if (null != reader) {
+                try {
                     reader.close();
                 } catch (IOException ignore) {
                 }
@@ -230,7 +217,6 @@ public abstract class HttpResponse {
         }
         return json;
     }
-
 
     public final InputStreamReader asReader() {
         try {
@@ -241,9 +227,9 @@ public abstract class HttpResponse {
     }
 
     private void disconnectForcibly() {
-        try{
+        try {
             disconnect();
-        }catch(Exception ignore){
+        } catch (Exception ignore) {
         }
     }
 
@@ -253,7 +239,6 @@ public abstract class HttpResponse {
     public String toString() {
         return "HttpResponse{" +
                 "statusCode=" + statusCode +
-                ", responseAsDocument=" + responseAsDocument +
                 ", responseAsString='" + responseAsString + '\'' +
                 ", is=" + is +
                 ", streamConsumed=" + streamConsumed +

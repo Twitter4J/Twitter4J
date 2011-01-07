@@ -29,6 +29,7 @@ package twitter4j.internal.http.alternative;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
+import twitter4j.internal.http.HttpClientConfiguration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +45,8 @@ import java.util.zip.GZIPInputStream;
 final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.HttpResponse {
     private HttpResponse res;
 
-    ApacheHttpClientHttpResponseImpl(HttpResponse res) throws IOException {
+    ApacheHttpClientHttpResponseImpl(HttpResponse res, HttpClientConfiguration conf) throws IOException {
+        super(conf);
         this.res = res;
         is = res.getEntity().getContent();
         statusCode = res.getStatusLine().getStatusCode();
@@ -70,11 +72,11 @@ final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.Htt
     public Map<String, List<String>> getResponseHeaderFields() {
         Header[] headers = res.getAllHeaders();
         Map<String, List<String>> maps = new HashMap<String, List<String>>();
-        for(Header header : headers){
+        for (Header header : headers) {
             HeaderElement[] elements = header.getElements();
-            for(HeaderElement element : elements){
+            for (HeaderElement element : elements) {
                 List<String> values;
-                if(null == (values = maps.get(element.getName()))){
+                if (null == (values = maps.get(element.getName()))) {
                     values = new ArrayList<String>(1);
                     maps.put(element.getName(), values);
                 }

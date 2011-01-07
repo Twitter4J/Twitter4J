@@ -33,6 +33,7 @@ import java.util.Map;
 
 /**
  * Configuration base class with default settings.
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class ConfigurationBase implements Configuration, java.io.Serializable {
@@ -43,6 +44,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String user;
     private String password;
     private boolean useSSL;
+    private boolean prettyDebug;
     private String httpProxyHost;
     private String httpProxyUser;
     private String httpProxyPassword;
@@ -106,6 +108,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final long serialVersionUID = -6610497517837844232L;
 
     static String dalvikDetected;
+
     static {
         // detecting dalvik (Android platform)
         try {
@@ -124,13 +127,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setUser(null);
         setPassword(null);
         setUseSSL(false);
+        setPrettyDebugEnabled(false);
         setHttpProxyHost(null);
         setHttpProxyUser(null);
         setHttpProxyPassword(null);
         setHttpProxyPort(-1);
         setHttpConnectionTimeout(20000);
         setHttpReadTimeout(120000);
-        setHttpStreamingReadTimeout(60*5*1000);
+        setHttpStreamingReadTimeout(60 * 5 * 1000);
         setHttpRetryCount(0);
         setHttpRetryIntervalSeconds(5);
         setHttpMaxTotalConnections(20);
@@ -171,7 +175,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         String isDalvik;
         try {
             isDalvik = System.getProperty(DALVIK, dalvikDetected);
-        }catch(SecurityException ignore){
+        } catch (SecurityException ignore) {
             // Unsigned applets are not allowed to access System properties
             isDalvik = dalvikDetected;
         }
@@ -228,13 +232,22 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.password = password;
     }
 
+    public boolean isPrettyDebugEnabled() {
+        return prettyDebug;
+    }
+
     protected final void setUseSSL(boolean useSSL) {
         this.useSSL = useSSL;
         fixRestBaseURL();
     }
 
+    protected final void setPrettyDebugEnabled(boolean prettyDebug) {
+        this.prettyDebug = prettyDebug;
+    }
+
     // method for HttpRequestFactoryConfiguration
     Map<String, String> requestHeaders;
+
     private void initRequestHeaders() {
         requestHeaders = new HashMap<String, String>();
         requestHeaders.put("X-Twitter-Client-Version", getClientVersion());
@@ -246,6 +259,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         requestHeaders.put("Connection", "close");
 
     }
+
     public Map<String, String> getRequestHeaders() {
         return requestHeaders;
     }
@@ -326,19 +340,19 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     public final int getHttpMaxTotalConnections() {
-      return maxTotalConnections;
+        return maxTotalConnections;
     }
 
     protected final void setHttpMaxTotalConnections(int maxTotalConnections) {
-      this.maxTotalConnections = maxTotalConnections;
+        this.maxTotalConnections = maxTotalConnections;
     }
 
     public final int getHttpDefaultMaxPerRoute() {
-      return defaultMaxPerRoute;
+        return defaultMaxPerRoute;
     }
 
     protected final void setHttpDefaultMaxPerRoute(int defaultMaxPerRoute) {
-      this.defaultMaxPerRoute = defaultMaxPerRoute;
+        this.defaultMaxPerRoute = defaultMaxPerRoute;
     }
 
     // oauth related setter/getters
@@ -411,6 +425,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.restBaseURL = restBaseURL;
         fixRestBaseURL();
     }
+
     private void fixRestBaseURL() {
         if (DEFAULT_REST_BASE_URL.equals(fixURL(false, restBaseURL))) {
             if (null != oAuthConsumerKey && null != oAuthConsumerSecret) {
@@ -449,19 +464,19 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.streamBaseURL = streamBaseURL;
     }
 
-    public String getUserStreamBaseURL () {
+    public String getUserStreamBaseURL() {
         return userStreamBaseURL;
     }
 
-    protected final void setUserStreamBaseURL (String siteStreamBaseURL) {
+    protected final void setUserStreamBaseURL(String siteStreamBaseURL) {
         this.userStreamBaseURL = siteStreamBaseURL;
     }
 
-    public String getSiteStreamBaseURL () {
+    public String getSiteStreamBaseURL() {
         return siteStreamBaseURL;
     }
 
-    protected final void setSiteStreamBaseURL (String siteStreamBaseURL) {
+    protected final void setSiteStreamBaseURL(String siteStreamBaseURL) {
         this.siteStreamBaseURL = siteStreamBaseURL;
     }
 
@@ -508,6 +523,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     protected final void setDispatcherImpl(String dispatcherImpl) {
         this.dispatcherImpl = dispatcherImpl;
     }
+
     public boolean isIncludeRTsEnabled() {
         return this.includeRTsEnabled;
     }
@@ -515,6 +531,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     protected final void setIncludeRTsEnbled(boolean enabled) {
         this.includeRTsEnabled = enabled;
     }
+
     public boolean isIncludeEntitiesEnabled() {
         return this.includeEntitiesEnabled;
     }
@@ -522,6 +539,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     protected final void setIncludeEntitiesEnbled(boolean enabled) {
         this.includeEntitiesEnabled = enabled;
     }
+
     public boolean isUserStreamRepliesAllEnabled() {
         return this.userStreamRepliesAllEnabled;
     }
@@ -530,19 +548,19 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.userStreamRepliesAllEnabled = enabled;
     }
 
-    public String getMediaProvider(){
+    public String getMediaProvider() {
         return this.mediaProvider;
     }
 
-    protected final void setMediaProvider(String mediaProvider){
+    protected final void setMediaProvider(String mediaProvider) {
         this.mediaProvider = mediaProvider;
     }
 
-    public String getMediaProviderAPIKey(){
+    public String getMediaProviderAPIKey() {
         return this.mediaProviderAPIKey;
     }
 
-    protected final void setMediaProviderAPIKey(String mediaProviderAPIKey){
+    protected final void setMediaProviderAPIKey(String mediaProviderAPIKey) {
         this.mediaProviderAPIKey = mediaProviderAPIKey;
     }
 
@@ -553,6 +571,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (useSSL ? 1 : 0);
+        result = 31 * result + (prettyDebug ? 1 : 0);
         result = 31 * result + (httpProxyHost != null ? httpProxyHost.hashCode() : 0);
         result = 31 * result + (httpProxyUser != null ? httpProxyUser.hashCode() : 0);
         result = 31 * result + (httpProxyPassword != null ? httpProxyPassword.hashCode() : 0);

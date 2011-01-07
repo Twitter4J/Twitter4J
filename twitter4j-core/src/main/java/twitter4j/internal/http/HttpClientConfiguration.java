@@ -50,4 +50,6 @@ public interface HttpClientConfiguration {
     int getHttpMaxTotalConnections();
 
     int getHttpDefaultMaxPerRoute();
+
+    boolean isPrettyDebugEnabled();
 }

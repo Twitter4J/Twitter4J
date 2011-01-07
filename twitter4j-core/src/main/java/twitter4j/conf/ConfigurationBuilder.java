@@ -44,6 +44,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setPrettyDebugEnabled(boolean prettyDebugEnabled) {
+        checkNotBuilt();
+        configurationBean.setPrettyDebugEnabled(prettyDebugEnabled);
+        return this;
+    }
+
     public ConfigurationBuilder setDebugEnabled(boolean debugEnabled) {
         checkNotBuilt();
         configurationBean.setDebug(debugEnabled);
@@ -51,7 +57,6 @@ public final class ConfigurationBuilder {
     }
 
     /**
-     *
      * @param source source
      * @return this instance
      * @deprecated source parameter is no longer supported.
@@ -130,13 +135,13 @@ public final class ConfigurationBuilder {
     }
 
 
-    public ConfigurationBuilder setHttpMaxTotalConnections(int httpMaxConnections){
+    public ConfigurationBuilder setHttpMaxTotalConnections(int httpMaxConnections) {
         checkNotBuilt();
         configurationBean.setHttpMaxTotalConnections(httpMaxConnections);
         return this;
     }
 
-    public ConfigurationBuilder setHttpDefaultMaxPerRoute(int httpDefaultMaxPerRoute){
+    public ConfigurationBuilder setHttpDefaultMaxPerRoute(int httpDefaultMaxPerRoute) {
         checkNotBuilt();
         configurationBean.setHttpDefaultMaxPerRoute(httpDefaultMaxPerRoute);
         return this;
@@ -214,13 +219,13 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder setUserStreamBaseURL (String userStreamBaseURL) {
+    public ConfigurationBuilder setUserStreamBaseURL(String userStreamBaseURL) {
         checkNotBuilt();
         configurationBean.setUserStreamBaseURL(userStreamBaseURL);
         return this;
     }
 
-    public ConfigurationBuilder setSiteStreamBaseURL (String siteStreamBaseURL) {
+    public ConfigurationBuilder setSiteStreamBaseURL(String siteStreamBaseURL) {
         checkNotBuilt();
         configurationBean.setSiteStreamBaseURL(siteStreamBaseURL);
         return this;

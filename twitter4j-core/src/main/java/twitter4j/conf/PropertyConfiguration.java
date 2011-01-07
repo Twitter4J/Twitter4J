@@ -26,16 +26,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.conf;
 
-import twitter4j.internal.logging.Logger;
 import twitter4j.internal.util.StringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.AccessControlException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -51,6 +48,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String PASSWORD = "password";
 
     public static final String HTTP_USE_SSL = "http.useSSL";
+    public static final String HTTP_PRETTY_DEBUG = "http.prettyDebug";
     public static final String HTTP_PROXY_HOST = "http.proxyHost";
     public static final String HTTP_PROXY_HOST_FALLBACK = "http.proxyHost";
     public static final String HTTP_PROXY_USER = "http.proxyUser";
@@ -100,18 +98,18 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String CLIENT_URL = "clientURL";
     private static final long serialVersionUID = 6458764415636588373L;
 
-    public PropertyConfiguration(InputStream is){
+    public PropertyConfiguration(InputStream is) {
         super();
         Properties props = new Properties();
         loadProperties(props, is);
         setFieldsWithTreePath(props, "/");
     }
 
-    public PropertyConfiguration(Properties props){
+    public PropertyConfiguration(Properties props) {
         this(props, "/");
     }
 
-    public PropertyConfiguration(Properties props, String treePath){
+    public PropertyConfiguration(Properties props, String treePath) {
         super();
         setFieldsWithTreePath(props, treePath);
     }
@@ -121,9 +119,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         Properties props;
         // load from system properties
         try {
-            props = (Properties)System.getProperties().clone();
+            props = (Properties) System.getProperties().clone();
             normalize(props);
-        }catch(SecurityException ignore){
+        } catch (SecurityException ignore) {
             // Unsigned applets are not allowed to access System properties
             props = new Properties();
         }
@@ -246,6 +244,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             // use SSL with Basic Auth
             setUseSSL(true);
         }
+        if (notNull(props, prefix, HTTP_PRETTY_DEBUG)) {
+            setPrettyDebugEnabled(getBoolean(props, prefix, HTTP_PRETTY_DEBUG));
+        }
         if (notNull(props, prefix, HTTP_PROXY_HOST)) {
             setHttpProxyHost(getString(props, prefix, HTTP_PROXY_HOST));
         } else if (notNull(props, prefix, HTTP_PROXY_HOST_FALLBACK)) {
@@ -278,10 +279,10 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             setHttpRetryIntervalSeconds(getIntProperty(props, prefix, HTTP_RETRY_INTERVAL_SECS));
         }
         if (notNull(props, prefix, HTTP_MAX_TOTAL_CONNECTIONS)) {
-          setHttpMaxTotalConnections(getIntProperty(props, prefix, HTTP_MAX_TOTAL_CONNECTIONS));
+            setHttpMaxTotalConnections(getIntProperty(props, prefix, HTTP_MAX_TOTAL_CONNECTIONS));
         }
         if (notNull(props, prefix, HTTP_DEFAULT_MAX_PER_ROUTE)) {
-          setHttpDefaultMaxPerRoute(getIntProperty(props, prefix, HTTP_DEFAULT_MAX_PER_ROUTE));
+            setHttpDefaultMaxPerRoute(getIntProperty(props, prefix, HTTP_DEFAULT_MAX_PER_ROUTE));
         }
         if (notNull(props, prefix, OAUTH_CONSUMER_KEY)) {
             setOAuthConsumerKey(getString(props, prefix, OAUTH_CONSUMER_KEY));

@@ -284,8 +284,8 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     /**
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
      *
-     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
      * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
+     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
      */
     public void user() {
         user(null);
@@ -295,8 +295,8 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
      *
      * @param track keywords to track
-     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
      * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
+     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
      * @since Twitter4J 2.1.9
      */
     public void user(final String[] track) {
@@ -338,14 +338,14 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         ensureAuthorizationEnabled();
         try {
             List<HttpParameter> params = new ArrayList<HttpParameter>();
-            if(conf.isUserStreamRepliesAllEnabled()){
-                params.add(new HttpParameter("replies","all"));
+            if (conf.isUserStreamRepliesAllEnabled()) {
+                params.add(new HttpParameter("replies", "all"));
             }
-            if(null != track){
+            if (null != track) {
                 params.add(new HttpParameter("track", StringUtil.join(track)));
             }
             return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
-                    ,params.toArray(new HttpParameter[params.size()])
+                    , params.toArray(new HttpParameter[params.size()])
                     , auth));
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -357,6 +357,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      * The following limitations must be respected during the beta period. These limitations may be changed with little advance notice. We intend to increase or remove these various limitations as we move from beta test into full production:<br>
      * Limit the follow count to 100 users per stream. Clients must occasionally compact users onto a smaller number of connections to minimize the total number of connections outstanding.<br>
      * Open no more than 25 new connections per second and exponentially back-off on errors.
+     *
      * @param withFollowings whether to receive status updates from people following
      * @param follow         an array of users to include in the stream
      * @see <a href="http://dev.twitter.com/pages/site_streams">Site Streams | dev.twitter.com</a>
@@ -380,8 +381,9 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
             }
         });
     }
-    private Dispatcher getDispatcher(){
-        if(shutdown){
+
+    private Dispatcher getDispatcher() {
+        if (shutdown) {
             throw new IllegalStateException("Already shut down");
         }
         if (null == dispatcher) {
@@ -389,6 +391,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         }
         return dispatcher;
     }
+
     private static transient Dispatcher dispatcher;
     private boolean shutdown = false;
 
@@ -398,14 +401,14 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      * @since Twitter4J 2.1.9
      */
     @Override
-    public void shutdown(){
+    public void shutdown() {
         super.shutdown();
         cleanUp();
         synchronized (TwitterStream.class) {
             if (shutdown) {
                 throw new IllegalStateException("Already shut down");
             }
-            if(dispatcher != null){
+            if (dispatcher != null) {
                 dispatcher.shutdown();
                 dispatcher = null;
             }
@@ -507,16 +510,17 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
 
     /**
      * check if any listener is set. Throws IllegalStateException if no listener is set.
+     *
      * @throws IllegalStateException when no listener is set.
      */
 
-    private void ensureListenerIsSet(){
-        if(streamListeners.length == 0){
+    private void ensureListenerIsSet() {
+        if (streamListeners.length == 0) {
             throw new IllegalStateException("No listener is set.");
         }
     }
 
-    private void ensureStatusStreamListenerIsSet(){
+    private void ensureStatusStreamListenerIsSet() {
         for (StreamListener listener : streamListeners) {
             if (!(listener instanceof StatusListener)) {
                 throw new IllegalStateException("Only StatusListener is supported. found: " + listener.getClass());
@@ -833,6 +837,10 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
 
     public Map<String, String> getRequestHeaders() {
         return nestedConf.getRequestHeaders();
+    }
+
+    public boolean isPrettyDebugEnabled() {
+        return nestedConf.isPrettyDebugEnabled();
     }
 
 }
