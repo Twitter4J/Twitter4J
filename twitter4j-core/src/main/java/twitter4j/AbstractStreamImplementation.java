@@ -124,6 +124,8 @@ abstract class AbstractStreamImplementation {
                                 onFollow(json.getJSONObject("source"), json.getJSONObject("target"));
                             } else if (JSONObjectType.USER_LIST_SUBSCRIBED == jsonObjectType) {
                                 onUserListSubscribed(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
+                            } else if (JSONObjectType.USER_LIST_UNSUBSCRIBED == jsonObjectType) {
+                                onUserListUnsubscribed(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
                             } else if (JSONObjectType.USER_LIST_CREATED == jsonObjectType) {
                                 onUserListCreated(json.getJSONObject("source"), json.getJSONObject("target"));
                             } else if (JSONObjectType.USER_LIST_UPDATED == jsonObjectType) {
@@ -194,6 +196,9 @@ abstract class AbstractStreamImplementation {
     }
 
     protected void onUserListSubscribed(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    }
+
+    protected void onUserListUnsubscribed(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
     }
 
     protected void onUserListCreated(JSONObject source, JSONObject userList) throws TwitterException, JSONException {

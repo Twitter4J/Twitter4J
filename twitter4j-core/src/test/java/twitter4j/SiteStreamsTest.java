@@ -202,6 +202,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
             assertReceived("onUserListSubscribed", TwitterMethod.SUBSCRIBE_LIST);
+            assertReceived("onUserListUnsubscribed", TwitterMethod.UNSUBSCRIBE_LIST);
             assertReceived("onUserListCreated", TwitterMethod.CREATE_USER_LIST);
             assertReceived("onUserListUpdated", TwitterMethod.UPDATE_USER_LIST);
             assertReceived("onUserListDestoyed", TwitterMethod.DESTROY_USER_LIST);
@@ -311,6 +312,14 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
     public void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.SUBSCRIBE_LIST, forUser, subscriber, listOwner, list});
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
+        notifyResponse();
+    }
+
+    public void onUserListUnsubscription(int forUser, User subscriber, User listOwner, UserList list) {
+        received.add(new Object[]{TwitterMethod.UNSUBSCRIBE_LIST, forUser, subscriber, listOwner, list});
         assertNotNull(DataObjectFactory.getRawJSON(subscriber));
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));

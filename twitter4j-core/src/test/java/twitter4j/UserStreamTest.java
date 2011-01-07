@@ -206,6 +206,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
         assertReceived("onUserListSubscribed", TwitterMethod.SUBSCRIBE_LIST);
+        assertReceived("onUserListUnsubscribed", TwitterMethod.UNSUBSCRIBE_LIST);
         assertReceived("onUserListCreated", TwitterMethod.CREATE_USER_LIST);
         assertReceived("onUserListUpdated", TwitterMethod.UPDATE_USER_LIST);
         assertReceived("onUserListDestoyed", TwitterMethod.DESTROY_USER_LIST);
@@ -311,6 +312,14 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 
     public void onUserListSubscription(User subscriber, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.SUBSCRIBE_LIST, subscriber, listOwner, list});
+        assertNotNull(DataObjectFactory.getRawJSON(subscriber));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
+        notifyResponse();
+    }
+
+    public void onUserListUnsubscription(User subscriber, User listOwner, UserList list) {
+        received.add(new Object[]{TwitterMethod.UNSUBSCRIBE_LIST, subscriber, listOwner, list});
         assertNotNull(DataObjectFactory.getRawJSON(subscriber));
         assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         assertNotNull(DataObjectFactory.getRawJSON(list));

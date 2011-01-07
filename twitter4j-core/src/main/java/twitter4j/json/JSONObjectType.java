@@ -49,6 +49,7 @@ public final class JSONObjectType implements java.io.Serializable {
     public static final JSONObjectType RETWEET = new JSONObjectType("RETWEET");
     public static final JSONObjectType FOLLOW = new JSONObjectType("FOLLOW");
     public static final JSONObjectType USER_LIST_SUBSCRIBED = new JSONObjectType("USER_LIST_SUBSCRIBED");
+    public static final JSONObjectType USER_LIST_UNSUBSCRIBED = new JSONObjectType("USER_LIST_UNSUBSCRIBED");
     public static final JSONObjectType USER_LIST_CREATED = new JSONObjectType("USER_LIST_CREATED");
     public static final JSONObjectType USER_LIST_UPDATED = new JSONObjectType("USER_LIST_UPDATED");
     public static final JSONObjectType USER_LIST_DESTROYED = new JSONObjectType("USER_LIST_DESTROYED");
@@ -114,6 +115,8 @@ public final class JSONObjectType implements java.io.Serializable {
                 } else if (event.startsWith("list_")) {
                     if ("list_user_subscribed".equals(event)) {
                         return USER_LIST_SUBSCRIBED;
+                    }else if ("list_user_unsubscribed".equals(event)) {
+                        return USER_LIST_UNSUBSCRIBED;
                     } else if ("list_created".equals(event)) {
                         return USER_LIST_CREATED;
                     } else if ("list_updated".equals(event)) {

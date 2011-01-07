@@ -125,6 +125,11 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
                 , asUser(owner), asUserList(userList));
     }
 
+    protected void onUserListUnsubscribed(final JSONObject source, final JSONObject owner, final JSONObject userList) throws TwitterException, JSONException {
+        listener.onUserListUnsubscription(forUser.get(), asUser(source)
+                , asUser(owner), asUserList(userList));
+    }
+
     protected void onUserListCreated(final JSONObject source, final JSONObject userList) throws TwitterException, JSONException {
         listener.onUserListCreation(forUser.get(), asUser(source)
                 , asUserList(userList));

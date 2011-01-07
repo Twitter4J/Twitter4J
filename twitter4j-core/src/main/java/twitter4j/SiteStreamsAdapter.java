@@ -57,6 +57,9 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     public void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list) {
     }
 
+    public void onUserListUnsubscription(int forUser, User subscriber, User listOwner, UserList list) {
+    }
+
     public void onUserListCreation(int forUser, User listOwner, UserList list) {
     }
 

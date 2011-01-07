@@ -114,6 +114,13 @@ public final class PrintUserStream {
                     + " list:" + list.getName());
         }
 
+        public void onUserListUnsubscription(User subscriber, User listOwner, UserList list) {
+            System.out.println("onUserListUnsubscribed subscriber:@"
+                    + subscriber.getScreenName()
+                    + " listOwner:@" + listOwner.getScreenName()
+                    + " list:" + list.getName());
+        }
+
         public void onUserListCreation(User listOwner, UserList list) {
             System.out.println("onUserListCreated  listOwner:@"
                     + listOwner.getScreenName()
