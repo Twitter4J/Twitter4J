@@ -27,6 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.internal.http;
 
 
+import twitter4j.TwitterException;
+
 /**
  * @author Andrew Hedges - andrew.hedges at gmail.com
  */
@@ -36,13 +38,17 @@ public final class HttpResponseEvent {
 
     private HttpResponse response;
 
-    public HttpResponseEvent(HttpRequest request, HttpResponse response) {
+    private TwitterException twitterException;
+
+    HttpResponseEvent(HttpRequest request, HttpResponse response, TwitterException te) {
         this.request = request;
         this.response = response;
+        this.twitterException = te;
     }
 
     /**
      * returns the request associated with the event
+     *
      * @return the request associated with the event
      */
     public HttpRequest getRequest() {
@@ -51,10 +57,20 @@ public final class HttpResponseEvent {
 
     /**
      * returns the response associated with the event
+     *
      * @return the response associated with the event
      */
     public HttpResponse getResponse() {
         return response;
+    }
+
+    /**
+     * returns the TwitterException associated with the event
+     *
+     * @return the TwitterException associated with the event
+     */
+    public TwitterException getTwitterException() {
+        return twitterException;
     }
 
     public boolean isAuthenticated() {

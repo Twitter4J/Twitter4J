@@ -1,11 +1,20 @@
 package twitter4j;
 
+import twitter4j.conf.Configuration;
+import twitter4j.http.AccessToken;
+import twitter4j.http.Authorization;
+import twitter4j.http.NullAuthorization;
+import twitter4j.http.OAuthAuthorization;
+import twitter4j.http.OAuthSupport;
+import twitter4j.http.RequestToken;
+import twitter4j.internal.http.HttpClientWrapper;
+import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.http.HttpResponseCode;
+import twitter4j.internal.http.HttpResponseEvent;
+import twitter4j.internal.http.HttpResponseListener;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
-
-import twitter4j.conf.Configuration;
-import twitter4j.http.*;
-import twitter4j.internal.http.*;
 
 abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseCode, HttpResponseListener, OAuthSupport, java.io.Serializable {
     protected transient HttpClientWrapper http;
@@ -22,13 +31,14 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
         super(conf, screenName, password);
         init();
     }
+
     /*package*/ TwitterOAuthSupportBase(Configuration conf, Authorization auth) {
         super(conf, auth);
         init();
     }
 
-    private void init(){
-        if(auth instanceof NullAuthorization){
+    private void init() {
+        if (auth instanceof NullAuthorization) {
             // try to populate OAuthAuthorization if available in the configuration
             String consumerKey = conf.getOAuthConsumerKey();
             String consumerSecret = conf.getOAuthConsumerSecret();
@@ -52,7 +62,7 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
      * should be called on all instances constructed.
      */
     public void shutdown() {
-      if (http != null) http.shutdown();
+        if (http != null) http.shutdown();
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
@@ -65,7 +75,7 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
 
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
-        rateLimitStatusListener = (RateLimitStatusListener)stream.readObject();
+        rateLimitStatusListener = (RateLimitStatusListener) stream.readObject();
         http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
     }
@@ -73,10 +83,11 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
 
     /**
      * sets the OAuth consumer key and consumer secret
-     * @param consumerKey OAuth consumer key
+     *
+     * @param consumerKey    OAuth consumer key
      * @param consumerSecret OAuth consumer secret
-     * @since Twitter 2.0.0
      * @throws IllegalStateException when OAuth consumer has already been set, or the instance is using basic authorization
+     * @since Twitter 2.0.0
      */
     public abstract void setOAuthConsumer(String consumerKey, String consumerSecret);
 
@@ -116,16 +127,17 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
     /**
      * Sets the access token
      *
-     * @param token access token
+     * @param token       access token
      * @param tokenSecret access token secret
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
      * @since Twitter 2.0.0
      * @deprecated Use {@link TwitterFactory#getInstance(twitter4j.http.Authorization)} instead
-     * @throws IllegalStateException when AccessToken has already been retrieved or set
      */
     public abstract void setOAuthAccessToken(String token, String tokenSecret);
 
     /**
      * tests if the instance is authenticated by Basic
+     *
      * @return returns true if the instance is authenticated by Basic
      */
     public boolean isOAuthEnabled() {
@@ -134,12 +146,13 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
 
     /**
      * Registers a RateLimitStatusListener for account associated rate limits
+     *
      * @param listener the listener to be added
-     * @since Twitter4J 2.1.0
      * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
+     * @since Twitter4J 2.1.0
      */
-    public void setRateLimitStatusListener(RateLimitStatusListener listener){
-      this.rateLimitStatusListener = listener;
+    public void setRateLimitStatusListener(RateLimitStatusListener listener) {
+        this.rateLimitStatusListener = listener;
     }
 
     @Override
@@ -166,12 +179,21 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
     public void httpResponseReceived(HttpResponseEvent event) {
         if (null != rateLimitStatusListener) {
             HttpResponse res = event.getResponse();
-            RateLimitStatus rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
-            RateLimitStatusEvent statusEvent = null;
+            TwitterException te = event.getTwitterException();
+            RateLimitStatus rateLimitStatus;
+            int statusCode;
+            if (null != te) {
+                rateLimitStatus = te.getRateLimitStatus();
+                statusCode = te.getStatusCode();
+            } else {
+                rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+                statusCode = res.getStatusCode();
+            }
             if (null != rateLimitStatus) {
-                statusEvent = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
-                if (res.getStatusCode() == ENHANCE_YOUR_CLAIM
-                        || res.getStatusCode() == SERVICE_UNAVAILABLE) {
+                RateLimitStatusEvent statusEvent
+                        = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
+                if (statusCode == ENHANCE_YOUR_CLAIM
+                        || statusCode == SERVICE_UNAVAILABLE) {
                     // EXCEEDED_RATE_LIMIT_QUOTA is returned by Rest API
                     // SERVICE_UNAVAILABLE is returned by Search API
                     rateLimitStatusListener.onRateLimitStatus(statusEvent);
