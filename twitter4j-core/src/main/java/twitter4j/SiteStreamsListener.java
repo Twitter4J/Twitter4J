@@ -76,6 +76,13 @@ public interface SiteStreamsListener extends StreamListener {
     void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list);
 
     /**
+     * @param subscriber
+     * @param listOwner
+     * @param list
+     */
+    void onUserListUnsubscription(int forUser, User subscriber, User listOwner, UserList list);
+
+    /**
      * @param listOwner
      * @param list
      */

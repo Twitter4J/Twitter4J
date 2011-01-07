@@ -126,6 +126,13 @@ public final class PrintSiteStreams {
                     + " list:" + list.getName());
         }
 
+        public void onUserListUnsubscription(int forUser, User subscriber, User listOwner, UserList list) {
+            System.out.println("onUserListUnsubscribed for_user:" + forUser
+                    + " subscriber:@" + subscriber.getScreenName()
+                    + " listOwner:@" + listOwner.getScreenName()
+                    + " list:" + list.getName());
+        }
+
         public void onUserListCreation(int forUser, User listOwner, UserList list) {
             System.out.println("onUserListCreated for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()

@@ -55,6 +55,9 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     public void onUserListSubscription(User subscriber, User listOwner, UserList list) {
     }
 
+    public void onUserListUnsubscription(User subscriber, User listOwner, UserList list) {
+    }
+
     public void onUserListCreation(User listOwner, UserList list) {
     }
 
