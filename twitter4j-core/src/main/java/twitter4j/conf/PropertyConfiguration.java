@@ -300,7 +300,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_NUM_THREADS));
         }
         if (notNull(props, prefix, ASYNC_DISPATCHER_IMPL)) {
-            setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_DISPATCHER_IMPL));
+            setDispatcherImpl(getString(props, prefix, ASYNC_DISPATCHER_IMPL));
         }
         if (notNull(props, prefix, CLIENT_VERSION)) {
             setClientVersion(getString(props, prefix, CLIENT_VERSION));
