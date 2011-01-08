@@ -256,8 +256,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         requestHeaders.put("User-Agent", getUserAgent());
         requestHeaders.put("Accept-Encoding", "gzip");
-        requestHeaders.put("Connection", "close");
-
+        if (IS_DALVIK) {
+            requestHeaders.put("Connection", "close");
+        }
     }
 
     public Map<String, String> getRequestHeaders() {
