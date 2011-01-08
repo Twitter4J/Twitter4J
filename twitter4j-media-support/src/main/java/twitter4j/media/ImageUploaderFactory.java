@@ -42,7 +42,6 @@ public final class ImageUploaderFactory {
     private final Configuration conf;
     private final MediaProvider defaultMediaProvider;
     private final String apiKey;
-    private final OAuthAuthorization oauth;
 
     /**
      * Creates an ImageUploaderFactory with default configuration
@@ -73,19 +72,24 @@ public final class ImageUploaderFactory {
         }
         this.conf = conf;
         apiKey = conf.getMediaProviderAPIKey();
-        Authorization authorization = AuthorizationFactory.getInstance(conf, true);
-        if (!(authorization instanceof OAuthAuthorization)) {
-            throw new IllegalArgumentException("OAuth authorization is required.");
-        }
-        oauth = (OAuthAuthorization) authorization;
     }
 
     /**
-     * Returns an ImageUploader instance associated with the default media provider
-     * @return ImageUploader
+     * Returns an ImageUpload instance associated with the default media provider
+     * @return ImageUpload
      */
     public ImageUpload getInstance() {
         return getInstance(defaultMediaProvider);
+    }
+
+    /**
+     * Returns an ImageUpload instance associated with the default media provider
+     * @param authorization authorization
+     * @return ImageUpload
+     * @since Twitter4J 2.1.11
+     */
+    public ImageUpload getInstance(Authorization authorization) {
+        return getInstance(defaultMediaProvider, authorization);
     }
 
     /**
@@ -94,7 +98,22 @@ public final class ImageUploaderFactory {
      * @return ImageUploader
      */
     public ImageUpload getInstance(MediaProvider mediaProvider) {
+        Authorization authorization = AuthorizationFactory.getInstance(conf, true);
+        return getInstance(mediaProvider, authorization);
+    }
 
+    /**
+     * Returns an ImageUpload instance associated with the specified media provider
+     * @param mediaProvider media provider
+     * @param authorization authorization
+     * @return ImageUpload
+     * @since Twitter4J 2.1.11
+     */
+    public ImageUpload getInstance(MediaProvider mediaProvider, Authorization authorization) {
+        if (!(authorization instanceof OAuthAuthorization)) {
+            throw new IllegalArgumentException("OAuth authorization is required.");
+        }
+        OAuthAuthorization oauth = (OAuthAuthorization)authorization;
         if (mediaProvider == IMG_LY) {
             return new ImgLyUpload(conf, oauth);
         } else if (mediaProvider == PLIXI) {
