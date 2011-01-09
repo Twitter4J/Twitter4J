@@ -33,6 +33,8 @@ import twitter4j.TwitterException;
 import twitter4j.User;
 
 import java.io.File;
+import java.io.InputStream;
+
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
@@ -75,18 +77,31 @@ public interface AccountMethods {
 	User updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor)
 			throws TwitterException;
 
-	/**
-	 * Updates the authenticating user's profile image.
-	 * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
-	 * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
-	 * @return the updated user
-	 * @throws TwitterException when Twitter service or network is unavailable,
-	 *  or when the specified file is not found (FileNotFoundException will be nested),
-	 *  or when the specified file object in not representing a file (IOException will be nested)
-	 * @since Twitter4J 2.1.0
+    /**
+     * Updates the authenticating user's profile image.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
+     * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
+     * @return the updated user
+     * @throws TwitterException when Twitter service or network is unavailable,
+     *  or when the specified file is not found (FileNotFoundException will be nested),
+     *  or when the specified file object in not representing a file (IOException will be nested)
+     * @since Twitter4J 2.1.0
      * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_image">POST account/update_profile_image | dev.twitter.com</a>
-	 */
+     */
     User updateProfileImage(File image) throws TwitterException;
+
+    /**
+     * Updates the authenticating user's profile image.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
+     * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
+     * @return the updated user
+     * @throws TwitterException when Twitter service or network is unavailable,
+     *  or when the specified file is not found (FileNotFoundException will be nested),
+     *  or when the specified file object in not representing a file (IOException will be nested)
+     * @since Twitter4J 2.1.11
+     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_image">POST account/update_profile_image | dev.twitter.com</a>
+     */
+    User updateProfileImage(InputStream image) throws TwitterException;
 
     /**
 	 * Updates the authenticating user's profile background image.
@@ -101,6 +116,21 @@ public interface AccountMethods {
      * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_background_image">POST account/update_profile_background_image | dev.twitter.com</a>
 	 */
 	User updateProfileBackgroundImage(File image, boolean tile)
+			throws TwitterException;
+
+    /**
+	 * Updates the authenticating user's profile background image.
+	 * <br>This method calls http://api.twitter.com/1/account/update_profile_background_image.json
+	 * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forceably scaled down.
+	 * @param tile If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
+	 * @return the updated user
+	 * @throws TwitterException when Twitter service or network is unavailable,
+	 *  or when the specified file is not found (FileNotFoundException will be nested),
+	 *  or when the specified file object in not representing a file (IOException will be nested)
+	 * @since Twitter4J 2.1.11
+     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_background_image">POST account/update_profile_background_image | dev.twitter.com</a>
+	 */
+	User updateProfileBackgroundImage(InputStream image, boolean tile)
 			throws TwitterException;
 
     /**

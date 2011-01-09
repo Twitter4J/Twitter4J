@@ -32,6 +32,7 @@ import static twitter4j.DAOTest.assertDeserializedFormIsEqual;
 import static twitter4j.DAOTest.assertDeserializedFormIsNotEqual;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -849,7 +850,7 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testAccountProfileImageUpdates() throws Exception {
-        User user = twitter1.updateProfileImage(getRandomlyChosenFile());
+        User user = twitter1.updateProfileImage(new FileInputStream(getRandomlyChosenFile()));
         assertNotNull(DataObjectFactory.getRawJSON(user));
         // tile randomly
         User user2 = twitter1.updateProfileBackgroundImage(getRandomlyChosenFile(),

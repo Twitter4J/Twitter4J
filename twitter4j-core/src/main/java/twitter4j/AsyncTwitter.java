@@ -36,6 +36,7 @@ import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.async.DispatcherFactory;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Date;
 
 import static twitter4j.TwitterMethod.*;
@@ -1548,7 +1549,36 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public void updateProfileImage(final InputStream image) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE_IMAGE,
+                listener) {
+            public void invoke(TwitterListener listener)
+                    throws TwitterException {
+                listener.updatedProfileImage(twitter.updateProfileImage(image));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void updateProfileBackgroundImage(final File image
+            , final boolean tile) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE_BACKGROUND_IMAGE,
+                listener) {
+            public void invoke(TwitterListener listener)
+                    throws TwitterException {
+                listener.updatedProfileBackgroundImage(twitter.
+                        updateProfileBackgroundImage(image, tile)
+                );
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void updateProfileBackgroundImage(final InputStream image
             , final boolean tile) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE_BACKGROUND_IMAGE,
                 listener) {

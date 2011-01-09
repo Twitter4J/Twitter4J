@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.api;
 
 import java.io.File;
+import java.io.InputStream;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -62,24 +63,43 @@ public interface AccountMethodsAsync {
 	 */
 	void updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor);
 
-	/**
-	 * Updates the authenticating user's profile image.
-	 * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
-	 * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
-	 * @since Twitter4J 2.1.0
+    /**
+     * Updates the authenticating user's profile image.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
+     * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
+     * @since Twitter4J 2.1.0
      * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_image">POST account/update_profile_image | dev.twitter.com</a>
-	 */
-	void updateProfileImage(File image);
+     */
+    void updateProfileImage(File image);
 
-	/**
-	 * Updates the authenticating user's profile background image.
-	 * <br>This method calls http://api.twitter.com/1/account/update_profile_background_image.json
-	 * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forcibly scaled down.
-	 * @param tile If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
-	 * @since Twitter4J 2.1.0
+    /**
+     * Updates the authenticating user's profile image.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
+     * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
+     * @since Twitter4J 2.1.11
+     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_image">POST account/update_profile_image | dev.twitter.com</a>
+     */
+    void updateProfileImage(InputStream image);
+
+    /**
+     * Updates the authenticating user's profile background image.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile_background_image.json
+     * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forcibly scaled down.
+     * @param tile If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
+     * @since Twitter4J 2.1.0
      * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_background_image">POST account/update_profile_background_image | dev.twitter.com</a>
-	 */
-	void updateProfileBackgroundImage(File image, boolean tile);
+     */
+    void updateProfileBackgroundImage(File image, boolean tile);
+
+    /**
+     * Updates the authenticating user's profile background image.
+     * <br>This method calls http://api.twitter.com/1/account/update_profile_background_image.json
+     * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forcibly scaled down.
+     * @param tile If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
+     * @since Twitter4J 2.1.11
+     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_background_image">POST account/update_profile_background_image | dev.twitter.com</a>
+     */
+    void updateProfileBackgroundImage(InputStream image, boolean tile);
 
 	/**
 	 * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified(non-null) will be updated.

@@ -42,6 +42,7 @@ import static twitter4j.internal.http.HttpParameter.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1496,6 +1497,17 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public User updateProfileImage(InputStream image) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new UserJSONImpl(http.post(conf.getRestBaseURL()
+                + "account/update_profile_image.json"
+                , new HttpParameter[]{new HttpParameter("image", "image", image)
+                        , INCLUDE_ENTITIES}, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public User updateProfileBackgroundImage(File image, boolean tile)
             throws TwitterException {
         ensureAuthorizationEnabled();
@@ -1503,6 +1515,19 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         return new UserJSONImpl(http.post(conf.getRestBaseURL()
                 + "account/update_profile_background_image.json",
                 new HttpParameter[]{new HttpParameter("image", image)
+                        , new HttpParameter("tile", tile)
+                        , INCLUDE_ENTITIES}, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public User updateProfileBackgroundImage(InputStream image, boolean tile)
+            throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new UserJSONImpl(http.post(conf.getRestBaseURL()
+                + "account/update_profile_background_image.json",
+                new HttpParameter[]{new HttpParameter("image", "image", image)
                         , new HttpParameter("tile", tile)
                         , INCLUDE_ENTITIES}, auth));
     }
