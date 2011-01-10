@@ -142,9 +142,8 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
 
     /**
      *
-     * @param auth
-     * @return
-     * @deprecated
+     * @param auth authorization
+     * @return an instance
      */
     public AsyncTwitter getInstance(Authorization auth) {
         return getInstance(conf, auth);

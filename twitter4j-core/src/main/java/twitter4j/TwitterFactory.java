@@ -112,7 +112,6 @@ public final class TwitterFactory implements java.io.Serializable {
     }
 
     /**
-     * @deprecated
      */
     public Twitter getInstance(Authorization auth) {
         return getInstance(conf, auth);

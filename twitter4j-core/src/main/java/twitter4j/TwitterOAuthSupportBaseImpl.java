@@ -186,7 +186,7 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
      * @param tokenSecret access token secret
      * @throws IllegalStateException when AccessToken has already been retrieved or set
      * @since Twitter 2.0.0
-     * @deprecated Use {@link TwitterFactory#getInstance(twitter4j.http.Authorization)} instead
+     * @deprecated Use {@link #setOAuthAccessToken(twitter4j.http.AccessToken)} instead
      */
     public void setOAuthAccessToken(String token, String tokenSecret) {
         getOAuth().setOAuthAccessToken(new AccessToken(token, tokenSecret));
