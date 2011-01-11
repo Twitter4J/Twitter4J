@@ -38,7 +38,7 @@ import twitter4j.TwitterFactory;
  */
 public final class GetFriendsIDs {
     /**
-     * Usage: java twitter4j.examples.friendsandfollowers.GetFriendsIDs
+     * Usage: java twitter4j.examples.friendsandfollowers.GetFriendsIDs [screen name]
      *
      * @param args message
      */
@@ -49,7 +49,11 @@ public final class GetFriendsIDs {
             IDs ids;
             System.out.println("Listing following ids.");
             do {
-                ids = twitter.getFriendsIDs(cursor);
+                if (0 < args.length) {
+                    ids = twitter.getFriendsIDs(args[0], cursor);
+                } else {
+                    ids = twitter.getFriendsIDs(cursor);
+                }
                 for (int id : ids.getIDs()) {
                     System.out.println(id);
                 }

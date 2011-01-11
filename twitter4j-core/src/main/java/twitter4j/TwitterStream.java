@@ -545,10 +545,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      */
     public synchronized void cleanUp() {
         if (null != handler) {
-            try {
-                handler.close();
-            } catch (IOException ignore) {
-            }
+            handler.close();
         }
     }
 
@@ -768,10 +765,12 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
             }
         }
 
-        public synchronized void close() throws IOException {
+        public synchronized void close() {
             setStatus("[Disposing thread]");
             if (null != stream) {
-                stream.close();
+                try {
+                    stream.close();
+                }catch(IOException ignore){}
             }
             closed = true;
         }
