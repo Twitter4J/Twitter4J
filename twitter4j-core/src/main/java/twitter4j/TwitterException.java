@@ -281,28 +281,28 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 cause = "The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.";
                 break;
             case UNAUTHORIZED:
-                cause = "Authentication credentials were missing or incorrect.";
+                cause = "Authentication credentials (http://dev.twitter.com/pages/auth) were missing or incorrect.";
                 break;
             case FORBIDDEN:
-                cause = "The request is understood, but it has been refused.  An accompanying error message will explain why.";
+                cause = "The request is understood, but it has been refused. An accompanying error message will explain why. This code is used when requests are being denied due to update limits (http://support.twitter.com/forums/10711/entries/15364).";
                 break;
             case NOT_FOUND:
-                cause = "The URI requested is invalid or the resource requested, such as a user, does not exists.";
+                cause = "The URI requested is invalid or the resource requested, such as a user, does not exist.";
                 break;
             case NOT_ACCEPTABLE:
                 cause = "Returned by the Search API when an invalid format is specified in the request.";
                 break;
             case ENHANCE_YOUR_CLAIM:
-                cause = "The number of requests you have made exceeds the quota afforded by your assigned rate limit.";
+                cause = "Returned by the Search, Streaming and Trends API when you are being rate limited (http://dev.twitter.com/pages/rate-limiting).";
                 break;
             case INTERNAL_SERVER_ERROR:
-                cause = "Something is broken.  Please post to the group so the Twitter team can investigate.";
+                cause = "Something is broken. Please post to the group (http://dev.twitter.com/pages/support) so the Twitter team can investigate.";
                 break;
             case BAD_GATEWAY:
                 cause = "Twitter is down or being upgraded.";
                 break;
             case SERVICE_UNAVAILABLE:
-                cause = "Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.";
+                cause = "The Twitter servers are up, but overloaded with requests. Try again later.";
                 break;
             default:
                 cause = "";

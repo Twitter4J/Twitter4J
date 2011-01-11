@@ -691,17 +691,16 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                                 stream.next(streamListeners);
                             } catch (IllegalStateException ise) {
                                 logger.warn(ise.getMessage());
-                                connected = false;
-                                for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
-                                    try {
-                                        listener.onDisconnect();
-                                    } catch (Exception e) {
-                                        logger.warn(e.getMessage());
-                                    }
-                                }
+                                break;
+                            } catch (TwitterException e) {
+                                logger.info(e.getMessage());
+                                stream.onException(e);
+                                throw e;
                             } catch (Exception e) {
                                 logger.info(e.getMessage());
                                 stream.onException(e);
+                                closed = true;
+                                break;
                             }
                         }
                     }
@@ -714,11 +713,22 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                                 closed = true;
                                 break;
                             }
+                            connected = false;
+                            for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
+                                try {
+                                    listener.onDisconnect();
+                                } catch (Exception e) {
+                                    logger.warn(e.getMessage());
+                                }
+                            }
                             if (te.getStatusCode() > 200) {
                                 timeToSleep = HTTP_ERROR_INITIAL_WAIT;
                             } else if (0 == timeToSleep) {
                                 timeToSleep = TCP_ERROR_INITIAL_WAIT;
                             }
+                        }
+                        if (te.getStatusCode() > 200 && timeToSleep < HTTP_ERROR_INITIAL_WAIT) {
+                            timeToSleep = HTTP_ERROR_INITIAL_WAIT;
                         }
                         if (connected) {
                             for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
