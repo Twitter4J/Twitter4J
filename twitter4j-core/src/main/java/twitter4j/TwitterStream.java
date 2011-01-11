@@ -670,9 +670,11 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                 try {
                     if (!closed && null == stream) {
                         // try establishing connection
+                        logger.info("Establishing connection.");
                         setStatus("[Establishing connection]");
                         stream = getStream();
                         connected = true;
+                        logger.info("Connection established.");
                         for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
                             try {
                                 listener.onConnect();
@@ -682,11 +684,13 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                         }
                         // connection established successfully
                         timeToSleep = NO_WAIT;
+                        logger.info("Receiving status stream.");
                         setStatus("[Receiving stream]");
                         while (!closed) {
                             try {
                                 stream.next(streamListeners);
                             } catch (IllegalStateException ise) {
+                                logger.warn(ise.getMessage());
                                 connected = false;
                                 for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
                                     try {
@@ -696,11 +700,13 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                                     }
                                 }
                             } catch (Exception e) {
+                                logger.info(e.getMessage());
                                 stream.onException(e);
                             }
                         }
                     }
                 } catch (TwitterException te) {
+                    logger.info(te.getMessage());
                     if (!closed) {
                         if (NO_WAIT == timeToSleep) {
                             if (te.getStatusCode() == 403) {
@@ -726,13 +732,13 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                         // there was a problem establishing the connection, or the connection closed by peer
                         if (!closed) {
                             // wait for a moment not to overload Twitter API
+                            logger.info("Waiting for " + (timeToSleep) + " milliseconds");
                             setStatus("[Waiting for " + (timeToSleep) + " milliseconds]");
                             try {
                                 Thread.sleep(timeToSleep);
                             } catch (InterruptedException ignore) {
                             }
                             timeToSleep = Math.min(timeToSleep * 2, (te.getStatusCode() > 200) ? HTTP_ERROR_WAIT_CAP : TCP_ERROR_WAIT_CAP);
-
                         }
                         stream = null;
                         logger.debug(te.getMessage());
