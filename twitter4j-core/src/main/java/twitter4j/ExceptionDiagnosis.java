@@ -70,8 +70,15 @@ final class ExceptionDiagnosis implements java.io.Serializable {
         return stackLineHash;
     }
 
+    String getStackLineHashAsHex() {
+        return toHexString(stackLineHash);
+    }
+
     int getLineNumberHash() {
         return lineNumberHash;
+    }
+    String getLineNumberHashAsHex(){
+        return toHexString(lineNumberHash);
     }
 
     String asHexString() {

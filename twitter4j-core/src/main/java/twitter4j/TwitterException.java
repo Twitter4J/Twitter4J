@@ -47,6 +47,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     private RateLimitStatus featureSpecificRateLimitStatus = null;
     private static final long serialVersionUID = -2623309261327598087L;
     private Map<String, List<String>> responseHeaderFields = null;
+    private ExceptionDiagnosis exceptionDiagnosis = null;
 
     public TwitterException(String message) {
         super(decode(message));
@@ -228,7 +229,13 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * @return a hexadecimal representation of this exception stacktrace
      */
     public String getExceptionCode() {
-        return new ExceptionDiagnosis(this, FILTER).asHexString();
+        return getExceptionDiagnosis().asHexString();
+    }
+    private ExceptionDiagnosis getExceptionDiagnosis(){
+        if(null == exceptionDiagnosis){
+         exceptionDiagnosis = new ExceptionDiagnosis(this, FILTER);
+        }
+        return exceptionDiagnosis;
     }
     boolean nested = false;
     void setNested(){
@@ -260,8 +267,10 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     @Override
     public String toString() {
-        return getMessage() + "TwitterException{" +
-                (nested ? "" : "exceptionCode=[" + getExceptionCode() + "], ") +
+        return getMessage() + (nested ? "" : "Relevant discussions can be on the Internet at:\n"
+                + "\thttp://www.google.co.jp/search?q=" + getExceptionDiagnosis().getStackLineHashAsHex()
+                + " or\n\thttp://www.google.co.jp/search?q=" + getExceptionDiagnosis().getLineNumberHashAsHex())
+                + "\nTwitterException{" + (nested ? "" : "exceptionCode=[" + getExceptionCode() + "], ") +
                 "statusCode=" + statusCode +
                 ", retryAfter=" + retryAfter +
                 ", rateLimitStatus=" + rateLimitStatus +
