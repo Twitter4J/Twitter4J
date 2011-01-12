@@ -290,7 +290,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 cause = "The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.";
                 break;
             case UNAUTHORIZED:
-                cause = "Authentication credentials (http://dev.twitter.com/pages/auth) were missing or incorrect.";
+                cause = "Authentication credentials (http://dev.twitter.com/pages/auth) were missing or incorrect. Ensure that you have set valid conumer key/secret, access token/secret, and the system clock in in sync.";
                 break;
             case FORBIDDEN:
                 cause = "The request is understood, but it has been refused. An accompanying error message will explain why. This code is used when requests are being denied due to update limits (http://support.twitter.com/forums/10711/entries/15364).";

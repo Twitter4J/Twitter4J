@@ -71,7 +71,6 @@ public class TwitterTest extends TwitterTestBase {
 
     public void testSerializability() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance("foo", "bar");
-        twitter.getUserTimeline();
         Twitter deserialized = (Twitter) assertDeserializedFormIsEqual(twitter);
 
         assertEquals(deserialized.getScreenName(), twitter.getScreenName());
