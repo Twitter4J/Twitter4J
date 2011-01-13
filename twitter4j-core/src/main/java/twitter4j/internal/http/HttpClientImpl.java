@@ -56,14 +56,6 @@ import static twitter4j.internal.http.RequestMethod.POST;
 public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
 
-    private String proxyHost = null;
-    private int proxyPort = -1;
-    private String proxyAuthUser = null;
-    private String proxyAuthPassword = null;
-    private int connectionTimeout = 20000;
-    private int readTimeout = 120000;
-    private int retryCount = 0;
-    private int retryIntervalSeconds = 5 * 1000;
     private static boolean isJDK14orEarlier = false;
     private final HttpClientConfiguration CONF;
 
@@ -92,14 +84,6 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
 
     public HttpClientImpl(HttpClientConfiguration conf) {
         this.CONF = conf;
-        setProxyHost(conf.getHttpProxyHost());
-        setProxyPort(conf.getHttpProxyPort());
-        setProxyAuthUser(conf.getHttpProxyUser());
-        setProxyAuthPassword(conf.getHttpProxyPassword());
-        setConnectionTimeout(conf.getHttpConnectionTimeout());
-        setReadTimeout(conf.getHttpReadTimeout());
-        setRetryCount(conf.getHttpRetryCount());
-        setRetryIntervalSeconds(conf.getHttpRetryIntervalSeconds());
         if (isProxyConfigured() && isJDK14orEarlier) {
             logger.warn("HTTP Proxy is not supported on JDK1.4 or earlier. Try twitter4j-httpclient-supoprt artifact");
         }
@@ -119,106 +103,6 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         return client;
     }
 
-
-    public String getProxyHost() {
-        return proxyHost;
-    }
-
-    /**
-     * Sets proxy host.
-     *
-     * @param proxyHost
-     */
-    public void setProxyHost(String proxyHost) {
-        this.proxyHost = proxyHost;
-    }
-
-    public int getProxyPort() {
-        return proxyPort;
-    }
-
-    /**
-     * Sets proxy port.
-     *
-     * @param proxyPort
-     */
-    public void setProxyPort(int proxyPort) {
-        this.proxyPort = proxyPort;
-    }
-
-    public String getProxyAuthUser() {
-        return proxyAuthUser;
-    }
-
-    /**
-     * Sets proxy authentication user.
-     * System property -Dtwitter4j.http.proxyUser overrides this attribute.
-     *
-     * @param proxyAuthUser
-     */
-    public void setProxyAuthUser(String proxyAuthUser) {
-        this.proxyAuthUser = proxyAuthUser;
-    }
-
-    public String getProxyAuthPassword() {
-        return proxyAuthPassword;
-    }
-
-    /**
-     * Sets proxy authentication password.
-     * System property -Dtwitter4j.http.proxyPassword overrides this attribute.
-     *
-     * @param proxyAuthPassword
-     */
-    public void setProxyAuthPassword(String proxyAuthPassword) {
-        this.proxyAuthPassword = proxyAuthPassword;
-    }
-
-    public int getConnectionTimeout() {
-        return connectionTimeout;
-    }
-
-    /**
-     * Sets a specified timeout value, in milliseconds, to be used when opening a communications link to the resource referenced by this URLConnection.
-     *
-     * @param connectionTimeout - an int that specifies the connect timeout value in milliseconds
-     */
-    public void setConnectionTimeout(int connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
-
-    }
-
-    public int getReadTimeout() {
-        return readTimeout;
-    }
-
-    /**
-     * Sets the read timeout to a specified timeout, in milliseconds.
-     *
-     * @param readTimeout - an int that specifies the timeout value to be used in milliseconds
-     */
-    public void setReadTimeout(int readTimeout) {
-        this.readTimeout = readTimeout;
-    }
-
-    public void setRetryCount(int retryCount) {
-        if (retryCount >= 0) {
-            this.retryCount = retryCount;
-        } else {
-            throw new IllegalArgumentException("RetryCount cannot be negative.");
-        }
-    }
-
-    public void setRetryIntervalSeconds(int retryIntervalSeconds) {
-        if (retryIntervalSeconds >= 0) {
-            this.retryIntervalSeconds = retryIntervalSeconds;
-        } else {
-            throw new IllegalArgumentException(
-                    "RetryInterval cannot be negative.");
-        }
-    }
-
-
     public HttpResponse get(String url) throws TwitterException {
         return request(new HttpRequest(RequestMethod.GET, url, null, null, null));
     }
@@ -229,7 +113,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
 
     public HttpResponse request(HttpRequest req) throws TwitterException {
         int retriedCount;
-        int retry = retryCount + 1;
+        int retry = CONF.getHttpRetryCount() + 1;
         HttpResponse res = null;
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
@@ -311,7 +195,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                         if (responseCode == ENHANCE_YOUR_CLAIM ||
                                 responseCode == BAD_REQUEST ||
                                 responseCode < INTERNAL_SERVER_ERROR ||
-                                retriedCount == retryCount) {
+                                retriedCount == CONF.getHttpRetryCount()) {
                             throw new TwitterException(res.asString(), res);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR
@@ -326,7 +210,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                 }
             } catch (IOException ioe) {
                 // connection timeout or read timeout
-                if (retriedCount == retryCount) {
+                if (retriedCount == CONF.getHttpRetryCount()) {
                     throw new TwitterException(ioe.getMessage(), ioe, responseCode);
                 }
             }
@@ -334,8 +218,8 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                 if (logger.isDebugEnabled() && null != res) {
                     res.asString();
                 }
-                logger.debug("Sleeping " + retryIntervalSeconds + " seconds until the next retry.");
-                Thread.sleep(retryIntervalSeconds * 1000);
+                logger.debug("Sleeping " + CONF.getHttpRetryIntervalSeconds() + " seconds until the next retry.");
+                Thread.sleep(CONF.getHttpRetryIntervalSeconds() * 1000);
             } catch (InterruptedException ignore) {
                 //nothing to do
             }
@@ -386,10 +270,10 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
     private HttpURLConnection getConnection(String url) throws IOException {
         HttpURLConnection con = null;
         if (isProxyConfigured() && !isJDK14orEarlier) {
-            if (proxyAuthUser != null && !proxyAuthUser.equals("")) {
+            if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Proxy AuthUser: " + proxyAuthUser);
-                    logger.debug("Proxy AuthPassword: " + StringUtil.maskString(proxyAuthPassword));
+                    logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
+                    logger.debug("Proxy AuthPassword: " + StringUtil.maskString(CONF.getHttpProxyPassword()));
                 }
                 Authenticator.setDefault(new Authenticator() {
                     @Override
@@ -397,9 +281,8 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                     getPasswordAuthentication() {
                         //respond only to proxy auth requests
                         if (getRequestorType().equals(RequestorType.PROXY)) {
-                            return new PasswordAuthentication(proxyAuthUser,
-                                    proxyAuthPassword
-                                            .toCharArray());
+                            return new PasswordAuthentication(CONF.getHttpProxyUser(),
+                                    CONF.getHttpProxyPassword().toCharArray());
                         } else {
                             return null;
                         }
@@ -407,45 +290,36 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                 });
             }
             final Proxy proxy = new Proxy(Proxy.Type.HTTP, InetSocketAddress
-                    .createUnresolved(proxyHost, proxyPort));
+                    .createUnresolved(CONF.getHttpProxyHost(), CONF.getHttpProxyPort()));
             if (logger.isDebugEnabled()) {
-                logger.debug("Opening proxied connection(" + proxyHost + ":" + proxyPort + ")");
+                logger.debug("Opening proxied connection(" + CONF.getHttpProxyHost() + ":" + CONF.getHttpProxyPort() + ")");
             }
             con = (HttpURLConnection) new URL(url).openConnection(proxy);
         } else {
             con = (HttpURLConnection) new URL(url).openConnection();
         }
-        if (connectionTimeout > 0 && !isJDK14orEarlier) {
-            con.setConnectTimeout(connectionTimeout);
+        if (CONF.getHttpConnectionTimeout() > 0 && !isJDK14orEarlier) {
+            con.setConnectTimeout(CONF.getHttpConnectionTimeout());
         }
-        if (readTimeout > 0 && !isJDK14orEarlier) {
-            con.setReadTimeout(readTimeout);
+        if (CONF.getHttpReadTimeout() > 0 && !isJDK14orEarlier) {
+            con.setReadTimeout(CONF.getHttpReadTimeout());
         }
         con.setInstanceFollowRedirects(false);
         return con;
     }
 
     private boolean isProxyConfigured() {
-        return proxyHost != null && !proxyHost.equals("");
+        return CONF.getHttpProxyHost() != null && !CONF.getHttpProxyHost().equals("");
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof HttpClientImpl)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         HttpClientImpl that = (HttpClientImpl) o;
 
-        if (connectionTimeout != that.connectionTimeout) return false;
-        if (proxyPort != that.proxyPort) return false;
-        if (readTimeout != that.readTimeout) return false;
-        if (retryCount != that.retryCount) return false;
-        if (retryIntervalSeconds != that.retryIntervalSeconds) return false;
-        if (proxyAuthPassword != null ? !proxyAuthPassword.equals(that.proxyAuthPassword) : that.proxyAuthPassword != null)
-            return false;
-        if (proxyAuthUser != null ? !proxyAuthUser.equals(that.proxyAuthUser) : that.proxyAuthUser != null)
-            return false;
-        if (proxyHost != null ? !proxyHost.equals(that.proxyHost) : that.proxyHost != null)
+        if (CONF != null ? !CONF.equals(that.CONF) : that.CONF != null)
             return false;
 
         return true;
@@ -453,28 +327,13 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
 
     @Override
     public int hashCode() {
-        int result = proxyHost != null ? proxyHost.hashCode() : 0;
-        result = 31 * result + proxyPort;
-        result = 31 * result + (proxyAuthUser != null ? proxyAuthUser.hashCode() : 0);
-        result = 31 * result + (proxyAuthPassword != null ? proxyAuthPassword.hashCode() : 0);
-        result = 31 * result + connectionTimeout;
-        result = 31 * result + readTimeout;
-        result = 31 * result + retryCount;
-        result = 31 * result + retryIntervalSeconds;
-        return result;
+        return CONF != null ? CONF.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "HttpClientImpl{" +
-                "proxyHost='" + proxyHost + '\'' +
-                ", proxyPort=" + proxyPort +
-                ", proxyAuthUser='" + proxyAuthUser + '\'' +
-                ", proxyAuthPassword='" + proxyAuthPassword + '\'' +
-                ", connectionTimeout=" + connectionTimeout +
-                ", readTimeout=" + readTimeout +
-                ", retryCount=" + retryCount +
-                ", retryIntervalSeconds=" + retryIntervalSeconds +
+                "CONF=" + CONF +
                 '}';
     }
 }
