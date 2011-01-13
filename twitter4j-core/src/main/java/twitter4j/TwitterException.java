@@ -299,10 +299,23 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 cause = "The URI requested is invalid or the resource requested, such as a user, does not exist.";
                 break;
             case NOT_ACCEPTABLE:
-                cause = "Returned by the Search API when an invalid format is specified in the request.";
+                cause = "Returned by the Search API when an invalid format is specified in the request.\n"+
+                "Returned by the Streaming API when one or more of the parameters are not suitable for the resource. The track parameter, for example, would throw this error if:\n" +
+                        " The track keyword is too long or too short.\n" +
+                        " The bounding box specified is invalid.\n" +
+                        " No predicates defined for filtered resource, for example, neither track nor follow parameter defined.\n" +
+                        " Follow userid cannot be read.";
+                break;
+            case TOO_LONG:
+                cause = "A parameter list is too long. The track parameter, for example, would throw this error if:\n" +
+                        " Too many track tokens specified for role; contact API team for increased access.\n" +
+                        " Too many bounding boxes specified for role; contact API team for increased access.\n" +
+                        " Too many follow userids specified for role; contact API team for increased access.";
                 break;
             case ENHANCE_YOUR_CLAIM:
-                cause = "Returned by the Search, Streaming and Trends API when you are being rate limited (http://dev.twitter.com/pages/rate-limiting).";
+                cause = "Returned by the Search and Trends API when you are being rate limited (http://dev.twitter.com/pages/rate-limiting).\n"
+                + "Returned by the Streaming API:\n Too many login attempts in a short period of time.\n" +
+                        " Running too many copies of the same application authenticating with the same account name.";
                 break;
             case INTERNAL_SERVER_ERROR:
                 cause = "Something is broken. Please post to the group (http://dev.twitter.com/pages/support) so the Twitter team can investigate.";
