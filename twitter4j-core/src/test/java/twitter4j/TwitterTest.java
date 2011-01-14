@@ -472,7 +472,7 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testStatusMethods() throws Exception {
-        String date = new java.util.Date().toString() + "test http://t.co/chEeJss @twit4j2 #twitter4jtest";
+        String date = new java.util.Date().toString() + "test http://t.co/ppLTMVO @twit4j2 #twitter4jtest";
         Status status = twitter1.updateStatus(date);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
@@ -1259,31 +1259,30 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testEntities() throws Exception {
-        Status status = twitter2.showStatus(20098389530120192l);
+        Status status = twitter2.showStatus(25733871525957632l);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
         URLEntity[] entities = status.getURLEntities();
-        assertEquals(1, entities.length);
-        System.out.println(entities[0]);
-        assertEquals("http://t.co/chEeJss", entities[0].getURL().toString());
-        assertEquals("http://samuraism.jp/cgi-bin/is01.cgi", entities[0].getExpandedURL().toString());
-        assertEquals("samuraism.jp/cgi-bin/is01.c\u2026", entities[0].getDisplayURL());
+        assertEquals(2, entities.length);
+        assertEquals("http://t.co/ppLTMVO", entities[0].getURL().toString());
+        assertEquals("http://twitter4j.org/en/index.html#download", entities[0].getExpandedURL().toString());
+        assertEquals("twitter4j.org/en/index.html#…", entities[0].getDisplayURL());
         assertTrue(0 < entities[0].getStart());
         assertTrue(entities[0].getStart() < entities[0].getEnd());
 
         UserMentionEntity[] userMentions = status.getUserMentionEntities();
         assertEquals(1, userMentions.length);
-        assertEquals(id2.id, userMentions[0].getId());
-        assertEquals("twit4j2", userMentions[0].getScreenName());
-        assertEquals("twit4j2 name", userMentions[0].getName());
-        assertEquals(53, userMentions[0].getStart());
-        assertEquals(61, userMentions[0].getEnd());
+        assertEquals(15928023, userMentions[0].getId());
+        assertEquals("SonatypeNexus", userMentions[0].getScreenName());
+        assertEquals("Sonatype Nexus", userMentions[0].getName());
+        assertEquals(111, userMentions[0].getStart());
+        assertEquals(125, userMentions[0].getEnd());
 
         HashtagEntity[] hashtags = status.getHashtagEntities();
         assertEquals(1, hashtags.length);
-        assertEquals("twitter4jtest", hashtags[0].getText());
-        assertEquals(62, hashtags[0].getStart());
-        assertEquals(76, hashtags[0].getEnd());
+        assertEquals("twitter4j", hashtags[0].getText());
+        assertEquals(126, hashtags[0].getStart());
+        assertEquals(136, hashtags[0].getEnd());
     }
 }
