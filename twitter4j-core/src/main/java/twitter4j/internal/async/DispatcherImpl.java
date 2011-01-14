@@ -35,7 +35,7 @@ import java.util.List;
  */
 final class DispatcherImpl implements Dispatcher{
     private ExecuteThread[] threads;
-    private List<Runnable> q = new LinkedList<Runnable>();
+    private final List<Runnable> q = new LinkedList<Runnable>();
     public DispatcherImpl(DispatcherConfiguration conf) {
         threads = new ExecuteThread[conf.getAsyncNumThreads()];
         for (int i = 0; i < threads.length; i++) {
@@ -60,7 +60,7 @@ final class DispatcherImpl implements Dispatcher{
             ticket.notify();
         }
     }
-    Object ticket = new Object();
+    final Object ticket = new Object();
     public Runnable poll(){
         while(active){
             synchronized(q){

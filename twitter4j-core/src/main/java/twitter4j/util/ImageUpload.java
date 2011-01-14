@@ -237,8 +237,7 @@ public abstract class ImageUpload {
                 throw new TwitterException("YFrog image upload failed with this error message: " + error, httpResponse);
             }
             if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
-                String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
-                return media;
+                return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
             }
 
             throw new TwitterException("Unknown YFrog response", httpResponse);
@@ -323,8 +322,7 @@ public abstract class ImageUpload {
             }
 
             if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
-                String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
-                return media;
+                return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
             }
 
             throw new TwitterException("Unknown YFrog response", httpResponse);
@@ -486,8 +484,7 @@ public abstract class ImageUpload {
             }
 
             if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
-                String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
-                return media;
+                return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
             }
 
             throw new TwitterException("Unknown Twitpic response", httpResponse);
@@ -573,8 +570,7 @@ public abstract class ImageUpload {
                 throw new TwitterException("TweetPhoto image upload failed with this error message: " + error, httpResponse);
             }
             if (-1 != response.indexOf("<Status>OK</Status>")) {
-                String media = response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
-                return media;
+                return response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
             }
 
             throw new TwitterException("Unknown TweetPhoto response", httpResponse);
@@ -850,8 +846,7 @@ public abstract class ImageUpload {
                 throw new TwitterException("Twipple image upload failed with this error message: " + error, httpResponse);
             }
             if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
-                String media = response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
-                return media;
+                return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
             }
 
             throw new TwitterException("Unknown Twipple response", httpResponse);

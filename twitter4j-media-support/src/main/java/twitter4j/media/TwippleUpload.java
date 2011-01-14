@@ -65,9 +65,8 @@ class TwippleUpload extends AbstractImageUploadImpl {
         uploadUrl = "http://p.twipple.jp/api/upload";
         String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML);
 
-        HttpParameter[] params = {
+        this.postParameter = new HttpParameter[]{
                 new HttpParameter("verify_url", signedVerifyCredentialsURL),
                 this.image};
-        this.postParameter = params;
     }
 }

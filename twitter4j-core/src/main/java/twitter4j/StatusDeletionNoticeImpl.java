@@ -41,7 +41,7 @@ class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializ
     private int userId;
     private static final long serialVersionUID = 1723338404242596062L;
 
-    /*package*/ StatusDeletionNoticeImpl(JSONObject status) throws JSONException {
+    /*package*/ StatusDeletionNoticeImpl(JSONObject status) {
         this.statusId = ParseUtil.getLong("id", status);
         this.userId = ParseUtil.getInt("user_id", status);
     }

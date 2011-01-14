@@ -42,7 +42,7 @@ import static twitter4j.internal.util.ParseUtil.*;
     private String query = null;
     private static final long serialVersionUID = 1925956704460743946L;
 
-    /*package*/ TrendJSONImpl(JSONObject json) throws JSONException {
+    /*package*/ TrendJSONImpl(JSONObject json) {
         this.name = getRawString("name", json);
         this.url = getRawString("url", json);
         this.query = getRawString("query", json);

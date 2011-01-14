@@ -33,8 +33,9 @@ import twitter4j.internal.util.StringUtil;
 import javax.crypto.spec.SecretKeySpec;
 
 abstract class OAuthToken implements java.io.Serializable {
-    
-	private String token;
+
+    private static final long serialVersionUID = 3891133932519746686L;
+    private String token;
     private String tokenSecret;
     
     private transient SecretKeySpec secretKeySpec;

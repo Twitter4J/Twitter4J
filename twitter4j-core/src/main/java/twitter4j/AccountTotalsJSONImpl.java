@@ -43,7 +43,7 @@ class AccountTotalsJSONImpl extends TwitterResponseImpl implements AccountTotals
     private final int followers;
     private final int favorites;
     private final int friends;
-    private AccountTotalsJSONImpl(HttpResponse res, JSONObject json) throws TwitterException {
+    private AccountTotalsJSONImpl(HttpResponse res, JSONObject json) {
         super(res);
         updates = getInt("updates", json);
         followers = getInt("followers", json);

@@ -1409,15 +1409,6 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User updateProfile(String name, String email, String url
-            , String location, String description) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return updateProfile(name, url, location, description);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public User updateProfile(String name, String url
             , String location, String description) throws TwitterException {
         ensureAuthorizationEnabled();

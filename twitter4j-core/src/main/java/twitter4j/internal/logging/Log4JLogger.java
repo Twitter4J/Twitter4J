@@ -66,7 +66,7 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public void debug(String message) {
-        LOGGER.debug((Object)message);
+        LOGGER.debug(message);
     }
 
     /**
@@ -81,7 +81,7 @@ final class Log4JLogger extends Logger {
      * {@inheritDoc}
      */
     public void info(String message) {
-        LOGGER.info((Object)message);
+        LOGGER.info(message);
     }
 
     /**
@@ -97,7 +97,7 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public void warn(String message) {
-        LOGGER.warn((Object)message);
+        LOGGER.warn(message);
     }
 
     /**

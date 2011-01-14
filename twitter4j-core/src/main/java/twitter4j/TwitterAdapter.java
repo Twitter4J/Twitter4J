@@ -235,7 +235,7 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.1.7
      */
-    public void addedUserListMembers(UserList userList) {};
+    public void addedUserListMembers(UserList userList) {}
 
     /**
      * @since Twitter4J 2.1.0

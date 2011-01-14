@@ -93,8 +93,7 @@ import static twitter4j.internal.util.ParseUtil.*;
     }
 
 
-    /*package*/ TrendsJSONImpl(Date asOf, Location location, Date trendAt, Trend[] trends)
-            throws TwitterException {
+    /*package*/ TrendsJSONImpl(Date asOf, Location location, Date trendAt, Trend[] trends) {
         this.asOf = asOf;
         this.location = location;
         this.trendAt = trendAt;

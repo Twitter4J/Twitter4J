@@ -101,20 +101,6 @@ public interface AccountMethodsAsync {
      */
     void updateProfileBackgroundImage(InputStream image, boolean tile);
 
-	/**
-	 * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified(non-null) will be updated.
-	 *
-	 * @param name        Optional. Maximum of 20 characters.
-	 * @param email       Optional. Maximum of 40 characters. Must be a valid email address.
-	 * @param url         Optional. Maximum of 100 characters. Will be prepended with "http://" if not present.
-	 * @param location    Optional. Maximum of 30 characters. The contents are not normalized or geocoded in any way.
-	 * @param description Optional. Maximum of 160 characters.
-	 * @since Twitter4J 2.0.2
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile">POST account/update_profile | dev.twitter.com</a>
-     * @deprecated use {@link AccountMethods#updateProfile(String, String, String, String)} instead
-	 */
-	void updateProfile(String name, String email, String url, String location, String description);
-
     /**
      * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified(non-null) will be updated.
      *

@@ -59,7 +59,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
     private static final Logger logger = Logger.getLogger(OAuthAuthorization.class);
-    static final long serialVersionUID = -4368426677157998618L;
+    private static final long serialVersionUID = -4368426677157998618L;
     private String consumerKey = "";
     private String consumerSecret;
 

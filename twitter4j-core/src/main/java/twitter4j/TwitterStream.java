@@ -434,7 +434,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-filter">Streaming API: Methods statuses/filter</a>
      * @since Twitter4J 2.1.2
      */
-    public void filter(final FilterQuery query) throws TwitterException {
+    public void filter(final FilterQuery query) {
         ensureAuthorizationEnabled();
         ensureListenerIsSet();
         ensureStatusStreamListenerIsSet();

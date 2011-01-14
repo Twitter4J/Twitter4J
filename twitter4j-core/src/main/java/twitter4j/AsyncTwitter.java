@@ -1485,14 +1485,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void updateProfile(final String name, final String email, final String url
-            , final String location, final String description) {
-        updateProfile(name, url, location, description);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void updateProfile(final String name, final String url
             , final String location, final String description) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE, listener) {
@@ -1807,7 +1799,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void reportSpam(final int userId) throws TwitterException{
+    public void reportSpam(final int userId) {
         getDispatcher().invokeLater(new AsyncTask(REPORT_SPAM, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.reportedSpam(twitter.reportSpam(userId));
@@ -1818,7 +1810,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void reportSpam(final String screenName) throws TwitterException{
+    public void reportSpam(final String screenName) {
         getDispatcher().invokeLater(new AsyncTask(REPORT_SPAM, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.reportedSpam(twitter.reportSpam(screenName));
@@ -1949,7 +1941,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
 
     /* #newtwitter Methods */
 
-    public void getRelatedResults(final long statusId) throws TwitterException {
+    public void getRelatedResults(final long statusId) {
         getDispatcher().invokeLater(new AsyncTask(RELATED_RESULTS, listener) {
             @Override
             void invoke(TwitterListener listener) throws TwitterException {

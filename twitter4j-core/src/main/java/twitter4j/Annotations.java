@@ -137,7 +137,6 @@ public class Annotations implements java.io.Serializable {
 	
 	/**
 	 * @return true if the JSON String representation of this exceeds the limit imposed by Twitter, false otherwise
-	 * @see isExceedingLengthLimit(Annotations annotations)
 	 */
 	public boolean isExceedingLengthLimit() {
 		return isExceedingLengthLimit(this);

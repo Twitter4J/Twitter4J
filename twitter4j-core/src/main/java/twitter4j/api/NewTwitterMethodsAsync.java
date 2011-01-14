@@ -41,6 +41,6 @@ public interface NewTwitterMethodsAsync {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.8
      */
-    void getRelatedResults(long statusId) throws TwitterException;
+    void getRelatedResults(long statusId);
 
 }

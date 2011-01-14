@@ -73,7 +73,7 @@ import static twitter4j.internal.util.ParseUtil.*;
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
     }
-    /*package*/ QueryResultJSONImpl(Query query) throws TwitterException {
+    /*package*/ QueryResultJSONImpl(Query query) {
         super();
         sinceId = query.getSinceId();
         resultsPerPage = query.getRpp();
