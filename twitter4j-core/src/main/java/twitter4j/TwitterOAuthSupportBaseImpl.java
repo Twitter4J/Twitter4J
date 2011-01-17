@@ -116,8 +116,8 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
                 this.auth = xauth;
                 OAuthAuthorization oauthAuth = new OAuthAuthorization(conf, xauth.getConsumerKey(), xauth.getConsumerSecret());
                 oauthAccessToken = oauthAuth.getOAuthAccessToken(xauth.getUserId(), xauth.getPassword());
-            }else{
-            oauthAccessToken = getOAuth().getOAuthAccessToken();
+            } else {
+                oauthAccessToken = getOAuth().getOAuthAccessToken();
             }
         }
         screenName = oauthAccessToken.getScreenName();
@@ -215,16 +215,16 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
      * {@inheritDoc}
      */
     public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret) {
-        if(null == consumerKey){
+        if (null == consumerKey) {
             throw new NullPointerException("consumer key is null");
         }
-        if(null == consumerSecret){
+        if (null == consumerSecret) {
             throw new NullPointerException("consumer secret is null");
         }
         if (auth instanceof NullAuthorization) {
             auth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
         } else if (auth instanceof BasicAuthorization) {
-            XAuthAuthorization xauth = new XAuthAuthorization((BasicAuthorization)auth);
+            XAuthAuthorization xauth = new XAuthAuthorization((BasicAuthorization) auth);
             xauth.setOAuthConsumer(consumerKey, consumerSecret);
             auth = xauth;
         } else if (auth instanceof OAuthAuthorization) {
@@ -232,4 +232,26 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        TwitterOAuthSupportBaseImpl that = (TwitterOAuthSupportBaseImpl) o;
+
+        if (id != that.id) return false;
+        if (screenName != null ? !screenName.equals(that.screenName) : that.screenName != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
+        result = 31 * result + id;
+        return result;
+    }
 }

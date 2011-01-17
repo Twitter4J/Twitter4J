@@ -40,6 +40,7 @@ import twitter4j.internal.util.StringUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -786,7 +787,8 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
             if (null != stream) {
                 try {
                     stream.close();
-                }catch(IOException ignore){}
+                } catch (IOException ignore) {
+                }
             }
             closed = true;
         }
@@ -799,6 +801,38 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
 
         abstract StreamImplementation getStream() throws TwitterException;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        TwitterStream that = (TwitterStream) o;
+
+        if (shutdown != that.shutdown) return false;
+        if (handler != null ? !handler.equals(that.handler) : that.handler != null)
+            return false;
+        if (http != null ? !http.equals(that.http) : that.http != null)
+            return false;
+        if (lifeCycleListeners != null ? !lifeCycleListeners.equals(that.lifeCycleListeners) : that.lifeCycleListeners != null)
+            return false;
+        if (!Arrays.equals(streamListeners, that.streamListeners))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (http != null ? http.hashCode() : 0);
+        result = 31 * result + (streamListeners != null ? Arrays.hashCode(streamListeners) : 0);
+        result = 31 * result + (lifeCycleListeners != null ? lifeCycleListeners.hashCode() : 0);
+        result = 31 * result + (handler != null ? handler.hashCode() : 0);
+        result = 31 * result + (shutdown ? 1 : 0);
+        return result;
     }
 }
 

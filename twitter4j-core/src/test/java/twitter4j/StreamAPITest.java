@@ -32,6 +32,8 @@ import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class StreamAPITest extends TwitterTestBase implements StatusListener, ConnectionLifeCycleListener {
@@ -61,6 +63,15 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     protected void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    public void testEquality() throws Exception {
+        Map map = new HashMap();
+        TwitterStream twitterStream1 = new TwitterStreamFactory().getInstance();
+        TwitterStream twitterStream2 = new TwitterStreamFactory().getInstance();
+        map.put(twitterStream1, "value");
+        map.put(twitterStream2, "value");
+        assertEquals(2, map.size());
     }
 
     public void testStatusStream() throws Exception {
