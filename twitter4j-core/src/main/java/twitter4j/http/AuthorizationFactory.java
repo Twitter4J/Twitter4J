@@ -35,6 +35,21 @@ import twitter4j.conf.Configuration;
  * @since Twitter4J 2.1.1
  */
 public final class AuthorizationFactory {
+    /**
+     * @param conf configuraiton
+     * @return authorization instance
+     * @since Twitter4J 2.1.11
+     */
+    public static Authorization getInstance(Configuration conf) {
+        return getInstance(conf, true);
+    }
+
+    /**
+     * @param conf          configuration
+     * @param supportsOAuth set true if the authorization instance required to be OAuth'ed
+     * @return authorization instance
+     * @deprecated use {@link #getInstance(twitter4j.conf.Configuration)} instead
+     */
     public static Authorization getInstance(Configuration conf, boolean supportsOAuth) {
         Authorization auth = null;
         String consumerKey = conf.getOAuthConsumerKey();
@@ -56,21 +71,20 @@ public final class AuthorizationFactory {
                 auth = new BasicAuthorization(screenName, password);
             }
         }
-        if(null == auth){
+        if (null == auth) {
             auth = NullAuthorization.getInstance();
         }
         return auth;
     }
 
     /**
-     *
      * @param screenName screen name
-     * @param password password
+     * @param password   password
      * @return authorization instance
      * @deprecated The @twitterapi team will be shutting off basic authentication on the Twitter API. All applications, by this date, need to switch to using OAuth. <a href="http://dev.twitter.com/announcements">Read more »</a>
      */
     public static Authorization getBasicAuthorizationInstance(String screenName,
-                                                              String password){
+                                                              String password) {
         return new BasicAuthorization(screenName, password);
     }
 }

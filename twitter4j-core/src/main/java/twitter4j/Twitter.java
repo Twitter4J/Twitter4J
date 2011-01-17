@@ -37,8 +37,6 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.util.StringUtil;
 
-import static twitter4j.internal.http.HttpParameter.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -47,6 +45,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static twitter4j.internal.http.HttpParameter.getParameterArray;
 
 /**
  * A java representation of the <a href="http://apiwiki.twitter.com/">Twitter API</a><br>
@@ -102,7 +102,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      *
      * @param screenName the screen name of the user
      * @param password   the password of the user
-     * @deprecated use {@link TwitterFactory#getInstance(String,String)} instead
+     * @deprecated use {@link TwitterFactory#getInstance(String, String)} instead
      */
     public Twitter(String screenName, String password) {
         super(ConfigurationContext.getInstance(), screenName, password);
@@ -123,6 +123,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         INCLUDE_ENTITIES = new HttpParameter("include_entities", conf.isIncludeEntitiesEnabled());
         INCLUDE_RTS = new HttpParameter("include_rts", conf.isIncludeRTsEnabled());
     }
+
     private final HttpParameter INCLUDE_ENTITIES;
     private final HttpParameter INCLUDE_RTS;
 
@@ -148,7 +149,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         if (null != params1 && null != params2) {
             HttpParameter[] params = new HttpParameter[params1.length + 1];
             System.arraycopy(params1, 0, params, 0, params1.length);
-            params[params.length-1] = params2;
+            params[params.length - 1] = params2;
             return params;
         }
         if (null == params1 && null == params2) {
@@ -322,7 +323,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
             TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
-                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(),INCLUDE_ENTITIES), auth));
+                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), INCLUDE_ENTITIES), auth));
     }
 
     /**
@@ -500,7 +501,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
                 "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
                         new HttpParameter("screen_name", screenName)
-                        ,INCLUDE_ENTITIES}), auth));
+                        , INCLUDE_ENTITIES}), auth));
     }
 
     /**
@@ -511,7 +512,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
                 "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
                         new HttpParameter("user_id", userId)
-                        ,INCLUDE_ENTITIES}), auth));
+                        , INCLUDE_ENTITIES}), auth));
     }
 
     /**
@@ -522,7 +523,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
                 "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
                         new HttpParameter("screen_name", screenName)
-                        ,INCLUDE_ENTITIES}), auth));
+                        , INCLUDE_ENTITIES}), auth));
     }
 
     /**
@@ -533,7 +534,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
                 "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
                         new HttpParameter("user_id", userId)
-                        ,INCLUDE_ENTITIES}), auth));
+                        , INCLUDE_ENTITIES}), auth));
     }
 
     /**
@@ -634,7 +635,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public Status updateStatus(StatusUpdate latestStatus) throws TwitterException{
+    public Status updateStatus(StatusUpdate latestStatus) throws TwitterException {
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL()
                 + "statuses/update.json",
@@ -760,7 +761,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public ProfileImage getProfileImage(String screenName, ProfileImage.ImageSize size) throws TwitterException {
         return new ProfileImageImpl(http.get(conf.getRestBaseURL() + "users/profile_image/"
-                + screenName + ".json?size="+size.getName(), auth));
+                + screenName + ".json?size=" + size.getName(), auth));
     }
 
     /**
@@ -955,7 +956,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public ResponseList<UserList> getAllUserLists(String screenName)
-            throws TwitterException{
+            throws TwitterException {
         return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL()
                 + "lists/all.json?screen_name=" + screenName, auth));
     }
@@ -964,7 +965,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public ResponseList<UserList> getAllUserLists(int userId)
-            throws TwitterException{
+            throws TwitterException {
         return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL()
                 + "lists/all.json?user_id=" + userId, auth));
     }
@@ -1392,6 +1393,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public User verifyCredentials() throws TwitterException {
+        ensureAuthorizationEnabled();
         User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json?include_entities="
                 + conf.isIncludeEntitiesEnabled(), auth));
         this.screenName = user.getScreenName();
@@ -1809,7 +1811,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         return LocationJSONImpl.createLocationList(http.get(conf.getRestBaseURL()
                 + "trends/available.json",
                 new HttpParameter[]{new HttpParameter("lat", location.getLatitude())
-                        ,new HttpParameter("long", location.getLongitude())
+                        , new HttpParameter("long", location.getLongitude())
                 }, auth));
     }
 
@@ -1827,13 +1829,13 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public ResponseList<Place> searchPlaces(GeoQuery query) throws TwitterException {
-        try{
+        try {
             return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
                     + "geo/search.json", query.asHttpParameterArray(), auth));
-        }catch(TwitterException te){
-            if(te.getStatusCode() == 404){
+        } catch (TwitterException te) {
+            if (te.getStatusCode() == 404) {
                 return new ResponseListImpl<Place>(0, null);
-            }else{
+            } else {
                 throw te;
             }
         }
@@ -1861,13 +1863,13 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public ResponseList<Place> getNearbyPlaces(GeoQuery query) throws TwitterException {
-        try{
+        try {
             return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
                     + "geo/nearby_places.json", query.asHttpParameterArray(), auth));
-        }catch(TwitterException te){
-            if(te.getStatusCode() == 404){
+        } catch (TwitterException te) {
+            if (te.getStatusCode() == 404) {
                 return new ResponseListImpl<Place>(0, null);
-            }else{
+            } else {
                 throw te;
             }
         }
@@ -1877,13 +1879,13 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException {
-        try{
+        try {
             return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
                     + "geo/reverse_geocode.json", query.asHttpParameterArray(), auth));
-        }catch(TwitterException te){
-            if(te.getStatusCode() == 404){
+        } catch (TwitterException te) {
+            if (te.getStatusCode() == 404) {
                 return new ResponseListImpl<Place>(0, null);
-            }else{
+            } else {
                 throw te;
             }
         }
@@ -1916,6 +1918,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     }
 
     /* Legal Resources */
+
     /**
      * {@inheritDoc}
      */
@@ -1959,7 +1962,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
                 asString().indexOf("ok");
     }
 
-    private static String toCommaSeparatedString(String[] strArray){
+    private static String toCommaSeparatedString(String[] strArray) {
         StringBuffer buf = new StringBuffer(strArray.length * 8);
         for (String value : strArray) {
             if (buf.length() != 0) {
@@ -1969,7 +1972,8 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         }
         return buf.toString();
     }
-    private static String toCommaSeparatedString(int[] strArray){
+
+    private static String toCommaSeparatedString(int[] strArray) {
         StringBuffer buf = new StringBuffer(strArray.length * 8);
         for (int value : strArray) {
             if (buf.length() != 0) {

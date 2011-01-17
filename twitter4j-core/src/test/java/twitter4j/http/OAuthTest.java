@@ -82,9 +82,25 @@ public class OAuthTest extends TwitterTestBase {
         twitter2.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         assertEquals(twitter1, twitter2);
     }
+
     public void testStreaming() throws Exception {
         StatusStream stream = twitterStream.getSampleStream();
         stream.close();
+    }
+
+    public void testOAuth() throws Exception {
+        ConfigurationBuilder build = new ConfigurationBuilder();
+        String oAuthAccessToken = p.getProperty("id1.oauth.accessToken");
+        String oAuthAccessTokenSecret = p.getProperty("id1.oauth.accessTokenSecret");
+        String oAuthConsumerKey = p.getProperty("oauth.consumerKey");
+        String oAuthConsumerSecret = p.getProperty("oauth.consumerSecret");
+        build.setOAuthAccessToken(oAuthAccessToken);
+        build.setOAuthAccessTokenSecret(oAuthAccessTokenSecret);
+        build.setOAuthConsumerKey(oAuthConsumerKey);
+        build.setOAuthConsumerSecret(oAuthConsumerSecret);
+        OAuthAuthorization auth = new OAuthAuthorization(build.build());
+        Twitter twitter = new TwitterFactory().getInstance(auth);
+        twitter.verifyCredentials();
     }
 
     public void testDesktopClient() throws Exception {
@@ -119,7 +135,7 @@ public class OAuthTest extends TwitterTestBase {
         } catch (TwitterException te) {
             assertEquals(401, te.getStatusCode());
         }
-        Map<String,String> props = new HashMap<String,String>();
+        Map<String, String> props = new HashMap<String, String>();
         response = http.get(rt.getAuthorizationURL());
         cookie = response.getResponseHeader("Set-Cookie");
 //        http.setRequestHeader("Cookie", cookie);
@@ -139,9 +155,10 @@ public class OAuthTest extends TwitterTestBase {
         at = twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret(), pin);
         try {
             twitter.getOAuthRequestToken();
-        }catch(TwitterException te){
+        } catch (TwitterException te) {
             fail("expecting IllegalStateException as access token is already available.");
-        }catch(IllegalStateException expected){}
+        } catch (IllegalStateException expected) {
+        }
 
 
         assertEquals(at.getScreenName(), id1.screenName);
@@ -175,7 +192,7 @@ public class OAuthTest extends TwitterTestBase {
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         rt = twitter.getOAuthRequestToken();
 
-        Map<String,String> props = new HashMap<String,String>();
+        Map<String, String> props = new HashMap<String, String>();
         response = http.get(rt.getAuthenticationURL());
         cookie = response.getResponseHeader("Set-Cookie");
 //        http.setRequestHeader("Cookie", cookie);
@@ -218,7 +235,7 @@ public class OAuthTest extends TwitterTestBase {
         response = http.get(rt.getAuthorizationURL());
 
         response = http.get(rt.getAuthorizationURL());
-        Map<String,String> props = new HashMap<String,String>();
+        Map<String, String> props = new HashMap<String, String>();
         cookie = response.getResponseHeader("Set-Cookie");
 //        http.setRequestHeader("Cookie", cookie);
         props.put("Cookie", cookie);
@@ -259,7 +276,7 @@ public class OAuthTest extends TwitterTestBase {
 
         System.out.println("AuthorizationURL: " + rt.getAuthorizationURL());
         response = http.get(rt.getAuthorizationURL());
-        Map<String,String> props = new HashMap<String,String>();
+        Map<String, String> props = new HashMap<String, String>();
         cookie = response.getResponseHeader("Set-Cookie");
 //        http.setRequestHeader("Cookie", cookie);
         props.put("Cookie", cookie);
@@ -405,9 +422,9 @@ public class OAuthTest extends TwitterTestBase {
             assertEquals(401, te.getStatusCode());
         }
         InputStream is = OAuthTest.class.getResourceAsStream("/xauth-test.properties");
-        if(null == is){
+        if (null == is) {
             System.out.println("xauth-test.properties not found. skipping xAuth test.");
-        }else{
+        } else {
             Properties props = new Properties();
             props.load(is);
             Configuration conf = new PropertyConfiguration(props);
@@ -416,7 +433,7 @@ public class OAuthTest extends TwitterTestBase {
             twitter.updateStatus(new Date() + ": xAuth test.");
 
             twitter = new TwitterFactory().getInstance(id1.screenName, id1.password);
-            twitter.setOAuthConsumer(conf.getOAuthConsumerKey(),conf.getOAuthConsumerSecret());
+            twitter.setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
             twitter.getOAuthAccessToken();
         }
 

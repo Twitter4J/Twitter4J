@@ -26,8 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-import twitter4j.conf.Configuration;
 import twitter4j.TwitterException;
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.BASE64Encoder;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
@@ -39,7 +39,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -68,27 +67,45 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     private OAuthToken oauthToken = null;
 
     // constructors
+
+    /**
+     * @param conf configuration
+     */
     public OAuthAuthorization(Configuration conf) {
-        this(conf, conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
+        this(conf, conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret()
+                , new AccessToken(conf.getOAuthAccessToken(), conf.getOAuthAccessTokenSecret()));
     }
 
+    /**
+     * @param conf           configuration
+     * @param consumerKey    consumer key
+     * @param consumerSecret consumer secret
+     * @deprecated use {@link #OAuthAuthorization(twitter4j.conf.Configuration)} instead
+     */
     public OAuthAuthorization(Configuration conf, String consumerKey, String consumerSecret) {
         this.conf = conf;
         init(consumerKey, consumerSecret);
     }
 
+    /**
+     * @param conf           configuration
+     * @param consumerKey    consumer key
+     * @param consumerSecret consumer secret
+     * @param accessToken    access token
+     * @deprecated use {@link #OAuthAuthorization(twitter4j.conf.Configuration)} instead
+     */
     public OAuthAuthorization(Configuration conf, String consumerKey, String consumerSecret, AccessToken accessToken) {
         this.conf = conf;
         init(consumerKey, consumerSecret, accessToken);
     }
 
-    private void init(String consumerKey, String consumerSecret){
+    private void init(String consumerKey, String consumerSecret) {
         http = new HttpClientWrapper(conf);
         setConsumerKey(consumerKey);
         setConsumerSecret(consumerSecret);
     }
 
-    private void init(String consumerKey, String consumerSecret, AccessToken accessToken){
+    private void init(String consumerKey, String consumerSecret, AccessToken accessToken) {
         init(consumerKey, consumerSecret);
         setOAuthAccessToken(accessToken);
     }
@@ -112,6 +129,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     }
 
     // implementation for OAuthSupport interface
+
     /**
      * {@inheritDoc}
      */
@@ -123,7 +141,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      * {@inheritDoc}
      */
     public RequestToken getOAuthRequestToken(String callbackURL) throws TwitterException {
-        if(oauthToken instanceof AccessToken){
+        if (oauthToken instanceof AccessToken) {
             throw new IllegalStateException("Access token already available.");
         }
         HttpParameter[] params = null != callbackURL ? new HttpParameter[]{new HttpParameter("oauth_callback", callbackURL)} : new HttpParameter[0];
@@ -136,8 +154,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      */
     public AccessToken getOAuthAccessToken() throws TwitterException {
         ensureTokenIsAvailable();
-        if(oauthToken instanceof AccessToken){
-            return (AccessToken)oauthToken;
+        if (oauthToken instanceof AccessToken) {
+            return (AccessToken) oauthToken;
         }
         oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), this));
         return (AccessToken) oauthToken;
@@ -175,22 +193,22 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
         try {
             String url = conf.getOAuthAccessTokenURL();
-            if(0 == url.indexOf("http://")){
+            if (0 == url.indexOf("http://")) {
                 // SSL is required
                 // @see http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth
                 url = "https://" + url.substring(7);
             }
             oauthToken = new AccessToken(http.post(url, new HttpParameter[]{
-                new HttpParameter("x_auth_username", screenName),
-                new HttpParameter("x_auth_password", password),
-                new HttpParameter("x_auth_mode", "client_auth")
-               }, this));
-            return (AccessToken)oauthToken;
+                    new HttpParameter("x_auth_username", screenName),
+                    new HttpParameter("x_auth_password", password),
+                    new HttpParameter("x_auth_mode", "client_auth")
+            }, this));
+            return (AccessToken) oauthToken;
         } catch (TwitterException te) {
             throw new TwitterException("The screen name / password combination seems to be invalid.", te, te.getStatusCode());
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -282,10 +300,10 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return generateAuthorizationHeader(method, url, params, String.valueOf(nonce), String.valueOf(timestamp), token);
     }
 
-    public List<HttpParameter> generateOAuthSignatureHttpParams (String method, String url) {
+    public List<HttpParameter> generateOAuthSignatureHttpParams(String method, String url) {
         long timestamp = System.currentTimeMillis() / 1000;
         long nonce = timestamp + RAND.nextInt();
-        
+
         List<HttpParameter> oauthHeaderParams = new ArrayList<HttpParameter>(5);
         oauthHeaderParams.add(new HttpParameter("oauth_consumer_key", consumerKey));
         oauthHeaderParams.add(OAUTH_SIGNATURE_METHOD);
@@ -295,27 +313,27 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         if (null != oauthToken) {
             oauthHeaderParams.add(new HttpParameter("oauth_token", oauthToken.getToken()));
         }
-        
-        List<HttpParameter> signatureBaseParams = new ArrayList<HttpParameter> (oauthHeaderParams.size());
+
+        List<HttpParameter> signatureBaseParams = new ArrayList<HttpParameter>(oauthHeaderParams.size());
         signatureBaseParams.addAll(oauthHeaderParams);
-        parseGetParameters (url, signatureBaseParams);
-        
-        StringBuffer base = new StringBuffer (method).append("&")
+        parseGetParameters(url, signatureBaseParams);
+
+        StringBuffer base = new StringBuffer(method).append("&")
                 .append(HttpParameter.encode(constructRequestURL(url))).append("&");
-        base.append(HttpParameter.encode (normalizeRequestParameters(signatureBaseParams)));
+        base.append(HttpParameter.encode(normalizeRequestParameters(signatureBaseParams)));
 
         String oauthBaseString = base.toString();
-        String signature = generateSignature (oauthBaseString, oauthToken);
+        String signature = generateSignature(oauthBaseString, oauthToken);
 
-        oauthHeaderParams.add (new HttpParameter("oauth_signature", signature));
-        
+        oauthHeaderParams.add(new HttpParameter("oauth_signature", signature));
+
         return oauthHeaderParams;
     }
 
     /**
      * Computes RFC 2104-compliant HMAC signature.
      *
-     * @param data the data to be signed
+     * @param data  the data to be signed
      * @param token the token
      * @return signature
      * @see <a href="http://oauth.net/core/1.0a/#rfc.section.9.2.1">OAuth Core - 9.2.1.  Generating Signature</a>

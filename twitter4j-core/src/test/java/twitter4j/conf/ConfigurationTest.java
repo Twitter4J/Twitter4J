@@ -29,8 +29,6 @@ package twitter4j.conf;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import twitter4j.Version;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.PropertyConfiguration;
 import twitter4j.http.RequestToken;
 import twitter4j.internal.util.StringUtil;
 
@@ -42,7 +40,7 @@ import java.io.IOException;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class ConfigurationTest  extends TestCase {
+public class ConfigurationTest extends TestCase {
 
     public ConfigurationTest(String name) {
         super(name);
@@ -56,10 +54,12 @@ public class ConfigurationTest  extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
+
     public void testGetInstance() throws Exception {
         Configuration conf = ConfigurationContext.getInstance();
         assertNotNull(conf);
     }
+
     public void testFixURL() throws Exception {
         assertEquals("http://www.bea.com", ConfigurationBase.fixURL(false, "http://www.bea.com"));
         assertEquals("http://www.bea.com", ConfigurationBase.fixURL(false, "https://www.bea.com"));
@@ -70,12 +70,12 @@ public class ConfigurationTest  extends TestCase {
     }
 
     public void testSprit() throws Exception {
-       String original = "foo/bar";
-        String[] split = StringUtil.split(original,"/");
-        assertEquals("foo",split[0]);
-        assertEquals("bar",split[1]);
-        assertEquals(2,split.length);
-      }
+        String original = "foo/bar";
+        String[] split = StringUtil.split(original, "/");
+        assertEquals("foo", split[0]);
+        assertEquals("bar", split[1]);
+        assertEquals(2, split.length);
+    }
 
     public void testConfiguration() throws Exception {
         ConfigurationBase conf = new PropertyConfiguration();
@@ -249,13 +249,13 @@ public class ConfigurationTest  extends TestCase {
 
         // disable SSL
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
-        + "\n" + "twitter4j.http.useSSL=false");
+                + "\n" + "twitter4j.http.useSSL=false");
         conf = new PropertyConfiguration("/");
         assertEquals("http://somewhere.com/", conf.getRestBaseURL());
 
         // explicitly enabling SSL
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
-        + "\n" + "twitter4j.http.useSSL=true");
+                + "\n" + "twitter4j.http.useSSL=true");
         conf = new PropertyConfiguration("/");
         // useSSL doesn't take effect if restBaseURL is explicitly specified.
         assertEquals("http://somewhere.com/", conf.getRestBaseURL());
@@ -287,7 +287,7 @@ public class ConfigurationTest  extends TestCase {
     public void testTreeConfiguration() throws Exception {
         Configuration conf;
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
-        + "\n" + "twitter4j.http.useSSL=false");
+                + "\n" + "twitter4j.http.useSSL=false");
         conf = new PropertyConfiguration("/");
         assertEquals("http://somewhere.com/", conf.getRestBaseURL());
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
@@ -383,7 +383,7 @@ public class ConfigurationTest  extends TestCase {
         assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
 
-        RequestToken rt = new RequestToken("key","secret");
+        RequestToken rt = new RequestToken("key", "secret");
 
         // TFJ-328 RequestToken.getAuthenticationURL()/getAuthorizationURL() should return URLs starting with https:// for security reasons
         assertTrue(0 == rt.getAuthenticationURL().indexOf("http://"));
@@ -393,7 +393,7 @@ public class ConfigurationTest  extends TestCase {
 
         // disable SSL
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
-        + "\n" + "twitter4j.debug=true");
+                + "\n" + "twitter4j.debug=true");
         conf = new ConfigurationBuilder().build();
         assertEquals("http://somewhere.com/", conf.getRestBaseURL());
         assertTrue(conf.isDebugEnabled());
