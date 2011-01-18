@@ -10,11 +10,12 @@ twitter4j-examples - examples
 
 Contributors
 ------------
-﻿Adam Samet <asamet at twitter.com>
+Adam Samet <asamet at twitter.com>
 Alan Gutierrez <alan at blogometer.com>
 Anton Evane <antonevane at gmail.com>
 Blake Barnes <blake.barnes at gmail.com>
 Bruno Torres Goyanna <bgoyanna at gmail.com>
+Ciaran Jessup <ciaranj at gmail.com>
 Dan Checkoway <dcheckoway at gmail.com>
 Dong Wang <dong at twitter.com>
 Eric Jensen <ej at twitter.com>
