@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
@@ -52,18 +53,20 @@ abstract class AbstractStreamImplementation {
     private InputStream is;
     private HttpResponse response;
     protected final Dispatcher dispatcher;
+    private final Configuration CONF;
 
     /*package*/
 
-    AbstractStreamImplementation(Dispatcher dispatcher, InputStream stream) throws IOException {
+    AbstractStreamImplementation(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
         this.is = stream;
         this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
         this.dispatcher = dispatcher;
+        this.CONF = conf;
     }
     /*package*/
 
-    AbstractStreamImplementation(Dispatcher dispatcher, HttpResponse response) throws IOException {
-        this(dispatcher, response.asStream());
+    AbstractStreamImplementation(Dispatcher dispatcher, HttpResponse response, Configuration conf) throws IOException {
+        this(dispatcher, response.asStream(), conf);
         this.response = response;
     }
 
@@ -95,10 +98,12 @@ abstract class AbstractStreamImplementation {
                 public void run() {
                     line = parseLine(line);
                     if (line.length() > 0) {
-                        logger.debug("received:", line);
                         try {
                             JSONObject json = new JSONObject(line);
                             JSONObjectType jsonObjectType = JSONObjectType.determine(json);
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Received:", CONF.isPrettyDebugEnabled() ? json.toString(1) : json.toString());
+                            }
                             if (JSONObjectType.SENDER == jsonObjectType) {
                                 onSender(json);
                             } else if (JSONObjectType.STATUS == jsonObjectType) {
@@ -122,12 +127,16 @@ abstract class AbstractStreamImplementation {
                                 onRetweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
                             } else if (JSONObjectType.FOLLOW == jsonObjectType) {
                                 onFollow(json.getJSONObject("source"), json.getJSONObject("target"));
+                            } else if (JSONObjectType.USER_LIST_MEMBER_ADDED == jsonObjectType) {
+                                onUserListMemberAddition(json.getJSONObject("target"), json.getJSONObject("source"), json.getJSONObject("target_object"));
+                            } else if (JSONObjectType.USER_LIST_MEMBER_DELETED == jsonObjectType) {
+                                onUserListMemberDeletion(json.getJSONObject("target"), json.getJSONObject("source"), json.getJSONObject("target_object"));
                             } else if (JSONObjectType.USER_LIST_SUBSCRIBED == jsonObjectType) {
-                                onUserListSubscribed(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
+                                onUserListSubscription(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
                             } else if (JSONObjectType.USER_LIST_UNSUBSCRIBED == jsonObjectType) {
-                                onUserListUnsubscribed(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
+                                onUserListUnsubscription(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
                             } else if (JSONObjectType.USER_LIST_CREATED == jsonObjectType) {
-                                onUserListCreated(json.getJSONObject("source"), json.getJSONObject("target"));
+                                onUserListCreation(json.getJSONObject("source"), json.getJSONObject("target"));
                             } else if (JSONObjectType.USER_LIST_UPDATED == jsonObjectType) {
                                 onUserListUpdated(json.getJSONObject("source"), json.getJSONObject("target"));
                             } else if (JSONObjectType.USER_LIST_DESTROYED == jsonObjectType) {
@@ -139,8 +148,7 @@ abstract class AbstractStreamImplementation {
                             } else if (JSONObjectType.UNBLOCK == jsonObjectType) {
                                 onUnblock(json.getJSONObject("source"), json.getJSONObject("target"));
                             } else {
-                                // tmp: just checking what kind of unknown event we're receiving on this stream
-                                logger.info("Received unknown event: " + line);
+                                logger.warn("Received unknown event:", CONF.isPrettyDebugEnabled() ? json.toString(1) : json.toString());
                             }
                         } catch (Exception ex) {
                             onException(ex);
@@ -195,13 +203,20 @@ abstract class AbstractStreamImplementation {
     protected void onFollow(JSONObject source, JSONObject target) throws TwitterException {
     }
 
-    protected void onUserListSubscribed(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListMemberAddition(JSONObject addedMember, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
     }
 
-    protected void onUserListUnsubscribed(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListMemberDeletion(JSONObject deletedMember, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
     }
 
-    protected void onUserListCreated(JSONObject source, JSONObject userList) throws TwitterException, JSONException {
+
+    protected void onUserListSubscription(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    }
+
+    protected void onUserListUnsubscription(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    }
+
+    protected void onUserListCreation(JSONObject source, JSONObject userList) throws TwitterException, JSONException {
     }
 
     protected void onUserListUpdated(JSONObject source, JSONObject userList) throws TwitterException, JSONException {

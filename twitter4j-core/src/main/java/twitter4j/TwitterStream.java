@@ -202,7 +202,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + relativeUrl
-                    , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))}, auth));
+                    , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))}, auth), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -239,7 +239,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
-                    , new HttpParameter[]{}, auth));
+                    , new HttpParameter[]{}, auth), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -276,7 +276,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json"
-                    , auth));
+                    , auth), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -347,7 +347,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
             }
             return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
                     , params.toArray(new HttpParameter[params.size()])
-                    , auth));
+                    , auth), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -375,7 +375,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         startHandler(new TwitterStreamConsumer() {
             public StreamImplementation getStream() throws TwitterException {
                 try {
-                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow));
+                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow), conf);
                 } catch (IOException e) {
                     throw new TwitterException(e);
                 }
@@ -462,7 +462,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         try {
             return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL()
                     + "statuses/filter.json"
-                    , query.asHttpParameterArray(), auth));
+                    , query.asHttpParameterArray(), auth), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }

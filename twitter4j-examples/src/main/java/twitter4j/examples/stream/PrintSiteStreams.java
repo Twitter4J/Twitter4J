@@ -59,7 +59,7 @@ public final class PrintSiteStreams {
         TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
         twitterStream.addListener(listener);
 
-        String[] split  = args[0].split(",");
+        String[] split = args[0].split(",");
         int[] followArray = new int[split.length];
         for (int i = 0; i < followArray.length; i++) {
             followArray[i] = Integer.parseInt(split[i]);
@@ -81,7 +81,7 @@ public final class PrintSiteStreams {
 
         public void onFriendList(int forUser, int[] friendIds) {
             System.out.print("onFriendList for_user:" + forUser);
-            for(int friendId : friendIds){
+            for (int friendId : friendIds) {
                 System.out.print(" " + friendId);
             }
             System.out.println();
@@ -117,6 +117,20 @@ public final class PrintSiteStreams {
         public void onDeletionNotice(int forUser, int directMessageId, int userId) {
             System.out.println("Got a direct message deletion notice for_user:"
                     + forUser + " id:" + directMessageId);
+        }
+
+        public void onUserListMemberAddition(int forUser, User addedMember, User listOwner, UserList list) {
+            System.out.println("onUserListMemberAddition for_user:" + forUser
+                    + " member:@" + addedMember.getScreenName()
+                    + " listOwner:@" + listOwner.getScreenName()
+                    + " list:" + list.getName());
+        }
+
+        public void onUserListMemberDeletion(int forUser, User deletedMember, User listOwner, UserList list) {
+            System.out.println("onUserListMemberDeletion for_user:" + forUser
+                    + " member:@" + deletedMember.getScreenName()
+                    + " listOwner:@" + listOwner.getScreenName()
+                    + " list:" + list.getName());
         }
 
         public void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list) {

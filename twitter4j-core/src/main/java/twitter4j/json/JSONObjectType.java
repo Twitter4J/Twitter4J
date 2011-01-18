@@ -48,6 +48,8 @@ public final class JSONObjectType implements java.io.Serializable {
     public static final JSONObjectType UNFAVORITE = new JSONObjectType("UNFAVORITE");
     public static final JSONObjectType RETWEET = new JSONObjectType("RETWEET");
     public static final JSONObjectType FOLLOW = new JSONObjectType("FOLLOW");
+    public static final JSONObjectType USER_LIST_MEMBER_ADDED = new JSONObjectType("USER_LIST_MEMBER_ADDED");
+    public static final JSONObjectType USER_LIST_MEMBER_DELETED = new JSONObjectType("USER_LIST_MEMBER_DELETED");
     public static final JSONObjectType USER_LIST_SUBSCRIBED = new JSONObjectType("USER_LIST_SUBSCRIBED");
     public static final JSONObjectType USER_LIST_UNSUBSCRIBED = new JSONObjectType("USER_LIST_UNSUBSCRIBED");
     public static final JSONObjectType USER_LIST_CREATED = new JSONObjectType("USER_LIST_CREATED");
@@ -78,10 +80,11 @@ public final class JSONObjectType implements java.io.Serializable {
      * represents.  This is useful when processing JSON events of mixed type
      * from a stream, in which case you may need to know what type of object
      * to construct, or how to handle the event properly.
+     *
      * @param json the JSONObject whose type should be determined
      * @return the determined JSONObjectType, or null if not recognized
      */
-    public static JSONObjectType determine(JSONObject json){
+    public static JSONObjectType determine(JSONObject json) {
         // This code originally lived in AbstractStreamImplementation.
         // I've moved it in here to expose it as a public encapsulation of
         // the object type determination logic.
@@ -112,10 +115,14 @@ public final class JSONObjectType implements java.io.Serializable {
                     return RETWEET;
                 } else if ("follow".equals(event)) {
                     return FOLLOW;
-                } else if (event.startsWith("list_")) {
-                    if ("list_user_subscribed".equals(event)) {
+                } else if (event.startsWith("list")) {
+                    if ("list_member_added".equals(event)) {
+                        return USER_LIST_MEMBER_ADDED;
+                    } else if ("list_member_removed".equals(event)) {
+                        return USER_LIST_MEMBER_DELETED;
+                    } else if ("list_user_subscribed".equals(event)) {
                         return USER_LIST_SUBSCRIBED;
-                    }else if ("list_user_unsubscribed".equals(event)) {
+                    } else if ("list_user_unsubscribed".equals(event)) {
                         return USER_LIST_UNSUBSCRIBED;
                     } else if ("list_created".equals(event)) {
                         return USER_LIST_CREATED;

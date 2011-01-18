@@ -26,15 +26,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.util.ParseUtil;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -46,12 +44,12 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
 
     SiteStreamsListener listener;
 
-    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, InputStream stream) throws IOException {
-        super(dispatcher, stream);
+    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
+        super(dispatcher, stream, conf);
     }
 
-    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, HttpResponse response) throws IOException {
-        super(dispatcher, response);
+    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, HttpResponse response, Configuration conf) throws IOException {
+        super(dispatcher, response, conf);
     }
 
     public void next(StreamListener[] listeners) throws TwitterException {
@@ -88,7 +86,7 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
     }
 
     @Override
-    protected void onDelete(final JSONObject json) throws JSONException{
+    protected void onDelete(final JSONObject json) throws JSONException {
         JSONObject deletionNotice = json.getJSONObject("delete");
         if (deletionNotice.has("status")) {
             listener.onDeletionNotice(forUser.get(), new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
@@ -120,17 +118,27 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         listener.onFollow(forUser.get(), asUser(source), asUser(target));
     }
 
-    protected void onUserListSubscribed(final JSONObject source, final JSONObject owner, final JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListMemberAddition(final JSONObject addedMember, final JSONObject owner, final JSONObject userList) throws TwitterException, JSONException {
+        listener.onUserListMemberAddition(forUser.get(), asUser(addedMember)
+                , asUser(owner), asUserList(userList));
+    }
+
+    protected void onUserListMemberDeletion(final JSONObject deletedMember, final JSONObject owner, final JSONObject userList) throws TwitterException, JSONException {
+        listener.onUserListMemberDeletion(forUser.get(), asUser(deletedMember)
+                , asUser(owner), asUserList(userList));
+    }
+
+    protected void onUserListSubscription(final JSONObject source, final JSONObject owner, final JSONObject userList) throws TwitterException, JSONException {
         listener.onUserListSubscription(forUser.get(), asUser(source)
                 , asUser(owner), asUserList(userList));
     }
 
-    protected void onUserListUnsubscribed(final JSONObject source, final JSONObject owner, final JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListUnsubscription(final JSONObject source, final JSONObject owner, final JSONObject userList) throws TwitterException, JSONException {
         listener.onUserListUnsubscription(forUser.get(), asUser(source)
                 , asUser(owner), asUserList(userList));
     }
 
-    protected void onUserListCreated(final JSONObject source, final JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListCreation(final JSONObject source, final JSONObject userList) throws TwitterException, JSONException {
         listener.onUserListCreation(forUser.get(), asUser(source)
                 , asUserList(userList));
     }

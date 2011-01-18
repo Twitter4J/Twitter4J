@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
@@ -39,12 +40,13 @@ import java.io.InputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-class UserStreamImpl extends StatusStreamImpl implements UserStream{
-    /*package*/ UserStreamImpl(Dispatcher dispatcher, InputStream stream) throws IOException {
-        super(dispatcher, stream);
+class UserStreamImpl extends StatusStreamImpl implements UserStream {
+    /*package*/ UserStreamImpl(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
+        super(dispatcher, stream, conf);
     }
-    /*package*/ UserStreamImpl(Dispatcher dispatcher, HttpResponse response) throws IOException {
-        super(dispatcher, response);
+
+    /*package*/ UserStreamImpl(Dispatcher dispatcher, HttpResponse response, Configuration conf) throws IOException {
+        super(dispatcher, response, conf);
     }
 
     /**
@@ -56,19 +58,20 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream{
         this.listeners = list;
         handleNextElement();
     }
-    public void next(StreamListener[] listeners) throws TwitterException{
+
+    public void next(StreamListener[] listeners) throws TwitterException {
         this.listeners = listeners;
         handleNextElement();
     }
 
-    protected String parseLine(String line){
+    protected String parseLine(String line) {
         DataObjectFactoryUtil.clearThreadLocalMap();
         this.line = line;
         return line;
     }
 
     @Override
-    protected void onSender(JSONObject json) throws TwitterException{
+    protected void onSender(JSONObject json) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onDirectMessage(new DirectMessageJSONImpl(json));
         }
@@ -89,7 +92,7 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream{
     }
 
     @Override
-    protected void onFriends(JSONObject json) throws TwitterException ,JSONException{
+    protected void onFriends(JSONObject json) throws TwitterException, JSONException {
         int[] friendIds = asFriendList(json);
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onFriendList(friendIds);
@@ -125,21 +128,21 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream{
     }
 
     @Override
-    protected void onUserListSubscribed(JSONObject source, JSONObject owner, JSONObject target) throws TwitterException, JSONException {
+    protected void onUserListSubscription(JSONObject source, JSONObject owner, JSONObject target) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onUserListSubscription(asUser(source), asUser(owner), asUserList(target));
         }
     }
 
     @Override
-    protected void onUserListUnsubscribed(JSONObject source, JSONObject owner, JSONObject target) throws TwitterException, JSONException {
+    protected void onUserListUnsubscription(JSONObject source, JSONObject owner, JSONObject target) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onUserListUnsubscription(asUser(source), asUser(owner), asUserList(target));
         }
     }
 
     @Override
-    protected void onUserListCreated(JSONObject source, JSONObject target) throws TwitterException , JSONException{
+    protected void onUserListCreation(JSONObject source, JSONObject target) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onUserListCreation(asUser(source), asUserList(target));
         }

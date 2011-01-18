@@ -54,6 +54,12 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     public void onDeletionNotice(int forUser, int directMessageId, int userId) {
     }
 
+    public void onUserListMemberAddition(int forUser, User addedUser, User listOwner, UserList list) {
+    }
+
+    public void onUserListMemberDeletion(int forUser, User deletedUser, User listOwner, UserList list) {
+    }
+
     public void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list) {
     }
 

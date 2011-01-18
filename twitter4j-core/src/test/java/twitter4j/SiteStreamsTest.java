@@ -33,8 +33,8 @@ import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -57,26 +57,26 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
     public void testStream() throws Exception {
         InputStream is = SiteStreamsTest.class.getResourceAsStream("/sitestream-testcase.json");
-        SiteStreamsImpl siteStreams = new SiteStreamsImpl(new DispatcherFactory(ConfigurationContext.getInstance()).getInstance(), is);
+        SiteStreamsImpl siteStreams = new SiteStreamsImpl(new DispatcherFactory(ConfigurationContext.getInstance()).getInstance(), is, conf1);
         SiteStreamsListener[] listeners = new SiteStreamsListener[1];
         listeners[0] = this;
         received.clear();
         siteStreams.next(listeners);
-        synchronized(this){
+        synchronized (this) {
             this.wait(200);
         }
         assertEquals("onfriendlist", received.get(0)[0]);
         assertEquals(6358482, received.get(0)[1]);
         received.clear();
         siteStreams.next(listeners);
-        synchronized(this){
+        synchronized (this) {
             this.wait(200);
         }
         assertEquals("onfriendlist", received.get(0)[0]);
         assertEquals(new Integer(6358481), received.get(0)[1]);
         received.clear();
         siteStreams.next(listeners);
-        synchronized(this){
+        synchronized (this) {
             this.wait(200);
         }
         assertEquals("onfriendlist", received.get(0)[0]);
@@ -175,32 +175,37 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
                 waitForStatus();
             } catch (TwitterException ignore) {
             }
-            twitter1.updateProfile(null,null,new Date().toString(),null);
+            twitter1.updateProfile(null, null, new Date().toString(), null);
             waitForStatus();
 
             UserList list = twit4j.createUserList("test", true, "desctription");
             waitForStatus();
-            list = twit4j.updateUserList(list.getId(),"test2",true,"description2");
+            list = twit4j.updateUserList(list.getId(), "test2", true, "description2");
             waitForStatus();
-            twit4j.addUserListMember(list.getId(), 6377362);
+            twit4j.addUserListMember(list.getId(), id2.id);
+            waitForStatus();
             twit4j2.subscribeUserList("twit4j", list.getId());
             waitForStatus();
             twit4j2.unsubscribeUserList("twit4j", list.getId());
             waitForStatus();
+            twit4j.deleteUserListMember(list.getId(), id2.id);
+            waitForStatus();
             twit4j.destroyUserList(list.getId());
             waitForStatus();
 
-            assertReceived("onstatus","onstatus");
-            assertReceived("onfriendlist","onfriendlist");
+            assertReceived("onstatus", "onstatus");
+            assertReceived("onfriendlist", "onfriendlist");
             assertReceived("onFavorite", TwitterMethod.CREATE_FAVORITE);
             assertReceived("onUnfavorite", TwitterMethod.DESTROY_FAVORITE);
             assertReceived("onFollow", TwitterMethod.CREATE_FRIENDSHIP);
 //            assertReceived(TwitterMethod.RETWEET_STATUS);
-            assertReceived("onDirectMessage",TwitterMethod.SEND_DIRECT_MESSAGE);
+            assertReceived("onDirectMessage", TwitterMethod.SEND_DIRECT_MESSAGE);
 
             assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
             assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
+            assertReceived("onUserListMemberAddition", TwitterMethod.ADD_LIST_MEMBER);
+            assertReceived("onUserListMemberDeletion", TwitterMethod.DELETE_LIST_MEMBER);
             assertReceived("onUserListSubscribed", TwitterMethod.SUBSCRIBE_LIST);
             assertReceived("onUserListUnsubscribed", TwitterMethod.UNSUBSCRIBE_LIST);
             assertReceived("onUserListCreated", TwitterMethod.CREATE_USER_LIST);
@@ -267,11 +272,12 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         notifyResponse();
     }
 
-    public void onDeletionNotice(int forUser, StatusDeletionNotice statusDeletionNotice){
+    public void onDeletionNotice(int forUser, StatusDeletionNotice statusDeletionNotice) {
         received.add(new Object[]{TwitterMethod.DESTROY_STATUS, forUser, statusDeletionNotice});
         notifyResponse();
     }
-    public void onDeletionNotice(int forUser, int directMessageId, int userId){
+
+    public void onDeletionNotice(int forUser, int directMessageId, int userId) {
         received.add(new Object[]{TwitterMethod.DESTROY_DIRECT_MESSAGE, forUser, directMessageId, userId});
         notifyResponse();
     }
@@ -307,6 +313,22 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
     public void onDirectMessage(int forUser, DirectMessage directMessage) {
         received.add(new Object[]{TwitterMethod.SEND_DIRECT_MESSAGE, forUser, directMessage});
         assertNotNull(DataObjectFactory.getRawJSON(directMessage));
+        notifyResponse();
+    }
+
+    public void onUserListMemberAddition(int forUser, User addedMember, User listOwner, UserList list) {
+        received.add(new Object[]{TwitterMethod.ADD_LIST_MEMBER, forUser, addedMember, listOwner, list});
+        assertNotNull(DataObjectFactory.getRawJSON(addedMember));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
+        notifyResponse();
+    }
+
+    public void onUserListMemberDeletion(int forUser, User deletedMember, User listOwner, UserList list) {
+        received.add(new Object[]{TwitterMethod.DELETE_LIST_MEMBER, forUser, deletedMember, listOwner, list});
+        assertNotNull(DataObjectFactory.getRawJSON(deletedMember));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 

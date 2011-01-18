@@ -58,7 +58,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 
     public void testUserStreamEventTypes() throws Exception {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-event-testcase.json");
-        UserStream stream = new UserStreamImpl(new DispatcherFactory().getInstance(), is);
+        UserStream stream = new UserStreamImpl(new DispatcherFactory().getInstance(), is, conf1);
 
         source = null;
         target = null;
@@ -86,23 +86,23 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         TwitterStream twitterStream = new TwitterStreamFactory(conf1).getInstance();
         twitterStream.addListener(this);
         try {
-            twitter1.destroyBlock(6377362);
+            twitter1.destroyBlock(id2.id);
         } catch (TwitterException ignore) {
         }
         try {
-            twitter2.destroyBlock(6358482);
+            twitter2.destroyBlock(id1.id);
         } catch (TwitterException ignore) {
         }
         try {
-            twitter1.createFriendship(6377362);
+            twitter1.createFriendship(id2.id);
         } catch (TwitterException ignore) {
         }
         try {
-            twitter2.createFriendship(6358482);
+            twitter2.createFriendship(id1.id);
         } catch (TwitterException ignore) {
         }
 
-        //twit4j: 6358482
+        //twit4j: id1.id
         //twit4j2: 6377362
         twitterStream.user(new String[]{"BAh7CToPY3JlYXR"});
         //expecting onFriendList for twit4j and twit4j2
@@ -120,26 +120,26 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         waitForStatus();
 
         // unfollow twit4j
-        twitter2.destroyFriendship(6358482);
+        twitter2.destroyFriendship(id1.id);
         waitForStatus();
 
         // follow twit4j
-        twitter2.createFriendship(6358482);
+        twitter2.createFriendship(id1.id);
         waitForStatus();
 
         // unfollow twit4j2
-        twitter1.destroyFriendship(6377362);
+        twitter1.destroyFriendship(id2.id);
         waitForStatus();
 
         status = twitter2.updateStatus("somerandometext " + new Date());
         waitForStatus();
         // follow twit4j2
-        twitter1.createFriendship(6377362);
+        twitter1.createFriendship(id2.id);
         waitForStatus();
 
         twitter1.retweetStatus(status.getId());
         waitForStatus();
-        DirectMessage dm = twitter1.sendDirectMessage(6377362, "test " + new Date());
+        DirectMessage dm = twitter1.sendDirectMessage(id2.id, "test " + new Date());
         waitForStatus();
 
         twitter2.destroyStatus(status.getId());
@@ -149,33 +149,34 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         waitForStatus();
 
         // block twit4j
-        twitter1.createBlock(6377362);
+        twitter1.createBlock(id2.id);
         waitForStatus();
 
         // unblock twit4j
-        twitter1.destroyBlock(6377362);
+        twitter1.destroyBlock(id2.id);
         waitForStatus();
 
         try {
-            twitter1.createFriendship(6377362);
+            twitter1.createFriendship(id2.id);
             waitForStatus();
         } catch (TwitterException ignore) {
         }
         try {
-            twitter2.createFriendship(6358482);
+            twitter2.createFriendship(id1.id);
             waitForStatus();
         } catch (TwitterException ignore) {
         }
-        twitter1.updateProfile(null,null,new Date().toString(),null);
+        twitter1.updateProfile(null, null, new Date().toString(), null);
         waitForStatus();
 
         UserList list = twitter1.createUserList("test", true, "desctription");
         waitForStatus();
         list = twitter1.updateUserList(list.getId(), "test2", true, "description2");
         waitForStatus();
-        twitter1.addUserListMember(list.getId(), 6377362);
+        twitter1.addUserListMember(list.getId(), id2.id);
         twitter2.subscribeUserList("twit4j", list.getId());
         waitForStatus();
+        twitter1.deleteUserListMember(list.getId(), id2.id);
         twitter2.unsubscribeUserList("twit4j", list.getId());
         waitForStatus();
         twitter1.destroyUserList(list.getId());
@@ -185,8 +186,8 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         boolean found = false;
         for (Object[] event : this.received) {
             if ("onstatus".equals(event[0])) {
-                Status status1 = (Status)event[1];
-                if(-1 != status1.getText().indexOf("somerandometext"));
+                Status status1 = (Status) event[1];
+                if (-1 != status1.getText().indexOf("somerandometext")) ;
                 found = true;
                 break;
             }
@@ -194,13 +195,13 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         assertTrue(found);
 
 
-        assertReceived("onstatus","onstatus");
-        assertReceived("onfriendlist","onfriendlist");
+        assertReceived("onstatus", "onstatus");
+        assertReceived("onfriendlist", "onfriendlist");
         assertReceived("onFavorite", TwitterMethod.CREATE_FAVORITE);
         assertReceived("onUnfavorite", TwitterMethod.DESTROY_FAVORITE);
         assertReceived("onFollow", TwitterMethod.CREATE_FRIENDSHIP);
 //            assertReceived(TwitterMethod.RETWEET_STATUS);
-        assertReceived("onDirectMessage",TwitterMethod.SEND_DIRECT_MESSAGE);
+        assertReceived("onDirectMessage", TwitterMethod.SEND_DIRECT_MESSAGE);
 
         assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
         assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
@@ -249,15 +250,18 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         assertNotNull(DataObjectFactory.getRawJSON(status));
         notifyResponse();
     }
-    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice){
+
+    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
         received.add(new Object[]{TwitterMethod.DESTROY_STATUS, statusDeletionNotice});
         notifyResponse();
     }
-    public void onDeletionNotice(long directMessageId, int userId){
+
+    public void onDeletionNotice(long directMessageId, int userId) {
         received.add(new Object[]{TwitterMethod.DESTROY_DIRECT_MESSAGE, directMessageId, userId});
         notifyResponse();
     }
-    public void onTrackLimitationNotice(int numberOfLimitedStatuses){
+
+    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
         received.add(new Object[]{"tracklimitation", numberOfLimitedStatuses});
         notifyResponse();
     }

@@ -69,6 +69,20 @@ public interface SiteStreamsListener extends StreamListener {
     void onDeletionNotice(int forUser, int directMessageId, int userId);
 
     /**
+     * @param addedMember
+     * @param listOwner
+     * @param list
+     */
+    void onUserListMemberAddition(int forUser, User addedMember, User listOwner, UserList list);
+
+    /**
+     * @param deletedMember
+     * @param listOwner
+     * @param list
+     */
+    void onUserListMemberDeletion(int forUser, User deletedMember, User listOwner, UserList list);
+
+    /**
      * @param subscriber
      * @param listOwner
      * @param list

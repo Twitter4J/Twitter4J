@@ -6,7 +6,7 @@ import twitter4j.conf.ConfigurationContext;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
  */
-final class StdOutLogger extends Logger{
+final class StdOutLogger extends Logger {
     private static final boolean DEBUG = ConfigurationContext.getInstance().isDebugEnabled();
 
     /**
@@ -66,7 +66,7 @@ final class StdOutLogger extends Logger{
      */
     @Override
     public void info(String message, String message2) {
-        info(message + message);
+        info(message + message2);
     }
 
     /**
@@ -82,6 +82,6 @@ final class StdOutLogger extends Logger{
      */
     @Override
     public void warn(String message, String message2) {
-        warn(message + message);
+        warn(message + message2);
     }
 }

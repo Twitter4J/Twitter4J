@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
@@ -45,13 +46,13 @@ import java.io.InputStream;
 class StatusStreamImpl extends AbstractStreamImplementation implements StatusStream {
     /*package*/
 
-    StatusStreamImpl(Dispatcher dispatcher, InputStream stream) throws IOException {
-        super(dispatcher, stream);
+    StatusStreamImpl(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
+        super(dispatcher, stream, conf);
     }
     /*package*/
 
-    StatusStreamImpl(Dispatcher dispatcher, HttpResponse response) throws IOException {
-        super(dispatcher, response);
+    StatusStreamImpl(Dispatcher dispatcher, HttpResponse response, Configuration conf) throws IOException {
+        super(dispatcher, response, conf);
     }
 
     protected String line;
@@ -60,8 +61,9 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
 
     /**
      * Reads next status from this stream.
+     *
      * @param listener a StatusListener implementation
-     * @throws TwitterException when the end of the stream has been reached.
+     * @throws TwitterException      when the end of the stream has been reached.
      * @throws IllegalStateException when the end of the stream had been reached.
      */
     public void next(StatusListener listener) throws TwitterException {
@@ -70,12 +72,13 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
         this.listeners = list;
         handleNextElement();
     }
-    public void next(StreamListener[] listeners) throws TwitterException{
+
+    public void next(StreamListener[] listeners) throws TwitterException {
         this.listeners = listeners;
         handleNextElement();
     }
 
-    protected String parseLine(String line){
+    protected String parseLine(String line) {
         DataObjectFactoryUtil.clearThreadLocalMap();
         this.line = line;
         return line;
@@ -84,26 +87,28 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     @Override
     protected void onStatus(JSONObject json) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((StatusListener)listener).onStatus(asStatus(json));
+            ((StatusListener) listener).onStatus(asStatus(json));
         }
     }
+
     @Override
     protected void onDelete(JSONObject json) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
             JSONObject deletionNotice = json.getJSONObject("delete");
-            if(deletionNotice.has("status")){
-                ((StatusListener)listener).onDeletionNotice(new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
-            }else{
+            if (deletionNotice.has("status")) {
+                ((StatusListener) listener).onDeletionNotice(new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
+            } else {
                 JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
-                ((UserStreamListener)listener).onDeletionNotice(ParseUtil.getLong("id", directMessage)
+                ((UserStreamListener) listener).onDeletionNotice(ParseUtil.getLong("id", directMessage)
                         , ParseUtil.getInt("user_id", directMessage));
             }
         }
     }
+
     @Override
     protected void onLimit(JSONObject json) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
-            ((StatusListener)listener).onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
+            ((StatusListener) listener).onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
         }
     }
 
