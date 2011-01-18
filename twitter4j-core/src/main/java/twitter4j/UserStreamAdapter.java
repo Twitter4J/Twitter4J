@@ -30,7 +30,7 @@ package twitter4j;
  * @author Rémy Rakic at gmail.com
  * @since Twitter4J 2.1.3
  */
-public class UserStreamAdapter extends StatusAdapter implements UserStreamListener{
+public class UserStreamAdapter extends StatusAdapter implements UserStreamListener {
     public void onDeletionNotice(long directMessageId, int userId) {
     }
 
@@ -50,6 +50,12 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     }
 
     public void onDirectMessage(DirectMessage directMessage) {
+    }
+
+    public void onUserListMemberAddition(User addedMember, User listOwner, UserList list) {
+    }
+
+    public void onUserListMemberDeletion(User deletedMember, User listOwner, UserList list) {
     }
 
     public void onUserListSubscription(User subscriber, User listOwner, UserList list) {

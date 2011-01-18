@@ -174,9 +174,11 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         list = twitter1.updateUserList(list.getId(), "test2", true, "description2");
         waitForStatus();
         twitter1.addUserListMember(list.getId(), id2.id);
+        waitForStatus();
         twitter2.subscribeUserList("twit4j", list.getId());
         waitForStatus();
         twitter1.deleteUserListMember(list.getId(), id2.id);
+        waitForStatus();
         twitter2.unsubscribeUserList("twit4j", list.getId());
         waitForStatus();
         twitter1.destroyUserList(list.getId());
@@ -206,8 +208,10 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
         assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
-        assertReceived("onUserListSubscribed", TwitterMethod.SUBSCRIBE_LIST);
-        assertReceived("onUserListUnsubscribed", TwitterMethod.UNSUBSCRIBE_LIST);
+        assertReceived("onUserListMemberAddition", TwitterMethod.ADD_LIST_MEMBER);
+        assertReceived("onUserListMemberDeletion", TwitterMethod.DELETE_LIST_MEMBER);
+        assertReceived("onUserListSubscription", TwitterMethod.SUBSCRIBE_LIST);
+        assertReceived("onUserListUnsubscription", TwitterMethod.UNSUBSCRIBE_LIST);
         assertReceived("onUserListCreated", TwitterMethod.CREATE_USER_LIST);
         assertReceived("onUserListUpdated", TwitterMethod.UPDATE_USER_LIST);
         assertReceived("onUserListDestoyed", TwitterMethod.DESTROY_USER_LIST);
@@ -311,6 +315,22 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     public void onDirectMessage(DirectMessage directMessage) {
         received.add(new Object[]{TwitterMethod.SEND_DIRECT_MESSAGE, directMessage});
         assertNotNull(DataObjectFactory.getRawJSON(directMessage));
+        notifyResponse();
+    }
+
+    public void onUserListMemberAddition(User addedMember, User listOwner, UserList list) {
+        received.add(new Object[]{TwitterMethod.ADD_LIST_MEMBER, addedMember, listOwner, list});
+        assertNotNull(DataObjectFactory.getRawJSON(addedMember));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
+        notifyResponse();
+    }
+
+    public void onUserListMemberDeletion(User deletedMember, User listOwner, UserList list) {
+        received.add(new Object[]{TwitterMethod.DELETE_LIST_MEMBER, deletedMember, listOwner, list});
+        assertNotNull(DataObjectFactory.getRawJSON(deletedMember));
+        assertNotNull(DataObjectFactory.getRawJSON(listOwner));
+        assertNotNull(DataObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 

@@ -128,6 +128,21 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream {
     }
 
     @Override
+    protected void onUserListMemberAddition(JSONObject addedMember, JSONObject owner, JSONObject target) throws TwitterException, JSONException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onUserListMemberAddition(asUser(addedMember), asUser(owner), asUserList(target));
+        }
+    }
+
+    @Override
+    protected void onUserListMemberDeletion(JSONObject deletedMember, JSONObject owner, JSONObject target) throws TwitterException, JSONException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onUserListMemberDeletion(asUser(deletedMember), asUser(owner), asUserList(target));
+        }
+    }
+
+
+    @Override
     protected void onUserListSubscription(JSONObject source, JSONObject owner, JSONObject target) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onUserListSubscription(asUser(source), asUser(owner), asUserList(target));

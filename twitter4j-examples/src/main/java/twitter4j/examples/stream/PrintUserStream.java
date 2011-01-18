@@ -26,7 +26,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package twitter4j.examples.stream;
 
-import twitter4j.*;
+import twitter4j.DirectMessage;
+import twitter4j.Status;
+import twitter4j.StatusDeletionNotice;
+import twitter4j.TwitterException;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
+import twitter4j.User;
+import twitter4j.UserList;
+import twitter4j.UserStreamListener;
 
 /**
  * <p>
@@ -54,7 +62,7 @@ public final class PrintUserStream {
             System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
         }
 
-        public void onDeletionNotice(long directMessageId, int userId){
+        public void onDeletionNotice(long directMessageId, int userId) {
             System.out.println("Got a direct message deletion notice id:" + directMessageId);
         }
 
@@ -105,6 +113,20 @@ public final class PrintUserStream {
         public void onDirectMessage(DirectMessage directMessage) {
             System.out.println("onDirectMessage text:"
                     + directMessage.getText());
+        }
+
+        public void onUserListMemberAddition(User addedMember, User listOwner, UserList list) {
+            System.out.println("onUserListMemberAddition added member:@"
+                    + addedMember.getScreenName()
+                    + " listOwner:@" + listOwner.getScreenName()
+                    + " list:" + list.getName());
+        }
+
+        public void onUserListMemberDeletion(User deletedMember, User listOwner, UserList list) {
+            System.out.println("onUserListMemberDeleted deleted member:@"
+                    + deletedMember.getScreenName()
+                    + " listOwner:@" + listOwner.getScreenName()
+                    + " list:" + list.getName());
         }
 
         public void onUserListSubscription(User subscriber, User listOwner, UserList list) {

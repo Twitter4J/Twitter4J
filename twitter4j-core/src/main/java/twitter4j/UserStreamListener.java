@@ -77,6 +77,22 @@ public interface UserStreamListener extends StatusListener {
     void onDirectMessage(DirectMessage directMessage);
 
     /**
+     * @param addedMember
+     * @param listOwner
+     * @param list
+     * @since Twitter4J 2.1.11
+     */
+    void onUserListMemberAddition(User addedMember, User listOwner, UserList list);
+
+    /**
+     * @param deletedMember
+     * @param listOwner
+     * @param list
+     * @since Twitter4J 2.1.11
+     */
+    void onUserListMemberDeletion(User deletedMember, User listOwner, UserList list);
+
+    /**
      * @param subscriber
      * @param listOwner
      * @param list
