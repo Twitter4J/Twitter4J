@@ -134,6 +134,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             // unfollow twit4j
             twit4j2.destroyFriendship(6358482);
+            waitForStatus();
 
             // follow twit4j
             twit4j2.createFriendship(6358482);
@@ -198,6 +199,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             assertReceived("onFavorite", TwitterMethod.CREATE_FAVORITE);
             assertReceived("onUnfavorite", TwitterMethod.DESTROY_FAVORITE);
             assertReceived("onFollow", TwitterMethod.CREATE_FRIENDSHIP);
+            assertReceived("onUnfollow", TwitterMethod.DESTROY_FRIENDSHIP);
 //            assertReceived(TwitterMethod.RETWEET_STATUS);
             assertReceived("onDirectMessage", TwitterMethod.SEND_DIRECT_MESSAGE);
 
@@ -305,6 +307,13 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
     public void onFollow(int forUser, User source, User followedUser) {
         received.add(new Object[]{TwitterMethod.CREATE_FRIENDSHIP, forUser, source, followedUser});
+        assertNotNull(DataObjectFactory.getRawJSON(source));
+        assertNotNull(DataObjectFactory.getRawJSON(followedUser));
+        notifyResponse();
+    }
+
+    public void onUnfollow(int forUser, User source, User followedUser) {
+        received.add(new Object[]{TwitterMethod.DESTROY_FRIENDSHIP, forUser, source, followedUser});
         assertNotNull(DataObjectFactory.getRawJSON(source));
         assertNotNull(DataObjectFactory.getRawJSON(followedUser));
         notifyResponse();

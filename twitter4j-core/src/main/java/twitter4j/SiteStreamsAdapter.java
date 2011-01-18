@@ -48,6 +48,9 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     public void onFollow(int forUser, User source, User followedUser) {
     }
 
+    public void onUnfollow(int forUser, User source, User followedUser) {
+    }
+
     public void onDirectMessage(int forUser, DirectMessage directMessage) {
     }
 

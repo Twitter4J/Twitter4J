@@ -109,6 +109,12 @@ public final class PrintSiteStreams {
                     + followedUser.getScreenName());
         }
 
+        public void onUnfollow(int forUser, User source, User followedUser) {
+            System.out.println("onUnfollow for_user:" + forUser + " source:@"
+                    + source.getScreenName() + " target:@"
+                    + followedUser.getScreenName());
+        }
+
         public void onDirectMessage(int forUser, DirectMessage directMessage) {
             System.out.println("onDirectMessage for_user:" + forUser + " text:"
                     + directMessage.getText());

@@ -127,6 +127,8 @@ abstract class AbstractStreamImplementation {
                                 onRetweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
                             } else if (JSONObjectType.FOLLOW == jsonObjectType) {
                                 onFollow(json.getJSONObject("source"), json.getJSONObject("target"));
+                            } else if (JSONObjectType.UNFOLLOW == jsonObjectType) {
+                                onUnfollow(json.getJSONObject("source"), json.getJSONObject("target"));
                             } else if (JSONObjectType.USER_LIST_MEMBER_ADDED == jsonObjectType) {
                                 onUserListMemberAddition(json.getJSONObject("target"), json.getJSONObject("source"), json.getJSONObject("target_object"));
                             } else if (JSONObjectType.USER_LIST_MEMBER_DELETED == jsonObjectType) {
@@ -171,70 +173,95 @@ abstract class AbstractStreamImplementation {
     }
 
     protected void onSender(JSONObject json) throws TwitterException {
+        logger.warn("Unhandled event: onSender");
     }
 
     protected void onStatus(JSONObject json) throws TwitterException {
+        logger.warn("Unhandled event: onStatus");
     }
 
     protected void onDirectMessage(JSONObject json) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onDirectMessage");
     }
 
     protected void onDelete(JSONObject json) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onDelete");
     }
 
     protected void onLimit(JSONObject json) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onLimit");
     }
 
     protected void onScrubGeo(JSONObject json) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onScrubGeo");
     }
 
     protected void onFriends(JSONObject json) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onFriends");
     }
 
     protected void onFavorite(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {
+        logger.warn("Unhandled event: onFavorite");
     }
 
     protected void onUnfavorite(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {
+        logger.warn("Unhandled event: onUnfavorite");
     }
 
     protected void onRetweet(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {
+        logger.warn("Unhandled event: onRetweet");
     }
 
     protected void onFollow(JSONObject source, JSONObject target) throws TwitterException {
+        logger.warn("Unhandled event: onFollow");
+    }
+
+    protected void onUnfollow(JSONObject source, JSONObject target) throws TwitterException {
+        logger.warn("Unhandled event: onUnfollow");
     }
 
     protected void onUserListMemberAddition(JSONObject addedMember, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onUserListMemberAddition");
     }
 
     protected void onUserListMemberDeletion(JSONObject deletedMember, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onUserListMemberDeletion");
     }
 
-
     protected void onUserListSubscription(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onUserListSubscription");
     }
 
     protected void onUserListUnsubscription(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onUserListUnsubscription");
     }
 
     protected void onUserListCreation(JSONObject source, JSONObject userList) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onUserListCreation");
     }
 
     protected void onUserListUpdated(JSONObject source, JSONObject userList) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onUserListUpdated");
     }
 
     protected void onUserListDestroyed(JSONObject source, JSONObject userList) throws TwitterException {
+        logger.warn("Unhandled event: onUserListDestroyed");
     }
 
     protected void onUserUpdate(JSONObject source, JSONObject target) throws TwitterException {
+        logger.warn("Unhandled event: onUserUpdate");
     }
 
     protected void onBlock(JSONObject source, JSONObject target) throws TwitterException {
+        logger.warn("Unhandled event: onBlock");
     }
 
     protected void onUnblock(JSONObject source, JSONObject target) throws TwitterException {
+        logger.warn("Unhandled event: onUnblock");
     }
 
     protected void onException(Exception e) {
+        logger.warn("Unhandled event: ", e.getMessage());
     }
 
     public void close() throws IOException {

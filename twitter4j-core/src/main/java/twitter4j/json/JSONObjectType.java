@@ -48,6 +48,7 @@ public final class JSONObjectType implements java.io.Serializable {
     public static final JSONObjectType UNFAVORITE = new JSONObjectType("UNFAVORITE");
     public static final JSONObjectType RETWEET = new JSONObjectType("RETWEET");
     public static final JSONObjectType FOLLOW = new JSONObjectType("FOLLOW");
+    public static final JSONObjectType UNFOLLOW = new JSONObjectType("UNFOLLOW");
     public static final JSONObjectType USER_LIST_MEMBER_ADDED = new JSONObjectType("USER_LIST_MEMBER_ADDED");
     public static final JSONObjectType USER_LIST_MEMBER_DELETED = new JSONObjectType("USER_LIST_MEMBER_DELETED");
     public static final JSONObjectType USER_LIST_SUBSCRIBED = new JSONObjectType("USER_LIST_SUBSCRIBED");
@@ -115,6 +116,8 @@ public final class JSONObjectType implements java.io.Serializable {
                     return RETWEET;
                 } else if ("follow".equals(event)) {
                     return FOLLOW;
+                } else if ("unfollow".equals(event)) {
+                    return UNFOLLOW;
                 } else if (event.startsWith("list")) {
                     if ("list_member_added".equals(event)) {
                         return USER_LIST_MEMBER_ADDED;
