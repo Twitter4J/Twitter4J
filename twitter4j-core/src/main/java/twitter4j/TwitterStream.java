@@ -657,7 +657,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     abstract class TwitterStreamConsumer extends Thread {
         private StreamImplementation stream = null;
         private final String NAME = "Twitter Stream consumer-" + (++count);
-        private boolean closed = false;
+        private volatile boolean closed = false;
 
         TwitterStreamConsumer() {
             super();
