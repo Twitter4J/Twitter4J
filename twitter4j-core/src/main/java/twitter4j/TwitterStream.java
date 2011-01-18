@@ -384,31 +384,33 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     }
 
     private Dispatcher getDispatcher() {
-        if (shutdown) {
-            throw new IllegalStateException("Already shut down");
-        }
-        if (null == dispatcher) {
-            dispatcher = new DispatcherFactory(conf).getInstance();
-        }
-        return dispatcher;
-    }
-
-    private static transient Dispatcher dispatcher;
-    private boolean shutdown = false;
-
-    /**
-     * Shuts down internal dispatcher thread used by site stream.
-     *
-     * @since Twitter4J 2.1.9
-     */
-    @Override
-    public void shutdown() {
-        super.shutdown();
-        cleanUp();
         synchronized (TwitterStream.class) {
             if (shutdown) {
                 throw new IllegalStateException("Already shut down");
             }
+            if (null == dispatcher) {
+                // dispatcher is held statically, but it'll be instantiated with
+                // the configuration instance associated with the TwitterStream
+                // instance which invokes getDispatcher() on the first time.
+                dispatcher = new DispatcherFactory(conf).getInstance();
+            }
+            return dispatcher;
+        }
+    }
+
+    private static transient Dispatcher dispatcher;
+    private static boolean shutdown = false;
+
+    /**
+     * Shuts down internal dispatcher thread
+     *
+     * @since Twitter4J 2.1.9
+     */
+    @Override
+    public synchronized void shutdown() {
+        super.shutdown();
+        cleanUp();
+        synchronized (TwitterStream.class) {
             if (dispatcher != null) {
                 dispatcher.shutdown();
                 dispatcher = null;
