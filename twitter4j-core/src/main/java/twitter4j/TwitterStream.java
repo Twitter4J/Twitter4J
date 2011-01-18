@@ -784,13 +784,16 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
 
         public synchronized void close() {
             setStatus("[Disposing thread]");
-            if (null != stream) {
-                try {
-                    stream.close();
-                } catch (IOException ignore) {
-                }
+            try { 
+              if (null != stream) {
+                  try {
+                      stream.close();
+                  } catch (IOException ignore) {
+                  }
+              }
+            } finally {
+              closed = true;
             }
-            closed = true;
         }
 
         private void setStatus(String message) {
