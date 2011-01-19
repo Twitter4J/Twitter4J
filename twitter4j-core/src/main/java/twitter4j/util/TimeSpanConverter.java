@@ -76,6 +76,15 @@ public final class TimeSpanConverter implements Serializable {
             formats[N_HOURS_AGO] = new MessageFormat("{0} ore fa");
             dateMonth = new SimpleDateFormat("d MMM", locale);
             dateMonthYear = new SimpleDateFormat("d MMM yy", locale);
+        } else if ("kr".equals(language)) {
+            formats[NOW] = new MessageFormat("지금");
+            formats[N_SECONDS_AGO] = new MessageFormat("{0}초 전");
+            formats[A_MINUTE_AGO] = new MessageFormat("1분 전");
+            formats[N_MINUTES_AGO] = new MessageFormat("{0}분 전");
+            formats[AN_HOUR_AGO] = new MessageFormat("1시간 전");
+            formats[N_HOURS_AGO] = new MessageFormat("{0} ore fa");
+            dateMonth = new SimpleDateFormat("M월 d일", locale);
+            dateMonthYear = new SimpleDateFormat("yy년 M월 d일", locale);
         } else if ("es".equals(language)) {
             formats[NOW] = new MessageFormat("Ahora");
             formats[N_SECONDS_AGO] = new MessageFormat("hace {0} segundos");
