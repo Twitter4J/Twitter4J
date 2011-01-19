@@ -762,9 +762,14 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                     }
                 }
             }
-            try {
-                if (null != this.stream && connected) {
+            if (null != this.stream && connected) {
+                try {
                     this.stream.close();
+                } catch (IOException ignore) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.warn(e.getMessage());
+                } finally {
                     for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
                         try {
                             listener.onDisconnect();
@@ -773,7 +778,6 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                         }
                     }
                 }
-            } catch (IOException ignore) {
             }
             for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
                 try {
@@ -786,15 +790,18 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
 
         public synchronized void close() {
             setStatus("[Disposing thread]");
-            try { 
-              if (null != stream) {
-                  try {
-                      stream.close();
-                  } catch (IOException ignore) {
-                  }
-              }
+            try {
+                if (null != stream) {
+                    try {
+                        stream.close();
+                    } catch (IOException ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.warn(e.getMessage());
+                    }
+                }
             } finally {
-              closed = true;
+                closed = true;
             }
         }
 
