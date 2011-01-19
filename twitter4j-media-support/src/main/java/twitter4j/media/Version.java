@@ -30,19 +30,20 @@ package twitter4j.media;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class Version {
-    private static final String VERSION = "2.1.11-SNAPSHOT";
+    private static final String VERSION = "2.1.11";
     private static final String TITLE = "Twitter4J Media support";
 
-    private Version(){
+    private Version() {
         throw new AssertionError();
     }
 
-    public static String getVersion(){
+    public static String getVersion() {
         return VERSION;
     }
 
     /**
      * prints the version string
+     *
      * @param args will be just ignored.
      */
     public static void main(String[] args) {
