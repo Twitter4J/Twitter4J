@@ -198,8 +198,6 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             assertReceived("onfriendlist", "onfriendlist");
             assertReceived("onFavorite", TwitterMethod.CREATE_FAVORITE);
             assertReceived("onUnfavorite", TwitterMethod.DESTROY_FAVORITE);
-            assertReceived("onFollow", TwitterMethod.CREATE_FRIENDSHIP);
-            assertReceived("onUnfollow", TwitterMethod.DESTROY_FRIENDSHIP);
 //            assertReceived(TwitterMethod.RETWEET_STATUS);
             assertReceived("onDirectMessage", TwitterMethod.SEND_DIRECT_MESSAGE);
 
@@ -219,6 +217,8 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             assertReceived("onBlock", TwitterMethod.CREATE_BLOCK);
             assertReceived("onUnblock", TwitterMethod.DESTROY_BLOCK);
+            assertReceived("onFollow", TwitterMethod.CREATE_FRIENDSHIP);
+            assertReceived("onUnfollow", TwitterMethod.DESTROY_FRIENDSHIP);
         }
     }
 
