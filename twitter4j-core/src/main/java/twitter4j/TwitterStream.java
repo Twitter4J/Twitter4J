@@ -659,7 +659,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     abstract class TwitterStreamConsumer extends Thread {
         private StreamImplementation stream = null;
         private final String NAME = "Twitter Stream consumer-" + (++count);
-        private boolean closed = false;
+        private volatile boolean closed = false;
 
         TwitterStreamConsumer() {
             super();
@@ -786,13 +786,16 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
 
         public synchronized void close() {
             setStatus("[Disposing thread]");
-            if (null != stream) {
-                try {
-                    stream.close();
-                } catch (IOException ignore) {
-                }
+            try { 
+              if (null != stream) {
+                  try {
+                      stream.close();
+                  } catch (IOException ignore) {
+                  }
+              }
+            } finally {
+              closed = true;
             }
-            closed = true;
         }
 
         private void setStatus(String message) {
