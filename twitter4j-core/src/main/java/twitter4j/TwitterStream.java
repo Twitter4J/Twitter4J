@@ -711,8 +711,13 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                     logger.info(te.getMessage());
                     if (!closed) {
                         if (NO_WAIT == timeToSleep) {
-                            if (te.getStatusCode() == 403) {
-                                logger.warn("This account is not in required role.");
+                            if (te.getStatusCode() == FORBIDDEN) {
+                                logger.warn("This account is not in required role. ", te.getMessage());
+                                closed = true;
+                                break;
+                            }
+                            if (te.getStatusCode() == NOT_ACCEPTABLE) {
+                                logger.warn("Parameter not accepted with the role. ", te.getMessage());
                                 closed = true;
                                 break;
                             }
