@@ -30,6 +30,7 @@ import twitter4j.Version;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Configuration base class with default settings.
@@ -87,6 +88,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private String mediaProviderAPIKey;
 
+    private Properties mediaProviderParameters;
     // hidden portion
     private String clientVersion;
     private String clientURL;
@@ -183,6 +185,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         setMediaProvider("YFROG");
         setMediaProviderAPIKey(null);
+        setMediaProviderParameters(null);
     }
 
 
@@ -565,6 +568,98 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.mediaProviderAPIKey = mediaProviderAPIKey;
     }
 
+    public Properties getMediaProviderParameters() {
+        return this.mediaProviderParameters;
+    }
+
+    protected final void setMediaProviderParameters(Properties props) {
+        this.mediaProviderParameters = props;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ConfigurationBase that = (ConfigurationBase) o;
+
+        if (IS_DALVIK != that.IS_DALVIK) return false;
+        if (asyncNumThreads != that.asyncNumThreads) return false;
+        if (debug != that.debug) return false;
+        if (defaultMaxPerRoute != that.defaultMaxPerRoute) return false;
+        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
+        if (httpProxyPort != that.httpProxyPort) return false;
+        if (httpReadTimeout != that.httpReadTimeout) return false;
+        if (httpRetryCount != that.httpRetryCount) return false;
+        if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds)
+            return false;
+        if (httpStreamingReadTimeout != that.httpStreamingReadTimeout)
+            return false;
+        if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
+        if (includeRTsEnabled != that.includeRTsEnabled) return false;
+        if (maxTotalConnections != that.maxTotalConnections) return false;
+        if (prettyDebug != that.prettyDebug) return false;
+        if (useSSL != that.useSSL) return false;
+        if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled)
+            return false;
+        if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null)
+            return false;
+        if (clientVersion != null ? !clientVersion.equals(that.clientVersion) : that.clientVersion != null)
+            return false;
+        if (dispatcherImpl != null ? !dispatcherImpl.equals(that.dispatcherImpl) : that.dispatcherImpl != null)
+            return false;
+        if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
+            return false;
+        if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
+            return false;
+        if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
+            return false;
+        if (mediaProvider != null ? !mediaProvider.equals(that.mediaProvider) : that.mediaProvider != null)
+            return false;
+        if (mediaProviderAPIKey != null ? !mediaProviderAPIKey.equals(that.mediaProviderAPIKey) : that.mediaProviderAPIKey != null)
+            return false;
+        if (mediaProviderParameters != null ? !mediaProviderParameters.equals(that.mediaProviderParameters) : that.mediaProviderParameters != null)
+            return false;
+        if (oAuthAccessToken != null ? !oAuthAccessToken.equals(that.oAuthAccessToken) : that.oAuthAccessToken != null)
+            return false;
+        if (oAuthAccessTokenSecret != null ? !oAuthAccessTokenSecret.equals(that.oAuthAccessTokenSecret) : that.oAuthAccessTokenSecret != null)
+            return false;
+        if (oAuthAccessTokenURL != null ? !oAuthAccessTokenURL.equals(that.oAuthAccessTokenURL) : that.oAuthAccessTokenURL != null)
+            return false;
+        if (oAuthAuthenticationURL != null ? !oAuthAuthenticationURL.equals(that.oAuthAuthenticationURL) : that.oAuthAuthenticationURL != null)
+            return false;
+        if (oAuthAuthorizationURL != null ? !oAuthAuthorizationURL.equals(that.oAuthAuthorizationURL) : that.oAuthAuthorizationURL != null)
+            return false;
+        if (oAuthConsumerKey != null ? !oAuthConsumerKey.equals(that.oAuthConsumerKey) : that.oAuthConsumerKey != null)
+            return false;
+        if (oAuthConsumerSecret != null ? !oAuthConsumerSecret.equals(that.oAuthConsumerSecret) : that.oAuthConsumerSecret != null)
+            return false;
+        if (oAuthRequestTokenURL != null ? !oAuthRequestTokenURL.equals(that.oAuthRequestTokenURL) : that.oAuthRequestTokenURL != null)
+            return false;
+        if (password != null ? !password.equals(that.password) : that.password != null)
+            return false;
+        if (requestHeaders != null ? !requestHeaders.equals(that.requestHeaders) : that.requestHeaders != null)
+            return false;
+        if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null)
+            return false;
+        if (searchBaseURL != null ? !searchBaseURL.equals(that.searchBaseURL) : that.searchBaseURL != null)
+            return false;
+        if (siteStreamBaseURL != null ? !siteStreamBaseURL.equals(that.siteStreamBaseURL) : that.siteStreamBaseURL != null)
+            return false;
+        if (source != null ? !source.equals(that.source) : that.source != null)
+            return false;
+        if (streamBaseURL != null ? !streamBaseURL.equals(that.streamBaseURL) : that.streamBaseURL != null)
+            return false;
+        if (user != null ? !user.equals(that.user) : that.user != null)
+            return false;
+        if (userAgent != null ? !userAgent.equals(that.userAgent) : that.userAgent != null)
+            return false;
+        if (userStreamBaseURL != null ? !userStreamBaseURL.equals(that.userStreamBaseURL) : that.userStreamBaseURL != null)
+            return false;
+
+        return true;
+    }
+
     @Override
     public int hashCode() {
         int result = (debug ? 1 : 0);
@@ -607,6 +702,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
         result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
         result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
+        result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
         return result;
     }
 
@@ -653,6 +749,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", requestHeaders=" + requestHeaders +
                 ", mediaProvider=" + mediaProvider +
                 ", mediaProviderAPIKey=" + mediaProviderAPIKey +
+                ", mediaProviderParameters=" + mediaProviderParameters +
                 '}';
     }
 

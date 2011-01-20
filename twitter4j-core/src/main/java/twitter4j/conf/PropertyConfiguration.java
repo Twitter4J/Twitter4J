@@ -85,13 +85,14 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
 
     public static final String ASYNC_NUM_THREADS = "async.numThreads";
-    public static final String ASYNC_DISPATCHER_IMPL = "async.dispatherImpl";
+    public static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
     public static final String INCLUDE_RTS = "includeRTs";
     public static final String INCLUDE_ENTITIES = "includeEntities";
     public static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
 
-    public static final String MEDIA_PROVIDER = "media.provier";
-    public static final String MEDIA_PROVIDER_API_KEY = "media.provierAPIKey";
+    public static final String MEDIA_PROVIDER = "media.provider";
+    public static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
+    public static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
 
     // hidden portion
     public static final String CLIENT_VERSION = "clientVersion";
@@ -359,6 +360,15 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, MEDIA_PROVIDER_API_KEY)) {
             setMediaProviderAPIKey(getString(props, prefix, MEDIA_PROVIDER_API_KEY));
+        }
+        if (notNull(props, prefix, MEDIA_PROVIDER_PARAMETERS)) {
+            String[] propsAry = StringUtil.split(getString(props, prefix, MEDIA_PROVIDER_PARAMETERS), "&");
+            Properties p = new Properties();
+            for (String str : propsAry) {
+                String[] parameter = StringUtil.split(str, "=");
+                p.setProperty(parameter[0], parameter[1]);
+            }
+            setMediaProviderParameters(p);
         }
     }
 

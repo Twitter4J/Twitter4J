@@ -26,6 +26,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.conf;
 
+import java.util.Properties;
+
 /**
  * A builder that can be used to construct a twitter4j configuration with desired settings.  This
  * builder has sensible defaults such that {@code new ConfigurationBuilder().build()} would create a
@@ -282,6 +284,12 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder setMediaProviderAPIKey(String mediaProviderAPIKey) {
         checkNotBuilt();
         configurationBean.setMediaProviderAPIKey(mediaProviderAPIKey);
+        return this;
+    }
+
+    public ConfigurationBuilder setMediaProviderParameters(Properties props) {
+        checkNotBuilt();
+        configurationBean.setMediaProviderParameters(props);
         return this;
     }
 

@@ -32,6 +32,7 @@ import twitter4j.internal.http.HttpClientConfiguration;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 
 import java.util.Map;
+import java.util.Properties;
 
 
 /**
@@ -113,7 +114,7 @@ public interface Configuration extends HttpClientConfiguration
     String getOAuthAccessTokenURL();
 
     String getOAuthAuthenticationURL();
-    
+
     String getUserStreamBaseURL();
 
     String getSiteStreamBaseURL();
@@ -127,4 +128,6 @@ public interface Configuration extends HttpClientConfiguration
     String getMediaProvider();
 
     String getMediaProviderAPIKey();
+
+    Properties getMediaProviderParameters();
 }
