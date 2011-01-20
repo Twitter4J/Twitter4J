@@ -30,125 +30,131 @@ package twitter4j.api;
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
 public interface FriendsFollowersMethodsAsync {
-	/**
-	 * Returns an array of numeric IDs for every user the authenticating user is following.
+    /**
+     * Returns an array of numeric IDs for every user the authenticating user is following.
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
-	 *
-	 * @since Twitter4J 2.0.0
+     *
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
-	 */
-	void getFriendsIDs();
+     * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFriendsIDs(long)} instead
+     */
+    void getFriendsIDs();
 
-	/**
-	 * Returns an array of numeric IDs for every user the authenticating user is following.
+    /**
+     * Returns an array of numeric IDs for every user the authenticating user is following.
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
-	 *
-	 * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     *
+     * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.10
-	 */
-	void getFriendsIDs(long cursor);
+     * @since Twitter4J 2.0.10
+     */
+    void getFriendsIDs(long cursor);
 
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is following.
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
-	 *
-	 * @param userId   Specifies the ID of the user for whom to return the friends list.
+     *
+     * @param userId Specifies the ID of the user for whom to return the friends list.
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.0
-	 */
-	void getFriendsIDs(int userId);
+     * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFriendsIDs(int, long)} instead
+     */
+    void getFriendsIDs(int userId);
 
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is following.
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
-	 *
-	 * @param userId   Specifies the ID of the user for whom to return the friends list.
-	 * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     *
+     * @param userId Specifies the ID of the user for whom to return the friends list.
+     * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.10
-	 */
-	void getFriendsIDs(int userId, long cursor);
+     * @since Twitter4J 2.0.10
+     */
+    void getFriendsIDs(int userId, long cursor);
 
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is following.
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
-	 *
-	 * @param screenName Specifies the screen name of the user for whom to return the friends list.
+     *
+     * @param screenName Specifies the screen name of the user for whom to return the friends list.
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.0
-	 */
-	void getFriendsIDs(String screenName);
+     * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFriendsIDs(String, long)} instead
+     */
+    void getFriendsIDs(String screenName);
 
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is following.
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
-	 *
-	 * @param screenName Specifies the screen name of the user for whom to return the friends list.
-	 * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     *
+     * @param screenName Specifies the screen name of the user for whom to return the friends list.
+     * @param cursor     Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.10
-	 */
-	void getFriendsIDs(String screenName, long cursor);
+     * @since Twitter4J 2.0.10
+     */
+    void getFriendsIDs(String screenName, long cursor);
 
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is followed by.
-	 * <br>This method calls http://api.twitter.com/1/followers/ids.json
-	 *
-     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.0
-	 */
-	void getFollowersIDs();
-
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is followed by.
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>This method calls http://api.twitter.com/1/followers/ids.json
-	 *
-	 * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     *
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.10
-	 */
-	void getFollowersIDs(long cursor);
+     * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFollowersIDs(long)} instead
+     */
+    void getFollowersIDs();
 
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is followed by.
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>This method calls http://api.twitter.com/1/followers/ids.json
-	 *
-	 * @param userId   Specifies the ID of the user for whom to return the followers list.
+     *
+     * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.0
-	 */
-	void getFollowersIDs(int userId);
+     * @since Twitter4J 2.0.10
+     */
+    void getFollowersIDs(long cursor);
 
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is followed by.
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>This method calls http://api.twitter.com/1/followers/ids.json
-	 *
-	 * @param userId   Specifies the ID of the user for whom to return the followers list.
-	 * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     *
+     * @param userId Specifies the ID of the user for whom to return the followers list.
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.10
-	 */
-	void getFollowersIDs(int userId, long cursor);
+     * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFollowersIDs(int, long)} instead
+     */
+    void getFollowersIDs(int userId);
 
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is followed by.
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>This method calls http://api.twitter.com/1/followers/ids.json
-	 *
-	 * @param screenName Specifies the screen name of the user for whom to return the followers list.
+     *
+     * @param userId Specifies the ID of the user for whom to return the followers list.
+     * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.0
-	 */
-	void getFollowersIDs(String screenName);
+     * @since Twitter4J 2.0.10
+     */
+    void getFollowersIDs(int userId, long cursor);
 
-	/**
-	 * Returns an array of numeric IDs for every user the specified user is followed by.
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>This method calls http://api.twitter.com/1/followers/ids.json
-	 *
-	 * @param screenName Specifies the screen name of the user for whom to return the followers list.
-	 * @param cursor  Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     *
+     * @param screenName Specifies the screen name of the user for whom to return the followers list.
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
-	 * @since Twitter4J 2.0.10
-	 */
-	void getFollowersIDs(String screenName, long cursor);
+     * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFollowersIDs(String, long)} instead
+     */
+    void getFollowersIDs(String screenName);
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>This method calls http://api.twitter.com/1/followers/ids.json
+     *
+     * @param screenName Specifies the screen name of the user for whom to return the followers list.
+     * @param cursor     Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
+     * @since Twitter4J 2.0.10
+     */
+    void getFollowersIDs(String screenName, long cursor);
 }

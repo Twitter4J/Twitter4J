@@ -41,6 +41,7 @@ public interface FriendsFollowersMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFriendsIDs(long)} instead
      */
     IDs getFriendsIDs() throws TwitterException;
 
@@ -66,6 +67,7 @@ public interface FriendsFollowersMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFriendsIDs(int, long)} instead
      */
     IDs getFriendsIDs(int userId) throws TwitterException;
 
@@ -91,6 +93,7 @@ public interface FriendsFollowersMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFriendsIDs(String, long)} instead
      */
     IDs getFriendsIDs(String screenName) throws TwitterException;
 
@@ -115,6 +118,7 @@ public interface FriendsFollowersMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFollowersIDs(long)} instead
      */
     IDs getFollowersIDs() throws TwitterException;
 
@@ -139,6 +143,7 @@ public interface FriendsFollowersMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFollowersIDs(int, long)} instead
      */
     IDs getFollowersIDs(int userId) throws TwitterException;
 
@@ -164,6 +169,7 @@ public interface FriendsFollowersMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.0
+     * @deprecated use {@link #getFollowersIDs(String, long)} instead
      */
     IDs getFollowersIDs(String screenName) throws TwitterException;
 

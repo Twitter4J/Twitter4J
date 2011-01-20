@@ -28,13 +28,13 @@ package twitter4j;
 
 import twitter4j.json.DataObjectFactory;
 
-import static twitter4j.DAOTest.assertDeserializedFormIsEqual;
-import static twitter4j.DAOTest.assertDeserializedFormIsNotEqual;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
 import java.util.List;
+
+import static twitter4j.DAOTest.assertDeserializedFormIsEqual;
+import static twitter4j.DAOTest.assertDeserializedFormIsNotEqual;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -294,7 +294,7 @@ public class TwitterTest extends TwitterTestBase {
         userList = twitter1.addUserListMembers(userList.getId(), new int[]{id3.id, id2.id});
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(DataObjectFactory.getRawJSON(userList));
-        userList = twitter1.addUserListMembers(userList.getId(), new String[]{"akr", "yusukey" });
+        userList = twitter1.addUserListMembers(userList.getId(), new String[]{"akr", "yusukey"});
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(DataObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
@@ -661,10 +661,10 @@ public class TwitterTest extends TwitterTestBase {
         friendshipList = twitter1.lookupFriendships(new int[]{id2.id, id3.id});
         assertEquals(2, friendshipList.size());
 
-        Relationship relationship = twitter1.updateFriendship(id3.screenName,true,true);
+        Relationship relationship = twitter1.updateFriendship(id3.screenName, true, true);
         assertEquals(id3.screenName, relationship.getTargetUserScreenName());
 
-        relationship = twitter1.updateFriendship(id3.id,true,true);
+        relationship = twitter1.updateFriendship(id3.id, true, true);
         assertEquals(id3.screenName, relationship.getTargetUserScreenName());
     }
 
@@ -707,7 +707,7 @@ public class TwitterTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertIDExsits("yusukey is following ryunosukey", ids, ryunosukey);
         IDs obamaFollowers;
-        obamaFollowers = twitter1.getFollowersIDs("barackobama");
+        obamaFollowers = twitter1.getFollowersIDs("barackobama", -1);
         assertNotNull(DataObjectFactory.getRawJSON(obamaFollowers));
         assertEquals(obamaFollowers, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFollowers)));
         assertTrue(obamaFollowers.hasNext());
@@ -730,7 +730,7 @@ public class TwitterTest extends TwitterTestBase {
         assertTrue(obamaFollowers.hasPrevious());
 
         IDs obamaFriends;
-        obamaFriends = twitter1.getFriendsIDs("barackobama");
+        obamaFriends = twitter1.getFriendsIDs("barackobama", -1);
         assertNull(DataObjectFactory.getRawJSON(obamaFollowers));
         assertNotNull(DataObjectFactory.getRawJSON(obamaFriends));
         assertEquals(obamaFriends, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFriends)));
@@ -928,7 +928,7 @@ public class TwitterTest extends TwitterTestBase {
     public void testDirectMessages() throws Exception {
         String expectedReturn = new Date() + ":directmessage test";
         DirectMessage actualReturn = twitter1.sendDirectMessage("twit4jnoupdate", expectedReturn);
-        assertTrue(0<=actualReturn.getId());
+        assertTrue(0 <= actualReturn.getId());
         assertNotNull(DataObjectFactory.getRawJSON(actualReturn));
         assertEquals(actualReturn, DataObjectFactory.createDirectMessage(DataObjectFactory.getRawJSON(actualReturn)));
         assertEquals(expectedReturn, actualReturn.getText());

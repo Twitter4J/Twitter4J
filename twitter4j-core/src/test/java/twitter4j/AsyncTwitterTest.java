@@ -30,7 +30,9 @@ import twitter4j.http.AccessToken;
 
 import java.util.Date;
 import java.util.List;
-import static twitter4j.DAOTest.*;
+
+import static twitter4j.DAOTest.assertDeserializedFormIsEqual;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -56,16 +58,16 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         super.setUp();
         AsyncTwitterFactory factory = new AsyncTwitterFactory(this);
         async1 = factory.getInstance();
-        async1.setOAuthConsumer(desktopConsumerKey,desktopConsumerSecret);
+        async1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         async1.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
 
         async2 = factory.getInstance();
         async2 = factory.getInstance();
-        async2.setOAuthConsumer(desktopConsumerKey,desktopConsumerSecret);
+        async2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         async2.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
 
         bestFriend1Async = factory.getInstance();
-        bestFriend1Async.setOAuthConsumer(desktopConsumerKey,desktopConsumerSecret);
+        bestFriend1Async.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         bestFriend1Async.setOAuthAccessToken(new AccessToken(bestFriend1.accessToken, bestFriend1.accessTokenSecret));
 
         statuses = null;
@@ -98,7 +100,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertDeserializedFormIsEqual(statuses);
     }
 
-    public void testShowUser() throws Exception{
+    public void testShowUser() throws Exception {
         async1.showUser(id1.screenName);
         waitForResponse();
         User user = this.user;
@@ -115,24 +117,10 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertNotNull(user.getProfileTextColor());
 
         this.user = null;
-        //@todo replace with verifyCredentialsAsync(this);
-//        twitterAPI1.getAuthenticatedUserAsync(this);
-//        waitForResponse();
-//        assertEquals(id1.name, user.getName());
-//        assertTrue(0 <= user.getFavouritesCount());
-//        assertTrue(0 <= user.getFollowersCount());
-//        assertTrue(0 <= user.getFriendsCount());
-//        assertTrue(0 <= user.getStatusesCount());
-//        assertNotNull(user.getProfileBackgroundColor());
-//        assertNotNull(user.getProfileTextColor());
-//        assertNotNull(user.getProfileLinkColor());
-//        assertNotNull(user.getProfileSidebarBorderColor());
-//        assertNotNull(user.getProfileSidebarFillColor());
-//        assertNotNull(user.getProfileTextColor());
     }
 
     public void testSearchUser() throws TwitterException {
-        async1.searchUsers("Doug Williams",1);
+        async1.searchUsers("Doug Williams", 1);
         waitForResponse();
         assertTrue(4 < users.size());
     }
@@ -161,6 +149,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertTrue("size", 10 < statuses.size());
         assertDeserializedFormIsEqual(statuses);
     }
+
     public void testAccountProfileImageUpdates() throws Exception {
         te = null;
         async1.updateProfileImage(TwitterTest.getRandomlyChosenFile());
@@ -184,9 +173,9 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         Thread.sleep(5000);
         async2.destroyFavorite(status.getId());
         waitForResponse();
-        if(null != te && te.getStatusCode() == 404){
+        if (null != te && te.getStatusCode() == 404) {
             // sometimes destorying favorite fails with 404
-        }else{
+        } else {
             assertEquals(status, this.status);
         }
     }
@@ -219,17 +208,18 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
     }
 
-    private void assertIDExsits(String assertion, IDs ids, int idToFind){
+    private void assertIDExsits(String assertion, IDs ids, int idToFind) {
         boolean found = false;
-        for(int id : ids.getIDs()){
-            if(id == idToFind){
+        for (int id : ids.getIDs()) {
+            if (id == idToFind) {
                 found = true;
                 break;
             }
         }
         assertTrue(assertion, found);
     }
-    public void testAccountMethods() throws Exception{
+
+    public void testAccountMethods() throws Exception {
 
         async1.verifyCredentials();
         waitForResponse();
@@ -250,7 +240,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         newName = user.getName() + neu;
         newURL = user.getURL() + neu;
         newLocation = new Date().toString();
-        newDescription = user.getDescription()+neu;
+        newDescription = user.getDescription() + neu;
 
         async1.updateProfile(newName, newURL, newLocation, newDescription);
 
@@ -264,7 +254,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.updateProfile(oldName, oldURL, oldLocation, oldDescription);
         waitForResponse();
 
-        bestFriend1Async.existsFriendship(bestFriend1.screenName,bestFriend2.screenName);
+        bestFriend1Async.existsFriendship(bestFriend1.screenName, bestFriend2.screenName);
         waitForResponse();
         assertTrue(exists);
 
@@ -345,6 +335,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertEquals(1, ids.getIDs().length);
         assertEquals(39771963, ids.getIDs()[0]);
     }
+
     public void testUpdate() throws Exception {
         String date = new java.util.Date().toString() + "test";
         async1.updateStatus(date);
@@ -399,7 +390,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertEquals(expectedReturn, message.getText());
         async1.getDirectMessages();
         waitForResponse();
-        assertTrue(1<= messages.size());
+        assertTrue(1 <= messages.size());
     }
 
     public void testCreateDestroyFriend() throws Exception {
@@ -430,7 +421,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     }
 
-    public void testRateLimitStatus() throws Exception{
+    public void testRateLimitStatus() throws Exception {
         async1.getRateLimitStatus();
         waitForResponse();
         assertTrue(10 < rateLimitStatus.getHourlyLimit());
@@ -472,23 +463,28 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private Trends trends;
     private boolean blockExists;
     private RelatedResults relatedResults;
+
     /*Search API Methods*/
     public void searched(QueryResult result) {
         this.queryResult = result;
         notifyResponse();
     }
+
     public void gotTrends(Trends trends) {
         this.trends = trends;
         notifyResponse();
     }
+
     public void gotCurrentTrends(Trends trends) {
         this.trends = trends;
         notifyResponse();
     }
+
     public void gotDailyTrends(List<Trends> trendsList) {
         this.trendsList = trendsList;
         notifyResponse();
     }
+
     public void gotWeeklyTrends(List<Trends> trendsList) {
         this.trendsList = trendsList;
         notifyResponse();
@@ -514,10 +510,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.statuses = statuses;
         notifyResponse();
     }
+
     public void gotMentions(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
+
     public void gotRetweetedByMe(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
@@ -532,6 +530,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.statuses = statuses;
         notifyResponse();
     }
+
     public void gotRetweetedByUser(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
@@ -557,6 +556,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.status = destroyedStatus;
         notifyResponse();
     }
+
     /**
      * @since Twitter4J 2.0.10
      */
@@ -564,17 +564,19 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.status = retweetedStatus;
         notifyResponse();
     }
+
     /**
      * @since Twitter4J 2.1.0
      */
-    public void gotRetweets(ResponseList<Status> retweets){
+    public void gotRetweets(ResponseList<Status> retweets) {
         this.statuses = retweets;
         notifyResponse();
     }
+
     /**
      * @since Twitter4J 2.1.3
      */
-    public void gotRetweetedBy(ResponseList<User> users){
+    public void gotRetweetedBy(ResponseList<User> users) {
         this.users = users;
         notifyResponse();
     }
@@ -582,7 +584,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     /**
      * @since Twitter4J 2.1.3
      */
-    public void gotRetweetedByIDs(IDs ids){
+    public void gotRetweetedByIDs(IDs ids) {
         this.ids = ids;
         notifyResponse();
     }
@@ -630,7 +632,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     /**
      * @since Twitter4J 2.1.7
      */
-    public void gotProfileImage(ProfileImage image){
+    public void gotProfileImage(ProfileImage image) {
         notifyResponse();
     }
 
@@ -756,6 +758,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.message = message;
         notifyResponse();
     }
+
     /*Friendship Methods*/
     public void createdFriendship(User user) {
         this.user = user;
@@ -771,6 +774,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.exists = exists;
         notifyResponse();
     }
+
     /**
      * @since Twitter4J 2.1.0
      */
@@ -778,6 +782,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.relationship = relationship;
         notifyResponse();
     }
+
     /**
      * @since Twitter4J 2.1.2
      */
@@ -785,6 +790,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.ids = ids;
         notifyResponse();
     }
+
     /**
      * @since Twitter4J 2.1.2
      */
@@ -794,50 +800,50 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     /*Social Graph Methods*/
-    public void gotFriendsIDs(IDs ids){
+    public void gotFriendsIDs(IDs ids) {
         this.ids = ids;
         notifyResponse();
     }
 
-    public void gotFollowersIDs(IDs ids){
+    public void gotFollowersIDs(IDs ids) {
         this.ids = ids;
         notifyResponse();
     }
 
-    public void lookedUpFriendships(ResponseList<Friendship> friendships){
+    public void lookedUpFriendships(ResponseList<Friendship> friendships) {
         this.friendships = friendships;
         notifyResponse();
     }
 
 
-    public void updatedFriendship(Relationship relationship){
+    public void updatedFriendship(Relationship relationship) {
         this.relationship = relationship;
         notifyResponse();
     }
 
     /*Account Methods*/
 
-    public void gotRateLimitStatus(RateLimitStatus status){
+    public void gotRateLimitStatus(RateLimitStatus status) {
         this.rateLimitStatus = status;
         notifyResponse();
     }
 
-	public void verifiedCredentials(User user) {
-        this.user = user;
-        notifyResponse();
-	}
-
-    public void updatedProfileColors(User user){
+    public void verifiedCredentials(User user) {
         this.user = user;
         notifyResponse();
     }
 
-    public void gotAccountTotals(AccountTotals totals){
+    public void updatedProfileColors(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
+    public void gotAccountTotals(AccountTotals totals) {
         this.totals = totals;
         notifyResponse();
     }
 
-    public void gotAccountSettings(AccountSettings settings){
+    public void gotAccountSettings(AccountSettings settings) {
         this.settings = settings;
         notifyResponse();
     }
@@ -901,16 +907,18 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         this.user = user;
         notifyResponse();
     }
-    public void gotExistsBlock(boolean exists){
+
+    public void gotExistsBlock(boolean exists) {
         this.blockExists = exists;
         notifyResponse();
     }
 
-    public void gotBlockingUsers(ResponseList<User> blockingUsers){
+    public void gotBlockingUsers(ResponseList<User> blockingUsers) {
         this.users = blockingUsers;
         notifyResponse();
     }
-    public void gotBlockingUsersIDs(IDs blockingUsersIDs){
+
+    public void gotBlockingUsersIDs(IDs blockingUsersIDs) {
         this.ids = blockingUsersIDs;
         notifyResponse();
     }
@@ -929,19 +937,21 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     //destroySavedSearch()
 
     /*Local Trends Methods*/
+
     /**
      * @param locations the locations
      * @since Twitter4J 2.1.1
      */
-    public void gotAvailableTrends(ResponseList<Location> locations){
+    public void gotAvailableTrends(ResponseList<Location> locations) {
         this.locations = locations;
         notifyResponse();
     }
+
     /**
      * @param trends trends
      * @since Twitter4J 2.1.1
      */
-    public void gotLocationTrends(Trends trends){
+    public void gotLocationTrends(Trends trends) {
         this.trends = trends;
         notifyResponse();
     }
@@ -958,16 +968,17 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
 
-    public void gotNearByPlaces(ResponseList<Place> places){
-        this.places = places;
-        notifyResponse();
-    }
-    public void gotReverseGeoCode(ResponseList<Place> places){
+    public void gotNearByPlaces(ResponseList<Place> places) {
         this.places = places;
         notifyResponse();
     }
 
-    public void gotGeoDetails(Place place){
+    public void gotReverseGeoCode(ResponseList<Place> places) {
+        this.places = places;
+        notifyResponse();
+    }
+
+    public void gotGeoDetails(Place place) {
         this.place = place;
         notifyResponse();
     }
@@ -978,17 +989,18 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     /* Legal Resources */
+
     /**
      * @since Twitter4J 2.1.7
      */
-    public void gotTermsOfService(String str){
+    public void gotTermsOfService(String str) {
         notifyResponse();
     }
 
     /**
      * @since Twitter4J 2.1.7
      */
-    public void gotPrivacyPolicy(String str){
+    public void gotPrivacyPolicy(String str) {
         notifyResponse();
     }
 
@@ -1019,11 +1031,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
-    private synchronized void notifyResponse(){
+    private synchronized void notifyResponse() {
         this.notify();
     }
 
-    private synchronized void waitForResponse(){
+    private synchronized void waitForResponse() {
         try {
             this.wait(60000);
         } catch (InterruptedException e) {
