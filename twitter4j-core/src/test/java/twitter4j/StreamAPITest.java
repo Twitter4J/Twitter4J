@@ -129,6 +129,17 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         twitterStream.cleanUp();
     }
 
+    public void testShutdownAndRestart() throws Exception {
+        twitterStream.sample();
+        waitForStatus();
+        twitterStream.shutdown();
+        twitterStream.shutdown();
+        twitterStream.sample();
+        waitForStatus();
+        twitterStream.cleanUp();
+        twitterStream.shutdown();
+    }
+
 //    public void testFilterFollowPush() throws Exception {
 //        twitterStream.setHttpReadTimeout(Integer.MAX_VALUE);
 //        status = null;

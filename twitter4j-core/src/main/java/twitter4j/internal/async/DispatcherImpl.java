@@ -33,9 +33,10 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-final class DispatcherImpl implements Dispatcher{
+final class DispatcherImpl implements Dispatcher {
     private ExecuteThread[] threads;
     private final List<Runnable> q = new LinkedList<Runnable>();
+
     public DispatcherImpl(DispatcherConfiguration conf) {
         threads = new ExecuteThread[conf.getAsyncNumThreads()];
         for (int i = 0; i < threads.length; i++) {
@@ -60,10 +61,12 @@ final class DispatcherImpl implements Dispatcher{
             ticket.notify();
         }
     }
+
     final Object ticket = new Object();
-    public Runnable poll(){
-        while(active){
-            synchronized(q){
+
+    public Runnable poll() {
+        while (active) {
+            synchronized (q) {
                 if (q.size() > 0) {
                     Runnable task = q.remove(0);
                     if (null != task) {
@@ -92,14 +95,13 @@ final class DispatcherImpl implements Dispatcher{
             synchronized (ticket) {
                 ticket.notify();
             }
-        } else {
-            throw new IllegalStateException("Already shutdown");
         }
     }
 }
 
 class ExecuteThread extends Thread {
     DispatcherImpl q;
+
     ExecuteThread(String name, DispatcherImpl q, int index) {
         super(name + "[" + index + "]");
         this.q = q;
@@ -110,6 +112,7 @@ class ExecuteThread extends Thread {
     }
 
     private boolean alive = true;
+
     public void run() {
         while (alive) {
             Runnable task = q.poll();

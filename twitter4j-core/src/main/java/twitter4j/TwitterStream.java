@@ -384,25 +384,23 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     }
 
     private Dispatcher getDispatcher() {
-        synchronized (TwitterStream.class) {
-            if (shutdown) {
-                throw new IllegalStateException("Already shut down");
+        if (null == TwitterStream.dispatcher) {
+            synchronized (TwitterStream.class) {
+                if (null == TwitterStream.dispatcher) {
+                    // dispatcher is held statically, but it'll be instantiated with
+                    // the configuration instance associated with this TwitterStream
+                    // instance which invokes getDispatcher() on the first time.
+                    TwitterStream.dispatcher = new DispatcherFactory(conf).getInstance();
+                }
             }
-            if (null == dispatcher) {
-                // dispatcher is held statically, but it'll be instantiated with
-                // the configuration instance associated with the TwitterStream
-                // instance which invokes getDispatcher() on the first time.
-                dispatcher = new DispatcherFactory(conf).getInstance();
-            }
-            return dispatcher;
         }
+        return TwitterStream.dispatcher;
     }
 
     private static transient Dispatcher dispatcher;
-    private static boolean shutdown = false;
 
     /**
-     * Shuts down internal dispatcher thread
+     * Shuts down internal dispatcher thread shared by all TwitterStream instances.<br>
      *
      * @since Twitter4J 2.1.9
      */
@@ -411,11 +409,12 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         super.shutdown();
         cleanUp();
         synchronized (TwitterStream.class) {
-            if (dispatcher != null) {
-                dispatcher.shutdown();
-                dispatcher = null;
+            if (0 == numberOfHandlers) {
+                if (dispatcher != null) {
+                    dispatcher.shutdown();
+                    dispatcher = null;
+                }
             }
-            shutdown = true;
         }
     }
 
@@ -531,6 +530,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         }
     }
 
+    private static int numberOfHandlers = 0;
 
     private synchronized void startHandler(TwitterStreamConsumer handler) {
         cleanUp();
@@ -539,6 +539,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         }
         this.handler = handler;
         this.handler.start();
+        numberOfHandlers++;
     }
 
     /**
@@ -549,6 +550,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     public synchronized void cleanUp() {
         if (null != handler) {
             handler.close();
+            numberOfHandlers--;
         }
     }
 
@@ -828,7 +830,6 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
 
         TwitterStream that = (TwitterStream) o;
 
-        if (shutdown != that.shutdown) return false;
         if (handler != null ? !handler.equals(that.handler) : that.handler != null)
             return false;
         if (http != null ? !http.equals(that.http) : that.http != null)
@@ -848,7 +849,6 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         result = 31 * result + (streamListeners != null ? Arrays.hashCode(streamListeners) : 0);
         result = 31 * result + (lifeCycleListeners != null ? lifeCycleListeners.hashCode() : 0);
         result = 31 * result + (handler != null ? handler.hashCode() : 0);
-        result = 31 * result + (shutdown ? 1 : 0);
         return result;
     }
 }
