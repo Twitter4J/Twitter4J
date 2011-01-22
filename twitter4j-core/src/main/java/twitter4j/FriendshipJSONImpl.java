@@ -141,7 +141,7 @@ class FriendshipJSONImpl implements Friendship {
 
     @Override
     public String toString() {
-        return "ConnectionsJSONImpl{" +
+        return "FriendshipJSONImpl{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", screenName='" + screenName + '\'' +
