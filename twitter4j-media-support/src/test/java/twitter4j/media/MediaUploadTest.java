@@ -45,6 +45,7 @@ public class MediaUploadTest extends TestCase {
         super(name);
 
     }
+
     private String fileName = "t4j.jpeg";
     private String message = "Twitter4J image upload test";
 
@@ -52,11 +53,12 @@ public class MediaUploadTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
     }
-    private Configuration getConfiguration(String apiKey){
+
+    private Configuration getConfiguration(String apiKey) {
         return new ConfigurationBuilder().setMediaProviderAPIKey(apiKey).build();
     }
 
-    public void testProviders() throws Exception{
+    public void testProviders() throws Exception {
         Configuration conf;
         ImageUploaderFactory factory;
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.getName()).build();
@@ -80,7 +82,7 @@ public class MediaUploadTest extends TestCase {
         try {
             String url = upload.upload(new File("foobar"));
         } catch (TwitterException te) {
-            if(!(te.getCause() instanceof FileNotFoundException)){
+            if (!(te.getCause() instanceof FileNotFoundException)) {
                 fail("expecting FileNotFoundException");
             }
         }
@@ -163,6 +165,7 @@ public class MediaUploadTest extends TestCase {
         try {
             ImageUploaderFactory factory = new ImageUploaderFactory();
             ImageUpload upload = factory.getInstance();
+            System.out.println(upload);
             String url = upload.upload(fileName, is);
             assertTrue(url.length() > 0);
         } finally {

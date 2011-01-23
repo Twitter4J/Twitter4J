@@ -73,6 +73,9 @@ class TwitpicUpload extends AbstractImageUploadImpl {
         headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON);
         headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
 
+        if (null == apiKey) {
+            throw new IllegalStateException("No API Key for Twitpic specified. put media.providerAPIKey in twitter4j.properties.");
+        }
         HttpParameter[] params = {
                 new HttpParameter("key", apiKey),
                 this.image};
