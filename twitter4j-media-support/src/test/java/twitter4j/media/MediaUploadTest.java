@@ -26,14 +26,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.media;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
 import junit.framework.TestCase;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
@@ -158,4 +158,15 @@ public class MediaUploadTest extends TestCase {
         }
     }
 
+    public void testFromConfigurationUpload() throws Exception {
+        InputStream is = getClass().getResourceAsStream("/" + fileName);
+        try {
+            ImageUploaderFactory factory = new ImageUploaderFactory();
+            ImageUpload upload = factory.getInstance();
+            String url = upload.upload(fileName, is);
+            assertTrue(url.length() > 0);
+        } finally {
+            is.close();
+        }
+    }
 }

@@ -3,3 +3,7 @@ oauth.accessTokenSecret=
 
 oauth.consumerKey=
 oauth.consumerSecret=
+
+media.provider=Twitpic
+media.providerParameter=foo=bar&fizz=bazz
+

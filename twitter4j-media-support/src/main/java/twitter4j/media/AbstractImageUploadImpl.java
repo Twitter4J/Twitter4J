@@ -26,12 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.media;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.http.OAuthAuthorization;
@@ -39,6 +33,13 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.logging.Logger;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Rémy Rakic - remy.rakic at gmail.com
@@ -52,10 +53,12 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
 
     private HttpClientWrapper client;
 
+    protected Configuration conf = null;
     protected String apiKey = null;
     protected OAuthAuthorization oauth = null;
     protected String uploadUrl = null;
     protected HttpParameter[] postParameter = null;
+    protected HttpParameter[] appendParameter = null;
     protected HttpParameter image = null;
     protected HttpParameter message = null;
     protected Map<String, String> headers = new HashMap<String, String>();
@@ -64,6 +67,7 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
 
     AbstractImageUploadImpl(Configuration conf, OAuthAuthorization oauth) {
         this.oauth = oauth;
+        this.conf = conf;
         client = new HttpClientWrapper(conf);
     }
 
@@ -92,12 +96,26 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
     }
 
     public String upload() throws TwitterException {
+        if (conf.getMediaProviderParameters() != null) {
+            Set set = conf.getMediaProviderParameters().keySet();
+            HttpParameter[] params = new HttpParameter[set.size()];
+            int pos = 0;
+            for (Object k: set) {
+                String v = conf.getMediaProviderParameters().getProperty((String)k);
+                params[pos] = new HttpParameter((String)k, v);
+                pos++;
+            }
+            this.appendParameter = params;
+        }
         preUpload();
         if (this.postParameter == null) {
             throw new AssertionError("Incomplete implementation. postParameter is not set.");
         }
         if (this.uploadUrl == null) {
             throw new AssertionError("Incomplete implementation. uploadUrl is not set.");
+        }
+        if (conf.getMediaProviderParameters() != null && this.appendParameter.length > 0) {
+            this.postParameter = appendHttpParameters(this.postParameter, this.appendParameter);
         }
 
         httpResponse = client.post(uploadUrl, postParameter, headers);
