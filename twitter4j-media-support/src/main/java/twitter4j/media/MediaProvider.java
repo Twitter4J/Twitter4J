@@ -45,6 +45,9 @@ public class MediaProvider implements java.io.Serializable {
     public static MediaProvider TWITGOO= new MediaProvider("TWITGOO");
     public static MediaProvider TWITPIC = new MediaProvider("TWITPIC");
     public static MediaProvider YFROG = new MediaProvider("YFROG");
+    public static MediaProvider MOBYPICTURE = new MediaProvider("MOBYPICTURE");
+    public static MediaProvider TWIPL= new MediaProvider("TWIPL");
+    public static MediaProvider POSTEROUS = new MediaProvider("POSTEROUS");
 
     private final String name;
 

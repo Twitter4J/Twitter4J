@@ -67,6 +67,12 @@ public final class ImageUploaderFactory {
             defaultMediaProvider = TWITPIC;
         } else if ("yfrog".equals(mediaProvider)) {
             defaultMediaProvider = YFROG;
+        } else if ("mobypicture".equals(mediaProvider)) {
+            defaultMediaProvider = MOBYPICTURE;
+        } else if ("twipl".equals(mediaProvider)) {
+            defaultMediaProvider = TWIPL;
+        }  else if ("posterous".equals(mediaProvider)) {
+            defaultMediaProvider = POSTEROUS;
         } else {
             throw new IllegalArgumentException("unsupported media provider:" + mediaProvider);
         }
@@ -126,6 +132,12 @@ public final class ImageUploaderFactory {
             return new TwitpicUpload(conf, apiKey, oauth);
         } else if (mediaProvider == YFROG) {
             return new YFrogUpload(conf, oauth);
+        } else if (mediaProvider == MOBYPICTURE) {
+            return new MobypictureUpload(conf, apiKey, oauth);
+        } else if (mediaProvider == TWIPL) {
+            return new TwiplUpload(conf, apiKey, oauth);
+        } else if (mediaProvider == POSTEROUS) {
+            return new PosterousUpload(conf, oauth);
         } else {
             throw new AssertionError("Unknown provider");
         }
