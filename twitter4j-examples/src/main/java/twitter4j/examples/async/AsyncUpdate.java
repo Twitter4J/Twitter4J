@@ -48,7 +48,7 @@ public final class AsyncUpdate {
      * @throws InterruptedException
      */
 
-    static Object lock = new Object();
+    static final Object LOCK = new Object();
 
     public static void main(String[] args) throws InterruptedException {
         if (args.length < 1) {
@@ -60,8 +60,8 @@ public final class AsyncUpdate {
             public void updatedStatus(Status status) {
                 System.out.println("Successfully updated the status to [" +
                         status.getText() + "].");
-                synchronized (lock) {
-                    lock.notify();
+                synchronized (LOCK) {
+                    LOCK.notify();
                 }
             }
 
@@ -69,12 +69,12 @@ public final class AsyncUpdate {
             public void onException(TwitterException e, TwitterMethod method) {
                 if (method == UPDATE_STATUS) {
                     e.printStackTrace();
-                    synchronized (lock) {
-                        lock.notify();
+                    synchronized (LOCK) {
+                        LOCK.notify();
                     }
                 } else {
-                    synchronized (lock) {
-                        lock.notify();
+                    synchronized (LOCK) {
+                        LOCK.notify();
                     }
                     throw new AssertionError("Should not happen");
                 }
@@ -82,8 +82,8 @@ public final class AsyncUpdate {
         });
         AsyncTwitter twitter = factory.getInstance();
         twitter.updateStatus(args[0]);
-        synchronized (lock) {
-            lock.wait();
+        synchronized (LOCK) {
+            LOCK.wait();
         }
     }
 

@@ -28,8 +28,6 @@ package twitter4j.internal.async;
 
 import junit.framework.TestCase;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.async.DispatcherFactory;
 
 import java.util.Map;
 
@@ -97,7 +95,4 @@ public class DispatcherTest extends TestCase {
             count++;
         }
     }
-
-    ;
-
 }
