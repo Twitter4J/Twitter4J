@@ -154,7 +154,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             File file = new File(path);
             if (file.exists() && file.isFile()) {
                 fis = new FileInputStream(file);
-                props.load(new FileInputStream(file));
+                props.load(fis);
                 normalize(props);
                 return true;
             }

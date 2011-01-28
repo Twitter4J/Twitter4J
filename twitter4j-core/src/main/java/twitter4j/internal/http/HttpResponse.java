@@ -98,7 +98,7 @@ public abstract class HttpResponse {
      */
     public final String asString() throws TwitterException {
         if (null == responseAsString) {
-            BufferedReader br;
+            BufferedReader br = null;
             InputStream stream = null;
             try {
                 stream = asStream();
@@ -124,6 +124,12 @@ public abstract class HttpResponse {
                 if (null != stream) {
                     try {
                         stream.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+                if (null != br) {
+                    try {
+                        br.close();
                     } catch (IOException ignore) {
                     }
                 }
