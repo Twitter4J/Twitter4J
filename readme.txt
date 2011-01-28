@@ -24,6 +24,7 @@ Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
 Jenny Loomis <jenny at rockmelt.com>
 John Corwin <jcorwin at twitter.com> @johnxorz
 John Sirois <jsirois at twitter.com> @johnsirois
+Julien Letrouit <julien.letrouit at gmail.com> @jletroui
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 Mocel <docel77 at gmail.com> @Mocel
 Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp>
