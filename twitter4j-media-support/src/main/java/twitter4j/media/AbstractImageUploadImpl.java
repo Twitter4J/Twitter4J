@@ -49,7 +49,7 @@ import java.util.Set;
  */
 abstract class AbstractImageUploadImpl implements ImageUpload {
     public static final String TWITTER_VERIFY_CREDENTIALS_JSON = "https://api.twitter.com/1/account/verify_credentials.json";
-    public static final String TWITTER_VERIFY_CREDENTIALS_XML  = "https://api.twitter.com/1/account/verify_credentials.xml";
+    public static final String TWITTER_VERIFY_CREDENTIALS_XML = "https://api.twitter.com/1/account/verify_credentials.xml";
 
     private HttpClientWrapper client;
 
@@ -80,16 +80,19 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
         this.image = new HttpParameter("media", imageFileName, imageBody);
         return upload();
     }
+
     public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException {
         this.image = new HttpParameter("media", imageFileName, imageBody);
         this.message = new HttpParameter("message", message);
         return upload();
     }
+
     public String upload(File file, String message) throws TwitterException {
         this.image = new HttpParameter("media", file);
         this.message = new HttpParameter("message", message);
         return upload();
     }
+
     public String upload(File file) throws TwitterException {
         this.image = new HttpParameter("media", file);
         return upload();
@@ -100,9 +103,9 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
             Set set = conf.getMediaProviderParameters().keySet();
             HttpParameter[] params = new HttpParameter[set.size()];
             int pos = 0;
-            for (Object k: set) {
-                String v = conf.getMediaProviderParameters().getProperty((String)k);
-                params[pos] = new HttpParameter((String)k, v);
+            for (Object k : set) {
+                String v = conf.getMediaProviderParameters().getProperty((String) k);
+                params[pos] = new HttpParameter((String) k, v);
                 pos++;
             }
             this.appendParameter = params;
@@ -122,23 +125,20 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
 
         String mediaUrl = postUpload();
         logger.debug("uploaded url [" + mediaUrl + "]");
-        
+
         return mediaUrl;
     }
 
     protected abstract void preUpload() throws TwitterException;
+
     protected abstract String postUpload() throws TwitterException;
 
     protected HttpParameter[] appendHttpParameters(HttpParameter[] src, HttpParameter[] dst) {
         int srcLen = src.length;
         int dstLen = dst.length;
         HttpParameter[] ret = new HttpParameter[srcLen + dstLen];
-        for (int i = 0; i < srcLen; i++) {
-            ret[i] = src[i];
-        }
-        for (int i = 0; i < dstLen; i++) {
-            ret[srcLen + i] = dst[i];
-        }
+        System.arraycopy(src, 0, ret, 0, srcLen);
+        System.arraycopy(dst, 0, ret, srcLen, dstLen);
         return ret;
     }
 
