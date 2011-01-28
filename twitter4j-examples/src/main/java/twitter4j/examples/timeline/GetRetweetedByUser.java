@@ -31,7 +31,6 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.User;
 
 import java.util.List;
 
@@ -53,7 +52,6 @@ public class GetRetweetedByUser {
         // gets Twitter instance with default credentials
         Twitter twitter = new TwitterFactory().getInstance();
         try {
-            User user = twitter.verifyCredentials();
             List<Status> statuses = twitter.getRetweetedByUser(args[0], new Paging(1));
             System.out.println("Showing retweets by @" + args[0] + "");
             for (Status status : statuses) {

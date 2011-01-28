@@ -77,7 +77,7 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
             new ThreadLocal<Integer>() {
                 @Override
                 protected Integer initialValue() {
-                    return new Integer(0);
+                    return 0;
                 }
             };
 

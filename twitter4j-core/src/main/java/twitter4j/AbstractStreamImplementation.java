@@ -34,7 +34,6 @@ import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.json.DataObjectFactory;
 import twitter4j.json.JSONObjectType;
 
 import java.io.BufferedReader;
@@ -282,7 +281,7 @@ abstract class AbstractStreamImplementation {
     }
 
     protected DirectMessage asDirectMessage(JSONObject json) throws TwitterException {
-        DirectMessage directMessage = null;
+        DirectMessage directMessage;
         try {
             directMessage = new DirectMessageJSONImpl(json.getJSONObject("direct_message"));
         } catch (JSONException e) {
@@ -293,7 +292,7 @@ abstract class AbstractStreamImplementation {
     }
 
     protected int[] asFriendList(JSONObject json) throws TwitterException {
-        JSONArray friends = null;
+        JSONArray friends;
         try {
             friends = json.getJSONArray("friends");
             int[] friendIds = new int[friends.length()];

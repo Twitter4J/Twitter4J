@@ -268,7 +268,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
     }
 
     private HttpURLConnection getConnection(String url) throws IOException {
-        HttpURLConnection con = null;
+        HttpURLConnection con;
         if (isProxyConfigured() && !isJDK14orEarlier) {
             if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
                 if (logger.isDebugEnabled()) {

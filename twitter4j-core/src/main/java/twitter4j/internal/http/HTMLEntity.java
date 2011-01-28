@@ -62,7 +62,7 @@ public final class HTMLEntity {
 
     public static void unescape(StringBuffer original) {
         int index = 0;
-        int semicolonIndex = 0;
+        int semicolonIndex;
         String escaped;
         String entity;
         while (index < original.length()) {

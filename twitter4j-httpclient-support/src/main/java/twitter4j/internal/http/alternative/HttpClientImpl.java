@@ -116,7 +116,7 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
 
     public twitter4j.internal.http.HttpResponse request(twitter4j.internal.http.HttpRequest req) throws TwitterException {
         try {
-            HttpRequestBase commonsRequest = null;
+            HttpRequestBase commonsRequest;
 
             if (req.getMethod() == RequestMethod.GET) {
                 commonsRequest = new HttpGet(composeURL(req));

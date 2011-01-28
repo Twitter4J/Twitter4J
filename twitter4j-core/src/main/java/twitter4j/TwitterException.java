@@ -55,9 +55,9 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     public TwitterException(Exception cause) {
-        super(decode(cause.getMessage()),cause);
-        if(cause instanceof TwitterException){
-            ((TwitterException)cause).setNested();
+        super(decode(cause.getMessage()), cause);
+        if (cause instanceof TwitterException) {
+            ((TwitterException) cause).setNested();
         }
         rateLimitStatus = null;
     }
@@ -84,12 +84,11 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     /**
-     *
-     * @param message message
-     * @param retryAfter retry-after
-     * @param responseHeaderFields response header fields
-     * @param statusCode status code
-     * @param rateLimitStatus rate limit status
+     * @param message                        message
+     * @param retryAfter                     retry-after
+     * @param responseHeaderFields           response header fields
+     * @param statusCode                     status code
+     * @param rateLimitStatus                rate limit status
      * @param featureSpecificLateLimitStatus feature specific rate limit status
      * @since Twitter4J 2.1.9
      */
@@ -115,15 +114,15 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     }
 
-    private static String decode(String str){
+    private static String decode(String str) {
         StringBuffer value = new StringBuffer(str.length());
         try {
             JSONObject json = new JSONObject(str);
-            if(!json.isNull("error")){
+            if (!json.isNull("error")) {
                 value.append("error - ").append(json.getString("error"))
                         .append("\n");
             }
-            if(!json.isNull("request")){
+            if (!json.isNull("request")) {
                 value.append("request - ").append(json.getString("request"))
                         .append("\n");
             }
@@ -162,8 +161,8 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * This method is available in conjunction with Twitter#searchUsers()<br>
      *
      * @return current rate limit status
-     * @since Twitter4J 2.1.2
      * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
+     * @since Twitter4J 2.1.2
      */
     public RateLimitStatus getFeatureSpecificRateLimitStatus() {
         return featureSpecificRateLimitStatus;
@@ -219,6 +218,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     private final static String[] FILTER = new String[]{"twitter4j"};
+
     /**
      * Returns a hexadecimal representation of this exception stacktrace.<br>
      * An exception code is a hexadecimal representation of the stacktrace which enables it easier to Google known issues.<br>
@@ -226,19 +226,23 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * Where XX is a hash code of stacktrace without line number<br>
      * YY is a hash code of stacktrace excluding line number<br>
      * [-XX:YY] will appear when this instance a root cause
+     *
      * @return a hexadecimal representation of this exception stacktrace
      */
     public String getExceptionCode() {
         return getExceptionDiagnosis().asHexString();
     }
-    private ExceptionDiagnosis getExceptionDiagnosis(){
-        if(null == exceptionDiagnosis){
-         exceptionDiagnosis = new ExceptionDiagnosis(this, FILTER);
+
+    private ExceptionDiagnosis getExceptionDiagnosis() {
+        if (null == exceptionDiagnosis) {
+            exceptionDiagnosis = new ExceptionDiagnosis(this, FILTER);
         }
         return exceptionDiagnosis;
     }
+
     boolean nested = false;
-    void setNested(){
+
+    void setNested() {
         nested = true;
     }
 
@@ -280,7 +284,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     private static String getCause(HttpResponse res) {
         int statusCode = res.getStatusCode();
-        String cause = null;
+        String cause;
         // http://apiwiki.twitter.com/HTTP-Response-Codes-and-Errors
         switch (statusCode) {
             case NOT_MODIFIED:
@@ -299,8 +303,8 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 cause = "The URI requested is invalid or the resource requested, such as a user, does not exist.";
                 break;
             case NOT_ACCEPTABLE:
-                cause = "Returned by the Search API when an invalid format is specified in the request.\n"+
-                "Returned by the Streaming API when one or more of the parameters are not suitable for the resource. The track parameter, for example, would throw this error if:\n" +
+                cause = "Returned by the Search API when an invalid format is specified in the request.\n" +
+                        "Returned by the Streaming API when one or more of the parameters are not suitable for the resource. The track parameter, for example, would throw this error if:\n" +
                         " The track keyword is too long or too short.\n" +
                         " The bounding box specified is invalid.\n" +
                         " No predicates defined for filtered resource, for example, neither track nor follow parameter defined.\n" +
@@ -314,7 +318,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 break;
             case ENHANCE_YOUR_CLAIM:
                 cause = "Returned by the Search and Trends API when you are being rate limited (http://dev.twitter.com/pages/rate-limiting).\n"
-                + "Returned by the Streaming API:\n Too many login attempts in a short period of time.\n" +
+                        + "Returned by the Streaming API:\n Too many login attempts in a short period of time.\n" +
                         " Running too many copies of the same application authenticating with the same account name.";
                 break;
             case INTERNAL_SERVER_ERROR:

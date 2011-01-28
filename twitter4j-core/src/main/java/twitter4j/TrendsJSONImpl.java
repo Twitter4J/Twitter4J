@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import static twitter4j.internal.util.ParseUtil.*;
+import static twitter4j.internal.util.ParseUtil.getDate;
 
 /**
  * A data class representing Trends.
@@ -76,7 +76,7 @@ import static twitter4j.internal.util.ParseUtil.*;
                 JSONArray array = new JSONArray(jsonStr);
                 if (array.length() > 0) {
                     json = array.getJSONObject(0);
-                } else{
+                } else {
                     throw new TwitterException("No trends found on the specified woeid");
                 }
             } else {
@@ -100,7 +100,8 @@ import static twitter4j.internal.util.ParseUtil.*;
         this.trends = trends;
     }
 
-    /*package*/ static List<Trends> createTrendsList(HttpResponse res) throws
+    /*package*/
+    static List<Trends> createTrendsList(HttpResponse res) throws
             TwitterException {
         JSONObject json = res.asJSONObject();
         List<Trends> trends;
@@ -134,20 +135,21 @@ import static twitter4j.internal.util.ParseUtil.*;
             throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
         }
     }
-    private static Location extractLocation(JSONObject json) throws TwitterException{
-        if(json.isNull("locations")){
+
+    private static Location extractLocation(JSONObject json) throws TwitterException {
+        if (json.isNull("locations")) {
             return null;
         }
-        ResponseList<Location> locations = null;
+        ResponseList<Location> locations;
         try {
             locations = LocationJSONImpl.createLocationList(json.getJSONArray("locations"));
         } catch (JSONException e) {
             throw new AssertionError("locations can't be null");
         }
         Location location;
-        if(0 != locations.size()){
+        if (0 != locations.size()) {
             location = locations.get(0);
-        }else{
+        } else {
             location = null;
         }
         return location;
@@ -156,7 +158,7 @@ import static twitter4j.internal.util.ParseUtil.*;
 
     private static Date parseTrendsDate(String asOfStr) throws TwitterException {
         Date parsed;
-        switch(asOfStr.length()){
+        switch (asOfStr.length()) {
             case 10:
                 parsed = new Date(Long.parseLong(asOfStr) * 1000);
                 break;

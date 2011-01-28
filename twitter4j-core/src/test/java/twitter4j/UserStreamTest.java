@@ -189,9 +189,10 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         for (Object[] event : this.received) {
             if ("onstatus".equals(event[0])) {
                 Status status1 = (Status) event[1];
-                if (-1 != status1.getText().indexOf("somerandometext")) ;
-                found = true;
-                break;
+                if (-1 != status1.getText().indexOf("somerandometext")) {
+                    found = true;
+                    break;
+                }
             }
         }
         assertTrue(found);

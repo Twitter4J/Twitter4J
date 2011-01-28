@@ -77,7 +77,7 @@ final class DispatcherImpl implements Dispatcher {
             synchronized (ticket) {
                 try {
                     ticket.wait();
-                } catch (InterruptedException ex) {
+                } catch (InterruptedException ignore) {
                 }
             }
         }

@@ -73,14 +73,14 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             this.wait(200);
         }
         assertEquals("onfriendlist", received.get(0)[0]);
-        assertEquals(new Integer(6358481), received.get(0)[1]);
+        assertEquals(6358481, received.get(0)[1]);
         received.clear();
         siteStreams.next(listeners);
         synchronized (this) {
             this.wait(200);
         }
         assertEquals("onfriendlist", received.get(0)[0]);
-        assertEquals(new Integer(4933401), received.get(0)[1]);
+        assertEquals(4933401, received.get(0)[1]);
     }
 
     public void testSiteStream() throws Exception {

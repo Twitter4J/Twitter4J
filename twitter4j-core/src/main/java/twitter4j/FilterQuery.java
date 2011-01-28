@@ -47,38 +47,44 @@ public final class FilterQuery implements java.io.Serializable {
     /**
      * Creates a new FilterQuery
      */
-    public FilterQuery(){
+    public FilterQuery() {
         this.count = 0;
         this.follow = null;
         this.track = null;
         this.locations = null;
     }
+
     /**
      * Creates a new FilterQuery
+     *
      * @param follow Specifies the users, by ID, to receive public tweets from.
      */
-    public FilterQuery(int[] follow){
+    public FilterQuery(int[] follow) {
         this();
         this.count = 0;
         this.follow = follow;
     }
+
     /**
      * Creates a new FilterQuery
+     *
      * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @param follow Specifies the users, by ID, to receive public tweets from.
      */
-    public FilterQuery(int count, int[] follow){
+    public FilterQuery(int count, int[] follow) {
         this();
         this.count = count;
         this.follow = follow;
     }
+
     /**
      * Creates a new FilterQuery
+     *
      * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @param follow Specifies the users, by ID, to receive public tweets from.
      * @param track  Specifies keywords to track.
      */
-    public FilterQuery(int count, int[] follow, String[] track){
+    public FilterQuery(int count, int[] follow, String[] track) {
         this();
         this.count = count;
         this.follow = follow;
@@ -87,12 +93,13 @@ public final class FilterQuery implements java.io.Serializable {
 
     /**
      * Creates a new FilterQuery
-     * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
-     * @param follow Specifies the users, by ID, to receive public tweets from.
-     * @param track  Specifies keywords to track.
+     *
+     * @param count     Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @param follow    Specifies the users, by ID, to receive public tweets from.
+     * @param track     Specifies keywords to track.
      * @param locations Specifies the locations to track. 2D array
      */
-    public FilterQuery(int count, int[] follow, String[] track, double[][] locations){
+    public FilterQuery(int count, int[] follow, String[] track, double[][] locations) {
         this.count = count;
         this.follow = follow;
         this.track = track;
@@ -101,43 +108,51 @@ public final class FilterQuery implements java.io.Serializable {
 
     /**
      * Sets count
-     * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
+     *
+     * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @return this instance
      */
-    public FilterQuery count(int count){
+    public FilterQuery count(int count) {
         this.count = count;
         return this;
     }
+
     /**
      * Sets follow
+     *
      * @param follow Specifies the users, by ID, to receive public tweets from.
      * @return this instance
      */
-    public FilterQuery follow(int[] follow){
+    public FilterQuery follow(int[] follow) {
         this.follow = follow;
         return this;
     }
+
     /**
      * Sets track
-     * @param track  Specifies keywords to track.
+     *
+     * @param track Specifies keywords to track.
      * @return this instance
      */
-    public FilterQuery track(String[] track){
+    public FilterQuery track(String[] track) {
         this.track = track;
         return this;
     }
+
     /**
      * Sets locations
+     *
      * @param locations Specifies the locations to track. 2D array
      * @return this instance
      */
-    public FilterQuery locations(double[][] locations){
+    public FilterQuery locations(double[][] locations) {
         this.locations = locations;
         return this;
     }
 
     /**
      * Set whether to include extracted entities in the stream.
+     *
      * @param include True if entities should be included, else false.
      * @return this instance
      * @since Twitter4J 2.1.4
@@ -147,7 +162,7 @@ public final class FilterQuery implements java.io.Serializable {
         return this;
     }
 
-    /*package*/ HttpParameter[] asHttpParameterArray(){
+    /*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
 
         params.add(new HttpParameter("count", count));
@@ -173,13 +188,13 @@ public final class FilterQuery implements java.io.Serializable {
 
     private String toLocationsString(final double[][] keywords) {
         final StringBuffer buf = new StringBuffer(20 * keywords.length * 2);
-        for (int c = 0; c < keywords.length; c++) {
+        for (double[] keyword : keywords) {
             if (0 != buf.length()) {
                 buf.append(",");
             }
-            buf.append(keywords[c][0]);
+            buf.append(keyword[0]);
             buf.append(",");
-            buf.append(keywords[c][1]);
+            buf.append(keyword[1]);
         }
         return buf.toString();
     }
@@ -210,9 +225,10 @@ public final class FilterQuery implements java.io.Serializable {
     public String toString() {
         return "FilterQuery{" +
                 "count=" + count +
-                ", follow=" + follow +
+                ", follow=" + Arrays.toString(follow) +
                 ", track=" + (track == null ? null : Arrays.asList(track)) +
                 ", locations=" + (locations == null ? null : Arrays.asList(locations)) +
+                ", includeEntities=" + includeEntities +
                 '}';
     }
 }

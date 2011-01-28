@@ -211,7 +211,8 @@ public abstract class ImageUpload {
         public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException {
             try {
                 message = URLEncoder.encode(message, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
+            } catch (UnsupportedEncodingException ignore) {
+                throw new AssertionError();
             }
             return upload(new HttpParameter[]{
                     new HttpParameter("media", imageFileName, imageBody),
@@ -281,7 +282,8 @@ public abstract class ImageUpload {
             // step 1 - generate HTTP parameters
             try {
                 message = URLEncoder.encode(message, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
+            } catch (UnsupportedEncodingException ignore) {
+                throw new AssertionError();
             }
             return upload(new HttpParameter[]{
                     new HttpParameter("media", image),
@@ -300,7 +302,8 @@ public abstract class ImageUpload {
         public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException {
             try {
                 message = URLEncoder.encode(message, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
+            } catch (UnsupportedEncodingException ignore) {
+                throw new AssertionError();
             }
             return upload(new HttpParameter[]{
                     new HttpParameter("media", imageFileName, imageBody),

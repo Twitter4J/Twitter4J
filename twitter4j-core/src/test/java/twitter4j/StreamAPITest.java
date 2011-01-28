@@ -265,7 +265,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
             Status statusFromJSON = DataObjectFactory.createStatus(json);
             assertEquals(status, statusFromJSON);
         } catch (TwitterException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 //        System.out.println("got status from stream:" + status.toString());
         assertNotNull(status.getText());

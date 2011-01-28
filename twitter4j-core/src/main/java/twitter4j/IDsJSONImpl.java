@@ -58,6 +58,7 @@ import java.util.Arrays;
     /*package*/ IDsJSONImpl(String json) throws TwitterException {
         init(json);
     }
+
     private void init(String jsonStr) throws TwitterException {
 
         JSONArray idList;
@@ -127,7 +128,7 @@ import java.util.Arrays;
     /**
      * {@inheritDoc}
      */
-    public boolean hasPrevious(){
+    public boolean hasPrevious() {
         return 0 != previousCursor;
     }
 
@@ -141,7 +142,7 @@ import java.util.Arrays;
     /**
      * {@inheritDoc}
      */
-    public boolean hasNext(){
+    public boolean hasNext() {
         return 0 != nextCursor;
     }
 
@@ -172,7 +173,7 @@ import java.util.Arrays;
     @Override
     public String toString() {
         return "IDsJSONImpl{" +
-                "ids=" + ids +
+                "ids=" + Arrays.toString(ids) +
                 ", previousCursor=" + previousCursor +
                 ", nextCursor=" + nextCursor +
                 '}';
