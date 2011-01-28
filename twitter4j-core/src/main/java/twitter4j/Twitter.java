@@ -345,7 +345,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/friends_timeline.json",
-                mergeParameters(new HttpParameter[]{INCLUDE_RTS}
+                mergeParameters(new HttpParameter[]{INCLUDE_RTS, INCLUDE_ENTITIES}
                         , paging.asPostParameterArray()), auth));
 
     }
