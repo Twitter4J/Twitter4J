@@ -65,7 +65,6 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream {
     }
 
     protected String parseLine(String line) {
-        DataObjectFactoryUtil.clearThreadLocalMap();
         this.line = line;
         return line;
     }

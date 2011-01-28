@@ -79,7 +79,6 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     }
 
     protected String parseLine(String line) {
-        DataObjectFactoryUtil.clearThreadLocalMap();
         this.line = line;
         return line;
     }

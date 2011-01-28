@@ -34,6 +34,7 @@ import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.json.DataObjectFactory;
 import twitter4j.json.JSONObjectType;
 
 import java.io.BufferedReader;
@@ -99,6 +100,7 @@ abstract class AbstractStreamImplementation {
                     line = parseLine(line);
                     if (line.length() > 0) {
                         try {
+                            DataObjectFactoryUtil.clearThreadLocalMap();
                             JSONObject json = new JSONObject(line);
                             JSONObjectType jsonObjectType = JSONObjectType.determine(json);
                             if (logger.isDebugEnabled()) {
