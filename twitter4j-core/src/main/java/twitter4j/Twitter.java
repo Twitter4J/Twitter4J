@@ -1681,9 +1681,8 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public boolean existsBlock(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            // @todo this method looks to be always returning false as it's expecting an XML format.
             return -1 == http.get(conf.getRestBaseURL() + "blocks/exists.json?screen_name=" + screenName, auth).
-                    asString().indexOf("<error>You are not blocking this user.</error>");
+                    asString().indexOf("You are not blocking this user.");
         } catch (TwitterException te) {
             if (te.getStatusCode() == 404) {
                 return false;
