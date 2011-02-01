@@ -28,13 +28,13 @@ package twitter4j.examples.media;
 
 import twitter4j.TwitterException;
 import twitter4j.media.ImageUpload;
-import twitter4j.media.ImageUploaderFactory;
+import twitter4j.media.ImageUploadFactory;
 import twitter4j.media.MediaProvider;
 
 import java.io.File;
 
 /**
- * Sample of the ImageUploader interface. Uploads an image to Twipple with OAuth credentials specified in a properties file.
+ * Sample of the ImageUpload interface. Uploads an image to Twipple with OAuth credentials specified in a properties file.
  *
  * @author Rémy Rakic - remy.rakic at gmail.com
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -51,9 +51,9 @@ public final class TwippleImageUpload {
             System.exit(-1);
         }
         try {
-            ImageUpload upload = new ImageUploaderFactory().getInstance(MediaProvider.TWIPPLE);
+            ImageUpload upload = new ImageUploadFactory().getInstance(MediaProvider.TWIPPLE);
             String url;
-            if(args.length >= 2){
+            if (args.length >= 2) {
                 url = upload.upload(new File(args[0]), args[1]);
             } else {
                 url = upload.upload(new File(args[0]));

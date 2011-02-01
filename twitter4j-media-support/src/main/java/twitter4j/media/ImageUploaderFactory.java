@@ -27,119 +27,77 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.media;
 
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
-import twitter4j.http.AuthorizationFactory;
-import twitter4j.http.OAuthAuthorization;
-
-import static twitter4j.media.MediaProvider.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
+ * @deprecated use {@link ImageUploadFactory} instead
  */
 public final class ImageUploaderFactory {
-    private final Configuration conf;
-    private final MediaProvider defaultMediaProvider;
-    private final String apiKey;
+    ImageUploadFactory delegate;
 
     /**
      * Creates an ImageUploaderFactory with default configuration
+     *
+     * @deprecated use {@link ImageUploadFactory} instead
      */
     public ImageUploaderFactory() {
-        this(ConfigurationContext.getInstance());
+        delegate = new ImageUploadFactory();
     }
 
     /**
      * Creates an ImageUploaderFactory with the specified configuration
+     *
+     * @deprecated use {@link ImageUploadFactory} instead
      */
     public ImageUploaderFactory(Configuration conf) {
-        String mediaProvider = conf.getMediaProvider().toLowerCase();
-        if ("imgly".equals(mediaProvider) || "img_ly".equals(mediaProvider)) {
-            defaultMediaProvider = IMG_LY;
-        } else if ("plixi".equals(mediaProvider)) {
-            defaultMediaProvider = PLIXI;
-        } else if ("twipple".equals(mediaProvider)) {
-            defaultMediaProvider = TWIPPLE;
-        } else if ("twitgoo".equals(mediaProvider)) {
-            defaultMediaProvider = TWITGOO;
-        } else if ("twitpic".equals(mediaProvider)) {
-            defaultMediaProvider = TWITPIC;
-        } else if ("yfrog".equals(mediaProvider)) {
-            defaultMediaProvider = YFROG;
-        } else if ("mobypicture".equals(mediaProvider)) {
-            defaultMediaProvider = MOBYPICTURE;
-        } else if ("twipl".equals(mediaProvider)) {
-            defaultMediaProvider = TWIPL;
-        }  else if ("posterous".equals(mediaProvider)) {
-            defaultMediaProvider = POSTEROUS;
-        } else {
-            throw new IllegalArgumentException("unsupported media provider:" + mediaProvider);
-        }
-        this.conf = conf;
-        apiKey = conf.getMediaProviderAPIKey();
+        delegate = new ImageUploadFactory(conf);
     }
 
     /**
      * Returns an ImageUpload instance associated with the default media provider
+     *
      * @return ImageUpload
+     * @deprecated use {@link twitter4j.media.ImageUploadFactory#getInstance()} instead
      */
     public ImageUpload getInstance() {
-        return getInstance(defaultMediaProvider);
+        return delegate.getInstance();
     }
 
     /**
      * Returns an ImageUpload instance associated with the default media provider
+     *
      * @param authorization authorization
      * @return ImageUpload
      * @since Twitter4J 2.1.11
+     * @deprecated use {@link twitter4j.media.ImageUploadFactory#getInstance(twitter4j.http.Authorization)} instead
      */
     public ImageUpload getInstance(Authorization authorization) {
-        return getInstance(defaultMediaProvider, authorization);
+        return delegate.getInstance(authorization);
     }
 
     /**
      * Returns an ImageUploader instance associated with the specified media provider
+     *
      * @param mediaProvider media provider
      * @return ImageUploader
+     * @deprecated use {@link twitter4j.media.ImageUploadFactory#getInstance(MediaProvider)} instead
      */
     public ImageUpload getInstance(MediaProvider mediaProvider) {
-        Authorization authorization = AuthorizationFactory.getInstance(conf, true);
-        return getInstance(mediaProvider, authorization);
+        return delegate.getInstance(mediaProvider);
     }
 
     /**
      * Returns an ImageUpload instance associated with the specified media provider
+     *
      * @param mediaProvider media provider
      * @param authorization authorization
      * @return ImageUpload
      * @since Twitter4J 2.1.11
+     * @deprecated use {@link twitter4j.media.ImageUploadFactory#getInstance(MediaProvider, twitter4j.http.Authorization)} instead
      */
     public ImageUpload getInstance(MediaProvider mediaProvider, Authorization authorization) {
-        if (!(authorization instanceof OAuthAuthorization)) {
-            throw new IllegalArgumentException("OAuth authorization is required.");
-        }
-        OAuthAuthorization oauth = (OAuthAuthorization)authorization;
-        if (mediaProvider == IMG_LY) {
-            return new ImgLyUpload(conf, oauth);
-        } else if (mediaProvider == PLIXI) {
-            return new PlixiUpload(conf, apiKey, oauth);
-        } else if (mediaProvider == TWIPPLE) {
-            return new TwippleUpload(conf, oauth);
-        } else if (mediaProvider == TWITGOO) {
-            return new TwitgooUpload(conf, oauth);
-        } else if (mediaProvider == TWITPIC) {
-            return new TwitpicUpload(conf, apiKey, oauth);
-        } else if (mediaProvider == YFROG) {
-            return new YFrogUpload(conf, oauth);
-        } else if (mediaProvider == MOBYPICTURE) {
-            return new MobypictureUpload(conf, apiKey, oauth);
-        } else if (mediaProvider == TWIPL) {
-            return new TwiplUpload(conf, apiKey, oauth);
-        } else if (mediaProvider == POSTEROUS) {
-            return new PosterousUpload(conf, oauth);
-        } else {
-            throw new AssertionError("Unknown provider");
-        }
+        return delegate.getInstance(mediaProvider, authorization);
     }
 }
