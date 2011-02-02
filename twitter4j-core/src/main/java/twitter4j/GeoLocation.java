@@ -36,7 +36,7 @@ import twitter4j.internal.util.StringUtil;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class GeoLocation implements java.io.Serializable{
+public class GeoLocation implements java.io.Serializable {
 
     protected double latitude;
     protected double longitude;
@@ -44,7 +44,8 @@ public class GeoLocation implements java.io.Serializable{
 
     /**
      * Creates a GeoLocation instance
-     * @param latitude the latitude
+     *
+     * @param latitude  the latitude
      * @param longitude the longitude
      */
     public GeoLocation(double latitude, double longitude) {
@@ -54,11 +55,13 @@ public class GeoLocation implements java.io.Serializable{
 
     /**
      * returns a GeoLocation instance if a "geo" element is found.
+     *
      * @param json JSONObject to be parsed
-     * @return GeoLocation instance 
+     * @return GeoLocation instance
      * @throws TwitterException when coordinates is not included in geo element (should be an API side issue)
      */
-    /*package*/ static GeoLocation getInstance(JSONObject json) throws TwitterException {
+    /*package*/
+    static GeoLocation getInstance(JSONObject json) throws TwitterException {
         try {
             if (!json.isNull("geo")) {
                 String coordinates = json.getJSONObject("geo")
@@ -74,7 +77,8 @@ public class GeoLocation implements java.io.Serializable{
         return null;
     }
 
-    /*package*/ static GeoLocation[][] coordinatesAsGeoLocationArray(JSONArray coordinates) throws TwitterException {
+    /*package*/
+    static GeoLocation[][] coordinatesAsGeoLocationArray(JSONArray coordinates) throws TwitterException {
         try {
             GeoLocation[][] boundingBox = new GeoLocation[coordinates.length()][];
             for (int i = 0; i < coordinates.length(); i++) {
@@ -82,7 +86,7 @@ public class GeoLocation implements java.io.Serializable{
                 boundingBox[i] = new GeoLocation[array.length()];
                 for (int j = 0; j < array.length(); j++) {
                     JSONArray coordinate = array.getJSONArray(j);
-                    boundingBox[i][j] = new GeoLocation(coordinate.getDouble(0), coordinate.getDouble(1));
+                    boundingBox[i][j] = new GeoLocation(coordinate.getDouble(1), coordinate.getDouble(0));
                 }
             }
             return boundingBox;
@@ -93,6 +97,7 @@ public class GeoLocation implements java.io.Serializable{
 
     /**
      * returns the latitude of the geo location
+     *
      * @return the latitude
      */
     public double getLatitude() {
@@ -101,6 +106,7 @@ public class GeoLocation implements java.io.Serializable{
 
     /**
      * returns the longitude of the geo location
+     *
      * @return the longitude
      */
     public double getLongitude() {
