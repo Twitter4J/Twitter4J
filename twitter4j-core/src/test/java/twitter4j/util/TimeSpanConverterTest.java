@@ -82,8 +82,6 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("3 minuti fa", System.currentTimeMillis() - minute * 3);
         assertTimeSpanString("1 ora fa", System.currentTimeMillis() - hour);
         assertTimeSpanString("3 ore fa", System.currentTimeMillis() - hour * 3);
-        assertTimeSpanString("4 gen", getSpecificLocalDateInMillis(0, 4));
-        assertTimeSpanString("1 gen", getSpecificLocalDateInMillis(0, 1));
         assertTimeSpanString("18 dic 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
@@ -102,8 +100,6 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("hace 3 munitos", System.currentTimeMillis() - minute * 3);
         assertTimeSpanString("hace 1 hora", System.currentTimeMillis() - hour);
         assertTimeSpanString("hace 3 horas", System.currentTimeMillis() - hour * 3);
-        assertTimeSpanString("4 ene", getSpecificLocalDateInMillis(0, 4));
-        assertTimeSpanString("1 ene", getSpecificLocalDateInMillis(0, 1));
         assertTimeSpanString("18 dic 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
@@ -116,8 +112,6 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("3 minutes ago", System.currentTimeMillis() - minute * 3);
         assertTimeSpanString("1 hour ago", System.currentTimeMillis() - hour);
         assertTimeSpanString("3 hours ago", System.currentTimeMillis() - hour * 3);
-        assertTimeSpanString("4 Jan", getSpecificLocalDateInMillis(0, 4));
-        assertTimeSpanString("1 Jan", getSpecificLocalDateInMillis(0, 1));
         assertTimeSpanString("18 Dec 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
@@ -129,8 +123,6 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("Il y a 3 minutes", System.currentTimeMillis() - minute * 3);
         assertTimeSpanString("Il y a 1 heure", System.currentTimeMillis() - hour);
         assertTimeSpanString("Il y a 3 heures", System.currentTimeMillis() - hour * 3);
-        assertTimeSpanString("4 janv.", getSpecificLocalDateInMillis(0, 4));
-        assertTimeSpanString("1 janv.", getSpecificLocalDateInMillis(0, 1));
         assertTimeSpanString("18 déc. 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
@@ -142,8 +134,6 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("vor 3 Minuten", System.currentTimeMillis() - minute * 3);
         assertTimeSpanString("vor 1 Stunde", System.currentTimeMillis() - hour);
         assertTimeSpanString("vor 3 Stunden", System.currentTimeMillis() - hour * 3);
-        assertTimeSpanString("4 Jan", getSpecificLocalDateInMillis(0, 4));
-        assertTimeSpanString("1 Jan", getSpecificLocalDateInMillis(0, 1));
         assertTimeSpanString("18 Dez 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
@@ -156,8 +146,6 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("3分前", System.currentTimeMillis() - minute * 3);
         assertTimeSpanString("1時間前", System.currentTimeMillis() - hour);
         assertTimeSpanString("3時間前", System.currentTimeMillis() - hour * 3);
-        assertTimeSpanString("1月4日", getSpecificLocalDateInMillis(0, 4));
-        assertTimeSpanString("1月1日", getSpecificLocalDateInMillis(0, 1));
         assertTimeSpanString("09年12月18日", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 }
