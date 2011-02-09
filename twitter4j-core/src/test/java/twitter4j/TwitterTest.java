@@ -271,6 +271,10 @@ public class TwitterTest extends TwitterTestBase {
         if (statuses.size() > 0) {
             assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         }
+        statuses = twitter1.getUserListStatuses(id1.id, userList.getId(), new Paging());
+        if (statuses.size() > 0) {
+            assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
+        }
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertNull(DataObjectFactory.getRawJSON(userList));
         assertNotNull(statuses);
@@ -307,6 +311,11 @@ public class TwitterTest extends TwitterTestBase {
         // http://code.google.com/p/twitter-api/issues/detail?id=1301
 //        assertEquals(userList.getMemberCount(), users.size());
         assertTrue(0 < users.size());// workaround issue 1301
+
+        users = twitter1.getUserListMembers(id1.id, userList.getId(), -1);
+        assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
+        assertNotNull(DataObjectFactory.getRawJSON(users));
+        assertTrue(0 < users.size());
 
         userList = twitter1.deleteUserListMember(userList.getId(), id2.id);
         assertNotNull(DataObjectFactory.getRawJSON(userList));

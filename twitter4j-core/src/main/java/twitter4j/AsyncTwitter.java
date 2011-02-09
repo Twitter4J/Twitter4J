@@ -924,6 +924,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
+    public void getUserListStatuses(final int listOwnerId, final int id, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(USER_LIST_STATUSES, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotUserListStatuses(twitter.getUserListStatuses(listOwnerId, id, paging));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void getUserListMemberships(final String listMemberScreenName, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_MEMBERSHIPS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
@@ -974,6 +985,17 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         getDispatcher().invokeLater(new AsyncTask(LIST_MEMBERS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
                 listener.gotUserListMembers(twitter.getUserListMembers(listOwnerScreenName, listId, cursor));
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getUserListMembers(final int listOwnerId, final int listId, final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(LIST_MEMBERS, listener) {
+            public void invoke(TwitterListener listener) throws TwitterException {
+                listener.gotUserListMembers(twitter.getUserListMembers(listOwnerId, listId, cursor));
             }
         });
     }
