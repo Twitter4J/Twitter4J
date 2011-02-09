@@ -105,6 +105,18 @@ public interface ListMethodsAsync {
     void getUserListStatuses(String listOwnerScreenName, int id, Paging paging);
 
     /**
+     * Show tweet timeline for members of the specified list.
+     * <br>http://api.twitter.com/1/user/lists/list_id/statuses.json
+     *
+     * @param listOwnerId The screen name of the list owner
+     * @param id                  The id of the list to delete
+     * @param paging              controls pagination. Supports since_id, max_id, count and page parameters.
+     * @see <a href="http://dev.twitter.com/doc/get/:user/lists/:id/statuses">GET :user/lists/:id/statuses | dev.twitter.com</a>
+     * @since Twitter4J 2.1.1
+     */
+    void getUserListStatuses(int listOwnerId, int id, Paging paging);
+
+    /**
      * List the lists the specified user has been added to.
      * <br>This method calls http://api.twitter.com/1/:user/lists/memberships.json
      *

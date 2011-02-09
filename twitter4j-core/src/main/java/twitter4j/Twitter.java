@@ -937,6 +937,15 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Status> getUserListStatuses(int listOwnerId, int id, Paging paging) throws TwitterException {
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + listOwnerId +
+                "/lists/" + id + "/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
+                , INCLUDE_ENTITIES), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserListJSONImpl.createPagableUserListList(http.get(conf.getRestBaseURL() +
@@ -980,6 +989,17 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         ensureAuthorizationEnabled();
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL() +
                 listOwnerScreenName + "/" + listId + "/members.json?include_entities="
+                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public PagableResponseList<User> getUserListMembers(int listOwnerId, int listId
+            , long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL() +
+                listOwnerId + "/" + listId + "/members.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth));
     }
 

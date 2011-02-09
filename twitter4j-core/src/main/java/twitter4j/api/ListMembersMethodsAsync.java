@@ -42,6 +42,17 @@ public interface ListMembersMethodsAsync {
     void getUserListMembers(String listOwnerScreenName, int listId, long cursor);
 
     /**
+     * Returns the members of the specified list.
+     * <br>This method calls http://api.twitter.com/1/[user]/[list_id]/members.json
+     * @param listOwnerId The id of the list owner
+     * @param listId The id of the list
+     * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/members">GET :user/:list_id/members | dev.twitter.com</a>
+     * @since Twitter4J 2.1.1
+     */
+    void getUserListMembers(int listOwnerId, int listId, long cursor);
+
+    /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
      * <br>This method calls http://api.twitter.com/1/[listOwner]/[listId]/members.json
      * @param listId The id of the list.
