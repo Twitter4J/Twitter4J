@@ -27,7 +27,7 @@ John Sirois <jsirois at twitter.com> @johnsirois
 Julien Letrouit <julien.letrouit at gmail.com> @jletroui
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 Mocel <docel77 at gmail.com> @Mocel
-Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp>
+Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
 Perry Sakkaris <psakkaris at gmail.com>
 Roberto Estrada <robestradac at gmail.com>
 Roy Reshef Roy Reshef <royreshef at gmail.com>

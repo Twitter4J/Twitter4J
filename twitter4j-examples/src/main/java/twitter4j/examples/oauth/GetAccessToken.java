@@ -32,7 +32,10 @@ import twitter4j.TwitterFactory;
 import twitter4j.http.AccessToken;
 import twitter4j.http.RequestToken;
 
+import java.awt.*;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 /**
@@ -97,6 +100,12 @@ public class GetAccessToken {
             while (null == accessToken) {
                 System.out.println("Open the following URL and grant access to your account:");
                 System.out.println(requestToken.getAuthorizationURL());
+                try {
+                    Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
+                } catch (IOException ignore) {
+                } catch (URISyntaxException e) {
+                    throw new AssertionError(e);
+                }
                 System.out.print("Enter the PIN(if available) and hit enter after you granted access.[PIN]:");
                 String pin = br.readLine();
                 try{
