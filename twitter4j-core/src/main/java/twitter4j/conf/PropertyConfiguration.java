@@ -49,6 +49,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     public static final String HTTP_USE_SSL = "http.useSSL";
     public static final String HTTP_PRETTY_DEBUG = "http.prettyDebug";
+    public static final String HTTP_GZIP = "http.gzip";
     public static final String HTTP_PROXY_HOST = "http.proxyHost";
     public static final String HTTP_PROXY_HOST_FALLBACK = "http.proxyHost";
     public static final String HTTP_PROXY_USER = "http.proxyUser";
@@ -247,6 +248,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, HTTP_PRETTY_DEBUG)) {
             setPrettyDebugEnabled(getBoolean(props, prefix, HTTP_PRETTY_DEBUG));
+        }
+        if (notNull(props, prefix, HTTP_GZIP)) {
+            setGZIPEnabled(getBoolean(props, prefix, HTTP_GZIP));
         }
         if (notNull(props, prefix, HTTP_PROXY_HOST)) {
             setHttpProxyHost(getString(props, prefix, HTTP_PROXY_HOST));

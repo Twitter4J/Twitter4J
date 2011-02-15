@@ -52,6 +52,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setGZIPEnabled(boolean gzipEnabled) {
+        checkNotBuilt();
+        configurationBean.setGZIPEnabled(gzipEnabled);
+        return this;
+    }
+
     public ConfigurationBuilder setDebugEnabled(boolean debugEnabled) {
         checkNotBuilt();
         configurationBean.setDebug(debugEnabled);

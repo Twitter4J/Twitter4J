@@ -52,4 +52,6 @@ public interface HttpClientConfiguration {
     int getHttpDefaultMaxPerRoute();
 
     boolean isPrettyDebugEnabled();
+
+    boolean isGZIPEnabled();
 }

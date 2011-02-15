@@ -909,4 +909,8 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
         return nestedConf.isPrettyDebugEnabled();
     }
 
+    public boolean isGZIPEnabled() {
+        return nestedConf.isGZIPEnabled();
+    }
+
 }

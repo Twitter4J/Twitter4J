@@ -46,6 +46,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String password;
     private boolean useSSL;
     private boolean prettyDebug;
+    private boolean gzipEnabled;
     private String httpProxyHost;
     private String httpProxyUser;
     private String httpProxyPassword;
@@ -130,6 +131,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setPassword(null);
         setUseSSL(false);
         setPrettyDebugEnabled(false);
+        setGZIPEnabled(true);
         setHttpProxyHost(null);
         setHttpProxyUser(null);
         setHttpProxyPassword(null);
@@ -248,6 +250,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.prettyDebug = prettyDebug;
     }
 
+    protected final void setGZIPEnabled(boolean gzipEnabled) {
+        this.gzipEnabled = gzipEnabled;
+        initRequestHeaders();
+    }
+
+    public boolean isGZIPEnabled() {
+        return gzipEnabled;
+    }
+
     // method for HttpRequestFactoryConfiguration
     Map<String, String> requestHeaders;
 
@@ -258,7 +269,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         requestHeaders.put("X-Twitter-Client", getSource());
 
         requestHeaders.put("User-Agent", getUserAgent());
-        requestHeaders.put("Accept-Encoding", "gzip");
+        if (gzipEnabled) {
+            requestHeaders.put("Accept-Encoding", "gzip");
+        }
         if (IS_DALVIK) {
             requestHeaders.put("Connection", "close");
         }
