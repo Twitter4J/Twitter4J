@@ -3,6 +3,6 @@ cd ..
 . ./setEnv.sh
 
 
-RUN_CMD="$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.list.GetUserListSubscriptions $@"
-echo $RUN_CMD
-exec $RUN_CMD
+RUN_CMD="$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.list.GetUserListSubscriptions"
+echo $RUN_CMD ${1+"$@"}
+exec $RUN_CMD ${1+"$@"}

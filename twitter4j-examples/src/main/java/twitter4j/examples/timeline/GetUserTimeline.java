@@ -30,7 +30,6 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.User;
 
 import java.util.List;
 
@@ -48,9 +47,16 @@ public class GetUserTimeline {
         // gets Twitter instance with default credentials
         Twitter twitter = new TwitterFactory().getInstance();
         try {
-            User user = twitter.verifyCredentials();
-            List<Status> statuses = twitter.getUserTimeline();
-            System.out.println("Showing @" + user.getScreenName() + "'s user timeline.");
+            List<Status> statuses;
+            String user;
+            if (args.length == 1) {
+                user = args[0];
+                statuses = twitter.getUserTimeline(user);
+            } else {
+                user = twitter.verifyCredentials().getScreenName();
+                statuses = twitter.getUserTimeline();
+            }
+            System.out.println("Showing @" + user + "'s user timeline.");
             for (Status status : statuses) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             }
