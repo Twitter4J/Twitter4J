@@ -65,7 +65,7 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
             throw new NullPointerException("configuration cannot be null");
         }
         this.conf = conf;
-        this.listener = new TwitterAdapter();
+        this.listener = null;
     }
 
     /**
@@ -73,6 +73,7 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
      * @param conf the configuration to use
      * @param listener the listener to use
      * @since Twitter4J 2.1.1
+     * @deprecated use {@link AsyncTwitterFactory#AsyncTwitterFactory(twitter4j.conf.Configuration)} instead
      */
     public AsyncTwitterFactory(Configuration conf, TwitterListener listener) {
         if (conf == null) {
@@ -85,6 +86,7 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
     /**
      * Creates a AsyncTwitterFactory with the root configuration, with given listener
      * @param listener listener
+     * @deprecated use {@link AsyncTwitterFactory#AsyncTwitterFactory()} instead
      */
     public AsyncTwitterFactory(TwitterListener listener) {
         this.conf = ConfigurationContext.getInstance();
@@ -94,8 +96,18 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
     /**
      * Creates a AsyncTwitterFactory with the specified config tree, with given listener
      * @param configTreePath the path
+     * @since Twitter4J 2.1.12
+     */
+    public AsyncTwitterFactory(String configTreePath) {
+        this.conf = ConfigurationContext.getInstance(configTreePath);
+        this.listener = null;
+    }
+
+    /**
+     * Creates a AsyncTwitterFactory with the specified config tree, with given listener
+     * @param configTreePath the path
      * @param listener listener
-     * @deprecated use {@link AsyncTwitterFactory#AsyncTwitterFactory(twitter4j.conf.Configuration)}
+     * @deprecated use {@link AsyncTwitterFactory#AsyncTwitterFactory(String)}
      */
     public AsyncTwitterFactory(String configTreePath, TwitterListener listener) {
         this.conf = ConfigurationContext.getInstance(configTreePath);
@@ -195,9 +207,17 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
         return getInstance(accessToken);
     }
     private AsyncTwitter getInstance(Configuration conf, Authorization auth){
-        return new AsyncTwitter(conf, auth, listener);
+        AsyncTwitter twitter = new AsyncTwitter(conf, auth);
+        if (null != listener) {
+            twitter.addListener(listener);
+        }
+        return twitter;
     }
     private AsyncTwitter getInstance(Configuration conf){
-        return new AsyncTwitter(conf, AuthorizationFactory.getInstance(conf, true), listener);
+        AsyncTwitter asyncTwitter = new AsyncTwitter(conf, AuthorizationFactory.getInstance(conf));
+        if (null != listener) {
+            asyncTwitter.addListener(listener);
+        }
+        return asyncTwitter;
     }
 }
