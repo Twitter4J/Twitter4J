@@ -2004,6 +2004,28 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Twitter twitter = (Twitter) o;
+
+        if (!INCLUDE_ENTITIES.equals(twitter.INCLUDE_ENTITIES)) return false;
+        if (!INCLUDE_RTS.equals(twitter.INCLUDE_RTS)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + INCLUDE_ENTITIES.hashCode();
+        result = 31 * result + INCLUDE_RTS.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Twitter{" +
                 "auth='" + auth + '\'' +

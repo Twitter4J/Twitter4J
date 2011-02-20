@@ -185,4 +185,35 @@ public final class HttpClientWrapper implements java.io.Serializable {
         return request(new HttpRequest(PUT, url, null, null, this.requestHeaders));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HttpClientWrapper that = (HttpClientWrapper) o;
+
+        if (!http.equals(that.http)) return false;
+        if (!requestHeaders.equals(that.requestHeaders)) return false;
+        if (!wrapperConf.equals(that.wrapperConf)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = wrapperConf.hashCode();
+        result = 31 * result + http.hashCode();
+        result = 31 * result + requestHeaders.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HttpClientWrapper{" +
+                "wrapperConf=" + wrapperConf +
+                ", http=" + http +
+                ", requestHeaders=" + requestHeaders +
+                ", httpResponseListener=" + httpResponseListener +
+                '}';
+    }
 }

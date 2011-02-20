@@ -76,10 +76,11 @@ public class OAuthTest extends TwitterTestBase {
         ArrayList list1 = new ArrayList();
         ArrayList list2 = new ArrayList();
         assertEquals(list1, list2);
-        Twitter twitter1 = new Twitter();
+        Twitter twitter1 = new TwitterFactory().getInstance();
         twitter1.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        Twitter twitter2 = new Twitter();
+        Twitter twitter2 = new TwitterFactory().getInstance();
         twitter2.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        assertTrue(twitter1.equals(twitter2));
         assertEquals(twitter1, twitter2);
     }
 

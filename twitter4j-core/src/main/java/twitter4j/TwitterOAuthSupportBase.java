@@ -15,12 +15,14 @@ import twitter4j.internal.http.HttpResponseListener;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpResponseCode, HttpResponseListener, OAuthSupport, java.io.Serializable {
+    private static final long serialVersionUID = 1918940571188204638L;
     protected transient HttpClientWrapper http;
 
-    protected RateLimitStatusListener rateLimitStatusListener = null;
-    private static final long serialVersionUID = 6960663978976449394L;
+    private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
 
     TwitterOAuthSupportBase(Configuration conf) {
         super(conf); // this will populate BasicAuthorization from the configuration
@@ -66,16 +68,18 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        if (rateLimitStatusListener instanceof java.io.Serializable) {
-            out.writeObject(rateLimitStatusListener);
-        } else {
-            out.writeObject(null);
+        List<RateLimitStatusListener> serializableRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
+        for (RateLimitStatusListener listener : rateLimitStatusListeners) {
+            if (listener instanceof java.io.Serializable) {
+                serializableRateLimitStatusListeners.add(listener);
+            }
         }
+        out.writeObject(serializableRateLimitStatusListeners);
     }
 
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
-        rateLimitStatusListener = (RateLimitStatusListener) stream.readObject();
+        rateLimitStatusListeners = (List<RateLimitStatusListener>) stream.readObject();
         http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
     }
@@ -147,23 +151,38 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
     /**
      * Registers a RateLimitStatusListener for account associated rate limits
      *
-     * @param listener the listener to be added
-     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-account%C2%A0rate_limit_status">Twitter API Wiki / Twitter REST API Method: account rate_limit_status</a>
+     * @param listener the listener to be set
+     * @see <a href="http://dev.twitter.com/pages/rate-limiting">Rate Limiting | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
+     * @deprecated use {@link #addRateLimitStatusListener(RateLimitStatusListener)} instead
      */
     public void setRateLimitStatusListener(RateLimitStatusListener listener) {
-        this.rateLimitStatusListener = listener;
+        rateLimitStatusListeners.clear();
+        rateLimitStatusListeners.add(listener);
+    }
+
+    /**
+     * Registers a RateLimitStatusListener for account associated rate limits
+     *
+     * @param listener the listener to be added
+     * @see <a href="http://dev.twitter.com/pages/rate-limiting">Rate Limiting | dev.twitter.com</a>
+     * @since Twitter4J 2.1.12
+     */
+    public void addRateLimitStatusListener(RateLimitStatusListener listener) {
+        rateLimitStatusListeners.add(listener);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TwitterOAuthSupportBase)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
         TwitterOAuthSupportBase that = (TwitterOAuthSupportBase) o;
 
-        if (rateLimitStatusListener != null ? !rateLimitStatusListener.equals(that.rateLimitStatusListener) : that.rateLimitStatusListener != null)
+        if (http != null ? !http.equals(that.http) : that.http != null)
+            return false;
+        if (!rateLimitStatusListeners.equals(that.rateLimitStatusListeners))
             return false;
 
         return true;
@@ -172,12 +191,13 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (rateLimitStatusListener != null ? rateLimitStatusListener.hashCode() : 0);
+        result = 31 * result + (http != null ? http.hashCode() : 0);
+        result = 31 * result + (rateLimitStatusListeners != null ? rateLimitStatusListeners.hashCode() : 0);
         return result;
     }
 
     public void httpResponseReceived(HttpResponseEvent event) {
-        if (null != rateLimitStatusListener) {
+        if (rateLimitStatusListeners.size() != 0) {
             HttpResponse res = event.getResponse();
             TwitterException te = event.getTwitterException();
             RateLimitStatus rateLimitStatus;
@@ -196,10 +216,14 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
                         || statusCode == SERVICE_UNAVAILABLE) {
                     // EXCEEDED_RATE_LIMIT_QUOTA is returned by Rest API
                     // SERVICE_UNAVAILABLE is returned by Search API
-                    rateLimitStatusListener.onRateLimitStatus(statusEvent);
-                    rateLimitStatusListener.onRateLimitReached(statusEvent);
+                    for (RateLimitStatusListener listener : rateLimitStatusListeners) {
+                        listener.onRateLimitStatus(statusEvent);
+                        listener.onRateLimitReached(statusEvent);
+                    }
                 } else {
-                    rateLimitStatusListener.onRateLimitStatus(statusEvent);
+                    for (RateLimitStatusListener listener : rateLimitStatusListeners) {
+                        listener.onRateLimitStatus(statusEvent);
+                    }
                 }
             }
         }
