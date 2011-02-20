@@ -169,9 +169,13 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     /**
-     * Returns int value of "Retry-After" response header.
-     * An application that exceeds the rate limitations of the Search API will receive HTTP 420 response codes to requests. It is a best practice to watch for this error condition and honor the Retry-After header that instructs the application when it is safe to continue. The Retry-After header's value is the number of seconds your application should wait before submitting another query (for example: Retry-After: 67).<br>
-     * Check if getStatusCode() == 503 before calling this method to ensure that you are actually exceeding rate limitation with query apis.<br>
+     * Returns int value of "Retry-After" response header (Search API) or seconds_until_reset (REST API).
+     * An application that exceeds the rate limitations of the Search API will receive HTTP 420 response codes to requests. It is a best
+     * practice to watch for this error condition and honor the Retry-After header that instructs the application when it is safe to
+     * continue. The Retry-After header's value is the number of seconds your application should wait before submitting another query (for
+     * example: Retry-After: 67).<br>
+     * Check if getStatusCode() == 503 before calling this method to ensure that you are actually exceeding rate limitation with query
+     * apis.<br>
      * Otherwise, you'll get an IllegalStateException if "Retry-After" response header was not included in the response.<br>
      *
      * @return instructs the application when it is safe to continue in seconds
@@ -179,7 +183,15 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * @since Twitter4J 2.1.0
      */
     public int getRetryAfter() {
-        if (this.statusCode != 420) {
+        int retryAfter = -1;
+        if (this.statusCode == 400) {
+            if (null != rateLimitStatus) {
+                retryAfter = rateLimitStatus.getSecondsUntilReset();
+            }
+        } else if (this.statusCode == 420) {
+            retryAfter = this.retryAfter;
+        }
+        if (retryAfter == -1) {
             throw new IllegalStateException("Rate limitation is not exceeded");
         }
         return retryAfter;
