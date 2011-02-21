@@ -40,14 +40,14 @@ public class TwitterTestBase extends TestCase {
     protected class TestUserInfo {
         public String screenName;
         public String password;
-        public int id;
+        public long id;
         public String accessToken;
         public String accessTokenSecret;
 
         TestUserInfo(String screenName) {
             this.screenName = p.getProperty(screenName + ".user");
             this.password = p.getProperty(screenName + ".password");
-            this.id = Integer.valueOf(p.getProperty(screenName + ".id"));
+            this.id = Long.valueOf(p.getProperty(screenName + ".id"));
             this.accessToken = p.getProperty(screenName + ".oauth.accessToken");
             this.accessTokenSecret = p.getProperty(screenName + ".oauth.accessTokenSecret");
         }
