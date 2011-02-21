@@ -11,13 +11,13 @@
     <url>http://twitter4j.org/</url>
     <licenses>
         <license>
-            <name>BSD</name>
-            <url>http://twitter4j.org/en/LICENSE.txt</url>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
     <scm>
-        <url>http://twitter4j.org/fisheye/browse/twitter4j</url>
+        <url>https://github.com/yusuke/twitter4j</url>
         <connection>scm:git:git://github.com/yusuke/twitter4j.git</connection>
         <developerConnection>scm:git:git://github.com/yusuke/twitter4j.git
         </developerConnection>
@@ -47,13 +47,6 @@
             <unsubscribe>twitter4j-unsubscribe@googlegroups.com</unsubscribe>
             <post>twitter4j@googlegroups.com</post>
             <archive>http://groups.google.com/group/twitter4j</archive>
-        </mailingList>
-        <mailingList>
-            <name>Twitter4J-J</name>
-            <subscribe>twitter4j-j-subscribe@googlegroups.com</subscribe>
-            <unsubscribe>twitter4j-j-unsubscribe@googlegroups.com</unsubscribe>
-            <post>twitter4j-j@googlegroups.com</post>
-            <archive>http://groups.google.com/group/twitter4j-j</archive>
         </mailingList>
     </mailingLists>
     <distributionManagement>
