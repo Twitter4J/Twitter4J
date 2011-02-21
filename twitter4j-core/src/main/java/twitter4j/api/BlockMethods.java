@@ -1,29 +1,19 @@
 /*
-Copyright (c) 2007-2011, Yusuke Yamamoto
-All rights reserved.
+ * Copyright 2007 Yusuke Yamamoto
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the Yusuke Yamamoto nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY Yusuke Yamamoto ``AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL Yusuke Yamamoto BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 package twitter4j.api;
 
 import twitter4j.IDs;
@@ -35,108 +25,109 @@ import twitter4j.User;
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
 public interface BlockMethods {
-	/**
-	 * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
-	 * <br>This method calls http://api.twitter.com/1/blocks/create/[id].json
-	 *
-	 * @param screenName the screen_name of the user to block
-	 * @return the blocked user
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 2.0.1
+    /**
+     * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
+     * <br>This method calls http://api.twitter.com/1/blocks/create/[id].json
+     *
+     * @param screenName the screen_name of the user to block
+     * @return the blocked user
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/post/blocks/create">POST blocks/create | dev.twitter.com</a>
-	 */
-	User createBlock(String screenName) throws TwitterException;
+     * @since Twitter4J 2.0.1
+     */
+    User createBlock(String screenName) throws TwitterException;
 
-	/**
-	 * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
-	 * <br>This method calls http://api.twitter.com/1/blocks/create/[id].json
-	 *
-	 * @param userId the ID of the user to block
-	 * @return the blocked user
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 2.1.0
+    /**
+     * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
+     * <br>This method calls http://api.twitter.com/1/blocks/create/[id].json
+     *
+     * @param userId the ID of the user to block
+     * @return the blocked user
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/post/blocks/create">POST blocks/create | dev.twitter.com</a>
-	 */
-	User createBlock(int userId) throws TwitterException;
+     * @since Twitter4J 2.1.0
+     */
+    User createBlock(int userId) throws TwitterException;
 
-	/**
-	 * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
-	 * <br>This method calls http://api.twitter.com/1/blocks/destroy/[id].json
-	 *
-	 * @param screen_name the screen_name of the user to block
-	 * @return the unblocked user
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 2.0.1
+    /**
+     * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
+     * <br>This method calls http://api.twitter.com/1/blocks/destroy/[id].json
+     *
+     * @param screen_name the screen_name of the user to block
+     * @return the unblocked user
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/post/blocks/destroy">POST blocks/destroy | dev.twitter.com</a>
-	 */
-	User destroyBlock(String screen_name) throws TwitterException;
+     * @since Twitter4J 2.0.1
+     */
+    User destroyBlock(String screen_name) throws TwitterException;
 
-	/**
-	 * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
-	 * <br>This method calls http://api.twitter.com/1/blocks/destroy/[id].json
-	 *
-	 * @param userId the ID of the user to block
-	 * @return the unblocked user
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 2.0.1
+    /**
+     * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
+     * <br>This method calls http://api.twitter.com/1/blocks/destroy/[id].json
+     *
+     * @param userId the ID of the user to block
+     * @return the unblocked user
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/post/blocks/destroy">POST blocks/destroy | dev.twitter.com</a>
-	 */
-	User destroyBlock(int userId) throws TwitterException;
+     * @since Twitter4J 2.0.1
+     */
+    User destroyBlock(int userId) throws TwitterException;
 
-	/**
+    /**
      * Returns if the authenticating user is blocking a target user. Will return the blocked user's object if a block exists, and error with a HTTP 404 response code otherwise.
-	 * <br>This method calls http://api.twitter.com/1/blocks/exists/[id].json
-	 *
-	 * @param screenName The screen_name of the potentially blocked user.
-	 * @return  if the authenticating user is blocking a target user
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 2.0.4
+     * <br>This method calls http://api.twitter.com/1/blocks/exists/[id].json
+     *
+     * @param screenName The screen_name of the potentially blocked user.
+     * @return if the authenticating user is blocking a target user
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/blocks/exists">GET blocks/exists | dev.twitter.com</a>
-	 */
-	boolean existsBlock(String screenName) throws TwitterException;
+     * @since Twitter4J 2.0.4
+     */
+    boolean existsBlock(String screenName) throws TwitterException;
 
-	/**
+    /**
      * Returns if the authenticating user is blocking a target user. Will return the blocked user's object if a block exists, and error with a HTTP 404 response code otherwise.
-	 * <br>This method calls http://api.twitter.com/1/blocks/exists/[id].json
-	 *
-	 * @param userId The ID of the potentially blocked user.
-	 * @return  if the authenticating user is blocking a target user
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 2.1.0
+     * <br>This method calls http://api.twitter.com/1/blocks/exists/[id].json
+     *
+     * @param userId The ID of the potentially blocked user.
+     * @return if the authenticating user is blocking a target user
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/blocks/exists">GET blocks/exists | dev.twitter.com</a>
-	 */
-	boolean existsBlock(int userId) throws TwitterException;
+     * @since Twitter4J 2.1.0
+     */
+    boolean existsBlock(int userId) throws TwitterException;
 
-	/**
-	 * Returns a list of user objects that the authenticating user is blocking.
-	 * <br>This method calls http://api.twitter.com/1/blocks/blocking.json
-	 *
-	 * @return a list of user objects that the authenticating user
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 2.0.4
+    /**
+     * Returns a list of user objects that the authenticating user is blocking.
+     * <br>This method calls http://api.twitter.com/1/blocks/blocking.json
+     *
+     * @return a list of user objects that the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking">GET blocks/blocking | dev.twitter.com</a>
-	 */
-	ResponseList<User> getBlockingUsers() throws TwitterException;
+     * @since Twitter4J 2.0.4
+     */
+    ResponseList<User> getBlockingUsers() throws TwitterException;
 
-	/**
-	 * Returns a list of user objects that the authenticating user is blocking.
-	 * <br>This method calls http://api.twitter.com/1/blocks/blocking.json
-	 *
-	 * @param page the number of page
-	 * @return a list of user objects that the authenticating user
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 2.0.4
+    /**
+     * Returns a list of user objects that the authenticating user is blocking.
+     * <br>This method calls http://api.twitter.com/1/blocks/blocking.json
+     *
+     * @param page the number of page
+     * @return a list of user objects that the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking">GET blocks/blocking | dev.twitter.com</a>
-	 */
-	ResponseList<User> getBlockingUsers(int page) throws TwitterException;
+     * @since Twitter4J 2.0.4
+     */
+    ResponseList<User> getBlockingUsers(int page) throws TwitterException;
 
-	/**
-	 * Returns an array of numeric user ids the authenticating user is blocking.
-	 * <br>This method calls http://api.twitter.com/1/blocks/blocking/ids
-	 * @return Returns an array of numeric user ids the authenticating user is blocking.
-	 * @throws TwitterException when Twitter service or network is unavailable
-	 * @since Twitter4J 2.0.4
+    /**
+     * Returns an array of numeric user ids the authenticating user is blocking.
+     * <br>This method calls http://api.twitter.com/1/blocks/blocking/ids
+     *
+     * @return Returns an array of numeric user ids the authenticating user is blocking.
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking/ids">GET blocks/blocking/ids | dev.twitter.com</a>
-	 */
-	IDs getBlockingUsersIDs() throws TwitterException;
+     * @since Twitter4J 2.0.4
+     */
+    IDs getBlockingUsersIDs() throws TwitterException;
 }

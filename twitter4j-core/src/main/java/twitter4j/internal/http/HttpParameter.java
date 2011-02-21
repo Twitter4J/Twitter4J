@@ -1,29 +1,19 @@
 /*
-Copyright (c) 2007-2011, Yusuke Yamamoto
-All rights reserved.
+ * Copyright 2007 Yusuke Yamamoto
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the Yusuke Yamamoto nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY Yusuke Yamamoto ``AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL Yusuke Yamamoto BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 package twitter4j.internal.http;
 
 import java.io.File;
@@ -34,6 +24,7 @@ import java.util.List;
 
 /**
  * A data class representing HTTP Post parameter
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class HttpParameter implements Comparable, java.io.Serializable {
@@ -47,6 +38,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         this.name = name;
         this.value = value;
     }
+
     public HttpParameter(String name, File file) {
         this.name = name;
         this.file = file;
@@ -78,10 +70,11 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         this.value = String.valueOf(value);
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
-    public String getValue(){
+
+    public String getValue() {
         return value;
     }
 
@@ -89,15 +82,15 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         return file;
     }
 
-    public InputStream getFileBody(){
-    	return fileBody;
+    public InputStream getFileBody() {
+        return fileBody;
     }
 
-    public boolean isFile(){
+    public boolean isFile() {
         return null != file;
     }
 
-    public boolean hasFileBody(){
+    public boolean hasFileBody() {
         return null != fileBody;
     }
 
@@ -107,7 +100,6 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
     private static final String OCTET = "application/octet-stream";
 
     /**
-     * 
      * @return content-type
      */
     public String getContentType() {
@@ -165,7 +157,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
 
     public static boolean containsFile(HttpParameter[] params) {
         boolean containsFile = false;
-        if(null == params){
+        if (null == params) {
             return false;
         }
         for (HttpParameter param : params) {
@@ -176,7 +168,9 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         }
         return containsFile;
     }
-    /*package*/ static boolean containsFile(List<HttpParameter> params) {
+
+    /*package*/
+    static boolean containsFile(List<HttpParameter> params) {
         boolean containsFile = false;
         for (HttpParameter param : params) {
             if (param.isFile()) {
@@ -188,10 +182,11 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
     }
 
     public static HttpParameter[] getParameterArray(String name, String value) {
-        return new HttpParameter[]{new HttpParameter(name,value)};
+        return new HttpParameter[]{new HttpParameter(name, value)};
     }
+
     public static HttpParameter[] getParameterArray(String name, int value) {
-        return getParameterArray(name,String.valueOf(value));
+        return getParameterArray(name, String.valueOf(value));
     }
 
     public static HttpParameter[] getParameterArray(String name1, String value1
@@ -199,9 +194,10 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         return new HttpParameter[]{new HttpParameter(name1, value1)
                 , new HttpParameter(name2, value2)};
     }
+
     public static HttpParameter[] getParameterArray(String name1, int value1
             , String name2, int value2) {
-        return getParameterArray(name1,String.valueOf(value1),name2,String.valueOf(value2));
+        return getParameterArray(name1, String.valueOf(value1), name2, String.valueOf(value2));
     }
 
     @Override

@@ -1,42 +1,33 @@
 /*
-Copyright (c) 2007-2011, Yusuke Yamamoto
-All rights reserved.
+ * Copyright 2007 Yusuke Yamamoto
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the Yusuke Yamamoto nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY Yusuke Yamamoto ``AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL Yusuke Yamamoto BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 package twitter4j;
 
 import twitter4j.internal.http.HttpParameter;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class SearchAPITest extends TwitterTestBase {
 
     public SearchAPITest(String name) {
         super(name);
     }
+
     protected void setUp() throws Exception {
         super.setUp();
     }
@@ -44,24 +35,27 @@ public class SearchAPITest extends TwitterTestBase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
+
     public void testQuery() throws Exception {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Query query = new Query("test")
-                .until(format.format(new java.util.Date(System.currentTimeMillis() - 3600*24)));
+                .until(format.format(new java.util.Date(System.currentTimeMillis() - 3600 * 24)));
         HttpParameter[] params = query.asHttpParameterArray();
-        assertTrue(findParameter(params,"q"));
-        assertTrue(findParameter(params,"until"));
+        assertTrue(findParameter(params, "q"));
+        assertTrue(findParameter(params, "until"));
     }
-    private boolean findParameter(HttpParameter[] params, String paramName){
+
+    private boolean findParameter(HttpParameter[] params, String paramName) {
         boolean found = false;
-        for(HttpParameter param: params){
-            if(paramName.equals(param.getName())){
+        for (HttpParameter param : params) {
+            if (paramName.equals(param.getName())) {
                 found = true;
                 break;
             }
         }
         return found;
     }
+
     public void testSearch() throws Exception {
         String queryStr = "test";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -74,15 +68,15 @@ public class SearchAPITest extends TwitterTestBase {
         assertEquals(15, queryResult.getResultsPerPage());
         assertTrue(0 < queryResult.getCompletedIn());
         assertEquals(1, queryResult.getPage());
-        assertEquals(queryStr + " until:"+ dateStr, queryResult.getQuery());
+        assertEquals(queryStr + " until:" + dateStr, queryResult.getQuery());
 
         List<Tweet> tweets = queryResult.getTweets();
-        assertTrue(1<=tweets.size());
+        assertTrue(1 <= tweets.size());
         assertNotNull(tweets.get(0).getText());
         assertNotNull(tweets.get(0).getCreatedAt());
         assertNotNull("from user", tweets.get(0).getFromUser());
         assertTrue("fromUserId", -1 != tweets.get(0).getFromUserId());
-        assertTrue(-1 !=  tweets.get(0).getId());
+        assertTrue(-1 != tweets.get(0).getId());
 //        assertNotNull(tweets.get(0).getIsoLanguageCode());
         String profileImageURL = tweets.get(0).getProfileImageUrl();
         assertNotNull(profileImageURL);
@@ -110,7 +104,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());
         query.setQuery("from:al3x");
-        query.setGeoCode(new GeoLocation(37.78233252646689,-122.39301681518555) ,10,Query.KILOMETERS);
+        query.setGeoCode(new GeoLocation(37.78233252646689, -122.39301681518555), 10, Query.KILOMETERS);
         queryResult = unauthenticated.search(query);
         assertTrue(0 <= queryResult.getTweets().size());
 
@@ -123,7 +117,7 @@ public class SearchAPITest extends TwitterTestBase {
         QueryResult result = twitter1.search(query);
     }
 
-    public void testTrends() throws Exception{
+    public void testTrends() throws Exception {
         Trends trends;
         trends = unauthenticated.getTrends();
 
@@ -164,34 +158,34 @@ public class SearchAPITest extends TwitterTestBase {
 
         trendsList = unauthenticated.getDailyTrends();
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrends(trendsList,20);
+        assertTrends(trendsList, 20);
 
         trendsList = unauthenticated.getDailyTrends(new Date(), true);
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrends(trendsList,20);
+        assertTrends(trendsList, 20);
 
         trendsList = unauthenticated.getWeeklyTrends();
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrends(trendsList,30);
+        assertTrends(trendsList, 30);
 
         trendsList = unauthenticated.getWeeklyTrends(new Date(), true);
         assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertTrends(trendsList,30);
+        assertTrends(trendsList, 30);
     }
 
-    private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception{
+    private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception {
         Date trendAt = null;
-         for(Trends singleTrends : trendsArray){
-             assertEquals(expectedSize, singleTrends.getTrends().length);
-             if(null != trendAt){
-                 assertTrue(trendAt.before(singleTrends.getTrendAt()));
-             }
-             trendAt = singleTrends.getTrendAt();
-             for (int i = 0; i < singleTrends.getTrends().length; i++) {
-                 assertNotNull(singleTrends.getTrends()[i].getName());
-                 assertNull(singleTrends.getTrends()[i].getUrl());
-                 assertNotNull(singleTrends.getTrends()[i].getQuery());
-             }
-         }
+        for (Trends singleTrends : trendsArray) {
+            assertEquals(expectedSize, singleTrends.getTrends().length);
+            if (null != trendAt) {
+                assertTrue(trendAt.before(singleTrends.getTrendAt()));
+            }
+            trendAt = singleTrends.getTrendAt();
+            for (int i = 0; i < singleTrends.getTrends().length; i++) {
+                assertNotNull(singleTrends.getTrends()[i].getName());
+                assertNull(singleTrends.getTrends()[i].getUrl());
+                assertNotNull(singleTrends.getTrends()[i].getQuery());
+            }
+        }
     }
 }

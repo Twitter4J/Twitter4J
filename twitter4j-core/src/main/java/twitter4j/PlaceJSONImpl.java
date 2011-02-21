@@ -1,29 +1,19 @@
 /*
-Copyright (c) 2007-2011, Yusuke Yamamoto
-All rights reserved.
+ * Copyright 2007 Yusuke Yamamoto
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the Yusuke Yamamoto nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY Yusuke Yamamoto ``AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL Yusuke Yamamoto BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
@@ -64,15 +54,18 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         DataObjectFactoryUtil.clearThreadLocalMap();
         DataObjectFactoryUtil.registerJSONObject(this, json);
     }
+
     PlaceJSONImpl(JSONObject json, HttpResponse res) throws TwitterException {
         super(res);
         init(json);
     }
+
     PlaceJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }
-    private void init(JSONObject json) throws TwitterException{
+
+    private void init(JSONObject json) throws TwitterException {
         try {
             name = getUnescapedString("name", json);
             streetAddress = getUnescapedString("street_address", json);
@@ -92,32 +85,32 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
                 boundingBoxCoordinates = null;
             }
 
-            if(!json.isNull("geometry")){
+            if (!json.isNull("geometry")) {
                 JSONObject geometryJSON = json.getJSONObject("geometry");
                 geometryType = getRawString("type", geometryJSON);
                 JSONArray array = geometryJSON.getJSONArray("coordinates");
-                if(geometryType.equals("Point")){
-                  geometryCoordinates = new GeoLocation[1][1];
-                  geometryCoordinates[0][0] = new GeoLocation(array.getDouble(0), array.getDouble(1));
-                }else if (geometryType.equals("Polygon")){
-                  geometryCoordinates = GeoLocation.coordinatesAsGeoLocationArray(array);
-                }else{
-                  // MultiPolygon currently unsupported.
-                  geometryType = null;
-                  geometryCoordinates = null;
+                if (geometryType.equals("Point")) {
+                    geometryCoordinates = new GeoLocation[1][1];
+                    geometryCoordinates[0][0] = new GeoLocation(array.getDouble(0), array.getDouble(1));
+                } else if (geometryType.equals("Polygon")) {
+                    geometryCoordinates = GeoLocation.coordinatesAsGeoLocationArray(array);
+                } else {
+                    // MultiPolygon currently unsupported.
+                    geometryType = null;
+                    geometryCoordinates = null;
                 }
-            }else{
+            } else {
                 geometryType = null;
                 geometryCoordinates = null;
             }
 
-            if(!json.isNull("contained_within")){
+            if (!json.isNull("contained_within")) {
                 JSONArray containedWithInJSON = json.getJSONArray("contained_within");
                 containedWithIn = new Place[containedWithInJSON.length()];
-                for(int i=0;i<containedWithInJSON.length();i++){
-                containedWithIn[i] = new PlaceJSONImpl(containedWithInJSON.getJSONObject(i));
+                for (int i = 0; i < containedWithInJSON.length(); i++) {
+                    containedWithIn[i] = new PlaceJSONImpl(containedWithInJSON.getJSONObject(i));
                 }
-            }else{
+            } else {
                 containedWithIn = null;
             }
         } catch (JSONException jsone) {
@@ -129,7 +122,8 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         return this.id.compareTo(that.getId());
     }
 
-    /*package*/ static ResponseList<Place> createPlaceList(HttpResponse res) throws TwitterException {
+    /*package*/
+    static ResponseList<Place> createPlaceList(HttpResponse res) throws TwitterException {
         JSONObject json = null;
         try {
             json = res.asJSONObject();
@@ -139,7 +133,8 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         }
     }
 
-    /*package*/ static ResponseList<Place> createPlaceList(JSONArray list, HttpResponse res) throws TwitterException {
+    /*package*/
+    static ResponseList<Place> createPlaceList(JSONArray list, HttpResponse res) throws TwitterException {
         DataObjectFactoryUtil.clearThreadLocalMap();
         try {
             int size = list.length();
@@ -160,43 +155,55 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         }
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
-    public String getStreetAddress(){
+
+    public String getStreetAddress() {
         return streetAddress;
     }
-    public String getCountryCode(){
+
+    public String getCountryCode() {
         return countryCode;
     }
-    public String getId(){
+
+    public String getId() {
         return id;
     }
-    public String getCountry(){
+
+    public String getCountry() {
         return country;
     }
-    public String getPlaceType(){
+
+    public String getPlaceType() {
         return placeType;
     }
-    public String getURL(){
+
+    public String getURL() {
         return url;
     }
-    public String getFullName(){
+
+    public String getFullName() {
         return fullName;
     }
-    public String getBoundingBoxType(){
+
+    public String getBoundingBoxType() {
         return boundingBoxType;
     }
-    public GeoLocation[][] getBoundingBoxCoordinates(){
+
+    public GeoLocation[][] getBoundingBoxCoordinates() {
         return boundingBoxCoordinates;
     }
-    public String getGeometryType(){
+
+    public String getGeometryType() {
         return geometryType;
     }
-    public GeoLocation[][] getGeometryCoordinates(){
+
+    public GeoLocation[][] getGeometryCoordinates() {
         return geometryCoordinates;
     }
-    public Place[] getContainedWithIn(){
+
+    public Place[] getContainedWithIn() {
         return containedWithIn;
     }
 

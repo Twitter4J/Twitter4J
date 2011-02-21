@@ -1,29 +1,19 @@
 /*
-Copyright (c) 2007-2011, Yusuke Yamamoto
-All rights reserved.
+ * Copyright 2007 Yusuke Yamamoto
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the Yusuke Yamamoto nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY Yusuke Yamamoto ``AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL Yusuke Yamamoto BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 package twitter4j.json;
 
 import twitter4j.*;
@@ -31,7 +21,6 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import java.lang.Object;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -63,6 +52,7 @@ public final class DataObjectFactory {
     private static final Constructor<RelatedResults> relatedResultsConstructor;
     private static final Constructor<StatusDeletionNotice> statusDeletionNoticeConstructor;
     private static final Constructor<AccountTotals> accountTotalsConstructor;
+
     static {
         try {
             statusConstructor = (Constructor<Status>) Class.forName("twitter4j.StatusJSONImpl").getDeclaredConstructor(JSONObject.class);
@@ -109,7 +99,7 @@ public final class DataObjectFactory {
 
             relatedResultsConstructor = (Constructor<RelatedResults>) Class.forName("twitter4j.RelatedResultsJSONImpl").getDeclaredConstructor(JSONArray.class);
             relatedResultsConstructor.setAccessible(true);
-            
+
             statusDeletionNoticeConstructor = (Constructor<StatusDeletionNotice>) Class.forName("twitter4j.StatusDeletionNoticeImpl").getDeclaredConstructor(JSONObject.class);
             statusDeletionNoticeConstructor.setAccessible(true);
 
@@ -151,6 +141,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a Status object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return Status
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -173,6 +164,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a User object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return User
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -195,6 +187,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs an AccountTotals object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return AccountTotals
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -217,6 +210,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a Tweet object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return Tweet
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -239,6 +233,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a Relationship object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return Relationship
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -261,6 +256,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a Place object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return Place
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -283,6 +279,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a SavedSearch object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return SavedSearch
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -305,6 +302,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a Trend object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return Trend
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -327,6 +325,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a Trends object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return Trends
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -346,6 +345,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a IDs object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return IDs
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -365,6 +365,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a RateLimitStatus object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return RateLimitStatus
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -387,6 +388,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a Category object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return Category
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -409,6 +411,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a DirectMessage object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return DirectMessage
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -431,6 +434,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a Location object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return Location
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -453,6 +457,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a UserList object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return UserList
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -475,6 +480,7 @@ public final class DataObjectFactory {
 
     /**
      * Constructs a RelatedResults object from rawJSON string.
+     *
      * @param rawJSON raw JSON form as String
      * @return RelatedResults
      * @throws TwitterException when provided string is not a valid JSON string.
@@ -507,9 +513,10 @@ public final class DataObjectFactory {
      * NOTE: the raw JSONObject will be returned in cases where there isn't
      * a discrete respective object type that can be constructed.  That way,
      * the caller can at least have access to the JSON itself.
+     *
      * @param rawJSON raw JSON form as String
      * @return the respective constructed object, or the JSONObject in the
-     * case where we cannot determine the object type.
+     *         case where we cannot determine the object type.
      * @throws TwitterException when provided string is not a valid JSON string.
      * @since Twitter4J 2.1.9
      */
@@ -551,6 +558,7 @@ public final class DataObjectFactory {
     /**
      * clear raw JSON forms associated with the current thread.<br>
      * Currently this method is called indirectly by twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
+     *
      * @since Twitter4J 2.1.7
      */
     static void clearThreadLocalMap() {
@@ -560,6 +568,7 @@ public final class DataObjectFactory {
     /**
      * associate a raw JSON form to the current thread<br>
      * Currently this method is called indirectly by twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
+     *
      * @since Twitter4J 2.1.7
      */
     static <T> T registerJSONObject(T key, Object json) {
