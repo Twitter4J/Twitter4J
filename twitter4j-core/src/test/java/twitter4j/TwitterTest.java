@@ -60,14 +60,14 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testSerializability() throws Exception {
-        Twitter twitter = new TwitterFactory().getInstance("foo", "bar");
-        Twitter deserialized = (Twitter) assertDeserializedFormIsEqual(twitter);
+        TwitterImpl twitter = (TwitterImpl) new TwitterFactory().getInstance("foo", "bar");
+        TwitterImpl deserialized = (TwitterImpl) assertDeserializedFormIsEqual(twitter);
 
         assertEquals(deserialized.getScreenName(), twitter.getScreenName());
         assertEquals(deserialized.auth, twitter.auth);
 
-        twitter = new TwitterFactory().getInstance();
-        deserialized = (Twitter) assertDeserializedFormIsEqual(twitter);
+        twitter = (TwitterImpl) new TwitterFactory().getInstance();
+        deserialized = (TwitterImpl) assertDeserializedFormIsEqual(twitter);
         assertEquals(deserialized.auth, twitter.auth);
     }
 

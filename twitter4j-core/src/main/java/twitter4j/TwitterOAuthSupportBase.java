@@ -111,15 +111,6 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
     public abstract void setOAuthAccessToken(AccessToken accessToken);
 
     /**
-     * tests if the instance is authenticated by Basic
-     *
-     * @return returns true if the instance is authenticated by Basic
-     */
-    public boolean isOAuthEnabled() {
-        return auth instanceof OAuthAuthorization && auth.isEnabled();
-    }
-
-    /**
      * Registers a RateLimitStatusListener for account associated rate limits
      *
      * @param listener the listener to be added

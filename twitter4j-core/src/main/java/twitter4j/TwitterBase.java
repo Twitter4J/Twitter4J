@@ -57,15 +57,6 @@ abstract class TwitterBase implements java.io.Serializable {
         this.auth = auth;
     }
 
-    /**
-     * tests if the instance is authenticated by Basic
-     *
-     * @return returns true if the instance is authenticated by Basic
-     */
-    public final boolean isBasicAuthEnabled() {
-        return auth instanceof BasicAuthorization && auth.isEnabled();
-    }
-
     protected final void ensureAuthorizationEnabled() {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(

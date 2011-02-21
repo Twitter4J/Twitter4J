@@ -104,13 +104,11 @@ public final class TwitterFactory implements java.io.Serializable {
         return getInstance(conf, new BasicAuthorization(screenName, password));
     }
 
-    /**
-     */
     public Twitter getInstance(Authorization auth) {
         return getInstance(conf, auth);
     }
 
     private Twitter getInstance(Configuration conf, Authorization auth) {
-        return new Twitter(conf, auth);
+        return new TwitterImpl(conf, auth);
     }
 }

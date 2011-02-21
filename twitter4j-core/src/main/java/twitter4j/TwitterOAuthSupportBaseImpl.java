@@ -162,15 +162,6 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
         return getOAuth().getOAuthAccessToken(screenName, password);
     }
 
-    /**
-     * tests if the instance is authenticated by Basic
-     *
-     * @return returns true if the instance is authenticated by Basic
-     */
-    public boolean isOAuthEnabled() {
-        return auth instanceof OAuthAuthorization && auth.isEnabled();
-    }
-
     /* OAuth support methods */
 
     private OAuthSupport getOAuth() {

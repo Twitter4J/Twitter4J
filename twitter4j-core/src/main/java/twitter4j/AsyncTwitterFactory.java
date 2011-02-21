@@ -34,7 +34,6 @@ import twitter4j.http.OAuthAuthorization;
  * @since Twitter4J 2.1.0
  */
 public final class AsyncTwitterFactory implements java.io.Serializable {
-    private final TwitterListener listener;
     private final Configuration conf;
     private static final long serialVersionUID = -2565686715640816219L;
 
@@ -56,7 +55,6 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
             throw new NullPointerException("configuration cannot be null");
         }
         this.conf = conf;
-        this.listener = null;
     }
 
     /**
@@ -67,7 +65,6 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
      */
     public AsyncTwitterFactory(String configTreePath) {
         this.conf = ConfigurationContext.getInstance(configTreePath);
-        this.listener = null;
     }
 
     /**
@@ -119,18 +116,10 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
     }
 
     private AsyncTwitter getInstance(Configuration conf, Authorization auth) {
-        AsyncTwitter twitter = new AsyncTwitter(conf, auth);
-        if (null != listener) {
-            twitter.addListener(listener);
-        }
-        return twitter;
+        return new AsyncTwitterImpl(conf, auth);
     }
 
     private AsyncTwitter getInstance(Configuration conf) {
-        AsyncTwitter asyncTwitter = new AsyncTwitter(conf, AuthorizationFactory.getInstance(conf));
-        if (null != listener) {
-            asyncTwitter.addListener(listener);
-        }
-        return asyncTwitter;
+        return new AsyncTwitterImpl(conf, AuthorizationFactory.getInstance(conf));
     }
 }

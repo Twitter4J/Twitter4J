@@ -39,7 +39,6 @@ public class ApacheHttpClientTest extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        twitterAPI1.shutdown();
     }
 
     public void testOAuth() throws Exception {

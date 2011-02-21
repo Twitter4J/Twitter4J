@@ -41,16 +41,12 @@ public class AuthorizationTest extends TwitterTestBase {
 
     public void testAnonymousInstance() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
-        assertFalse(twitter.isBasicAuthEnabled());
-        assertFalse(twitter.isOAuthEnabled());
         Authorization auth = twitter.getAuthorization();
         assertTrue(auth instanceof NullAuthorization);
     }
 
     public void testBasicInstance() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance(id1.screenName, id1.password);
-        assertTrue(twitter.isBasicAuthEnabled());
-        assertFalse(twitter.isOAuthEnabled());
         Authorization auth = twitter.getAuthorization();
         assertTrue(auth instanceof BasicAuthorization);
     }
@@ -63,8 +59,6 @@ public class AuthorizationTest extends TwitterTestBase {
 
         Twitter twitter = new TwitterFactory().getInstance();
         twitter.setOAuthConsumer(consumerKey, consumerSecret);
-        assertFalse(twitter.isBasicAuthEnabled());
-        assertFalse(twitter.isOAuthEnabled());
         try {
             twitter.setOAuthConsumer(consumerSecret, consumerKey);
             fail("should throw IllegalStateException");

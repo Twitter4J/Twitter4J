@@ -69,7 +69,7 @@ public final class TwitterStreamFactory implements java.io.Serializable {
      * @return default instance
      */
     public TwitterStream getInstance() {
-        return new TwitterStream(conf);
+        return new TwitterStreamImpl(conf);
     }
 
     /**
@@ -112,6 +112,6 @@ public final class TwitterStreamFactory implements java.io.Serializable {
     }
 
     private TwitterStream getInstance(Configuration conf, Authorization auth) {
-        return new TwitterStream(conf, auth);
+        return new TwitterStreamImpl(conf, auth);
     }
 }
