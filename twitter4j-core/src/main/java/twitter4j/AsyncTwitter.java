@@ -28,7 +28,6 @@ package twitter4j;
 
 import twitter4j.api.*;
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
 import twitter4j.http.RequestToken;
@@ -81,19 +80,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     private final Twitter twitter;
     private final List<TwitterListener> listeners = new ArrayList<TwitterListener>();
 
-    /**
-     * Creates a basic authenticated AsyncTwitter instance.
-     *
-     * @param screenName screen name
-     * @param password   password
-     * @param listener   listener
-     * @deprecated use {@link AsyncTwitterFactory#getInstance(String, String)} instead.
-     */
-    public AsyncTwitter(String screenName, String password, TwitterListener listener) {
-        super(ConfigurationContext.getInstance(), screenName, password);
-        twitter = new TwitterFactory(ConfigurationContext.getInstance()).getInstance(screenName, password);
-        addListener(listener);
-    }
 
     /*package*/
     AsyncTwitter(Configuration conf, Authorization auth) {
@@ -103,9 +89,10 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
 
     /**
      * Adds twitter listener
+     *
      * @param listener TwitterListener
      */
-    public void addListener(TwitterListener listener){
+    public void addListener(TwitterListener listener) {
         this.listeners.add(listener);
     }
 
@@ -376,7 +363,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
             public void invoke(List<TwitterListener> listeners)
                     throws TwitterException {
                 ResponseList<Status> statuses = twitter.getUserTimeline(screenName,
-                                paging);
+                        paging);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserTimeline(statuses);
@@ -695,57 +682,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void updateStatus(final String statusText, final GeoLocation location) {
-        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                Status status = twitter.updateStatus(statusText, location);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.updatedStatus(status);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void updateStatus(final String statusText, final long inReplyToStatusId) {
-        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                Status status = twitter.updateStatus(statusText, inReplyToStatusId);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.updatedStatus(status);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void updateStatus(final String statusText, final long inReplyToStatusId, final GeoLocation location) {
-        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                Status status = twitter.updateStatus(statusText, inReplyToStatusId, location);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.updatedStatus(status);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void updateStatus(final StatusUpdate latestStatus) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -831,44 +767,10 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getRetweetedBy(final long statusId, final Paging paging) {
-        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<User> users = twitter.getRetweetedBy(statusId, paging);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotRetweetedBy(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getRetweetedByIDs(final long statusId) {
         getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY_IDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 IDs ids = twitter.getRetweetedByIDs(statusId);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotRetweetedByIDs(ids);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getRetweetedByIDs(final long statusId, final Paging paging) {
-        getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY_IDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                IDs ids = twitter.getRetweetedByIDs(statusId, paging);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotRetweetedByIDs(ids);
@@ -1071,23 +973,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getFriendsStatuses() {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getFriendsStatuses();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFriendsStatuses(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getFriendsStatuses(final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1100,20 +985,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
                 }
             }
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFriendsStatuses(final String screenName) {
-        getFriendsStatuses(screenName, -1l);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFriendsStatuses(final int userId) {
-        getFriendsStatuses(userId, -1l);
     }
 
     /**
@@ -1153,13 +1024,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getFollowersStatuses() {
-        getFollowersStatuses(-1l);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getFollowersStatuses(final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_STATUSES, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1172,20 +1036,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
                 }
             }
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFollowersStatuses(final String screenName) {
-        getFollowersStatuses(screenName, -1l);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFollowersStatuses(final int userId) {
-        getFollowersStatuses(userId, -1l);
     }
 
     /**
@@ -1971,7 +1821,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         getDispatcher().invokeLater(new AsyncTask(UPDATE_FRIENDSHIP, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 Relationship relationship = twitter.updateFriendship(screenName
-                                , enableDeviceNotification, retweet);
+                        , enableDeviceNotification, retweet);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedFriendship(relationship);
@@ -1990,7 +1840,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         getDispatcher().invokeLater(new AsyncTask(UPDATE_FRIENDSHIP, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 Relationship relationship = twitter.updateFriendship(userId
-                                , enableDeviceNotification, retweet);
+                        , enableDeviceNotification, retweet);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedFriendship(relationship);
@@ -2002,23 +1852,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     }
 
     /* Social Graph Methods */
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFriendsIDs() {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                IDs ids = twitter.getFriendsIDs();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFriendsIDs(ids);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
 
     /**
      * {@inheritDoc}
@@ -2041,44 +1874,10 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getFriendsIDs(final int userId) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                IDs ids = twitter.getFriendsIDs(userId);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFriendsIDs(ids);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getFriendsIDs(final int userId, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 IDs ids = twitter.getFriendsIDs(userId, cursor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFriendsIDs(ids);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFriendsIDs(final String screenName) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_IDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                IDs ids = twitter.getFriendsIDs(screenName);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFriendsIDs(ids);
@@ -2110,23 +1909,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getFollowersIDs() {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                IDs ids = twitter.getFollowersIDs();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFollowersIDs(ids);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getFollowersIDs(final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2144,44 +1926,10 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     /**
      * {@inheritDoc}
      */
-    public void getFollowersIDs(final int userId) {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                IDs ids = twitter.getFollowersIDs(userId);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFollowersIDs(ids);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getFollowersIDs(final int userId, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 IDs ids = twitter.getFollowersIDs(userId, cursor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFollowersIDs(ids);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFollowersIDs(final String screenName) {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_IDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                IDs ids = twitter.getFollowersIDs(screenName);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFollowersIDs(ids);
@@ -2273,9 +2021,9 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
             public void invoke(List<TwitterListener> listeners)
                     throws TwitterException {
                 User user = twitter.updateProfileColors(
-                                profileBackgroundColor, profileTextColor,
-                                profileLinkColor, profileSidebarFillColor,
-                                profileSidebarBorderColor);
+                        profileBackgroundColor, profileTextColor,
+                        profileLinkColor, profileSidebarFillColor,
+                        profileSidebarBorderColor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedProfileColors(user);
@@ -2812,24 +2560,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         });
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getNearbyPlaces(final GeoQuery query) {
-        getDispatcher().invokeLater(new AsyncTask(NEAR_BY_PLACES, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<Place> places = twitter.getNearbyPlaces(query);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotNearByPlaces(places);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -3060,34 +2790,9 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
-     *
-     * @deprecated Use {@link AsyncTwitterFactory#getInstance(Authorization)}
      */
-    @Override
-    public AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        return twitter.getOAuthAccessToken(token, tokenSecret);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AccessToken getOAuthAccessToken(String token, String tokenSecret, String pin) throws TwitterException {
-        return twitter.getOAuthAccessToken(new RequestToken(token, tokenSecret), pin);
-    }
-
-    /**
-     * Sets the access token
-     *
-     * @param token       access token
-     * @param tokenSecret access token secret
-     * @throws IllegalStateException when AccessToken has already been retrieved or set
-     * @since Twitter 2.0.0
-     * @deprecated Use {@link AsyncTwitterFactory#getInstance(Authorization)}
-     */
-    @Override
-    public void setOAuthAccessToken(String token, String tokenSecret) {
-        twitter.setOAuthAccessToken(token, tokenSecret);
+    public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
+        return twitter.getOAuthAccessToken(screenName, password);
     }
 
     abstract class AsyncTask implements Runnable {

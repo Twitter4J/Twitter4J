@@ -40,7 +40,6 @@ import java.util.Properties;
 class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean debug;
-    private String source;
     private String userAgent;
     private String user;
     private String password;
@@ -126,7 +125,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected ConfigurationBase() {
         setDebug(false);
-        setSource("Twitter4J");
         setUser(null);
         setPassword(null);
         setUseSSL(false);
@@ -212,15 +210,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         initRequestHeaders();
     }
 
-    public final String getSource() {
-        return source;
-    }
-
-    protected final void setSource(String source) {
-        this.source = source;
-        initRequestHeaders();
-    }
-
     public final String getUser() {
         return user;
     }
@@ -266,7 +255,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         requestHeaders = new HashMap<String, String>();
         requestHeaders.put("X-Twitter-Client-Version", getClientVersion());
         requestHeaders.put("X-Twitter-Client-URL", getClientURL());
-        requestHeaders.put("X-Twitter-Client", getSource());
+        requestHeaders.put("X-Twitter-Client", "Twitter4J");
 
         requestHeaders.put("User-Agent", getUserAgent());
         if (gzipEnabled) {
@@ -658,8 +647,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (searchBaseURL != null ? !searchBaseURL.equals(that.searchBaseURL) : that.searchBaseURL != null)
             return false;
         if (siteStreamBaseURL != null ? !siteStreamBaseURL.equals(that.siteStreamBaseURL) : that.siteStreamBaseURL != null)
-            return false;
-        if (source != null ? !source.equals(that.source) : that.source != null)
             return false;
         if (streamBaseURL != null ? !streamBaseURL.equals(that.streamBaseURL) : that.streamBaseURL != null)
             return false;

@@ -38,12 +38,14 @@ import twitter4j.TwitterStreamFactory;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */
-public class PrintLinksStream  extends StatusAdapter {
+public class PrintLinksStream extends StatusAdapter {
     /**
      * Main entry of this application.
+     *
      * @param args
      */
-    public static void main(String[] args)throws TwitterException {
+    public static void main(String[] args) throws TwitterException {
+        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
         StatusListener listener = new StatusListener() {
             public void onStatus(Status status) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
@@ -65,7 +67,7 @@ public class PrintLinksStream  extends StatusAdapter {
                 ex.printStackTrace();
             }
         };
-        TwitterStream twitterStream = new TwitterStreamFactory(listener).getInstance();
+        twitterStream.addListener(listener);
         twitterStream.links(0);
     }
 }

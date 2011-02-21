@@ -33,17 +33,6 @@ import twitter4j.TwitterException;
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
 public interface FriendsFollowersMethods {
-    /**
-     * Returns an array of numeric IDs for every user the authenticating user is following.
-     * <br>This method calls http://api.twitter.com/1/friends/ids.json
-     *
-     * @return an array of numeric IDs for every user the authenticating user is following
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated use {@link #getFriendsIDs(long)} instead
-     */
-    IDs getFriendsIDs() throws TwitterException;
 
     /**
      * Returns an array of numeric IDs for every user the authenticating user is following.
@@ -56,20 +45,6 @@ public interface FriendsFollowersMethods {
      * @since Twitter4J 2.0.10
      */
     IDs getFriendsIDs(long cursor) throws TwitterException;
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is following.<br>
-     * all IDs are attempted to be returned, but large sets of IDs will likely fail with timeout errors.
-     * <br>This method calls http://api.twitter.com/1/friends/ids.json
-     *
-     * @param userId Specifies the ID of the user for whom to return the friends list.
-     * @return an array of numeric IDs for every user the specified user is following
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated use {@link #getFriendsIDs(int, long)} instead
-     */
-    IDs getFriendsIDs(int userId) throws TwitterException;
 
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
@@ -89,19 +64,6 @@ public interface FriendsFollowersMethods {
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
      *
      * @param screenName Specifies the screen name of the user for whom to return the friends list.
-     * @return an array of numeric IDs for every user the specified user is following
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated use {@link #getFriendsIDs(String, long)} instead
-     */
-    IDs getFriendsIDs(String screenName) throws TwitterException;
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is following.
-     * <br>This method calls http://api.twitter.com/1/friends/ids.json
-     *
-     * @param screenName Specifies the screen name of the user for whom to return the friends list.
      * @param cursor     Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -109,18 +71,6 @@ public interface FriendsFollowersMethods {
      * @since Twitter4J 2.0.10
      */
     IDs getFriendsIDs(String screenName, long cursor) throws TwitterException;
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is followed by.
-     * <br>This method calls http://api.twitter.com/1/followers/ids.json
-     *
-     * @return The ID or screen_name of the user to retrieve the friends ID list for.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated use {@link #getFollowersIDs(long)} instead
-     */
-    IDs getFollowersIDs() throws TwitterException;
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
@@ -139,19 +89,6 @@ public interface FriendsFollowersMethods {
      * <br>This method calls http://api.twitter.com/1/followers/ids.json
      *
      * @param userId Specifies the ID of the user for whom to return the followers list.
-     * @return The ID or screen_name of the user to retrieve the friends ID list for.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated use {@link #getFollowersIDs(int, long)} instead
-     */
-    IDs getFollowersIDs(int userId) throws TwitterException;
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is followed by.
-     * <br>This method calls http://api.twitter.com/1/followers/ids.json
-     *
-     * @param userId Specifies the ID of the user for whom to return the followers list.
      * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -159,19 +96,6 @@ public interface FriendsFollowersMethods {
      * @since Twitter4J 2.0.10
      */
     IDs getFollowersIDs(int userId, long cursor) throws TwitterException;
-
-    /**
-     * Returns an array of numeric IDs for every user the specified user is followed by.
-     * <br>This method calls http://api.twitter.com/1/followers/ids.json
-     *
-     * @param screenName Specifies the screen name of the user for whom to return the followers list.
-     * @return The ID or screen_name of the user to retrieve the friends ID list for.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated use {@link #getFollowersIDs(String, long)} instead
-     */
-    IDs getFollowersIDs(String screenName) throws TwitterException;
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.

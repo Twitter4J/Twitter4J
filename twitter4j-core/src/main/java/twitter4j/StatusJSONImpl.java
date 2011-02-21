@@ -33,7 +33,6 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -45,6 +44,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
 /**
  * A data class representing one single status of a user.
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
@@ -68,11 +68,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private Annotations annotations = null;
 
     private Status retweetedStatus;
-    private User[] userMentions;
     private UserMentionEntity[] userMentionEntities;
-    private URL[] urls;
     private URLEntity[] urlEntities;
-    private String[] hashtags;
     private HashtagEntity[] hashtagEntities;
 
     private static final long serialVersionUID = 1608000492860584608L;
@@ -131,14 +128,14 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
             try {
                 JSONArray contributorsArray = json.getJSONArray("contributors");
                 contributors = new String[contributorsArray.length()];
-                for(int i=0;i<contributorsArray.length();i++){
+                for (int i = 0; i < contributorsArray.length(); i++) {
                     contributors[i] = contributorsArray.getString(i);
                 }
             } catch (JSONException ignore) {
                 ignore.printStackTrace();
                 logger.warn("failed to parse contributors:" + json);
             }
-        } else{
+        } else {
             contributors = null;
         }
         if (!json.isNull("entities")) {
@@ -147,29 +144,23 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
                 JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
                 int len = userMentionsArray.length();
-                userMentions = new User[len];
                 userMentionEntities = new UserMentionEntity[len];
-                for(int i=0;i<len;i++){
+                for (int i = 0; i < len; i++) {
                     userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
-                    userMentions[i] = new UserJSONImpl(userMentionsArray.getJSONObject(i));
                 }
 
                 JSONArray urlsArray = entities.getJSONArray("urls");
                 len = urlsArray.length();
-                urls = new URL[len];
                 urlEntities = new URLEntity[len];
-                for(int i=0;i<len;i++){
+                for (int i = 0; i < len; i++) {
                     urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
-                    urls[i] = urlEntities[i].getURL();
                 }
 
                 JSONArray hashtagsArray = entities.getJSONArray("hashtags");
                 len = hashtagsArray.length();
-                hashtags = new String[len];
                 hashtagEntities = new HashtagEntity[len];
-                for(int i=0;i<len;i++){
+                for (int i = 0; i < len; i++) {
                     hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
-                    hashtags[i] = hashtagsArray.getJSONObject(i).getString("text");
                 }
             } catch (JSONException ignore) {
             }
@@ -253,14 +244,14 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public GeoLocation getGeoLocation(){
+    public GeoLocation getGeoLocation() {
         return geoLocation;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Place getPlace(){
+    public Place getPlace() {
         return place;
     }
 
@@ -272,14 +263,14 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     }
 
 
-	/**
+    /**
      * {@inheritDoc}
      */
     public Annotations getAnnotations() {
-		return annotations;
-	}
+        return annotations;
+    }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     public boolean isFavorited() {
@@ -299,7 +290,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public boolean isRetweet(){
+    public boolean isRetweet() {
         return null != retweetedStatus;
     }
 
@@ -327,22 +318,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public User[] getUserMentions() {
-        return userMentions;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public UserMentionEntity[] getUserMentionEntities() {
         return userMentionEntities;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public URL[] getURLs() {
-        return urls;
     }
 
     /**
@@ -355,18 +332,12 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public String[] getHashtags() {
-        return hashtags;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public HashtagEntity[] getHashtagEntities() {
         return hashtagEntities;
     }
 
-    /*package*/ static ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
+    /*package*/
+    static ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
         try {
             DataObjectFactoryUtil.clearThreadLocalMap();
             JSONArray list = res.asJSONArray();
@@ -422,11 +393,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 ", contributors=" + (contributors == null ? null : Arrays.asList(contributors)) +
                 ", annotations=" + annotations +
                 ", retweetedStatus=" + retweetedStatus +
-                ", userMentions=" + (userMentions == null ? null : Arrays.asList(userMentions)) +
                 ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
-                ", urls=" + (urls == null ? null : Arrays.asList(urls)) +
                 ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
-                ", hashtags=" + (hashtags == null ? null : Arrays.asList(hashtags)) +
                 ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
                 ", user=" + user +
                 '}';

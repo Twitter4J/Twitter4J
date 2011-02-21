@@ -188,9 +188,9 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         boolean sawURL, sawMention, sawHashtag;
         do {
             waitForStatus();
-            sawURL = status.getURLs().length > 0;
-            sawMention = status.getUserMentions().length > 0;
-            sawHashtag = status.getHashtags().length > 0;
+            sawURL = status.getURLEntities().length > 0;
+            sawMention = status.getUserMentionEntities().length > 0;
+            sawHashtag = status.getHashtagEntities().length > 0;
         } while (!sawURL || !sawMention || !sawHashtag);
 
         assertNull(ex);
@@ -216,7 +216,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     public void testUnAuthorizedStreamMethods() throws Exception {
         try {
-            twitterStream = new TwitterStream();
+            twitterStream = new TwitterStreamFactory().getInstance();
             StatusStream stream = twitterStream.getFirehoseStream(0);
             fail();
         } catch (IllegalStateException ise) {
@@ -224,8 +224,8 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
         }
         try {
-            twitterStream = new TwitterStream();
-            StatusStream stream = twitterStream.getFilterStream(0, new int[]{6358482}, null);
+            twitterStream = new TwitterStreamFactory().getInstance();
+            StatusStream stream = twitterStream.getFilterStream(new FilterQuery(new int[]{6358482}));
             fail();
         } catch (IllegalStateException ise) {
         } catch (TwitterException te) {

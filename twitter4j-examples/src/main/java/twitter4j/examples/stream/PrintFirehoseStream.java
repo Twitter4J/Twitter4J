@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package twitter4j.examples.stream;
 
 import twitter4j.Status;
-import twitter4j.StatusAdapter;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
 import twitter4j.TwitterException;
@@ -45,6 +44,7 @@ public class PrintFirehoseStream {
      * @param args
      */
     public static void main(String[] args) throws TwitterException {
+        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
         StatusListener listener = new StatusListener() {
             public void onStatus(Status status) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
@@ -66,7 +66,7 @@ public class PrintFirehoseStream {
                 ex.printStackTrace();
             }
         };
-        TwitterStream twitterStream = new TwitterStreamFactory(listener).getInstance();
+        twitterStream.addListener(listener);
         twitterStream.firehose(0);
     }
 }

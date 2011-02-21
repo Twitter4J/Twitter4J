@@ -55,7 +55,9 @@ public final class AsyncUpdate {
             System.out.println("Usage: java twitter4j.examples.AsyncUpdate text");
             System.exit(-1);
         }
-        AsyncTwitterFactory factory = new AsyncTwitterFactory(new TwitterAdapter() {
+        AsyncTwitterFactory factory = new AsyncTwitterFactory();
+        AsyncTwitter twitter = factory.getInstance();
+        twitter.addListener(new TwitterAdapter() {
             @Override
             public void updatedStatus(Status status) {
                 System.out.println("Successfully updated the status to [" +
@@ -80,7 +82,6 @@ public final class AsyncUpdate {
                 }
             }
         });
-        AsyncTwitter twitter = factory.getInstance();
         twitter.updateStatus(args[0]);
         synchronized (LOCK) {
             LOCK.wait();

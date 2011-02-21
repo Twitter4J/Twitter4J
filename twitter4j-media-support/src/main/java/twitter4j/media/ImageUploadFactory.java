@@ -115,7 +115,7 @@ public class ImageUploadFactory {
      * @return ImageUploader
      */
     public ImageUpload getInstance(MediaProvider mediaProvider) {
-        Authorization authorization = AuthorizationFactory.getInstance(conf, true);
+        Authorization authorization = AuthorizationFactory.getInstance(conf);
         return getInstance(mediaProvider, authorization);
     }
 

@@ -128,16 +128,6 @@ public interface UserMethodsAsync {
     void getProfileImage(String screenName, ProfileImage.ImageSize size);
 
     /**
-     * Returns the specified user's friends, each with current status inline.
-     * <br>This method calls http://api.twitter.com/1/statuses/friends
-     *
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
-     * @since Twitter4J 2.0.9
-     * @deprecated use {@link #getFriendsStatuses(long)} instead
-     */
-    void getFriendsStatuses();
-
-    /**
      * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
      * <br>This method calls http://api.twitter.com/1/statuses/friends
      *
@@ -146,28 +136,6 @@ public interface UserMethodsAsync {
      * @since Twitter4J 2.0.9
      */
     void getFriendsStatuses(long cursor);
-
-    /**
-     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
-     * <br>This method calls http://api.twitter.com/1/statuses/friends
-     *
-     * @param screenName the screen name of the user for whom to request a list of friends
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
-     * @since Twitter4J 2.0.9
-     * @deprecated use {@link #getFriendsStatuses(String, long)} instead
-     */
-    void getFriendsStatuses(String screenName);
-
-    /**
-     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
-     * <br>This method calls http://api.twitter.com/1/statuses/friends
-     *
-     * @param userId the ID of the user for whom to request a list of friends
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #getFriendsStatuses(int, long)} instead
-     */
-    void getFriendsStatuses(int userId);
 
     /**
      * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
@@ -195,43 +163,11 @@ public interface UserMethodsAsync {
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://api.twitter.com/1/statuses/followers.json
      *
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
-     * @since Twitter4J 2.0.9
-     * @deprecated use {@link #getFollowersStatuses(long)} instead
-     */
-    void getFollowersStatuses();
-
-    /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://api.twitter.com/1/statuses/followers.json
-     *
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
      * @since Twitter4J 2.0.9
      */
     void getFollowersStatuses(long cursor);
-
-    /**
-     * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://api.twitter.com/1/statuses/followers.json
-     *
-     * @param screenName The screen name of the user for whom to request a list of followers.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
-     * @since Twitter4J 2.0.9
-     * @deprecated use {@link #getFollowersStatuses(String, long)} instead
-     */
-    void getFollowersStatuses(String screenName);
-
-    /**
-     * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://api.twitter.com/1/statuses/followers.json
-     *
-     * @param userId The ID of the user for whom to request a list of followers.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #getFriendsStatuses(int, long)} instead
-     */
-    void getFollowersStatuses(int userId);
 
     /**
      * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).

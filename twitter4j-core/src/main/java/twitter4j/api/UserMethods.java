@@ -152,17 +152,6 @@ public interface UserMethods {
      * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
      * <br>This method calls http://api.twitter.com/1/statuses/friends.json
      *
-     * @return the list of friends
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
-     * @deprecated use {@link #getFriendsStatuses(long)} instead
-     */
-    PagableResponseList<User> getFriendsStatuses() throws TwitterException;
-
-    /**
-     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
-     * <br>This method calls http://api.twitter.com/1/statuses/friends.json
-     *
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
@@ -170,36 +159,6 @@ public interface UserMethods {
      * @since Twitter4J 2.0.9
      */
     PagableResponseList<User> getFriendsStatuses(long cursor)
-            throws TwitterException;
-
-    /**
-     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
-     * This method automatically provides a value of cursor=-1 to begin paging.
-     * <br>This method calls http://api.twitter.com/1/statuses/friends.json
-     *
-     * @param screenName the screen name of the user for whom to request a list of friends
-     * @return the list of friends
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
-     * @since Twitter4J 2.0.9
-     * @deprecated use {@link #getFriendsStatuses(String, long)} instead
-     */
-    PagableResponseList<User> getFriendsStatuses(String screenName)
-            throws TwitterException;
-
-    /**
-     * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
-     * This method automatically provides a value of cursor=-1 to begin paging.
-     * <br>This method calls http://api.twitter.com/1/statuses/friends.json
-     *
-     * @param userId the ID of the user for whom to request a list of friends
-     * @return the list of friends
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #getFriendsStatuses(int, long)} instead
-     */
-    PagableResponseList<User> getFriendsStatuses(int userId)
             throws TwitterException;
 
     /**
@@ -231,19 +190,6 @@ public interface UserMethods {
             throws TwitterException;
 
     /**
-     * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).<br>
-     * This method automatically provides a value of cursor=-1 to begin paging.
-     * <br>This method calls http://api.twitter.com/1/statuses/followers.json
-     *
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
-     * @since Twitter4J 2.0.9
-     * @deprecated use {@link #getFollowersStatuses(long)} instead
-     */
-    PagableResponseList<User> getFollowersStatuses() throws TwitterException;
-
-    /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
      * <br>This method calls http://api.twitter.com/1/statuses/followers.json
      *
@@ -254,34 +200,6 @@ public interface UserMethods {
      * @since Twitter4J 2.0.9
      */
     PagableResponseList<User> getFollowersStatuses(long cursor)
-            throws TwitterException;
-
-    /**
-     * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://api.twitter.com/1/statuses/followers.json
-     *
-     * @param screenName The screen name of the user for whom to request a list of followers.
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
-     * @since Twitter4J 2.0.9
-     * @deprecated use {@link #getFollowersStatuses(String, long)} instead
-     */
-    PagableResponseList<User> getFollowersStatuses(String screenName)
-            throws TwitterException;
-
-    /**
-     * Returns the specified user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
-     * <br>This method calls http://api.twitter.com/1/statuses/followers.json
-     *
-     * @param userId The ID of the user for whom to request a list of followers.
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #getFriendsStatuses(int, long)} instead
-     */
-    PagableResponseList<User> getFollowersStatuses(int userId)
             throws TwitterException;
 
     /**

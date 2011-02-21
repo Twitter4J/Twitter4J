@@ -30,7 +30,6 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
-import twitter4j.http.AuthorizationFactory;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.http.OAuthAuthorization;
 
@@ -42,9 +41,8 @@ import twitter4j.http.OAuthAuthorization;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class TwitterStreamFactory implements java.io.Serializable{
+public final class TwitterStreamFactory implements java.io.Serializable {
     private static final long serialVersionUID = 8146074704915782233L;
-    private final StreamListener listener;
     private final Configuration conf;
 
     /**
@@ -56,92 +54,21 @@ public final class TwitterStreamFactory implements java.io.Serializable{
 
     /**
      * Creates a TwitterStreamFactory with the given configuration.
+     *
      * @param conf the configuration to use
      * @since Twitter4J 2.1.1
      */
     public TwitterStreamFactory(Configuration conf) {
         this.conf = conf;
-        this.listener = null;
-    }
-
-    /**
-     * Creates a TwitterStreamFactory with the root configuration and a specified status listener.
-     * @param listener the listener
-     * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
-     */
-    public TwitterStreamFactory(StatusListener listener) {
-        this.conf = ConfigurationContext.getInstance();
-        this.listener = listener;
-    }
-
-    /**
-     * Creates a TwitterStreamFactory with the root configuration and a specified status listener.
-     * @param listener the listener
-     * @since Twitter4J 2.1.8
-     * @deprecated use {@link TwitterStream#addListener(UserStreamListener)}} instead.
-     */
-    public TwitterStreamFactory(UserStreamListener listener) {
-        this.conf = ConfigurationContext.getInstance();
-        this.listener = listener;
     }
 
     /**
      * Creates a TwitterStreamFactory with a specified config tree.
+     *
      * @param configTreePath the path
      */
     public TwitterStreamFactory(String configTreePath) {
-        this(configTreePath, (StatusListener)null);
-    }
-
-    /**
-     * Creates a TwitterStreamFactory with a specified config tree and a listener.
-     * @param configTreePath the path
-     * @param listener the listener
-     * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
-     */
-    public TwitterStreamFactory(String configTreePath, StatusListener listener) {
-        this(ConfigurationContext.getInstance(configTreePath), listener);
-    }
-
-    /**
-     * Creates a TwitterStreamFactory with a specified config tree and a listener.
-     * @param configTreePath the path
-     * @param listener the listener
-     * @since Twitter4J 2.1.8
-     * @deprecated use {@link TwitterStream#addListener(UserStreamListener)}} instead.
-     */
-    public TwitterStreamFactory(String configTreePath, UserStreamListener listener) {
-        this(ConfigurationContext.getInstance(configTreePath), listener);
-    }
-
-    /**
-     * Creates a TwitterStreamFactory with the specified config and a listener.
-     * @param conf the configuration to use
-     * @param listener an optional status listener
-     * @since Twitter4J 2.1.1
-     * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
-     */
-    public TwitterStreamFactory(Configuration conf, StatusListener listener) {
-        if (conf == null) {
-          throw new NullPointerException("configuration cannot be null");
-        }
-        this.conf = conf;
-        this.listener = listener;
-    }
-
-    /**
-     * Creates a TwitterStreamFactory with the specified config and a listener.
-     * @param conf the configuration to use
-     * @param listener an optional status listener
-     * @since Twitter4J 2.1.8
-     * @deprecated use {@link TwitterStream#addListener(UserStreamListener)} instead.
-     */
-    public TwitterStreamFactory(Configuration conf, UserStreamListener listener) {
-        if (conf == null) {
-          throw new NullPointerException("configuration cannot be null");
-        }
-        this.conf = conf;
-        this.listener = listener;
+        this(ConfigurationContext.getInstance(configTreePath));
     }
 
     // implementations for BasicSupportFactory
@@ -151,18 +78,18 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      *
      * @return default instance
      */
-    public TwitterStream getInstance(){
-        return getInstance(conf);
+    public TwitterStream getInstance() {
+        return new TwitterStream(conf);
     }
 
     /**
      * Returns an XAuth Authenticated instance.
      *
      * @param screenName screen name
-     * @param password password
+     * @param password   password
      * @return an instance
      */
-    public TwitterStream getInstance(String screenName, String password){
+    public TwitterStream getInstance(String screenName, String password) {
         return getInstance(conf, new BasicAuthorization(screenName, password));
     }
 
@@ -180,50 +107,21 @@ public final class TwitterStreamFactory implements java.io.Serializable{
         if (null == consumerKey && null == consumerSecret) {
             throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
         }
-        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret, accessToken);
+        OAuthAuthorization oauth = new OAuthAuthorization(conf);
+        oauth.setOAuthAccessToken(accessToken);
         return getInstance(conf, oauth);
-    }
-
-    /**
-     * Returns a OAuth Authenticated instance.
-     *
-     * @param consumerKey consumer key
-     * @param consumerSecret consumer secret
-     * @return an instance
-     * @deprecated use {@link TwitterStream#setOAuthConsumer(String, String)}
-     */
-    public TwitterStream getOAuthAuthorizedInstance(String consumerKey, String consumerSecret) {
-        if (null == consumerKey && null == consumerSecret) {
-            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
-        }
-        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
-        return getInstance(conf, oauth);
-    }
-
-    /**
-     * Returns a OAuth Authenticated instance.<br>
-     * consumer key and consumer Secret must be provided by twitter4j.properties, or system properties.
-     *
-     * @param accessToken access token
-     * @return an instance
-     * @deprecated use {@link #getInstance(twitter4j.http.AccessToken)} instead
-     */
-    public TwitterStream getOAuthAuthorizedInstance(AccessToken accessToken) {
-        return getInstance(accessToken);
     }
 
     /**
      * Returns a instance.
      *
-     * @return an instance
+     * @return an instanc
      */
-    public TwitterStream getInstance(Authorization auth){
+    public TwitterStream getInstance(Authorization auth) {
         return getInstance(conf, auth);
     }
+
     private TwitterStream getInstance(Configuration conf, Authorization auth) {
-        return new TwitterStream(conf, auth, listener);
-    }
-    private TwitterStream getInstance(Configuration conf) {
-        return new TwitterStream(conf, AuthorizationFactory.getInstance(conf, true), listener);
+        return new TwitterStream(conf, auth);
     }
 }

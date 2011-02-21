@@ -26,7 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j;
 
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -109,6 +108,7 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
 
     /**
      * Returns the place attached to this status
+     *
      * @return The place attached to this status
      * @since Twitter4J 2.1.1
      */
@@ -142,6 +142,7 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
 
     /**
      * Returns an array of contributors, or null if no contributor is associated with this status.
+     *
      * @since Twitter4J 2.1.2
      */
     String[] getContributors();
@@ -164,16 +165,6 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
     boolean isRetweetedByMe();
 
     /**
-     * Returns an array of users mentioned in the tweet, or null if no users were mentioned.
-     * Note that these users only have data for ID, screen name, and name.
-     *
-     * @return An array of users mentioned in the tweet.
-     * @since Twitter4J 2.1.4
-     * @deprecated use {@link #getUserMentionEntities()} instead.
-     */
-    User[] getUserMentions();
-
-    /**
      * Returns an array of user mentions in the tweet, or null if no users were mentioned.
      *
      * @return An array of user mention entities in the tweet.
@@ -182,30 +173,12 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
     UserMentionEntity[] getUserMentionEntities();
 
     /**
-     * Returns an array of URLs mentioned in the tweet, or null if no URLs were mentioned.
-     *
-     * @return An array of URLs mentioned in the tweet.
-     * @since Twitter4J 2.1.4
-     * @deprecated use {@link #getURLEntities()} instead.
-     */
-    URL[] getURLs();
-
-    /**
      * Returns an array if URLEntity mentioned in the tweet, or null if no URLs were mentioned.
      *
      * @return An array of URLEntity mentioned in the tweet.
      * @since Twitter4J 2.1.9
      */
     URLEntity[] getURLEntities();
-
-    /**
-     * Returns an array of hashtags mentioned in the tweet, or null if no hashtags were mentioned.
-     *
-     * @return An array of users mentioned in the tweet.
-     * @since Twitter4J 2.1.4
-     * @deprecated use {@link #getHashtagEntities()} instead.
-     */
-    String[] getHashtags();
 
     /**
      * Returns an array if hashtag mentioned in the tweet, or null if no hashtag were mentioned.
@@ -217,6 +190,7 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
 
     /**
      * Returns the annotations, or null if no annotations are associated with this status.
+     *
      * @since Twitter4J 2.1.4
      */
     Annotations getAnnotations();

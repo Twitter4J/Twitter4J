@@ -54,6 +54,7 @@ public final class TwitterFactory implements java.io.Serializable {
 
     /**
      * Creates a TwitterFactory with the given configuration.
+     *
      * @param conf the configuration to use
      * @since Twitter4J 2.1.1
      */
@@ -66,6 +67,7 @@ public final class TwitterFactory implements java.io.Serializable {
 
     /**
      * Creates a TwitterFactory with a specified config tree
+     *
      * @param configTreePath the path
      */
     public TwitterFactory(String configTreePath) {
@@ -78,7 +80,7 @@ public final class TwitterFactory implements java.io.Serializable {
      * @return default singleton instance
      */
     public Twitter getInstance() {
-        return getInstance(conf, AuthorizationFactory.getInstance(conf, true));
+        return getInstance(conf, AuthorizationFactory.getInstance(conf));
     }
 
     /**
@@ -96,7 +98,8 @@ public final class TwitterFactory implements java.io.Serializable {
         if (null == consumerKey && null == consumerSecret) {
             throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
         }
-        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret, accessToken);
+        OAuthAuthorization oauth = new OAuthAuthorization(conf);
+        oauth.setOAuthAccessToken(accessToken);
         return getInstance(conf, oauth);
     }
 
@@ -104,7 +107,7 @@ public final class TwitterFactory implements java.io.Serializable {
      * Returns an XAuth Authenticated instance.
      *
      * @param screenName screen name
-     * @param password password
+     * @param password   password
      * @return an instance
      */
     public Twitter getInstance(String screenName, String password) {
@@ -117,53 +120,7 @@ public final class TwitterFactory implements java.io.Serializable {
         return getInstance(conf, auth);
     }
 
-    /**
-     * Returns a OAuth Authenticated instance.
-     *
-     * @param consumerKey consumer key
-     * @param consumerSecret consumer secret
-     * @return an instance
-     * @deprecated use {@link Twitter#setOAuthConsumer(String, String)}
-     */
-    public Twitter getOAuthAuthorizedInstance(String consumerKey, String consumerSecret) {
-        if (null == consumerKey && null == consumerSecret) {
-            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
-        }
-        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
-        return getInstance(conf, oauth);
-    }
-
-    /**
-     * Returns a OAuth Authenticated instance.
-     *
-     * @param consumerKey consumer key
-     * @param consumerSecret consumer secret
-     * @param accessToken access token
-     * @return an instance
-     * @deprecated use {@link Twitter#setOAuthConsumer(String, String)} and {$link Twitter#setOAuthAccessToken}
-     */
-    public Twitter getOAuthAuthorizedInstance(String consumerKey, String consumerSecret, AccessToken accessToken) {
-        if (null == consumerKey && null == consumerSecret) {
-            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
-        }
-        OAuthAuthorization oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
-        oauth.setOAuthAccessToken(accessToken);
-        return getInstance(conf, oauth);
-    }
-
-    /**
-     * Returns a OAuth Authenticated instance.<br>
-     * consumer key and consumer Secret must be provided by twitter4j.properties, or system properties.
-     *
-     * @param accessToken access token
-     * @return an instance
-     * @deprecated use {@link #getInstance(twitter4j.http.AccessToken)} instead
-     */
-    public Twitter getOAuthAuthorizedInstance(AccessToken accessToken) {
-        return getInstance(accessToken);
-    }
-
-    private Twitter getInstance(Configuration conf, Authorization auth){
+    private Twitter getInstance(Configuration conf, Authorization auth) {
         return new Twitter(conf, auth);
     }
 }

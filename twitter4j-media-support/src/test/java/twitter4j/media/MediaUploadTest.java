@@ -83,7 +83,7 @@ public class MediaUploadTest extends TestCase {
 
     public void testNonexistingFileUpload() throws Exception {
 
-        ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
+        ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
         ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
         try {
             String url = upload.upload(new File("foobar"));
@@ -97,7 +97,7 @@ public class MediaUploadTest extends TestCase {
     public void testTwitPicOAuthUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
-            ImageUploaderFactory factory = new ImageUploaderFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
+            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
             ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
             String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);

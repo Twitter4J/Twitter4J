@@ -73,6 +73,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     /**
      * Tests if the user is enabling contributors
+     *
      * @return if the user is enabling contributors
      * @since Twitter4J 2.1.2
      */
@@ -110,71 +111,11 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     /**
      * Returns the current status of the user<br>
      * This can be null if the instance if from Status.getUser().
+     *
      * @return current status of the user
      * @since Twitter4J 2.1.1
      */
     Status getStatus();
-
-    /**
-     * @return created_at or null if the user is protected
-     * @since Twitter4J 1.1.0
-     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getCreatedAt() .getCreatedAt()}
-     */
-    Date getStatusCreatedAt();
-
-    /**
-     * @return status id or -1 if the user is protected
-     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getId() .getId()}
-     */
-    long getStatusId();
-
-    /**
-     * @return status text or null if the user is protected
-     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getText() .getText()}
-     */
-    String getStatusText();
-
-    /**
-     * @return source or null if the user is protected
-     * @since 1.1.4
-     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getSource() .getSource()}
-     */
-    String getStatusSource();
-
-    /**
-     * @return truncated or false if the user is protected
-     * @since 1.1.4
-     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#isTruncated() .isTruncated()}
-     */
-    boolean isStatusTruncated();
-
-    /**
-     * @return in_reply_to_status_id or -1 if the user is protected
-     * @since 1.1.4
-     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getInReplyToStatusId() .getInReplyToStatusId()}
-     */
-    long getStatusInReplyToStatusId();
-
-    /**
-     * @return in_reply_to_user_id or -1 if the user is protected
-     * @since 1.1.4
-     * @deprecated Use {@link #getStatus()}{@link Status#getInReplyToUserId() .getInReplyToUserId()}
-     */
-    int getStatusInReplyToUserId();
-
-    /**
-     * @return favorited or false if the user is protected
-     * @since 1.1.4
-     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#isFavorited() .isFavorited()}
-     */
-    boolean isStatusFavorited();
-
-    /**
-     * @return in_reply_to_screen_name or null if the user is protected
-     * @since 1.1.4
-     * @deprecated Use {@link #getStatus()}{@link twitter4j.Status#getInReplyToScreenName() .getInReplyToScreenName()}
-     */
-    String getStatusInReplyToScreenName();
 
     String getProfileBackgroundColor();
 
@@ -206,6 +147,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     /**
      * Returns the preferred language of the user
+     *
      * @return the preferred language of the user
      * @since Twitter4J 2.1.2
      */

@@ -102,7 +102,7 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
         AccessToken oauthAccessToken;
         if (auth instanceof BasicAuthorization) {
             BasicAuthorization basicAuth = (BasicAuthorization) auth;
-            auth = AuthorizationFactory.getInstance(conf, true);
+            auth = AuthorizationFactory.getInstance(conf);
             if (auth instanceof OAuthAuthorization) {
                 this.auth = auth;
                 OAuthAuthorization oauthAuth = (OAuthAuthorization) auth;
@@ -114,7 +114,8 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
             if (auth instanceof XAuthAuthorization) {
                 XAuthAuthorization xauth = (XAuthAuthorization) auth;
                 this.auth = xauth;
-                OAuthAuthorization oauthAuth = new OAuthAuthorization(conf, xauth.getConsumerKey(), xauth.getConsumerSecret());
+                OAuthAuthorization oauthAuth = new OAuthAuthorization(conf);
+                oauthAuth.setOAuthConsumer(xauth.getConsumerKey(), xauth.getConsumerSecret());
                 oauthAccessToken = oauthAuth.getOAuthAccessToken(xauth.getUserId(), xauth.getPassword());
             } else {
                 oauthAccessToken = getOAuth().getOAuthAccessToken();
@@ -167,29 +168,8 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
     /**
      * {@inheritDoc}
      */
-    public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        return getOAuth().getOAuthAccessToken(new RequestToken(token, tokenSecret));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public synchronized AccessToken getOAuthAccessToken(String token
-            , String tokenSecret, String pin) throws TwitterException {
-        return getOAuthAccessToken(new RequestToken(token, tokenSecret), pin);
-    }
-
-    /**
-     * Sets the access token
-     *
-     * @param token       access token
-     * @param tokenSecret access token secret
-     * @throws IllegalStateException when AccessToken has already been retrieved or set
-     * @since Twitter 2.0.0
-     * @deprecated Use {@link #setOAuthAccessToken(twitter4j.http.AccessToken)} instead
-     */
-    public void setOAuthAccessToken(String token, String tokenSecret) {
-        getOAuth().setOAuthAccessToken(new AccessToken(token, tokenSecret));
+    public synchronized AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
+        return getOAuth().getOAuthAccessToken(screenName, password);
     }
 
     /**
@@ -222,7 +202,9 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
             throw new NullPointerException("consumer secret is null");
         }
         if (auth instanceof NullAuthorization) {
-            auth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
+            OAuthAuthorization oauth = new OAuthAuthorization(conf);
+            oauth.setOAuthConsumer(consumerKey, consumerSecret);
+            auth = oauth;
         } else if (auth instanceof BasicAuthorization) {
             XAuthAuthorization xauth = new XAuthAuthorization((BasicAuthorization) auth);
             xauth.setOAuthConsumer(consumerKey, consumerSecret);

@@ -129,14 +129,14 @@ public class TwitterTest extends TwitterTestBase {
 
         assertTrue(1 < user.getFollowersCount());
         if (null != user.getStatus()) {
-            assertNotNull(user.getStatusCreatedAt());
-            assertNotNull(user.getStatusText());
-            assertNotNull(user.getStatusSource());
-            assertFalse(user.isStatusFavorited());
-            assertEquals(-1, user.getStatusInReplyToStatusId());
-            assertEquals(-1, user.getStatusInReplyToUserId());
-            assertFalse(user.isStatusFavorited());
-            assertNull(user.getStatusInReplyToScreenName());
+            assertNotNull(user.getStatus().getCreatedAt());
+            assertNotNull(user.getStatus().getText());
+            assertNotNull(user.getStatus().getSource());
+            assertFalse(user.getStatus().isFavorited());
+            assertEquals(-1, user.getStatus().getInReplyToStatusId());
+            assertEquals(-1, user.getStatus().getInReplyToUserId());
+            assertFalse(user.getStatus().isFavorited());
+            assertNull(user.getStatus().getInReplyToScreenName());
         }
 
         assertTrue(1 <= user.getListedCount());
@@ -487,7 +487,7 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
         assertEquals(date, status.getText());
-        Status status2 = twitter2.updateStatus("@" + id1.screenName + " " + date, status.getId());
+        Status status2 = twitter2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
         assertNotNull(DataObjectFactory.getRawJSON(status2));
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
         assertEquals("@" + id1.screenName + " " + date, status2.getText());
@@ -567,7 +567,7 @@ public class TwitterTest extends TwitterTestBase {
         final double LATITUDE = 12.3456;
         final double LONGITUDE = -34.5678;
 
-        Status withgeo = twitter1.updateStatus(new java.util.Date().toString() + ": updating geo location", new GeoLocation(LATITUDE, LONGITUDE));
+        Status withgeo = twitter1.updateStatus(new StatusUpdate(new java.util.Date().toString() + ": updating geo location").location(new GeoLocation(LATITUDE, LONGITUDE)));
         assertNotNull(DataObjectFactory.getRawJSON(withgeo));
         assertEquals(withgeo, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(withgeo)));
         assertTrue(withgeo.getUser().isGeoEnabled());
@@ -596,25 +596,19 @@ public class TwitterTest extends TwitterTestBase {
 //    }
 
     public void testGetFriendsStatuses() throws Exception {
-        PagableResponseList<User> users = twitter1.getFriendsStatuses();
+        PagableResponseList<User> users = twitter1.getFriendsStatuses(-1);
         assertNotNull(DataObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
         assertNotNull("friendsStatuses", users);
 
-        users = twitter1.getFriendsStatuses(numberId);
-        assertNotNull(DataObjectFactory.getRawJSON(users));
-        assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
-        assertNotNull("friendsStatuses", users);
-        assertEquals(id1.screenName, users.get(0).getScreenName());
-
-        users = twitter1.getFriendsStatuses(numberIdId);
+        users = twitter1.getFriendsStatuses(numberId, -1);
         assertNotNull(DataObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
         assertNotNull("friendsStatuses", users);
         assertEquals(id1.screenName, users.get(0).getScreenName());
 
         try {
-            users = unauthenticated.getFriendsStatuses("yusukey");
+            users = unauthenticated.getFriendsStatuses("yusukey", -1);
             assertNotNull(DataObjectFactory.getRawJSON(users));
             assertNotNull("friendsStatuses", users);
             assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
@@ -703,7 +697,7 @@ public class TwitterTest extends TwitterTestBase {
 
     public void testSocialGraphMethods() throws Exception {
         IDs ids;
-        ids = twitter1.getFriendsIDs();
+        ids = twitter1.getFriendsIDs(-1);
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         int yusukey = 4933401;
         assertIDExsits("twit4j is following yusukey", ids, yusukey);
@@ -712,7 +706,7 @@ public class TwitterTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
         assertEquals("ryunosukey is not following anyone", 0, ids.getIDs().length);
-        ids = twitter1.getFriendsIDs("yusukey");
+        ids = twitter1.getFriendsIDs("yusukey", -1);
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertIDExsits("yusukey is following ryunosukey", ids, ryunosukey);
         IDs obamaFollowers;
@@ -727,7 +721,7 @@ public class TwitterTest extends TwitterTestBase {
         assertTrue(obamaFollowers.hasNext());
         assertTrue(obamaFollowers.hasPrevious());
 
-        obamaFollowers = twitter1.getFollowersIDs(813286);
+        obamaFollowers = twitter1.getFollowersIDs(813286, -1);
         assertNotNull(DataObjectFactory.getRawJSON(obamaFollowers));
         assertEquals(obamaFollowers, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFollowers)));
         assertTrue(obamaFollowers.hasNext());
@@ -752,7 +746,7 @@ public class TwitterTest extends TwitterTestBase {
         assertTrue(obamaFriends.hasNext());
         assertTrue(obamaFriends.hasPrevious());
 
-        obamaFriends = twitter1.getFriendsIDs(813286);
+        obamaFriends = twitter1.getFriendsIDs(813286, -1);
         assertNull(DataObjectFactory.getRawJSON(obamaFollowers));
         assertNotNull(DataObjectFactory.getRawJSON(obamaFriends));
         assertEquals(obamaFriends, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFriends)));
@@ -769,15 +763,15 @@ public class TwitterTest extends TwitterTestBase {
             twitter2.createFriendship(id1.screenName);
         } catch (TwitterException ignore) {
         }
-        ids = twitter1.getFollowersIDs();
+        ids = twitter1.getFollowersIDs(-1);
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
         assertIDExsits("twit4j2 is following twit4j", ids, 6377362);
-        ids = twitter1.getFollowersIDs(ryunosukey);
+        ids = twitter1.getFollowersIDs(ryunosukey, -1);
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
         assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
-        ids = twitter1.getFollowersIDs("ryunosukey");
+        ids = twitter1.getFollowersIDs("ryunosukey", -1);
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
         assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
@@ -902,11 +896,11 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testFollowers() throws Exception {
-        PagableResponseList<User> actualReturn = twitter1.getFollowersStatuses();
+        PagableResponseList<User> actualReturn = twitter1.getFollowersStatuses(-1);
         assertNotNull(DataObjectFactory.getRawJSON(actualReturn));
         assertEquals(actualReturn.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(actualReturn.get(0))));
         assertTrue(actualReturn.size() > 0);
-        actualReturn = twitter1.getFollowersStatuses();
+        actualReturn = twitter1.getFollowersStatuses(-1);
         assertNotNull(DataObjectFactory.getRawJSON(actualReturn));
         assertEquals(actualReturn.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(actualReturn.get(0))));
         assertTrue(actualReturn.size() > 0);
@@ -916,11 +910,11 @@ public class TwitterTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(actualReturn));
         assertEquals(0, actualReturn.size());
 
-        actualReturn = twitter2.getFollowersStatuses();
+        actualReturn = twitter2.getFollowersStatuses(-1);
         assertNotNull(DataObjectFactory.getRawJSON(actualReturn));
         assertEquals(actualReturn.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(actualReturn.get(0))));
         assertTrue(actualReturn.size() > 0);
-        actualReturn = twitter2.getFollowersStatuses("yusukey");
+        actualReturn = twitter2.getFollowersStatuses("yusukey", -1);
         assertNotNull(DataObjectFactory.getRawJSON(actualReturn));
         assertEquals(actualReturn.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(actualReturn.get(0))));
         assertTrue(actualReturn.size() > 60);
@@ -1206,12 +1200,7 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(places.get(0), DataObjectFactory.createPlace(DataObjectFactory.getRawJSON(places.get(0))));
 
         assertTrue(places.size() > 0);
-        places = twitter1.getNearbyPlaces(query);
-        assertNotNull(DataObjectFactory.getRawJSON(places));
-        for (Place place : places) {
-            System.out.println(place.getName());
-        }
-        assertTrue(places.size() > 0);
+
         places = twitter1.searchPlaces(query);
         assertNotNull(DataObjectFactory.getRawJSON(places));
         assertEquals(places.get(0), DataObjectFactory.createPlace(DataObjectFactory.getRawJSON(places.get(0))));

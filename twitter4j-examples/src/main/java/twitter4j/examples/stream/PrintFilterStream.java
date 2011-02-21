@@ -26,7 +26,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.examples.stream;
 
-import twitter4j.*;
+import twitter4j.FilterQuery;
+import twitter4j.Status;
+import twitter4j.StatusDeletionNotice;
+import twitter4j.StatusListener;
+import twitter4j.TwitterException;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,7 +79,8 @@ public final class PrintFilterStream {
             }
         };
 
-        TwitterStream twitterStream = new TwitterStreamFactory(listener).getInstance();
+        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
+        twitterStream.addListener(listener);
         ArrayList<Integer> follow = new ArrayList<Integer>();
         ArrayList<String> track = new ArrayList<String>();
         for (String arg : args) {

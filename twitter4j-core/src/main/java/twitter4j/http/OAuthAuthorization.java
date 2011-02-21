@@ -72,42 +72,12 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      * @param conf configuration
      */
     public OAuthAuthorization(Configuration conf) {
-        this(conf, conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret()
-                , new AccessToken(conf.getOAuthAccessToken(), conf.getOAuthAccessTokenSecret()));
-    }
-
-    /**
-     * @param conf           configuration
-     * @param consumerKey    consumer key
-     * @param consumerSecret consumer secret
-     * @deprecated use {@link #OAuthAuthorization(twitter4j.conf.Configuration)} instead
-     */
-    public OAuthAuthorization(Configuration conf, String consumerKey, String consumerSecret) {
         this.conf = conf;
-        init(consumerKey, consumerSecret);
-    }
-
-    /**
-     * @param conf           configuration
-     * @param consumerKey    consumer key
-     * @param consumerSecret consumer secret
-     * @param accessToken    access token
-     * @deprecated use {@link #OAuthAuthorization(twitter4j.conf.Configuration)} instead
-     */
-    public OAuthAuthorization(Configuration conf, String consumerKey, String consumerSecret, AccessToken accessToken) {
-        this.conf = conf;
-        init(consumerKey, consumerSecret, accessToken);
-    }
-
-    private void init(String consumerKey, String consumerSecret) {
         http = new HttpClientWrapper(conf);
-        setConsumerKey(consumerKey);
-        setConsumerSecret(consumerSecret);
-    }
-
-    private void init(String consumerKey, String consumerSecret, AccessToken accessToken) {
-        init(consumerKey, consumerSecret);
-        setOAuthAccessToken(accessToken);
+        setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
+        if (null != conf.getOAuthAccessToken() && null != conf.getOAuthAccessTokenSecret()) {
+            setOAuthAccessToken(new AccessToken(conf.getOAuthAccessToken(), conf.getOAuthAccessTokenSecret()));
+        }
     }
 
     // implementations for Authorization
@@ -482,11 +452,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return url;
     }
 
-    private void setConsumerKey(String consumerKey) {
+    public void setOAuthConsumer(String consumerKey, String consumerSecret) {
         this.consumerKey = null != consumerKey ? consumerKey : "";
-    }
-
-    private void setConsumerSecret(String consumerSecret) {
         this.consumerSecret = null != consumerSecret ? consumerSecret : "";
     }
 

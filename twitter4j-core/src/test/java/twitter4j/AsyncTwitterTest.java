@@ -56,17 +56,19 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     protected void setUp() throws Exception {
         super.setUp();
-        AsyncTwitterFactory factory = new AsyncTwitterFactory(this);
+        AsyncTwitterFactory factory = new AsyncTwitterFactory();
         async1 = factory.getInstance();
+        async1.addListener(this);
         async1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         async1.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
 
         async2 = factory.getInstance();
-        async2 = factory.getInstance();
+        async2.addListener(this);
         async2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         async2.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
 
         bestFriend1Async = factory.getInstance();
+        bestFriend1Async.addListener(this);
         bestFriend1Async.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         bestFriend1Async.setOAuthAccessToken(new AccessToken(bestFriend1.accessToken, bestFriend1.accessTokenSecret));
 
@@ -181,15 +183,15 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     public void testSocialGraphMethods() throws Exception {
-        async1.getFriendsIDs();
+        async1.getFriendsIDs(-1);
         waitForResponse();
         int yusukey = 4933401;
         assertIDExsits("twit4j is following yusukey", ids, yusukey);
         int ryunosukey = 48528137;
-        async1.getFriendsIDs(ryunosukey);
+        async1.getFriendsIDs(ryunosukey, -1);
         waitForResponse();
         assertEquals("ryunosukey is not following anyone", 0, ids.getIDs().length);
-        async1.getFriendsIDs("yusukey");
+        async1.getFriendsIDs("yusukey", -1);
         waitForResponse();
         assertIDExsits("yusukey is following ryunosukey", ids, ryunosukey);
 
@@ -197,13 +199,13 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
             twitter2.createFriendship(id1.screenName);
         } catch (TwitterException te) {
         }
-        async1.getFollowersIDs();
+        async1.getFollowersIDs(-1);
         waitForResponse();
         assertIDExsits("twit4j2(6377362) is following twit4j(6358482)", ids, 6377362);
-        async1.getFollowersIDs(ryunosukey);
+        async1.getFollowersIDs(ryunosukey, -1);
         waitForResponse();
         assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
-        async1.getFollowersIDs("ryunosukey");
+        async1.getFollowersIDs("ryunosukey", -1);
         waitForResponse();
         assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
     }
@@ -344,7 +346,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
         long id = status.getId();
 
-        async2.updateStatus("@" + id1.screenName + " " + date, id);
+        async2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(id));
         waitForResponse();
         assertEquals("", "@" + id1.screenName + " " + date, status.getText());
         assertEquals("", id, status.getInReplyToStatusId());
@@ -361,23 +363,23 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void testGetFriendsStatuses() throws Exception {
         users = null;
-        async1.getFriendsStatuses(id2.screenName);
+        async1.getFriendsStatuses(id2.screenName, -1);
         waitForResponse();
         assertNotNull(users);
 
         users = null;
-        async2.getFriendsStatuses();
+        async2.getFriendsStatuses(-1);
         waitForResponse();
         assertNotNull(users);
         assertDeserializedFormIsEqual(users);
     }
 
     public void testFollowers() throws Exception {
-        async1.getFollowersStatuses();
+        async1.getFollowersStatuses(-1);
         waitForResponse();
         assertTrue(users.size() > 0);
 
-        async2.getFollowersStatuses();
+        async2.getFollowersStatuses(-1);
         waitForResponse();
         assertTrue(users.size() > 0);
         assertDeserializedFormIsEqual(users);

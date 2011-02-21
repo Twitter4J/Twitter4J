@@ -475,7 +475,8 @@ public class DAOTest extends TwitterTestBase {
     }
 
     private OAuthAuthorization getOAuthOuthorization(Configuration conf) {
-        OAuthAuthorization oauth = new OAuthAuthorization(conf, desktopConsumerKey, desktopConsumerSecret);
+        OAuthAuthorization oauth = new OAuthAuthorization(conf);
+        oauth.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         oauth.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
         return oauth;
     }
@@ -538,14 +539,14 @@ public class DAOTest extends TwitterTestBase {
         assertNotNull(user.getProfileTextColor());
 
         assertTrue(1 < user.getFollowersCount());
-        assertNotNull(user.getStatusCreatedAt());
-        assertNotNull(user.getStatusText());
-        assertNotNull(user.getStatusSource());
-        assertFalse(user.isStatusFavorited());
-        assertEquals(-1, user.getStatusInReplyToStatusId());
-        assertEquals(-1, user.getStatusInReplyToUserId());
-        assertFalse(user.isStatusFavorited());
-        assertNull(user.getStatusInReplyToScreenName());
+        assertNotNull(user.getStatus().getCreatedAt());
+        assertNotNull(user.getStatus().getText());
+        assertNotNull(user.getStatus().getSource());
+        assertFalse(user.getStatus().isFavorited());
+        assertEquals(-1, user.getStatus().getInReplyToStatusId());
+        assertEquals(-1, user.getStatus().getInReplyToUserId());
+        assertFalse(user.getStatus().isFavorited());
+        assertNull(user.getStatus().getInReplyToScreenName());
         assertDeserializedFormIsEqual(user);
         assertTrue(0 <= user.getListedCount());
         List<User> users;

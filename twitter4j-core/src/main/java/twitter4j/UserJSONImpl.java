@@ -35,10 +35,15 @@ import twitter4j.internal.org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
-import static twitter4j.internal.util.ParseUtil.*;
+
+import static twitter4j.internal.util.ParseUtil.getBoolean;
+import static twitter4j.internal.util.ParseUtil.getDate;
+import static twitter4j.internal.util.ParseUtil.getInt;
+import static twitter4j.internal.util.ParseUtil.getRawString;
 
 /**
  * A data class representing Basic user information element
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
@@ -221,69 +226,6 @@ import static twitter4j.internal.util.ParseUtil.*;
     /**
      * {@inheritDoc}
      */
-    public Date getStatusCreatedAt() {
-        return status.getCreatedAt();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public long getStatusId() {
-        return status.getId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getStatusText() {
-        return status.getText();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getStatusSource() {
-        return status.getSource();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isStatusTruncated() {
-        return status.isTruncated();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public long getStatusInReplyToStatusId() {
-        return status.getInReplyToStatusId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int getStatusInReplyToUserId() {
-        return status.getInReplyToUserId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isStatusFavorited() {
-        return status.isFavorited();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getStatusInReplyToScreenName() {
-        return status.getInReplyToScreenName();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public String getProfileBackgroundColor() {
         return profileBackgroundColor;
     }
@@ -433,7 +375,8 @@ import static twitter4j.internal.util.ParseUtil.*;
         return isFollowRequestSent;
     }
 
-    /*package*/ static PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException {
+    /*package*/
+    static PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException {
         try {
             DataObjectFactoryUtil.clearThreadLocalMap();
             JSONObject json = res.asJSONObject();
@@ -455,11 +398,14 @@ import static twitter4j.internal.util.ParseUtil.*;
             throw te;
         }
     }
-    /*package*/ static ResponseList<User> createUserList(HttpResponse res) throws TwitterException {
+
+    /*package*/
+    static ResponseList<User> createUserList(HttpResponse res) throws TwitterException {
         return createUserList(res.asJSONArray(), res);
     }
 
-    /*package*/ static ResponseList<User> createUserList(JSONArray list, HttpResponse res) throws TwitterException {
+    /*package*/
+    static ResponseList<User> createUserList(JSONArray list, HttpResponse res) throws TwitterException {
         try {
             DataObjectFactoryUtil.clearThreadLocalMap();
             int size = list.length();

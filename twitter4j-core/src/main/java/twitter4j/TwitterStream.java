@@ -63,50 +63,21 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     /**
      * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
      * since Twitter4J 2.0.10
-     *
-     * @deprecated use {@link TwitterStreamFactory#getInstance()} instead.
      */
-    public TwitterStream() {
+    TwitterStream() {
         super(ConfigurationContext.getInstance());
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
     }
 
-    /**
-     * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
-     * since Twitter4J 2.0.10
-     *
-     * @param screenName screen name
-     * @param password   password
-     * @deprecated use {@link TwitterStreamFactory#getInstance()} instead.
-     */
-    public TwitterStream(String screenName, String password) {
-        super(ConfigurationContext.getInstance(), screenName, password);
-        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
-    }
-
-    /**
-     * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
-     * since Twitter4J 2.0.10
-     *
-     * @param screenName screen name
-     * @param password   password
-     * @param listener   listener
-     * @deprecated use {@link TwitterStreamFactory#getInstance()} instead.
-     */
-    public TwitterStream(String screenName, String password, StreamListener listener) {
-        super(ConfigurationContext.getInstance(), screenName, password);
-        if (null != listener) {
-            addListener(listener);
-        }
+    /*package*/
+    TwitterStream(Configuration conf, Authorization auth) {
+        super(conf, auth);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
     }
 
     /*package*/
-    TwitterStream(Configuration conf, Authorization auth, StreamListener listener) {
-        super(conf, auth);
-        if (null != listener) {
-            addListener(listener);
-        }
+    TwitterStream(Configuration conf) {
+        super(conf);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
     }
 
@@ -178,24 +149,6 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     public StatusStream getLinksStream(int count) throws TwitterException {
         ensureAuthorizationEnabled();
         return getCountStream("statuses/links.json", count);
-    }
-
-    /**
-     * Starts listening on a tweet stream.
-     *
-     * @param relativeUrl The relative url of the feed, for example "statuses/firehose.json" for the firehose.
-     * @param count       Indicates the number of previous statuses to stream before transitioning to the live stream.
-     * @deprecated
-     */
-    public void stream(final String relativeUrl, final int count, final boolean handleUserStream) {
-        ensureAuthorizationEnabled();
-        ensureListenerIsSet();
-        ensureStatusStreamListenerIsSet();
-        startHandler(new TwitterStreamConsumer() {
-            public StatusStream getStream() throws TwitterException {
-                return getCountStream(relativeUrl, count);
-            }
-        });
     }
 
     private StatusStream getCountStream(String relativeUrl, int count) throws TwitterException {
@@ -469,46 +422,6 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         }
     }
 
-    /**
-     * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
-     * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
-     *
-     * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
-     * @param follow Specifies the users, by ID, to receive public tweets from.
-     * @param track  Specifies keywords to track.
-     * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
-     * @since Twitter4J 2.0.10
-     * @deprecated use {@link #filter(FilterQuery)} instead
-     */
-    public void filter(final int count, final int[] follow, final String[] track) {
-        ensureAuthorizationEnabled();
-        ensureListenerIsSet();
-        ensureStatusStreamListenerIsSet();
-        startHandler(new TwitterStreamConsumer() {
-            public StatusStream getStream() throws TwitterException {
-                return getFilterStream(count, follow, track);
-            }
-        });
-    }
-
-    /**
-     * Returns public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
-     * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
-     *
-     * @param follow Specifies the users, by ID, to receive public tweets from.
-     * @return StatusStream
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
-     * @since Twitter4J 2.0.10
-     * @deprecated use {@link #getFilterStream(FilterQuery)} instead
-     */
-    public StatusStream getFilterStream(int count, int[] follow, String[] track)
-            throws TwitterException {
-        ensureAuthorizationEnabled();
-        return getFilterStream(new FilterQuery(count, follow, track, null));
-    }
 
     /**
      * check if any listener is set. Throws IllegalStateException if no listener is set.
@@ -555,13 +468,6 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
     }
 
     /**
-     * @deprecated use #cleanUp instead
-     */
-    public void cleanup() {
-        cleanUp();
-    }
-
-    /**
      * Adds a ConnectionLifeCycleListener
      *
      * @param listener listener to be added
@@ -569,46 +475,6 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      */
     public void addConnectionLifeCycleListener(ConnectionLifeCycleListener listener) {
         this.lifeCycleListeners.add(listener);
-    }
-
-    /**
-     * Clear existing listeners and sets a StatusListener
-     *
-     * @param listener listener to be set
-     * @deprecated use {@link #addListener(StatusListener)} instead.
-     */
-    public void setStatusListener(StatusListener listener) {
-        this.streamListeners = new StreamListener[1];
-        this.streamListeners[0] = listener;
-    }
-
-    /**
-     * @param statusListener listener to be added
-     * @since Twitter4J 2.1.7
-     * @deprecated use {@link #addListener(StatusListener)} instead.
-     */
-    public void addStatusListener(StatusListener statusListener) {
-        addListener((StreamListener) statusListener);
-    }
-
-    /**
-     * Clear existing listeners and sets a UserStreamListener
-     *
-     * @param listener listener to be set
-     * @deprecated use {@link #addListener(UserStreamListener)} instead.
-     */
-    public void setUserStreamListener(UserStreamListener listener) {
-        this.streamListeners = new StreamListener[1];
-        this.streamListeners[0] = listener;
-    }
-
-    /**
-     * @param userStreamListener listener to be added
-     * @since Twitter4J 2.1.7
-     * @deprecated use {@link #addListener(UserStreamListener)} instead.
-     */
-    public void addUserStreamListener(UserStreamListener userStreamListener) {
-        addListener((StreamListener) userStreamListener);
     }
 
     /**

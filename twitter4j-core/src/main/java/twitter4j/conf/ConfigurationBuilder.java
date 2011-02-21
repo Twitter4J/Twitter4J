@@ -64,24 +64,6 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    /**
-     * @param source source
-     * @return this instance
-     * @deprecated source parameter is no longer supported.
-     */
-
-    public ConfigurationBuilder setSource(String source) {
-        checkNotBuilt();
-        configurationBean.setSource(source);
-        return this;
-    }
-
-    public ConfigurationBuilder setUserAgent(String userAgent) {
-        checkNotBuilt();
-        configurationBean.setUserAgent(userAgent);
-        return this;
-    }
-
     public ConfigurationBuilder setUser(String user) {
         checkNotBuilt();
         configurationBean.setUser(user);

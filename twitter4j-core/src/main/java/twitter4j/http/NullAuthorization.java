@@ -26,9 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package twitter4j.http;
 
-import java.io.ObjectStreamException;
-
 import twitter4j.internal.http.HttpRequest;
+
+import java.io.ObjectStreamException;
 
 /**
  * An interface represents credentials.
@@ -55,7 +55,6 @@ public class NullAuthorization implements Authorization, java.io.Serializable {
         return false;
     }
 
-    /** @noinspection EqualsWhichDoesntCheckParameterClass*/
     @Override
     public boolean equals(Object o) {
         return SINGLETON == o;

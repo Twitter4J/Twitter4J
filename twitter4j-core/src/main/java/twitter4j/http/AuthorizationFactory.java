@@ -36,28 +36,18 @@ import twitter4j.conf.Configuration;
  */
 public final class AuthorizationFactory {
     /**
-     * @param conf configuraiton
+     * @param conf configuration
      * @return authorization instance
      * @since Twitter4J 2.1.11
      */
     public static Authorization getInstance(Configuration conf) {
-        return getInstance(conf, true);
-    }
-
-    /**
-     * @param conf          configuration
-     * @param supportsOAuth set true if the authorization instance required to be OAuth'ed
-     * @return authorization instance
-     * @deprecated use {@link #getInstance(twitter4j.conf.Configuration)} instead
-     */
-    public static Authorization getInstance(Configuration conf, boolean supportsOAuth) {
         Authorization auth = null;
         String consumerKey = conf.getOAuthConsumerKey();
         String consumerSecret = conf.getOAuthConsumerSecret();
 
-        if (supportsOAuth && null != consumerKey && null != consumerSecret) {
+        if (null != consumerKey && null != consumerSecret) {
             OAuthAuthorization oauth;
-            oauth = new OAuthAuthorization(conf, consumerKey, consumerSecret);
+            oauth = new OAuthAuthorization(conf);
             String accessToken = conf.getOAuthAccessToken();
             String accessTokenSecret = conf.getOAuthAccessTokenSecret();
             if (null != accessToken && null != accessTokenSecret) {
@@ -75,16 +65,5 @@ public final class AuthorizationFactory {
             auth = NullAuthorization.getInstance();
         }
         return auth;
-    }
-
-    /**
-     * @param screenName screen name
-     * @param password   password
-     * @return authorization instance
-     * @deprecated The @twitterapi team will be shutting off basic authentication on the Twitter API. All applications, by this date, need to switch to using OAuth. <a href="http://dev.twitter.com/announcements">Read more »</a>
-     */
-    public static Authorization getBasicAuthorizationInstance(String screenName,
-                                                              String password) {
-        return new BasicAuthorization(screenName, password);
     }
 }

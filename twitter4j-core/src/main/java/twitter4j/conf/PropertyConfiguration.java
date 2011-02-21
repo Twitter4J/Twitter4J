@@ -229,10 +229,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             setDebug(getBoolean(props, prefix, DEBUG));
         }
 
-        if (notNull(props, prefix, SOURCE)) {
-            setSource(getString(props, prefix, SOURCE));
-        }
-
         if (notNull(props, prefix, USER)) {
             setUser(getString(props, prefix, USER));
         }

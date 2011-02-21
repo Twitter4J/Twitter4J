@@ -111,21 +111,6 @@ public class ConfigurationTest extends TestCase {
         assertEquals(test, conf.getPassword());
         System.getProperties().remove("twitter4j.password");
 
-
-        System.getProperties().remove("twitter4j.source");
-        conf = new PropertyConfiguration();
-        assertEquals("Twitter4J", conf.getSource());
-
-        conf.setSource(test);
-        assertEquals(test, conf.getSource());
-        System.setProperty("twitter4j.source", override);
-        conf = new PropertyConfiguration();
-        assertEquals(override, conf.getSource());
-        conf.setSource(test);
-        assertEquals(test, conf.getSource());
-        System.getProperties().remove("twitter4j.source");
-
-
         System.getProperties().remove("twitter4j.clientVersion");
         conf = new PropertyConfiguration();
         Assert.assertEquals(Version.getVersion(), conf.getClientVersion());
