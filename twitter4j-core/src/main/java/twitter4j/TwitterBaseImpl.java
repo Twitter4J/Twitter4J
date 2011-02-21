@@ -43,7 +43,7 @@ import static twitter4j.internal.http.HttpResponseCode.SERVICE_UNAVAILABLE;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, HttpResponseListener {
-    protected final Configuration conf;
+    protected Configuration conf;
     protected transient String screenName = null;
     protected transient long id = 0;
 
@@ -209,6 +209,8 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(conf);
+        out.writeObject(auth);
         List<RateLimitStatusListener> serializableRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
         for (RateLimitStatusListener listener : rateLimitStatusListeners) {
             if (listener instanceof java.io.Serializable) {
@@ -220,6 +222,8 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
 
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
+        conf = (Configuration) stream.readObject();
+        auth = (Authorization) stream.readObject();
         rateLimitStatusListeners = (List<RateLimitStatusListener>) stream.readObject();
         http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
