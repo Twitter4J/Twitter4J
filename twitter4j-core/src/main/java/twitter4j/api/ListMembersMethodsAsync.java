@@ -42,7 +42,7 @@ public interface ListMembersMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/members">GET :user/:list_id/members | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
-    void getUserListMembers(int listOwnerId, int listId, long cursor);
+    void getUserListMembers(long listOwnerId, int listId, long cursor);
 
     /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
@@ -53,7 +53,7 @@ public interface ListMembersMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/:user/:list_id/members">POST :user/:list_id/members | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
-    void addUserListMember(int listId, int userId);
+    void addUserListMember(int listId, long userId);
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -64,7 +64,7 @@ public interface ListMembersMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/:user/:list_id/create_all">POST :user/:list_id/create_all | dev.twitter.com</a>
      * @since Twitter4J 2.1.7
      */
-    void addUserListMembers(int listId, int[] userIds);
+    void addUserListMembers(int listId, long[] userIds);
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -86,7 +86,7 @@ public interface ListMembersMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/delete/:user/:list_id/members">DELETE :user/:id/members | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void deleteUserListMember(int listId, int userId);
+    void deleteUserListMember(int listId, long userId);
 
     /**
      * Check if a user is a member of the specified list.<br>
@@ -98,5 +98,5 @@ public interface ListMembersMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/members/:id">GET :user/:list_id/members/:id | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void checkUserListMembership(String listOwnerScreenName, int listId, int userId);
+    void checkUserListMembership(String listOwnerScreenName, int listId, long userId);
 }

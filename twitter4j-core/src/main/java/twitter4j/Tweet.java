@@ -36,7 +36,7 @@ public interface Tweet extends Comparable<Tweet>, java.io.Serializable {
      *
      * @return the to_user_id value or -1 if to_user_id is not specified by the tweet
      */
-    int getToUserId();
+    long getToUserId();
 
     /**
      * returns the to_user
@@ -66,7 +66,7 @@ public interface Tweet extends Comparable<Tweet>, java.io.Serializable {
      * @return the user id of the tweet's owner
      * @see <a href="http://code.google.com/p/twitter-api/issues/detail?id=214">Issue 214:	Search API "from_user_id" doesn't match up with the proper Twitter "user_id"</a>
      */
-    int getFromUserId();
+    long getFromUserId();
 
     /**
      * returns the iso language code of the tweet

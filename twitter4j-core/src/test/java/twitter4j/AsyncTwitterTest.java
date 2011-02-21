@@ -202,7 +202,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     private void assertIDExsits(String assertion, IDs ids, int idToFind) {
         boolean found = false;
-        for (int id : ids.getIDs()) {
+        for (long id : ids.getIDs()) {
             if (id == idToFind) {
                 found = true;
                 break;

@@ -38,7 +38,7 @@ public interface BlockMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/blocks/create">POST blocks/create | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void createBlock(int userId);
+    void createBlock(long userId);
 
     /**
      * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
@@ -58,7 +58,7 @@ public interface BlockMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/blocks/destroy">POST blocks/destroy | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void destroyBlock(int userId);
+    void destroyBlock(long userId);
 
     /**
      * Returns if the authenticating user is blocking a target user. Will return the blocked user's object if a block exists, and error with a HTTP 404 response code otherwise.
@@ -78,7 +78,7 @@ public interface BlockMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/blocks/exists">GET blocks/exists | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void existsBlock(int userId);
+    void existsBlock(long userId);
 
     /**
      * Returns a list of user objects that the authenticating user is blocking.

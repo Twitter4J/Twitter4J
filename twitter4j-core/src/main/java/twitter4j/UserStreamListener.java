@@ -21,13 +21,13 @@ package twitter4j;
  * @since Twitter4J 2.1.3
  */
 public interface UserStreamListener extends StatusListener {
-    void onDeletionNotice(long directMessageId, int userId);
+    void onDeletionNotice(long directMessageId, long userId);
 
     /**
      * @param friendIds
      * @since Twitter4J 2.1.3
      */
-    void onFriendList(int[] friendIds);
+    void onFriendList(long[] friendIds);
 
     /**
      * @param source

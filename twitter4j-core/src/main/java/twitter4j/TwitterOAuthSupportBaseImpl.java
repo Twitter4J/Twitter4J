@@ -36,7 +36,7 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
 
     private static final long serialVersionUID = 2166151122833272805L;
     protected transient String screenName = null;
-    protected transient int id = 0;
+    protected transient long id = 0;
 
     TwitterOAuthSupportBaseImpl(Configuration conf) {
         super(conf);
@@ -223,7 +223,7 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
-        result = 31 * result + id;
+        result = 31 * result + (int) (id ^ (id >>> 32));
         return result;
     }
 }

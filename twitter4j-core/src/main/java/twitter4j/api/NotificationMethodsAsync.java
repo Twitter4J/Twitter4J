@@ -38,7 +38,7 @@ public interface NotificationMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/notifications/follow">POST notifications/follow | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void enableNotification(int userId);
+    void enableNotification(long userId);
 
     /**
      * Disables notifications for updates from the specified user to the authenticating user.  Returns the specified user when successful.
@@ -58,5 +58,5 @@ public interface NotificationMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/notifications/leave">POST notifications/leave | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void disableNotification(int userId);
+    void disableNotification(long userId);
 }

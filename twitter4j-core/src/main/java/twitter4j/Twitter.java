@@ -25,7 +25,7 @@ import twitter4j.http.BasicAuthorization;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.util.StringUtil;
+import twitter4j.internal.util.T4JInternalStringUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -192,7 +192,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * @throws IllegalStateException if no credentials are supplied. i.e.) this is an anonymous Twitter instance
      * @since Twitter4J 2.1.1
      */
-    public int getId() throws TwitterException, IllegalStateException {
+    public long getId() throws TwitterException, IllegalStateException {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(
                     "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
@@ -354,7 +354,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public ResponseList<Status> getUserTimeline(int userId, Paging paging)
+    public ResponseList<Status> getUserTimeline(long userId, Paging paging)
             throws TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/user_timeline.json",
@@ -374,7 +374,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public ResponseList<Status> getUserTimeline(int userId) throws TwitterException {
+    public ResponseList<Status> getUserTimeline(long userId) throws TwitterException {
         return getUserTimeline(userId, new Paging());
     }
 
@@ -494,7 +494,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public ResponseList<Status> getRetweetedToUser(int userId, Paging paging) throws TwitterException {
+    public ResponseList<Status> getRetweetedToUser(long userId, Paging paging) throws TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
                 "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
@@ -516,7 +516,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public ResponseList<Status> getRetweetedByUser(int userId, Paging paging) throws TwitterException {
+    public ResponseList<Status> getRetweetedByUser(long userId, Paging paging) throws TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
                 "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
@@ -616,7 +616,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User showUser(int userId) throws TwitterException {
+    public User showUser(long userId) throws TwitterException {
         return new UserJSONImpl(http.get(conf.getRestBaseURL() + "users/show.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
     }
@@ -628,18 +628,18 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         ensureAuthorizationEnabled();
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
                 "users/lookup.json", new HttpParameter[]{
-                new HttpParameter("screen_name", toCommaSeparatedString(screenNames))
+                new HttpParameter("screen_name", T4JInternalStringUtil.join(screenNames))
                 , INCLUDE_ENTITIES}, auth));
     }
 
     /**
      * {@inheritDoc}
      */
-    public ResponseList<User> lookupUsers(int[] ids) throws TwitterException {
+    public ResponseList<User> lookupUsers(long[] ids) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
                 "users/lookup.json", new HttpParameter[]{
-                new HttpParameter("user_id", toCommaSeparatedString(ids))
+                new HttpParameter("user_id", T4JInternalStringUtil.join(ids))
                 , INCLUDE_ENTITIES}, auth));
     }
 
@@ -716,7 +716,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<User> getFriendsStatuses(int userId, long cursor) throws TwitterException {
+    public PagableResponseList<User> getFriendsStatuses(long userId, long cursor) throws TwitterException {
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL()
                 + "statuses/friends.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId
@@ -744,7 +744,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<User> getFollowersStatuses(int userId, long cursor) throws TwitterException {
+    public PagableResponseList<User> getFollowersStatuses(long userId, long cursor) throws TwitterException {
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL()
                 + "statuses/followers.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId + "&cursor=" + cursor, auth));
@@ -825,7 +825,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public ResponseList<Status> getUserListStatuses(int listOwnerId, int id, Paging paging) throws TwitterException {
+    public ResponseList<Status> getUserListStatuses(long listOwnerId, int id, Paging paging) throws TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + listOwnerId +
                 "/lists/" + id + "/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
                 , INCLUDE_ENTITIES), auth));
@@ -861,7 +861,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public ResponseList<UserList> getAllUserLists(int userId)
+    public ResponseList<UserList> getAllUserLists(long userId)
             throws TwitterException {
         return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL()
                 + "lists/all.json?user_id=" + userId, auth));
@@ -883,7 +883,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<User> getUserListMembers(int listOwnerId, int listId
+    public PagableResponseList<User> getUserListMembers(long listOwnerId, int listId
             , long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL() +
@@ -894,7 +894,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public UserList addUserListMember(int listId, int userId) throws TwitterException {
+    public UserList addUserListMember(int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
                 "/" + listId + "/members.json?id=" + userId, auth));
@@ -903,10 +903,10 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public UserList addUserListMembers(int listId, int[] userIds) throws TwitterException {
+    public UserList addUserListMembers(int listId, long[] userIds) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members/create_all.json?user_id=" + toCommaSeparatedString(userIds), auth));
+                "/" + listId + "/members/create_all.json?user_id=" + T4JInternalStringUtil.join(userIds), auth));
     }
 
     /**
@@ -915,13 +915,13 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members/create_all.json?screen_name=" + toCommaSeparatedString(screenNames), auth));
+                "/" + listId + "/members/create_all.json?screen_name=" + T4JInternalStringUtil.join(screenNames), auth));
     }
 
     /**
      * {@inheritDoc}
      */
-    public UserList deleteUserListMember(int listId, int userId) throws TwitterException {
+    public UserList deleteUserListMember(int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.delete(conf.getRestBaseURL() + getScreenName() +
                 "/" + listId + "/members.json?id=" + userId, auth));
@@ -930,7 +930,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User checkUserListMembership(String listOwnerScreenName, int listId, int userId) throws TwitterException {
+    public User checkUserListMembership(String listOwnerScreenName, int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.get(conf.getRestBaseURL() + listOwnerScreenName + "/" + listId
                 + "/members/" + userId + ".json?include_entities="
@@ -971,7 +971,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User checkUserListSubscription(String listOwnerScreenName, int listId, int userId) throws TwitterException {
+    public User checkUserListSubscription(String listOwnerScreenName, int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.get(conf.getRestBaseURL() + listOwnerScreenName + "/" + listId
                 + "/subscribers/" + userId + ".json?include_entities="
@@ -1036,7 +1036,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public DirectMessage sendDirectMessage(int userId, String text)
+    public DirectMessage sendDirectMessage(long userId, String text)
             throws TwitterException {
         ensureAuthorizationEnabled();
         return new DirectMessageJSONImpl(http.post(conf.getRestBaseURL() + "direct_messages/new.json",
@@ -1078,7 +1078,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User createFriendship(int userId) throws TwitterException {
+    public User createFriendship(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/create.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
@@ -1096,7 +1096,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User createFriendship(int userId, boolean follow) throws TwitterException {
+    public User createFriendship(long userId, boolean follow) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/create.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId + "&follow=" + follow, auth));
@@ -1114,7 +1114,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User destroyFriendship(int userId) throws TwitterException {
+    public User destroyFriendship(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/destroy.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
@@ -1141,9 +1141,11 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public Relationship showFriendship(int sourceId, int targetId) throws TwitterException {
+    public Relationship showFriendship(long sourceId, long targetId) throws TwitterException {
         return new RelationshipJSONImpl(http.get(conf.getRestBaseURL() + "friendships/show.json",
-                getParameterArray("source_id", sourceId, "target_id", targetId), auth));
+                new HttpParameter[]{
+                        new HttpParameter("source_id", sourceId),
+                        new HttpParameter("target_id", targetId)}, auth));
     }
 
     /**
@@ -1167,15 +1169,15 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      */
     public ResponseList<Friendship> lookupFriendships(String[] screenNames) throws TwitterException {
         ensureAuthorizationEnabled();
-        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?screen_name=" + StringUtil.join(screenNames), auth));
+        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?screen_name=" + T4JInternalStringUtil.join(screenNames), auth));
     }
 
     /**
      * {@inheritDoc}
      */
-    public ResponseList<Friendship> lookupFriendships(int[] ids) throws TwitterException {
+    public ResponseList<Friendship> lookupFriendships(long[] ids) throws TwitterException {
         ensureAuthorizationEnabled();
-        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?user_id=" + StringUtil.join(ids), auth));
+        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?user_id=" + T4JInternalStringUtil.join(ids), auth));
     }
 
     /**
@@ -1195,7 +1197,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public Relationship updateFriendship(int userId, boolean enableDeviceNotification
+    public Relationship updateFriendship(long userId, boolean enableDeviceNotification
             , boolean retweets) throws TwitterException {
         ensureAuthorizationEnabled();
         return new RelationshipJSONImpl(http.post(conf.getRestBaseURL() + "friendships/update.json",
@@ -1218,7 +1220,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public IDs getFriendsIDs(int userId, long cursor) throws TwitterException {
+    public IDs getFriendsIDs(long userId, long cursor) throws TwitterException {
         return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friends/ids.json?user_id=" + userId +
                 "&cursor=" + cursor, auth));
     }
@@ -1242,7 +1244,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public IDs getFollowersIDs(int userId, long cursor) throws TwitterException {
+    public IDs getFollowersIDs(long userId, long cursor) throws TwitterException {
         return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "followers/ids.json?user_id=" + userId
                 + "&cursor=" + cursor, auth));
     }
@@ -1479,7 +1481,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User enableNotification(int userId) throws TwitterException {
+    public User enableNotification(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "notifications/follow.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&userId=" + userId, auth));
@@ -1497,7 +1499,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User disableNotification(int userId) throws TwitterException {
+    public User disableNotification(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "notifications/leave.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
@@ -1517,7 +1519,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User createBlock(int userId) throws TwitterException {
+    public User createBlock(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "blocks/create.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
@@ -1535,7 +1537,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User destroyBlock(int userId) throws TwitterException {
+    public User destroyBlock(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "blocks/destroy.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
@@ -1560,7 +1562,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public boolean existsBlock(int userId) throws TwitterException {
+    public boolean existsBlock(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
             return -1 == http.get(conf.getRestBaseURL() + "blocks/exists.json?user_id=" + userId, auth).
@@ -1608,7 +1610,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
-    public User reportSpam(int userId) throws TwitterException {
+    public User reportSpam(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "report_spam.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
@@ -1809,28 +1811,6 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public boolean test() throws TwitterException {
         return -1 != http.get(conf.getRestBaseURL() + "help/test.json").
                 asString().indexOf("ok");
-    }
-
-    private static String toCommaSeparatedString(String[] strArray) {
-        StringBuffer buf = new StringBuffer(strArray.length * 8);
-        for (String value : strArray) {
-            if (buf.length() != 0) {
-                buf.append(",");
-            }
-            buf.append(value);
-        }
-        return buf.toString();
-    }
-
-    private static String toCommaSeparatedString(int[] strArray) {
-        StringBuffer buf = new StringBuffer(strArray.length * 8);
-        for (int value : strArray) {
-            if (buf.length() != 0) {
-                buf.append(",");
-            }
-            buf.append(value);
-        }
-        return buf.toString();
     }
 
     @Override

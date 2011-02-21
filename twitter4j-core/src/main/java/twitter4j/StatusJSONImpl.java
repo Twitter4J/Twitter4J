@@ -28,7 +28,6 @@ import java.util.Date;
 
 import static twitter4j.internal.util.ParseUtil.getBoolean;
 import static twitter4j.internal.util.ParseUtil.getDate;
-import static twitter4j.internal.util.ParseUtil.getInt;
 import static twitter4j.internal.util.ParseUtil.getLong;
 import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
@@ -39,6 +38,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
  */
 /*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(StatusJSONImpl.class);
+    private static final long serialVersionUID = 7548618898682727465L;
 
     private Date createdAt;
     private long id;
@@ -46,7 +46,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private String source;
     private boolean isTruncated;
     private long inReplyToStatusId;
-    private int inReplyToUserId;
+    private long inReplyToUserId;
     private boolean isFavorited;
     private String inReplyToScreenName;
     private GeoLocation geoLocation = null;
@@ -61,8 +61,6 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private UserMentionEntity[] userMentionEntities;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
-
-    private static final long serialVersionUID = 1608000492860584608L;
 
     /*package*/StatusJSONImpl(HttpResponse res) throws TwitterException {
         super(res);
@@ -84,7 +82,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         createdAt = getDate("created_at", json);
         isTruncated = getBoolean("truncated", json);
         inReplyToStatusId = getLong("in_reply_to_status_id", json);
-        inReplyToUserId = getInt("in_reply_to_user_id", json);
+        inReplyToUserId = getLong("in_reply_to_user_id", json);
         isFavorited = getBoolean("favorited", json);
         inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
         retweetCount = getLong("retweet_count", json);
@@ -220,7 +218,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public int getInReplyToUserId() {
+    public long getInReplyToUserId() {
         return inReplyToUserId;
     }
 

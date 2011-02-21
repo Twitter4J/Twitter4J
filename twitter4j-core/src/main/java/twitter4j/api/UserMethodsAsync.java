@@ -39,7 +39,7 @@ public interface UserMethodsAsync {
      * @param userId the ID of the user for whom to request the retrieve
      * @see <a href="http://dev.twitter.com/doc/get/users/show">GET users/show | dev.twitter.com</a>
      */
-    void showUser(int userId);
+    void showUser(long userId);
 
     /**
      * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
@@ -60,7 +60,7 @@ public interface UserMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/users/lookup">GET users/lookup | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
-    void lookupUsers(int[] ids);
+    void lookupUsers(long[] ids);
 
     /**
      * Run a search for users similar to the Find People button on Twitter.com; the same results returned by people search on Twitter.com will be returned by using this API.<br>
@@ -147,7 +147,7 @@ public interface UserMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void getFriendsStatuses(int userId, long cursor);
+    void getFriendsStatuses(long userId, long cursor);
 
     /**
      * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they joined Twitter (this is going to be changed).
@@ -179,5 +179,5 @@ public interface UserMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void getFollowersStatuses(int userId, long cursor);
+    void getFollowersStatuses(long userId, long cursor);
 }

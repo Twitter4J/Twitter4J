@@ -78,7 +78,7 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      * @return the in_reply_tostatus_id
      * @since Twitter4J 1.0.4
      */
-    int getInReplyToUserId();
+    long getInReplyToUserId();
 
     /**
      * Returns the in_reply_to_screen_name

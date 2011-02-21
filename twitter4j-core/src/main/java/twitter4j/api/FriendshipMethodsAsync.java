@@ -41,7 +41,7 @@ public interface FriendshipMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void createFriendship(int userId);
+    void createFriendship(long userId);
 
     /**
      * Allows the authenticating users to follow the user specified in the ID parameter.<br>
@@ -65,7 +65,7 @@ public interface FriendshipMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void createFriendship(int userId, boolean follow);
+    void createFriendship(long userId, boolean follow);
 
     /**
      * Allows the authenticating users to unfollow the user specified in the ID parameter.<br>
@@ -87,7 +87,7 @@ public interface FriendshipMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/friendships/destroy">POST friendships/destroy | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void destroyFriendship(int userId);
+    void destroyFriendship(long userId);
 
     /**
      * Tests for the existence of friendship between two users. Will return true if user_a follows user_b, otherwise will return false.
@@ -115,12 +115,12 @@ public interface FriendshipMethodsAsync {
      * Returns detailed information about the relationship between two users.
      * <br>This method calls http://api.twitter.com/1/friendships/show.json
      *
-     * @param sourceId the screen ID of the source user
-     * @param targetId the screen ID of the target user
+     * @param sourceId the ID of the source user
+     * @param targetId the ID of the target user
      * @see <a href="http://dev.twitter.com/doc/get/friendships/show">GET friendships/show | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void showFriendship(int sourceId, int targetId);
+    void showFriendship(long sourceId, long targetId);
 
     /**
      * Returns an array of numeric IDs for every user who has a pending request to follow the authenticating user.
@@ -162,7 +162,7 @@ public interface FriendshipMethodsAsync {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    void lookupFriendships(int[] ids);
+    void lookupFriendships(long[] ids);
 
 
     /**
@@ -190,6 +190,6 @@ public interface FriendshipMethodsAsync {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    void updateFriendship(int userId, boolean enableDeviceNotification
+    void updateFriendship(long userId, boolean enableDeviceNotification
             , boolean retweets);
 }

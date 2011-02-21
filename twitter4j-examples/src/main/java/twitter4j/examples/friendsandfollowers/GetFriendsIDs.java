@@ -44,7 +44,7 @@ public final class GetFriendsIDs {
                 } else {
                     ids = twitter.getFriendsIDs(cursor);
                 }
-                for (int id : ids.getIDs()) {
+                for (long id : ids.getIDs()) {
                     System.out.println(id);
                 }
             } while ((cursor = ids.getNextCursor()) != 0);

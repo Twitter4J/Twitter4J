@@ -81,6 +81,6 @@ public interface ListSubscribersMethods {
      * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/subscribers/:id">GET :user/:list_id/subscribers/:id | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    User checkUserListSubscription(String listOwnerScreenName, int listId, int userId)
+    User checkUserListSubscription(String listOwnerScreenName, int listId, long userId)
             throws TwitterException;
 }

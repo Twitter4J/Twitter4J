@@ -49,7 +49,7 @@ import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.http.RequestMethod;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.StringUtil;
+import twitter4j.internal.util.T4JInternalStringUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
             if (conf.getHttpProxyUser() != null && !conf.getHttpProxyUser().equals("")) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Proxy AuthUser: " + conf.getHttpProxyUser());
-                    logger.debug("Proxy AuthPassword: " + StringUtil.maskString(conf.getHttpProxyPassword()));
+                    logger.debug("Proxy AuthPassword: " + T4JInternalStringUtil.maskString(conf.getHttpProxyPassword()));
                 }
                 client.getCredentialsProvider().setCredentials(
                         new AuthScope(conf.getHttpProxyHost(), conf.getHttpProxyPort()),

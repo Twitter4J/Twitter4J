@@ -29,7 +29,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     protected TwitterStream twitterStream = null;
     protected Twitter protectedTwitter = null;
     protected Properties p = new Properties();
-    private int userId;
+    private long userId;
     private long upToStatusId;
 
     public StreamAPITest(String name) {
@@ -214,7 +214,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         }
         try {
             twitterStream = new TwitterStreamFactory().getInstance();
-            StatusStream stream = twitterStream.getFilterStream(new FilterQuery(new int[]{6358482}));
+            StatusStream stream = twitterStream.getFilterStream(new FilterQuery(new long[]{6358482}));
             fail();
         } catch (IllegalStateException ise) {
         } catch (TwitterException te) {
@@ -280,7 +280,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         notifyResponse();
     }
 
-    public void onScrubGeo(int userId, long upToStatusId) {
+    public void onScrubGeo(long userId, long upToStatusId) {
         this.userId = userId;
         this.upToStatusId = upToStatusId;
         System.out.println("got onScrubGeo");

@@ -99,7 +99,7 @@ public interface DirectMessageMethods {
      * @see <a href="http://dev.twitter.com/doc/post/direct_messages/new">POST direct_messages/new | dev.twitter.com</a>
      * @since Twitter4j 2.1.0
      */
-    DirectMessage sendDirectMessage(int userId, String text)
+    DirectMessage sendDirectMessage(long userId, String text)
             throws TwitterException;
 
     /**

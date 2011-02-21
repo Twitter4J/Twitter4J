@@ -101,7 +101,7 @@ public interface ListMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/:user/lists/:id/statuses">GET :user/lists/:id/statuses | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
-    void getUserListStatuses(int listOwnerId, int id, Paging paging);
+    void getUserListStatuses(long listOwnerId, int id, Paging paging);
 
     /**
      * List the lists the specified user has been added to.
@@ -143,5 +143,5 @@ public interface ListMethodsAsync {
      * @param userId user id to look up
      * @since Twitter4J 2.1.9
      */
-    void getAllSubscribingUserLists(int userId);
+    void getAllSubscribingUserLists(long userId);
 }

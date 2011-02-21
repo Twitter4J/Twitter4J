@@ -125,7 +125,7 @@ public interface ListMethods {
      * @see <a href="http://dev.twitter.com/doc/get/:user/lists/:id/statuses">GET :user/lists/:id/statuses | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    ResponseList<Status> getUserListStatuses(int listOwnerId, int id, Paging paging)
+    ResponseList<Status> getUserListStatuses(long listOwnerId, int id, Paging paging)
             throws TwitterException;
 
     /**
@@ -179,6 +179,6 @@ public interface ListMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.9
      */
-    ResponseList<UserList> getAllUserLists(int userId)
+    ResponseList<UserList> getAllUserLists(long userId)
             throws TwitterException;
 }

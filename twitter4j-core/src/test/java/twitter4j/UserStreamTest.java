@@ -251,7 +251,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
 
-    public void onDeletionNotice(long directMessageId, int userId) {
+    public void onDeletionNotice(long directMessageId, long userId) {
         received.add(new Object[]{TwitterMethod.DESTROY_DIRECT_MESSAGE, directMessageId, userId});
         notifyResponse();
     }
@@ -261,12 +261,12 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
 
-    public void onScrubGeo(int userId, long upToStatusId) {
+    public void onScrubGeo(long userId, long upToStatusId) {
         received.add(new Object[]{"scrubgeo", userId, upToStatusId});
         notifyResponse();
     }
 
-    public void onFriendList(int[] friendIds) {
+    public void onFriendList(long[] friendIds) {
         received.add(new Object[]{"onfriendlist", friendIds});
         notifyResponse();
     }

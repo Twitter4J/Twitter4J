@@ -281,13 +281,13 @@ abstract class AbstractStreamImplementation {
         return directMessage;
     }
 
-    protected int[] asFriendList(JSONObject json) throws TwitterException {
+    protected long[] asFriendList(JSONObject json) throws TwitterException {
         JSONArray friends;
         try {
             friends = json.getJSONArray("friends");
-            int[] friendIds = new int[friends.length()];
+            long[] friendIds = new long[friends.length()];
             for (int i = 0; i < friendIds.length; ++i) {
-                friendIds[i] = friends.getInt(i);
+                friendIds[i] = friends.getLong(i);
             }
             return friendIds;
         } catch (JSONException e) {

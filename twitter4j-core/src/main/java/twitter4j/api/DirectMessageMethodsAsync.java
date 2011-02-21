@@ -79,7 +79,7 @@ public interface DirectMessageMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/post/direct_messages/new">POST direct_messages/new | dev.twitter.com</a>
      * @since Twitter4j 2.1.0
      */
-    void sendDirectMessage(int userId, String text);
+    void sendDirectMessage(long userId, String text);
 
     /**
      * Destroys the direct message specified in the required ID parameter. The authenticating user must be the recipient of the specified direct message.

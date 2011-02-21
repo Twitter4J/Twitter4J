@@ -60,7 +60,7 @@ public final class PrintFilterStream {
                 System.out.println("Got track limitation notice:" + numberOfLimitedStatuses);
             }
 
-            public void onScrubGeo(int userId, long upToStatusId) {
+            public void onScrubGeo(long userId, long upToStatusId) {
                 System.out.println("Got scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);
             }
 
@@ -71,18 +71,18 @@ public final class PrintFilterStream {
 
         TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
         twitterStream.addListener(listener);
-        ArrayList<Integer> follow = new ArrayList<Integer>();
+        ArrayList<Long> follow = new ArrayList<Long>();
         ArrayList<String> track = new ArrayList<String>();
         for (String arg : args) {
             if (isNumericalArgument(arg)) {
                 for (String id : arg.split(",")) {
-                    follow.add(Integer.parseInt(id));
+                    follow.add(Long.parseLong(id));
                 }
             } else {
                 track.addAll(Arrays.asList(arg.split(",")));
             }
         }
-        int[] followArray = new int[follow.size()];
+        long[] followArray = new long[follow.size()];
         for (int i = 0; i < follow.size(); i++) {
             followArray[i] = follow.get(i);
         }

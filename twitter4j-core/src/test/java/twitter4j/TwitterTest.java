@@ -158,7 +158,7 @@ public class TwitterTest extends TwitterTestBase {
         assertContains(users, id1);
         assertContains(users, id2);
 
-        users = twitter1.lookupUsers(new int[]{id1.id, id2.id});
+        users = twitter1.lookupUsers(new long[]{id1.id, id2.id});
         assertEquals(2, users.size());
         assertContains(users, id1);
         assertContains(users, id2);
@@ -285,7 +285,7 @@ public class TwitterTest extends TwitterTestBase {
         userList = twitter1.addUserListMember(userList.getId(), id2.id);
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(DataObjectFactory.getRawJSON(userList));
-        userList = twitter1.addUserListMembers(userList.getId(), new int[]{id3.id, id2.id});
+        userList = twitter1.addUserListMembers(userList.getId(), new long[]{id3.id, id2.id});
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(DataObjectFactory.getRawJSON(userList));
         userList = twitter1.addUserListMembers(userList.getId(), new String[]{"akr", "yusukey"});
@@ -651,7 +651,7 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(id3.screenName, friendshipList.get(2).getScreenName());
         assertTrue(friendshipList.get(2).isFollowing());
         assertTrue(friendshipList.get(2).isFollowedBy());
-        friendshipList = twitter1.lookupFriendships(new int[]{id2.id, id3.id});
+        friendshipList = twitter1.lookupFriendships(new long[]{id2.id, id3.id});
         assertEquals(2, friendshipList.size());
 
         Relationship relationship = twitter1.updateFriendship(id3.screenName, true, true);
@@ -663,7 +663,7 @@ public class TwitterTest extends TwitterTestBase {
 
     private void assertIDExsits(String assertion, IDs ids, int idToFind) {
         boolean found = false;
-        for (int id : ids.getIDs()) {
+        for (long id : ids.getIDs()) {
             if (id == idToFind) {
                 found = true;
                 break;

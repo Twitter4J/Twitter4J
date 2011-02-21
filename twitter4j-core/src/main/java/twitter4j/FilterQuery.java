@@ -17,7 +17,7 @@
 package twitter4j;
 
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.util.StringUtil;
+import twitter4j.internal.util.T4JInternalStringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ import java.util.Arrays;
 public final class FilterQuery implements java.io.Serializable {
     private static final long serialVersionUID = 430966623248982833L;
     private int count;
-    private int[] follow;
+    private long[] follow;
     private String[] track;
     private double[][] locations;
     private boolean includeEntities;
@@ -49,7 +49,7 @@ public final class FilterQuery implements java.io.Serializable {
      *
      * @param follow Specifies the users, by ID, to receive public tweets from.
      */
-    public FilterQuery(int[] follow) {
+    public FilterQuery(long[] follow) {
         this();
         this.count = 0;
         this.follow = follow;
@@ -61,7 +61,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @param follow Specifies the users, by ID, to receive public tweets from.
      */
-    public FilterQuery(int count, int[] follow) {
+    public FilterQuery(int count, long[] follow) {
         this();
         this.count = count;
         this.follow = follow;
@@ -74,7 +74,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param follow Specifies the users, by ID, to receive public tweets from.
      * @param track  Specifies keywords to track.
      */
-    public FilterQuery(int count, int[] follow, String[] track) {
+    public FilterQuery(int count, long[] follow, String[] track) {
         this();
         this.count = count;
         this.follow = follow;
@@ -89,7 +89,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param track     Specifies keywords to track.
      * @param locations Specifies the locations to track. 2D array
      */
-    public FilterQuery(int count, int[] follow, String[] track, double[][] locations) {
+    public FilterQuery(int count, long[] follow, String[] track, double[][] locations) {
         this.count = count;
         this.follow = follow;
         this.track = track;
@@ -113,7 +113,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param follow Specifies the users, by ID, to receive public tweets from.
      * @return this instance
      */
-    public FilterQuery follow(int[] follow) {
+    public FilterQuery follow(long[] follow) {
         this.follow = follow;
         return this;
     }
@@ -158,11 +158,11 @@ public final class FilterQuery implements java.io.Serializable {
         params.add(new HttpParameter("count", count));
         if (null != follow && follow.length > 0) {
             params.add(new HttpParameter("follow"
-                    , StringUtil.join(follow)));
+                    , T4JInternalStringUtil.join(follow)));
         }
         if (null != track && track.length > 0) {
             params.add(new HttpParameter("track"
-                    , StringUtil.join(track)));
+                    , T4JInternalStringUtil.join(track)));
         }
         if (null != locations && locations.length > 0) {
             params.add(new HttpParameter("locations"

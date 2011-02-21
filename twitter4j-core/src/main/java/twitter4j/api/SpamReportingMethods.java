@@ -34,7 +34,7 @@ public interface SpamReportingMethods {
      * @see <a href="http://dev.twitter.com/doc/post/report_spam">POST report_spam | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    User reportSpam(int userId) throws TwitterException;
+    User reportSpam(long userId) throws TwitterException;
 
     /**
      * The user specified in the id is blocked by the authenticated user and reported as a spammer.

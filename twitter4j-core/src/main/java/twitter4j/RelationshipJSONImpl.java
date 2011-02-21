@@ -23,7 +23,7 @@ import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
 import static twitter4j.internal.util.ParseUtil.getBoolean;
-import static twitter4j.internal.util.ParseUtil.getInt;
+import static twitter4j.internal.util.ParseUtil.getLong;
 import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
 /**
@@ -35,15 +35,15 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
  */
 /*package*/ class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {
 
-    private final int targetUserId;
+    private static final long serialVersionUID = 7725021608907856360L;
+    private final long targetUserId;
     private final String targetUserScreenName;
     private final boolean sourceBlockingTarget;
     private final boolean sourceNotificationsEnabled;
     private final boolean sourceFollowingTarget;
     private final boolean sourceFollowedByTarget;
-    private final int sourceUserId;
+    private final long sourceUserId;
     private final String sourceUserScreenName;
-    private static final long serialVersionUID = 697705345506281849L;
 
     /*package*/ RelationshipJSONImpl(HttpResponse res) throws TwitterException {
         this(res, res.asJSONObject());
@@ -61,8 +61,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
             JSONObject relationship = json.getJSONObject("relationship");
             JSONObject sourceJson = relationship.getJSONObject("source");
             JSONObject targetJson = relationship.getJSONObject("target");
-            sourceUserId = getInt("id", sourceJson);
-            targetUserId = getInt("id", targetJson);
+            sourceUserId = getLong("id", sourceJson);
+            targetUserId = getLong("id", targetJson);
             sourceUserScreenName = getUnescapedString("screen_name", sourceJson);
             targetUserScreenName = getUnescapedString("screen_name", targetJson);
             sourceBlockingTarget = getBoolean("blocking", sourceJson);
@@ -100,14 +100,14 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public int getSourceUserId() {
+    public long getSourceUserId() {
         return sourceUserId;
     }
 
     /**
      * {@inheritDoc}
      */
-    public int getTargetUserId() {
+    public long getTargetUserId() {
         return targetUserId;
     }
 
@@ -186,10 +186,14 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
     @Override
     public int hashCode() {
-        int result = sourceUserId;
-        result = 31 * result + targetUserId;
-        result = 31 * result + sourceUserScreenName.hashCode();
-        result = 31 * result + targetUserScreenName.hashCode();
+        int result = (int) (targetUserId ^ (targetUserId >>> 32));
+        result = 31 * result + (targetUserScreenName != null ? targetUserScreenName.hashCode() : 0);
+        result = 31 * result + (sourceBlockingTarget ? 1 : 0);
+        result = 31 * result + (sourceNotificationsEnabled ? 1 : 0);
+        result = 31 * result + (sourceFollowingTarget ? 1 : 0);
+        result = 31 * result + (sourceFollowedByTarget ? 1 : 0);
+        result = 31 * result + (int) (sourceUserId ^ (sourceUserId >>> 32));
+        result = 31 * result + (sourceUserScreenName != null ? sourceUserScreenName.hashCode() : 0);
         return result;
     }
 

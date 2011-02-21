@@ -28,12 +28,12 @@ import twitter4j.internal.util.ParseUtil;
  * @since Twitter4J 2.1.9
  */
 /*package*/ class UserMentionEntityJSONImpl implements UserMentionEntity {
-    private static final long serialVersionUID = 1255718748798369111L;
+    private static final long serialVersionUID = 6580431141350059702L;
     private int start = -1;
     private int end = -1;
     private String name;
     private String screenName;
-    private int id;
+    private long id;
 
     /* package */ UserMentionEntityJSONImpl(JSONObject json) throws TwitterException {
         super();
@@ -52,7 +52,7 @@ import twitter4j.internal.util.ParseUtil;
             if (!json.isNull("screen_name")) {
                 this.screenName = json.getString("screen_name");
             }
-            id = ParseUtil.getInt("id", json);
+            id = ParseUtil.getLong("id", json);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -75,7 +75,7 @@ import twitter4j.internal.util.ParseUtil;
     /**
      * {@inheritDoc}
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -117,7 +117,7 @@ import twitter4j.internal.util.ParseUtil;
         result = 31 * result + end;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
-        result = 31 * result + id;
+        result = 31 * result + (int) (id ^ (id >>> 32));
         return result;
     }
 

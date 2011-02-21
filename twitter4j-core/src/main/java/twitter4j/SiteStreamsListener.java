@@ -21,15 +21,15 @@ package twitter4j;
  * @since Twitter4J 2.1.8
  */
 public interface SiteStreamsListener extends StreamListener {
-    void onStatus(int forUser, Status status);
+    void onStatus(long forUser, Status status);
 
-    void onDeletionNotice(int forUser, StatusDeletionNotice statusDeletionNotice);
+    void onDeletionNotice(long forUser, StatusDeletionNotice statusDeletionNotice);
 
     /**
      * @param forUser   the user id to whom sent the event
      * @param friendIds
      */
-    void onFriendList(int forUser, int[] friendIds);
+    void onFriendList(long forUser, long[] friendIds);
 
     /**
      * @param forUser         the user id to whom sent the event
@@ -37,21 +37,21 @@ public interface SiteStreamsListener extends StreamListener {
      * @param target
      * @param favoritedStatus
      */
-    void onFavorite(int forUser, User source, User target, Status favoritedStatus);
+    void onFavorite(long forUser, User source, User target, Status favoritedStatus);
 
     /**
      * @param forUser           the user id to whom sent the event
      * @param target
      * @param unfavoritedStatus
      */
-    void onUnfavorite(int forUser, User source, User target, Status unfavoritedStatus);
+    void onUnfavorite(long forUser, User source, User target, Status unfavoritedStatus);
 
     /**
      * @param forUser      the user id to whom sent the event
      * @param source
      * @param followedUser
      */
-    void onFollow(int forUser, User source, User followedUser);
+    void onFollow(long forUser, User source, User followedUser);
 
     /**
      * @param forUser        the user id to whom sent the event
@@ -59,15 +59,15 @@ public interface SiteStreamsListener extends StreamListener {
      * @param unfollowedUser
      * @since Twitter4J 2.1.11
      */
-    void onUnfollow(int forUser, User source, User unfollowedUser);
+    void onUnfollow(long forUser, User source, User unfollowedUser);
 
     /**
      * @param forUser       the user id to whom sent the event
      * @param directMessage
      */
-    void onDirectMessage(int forUser, DirectMessage directMessage);
+    void onDirectMessage(long forUser, DirectMessage directMessage);
 
-    void onDeletionNotice(int forUser, int directMessageId, int userId);
+    void onDeletionNotice(long forUser, long directMessageId, long userId);
 
     /**
      * @param forUser     the user id to whom sent the event
@@ -75,7 +75,7 @@ public interface SiteStreamsListener extends StreamListener {
      * @param listOwner
      * @param list
      */
-    void onUserListMemberAddition(int forUser, User addedMember, User listOwner, UserList list);
+    void onUserListMemberAddition(long forUser, User addedMember, User listOwner, UserList list);
 
     /**
      * @param forUser       the user id to whom sent the event
@@ -83,7 +83,7 @@ public interface SiteStreamsListener extends StreamListener {
      * @param listOwner
      * @param list
      */
-    void onUserListMemberDeletion(int forUser, User deletedMember, User listOwner, UserList list);
+    void onUserListMemberDeletion(long forUser, User deletedMember, User listOwner, UserList list);
 
     /**
      * @param forUser    the user id to whom sent the event
@@ -91,7 +91,7 @@ public interface SiteStreamsListener extends StreamListener {
      * @param listOwner
      * @param list
      */
-    void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list);
+    void onUserListSubscription(long forUser, User subscriber, User listOwner, UserList list);
 
     /**
      * @param forUser    the user id to whom sent the event
@@ -99,49 +99,49 @@ public interface SiteStreamsListener extends StreamListener {
      * @param listOwner
      * @param list
      */
-    void onUserListUnsubscription(int forUser, User subscriber, User listOwner, UserList list);
+    void onUserListUnsubscription(long forUser, User subscriber, User listOwner, UserList list);
 
     /**
      * @param forUser   the user id to whom sent the event
      * @param listOwner
      * @param list
      */
-    void onUserListCreation(int forUser, User listOwner, UserList list);
+    void onUserListCreation(long forUser, User listOwner, UserList list);
 
     /**
      * @param forUser   the user id to whom sent the event
      * @param listOwner
      * @param list
      */
-    void onUserListUpdate(int forUser, User listOwner, UserList list);
+    void onUserListUpdate(long forUser, User listOwner, UserList list);
 
     /**
      * @param forUser   the user id to whom sent the event
      * @param listOwner
      * @param list
      */
-    void onUserListDeletion(int forUser, User listOwner, UserList list);
+    void onUserListDeletion(long forUser, User listOwner, UserList list);
 
     /**
      * @param forUser     the user id to whom sent the event
      * @param updatedUser updated user
      * @since Twitter4J 2.1.9
      */
-    void onUserProfileUpdate(int forUser, User updatedUser);
+    void onUserProfileUpdate(long forUser, User updatedUser);
 
     /**
      * @param forUser     the user id to whom sent the event
      * @param source
      * @param blockedUser
      */
-    void onBlock(int forUser, User source, User blockedUser);
+    void onBlock(long forUser, User source, User blockedUser);
 
     /**
      * @param forUser       the user id to whom sent the event
      * @param source
      * @param unblockedUser
      */
-    void onUnblock(int forUser, User source, User unblockedUser);
+    void onUnblock(long forUser, User source, User unblockedUser);
 
     void onException(Exception ex);
 }

@@ -30,7 +30,7 @@ public class StatusAdapter implements StatusListener {
     public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
     }
 
-    public void onScrubGeo(int userId, long upToStatusId) {
+    public void onScrubGeo(long userId, long upToStatusId) {
     }
 
     public void onException(Exception ex) {

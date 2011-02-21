@@ -41,7 +41,7 @@ public final class GetRetweetedByIds {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             IDs ids = twitter.getRetweetedByIDs(Long.parseLong(args[0]));
-            for (int id : ids.getIDs()) {
+            for (long id : ids.getIDs()) {
                 System.out.println(id);
             }
             System.out.println("done.");

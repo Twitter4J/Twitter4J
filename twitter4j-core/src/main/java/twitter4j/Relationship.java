@@ -30,14 +30,14 @@ public interface Relationship extends TwitterResponse, java.io.Serializable {
      *
      * @return the source user id
      */
-    int getSourceUserId();
+    long getSourceUserId();
 
     /**
      * Returns the target user id
      *
      * @return target user id
      */
-    int getTargetUserId();
+    long getTargetUserId();
 
     /**
      * Returns if the source user is blocking the target user

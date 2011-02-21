@@ -83,7 +83,7 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         } else {
             JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
             listener.onDeletionNotice(forUser.get(), ParseUtil.getInt("id", directMessage)
-                    , ParseUtil.getInt("user_id", directMessage));
+                    , ParseUtil.getLong("user_id", directMessage));
         }
     }
 

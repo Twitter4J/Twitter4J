@@ -25,7 +25,7 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.StringUtil;
+import twitter4j.internal.util.T4JInternalStringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -286,7 +286,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
                 params.add(new HttpParameter("replies", "all"));
             }
             if (null != track) {
-                params.add(new HttpParameter("track", StringUtil.join(track)));
+                params.add(new HttpParameter("track", T4JInternalStringUtil.join(track)));
             }
             return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
                     , params.toArray(new HttpParameter[params.size()])
@@ -307,7 +307,7 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
      * @see <a href="http://dev.twitter.com/pages/site_streams">Site Streams | dev.twitter.com</a>
      * @since Twitter4J 2.1.8
      */
-    public void site(final boolean withFollowings, final int[] follow) {
+    public void site(final boolean withFollowings, final long[] follow) {
         ensureOAuthEnabled();
         ensureListenerIsSet();
         for (StreamListener listener : streamListeners) {
@@ -361,12 +361,12 @@ public final class TwitterStream extends TwitterOAuthSupportBaseImpl {
         }
     }
 
-    InputStream getSiteStream(boolean withFollowings, int[] follow) throws TwitterException {
+    InputStream getSiteStream(boolean withFollowings, long[] follow) throws TwitterException {
         ensureOAuthEnabled();
         return http.post(conf.getSiteStreamBaseURL() + "site.json",
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
-                        , new HttpParameter("follow", StringUtil.join(follow))}
+                        , new HttpParameter("follow", T4JInternalStringUtil.join(follow))}
                 , auth).asStream();
     }
 

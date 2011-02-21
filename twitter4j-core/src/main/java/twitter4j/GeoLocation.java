@@ -19,7 +19,7 @@ package twitter4j;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.StringUtil;
+import twitter4j.internal.util.T4JInternalStringUtil;
 
 /**
  * A data class representing geo location.
@@ -57,7 +57,7 @@ public class GeoLocation implements java.io.Serializable {
                 String coordinates = json.getJSONObject("geo")
                         .getString("coordinates");
                 coordinates = coordinates.substring(1, coordinates.length() - 1);
-                String[] point = StringUtil.split(coordinates, ",");
+                String[] point = T4JInternalStringUtil.split(coordinates, ",");
                 return new GeoLocation(Double.parseDouble(point[0]),
                         Double.parseDouble(point[1]));
             }

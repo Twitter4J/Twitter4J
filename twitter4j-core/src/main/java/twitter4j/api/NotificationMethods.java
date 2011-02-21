@@ -46,7 +46,7 @@ public interface NotificationMethods {
      * @see <a href="http://dev.twitter.com/doc/post/notifications/follow">POST notifications/follow | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    User enableNotification(int userId)
+    User enableNotification(long userId)
             throws TwitterException;
 
     /**
@@ -72,6 +72,6 @@ public interface NotificationMethods {
      * @see <a href="http://dev.twitter.com/doc/post/notifications/leave">POST notifications/leave | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    User disableNotification(int userId)
+    User disableNotification(long userId)
             throws TwitterException;
 }

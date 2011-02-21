@@ -52,7 +52,7 @@ public final class PrintUserStream {
             System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
         }
 
-        public void onDeletionNotice(long directMessageId, int userId) {
+        public void onDeletionNotice(long directMessageId, long userId) {
             System.out.println("Got a direct message deletion notice id:" + directMessageId);
         }
 
@@ -60,13 +60,13 @@ public final class PrintUserStream {
             System.out.println("Got a track limitation notice:" + numberOfLimitedStatuses);
         }
 
-        public void onScrubGeo(int userId, long upToStatusId) {
+        public void onScrubGeo(long userId, long upToStatusId) {
             System.out.println("Got scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);
         }
 
-        public void onFriendList(int[] friendIds) {
+        public void onFriendList(long[] friendIds) {
             System.out.print("onFriendList");
-            for (int friendId : friendIds) {
+            for (long friendId : friendIds) {
                 System.out.print(" " + friendId);
             }
             System.out.println();

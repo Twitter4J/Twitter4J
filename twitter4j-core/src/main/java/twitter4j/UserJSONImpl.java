@@ -29,6 +29,7 @@ import java.util.Date;
 import static twitter4j.internal.util.ParseUtil.getBoolean;
 import static twitter4j.internal.util.ParseUtil.getDate;
 import static twitter4j.internal.util.ParseUtil.getInt;
+import static twitter4j.internal.util.ParseUtil.getLong;
 import static twitter4j.internal.util.ParseUtil.getRawString;
 
 /**
@@ -39,7 +40,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
  */
 /*package*/ final class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
 
-    private int id;
+    private long id;
     private String name;
     private String screenName;
     private String location;
@@ -90,7 +91,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
 
     private void init(JSONObject json) throws TwitterException {
         try {
-            id = getInt("id", json);
+            id = getLong("id", json);
             name = getRawString("name", json);
             screenName = getRawString("screen_name", json);
             location = getRawString("location", json);
@@ -132,13 +133,13 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     }
 
     public int compareTo(User that) {
-        return this.id - that.getId();
+        return (int) (this.id - that.getId());
     }
 
     /**
      * {@inheritDoc}
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -418,7 +419,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
 
     @Override
     public int hashCode() {
-        return id;
+        return (int) id;
     }
 
     @Override

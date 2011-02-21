@@ -23,8 +23,8 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.4
  */
-public class StringUtil {
-    private StringUtil() {
+public class T4JInternalStringUtil {
+    private T4JInternalStringUtil() {
         throw new AssertionError();
     }
 
@@ -64,6 +64,17 @@ public class StringUtil {
     public static String join(int[] follows) {
         StringBuffer buf = new StringBuffer(11 * follows.length);
         for (int follow : follows) {
+            if (0 != buf.length()) {
+                buf.append(",");
+            }
+            buf.append(follow);
+        }
+        return buf.toString();
+    }
+
+    public static String join(long[] follows) {
+        StringBuffer buf = new StringBuffer(11 * follows.length);
+        for (long follow : follows) {
             if (0 != buf.length()) {
                 buf.append(",");
             }

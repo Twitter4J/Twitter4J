@@ -24,23 +24,23 @@ import junit.framework.TestCase;
  */
 public class StringUtilTest extends TestCase {
     public void testMaskString() throws Exception {
-        assertEquals("******", StringUtil.maskString("foobar"));
+        assertEquals("******", T4JInternalStringUtil.maskString("foobar"));
     }
 
     public void testSplit() throws Exception {
         String[] expected = new String[]{"foo", "bar"};
-        String[] actual = StringUtil.split("foo,bar", ",");
+        String[] actual = T4JInternalStringUtil.split("foo,bar", ",");
         assertEquals(expected[0], actual[0]);
         assertEquals(expected[1], actual[1]);
 
         expected = new String[]{"foo", "bar", "hoge"};
-        actual = StringUtil.split("foo,bar,hoge", ",");
+        actual = T4JInternalStringUtil.split("foo,bar,hoge", ",");
         assertEquals(expected[0], actual[0]);
         assertEquals(expected[1], actual[1]);
         assertEquals(expected[2], actual[2]);
 
         expected = new String[]{"foobar"};
-        actual = StringUtil.split("foobar", ",");
+        actual = T4JInternalStringUtil.split("foobar", ",");
         assertEquals(expected[0], actual[0]);
     }
 }

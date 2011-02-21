@@ -27,5 +27,5 @@ package twitter4j;
 public interface StatusDeletionNotice extends Comparable<StatusDeletionNotice>, java.io.Serializable {
     long getStatusId();
 
-    int getUserId();
+    long getUserId();
 }

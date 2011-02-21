@@ -112,7 +112,7 @@ public interface TimelineMethods {
      * @see <a href="http://dev.twitter.com/doc/get/statuses/user_timeline">GET statuses/user_timeline | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    ResponseList<Status> getUserTimeline(int userId, Paging paging) throws TwitterException;
+    ResponseList<Status> getUserTimeline(long userId, Paging paging) throws TwitterException;
 
     /**
      * Returns the 20 most recent statuses posted from the authenticating user. It's also possible to request another user's timeline via the id parameter.<br>
@@ -139,7 +139,7 @@ public interface TimelineMethods {
      * @see <a href="http://dev.twitter.com/doc/get/statuses/user_timeline">GET statuses/user_timeline | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    ResponseList<Status> getUserTimeline(int userId) throws TwitterException;
+    ResponseList<Status> getUserTimeline(long userId) throws TwitterException;
 
     /**
      * Returns the 20 most recent statuses posted from the authenticating user. It's also possible to request another user's timeline via the id parameter.<br>
@@ -286,7 +286,7 @@ public interface TimelineMethods {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    ResponseList<Status> getRetweetedToUser(int userId, Paging paging)
+    ResponseList<Status> getRetweetedToUser(long userId, Paging paging)
             throws TwitterException;
 
     /**
@@ -316,6 +316,6 @@ public interface TimelineMethods {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.0.10
      */
-    ResponseList<Status> getRetweetedByUser(int userId, Paging paging)
+    ResponseList<Status> getRetweetedByUser(long userId, Paging paging)
             throws TwitterException;
 }

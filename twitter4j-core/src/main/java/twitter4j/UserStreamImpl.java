@@ -81,7 +81,7 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream {
 
     @Override
     protected void onFriends(JSONObject json) throws TwitterException, JSONException {
-        int[] friendIds = asFriendList(json);
+        long[] friendIds = asFriendList(json);
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onFriendList(friendIds);
         }

@@ -51,5 +51,5 @@ public interface StatusListener extends StreamListener {
      * @param upToStatusId up to status id
      * @since Twitter4J 2.1.9
      */
-    void onScrubGeo(int userId, long upToStatusId);
+    void onScrubGeo(long userId, long upToStatusId);
 }

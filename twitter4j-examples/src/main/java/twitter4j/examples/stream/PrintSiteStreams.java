@@ -50,9 +50,9 @@ public final class PrintSiteStreams {
         twitterStream.addListener(listener);
 
         String[] split = args[0].split(",");
-        int[] followArray = new int[split.length];
+        long[] followArray = new long[split.length];
         for (int i = 0; i < followArray.length; i++) {
-            followArray[i] = Integer.parseInt(split[i]);
+            followArray[i] = Long.parseLong(split[i]);
         }
 
         // site() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
@@ -60,24 +60,24 @@ public final class PrintSiteStreams {
     }
 
     static SiteStreamsListener listener = new SiteStreamsListener() {
-        public void onStatus(int forUser, Status status) {
+        public void onStatus(long forUser, Status status) {
             System.out.println("onStatus for_user:" + forUser + " @" + status.getUser().getScreenName() + " - " + status.getText());
         }
 
-        public void onDeletionNotice(int forUser, StatusDeletionNotice statusDeletionNotice) {
+        public void onDeletionNotice(long forUser, StatusDeletionNotice statusDeletionNotice) {
             System.out.println("Got a status deletion notice for_user:"
                     + forUser + " id:" + statusDeletionNotice.getStatusId());
         }
 
-        public void onFriendList(int forUser, int[] friendIds) {
+        public void onFriendList(long forUser, long[] friendIds) {
             System.out.print("onFriendList for_user:" + forUser);
-            for (int friendId : friendIds) {
+            for (long friendId : friendIds) {
                 System.out.print(" " + friendId);
             }
             System.out.println();
         }
 
-        public void onFavorite(int forUser, User source, User target, Status favoritedStatus) {
+        public void onFavorite(long forUser, User source, User target, Status favoritedStatus) {
             System.out.println("onFavorite for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
                     + target.getScreenName() + " @"
@@ -85,7 +85,7 @@ public final class PrintSiteStreams {
                     + favoritedStatus.getText());
         }
 
-        public void onUnfavorite(int forUser, User source, User target, Status unfavoritedStatus) {
+        public void onUnfavorite(long forUser, User source, User target, Status unfavoritedStatus) {
             System.out.println("onUnFavorite for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
                     + target.getScreenName() + " @"
@@ -93,86 +93,86 @@ public final class PrintSiteStreams {
                     + " - " + unfavoritedStatus.getText());
         }
 
-        public void onFollow(int forUser, User source, User followedUser) {
+        public void onFollow(long forUser, User source, User followedUser) {
             System.out.println("onFollow for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
                     + followedUser.getScreenName());
         }
 
-        public void onUnfollow(int forUser, User source, User followedUser) {
+        public void onUnfollow(long forUser, User source, User followedUser) {
             System.out.println("onUnfollow for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
                     + followedUser.getScreenName());
         }
 
-        public void onDirectMessage(int forUser, DirectMessage directMessage) {
+        public void onDirectMessage(long forUser, DirectMessage directMessage) {
             System.out.println("onDirectMessage for_user:" + forUser + " text:"
                     + directMessage.getText());
         }
 
-        public void onDeletionNotice(int forUser, int directMessageId, int userId) {
+        public void onDeletionNotice(long forUser, long directMessageId, long userId) {
             System.out.println("Got a direct message deletion notice for_user:"
                     + forUser + " id:" + directMessageId);
         }
 
-        public void onUserListMemberAddition(int forUser, User addedMember, User listOwner, UserList list) {
+        public void onUserListMemberAddition(long forUser, User addedMember, User listOwner, UserList list) {
             System.out.println("onUserListMemberAddition for_user:" + forUser
                     + " member:@" + addedMember.getScreenName()
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListMemberDeletion(int forUser, User deletedMember, User listOwner, UserList list) {
+        public void onUserListMemberDeletion(long forUser, User deletedMember, User listOwner, UserList list) {
             System.out.println("onUserListMemberDeletion for_user:" + forUser
                     + " member:@" + deletedMember.getScreenName()
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListSubscription(int forUser, User subscriber, User listOwner, UserList list) {
+        public void onUserListSubscription(long forUser, User subscriber, User listOwner, UserList list) {
             System.out.println("onUserListSubscribed for_user:" + forUser
                     + " subscriber:@" + subscriber.getScreenName()
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListUnsubscription(int forUser, User subscriber, User listOwner, UserList list) {
+        public void onUserListUnsubscription(long forUser, User subscriber, User listOwner, UserList list) {
             System.out.println("onUserListUnsubscribed for_user:" + forUser
                     + " subscriber:@" + subscriber.getScreenName()
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListCreation(int forUser, User listOwner, UserList list) {
+        public void onUserListCreation(long forUser, User listOwner, UserList list) {
             System.out.println("onUserListCreated for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListUpdate(int forUser, User listOwner, UserList list) {
+        public void onUserListUpdate(long forUser, User listOwner, UserList list) {
             System.out.println("onUserListUpdated for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserListDeletion(int forUser, User listOwner, UserList list) {
+        public void onUserListDeletion(long forUser, User listOwner, UserList list) {
             System.out.println("onUserListDestroyed for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
-        public void onUserProfileUpdate(int forUser, User updatedUser) {
+        public void onUserProfileUpdate(long forUser, User updatedUser) {
             System.out.println("onUserProfileUpdated for_user:" + forUser
                     + " user:@" + updatedUser.getScreenName());
         }
 
-        public void onBlock(int forUser, User source, User blockedUser) {
+        public void onBlock(long forUser, User source, User blockedUser) {
             System.out.println("onBlock for_user:" + forUser
                     + " source:@" + source.getScreenName()
                     + " target:@" + blockedUser.getScreenName());
         }
 
-        public void onUnblock(int forUser, User source, User unblockedUser) {
+        public void onUnblock(long forUser, User source, User unblockedUser) {
             System.out.println("onUnblock for_user:" + forUser
                     + " source:@" + source.getScreenName()
                     + " target:@" + unblockedUser.getScreenName());

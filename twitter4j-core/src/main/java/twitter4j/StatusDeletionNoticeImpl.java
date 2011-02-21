@@ -28,19 +28,19 @@ import twitter4j.internal.util.ParseUtil;
 class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializable {
 
     private long statusId;
-    private int userId;
+    private long userId;
     private static final long serialVersionUID = 1723338404242596062L;
 
     /*package*/ StatusDeletionNoticeImpl(JSONObject status) {
         this.statusId = ParseUtil.getLong("id", status);
-        this.userId = ParseUtil.getInt("user_id", status);
+        this.userId = ParseUtil.getLong("user_id", status);
     }
 
     public long getStatusId() {
         return statusId;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
@@ -57,12 +57,12 @@ class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializ
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof StatusDeletionNotice)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        StatusDeletionNotice that = (StatusDeletionNotice) o;
+        StatusDeletionNoticeImpl that = (StatusDeletionNoticeImpl) o;
 
-        if (statusId != that.getStatusId()) return false;
-        if (userId != that.getUserId()) return false;
+        if (statusId != that.statusId) return false;
+        if (userId != that.userId) return false;
 
         return true;
     }
@@ -70,7 +70,7 @@ class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializ
     @Override
     public int hashCode() {
         int result = (int) (statusId ^ (statusId >>> 32));
-        result = 31 * result + userId;
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
         return result;
     }
 

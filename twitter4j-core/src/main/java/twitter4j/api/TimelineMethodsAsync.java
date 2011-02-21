@@ -93,7 +93,7 @@ public interface TimelineMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/statuses/user_timeline">GET statuses/user_timeline | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void getUserTimeline(int userId, Paging paging);
+    void getUserTimeline(long userId, Paging paging);
 
     /**
      * Returns the 20 most recent statuses posted from the authenticating user. It's also possible to request another user's timeline via the id parameter.<br>
@@ -128,7 +128,7 @@ public interface TimelineMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/statuses/user_timeline">GET statuses/user_timeline | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    void getUserTimeline(int userId);
+    void getUserTimeline(long userId);
 
     /**
      * Returns the 20 most recent statuses posted from the authenticating user. It's also possible to request another user's timeline via the id parameter.<br>
@@ -238,7 +238,7 @@ public interface TimelineMethodsAsync {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    void getRetweetedToUser(int userId, Paging paging);
+    void getRetweetedToUser(long userId, Paging paging);
 
     /**
      * Returns the 20 most recent retweets posted by the specified user. This method is identical to statuses/retweeted_by_me except you can choose the user to view.
@@ -262,5 +262,5 @@ public interface TimelineMethodsAsync {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.0.10
      */
-    void getRetweetedByUser(int userId, Paging paging);
+    void getRetweetedByUser(long userId, Paging paging);
 }

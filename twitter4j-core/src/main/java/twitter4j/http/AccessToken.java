@@ -28,7 +28,7 @@ import twitter4j.internal.http.HttpResponse;
 public class AccessToken extends OAuthToken implements java.io.Serializable {
     private static final long serialVersionUID = -8344528374458826291L;
     private String screenName;
-    private int userId;
+    private long userId;
 
     AccessToken(HttpResponse res) throws TwitterException {
         this(res.asString());
@@ -61,14 +61,14 @@ public class AccessToken extends OAuthToken implements java.io.Serializable {
      * @since Twitter4J 2.0.4
      */
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AccessToken)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
         AccessToken that = (AccessToken) o;
@@ -84,7 +84,7 @@ public class AccessToken extends OAuthToken implements java.io.Serializable {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
-        result = 31 * result + userId;
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
         return result;
     }
 

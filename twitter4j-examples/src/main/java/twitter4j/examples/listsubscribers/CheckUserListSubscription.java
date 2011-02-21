@@ -42,7 +42,7 @@ public final class CheckUserListSubscription {
             Twitter twitter = new TwitterFactory().getInstance();
             int listId = Integer.parseInt(args[1]);
             UserList list = twitter.showUserList(args[0], listId);
-            int userId = Integer.parseInt(args[2]);
+            long userId = Integer.parseInt(args[2]);
             User user = twitter.showUser(userId);
             try {
                 twitter.checkUserListSubscription(args[0], listId, userId);

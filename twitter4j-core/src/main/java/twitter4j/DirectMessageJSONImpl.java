@@ -25,7 +25,6 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.Date;
 
 import static twitter4j.internal.util.ParseUtil.getDate;
-import static twitter4j.internal.util.ParseUtil.getInt;
 import static twitter4j.internal.util.ParseUtil.getLong;
 import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
@@ -35,14 +34,14 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class DirectMessageJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
+    private static final long serialVersionUID = -7104233663827757577L;
     private long id;
     private String text;
-    private int senderId;
-    private int recipientId;
+    private long senderId;
+    private long recipientId;
     private Date createdAt;
     private String senderScreenName;
     private String recipientScreenName;
-    private static final long serialVersionUID = -3253021825891789737L;
 
 
     /*package*/DirectMessageJSONImpl(HttpResponse res) throws TwitterException {
@@ -60,8 +59,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private void init(JSONObject json) throws TwitterException {
         id = getLong("id", json);
         text = getUnescapedString("text", json);
-        senderId = getInt("sender_id", json);
-        recipientId = getInt("recipient_id", json);
+        senderId = getLong("sender_id", json);
+        recipientId = getLong("recipient_id", json);
         createdAt = getDate("created_at", json);
         senderScreenName = getUnescapedString("sender_screen_name", json);
         recipientScreenName = getUnescapedString("recipient_screen_name", json);
@@ -90,14 +89,14 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public int getSenderId() {
+    public long getSenderId() {
         return senderId;
     }
 
     /**
      * {@inheritDoc}
      */
-    public int getRecipientId() {
+    public long getRecipientId() {
         return recipientId;
     }
 

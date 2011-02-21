@@ -16,7 +16,7 @@
 
 package twitter4j.conf;
 
-import twitter4j.internal.util.StringUtil;
+import twitter4j.internal.util.T4JInternalStringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -200,7 +200,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
      */
     private void setFieldsWithTreePath(Properties props, String treePath) {
         setFieldsWithPrefix(props, "");
-        String[] splitArray = StringUtil.split(treePath, "/");
+        String[] splitArray = T4JInternalStringUtil.split(treePath, "/");
         String prefix = null;
         for (String split : splitArray) {
             if (!"".equals(split)) {
@@ -352,10 +352,10 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             setMediaProviderAPIKey(getString(props, prefix, MEDIA_PROVIDER_API_KEY));
         }
         if (notNull(props, prefix, MEDIA_PROVIDER_PARAMETERS)) {
-            String[] propsAry = StringUtil.split(getString(props, prefix, MEDIA_PROVIDER_PARAMETERS), "&");
+            String[] propsAry = T4JInternalStringUtil.split(getString(props, prefix, MEDIA_PROVIDER_PARAMETERS), "&");
             Properties p = new Properties();
             for (String str : propsAry) {
-                String[] parameter = StringUtil.split(str, "=");
+                String[] parameter = T4JInternalStringUtil.split(str, "=");
                 p.setProperty(parameter[0], parameter[1]);
             }
             setMediaProviderParameters(p);

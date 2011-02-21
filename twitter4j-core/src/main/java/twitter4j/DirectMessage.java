@@ -29,9 +29,9 @@ public interface DirectMessage extends TwitterResponse, java.io.Serializable {
 
     String getText();
 
-    int getSenderId();
+    long getSenderId();
 
-    int getRecipientId();
+    long getRecipientId();
 
     /**
      * @return created_at

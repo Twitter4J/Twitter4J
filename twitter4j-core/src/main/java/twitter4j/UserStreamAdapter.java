@@ -21,10 +21,10 @@ package twitter4j;
  * @since Twitter4J 2.1.3
  */
 public class UserStreamAdapter extends StatusAdapter implements UserStreamListener {
-    public void onDeletionNotice(long directMessageId, int userId) {
+    public void onDeletionNotice(long directMessageId, long userId) {
     }
 
-    public void onFriendList(int[] friendIds) {
+    public void onFriendList(long[] friendIds) {
     }
 
     public void onFavorite(User source, User target, Status favoritedStatus) {

@@ -18,7 +18,7 @@ package twitter4j.http;
 
 import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.util.StringUtil;
+import twitter4j.internal.util.T4JInternalStringUtil;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -41,7 +41,7 @@ abstract class OAuthToken implements java.io.Serializable {
     }
 
     OAuthToken(String string) {
-        responseStr = StringUtil.split(string, "&");
+        responseStr = T4JInternalStringUtil.split(string, "&");
         tokenSecret = getParameter("oauth_token_secret");
         token = getParameter("oauth_token");
     }
@@ -66,7 +66,7 @@ abstract class OAuthToken implements java.io.Serializable {
         String value = null;
         for (String str : responseStr) {
             if (str.startsWith(parameter + '=')) {
-                value = StringUtil.split(str, "=")[1].trim();
+                value = T4JInternalStringUtil.split(str, "=")[1].trim();
                 break;
             }
         }

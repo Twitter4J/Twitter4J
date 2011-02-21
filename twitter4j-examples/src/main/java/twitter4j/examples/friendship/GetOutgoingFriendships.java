@@ -40,7 +40,7 @@ public final class GetOutgoingFriendships {
             System.out.println("Showing outgoing pending follow request(s).");
             do {
                 ids = twitter.getOutgoingFriendships(cursor);
-                for (int id : ids.getIDs()) {
+                for (long id : ids.getIDs()) {
                     System.out.println(id);
                 }
             } while ((cursor = ids.getNextCursor()) != 0);

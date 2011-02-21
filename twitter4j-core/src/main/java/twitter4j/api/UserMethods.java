@@ -48,7 +48,7 @@ public interface UserMethods {
      * @see <a href="http://dev.twitter.com/doc/get/users/show">GET users/show | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    User showUser(int userId) throws TwitterException;
+    User showUser(long userId) throws TwitterException;
 
     /**
      * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
@@ -72,7 +72,7 @@ public interface UserMethods {
      * @see <a href="http://dev.twitter.com/doc/get/users/lookup">GET users/lookup | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
-    ResponseList<User> lookupUsers(int[] ids) throws TwitterException;
+    ResponseList<User> lookupUsers(long[] ids) throws TwitterException;
 
     /**
      * Run a search for users similar to the Find People button on Twitter.com; the same results returned by people search on Twitter.com will be returned by using this API.<br>
@@ -176,7 +176,7 @@ public interface UserMethods {
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    PagableResponseList<User> getFriendsStatuses(int userId, long cursor)
+    PagableResponseList<User> getFriendsStatuses(long userId, long cursor)
             throws TwitterException;
 
     /**
@@ -217,6 +217,6 @@ public interface UserMethods {
      * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
      */
-    PagableResponseList<User> getFollowersStatuses(int userId, long cursor)
+    PagableResponseList<User> getFollowersStatuses(long userId, long cursor)
             throws TwitterException;
 }

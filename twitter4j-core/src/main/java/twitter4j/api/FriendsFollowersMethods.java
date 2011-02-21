@@ -47,7 +47,7 @@ public interface FriendsFollowersMethods {
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
-    IDs getFriendsIDs(int userId, long cursor) throws TwitterException;
+    IDs getFriendsIDs(long userId, long cursor) throws TwitterException;
 
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
@@ -85,7 +85,7 @@ public interface FriendsFollowersMethods {
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
-    IDs getFollowersIDs(int userId, long cursor) throws TwitterException;
+    IDs getFollowersIDs(long userId, long cursor) throws TwitterException;
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.

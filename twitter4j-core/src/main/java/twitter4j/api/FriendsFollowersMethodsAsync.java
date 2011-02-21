@@ -39,7 +39,7 @@ public interface FriendsFollowersMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
-    void getFriendsIDs(int userId, long cursor);
+    void getFriendsIDs(long userId, long cursor);
 
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
@@ -71,7 +71,7 @@ public interface FriendsFollowersMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
      * @since Twitter4J 2.0.10
      */
-    void getFollowersIDs(int userId, long cursor);
+    void getFollowersIDs(long userId, long cursor);
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.

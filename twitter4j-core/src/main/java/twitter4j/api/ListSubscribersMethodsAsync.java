@@ -66,5 +66,5 @@ public interface ListSubscribersMethodsAsync {
      * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/subscribers/:id">GET :user/:list_id/subscribers/:id | dev.twitter.com</a>
      * @since Twitter4J 2.1.1
      */
-    void checkUserListSubscription(String listOwnerScreenName, int listId, int userId);
+    void checkUserListSubscription(String listOwnerScreenName, int listId, long userId);
 }

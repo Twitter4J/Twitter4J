@@ -44,7 +44,7 @@ public interface UserMentionEntity extends Serializable {
      *
      * @return the user id mentioned in the status
      */
-    int getId();
+    long getId();
 
     /**
      * Returns the index of the start character of the user mention.
