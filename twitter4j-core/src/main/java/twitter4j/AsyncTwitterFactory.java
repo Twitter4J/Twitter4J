@@ -20,7 +20,6 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.AccessToken;
 import twitter4j.http.Authorization;
-import twitter4j.http.AuthorizationFactory;
 import twitter4j.http.BasicAuthorization;
 import twitter4j.http.OAuthAuthorization;
 
@@ -73,7 +72,7 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
      * @return default singleton instance
      */
     public AsyncTwitter getInstance() {
-        return getInstance(conf);
+        return new AsyncTwitterImpl(conf);
     }
 
     /**
@@ -84,7 +83,7 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
      * @return an instance
      */
     public AsyncTwitter getInstance(String screenName, String password) {
-        return getInstance(conf, new BasicAuthorization(screenName, password));
+        return new AsyncTwitterImpl(conf, new BasicAuthorization(screenName, password));
     }
 
     /**
@@ -104,7 +103,7 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
         OAuthAuthorization oauth = new OAuthAuthorization(conf);
         oauth.setOAuthConsumer(consumerKey, consumerSecret);
         oauth.setOAuthAccessToken(accessToken);
-        return getInstance(conf, oauth);
+        return new AsyncTwitterImpl(conf, oauth);
     }
 
     /**
@@ -112,14 +111,6 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
      * @return an instance
      */
     public AsyncTwitter getInstance(Authorization auth) {
-        return getInstance(conf, auth);
-    }
-
-    private AsyncTwitter getInstance(Configuration conf, Authorization auth) {
         return new AsyncTwitterImpl(conf, auth);
-    }
-
-    private AsyncTwitter getInstance(Configuration conf) {
-        return new AsyncTwitterImpl(conf, AuthorizationFactory.getInstance(conf));
     }
 }

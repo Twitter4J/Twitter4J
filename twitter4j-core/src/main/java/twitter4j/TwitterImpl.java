@@ -20,7 +20,6 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.http.Authorization;
 import twitter4j.http.AuthorizationFactory;
-import twitter4j.http.BasicAuthorization;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
@@ -62,24 +61,6 @@ public class TwitterImpl extends TwitterOAuthSupportBaseImpl
         INCLUDE_RTS = new HttpParameter("include_rts", conf.isIncludeRTsEnabled());
     }
 
-    /**
-     * Creates a Twitter instance with supplied id
-     *
-     * @param screenName the screen name of the user
-     * @param password   the password of the user
-     */
-    TwitterImpl(String screenName, String password) {
-        super(ConfigurationContext.getInstance(), screenName, password);
-        INCLUDE_ENTITIES = new HttpParameter("include_entities", ConfigurationContext.getInstance().isIncludeEntitiesEnabled());
-        INCLUDE_RTS = new HttpParameter("include_rts", conf.isIncludeRTsEnabled());
-    }
-    /*package*/
-
-    TwitterImpl(Configuration conf, String screenName, String password) {
-        super(conf, screenName, password);
-        INCLUDE_ENTITIES = new HttpParameter("include_entities", conf.isIncludeEntitiesEnabled());
-        INCLUDE_RTS = new HttpParameter("include_rts", conf.isIncludeRTsEnabled());
-    }
     /*package*/
 
     TwitterImpl(Configuration conf, Authorization auth) {
@@ -125,45 +106,6 @@ public class TwitterImpl extends TwitterOAuthSupportBaseImpl
             return new HttpParameter[]{params2};
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getScreenName() throws TwitterException, IllegalStateException {
-        if (!auth.isEnabled()) {
-            throw new IllegalStateException(
-                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
-        }
-        if (null == screenName) {
-            if (auth instanceof BasicAuthorization) {
-                screenName = ((BasicAuthorization) auth).getUserId();
-                if (-1 != screenName.indexOf("@")) {
-                    screenName = null;
-                }
-            }
-            if (null == screenName) {
-                // retrieve the screen name if this instance is authenticated with OAuth or email address
-                verifyCredentials();
-            }
-        }
-        return screenName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public long getId() throws TwitterException, IllegalStateException {
-        if (!auth.isEnabled()) {
-            throw new IllegalStateException(
-                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
-        }
-        if (0 == id) {
-            verifyCredentials();
-        }
-        // retrieve the screen name if this instance is authenticated with OAuth or email address
-        return id;
-    }
-
 
     /**
      * {@inheritDoc}
@@ -925,7 +867,7 @@ public class TwitterImpl extends TwitterOAuthSupportBaseImpl
     public UserList unsubscribeUserList(String listOwnerScreenName, int listId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.delete(conf.getRestBaseURL() + listOwnerScreenName +
-                "/" + listId + "/subscribers.json?id=" + verifyCredentials().getId(), auth));
+                "/" + listId + "/subscribers.json?id=" + getId(), auth));
     }
 
     /**
@@ -1221,12 +1163,7 @@ public class TwitterImpl extends TwitterOAuthSupportBaseImpl
      * {@inheritDoc}
      */
     public User verifyCredentials() throws TwitterException {
-        ensureAuthorizationEnabled();
-        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
-        this.screenName = user.getScreenName();
-        this.id = user.getId();
-        return user;
+        return super.fillInIDAndScreenName();
     }
 
     /**

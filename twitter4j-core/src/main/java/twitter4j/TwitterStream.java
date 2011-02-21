@@ -21,7 +21,7 @@ import twitter4j.http.OAuthSupport;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.0
  */
-public interface TwitterStream extends OAuthSupport {
+public interface TwitterStream extends OAuthSupport, TwitterBase {
     /**
      * Adds a ConnectionLifeCycleListener
      *

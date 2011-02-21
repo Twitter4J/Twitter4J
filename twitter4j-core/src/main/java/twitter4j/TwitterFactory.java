@@ -70,7 +70,7 @@ public final class TwitterFactory implements java.io.Serializable {
      * @return default singleton instance
      */
     public Twitter getInstance() {
-        return getInstance(conf, AuthorizationFactory.getInstance(conf));
+        return new TwitterImpl(conf, AuthorizationFactory.getInstance(conf));
     }
 
     /**
@@ -90,7 +90,7 @@ public final class TwitterFactory implements java.io.Serializable {
         }
         OAuthAuthorization oauth = new OAuthAuthorization(conf);
         oauth.setOAuthAccessToken(accessToken);
-        return getInstance(conf, oauth);
+        return new TwitterImpl(conf, oauth);
     }
 
     /**
@@ -101,14 +101,10 @@ public final class TwitterFactory implements java.io.Serializable {
      * @return an instance
      */
     public Twitter getInstance(String screenName, String password) {
-        return getInstance(conf, new BasicAuthorization(screenName, password));
+        return new TwitterImpl(conf, new BasicAuthorization(screenName, password));
     }
 
     public Twitter getInstance(Authorization auth) {
-        return getInstance(conf, auth);
-    }
-
-    private Twitter getInstance(Configuration conf, Authorization auth) {
         return new TwitterImpl(conf, auth);
     }
 }

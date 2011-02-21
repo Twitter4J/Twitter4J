@@ -8,9 +8,12 @@ import twitter4j.TwitterException;
  */
 public interface OAuthSupport {
     /**
-     * @param consumerKey    consumer key
-     * @param consumerSecret consumer secret
-     * @since Twitter4J 2.0.0
+     * sets the OAuth consumer key and consumer secret
+     *
+     * @param consumerKey    OAuth consumer key
+     * @param consumerSecret OAuth consumer secret
+     * @throws IllegalStateException when OAuth consumer has already been set, or the instance is using basic authorization
+     * @since Twitter 2.0.0
      */
     void setOAuthConsumer(String consumerKey, String consumerSecret);
 

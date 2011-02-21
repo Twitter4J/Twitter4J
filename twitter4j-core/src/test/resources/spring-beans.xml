@@ -13,15 +13,16 @@
     <bean id="asyncTwitterFactory" class="twitter4j.AsyncTwitterFactory"/>
 
     <bean id="twitterStreamFactory" class="twitter4j.TwitterStreamFactory"/>
-    <bean id="twitter" class="twitter4j.Twitter" factory-bean="twitterFactory"
+    <bean id="twitter" class="twitter4j.TwitterImpl"
+          factory-bean="twitterFactory"
           depends-on="twitterFactory">
     </bean>
-    <bean id="asyncTwitter" class="twitter4j.AsyncTwitter"
+    <bean id="asyncTwitter" class="twitter4j.AsyncTwitterImpl"
           factory-bean="asyncTwitterFactory" factory-method="getInstance"
           depends-on="asyncTwitterFactory">
     </bean>
-    <bean id="twitterStream" class="twitter4j.TwitterStream"
-          factory-bean="twitterStreamFactory"  factory-method="getInstance">
+    <bean id="twitterStream" class="twitter4j.TwitterStreamImpl"
+          factory-bean="twitterStreamFactory" factory-method="getInstance">
     </bean>
     <!--
     <bean id="productRepository" class="spring.kickstart.repository.ProductRepositoryImpl"/>

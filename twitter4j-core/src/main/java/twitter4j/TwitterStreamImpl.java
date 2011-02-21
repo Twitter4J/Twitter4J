@@ -34,6 +34,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static twitter4j.internal.http.HttpResponseCode.FORBIDDEN;
+import static twitter4j.internal.http.HttpResponseCode.NOT_ACCEPTABLE;
+
 /**
  * A java representation of the <a href="http://dev.twitter.com/pages/streaming_api_methods">Streaming API: Methods</a><br>
  * Note that this class is NOT compatible with Google App Engine as GAE is not capable of handling requests longer than 30 seconds.

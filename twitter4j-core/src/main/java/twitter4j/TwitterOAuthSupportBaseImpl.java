@@ -32,11 +32,9 @@ import twitter4j.internal.http.XAuthAuthorization;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
-class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
+class TwitterOAuthSupportBaseImpl extends TwitterBaseImpl {
 
     private static final long serialVersionUID = 2166151122833272805L;
-    protected transient String screenName = null;
-    protected transient long id = 0;
 
     TwitterOAuthSupportBaseImpl(Configuration conf) {
         super(conf);
@@ -47,16 +45,7 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
         super(ConfigurationContext.getInstance());
     }
 
-    TwitterOAuthSupportBaseImpl(String screenName, String password) {
-        super(ConfigurationContext.getInstance(), screenName, password);
-    }
     /*package*/
-
-    TwitterOAuthSupportBaseImpl(Configuration conf, String screenName, String password) {
-        super(conf, screenName, password);
-    }
-    /*package*/
-
     TwitterOAuthSupportBaseImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
     }
