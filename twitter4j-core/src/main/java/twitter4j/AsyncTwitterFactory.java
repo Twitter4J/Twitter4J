@@ -43,7 +43,7 @@ import twitter4j.http.OAuthAuthorization;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class AsyncTwitterFactory  implements java.io.Serializable {
+public final class AsyncTwitterFactory implements java.io.Serializable {
     private final TwitterListener listener;
     private final Configuration conf;
     private static final long serialVersionUID = -2565686715640816219L;
@@ -57,6 +57,7 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
 
     /**
      * Creates an AsyncTwitterFactory with the given configuration.
+     *
      * @param conf the configuration to use
      * @since Twitter4J 2.1.1
      */
@@ -70,7 +71,8 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
 
     /**
      * Creates an AsyncTwitterFactory with the given configuration and listener.
-     * @param conf the configuration to use
+     *
+     * @param conf     the configuration to use
      * @param listener the listener to use
      * @since Twitter4J 2.1.1
      * @deprecated use {@link AsyncTwitterFactory#AsyncTwitterFactory(twitter4j.conf.Configuration)} instead
@@ -85,6 +87,7 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
 
     /**
      * Creates a AsyncTwitterFactory with the root configuration, with given listener
+     *
      * @param listener listener
      * @deprecated use {@link AsyncTwitterFactory#AsyncTwitterFactory()} instead
      */
@@ -95,6 +98,7 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
 
     /**
      * Creates a AsyncTwitterFactory with the specified config tree, with given listener
+     *
      * @param configTreePath the path
      * @since Twitter4J 2.1.12
      */
@@ -105,8 +109,9 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
 
     /**
      * Creates a AsyncTwitterFactory with the specified config tree, with given listener
+     *
      * @param configTreePath the path
-     * @param listener listener
+     * @param listener       listener
      * @deprecated use {@link AsyncTwitterFactory#AsyncTwitterFactory(String)}
      */
     public AsyncTwitterFactory(String configTreePath, TwitterListener listener) {
@@ -127,8 +132,9 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
      * Returns an XAuth Authenticated instance.
      *
      * @param screenName screen name
-     * @param password password
+     * @param password   password
      * @return an instance
+     * @deprecated use {@link AsyncTwitter#getOAuthAccessToken(String, String)} instead
      */
     public AsyncTwitter getInstance(String screenName, String password) {
         return getInstance(conf, new BasicAuthorization(screenName, password));
@@ -153,7 +159,6 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
     }
 
     /**
-     *
      * @param auth authorization
      * @return an instance
      */
@@ -164,7 +169,7 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
     /**
      * Returns a OAuth Authenticated instance.
      *
-     * @param consumerKey consumer key
+     * @param consumerKey    consumer key
      * @param consumerSecret consumer secret
      * @return an instance
      * @deprecated use {@link AsyncTwitter#setOAuthConsumer(String, String)}
@@ -180,9 +185,9 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
     /**
      * Returns a OAuth Authenticated instance.
      *
-     * @param consumerKey consumer key
+     * @param consumerKey    consumer key
      * @param consumerSecret consumer secret
-     * @param accessToken access token
+     * @param accessToken    access token
      * @return an instance
      * @deprecated use {@link AsyncTwitter#setOAuthConsumer(String, String)} and {$link AsyncTwitter#setOAuthAccessToken}
      */
@@ -206,14 +211,16 @@ public final class AsyncTwitterFactory  implements java.io.Serializable {
     public AsyncTwitter getOAuthAuthorizedInstance(AccessToken accessToken) {
         return getInstance(accessToken);
     }
-    private AsyncTwitter getInstance(Configuration conf, Authorization auth){
+
+    private AsyncTwitter getInstance(Configuration conf, Authorization auth) {
         AsyncTwitter twitter = new AsyncTwitter(conf, auth);
         if (null != listener) {
             twitter.addListener(listener);
         }
         return twitter;
     }
-    private AsyncTwitter getInstance(Configuration conf){
+
+    private AsyncTwitter getInstance(Configuration conf) {
         AsyncTwitter asyncTwitter = new AsyncTwitter(conf, AuthorizationFactory.getInstance(conf));
         if (null != listener) {
             asyncTwitter.addListener(listener);

@@ -54,6 +54,7 @@ public final class TwitterFactory implements java.io.Serializable {
 
     /**
      * Creates a TwitterFactory with the given configuration.
+     *
      * @param conf the configuration to use
      * @since Twitter4J 2.1.1
      */
@@ -66,6 +67,7 @@ public final class TwitterFactory implements java.io.Serializable {
 
     /**
      * Creates a TwitterFactory with a specified config tree
+     *
      * @param configTreePath the path
      */
     public TwitterFactory(String configTreePath) {
@@ -104,8 +106,9 @@ public final class TwitterFactory implements java.io.Serializable {
      * Returns an XAuth Authenticated instance.
      *
      * @param screenName screen name
-     * @param password password
+     * @param password   password
      * @return an instance
+     * @deprecated use {@link Twitter#getOAuthAccessToken(String, String)} instead
      */
     public Twitter getInstance(String screenName, String password) {
         return getInstance(conf, new BasicAuthorization(screenName, password));
@@ -120,7 +123,7 @@ public final class TwitterFactory implements java.io.Serializable {
     /**
      * Returns a OAuth Authenticated instance.
      *
-     * @param consumerKey consumer key
+     * @param consumerKey    consumer key
      * @param consumerSecret consumer secret
      * @return an instance
      * @deprecated use {@link Twitter#setOAuthConsumer(String, String)}
@@ -136,9 +139,9 @@ public final class TwitterFactory implements java.io.Serializable {
     /**
      * Returns a OAuth Authenticated instance.
      *
-     * @param consumerKey consumer key
+     * @param consumerKey    consumer key
      * @param consumerSecret consumer secret
-     * @param accessToken access token
+     * @param accessToken    access token
      * @return an instance
      * @deprecated use {@link Twitter#setOAuthConsumer(String, String)} and {$link Twitter#setOAuthAccessToken}
      */
@@ -163,7 +166,7 @@ public final class TwitterFactory implements java.io.Serializable {
         return getInstance(accessToken);
     }
 
-    private Twitter getInstance(Configuration conf, Authorization auth){
+    private Twitter getInstance(Configuration conf, Authorization auth) {
         return new Twitter(conf, auth);
     }
 }

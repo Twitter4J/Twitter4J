@@ -3077,8 +3077,6 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
 
     /**
      * {@inheritDoc}
-     *
-     * @deprecated Use {@link AsyncTwitterFactory#getInstance(Authorization)}
      */
     @Override
     public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {

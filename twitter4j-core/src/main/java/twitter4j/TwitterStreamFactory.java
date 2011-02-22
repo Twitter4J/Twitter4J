@@ -42,7 +42,7 @@ import twitter4j.http.OAuthAuthorization;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class TwitterStreamFactory implements java.io.Serializable{
+public final class TwitterStreamFactory implements java.io.Serializable {
     private static final long serialVersionUID = 8146074704915782233L;
     private final StreamListener listener;
     private final Configuration conf;
@@ -56,6 +56,7 @@ public final class TwitterStreamFactory implements java.io.Serializable{
 
     /**
      * Creates a TwitterStreamFactory with the given configuration.
+     *
      * @param conf the configuration to use
      * @since Twitter4J 2.1.1
      */
@@ -66,6 +67,7 @@ public final class TwitterStreamFactory implements java.io.Serializable{
 
     /**
      * Creates a TwitterStreamFactory with the root configuration and a specified status listener.
+     *
      * @param listener the listener
      * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
      */
@@ -76,6 +78,7 @@ public final class TwitterStreamFactory implements java.io.Serializable{
 
     /**
      * Creates a TwitterStreamFactory with the root configuration and a specified status listener.
+     *
      * @param listener the listener
      * @since Twitter4J 2.1.8
      * @deprecated use {@link TwitterStream#addListener(UserStreamListener)}} instead.
@@ -87,16 +90,18 @@ public final class TwitterStreamFactory implements java.io.Serializable{
 
     /**
      * Creates a TwitterStreamFactory with a specified config tree.
+     *
      * @param configTreePath the path
      */
     public TwitterStreamFactory(String configTreePath) {
-        this(configTreePath, (StatusListener)null);
+        this(configTreePath, (StatusListener) null);
     }
 
     /**
      * Creates a TwitterStreamFactory with a specified config tree and a listener.
+     *
      * @param configTreePath the path
-     * @param listener the listener
+     * @param listener       the listener
      * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
      */
     public TwitterStreamFactory(String configTreePath, StatusListener listener) {
@@ -105,8 +110,9 @@ public final class TwitterStreamFactory implements java.io.Serializable{
 
     /**
      * Creates a TwitterStreamFactory with a specified config tree and a listener.
+     *
      * @param configTreePath the path
-     * @param listener the listener
+     * @param listener       the listener
      * @since Twitter4J 2.1.8
      * @deprecated use {@link TwitterStream#addListener(UserStreamListener)}} instead.
      */
@@ -116,14 +122,15 @@ public final class TwitterStreamFactory implements java.io.Serializable{
 
     /**
      * Creates a TwitterStreamFactory with the specified config and a listener.
-     * @param conf the configuration to use
+     *
+     * @param conf     the configuration to use
      * @param listener an optional status listener
      * @since Twitter4J 2.1.1
      * @deprecated use {@link TwitterStream#addListener(StatusListener)} instead.
      */
     public TwitterStreamFactory(Configuration conf, StatusListener listener) {
         if (conf == null) {
-          throw new NullPointerException("configuration cannot be null");
+            throw new NullPointerException("configuration cannot be null");
         }
         this.conf = conf;
         this.listener = listener;
@@ -131,14 +138,15 @@ public final class TwitterStreamFactory implements java.io.Serializable{
 
     /**
      * Creates a TwitterStreamFactory with the specified config and a listener.
-     * @param conf the configuration to use
+     *
+     * @param conf     the configuration to use
      * @param listener an optional status listener
      * @since Twitter4J 2.1.8
      * @deprecated use {@link TwitterStream#addListener(UserStreamListener)} instead.
      */
     public TwitterStreamFactory(Configuration conf, UserStreamListener listener) {
         if (conf == null) {
-          throw new NullPointerException("configuration cannot be null");
+            throw new NullPointerException("configuration cannot be null");
         }
         this.conf = conf;
         this.listener = listener;
@@ -151,7 +159,7 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      *
      * @return default instance
      */
-    public TwitterStream getInstance(){
+    public TwitterStream getInstance() {
         return getInstance(conf);
     }
 
@@ -159,10 +167,11 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      * Returns an XAuth Authenticated instance.
      *
      * @param screenName screen name
-     * @param password password
+     * @param password   password
      * @return an instance
+     * @deprecated use {@link TwitterStream#getOAuthAccessToken(String, String)} instead
      */
-    public TwitterStream getInstance(String screenName, String password){
+    public TwitterStream getInstance(String screenName, String password) {
         return getInstance(conf, new BasicAuthorization(screenName, password));
     }
 
@@ -187,7 +196,7 @@ public final class TwitterStreamFactory implements java.io.Serializable{
     /**
      * Returns a OAuth Authenticated instance.
      *
-     * @param consumerKey consumer key
+     * @param consumerKey    consumer key
      * @param consumerSecret consumer secret
      * @return an instance
      * @deprecated use {@link TwitterStream#setOAuthConsumer(String, String)}
@@ -217,12 +226,14 @@ public final class TwitterStreamFactory implements java.io.Serializable{
      *
      * @return an instance
      */
-    public TwitterStream getInstance(Authorization auth){
+    public TwitterStream getInstance(Authorization auth) {
         return getInstance(conf, auth);
     }
+
     private TwitterStream getInstance(Configuration conf, Authorization auth) {
         return new TwitterStream(conf, auth, listener);
     }
+
     private TwitterStream getInstance(Configuration conf) {
         return new TwitterStream(conf, AuthorizationFactory.getInstance(conf, true), listener);
     }
