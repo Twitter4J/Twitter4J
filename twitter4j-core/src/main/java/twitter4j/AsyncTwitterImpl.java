@@ -41,7 +41,7 @@ import static twitter4j.TwitterMethod.*;
  * @see twitter4j.AsyncTwitter
  * @see twitter4j.TwitterListener
  */
-public class AsyncTwitterImpl extends TwitterBaseImpl
+class AsyncTwitterImpl extends TwitterBaseImpl
         implements AsyncTwitter {
     private static final long serialVersionUID = -2008667933225051907L;
     private final Twitter twitter;

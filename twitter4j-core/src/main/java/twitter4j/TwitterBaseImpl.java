@@ -40,7 +40,7 @@ import static twitter4j.internal.http.HttpResponseCode.ENHANCE_YOUR_CLAIM;
 import static twitter4j.internal.http.HttpResponseCode.SERVICE_UNAVAILABLE;
 
 /**
- * Base class of Twitter / AsyncTwitter / TwitterStream supports Basic Authorization.
+ * Base class of Twitter / AsyncTwitter / TwitterStream supports OAuth.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */

@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.internal.http.HttpClientWrapper;
@@ -44,8 +43,7 @@ import static twitter4j.internal.http.HttpResponseCode.NOT_ACCEPTABLE;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public final class TwitterStreamImpl extends TwitterBaseImpl
-        implements TwitterStream {
+class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private static final long serialVersionUID = 5529611191443189901L;
     private final HttpClientWrapper http;
     private static final Logger logger = Logger.getLogger(TwitterStreamImpl.class);
@@ -53,15 +51,6 @@ public final class TwitterStreamImpl extends TwitterBaseImpl
     private StreamListener[] streamListeners = new StreamListener[0];
     private List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<ConnectionLifeCycleListener>(0);
     private TwitterStreamConsumer handler = null;
-
-    /**
-     * Constructs a TwitterStream instance. UserID and password should be provided by either twitter4j.properties or system property.
-     * since Twitter4J 2.0.10
-     */
-    TwitterStreamImpl() {
-        super(ConfigurationContext.getInstance());
-        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
-    }
 
     /*package*/
     TwitterStreamImpl(Configuration conf, Authorization auth) {

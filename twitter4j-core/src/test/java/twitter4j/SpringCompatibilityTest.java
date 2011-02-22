@@ -60,7 +60,7 @@ public class SpringCompatibilityTest extends TestCase {
         assertTrue(asyncTwitter instanceof AsyncTwitter);
 
         TwitterStreamFactory twitterStreamFactory = (TwitterStreamFactory) beanFactory.getBean("twitterStreamFactory");
-        TwitterStream twitterStream = twitterStreamFactory.getInstance("test", "test");
+        TwitterStream twitterStream = twitterStreamFactory.getInstance();
         assertTrue(twitterStream instanceof TwitterStream);
     }
 

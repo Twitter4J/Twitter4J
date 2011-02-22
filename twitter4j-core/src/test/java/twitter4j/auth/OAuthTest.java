@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.http;
+package twitter4j.auth;
 
 import twitter4j.StatusStream;
 import twitter4j.Twitter;
@@ -23,9 +23,6 @@ import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.TwitterTestBase;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.OAuthAuthorization;
-import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
@@ -412,9 +409,9 @@ public class OAuthTest extends TwitterTestBase {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey(desktopConsumerKey);
         builder.setOAuthConsumerSecret(desktopConsumerSecret);
-        Twitter twitter = new TwitterFactory(builder.build()).getInstance(id1.screenName, id2.password);
+        Twitter twitter = new TwitterFactory(builder.build()).getInstance();
         try {
-            twitter.getOAuthAccessToken();
+            twitter.getOAuthAccessToken(id1.screenName, id2.password);
             fail("expecting TwitterException");
         } catch (TwitterException te) {
             // id1 doesn't have access to xAuth
@@ -427,13 +424,13 @@ public class OAuthTest extends TwitterTestBase {
             Properties props = new Properties();
             props.load(is);
             Configuration conf = new PropertyConfiguration(props);
-            twitter = new TwitterFactory(conf).getInstance(id1.screenName, id1.password);
-            AccessToken at = twitter.getOAuthAccessToken();
+            twitter = new TwitterFactory(conf).getInstance();
+            AccessToken at = twitter.getOAuthAccessToken(id1.screenName, id1.password);
             twitter.updateStatus(new Date() + ": xAuth test.");
 
-            twitter = new TwitterFactory().getInstance(id1.screenName, id1.password);
+            twitter = new TwitterFactory().getInstance();
             twitter.setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
-            twitter.getOAuthAccessToken();
+            twitter.getOAuthAccessToken(id1.screenName, id1.password);
         }
 
     }

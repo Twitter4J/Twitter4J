@@ -17,9 +17,7 @@
 package twitter4j;
 
 import twitter4j.auth.Authorization;
-import twitter4j.auth.AuthorizationFactory;
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
@@ -43,23 +41,9 @@ import static twitter4j.internal.http.HttpParameter.getParameterArray;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class TwitterImpl extends TwitterBaseImpl
+class TwitterImpl extends TwitterBaseImpl
         implements Twitter {
     private static final long serialVersionUID = -1486360080128882436L;
-
-    TwitterImpl(Configuration conf) {
-        this(conf, AuthorizationFactory.getInstance(conf));
-    }
-
-
-    /**
-     * Creates an unauthenticated Twitter instance
-     */
-    TwitterImpl() {
-        super(ConfigurationContext.getInstance());
-        INCLUDE_ENTITIES = new HttpParameter("include_entities", ConfigurationContext.getInstance().isIncludeEntitiesEnabled());
-        INCLUDE_RTS = new HttpParameter("include_rts", conf.isIncludeRTsEnabled());
-    }
 
     /*package*/
 

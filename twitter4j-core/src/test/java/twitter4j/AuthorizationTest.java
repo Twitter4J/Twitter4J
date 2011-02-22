@@ -17,7 +17,6 @@
 package twitter4j;
 
 import twitter4j.auth.Authorization;
-import twitter4j.auth.BasicAuthorization;
 import twitter4j.auth.NullAuthorization;
 import twitter4j.auth.OAuthAuthorization;
 
@@ -43,12 +42,6 @@ public class AuthorizationTest extends TwitterTestBase {
         Twitter twitter = new TwitterFactory().getInstance();
         Authorization auth = twitter.getAuthorization();
         assertTrue(auth instanceof NullAuthorization);
-    }
-
-    public void testBasicInstance() throws Exception {
-        Twitter twitter = new TwitterFactory().getInstance(id1.screenName, id1.password);
-        Authorization auth = twitter.getAuthorization();
-        assertTrue(auth instanceof BasicAuthorization);
     }
 
     public void testOAuthInstance() throws Exception {

@@ -60,15 +60,9 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testSerializability() throws Exception {
-        TwitterImpl twitter = (TwitterImpl) new TwitterFactory().getInstance("foo", "bar");
-        TwitterImpl deserialized = (TwitterImpl) assertDeserializedFormIsEqual(twitter);
-
-        assertEquals(deserialized.getScreenName(), twitter.getScreenName());
-        assertEquals(deserialized.auth, twitter.auth);
-
-        twitter = (TwitterImpl) new TwitterFactory().getInstance();
-        deserialized = (TwitterImpl) assertDeserializedFormIsEqual(twitter);
-        assertEquals(deserialized.auth, twitter.auth);
+        TwitterImpl deserialized = (TwitterImpl) assertDeserializedFormIsEqual(twitter1);
+        assertEquals(deserialized.getScreenName(), twitter1.getScreenName());
+        assertEquals(deserialized.auth, ((TwitterImpl) twitter1).auth);
     }
 
     public void testGetScreenName() throws Exception {
@@ -795,12 +789,6 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(newURL, altered.getURL().toString());
         assertEquals(newLocation, altered.getLocation());
         assertEquals(newDescription, altered.getDescription());
-
-        try {
-            new TwitterFactory().getInstance("doesnotexist--", "foobar").verifyCredentials();
-            fail("should throw TwitterException");
-        } catch (TwitterException te) {
-        }
 
         assertTrue(twitterAPIBestFriend1.existsFriendship(bestFriend1.screenName, bestFriend2.screenName));
         assertFalse(twitter1.existsFriendship(id1.screenName, "al3x"));
