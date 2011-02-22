@@ -100,6 +100,7 @@ cp twitter4j-stream/target/twitter4j-stream-$1-javadoc.jar -d $DIR/twitter4j-str
 cp twitter4j-stream/target/twitter4j-stream-$1-sources.jar -d $DIR/twitter4j-stream/
 
 mkdir $DIR/lib
+cp readme-libs.txt $DIR/lib
 cp twitter4j-core/target/twitter4j-core-$1.jar $DIR/lib
 cp twitter4j-media-support/target/twitter4j-media-support-$1.jar $DIR/lib
 cp twitter4j-examples/target/twitter4j-examples-$1.jar $DIR/lib
@@ -139,16 +140,15 @@ cd ../twitter4j-stream
 mvn clean compile jar:jar -Dmaven.test.skip=true
 cd ..
 
-echo packaging android-じｐ
+echo packaging android-zip
 pwd
-rm $DIR/lib/*
-rmdir $DIR/lib
-mkdir $DIR/lib-android
+rm $DIR/lib/*.jar
 
-cp twitter4j-core/target/twitter4j-core-$1.jar $DIR/lib-android/twitter4j-core-android-$1.jar
-cp twitter4j-media-support/target/twitter4j-media-support-$1.jar $DIR/lib-android/twitter4j-media-support-android-$1.jar
-cp twitter4j-async/target/twitter4j-async-$1.jar $DIR/lib-android/twitter4j-async-android-$1.jar 
-cp twitter4j-stream/target/twitter4j-stream-$1.jar $DIR/lib-android/twitter4j-stream-android-$1.jar
+cp twitter4j-core/target/twitter4j-core-$1.jar $DIR/lib/twitter4j-core-android-$1.jar
+cp twitter4j-media-support/target/twitter4j-media-support-$1.jar $DIR/lib/twitter4j-media-support-android-$1.jar
+cp twitter4j-examples/target/twitter4j-examples-$1.jar $DIR/lib/
+cp twitter4j-async/target/twitter4j-async-$1.jar $DIR/lib/twitter4j-async-android-$1.jar
+cp twitter4j-stream/target/twitter4j-stream-$1.jar $DIR/lib/twitter4j-stream-android-$1.jar
 
 cd $DIR
 zip -r ../../twitter4j-android-$1.zip .

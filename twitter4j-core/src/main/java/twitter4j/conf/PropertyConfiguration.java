@@ -32,7 +32,6 @@ import java.util.Set;
 public final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
 
     public static final String DEBUG = "debug";
-    public static final String SOURCE = "source";
     public static final String HTTP_USER_AGENT = "http.userAgent";
     public static final String USER = "user";
     public static final String PASSWORD = "password";
@@ -79,6 +78,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
     public static final String INCLUDE_RTS = "includeRTs";
     public static final String INCLUDE_ENTITIES = "includeEntities";
+    public static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
     public static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
 
     public static final String MEDIA_PROVIDER = "media.provider";
@@ -341,6 +341,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, INCLUDE_ENTITIES)) {
             setIncludeEntitiesEnbled(getBoolean(props, prefix, INCLUDE_ENTITIES));
+        }
+        if (notNull(props, prefix, JSON_STORE_ENABLED)) {
+            setJSONStoreEnabled(getBoolean(props, prefix, JSON_STORE_ENABLED));
         }
         if (notNull(props, prefix, STREAM_USER_REPLIES_ALL)) {
             setUserStreamRepliesAllEnabled(getBoolean(props, prefix, STREAM_USER_REPLIES_ALL));
