@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import twitter4j.http.AccessToken;
+import twitter4j.auth.AccessToken;
 import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 

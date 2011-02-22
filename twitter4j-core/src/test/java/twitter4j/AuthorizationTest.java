@@ -16,10 +16,10 @@
 
 package twitter4j;
 
-import twitter4j.http.Authorization;
-import twitter4j.http.BasicAuthorization;
-import twitter4j.http.NullAuthorization;
-import twitter4j.http.OAuthAuthorization;
+import twitter4j.auth.Authorization;
+import twitter4j.auth.BasicAuthorization;
+import twitter4j.auth.NullAuthorization;
+import twitter4j.auth.OAuthAuthorization;
 
 
 /**

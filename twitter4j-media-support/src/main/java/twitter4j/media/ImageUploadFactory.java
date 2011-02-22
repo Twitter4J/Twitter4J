@@ -16,11 +16,11 @@
 
 package twitter4j.media;
 
+import twitter4j.auth.Authorization;
+import twitter4j.auth.AuthorizationFactory;
+import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.Authorization;
-import twitter4j.http.AuthorizationFactory;
-import twitter4j.http.OAuthAuthorization;
 
 import static twitter4j.media.MediaProvider.IMG_LY;
 import static twitter4j.media.MediaProvider.MOBYPICTURE;

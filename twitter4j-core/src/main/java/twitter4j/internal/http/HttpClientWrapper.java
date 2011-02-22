@@ -17,8 +17,8 @@
 package twitter4j.internal.http;
 
 import twitter4j.TwitterException;
+import twitter4j.auth.Authorization;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.Authorization;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -16,8 +16,8 @@
 
 package twitter4j.internal.http;
 
-import twitter4j.http.Authorization;
-import twitter4j.http.BasicAuthorization;
+import twitter4j.auth.Authorization;
+import twitter4j.auth.BasicAuthorization;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

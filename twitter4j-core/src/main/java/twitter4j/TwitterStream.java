@@ -15,7 +15,7 @@
  */
 package twitter4j;
 
-import twitter4j.http.OAuthSupport;
+import twitter4j.auth.OAuthSupport;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

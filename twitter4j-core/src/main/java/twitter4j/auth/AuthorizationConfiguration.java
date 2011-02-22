@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.http;
+package twitter4j.auth;
 
 /**
  * A static factory class for Authorization.

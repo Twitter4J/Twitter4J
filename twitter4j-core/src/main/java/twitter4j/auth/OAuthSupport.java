@@ -1,4 +1,4 @@
-package twitter4j.http;
+package twitter4j.auth;
 
 import twitter4j.TwitterException;
 

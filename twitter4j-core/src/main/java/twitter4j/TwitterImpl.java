@@ -16,10 +16,10 @@
 
 package twitter4j;
 
+import twitter4j.auth.Authorization;
+import twitter4j.auth.AuthorizationFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.Authorization;
-import twitter4j.http.AuthorizationFactory;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;

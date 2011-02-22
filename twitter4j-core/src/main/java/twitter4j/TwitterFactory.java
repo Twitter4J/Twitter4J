@@ -16,13 +16,13 @@
 
 package twitter4j;
 
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.Authorization;
+import twitter4j.auth.AuthorizationFactory;
+import twitter4j.auth.BasicAuthorization;
+import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.http.AccessToken;
-import twitter4j.http.Authorization;
-import twitter4j.http.AuthorizationFactory;
-import twitter4j.http.BasicAuthorization;
-import twitter4j.http.OAuthAuthorization;
 
 /**
  * A factory class for Twitter.
@@ -76,7 +76,7 @@ public final class TwitterFactory implements java.io.Serializable {
     /**
      * Returns a OAuth Authenticated instance.<br>
      * consumer key and consumer Secret must be provided by twitter4j.properties, or system properties.<br>
-     * Unlike {@link Twitter#setOAuthAccessToken(twitter4j.http.AccessToken)}, this factory method potentially returns a cached instance.
+     * Unlike {@link Twitter#setOAuthAccessToken(twitter4j.auth.AccessToken)}, this factory method potentially returns a cached instance.
      *
      * @param accessToken access token
      * @return an instance

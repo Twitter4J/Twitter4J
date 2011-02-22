@@ -19,7 +19,7 @@ package twitter4j.conf;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import twitter4j.Version;
-import twitter4j.http.RequestToken;
+import twitter4j.auth.RequestToken;
 import twitter4j.internal.util.T4JInternalStringUtil;
 
 import java.io.BufferedWriter;

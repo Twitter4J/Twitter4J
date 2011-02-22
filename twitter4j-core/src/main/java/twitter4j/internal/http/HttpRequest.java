@@ -16,7 +16,7 @@
 
 package twitter4j.internal.http;
 
-import twitter4j.http.Authorization;
+import twitter4j.auth.Authorization;
 
 import java.util.Arrays;
 import java.util.Map;

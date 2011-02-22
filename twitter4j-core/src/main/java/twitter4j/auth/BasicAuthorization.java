@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.http;
+package twitter4j.auth;
 
 import twitter4j.internal.http.BASE64Encoder;
 import twitter4j.internal.http.HttpRequest;

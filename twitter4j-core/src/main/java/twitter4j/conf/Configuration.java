@@ -16,7 +16,7 @@
 
 package twitter4j.conf;
 
-import twitter4j.http.AuthorizationConfiguration;
+import twitter4j.auth.AuthorizationConfiguration;
 import twitter4j.internal.async.DispatcherConfiguration;
 import twitter4j.internal.http.HttpClientConfiguration;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;

@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import twitter4j.http.AccessToken;
+import twitter4j.auth.AccessToken;
 
 import java.util.Date;
 import java.util.List;
