@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.Authorization;
-import twitter4j.auth.BasicAuthorization;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
@@ -70,17 +69,6 @@ public final class TwitterStreamFactory implements java.io.Serializable {
      */
     public TwitterStream getInstance() {
         return new TwitterStreamImpl(conf);
-    }
-
-    /**
-     * Returns an XAuth Authenticated instance.
-     *
-     * @param screenName screen name
-     * @param password   password
-     * @return an instance
-     */
-    public TwitterStream getInstance(String screenName, String password) {
-        return getInstance(conf, new BasicAuthorization(screenName, password));
     }
 
     /**
