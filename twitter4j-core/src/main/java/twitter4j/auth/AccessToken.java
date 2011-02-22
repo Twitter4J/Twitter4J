@@ -38,13 +38,13 @@ public class AccessToken extends OAuthToken implements java.io.Serializable {
         super(str);
         screenName = getParameter("screen_name");
         String sUserId = getParameter("user_id");
-        if (sUserId != null) userId = Integer.parseInt(sUserId);
+        if (sUserId != null) userId = Long.parseLong(sUserId);
     }
 
     public AccessToken(String token, String tokenSecret) {
         super(token, tokenSecret);
         String sUserId = token.substring(0, token.indexOf("-"));
-        if (sUserId != null) userId = Integer.parseInt(sUserId);
+        if (sUserId != null) userId = Long.parseLong(sUserId);
     }
 
     /**
