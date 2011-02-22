@@ -24,22 +24,53 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.auth;
 
 import twitter4j.internal.http.HttpRequest;
+
+import java.io.ObjectStreamException;
 
 /**
  * An interface represents credentials.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @deprecated use {@link twitter4j.auth.Authorization} instead
+ * @since Twitter4J 2.1.13
  */
-public interface Authorization extends java.io.Serializable {
-    String getAuthorizationHeader(HttpRequest req);
+public class NullAuthorization implements Authorization, java.io.Serializable {
+    private static NullAuthorization SINGLETON = new NullAuthorization();
+    private static final long serialVersionUID = -8748173338942663960L;
+
+    private NullAuthorization() {
+
+    }
+
+    public static NullAuthorization getInstance() {
+        return SINGLETON;
+    }
+
+    public String getAuthorizationHeader(HttpRequest req) {
+        return null;
+    }
+
+    public boolean isEnabled() {
+        return false;
+    }
 
     /**
-     * Returns true if authorization credentials are set.
-     * @return true if authorization credentials are set
+     * @noinspection EqualsWhichDoesntCheckParameterClass
      */
-    boolean isEnabled();
+    @Override
+    public boolean equals(Object o) {
+        return SINGLETON == o;
+    }
+
+    @Override
+    public String toString() {
+        return "NullAuthentication{SINGLETON}";
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        return SINGLETON;
+    }
+
 }

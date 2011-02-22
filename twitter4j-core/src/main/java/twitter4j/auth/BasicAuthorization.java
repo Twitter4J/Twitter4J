@@ -24,22 +24,19 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
-
-import twitter4j.internal.http.HttpRequest;
+package twitter4j.auth;
 
 /**
- * An interface represents credentials.
+ * An authentication implementation implements Basic authentication
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @deprecated use {@link twitter4j.auth.Authorization} instead
+ * @since Twitter4J 2.1.13
  */
-public interface Authorization extends java.io.Serializable {
-    String getAuthorizationHeader(HttpRequest req);
+public class BasicAuthorization extends twitter4j.http.BasicAuthorization {
 
-    /**
-     * Returns true if authorization credentials are set.
-     * @return true if authorization credentials are set
-     */
-    boolean isEnabled();
+    private static final long serialVersionUID = 6287482412228552984L;
+
+    public BasicAuthorization(String userId, String password) {
+        super(userId, password);
+    }
 }

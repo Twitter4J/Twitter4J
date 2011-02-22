@@ -50,6 +50,7 @@ import java.util.Random;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
+ * @deprecated use {@link twitter4j.auth.OAuthAuthorization} instead
  */
 public class OAuthAuthorization implements Authorization, java.io.Serializable, OAuthSupport {
     private final Configuration conf;

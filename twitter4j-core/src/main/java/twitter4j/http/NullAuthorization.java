@@ -34,6 +34,7 @@ import twitter4j.internal.http.HttpRequest;
  * An interface represents credentials.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @deprecated use {@link twitter4j.auth.NullAuthorization} instead
  */
 public class NullAuthorization implements Authorization, java.io.Serializable {
     private static NullAuthorization SINGLETON = new NullAuthorization();

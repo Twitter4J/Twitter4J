@@ -24,7 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.auth;
 
 import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpResponse;
@@ -32,78 +32,22 @@ import twitter4j.internal.http.HttpResponse;
 /**
  * Representing authorized Access Token which is passed to the service provider in order to access protected resources.<br>
  * the token and token secret can be stored into some persistent stores such as file system or RDBMS for the further accesses.
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @deprecated use {@link twitter4j.auth.AccessToken} instead
+ * @since Twitter4J 2.1.13
  */
-public class AccessToken extends OAuthToken implements java.io.Serializable {
-    private static final long serialVersionUID = -8344528374458826291L;
-    private String screenName;
-    private int userId;
-    protected AccessToken(HttpResponse res) throws TwitterException {
-        this(res.asString());
+public class AccessToken extends twitter4j.http.AccessToken {
+    private static final long serialVersionUID = 2799912874660472843L;
+
+    AccessToken(HttpResponse res) throws TwitterException {
+        super(res);
     }
 
-    protected AccessToken(String str) {
+    AccessToken(String str) {
         super(str);
-        screenName = getParameter("screen_name");
-        String sUserId = getParameter("user_id");
-        if (sUserId != null) userId = Integer.parseInt(sUserId);
     }
 
     public AccessToken(String token, String tokenSecret) {
         super(token, tokenSecret);
-        String sUserId = token.substring(0, token.indexOf("-"));
-        if (sUserId != null) userId = Integer.parseInt(sUserId);
-    }
-
-    /**
-     *
-     * @return screen name
-     * @since Twitter4J 2.0.4
-     */
-
-	public String getScreenName() {
-		return screenName;
-	}
-
-    /**
-     *
-     * @return user id
-     * @since Twitter4J 2.0.4
-     */
-
-	public int getUserId() {
-		return userId;
-	}
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AccessToken)) return false;
-        if (!super.equals(o)) return false;
-
-        AccessToken that = (AccessToken) o;
-
-        if (userId != that.userId) return false;
-        if (screenName != null ? !screenName.equals(that.screenName) : that.screenName != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
-        result = 31 * result + userId;
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "AccessToken{" +
-                "screenName='" + screenName + '\'' +
-                ", userId=" + userId +
-                '}';
     }
 }

@@ -24,22 +24,31 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.auth;
 
-import twitter4j.internal.http.HttpRequest;
+import twitter4j.TwitterException;
+import twitter4j.internal.http.HttpResponse;
 
 /**
- * An interface represents credentials.
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @deprecated use {@link twitter4j.auth.Authorization} instead
+ *         representing unauthorized Request Token which is passed to the service provider when acquiring the authorized Access Token
+ * @since Twitter4J 2.1.13
  */
-public interface Authorization extends java.io.Serializable {
-    String getAuthorizationHeader(HttpRequest req);
+public final class RequestToken extends twitter4j.http.RequestToken {
 
-    /**
-     * Returns true if authorization credentials are set.
-     * @return true if authorization credentials are set
-     */
-    boolean isEnabled();
+    private static final long serialVersionUID = -8856866274913310625L;
+
+    RequestToken(HttpResponse res, twitter4j.http.OAuthSupport oauth) throws TwitterException {
+        super(res, oauth);
+    }
+
+    public RequestToken(String token, String tokenSecret) {
+        super(token, tokenSecret);
+    }
+
+    RequestToken(String token, String tokenSecret, twitter4j.http.OAuthSupport oauth) {
+        super(token, tokenSecret, oauth);
+    }
+
+
 }

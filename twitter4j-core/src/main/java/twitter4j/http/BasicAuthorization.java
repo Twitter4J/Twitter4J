@@ -33,6 +33,7 @@ import twitter4j.internal.http.HttpRequest;
  * An authentication implementation implements Basic authentication
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @deprecated use {@link twitter4j.auth.BasicAuthorization} instead
  */
 public class BasicAuthorization implements Authorization, java.io.Serializable {
 

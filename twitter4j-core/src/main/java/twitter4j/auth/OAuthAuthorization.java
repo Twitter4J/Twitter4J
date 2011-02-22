@@ -24,22 +24,43 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package twitter4j.http;
+package twitter4j.auth;
 
-import twitter4j.internal.http.HttpRequest;
+import twitter4j.conf.Configuration;
 
 /**
- * An interface represents credentials.
- *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @deprecated use {@link twitter4j.auth.Authorization} instead
+ * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
+ * @since Twitter4J 2.1.13
  */
-public interface Authorization extends java.io.Serializable {
-    String getAuthorizationHeader(HttpRequest req);
+public class OAuthAuthorization extends twitter4j.http.OAuthAuthorization {
+    // constructors
 
     /**
-     * Returns true if authorization credentials are set.
-     * @return true if authorization credentials are set
+     * @param conf configuration
      */
-    boolean isEnabled();
+    public OAuthAuthorization(Configuration conf) {
+        super(conf);
+    }
+
+    /**
+     * @param conf           configuration
+     * @param consumerKey    consumer key
+     * @param consumerSecret consumer secret
+     * @deprecated use {@link #OAuthAuthorization(twitter4j.conf.Configuration)} instead
+     */
+    public OAuthAuthorization(Configuration conf, String consumerKey, String consumerSecret) {
+        super(conf, consumerKey, consumerSecret);
+    }
+
+    /**
+     * @param conf           configuration
+     * @param consumerKey    consumer key
+     * @param consumerSecret consumer secret
+     * @param accessToken    access token
+     * @deprecated use {@link #OAuthAuthorization(twitter4j.conf.Configuration)} instead
+     */
+    public OAuthAuthorization(Configuration conf, String consumerKey, String consumerSecret, AccessToken accessToken) {
+        super(conf, consumerKey, consumerSecret, accessToken);
+    }
 }

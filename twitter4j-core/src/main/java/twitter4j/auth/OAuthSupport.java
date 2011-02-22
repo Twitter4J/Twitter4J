@@ -1,18 +1,17 @@
-package twitter4j.http;
+package twitter4j.auth;
 
 import twitter4j.TwitterException;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.0
- * @deprecated use {@link twitter4j.auth.OAuthSupport} instead
+ * @since Twitter4J 2.1.13
  */
 public interface OAuthSupport {
     /**
      * Retrieves a request token
      *
      * @return generated request token.
-     * @throws TwitterException when Twitter service or network is unavailable
+     * @throws TwitterException      when Twitter service or network is unavailable
      * @throws IllegalStateException access token is already available
      * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
@@ -25,7 +24,7 @@ public interface OAuthSupport {
      *
      * @param callbackURL callback URL
      * @return generated request token
-     * @throws TwitterException when Twitter service or network is unavailable
+     * @throws TwitterException      when Twitter service or network is unavailable
      * @throws IllegalStateException access token is already available
      * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
@@ -38,7 +37,7 @@ public interface OAuthSupport {
      * If no access token is associated with this instance, this will retrieve a new access token.
      *
      * @return access token
-     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @throws TwitterException      when Twitter service or network is unavailable, or the user has not authorized
      * @throws IllegalStateException when RequestToken has never been acquired
      * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
@@ -73,7 +72,7 @@ public interface OAuthSupport {
     /**
      * Retrieves an access token associated with the supplied request token and sets userId.
      *
-     * @param requestToken the request token
+     * @param requestToken  the request token
      * @param oauthVerifier OAuth verifier. AKA pin.
      * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
@@ -88,7 +87,7 @@ public interface OAuthSupport {
      * Storage of Twitter usernames and passwords is forbidden. By using xAuth, you are required to store only access tokens and access token secrets. If the access token expires or is expunged by a user, you must ask for their login and password again before exchanging the credentials for an access token.
      *
      * @param screenName the screen name
-     * @param password the password
+     * @param password   the password
      * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://dev.twitter.com/pages/oauth_faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>

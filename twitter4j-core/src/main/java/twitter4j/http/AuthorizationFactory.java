@@ -33,8 +33,9 @@ import twitter4j.conf.Configuration;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
+ * @deprecated use {@link twitter4j.auth.AuthorizationFactory} instead
  */
-public final class AuthorizationFactory {
+public class AuthorizationFactory {
     /**
      * @param conf configuraiton
      * @return authorization instance

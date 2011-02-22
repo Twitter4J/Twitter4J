@@ -34,13 +34,14 @@ import twitter4j.internal.http.HttpResponse;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  *         representing unauthorized Request Token which is passed to the service provider when acquiring the authorized Access Token
+ * @deprecated use {@link twitter4j.auth.RequestToken} instead
  */
-public final class RequestToken extends OAuthToken implements java.io.Serializable {
+public class RequestToken extends OAuthToken implements java.io.Serializable {
     private final Configuration conf;
     private OAuthSupport oauth;
     private static final long serialVersionUID = -8214365845469757952L;
 
-    RequestToken(HttpResponse res, OAuthSupport oauth) throws TwitterException {
+    protected RequestToken(HttpResponse res, OAuthSupport oauth) throws TwitterException {
         super(res);
         conf = ConfigurationContext.getInstance();
         this.oauth = oauth;
@@ -51,7 +52,7 @@ public final class RequestToken extends OAuthToken implements java.io.Serializab
         conf = ConfigurationContext.getInstance();
     }
 
-    RequestToken(String token, String tokenSecret, OAuthSupport oauth) {
+    protected RequestToken(String token, String tokenSecret, OAuthSupport oauth) {
         super(token, tokenSecret);
         conf = ConfigurationContext.getInstance();
         this.oauth = oauth;
