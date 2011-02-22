@@ -16,15 +16,17 @@
 
 package twitter4j;
 
+import junit.framework.Assert;
 import twitter4j.json.DataObjectFactory;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
-
-import static twitter4j.DAOTest.assertDeserializedFormIsEqual;
-import static twitter4j.DAOTest.assertDeserializedFormIsNotEqual;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -465,7 +467,7 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testStatusMethods() throws Exception {
-        String date = new java.util.Date().toString() + "test http://t.co/ppLTMVO @twit4j2 #twitter4jtest";
+        String date = new java.util.Date().toString() + "test http://t.co/VEDROet @twit4j2 #twitter4jtest";
         Status status = twitter1.updateStatus(date);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
@@ -838,23 +840,6 @@ public class TwitterTest extends TwitterTestBase {
                 (5 < System.currentTimeMillis() % 5));
         assertNotNull(DataObjectFactory.getRawJSON(user2));
         assertEquals(user2, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user2)));
-    }
-
-    static final String[] files = {"src/test/resources/t4j-reverse.jpeg",
-            "src/test/resources/t4j-reverse.png",
-            "src/test/resources/t4j-reverse.gif",
-            "src/test/resources/t4j.jpeg",
-            "src/test/resources/t4j.png",
-            "src/test/resources/t4j.gif",
-    };
-
-    public static File getRandomlyChosenFile() {
-        int rand = (int) (System.currentTimeMillis() % 6);
-        File file = new File(files[rand]);
-        if (!file.exists()) {
-            file = new File("twitter4j-core/" + files[rand]);
-        }
-        return file;
     }
 
     public void testFavoriteMethods() throws Exception {
@@ -1261,4 +1246,55 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(126, hashtags[0].getStart());
         assertEquals(136, hashtags[0].getEnd());
     }
+
+    /**
+     * @param obj the object to be asserted
+     * @return the deserialized object
+     * @throws Exception in the case the object is not (de)serializable
+     */
+    public static Object assertDeserializedFormIsEqual(Object obj) throws Exception {
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
+        oos.writeObject(obj);
+        byteOutputStream.close();
+        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteOutputStream.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(byteInputStream);
+        Object that = ois.readObject();
+        byteInputStream.close();
+        ois.close();
+        Assert.assertEquals(obj, that);
+        return that;
+    }
+
+    public static Object assertDeserializedFormIsNotEqual(Object obj) throws Exception {
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
+        oos.writeObject(obj);
+        byteOutputStream.close();
+        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteOutputStream.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(byteInputStream);
+        Object that = ois.readObject();
+        byteInputStream.close();
+        ois.close();
+        Assert.assertFalse(obj.equals(that));
+        return that;
+    }
+
+    static final String[] files = {"src/test/resources/t4j-reverse.jpeg",
+            "src/test/resources/t4j-reverse.png",
+            "src/test/resources/t4j-reverse.gif",
+            "src/test/resources/t4j.jpeg",
+            "src/test/resources/t4j.png",
+            "src/test/resources/t4j.gif",
+    };
+
+    private static File getRandomlyChosenFile() {
+        int rand = (int) (System.currentTimeMillis() % 6);
+        File file = new File(files[rand]);
+        if (!file.exists()) {
+            file = new File("twitter4j-core/" + files[rand]);
+        }
+        return file;
+    }
+
 }

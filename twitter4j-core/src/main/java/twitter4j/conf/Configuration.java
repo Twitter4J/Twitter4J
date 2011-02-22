@@ -17,7 +17,6 @@
 package twitter4j.conf;
 
 import twitter4j.auth.AuthorizationConfiguration;
-import twitter4j.internal.async.DispatcherConfiguration;
 import twitter4j.internal.http.HttpClientConfiguration;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 
@@ -31,7 +30,6 @@ import java.util.Properties;
 public interface Configuration extends HttpClientConfiguration
         , HttpClientWrapperConfiguration
         , AuthorizationConfiguration
-        , DispatcherConfiguration
         , java.io.Serializable {
 
     boolean isDalvik();
@@ -113,4 +111,8 @@ public interface Configuration extends HttpClientConfiguration
     String getMediaProviderAPIKey();
 
     Properties getMediaProviderParameters();
+
+    int getAsyncNumThreads();
+
+    String getDispatcherImpl();
 }

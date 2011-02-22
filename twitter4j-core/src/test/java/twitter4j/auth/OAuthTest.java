@@ -16,12 +16,9 @@
 
 package twitter4j.auth;
 
-import twitter4j.StatusStream;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
 import twitter4j.TwitterTestBase;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -48,7 +45,6 @@ import java.util.Properties;
  */
 public class OAuthTest extends TwitterTestBase {
 
-    TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 
     public OAuthTest(String name) {
         super(name);
@@ -57,10 +53,6 @@ public class OAuthTest extends TwitterTestBase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
-        twitterStream.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        twitterStream.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
-
     }
 
     public void testDeterministic() throws Exception {
@@ -73,11 +65,6 @@ public class OAuthTest extends TwitterTestBase {
         twitter2.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         assertTrue(twitter1.equals(twitter2));
         assertEquals(twitter1, twitter2);
-    }
-
-    public void testStreaming() throws Exception {
-        StatusStream stream = twitterStream.getSampleStream();
-        stream.close();
     }
 
     public void testOAuth() throws Exception {

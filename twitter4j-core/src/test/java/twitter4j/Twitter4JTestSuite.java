@@ -21,7 +21,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import twitter4j.auth.OAuthTest;
 import twitter4j.conf.ConfigurationTest;
-import twitter4j.internal.async.DispatcherTest;
 import twitter4j.util.TimeSpanConverterTest;
 
 /**
@@ -47,13 +46,8 @@ public class Twitter4JTestSuite extends TestCase {
         suite.addTestSuite(twitter4j.util.CharacterUtilTest.class);
         suite.addTestSuite(TimeSpanConverterTest.class);
 
-        suite.addTestSuite(AsyncTwitterTest.class);
-        suite.addTestSuite(DAOTest.class);
-        suite.addTestSuite(DispatcherTest.class);
         suite.addTestSuite(PagingTest.class);
         suite.addTestSuite(SearchAPITest.class);
-        suite.addTestSuite(SpringCompatibilityTest.class);
-        suite.addTestSuite(StreamAPITest.class);
         suite.addTestSuite(TwitterExceptionTest.class);
 
         return suite;

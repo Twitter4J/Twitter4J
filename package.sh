@@ -1,4 +1,7 @@
 LANG=C
+mkdir /tmp/t4jbuild
+cp -r ./* /tmp/t4jbuild/
+cd /tmp/t4jbuild/
 
 cd twitter4j-core
 mvn clean package -Dmaven.test.skip=true
@@ -7,6 +10,10 @@ mvn clean package -Dmaven.test.skip=true
 #cd ../twitter4j-httpclient-support
 #mvn clean package -Dmaven.test.skip=true
 cd ../twitter4j-media-support
+mvn clean package -Dmaven.test.skip=true
+cd ../twitter4j-async
+mvn clean package -Dmaven.test.skip=true
+cd ../twitter4j-stream
 mvn clean package -Dmaven.test.skip=true
 cd ..
 
@@ -31,6 +38,14 @@ mkdir $DIR/twitter4j-media-support
 cp -r twitter4j-media-support/src $DIR/twitter4j-media-support/
 cp twitter4j-media-support/pom.xml $DIR/twitter4j-media-support/
 
+mkdir $DIR/twitter4j-async
+cp -r twitter4j-async/src $DIR/twitter4j-async/
+cp twitter4j-async/pom.xml $DIR/twitter4j-async/
+
+mkdir $DIR/twitter4j-stream
+cp -r twitter4j-stream/src $DIR/twitter4j-stream/
+cp twitter4j-stream/pom.xml $DIR/twitter4j-stream/
+
 cp pom.xml $DIR/pom.xml
 cp LICENSE.txt $DIR/
 cp -r powered-by-badge $DIR/
@@ -50,6 +65,16 @@ unzip twitter4j-examples/target/twitter4j-examples-$1-javadoc.jar -d $DIR/twitte
 cp twitter4j-examples/target/twitter4j-examples-$1-javadoc.jar -d $DIR/twitter4j-examples/
 cp twitter4j-examples/target/twitter4j-examples-$1-sources.jar -d $DIR/twitter4j-examples/
 
+mkdir $DIR/twitter4j-async/javadoc/
+unzip twitter4j-async/target/twitter4j-async-$1-javadoc.jar -d $DIR/twitter4j-async/javadoc/
+cp twitter4j-async/target/twitter4j-async-$1-javadoc.jar -d $DIR/twitter4j-async/
+cp twitter4j-async/target/twitter4j-async-$1-sources.jar -d $DIR/twitter4j-async/
+
+mkdir $DIR/twitter4j-stream/javadoc/
+unzip twitter4j-stream/target/twitter4j-stream-$1-javadoc.jar -d $DIR/twitter4j-stream/javadoc/
+cp twitter4j-stream/target/twitter4j-stream-$1-javadoc.jar -d $DIR/twitter4j-stream/
+cp twitter4j-stream/target/twitter4j-stream-$1-sources.jar -d $DIR/twitter4j-stream/
+
 #cp twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1.jar $DIR/twitter4j-httpclient-support/
 #mkdir $DIR/twitter4j-httpclient-support/javadoc/
 #unzip twitter4j-httpclient-support/target/twitter4j-httpclient-support-$1-javadoc.jar -d $DIR/twitter4j-httpclient-support/javadoc/
@@ -58,12 +83,14 @@ mkdir $DIR/lib
 cp twitter4j-core/target/twitter4j-core-$1.jar $DIR/lib
 cp twitter4j-media-support/target/twitter4j-media-support-$1.jar $DIR/lib
 cp twitter4j-examples/target/twitter4j-examples-$1.jar $DIR/lib
+cp twitter4j-async/target/twitter4j-async-$1.jar $DIR/lib
+cp twitter4j-stream/target/twitter4j-stream-$1.jar $DIR/lib
 
 cd $DIR/
 find . -name ".svn" -print -exec rm -rf {} ";"
 find . -name ".DS_Store" -print -exec rm -r {} ";"
 find . -name ._* -exec rm -r {} ";"
 rm ../twitter4j-$1.zip
-zip -r ../twitter4j-$1.zip .
-cd ..
-rm -Rf $DIR
+zip -r ../../twitter4j-$1.zip .
+cd ../..
+rm -Rf t4jbuild/
