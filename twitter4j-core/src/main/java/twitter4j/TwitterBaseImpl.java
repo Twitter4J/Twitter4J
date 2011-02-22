@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.Authorization;
+import twitter4j.auth.AuthorizationFactory;
 import twitter4j.auth.BasicAuthorization;
 import twitter4j.auth.NullAuthorization;
 import twitter4j.auth.OAuthAuthorization;
@@ -28,6 +29,7 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseEvent;
 import twitter4j.internal.http.HttpResponseListener;
+import twitter4j.internal.http.XAuthAuthorization;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -235,39 +237,133 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
     /**
      * {@inheritDoc}
      */
-    public abstract void setOAuthConsumer(String consumerKey, String consumerSecret);
+    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret) {
+        if (null == consumerKey) {
+            throw new NullPointerException("consumer key is null");
+        }
+        if (null == consumerSecret) {
+            throw new NullPointerException("consumer secret is null");
+        }
+        if (auth instanceof NullAuthorization) {
+            OAuthAuthorization oauth = new OAuthAuthorization(conf);
+            oauth.setOAuthConsumer(consumerKey, consumerSecret);
+            auth = oauth;
+        } else if (auth instanceof BasicAuthorization) {
+            XAuthAuthorization xauth = new XAuthAuthorization((BasicAuthorization) auth);
+            xauth.setOAuthConsumer(consumerKey, consumerSecret);
+            auth = xauth;
+        } else if (auth instanceof OAuthAuthorization) {
+            throw new IllegalStateException("consumer key/secret pair already set.");
+        }
+    }
 
     /**
      * {@inheritDoc}
      */
-    public abstract RequestToken getOAuthRequestToken() throws TwitterException;
+    public RequestToken getOAuthRequestToken() throws TwitterException {
+        return getOAuthRequestToken(null);
+    }
 
     /**
      * {@inheritDoc}
      */
-    public abstract RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException;
+    public RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException {
+        return getOAuth().getOAuthRequestToken(callbackUrl);
+    }
+
+    /**
+     * {@inheritDoc}
+     * Basic authenticated instance of this class will try acquiring an AccessToken using xAuth.<br>
+     * In order to get access acquire AccessToken using xAuth, you must apply by sending an email to <a href="mailto:api@twitter.com">api@twitter.com</a> all other applications will receive an HTTP 401 error.  Web-based applications will not be granted access, except on a temporary basis for when they are converting from basic-authentication support to full OAuth support.<br>
+     * Storage of Twitter usernames and passwords is forbidden. By using xAuth, you are required to store only access tokens and access token secrets. If the access token expires or is expunged by a user, you must ask for their login and password again before exchanging the credentials for an access token.
+     *
+     * @throws TwitterException When Twitter service or network is unavailable, when the user has not authorized, or when the client application is not permitted to use xAuth
+     * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth">Twitter REST API Method: oauth access_token for xAuth</a>
+     */
+    public synchronized AccessToken getOAuthAccessToken() throws TwitterException {
+        Authorization auth = getAuthorization();
+        AccessToken oauthAccessToken;
+        if (auth instanceof BasicAuthorization) {
+            BasicAuthorization basicAuth = (BasicAuthorization) auth;
+            auth = AuthorizationFactory.getInstance(conf);
+            if (auth instanceof OAuthAuthorization) {
+                this.auth = auth;
+                OAuthAuthorization oauthAuth = (OAuthAuthorization) auth;
+                oauthAccessToken = oauthAuth.getOAuthAccessToken(basicAuth.getUserId(), basicAuth.getPassword());
+            } else {
+                throw new IllegalStateException("consumer key / secret combination not supplied.");
+            }
+        } else {
+            if (auth instanceof XAuthAuthorization) {
+                XAuthAuthorization xauth = (XAuthAuthorization) auth;
+                this.auth = xauth;
+                OAuthAuthorization oauthAuth = new OAuthAuthorization(conf);
+                oauthAuth.setOAuthConsumer(xauth.getConsumerKey(), xauth.getConsumerSecret());
+                oauthAccessToken = oauthAuth.getOAuthAccessToken(xauth.getUserId(), xauth.getPassword());
+            } else {
+                oauthAccessToken = getOAuth().getOAuthAccessToken();
+            }
+        }
+        screenName = oauthAccessToken.getScreenName();
+        id = oauthAccessToken.getUserId();
+        return oauthAccessToken;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
+     */
+    public synchronized AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
+        AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken(oauthVerifier);
+        screenName = oauthAccessToken.getScreenName();
+        return oauthAccessToken;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
+     */
+    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
+        OAuthSupport oauth = getOAuth();
+        AccessToken oauthAccessToken = oauth.getOAuthAccessToken(requestToken);
+        screenName = oauthAccessToken.getScreenName();
+        return oauthAccessToken;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalStateException when AccessToken has already been retrieved or set
+     */
+    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
+        return getOAuth().getOAuthAccessToken(requestToken, oauthVerifier);
+    }
 
     /**
      * {@inheritDoc}
      */
-    public abstract AccessToken getOAuthAccessToken() throws TwitterException;
+    public synchronized void setOAuthAccessToken(AccessToken accessToken) {
+        getOAuth().setOAuthAccessToken(accessToken);
+    }
 
     /**
      * {@inheritDoc}
      */
-    public abstract AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException;
+    public synchronized AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
+        return getOAuth().getOAuthAccessToken(screenName, password);
+    }
+    /* OAuth support methods */
 
-    /**
-     * {@inheritDoc}
-     */
-    public abstract AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException;
-
-    /**
-     * {@inheritDoc}
-     */
-    public abstract AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException;
-
-    public abstract void setOAuthAccessToken(AccessToken accessToken);
+    private OAuthSupport getOAuth() {
+        if (!(auth instanceof OAuthSupport)) {
+            throw new IllegalStateException(
+                    "OAuth consumer key/secret combination not supplied");
+        }
+        return (OAuthSupport) auth;
+    }
 
 
     @Override

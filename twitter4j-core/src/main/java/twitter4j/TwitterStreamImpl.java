@@ -44,7 +44,7 @@ import static twitter4j.internal.http.HttpResponseCode.NOT_ACCEPTABLE;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public final class TwitterStreamImpl extends TwitterOAuthSupportBaseImpl
+public final class TwitterStreamImpl extends TwitterBaseImpl
         implements TwitterStream {
     private static final long serialVersionUID = 5529611191443189901L;
     private final HttpClientWrapper http;

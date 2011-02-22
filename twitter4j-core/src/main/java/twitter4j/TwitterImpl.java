@@ -43,7 +43,7 @@ import static twitter4j.internal.http.HttpParameter.getParameterArray;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class TwitterImpl extends TwitterOAuthSupportBaseImpl
+public class TwitterImpl extends TwitterBaseImpl
         implements Twitter {
     private static final long serialVersionUID = -1486360080128882436L;
 
