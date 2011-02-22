@@ -110,7 +110,7 @@ abstract class TwitterOAuthSupportBase extends TwitterBase implements HttpRespon
 
     public abstract void setOAuthAccessToken(AccessToken accessToken);
 
-    public abstract AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException;
+    public abstract AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException;
 
     /**
      * Retrieves an access token associated with the supplied request token.

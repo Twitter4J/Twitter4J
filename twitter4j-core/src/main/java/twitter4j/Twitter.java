@@ -204,8 +204,24 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
      * @throws TwitterException      when verifyCredentials threw an exception.
      * @throws IllegalStateException if no credentials are supplied. i.e.) this is an anonymous Twitter instance
      * @since Twitter4J 2.1.1
+     * @deprecated user {@link #getUserId()} instead
      */
     public int getId() throws TwitterException, IllegalStateException {
+        return getUserId();
+    }
+
+    /**
+     * Returns authenticating user's user id.<br>
+     * This method may internally call verifyCredentials() on the first invocation if<br>
+     * - this instance is authenticated by Basic and email address is supplied instead of screen name, or
+     * - this instance is authenticated by OAuth.<br>
+     *
+     * @return the authenticating user's id
+     * @throws TwitterException      when verifyCredentials threw an exception.
+     * @throws IllegalStateException if no credentials are supplied. i.e.) this is an anonymous Twitter instance
+     * @since Twitter4J 2.1.13
+     */
+    public int getUserId() throws TwitterException, IllegalStateException {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(
                     "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");

@@ -103,9 +103,10 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
 
     /**
      * Adds twitter listener
+     *
      * @param listener TwitterListener
      */
-    public void addListener(TwitterListener listener){
+    public void addListener(TwitterListener listener) {
         this.listeners.add(listener);
     }
 
@@ -135,9 +136,25 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
      * @throws TwitterException      when verifyCredentials threw an exception.
      * @throws IllegalStateException if no credentials are supplied. i.e.) this is an anonymous Twitter instance
      * @since Twitter4J 2.1.1
+     * @deprecated user {@link #getUserId()} instead
      */
     public int getId() throws TwitterException, IllegalStateException {
-        return twitter.getId();
+        return twitter.getUserId();
+    }
+
+    /**
+     * Returns authenticating user's user id.<br>
+     * This method may internally call verifyCredentials() on the first invocation if<br>
+     * - this instance is authenticated by Basic and email address is supplied instead of screen name, or
+     * - this instance is authenticated by OAuth.<br>
+     *
+     * @return the authenticating user's id
+     * @throws TwitterException      when verifyCredentials threw an exception.
+     * @throws IllegalStateException if no credentials are supplied. i.e.) this is an anonymous Twitter instance
+     * @since Twitter4J 2.1.13
+     */
+    public int getUserId() throws TwitterException, IllegalStateException {
+        return twitter.getUserId();
     }
 
     /**
@@ -376,7 +393,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
             public void invoke(List<TwitterListener> listeners)
                     throws TwitterException {
                 ResponseList<Status> statuses = twitter.getUserTimeline(screenName,
-                                paging);
+                        paging);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserTimeline(statuses);
@@ -1971,7 +1988,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         getDispatcher().invokeLater(new AsyncTask(UPDATE_FRIENDSHIP, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 Relationship relationship = twitter.updateFriendship(screenName
-                                , enableDeviceNotification, retweet);
+                        , enableDeviceNotification, retweet);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedFriendship(relationship);
@@ -1990,7 +2007,7 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
         getDispatcher().invokeLater(new AsyncTask(UPDATE_FRIENDSHIP, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 Relationship relationship = twitter.updateFriendship(userId
-                                , enableDeviceNotification, retweet);
+                        , enableDeviceNotification, retweet);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedFriendship(relationship);
@@ -2273,9 +2290,9 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
             public void invoke(List<TwitterListener> listeners)
                     throws TwitterException {
                 User user = twitter.updateProfileColors(
-                                profileBackgroundColor, profileTextColor,
-                                profileLinkColor, profileSidebarFillColor,
-                                profileSidebarBorderColor);
+                        profileBackgroundColor, profileTextColor,
+                        profileLinkColor, profileSidebarFillColor,
+                        profileSidebarBorderColor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedProfileColors(user);
@@ -3064,8 +3081,8 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
      * @deprecated Use {@link AsyncTwitterFactory#getInstance(Authorization)}
      */
     @Override
-    public AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        return twitter.getOAuthAccessToken(token, tokenSecret);
+    public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
+        return twitter.getOAuthAccessToken(screenName, password);
     }
 
     /**

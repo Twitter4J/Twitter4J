@@ -167,8 +167,8 @@ class TwitterOAuthSupportBaseImpl extends TwitterOAuthSupportBase {
     /**
      * {@inheritDoc}
      */
-    public synchronized AccessToken getOAuthAccessToken(String token, String tokenSecret) throws TwitterException {
-        return getOAuth().getOAuthAccessToken(new RequestToken(token, tokenSecret));
+    public synchronized AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
+        return getOAuth().getOAuthAccessToken(screenName, password);
     }
 
     /**
