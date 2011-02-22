@@ -1,12 +1,15 @@
-Twittetr4J is a Twitter API binding library for the Java language licensed under the BSD license.
+Twittetr4J is a Twitter API binding library for the Java language licensed under Apache License 2.0.
 
 LICENSE.txt - the terms of license of this software
 pom.xml - maven parent pom
 powered-by-badge - badge
 readme.txt - this file
+twitter4j-core - core component : support REST and Search API
 twitter4j-apache-httpclient-support - optional component adds Apache HttpClient support
-twitter4j-core - core component
 twitter4j-examples - examples
+twitter4j-media-support - media API support
+twitter4j-async - Async API support : depending on twitter4j-core
+twitter4j-stream - Streaming API support : depeinding on twitter4j-core and twitter4j-async
 
 Contributors
 ------------

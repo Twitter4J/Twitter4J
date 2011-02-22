@@ -232,6 +232,7 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(userList);
         assertEquals("testpoint1", userList.getName());
+        assertEquals("@twit4j/testpoint1", userList.getFullName());
         assertEquals("description1", userList.getDescription());
 
         userList = twitter1.updateUserList(userList.getId(), "testpoint2", true, "description2");
