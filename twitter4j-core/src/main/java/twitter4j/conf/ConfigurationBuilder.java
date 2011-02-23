@@ -247,12 +247,6 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder setJSONStoreEnabled(boolean enabled) {
-        checkNotBuilt();
-        configurationBean.setJSONStoreEnabled(enabled);
-        return this;
-    }
-
     public ConfigurationBuilder setUserStreamRepliesAllEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setUserStreamRepliesAllEnabled(enabled);
