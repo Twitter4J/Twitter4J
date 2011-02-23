@@ -125,6 +125,11 @@ sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/gro
 sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/groupId><artifactId>json<\/artifactId><version>20090211<\/version><scope>provided<\/scope><\/dependency>/' twitter4j-async/pom.xml
 sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/groupId><artifactId>json<\/artifactId><version>20090211<\/version><scope>provided<\/scope><\/dependency>/' twitter4j-stream/pom.xml
 
+sed -i "" -e 's/reader = asReader();/\/\/reader = asReader();/' twitter4j-core/src/main/java/twitter4j/internal/http/HttpResponse.java
+sed -i "" -e 's/new JSONTokener(reader)/asString()/' twitter4j-core/src/main/java/twitter4j/internal/http/HttpResponse.java
+sed -i "" -e 's/import twitter4j.internal.org.json.JSONTokener;/\/\/import twitter4j.internal.org.json.JSONTokener;/' twitter4j-core/src/main/java/twitter4j/internal/http/HttpResponse.java
+
+
 echo building android-jar
 pwd
 export HOME=/tmp
