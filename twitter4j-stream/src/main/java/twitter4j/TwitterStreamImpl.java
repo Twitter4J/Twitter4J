@@ -218,7 +218,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
             if (null != track) {
                 params.add(new HttpParameter("track", T4JInternalStringUtil.join(track)));
             }
-            return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "dao/user.json"
+            return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
                     , params.toArray(new HttpParameter[params.size()])
                     , auth), conf);
         } catch (IOException e) {
