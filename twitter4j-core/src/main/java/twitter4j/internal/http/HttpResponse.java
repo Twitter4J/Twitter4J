@@ -105,9 +105,6 @@ public abstract class HttpResponse {
                 logger.debug(responseAsString);
                 stream.close();
                 streamConsumed = true;
-            } catch (NullPointerException npe) {
-                // don't remember in which case npe can be thrown
-                throw new TwitterException(npe.getMessage(), npe);
             } catch (IOException ioe) {
                 throw new TwitterException(ioe.getMessage(), ioe);
             } finally {
