@@ -3,12 +3,12 @@
     <parent>
       <groupId>org.twitter4j</groupId>
       <artifactId>twitter4j</artifactId>
-      <version>2.1.13</version>
+      <version>2.1.14-SNAPSHOT</version>
     </parent>
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-examples</artifactId>
-    <version>2.1.13</version>
+    <version>2.1.14-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>twitter4j-examples</name>
     <description>A Java library for the Twitter API</description>
@@ -107,12 +107,12 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>2.1.13</version>
+            <version>2.1.14-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-media-support</artifactId>
-            <version>2.1.13</version>
+            <version>2.1.14-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
