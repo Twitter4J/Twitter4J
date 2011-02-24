@@ -21,6 +21,7 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
+import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.http.HttpClientImpl;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.org.json.JSONArray;
@@ -45,6 +46,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class DAOTest extends TwitterTestBase {
+    Configuration conf = ConfigurationContext.getInstance();
     public DAOTest(String name) {
         super(name);
     }
@@ -61,22 +63,22 @@ public class DAOTest extends TwitterTestBase {
         HttpClientImpl http = new HttpClientImpl();
 
         // empty User list
-        List<User> users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"));
+        List<User> users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
         Assert.assertTrue(users.size() == 0);
         assertDeserializedFormIsEqual(users);
 
         // empty Status list
-        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"));
+        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
         Assert.assertTrue(statuses.size() == 0);
         assertDeserializedFormIsEqual(statuses);
 
         // empty DirectMessages list
-        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"));
+        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
         Assert.assertTrue(directMessages.size() == 0);
         assertDeserializedFormIsEqual(directMessages);
 
         // empty Trends list
-        List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("http://twitter4j.org/en/testcases/trends/daily-empty.json"));
+        List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("http://twitter4j.org/en/testcases/trends/daily-empty.json"), conf.isJSONStoreEnabled());
         Assert.assertTrue(trends.size() == 0);
         assertDeserializedFormIsEqual(trends);
     }
@@ -92,7 +94,7 @@ public class DAOTest extends TwitterTestBase {
 
     public void testLocation() throws Exception {
         JSONArray array = getJSONArrayFromClassPath("/dao/trends-available.json");
-        ResponseList<Location> locations = LocationJSONImpl.createLocationList(array);
+        ResponseList<Location> locations = LocationJSONImpl.createLocationList(array, conf.isJSONStoreEnabled());
         Assert.assertEquals(23, locations.size());
         Location location = locations.get(0);
         Assert.assertEquals("GB", location.getCountryCode());
@@ -157,7 +159,7 @@ public class DAOTest extends TwitterTestBase {
                 "size",
         };
         url = "http://api.twitter.com/1/users/suggestions.json";
-        List categories = CategoryJSONImpl.createCategoriesList(validateJSONArraySchema(url, schema), null);
+        List categories = CategoryJSONImpl.createCategoriesList(validateJSONArraySchema(url, schema), null, conf);
         Assert.assertEquals(20, categories.size());
 
         schema = new String[]{
@@ -543,7 +545,7 @@ public class DAOTest extends TwitterTestBase {
         List<User> users;
 
         // User list
-        users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/followers/T4J_hudson.json"));
+        users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/followers/T4J_hudson.json"), conf);
         Assert.assertTrue(users.size() > 0);
         assertDeserializedFormIsEqual(users);
     }
@@ -555,7 +557,7 @@ public class DAOTest extends TwitterTestBase {
     public void testStatusAsJSON() throws Exception {
         // single Status
         HttpClientImpl http = new HttpClientImpl();
-        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/public_timeline.json"));
+        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/public_timeline.json"), conf);
         Status status = statuses.get(0);
         Assert.assertEquals(new Date(1259041785000l), status.getCreatedAt());
         Assert.assertEquals(6000554383l, status.getId());
@@ -573,7 +575,7 @@ public class DAOTest extends TwitterTestBase {
     public void testRetweetStatusAsJSON() throws Exception {
         // single Status
         HttpClientImpl http = new HttpClientImpl();
-        Status status = new StatusJSONImpl(http.get("http://twitter4j.org/en/testcases/statuses/retweet/6010814202.json"));
+        Status status = new StatusJSONImpl(http.get("http://twitter4j.org/en/testcases/statuses/retweet/6010814202.json"), conf);
         Assert.assertEquals(new Date(1259078050000l), status.getCreatedAt());
         Assert.assertEquals(6011259778l, status.getId());
         Assert.assertEquals(null, status.getInReplyToScreenName());
@@ -590,7 +592,7 @@ public class DAOTest extends TwitterTestBase {
 
     public void testCategoryAsJSON() throws Exception {
         List<Category> categories = CategoryJSONImpl.createCategoriesList(
-                getJSONArrayFromClassPath("/dao/suggestions.json"), null);
+                getJSONArrayFromClassPath("/dao/suggestions.json"), null, conf);
         Assert.assertEquals(20, categories.size());
         Assert.assertEquals("art-design", categories.get(0).getSlug());
         Assert.assertEquals("Art & Design", categories.get(0).getName());
@@ -601,7 +603,7 @@ public class DAOTest extends TwitterTestBase {
     public void testPlaceAsJSON() throws Exception {
         List<Place> places = PlaceJSONImpl.createPlaceList(
                 getJSONObjectFromClassPath("/dao/reverse-geocode.json")
-                        .getJSONObject("result").getJSONArray("places"), null);
+                        .getJSONObject("result").getJSONArray("places"), null, conf);
         Place place = places.get(0);
         Assert.assertEquals("SoMa", place.getName());
         Assert.assertEquals("US", place.getCountryCode());
@@ -669,7 +671,7 @@ public class DAOTest extends TwitterTestBase {
 
     public void testDirectMessagesAsJSON() throws Exception {
         HttpClientImpl http = new HttpClientImpl();
-        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/direct_messages.json"));
+        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/direct_messages.json"), conf);
         DirectMessage dm = directMessages.get(0);
         Assert.assertEquals(new java.util.Date(1248177356000l), dm.getCreatedAt());
         Assert.assertEquals(6358482, dm.getRecipient().getId());

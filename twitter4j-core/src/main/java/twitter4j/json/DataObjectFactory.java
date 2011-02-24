@@ -17,7 +17,6 @@
 package twitter4j.json;
 
 import twitter4j.*;
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -35,7 +34,6 @@ public final class DataObjectFactory {
     private DataObjectFactory() {
         throw new AssertionError("not intended to be instantiated.");
     }
-    private static final boolean JSON_STORE_ENABLED = ConfigurationContext.getInstance().isJSONStoreEnabled();
 
     private static final Constructor<Status> statusConstructor;
     private static final Constructor<User> userConstructor;
@@ -114,12 +112,12 @@ public final class DataObjectFactory {
         }
     }
 
-    private static final ThreadLocal<Map> rawJsonMap = JSON_STORE_ENABLED ? new ThreadLocal<Map>() {
+    private static final ThreadLocal<Map> rawJsonMap = new ThreadLocal<Map>() {
         @Override
         protected Map initialValue() {
             return new HashMap();
         }
-    } : null;
+    };
 
     /**
      * Returns a raw JSON form of the provided object.<br>
@@ -130,18 +128,14 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static String getRawJSON(Object obj) {
-        if (JSON_STORE_ENABLED) {
-            Object json = rawJsonMap.get().get(obj);
-            if (json instanceof String) {
-                return (String) json;
-            } else if (json != null) {
-                // object must be instance of JSONObject
-                return json.toString();
-            } else {
-                return null;
-            }
-        }else{
-            throw new IllegalStateException("JSON Store not enabled. See http://twitter4j.org/en/configuration.html#Misc. for the detail.");
+        Object json = rawJsonMap.get().get(obj);
+        if (json instanceof String) {
+            return (String) json;
+        } else if (json != null) {
+            // object must be instance of JSONObject
+            return json.toString();
+        } else {
+            return null;
         }
     }
 
@@ -568,9 +562,7 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     static void clearThreadLocalMap() {
-        if (JSON_STORE_ENABLED) {
-            rawJsonMap.get().clear();
-        }
+        rawJsonMap.get().clear();
     }
 
     /**
@@ -580,9 +572,7 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     static <T> T registerJSONObject(T key, Object json) {
-        if (JSON_STORE_ENABLED) {
-            rawJsonMap.get().put(key, json);
-        }
+        rawJsonMap.get().put(key, json);
         return key;
     }
 }
