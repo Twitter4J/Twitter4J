@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
@@ -45,10 +46,12 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private final long sourceUserId;
     private final String sourceUserScreenName;
 
-    /*package*/ RelationshipJSONImpl(HttpResponse res) throws TwitterException {
+    /*package*/ RelationshipJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
-        DataObjectFactoryUtil.clearThreadLocalMap();
-        DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+        if(conf.isJSONStoreEnabled()){
+            DataObjectFactoryUtil.clearThreadLocalMap();
+            DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+        }
     }
 
     /*package*/ RelationshipJSONImpl(JSONObject json) throws TwitterException {
@@ -75,19 +78,25 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     }
 
     /*package*/
-    static ResponseList<Relationship> createRelationshipList(HttpResponse res) throws TwitterException {
+    static ResponseList<Relationship> createRelationshipList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.clearThreadLocalMap();
+            }
             JSONArray list = res.asJSONArray();
             int size = list.length();
             ResponseList<Relationship> relationships = new ResponseListImpl<Relationship>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Relationship relationship = new RelationshipJSONImpl(json);
-                DataObjectFactoryUtil.registerJSONObject(relationship, json);
+                if (conf.isJSONStoreEnabled()) {
+                    DataObjectFactoryUtil.registerJSONObject(relationship, json);
+                }
                 relationships.add(relationship);
             }
-            DataObjectFactoryUtil.registerJSONObject(relationships, list);
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.registerJSONObject(relationships, list);
+            }
             return relationships;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

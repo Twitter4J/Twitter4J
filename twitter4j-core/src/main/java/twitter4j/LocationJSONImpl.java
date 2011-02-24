@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
@@ -60,13 +61,15 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     }
 
     /*package*/
-    static ResponseList<Location> createLocationList(HttpResponse res) throws TwitterException {
-        DataObjectFactoryUtil.clearThreadLocalMap();
-        return createLocationList(res.asJSONArray());
+    static ResponseList<Location> createLocationList(HttpResponse res, Configuration conf) throws TwitterException {
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+        }
+        return createLocationList(res.asJSONArray(), conf.isJSONStoreEnabled());
     }
 
     /*package*/
-    static ResponseList<Location> createLocationList(JSONArray list) throws TwitterException {
+    static ResponseList<Location> createLocationList(JSONArray list, boolean storeJSON) throws TwitterException {
         try {
             int size = list.length();
             ResponseList<Location> locations =
@@ -75,9 +78,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 JSONObject json = list.getJSONObject(i);
                 Location location = new LocationJSONImpl(json);
                 locations.add(location);
-                DataObjectFactoryUtil.registerJSONObject(location, json);
+                if (storeJSON) {
+                    DataObjectFactoryUtil.registerJSONObject(location, json);
+                }
             }
-            DataObjectFactoryUtil.registerJSONObject(locations, list);
+            if(storeJSON){
+                DataObjectFactoryUtil.registerJSONObject(locations, list);
+            }
             return locations;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

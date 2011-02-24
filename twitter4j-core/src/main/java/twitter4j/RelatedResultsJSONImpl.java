@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
@@ -39,12 +40,13 @@ import java.util.Map;
 
     private Map<String, ResponseList<Status>> tweetsMap;
 
-    /* package */ RelatedResultsJSONImpl(HttpResponse res) throws TwitterException {
+    /* package */ RelatedResultsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
-        DataObjectFactoryUtil.clearThreadLocalMap();
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+        }
         JSONArray jsonArray = res.asJSONArray();
-        init(jsonArray, res, true);
-
+        init(jsonArray, res, conf.isJSONStoreEnabled());
     }
 
     /* package */ RelatedResultsJSONImpl(JSONArray jsonArray) throws TwitterException {

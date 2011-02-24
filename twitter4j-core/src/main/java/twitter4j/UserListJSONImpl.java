@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
@@ -50,12 +51,16 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     private boolean following;
     private static final long serialVersionUID = -6345893237975349030L;
 
-    /*package*/ UserListJSONImpl(HttpResponse res) throws TwitterException {
+    /*package*/ UserListJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
-        DataObjectFactoryUtil.clearThreadLocalMap();
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+        }
         JSONObject json = res.asJSONObject();
         init(json);
-        DataObjectFactoryUtil.registerJSONObject(this, json);
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.registerJSONObject(this, json);
+        }
     }
 
     /*package*/ UserListJSONImpl(JSONObject json) throws TwitterException {
@@ -170,9 +175,11 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     }
 
     /*package*/
-    static PagableResponseList<UserList> createPagableUserListList(HttpResponse res) throws TwitterException {
+    static PagableResponseList<UserList> createPagableUserListList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.clearThreadLocalMap();
+            }
             JSONObject json = res.asJSONObject();
             JSONArray list = json.getJSONArray("lists");
             int size = list.length();
@@ -182,9 +189,13 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
                 JSONObject userListJson = list.getJSONObject(i);
                 UserList userList = new UserListJSONImpl(userListJson);
                 users.add(userList);
-                DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
+                if (conf.isJSONStoreEnabled()) {
+                    DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
+                }
             }
-            DataObjectFactoryUtil.registerJSONObject(users, json);
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.registerJSONObject(users, json);
+            }
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -194,9 +205,11 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     }
 
     /*package*/
-    static ResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException {
+    static ResponseList<UserList> createUserListList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.clearThreadLocalMap();
+            }
             JSONArray list = res.asJSONArray();
             int size = list.length();
             ResponseList<UserList> users =
@@ -205,9 +218,13 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
                 JSONObject userListJson = list.getJSONObject(i);
                 UserList userList = new UserListJSONImpl(userListJson);
                 users.add(userList);
-                DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
+                if(conf.isJSONStoreEnabled()){
+                    DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
+                }
             }
-            DataObjectFactoryUtil.registerJSONObject(users, list);
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.registerJSONObject(users, list);
+            }
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

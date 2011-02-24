@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONObject;
@@ -42,10 +43,12 @@ class AccountTotalsJSONImpl extends TwitterResponseImpl implements AccountTotals
         friends = getInt("friends", json);
     }
 
-    /*package*/ AccountTotalsJSONImpl(HttpResponse res) throws TwitterException {
+    /*package*/ AccountTotalsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
-        DataObjectFactoryUtil.clearThreadLocalMap();
-        DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+            DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+        }
     }
 
     /*package*/ AccountTotalsJSONImpl(JSONObject json) throws TwitterException {

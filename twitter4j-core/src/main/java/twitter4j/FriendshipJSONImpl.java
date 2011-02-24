@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
@@ -35,12 +36,6 @@ class FriendshipJSONImpl implements Friendship {
     private final String screenName;
     private boolean following = false;
     private boolean followedBy = false;
-
-    /*package*/ FriendshipJSONImpl(HttpResponse res) throws TwitterException {
-        this(res.asJSONObject());
-        DataObjectFactoryUtil.clearThreadLocalMap();
-        DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
-    }
 
     /*package*/ FriendshipJSONImpl(JSONObject json) throws TwitterException {
         super();
@@ -63,19 +58,25 @@ class FriendshipJSONImpl implements Friendship {
     }
 
     /*package*/
-    static ResponseList<Friendship> createFriendshipList(HttpResponse res) throws TwitterException {
+    static ResponseList<Friendship> createFriendshipList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.clearThreadLocalMap();
+            }
             JSONArray list = res.asJSONArray();
             int size = list.length();
             ResponseList<Friendship> friendshipList = new ResponseListImpl<Friendship>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Friendship friendship = new FriendshipJSONImpl(json);
-                DataObjectFactoryUtil.registerJSONObject(friendship, json);
+                if (conf.isJSONStoreEnabled()) {
+                    DataObjectFactoryUtil.registerJSONObject(friendship, json);
+                }
                 friendshipList.add(friendship);
             }
-            DataObjectFactoryUtil.registerJSONObject(friendshipList, list);
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.registerJSONObject(friendshipList, list);
+            }
             return friendshipList;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

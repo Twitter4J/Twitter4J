@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONObject;
@@ -48,12 +49,13 @@ import static twitter4j.internal.util.ParseUtil.getInt;
         this.secondsUntilReset = (int) ((resetTime.getTime() - System.currentTimeMillis()) / 1000);
     }
 
-    RateLimitStatusJSONImpl(HttpResponse res) throws TwitterException {
+    RateLimitStatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         JSONObject json = res.asJSONObject();
         init(json);
-        DataObjectFactoryUtil.clearThreadLocalMap();
-        DataObjectFactoryUtil.registerJSONObject(this, json);
-
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+            DataObjectFactoryUtil.registerJSONObject(this, json);
+        }
     }
 
     RateLimitStatusJSONImpl(JSONObject json) throws TwitterException {

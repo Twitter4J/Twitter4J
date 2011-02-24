@@ -16,7 +16,6 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.json.DataObjectFactory;
 
 import java.lang.reflect.InvocationTargetException;
@@ -33,8 +32,6 @@ public class DataObjectFactoryUtil {
     private DataObjectFactoryUtil() {
         throw new AssertionError("not intended to be instantiated.");
     }
-
-    private static final boolean JSON_STORE_ENABLED = ConfigurationContext.getInstance().isJSONStoreEnabled();
 
     private static final Method CLEAR_THREAD_LOCAL_MAP;
     private static final Method REGISTER_JSON_OBJECT;
@@ -63,14 +60,12 @@ public class DataObjectFactoryUtil {
      * provides a public access to {DAOFactory#clearThreadLocalMap}
      */
     public static void clearThreadLocalMap() {
-        if (JSON_STORE_ENABLED) {
-            try {
-                CLEAR_THREAD_LOCAL_MAP.invoke(null);
-            } catch (IllegalAccessException e) {
-                throw new AssertionError(e);
-            } catch (InvocationTargetException e) {
-                throw new AssertionError(e);
-            }
+        try {
+            CLEAR_THREAD_LOCAL_MAP.invoke(null);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new AssertionError(e);
         }
     }
 
@@ -78,17 +73,12 @@ public class DataObjectFactoryUtil {
      * provides a public access to {DAOFactory#registerJSONObject}
      */
     public static <T> T registerJSONObject(T key, Object json) {
-        if (JSON_STORE_ENABLED) {
-            try {
-//            Class[] clazz = REGISTER_JSON_OBJECT.getParameterTypes();
-                return (T) REGISTER_JSON_OBJECT.invoke(null, key, json);
-            } catch (IllegalAccessException e) {
-                throw new AssertionError(e);
-            } catch (InvocationTargetException e) {
-                throw new AssertionError(e);
-            }
-        } else {
-            return key;
+        try {
+            return (T) REGISTER_JSON_OBJECT.invoke(null, key, json);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new AssertionError(e);
         }
     }
 }

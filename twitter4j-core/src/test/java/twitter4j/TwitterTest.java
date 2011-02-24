@@ -17,6 +17,7 @@
 package twitter4j;
 
 import junit.framework.Assert;
+import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.ByteArrayInputStream;
@@ -48,15 +49,19 @@ public class TwitterTest extends TwitterTestBase {
 
     public void testGetPublicTimeline() throws Exception {
         List<Status> statuses;
+        twitter1 = new TwitterFactory(new ConfigurationBuilder().setOAuthConsumerKey(desktopConsumerKey)
+        .setOAuthConsumerSecret(desktopConsumerSecret).setOAuthAccessToken(id1.accessToken).setOAuthConsumerSecret(id1.accessTokenSecret)
+        .setJSONStoreEnabled(false).build()).getInstance();
         statuses = twitter1.getPublicTimeline();
         assertTrue("size", 0 < statuses.size());
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
+        // should be null because json store is disabled programatically
+        assertNull(DataObjectFactory.getRawJSON(statuses));
     }
 
     public void testGetHomeTimeline() throws Exception {
         List<Status> statuses = twitter1.getHomeTimeline();
         assertTrue(0 < statuses.size());
+        assertTrue(twitter1.getConfiguration().isJSONStoreEnabled());
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
     }

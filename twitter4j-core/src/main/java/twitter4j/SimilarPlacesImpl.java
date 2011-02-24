@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -42,12 +43,12 @@ public class SimilarPlacesImpl extends ResponseListImpl<Place> implements Simila
     }
 
     /*package*/
-    static SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException {
+    static SimilarPlaces createSimilarPlaces(HttpResponse res, Configuration conf) throws TwitterException {
         JSONObject json = null;
         try {
             json = res.asJSONObject();
             JSONObject result = json.getJSONObject("result");
-            return new SimilarPlacesImpl(PlaceJSONImpl.createPlaceList(result.getJSONArray("places"), res), res
+            return new SimilarPlacesImpl(PlaceJSONImpl.createPlaceList(result.getJSONArray("places"), res, conf), res
                     , result.getString("token"));
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);

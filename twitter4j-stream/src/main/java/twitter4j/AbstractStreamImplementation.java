@@ -89,7 +89,9 @@ abstract class AbstractStreamImplementation {
                     line = parseLine(line);
                     if (line.length() > 0) {
                         try {
-                            DataObjectFactoryUtil.clearThreadLocalMap();
+                            if (CONF.isJSONStoreEnabled()) {
+                                DataObjectFactoryUtil.clearThreadLocalMap();
+                            }
                             JSONObject json = new JSONObject(line);
                             JSONObjectType jsonObjectType = JSONObjectType.determine(json);
                             if (logger.isDebugEnabled()) {
@@ -266,7 +268,9 @@ abstract class AbstractStreamImplementation {
 
     protected Status asStatus(JSONObject json) throws TwitterException {
         Status status = new StatusJSONImpl(json);
-        DataObjectFactoryUtil.registerJSONObject(status, json);
+        if (CONF.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.registerJSONObject(status, json);
+        }
         return status;
     }
 
@@ -277,7 +281,9 @@ abstract class AbstractStreamImplementation {
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
-        DataObjectFactoryUtil.registerJSONObject(directMessage, json);
+        if (CONF.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.registerJSONObject(directMessage, json);
+        }
         return directMessage;
     }
 
@@ -297,13 +303,17 @@ abstract class AbstractStreamImplementation {
 
     protected User asUser(JSONObject json) throws TwitterException {
         User user = new UserJSONImpl(json);
-        DataObjectFactoryUtil.registerJSONObject(user, json);
+        if (CONF.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.registerJSONObject(user, json);
+        }
         return user;
     }
 
     protected UserList asUserList(JSONObject json) throws TwitterException {
         UserList userList = new UserListJSONImpl(json);
-        DataObjectFactoryUtil.registerJSONObject(userList, json);
+        if (CONF.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.registerJSONObject(userList, json);
+        }
         return userList;
     }
 

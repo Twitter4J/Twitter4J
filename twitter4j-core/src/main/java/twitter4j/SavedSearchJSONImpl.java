@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
@@ -43,12 +44,16 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private int id;
     private static final long serialVersionUID = 3083819860391598212L;
 
-    /*package*/ SavedSearchJSONImpl(HttpResponse res) throws TwitterException {
+    /*package*/ SavedSearchJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
-        DataObjectFactoryUtil.clearThreadLocalMap();
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+        }
         JSONObject json = res.asJSONObject();
         init(json);
-        DataObjectFactoryUtil.registerJSONObject(this, json);
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.registerJSONObject(this, json);
+        }
     }
 
     /*package*/ SavedSearchJSONImpl(JSONObject savedSearch) throws TwitterException {
@@ -56,8 +61,10 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     }
 
     /*package*/
-    static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res) throws TwitterException {
-        DataObjectFactoryUtil.clearThreadLocalMap();
+    static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res, Configuration conf) throws TwitterException {
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+        }
         JSONArray json = res.asJSONArray();
         ResponseList<SavedSearch> savedSearches;
         try {
@@ -66,9 +73,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 JSONObject savedSearchesJSON = json.getJSONObject(i);
                 SavedSearch savedSearch = new SavedSearchJSONImpl(savedSearchesJSON);
                 savedSearches.add(savedSearch);
-                DataObjectFactoryUtil.registerJSONObject(savedSearch, savedSearchesJSON);
+                if(conf.isJSONStoreEnabled()){
+                    DataObjectFactoryUtil.registerJSONObject(savedSearch, savedSearchesJSON);
+                }
             }
-            DataObjectFactoryUtil.registerJSONObject(savedSearches, json);
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.registerJSONObject(savedSearches, json);
+            }
             return savedSearches;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
