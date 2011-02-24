@@ -6,5 +6,5 @@ readme-libs.txt - this file
 twitter4j-core.jar - REST and Search API support 
 twitter4j-async.jar - Async API support : use with twitter4j-core
 twitter4j-media-support.jar - media API support : use with twitter4j-core
-twitter4j-stream.jar - Streaming API support : use with twitter4j-core and twitter4j-async
+twitter4j-stream.jar - Streaming API support : use with twitter4j-core
 twitter4j-examples.jar - examples : use with twitter4j-core, twitter4j-async and twitter4j-stream
