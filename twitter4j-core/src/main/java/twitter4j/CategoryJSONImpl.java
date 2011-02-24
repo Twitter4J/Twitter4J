@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
@@ -44,22 +45,28 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
         this.size = ParseUtil.getInt("size", json);
     }
 
-    public static ResponseList<Category> createCategoriesList(HttpResponse res) throws TwitterException {
-        return createCategoriesList(res.asJSONArray(), res);
+    static ResponseList<Category> createCategoriesList(HttpResponse res, Configuration conf) throws TwitterException {
+        return createCategoriesList(res.asJSONArray(), res, conf);
     }
 
-    public static ResponseList<Category> createCategoriesList(JSONArray array, HttpResponse res) throws TwitterException {
+    static ResponseList<Category> createCategoriesList(JSONArray array, HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.clearThreadLocalMap();
+            }
             ResponseList<Category> categories =
                     new ResponseListImpl<Category>(array.length(), res);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject json = array.getJSONObject(i);
                 Category category = new CategoryJSONImpl(json);
                 categories.add(category);
-                DataObjectFactoryUtil.registerJSONObject(category, json);
+                if (conf.isJSONStoreEnabled()) {
+                    DataObjectFactoryUtil.registerJSONObject(category, json);
+                }
             }
-            DataObjectFactoryUtil.registerJSONObject(categories, array);
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.registerJSONObject(categories, array);
+            }
             return categories;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

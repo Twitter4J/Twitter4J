@@ -110,14 +110,14 @@ class TwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public Trends getTrends() throws TwitterException {
-        return new TrendsJSONImpl(http.get(conf.getRestBaseURL() + "trends.json"));
+        return new TrendsJSONImpl(http.get(conf.getRestBaseURL() + "trends.json"), conf);
     }
 
     /**
      * {@inheritDoc}
      */
     public Trends getCurrentTrends() throws TwitterException {
-        return TrendsJSONImpl.createTrendsList(http.get(conf.getRestBaseURL() + "trends/current.json")).get(0);
+        return TrendsJSONImpl.createTrendsList(http.get(conf.getRestBaseURL() + "trends/current.json"), conf.isJSONStoreEnabled()).get(0);
     }
 
     /**
@@ -125,14 +125,14 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public Trends getCurrentTrends(boolean excludeHashTags) throws TwitterException {
         return TrendsJSONImpl.createTrendsList(http.get(conf.getRestBaseURL() + "trends/current.json"
-                + (excludeHashTags ? "?exclude=hashtags" : ""))).get(0);
+                + (excludeHashTags ? "?exclude=hashtags" : "")), conf.isJSONStoreEnabled()).get(0);
     }
 
     /**
      * {@inheritDoc}
      */
     public List<Trends> getDailyTrends() throws TwitterException {
-        return TrendsJSONImpl.createTrendsList(http.get(conf.getRestBaseURL() + "trends/daily.json"));
+        return TrendsJSONImpl.createTrendsList(http.get(conf.getRestBaseURL() + "trends/daily.json"), conf.isJSONStoreEnabled());
     }
 
     /**
@@ -141,7 +141,7 @@ class TwitterImpl extends TwitterBaseImpl
     public List<Trends> getDailyTrends(Date date, boolean excludeHashTags) throws TwitterException {
         return TrendsJSONImpl.createTrendsList(http.get(conf.getRestBaseURL()
                 + "trends/daily.json?date=" + toDateStr(date)
-                + (excludeHashTags ? "&exclude=hashtags" : "")));
+                + (excludeHashTags ? "&exclude=hashtags" : "")), conf.isJSONStoreEnabled());
     }
 
     private String toDateStr(Date date) {
@@ -157,7 +157,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public List<Trends> getWeeklyTrends() throws TwitterException {
         return TrendsJSONImpl.createTrendsList(http.get(conf.getRestBaseURL()
-                + "trends/weekly.json"));
+                + "trends/weekly.json"), conf.isJSONStoreEnabled());
     }
 
     /**
@@ -166,7 +166,7 @@ class TwitterImpl extends TwitterBaseImpl
     public List<Trends> getWeeklyTrends(Date date, boolean excludeHashTags) throws TwitterException {
         return TrendsJSONImpl.createTrendsList(http.get(conf.getRestBaseURL()
                 + "trends/weekly.json?date=" + toDateStr(date)
-                + (excludeHashTags ? "&exclude=hashtags" : "")));
+                + (excludeHashTags ? "&exclude=hashtags" : "")), conf.isJSONStoreEnabled());
     }
 
     /* Status Methods */
@@ -177,7 +177,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<Status> getPublicTimeline() throws
             TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
-                "statuses/public_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled(), auth));
+                "statuses/public_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled(), auth), conf);
     }
 
     /**
@@ -186,7 +186,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<Status> getHomeTimeline() throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + "statuses/home_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled(), auth));
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + "statuses/home_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -196,7 +196,7 @@ class TwitterImpl extends TwitterBaseImpl
             TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
-                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), INCLUDE_ENTITIES), auth));
+                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -207,7 +207,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/friends_timeline.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled(), auth), conf);
     }
 
     /**
@@ -219,7 +219,7 @@ class TwitterImpl extends TwitterBaseImpl
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/friends_timeline.json",
                 mergeParameters(new HttpParameter[]{INCLUDE_RTS, INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray()), auth));
+                        , paging.asPostParameterArray()), auth), conf);
 
     }
 
@@ -234,7 +234,7 @@ class TwitterImpl extends TwitterBaseImpl
                 mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)
                         , INCLUDE_RTS
                         , INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray()), auth));
+                        , paging.asPostParameterArray()), auth), conf);
     }
 
     /**
@@ -247,7 +247,7 @@ class TwitterImpl extends TwitterBaseImpl
                 mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)
                         , INCLUDE_RTS
                         , INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray()), auth));
+                        , paging.asPostParameterArray()), auth), conf);
     }
 
     /**
@@ -282,7 +282,7 @@ class TwitterImpl extends TwitterBaseImpl
                 "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{INCLUDE_RTS
                         , INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray()), auth));
+                        , paging.asPostParameterArray()), auth), conf);
     }
 
     /**
@@ -292,7 +292,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
                 "statuses/mentions.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled(), auth), conf);
     }
 
     /**
@@ -304,7 +304,7 @@ class TwitterImpl extends TwitterBaseImpl
                 + "statuses/mentions.json",
                 mergeParameters(new HttpParameter[]{INCLUDE_RTS
                         , INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray()), auth));
+                        , paging.asPostParameterArray()), auth), conf);
     }
 
     /**
@@ -313,7 +313,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<Status> getRetweetedByMe() throws TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
-                + "statuses/retweeted_by_me.json?include_entities=" + conf.isIncludeEntitiesEnabled(), auth));
+                + "statuses/retweeted_by_me.json?include_entities=" + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -323,7 +323,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/retweeted_by_me.json", mergeParameters(paging.asPostParameterArray()
-                , INCLUDE_ENTITIES), auth));
+                , INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -333,7 +333,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/retweeted_to_me.json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -343,7 +343,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() +
                 "statuses/retweeted_to_me.json", mergeParameters(paging.asPostParameterArray()
-                , INCLUDE_ENTITIES), auth));
+                , INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -353,7 +353,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/retweets_of_me.json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -363,7 +363,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/retweets_of_me.json", mergeParameters(paging.asPostParameterArray()
-                , INCLUDE_ENTITIES), auth));
+                , INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -374,7 +374,7 @@ class TwitterImpl extends TwitterBaseImpl
                 "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
                         new HttpParameter("screen_name", screenName)
-                        , INCLUDE_ENTITIES}), auth));
+                        , INCLUDE_ENTITIES}), auth), conf);
     }
 
     /**
@@ -385,7 +385,7 @@ class TwitterImpl extends TwitterBaseImpl
                 "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
                         new HttpParameter("user_id", userId)
-                        , INCLUDE_ENTITIES}), auth));
+                        , INCLUDE_ENTITIES}), auth), conf);
     }
 
     /**
@@ -396,7 +396,7 @@ class TwitterImpl extends TwitterBaseImpl
                 "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
                         new HttpParameter("screen_name", screenName)
-                        , INCLUDE_ENTITIES}), auth));
+                        , INCLUDE_ENTITIES}), auth), conf);
     }
 
     /**
@@ -407,7 +407,7 @@ class TwitterImpl extends TwitterBaseImpl
                 "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
                         new HttpParameter("user_id", userId)
-                        , INCLUDE_ENTITIES}), auth));
+                        , INCLUDE_ENTITIES}), auth), conf);
     }
 
     /**
@@ -417,7 +417,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL()
                 + "statuses/" + statusId + "/retweeted_by.json?count=100&include_entities"
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -427,7 +427,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new IDsJSONImpl(http.get(conf.getRestBaseURL()
                 + "statuses/" + statusId + "/retweeted_by/ids.json?count=100&include_entities"
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -435,7 +435,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public Status showStatus(long id) throws TwitterException {
         return new StatusJSONImpl(http.get(conf.getRestBaseURL() + "statuses/show/" + id + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -445,7 +445,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL() + "statuses/update.json",
                 new HttpParameter[]{new HttpParameter("status", status)
-                        , INCLUDE_ENTITIES}, auth));
+                        , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -456,7 +456,7 @@ class TwitterImpl extends TwitterBaseImpl
         return new StatusJSONImpl(http.post(conf.getRestBaseURL()
                 + "statuses/update.json",
                 mergeParameters(latestStatus.asHttpParameterArray(),
-                        INCLUDE_ENTITIES), auth));
+                        INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -466,7 +466,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL()
                 + "statuses/destroy/" + statusId + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -476,7 +476,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL()
                 + "statuses/retweet/" + statusId + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -486,7 +486,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "statuses/retweets/" + statusId + ".json?count=100&include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /* User Methods */
@@ -496,7 +496,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public User showUser(String screenName) throws TwitterException {
         return new UserJSONImpl(http.get(conf.getRestBaseURL() + "users/show.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth), conf);
     }
 
     /**
@@ -504,7 +504,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public User showUser(long userId) throws TwitterException {
         return new UserJSONImpl(http.get(conf.getRestBaseURL() + "users/show.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth), conf);
     }
 
     /**
@@ -515,7 +515,7 @@ class TwitterImpl extends TwitterBaseImpl
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
                 "users/lookup.json", new HttpParameter[]{
                 new HttpParameter("screen_name", T4JInternalStringUtil.join(screenNames))
-                , INCLUDE_ENTITIES}, auth));
+                , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -526,7 +526,7 @@ class TwitterImpl extends TwitterBaseImpl
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
                 "users/lookup.json", new HttpParameter[]{
                 new HttpParameter("user_id", T4JInternalStringUtil.join(ids))
-                , INCLUDE_ENTITIES}, auth));
+                , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -539,7 +539,7 @@ class TwitterImpl extends TwitterBaseImpl
                 new HttpParameter("q", query),
                 new HttpParameter("per_page", 20),
                 new HttpParameter("page", page)
-                , INCLUDE_ENTITIES}, auth));
+                , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -547,7 +547,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public ResponseList<Category> getSuggestedUserCategories() throws TwitterException {
         return CategoryJSONImpl.createCategoriesList(http.get(conf.getRestBaseURL() +
-                "users/suggestions.json", auth));
+                "users/suggestions.json", auth), conf);
     }
 
     /**
@@ -557,7 +557,7 @@ class TwitterImpl extends TwitterBaseImpl
         HttpResponse res = http.get(conf.getRestBaseURL() + "users/suggestions/"
                 + categorySlug + ".json", auth);
         try {
-            return UserJSONImpl.createUserList(res.asJSONObject().getJSONArray("users"), res);
+            return UserJSONImpl.createUserList(res.asJSONObject().getJSONArray("users"), res, conf);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -569,7 +569,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<User> getMemberSuggestions(String categorySlug) throws TwitterException {
         HttpResponse res = http.get(conf.getRestBaseURL() + "users/suggestions/"
                 + categorySlug + "/members.json", auth);
-        return UserJSONImpl.createUserList(res.asJSONArray(), res);
+        return UserJSONImpl.createUserList(res.asJSONArray(), res, conf);
     }
 
     /**
@@ -586,7 +586,7 @@ class TwitterImpl extends TwitterBaseImpl
     public PagableResponseList<User> getFriendsStatuses(long cursor) throws TwitterException {
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL()
                 + "statuses/friends.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth));
+                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -596,7 +596,7 @@ class TwitterImpl extends TwitterBaseImpl
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL()
                 + "statuses/friends.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName + "&cursor="
-                + cursor, auth));
+                + cursor, auth), conf);
     }
 
     /**
@@ -606,7 +606,7 @@ class TwitterImpl extends TwitterBaseImpl
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL()
                 + "statuses/friends.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId
-                + "&cursor=" + cursor, null, auth));
+                + "&cursor=" + cursor, null, auth), conf);
     }
 
     /**
@@ -615,7 +615,7 @@ class TwitterImpl extends TwitterBaseImpl
     public PagableResponseList<User> getFollowersStatuses(long cursor) throws TwitterException {
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL()
                 + "statuses/followers.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth));
+                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -624,7 +624,7 @@ class TwitterImpl extends TwitterBaseImpl
     public PagableResponseList<User> getFollowersStatuses(String screenName, long cursor) throws TwitterException {
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL()
                 + "statuses/followers.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName + "&cursor=" + cursor, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName + "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -633,7 +633,7 @@ class TwitterImpl extends TwitterBaseImpl
     public PagableResponseList<User> getFollowersStatuses(long userId, long cursor) throws TwitterException {
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL()
                 + "statuses/followers.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId + "&cursor=" + cursor, auth));
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId + "&cursor=" + cursor, auth), conf);
     }
 
     /*List Methods*/
@@ -652,7 +652,7 @@ class TwitterImpl extends TwitterBaseImpl
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
                 "/lists.json",
                 httpParams.toArray(new HttpParameter[httpParams.size()]),
-                auth));
+                auth), conf);
     }
 
     /**
@@ -669,7 +669,7 @@ class TwitterImpl extends TwitterBaseImpl
             httpParams.add(new HttpParameter("description", newDescription));
         }
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() + "/lists/"
-                + listId + ".json", httpParams.toArray(new HttpParameter[httpParams.size()]), auth));
+                + listId + ".json", httpParams.toArray(new HttpParameter[httpParams.size()]), auth), conf);
     }
 
     /**
@@ -678,7 +678,7 @@ class TwitterImpl extends TwitterBaseImpl
     public PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserListJSONImpl.createPagableUserListList(http.get(conf.getRestBaseURL() +
-                listOwnerScreenName + "/lists.json?cursor=" + cursor, auth));
+                listOwnerScreenName + "/lists.json?cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -687,7 +687,7 @@ class TwitterImpl extends TwitterBaseImpl
     public UserList showUserList(String listOwnerScreenName, int id) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.get(conf.getRestBaseURL() + listOwnerScreenName + "/lists/"
-                + id + ".json", auth));
+                + id + ".json", auth), conf);
     }
 
     /**
@@ -696,7 +696,7 @@ class TwitterImpl extends TwitterBaseImpl
     public UserList destroyUserList(int listId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.delete(conf.getRestBaseURL() + getScreenName() +
-                "/lists/" + listId + ".json", auth));
+                "/lists/" + listId + ".json", auth), conf);
     }
 
     /**
@@ -705,7 +705,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<Status> getUserListStatuses(String listOwnerScreenName, int id, Paging paging) throws TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + listOwnerScreenName +
                 "/lists/" + id + "/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
-                , INCLUDE_ENTITIES), auth));
+                , INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -714,7 +714,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<Status> getUserListStatuses(long listOwnerId, int id, Paging paging) throws TwitterException {
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + listOwnerId +
                 "/lists/" + id + "/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
-                , INCLUDE_ENTITIES), auth));
+                , INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -723,7 +723,7 @@ class TwitterImpl extends TwitterBaseImpl
     public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserListJSONImpl.createPagableUserListList(http.get(conf.getRestBaseURL() +
-                listMemberScreenName + "/lists/memberships.json?cursor=" + cursor, auth));
+                listMemberScreenName + "/lists/memberships.json?cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -732,7 +732,7 @@ class TwitterImpl extends TwitterBaseImpl
     public PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserListJSONImpl.createPagableUserListList(http.get(conf.getRestBaseURL() +
-                listOwnerScreenName + "/lists/subscriptions.json?cursor=" + cursor, auth));
+                listOwnerScreenName + "/lists/subscriptions.json?cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -741,7 +741,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<UserList> getAllUserLists(String screenName)
             throws TwitterException {
         return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL()
-                + "lists/all.json?screen_name=" + screenName, auth));
+                + "lists/all.json?screen_name=" + screenName, auth), conf);
     }
 
     /**
@@ -750,7 +750,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<UserList> getAllUserLists(long userId)
             throws TwitterException {
         return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL()
-                + "lists/all.json?user_id=" + userId, auth));
+                + "lists/all.json?user_id=" + userId, auth), conf);
     }
 
     /*List Members Methods*/
@@ -763,7 +763,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL() +
                 listOwnerScreenName + "/" + listId + "/members.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth));
+                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -774,7 +774,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL() +
                 listOwnerId + "/" + listId + "/members.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth));
+                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -783,7 +783,7 @@ class TwitterImpl extends TwitterBaseImpl
     public UserList addUserListMember(int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members.json?id=" + userId, auth));
+                "/" + listId + "/members.json?id=" + userId, auth), conf);
     }
 
     /**
@@ -792,7 +792,7 @@ class TwitterImpl extends TwitterBaseImpl
     public UserList addUserListMembers(int listId, long[] userIds) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members/create_all.json?user_id=" + T4JInternalStringUtil.join(userIds), auth));
+                "/" + listId + "/members/create_all.json?user_id=" + T4JInternalStringUtil.join(userIds), auth), conf);
     }
 
     /**
@@ -801,7 +801,7 @@ class TwitterImpl extends TwitterBaseImpl
     public UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members/create_all.json?screen_name=" + T4JInternalStringUtil.join(screenNames), auth));
+                "/" + listId + "/members/create_all.json?screen_name=" + T4JInternalStringUtil.join(screenNames), auth), conf);
     }
 
     /**
@@ -810,7 +810,7 @@ class TwitterImpl extends TwitterBaseImpl
     public UserList deleteUserListMember(int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.delete(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members.json?id=" + userId, auth));
+                "/" + listId + "/members.json?id=" + userId, auth), conf);
     }
 
     /**
@@ -820,7 +820,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.get(conf.getRestBaseURL() + listOwnerScreenName + "/" + listId
                 + "/members/" + userId + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /*List Subscribers Methods*/
@@ -833,7 +833,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return UserJSONImpl.createPagableUserList(http.get(conf.getRestBaseURL() +
                 listOwnerScreenName + "/" + listId + "/subscribers.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth));
+                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -842,7 +842,7 @@ class TwitterImpl extends TwitterBaseImpl
     public UserList subscribeUserList(String listOwnerScreenName, int listId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.post(conf.getRestBaseURL() + listOwnerScreenName +
-                "/" + listId + "/subscribers.json", auth));
+                "/" + listId + "/subscribers.json", auth), conf);
     }
 
     /**
@@ -851,7 +851,7 @@ class TwitterImpl extends TwitterBaseImpl
     public UserList unsubscribeUserList(String listOwnerScreenName, int listId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserListJSONImpl(http.delete(conf.getRestBaseURL() + listOwnerScreenName +
-                "/" + listId + "/subscribers.json?id=" + getId(), auth));
+                "/" + listId + "/subscribers.json?id=" + getId(), auth), conf);
     }
 
     /**
@@ -861,7 +861,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.get(conf.getRestBaseURL() + listOwnerScreenName + "/" + listId
                 + "/subscribers/" + userId + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /*Direct Message Methods */
@@ -873,7 +873,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return DirectMessageJSONImpl.createDirectMessageList(http.get(conf.getRestBaseURL()
                 + "direct_messages.json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -883,7 +883,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return DirectMessageJSONImpl.createDirectMessageList(http.get(conf.getRestBaseURL()
                 + "direct_messages.json", mergeParameters(paging.asPostParameterArray()
-                , INCLUDE_ENTITIES), auth));
+                , INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -894,7 +894,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return DirectMessageJSONImpl.createDirectMessageList(http.get(conf.getRestBaseURL() +
                 "direct_messages/sent.json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -905,7 +905,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return DirectMessageJSONImpl.createDirectMessageList(http.get(conf.getRestBaseURL() +
                 "direct_messages/sent.json", mergeParameters(paging.asPostParameterArray()
-                , INCLUDE_ENTITIES), auth));
+                , INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -916,7 +916,7 @@ class TwitterImpl extends TwitterBaseImpl
         return new DirectMessageJSONImpl(http.post(conf.getRestBaseURL() + "direct_messages/new.json",
                 new HttpParameter[]{new HttpParameter("screen_name", screenName)
                         , new HttpParameter("text", text)
-                        , INCLUDE_ENTITIES}, auth));
+                        , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -928,7 +928,7 @@ class TwitterImpl extends TwitterBaseImpl
         return new DirectMessageJSONImpl(http.post(conf.getRestBaseURL() + "direct_messages/new.json",
                 new HttpParameter[]{new HttpParameter("user_id", userId),
                         new HttpParameter("text", text)
-                        , INCLUDE_ENTITIES}, auth));
+                        , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -939,7 +939,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new DirectMessageJSONImpl(http.post(conf.getRestBaseURL() +
                 "direct_messages/destroy/" + id + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -949,7 +949,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new DirectMessageJSONImpl(http.get(conf.getRestBaseURL()
                 + "direct_messages/show/" + id + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -958,7 +958,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User createFriendship(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/create.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth), conf);
     }
 
     /**
@@ -967,7 +967,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User createFriendship(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/create.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth), conf);
     }
 
     /**
@@ -976,7 +976,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User createFriendship(String screenName, boolean follow) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/create.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName + "&follow=" + follow, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName + "&follow=" + follow, auth), conf);
     }
 
     /**
@@ -985,7 +985,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User createFriendship(long userId, boolean follow) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/create.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId + "&follow=" + follow, auth));
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId + "&follow=" + follow, auth), conf);
     }
 
     /**
@@ -994,7 +994,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User destroyFriendship(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/destroy.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth), conf);
     }
 
     /**
@@ -1003,7 +1003,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User destroyFriendship(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "friendships/destroy.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth), conf);
     }
 
     /**
@@ -1021,7 +1021,7 @@ class TwitterImpl extends TwitterBaseImpl
     public Relationship showFriendship(String sourceScreenName, String targetScreenName) throws TwitterException {
         return new RelationshipJSONImpl(http.get(conf.getRestBaseURL() + "friendships/show.json",
                 getParameterArray("source_screen_name", sourceScreenName,
-                        "target_screen_name", targetScreenName), auth));
+                        "target_screen_name", targetScreenName), auth), conf);
     }
 
     /**
@@ -1031,7 +1031,7 @@ class TwitterImpl extends TwitterBaseImpl
         return new RelationshipJSONImpl(http.get(conf.getRestBaseURL() + "friendships/show.json",
                 new HttpParameter[]{
                         new HttpParameter("source_id", sourceId),
-                        new HttpParameter("target_id", targetId)}, auth));
+                        new HttpParameter("target_id", targetId)}, auth), conf);
     }
 
     /**
@@ -1039,7 +1039,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public IDs getIncomingFriendships(long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friendships/incoming.json?cursor=" + cursor, auth));
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friendships/incoming.json?cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -1047,7 +1047,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public IDs getOutgoingFriendships(long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor, auth));
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -1055,7 +1055,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public ResponseList<Friendship> lookupFriendships(String[] screenNames) throws TwitterException {
         ensureAuthorizationEnabled();
-        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?screen_name=" + T4JInternalStringUtil.join(screenNames), auth));
+        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?screen_name=" + T4JInternalStringUtil.join(screenNames), auth), conf);
     }
 
     /**
@@ -1063,7 +1063,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public ResponseList<Friendship> lookupFriendships(long[] ids) throws TwitterException {
         ensureAuthorizationEnabled();
-        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?user_id=" + T4JInternalStringUtil.join(ids), auth));
+        return FriendshipJSONImpl.createFriendshipList(http.get(conf.getRestBaseURL() + "friendships/lookup.json?user_id=" + T4JInternalStringUtil.join(ids), auth), conf);
     }
 
     /**
@@ -1077,7 +1077,7 @@ class TwitterImpl extends TwitterBaseImpl
                         new HttpParameter("screen_name", screenName),
                         new HttpParameter("device", enableDeviceNotification),
                         new HttpParameter("retweets", enableDeviceNotification)
-                }, auth));
+                }, auth), conf);
     }
 
     /**
@@ -1091,7 +1091,7 @@ class TwitterImpl extends TwitterBaseImpl
                         new HttpParameter("user_id", userId),
                         new HttpParameter("device", enableDeviceNotification),
                         new HttpParameter("retweets", enableDeviceNotification)
-                }, auth));
+                }, auth), conf);
     }
 
     /* Social Graph Methods */
@@ -1100,7 +1100,7 @@ class TwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public IDs getFriendsIDs(long cursor) throws TwitterException {
-        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friends/ids.json?cursor=" + cursor, auth));
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friends/ids.json?cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -1108,7 +1108,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public IDs getFriendsIDs(long userId, long cursor) throws TwitterException {
         return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friends/ids.json?user_id=" + userId +
-                "&cursor=" + cursor, auth));
+                "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -1116,7 +1116,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public IDs getFriendsIDs(String screenName, long cursor) throws TwitterException {
         return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "friends/ids.json?screen_name=" + screenName
-                + "&cursor=" + cursor, auth));
+                + "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -1124,7 +1124,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public IDs getFollowersIDs(long cursor) throws TwitterException {
         return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "followers/ids.json?cursor=" + cursor
-                , auth));
+                , auth), conf);
     }
 
     /**
@@ -1132,7 +1132,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public IDs getFollowersIDs(long userId, long cursor) throws TwitterException {
         return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "followers/ids.json?user_id=" + userId
-                + "&cursor=" + cursor, auth));
+                + "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -1140,7 +1140,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public IDs getFollowersIDs(String screenName, long cursor) throws TwitterException {
         return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "followers/ids.json?screen_name="
-                + screenName + "&cursor=" + cursor, auth));
+                + screenName + "&cursor=" + cursor, auth), conf);
     }
 
     /**
@@ -1154,7 +1154,7 @@ class TwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public RateLimitStatus getRateLimitStatus() throws TwitterException {
-        return new RateLimitStatusJSONImpl(http.get(conf.getRestBaseURL() + "account/rate_limit_status.json", auth));
+        return new RateLimitStatusJSONImpl(http.get(conf.getRestBaseURL() + "account/rate_limit_status.json", auth), conf);
     }
 
     /**
@@ -1170,7 +1170,7 @@ class TwitterImpl extends TwitterBaseImpl
         addParameterToList(profile, "description", description);
         profile.add(INCLUDE_ENTITIES);
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "account/update_profile.json"
-                , profile.toArray(new HttpParameter[profile.size()]), auth));
+                , profile.toArray(new HttpParameter[profile.size()]), auth), conf);
     }
 
     /**
@@ -1178,7 +1178,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public AccountTotals getAccountTotals() throws TwitterException {
         ensureAuthorizationEnabled();
-        return new AccountTotalsJSONImpl(http.get(conf.getRestBaseURL() + "account/totals.json", auth));
+        return new AccountTotalsJSONImpl(http.get(conf.getRestBaseURL() + "account/totals.json", auth), conf);
     }
 
     /**
@@ -1186,7 +1186,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public AccountSettings getAccountSettings() throws TwitterException {
         ensureAuthorizationEnabled();
-        return new AccountSettingsJSONImpl(http.get(conf.getRestBaseURL() + "account/settings.json", auth));
+        return new AccountSettingsJSONImpl(http.get(conf.getRestBaseURL() + "account/settings.json", auth), conf);
     }
 
     /**
@@ -1214,7 +1214,7 @@ class TwitterImpl extends TwitterBaseImpl
         colors.add(INCLUDE_ENTITIES);
         return new UserJSONImpl(http.post(conf.getRestBaseURL() +
                 "account/update_profile_colors.json",
-                colors.toArray(new HttpParameter[colors.size()]), auth));
+                colors.toArray(new HttpParameter[colors.size()]), auth), conf);
     }
 
     private void addParameterToList(List<HttpParameter> colors,
@@ -1233,7 +1233,7 @@ class TwitterImpl extends TwitterBaseImpl
         return new UserJSONImpl(http.post(conf.getRestBaseURL()
                 + "account/update_profile_image.json"
                 , new HttpParameter[]{new HttpParameter("image", image)
-                        , INCLUDE_ENTITIES}, auth));
+                        , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -1244,7 +1244,7 @@ class TwitterImpl extends TwitterBaseImpl
         return new UserJSONImpl(http.post(conf.getRestBaseURL()
                 + "account/update_profile_image.json"
                 , new HttpParameter[]{new HttpParameter("image", "image", image)
-                        , INCLUDE_ENTITIES}, auth));
+                        , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -1258,7 +1258,7 @@ class TwitterImpl extends TwitterBaseImpl
                 + "account/update_profile_background_image.json",
                 new HttpParameter[]{new HttpParameter("image", image)
                         , new HttpParameter("tile", tile)
-                        , INCLUDE_ENTITIES}, auth));
+                        , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -1271,7 +1271,7 @@ class TwitterImpl extends TwitterBaseImpl
                 + "account/update_profile_background_image.json",
                 new HttpParameter[]{new HttpParameter("image", "image", image)
                         , new HttpParameter("tile", tile)
-                        , INCLUDE_ENTITIES}, auth));
+                        , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -1299,7 +1299,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "favorites.json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -1309,7 +1309,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + "favorites.json"
                 , new HttpParameter[]{new HttpParameter("page", page)
-                        , INCLUDE_ENTITIES}, auth));
+                        , INCLUDE_ENTITIES}, auth), conf);
     }
 
     /**
@@ -1319,7 +1319,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
                 + "favorites/" + id + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -1329,7 +1329,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + "favorites/" + id + ".json",
                 mergeParameters(getParameterArray("page", page)
-                        , INCLUDE_ENTITIES), auth));
+                        , INCLUDE_ENTITIES), auth), conf);
     }
 
     /**
@@ -1338,7 +1338,7 @@ class TwitterImpl extends TwitterBaseImpl
     public Status createFavorite(long id) throws TwitterException {
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL() + "favorites/create/" + id + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -1347,7 +1347,7 @@ class TwitterImpl extends TwitterBaseImpl
     public Status destroyFavorite(long id) throws TwitterException {
         ensureAuthorizationEnabled();
         return new StatusJSONImpl(http.post(conf.getRestBaseURL() + "favorites/destroy/" + id + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -1356,7 +1356,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User enableNotification(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "notifications/follow.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth), conf);
     }
 
     /**
@@ -1365,7 +1365,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User enableNotification(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "notifications/follow.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&userId=" + userId, auth));
+                + conf.isIncludeEntitiesEnabled() + "&userId=" + userId, auth), conf);
     }
 
     /**
@@ -1374,7 +1374,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User disableNotification(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "notifications/leave.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth), conf);
     }
 
     /**
@@ -1383,7 +1383,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User disableNotification(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "notifications/leave.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth), conf);
     }
 
     /* Block Methods */
@@ -1394,7 +1394,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User createBlock(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "blocks/create.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth), conf);
     }
 
     /**
@@ -1403,7 +1403,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User createBlock(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "blocks/create.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth), conf);
     }
 
     /**
@@ -1412,7 +1412,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User destroyBlock(String screen_name) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "blocks/destroy.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screen_name, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screen_name, auth), conf);
     }
 
     /**
@@ -1421,7 +1421,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User destroyBlock(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "blocks/destroy.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth), conf);
     }
 
     /**
@@ -1464,7 +1464,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
                 "blocks/blocking.json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth));
+                + conf.isIncludeEntitiesEnabled(), auth), conf);
     }
 
     /**
@@ -1475,7 +1475,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return UserJSONImpl.createUserList(http.get(conf.getRestBaseURL() +
                 "blocks/blocking.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&page=" + page, auth));
+                + conf.isIncludeEntitiesEnabled() + "&page=" + page, auth), conf);
     }
 
     /**
@@ -1483,7 +1483,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public IDs getBlockingUsersIDs() throws TwitterException {
         ensureAuthorizationEnabled();
-        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "blocks/blocking/ids.json", auth));
+        return new IDsJSONImpl(http.get(conf.getRestBaseURL() + "blocks/blocking/ids.json", auth), conf);
     }
 
     /* Spam Reporting Methods */
@@ -1494,7 +1494,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User reportSpam(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "report_spam.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth));
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId, auth), conf);
     }
 
     /**
@@ -1503,7 +1503,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User reportSpam(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(http.post(conf.getRestBaseURL() + "report_spam.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth));
+                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName, auth), conf);
     }
 
     /* Saved Searches Methods */
@@ -1513,7 +1513,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public List<SavedSearch> getSavedSearches() throws TwitterException {
         ensureAuthorizationEnabled();
-        return SavedSearchJSONImpl.createSavedSearchList(http.get(conf.getRestBaseURL() + "saved_searches.json", auth));
+        return SavedSearchJSONImpl.createSavedSearchList(http.get(conf.getRestBaseURL() + "saved_searches.json", auth), conf);
     }
 
     /**
@@ -1522,7 +1522,7 @@ class TwitterImpl extends TwitterBaseImpl
     public SavedSearch showSavedSearch(int id) throws TwitterException {
         ensureAuthorizationEnabled();
         return new SavedSearchJSONImpl(http.get(conf.getRestBaseURL() + "saved_searches/show/" + id
-                + ".json", auth));
+                + ".json", auth), conf);
     }
 
     /**
@@ -1531,7 +1531,7 @@ class TwitterImpl extends TwitterBaseImpl
     public SavedSearch createSavedSearch(String query) throws TwitterException {
         ensureAuthorizationEnabled();
         return new SavedSearchJSONImpl(http.post(conf.getRestBaseURL() + "saved_searches/create.json"
-                , new HttpParameter[]{new HttpParameter("query", query)}, auth));
+                , new HttpParameter[]{new HttpParameter("query", query)}, auth), conf);
     }
 
     /**
@@ -1540,7 +1540,7 @@ class TwitterImpl extends TwitterBaseImpl
     public SavedSearch destroySavedSearch(int id) throws TwitterException {
         ensureAuthorizationEnabled();
         return new SavedSearchJSONImpl(http.post(conf.getRestBaseURL()
-                + "saved_searches/destroy/" + id + ".json", auth));
+                + "saved_searches/destroy/" + id + ".json", auth), conf);
     }
     /* Local Trends Methods */
 
@@ -1549,7 +1549,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public ResponseList<Location> getAvailableTrends() throws TwitterException {
         return LocationJSONImpl.createLocationList(http.get(conf.getRestBaseURL()
-                + "trends/available.json", auth));
+                + "trends/available.json", auth), conf);
     }
 
     /**
@@ -1560,7 +1560,7 @@ class TwitterImpl extends TwitterBaseImpl
                 + "trends/available.json",
                 new HttpParameter[]{new HttpParameter("lat", location.getLatitude())
                         , new HttpParameter("long", location.getLongitude())
-                }, auth));
+                }, auth), conf);
     }
 
     /**
@@ -1568,7 +1568,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public Trends getLocationTrends(int woeid) throws TwitterException {
         return new TrendsJSONImpl(http.get(conf.getRestBaseURL()
-                + "trends/" + woeid + ".json", auth));
+                + "trends/" + woeid + ".json", auth), conf);
     }
 
     /* Geo Methods */
@@ -1579,7 +1579,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<Place> searchPlaces(GeoQuery query) throws TwitterException {
         try {
             return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
-                    + "geo/search.json", query.asHttpParameterArray(), auth));
+                    + "geo/search.json", query.asHttpParameterArray(), auth), conf);
         } catch (TwitterException te) {
             if (te.getStatusCode() == 404) {
                 return new ResponseListImpl<Place>(0, null);
@@ -1604,7 +1604,7 @@ class TwitterImpl extends TwitterBaseImpl
             params.add(new HttpParameter("attribute:street_address", streetAddress));
         }
         return SimilarPlacesImpl.createSimilarPlaces(http.get(conf.getRestBaseURL()
-                + "geo/similar_places.json", params.toArray(new HttpParameter[params.size()]), auth));
+                + "geo/similar_places.json", params.toArray(new HttpParameter[params.size()]), auth), conf);
     }
 
     /**
@@ -1613,7 +1613,7 @@ class TwitterImpl extends TwitterBaseImpl
     public ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException {
         try {
             return PlaceJSONImpl.createPlaceList(http.get(conf.getRestBaseURL()
-                    + "geo/reverse_geocode.json", query.asHttpParameterArray(), auth));
+                    + "geo/reverse_geocode.json", query.asHttpParameterArray(), auth), conf);
         } catch (TwitterException te) {
             if (te.getStatusCode() == 404) {
                 return new ResponseListImpl<Place>(0, null);
@@ -1628,7 +1628,7 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public Place getGeoDetails(String id) throws TwitterException {
         return new PlaceJSONImpl(http.get(conf.getRestBaseURL() + "geo/id/" + id
-                + ".json", auth));
+                + ".json", auth), conf);
     }
 
     /**
@@ -1646,7 +1646,7 @@ class TwitterImpl extends TwitterBaseImpl
             params.add(new HttpParameter("attribute:street_address", streetAddress));
         }
         return new PlaceJSONImpl(http.post(conf.getRestBaseURL() + "geo/place.json"
-                , params.toArray(new HttpParameter[params.size()]), auth));
+                , params.toArray(new HttpParameter[params.size()]), auth), conf);
     }
 
     /* Legal Resources */
@@ -1681,7 +1681,7 @@ class TwitterImpl extends TwitterBaseImpl
     public RelatedResults getRelatedResults(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new RelatedResultsJSONImpl(http.get(conf.getRestBaseURL() + "related_results/show/"
-                + Long.toString(statusId) + ".json", auth));
+                + Long.toString(statusId) + ".json", auth), conf);
     }
 
     /* Help Methods */

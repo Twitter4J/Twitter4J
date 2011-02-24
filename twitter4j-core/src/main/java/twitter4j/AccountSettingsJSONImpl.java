@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
@@ -58,10 +59,12 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
         }
     }
 
-    /*package*/ AccountSettingsJSONImpl(HttpResponse res) throws TwitterException {
+    /*package*/ AccountSettingsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
-        DataObjectFactoryUtil.clearThreadLocalMap();
-        DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+            DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+        }
     }
 
     /*package*/ AccountSettingsJSONImpl(JSONObject json) throws TwitterException {

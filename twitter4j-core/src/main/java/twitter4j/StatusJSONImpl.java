@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.logging.Logger;
@@ -62,12 +63,14 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
 
-    /*package*/StatusJSONImpl(HttpResponse res) throws TwitterException {
+    /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
         init(json);
-        DataObjectFactoryUtil.clearThreadLocalMap();
-        DataObjectFactoryUtil.registerJSONObject(this, json);
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.clearThreadLocalMap();
+            DataObjectFactoryUtil.registerJSONObject(this, json);
+        }
     }
 
     /*package*/ StatusJSONImpl(JSONObject json) throws TwitterException {
@@ -325,19 +328,25 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     }
 
     /*package*/
-    static ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
+    static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.clearThreadLocalMap();
+            }
             JSONArray list = res.asJSONArray();
             int size = list.length();
             ResponseList<Status> statuses = new ResponseListImpl<Status>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Status status = new StatusJSONImpl(json);
-                DataObjectFactoryUtil.registerJSONObject(status, json);
+                if (conf.isJSONStoreEnabled()) {
+                    DataObjectFactoryUtil.registerJSONObject(status, json);
+                }
                 statuses.add(status);
             }
-            DataObjectFactoryUtil.registerJSONObject(statuses, list);
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.registerJSONObject(statuses, list);
+            }
             return statuses;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
