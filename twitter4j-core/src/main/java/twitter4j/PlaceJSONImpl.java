@@ -75,7 +75,11 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
             countryCode = getRawString("country_code", json);
             id = getRawString("id", json);
             country = getRawString("country", json);
-            placeType = getRawString("place_type", json);
+            if (!json.isNull("place_type")) {
+                placeType = getRawString("place_type", json);
+            } else {
+                placeType = getRawString("type", json);
+            }
             url = getRawString("url", json);
             fullName = getRawString("full_name", json);
             if (!json.isNull("bounding_box")) {

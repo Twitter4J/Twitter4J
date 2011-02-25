@@ -45,6 +45,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private String profileImageUrl;
     private Date createdAt;
     private String location;
+    private Place place;
 
     private GeoLocation geoLocation = null;
     private Annotations annotations = null;
@@ -68,6 +69,15 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 annotations = new Annotations(annotationsArray);
             } catch (JSONException ignore) {
             }
+        }
+        if (!tweet.isNull("place")) {
+            try {
+                place = new PlaceJSONImpl(tweet.getJSONObject("place"));
+            } catch (JSONException jsone) {
+                throw new TwitterException(jsone);
+            }
+        } else {
+            place = null;
         }
     }
 
@@ -168,6 +178,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    public Place getPlace() {
+        return place;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Annotations getAnnotations() {
         return annotations;
     }
@@ -197,6 +214,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         result = 31 * result + (profileImageUrl != null ? profileImageUrl.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (location != null ? location.hashCode() : 0);
+        result = 31 * result + (place != null ? place.hashCode() : 0);
         result = 31 * result + (geoLocation != null ? geoLocation.hashCode() : 0);
         result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
         return result;
@@ -215,6 +233,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 ", source='" + source + '\'' +
                 ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", createdAt=" + createdAt +
+                ", location='" + location + '\'' +
+                ", place=" + place +
                 ", geoLocation=" + geoLocation +
                 ", annotations=" + annotations +
                 '}';

@@ -114,6 +114,13 @@ public interface Tweet extends Comparable<Tweet>, java.io.Serializable {
     String getLocation();
 
     /**
+     * Returns the place associated with the post.
+     *
+     * @return The place associated with the post
+     */
+    Place getPlace();
+
+    /**
      * Returns the annotations of the tweet.
      * At the moment this code is written (2010-08-18), Twitter Search API does
      * not support annotations yet (so even annotated tweets are returned without the annotations).
