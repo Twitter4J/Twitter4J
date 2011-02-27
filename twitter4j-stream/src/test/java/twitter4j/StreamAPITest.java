@@ -17,6 +17,7 @@
 package twitter4j;
 
 import twitter4j.auth.AccessToken;
+import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 
@@ -39,7 +40,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     protected void setUp() throws Exception {
         super.setUp();
-        twitterStream = new TwitterStreamFactory().getInstance();
+        twitterStream = new TwitterStreamFactory(new ConfigurationBuilder().setJSONStoreEnabled(true).build()).getInstance();
         twitterStream.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         twitterStream.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
         twitterStream.addListener(this);
@@ -249,6 +250,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         this.status = status;
         String json = DataObjectFactory.getRawJSON(status);
         try {
+            assertNotNull(json);
             Status statusFromJSON = DataObjectFactory.createStatus(json);
             assertEquals(status, statusFromJSON);
         } catch (TwitterException e) {
