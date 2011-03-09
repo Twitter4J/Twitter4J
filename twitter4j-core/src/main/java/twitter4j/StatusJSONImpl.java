@@ -59,7 +59,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
     private String inReplyToScreenName;
     private GeoLocation geoLocation = null;
     private Place place = null;
-    private long retweetCount;
+    private String retweetCount;
     private boolean wasRetweetedByMe;
 
     private String[] contributors;
@@ -94,7 +94,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
         inReplyToUserId = getInt("in_reply_to_user_id", json);
         isFavorited = getBoolean("favorited", json);
         inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
-        retweetCount = getLong("retweet_count", json);
+        retweetCount = getUnescapedString("retweet_count", json);
         wasRetweetedByMe = getBoolean("retweeted", json);
         try {
             if (!json.isNull("user")) {
@@ -302,7 +302,7 @@ import static twitter4j.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public long getRetweetCount() {
+    public String getRetweetCount() {
         return retweetCount;
     }
 

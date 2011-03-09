@@ -152,7 +152,7 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      *
      * @return the retweet count.
      */
-    long getRetweetCount();
+    String getRetweetCount();
 
     /**
      * Returns true if the authenticating user has retweeted this tweet, or false when the tweet was
