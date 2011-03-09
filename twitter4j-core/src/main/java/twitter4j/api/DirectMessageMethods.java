@@ -121,6 +121,6 @@ public interface DirectMessageMethods {
      * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy">POST direct_messages/destroy | dev.twitter.com</a>
 	 * @since Twitter4J 2.0.1
 	 */
-	DirectMessage destroyDirectMessage(int id)
+	DirectMessage destroyDirectMessage(long id)
 			throws TwitterException;
 }
