@@ -86,6 +86,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "http://api.twitter.com/oauth/authenticate";
 
     private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1/";
+	private static final String DEFAULT_SEARCH_BASE_URL = "http://search.twitter.com/";
 
     private boolean IS_DALVIK;
     private static final long serialVersionUID = -6610497517837844232L;
@@ -125,7 +126,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setRestBaseURL(DEFAULT_REST_BASE_URL);
         // search api tends to fail with SSL as of 12/31/2009
         // setSearchBaseURL(fixURL(useSSL, "http://search.twitter.com/"));
-        setSearchBaseURL("http://search.twitter.com/");
+		setSearchBaseURL(DEFAULT_SEARCH_BASE_URL);
         // streaming api doesn't support SSL as of 12/30/2009
         // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
         setStreamBaseURL("http://stream.twitter.com/1/");
@@ -395,6 +396,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         }
         if (DEFAULT_OAUTH_REQUEST_TOKEN_URL.equals(fixURL(false, oAuthRequestTokenURL))) {
             this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
+		}
+		if (DEFAULT_SEARCH_BASE_URL.equals(fixURL(false, searchBaseURL))) {
+			this.searchBaseURL = fixURL(useSSL, searchBaseURL);
         }
     }
 
