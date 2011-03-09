@@ -91,6 +91,28 @@ public abstract class ImageUpload {
     }
 
     /**
+     * Returns an image uploader to Twitpic. Handles both BasicAuth and OAuth.
+     * Note: When using OAuth, the Twitpic API Key needs to be specified, either with the field ImageUpload.DEFAULT_TWITPIC_API_KEY,
+     * or using the getTwitpicUploader (String twitpicAPIKey, OAuthAuthorization auth) method
+     */
+    public static ImageUpload getPosterousUploader(Twitter twitter) throws TwitterException {
+        Authorization auth = twitter.getAuthorization();
+        //ensureBasicEnabled(auth);
+        return new PosterousOAuthUploader((OAuthAuthorization) auth);
+    }
+
+    /**
+     * Returns an image uploader to Twitpic. Handles both BasicAuth and OAuth.
+     * Note: When using OAuth, the Twitpic API Key needs to be specified, either with the field ImageUpload.DEFAULT_TWITPIC_API_KEY,
+     * or using the getTwitpicUploader (String twitpicAPIKey, OAuthAuthorization auth) method
+     */
+    public static ImageUpload getPosterousUploader(Twitter twitter, String appname, String app_url) throws TwitterException {
+        Authorization auth = twitter.getAuthorization();
+        //ensureBasicEnabled(auth);
+        return new PosterousOAuthUploader((OAuthAuthorization) auth, appname, app_url);
+    }
+
+    /**
      * Returns an OAuth image uploader to TweetPhoto
      */
     public static ImageUpload getTweetPhotoUploader(String tweetPhotoAPIKey, OAuthAuthorization auth) {
@@ -473,6 +495,102 @@ public abstract class ImageUpload {
             }
 
             throw new TwitterException("Unknown Twitpic response", httpResponse);
+        }
+    }
+
+    // Described at http://posterous.com/api/twitter
+    private static class PosterousOAuthUploader extends ImageUpload {
+        private OAuthAuthorization auth;
+        //private String app = "twitter4j";
+        //private String app_url = "http://twitter4j.org/";
+
+        // uses the secure upload URL, not the one specified in the Twitpic FAQ
+        private static final String POSTEROUS_UPLOAD_URL = "https://posterous.com/api2/upload.json";
+        private static final String TWITTER_VERIFY_CREDENTIALS = "https://api.twitter.com/1/account/verify_credentials.json";
+
+        public PosterousOAuthUploader(OAuthAuthorization auth) {
+            this.auth = auth;
+        }
+
+        public PosterousOAuthUploader(OAuthAuthorization auth, String app, String app_url) {
+            this.auth = auth;
+            //this.app = app;
+            //this.app_url = app_url;
+        }
+
+        @Override
+        public String upload(File image) throws TwitterException {
+            return upload(new HttpParameter[]{
+                    new HttpParameter("media", image),
+            });
+        }
+
+        @Override
+        public String upload(File image, String message) throws TwitterException {
+            return upload(new HttpParameter[]{
+                    new HttpParameter("media", image),
+                    new HttpParameter("message", message),
+            });
+        }
+
+        @Override
+        public String upload(String imageFileName, InputStream imageBody) throws TwitterException {
+            return upload(new HttpParameter[]{
+                    new HttpParameter("media", imageFileName, imageBody),
+            });
+        }
+
+        @Override
+        public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException {
+            return upload(new HttpParameter[]{
+                    new HttpParameter("media", imageFileName, imageBody),
+                    new HttpParameter("message", message),
+            });
+        }
+
+        private String upload(HttpParameter[] additionalParams) throws TwitterException {
+            // step 1 - generate HTTP request headers
+            String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader();
+
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS);
+            headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
+
+            // step 2 - generate HTTP parameters
+            /* broken with their server when we add the "source" app
+             * HttpParameter[] params = {
+                    new HttpParameter("source", app),
+                    new HttpParameter("sourceLink", app_url)
+            };
+            params = appendHttpParameters(params, additionalParams);*/
+            //HttpParameter[] params = additionalParams;
+
+            // step 3 - upload the file
+            HttpClientWrapper client = new HttpClientWrapper();
+            HttpResponse httpResponse = client.post(POSTEROUS_UPLOAD_URL, additionalParams, headers);
+
+            // step 4 - check the response
+            int statusCode = httpResponse.getStatusCode();
+            if (statusCode != 200)
+                throw new TwitterException("Posterous image upload returned invalid status code", httpResponse);
+
+            String response = httpResponse.asString();
+
+            try {
+                JSONObject json = new JSONObject(response);
+                if (!json.isNull("url"))
+                    return json.getString("url");
+            }
+            catch (JSONException e) {
+                throw new TwitterException("Invalid Posterous response: " + response, e);
+            }
+
+            throw new TwitterException("Unknown Posterous response", httpResponse);
+        }
+
+        private String generateVerifyCredentialsAuthorizationHeader() {
+            List<HttpParameter> oauthSignatureParams = auth.generateOAuthSignatureHttpParams("GET", TWITTER_VERIFY_CREDENTIALS);
+            return "OAuth realm=\"http://api.twitter.com/\"," + OAuthAuthorization.encodeParameters(oauthSignatureParams, ",", true);
         }
     }
 
