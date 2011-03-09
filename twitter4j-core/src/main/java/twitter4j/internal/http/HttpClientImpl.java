@@ -226,6 +226,8 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         HttpResponse res = null;
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
+            if (retriedCount>0)
+            	logger.info("HTTP retry "+retriedCount+" for "+req.getURL());
             try {
                 HttpURLConnection con = null;
                 OutputStream os = null;
@@ -301,12 +303,12 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                         }
                     }
                     if (responseCode < OK || MULTIPLE_CHOICES <= responseCode) {
-                        if (responseCode == ENHANCE_YOUR_CLAIM ||
+                        if (responseCode!=-1 && (responseCode == ENHANCE_YOUR_CLAIM ||
                                 responseCode == SERVICE_UNAVAILABLE ||
                                 responseCode == BAD_REQUEST ||
                                 responseCode < INTERNAL_SERVER_ERROR ||
-                                retriedCount == retryCount) {
-                            throw new TwitterException(res.asString(), res);
+                                retriedCount == retryCount)) {
+                            throw new TwitterException(res.asString() +" responseCode:"+responseCode+" retriedCount:"+retriedCount+" vs "+retryCount+"\n", res);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR
                     } else {
