@@ -70,14 +70,15 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
 
     static {
         try {
+        	// LevelUp Studio reorder
             String versionStr = System.getProperty("java.specification.version");
-            if (null != versionStr) {
-                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
-            }
             if (ConfigurationContext.getInstance().isDalvik()) {
                 // quick and dirty workaround for TFJ-296
                 // it must be an Android/Dalvik/Harmony side issue!!!!
                 System.setProperty("http.keepAlive", "false");
+            }
+            else if (null != versionStr) {
+                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
             }
         } catch (AccessControlException ace) {
             isJDK14orEarlier = true;
