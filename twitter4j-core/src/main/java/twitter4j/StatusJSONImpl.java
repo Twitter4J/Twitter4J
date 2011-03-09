@@ -357,6 +357,43 @@ import static twitter4j.ParseUtil.getUnescapedString;
     	}
     }
 
+    /*package*/ static ResponseList<Status> createResultStatusList(HttpResponse res) throws TwitterException {
+    	try {
+    		JSONArray results = res.asJSONArray();
+			ResponseList<Status> statuses = new ResponseListImpl<Status>(0, res);
+
+			for (int j=0; j < results.getJSONObjectCount(); ++j) {
+				JSONObject obj1 = results.getJSONObject(j);
+
+				//String kind = obj1.getString("groupName");
+				//if (kind.equalsIgnoreCase("TweetsWithReply")) {
+					JSONArray list = obj1.getJSONArray("results");
+					int size = list.length();
+					for (int i = 0; i < size; i++) {
+						JSONObject json;
+						double score;
+						try {
+							json = list.getJSONObject(i);
+							score = json.getDouble("score");
+							json = json.getJSONObject("value");
+						} catch (JSONException e) {
+							continue;
+						}
+						if (score==1.0 && json!=null)
+							statuses.add(new StatusJSONImpl(json));
+					}
+				//}
+			}
+    		return statuses;
+    	} catch (JSONException jsone) {
+    		throw new TwitterException(jsone);
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
+    }
+
+
+
     @Override
     public int hashCode() {
         return (int) id;

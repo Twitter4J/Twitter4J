@@ -33,6 +33,7 @@ import twitter4j.http.*;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
 
 import static twitter4j.internal.http.HttpParameter.*;
 
@@ -195,6 +196,15 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
             } else {
                 throw te;
             }
+        }
+    }
+
+    public ResponseList<Status> getRelated(long id) throws TwitterException {
+        try {
+            return StatusJSONImpl.createResultStatusList(http.get(conf.getRestBaseURL() + "related_results/show/" + id + ".json",
+                    new HttpParameter[] { new HttpParameter("include_entities", "1")}));
+        } catch (TwitterException te) {
+            throw te;
         }
     }
 
