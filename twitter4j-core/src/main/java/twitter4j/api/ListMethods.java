@@ -124,6 +124,21 @@ public interface ListMethods {
             throws TwitterException;
 
     /**
+     * Show tweet timeline for members of the specified list.
+     * <br>http://api.twitter.com/1/user/lists/list_id/statuses.json
+     *
+     * @param listOwnerScreenName The screen name of the list owner
+     * @param listName            The name of the list to display
+     * @param paging              controls pagination. Supports since_id, max_id, count and page parameters.
+     * @return list of statuses for members of the specified list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/get/:user/lists/:id/statuses">GET :user/lists/:id/statuses | dev.twitter.com</a>
+     * @since Twitter4J 2.1.0
+     */
+    ResponseList<Status> getUserListStatuses(String listOwnerScreenName, String listName, Paging paging)
+            throws TwitterException;
+
+    /**
      * List the lists the specified user has been added to.
      * <br>This method calls http://api.twitter.com/1/:user/lists/memberships.json
      *

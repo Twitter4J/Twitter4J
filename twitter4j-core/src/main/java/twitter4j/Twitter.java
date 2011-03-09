@@ -828,6 +828,14 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Status> getUserListStatuses(String listOwnerScreenName, String listName, Paging paging) throws TwitterException {
+        return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL() + listOwnerScreenName +
+                "/lists/" + listName + "/statuses.json", paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE), auth));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public PagableResponseList<UserList> getUserListMemberships(String listOwnerScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
         return UserListJSONImpl.createUserListList(http.get(conf.getRestBaseURL() +
