@@ -221,8 +221,6 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     boolean isVerified();
 
-    boolean isFollowing();
-
     /**
      * Returns the number of public lists the user is listed on, or -1
      * if the count is unavailable.

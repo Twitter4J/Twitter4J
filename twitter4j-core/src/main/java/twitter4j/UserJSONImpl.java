@@ -72,7 +72,6 @@ import static twitter4j.ParseUtil.*;
     private int statusesCount;
     private boolean isGeoEnabled;
     private boolean isVerified;
-    private boolean isFollowing;
     private int listedCount;
     private boolean isFollowRequestSent;
     private static final long serialVersionUID = -6345893237975349030L;
@@ -391,13 +390,6 @@ import static twitter4j.ParseUtil.*;
      */
     public boolean isVerified() {
         return isVerified;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isFollowing() {
-        return isFollowing;
     }
 
     /**
