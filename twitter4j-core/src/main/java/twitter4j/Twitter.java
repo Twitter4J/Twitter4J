@@ -1564,7 +1564,11 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
         try {
             HttpResponse res = http.get(conf.getRestBaseURL()
                     + "trends/" + woeid + ".json", auth);
-            return TrendsJSONImpl.createTrends(res.asJSONArray().getJSONObject(0), res);
+        	JSONObject json = res.asJSONArray().getJSONObject(0);
+        	if (json!=null)
+        		return TrendsJSONImpl.createTrends(json, res);
+        	else
+        		return null;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }

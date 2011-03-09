@@ -1636,7 +1636,9 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     public void getLocationTrends(final int woeid) {
         getDispatcher().invokeLater(new AsyncTask(LOCATION_TRENDS, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
-                listener.gotLocationTrends(twitter.getLocationTrends(woeid));
+            	Trends trend = twitter.getLocationTrends(woeid);
+            	if (trend!=null)
+            		listener.gotLocationTrends(trend);
             }
         });
     }
@@ -1649,7 +1651,9 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     public void getNearbyPlaces(final GeoQuery query){
         getDispatcher().invokeLater(new AsyncTask(NEAR_BY_PLACES, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
-                listener.gotNearByPlaces(twitter.getNearbyPlaces(query));
+            	ResponseList<Place> places = twitter.getNearbyPlaces(query);
+            	if (places!=null)
+            		listener.gotNearByPlaces(places);
             }
         });
     }
@@ -1660,7 +1664,9 @@ public class AsyncTwitter extends TwitterOAuthSupportBase
     public void reverseGeoCode(final GeoQuery query){
         getDispatcher().invokeLater(new AsyncTask(REVERSE_GEO_CODE, listener) {
             public void invoke(TwitterListener listener) throws TwitterException {
-                listener.gotReverseGeoCode(twitter.reverseGeoCode(query));
+            	ResponseList<Place> places = twitter.reverseGeoCode(query);
+            	if (places!=null)
+            		listener.gotReverseGeoCode(places);
             }
         });
     }

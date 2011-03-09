@@ -121,7 +121,8 @@ import static twitter4j.ParseUtil.*;
             isFollowRequestSent = getBoolean("follow_request_sent", json);
             if (!json.isNull("status")) {
                 JSONObject statusJSON = json.getJSONObject("status");
-                status = new StatusJSONImpl(statusJSON);
+                if (statusJSON!=null)
+                	status = new StatusJSONImpl(statusJSON);
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
@@ -419,7 +420,9 @@ import static twitter4j.ParseUtil.*;
             PagableResponseList<User> users =
                     new PagableResponseListImpl<User>(size, json, res);
             for (int i = 0; i < size; i++) {
-                users.add(new UserJSONImpl(list.getJSONObject(i)));
+            	JSONObject jsono = list.getJSONObject(i);
+            	if (jsono!=null)
+            		users.add(new UserJSONImpl(jsono));
             }
             return users;
         } catch (JSONException jsone) {
@@ -433,19 +436,24 @@ import static twitter4j.ParseUtil.*;
     }
 
     /*package*/ static ResponseList<User> createUserList(JSONArray list, HttpResponse res) throws TwitterException {
-        try {
-            int size = list.length();
-            ResponseList<User> users =
-                    new ResponseListImpl<User>(size, res);
-            for (int i = 0; i < size; i++) {
-                users.add(new UserJSONImpl(list.getJSONObject(i)));
-            }
-            return users;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
-        }
+    	try {
+    		int size = list.length();
+    		ResponseList<User> users =
+    			new ResponseListImpl<User>(list.getJSONObjectCount(), res);
+    		for (int i = 0; i < size; i++) {
+    			JSONObject json;
+    			try {
+    				json = list.getJSONObject(i);
+    			} catch (JSONException jsone) {
+    				continue;
+    			}
+    			if (json!=null)
+    				users.add(new UserJSONImpl(json));
+    		}
+    		return users;
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
     }
 
     @Override

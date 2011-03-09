@@ -75,7 +75,9 @@ import java.net.URISyntaxException;
             mode = "public".equals(getRawString("mode", json));
         try {
             if (!json.isNull("user")) {
-                user = new UserJSONImpl(json.getJSONObject("user"));
+            	JSONObject u = json.getJSONObject("user");
+            	if (u!=null)
+            		user = new UserJSONImpl(u);
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
@@ -161,21 +163,28 @@ import java.net.URISyntaxException;
     }
 
     /*package*/ static PagableResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException {
-        try {
-            JSONObject json = res.asJSONObject();
-            JSONArray list = json.getJSONArray("lists");
-            int size = list.length();
-            PagableResponseList<UserList> users =
-                    new PagableResponseListImpl<UserList>(size, json, res);
-            for (int i = 0; i < size; i++) {
-                users.add(new UserListJSONImpl(list.getJSONObject(i)));
-            }
-            return users;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
-        }
+    	try {
+    		JSONObject json = res.asJSONObject();
+    		JSONArray list = json.getJSONArray("lists");
+    		int size = list.length();
+    		PagableResponseList<UserList> users =
+    			new PagableResponseListImpl<UserList>(list.getJSONObjectCount(), json, res);
+    		for (int i = 0; i < size; i++) {
+    			JSONObject jsono;
+    			try {
+    				jsono = list.getJSONObject(i);
+    			} catch (JSONException jsone) {
+    				continue;
+    			}
+    			if (jsono!=null)
+    				users.add(new UserListJSONImpl(jsono));
+    		}
+    		return users;
+    	} catch (JSONException jsone) {
+    		throw new TwitterException(jsone);
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
     }
 
     @Override

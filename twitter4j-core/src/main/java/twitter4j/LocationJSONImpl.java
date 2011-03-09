@@ -55,8 +55,13 @@ import static twitter4j.ParseUtil.getUnescapedString;
             countryCode = getRawString("countryCode", location);
             if (!location.isNull("placeType")) {
                 JSONObject placeJSON = location.getJSONObject("placeType");
-                placeName = getUnescapedString("name", placeJSON);
-                placeCode = getInt("code", placeJSON);
+                if (placeJSON!=null) {
+	                placeName = getUnescapedString("name", placeJSON);
+	                placeCode = getInt("code", placeJSON);
+                } else {
+                    placeName = null;
+                    placeCode = -1;
+                }
             } else {
                 placeName = null;
                 placeCode = -1;
@@ -76,16 +81,21 @@ import static twitter4j.ParseUtil.getUnescapedString;
         try {
             int size = list.length();
             ResponseList<Location> locations =
-                    new ResponseListImpl<Location>(size, null);
+                    new ResponseListImpl<Location>(list.getJSONObjectCount(), null);
             for (int i = 0; i < size; i++) {
-                locations.add(new LocationJSONImpl(list.getJSONObject(i)));
+            	JSONObject json;
+				try {
+					json = list.getJSONObject(i);
+				} catch (JSONException e) {
+					continue;
+				}
+            	if (json!=null)
+            		locations.add(new LocationJSONImpl(json));
             }
             return locations;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
         } catch (TwitterException te) {
             throw te;
-        }
+		}
     }
 
     /**

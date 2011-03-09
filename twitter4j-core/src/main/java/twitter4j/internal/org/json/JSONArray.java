@@ -314,21 +314,35 @@ public class JSONArray {
                 "] is not a JSONArray.");
     }
 
+    public int getJSONObjectCount() {
+    	int Result = 0;
+        for (int i = 0; i < length(); i++) {
+            Object o;
+			try {
+				o = get(i);
+			} catch (JSONException e) {
+				continue;
+			}
+            if (o != null && o instanceof JSONObject)
+            	++Result;
+        }
+        return Result;
+    }
 
     /**
      * Get the JSONObject associated with an index.
      * @param index subscript
      * @return      A JSONObject value.
-     * @throws JSONException If there is no value for the index or if the
-     * value is not a JSONObject
+     * @throws JSONException If the value is not a JSONObject
      */
     public JSONObject getJSONObject(int index) throws JSONException {
         Object o = get(index);
+        if (o == null)
+        	return null;
         if (o instanceof JSONObject) {
             return (JSONObject)o;
         }
-        throw new JSONException("JSONArray[" + index +
-            "] is not a JSONObject.");
+        throw new JSONException("JSONArray[" + index + "] is not a JSONObject.");
     }
 
 

@@ -97,12 +97,16 @@ class StatusStreamImpl implements StatusStream, UserStream {
                     } else if (!json.isNull("text")) {
                         listener.onStatus(new StatusJSONImpl(json));
                     } else if (!json.isNull("direct_message")) {
-                        userStreamListener.onDirectMessage(new DirectMessageJSONImpl(json.getJSONObject("direct_message")));
+                    	JSONObject dm = json.getJSONObject("direct_message");
+                    	if (dm!=null)
+                    		userStreamListener.onDirectMessage(new DirectMessageJSONImpl(dm));
                     } else if (!json.isNull("delete")) {
                         listener.onDeletionNotice(new StatusDeletionNoticeImpl(json));
                     }
                     else if (!json.isNull("limit")) {
-                        listener.onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
+                    	JSONObject limit = json.getJSONObject("limit");
+                    	if (limit!=null)
+                    		listener.onTrackLimitationNotice(ParseUtil.getInt("track", limit));
                     } else if (!json.isNull ("scrub_geo")) {
                             // Not implemented yet
                             System.out.println ("Geo-tagging deletion notice (not implemented yet): " + line);

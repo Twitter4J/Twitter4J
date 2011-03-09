@@ -51,17 +51,19 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
     }
 
     public static ResponseList<Category> createCategoriesList(JSONArray array, HttpResponse res) throws TwitterException {
-        try {
-            ResponseList<Category> categories =
-                    new ResponseListImpl<Category>(array.length(), res);
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject json = array.getJSONObject(i);
-                categories.add(new CategoryJSONImpl(json.getString("name"), json.getString("slug")));
-            }
-            return categories;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
+    	ResponseList<Category> categories =
+    		new ResponseListImpl<Category>(array.getJSONObjectCount(), res);
+    	for (int i = 0; i < array.length(); i++) {
+    		JSONObject json;
+    		try {
+    			json = array.getJSONObject(i);
+    			if (json!=null)
+    				categories.add(new CategoryJSONImpl(json.getString("name"), json.getString("slug")));
+    		} catch (JSONException e) {
+    			continue;
+    		}
+    	}
+    	return categories;
     }
 
     public String getName() {

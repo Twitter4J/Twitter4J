@@ -96,7 +96,9 @@ import static twitter4j.ParseUtil.getUnescapedString;
         wasRetweetedByMe = getBoolean("retweeted", json);
         try {
             if (!json.isNull("user")) {
-                user = new UserJSONImpl(json.getJSONObject("user"));
+            	JSONObject u = json.getJSONObject("user");
+            	if (u!=null)
+            		user = new UserJSONImpl(u);
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -104,14 +106,18 @@ import static twitter4j.ParseUtil.getUnescapedString;
         geoLocation = GeoLocation.getInstance(json);
         if (!json.isNull("place")) {
             try {
-                place = new PlaceJSONImpl(json.getJSONObject("place"), null);
+            	JSONObject p = json.getJSONObject("place");
+            	if (p!=null)
+            		place = new PlaceJSONImpl(p, null);
             } catch (JSONException ignore) {
             }
         }
 
         if (!json.isNull("retweeted_status")) {
             try {
-                retweetedStatus = new StatusJSONImpl(json.getJSONObject("retweeted_status"));
+            	JSONObject rts = json.getJSONObject("retweeted_status");
+            	if (rts!=null)
+            		retweetedStatus = new StatusJSONImpl(rts);
             } catch (JSONException ignore) {
             }
         }
@@ -327,19 +333,26 @@ import static twitter4j.ParseUtil.getUnescapedString;
     }
 
     /*package*/ static ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
-        try {
-            JSONArray list = res.asJSONArray();
-            int size = list.length();
-            ResponseList<Status> statuses = new ResponseListImpl<Status>(size, res);
-            for (int i = 0; i < size; i++) {
-                statuses.add(new StatusJSONImpl(list.getJSONObject(i)));
-            }
-            return statuses;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
-        }
+    	try {
+    		JSONArray list = res.asJSONArray();
+    		int size = list.length();
+    		ResponseList<Status> statuses = new ResponseListImpl<Status>(list.getJSONObjectCount(), res);
+    		for (int i = 0; i < size; i++) {
+    			JSONObject json;
+    			try {
+    				json = list.getJSONObject(i);
+    			} catch (JSONException e) {
+    				continue;
+    			}
+    			if (json!=null)
+    				statuses.add(new StatusJSONImpl(json));
+    		}
+    		return statuses;
+    	} catch (JSONException jsone) {
+    		throw new TwitterException(jsone);
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
     }
 
     @Override

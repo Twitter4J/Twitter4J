@@ -60,12 +60,14 @@ public class GeoLocation implements java.io.Serializable{
     /*package*/ static GeoLocation getInstance(JSONObject json) throws TwitterException {
         try {
             if (!json.isNull("geo")) {
-                String coordinates = json.getJSONObject("geo")
-                        .getString("coordinates");
-                coordinates = coordinates.substring(1, coordinates.length() - 1);
-                String[] point = coordinates.split(",");
-                return new GeoLocation(Double.parseDouble(point[0]),
-                        Double.parseDouble(point[1]));
+            	JSONObject geo = json.getJSONObject("geo");
+            	if (geo!=null) {
+	                String coordinates = geo.getString("coordinates");
+	                coordinates = coordinates.substring(1, coordinates.length() - 1);
+	                String[] point = coordinates.split(",");
+	                return new GeoLocation(Double.parseDouble(point[0]),
+	                        Double.parseDouble(point[1]));
+            	}
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

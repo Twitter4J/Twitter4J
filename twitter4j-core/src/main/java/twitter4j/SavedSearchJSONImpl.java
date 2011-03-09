@@ -58,18 +58,21 @@ import static twitter4j.ParseUtil.*;
     }
 
     /*package*/ static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res) throws TwitterException {
-            JSONArray json = res.asJSONArray();
-            ResponseList<SavedSearch> savedSearches;
-            try {
-                savedSearches = new ResponseListImpl<SavedSearch>(json.length(), res);
-                for(int i=0;i<json.length();i++){
-                    savedSearches.add(new SavedSearchJSONImpl(json.getJSONObject(i)));
-                }
-                return savedSearches;
-            } catch (JSONException jsone) {
-                throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
-            }
-        }
+    	JSONArray json = res.asJSONArray();
+    	ResponseList<SavedSearch> savedSearches;
+    	savedSearches = new ResponseListImpl<SavedSearch>(json.getJSONObjectCount(), res);
+    	for(int i=0;i<json.length();i++){
+    		JSONObject jsono;
+    		try {
+    			jsono = json.getJSONObject(i);
+    		} catch (JSONException e) {
+    			continue;
+    		}
+    		if (jsono!=null)
+    			savedSearches.add(new SavedSearchJSONImpl(jsono));
+    	}
+    	return savedSearches;
+    }
 
     private void init(JSONObject savedSearch) throws TwitterException {
             createdAt = getDate("created_at", savedSearch, "EEE MMM dd HH:mm:ss z yyyy");

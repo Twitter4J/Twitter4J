@@ -76,6 +76,8 @@ import static twitter4j.ParseUtil.*;
         try {
             Date asOf = parseTrendsDate(json.getString("as_of"));
             JSONObject trendsJson = json.getJSONObject("trends");
+            if (trendsJson==null)
+            	return null;
             Location location = extractLocation(json, res);
             trends = new ArrayList<Trends>(trendsJson.length());
             Iterator ite = trendsJson.keys();
@@ -153,12 +155,18 @@ import static twitter4j.ParseUtil.*;
     }
 
     private static Trend[] jsonArrayToTrendArray(JSONArray array) throws JSONException {
-        Trend[] trends = new Trend[array.length()];
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject trend = array.getJSONObject(i);
-            trends[i] = new TrendJSONImpl(trend);
-        }
-        return trends;
+    	Trend[] trends = new Trend[array.getJSONObjectCount()];
+    	for (int i = 0; i < array.length(); i++) {
+    		JSONObject trend;
+    		try {
+    			trend = array.getJSONObject(i);
+    		} catch (JSONException e) {
+    			continue;
+    		}
+    		if (trend!=null)
+    			trends[i] = new TrendJSONImpl(trend);
+    	}
+    	return trends;
     }
 
     /**

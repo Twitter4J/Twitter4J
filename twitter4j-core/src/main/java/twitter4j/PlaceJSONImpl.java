@@ -96,9 +96,16 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
 
             if(!json.isNull("contained_within")){
                 JSONArray containedWithInJSON = json.getJSONArray("contained_within");
-                containedWithIn = new Place[containedWithInJSON.length()];
+                containedWithIn = new Place[containedWithInJSON.getJSONObjectCount()];
                 for(int i=0;i<containedWithInJSON.length();i++){
-                containedWithIn[i] = new PlaceJSONImpl(containedWithInJSON.getJSONObject(i), null);
+                	JSONObject jsono;
+                	try {
+                		jsono = containedWithInJSON.getJSONObject(i);
+                	} catch (JSONException e) {
+                		continue;
+                	}
+                	if (jsono!=null)
+                		containedWithIn[i] = new PlaceJSONImpl(jsono, null);
                 }
             }else{
                 containedWithIn = null;
@@ -116,26 +123,37 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         JSONObject json = null;
         try {
             json = res.asJSONObject();
-            return createPlaceList(json.getJSONObject("result").getJSONArray("places"), res);
+            json = json.getJSONObject("result");
+            if (json!=null) {
+            	JSONArray places = json.getJSONArray("places");
+            	if (places!=null)
+            		return createPlaceList(places, res);
+            }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
+        return null;
     }
 
     /*package*/ static ResponseList<Place> createPlaceList(JSONArray list, HttpResponse res) throws TwitterException {
-        try {
-            int size = list.length();
-            ResponseList<Place> places =
-                    new ResponseListImpl<Place>(size, res);
-            for (int i = 0; i < size; i++) {
-                places.add(new PlaceJSONImpl(list.getJSONObject(i), null));
-            }
-            return places;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
-        }
+    	try {
+    		int size = list.length();
+    		ResponseList<Place> places =
+    			new ResponseListImpl<Place>(list.getJSONObjectCount(), res);
+    		for (int i = 0; i < size; i++) {
+    			JSONObject json;
+    			try {
+    				json = list.getJSONObject(i);
+    			} catch (JSONException jsone) {
+    				continue;
+    			}
+    			if (json!=null)
+    				places.add(new PlaceJSONImpl(json, null));
+    		}
+    		return places;
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
     }
 
     public String getName(){

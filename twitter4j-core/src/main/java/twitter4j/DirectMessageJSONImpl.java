@@ -139,19 +139,24 @@ import static twitter4j.ParseUtil.*;
     }
 
     /*package*/ static ResponseList<DirectMessage> createDirectMessageList(HttpResponse res) throws TwitterException {
-        try {
-            JSONArray list = res.asJSONArray();
-            int size = list.length();
-            ResponseList<DirectMessage> directMessages = new ResponseListImpl<DirectMessage>(size, res);
-            for (int i = 0; i < size; i++) {
-                directMessages.add(new DirectMessageJSONImpl(list.getJSONObject(i)));
-            }
-            return directMessages;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
-        }
+    	try {
+    		JSONArray list = res.asJSONArray();
+    		int size = list.length();
+    		ResponseList<DirectMessage> directMessages = new ResponseListImpl<DirectMessage>(list.getJSONObjectCount(), res);
+    		for (int i = 0; i < size; i++) {
+    			JSONObject json;
+    			try {
+    				json = list.getJSONObject(i);
+    			} catch (JSONException jsone) {
+    				continue;
+    			}
+    			if (json!=null)
+    				directMessages.add(new DirectMessageJSONImpl(json));
+    		}
+    		return directMessages;
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
     }
 
     @Override

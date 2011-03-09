@@ -585,16 +585,16 @@ public class JSONObject {
      *
      * @param key   A key string.
      * @return      A JSONObject which is the value.
-     * @throws   JSONException if the key is not found or
-     *  if the value is not a JSONObject.
+     * @throws   JSONException if the value is not a JSONObject.
      */
     public JSONObject getJSONObject(String key) throws JSONException {
         Object o = get(key);
+        if (o == null)
+        	return null;
         if (o instanceof JSONObject) {
             return (JSONObject)o;
         }
-        throw new JSONException("JSONObject[" + quote(key) +
-                "] is not a JSONObject.");
+        throw new JSONException("JSONObject[" + quote(key) + "] is not a JSONObject.");
     }
 
 

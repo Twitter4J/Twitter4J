@@ -54,21 +54,27 @@ import static twitter4j.ParseUtil.*;
     /*package*/ QueryResultJSONImpl(HttpResponse res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         try {
-            sinceId = getLong("since_id", json);
-            maxId = getLong("max_id", json);
-            refreshUrl = getUnescapedString("refresh_url", json);
+        	sinceId = getLong("since_id", json);
+        	maxId = getLong("max_id", json);
+        	refreshUrl = getUnescapedString("refresh_url", json);
 
-            resultsPerPage = getInt("results_per_page", json);
-            warning = getRawString("warning", json);
-            completedIn = getDouble("completed_in", json);
-            page = getInt("page", json);
-            query = getURLDecodedString("query", json);
-            JSONArray array = json.getJSONArray("results");
-            tweets = new ArrayList<Tweet>(array.length());
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject tweet = array.getJSONObject(i);
-                tweets.add(new TweetJSONImpl(tweet));
-            }
+        	resultsPerPage = getInt("results_per_page", json);
+        	warning = getRawString("warning", json);
+        	completedIn = getDouble("completed_in", json);
+        	page = getInt("page", json);
+        	query = getURLDecodedString("query", json);
+        	JSONArray array = json.getJSONArray("results");
+        	tweets = new ArrayList<Tweet>(array.getJSONObjectCount());
+        	for (int i = 0; i < array.length(); i++) {
+        		JSONObject tweet;
+        		try {
+        			tweet = array.getJSONObject(i);
+        		} catch (JSONException  e) {
+        			continue;
+        		}
+        		if (tweet!=null)
+        			tweets.add(new TweetJSONImpl(tweet));
+        	}
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
