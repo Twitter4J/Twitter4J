@@ -83,6 +83,8 @@ import static twitter4j.ParseUtil.getUnescapedString;
     }
 
     private void init(JSONObject json) throws TwitterException {
+    	if (json==null)
+    		throw new TwitterException("trying to create a null StatusJSONImpl");
         id = getLong("id", json);
         text = getUnescapedString("text", json);
         source = getUnescapedString("source", json);

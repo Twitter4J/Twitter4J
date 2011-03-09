@@ -42,9 +42,13 @@ class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializ
 
     /*package*/ StatusDeletionNoticeImpl(JSONObject json) throws JSONException {
         JSONObject deletionNotice = json.getJSONObject("delete");
+        if (deletionNotice==null)
+        	throw new JSONException("Trying to create a status deletion notice with no delete element");
         JSONObject status = deletionNotice.has("status")
             ? deletionNotice.getJSONObject("status")
             : deletionNotice.getJSONObject("direct_message");
+        if (status==null)
+        	throw new JSONException("Trying to create a status deletion notice with no status");
         this.statusId = ParseUtil.getLong("id", status);
         this.userId = ParseUtil.getInt("user_id", status);
     }

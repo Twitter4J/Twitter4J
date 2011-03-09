@@ -56,6 +56,8 @@ import static twitter4j.ParseUtil.*;
         init(json);
     }
     private void init(JSONObject json) throws TwitterException{
+    	if (json==null)
+    		throw new TwitterException("trying to create a null DirectMessageJSONImpl");
         id = getLong("id", json);
         text = getUnescapedString("text", json);
         senderId = getInt("sender_id", json);

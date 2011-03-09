@@ -88,6 +88,8 @@ import static twitter4j.ParseUtil.*;
     }
 
     private void init(JSONObject json) throws TwitterException {
+    	if (json==null)
+    		throw new TwitterException("trying to create a null UserJSONImpl");
         try {
             id = getInt("id", json);
             name = getRawString("name", json);
