@@ -202,7 +202,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     @Override
     public String toString() {
-        return "TwitterException{" +
+        return getMessage() + "TwitterException{" +
                 (nested ? "" : "exceptionCode=[" + getExceptionCode() + "], ") +
                 "statusCode=" + statusCode +
                 ", retryAfter=" + retryAfter +
