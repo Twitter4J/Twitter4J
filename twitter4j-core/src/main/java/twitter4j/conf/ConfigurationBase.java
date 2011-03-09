@@ -130,7 +130,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         // streaming api doesn't support SSL as of 12/30/2009
         // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
         setStreamBaseURL("http://stream.twitter.com/1/");
-        setUserStreamBaseURL("http://betastream.twitter.com/2b/");
+		setUserStreamBaseURL("https://userstream.twitter.com/2/");
         
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
