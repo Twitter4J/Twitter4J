@@ -583,7 +583,7 @@ public class Twitter extends TwitterOAuthSupportBaseImpl
     public ResponseList<Status> getRetweets(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(http.get(conf.getRestBaseURL()
-                + "statuses/retweets/" + statusId + ".json?count=100", auth));
+                + "statuses/retweets/" + statusId + ".json?count=20", auth));
     }
 
     /* User Methods */
