@@ -74,6 +74,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean jsonStoreEnabled;
 
+    private boolean mbeanEnabled;
+
     private boolean userStreamRepliesAllEnabled;
 
     private String mediaProvider;
@@ -147,6 +149,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setIncludeEntitiesEnbled(false);
 
         setJSONStoreEnabled(false);
+
+        setMBeanEnabled(false);
 
         setOAuthRequestTokenURL(DEFAULT_OAUTH_REQUEST_TOKEN_URL);
         setOAuthAuthorizationURL(DEFAULT_OAUTH_AUTHORIZATION_URL);
@@ -545,6 +549,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setJSONStoreEnabled(boolean enabled) {
         this.jsonStoreEnabled = enabled;
+    }
+
+    public boolean isMBeanEnabled() {
+        return this.mbeanEnabled;
+    }
+
+    protected final void setMBeanEnabled(boolean enabled) {
+        this.mbeanEnabled = enabled;
     }
 
     public boolean isUserStreamRepliesAllEnabled() {

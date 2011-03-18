@@ -106,6 +106,8 @@ public interface Configuration extends HttpClientConfiguration
 
     boolean isJSONStoreEnabled();
 
+    boolean isMBeanEnabled();
+
     boolean isUserStreamRepliesAllEnabled();
 
     String getMediaProvider();

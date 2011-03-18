@@ -97,4 +97,20 @@ final class Log4JLogger extends Logger {
     public void warn(String message, String message2) {
         warn(message + message2);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(String message) {
+        LOGGER.error(message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(String message, Throwable th) {
+        error(message, th);
+    }
 }
