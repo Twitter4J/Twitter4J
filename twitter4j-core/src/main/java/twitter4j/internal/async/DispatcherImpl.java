@@ -16,6 +16,7 @@
 package twitter4j.internal.async;
 
 import twitter4j.conf.Configuration;
+import twitter4j.internal.logging.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -91,6 +92,7 @@ final class DispatcherImpl implements Dispatcher {
 }
 
 class ExecuteThread extends Thread {
+    private static Logger logger = Logger.getLogger(ExecuteThread.class);
     DispatcherImpl q;
 
     ExecuteThread(String name, DispatcherImpl q, int index) {
@@ -111,7 +113,7 @@ class ExecuteThread extends Thread {
                 try {
                     task.run();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    logger.error("Got an exception while running a taks:", ex);
                 }
             }
         }
