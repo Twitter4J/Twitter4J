@@ -84,4 +84,21 @@ final class StdOutLogger extends Logger {
     public void warn(String message, String message2) {
         warn(message + message2);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(String message) {
+        System.out.println("[" + new java.util.Date() + "]" + message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(String message, Throwable th) {
+        System.out.println(message);
+        th.printStackTrace(System.err);
+    }
 }

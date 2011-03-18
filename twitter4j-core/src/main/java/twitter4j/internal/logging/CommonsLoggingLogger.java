@@ -99,4 +99,21 @@ final class CommonsLoggingLogger extends Logger {
     public void warn(String message, String message2) {
         LOGGER.warn(message + message2);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(String message) {
+        LOGGER.error(message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void error(String message, Throwable th) {
+        LOGGER.error(message, th);
+    }
+
 }

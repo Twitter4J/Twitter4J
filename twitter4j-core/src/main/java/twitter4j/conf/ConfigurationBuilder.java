@@ -253,6 +253,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setMBeanEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setMBeanEnabled(enabled);
+        return this;
+    }
+
     public ConfigurationBuilder setUserStreamRepliesAllEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setUserStreamRepliesAllEnabled(enabled);

@@ -50,8 +50,8 @@ public class TwitterTest extends TwitterTestBase {
     public void testGetPublicTimeline() throws Exception {
         List<Status> statuses;
         twitter1 = new TwitterFactory(new ConfigurationBuilder().setOAuthConsumerKey(desktopConsumerKey)
-        .setOAuthConsumerSecret(desktopConsumerSecret).setOAuthAccessToken(id1.accessToken).setOAuthConsumerSecret(id1.accessTokenSecret)
-        .setJSONStoreEnabled(false).build()).getInstance();
+                .setOAuthConsumerSecret(desktopConsumerSecret).setOAuthAccessToken(id1.accessToken).setOAuthConsumerSecret(id1.accessTokenSecret)
+                .setJSONStoreEnabled(false).build()).getInstance();
         statuses = twitter1.getPublicTimeline();
         assertTrue("size", 0 < statuses.size());
         // should be null because json store is disabled programatically
@@ -1221,7 +1221,7 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testTest() throws Exception {
-        assertTrue(twitter2.test());
+        assertTrue(unauthenticated.test());
     }
 
     public void testEntities() throws Exception {
