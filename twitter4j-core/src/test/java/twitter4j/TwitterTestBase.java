@@ -18,6 +18,7 @@ package twitter4j;
 
 import junit.framework.TestCase;
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.PropertyConfiguration;
 
 import java.io.InputStream;
@@ -95,7 +96,7 @@ public class TwitterTestBase extends TestCase {
 
         twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
 
-        unauthenticated = new TwitterFactory().getInstance();
+        unauthenticated = new TwitterFactory(new ConfigurationBuilder().setJSONStoreEnabled(true).build()).getInstance();
 
         followsOneWay = p.getProperty("followsOneWay");
     }
