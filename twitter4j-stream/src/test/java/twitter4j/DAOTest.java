@@ -86,14 +86,14 @@ public class DAOTest extends TwitterTestBase {
 
     public void testTweet() throws Exception {
         JSONObject json = new JSONObject("{\"profile_image_url\":\"http://a3.twimg.com/profile_images/554278229/twitterProfilePhoto_normal.jpg\",\"created_at\":\"Thu, 24 Dec 2009 18:30:56 +0000\",\"from_user\":\"pskh\",\"to_user_id\":null,\"text\":\"test\",\"id\":7007483122,\"from_user_id\":215487,\"geo\":{\"type\":\"Point\",\"coordinates\":[37.78029, -122.39697]},\"source\":\"&lt;a href=&quot;http://twitter4j.org/&quot; rel=&quot;nofollow&quot;&gt;Twitter4J&lt;/a&gt;\"}");
-        Tweet tweet = new TweetJSONImpl(json);
+        Tweet tweet = new TweetJSONImpl(json, conf);
         GeoLocation geo = tweet.getGeoLocation();
         assertNotNull(geo);
         assertEquals(37.78029, geo.getLatitude());
         assertEquals(-122.39697, geo.getLongitude());
 
         JSONObject json2 = new JSONObject("{\"from_user_id_str\": \"178849153\", \"profile_image_url\": \"http://a2.twimg.com/sticky/default_profile_images/default_profile_1_normal.png\", \"created_at\": \"Thu, 24 Feb 2011 16:52:19 +0000\", \"from_user\": \"jscottdawson\", \"id_str\": \"40816302931181569\", \"metadata\": {\"result_type\": \"recent\"}, \"to_user_id\": null, \"text\": \"Schluzz and stuff\", \"id\": 40816302931181570, \"from_user_id\": 178849153, \"geo\": null, \"iso_language_code\": \"de\", \"place\": {\"id\": \"33fe3f451651a7c1\", \"type\": \"neighborhood\", \"full_name\": \"Old Town West, Fort Collins\"}, \"to_user_id_str\": null, \"source\": \"&lt;a href=&quot;http://twitter.com/&quot;&gt;web&lt;/a&gt;\"}");
-        Tweet tweet2 = new TweetJSONImpl(json2);
+        Tweet tweet2 = new TweetJSONImpl(json2, conf);
         Place place = tweet2.getPlace();
         assertNotNull(place);
         assertEquals("33fe3f451651a7c1", place.getId());
