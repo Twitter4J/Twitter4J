@@ -17,6 +17,7 @@
 package twitter4j;
 
 import twitter4j.internal.http.HttpParameter;
+import twitter4j.json.DataObjectFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,6 +73,7 @@ public class SearchAPITest extends TwitterTestBase {
 
         List<Tweet> tweets = queryResult.getTweets();
         assertTrue(1 <= tweets.size());
+        assertEquals(tweets.get(0), DataObjectFactory.createTweet(DataObjectFactory.getRawJSON(tweets.get(0))));
         assertNotNull(tweets.get(0).getText());
         assertNotNull(tweets.get(0).getCreatedAt());
         assertNotNull("from user", tweets.get(0).getFromUser());

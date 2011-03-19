@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -78,6 +80,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
             }
         } else {
             place = null;
+        }
+    }
+
+    /*package*/ TweetJSONImpl(JSONObject tweet, Configuration conf) throws TwitterException {
+        this(tweet);
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.registerJSONObject(this, tweet);
         }
     }
 

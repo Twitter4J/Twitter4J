@@ -16,7 +16,9 @@
 
 package twitter4j;
 
+import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -49,7 +51,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private List<Tweet> tweets;
     private static final long serialVersionUID = -9059136565234613286L;
 
-    /*package*/ QueryResultJSONImpl(HttpResponse res) throws TwitterException {
+    /*package*/ QueryResultJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         JSONObject json = res.asJSONObject();
         try {
             sinceId = getLong("since_id", json);
@@ -63,9 +65,12 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
             query = getURLDecodedString("query", json);
             JSONArray array = json.getJSONArray("results");
             tweets = new ArrayList<Tweet>(array.length());
+            if (conf.isJSONStoreEnabled()) {
+                DataObjectFactoryUtil.clearThreadLocalMap();
+            }
             for (int i = 0; i < array.length(); i++) {
                 JSONObject tweet = array.getJSONObject(i);
-                tweets.add(new TweetJSONImpl(tweet));
+                tweets.add(new TweetJSONImpl(tweet, conf));
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);

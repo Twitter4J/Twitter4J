@@ -96,7 +96,8 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public QueryResult search(Query query) throws TwitterException {
         try {
-            return new QueryResultJSONImpl(get(conf.getSearchBaseURL() + "search.json", query.asHttpParameterArray()));
+            return new QueryResultJSONImpl(get(conf.getSearchBaseURL()
+                    + "search.json", query.asHttpParameterArray()), conf);
         } catch (TwitterException te) {
             if (404 == te.getStatusCode()) {
                 return new QueryResultJSONImpl(query);
