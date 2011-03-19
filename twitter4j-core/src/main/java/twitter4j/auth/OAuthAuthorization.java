@@ -316,10 +316,12 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
             }
             mac.init(spec);
             byteHMAC = mac.doFinal(data.getBytes());
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException ignore) {
-            // should never happen
+        } catch (InvalidKeyException ike) {
+            logger.error("Failed initialize \"Message Authentication Code\" (MAC)", ike);
+            throw new AssertionError(ike);
+        } catch (NoSuchAlgorithmException nsae) {
+            logger.error("Failed to get HmacSHA1 \"Message Authentication Code\" (MAC)", nsae);
+            throw new AssertionError(nsae);
         }
         return BASE64Encoder.encode(byteHMAC);
     }
