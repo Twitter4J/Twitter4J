@@ -34,6 +34,7 @@ Ludovico Fischer @ludovicofischer
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 Mocel <docel77 at gmail.com> @Mocel
 Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
+Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
 Perry Sakkaris <psakkaris at gmail.com>
 Roberto Estrada <robestradac at gmail.com>
 Roy Reshef Roy Reshef <royreshef at gmail.com>
