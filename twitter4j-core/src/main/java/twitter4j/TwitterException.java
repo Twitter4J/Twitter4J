@@ -105,21 +105,25 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     private static String decode(String str) {
-        StringBuffer value = new StringBuffer(str.length());
-        try {
-            JSONObject json = new JSONObject(str);
-            if (!json.isNull("error")) {
-                value.append("error - ").append(json.getString("error"))
-                        .append("\n");
+        if (null != str) {
+            StringBuffer value = new StringBuffer(str.length());
+            try {
+                JSONObject json = new JSONObject(str);
+                if (!json.isNull("error")) {
+                    value.append("error - ").append(json.getString("error"))
+                            .append("\n");
+                }
+                if (!json.isNull("request")) {
+                    value.append("request - ").append(json.getString("request"))
+                            .append("\n");
+                }
+            } catch (JSONException e) {
+                value.append(str);
             }
-            if (!json.isNull("request")) {
-                value.append("request - ").append(json.getString("request"))
-                        .append("\n");
-            }
-        } catch (JSONException e) {
-            value.append(str);
+            return value.toString();
+        } else {
+            return "";
         }
-        return value.toString();
     }
 
     public int getStatusCode() {

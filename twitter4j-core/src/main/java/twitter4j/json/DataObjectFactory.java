@@ -156,7 +156,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -179,7 +179,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -202,7 +202,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -225,7 +225,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -248,7 +248,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -271,7 +271,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -294,7 +294,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -317,7 +317,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -337,7 +337,7 @@ public final class DataObjectFactory {
         } catch (InstantiationException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (InvocationTargetException e) {
             throw new AssertionError(e);
         }
@@ -359,7 +359,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         }
     }
 
@@ -380,7 +380,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -403,7 +403,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -426,7 +426,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -449,7 +449,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -472,7 +472,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -495,7 +495,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -549,7 +549,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
