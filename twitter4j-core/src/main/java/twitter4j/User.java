@@ -180,4 +180,12 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @since Twitter4J 2.1.4
      */
     boolean isFollowRequestSent();
+
+    /**
+     * Return true if the authenticating user is enable to notify for updates from this user,
+     * otherwise false.
+     *
+     * @return return true if the authenticating user is enable to notify for updates from this user.
+     */
+    boolean isEnabledNotifications();
 }

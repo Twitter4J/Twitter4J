@@ -1374,7 +1374,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User enableNotification(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(post(conf.getRestBaseURL() + "notifications/follow.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&userId=" + userId), conf);
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId), conf);
     }
 
     /**
