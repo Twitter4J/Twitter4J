@@ -25,6 +25,7 @@ import twitter4j.User;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
+ * @author Mocel - docel77 at gmail.com
  */
 public interface FriendshipMethods {
     /**
@@ -238,4 +239,15 @@ public interface FriendshipMethods {
      */
     Relationship updateFriendship(long userId, boolean enableDeviceNotification
             , boolean retweets) throws TwitterException;
+
+    /**
+     * Returns the list of user_ids for which the authenticating user has said they do not want to receive retweets from when successful.
+     * <br>Now the return value had no data for paging.
+     * <br>This methos calls http://api.twitter.com/1/friendships/no_retweet_ids.json
+     *
+     * @return IDs
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/6f734611ac57e281">Some changes and updates to the API and Tweet Button - Twitter API Announcements | Google Groups</a>
+     */
+    IDs getNoRetweetIds() throws TwitterException;
 }

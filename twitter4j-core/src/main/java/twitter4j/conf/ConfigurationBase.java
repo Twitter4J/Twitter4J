@@ -431,11 +431,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private void fixRestBaseURL() {
         if (DEFAULT_REST_BASE_URL.equals(fixURL(false, restBaseURL))) {
-            if (null != oAuthConsumerKey && null != oAuthConsumerSecret) {
-                this.restBaseURL = fixURL(false, restBaseURL);
-            } else {
-                this.restBaseURL = fixURL(useSSL, restBaseURL);
-            }
+            this.restBaseURL = fixURL(useSSL, restBaseURL);
         }
         if (DEFAULT_OAUTH_ACCESS_TOKEN_URL.equals(fixURL(false, oAuthAccessTokenURL))) {
             this.oAuthAccessTokenURL = fixURL(useSSL, oAuthAccessTokenURL);

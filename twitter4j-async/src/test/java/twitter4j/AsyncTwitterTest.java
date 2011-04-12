@@ -18,6 +18,7 @@ package twitter4j;
 
 import junit.framework.Assert;
 import twitter4j.auth.AccessToken;
+import twitter4j.json.DataObjectFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,21 +51,21 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     protected void setUp() throws Exception {
         super.setUp();
-        AsyncTwitterFactory factory = new AsyncTwitterFactory();
+        AsyncTwitterFactory factory = new AsyncTwitterFactory(conf1);
         async1 = factory.getInstance();
         async1.addListener(this);
-        async1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        async1.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
+//        async1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+//        async1.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
 
-        async2 = factory.getInstance();
+        async2 = new AsyncTwitterFactory(conf2).getInstance();
         async2.addListener(this);
-        async2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        async2.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
+//        async2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+//        async2.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
 
-        bestFriend1Async = factory.getInstance();
+        bestFriend1Async = new AsyncTwitterFactory(bestFriend1Conf).getInstance();
         bestFriend1Async.addListener(this);
-        bestFriend1Async.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        bestFriend1Async.setOAuthAccessToken(new AccessToken(bestFriend1.accessToken, bestFriend1.accessTokenSecret));
+//        bestFriend1Async.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+//        bestFriend1Async.setOAuthAccessToken(new AccessToken(bestFriend1.accessToken, bestFriend1.accessTokenSecret));
 
         statuses = null;
         users = null;
@@ -438,6 +439,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         Assert.assertNull(te);
         assertDeserializedFormIsEqual(user);
 
+    }
+
+    public void testNoRetweet() throws Exception {
+        async1.getNoRetweetIds();
+        waitForResponse();
+        assertNotNull(this.ids);
     }
 
     private ResponseList<Status> statuses = null;
@@ -814,6 +821,17 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void updatedFriendship(Relationship relationship) {
         this.relationship = relationship;
+        notifyResponse();
+    }
+
+    public void gotNoRetweetIds(IDs ids) {
+        this.ids = ids;
+        assertNotNull(DataObjectFactory.getRawJSON(this.ids));
+        try {
+            assertEquals(this.ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
+        } catch (TwitterException e) {
+            fail("");
+        }
         notifyResponse();
     }
 

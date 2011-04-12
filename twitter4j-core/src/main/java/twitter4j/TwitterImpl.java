@@ -1094,6 +1094,14 @@ class TwitterImpl extends TwitterBaseImpl
                 }), conf);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public IDs getNoRetweetIds() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new IDsJSONImpl(get(conf.getRestBaseURL() + "friendships/no_retweet_ids.json"), conf);
+    }
+
     /* Social Graph Methods */
 
     /**
@@ -1365,7 +1373,7 @@ class TwitterImpl extends TwitterBaseImpl
     public User enableNotification(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
         return new UserJSONImpl(post(conf.getRestBaseURL() + "notifications/follow.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&userId=" + userId), conf);
+                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId), conf);
     }
 
     /**

@@ -320,6 +320,11 @@ public interface TwitterListener {
      */
     void updatedFriendship(Relationship relationship);
 
+    /**
+     * @since
+     */
+    void gotNoRetweetIds(IDs ids);
+
     /*Account Methods*/
 
     void verifiedCredentials(User user);
