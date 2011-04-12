@@ -1791,6 +1791,24 @@ class AsyncTwitterImpl extends TwitterBaseImpl
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void getNoRetweetIds() {
+        getDispatcher().invokeLater(new AsyncTask(NO_RETWEET_IDS, listeners) {
+            @Override
+            void invoke(List<TwitterListener> listeners) throws TwitterException {
+                IDs ids = twitter.getNoRetweetIds();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotNoRetweetIds(ids);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
     /* Social Graph Methods */
 
     /**

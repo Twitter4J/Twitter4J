@@ -379,6 +379,12 @@ public class TwitterAdapter implements TwitterListener {
     public void updatedFriendship(Relationship relationship) {
     }
 
+    /**
+     * @since
+     */
+    public void gotNoRetweetIds(IDs ids) {
+    }
+
     /*Social Graph Methods*/
     public void gotFriendsIDs(IDs ids) {
     }

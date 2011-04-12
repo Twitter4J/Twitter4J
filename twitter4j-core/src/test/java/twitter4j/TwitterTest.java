@@ -684,6 +684,11 @@ public class TwitterTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
         assertTrue(ids.getIDs().length > 0);
+        ids = twitter2.getNoRetweetIds();
+        assertNotNull(DataObjectFactory.getRawJSON(ids));
+        assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
+        // needs the account has at least one user who is not received any retweets.
+        //assertTrue(ids.getIDs().length > 0);
     }
 
     public void testSocialGraphMethods() throws Exception {

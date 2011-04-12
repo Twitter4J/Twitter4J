@@ -192,4 +192,13 @@ public interface FriendshipMethodsAsync {
      */
     void updateFriendship(long userId, boolean enableDeviceNotification
             , boolean retweets);
+
+    /**
+     * Returns the list of user_ids for which the authenticating user has said they do not want to receive retweets from when successful.
+     * <br>Now the return value had no data for paging.
+     * <br>This methos calls http://api.twitter.com/1/friendships/no_retweet_ids.json
+     *
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/6f734611ac57e281">Some changes and updates to the API and Tweet Button - Twitter API Announcements | Google Groups</a>
+     */
+    void getNoRetweetIds();
 }

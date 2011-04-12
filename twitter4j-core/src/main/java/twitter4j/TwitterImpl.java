@@ -1094,6 +1094,15 @@ class TwitterImpl extends TwitterBaseImpl
                 }), conf);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IDs getNoRetweetIds() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new IDsJSONImpl(get(conf.getRestBaseURL() + "friendships/no_retweet_ids.json"), conf);
+    }
+
     /* Social Graph Methods */
 
     /**

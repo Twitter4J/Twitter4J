@@ -18,6 +18,7 @@ package twitter4j;
 
 import junit.framework.Assert;
 import twitter4j.auth.AccessToken;
+import twitter4j.json.DataObjectFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -440,6 +441,13 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     }
 
+    public void testNoRetweet() throws Exception {
+        async1.getNoRetweetIds();
+        waitForResponse();
+        assertNotNull(DataObjectFactory.getRawJSON(this.ids));
+        assertEquals(this.ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(this.ids)));
+    }
+
     private ResponseList<Status> statuses = null;
     private ResponseList<User> users = null;
     private ResponseList<DirectMessage> messages = null;
@@ -814,6 +822,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     public void updatedFriendship(Relationship relationship) {
         this.relationship = relationship;
+        notifyResponse();
+    }
+
+    public void gotNoRetweetIds(IDs ids) {
+        this.ids = ids;
         notifyResponse();
     }
 
