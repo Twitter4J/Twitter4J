@@ -20,7 +20,7 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class VersionStream {
-    private static final String VERSION = "2.2.2-SNAPSHOT";
+    private static final String VERSION = "2.2.2";
     private static final String TITLE = "Twitter4J Streaming API support";
 
     private VersionStream() {
