@@ -120,7 +120,7 @@ public class OAuthTest extends TwitterTestBase {
 //        http.setRequestHeader("Cookie", cookie);
         props.put("Cookie", cookie);
         resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
+        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
         params = new HttpParameter[4];
         params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
@@ -130,7 +130,7 @@ public class OAuthTest extends TwitterTestBase {
         params[3] = new HttpParameter("session[password]", id1.password);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
         resStr = response.asString();
-        String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ", "\n</div>");
+        String pin = catchPattern(resStr, "<kbd aria-labelledby=\"code-desc\"><code>", "</code></kbd>");
         at = twitter.getOAuthAccessToken(rt, pin);
         try {
             twitter.getOAuthRequestToken();
@@ -178,7 +178,7 @@ public class OAuthTest extends TwitterTestBase {
         props.put("Cookie", cookie);
 
         resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
+        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
         params = new HttpParameter[4];
         params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
@@ -216,7 +216,7 @@ public class OAuthTest extends TwitterTestBase {
         cookie = response.getResponseHeader("Set-Cookie");
         props.put("Cookie", cookie);
         resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
+        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
         params = new HttpParameter[4];
         params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
@@ -257,7 +257,7 @@ public class OAuthTest extends TwitterTestBase {
 //        http.setRequestHeader("Cookie", cookie);
         props.put("Cookie", cookie);
         resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
+        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
         params = new HttpParameter[4];
         params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
