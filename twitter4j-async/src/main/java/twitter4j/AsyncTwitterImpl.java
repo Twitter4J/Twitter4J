@@ -691,9 +691,16 @@ class AsyncTwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public void getRetweetedBy(final long statusId) {
+        getRetweetedBy(statusId, new Paging(1, 100));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetedBy(final long statusId, final Paging paging) {
         getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<User> users = twitter.getRetweetedBy(statusId);
+                ResponseList<User> users = twitter.getRetweetedBy(statusId, paging);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotRetweetedBy(users);
@@ -708,9 +715,16 @@ class AsyncTwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public void getRetweetedByIDs(final long statusId) {
+        getRetweetedByIDs(statusId, new Paging(1, 100));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetedByIDs(final long statusId, final Paging paging) {
         getDispatcher().invokeLater(new AsyncTask(RETWEETED_BY_IDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                IDs ids = twitter.getRetweetedByIDs(statusId);
+                IDs ids = twitter.getRetweetedByIDs(statusId, paging);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotRetweetedByIDs(ids);

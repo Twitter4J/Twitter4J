@@ -15,6 +15,7 @@ twitter4j-async/target/*
 twitter4j-async/src/test/resources/test.properties
 twitter4j-media-support/src/test/resources/twitter4j.properties
 twitter4j-httpclient-support/src/test/resources/twitter4j.properties
+twitter4j-examples/src/main/resources/twitter4j.properties
 twitter4j-examples/target/*
 .DS_Store
 ~$*

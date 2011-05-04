@@ -42,7 +42,6 @@ import java.util.Arrays;
         super(res);
         String json = res.asString();
         init(json);
-        System.out.println(conf.isJSONStoreEnabled());
         if (conf.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.clearThreadLocalMap();
             DataObjectFactoryUtil.registerJSONObject(this, json);

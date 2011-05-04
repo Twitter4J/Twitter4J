@@ -537,16 +537,15 @@ public class TwitterTest extends TwitterTestBase {
         assertIsRetweet(statuses);
         assertTrue(20 < statuses.size());
 
-        for (Status status : statuses) {
-            if (null != status.getRetweetedStatus()) {
-                List<User> users = twitter1.getRetweetedBy(status.getRetweetedStatus().getId());
-                assertNotNull(DataObjectFactory.getRawJSON(users));
-                assertNotNull(DataObjectFactory.getRawJSON(users.get(0)));
-                assertNotNull(users);
-                assertTrue(users.size() > 1);
-                break;
-            }
-        }
+        List<User> users = unauthenticated.getRetweetedBy(47621163517624320L, new Paging(1, 100));
+        assertTrue(users.size() > 90);
+        users = unauthenticated.getRetweetedBy(47621163517624320L, new Paging(2, 100));
+        assertTrue(users.size() > 10);
+
+        IDs ids = twitter1.getRetweetedByIDs(47621163517624320L, new Paging(1, 100));
+        assertTrue(ids.getIDs().length > 90);
+        ids = twitter1.getRetweetedByIDs(47621163517624320L, new Paging(2, 100));
+        assertTrue(ids.getIDs().length > 10);
     }
 
     private void assertIsRetweet(List<Status> statuses) {

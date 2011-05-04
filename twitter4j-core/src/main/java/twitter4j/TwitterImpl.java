@@ -415,20 +415,33 @@ class TwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public ResponseList<User> getRetweetedBy(long statusId) throws TwitterException {
-        ensureAuthorizationEnabled();
+        return getRetweetedBy(statusId, new Paging(1, 100));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<User> getRetweetedBy(long statusId, Paging paging) throws TwitterException {
         return UserJSONImpl.createUserList(get(conf.getRestBaseURL()
-                + "statuses/" + statusId + "/retweeted_by.json?count=100&include_entities"
-                + conf.isIncludeEntitiesEnabled()), conf);
+                + "statuses/" + statusId + "/retweeted_by.json",
+                paging.asPostParameterArray()), conf);
     }
 
     /**
      * {@inheritDoc}
      */
     public IDs getRetweetedByIDs(long statusId) throws TwitterException {
+        return getRetweetedByIDs(statusId, new Paging(1, 100));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IDs getRetweetedByIDs(long statusId, Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
         return new IDsJSONImpl(get(conf.getRestBaseURL()
-                + "statuses/" + statusId + "/retweeted_by/ids.json?count=100&include_entities"
-                + conf.isIncludeEntitiesEnabled()), conf);
+                + "statuses/" + statusId + "/retweeted_by/ids.json",
+                paging.asPostParameterArray()), conf);
     }
 
     /**
