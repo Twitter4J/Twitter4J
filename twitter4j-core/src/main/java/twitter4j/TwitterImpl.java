@@ -650,8 +650,7 @@ class TwitterImpl extends TwitterBaseImpl
         if (description != null) {
             httpParams.add(new HttpParameter("description", description));
         }
-        return new UserListJSONImpl(post(conf.getRestBaseURL() + getScreenName() +
-                "/lists.json",
+        return new UserListJSONImpl(post(conf.getRestBaseURL() + "lists/create.json",
                 httpParams.toArray(new HttpParameter[httpParams.size()])), conf);
     }
 
@@ -661,6 +660,7 @@ class TwitterImpl extends TwitterBaseImpl
     public UserList updateUserList(int listId, String newListName, boolean isPublicList, String newDescription) throws TwitterException {
         ensureAuthorizationEnabled();
         List<HttpParameter> httpParams = new ArrayList<HttpParameter>();
+        httpParams.add(new HttpParameter("list_id", listId));
         if (newListName != null) {
             httpParams.add(new HttpParameter("name", newListName));
         }
@@ -668,8 +668,7 @@ class TwitterImpl extends TwitterBaseImpl
         if (newDescription != null) {
             httpParams.add(new HttpParameter("description", newDescription));
         }
-        return new UserListJSONImpl(post(conf.getRestBaseURL() + getScreenName() + "/lists/"
-                + listId + ".json", httpParams.toArray(new HttpParameter[httpParams.size()])), conf);
+        return new UserListJSONImpl(post(conf.getRestBaseURL() + "lists/update.json", httpParams.toArray(new HttpParameter[httpParams.size()])), conf);
     }
 
     /**
@@ -677,17 +676,30 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        return UserListJSONImpl.createPagableUserListList(get(conf.getRestBaseURL() +
-                listOwnerScreenName + "/lists.json?cursor=" + cursor), conf);
+        return UserListJSONImpl.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?screen_name=" + listOwnerScreenName + "&cursor=" + cursor), conf);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public PagableResponseList<UserList> getUserLists(long listOwnerUserId, long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return UserListJSONImpl.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?user_id=" + listOwnerUserId + "&cursor=" + cursor), conf);
     }
 
     /**
      * {@inheritDoc}
      */
     public UserList showUserList(String listOwnerScreenName, int id) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return new UserListJSONImpl(get(conf.getRestBaseURL() + listOwnerScreenName + "/lists/"
-                + id + ".json"), conf);
+        return showUserList(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public UserList showUserList(int listId) throws TwitterException {
+        return new UserListJSONImpl(get(conf.getRestBaseURL() + "lists/show.json?list_id="
+                + listId), conf);
     }
 
     /**
@@ -695,26 +707,31 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public UserList destroyUserList(int listId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new UserListJSONImpl(delete(conf.getRestBaseURL() + getScreenName() +
-                "/lists/" + listId + ".json"), conf);
+        return new UserListJSONImpl(post(conf.getRestBaseURL() + "lists/destroy.json?list_id=" + listId), conf);
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getUserListStatuses(String listOwnerScreenName, int id, Paging paging) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + listOwnerScreenName +
-                "/lists/" + id + "/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
-                , INCLUDE_ENTITIES)), conf);
+        return getUserListStatuses(id, paging);
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getUserListStatuses(long listOwnerId, int id, Paging paging) throws TwitterException {
-        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + listOwnerId +
-                "/lists/" + id + "/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
-                , INCLUDE_ENTITIES)), conf);
+        return getUserListStatuses(id, paging);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getUserListStatuses(int listId, Paging paging) throws TwitterException {
+        return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "lists/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
+                , new HttpParameter[]{new HttpParameter("list_id", listId),
+                INCLUDE_ENTITIES,
+                INCLUDE_RTS})), conf);
     }
 
     /**
@@ -722,17 +739,16 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        return UserListJSONImpl.createPagableUserListList(get(conf.getRestBaseURL() +
-                listMemberScreenName + "/lists/memberships.json?cursor=" + cursor), conf);
+        return UserListJSONImpl.createPagableUserListList(get(conf.getRestBaseURL()
+                + "lists/memberships.json?screen_name=" + listMemberScreenName + "&cursor=" + cursor), conf);
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
         return UserListJSONImpl.createPagableUserListList(get(conf.getRestBaseURL() +
-                listOwnerScreenName + "/lists/subscriptions.json?cursor=" + cursor), conf);
+                "lists/subscriptions.json?screen_name=" + listOwnerScreenName + "&cursor=" + cursor), conf);
     }
 
     /**
@@ -780,10 +796,22 @@ class TwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
+    public PagableResponseList<User> getUserListMembers(int listId
+            , long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL() +
+                "lists/members.json?list_id=" + listId + "include_entities="
+                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor), conf);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public UserList addUserListMember(int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new UserListJSONImpl(post(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members.json?id=" + userId), conf);
+        return new UserListJSONImpl(post(conf.getRestBaseURL() +
+                "lists/members/create.json?user_id=" + userId + "&list_id=" +
+                listId), conf);
     }
 
     /**
@@ -791,8 +819,11 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public UserList addUserListMembers(int listId, long[] userIds) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new UserListJSONImpl(post(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members/create_all.json?user_id=" + T4JInternalStringUtil.join(userIds)), conf);
+        return new UserListJSONImpl(post(conf.getRestBaseURL() +
+                "lists/members/create_all.json",
+                new HttpParameter[]{
+                        new HttpParameter("list_id", listId),
+                        new HttpParameter("user_id", T4JInternalStringUtil.join(userIds))}), conf);
     }
 
     /**
@@ -800,8 +831,11 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new UserListJSONImpl(post(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members/create_all.json?screen_name=" + T4JInternalStringUtil.join(screenNames)), conf);
+        return new UserListJSONImpl(post(conf.getRestBaseURL() +
+                "lists/members/create_all.json",
+                new HttpParameter[]{
+                        new HttpParameter("list_id", listId),
+                        new HttpParameter("screen_name", T4JInternalStringUtil.join(screenNames))}), conf);
     }
 
     /**
@@ -809,18 +843,29 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public UserList deleteUserListMember(int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new UserListJSONImpl(delete(conf.getRestBaseURL() + getScreenName() +
-                "/" + listId + "/members.json?id=" + userId), conf);
+        return new UserListJSONImpl(post(conf.getRestBaseURL() +
+                "lists/members/destroy.json",
+                new HttpParameter[]{
+                        new HttpParameter("list_id", listId),
+                        new HttpParameter("user_id", userId)}), conf);
     }
 
     /**
      * {@inheritDoc}
      */
     public User checkUserListMembership(String listOwnerScreenName, int listId, long userId) throws TwitterException {
+        return showUserListMembership(listId, userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public User showUserListMembership(int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new UserJSONImpl(get(conf.getRestBaseURL() + listOwnerScreenName + "/" + listId
-                + "/members/" + userId + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled()), conf);
+        return new UserJSONImpl(get(conf.getRestBaseURL() +
+                "lists/members/show.json?list_id=" + listId + "&user_id=" +
+                userId + "&include_entities=" +
+                conf.isIncludeEntitiesEnabled()), conf);
     }
 
     /*List Subscribers Methods*/
@@ -830,9 +875,15 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public PagableResponseList<User> getUserListSubscribers(String listOwnerScreenName
             , int listId, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
+        return getUserListSubscribers(listId, cursor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public PagableResponseList<User> getUserListSubscribers(int listId, long cursor) throws TwitterException {
         return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL() +
-                listOwnerScreenName + "/" + listId + "/subscribers.json?include_entities="
+                "lists/subscribers.json?list_id=" + listId + "include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor), conf);
     }
 
@@ -848,20 +899,47 @@ class TwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
-    public UserList unsubscribeUserList(String listOwnerScreenName, int listId) throws TwitterException {
+    public UserList createUserListSubscription(int listId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new UserListJSONImpl(delete(conf.getRestBaseURL() + listOwnerScreenName +
-                "/" + listId + "/subscribers.json?id=" + getId()), conf);
+        return new UserListJSONImpl(post(conf.getRestBaseURL() +
+                "lists/subscribers/create.json"
+                , new HttpParameter[]{new HttpParameter("list_id", listId)}), conf);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public UserList unsubscribeUserList(String listOwnerScreenName, int listId) throws TwitterException {
+        return destroyUserListSubscription(listId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public UserList destroyUserListSubscription(int listId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return new UserListJSONImpl(post(conf.getRestBaseURL() +
+                "lists/subscribers/destroy.json",
+                new HttpParameter[]{new HttpParameter("list_id", listId)})
+                , conf);
     }
 
     /**
      * {@inheritDoc}
      */
     public User checkUserListSubscription(String listOwnerScreenName, int listId, long userId) throws TwitterException {
+        return showUserListSubscription(listId, userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public User showUserListSubscription(int listId, long userId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return new UserJSONImpl(get(conf.getRestBaseURL() + listOwnerScreenName + "/" + listId
-                + "/subscribers/" + userId + ".json?include_entities="
-                + conf.isIncludeEntitiesEnabled()), conf);
+        return new UserJSONImpl(get(conf.getRestBaseURL() +
+                "lists/subscribers/show.json?list_id=" + listId +
+                "&user_id=" + userId + "&include_entities=" +
+                conf.isIncludeEntitiesEnabled()), conf);
     }
 
     /*Direct Message Methods */

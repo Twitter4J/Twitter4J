@@ -228,10 +228,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, HTTP_USE_SSL)) {
             setUseSSL(getBoolean(props, prefix, HTTP_USE_SSL));
-        } else if (notNull(props, prefix, USER) &&
-                notNull(props, prefix, PASSWORD)) {
-            // use SSL with Basic Auth
-            setUseSSL(true);
         }
         if (notNull(props, prefix, HTTP_PRETTY_DEBUG)) {
             setPrettyDebugEnabled(getBoolean(props, prefix, HTTP_PRETTY_DEBUG));
