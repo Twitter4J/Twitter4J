@@ -29,13 +29,13 @@ import twitter4j.User;
  */
 public final class GetUserListSubscribers {
     /**
-     * Usage: java twitter4j.examples.listsubscribers.GetUserListSubscribers [list owner screen name] [list id]
+     * Usage: java twitter4j.examples.listsubscribers.GetUserListSubscribers [list id]
      *
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Usage: java twitter4j.examples.listsubscribers.GetUserListSubscribers [list owner screen name] [list id]");
+        if (args.length < 1) {
+            System.out.println("Usage: java twitter4j.examples.listsubscribers.GetUserListSubscribers [list id]");
             System.exit(-1);
         }
         try {
@@ -43,7 +43,7 @@ public final class GetUserListSubscribers {
             long cursor = -1;
             PagableResponseList<User> usres;
             do {
-                usres = twitter.getUserListSubscribers(args[0], Integer.parseInt(args[1]), cursor);
+                usres = twitter.getUserListSubscribers(Integer.parseInt(args[0]), cursor);
                 for (User list : usres) {
                     System.out.println("@" + list.getScreenName());
                 }

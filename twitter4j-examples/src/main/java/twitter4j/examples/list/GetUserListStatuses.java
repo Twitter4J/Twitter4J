@@ -30,13 +30,13 @@ import twitter4j.TwitterFactory;
  */
 public final class GetUserListStatuses {
     /**
-     * Usage: java twitter4j.examples.list.GetUserListStatuses [list owner screen name] [list id]
+     * Usage: java twitter4j.examples.list.GetUserListStatuses [list id]
      *
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Usage: java twitter4j.examples.list.GetUserListStatuses [list owner screen name] [list id]");
+        if (args.length < 1) {
+            System.out.println("Usage: java twitter4j.examples.list.GetUserListStatuses [list id]");
             System.exit(-1);
         }
         try {
@@ -44,7 +44,7 @@ public final class GetUserListStatuses {
             Paging page = new Paging(1);
             ResponseList<Status> statuses;
             do {
-                statuses = twitter.getUserListStatuses(args[0], Integer.parseInt(args[1]), page);
+                statuses = twitter.getUserListStatuses(Integer.parseInt(args[0]), page);
                 for (Status status : statuses) {
                     System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
                 }

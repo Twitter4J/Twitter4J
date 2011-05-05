@@ -92,6 +92,7 @@ public interface ListSubscribersMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/post/lists/subscribers/destroy">POST lists/subscribers/destroy | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
+     * @deprecated user {@link #destroyUserListSubscription(int)} instead
      */
     UserList unsubscribeUserList(String listOwnerScreenName, int listId)
             throws TwitterException;

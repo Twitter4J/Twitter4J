@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.examples.listsubscribers;
+package twitter4j.examples.listmembers;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -23,39 +23,39 @@ import twitter4j.User;
 import twitter4j.UserList;
 
 /**
- * Checks list subscription.
+ * Checks list membership.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class CheckUserListSubscription {
+public final class ShowUserListMembership {
     /**
-     * Usage: java twitter4j.examples.listsubscribers.CheckUserListSubscription [list owner screen name] [list id] [user id]
+     * Usage: java twitter4j.examples.listmembers.ShowUserListMembership [list id] [user id]
      *
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 3) {
-            System.out.println("Usage: java twitter4j.examples.listsubscribers.CheckUserListSubscription [list owner screen name] [list id] [user id]");
+        if (args.length < 2) {
+            System.out.println("Usage: java twitter4j.examples.listmembers.ShowUserListMembership [list id] [user id]");
             System.exit(-1);
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            int listId = Integer.parseInt(args[1]);
-            UserList list = twitter.showUserList(args[0], listId);
-            long userId = Integer.parseInt(args[2]);
+            int listId = Integer.parseInt(args[0]);
+            UserList list = twitter.showUserList(listId);
+            long userId = Integer.parseInt(args[1]);
             User user = twitter.showUser(userId);
             try {
-                twitter.checkUserListSubscription(args[0], listId, userId);
-                System.out.println("@" + user.getScreenName() + " is subscribing the list:" + list.getName());
+                twitter.showUserListMembership(listId, userId);
+                System.out.println("@" + user.getScreenName() + " is in the list:" + list.getName());
             } catch (TwitterException te) {
                 if (te.getStatusCode() == 404) {
-                    System.out.println("@" + user.getScreenName() + " is not subscribing  the list:" + list.getName());
+                    System.out.println("@" + user.getScreenName() + " is not in the list:" + list.getName());
                 }
             }
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to check user subscription: " + te.getMessage());
+            System.out.println("Failed to check user membership: " + te.getMessage());
             System.exit(-1);
         }
     }

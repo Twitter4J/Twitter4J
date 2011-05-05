@@ -25,20 +25,20 @@ import twitter4j.TwitterFactory;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class UnsubscribeUserList {
+public final class DestroyUserListSubscription {
     /**
-     * Usage: java twitter4j.examples.listsubscribers.UnsubscribeUserList [list owner screen name] [list id]
+     * Usage: java twitter4j.examples.listsubscribers.DestroyUserListSubscription [list id]
      *
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Usage: java twitter4j.examples.listsubscribers.UnsubscribeUserList [list owner screen name] [list id]");
+        if (args.length < 1) {
+            System.out.println("Usage: java twitter4j.examples.listsubscribers.DestroyUserListSubscription [list id]");
             System.exit(-1);
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            twitter.unsubscribeUserList(args[0], Integer.parseInt(args[1]));
+            twitter.destroyUserListSubscription(Integer.parseInt(args[0]));
             System.out.println("Successfully unsubscribed the list.");
             System.exit(0);
         } catch (TwitterException te) {
