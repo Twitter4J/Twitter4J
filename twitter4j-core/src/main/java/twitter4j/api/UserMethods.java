@@ -147,6 +147,7 @@ public interface UserMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
      * @since Twitter4J 2.0.9
+     * @deprecated use {@link FriendsFollowersMethods#getFriendsIDs(long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
     PagableResponseList<User> getFriendsStatuses(long cursor)
             throws TwitterException;
@@ -161,6 +162,7 @@ public interface UserMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
      * @since Twitter4J 2.0.9
+     * @deprecated use {@link FriendsFollowersMethods#getFriendsIDs(String, long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
     PagableResponseList<User> getFriendsStatuses(String screenName, long cursor)
             throws TwitterException;
@@ -175,6 +177,7 @@ public interface UserMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
+     * @deprecated use {@link FriendsFollowersMethods#getFriendsIDs(long, long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
     PagableResponseList<User> getFriendsStatuses(long userId, long cursor)
             throws TwitterException;
@@ -188,6 +191,7 @@ public interface UserMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
      * @since Twitter4J 2.0.9
+     * @deprecated use {@link FriendsFollowersMethods#getFollowersIDs(long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
     PagableResponseList<User> getFollowersStatuses(long cursor)
             throws TwitterException;
@@ -202,6 +206,7 @@ public interface UserMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
      * @since Twitter4J 2.0.9
+     * @deprecated use {@link FriendsFollowersMethods#getFollowersIDs(String, long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
     PagableResponseList<User> getFollowersStatuses(String screenName, long cursor)
             throws TwitterException;
@@ -216,6 +221,7 @@ public interface UserMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
+     * @deprecated use {@link FriendsFollowersMethods#getFollowersIDs(long, long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
     PagableResponseList<User> getFollowersStatuses(long userId, long cursor)
             throws TwitterException;

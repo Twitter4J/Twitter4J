@@ -478,6 +478,9 @@ public interface TwitterListener {
     /*Timeline Methods*/
     TwitterMethod PUBLIC_TIMELINE = TwitterMethod.PUBLIC_TIMELINE;
     TwitterMethod HOME_TIMELINE = TwitterMethod.HOME_TIMELINE;
+    /**
+     * @deprecated use {@link #HOME_TIMELINE} instead
+     */
     TwitterMethod FRIENDS_TIMELINE = TwitterMethod.FRIENDS_TIMELINE;
     TwitterMethod USER_TIMELINE = TwitterMethod.USER_TIMELINE;
     TwitterMethod MENTIONS = TwitterMethod.MENTIONS;

@@ -56,6 +56,7 @@ public interface TimelineMethodsAsync {
      * Returns the 20 most recent statuses posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
      *
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends_timeline">GET statuses/friends_timeline | dev.twitter.com</a>
+     * @deprecated use {@link #getHomeTimeline()} instead
      */
     void getFriendsTimeline();
 
@@ -66,6 +67,7 @@ public interface TimelineMethodsAsync {
      * @param paging controls pagination
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends_timeline">GET statuses/friends_timeline | dev.twitter.com</a>
      * @since Twitter4J 2.0.1
+     * @deprecated use {@link #getHomeTimeline(Paging)} instead
      */
     void getFriendsTimeline(Paging paging);
 
