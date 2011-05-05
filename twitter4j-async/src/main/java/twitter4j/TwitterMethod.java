@@ -86,6 +86,9 @@ public final class TwitterMethod implements java.io.Serializable {
     /*Timeline Methods*/
     public static final TwitterMethod PUBLIC_TIMELINE = new TwitterMethod("PUBLIC_TIMELINE");
     public static final TwitterMethod HOME_TIMELINE = new TwitterMethod("HOME_TIMELINE");
+    /**
+     * @deprecated use {@link #HOME_TIMELINE} instead
+     */
     public static final TwitterMethod FRIENDS_TIMELINE = new TwitterMethod("FRIENDS_TIMELINE");
     public static final TwitterMethod USER_TIMELINE = new TwitterMethod("USER_TIMELINE");
     public static final TwitterMethod MENTIONS = new TwitterMethod("MENTIONS");
@@ -112,7 +115,13 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod PROFILE_IMAGE = new TwitterMethod("PROFILE_IMAGE");
     public static final TwitterMethod USER_SUGGESTIONS = new TwitterMethod("USER_SUGGESTIONS");
     public static final TwitterMethod MEMBER_SUGGESTIONS = new TwitterMethod("MEMBER_SUGGESTIONS");
+    /**
+     * @deprecated use {@link #FRIENDS_IDS} and {@link #LOOKUP_USERS} instead
+     */
     public static final TwitterMethod FRIENDS_STATUSES = new TwitterMethod("FRIENDS_STATUSES");
+    /**
+     * @deprecated use {@link #FOLLOWERS_IDS} and {@link #LOOKUP_USERS} instead
+     */
     public static final TwitterMethod FOLLOWERS_STATUSES = new TwitterMethod("FOLLOWERS_STATUSES");
 
     /*List Methods*/
