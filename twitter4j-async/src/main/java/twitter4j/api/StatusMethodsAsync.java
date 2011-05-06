@@ -16,6 +16,7 @@
 
 package twitter4j.api;
 
+import twitter4j.Paging;
 import twitter4j.StatusUpdate;
 
 /**
@@ -91,8 +92,20 @@ public interface StatusMethodsAsync {
      * @param statusId The ID of the status you want to get retweeters of
      * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | dev.twitter.com</a>
      * @since Twitter4J 2.1.3
+     * @deprecated use {@link #getRetweetedBy(long, twitter4j.Paging)} instead
      */
     void getRetweetedBy(long statusId);
+
+    /**
+     * Show user objects of up to 100 members who retweeted the status.
+     * <br>This method calls http://api.twitter.com/1/statuses/:id/retweeted_by
+     *
+     * @param statusId The ID of the status you want to get retweeters of
+     * @param paging controls pagination. Supports count and page parameters.
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | dev.twitter.com</a>
+     * @since Twitter4J 2.2.3
+     */
+    void getRetweetedBy(long statusId, Paging paging);
 
     /**
      * Show user ids of up to 100 users who retweeted the status represented by id
@@ -101,6 +114,18 @@ public interface StatusMethodsAsync {
      * @param statusId The ID of the status you want to get retweeters of
      * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | dev.twitter.com</a>
      * @since Twitter4J 2.1.3
+     * @deprecated use {@link #getRetweetedByIDs(long, twitter4j.Paging)} instead
      */
     void getRetweetedByIDs(long statusId);
+
+    /**
+     * Show user ids of up to 100 users who retweeted the status represented by id
+     * <br />This method calls http://api.twitter.com/1/statuses/:id/retweeted_by/ids.format
+     *
+     * @param statusId The ID of the status you want to get retweeters of
+     * @param paging controls pagination. Supports count and page parameters.
+     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | dev.twitter.com</a>
+     * @since Twitter4J 2.2.3
+     */
+    void getRetweetedByIDs(long statusId, Paging paging);
 }

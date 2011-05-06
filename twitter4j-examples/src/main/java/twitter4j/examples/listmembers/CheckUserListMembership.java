@@ -34,7 +34,7 @@ public final class CheckUserListMembership {
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 1) {
+        if (args.length < 3) {
             System.out.println("Usage: java twitter4j.examples.listmembers.CheckUserListMembership [list owner screen name] [list id] [user id]");
             System.exit(-1);
         }
