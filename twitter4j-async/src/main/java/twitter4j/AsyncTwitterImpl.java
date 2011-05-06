@@ -1082,10 +1082,34 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
-    public void showUserList(final String listOwnerScreenName, final int id) {
+    public void getUserLists(final long listOwnerUserId, final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(USER_LISTS, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<UserList> lists = twitter.getUserLists(listOwnerUserId, cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotUserLists(lists);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void showUserList(final String listOwnerScreenName, final int listId) {
+        showUserList(listId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void showUserList(final int listId) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_USER_LIST, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.showUserList(listOwnerScreenName, id);
+                UserList list = twitter.showUserList(listId);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotShowUserList(list);
@@ -1117,26 +1141,23 @@ class AsyncTwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public void getUserListStatuses(final String listOwnerScreenName, final int id, final Paging paging) {
-        getDispatcher().invokeLater(new AsyncTask(USER_LIST_STATUSES, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<Status> statuses = twitter.getUserListStatuses(listOwnerScreenName, id, paging);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotUserListStatuses(statuses);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
+        getUserListStatuses(id, paging);
     }
 
     /**
      * {@inheritDoc}
      */
     public void getUserListStatuses(final long listOwnerId, final int id, final Paging paging) {
+        getUserListStatuses(id, paging);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getUserListStatuses(final int listId, final Paging paging) {
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_STATUSES, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<Status> statuses = twitter.getUserListStatuses(listOwnerId, id, paging);
+                ResponseList<Status> statuses = twitter.getUserListStatuses(listId, paging);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListStatuses(statuses);
@@ -1238,9 +1259,16 @@ class AsyncTwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public void getUserListMembers(final long listOwnerId, final int listId, final long cursor) {
+        getUserListMembers(listId, cursor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getUserListMembers(final int listId, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(LIST_MEMBERS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getUserListMembers(listOwnerId, listId, cursor);
+                PagableResponseList<User> users = twitter.getUserListMembers(listId, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMembers(users);
@@ -1323,9 +1351,16 @@ class AsyncTwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public void checkUserListMembership(final String listOwnerScreenName, final int listId, final long userId) {
+        showUserListMembership(listId, userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void showUserListMembership(final int listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CHECK_LIST_MEMBERSHIP, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                User user = twitter.checkUserListMembership(listOwnerScreenName, listId, userId);
+                User user = twitter.showUserListMembership(listId, userId);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.checkedUserListMembership(user);
@@ -1342,9 +1377,16 @@ class AsyncTwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public void getUserListSubscribers(final String listOwnerScreenName, final int listId, final long cursor) {
+        getUserListSubscribers(listId, cursor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getUserListSubscribers(final int listId, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(LIST_SUBSCRIBERS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getUserListSubscribers(listOwnerScreenName, listId, cursor);
+                PagableResponseList<User> users = twitter.getUserListSubscribers(listId, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListSubscribers(users);
@@ -1359,9 +1401,16 @@ class AsyncTwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public void subscribeUserList(final String listOwnerScreenName, final int listId) {
+        createUserListSubscription(listId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createUserListSubscription(final int listId) {
         getDispatcher().invokeLater(new AsyncTask(SUBSCRIBE_LIST, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.subscribeUserList(listOwnerScreenName, listId);
+                UserList list = twitter.createUserListSubscription(listId);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.subscribedUserList(list);
@@ -1376,9 +1425,16 @@ class AsyncTwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public void unsubscribeUserList(final String listOwnerScreenName, final int listId) {
+        destroyUserListSubscription(listId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void destroyUserListSubscription(final int listId) {
         getDispatcher().invokeLater(new AsyncTask(UNSUBSCRIBE_LIST, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.unsubscribeUserList(listOwnerScreenName, listId);
+                UserList list = twitter.destroyUserListSubscription(listId);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.unsubscribedUserList(list);
@@ -1393,9 +1449,16 @@ class AsyncTwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public void checkUserListSubscription(final String listOwnerScreenName, final int listId, final long userId) {
+        showUserListSubscription(listId, userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void showUserListSubscription(final int listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CHECK_LIST_SUBSCRIPTION, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                User user = twitter.checkUserListSubscription(listOwnerScreenName, listId, userId);
+                User user = twitter.showUserListSubscription(listId, userId);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.checkedUserListSubscription(user);
