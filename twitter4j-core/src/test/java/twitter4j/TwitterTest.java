@@ -242,6 +242,9 @@ public class TwitterTest extends TwitterTestBase {
 
         userList = twitter1.updateUserList(userList.getId(), "testpoint2", true, "description2");
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
+        // workarounding issue 2166
+        // http://code.google.com/p/twitter-api/issues/detail?id=2166
+        userList = twitter1.showUserList(userList.getId());
         assertTrue(userList.isPublic());
         assertNotNull(DataObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
