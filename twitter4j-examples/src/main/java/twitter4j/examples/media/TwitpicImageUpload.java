@@ -44,7 +44,7 @@ public final class TwitpicImageUpload {
         }
         try {
             Configuration conf = new ConfigurationBuilder().setMediaProviderAPIKey(args[0]).build();
-            ImageUpload upload = new ImageUploadFactory(conf).getInstance(MediaProvider.PLIXI);
+            ImageUpload upload = new ImageUploadFactory(conf).getInstance(MediaProvider.TWITPIC);
             String url;
             if (args.length >= 3) {
                 url = upload.upload(new File(args[1]), args[2]);
