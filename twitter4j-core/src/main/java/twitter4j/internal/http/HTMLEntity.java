@@ -19,14 +19,16 @@ package twitter4j.internal.http;
 import java.util.HashMap;
 import java.util.Map;
 
+import twitter4j.internal.util.StringAppender;
+
 public final class HTMLEntity {
     public static String escape(String original) {
-        StringBuffer buf = new StringBuffer(original);
+        StringAppender buf = new StringAppender(original);
         escape(buf);
         return buf.toString();
     }
 
-    public static void escape(StringBuffer original) {
+    public static void escape(StringAppender original) {
         int index = 0;
         String escaped;
         while (index < original.length()) {
@@ -43,14 +45,14 @@ public final class HTMLEntity {
     public static String unescape(String original) {
         String returnValue = null;
         if (null != original) {
-            StringBuffer buf = new StringBuffer(original);
+            StringAppender buf = new StringAppender(original);
             unescape(buf);
             returnValue = buf.toString();
         }
         return returnValue;
     }
 
-    public static void unescape(StringBuffer original) {
+    public static void unescape(StringAppender original) {
         int index = 0;
         int semicolonIndex;
         String escaped;

@@ -27,6 +27,7 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.util.StringAppender;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.BufferedReader;
@@ -532,7 +533,7 @@ public class DAOTest extends TwitterTestBase {
             }
             isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
-            StringBuffer buf = new StringBuffer();
+            StringAppender buf = new StringAppender();
             String line;
             while (null != (line = br.readLine())) {
                 buf.append(line);

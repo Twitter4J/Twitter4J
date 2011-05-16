@@ -18,6 +18,7 @@ package twitter4j.http;
 
 import junit.framework.TestCase;
 import twitter4j.internal.http.HTMLEntity;
+import twitter4j.internal.util.StringAppender;
 
 public class HTMLEntityTest extends TestCase {
     public HTMLEntityTest(String name) {
@@ -34,7 +35,7 @@ public class HTMLEntityTest extends TestCase {
         String original = "<=% !>";
         String expected = "&lt;=% !&gt;";
         assertEquals(expected, HTMLEntity.escape(original));
-        StringBuffer buf = new StringBuffer(original);
+        StringAppender buf = new StringAppender(original);
         HTMLEntity.escape(buf);
         assertEquals(expected, buf.toString());
     }
@@ -43,28 +44,28 @@ public class HTMLEntityTest extends TestCase {
         String original = "&lt;&lt;=% !&nbsp;&gt;";
         String expected = "<<=% !\u00A0>";
         assertEquals(expected, HTMLEntity.unescape(original));
-        StringBuffer buf = new StringBuffer(original);
+        StringAppender buf = new StringAppender(original);
         HTMLEntity.unescape(buf);
         assertEquals(expected, buf.toString());
 
         original = "&asd&gt;";
         expected = "&asd>";
         assertEquals(expected, HTMLEntity.unescape(original));
-        buf = new StringBuffer(original);
+        buf = new StringAppender(original);
         HTMLEntity.unescape(buf);
         assertEquals(expected, buf.toString());
 
         original = "&quot;;&;asd&;gt;";
         expected = "\";&;asd&;gt;";
         assertEquals(expected, HTMLEntity.unescape(original));
-        buf = new StringBuffer(original);
+        buf = new StringAppender(original);
         HTMLEntity.unescape(buf);
         assertEquals(expected, buf.toString());
 
         original = "\\u5e30%u5e30 &lt;%}& foobar &lt;&Cynthia&gt;";
         expected = "\\u5e30%u5e30 <%}& foobar <&Cynthia>";
         assertEquals(expected, HTMLEntity.unescape(original));
-        buf = new StringBuffer(original);
+        buf = new StringAppender(original);
         HTMLEntity.unescape(buf);
         assertEquals(expected, buf.toString());
 

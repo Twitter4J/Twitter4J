@@ -1,5 +1,7 @@
 package twitter4j.internal.org.json;
 
+import twitter4j.internal.util.StringAppender;
+
 /*
 Copyright (c) 2002 JSON.org
 
@@ -55,7 +57,7 @@ public class CDL {
     private static String getValue(JSONTokener x) throws JSONException {
         char c;
         char q;
-        StringBuffer sb;
+        StringAppender sb;
         do {
             c = x.next();
         } while (c == ' ' || c == '\t');
@@ -65,7 +67,7 @@ public class CDL {
         case '"':
         case '\'':
         	q = c;
-        	sb = new StringBuffer();
+        	sb = new StringAppender();
         	for (;;) {
         		c = x.next();
         		if (c == q) {
@@ -97,12 +99,12 @@ public class CDL {
         for (;;) {
             String value = getValue(x);
             char c = x.next();
-            if (value == null || 
+            if (value == null ||
             		(ja.length() == 0 && value.length() == 0 && c != ',')) {
                 return null;
             }
             ja.put(value);
-            for (;;) {                
+            for (;;) {
                 if (c == ',') {
                     break;
                 }
@@ -136,13 +138,13 @@ public class CDL {
 
     /**
 	 * Produce a comma delimited text row from a JSONArray. Values containing
-	 * the comma character will be quoted. Troublesome characters may be 
+	 * the comma character will be quoted. Troublesome characters may be
 	 * removed.
 	 * @param ja A JSONArray of strings.
 	 * @return A string ending in NEWLINE.
 	 */
 	public static String rowToString(JSONArray ja) {
-	    StringBuffer sb = new StringBuffer();
+	    StringAppender sb = new StringAppender();
 	    for (int i = 0; i < ja.length(); i += 1) {
 	        if (i > 0) {
 	            sb.append(',');
@@ -150,8 +152,8 @@ public class CDL {
 	        Object object = ja.opt(i);
 	        if (object != null) {
 	            String string = object.toString();
-	            if (string.length() > 0 && (string.indexOf(',') >= 0 || 
-	            		string.indexOf('\n') >= 0 || string.indexOf('\r') >= 0 || 
+	            if (string.length() > 0 && (string.indexOf(',') >= 0 ||
+	            		string.indexOf('\n') >= 0 || string.indexOf('\r') >= 0 ||
 	            		string.indexOf(0) >= 0 || string.charAt(0) == '"')) {
 	                sb.append('"');
 	            	int length = string.length();
@@ -267,7 +269,7 @@ public class CDL {
         if (names == null || names.length() == 0) {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
+        StringAppender sb = new StringAppender();
         for (int i = 0; i < ja.length(); i += 1) {
             JSONObject jo = ja.optJSONObject(i);
             if (jo != null) {

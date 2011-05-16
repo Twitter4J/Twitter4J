@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.util.StringAppender;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -35,7 +36,7 @@ import java.util.TreeSet;
 public class Annotation implements Comparable<Annotation>, java.io.Serializable {
     private static final long serialVersionUID = -6515375141284988754L;
     private String type = null;
-    private Map<String, String> attributes = null;
+    private Map attributes = null;
 
     /**
      * Construct an Annotation with a type but no attributes
@@ -66,7 +67,7 @@ public class Annotation implements Comparable<Annotation>, java.io.Serializable 
      */
     Annotation(JSONObject jsonObject) {
         String typ = null;
-        Map<String, String> attrs = null;
+        Map attrs = null;
         Iterator it = jsonObject.keys();
         if (it.hasNext()) {
             typ = (String) it.next();
@@ -76,7 +77,7 @@ public class Annotation implements Comparable<Annotation>, java.io.Serializable 
             } else {
                 try {
                     JSONObject jo = jsonObject.getJSONObject(typ);
-                    attrs = new LinkedHashMap<String, String>();
+                    attrs = new LinkedHashMap();
                     it = jo.keys();
                     while (it.hasNext()) {
                         String key = (String) it.next();
@@ -126,7 +127,7 @@ public class Annotation implements Comparable<Annotation>, java.io.Serializable 
     /**
      * @return the attributes
      */
-    public Map<String, String> getAttributes() {
+    public Map getAttributes() {
         return attributes;
     }
 
@@ -136,7 +137,7 @@ public class Annotation implements Comparable<Annotation>, java.io.Serializable 
      *
      * @param attributes - the attributes
      */
-    public void setAttributes(Map<String, String> attributes) {
+    public void setAttributes(Map attributes) {
         this.attributes = (attributes == null) ?
                 new LinkedHashMap<String, String>() : attributes;
     }
@@ -246,8 +247,8 @@ public class Annotation implements Comparable<Annotation>, java.io.Serializable 
             if (result != 0) {
                 return result;
             }
-            String thisValue = this.getAttributes().get(thisName);
-            String otherValue = other.getAttributes().get(otherName);
+            String thisValue = (String) this.getAttributes().get(thisName);
+            String otherValue = (String) other.getAttributes().get(otherName);
             result = thisValue.compareTo(otherValue);
             if (result != 0) {
                 return result;
@@ -271,7 +272,7 @@ public class Annotation implements Comparable<Annotation>, java.io.Serializable 
             return false;
         }
         Annotation other = (Annotation) obj;
-        // Map comparison ignores the order of the map entries - 
+        // Map comparison ignores the order of the map entries -
         // which is exactly what we want here for the attributes
         return ((this.getType().equals(other.getType())) &&
                 (this.getAttributes().equals(other.getAttributes())));
@@ -287,28 +288,24 @@ public class Annotation implements Comparable<Annotation>, java.io.Serializable 
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer("Annotation{type='");
-        sb.append(type).append("', attributes={");
-        Iterator<String> nameIt = attributes.keySet().iterator();
+        StringAppender sa = new StringAppender("Annotation{type='");
+        sa.append(type).append("', attributes={");
+
+        Iterator nameIt = attributes.keySet().iterator();
         while (nameIt.hasNext()) {
-            String name = nameIt.next();
-            String value = attributes.get(name);
-            sb.append('\'').append(name).append("'='").append(value).append('\'');
-            if (nameIt.hasNext()) {
-                sb.append(", ");
-            }
+            String name = (String) nameIt.next();
+            String value = (String) attributes.get(name);
+            sa.append('\'').append(name).append("'='").append(value).append('\'');
         }
-        sb.append("}}");
-        return sb.toString();
+        sa.append("}}");
+        return sa.toString();
     }
 
     /**
      * @return a sorted set of the attributes' names
      */
-    private SortedSet<String> sortedNames() {
-        SortedSet<String> names = new TreeSet<String>();
-        names.addAll(getAttributes().keySet());
-        return names;
+    private SortedSet sortedNames() {
+        return new TreeSet(getAttributes().keySet());
     }
 
 }

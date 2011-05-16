@@ -29,7 +29,7 @@ public class T4JInternalStringUtil {
     }
 
     public static String maskString(String str) {
-        StringBuffer buf = new StringBuffer(str.length());
+        StringAppender buf = new StringAppender(str.length());
         for (int i = 0; i < str.length(); i++) {
             buf.append("*");
         }
@@ -62,7 +62,7 @@ public class T4JInternalStringUtil {
     }
 
     public static String join(int[] follows) {
-        StringBuffer buf = new StringBuffer(11 * follows.length);
+        StringAppender buf = new StringAppender(11 * follows.length);
         for (int follow : follows) {
             if (0 != buf.length()) {
                 buf.append(",");
@@ -73,7 +73,7 @@ public class T4JInternalStringUtil {
     }
 
     public static String join(long[] follows) {
-        StringBuffer buf = new StringBuffer(11 * follows.length);
+        StringAppender buf = new StringAppender(11 * follows.length);
         for (long follow : follows) {
             if (0 != buf.length()) {
                 buf.append(",");
@@ -84,7 +84,7 @@ public class T4JInternalStringUtil {
     }
 
     public static String join(String[] track) {
-        StringBuffer buf = new StringBuffer(11 * track.length);
+        StringAppender buf = new StringAppender(11 * track.length);
         for (String str : track) {
             if (0 != buf.length()) {
                 buf.append(",");

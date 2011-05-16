@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeSet;
 
+import twitter4j.internal.util.StringAppender;
+
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its
  * external form is a string wrapped in curly braces with colons between the
@@ -339,7 +341,7 @@ public class JSONObject {
             Object key = keys.nextElement();
             if (key instanceof String) {
 
-// Go through the path, ensuring that there is a nested JSONObject for each 
+// Go through the path, ensuring that there is a nested JSONObject for each
 // segment except the last. Add the value using the last segment's name into
 // the deepest nested JSONObject.
 
@@ -962,7 +964,7 @@ public class JSONObject {
     private void populateMap(Object bean) {
         Class klass = bean.getClass();
 
-// If klass is a System class then set includeSuperClass to false. 
+// If klass is a System class then set includeSuperClass to false.
 
         boolean includeSuperClass = klass.getClassLoader() != null;
 
@@ -1177,7 +1179,7 @@ public class JSONObject {
         String hhhh;
         int i;
         int len = string.length();
-        StringBuffer sb = new StringBuffer(len + 4);
+        StringAppender sb = new StringAppender(len + 4);
 
         sb.append('"');
         for (i = 0; i < len; i += 1) {
@@ -1267,8 +1269,8 @@ public class JSONObject {
         }
 
         /*
-         * If it might be a number, try converting it. 
-         * We support the non-standard 0x- convention. 
+         * If it might be a number, try converting it.
+         * We support the non-standard 0x- convention.
          * If a number cannot be produced, then the value will just
          * be a string. Note that the 0x-, plus, and implied string
          * conventions are non-standard. A JSON parser may accept
@@ -1361,7 +1363,7 @@ public class JSONObject {
     public String toString() {
         try {
             Iterator keys = keys();
-            StringBuffer sb = new StringBuffer("{");
+            StringAppender sb = new StringAppender("{");
 
             while (keys.hasNext()) {
                 if (sb.length() > 1) {
@@ -1421,7 +1423,7 @@ public class JSONObject {
         Iterator keys = sortedKeys();
         int newindent = indent + indentFactor;
         Object object;
-        StringBuffer sb = new StringBuffer("{");
+        StringAppender sb = new StringAppender("{");
         if (length == 1) {
             object = keys.next();
             sb.append(quote(object.toString()));

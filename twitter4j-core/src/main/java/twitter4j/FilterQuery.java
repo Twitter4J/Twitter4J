@@ -17,6 +17,7 @@
 package twitter4j;
 
 import twitter4j.internal.http.HttpParameter;
+import twitter4j.internal.util.StringAppender;
 import twitter4j.internal.util.T4JInternalStringUtil;
 
 import java.util.ArrayList;
@@ -177,16 +178,16 @@ public final class FilterQuery implements java.io.Serializable {
     }
 
     private String toLocationsString(final double[][] keywords) {
-        final StringBuffer buf = new StringBuffer(20 * keywords.length * 2);
+        final StringAppender sa = new StringAppender(20 * keywords.length * 2);
         for (double[] keyword : keywords) {
-            if (0 != buf.length()) {
-                buf.append(",");
+            if (0 != sa.length()) {
+                sa.append(",");
             }
-            buf.append(keyword[0]);
-            buf.append(",");
-            buf.append(keyword[1]);
+            sa.append(keyword[0]);
+            sa.append(",");
+            sa.append(keyword[1]);
         }
-        return buf.toString();
+        return sa.toString();
     }
 
     @Override

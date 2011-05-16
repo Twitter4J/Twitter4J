@@ -22,6 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
+import twitter4j.internal.util.StringAppender;
+
 /**
  * A data class representing HTTP Post parameter
  *
@@ -233,7 +235,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         if (null == httpParams) {
             return "";
         }
-        StringBuffer buf = new StringBuffer();
+        StringAppender buf = new StringAppender();
         for (int j = 0; j < httpParams.length; j++) {
             if (httpParams[j].isFile()) {
                 throw new IllegalArgumentException("parameter [" + httpParams[j].name + "]should be text");
@@ -260,7 +262,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
             encoded = URLEncoder.encode(value, "UTF-8");
         } catch (UnsupportedEncodingException ignore) {
         }
-        StringBuffer buf = new StringBuffer(encoded.length());
+        StringAppender buf = new StringAppender(encoded.length());
         char focus;
         for (int i = 0; i < encoded.length(); i++) {
             focus = encoded.charAt(i);

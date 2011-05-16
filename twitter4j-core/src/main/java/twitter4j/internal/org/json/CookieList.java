@@ -26,6 +26,8 @@ SOFTWARE.
 
 import java.util.Iterator;
 
+import twitter4j.internal.util.StringAppender;
+
 /**
  * Convert a web browser cookie list string to a JSONObject and back.
  * @author JSON.org
@@ -72,7 +74,7 @@ public class CookieList {
         boolean      b = false;
         Iterator     keys = jo.keys();
         String       string;
-        StringBuffer sb = new StringBuffer();
+        StringAppender sb = new StringAppender();
         while (keys.hasNext()) {
             string = keys.next().toString();
             if (!jo.isNull(string)) {

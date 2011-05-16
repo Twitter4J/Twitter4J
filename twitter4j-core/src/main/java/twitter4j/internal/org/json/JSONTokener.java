@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 
+import twitter4j.internal.util.StringAppender;
+
 /*
 Copyright (c) 2002 JSON.org
 
@@ -55,7 +57,7 @@ public class JSONTokener {
      * @param reader     A reader.
      */
     public JSONTokener(Reader reader) {
-        this.reader = reader.markSupported() ? 
+        this.reader = reader.markSupported() ?
         		reader : new BufferedReader(reader);
         this.eof = false;
         this.usePrevious = false;
@@ -64,13 +66,13 @@ public class JSONTokener {
         this.character = 1;
         this.line = 1;
     }
-    
-    
+
+
     /**
      * Construct a JSONTokener from an InputStream.
      */
     public JSONTokener(InputStream inputStream) throws JSONException {
-        this(new InputStreamReader(inputStream));    	
+        this(new InputStreamReader(inputStream));
     }
 
 
@@ -118,9 +120,9 @@ public class JSONTokener {
         }
         return -1;
     }
-    
+
     public boolean end() {
-    	return eof && !usePrevious;    	
+    	return eof && !usePrevious;
     }
 
 
@@ -133,7 +135,7 @@ public class JSONTokener {
         next();
         if (end()) {
             return false;
-        } 
+        }
         back();
         return true;
     }
@@ -155,11 +157,11 @@ public class JSONTokener {
 	        } catch (IOException exception) {
 	            throw new JSONException(exception);
 	        }
-	
+
 	        if (c <= 0) { // End of stream
 	        	this.eof = true;
 	        	c = 0;
-	        } 
+	        }
         }
     	this.index += 1;
     	if (this.previous == '\r') {
@@ -213,7 +215,7 @@ public class JSONTokener {
          while (pos < n) {
              chars[pos] = next();
              if (end()) {
-                 throw syntaxError("Substring bounds error");                 
+                 throw syntaxError("Substring bounds error");
              }
              pos += 1;
          }
@@ -249,7 +251,7 @@ public class JSONTokener {
      */
     public String nextString(char quote) throws JSONException {
         char c;
-        StringBuffer sb = new StringBuffer();
+        StringAppender sb = new StringAppender();
         for (;;) {
             c = next();
             switch (c) {
@@ -305,7 +307,7 @@ public class JSONTokener {
      * @return   A string.
      */
     public String nextTo(char delimiter) throws JSONException {
-        StringBuffer sb = new StringBuffer();
+        StringAppender sb = new StringAppender();
         for (;;) {
             char c = next();
             if (c == delimiter || c == 0 || c == '\n' || c == '\r') {
@@ -327,7 +329,7 @@ public class JSONTokener {
      */
     public String nextTo(String delimiters) throws JSONException {
         char c;
-        StringBuffer sb = new StringBuffer();
+        StringAppender sb = new StringAppender();
         for (;;) {
             c = next();
             if (delimiters.indexOf(c) >= 0 || c == 0 ||
@@ -374,7 +376,7 @@ public class JSONTokener {
          * formatting character.
          */
 
-        StringBuffer sb = new StringBuffer();
+        StringAppender sb = new StringAppender();
         while (c >= ' ' && ",:]}/\\\"[{;=#".indexOf(c) < 0) {
             sb.append(c);
             c = next();
@@ -420,7 +422,7 @@ public class JSONTokener {
         back();
         return c;
     }
-    
+
 
     /**
      * Make a JSONException to signal a syntax error.
@@ -439,7 +441,7 @@ public class JSONTokener {
      * @return " at {index} [character {character} line {line}]"
      */
     public String toString() {
-        return " at " + index + " [character " + this.character + " line " + 
+        return " at " + index + " [character " + this.character + " line " +
         	this.line + "]";
     }
 }

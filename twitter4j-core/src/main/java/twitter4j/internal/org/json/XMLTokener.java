@@ -1,5 +1,7 @@
 package twitter4j.internal.org.json;
 
+import twitter4j.internal.util.StringAppender;
+
 /*
 Copyright (c) 2002 JSON.org
 
@@ -63,7 +65,7 @@ public class XMLTokener extends JSONTokener {
     public String nextCDATA() throws JSONException {
         char         c;
         int          i;
-        StringBuffer sb = new StringBuffer();
+        StringAppender sb = new StringAppender();
         for (;;) {
             c = next();
             if (end()) {
@@ -91,7 +93,7 @@ public class XMLTokener extends JSONTokener {
      */
     public Object nextContent() throws JSONException {
         char         c;
-        StringBuffer sb;
+        StringAppender sb;
         do {
             c = next();
         } while (Character.isWhitespace(c));
@@ -101,7 +103,7 @@ public class XMLTokener extends JSONTokener {
         if (c == '<') {
             return XML.LT;
         }
-        sb = new StringBuffer();
+        sb = new StringAppender();
         for (;;) {
             if (c == '<' || c == 0) {
                 back();
@@ -125,7 +127,7 @@ public class XMLTokener extends JSONTokener {
      * @throws JSONException If missing ';' in XML entity.
      */
     public Object nextEntity(char ampersand) throws JSONException {
-        StringBuffer sb = new StringBuffer();
+        StringAppender sb = new StringAppender();
         for (;;) {
             char c = next();
             if (Character.isLetterOrDigit(c) || c == '#') {
@@ -219,7 +221,7 @@ public class XMLTokener extends JSONTokener {
     public Object nextToken() throws JSONException {
         char c;
         char q;
-        StringBuffer sb;
+        StringAppender sb;
         do {
             c = next();
         } while (Character.isWhitespace(c));
@@ -244,7 +246,7 @@ public class XMLTokener extends JSONTokener {
         case '"':
         case '\'':
             q = c;
-            sb = new StringBuffer();
+            sb = new StringAppender();
             for (;;) {
                 c = next();
                 if (c == 0) {
@@ -263,7 +265,7 @@ public class XMLTokener extends JSONTokener {
 
 // Name
 
-            sb = new StringBuffer();
+            sb = new StringAppender();
             for (;;) {
                 sb.append(c);
                 c = next();
@@ -290,8 +292,8 @@ public class XMLTokener extends JSONTokener {
             }
         }
     }
-    
-    
+
+
     /**
      * Skip characters until past the requested string.
      * If it is not found, we are left at the end of the source with a result of false.
@@ -306,12 +308,12 @@ public class XMLTokener extends JSONTokener {
     	int offset = 0;
     	int length = to.length();
         char[] circle = new char[length];
-        
+
         /*
          * First fill the circle buffer with as many characters as are in the
          * to string. If we reach an early end, bail.
          */
-        
+
     	for (i = 0; i < length; i += 1) {
     		c = next();
     		if (c == 0) {
@@ -326,7 +328,7 @@ public class XMLTokener extends JSONTokener {
     		j = offset;
     		b = true;
     		/*
-    		 * Compare the circle buffer with the to string. 
+    		 * Compare the circle buffer with the to string.
     		 */
     		for (i = 0; i < length; i += 1) {
     			if (circle[j] != to.charAt(i)) {
@@ -352,7 +354,7 @@ public class XMLTokener extends JSONTokener {
     			return false;
     		}
     		/*
-    		 * Shove the character in the circle buffer and advance the 
+    		 * Shove the character in the circle buffer and advance the
     		 * circle offset. The offset is mod n.
     		 */
     		circle[offset] = c;
