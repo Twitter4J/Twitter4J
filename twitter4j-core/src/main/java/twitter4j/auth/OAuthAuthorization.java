@@ -23,7 +23,6 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.StringAppender;
 import twitter4j.internal.util.T4JInternalStringUtil;
 
 import javax.crypto.Mac;
@@ -207,7 +206,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
             signatureBaseParams.addAll(toParamList(params));
         }
         parseGetParameters(url, signatureBaseParams);
-        StringAppender base = new StringAppender(method).append('&')
+        StringBuilder base = new StringBuilder(method).append('&')
                 .append(HttpParameter.encode(constructRequestURL(url))).append('&')
                 .append(HttpParameter.encode(normalizeRequestParameters(signatureBaseParams)));
         String oauthBaseString = base.toString();
@@ -279,7 +278,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         signatureBaseParams.addAll(oauthHeaderParams);
         parseGetParameters(url, signatureBaseParams);
 
-        StringAppender base = new StringAppender(method).append("&")
+        StringBuilder base = new StringBuilder(method).append("&")
                 .append(HttpParameter.encode(constructRequestURL(url))).append("&");
         base.append(HttpParameter.encode(normalizeRequestParameters(signatureBaseParams)));
 
@@ -384,7 +383,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     }
 
     public static String encodeParameters(List<HttpParameter> httpParams, String splitter, boolean quot) {
-        StringAppender sa = new StringAppender();
+        StringBuilder sa = new StringBuilder();
         for (HttpParameter param : httpParams) {
             if (!param.isFile()) {
                 if (sa.length() != 0) {

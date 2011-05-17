@@ -272,11 +272,12 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
 
-    public void onFavorite(User source, User target, Status favoritedStatus) {
+    public void onFavorite(User source, User target, Status favoritedStatus, Date createdAt) {
         received.add(new Object[]{TwitterMethod.CREATE_FAVORITE, source, target, favoritedStatus});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(target));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(favoritedStatus));
+        Assert.assertNotNull(createdAt);
         notifyResponse();
     }
 

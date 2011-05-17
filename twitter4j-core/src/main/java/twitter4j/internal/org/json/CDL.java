@@ -1,6 +1,5 @@
 package twitter4j.internal.org.json;
 
-import twitter4j.internal.util.StringAppender;
 
 /*
 Copyright (c) 2002 JSON.org
@@ -57,7 +56,7 @@ public class CDL {
     private static String getValue(JSONTokener x) throws JSONException {
         char c;
         char q;
-        StringAppender sb;
+        StringBuilder sb;
         do {
             c = x.next();
         } while (c == ' ' || c == '\t');
@@ -67,7 +66,7 @@ public class CDL {
         case '"':
         case '\'':
         	q = c;
-        	sb = new StringAppender();
+        	sb = new StringBuilder();
         	for (;;) {
         		c = x.next();
         		if (c == q) {
@@ -144,7 +143,7 @@ public class CDL {
 	 * @return A string ending in NEWLINE.
 	 */
 	public static String rowToString(JSONArray ja) {
-	    StringAppender sb = new StringAppender();
+	    StringBuilder sb = new StringBuilder();
 	    for (int i = 0; i < ja.length(); i += 1) {
 	        if (i > 0) {
 	            sb.append(',');
@@ -269,7 +268,7 @@ public class CDL {
         if (names == null || names.length() == 0) {
             return null;
         }
-        StringAppender sb = new StringAppender();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < ja.length(); i += 1) {
             JSONObject jo = ja.optJSONObject(i);
             if (jo != null) {

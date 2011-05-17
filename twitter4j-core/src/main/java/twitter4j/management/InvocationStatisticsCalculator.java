@@ -16,8 +16,6 @@
 
 package twitter4j.management;
 
-import twitter4j.internal.util.StringAppender;
-
 
 /**
  * Object that collects/aggregates statistics for the invocation of a given method.
@@ -93,7 +91,7 @@ public class InvocationStatisticsCalculator implements InvocationStatistics {
     @Override
     public String toString() {
         // StringBuilder is faster... do we still need to support JDK 1.4?
-        StringAppender sb = new StringAppender();
+        StringBuilder sb = new StringBuilder();
         sb.append("calls=").append(getCallCount()).append(",")
                 .append("errors=").append(getErrorCount()).append(",")
                 .append("totalTime=").append(getTotalTime()).append(",")

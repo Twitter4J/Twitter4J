@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.StringAppender;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -288,7 +287,7 @@ public class Annotation implements Comparable<Annotation>, java.io.Serializable 
 
     @Override
     public String toString() {
-        StringAppender sa = new StringAppender("Annotation{type='");
+        StringBuilder sa = new StringBuilder("Annotation{type='");
         sa.append(type).append("', attributes={");
 
         Iterator nameIt = attributes.keySet().iterator();

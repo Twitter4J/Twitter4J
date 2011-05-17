@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.util.StringAppender;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -181,7 +180,7 @@ public class Annotations implements java.io.Serializable {
     */
     @Override
     public String toString() {
-        StringAppender sa = new StringAppender("Annotations{");
+        StringBuilder sa = new StringBuilder("Annotations{");
         for (int i = 0; i < size(); i++) {
             if (i > 0) {
                 sa.append(", ");

@@ -38,8 +38,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeSet;
 
-import twitter4j.internal.util.StringAppender;
-
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its
  * external form is a string wrapped in curly braces with colons between the
@@ -1179,7 +1177,7 @@ public class JSONObject {
         String hhhh;
         int i;
         int len = string.length();
-        StringAppender sb = new StringAppender(len + 4);
+        StringBuilder sb = new StringBuilder(len + 4);
 
         sb.append('"');
         for (i = 0; i < len; i += 1) {
@@ -1363,7 +1361,7 @@ public class JSONObject {
     public String toString() {
         try {
             Iterator keys = keys();
-            StringAppender sb = new StringAppender("{");
+            StringBuilder sb = new StringBuilder("{");
 
             while (keys.hasNext()) {
                 if (sb.length() > 1) {
@@ -1423,7 +1421,7 @@ public class JSONObject {
         Iterator keys = sortedKeys();
         int newindent = indent + indentFactor;
         Object object;
-        StringAppender sb = new StringAppender("{");
+        StringBuilder sb = new StringBuilder("{");
         if (length == 1) {
             object = keys.next();
             sb.append(quote(object.toString()));

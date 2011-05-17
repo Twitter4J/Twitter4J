@@ -16,7 +16,6 @@
 
 package twitter4j.examples.tweets;
 
-import twitter4j.IDs;
 import twitter4j.Paging;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

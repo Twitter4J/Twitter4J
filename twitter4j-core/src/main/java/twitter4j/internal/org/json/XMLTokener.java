@@ -1,6 +1,5 @@
 package twitter4j.internal.org.json;
 
-import twitter4j.internal.util.StringAppender;
 
 /*
 Copyright (c) 2002 JSON.org
@@ -65,7 +64,7 @@ public class XMLTokener extends JSONTokener {
     public String nextCDATA() throws JSONException {
         char         c;
         int          i;
-        StringAppender sb = new StringAppender();
+        StringBuilder sb = new StringBuilder();
         for (;;) {
             c = next();
             if (end()) {
@@ -93,7 +92,7 @@ public class XMLTokener extends JSONTokener {
      */
     public Object nextContent() throws JSONException {
         char         c;
-        StringAppender sb;
+        StringBuilder sb;
         do {
             c = next();
         } while (Character.isWhitespace(c));
@@ -103,7 +102,7 @@ public class XMLTokener extends JSONTokener {
         if (c == '<') {
             return XML.LT;
         }
-        sb = new StringAppender();
+        sb = new StringBuilder();
         for (;;) {
             if (c == '<' || c == 0) {
                 back();
@@ -127,7 +126,7 @@ public class XMLTokener extends JSONTokener {
      * @throws JSONException If missing ';' in XML entity.
      */
     public Object nextEntity(char ampersand) throws JSONException {
-        StringAppender sb = new StringAppender();
+        StringBuilder sb = new StringBuilder();
         for (;;) {
             char c = next();
             if (Character.isLetterOrDigit(c) || c == '#') {
@@ -221,7 +220,7 @@ public class XMLTokener extends JSONTokener {
     public Object nextToken() throws JSONException {
         char c;
         char q;
-        StringAppender sb;
+        StringBuilder sb;
         do {
             c = next();
         } while (Character.isWhitespace(c));
@@ -246,7 +245,7 @@ public class XMLTokener extends JSONTokener {
         case '"':
         case '\'':
             q = c;
-            sb = new StringAppender();
+            sb = new StringBuilder();
             for (;;) {
                 c = next();
                 if (c == 0) {
@@ -265,7 +264,7 @@ public class XMLTokener extends JSONTokener {
 
 // Name
 
-            sb = new StringAppender();
+            sb = new StringBuilder();
             for (;;) {
                 sb.append(c);
                 c = next();

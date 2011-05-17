@@ -20,7 +20,6 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseCode;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.StringAppender;
 
 import java.util.List;
 import java.util.Map;
@@ -107,7 +106,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     private static String decode(String str) {
         if (null != str) {
-            StringAppender sa = new StringAppender(str.length());
+            StringBuilder sa = new StringBuilder(str.length());
             try {
                 JSONObject json = new JSONObject(str);
                 if (!json.isNull("error")) {

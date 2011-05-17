@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import java.util.Date;
+
 /**
  * @author Rémy Rakic at gmail.com
  * @since Twitter4J 2.1.3
@@ -35,7 +37,7 @@ public interface UserStreamListener extends StatusListener {
      * @param favoritedStatus
      * @since Twitter4J 2.1.3
      */
-    void onFavorite(User source, User target, Status favoritedStatus);
+    void onFavorite(User source, User target, Status favoritedStatus, Date createdAt);
 
     /**
      * @param source

@@ -23,7 +23,6 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.org.json.JSONTokener;
-import twitter4j.internal.util.StringAppender;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -97,7 +96,7 @@ public abstract class HttpResponse {
                     return null;
                 }
                 br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-                StringAppender buf = new StringAppender();
+                StringBuilder buf = new StringBuilder();
                 String line;
                 while (null != (line = br.readLine())) {
                     buf.append(line).append("\n");

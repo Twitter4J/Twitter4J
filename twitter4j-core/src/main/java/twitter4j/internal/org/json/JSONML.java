@@ -26,8 +26,6 @@ SOFTWARE.
 
 import java.util.Iterator;
 
-import twitter4j.internal.util.StringAppender;
-
 
 /**
  * This provides static methods to convert an XML text into a JSONArray or
@@ -311,7 +309,7 @@ public class JSONML {
 	    Iterator     keys;
 	    int			 length;
     	Object		 object;
-    	StringAppender sb = new StringAppender();
+    	StringBuilder sb = new StringBuilder();
 	    String       tagName;
 	    String       value;
 
@@ -387,7 +385,7 @@ public class JSONML {
      * @throws JSONException
      */
 	public static String toString(JSONObject jo) throws JSONException {
-	    StringAppender sb = new StringAppender();
+	    StringBuilder sb = new StringBuilder();
 	    int          i;
 	    JSONArray    ja;
 	    String       key;

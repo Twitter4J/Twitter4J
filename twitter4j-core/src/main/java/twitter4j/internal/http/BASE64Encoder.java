@@ -16,7 +16,6 @@
 
 package twitter4j.internal.http;
 
-import twitter4j.internal.util.StringAppender;
 
 /**
  * A utility class encodes byte array into String using Base64 encoding scheme.
@@ -37,7 +36,7 @@ public final class BASE64Encoder {
     }
 
     public static String encode(byte[] from) {
-        StringAppender to = new StringAppender((int) (from.length * 1.34) + 3);
+        StringBuilder to = new StringBuilder((int) (from.length * 1.34) + 3);
         int num = 0;
         char currentByte = 0;
         for (int i = 0; i < from.length; i++) {

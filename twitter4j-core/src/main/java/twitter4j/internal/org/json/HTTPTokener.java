@@ -1,6 +1,5 @@
 package twitter4j.internal.org.json;
 
-import twitter4j.internal.util.StringAppender;
 
 /*
 Copyright (c) 2002 JSON.org
@@ -51,7 +50,7 @@ public class HTTPTokener extends JSONTokener {
     public String nextToken() throws JSONException {
         char c;
         char q;
-        StringAppender sb = new StringAppender();
+        StringBuilder sb = new StringBuilder();
         do {
             c = next();
         } while (Character.isWhitespace(c));

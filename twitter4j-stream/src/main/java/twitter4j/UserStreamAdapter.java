@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import java.util.Date;
+
 /**
  * @author Rémy Rakic at gmail.com
  * @since Twitter4J 2.1.3
@@ -27,7 +29,7 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     public void onFriendList(long[] friendIds) {
     }
 
-    public void onFavorite(User source, User target, Status favoritedStatus) {
+    public void onFavorite(User source, User target, Status favoritedStatus, Date createdAt) {
     }
 
     public void onFollow(User source, User followedUser) {

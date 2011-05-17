@@ -26,7 +26,6 @@ SOFTWARE.
 
 import java.util.Iterator;
 
-import twitter4j.internal.util.StringAppender;
 
 /**
  * Convert an HTTP header to a JSONObject and back.
@@ -129,7 +128,7 @@ public class HTTP {
     public static String toString(JSONObject jo) throws JSONException {
         Iterator     keys = jo.keys();
         String       string;
-        StringAppender sb = new StringAppender();
+        StringBuilder sb = new StringBuilder();
         if (jo.has("Status-Code") && jo.has("Reason-Phrase")) {
             sb.append(jo.getString("HTTP-Version"));
             sb.append(' ');
