@@ -20,6 +20,9 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface CursorSupport {
+
+    long START = -1L;
+
     /**
      * @since Twitter4J 2.0.10
      */
