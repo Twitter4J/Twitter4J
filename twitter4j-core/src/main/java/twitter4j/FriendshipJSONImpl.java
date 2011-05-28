@@ -23,15 +23,15 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import static twitter4j.internal.util.ParseUtil.getInt;
+import static twitter4j.internal.util.ParseUtil.getLong;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
 class FriendshipJSONImpl implements Friendship {
-    private static final long serialVersionUID = -7592213959077711096L;
-    private final int id;
+    private static final long serialVersionUID = 7724410837770709741L;
+    private final long id;
     private final String name;
     private final String screenName;
     private boolean following = false;
@@ -40,7 +40,7 @@ class FriendshipJSONImpl implements Friendship {
     /*package*/ FriendshipJSONImpl(JSONObject json) throws TwitterException {
         super();
         try {
-            id = getInt("id", json);
+            id = getLong("id", json);
             name = json.getString("name");
             screenName = json.getString("screen_name");
             JSONArray connections = json.getJSONArray("connections");
@@ -85,7 +85,7 @@ class FriendshipJSONImpl implements Friendship {
         }
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -123,9 +123,9 @@ class FriendshipJSONImpl implements Friendship {
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + screenName.hashCode();
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
         result = 31 * result + (following ? 1 : 0);
         result = 31 * result + (followedBy ? 1 : 0);
         return result;
