@@ -374,8 +374,8 @@ class TwitterImpl extends TwitterBaseImpl
         return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() +
                 "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
-                        new HttpParameter("screen_name", screenName)
-                        , INCLUDE_ENTITIES})), conf);
+                new HttpParameter("screen_name", screenName)
+                , INCLUDE_ENTITIES})), conf);
     }
 
     /**
@@ -385,8 +385,8 @@ class TwitterImpl extends TwitterBaseImpl
         return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() +
                 "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
-                        new HttpParameter("user_id", userId)
-                        , INCLUDE_ENTITIES})), conf);
+                new HttpParameter("user_id", userId)
+                , INCLUDE_ENTITIES})), conf);
     }
 
     /**
@@ -396,8 +396,8 @@ class TwitterImpl extends TwitterBaseImpl
         return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() +
                 "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
-                        new HttpParameter("screen_name", screenName)
-                        , INCLUDE_ENTITIES})), conf);
+                new HttpParameter("screen_name", screenName)
+                , INCLUDE_ENTITIES})), conf);
     }
 
     /**
@@ -407,8 +407,8 @@ class TwitterImpl extends TwitterBaseImpl
         return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() +
                 "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
                 , new HttpParameter[]{
-                        new HttpParameter("user_id", userId)
-                        , INCLUDE_ENTITIES})), conf);
+                new HttpParameter("user_id", userId)
+                , INCLUDE_ENTITIES})), conf);
     }
 
     /**
@@ -688,7 +688,6 @@ class TwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
         return UserListJSONImpl.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?screen_name=" + listOwnerScreenName + "&cursor=" + cursor), conf);
     }
 
@@ -696,7 +695,6 @@ class TwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserLists(long listOwnerUserId, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
         return UserListJSONImpl.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?user_id=" + listOwnerUserId + "&cursor=" + cursor), conf);
     }
 
@@ -753,7 +751,6 @@ class TwitterImpl extends TwitterBaseImpl
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
         return UserListJSONImpl.createPagableUserListList(get(conf.getRestBaseURL()
                 + "lists/memberships.json?screen_name=" + listMemberScreenName + "&cursor=" + cursor), conf);
     }
@@ -1330,7 +1327,7 @@ class TwitterImpl extends TwitterBaseImpl
         return new UserJSONImpl(post(conf.getRestBaseURL()
                 + "account/update_profile_image.json"
                 , new HttpParameter[]{new HttpParameter("image", image)
-                        , INCLUDE_ENTITIES}), conf);
+                , INCLUDE_ENTITIES}), conf);
     }
 
     /**
@@ -1341,7 +1338,7 @@ class TwitterImpl extends TwitterBaseImpl
         return new UserJSONImpl(post(conf.getRestBaseURL()
                 + "account/update_profile_image.json"
                 , new HttpParameter[]{new HttpParameter("image", "image", image)
-                        , INCLUDE_ENTITIES}), conf);
+                , INCLUDE_ENTITIES}), conf);
     }
 
     /**
@@ -1406,7 +1403,7 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return StatusJSONImpl.createStatusList(get(conf.getRestBaseURL() + "favorites.json"
                 , new HttpParameter[]{new HttpParameter("page", page)
-                        , INCLUDE_ENTITIES}), conf);
+                , INCLUDE_ENTITIES}), conf);
     }
 
     /**
