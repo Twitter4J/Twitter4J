@@ -60,7 +60,7 @@ public class ConfigurationTest extends TestCase {
         assertNull(ConfigurationBase.fixURL(true, null));
     }
 
-    public void testSprit() throws Exception {
+    public void testSplit() throws Exception {
         String original = "foo/bar";
         String[] split = T4JInternalStringUtil.split(original, "/");
         assertEquals("foo", split[0]);
