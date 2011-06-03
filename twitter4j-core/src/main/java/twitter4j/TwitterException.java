@@ -151,7 +151,6 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * example: Retry-After: 67).<br>
      * Check if getStatusCode() == 503 before calling this method to ensure that you are actually exceeding rate limitation with query
      * apis.<br>
-     * Otherwise, you'll get an IllegalStateException if "Retry-After" response header was not included in the response.<br>
      *
      * @return instructs the application when it is safe to continue in seconds
      * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
@@ -172,9 +171,6 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 }
             } catch (NumberFormatException ignore) {
             }
-        }
-        if (retryAfter == -1) {
-            throw new IllegalStateException("Rate limitation is not exceeded");
         }
         return retryAfter;
     }

@@ -52,6 +52,7 @@ public class TwitterExceptionTest extends TestCase {
         assertEquals(35, te3.getExceptionCode().length());
 
         assertFalse(code1.equals(code2));
+        new TwitterException("msg").toString();
     }
 
     public void testEncodedMessage() throws Exception {
