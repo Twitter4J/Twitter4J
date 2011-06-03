@@ -48,6 +48,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     private String description;
     private boolean isContributorsEnabled;
     private String profileImageUrl;
+    private String profileImageUrlHttps;
     private String url;
     private boolean isProtected;
     private int followersCount;
@@ -67,6 +68,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     private int utcOffset;
     private String timeZone;
     private String profileBackgroundImageUrl;
+    private String profileBackgroundImageUrlHttps;
     private boolean profileBackgroundTiled;
     private String lang;
     private int statusesCount;
@@ -103,6 +105,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
             description = getRawString("description", json);
             isContributorsEnabled = getBoolean("contributors_enabled", json);
             profileImageUrl = getRawString("profile_image_url", json);
+            profileImageUrlHttps = getRawString("profile_image_url_https", json);
             url = getRawString("url", json);
             isProtected = getBoolean("protected", json);
             isGeoEnabled = getBoolean("geo_enabled", json);
@@ -123,6 +126,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
             utcOffset = getInt("utc_offset", json);
             timeZone = getRawString("time_zone", json);
             profileBackgroundImageUrl = getRawString("profile_background_image_url", json);
+            profileBackgroundImageUrlHttps = getRawString("profile_background_image_url_https", json);
             profileBackgroundTiled = getBoolean("profile_background_tile", json);
             lang = getRawString("lang", json);
             statusesCount = getInt("statuses_count", json);
@@ -193,7 +197,20 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
             return null;
         }
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public URL getProfileImageUrlHttps() {
+    	if (null == profileImageUrlHttps)
+    		return null;
+        try {
+            return new URL(profileImageUrlHttps);
+        } catch (MalformedURLException ex) {
+            return null;
+        }
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -312,7 +329,14 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
      * {@inheritDoc}
      */
     public String getProfileBackgroundImageUrl() {
-        return profileBackgroundImageUrl;
+    	return profileBackgroundImageUrl;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getProfileBackgroundImageUrlHttps() {
+    	return profileBackgroundImageUrlHttps;
     }
 
     /**
@@ -460,6 +484,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
                 ", description='" + description + '\'' +
                 ", isContributorsEnabled=" + isContributorsEnabled +
                 ", profileImageUrl='" + profileImageUrl + '\'' +
+                ", profileImageUrlHttps='" + profileImageUrlHttps + '\'' +
                 ", url='" + url + '\'' +
                 ", isProtected=" + isProtected +
                 ", followersCount=" + followersCount +
@@ -477,6 +502,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
                 ", utcOffset=" + utcOffset +
                 ", timeZone='" + timeZone + '\'' +
                 ", profileBackgroundImageUrl='" + profileBackgroundImageUrl + '\'' +
+                ", profileBackgroundImageUrlHttps='" + profileBackgroundImageUrlHttps + '\'' +
                 ", profileBackgroundTiled=" + profileBackgroundTiled +
                 ", lang='" + lang + '\'' +
                 ", statusesCount=" + statusesCount +

@@ -75,6 +75,13 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return the profile image url of the user
      */
     URL getProfileImageURL();
+    
+    /**
+     * Returns the profile image url of the user, served over SSL
+     *
+     * @return the profile image url of the user, served over SSL
+     */
+    URL getProfileImageUrlHttps();
 
     /**
      * Returns the url of the user
@@ -132,6 +139,8 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     String getTimeZone();
 
     String getProfileBackgroundImageUrl();
+    
+    String getProfileBackgroundImageUrlHttps();
 
     boolean isProfileBackgroundTiled();
 
