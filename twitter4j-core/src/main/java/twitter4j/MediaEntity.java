@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.3
  */
-public interface MediaEntity extends java.io.Serializable {
+public interface MediaEntity extends URLEntity {
     /**
      * Returns the id of the media.
      *
@@ -45,46 +45,11 @@ public interface MediaEntity extends java.io.Serializable {
     URL getMediaURLHttps();
 
     /**
-     * Returns the URL.
-     *
-     * @return the URL
-     */
-    URL getURL();
-
-    /**
-     * Returns the display URL if mentioned URL is shorten.
-     *
-     * @return the display URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
-     */
-    String getDisplayURL();
-
-    /**
-     * Returns the expanded URL if mentioned URL is shorten.
-     *
-     * @return the expanded URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
-     */
-    URL getExpandedURL();
-
-    /**
      * Returns size variations of the media.
      *
      * @return size variations of the media
      */
     Map<Integer, Size> getSizes();
-
-    /**
-     * Returns the index of the start character of the URL mentioned in the tweet.
-     *
-     * @return the index of the start character of the URL mentioned in the tweet
-     */
-    int getStart();
-
-    /**
-     * Returns the index of the end character of the URL mentioned in the tweet.
-     *
-     * @return the index of the end character of the URL mentioned in the tweet
-     */
-    int getEnd();
 
     interface Size extends java.io.Serializable {
         Integer THUMB = 0;
