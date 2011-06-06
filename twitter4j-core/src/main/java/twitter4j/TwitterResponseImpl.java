@@ -20,7 +20,7 @@ import twitter4j.internal.http.HttpResponse;
 
 
 /**
- * Super interface of Twitter Response data interfaces which indicates that rate limit status is avaialble.
+ * Super interface of Twitter Response data interfaces which indicates that rate limit status is available.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see twitter4j.DirectMessage
@@ -31,12 +31,48 @@ import twitter4j.internal.http.HttpResponse;
 
     private transient RateLimitStatus rateLimitStatus = null;
     private static final long serialVersionUID = -7284708239736552059L;
+    private transient int accessLevel;
 
     public TwitterResponseImpl() {
+        accessLevel = NONE;
     }
 
     public TwitterResponseImpl(HttpResponse res) {
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+        accessLevel = toAccessLevel(res);
+
+    }
+
+    /* package */
+    static int toAccessLevel(HttpResponse res) {
+        if (null == res) {
+            return -1;
+        }
+        String xAccessLevel = res.getResponseHeader("X-Access-Level");
+        int accessLevel;
+        if (null == xAccessLevel) {
+            accessLevel = NONE;
+        } else {
+            // https://dev.twitter.com/pages/application-permission-model-faq#how-do-we-know-what-the-access-level-of-a-user-token-is
+            switch (xAccessLevel.length()) {
+                // “read” (Read-only)
+                case 4:
+                    accessLevel = READ;
+                    break;
+                case 10:
+                    // “read-write” (Read & Write)
+                    accessLevel = READ_WRITE;
+                    break;
+                case 25:
+                    // “read-write-directmessages” (Read, Write, & Direct Message)
+                    accessLevel = READ_WRITE_DIRECTMESSAGES;
+                    break;
+                default:
+                    accessLevel = NONE;
+                    // unknown access level;
+            }
+        }
+        return accessLevel;
     }
 
     /**
@@ -44,5 +80,12 @@ import twitter4j.internal.http.HttpResponse;
      */
     public RateLimitStatus getRateLimitStatus() {
         return rateLimitStatus;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getAccessLevel() {
+        return accessLevel;
     }
 }

@@ -50,16 +50,19 @@ import static twitter4j.internal.util.ParseUtil.getDate;
     }
 
     TrendsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
-        String jsonStr = res.asString();
-        init(res.asString(), conf.isJSONStoreEnabled());
-        if(conf.isJSONStoreEnabled()){
+        this(res.asString(), conf.isJSONStoreEnabled());
+        if (conf.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(this, jsonStr);
+            DataObjectFactoryUtil.registerJSONObject(this, res.asString());
         }
     }
 
     TrendsJSONImpl(String jsonStr) throws TwitterException {
-        init(jsonStr, false);
+        this(jsonStr, false);
+    }
+
+    TrendsJSONImpl(String jsonStr, boolean storeJSON) throws TwitterException {
+        init(jsonStr, storeJSON);
     }
 
     void init(String jsonStr, boolean storeJSON) throws TwitterException {
@@ -79,7 +82,7 @@ import static twitter4j.internal.util.ParseUtil.getDate;
             this.location = extractLocation(json, storeJSON);
             JSONArray array = json.getJSONArray("trends");
             this.trendAt = asOf;
-            this.trends = jsonArrayToTrendArray(array);
+            this.trends = jsonArrayToTrendArray(array, storeJSON);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage(), jsone);
         }
@@ -107,7 +110,7 @@ import static twitter4j.internal.util.ParseUtil.getDate;
             while (ite.hasNext()) {
                 String key = (String) ite.next();
                 JSONArray array = trendsJson.getJSONArray(key);
-                Trend[] trendsArray = jsonArrayToTrendArray(array);
+                Trend[] trendsArray = jsonArrayToTrendArray(array, storeJSON);
                 if (key.length() == 19) {
                     // current trends
                     trends.add(new TrendsJSONImpl(asOf, location, getDate(key
@@ -164,11 +167,11 @@ import static twitter4j.internal.util.ParseUtil.getDate;
         return parsed;
     }
 
-    private static Trend[] jsonArrayToTrendArray(JSONArray array) throws JSONException {
+    private static Trend[] jsonArrayToTrendArray(JSONArray array, boolean storeJSON) throws JSONException {
         Trend[] trends = new Trend[array.length()];
         for (int i = 0; i < array.length(); i++) {
             JSONObject trend = array.getJSONObject(i);
-            trends[i] = new TrendJSONImpl(trend);
+            trends[i] = new TrendJSONImpl(trend, storeJSON);
         }
         return trends;
     }

@@ -129,6 +129,13 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public int getAccessLevel() {
+        return TwitterResponseImpl.toAccessLevel(response);
+    }
+
+    /**
      * Returns the current feature-specific rate limit status if available.<br>
      * This method is available in conjunction with Twitter#searchUsers()<br>
      *

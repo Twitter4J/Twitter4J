@@ -27,12 +27,14 @@ import java.util.ArrayList;
 class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
     private transient RateLimitStatus rateLimitStatus = null;
     private transient RateLimitStatus featureSpecificRateLimitStatus = null;
+    private transient int accessLevel;
     private static final long serialVersionUID = 5646617841989265312L;
 
     ResponseListImpl(int size, HttpResponse res) {
         super(size);
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
         this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
+        accessLevel = TwitterResponseImpl.toAccessLevel(res);
     }
 
     /**
@@ -47,5 +49,12 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
      */
     public RateLimitStatus getFeatureSpecificRateLimitStatus() {
         return featureSpecificRateLimitStatus;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getAccessLevel() {
+        return accessLevel;
     }
 }

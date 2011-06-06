@@ -218,7 +218,7 @@ public class TwitterTest extends TwitterTestBase {
         assertNotNull(image.getURL());
     }
 
-    private UserList prepareListTest() throws Exception{
+    private UserList prepareListTest() throws Exception {
         PagableResponseList<UserList> userLists;
         userLists = twitter1.getUserLists(id1.screenName, -1l);
         assertNotNull(DataObjectFactory.getRawJSON(userLists));
@@ -279,7 +279,7 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals("description2", userList.getDescription());
     }
 
-    public void testListMemberMethods() throws Exception{
+    public void testListMemberMethods() throws Exception {
         PagableResponseList<UserList> userLists;
 
         UserList userList;
@@ -342,7 +342,8 @@ public class TwitterTest extends TwitterTestBase {
         assertNotNull(userLists);
         assertEquals(0, userLists.size());
     }
-    public void testListSubscribersMethods() throws Exception{
+
+    public void testListSubscribersMethods() throws Exception {
         PagableResponseList<UserList> userLists;
         UserList userList;
         userList = prepareListTest();
@@ -1270,6 +1271,14 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals("twitter4j", hashtags[0].getText());
         assertEquals(126, hashtags[0].getStart());
         assertEquals(136, hashtags[0].getEnd());
+    }
+
+    public void testGetAccessLevel() throws Exception {
+        TwitterResponse response;
+        response = unauthenticated.getPublicTimeline();
+        assertEquals(TwitterResponse.NONE, response.getAccessLevel());
+        response = twitter1.verifyCredentials();
+        assertEquals(TwitterResponse.READ_WRITE, response.getAccessLevel());
     }
 
     /**
