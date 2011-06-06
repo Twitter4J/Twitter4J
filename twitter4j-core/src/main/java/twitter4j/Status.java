@@ -133,9 +133,9 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
     /**
      * Returns an array of contributors, or null if no contributor is associated with this status.
      *
-     * @since Twitter4J 2.1.2
+     * @since Twitter4J 2.2.3
      */
-    String[] getContributors();
+    long[] getContributors();
 
     /**
      * Returns the number of times this tweet has been retweeted, or -1 when the tweet was

@@ -55,7 +55,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private long retweetCount;
     private boolean wasRetweetedByMe;
 
-    private String[] contributors;
+    private String[] contributors = null;
+    private long[] contributorsIDs;
     private Annotations annotations = null;
 
     private Status retweetedStatus;
@@ -119,10 +120,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         if (!json.isNull("contributors")) {
             try {
                 JSONArray contributorsArray = json.getJSONArray("contributors");
-                contributors = new String[contributorsArray.length()];
+                contributorsIDs = new long[contributorsArray.length()];
                 for (int i = 0; i < contributorsArray.length(); i++) {
-                    contributors[i] = contributorsArray.getString(i);
+                    contributorsIDs[i] = Long.parseLong(contributorsArray.getString(i));
                 }
+            } catch (NumberFormatException ignore) {
+                ignore.printStackTrace();
+                logger.warn("failed to parse contributors:" + json);
             } catch (JSONException ignore) {
                 ignore.printStackTrace();
                 logger.warn("failed to parse contributors:" + json);
@@ -257,10 +261,23 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public String[] getContributors() {
-        return contributors;
+    public long[] getContributors() {
+        if (null != contributors) {
+            // http://twitter4j.org/jira/browse/TFJ-592
+            // preserving serialized form compatibility with older versions
+            contributorsIDs = new long[contributors.length];
+            for (int i = 0; i < contributors.length; i++) {
+                try {
+                    contributorsIDs[i] = Long.parseLong(contributors[i]);
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                    logger.warn("failed to parse contributors:" + nfe);
+                }
+            }
+            contributors = null;
+        }
+        return contributorsIDs;
     }
-
 
     /**
      * {@inheritDoc}
@@ -402,7 +419,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 ", place=" + place +
                 ", retweetCount=" + retweetCount +
                 ", wasRetweetedByMe=" + wasRetweetedByMe +
-                ", contributors=" + (contributors == null ? null : Arrays.asList(contributors)) +
+                ", contributors=" + (contributorsIDs == null ? null : Arrays.asList(contributorsIDs)) +
                 ", annotations=" + annotations +
                 ", retweetedStatus=" + retweetedStatus +
                 ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
