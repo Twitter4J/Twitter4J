@@ -28,6 +28,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -1271,6 +1272,44 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals("twitter4j", hashtags[0].getText());
         assertEquals(126, hashtags[0].getStart());
         assertEquals(136, hashtags[0].getEnd());
+
+        status = twitter1.showStatus(76360760606986241L);
+        assertNotNull(DataObjectFactory.getRawJSON(status));
+        assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+
+        MediaEntity[] medias = status.getMediaEntities();
+        assertEquals(1, medias.length);
+        MediaEntity media = medias[0];
+        assertEquals("pic.twitter.com/qbJx26r", media.getDisplayURL());
+        assertEquals("http://twitter.com/twitter/status/76360760606986241/photo/1", media.getExpandedURL().toString());
+        assertEquals(76360760611180544L, media.getId());
+        assertEquals("http://p.twimg.com/AQ9JtQsCEAA7dEN.jpg", media.getMediaURL().toString());
+        assertEquals("https://p.twimg.com/AQ9JtQsCEAA7dEN.jpg", media.getMediaURLHttps().toString());
+        assertEquals("http://t.co/qbJx26r", media.getURL().toString());
+        assertEquals(34, media.getStart());
+        assertEquals(53, media.getEnd());
+        Map<Integer, MediaEntity.Size> sizes = media.getSizes();
+        assertEquals(4, sizes.size());
+        MediaEntity.Size large = sizes.get(MediaEntity.Size.LARGE);
+        assertEquals(MediaEntity.Size.FIT, sizes.get(MediaEntity.Size.LARGE).getResize());
+        assertEquals(700, large.getWidth());
+        assertEquals(466, large.getHeight());
+
+        MediaEntity.Size medium = sizes.get(MediaEntity.Size.MEDIUM);
+        assertEquals(MediaEntity.Size.FIT, medium.getResize());
+        assertEquals(600, medium.getWidth());
+        assertEquals(399, medium.getHeight());
+
+        MediaEntity.Size small = sizes.get(MediaEntity.Size.SMALL);
+        assertEquals(MediaEntity.Size.FIT, small.getResize());
+        assertEquals(340, small.getWidth());
+        assertEquals(226, small.getHeight());
+
+        MediaEntity.Size thumb = sizes.get(MediaEntity.Size.THUMB);
+
+        assertEquals(MediaEntity.Size.CROP, thumb.getResize());
+        assertEquals(150, thumb.getWidth());
+        assertEquals(150, thumb.getHeight());
     }
 
     public void testGetAccessLevel() throws Exception {

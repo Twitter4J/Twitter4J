@@ -62,6 +62,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private UserMentionEntity[] userMentionEntities;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
+    private MediaEntity[] mediaEntities;
 
     /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -152,6 +153,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
                 hashtagEntities = new HashtagEntity[len];
                 for (int i = 0; i < len; i++) {
                     hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
+                }
+
+                JSONArray mediaArray = entities.getJSONArray("media");
+                len = mediaArray.length();
+                mediaEntities = new MediaEntity[len];
+                for (int i = 0; i < len; i++) {
+                    mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
                 }
             } catch (JSONException ignore) {
             }
@@ -325,6 +333,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
      */
     public HashtagEntity[] getHashtagEntities() {
         return hashtagEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public MediaEntity[] getMediaEntities() {
+        return mediaEntities;
     }
 
     /*package*/
