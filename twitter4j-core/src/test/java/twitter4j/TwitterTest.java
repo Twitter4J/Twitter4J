@@ -1275,10 +1275,17 @@ public class TwitterTest extends TwitterTestBase {
 
     public void testGetAccessLevel() throws Exception {
         TwitterResponse response;
-        response = unauthenticated.getPublicTimeline();
-        assertEquals(TwitterResponse.NONE, response.getAccessLevel());
+        try {
+            response = unauthenticated.getPublicTimeline();
+            assertEquals(TwitterResponse.NONE, response.getAccessLevel());
+        } catch (TwitterException te) {
+            // the account is being rate limited
+            assertEquals(te.getStatusCode(), 400);
+        }
         response = twitter1.verifyCredentials();
         assertEquals(TwitterResponse.READ_WRITE, response.getAccessLevel());
+        response = rwPrivateMessage.verifyCredentials();
+        assertEquals(TwitterResponse.READ_WRITE_DIRECTMESSAGES, response.getAccessLevel());
     }
 
     /**

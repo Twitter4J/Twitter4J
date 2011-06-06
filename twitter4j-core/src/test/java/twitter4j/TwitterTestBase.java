@@ -30,7 +30,8 @@ public class TwitterTestBase extends TestCase {
     }
 
     protected Twitter twitter1, twitter2, twitter3,
-            unauthenticated, twitterAPIBestFriend1, twitterAPIBestFriend2;
+            unauthenticated, twitterAPIBestFriend1, twitterAPIBestFriend2,
+            rwPrivateMessage;
     protected Properties p = new Properties();
 
     protected String numberId, numberPass, followsOneWay;
@@ -76,6 +77,7 @@ public class TwitterTestBase extends TestCase {
         id2 = new TestUserInfo("id2");
         conf3 = new PropertyConfiguration(p, "/id3");
         id3 = new TestUserInfo("id3");
+        rwPrivateMessage = new TwitterFactory(new PropertyConfiguration(p, "/r-w-private")).getInstance();
         Configuration bestFriend1Conf = new PropertyConfiguration(p, "/bestFriend1");
         bestFriend1 = new TestUserInfo("bestFriend1");
         Configuration bestFriend2Conf = new PropertyConfiguration(p, "/bestFriend2");

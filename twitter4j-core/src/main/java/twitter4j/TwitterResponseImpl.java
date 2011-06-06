@@ -67,6 +67,10 @@ import twitter4j.internal.http.HttpResponse;
                     // “read-write-directmessages” (Read, Write, & Direct Message)
                     accessLevel = READ_WRITE_DIRECTMESSAGES;
                     break;
+                case 26:
+                    // “read-write-privatemessages” (Read, Write, & Direct Message)
+                    accessLevel = READ_WRITE_DIRECTMESSAGES;
+                    break;
                 default:
                     accessLevel = NONE;
                     // unknown access level;
