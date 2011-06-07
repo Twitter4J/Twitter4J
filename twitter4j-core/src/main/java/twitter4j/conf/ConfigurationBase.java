@@ -121,7 +121,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setDebug(false);
         setUser(null);
         setPassword(null);
-        setUseSSL(true);
+        setUseSSL(false);
         setPrettyDebugEnabled(false);
         setGZIPEnabled(true);
         setHttpProxyHost(null);
