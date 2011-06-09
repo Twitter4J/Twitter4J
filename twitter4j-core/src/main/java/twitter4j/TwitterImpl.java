@@ -56,7 +56,6 @@ class TwitterImpl extends TwitterBaseImpl
     private final HttpParameter INCLUDE_ENTITIES;
     private final HttpParameter INCLUDE_RTS;
 
-
     private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter[] params2) {
         if (null != params1 && null != params2) {
             HttpParameter[] params = new HttpParameter[params1.length + params2.length];
