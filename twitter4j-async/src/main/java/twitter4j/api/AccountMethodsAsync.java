@@ -114,7 +114,7 @@ public interface AccountMethodsAsync {
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
      * <br>This method calls http://api.twitter.com/1/account/totals.json
      *
-     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @see <a href="http://dev.twitter.com/doc/get/account/totals">GET account/totals | dev.twitter.com</a>
      * @since Twitter4J 2.1.9
      */
     void getAccountTotals();
@@ -124,7 +124,7 @@ public interface AccountMethodsAsync {
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
      * <br>This method calls http://api.twitter.com/1/account/settings.json
      *
-     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @see <a href="http://dev.twitter.com/doc/get/account/totals">GET account/settings | dev.twitter.com</a>
      * @since Twitter4J 2.1.9
      */
     void getAccountSettings();
