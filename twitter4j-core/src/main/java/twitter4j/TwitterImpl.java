@@ -1788,6 +1788,20 @@ class TwitterImpl extends TwitterBaseImpl
                 asString().indexOf("ok");
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public TwitterAPIConfiguration getAPIConfiguration() throws TwitterException {
+        return new TwitterAPIConfigurationJSONImpl(get(conf.getRestBaseURL() + "help/configuration.json"), conf);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Language> getLanguages() throws TwitterException {
+        return LanguageJSONImpl.createLanguageList(get(conf.getRestBaseURL() + "help/languages.json"), conf);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

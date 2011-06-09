@@ -226,4 +226,6 @@ public final class TwitterMethod implements java.io.Serializable {
 
     /*Help Methods*/
     public static final TwitterMethod TEST = new TwitterMethod("TEST");
+    public static final TwitterMethod CONFIGURATION = new TwitterMethod("CONFIGURATION");
+    public static final TwitterMethod LANGUAGES = new TwitterMethod("LANGUAGES");
 }

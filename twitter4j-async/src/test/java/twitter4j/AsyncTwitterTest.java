@@ -17,7 +17,7 @@
 package twitter4j;
 
 import junit.framework.Assert;
-import twitter4j.auth.AccessToken;
+import twitter4j.api.HelpMethods;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.ByteArrayInputStream;
@@ -44,6 +44,8 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private AccountSettings settings;
     private ResponseList<Friendship> friendships;
     private ResponseList<UserList> userLists;
+    private ResponseList<HelpMethods.Language> languages;
+    private TwitterAPIConfiguration apiConf;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -1031,6 +1033,16 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     /*Help Methods*/
     public void tested(boolean test) {
         this.test = test;
+        notifyResponse();
+    }
+
+    public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
+        this.apiConf = conf;
+        notifyResponse();
+    }
+
+    public void gotLanguages(ResponseList<HelpMethods.Language> languages) {
+        this.languages = languages;
         notifyResponse();
     }
 

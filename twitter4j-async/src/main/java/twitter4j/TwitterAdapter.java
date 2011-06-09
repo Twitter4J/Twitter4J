@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import twitter4j.api.HelpMethods;
+
 import java.util.List;
 
 /**
@@ -571,6 +573,12 @@ public class TwitterAdapter implements TwitterListener {
 
     /*Help Methods*/
     public void tested(boolean test) {
+    }
+
+    public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
+    }
+
+    public void gotLanguages(ResponseList<HelpMethods.Language> languages) {
     }
 
     /**

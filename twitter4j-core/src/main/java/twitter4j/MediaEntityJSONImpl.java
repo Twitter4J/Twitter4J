@@ -147,7 +147,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
         return end;
     }
 
-    class Size implements MediaEntity.Size {
+    static class Size implements MediaEntity.Size {
         private static final long serialVersionUID = 8681853416159361581L;
         int width;
         int height;

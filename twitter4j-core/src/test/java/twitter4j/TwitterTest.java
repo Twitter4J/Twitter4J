@@ -17,6 +17,7 @@
 package twitter4j;
 
 import junit.framework.Assert;
+import twitter4j.api.HelpMethods;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.json.DataObjectFactory;
 
@@ -1244,6 +1245,21 @@ public class TwitterTest extends TwitterTestBase {
 
     public void testTest() throws Exception {
         assertTrue(unauthenticated.test());
+        ResponseList<HelpMethods.Language> languages = twitter1.getLanguages();
+        assertTrue(languages.size() > 5);
+        HelpMethods.Language language = languages.get(0);
+        assertNotNull(language.getCode());
+        assertNotNull(language.getName());
+        assertNotNull(language.getStatus());
+
+        TwitterAPIConfiguration conf = twitter1.getAPIConfiguration();
+        assertEquals(3145728, conf.getPhotoSizeLimit());
+        assertEquals(20, conf.getCharactersReservedPerMedia());
+        assertEquals(19, conf.getShortURLLength());
+        assertEquals(20, conf.getShortURLLengthHttps());
+        assertEquals(4, conf.getPhotoSizes().size());
+        assertTrue(20 < conf.getNonUsernamePaths().length);
+        assertEquals(1, conf.getMaxMediaPerUpload());
     }
 
     public void testEntities() throws Exception {

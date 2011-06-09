@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.api.HelpMethods;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.RequestToken;
@@ -2708,6 +2709,40 @@ class AsyncTwitterImpl extends TwitterBaseImpl
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.tested(ok);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getAPIConfiguration() {
+        getDispatcher().invokeLater(new AsyncTask(CONFIGURATION, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                TwitterAPIConfiguration apiConf = twitter.getAPIConfiguration();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotAPIConfiguration(apiConf);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getLanguages() {
+        getDispatcher().invokeLater(new AsyncTask(LANGUAGES, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<HelpMethods.Language> languages = twitter.getLanguages();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotLanguages(languages);
                     } catch (Exception ignore) {
                     }
                 }

@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import twitter4j.api.HelpMethods;
+
 import java.util.List;
 
 /**
@@ -461,6 +463,10 @@ public interface TwitterListener {
     /*Help Methods*/
     void tested(boolean test);
 
+    void gotAPIConfiguration(TwitterAPIConfiguration conf);
+
+    void gotLanguages(ResponseList<HelpMethods.Language> languages);
+
     /**
      * @param te     TwitterException
      * @param method
@@ -611,5 +617,7 @@ public interface TwitterListener {
 
     /*Help Methods*/
     TwitterMethod TEST = TwitterMethod.TEST;
+    TwitterMethod CONFIGURATION = TwitterMethod.CONFIGURATION;
+    TwitterMethod LANGUAGES = TwitterMethod.LANGUAGES;
 
 }
