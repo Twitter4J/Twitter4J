@@ -604,6 +604,16 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         result = 31 * result + (handler != null ? handler.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "TwitterStreamImpl{" +
+                "http=" + http +
+                ", streamListeners=" + (streamListeners == null ? null : Arrays.asList(streamListeners)) +
+                ", lifeCycleListeners=" + lifeCycleListeners +
+                ", handler=" + handler +
+                '}';
+    }
 }
 
 class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguration {
