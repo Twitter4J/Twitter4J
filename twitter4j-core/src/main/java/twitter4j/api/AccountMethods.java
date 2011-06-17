@@ -157,7 +157,7 @@ public interface AccountMethods {
     AccountTotals getAccountTotals() throws TwitterException;
 
     /**
-     * Returns the current trend, geo and sleep time information for the authenticating user.
+     * Returns the current trend, geo, language, timezone and sleep time information for the authenticating user.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
      * <br>This method calls http://api.twitter.com/1/account/settings.json
      *
@@ -167,4 +167,22 @@ public interface AccountMethods {
      * @since Twitter4J 2.1.9
      */
     AccountSettings getAccountSettings() throws TwitterException;
+    
+    /**
+     * Updates the current trend, geo, language, timezone and sleep time information for the authenticating user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/account/settings.json
+     *
+     * @param trend_location_woeid  Optional. The Yahoo! Where On Earth ID to use as the user's default trend location.
+     * @param sleep_time_enabled    Optional. Whether sleep time is enabled for the user
+     * @param start_sleep_time      Optional. The hour that sleep time should begin if it is enabled.
+     * @param end_sleep_time        Optional. The hour that sleep time should end if it is enabled.
+     * @param time_zone             Optional. The timezone dates and times should be displayed in for the user.
+     * @param lang                  Optional. The language which Twitter should render in for this user. (two letter ISO 639-1)
+     * @return the current trend, geo and sleep time information for the authenticating user.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/post/account/settings">POST account/settings | dev.twitter.com</a>
+     * @since Twitter4J 2.2.4
+     */
+    AccountSettings updateAccountSettings(Integer trend_location_woeid, Boolean sleep_time_enabled, String start_sleep_time, String end_sleep_time, String time_zone, String lang) throws TwitterException;
 }
