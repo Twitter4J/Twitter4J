@@ -1281,8 +1281,45 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new AccountSettingsJSONImpl(get(conf.getRestBaseURL() + "account/settings.json"), conf);
     }
-
+    
+    
     /**
+     * {@inheritDoc}
+     */
+    public AccountSettings updateAccountSettings(Integer trend_location_woeid,
+			Boolean sleep_time_enabled, String start_sleep_time,
+			String end_sleep_time, String time_zone, String lang)
+			throws TwitterException {
+		
+    	ensureAuthorizationEnabled();
+    	
+        List<HttpParameter> profile = new ArrayList<HttpParameter>(6);
+        if (null != trend_location_woeid) {
+            profile.add(new HttpParameter("trend_location_woeid", trend_location_woeid));
+        }
+        if (null != sleep_time_enabled) {
+            profile.add(new HttpParameter("sleep_time_enabled", sleep_time_enabled.toString()));
+        }
+        if (null != start_sleep_time) {
+            profile.add(new HttpParameter("start_sleep_time", start_sleep_time));
+        }
+        if (null != end_sleep_time) {
+            profile.add(new HttpParameter("end_sleep_time", end_sleep_time));
+        }
+        if (null != time_zone) {
+            profile.add(new HttpParameter("time_zone", time_zone));
+        }
+        if (null != lang) {
+            profile.add(new HttpParameter("lang", lang));
+        }
+        
+        profile.add(INCLUDE_ENTITIES);
+        return new AccountSettingsJSONImpl(post(conf.getRestBaseURL() + "account/settings.json"
+                , profile.toArray(new HttpParameter[profile.size()])), conf);
+    	
+	}
+
+	/**
      * {@inheritDoc}
      */
     public User updateProfileColors(
