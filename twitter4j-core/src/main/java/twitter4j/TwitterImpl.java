@@ -803,7 +803,6 @@ class TwitterImpl extends TwitterBaseImpl
      */
     public PagableResponseList<User> getUserListMembers(int listId
             , long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
         return UserJSONImpl.createPagableUserList(get(conf.getRestBaseURL() +
                 "lists/members.json?list_id=" + listId + "&include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor), conf);
@@ -1281,18 +1280,18 @@ class TwitterImpl extends TwitterBaseImpl
         ensureAuthorizationEnabled();
         return new AccountSettingsJSONImpl(get(conf.getRestBaseURL() + "account/settings.json"), conf);
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AccountSettings updateAccountSettings(Integer trend_location_woeid,
-			Boolean sleep_time_enabled, String start_sleep_time,
-			String end_sleep_time, String time_zone, String lang)
-			throws TwitterException {
-		
-    	ensureAuthorizationEnabled();
-    	
+                                                 Boolean sleep_time_enabled, String start_sleep_time,
+                                                 String end_sleep_time, String time_zone, String lang)
+            throws TwitterException {
+
+        ensureAuthorizationEnabled();
+
         List<HttpParameter> profile = new ArrayList<HttpParameter>(6);
         if (null != trend_location_woeid) {
             profile.add(new HttpParameter("trend_location_woeid", trend_location_woeid));
@@ -1312,14 +1311,14 @@ class TwitterImpl extends TwitterBaseImpl
         if (null != lang) {
             profile.add(new HttpParameter("lang", lang));
         }
-        
+
         profile.add(INCLUDE_ENTITIES);
         return new AccountSettingsJSONImpl(post(conf.getRestBaseURL() + "account/settings.json"
                 , profile.toArray(new HttpParameter[profile.size()])), conf);
-    	
-	}
 
-	/**
+    }
+
+    /**
      * {@inheritDoc}
      */
     public User updateProfileColors(
