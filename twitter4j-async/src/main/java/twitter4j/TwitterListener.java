@@ -348,6 +348,12 @@ public interface TwitterListener {
     void gotAccountSettings(AccountSettings settings);
 
     /**
+     * @param settings account settings
+     * @since Twitter4J 2.2.4
+     */
+    void updatedAccountSettings(AccountSettings settings);
+
+    /**
      * @since Twitter4J 2.1.0
      */
     void updatedProfileImage(User user);
@@ -570,6 +576,7 @@ public interface TwitterListener {
     TwitterMethod UPDATE_PROFILE = TwitterMethod.UPDATE_PROFILE;
     TwitterMethod ACCOUNT_TOTALS = TwitterMethod.ACCOUNT_TOTALS;
     TwitterMethod ACCOUNT_SETTINGS = TwitterMethod.ACCOUNT_SETTINGS;
+    TwitterMethod UPDATE_ACCOUNT_SETTINGS = TwitterMethod.UPDATE_ACCOUNT_SETTINGS;
 
     /*Favorite Methods*/
     TwitterMethod FAVORITES = TwitterMethod.FAVORITES;

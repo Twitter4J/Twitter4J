@@ -928,6 +928,23 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
+    public void updateAccountSettings(final Integer trend_locationWoeid, final Boolean sleep_timeEnabled, final String start_sleepTime, final String end_sleepTime, final String time_zone, final String lang) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_ACCOUNT_SETTINGS, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                AccountSettings accountSettings = twitter.updateAccountSettings(trend_locationWoeid, sleep_timeEnabled, start_sleepTime, end_sleepTime, time_zone, lang);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.updatedAccountSettings(accountSettings);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void getFriendsStatuses(final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {

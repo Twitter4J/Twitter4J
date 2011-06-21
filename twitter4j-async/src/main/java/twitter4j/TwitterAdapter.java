@@ -418,6 +418,13 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     /**
+     * @param settings account settings
+     * @since Twitter4J 2.2.4
+     */
+    public void updatedAccountSettings(AccountSettings settings) {
+    }
+
+    /**
      * @since Twitter4J 2.1.0
      */
     public void updatedProfileImage(User user) {

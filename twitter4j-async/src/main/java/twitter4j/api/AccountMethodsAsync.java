@@ -128,4 +128,20 @@ public interface AccountMethodsAsync {
      * @since Twitter4J 2.1.9
      */
     void getAccountSettings();
+
+    /**
+     * Updates the current trend, geo, language, timezone and sleep time information for the authenticating user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls http://api.twitter.com/1/account/settings.json
+     *
+     * @param trendLocationWoeid Optional. The Yahoo! Where On Earth ID to use as the user's default trend location.
+     * @param sleepTimeEnabled   Optional. Whether sleep time is enabled for the user
+     * @param startSleepTime     Optional. The hour that sleep time should begin if it is enabled.
+     * @param endSleepTime       Optional. The hour that sleep time should end if it is enabled.
+     * @param timeZone           Optional. The timezone dates and times should be displayed in for the user.
+     * @param lang               Optional. The language which Twitter should render in for this user. (two letter ISO 639-1)
+     * @see <a href="http://dev.twitter.com/doc/post/account/settings">POST account/settings | dev.twitter.com</a>
+     * @since Twitter4J 2.2.4
+     */
+    void updateAccountSettings(Integer trendLocationWoeid, Boolean sleepTimeEnabled, String startSleepTime, String endSleepTime, String timeZone, String lang);
 }

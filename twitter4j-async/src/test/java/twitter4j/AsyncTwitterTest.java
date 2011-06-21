@@ -864,6 +864,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    public void updatedAccountSettings(AccountSettings settings) {
+        this.settings = settings;
+        notifyResponse();
+    }
+
     /**
      * @since Twitter4J 2.1.0
      */
