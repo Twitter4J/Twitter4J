@@ -111,6 +111,6 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public void error(String message, Throwable th) {
-        error(message, th);
+    	LOGGER.error(message, th);
     }
 }

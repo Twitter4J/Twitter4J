@@ -36,6 +36,10 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
     private final String SLEEP_END_TIME;
     private final Location[] TREND_LOCATION;
     private final boolean GEO_ENABLED;
+    private final String LANGUAGE;
+    private final TimeZone TIMEZONE;
+    private final boolean ALWAYS_USE_HTTPS;
+    private final boolean DISCOVERABLE_BY_EMAIL;
 
     private AccountSettingsJSONImpl(HttpResponse res, JSONObject json) throws TwitterException {
         super(res);
@@ -54,6 +58,10 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
                 }
             }
             GEO_ENABLED = getBoolean("geo_enabled", json);
+            LANGUAGE = json.getString("language");
+            ALWAYS_USE_HTTPS = getBoolean("always_use_https", json);
+            DISCOVERABLE_BY_EMAIL = getBoolean("discoverable_by_email", json);
+            TIMEZONE = new TimeZoneJSONImpl(json.getJSONObject("time_zone"));
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -89,5 +97,21 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
 
     public boolean isGeoEnabled() {
         return GEO_ENABLED;
+    }
+
+    public boolean isDiscoverableByEmail() {
+        return DISCOVERABLE_BY_EMAIL;
+    }
+    
+    public boolean isAlwaysUseHttps() {
+        return ALWAYS_USE_HTTPS;
+    }
+
+    public String getLanguage() {
+        return LANGUAGE;
+    }
+
+    public TimeZone getTimeZone() {
+        return TIMEZONE;
     }
 }

@@ -853,11 +853,33 @@ public class TwitterTest extends TwitterTestBase {
 
         AccountSettings settings = twitter1.getAccountSettings();
         assertFalse(settings.isSleepTimeEnabled());
-        assertNull(settings.getSleepStartTime());
-        assertNull(settings.getSleepEndTime());
         assertTrue(settings.isGeoEnabled());
+        assertEquals("en", settings.getLanguage());
+        assertEquals("Rome", settings.getTimeZone().getName());
+        assertFalse(settings.isAlwaysUseHttps());
+        assertTrue(settings.isDiscoverableByEmail());
         Location[] locations = settings.getTrendLocations();
         assertTrue(0 < locations.length);
+
+        AccountSettings intermSettings = twitter1.updateAccountSettings(1 /* GLOBAL */, true,
+                "23", "08", "Helsinki", "it");
+        assertTrue(intermSettings.isSleepTimeEnabled());
+        assertEquals(intermSettings.getSleepStartTime(), "23");
+        assertEquals(intermSettings.getSleepEndTime(), "8");
+        assertTrue(intermSettings.isGeoEnabled());
+        assertEquals("it", intermSettings.getLanguage());
+        assertFalse(intermSettings.isAlwaysUseHttps());
+        assertTrue(intermSettings.isDiscoverableByEmail());
+        assertEquals("Helsinki", intermSettings.getTimeZone().getName());
+        Location[] intermLocations = intermSettings.getTrendLocations();
+        assertTrue(0 < intermLocations.length);
+
+        AccountSettings lastSettings = twitter1.updateAccountSettings(settings.getTrendLocations()[0].getWoeid(), settings.isSleepTimeEnabled(),
+                settings.getSleepStartTime(), settings.getSleepStartTime(), settings.getTimeZone().getName(), settings.getLanguage());
+        assertEquals(settings.getLanguage(), lastSettings.getLanguage());
+        assertEquals(settings.isSleepTimeEnabled(), lastSettings.isSleepTimeEnabled());
+        assertEquals(settings.getTimeZone().getName(), lastSettings.getTimeZone().getName());
+        assertEquals(settings.getSleepEndTime(), lastSettings.getSleepEndTime());
     }
 
     public void testAccountProfileImageUpdates() throws Exception {

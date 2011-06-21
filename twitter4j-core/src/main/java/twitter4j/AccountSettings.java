@@ -55,4 +55,32 @@ public interface AccountSettings extends TwitterResponse, java.io.Serializable {
      * @return true if the user is enabling geo location
      */
     boolean isGeoEnabled();
+
+    /**
+     * Returns the timezone configured for this user.
+     *
+     * @return the timezone (formated as a Rails TimeZone name)
+     */
+    TimeZone getTimeZone();
+
+    /**
+     * Returns the language used to render Twitter's UII for this user.
+     *
+     * @return the language ISO 639-1 representation
+     */
+    String getLanguage();
+
+    /**
+     * Returns true if the user is discoverable by email.
+     *
+     * @return true if the user is discoverable by email
+     */
+    boolean isDiscoverableByEmail();
+
+    /**
+     * Returns true if the wants to always access twitter using HTTPS.
+     *
+     * @return true if the wants to always access twitter using HTTPS
+     */
+    boolean isAlwaysUseHttps();
 }
