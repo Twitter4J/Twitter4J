@@ -17,6 +17,7 @@ Contributors
 ------------
 Adam Samet <asamet at twitter.com> @damnitsamet
 Alan Gutierrez <alan at blogometer.com>
+Alessandro Bahgat <ale.bahgat at gmail.com> @abahgat
 Anton Evane <antonevane at gmail.com> @anton_evane
 Blake Barnes <blake.barnes at gmail.com>
 Bruno Torres Goyanna <bgoyanna at gmail.com> @bgoyanna
