@@ -38,7 +38,7 @@ import static twitter4j.internal.util.ParseUtil.getDate;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.2
  */
-/*package*/ final class TrendsJSONImpl implements Trends, java.io.Serializable {
+/*package*/ final class TrendsJSONImpl extends TwitterResponseImpl implements Trends, java.io.Serializable {
     private Date asOf;
     private Date trendAt;
     private Trend[] trends;
@@ -50,7 +50,8 @@ import static twitter4j.internal.util.ParseUtil.getDate;
     }
 
     TrendsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
-        this(res.asString(), conf.isJSONStoreEnabled());
+        super(res);
+        init(res.asString(), conf.isJSONStoreEnabled());
         if (conf.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.clearThreadLocalMap();
             DataObjectFactoryUtil.registerJSONObject(this, res.asString());

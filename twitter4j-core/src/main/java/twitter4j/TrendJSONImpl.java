@@ -16,8 +16,7 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONObject;
 
 import static twitter4j.internal.util.ParseUtil.getRawString;
@@ -28,29 +27,23 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.2
  */
-/*package*/ final class TrendJSONImpl extends TwitterResponseImpl implements Trend, java.io.Serializable {
+/*package*/ final class TrendJSONImpl implements Trend, java.io.Serializable {
     private String name;
     private String url = null;
     private String query = null;
     private static final long serialVersionUID = 1925956704460743946L;
 
-    /*package*/ TrendJSONImpl(HttpResponse res, JSONObject json, boolean storeJSON) {
-        super(res);
+    /*package*/ TrendJSONImpl(JSONObject json, boolean storeJSON) {
         this.name = getRawString("name", json);
         this.url = getRawString("url", json);
         this.query = getRawString("query", json);
-    }
-
-    /*package*/ TrendJSONImpl(JSONObject json, Configuration conf) {
-        this(null, json, conf.isJSONStoreEnabled());
-    }
-
-    /*package*/ TrendJSONImpl(JSONObject json, boolean storeJSON) {
-        this(null, json, storeJSON);
+        if (storeJSON) {
+            DataObjectFactoryUtil.registerJSONObject(this, json);
+        }
     }
 
     /*package*/ TrendJSONImpl(JSONObject json) {
-        this(null, json, false);
+        this(json, false);
     }
 
     /**
