@@ -146,7 +146,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         setIncludeRTsEnbled(true);
 
-        setIncludeEntitiesEnbled(false);
+        setIncludeEntitiesEnbled(true);
 
         setJSONStoreEnabled(false);
 
