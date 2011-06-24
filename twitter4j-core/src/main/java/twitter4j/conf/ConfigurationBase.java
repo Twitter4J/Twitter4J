@@ -170,7 +170,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
         setIncludeRTsEnbled(true);
-        setUserStreamRepliesAllEnabled(false);
+        setUserStreamRepliesAllEnabled(true);
         String isDalvik;
         try {
             isDalvik = System.getProperty(DALVIK, dalvikDetected);
