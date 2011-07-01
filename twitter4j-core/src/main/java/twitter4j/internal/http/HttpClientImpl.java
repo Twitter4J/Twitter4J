@@ -58,6 +58,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                 isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
             }
             if (ConfigurationContext.getInstance().isDalvik()) {
+                isJDK14orEarlier = false;
                 // quick and dirty workaround for TFJ-296
                 // it must be an Android/Dalvik/Harmony side issue!!!!
                 System.setProperty("http.keepAlive", "false");
@@ -131,7 +132,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                                     BufferedInputStream in = new BufferedInputStream(
                                             param.hasFileBody() ? param.getFileBody() : new FileInputStream(param.getFile())
                                     );
-                                    int buff = 0;
+                                    int buff;
                                     while ((buff = in.read()) != -1) {
                                         out.write(buff);
                                     }
