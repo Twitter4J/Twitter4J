@@ -17,7 +17,9 @@
 package twitter4j.internal.util;
 
 import twitter4j.TwitterException;
+import twitter4j.TwitterResponse;
 import twitter4j.internal.http.HTMLEntity;
+import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -152,5 +154,41 @@ public final class ParseUtil {
             return false;
         }
         return Boolean.valueOf(str);
+    }
+
+
+    public static int toAccessLevel(HttpResponse res) {
+        if (null == res) {
+            return -1;
+        }
+        String xAccessLevel = res.getResponseHeader("X-Access-Level");
+        int accessLevel;
+        if (null == xAccessLevel) {
+            accessLevel = TwitterResponse.NONE;
+        } else {
+            // https://dev.twitter.com/pages/application-permission-model-faq#how-do-we-know-what-the-access-level-of-a-user-token-is
+            switch (xAccessLevel.length()) {
+                // “read” (Read-only)
+                case 4:
+                    accessLevel = TwitterResponse.READ;
+                    break;
+                case 10:
+                    // “read-write” (Read & Write)
+                    accessLevel = TwitterResponse.READ_WRITE;
+                    break;
+                case 25:
+                    // “read-write-directmessages” (Read, Write, & Direct Message)
+                    accessLevel = TwitterResponse.READ_WRITE_DIRECTMESSAGES;
+                    break;
+                case 26:
+                    // “read-write-privatemessages” (Read, Write, & Direct Message)
+                    accessLevel = TwitterResponse.READ_WRITE_DIRECTMESSAGES;
+                    break;
+                default:
+                    accessLevel = TwitterResponse.NONE;
+                    // unknown access level;
+            }
+        }
+        return accessLevel;
     }
 }

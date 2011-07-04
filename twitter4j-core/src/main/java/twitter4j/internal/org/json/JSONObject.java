@@ -188,7 +188,7 @@ public class JSONObject {
         String key;
 
         if (x.nextClean() != '{') {
-            throw x.syntaxError("A JSONObject text must begin with '{'");
+            throw x.syntaxError("A JSONObject text must begin with '{' found:" +x.nextClean());
         }
         for (; ;) {
             c = x.nextClean();

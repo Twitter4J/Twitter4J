@@ -30,6 +30,8 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseEvent;
 import twitter4j.internal.http.HttpResponseListener;
 import twitter4j.internal.http.XAuthAuthorization;
+import twitter4j.internal.json.zzzz_T4J_INTERNAL_Factory;
+import twitter4j.internal.json.zzzz_T4J_INTERNAL_JSONImplFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -52,13 +54,10 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
     protected transient HttpClientWrapper http;
     private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
 
+    protected zzzz_T4J_INTERNAL_Factory factory;
+
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
-
-    /*package*/ TwitterBaseImpl(Configuration conf) {
-        this.conf = conf;
-        init();
-    }
 
     /*package*/ TwitterBaseImpl(Configuration conf, Authorization auth) {
         this.conf = conf;
@@ -86,6 +85,10 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
         }
         http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
+        setFactory();
+    }
+    protected void setFactory(){
+        factory = new zzzz_T4J_INTERNAL_JSONImplFactory(conf);
     }
 
     /**
@@ -128,8 +131,8 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
 
     protected User fillInIDAndScreenName() throws TwitterException {
         ensureAuthorizationEnabled();
-        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth), conf);
+        User user = factory.createUser(http.get(conf.getRestBaseURL() + "account/verify_credentials.json?include_entities="
+                + conf.isIncludeEntitiesEnabled(), auth));
         this.screenName = user.getScreenName();
         this.id = user.getId();
         return user;
@@ -152,7 +155,7 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
                 rateLimitStatus = te.getRateLimitStatus();
                 statusCode = te.getStatusCode();
             } else {
-                rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+                rateLimitStatus = zzzz_T4J_INTERNAL_JSONImplFactory.createRateLimitStatusFromResponseHeader(res);
                 statusCode = res.getStatusCode();
             }
             if (null != rateLimitStatus) {
@@ -229,6 +232,7 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
         rateLimitStatusListeners = (List<RateLimitStatusListener>) stream.readObject();
         http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
+        setFactory();
     }
 
 

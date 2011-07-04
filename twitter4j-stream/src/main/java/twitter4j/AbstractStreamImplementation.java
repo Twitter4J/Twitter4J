@@ -20,6 +20,8 @@ import twitter4j.conf.Configuration;
 import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
+import twitter4j.internal.json.zzzz_T4J_INTERNAL_Factory;
+import twitter4j.internal.json.zzzz_T4J_INTERNAL_JSONImplFactory;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
@@ -44,6 +46,7 @@ abstract class AbstractStreamImplementation {
     private HttpResponse response;
     protected final Dispatcher dispatcher;
     private final Configuration CONF;
+    protected zzzz_T4J_INTERNAL_Factory factory;
 
     /*package*/
 
@@ -52,6 +55,7 @@ abstract class AbstractStreamImplementation {
         this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
         this.dispatcher = dispatcher;
         this.CONF = conf;
+        this.factory = new zzzz_T4J_INTERNAL_JSONImplFactory(conf);
     }
     /*package*/
 
@@ -267,7 +271,7 @@ abstract class AbstractStreamImplementation {
     }
 
     protected Status asStatus(JSONObject json) throws TwitterException {
-        Status status = new StatusJSONImpl(json);
+        Status status = factory.createStatus(json);
         if (CONF.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.registerJSONObject(status, json);
         }
@@ -277,7 +281,7 @@ abstract class AbstractStreamImplementation {
     protected DirectMessage asDirectMessage(JSONObject json) throws TwitterException {
         DirectMessage directMessage;
         try {
-            directMessage = new DirectMessageJSONImpl(json.getJSONObject("direct_message"));
+            directMessage = factory.createDirectMessage(json.getJSONObject("direct_message"));
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -302,7 +306,7 @@ abstract class AbstractStreamImplementation {
     }
 
     protected User asUser(JSONObject json) throws TwitterException {
-        User user = new UserJSONImpl(json);
+        User user = factory.createUser(json);
         if (CONF.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.registerJSONObject(user, json);
         }
@@ -310,7 +314,7 @@ abstract class AbstractStreamImplementation {
     }
 
     protected UserList asUserList(JSONObject json) throws TwitterException {
-        UserList userList = new UserListJSONImpl(json);
+        UserList userList = factory.createAUserList(json);
         if (CONF.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.registerJSONObject(userList, json);
         }

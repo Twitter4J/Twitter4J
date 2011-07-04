@@ -44,48 +44,6 @@ public class GeoLocation implements java.io.Serializable {
     }
 
     /**
-     * returns a GeoLocation instance if a "geo" element is found.
-     *
-     * @param json JSONObject to be parsed
-     * @return GeoLocation instance
-     * @throws TwitterException when coordinates is not included in geo element (should be an API side issue)
-     */
-    /*package*/
-    static GeoLocation getInstance(JSONObject json) throws TwitterException {
-        try {
-            if (!json.isNull("geo")) {
-                String coordinates = json.getJSONObject("geo")
-                        .getString("coordinates");
-                coordinates = coordinates.substring(1, coordinates.length() - 1);
-                String[] point = T4JInternalStringUtil.split(coordinates, ",");
-                return new GeoLocation(Double.parseDouble(point[0]),
-                        Double.parseDouble(point[1]));
-            }
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-        return null;
-    }
-
-    /*package*/
-    static GeoLocation[][] coordinatesAsGeoLocationArray(JSONArray coordinates) throws TwitterException {
-        try {
-            GeoLocation[][] boundingBox = new GeoLocation[coordinates.length()][];
-            for (int i = 0; i < coordinates.length(); i++) {
-                JSONArray array = coordinates.getJSONArray(i);
-                boundingBox[i] = new GeoLocation[array.length()];
-                for (int j = 0; j < array.length(); j++) {
-                    JSONArray coordinate = array.getJSONArray(j);
-                    boundingBox[i][j] = new GeoLocation(coordinate.getDouble(1), coordinate.getDouble(0));
-                }
-            }
-            return boundingBox;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-    }
-
-    /**
      * returns the latitude of the geo location
      *
      * @return the latitude

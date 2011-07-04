@@ -48,13 +48,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     private final Twitter twitter;
     private final List<TwitterListener> listeners = new ArrayList<TwitterListener>();
 
-
-    /*package*/
-    AsyncTwitterImpl(Configuration conf) {
-        super(conf);
-        twitter = new TwitterFactory(conf).getInstance(auth);
-    }
-
     /*package*/
     AsyncTwitterImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
@@ -146,7 +139,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl
         getDispatcher().invokeLater(new AsyncTask(DAILY_TRENDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws
                     TwitterException {
-                List<Trends> trendsList = twitter.getDailyTrends();
+                ResponseList<Trends> trendsList = twitter.getDailyTrends();
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotDailyTrends(trendsList);
@@ -164,7 +157,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl
         getDispatcher().invokeLater(new AsyncTask(DAILY_TRENDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws
                     TwitterException {
-                List<Trends> trendsList = twitter.getDailyTrends(date, excludeHashTags);
+                ResponseList<Trends> trendsList = twitter.getDailyTrends(date, excludeHashTags);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotDailyTrends(trendsList);
@@ -182,7 +175,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl
         getDispatcher().invokeLater(new AsyncTask(WEEKLY_TRENDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws
                     TwitterException {
-                List<Trends> trendsList = twitter.getWeeklyTrends();
+                ResponseList<Trends> trendsList = twitter.getWeeklyTrends();
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotWeeklyTrends(trendsList);
@@ -200,7 +193,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl
         getDispatcher().invokeLater(new AsyncTask(WEEKLY_TRENDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws
                     TwitterException {
-                List<Trends> trendsList = twitter.getWeeklyTrends(date, excludeHashTags);
+                ResponseList<Trends> trendsList = twitter.getWeeklyTrends(date, excludeHashTags);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotWeeklyTrends(trendsList);

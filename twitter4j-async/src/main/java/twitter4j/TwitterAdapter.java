@@ -50,13 +50,13 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.0.2
      */
-    public void gotDailyTrends(List<Trends> trendsList) {
+    public void gotDailyTrends(ResponseList<Trends> trendsList) {
     }
 
     /**
      * @since Twitter4J 2.0.2
      */
-    public void gotWeeklyTrends(List<Trends> trendsList) {
+    public void gotWeeklyTrends(ResponseList<Trends> trendsList) {
     }
 
     /*Timeline Methods*/

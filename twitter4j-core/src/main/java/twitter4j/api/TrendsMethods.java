@@ -16,6 +16,7 @@
 
 package twitter4j.api;
 
+import twitter4j.ResponseList;
 import twitter4j.Trends;
 import twitter4j.TwitterException;
 
@@ -70,7 +71,7 @@ public interface TrendsMethods {
      * @see <a href="http://dev.twitter.com/doc/get/trends/daily">GET trends/daily | dev.twitter.com</a>
      * @since Twitter4J 2.0.2
      */
-    List<Trends> getDailyTrends() throws TwitterException;
+    ResponseList<Trends> getDailyTrends() throws TwitterException;
 
     /**
      * Returns the top 20 trending topics for each hour in a given day.
@@ -83,7 +84,7 @@ public interface TrendsMethods {
      * @see <a href="http://dev.twitter.com/doc/get/trends/daily">GET trends/daily | dev.twitter.com</a>
      * @since Twitter4J 2.0.2
      */
-    List<Trends> getDailyTrends(Date date, boolean excludeHashTags)
+    ResponseList<Trends> getDailyTrends(Date date, boolean excludeHashTags)
             throws TwitterException;
 
     /**
@@ -95,7 +96,7 @@ public interface TrendsMethods {
      * @see <a href="http://dev.twitter.com/doc/get/trends/weekly">GET trends/weekly | dev.twitter.com</a>
      * @since Twitter4J 2.0.2
      */
-    List<Trends> getWeeklyTrends() throws TwitterException;
+    ResponseList<Trends> getWeeklyTrends() throws TwitterException;
 
     /**
      * Returns the top 30 trending topics for each day in a given week.
@@ -108,6 +109,6 @@ public interface TrendsMethods {
      * @see <a href="http://dev.twitter.com/doc/get/trends/weekly">GET trends/weekly | dev.twitter.com</a>
      * @since Twitter4J 2.0.2
      */
-    List<Trends> getWeeklyTrends(Date date, boolean excludeHashTags)
+    ResponseList<Trends> getWeeklyTrends(Date date, boolean excludeHashTags)
             throws TwitterException;
 }
