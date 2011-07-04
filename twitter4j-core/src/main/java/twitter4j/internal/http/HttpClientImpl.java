@@ -43,11 +43,10 @@ import static twitter4j.internal.http.RequestMethod.POST;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Serializable {
+public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
 
     private static boolean isJDK14orEarlier = false;
-    private final HttpClientConfiguration CONF;
 
     private static final long serialVersionUID = -8819171414069621503L;
 
@@ -70,17 +69,14 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
     }
 
     public HttpClientImpl() {
-        this.CONF = ConfigurationContext.getInstance();
+        super(ConfigurationContext.getInstance());
     }
 
     public HttpClientImpl(HttpClientConfiguration conf) {
-        this.CONF = conf;
+        super(conf);
         if (isProxyConfigured() && isJDK14orEarlier) {
             logger.warn("HTTP Proxy is not supported on JDK1.4 or earlier. Try twitter4j-httpclient-supoprt artifact");
         }
-    }
-
-    public void shutdown() {
     }
 
     private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<HttpClientConfiguration, HttpClient>(1);
@@ -143,7 +139,6 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"\r\n");
                                     write(out, "Content-Type: text/plain; charset=UTF-8\r\n\r\n");
                                     logger.debug(param.getValue());
-//                                    out.write(encode(param.getValue()).getBytes("UTF-8"));
                                     out.write(param.getValue().getBytes("UTF-8"));
                                     write(out, "\r\n");
                                 }
@@ -216,11 +211,6 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
             }
         }
         return res;
-    }
-
-    private void write(DataOutputStream out, String outStr) throws IOException {
-        out.writeBytes(outStr);
-        logger.debug(outStr);
     }
 
     public static String encode(String str) {
@@ -297,34 +287,5 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         }
         con.setInstanceFollowRedirects(false);
         return con;
-    }
-
-    private boolean isProxyConfigured() {
-        return CONF.getHttpProxyHost() != null && !CONF.getHttpProxyHost().equals("");
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        HttpClientImpl that = (HttpClientImpl) o;
-
-        if (CONF != null ? !CONF.equals(that.CONF) : that.CONF != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return CONF != null ? CONF.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "HttpClientImpl{" +
-                "CONF=" + CONF +
-                '}';
     }
 }

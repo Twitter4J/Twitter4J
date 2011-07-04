@@ -17,6 +17,8 @@
 package twitter4j;
 
 
+import twitter4j.internal.http.HttpResponse;
+
 /**
  * Super interface of Twitter Response data interfaces which indicates that rate limit status is avaialble.
  *
@@ -45,4 +47,6 @@ public interface TwitterResponse extends java.io.Serializable {
     int READ = 1;
     int READ_WRITE = 2;
     int READ_WRITE_DIRECTMESSAGES = 3;
+
+
 }

@@ -57,12 +57,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
     }
 
-    /*package*/
-    TwitterStreamImpl(Configuration conf) {
-        super(conf);
-        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
-    }
-
     /* Streaming API */
 
     /**

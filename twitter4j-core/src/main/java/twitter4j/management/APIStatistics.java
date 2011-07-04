@@ -76,8 +76,6 @@ public class APIStatistics implements APIStatisticsMBean {
         return API_STATS_CALCULATOR.getName();
     }
 
-    ;
-
     public long getCallCount() {
         return API_STATS_CALCULATOR.getCallCount();
     }

@@ -18,8 +18,10 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseCode;
+import twitter4j.internal.json.zzzz_T4J_INTERNAL_JSONImplFactory;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.util.ParseUtil;
 
 import java.util.List;
 
@@ -79,8 +81,8 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         } else {
             value.append(super.getMessage());
         }
-        if (null != response) {
-            return getCause(response) + "\n" + value.toString();
+        if (statusCode != -1) {
+            return getCause(statusCode) + "\n" + value.toString();
         } else {
             return value.toString();
         }
@@ -125,14 +127,14 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         if (null == response) {
             return null;
         }
-        return RateLimitStatusJSONImpl.createFromResponseHeader(response);
+        return zzzz_T4J_INTERNAL_JSONImplFactory.createRateLimitStatusFromResponseHeader(response);
     }
 
     /**
      * {@inheritDoc}
      */
     public int getAccessLevel() {
-        return TwitterResponseImpl.toAccessLevel(response);
+        return ParseUtil.toAccessLevel(response);
     }
 
     /**
@@ -147,7 +149,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         if (null == response) {
             return null;
         }
-        return RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(response);
+        return zzzz_T4J_INTERNAL_JSONImplFactory.createFeatureSpecificRateLimitStatusFromResponseHeader(response);
     }
 
     /**
@@ -319,8 +321,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 '}';
     }
 
-    private static String getCause(HttpResponse res) {
-        int statusCode = res.getStatusCode();
+    private static String getCause(int statusCode) {
         String cause;
         // http://apiwiki.twitter.com/HTTP-Response-Codes-and-Errors
         switch (statusCode) {

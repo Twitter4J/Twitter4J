@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public abstract class HttpResponse {
     protected InputStream is;
     private boolean streamConsumed = false;
 
-    public final int getStatusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
@@ -72,7 +73,7 @@ public abstract class HttpResponse {
      * @throws TwitterException
      * @see #disconnect()
      */
-    public final InputStream asStream() {
+    public InputStream asStream() {
         if (streamConsumed) {
             throw new IllegalStateException("Stream has already been consumed.");
         }
@@ -86,7 +87,7 @@ public abstract class HttpResponse {
      * @return response body
      * @throws TwitterException
      */
-    public final String asString() throws TwitterException {
+    public String asString() throws TwitterException {
         if (null == responseAsString) {
             BufferedReader br = null;
             InputStream stream = null;
@@ -135,9 +136,9 @@ public abstract class HttpResponse {
      * @return response body as twitter4j.internal.org.json.JSONObject
      * @throws TwitterException
      */
-    public final JSONObject asJSONObject() throws TwitterException {
+    public JSONObject asJSONObject() throws TwitterException {
         if (null == json) {
-            InputStreamReader reader = null;
+            Reader reader = null;
             try {
                 if (logger.isDebugEnabled()) {
                     if (CONF.isPrettyDebugEnabled()) {
@@ -177,9 +178,9 @@ public abstract class HttpResponse {
      * @return response body as twitter4j.internal.org.json.JSONArray
      * @throws TwitterException
      */
-    public final JSONArray asJSONArray() throws TwitterException {
+    public JSONArray asJSONArray() throws TwitterException {
         JSONArray json = null;
-        InputStreamReader reader = null;
+        Reader reader = null;
         try {
             if (logger.isDebugEnabled()) {
                 if (CONF.isPrettyDebugEnabled()) {
@@ -211,9 +212,9 @@ public abstract class HttpResponse {
         return json;
     }
 
-    public final InputStreamReader asReader() {
+    public Reader asReader() {
         try {
-            return new InputStreamReader(is, "UTF-8");
+            return new BufferedReader(new InputStreamReader(is, "UTF-8"));
         } catch (java.io.UnsupportedEncodingException uee) {
             return new InputStreamReader(is);
         }

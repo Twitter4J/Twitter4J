@@ -70,6 +70,7 @@ public class TwitterTest extends TwitterTestBase {
 
     public void testSerializability() throws Exception {
         TwitterImpl deserialized = (TwitterImpl) assertDeserializedFormIsEqual(twitter1);
+        System.out.println(deserialized);
         assertEquals(deserialized.getScreenName(), twitter1.getScreenName());
         assertEquals(deserialized.auth, ((TwitterImpl) twitter1).auth);
     }

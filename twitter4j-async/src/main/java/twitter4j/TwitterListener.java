@@ -44,12 +44,12 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.0.2
      */
-    void gotDailyTrends(List<Trends> trendsList);
+    void gotDailyTrends(ResponseList<Trends> trendsList);
 
     /**
      * @since Twitter4J 2.0.2
      */
-    void gotWeeklyTrends(List<Trends> trendsList);
+    void gotWeeklyTrends(ResponseList<Trends> trendsList);
 
     /*Timeline Methods*/
     void gotPublicTimeline(ResponseList<Status> statuses);

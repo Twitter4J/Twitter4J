@@ -485,12 +485,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
-    public void gotDailyTrends(List<Trends> trendsList) {
+    public void gotDailyTrends(ResponseList<Trends> trendsList) {
         this.trendsList = trendsList;
         notifyResponse();
     }
 
-    public void gotWeeklyTrends(List<Trends> trendsList) {
+    public void gotWeeklyTrends(ResponseList<Trends> trendsList) {
         this.trendsList = trendsList;
         notifyResponse();
     }
