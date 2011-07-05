@@ -26,7 +26,11 @@ import twitter4j.internal.util.T4JInternalStringUtil;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
+<<<<<<< HEAD
  * @since Twitter4J 2.2.4
+=======
+ * @since Twitter4J 2.2.0
+>>>>>>> ea9d8b95030225896bee32518406a4344eaf2655
  */
 public class zzzz_T4J_INTERNAL_JSONImplFactory implements zzzz_T4J_INTERNAL_Factory {
     private Configuration conf;

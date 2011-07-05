@@ -48,6 +48,7 @@ public interface zzzz_T4J_INTERNAL_Factory extends java.io.Serializable {
     PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException;
 
     UserList createAUserList(HttpResponse res) throws TwitterException;
+
     PagableResponseList<UserList> createPagableUserListList(HttpResponse res) throws TwitterException;
 
     ResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException;

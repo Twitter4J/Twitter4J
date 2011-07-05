@@ -1929,6 +1929,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             return response;
         }
     }
+    
+
 
     private boolean isOk(HttpResponse response) {
         return response != null && response.getStatusCode() < 300;

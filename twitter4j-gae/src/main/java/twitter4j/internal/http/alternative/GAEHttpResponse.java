@@ -39,7 +39,6 @@ import twitter4j.internal.http.HttpResponseCode;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.ParseUtil;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
