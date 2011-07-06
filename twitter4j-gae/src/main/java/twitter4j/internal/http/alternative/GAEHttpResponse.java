@@ -15,6 +15,17 @@
  */
 package twitter4j.internal.http.alternative;
 
+import com.google.appengine.api.urlfetch.HTTPHeader;
+import com.google.appengine.api.urlfetch.HTTPResponse;
+import twitter4j.TwitterException;
+import twitter4j.TwitterRuntimeException;
+import twitter4j.conf.ConfigurationContext;
+import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.http.HttpResponseCode;
+import twitter4j.internal.logging.Logger;
+import twitter4j.internal.org.json.JSONArray;
+import twitter4j.internal.org.json.JSONObject;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,23 +39,11 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import twitter4j.TwitterException;
-import twitter4j.TwitterRuntimeException;
-import twitter4j.conf.ConfigurationContext;
-import twitter4j.internal.http.HttpResponse;
-
-import com.google.appengine.api.urlfetch.HTTPHeader;
-import com.google.appengine.api.urlfetch.HTTPResponse;
-import twitter4j.internal.http.HttpResponseCode;
-import twitter4j.internal.logging.Logger;
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONObject;
-
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @since Twitter4J 2.2.4
  */
-class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
+final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
     private Future<HTTPResponse> future;
     private boolean responseGot;
     private Map<String, String> headers;
@@ -63,6 +62,7 @@ class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
         ensureResponse();
         return statusCode;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -144,14 +144,14 @@ class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
 
     private void ensureResponse() {
         logger.debug("ensureResponse called");
-        if (responseGot){
-            return;
-        }
-        if(th != null){
+        if (th != null) {
             throw new TwitterRuntimeException(th);
         }
+        if (responseGot) {
+            return;
+        }
         responseGot = true;
-        if (future.isCancelled()){
+        if (future.isCancelled()) {
             th = new TwitterException("HttpResponse already disconnected.");
             throw new TwitterRuntimeException(th);
         }
@@ -163,6 +163,7 @@ class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
                 headers.put(h.getName(), h.getValue());
             }
             byte[] content = r.getContent();
+            is = new ByteArrayInputStream(content);
             if (logger.isDebugEnabled()) {
                 logger.debug(new String(content, "UTF-8"));
             }

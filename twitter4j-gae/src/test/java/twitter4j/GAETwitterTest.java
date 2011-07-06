@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import junit.framework.TestCase;
 
 /**
@@ -28,6 +29,7 @@ public class GAETwitterTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
+        new LocalServiceTestHelper().setUp();
     }
 
     protected void tearDown() throws Exception {
@@ -35,12 +37,12 @@ public class GAETwitterTest extends TestCase {
     }
 
     public void testGAETwitter() throws Exception {
-        System.setProperty("twitter4j.http.httpClient", "twitter4j.internal.http.LazyHttpClientImpl");
         Twitter twitter = new TwitterFactory().getInstance();
         assertTrue(twitter instanceof GAETwitterImpl);
         try {
             twitter.showStatus(0L).toString();
         } catch (TwitterRuntimeException tre) {
+            tre.printStackTrace();
             assertTrue(tre.getCause() instanceof TwitterException);
         }
         QueryResult result = twitter.search(new Query("aspofjaoprjraepofjapofawf"));

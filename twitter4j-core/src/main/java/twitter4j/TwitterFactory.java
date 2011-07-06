@@ -37,10 +37,16 @@ public final class TwitterFactory implements java.io.Serializable {
     static final Constructor<Twitter> twitterConstructor;
 
     static {
-        String className;
+        String className = null;
         if (ConfigurationContext.getInstance().isGAE()) {
-            className = "twitter4j.GAETwitterImpl";
-        } else {
+            final String GAE_TWITTER_IMPL = "twitter4j.GAETwitterImpl";
+            try {
+                Class.forName(GAE_TWITTER_IMPL);
+                className = "twitter4j.GAETwitterImpl";
+            } catch (ClassNotFoundException ignore) {
+            }
+        }
+        if (className == null) {
             className = "twitter4j.TwitterImpl";
         }
         Constructor<Twitter> constructor;

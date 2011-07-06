@@ -32,9 +32,11 @@ import java.util.Map;
  */
 public class LazyHttpClientImpl implements HttpClient {
     HttpClient client;
-    public LazyHttpClientImpl(HttpClientConfiguration conf){
+
+    public LazyHttpClientImpl(HttpClientConfiguration conf) {
         client = new HttpClientImpl(conf);
     }
+
     public HttpResponse request(HttpRequest req) throws TwitterException {
         return new LazyHttpResponseImpl(client, req);
     }
@@ -42,11 +44,13 @@ public class LazyHttpClientImpl implements HttpClient {
     public void shutdown() {
     }
 }
-class LazyHttpResponseImpl extends HttpResponse{
-    HttpClient client;
-    HttpRequest req;
-    HttpResponse actualResponse = null;
-    LazyHttpResponseImpl(HttpClient client, HttpRequest req){
+
+class LazyHttpResponseImpl extends HttpResponse {
+    private HttpClient client;
+    private HttpRequest req;
+    private HttpResponse actualResponse = null;
+
+    LazyHttpResponseImpl(HttpClient client, HttpRequest req) {
         this.client = client;
         this.req = req;
     }
@@ -62,12 +66,13 @@ class LazyHttpResponseImpl extends HttpResponse{
         ensure();
         actualResponse.disconnect();
     }
+
     public int getStatusCode() {
         ensure();
         return actualResponse.getStatusCode();
     }
 
-    public String getResponseHeader(String name){
+    public String getResponseHeader(String name) {
         ensure();
         return actualResponse.getResponseHeader(name);
     }
@@ -81,6 +86,7 @@ class LazyHttpResponseImpl extends HttpResponse{
         ensure();
         return actualResponse.asString();
     }
+
     public JSONObject asJSONObject() throws TwitterException {
         ensure();
         return actualResponse.asJSONObject();
@@ -95,8 +101,9 @@ class LazyHttpResponseImpl extends HttpResponse{
         ensure();
         return actualResponse.asReader();
     }
-    private void ensure(){
-        if(actualResponse == null){
+
+    private void ensure() {
+        if (actualResponse == null) {
             try {
                 actualResponse = client.request(req);
             } catch (TwitterException e) {
