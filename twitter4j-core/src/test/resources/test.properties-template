@@ -16,6 +16,9 @@ id3.password=
 id3.id=
 id3.oauth.accessToken=
 id3.oauth.accessTokenSecret=
+id3.oauth.consumerKey=
+id3.oauth.consumerSecret=
+
 
 # a user who's screen name consists of numbers
 numberid.user=
