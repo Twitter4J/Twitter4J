@@ -59,7 +59,7 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
      */
     @Override
     public int getStatusCode() {
-        ensureResponse();
+        ensureResponseEvaluated();
         return statusCode;
     }
 
@@ -68,7 +68,7 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
      */
     @Override
     public String getResponseHeader(String name) {
-        ensureResponse();
+        ensureResponseEvaluated();
         return headers.get(name);
     }
 
@@ -77,7 +77,7 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
      */
     @Override
     public Map<String, List<String>> getResponseHeaderFields() {
-        ensureResponse();
+        ensureResponseEvaluated();
         Map<String, List<String>> ret = new TreeMap<String, List<String>>();
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             ret.put(entry.getKey(), Arrays.asList(entry.getValue()));
@@ -90,7 +90,7 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
      */
     @Override
     public InputStream asStream() {
-        ensureResponse();
+        ensureResponseEvaluated();
         return super.asStream();
     }
 
@@ -99,7 +99,7 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
      */
     @Override
     public String asString() throws TwitterException {
-        ensureResponse();
+        ensureResponseEvaluated();
         return super.asString();
     }
 
@@ -108,7 +108,7 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
      */
     @Override
     public final JSONObject asJSONObject() throws TwitterException {
-        ensureResponse();
+        ensureResponseEvaluated();
         return super.asJSONObject();
     }
 
@@ -117,7 +117,7 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
      */
     @Override
     public final JSONArray asJSONArray() throws TwitterException {
-        ensureResponse();
+        ensureResponseEvaluated();
         return super.asJSONArray();
     }
 
@@ -126,7 +126,7 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
      */
     @Override
     public final Reader asReader() {
-        ensureResponse();
+        ensureResponseEvaluated();
         return super.asReader();
     }
 
@@ -142,7 +142,7 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
 
     private Throwable th = null;
 
-    private void ensureResponse() {
+    private void ensureResponseEvaluated() {
         logger.debug("ensureResponse called");
         if (th != null) {
             throw new TwitterRuntimeException(th);

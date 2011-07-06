@@ -64,6 +64,9 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         source = null;
         target = null;
         ex = null;
+        stream.next(this);
+        waitForStatus();
+        assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
         // This one is an unknown event type.  We should safely ignore it.
         stream.next(this);
@@ -135,9 +138,9 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 
         twitter2.destroyStatus(status.getId());
         waitForStatus();
-
-        twitter1.destroyDirectMessage(dm.getId());
-        waitForStatus();
+        // twitter1 is not permitted to delete direct message
+        // twitter1.destroyDirectMessage(dm.getId());
+        // waitForStatus();
 
         // block twit4j
         twitter1.createBlock(id2.id);
@@ -166,11 +169,11 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         waitForStatus();
         twitter1.addUserListMember(list.getId(), id2.id);
         waitForStatus();
-        twitter2.subscribeUserList("twit4j", list.getId());
+        twitter2.createUserListSubscription(list.getId());
         waitForStatus();
         twitter1.deleteUserListMember(list.getId(), id2.id);
         waitForStatus();
-        twitter2.unsubscribeUserList("twit4j", list.getId());
+        twitter2.destroyUserListSubscription(list.getId());
         waitForStatus();
         twitter1.destroyUserList(list.getId());
         waitForStatus();
@@ -198,7 +201,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         assertReceived("onDirectMessage", TwitterMethod.SEND_DIRECT_MESSAGE);
 
         assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
-        assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
+//        assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
         assertReceived("onUserListMemberAddition", TwitterMethod.ADD_LIST_MEMBER);
         assertReceived("onUserListMemberDeletion", TwitterMethod.DELETE_LIST_MEMBER);
