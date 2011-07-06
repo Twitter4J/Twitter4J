@@ -35,6 +35,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     private AsyncTwitter async1 = null;
     private AsyncTwitter async2 = null;
+    private AsyncTwitter async3 = null;
     private AsyncTwitter bestFriend1Async = null;
     private ResponseList<Location> locations;
     private ResponseList<Place> places;
@@ -56,18 +57,15 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         AsyncTwitterFactory factory = new AsyncTwitterFactory(conf1);
         async1 = factory.getInstance();
         async1.addListener(this);
-//        async1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-//        async1.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
 
         async2 = new AsyncTwitterFactory(conf2).getInstance();
         async2.addListener(this);
-//        async2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-//        async2.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
+
+        async3 = new AsyncTwitterFactory(conf3).getInstance();
+        async3.addListener(this);
 
         bestFriend1Async = new AsyncTwitterFactory(bestFriend1Conf).getInstance();
         bestFriend1Async.addListener(this);
-//        bestFriend1Async.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-//        bestFriend1Async.setOAuthAccessToken(new AccessToken(bestFriend1.accessToken, bestFriend1.accessTokenSecret));
 
         statuses = null;
         users = null;
@@ -87,15 +85,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.getPublicTimeline();
         waitForResponse();
         Assert.assertTrue("size", 0 < statuses.size());
-        assertDeserializedFormIsEqual(statuses);
-    }
-
-    public void testGetFriendsTimeline() throws Exception {
-        async1.getFriendsTimeline();
-        waitForResponse();
-        Assert.assertNotNull(statuses);
-        Assert.assertTrue(statuses.size() > 0);
-
         assertDeserializedFormIsEqual(statuses);
     }
 
@@ -358,36 +347,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertDeserializedFormIsEqual(status);
     }
 
-    public void testGetFriendsStatuses() throws Exception {
-        users = null;
-        async1.getFriendsStatuses(id2.screenName, -1);
-        waitForResponse();
-        Assert.assertNotNull(users);
-
-        users = null;
-        async2.getFriendsStatuses(-1);
-        waitForResponse();
-        Assert.assertNotNull(users);
-        assertDeserializedFormIsEqual(users);
-    }
-
-    public void testFollowers() throws Exception {
-        async1.getFollowersStatuses(-1);
-        waitForResponse();
-        Assert.assertTrue(users.size() > 0);
-
-        async2.getFollowersStatuses(-1);
-        waitForResponse();
-        Assert.assertTrue(users.size() > 0);
-        assertDeserializedFormIsEqual(users);
-    }
-
     public void testDirectMessages() throws Exception {
         String expectedReturn = new Date() + ":directmessage test";
-        async1.sendDirectMessage("twit4jnoupdate", expectedReturn);
+        async1.sendDirectMessage(id3.id, expectedReturn);
         waitForResponse();
         Assert.assertEquals(expectedReturn, message.getText());
-        async1.getDirectMessages();
+        async3.getDirectMessages();
         waitForResponse();
         Assert.assertTrue(1 <= messages.size());
     }

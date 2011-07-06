@@ -178,7 +178,7 @@ public class SearchAPITest extends TwitterTestBase {
     private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception {
         Date trendAt = null;
         for (Trends singleTrends : trendsArray) {
-            assertEquals(expectedSize, singleTrends.getTrends().length);
+            assertTrue((expectedSize-10) < singleTrends.getTrends().length);
             if (trendAt != null) {
                 assertTrue(trendAt.before(singleTrends.getTrendAt()));
             }
