@@ -15,23 +15,12 @@
  */
 package twitter4j.internal.http.alternative;
 
-import static twitter4j.internal.http.RequestMethod.POST;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import com.google.appengine.api.urlfetch.FetchOptions.Builder;
 import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
-import com.google.appengine.api.urlfetch.FetchOptions.Builder;
-
 import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpClient;
 import twitter4j.internal.http.HttpClientBase;
@@ -42,14 +31,24 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.util.T4JInternalStringUtil;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import static twitter4j.internal.http.RequestMethod.POST;
+
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @since Twitter4J 2.2.4
  */
-public class HttpClientImpl extends HttpClientBase implements HttpClient{
+public class HttpClientImpl extends HttpClientBase implements HttpClient {
     private static Logger logger = Logger.getLogger(HttpClientImpl.class);
 
-	public HttpClientImpl(HttpClientConfiguration conf) {
+    public HttpClientImpl(HttpClientConfiguration conf) {
         super(conf);
     }
 
@@ -60,10 +59,10 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient{
                     , HTTPMethod.valueOf(req.getMethod().name())
                     , Builder.disallowTruncate().setDeadline(CONF.getHttpReadTimeout() / 1000D)
             );
-        } catch(MalformedURLException e){
-    		throw new TwitterException(e);
-    	}
-    	
+        } catch (MalformedURLException e) {
+            throw new TwitterException(e);
+        }
+
         int responseCode = -1;
         ByteArrayOutputStream os;
         try {
@@ -81,8 +80,8 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient{
                             write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"; filename=\"" + param.getFile().getName() + "\"\r\n");
                             write(out, "Content-Type: " + param.getContentType() + "\r\n\r\n");
                             BufferedInputStream in = new BufferedInputStream(
-                            		param.hasFileBody() ? param.getFileBody() :new FileInputStream(param.getFile())
-                            		);
+                                    param.hasFileBody() ? param.getFileBody() : new FileInputStream(param.getFile())
+                            );
                             int buff = 0;
                             while ((buff = in.read()) != -1) {
                                 out.write(buff);
@@ -102,9 +101,9 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient{
                     write(out, "\r\n");
                 } else {
                     request.setHeader(new HTTPHeader(
-                    		"Content-Type",
+                            "Content-Type",
                             "application/x-www-form-urlencoded"
-                    		));
+                    ));
                     String postParam = HttpParameter.encodeParameters(req.getParameters());
                     logger.debug("Post Params: ", postParam);
                     byte[] bytes = postParam.getBytes("UTF-8");
@@ -119,9 +118,9 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient{
             return new GAEHttpResponse(service.fetchAsync(request));
         } catch (IOException ioe) {
             // connection timeout or read timeout
-        	throw new TwitterException(ioe.getMessage(), ioe, responseCode);
+            throw new TwitterException(ioe.getMessage(), ioe, responseCode);
         }
-	}
+    }
 
     private void setHeaders(HttpRequest req, HTTPRequest request) {
         if (logger.isDebugEnabled()) {
@@ -130,7 +129,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient{
         }
 
         String authorizationHeader;
-        if (null != req.getAuthorization() && null != (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req))) {
+        if (req.getAuthorization() != null && (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req)) != null) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Authorization: ", T4JInternalStringUtil.maskString(authorizationHeader));
             }
@@ -138,7 +137,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient{
         }
         if (null != req.getRequestHeaders()) {
             for (String key : req.getRequestHeaders().keySet()) {
-            	request.addHeader(new HTTPHeader(key, req.getRequestHeaders().get(key)));
+                request.addHeader(new HTTPHeader(key, req.getRequestHeaders().get(key)));
                 logger.debug(key + ": " + req.getRequestHeaders().get(key));
             }
         }

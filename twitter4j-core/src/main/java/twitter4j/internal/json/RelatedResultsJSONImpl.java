@@ -22,7 +22,6 @@ import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -103,7 +102,7 @@ import java.util.Map;
      */
     public ResponseList<Status> getTweetsWithConversation() {
         ResponseList<Status> statuses = this.tweetsMap.get(TWEETS_WITH_CONVERSATION);
-        if (null != statuses) {
+        if (statuses != null) {
             return statuses;
         } else {
             return new ResponseListImpl<Status>(0, null);
@@ -115,7 +114,7 @@ import java.util.Map;
      */
     public ResponseList<Status> getTweetsWithReply() {
         ResponseList<Status> statuses = this.tweetsMap.get(TWEETS_WITH_REPLY);
-        if (null != statuses) {
+        if (statuses != null) {
             return statuses;
         } else {
             return new ResponseListImpl<Status>(0, null);
@@ -127,7 +126,7 @@ import java.util.Map;
      */
     public ResponseList<Status> getTweetsFromUser() {
         ResponseList<Status> statuses = this.tweetsMap.get(TWEETS_FROM_USER);
-        if (null != statuses) {
+        if (statuses != null) {
             return statuses;
         } else {
             return new ResponseListImpl<Status>(0, null);

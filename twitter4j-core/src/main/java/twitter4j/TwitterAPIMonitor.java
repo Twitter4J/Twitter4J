@@ -55,7 +55,7 @@ public class TwitterAPIMonitor {
         boolean isJDK14orEarlier = false;
         try {
             String versionStr = System.getProperty("java.specification.version");
-            if (null != versionStr) {
+            if (versionStr != null) {
                 isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
             }
             if (ConfigurationContext.getInstance().isDalvik()) {

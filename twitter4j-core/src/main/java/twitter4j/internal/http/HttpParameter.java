@@ -87,11 +87,11 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
     }
 
     public boolean isFile() {
-        return null != file;
+        return file != null;
     }
 
     public boolean hasFileBody() {
-        return null != fileBody;
+        return fileBody != null;
     }
 
     private static final String JPEG = "image/jpeg";

@@ -115,7 +115,7 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
                 HttpPost post = new HttpPost(req.getURL());
                 // parameter has a file?
                 boolean hasFile = false;
-                if (null != req.getParameters()) {
+                if (req.getParameters() != null) {
                     for (HttpParameter parameter : req.getParameters()) {
                         if (parameter.isFile()) {
                             hasFile = true;
@@ -124,7 +124,7 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
                     }
                     if (!hasFile) {
                         List<NameValuePair> nameValuePair = asNameValuePairList(req);
-                        if (null != nameValuePair) {
+                        if (nameValuePair != null) {
                             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePair, "UTF-8");
                             post.setEntity(entity);
                         }
@@ -157,8 +157,8 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
                 commonsRequest.addHeader(headerName, headers.get(headerName));
             }
             String authorizationHeader;
-            if (null != req.getAuthorization()
-                    && null != (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req))) {
+            if (req.getAuthorization() != null
+                    && (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req)) != null) {
                 commonsRequest.addHeader("Authorization", authorizationHeader);
             }
 
@@ -174,7 +174,7 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
 
     private String composeURL(HttpRequest req) {
         List<NameValuePair> params = asNameValuePairList(req);
-        if (null != params) {
+        if (params != null) {
             return req.getURL() + "?" + URLEncodedUtils.format(params, "UTF-8");
         } else {
             return req.getURL();
@@ -182,7 +182,7 @@ public class HttpClientImpl implements twitter4j.internal.http.HttpClient {
     }
 
     private List<NameValuePair> asNameValuePairList(HttpRequest req) {
-        if (null != req.getParameters() && req.getParameters().length > 0) {
+        if (req.getParameters() != null && req.getParameters().length > 0) {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             for (HttpParameter parameter : req.getParameters()) {
                 params.add(new BasicNameValuePair(parameter.getName(), parameter.getValue()));

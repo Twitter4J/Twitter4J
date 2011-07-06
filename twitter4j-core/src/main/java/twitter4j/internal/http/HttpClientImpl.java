@@ -53,7 +53,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
     static {
         try {
             String versionStr = System.getProperty("java.specification.version");
-            if (null != versionStr) {
+            if (versionStr != null) {
                 isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
             }
             if (ConfigurationContext.getInstance().isDalvik()) {
@@ -169,7 +169,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
                         for (String key : responseHeaders.keySet()) {
                             List<String> values = responseHeaders.get(key);
                             for (String value : values) {
-                                if (null != key) {
+                                if (key != null) {
                                     logger.debug(key + ": " + value);
                                 } else {
                                     logger.debug(value);
@@ -201,7 +201,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
                 }
             }
             try {
-                if (logger.isDebugEnabled() && null != res) {
+                if (logger.isDebugEnabled() && res != null) {
                     res.asString();
                 }
                 logger.debug("Sleeping " + CONF.getHttpRetryIntervalSeconds() + " seconds until the next retry.");
@@ -234,13 +234,13 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
         }
 
         String authorizationHeader;
-        if (null != req.getAuthorization() && null != (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req))) {
+        if (req.getAuthorization() != null && (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req)) != null) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Authorization: ", T4JInternalStringUtil.maskString(authorizationHeader));
             }
             connection.addRequestProperty("Authorization", authorizationHeader);
         }
-        if (null != req.getRequestHeaders()) {
+        if (req.getRequestHeaders() != null) {
             for (String key : req.getRequestHeaders().keySet()) {
                 connection.addRequestProperty(key, req.getRequestHeaders().get(key));
                 logger.debug(key + ": " + req.getRequestHeaders().get(key));

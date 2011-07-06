@@ -55,6 +55,14 @@ final class Log4JLogger extends Logger {
      * {@inheritDoc}
      */
     @Override
+    public boolean isErrorEnabled() {
+        return LOGGER.isEnabledFor(org.apache.log4j.Level.WARN);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void debug(String message) {
         LOGGER.debug(message);
     }
@@ -111,6 +119,6 @@ final class Log4JLogger extends Logger {
      */
     @Override
     public void error(String message, Throwable th) {
-    	LOGGER.error(message, th);
+        LOGGER.error(message, th);
     }
 }

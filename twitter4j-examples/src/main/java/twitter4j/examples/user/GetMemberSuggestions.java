@@ -43,7 +43,7 @@ public final class GetMemberSuggestions {
             Twitter twitter = new TwitterFactory().getInstance();
             ResponseList<User> users = twitter.getMemberSuggestions(args[0]);
             for (User user : users) {
-                if (null != user.getStatus()) {
+                if (user.getStatus() != null) {
                     System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());
                 } else {
                     // the user is protected

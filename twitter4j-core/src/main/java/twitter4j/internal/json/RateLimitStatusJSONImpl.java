@@ -20,7 +20,6 @@ import twitter4j.RateLimitStatus;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Date;
@@ -82,19 +81,19 @@ import static twitter4j.internal.util.ParseUtil.getInt;
         Date resetTime;//new Date("X-RateLimit-Reset")
 
         String limit = res.getResponseHeader("X-RateLimit-Limit");
-        if (null != limit) {
+        if (limit != null) {
             hourlyLimit = Integer.parseInt(limit);
         } else {
             return null;
         }
         String remaining = res.getResponseHeader("X-RateLimit-Remaining");
-        if (null != remaining) {
+        if (remaining != null) {
             remainingHits = Integer.parseInt(remaining);
         } else {
             return null;
         }
         String reset = res.getResponseHeader("X-RateLimit-Reset");
-        if (null != reset) {
+        if (reset != null) {
             long longReset = Long.parseLong(reset);
             resetTimeInSeconds = (int) (longReset / 1000);
             resetTime = new Date(longReset * 1000);
@@ -114,19 +113,19 @@ import static twitter4j.internal.util.ParseUtil.getInt;
         Date resetTime;//new Date("X-FeatureRateLimit-Reset")
 
         String limit = res.getResponseHeader("X-FeatureRateLimit-Limit");
-        if (null != limit) {
+        if (limit != null) {
             hourlyLimit = Integer.parseInt(limit);
         } else {
             return null;
         }
         String remaining = res.getResponseHeader("X-FeatureRateLimit-Remaining");
-        if (null != remaining) {
+        if (remaining != null) {
             remainingHits = Integer.parseInt(remaining);
         } else {
             return null;
         }
         String reset = res.getResponseHeader("X-FeatureRateLimit-Reset");
-        if (null != reset) {
+        if (reset != null) {
             long longReset = Long.parseLong(reset);
             resetTimeInSeconds = (int) (longReset / 1000);
             resetTime = new Date(longReset * 1000);

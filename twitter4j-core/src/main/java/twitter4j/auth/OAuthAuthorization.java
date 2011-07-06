@@ -65,7 +65,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         this.conf = conf;
         http = new HttpClientWrapper(conf);
         setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
-        if (null != conf.getOAuthAccessToken() && null != conf.getOAuthAccessTokenSecret()) {
+        if (conf.getOAuthAccessToken() != null && conf.getOAuthAccessTokenSecret() != null) {
             setOAuthAccessToken(new AccessToken(conf.getOAuthAccessToken(), conf.getOAuthAccessTokenSecret()));
         }
     }
@@ -85,7 +85,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      * #{inheritDoc}
      */
     public boolean isEnabled() {
-        return null != oauthToken && oauthToken instanceof AccessToken;
+        return oauthToken != null && oauthToken instanceof AccessToken;
     }
 
     // implementation for OAuthSupport interface
@@ -210,7 +210,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         oauthHeaderParams.add(new HttpParameter("oauth_timestamp", timestamp));
         oauthHeaderParams.add(new HttpParameter("oauth_nonce", nonce));
         oauthHeaderParams.add(new HttpParameter("oauth_version", "1.0"));
-        if (null != otoken) {
+        if (otoken != null) {
             oauthHeaderParams.add(new HttpParameter("oauth_token", otoken.getToken()));
         }
         List<HttpParameter> signatureBaseParams = new ArrayList<HttpParameter>(oauthHeaderParams.size() + params.length);
@@ -230,7 +230,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         oauthHeaderParams.add(new HttpParameter("oauth_signature", signature));
 
         // http://oauth.net/core/1.0/#rfc.section.9.1.1
-        if (null != realm) {
+        if (realm != null) {
             oauthHeaderParams.add(new HttpParameter("realm", realm));
         }
         return "OAuth " + encodeParameters(oauthHeaderParams, ",", true);
@@ -283,7 +283,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         oauthHeaderParams.add(new HttpParameter("oauth_timestamp", timestamp));
         oauthHeaderParams.add(new HttpParameter("oauth_nonce", nonce));
         oauthHeaderParams.add(new HttpParameter("oauth_version", "1.0"));
-        if (null != oauthToken) {
+        if (oauthToken != null) {
             oauthHeaderParams.add(new HttpParameter("oauth_token", oauthToken.getToken()));
         }
 
@@ -458,8 +458,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     }
 
     public void setOAuthConsumer(String consumerKey, String consumerSecret) {
-        this.consumerKey = null != consumerKey ? consumerKey : "";
-        this.consumerSecret = null != consumerSecret ? consumerSecret : "";
+        this.consumerKey = consumerKey != null ? consumerKey : "";
+        this.consumerSecret = consumerSecret != null ? consumerSecret : "";
     }
 
     @Override

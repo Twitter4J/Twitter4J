@@ -71,11 +71,11 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
             String consumerKey = conf.getOAuthConsumerKey();
             String consumerSecret = conf.getOAuthConsumerSecret();
             // try to find oauth tokens in the configuration
-            if (null != consumerKey && null != consumerSecret) {
+            if (consumerKey != null && consumerSecret != null) {
                 OAuthAuthorization oauth = new OAuthAuthorization(conf);
                 String accessToken = conf.getOAuthAccessToken();
                 String accessTokenSecret = conf.getOAuthAccessTokenSecret();
-                if (null != accessToken && null != accessTokenSecret) {
+                if (accessToken != null && accessTokenSecret != null) {
                     oauth.setOAuthAccessToken(new AccessToken(accessToken, accessTokenSecret));
                 }
                 this.auth = oauth;
@@ -87,7 +87,8 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
         http.setHttpResponseListener(this);
         setFactory();
     }
-    protected void setFactory(){
+
+    protected void setFactory() {
         factory = new zzzz_T4J_INTERNAL_JSONImplFactory(conf);
     }
 
@@ -151,14 +152,14 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
             TwitterException te = event.getTwitterException();
             RateLimitStatus rateLimitStatus;
             int statusCode;
-            if (null != te) {
+            if (te != null) {
                 rateLimitStatus = te.getRateLimitStatus();
                 statusCode = te.getStatusCode();
             } else {
                 rateLimitStatus = zzzz_T4J_INTERNAL_JSONImplFactory.createRateLimitStatusFromResponseHeader(res);
                 statusCode = res.getStatusCode();
             }
-            if (null != rateLimitStatus) {
+            if (rateLimitStatus != null) {
                 RateLimitStatusEvent statusEvent
                         = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
                 if (statusCode == ENHANCE_YOUR_CLAIM

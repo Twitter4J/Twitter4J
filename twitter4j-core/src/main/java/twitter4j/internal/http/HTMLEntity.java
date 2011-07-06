@@ -31,7 +31,7 @@ public final class HTMLEntity {
         String escaped;
         while (index < original.length()) {
             escaped = entityEscapeMap.get(original.substring(index, index + 1));
-            if (null != escaped) {
+            if (escaped != null) {
                 original.replace(index, index + 1, escaped);
                 index += escaped.length();
             } else {
@@ -42,7 +42,7 @@ public final class HTMLEntity {
 
     public static String unescape(String original) {
         String returnValue = null;
-        if (null != original) {
+        if (original != null) {
             StringBuffer buf = new StringBuffer(original);
             unescape(buf);
             returnValue = buf.toString();
@@ -64,7 +64,7 @@ public final class HTMLEntity {
             if (-1 != semicolonIndex) {
                 escaped = original.substring(index, semicolonIndex + 1);
                 entity = escapeEntityMap.get(escaped);
-                if (null != entity) {
+                if (entity != null) {
                     original.replace(index, semicolonIndex + 1, entity);
                 }
                 index++;

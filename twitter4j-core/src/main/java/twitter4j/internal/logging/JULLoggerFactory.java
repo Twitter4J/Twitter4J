@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package twitter4j;
+package twitter4j.internal.logging;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class TwitterRuntimeException extends RuntimeException {
-    public TwitterRuntimeException(Throwable th) {
-        super(th);
+final class JULLoggerFactory extends LoggerFactory {
+    @Override
+    public Logger getLogger(Class clazz) {
+        return new JULLogger(java.util.logging.Logger.getLogger(clazz.getName()));
     }
 }

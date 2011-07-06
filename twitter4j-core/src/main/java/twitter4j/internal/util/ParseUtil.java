@@ -69,7 +69,7 @@ public final class ParseUtil {
 
     public static String getURLDecodedString(String name, JSONObject json) {
         String returnValue = getRawString(name, json);
-        if (null != returnValue) {
+        if (returnValue != null) {
             try {
                 returnValue = URLDecoder.decode(returnValue, "UTF-8");
             } catch (UnsupportedEncodingException ignore) {

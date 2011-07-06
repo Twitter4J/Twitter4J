@@ -64,11 +64,11 @@ public final class HttpClientWrapper implements java.io.Serializable {
         try {
             res = http.request(req);
             //fire HttpResponseEvent
-            if (null != httpResponseListener) {
+            if (httpResponseListener != null) {
                 httpResponseListener.httpResponseReceived(new HttpResponseEvent(req, res, null));
             }
         } catch (TwitterException te) {
-            if (null != httpResponseListener) {
+            if (httpResponseListener != null) {
                 httpResponseListener.httpResponseReceived(new HttpResponseEvent(req, null, te));
             }
             throw te;

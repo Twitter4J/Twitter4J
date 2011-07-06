@@ -49,6 +49,14 @@ final class NullLogger extends Logger {
      * {@inheritDoc}
      */
     @Override
+    public boolean isErrorEnabled() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void debug(String message) {
     }
 

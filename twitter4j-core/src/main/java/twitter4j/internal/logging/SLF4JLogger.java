@@ -55,6 +55,14 @@ final class SLF4JLogger extends Logger {
      * {@inheritDoc}
      */
     @Override
+    public boolean isErrorEnabled() {
+        return LOGGER.isErrorEnabled();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void debug(String message) {
         LOGGER.debug(message);
     }

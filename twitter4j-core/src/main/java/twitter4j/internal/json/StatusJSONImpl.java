@@ -262,7 +262,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
      * {@inheritDoc}
      */
     public long[] getContributors() {
-        if (null != contributors) {
+        if (contributors != null) {
             // http://twitter4j.org/jira/browse/TFJ-592
             // preserving serialized form compatibility with older versions
             contributorsIDs = new long[contributors.length];
@@ -307,7 +307,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
      * {@inheritDoc}
      */
     public boolean isRetweet() {
-        return null != retweetedStatus;
+        return retweetedStatus != null;
     }
 
     /**

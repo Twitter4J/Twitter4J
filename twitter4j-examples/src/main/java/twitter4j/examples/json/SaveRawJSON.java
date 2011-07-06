@@ -75,19 +75,19 @@ public final class SaveRawJSON {
             bw.write(rawJSON);
             bw.flush();
         } finally {
-            if (null != bw) {
+            if (bw != null) {
                 try {
                     bw.close();
                 } catch (IOException ignore) {
                 }
             }
-            if (null != osw) {
+            if (osw != null) {
                 try {
                     osw.close();
                 } catch (IOException ignore) {
                 }
             }
-            if (null != fos) {
+            if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException ignore) {

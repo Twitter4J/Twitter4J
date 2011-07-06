@@ -2888,7 +2888,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl
             try {
                 invoke(listeners);
             } catch (TwitterException te) {
-                if (null != listeners) {
+                if (listeners != null) {
                     for (TwitterListener listener : listeners) {
                         try {
                             listener.onException(te, method);

@@ -45,7 +45,7 @@ public class DispatcherTest extends TestCase {
     public void testInvokeLater() throws Exception {
         boolean isJDK14orEarlier = false;
         String versionStr = System.getProperty("java.specification.version");
-        if (null != versionStr) {
+        if (versionStr != null) {
             isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
         }
         // this test runs only on JDK1.5 or later since Thread.getAllStackTraces() is available from JDK1.5

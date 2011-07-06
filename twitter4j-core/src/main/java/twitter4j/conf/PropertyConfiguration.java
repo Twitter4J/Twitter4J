@@ -137,7 +137,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     private boolean notNull(Properties props, String prefix, String name) {
-        return null != props.getProperty(prefix + name);
+        return props.getProperty(prefix + name) != null;
     }
 
     private boolean loadProperties(Properties props, String path) {
@@ -153,7 +153,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         } catch (Exception ignore) {
         } finally {
             try {
-                if (null != fis) {
+                if (fis != null) {
                     fis.close();
                 }
             } catch (IOException ignore) {

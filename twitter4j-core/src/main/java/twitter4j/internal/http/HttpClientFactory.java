@@ -31,7 +31,7 @@ public final class HttpClientFactory {
         Class clazz = null;
         //-Dtwitter4j.http.httpClient=twitter4j.internal.http.HttpClient
         String httpClientImpl = System.getProperty(HTTP_CLIENT_IMPLEMENTATION);
-        if (null != httpClientImpl) {
+        if (httpClientImpl != null) {
             try {
                 clazz = Class.forName(httpClientImpl);
             } catch (ClassNotFoundException ignore) {

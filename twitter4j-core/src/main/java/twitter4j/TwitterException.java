@@ -73,7 +73,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     @Override
     public String getMessage() {
         StringBuffer value = new StringBuffer();
-        if (null != errorMessage && null != requestPath) {
+        if (errorMessage != null && requestPath != null) {
             value.append("error - ").append(errorMessage)
                     .append("\n");
             value.append("request - ").append(requestPath)
@@ -89,7 +89,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     private void decode(String str) {
-        if (null != str && str.startsWith("{")) {
+        if (str != null && str.startsWith("{")) {
             try {
                 JSONObject json = new JSONObject(str);
                 if (!json.isNull("error")) {
@@ -109,7 +109,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     public String getResponseHeader(String name) {
         String value = null;
-        if (null != response) {
+        if (response != null) {
             List<String> header = response.getResponseHeaderFields().get(name);
             if (header.size() > 0) {
                 value = header.get(0);
@@ -169,13 +169,13 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         int retryAfter = -1;
         if (this.statusCode == 400) {
             RateLimitStatus rateLimitStatus = getRateLimitStatus();
-            if (null != rateLimitStatus) {
+            if (rateLimitStatus != null) {
                 retryAfter = rateLimitStatus.getSecondsUntilReset();
             }
         } else if (this.statusCode == ENHANCE_YOUR_CLAIM) {
             try {
                 String retryAfterStr = response.getResponseHeader("Retry-After");
-                if (null != retryAfterStr) {
+                if (retryAfterStr != null) {
                     retryAfter = Integer.valueOf(retryAfterStr);
                 }
             } catch (NumberFormatException ignore) {
@@ -202,7 +202,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * @since Twitter4J 2.1.2
      */
     public boolean exceededRateLimitation() {
-        return (statusCode == 400 && null != getRateLimitStatus()) // REST API
+        return (statusCode == 400 && getRateLimitStatus() != null) // REST API
                 || (statusCode == 420); // Search API
     }
 
@@ -272,7 +272,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * @since Twitter4J 2.2.3
      */
     public boolean isErrorMessageAvailable() {
-        return null != errorMessage;
+        return errorMessage != null;
     }
 
     @Override

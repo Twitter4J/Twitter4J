@@ -179,7 +179,7 @@ public class SearchAPITest extends TwitterTestBase {
         Date trendAt = null;
         for (Trends singleTrends : trendsArray) {
             assertEquals(expectedSize, singleTrends.getTrends().length);
-            if (null != trendAt) {
+            if (trendAt != null) {
                 assertTrue(trendAt.before(singleTrends.getTrendAt()));
             }
             trendAt = singleTrends.getTrendAt();

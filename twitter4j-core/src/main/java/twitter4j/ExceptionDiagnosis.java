@@ -49,7 +49,7 @@ final class ExceptionDiagnosis implements java.io.Serializable {
             }
         }
         hexString += toHexString(stackLineHash) + "-" + toHexString(lineNumberHash);
-        if (null != th.getCause()) {
+        if (th.getCause() != null) {
             this.hexString += " " + new ExceptionDiagnosis(th.getCause(), inclusionFilter).asHexString();
         }
 

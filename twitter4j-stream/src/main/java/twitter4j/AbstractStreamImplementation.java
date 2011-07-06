@@ -265,7 +265,7 @@ abstract class AbstractStreamImplementation {
         streamAlive = false;
         is.close();
         br.close();
-        if (null != response) {
+        if (response != null) {
             response.disconnect();
         }
     }

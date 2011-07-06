@@ -172,7 +172,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         Thread.sleep(5000);
         async2.destroyFavorite(status.getId());
         waitForResponse();
-        if (null != te && te.getStatusCode() == 404) {
+        if (te != null && te.getStatusCode() == 404) {
             // sometimes destorying favorite fails with 404
         } else {
             Assert.assertEquals(status, this.status);

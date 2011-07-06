@@ -40,7 +40,7 @@ final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.Htt
         this.res = res;
         is = res.getEntity().getContent();
         statusCode = res.getStatusLine().getStatusCode();
-        if (null != is && "gzip".equals(getResponseHeader("Content-Encoding"))) {
+        if (is != null && "gzip".equals(getResponseHeader("Content-Encoding"))) {
             // the response is gzipped
             is = new GZIPInputStream(is);
         }
@@ -51,7 +51,7 @@ final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.Htt
      */
     public final String getResponseHeader(String name) {
         Header[] headers = res.getHeaders(name);
-        if (null != headers && headers.length > 0) {
+        if (headers != null && headers.length > 0) {
             return headers[0].getValue();
         } else {
             return null;
@@ -80,7 +80,7 @@ final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.Htt
      * {@inheritDoc}
      */
     public void disconnect() throws IOException {
-        if (null != res) {
+        if (res != null) {
             res.getEntity().consumeContent();
         }
     }

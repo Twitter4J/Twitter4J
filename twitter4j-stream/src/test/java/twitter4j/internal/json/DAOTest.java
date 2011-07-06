@@ -17,6 +17,7 @@
 package twitter4j.internal.json;
 
 import junit.framework.Assert;
+import twitter4j.*;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
@@ -28,7 +29,6 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.json.DataObjectFactory;
-import twitter4j.*;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -535,12 +535,12 @@ public class DAOTest extends TwitterTestBase {
             br = new BufferedReader(isr);
             StringBuffer buf = new StringBuffer();
             String line;
-            while (null != (line = br.readLine())) {
+            while ((line = br.readLine()) != null) {
                 buf.append(line);
             }
             return buf.toString();
         } finally {
-            if (null != is) {
+            if (is != null) {
                 is.close();
                 isr.close();
                 br.close();

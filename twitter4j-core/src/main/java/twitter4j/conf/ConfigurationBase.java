@@ -88,6 +88,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String clientURL;
 
     public static final String DALVIK = "twitter4j.dalvik";
+    public static final String GAE = "twitter4j.gae";
 
     private static final String DEFAULT_OAUTH_REQUEST_TOKEN_URL = "http://api.twitter.com/oauth/request_token";
     private static final String DEFAULT_OAUTH_AUTHORIZATION_URL = "http://api.twitter.com/oauth/authorize";
@@ -101,9 +102,11 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final String DEFAULT_SITE_STREAM_BASE_URL = "http://sitestream.twitter.com/2b/";
 
     private boolean IS_DALVIK;
+    private boolean IS_GAE;
     private static final long serialVersionUID = -6610497517837844232L;
 
     static String dalvikDetected;
+    static String gaeDetected;
 
     static {
         // detecting dalvik (Android platform)
@@ -114,6 +117,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             dalvikDetected = "true";
         } catch (ClassNotFoundException cnfe) {
             dalvikDetected = "false";
+        }
+
+        // detecting Google App Engine
+        try {
+            Class.forName("com.google.appengine.api.urlfetch.URLFetchService");
+            gaeDetected = "true";
+        } catch (ClassNotFoundException cnfe) {
+            gaeDetected = "false";
         }
     }
 
@@ -180,6 +191,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         }
         IS_DALVIK = Boolean.valueOf(isDalvik);
 
+        String isGAE;
+        try {
+            isGAE = System.getProperty(GAE, gaeDetected);
+        } catch (SecurityException ignore) {
+            // Unsigned applets are not allowed to access System properties
+            isGAE = gaeDetected;
+        }
+        IS_GAE = Boolean.valueOf(isGAE);
+
         setMediaProvider("YFROG");
         setMediaProviderAPIKey(null);
         setMediaProviderParameters(null);
@@ -188,6 +208,10 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     public final boolean isDalvik() {
         return IS_DALVIK;
+    }
+
+    public boolean isGAE() {
+        return IS_GAE;
     }
 
     public final boolean isDebugEnabled() {

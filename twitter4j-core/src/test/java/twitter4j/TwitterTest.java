@@ -122,7 +122,7 @@ public class TwitterTest extends TwitterTestBase {
         assertNotNull(user.getProfileTextColor());
 
         assertTrue(1 < user.getFollowersCount());
-        if (null != user.getStatus()) {
+        if (user.getStatus() != null) {
             assertNotNull(user.getStatus().getCreatedAt());
             assertNotNull(user.getStatus().getText());
             assertNotNull(user.getStatus().getSource());

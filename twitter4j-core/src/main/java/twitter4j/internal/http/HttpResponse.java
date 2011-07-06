@@ -99,7 +99,7 @@ public abstract class HttpResponse {
                 br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
                 StringBuffer buf = new StringBuffer();
                 String line;
-                while (null != (line = br.readLine())) {
+                while ((line = br.readLine()) != null) {
                     buf.append(line).append("\n");
                 }
                 this.responseAsString = buf.toString();
@@ -109,13 +109,13 @@ public abstract class HttpResponse {
             } catch (IOException ioe) {
                 throw new TwitterException(ioe.getMessage(), ioe);
             } finally {
-                if (null != stream) {
+                if (stream != null) {
                     try {
                         stream.close();
                     } catch (IOException ignore) {
                     }
                 }
-                if (null != br) {
+                if (br != null) {
                     try {
                         br.close();
                     } catch (IOException ignore) {
@@ -159,7 +159,7 @@ public abstract class HttpResponse {
                     throw new TwitterException(jsone.getMessage(), jsone);
                 }
             } finally {
-                if (null != reader) {
+                if (reader != null) {
                     try {
                         reader.close();
                     } catch (IOException ignore) {
@@ -201,7 +201,7 @@ public abstract class HttpResponse {
                 throw new TwitterException(jsone.getMessage(), jsone);
             }
         } finally {
-            if (null != reader) {
+            if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException ignore) {

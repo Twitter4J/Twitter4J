@@ -209,7 +209,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
             if (conf.isUserStreamRepliesAllEnabled()) {
                 params.add(new HttpParameter("replies", "all"));
             }
-            if (null != track) {
+            if (track != null) {
                 params.add(new HttpParameter("track", T4JInternalStringUtil.join(track)));
             }
             return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
@@ -332,7 +332,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
      * {@inheritDoc}
      */
     public synchronized void cleanUp() {
-        if (null != handler) {
+        if (handler != null) {
             handler.close();
             numberOfHandlers--;
         }
@@ -516,7 +516,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                     }
                 }
             }
-            if (null != this.stream && connected) {
+            if (this.stream != null && connected) {
                 try {
                     this.stream.close();
                 } catch (IOException ignore) {
@@ -545,7 +545,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         public synchronized void close() {
             setStatus("[Disposing thread]");
             try {
-                if (null != stream) {
+                if (stream != null) {
                     try {
                         stream.close();
                     } catch (IOException ignore) {

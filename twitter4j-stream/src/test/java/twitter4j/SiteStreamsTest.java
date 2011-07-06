@@ -238,7 +238,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 //            InputStreamReader isr = new InputStreamReader(is);
 //            BufferedReader br = new BufferedReader(isr);
 //            String line;
-//            while (null != (line = br.readLine())) {
+//            while ((line = br.readLine()) != null) {
 //                System.out.println(line);
 //            }
 //        }

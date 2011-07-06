@@ -55,7 +55,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private final HttpParameter INCLUDE_RTS;
 
     private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter[] params2) {
-        if (null != params1 && null != params2) {
+        if (params1 != null && params2 != null) {
             HttpParameter[] params = new HttpParameter[params1.length + params2.length];
             System.arraycopy(params1, 0, params, 0, params1.length);
             System.arraycopy(params2, 0, params, params1.length, params2.length);
@@ -64,7 +64,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         if (null == params1 && null == params2) {
             return new HttpParameter[0];
         }
-        if (null != params1) {
+        if (params1 != null) {
             return params1;
         } else {
             return params2;
@@ -72,7 +72,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter params2) {
-        if (null != params1 && null != params2) {
+        if (params1 != null && params2 != null) {
             HttpParameter[] params = new HttpParameter[params1.length + 1];
             System.arraycopy(params1, 0, params, 0, params1.length);
             params[params.length - 1] = params2;
@@ -81,7 +81,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         if (null == params1 && null == params2) {
             return new HttpParameter[0];
         }
-        if (null != params1) {
+        if (params1 != null) {
             return params1;
         } else {
             return new HttpParameter[]{params2};
@@ -568,7 +568,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException {
         HttpResponse res = get(conf.getRestBaseURL() + "users/suggestions/"
                 + categorySlug + ".json");
-            return factory.createUserListFromJSONArray_Users(res);
+        return factory.createUserListFromJSONArray_Users(res);
     }
 
     /**
@@ -1287,22 +1287,22 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         ensureAuthorizationEnabled();
 
         List<HttpParameter> profile = new ArrayList<HttpParameter>(6);
-        if (null != trend_locationWoeid) {
+        if (trend_locationWoeid != null) {
             profile.add(new HttpParameter("trend_location_woeid", trend_locationWoeid));
         }
-        if (null != sleep_timeEnabled) {
+        if (sleep_timeEnabled != null) {
             profile.add(new HttpParameter("sleep_time_enabled", sleep_timeEnabled.toString()));
         }
-        if (null != start_sleepTime) {
+        if (start_sleepTime != null) {
             profile.add(new HttpParameter("start_sleep_time", start_sleepTime));
         }
-        if (null != end_sleepTime) {
+        if (end_sleepTime != null) {
             profile.add(new HttpParameter("end_sleep_time", end_sleepTime));
         }
-        if (null != time_zone) {
+        if (time_zone != null) {
             profile.add(new HttpParameter("time_zone", time_zone));
         }
-        if (null != lang) {
+        if (lang != null) {
             profile.add(new HttpParameter("lang", lang));
         }
 
@@ -1342,7 +1342,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     private void addParameterToList(List<HttpParameter> colors,
                                     String paramName, String color) {
-        if (null != color) {
+        if (color != null) {
             colors.add(new HttpParameter(paramName, color));
         }
     }
@@ -1720,10 +1720,10 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         params.add(new HttpParameter("lat", location.getLatitude()));
         params.add(new HttpParameter("long", location.getLongitude()));
         params.add(new HttpParameter("name", name));
-        if (null != containedWithin) {
+        if (containedWithin != null) {
             params.add(new HttpParameter("contained_within", containedWithin));
         }
-        if (null != streetAddress) {
+        if (streetAddress != null) {
             params.add(new HttpParameter("attribute:street_address", streetAddress));
         }
         return factory.createSimilarPlaces(get(conf.getRestBaseURL()
@@ -1765,7 +1765,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         params.add(new HttpParameter("token", token));
         params.add(new HttpParameter("lat", location.getLatitude()));
         params.add(new HttpParameter("long", location.getLongitude()));
-        if (null != streetAddress) {
+        if (streetAddress != null) {
             params.add(new HttpParameter("attribute:street_address", streetAddress));
         }
         return factory.createPlace(post(conf.getRestBaseURL() + "geo/place.json"
@@ -1929,7 +1929,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             return response;
         }
     }
-    
 
 
     private boolean isOk(HttpResponse response) {

@@ -71,19 +71,19 @@ public final class LoadRawJSON {
             br = new BufferedReader(isr);
             return br.readLine();
         } finally {
-            if (null != br) {
+            if (br != null) {
                 try {
                     br.close();
                 } catch (IOException ignore) {
                 }
             }
-            if (null != isr) {
+            if (isr != null) {
                 try {
                     isr.close();
                 } catch (IOException ignore) {
                 }
             }
-            if (null != fis) {
+            if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException ignore) {

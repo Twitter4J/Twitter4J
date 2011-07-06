@@ -34,6 +34,8 @@ public interface Configuration extends HttpClientConfiguration
 
     boolean isDalvik();
 
+    boolean isGAE();
+
     boolean isDebugEnabled();
 
     String getUserAgent();

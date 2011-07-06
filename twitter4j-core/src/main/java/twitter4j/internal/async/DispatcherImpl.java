@@ -61,7 +61,7 @@ final class DispatcherImpl implements Dispatcher {
             synchronized (q) {
                 if (q.size() > 0) {
                     Runnable task = q.remove(0);
-                    if (null != task) {
+                    if (task != null) {
                         return task;
                     }
                 }
@@ -109,7 +109,7 @@ class ExecuteThread extends Thread {
     public void run() {
         while (alive) {
             Runnable task = q.poll();
-            if (null != task) {
+            if (task != null) {
                 try {
                     task.run();
                 } catch (Exception ex) {
