@@ -26,11 +26,12 @@ import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.zip.GZIPInputStream;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
@@ -164,14 +166,23 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
             }
             byte[] content = r.getContent();
             is = new ByteArrayInputStream(content);
+            if ("gzip".equals(headers.get("Content-Encoding"))) {
+                // the response is gzipped
+                try {
+                    is = new GZIPInputStream(is);
+                } catch (IOException e) {
+                    th = e;
+                    throw new TwitterRuntimeException(th);
+                }
+            }
             if (logger.isDebugEnabled()) {
-                logger.debug(new String(content, "UTF-8"));
+                logger.debug(inputStreamToString(is));
             }
             if (statusCode < OK || (statusCode != FOUND && MULTIPLE_CHOICES <= statusCode)) {
                 if (statusCode == ENHANCE_YOUR_CLAIM ||
                         statusCode == BAD_REQUEST ||
                         statusCode < INTERNAL_SERVER_ERROR) {
-                    th = new TwitterException(new String(content, "UTF-8"), null, statusCode);
+                    th = new TwitterException(inputStreamToString(is), null, statusCode);
                     throw new TwitterRuntimeException(th);
                 }
             }
@@ -179,12 +190,25 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
             th = e.getCause();
         } catch (InterruptedException e) {
             th = e.getCause();
-        } catch (UnsupportedEncodingException e) {
-            throw new AssertionError(e);
         }
         if (th != null) {
             throw new TwitterRuntimeException(th);
         }
+    }
+
+    private static String inputStreamToString(InputStream is) {
+        StringBuffer buf = new StringBuffer();
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        String line;
+        try {
+            while ((line = br.readLine()) != null) {
+                buf.append(line);
+            }
+        } catch (IOException e) {
+            return null;
+        }
+        return buf.toString();
     }
 
     @Override

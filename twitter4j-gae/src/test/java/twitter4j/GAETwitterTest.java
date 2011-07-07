@@ -45,7 +45,8 @@ public class GAETwitterTest extends TestCase {
             tre.printStackTrace();
             assertTrue(tre.getCause() instanceof TwitterException);
         }
-        QueryResult result = twitter.search(new Query("aspofjaoprjraepofjapofawf"));
-        result.getTweets();
+        String msg = new java.util.Date().toString() + "日本語";
+        Status status = twitter.updateStatus(msg);
+        assertEquals(msg, status.getText());
     }
 }
