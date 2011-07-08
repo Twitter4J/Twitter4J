@@ -108,12 +108,6 @@
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-tools-sdk</artifactId>
-            <version>1.5.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.appengine</groupId>
             <artifactId>appengine-testing</artifactId>
             <version>1.5.1</version>
             <scope>test</scope>

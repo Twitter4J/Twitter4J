@@ -137,20 +137,58 @@ public abstract class HttpResponse {
      * @throws TwitterException
      */
     public JSONObject asJSONObject() throws TwitterException {
-        if (null == json) {
+        if (json == null) {
             Reader reader = null;
             try {
-                if (logger.isDebugEnabled()) {
-                    if (CONF.isPrettyDebugEnabled()) {
-                        reader = asReader();
-                        json = new JSONObject(new JSONTokener(reader));
-                        logger.debug(json.toString(1));
-                    } else {
-                        json = new JSONObject(asString());
-                    }
-                } else {
+                if (responseAsString == null) {
                     reader = asReader();
                     json = new JSONObject(new JSONTokener(reader));
+                } else {
+                    json = new JSONObject(responseAsString);
+                }
+                if (CONF.isPrettyDebugEnabled()) {
+                    logger.debug(json.toString(1));
+                }
+            } catch (JSONException jsone) {
+                if (responseAsString == null) {
+                    throw new TwitterException(jsone.getMessage(), jsone);
+                } else {
+                    throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
+                }
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+                disconnectForcibly();
+            }
+        }
+        return json;
+    }
+
+    private JSONArray jsonArray = null;
+
+    /**
+     * Returns the response body as twitter4j.internal.org.json.JSONArray.<br>
+     * Disconnects the internal HttpURLConnection silently.
+     *
+     * @return response body as twitter4j.internal.org.json.JSONArray
+     * @throws TwitterException
+     */
+    public JSONArray asJSONArray() throws TwitterException {
+        if (jsonArray == null) {
+            Reader reader = null;
+            try {
+                if (responseAsString == null) {
+                    reader = asReader();
+                    jsonArray = new JSONArray(new JSONTokener(reader));
+                } else {
+                    jsonArray = new JSONArray(responseAsString);
+                }
+                if (CONF.isPrettyDebugEnabled()) {
+                    logger.debug(json.toString(1));
                 }
             } catch (JSONException jsone) {
                 if (logger.isDebugEnabled()) {
@@ -168,48 +206,7 @@ public abstract class HttpResponse {
                 disconnectForcibly();
             }
         }
-        return json;
-    }
-
-    /**
-     * Returns the response body as twitter4j.internal.org.json.JSONArray.<br>
-     * Disconnects the internal HttpURLConnection silently.
-     *
-     * @return response body as twitter4j.internal.org.json.JSONArray
-     * @throws TwitterException
-     */
-    public JSONArray asJSONArray() throws TwitterException {
-        JSONArray json = null;
-        Reader reader = null;
-        try {
-            if (logger.isDebugEnabled()) {
-                if (CONF.isPrettyDebugEnabled()) {
-                    reader = asReader();
-                    json = new JSONArray(new JSONTokener(reader));
-                    logger.debug(json.toString(1));
-                } else {
-                    json = new JSONArray(asString());
-                }
-            } else {
-                reader = asReader();
-                json = new JSONArray(new JSONTokener(reader));
-            }
-        } catch (JSONException jsone) {
-            if (logger.isDebugEnabled()) {
-                throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
-            } else {
-                throw new TwitterException(jsone.getMessage(), jsone);
-            }
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException ignore) {
-                }
-            }
-            disconnectForcibly();
-        }
-        return json;
+        return jsonArray;
     }
 
     public Reader asReader() {

@@ -145,7 +145,6 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
     private Throwable th = null;
 
     private void ensureResponseEvaluated() {
-        logger.debug("ensureResponse called");
         if (th != null) {
             throw new TwitterRuntimeException(th);
         }
@@ -175,14 +174,12 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
                     throw new TwitterRuntimeException(th);
                 }
             }
-            if (logger.isDebugEnabled()) {
-                logger.debug(inputStreamToString(is));
-            }
+            responseAsString = inputStreamToString(is);
             if (statusCode < OK || (statusCode != FOUND && MULTIPLE_CHOICES <= statusCode)) {
                 if (statusCode == ENHANCE_YOUR_CLAIM ||
                         statusCode == BAD_REQUEST ||
                         statusCode < INTERNAL_SERVER_ERROR) {
-                    th = new TwitterException(inputStreamToString(is), null, statusCode);
+                    th = new TwitterException(responseAsString, null, statusCode);
                     throw new TwitterRuntimeException(th);
                 }
             }
@@ -196,19 +193,22 @@ final class GAEHttpResponse extends HttpResponse implements HttpResponseCode {
         }
     }
 
-    private static String inputStreamToString(InputStream is) {
-        StringBuffer buf = new StringBuffer();
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-        String line;
-        try {
-            while ((line = br.readLine()) != null) {
-                buf.append(line);
+    private String inputStreamToString(InputStream is) {
+        if (responseAsString == null) {
+            StringBuffer buf = new StringBuffer();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+            String line;
+            try {
+                while ((line = br.readLine()) != null) {
+                    buf.append(line);
+                }
+            } catch (IOException e) {
+                return null;
             }
-        } catch (IOException e) {
-            return null;
+            responseAsString = buf.toString();
         }
-        return buf.toString();
+        return responseAsString;
     }
 
     @Override
