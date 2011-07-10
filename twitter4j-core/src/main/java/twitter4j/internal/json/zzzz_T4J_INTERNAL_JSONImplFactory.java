@@ -126,6 +126,11 @@ public class zzzz_T4J_INTERNAL_JSONImplFactory implements zzzz_T4J_INTERNAL_Fact
         return TrendsJSONImpl.createTrendsList(res, conf.isJSONStoreEnabled());
     }
 
+    public ResponseList<Trends> createEmptyTrendsList(TwitterException te) {
+        return new ResponseListImpl<Trends>(te.getRateLimitStatus(),
+                            te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
+    }
+
     public User createUser(HttpResponse res) throws TwitterException {
         return new UserJSONImpl(res, conf);
     }

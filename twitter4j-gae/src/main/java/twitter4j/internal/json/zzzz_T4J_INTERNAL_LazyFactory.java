@@ -76,6 +76,17 @@ public class zzzz_T4J_INTERNAL_LazyFactory implements zzzz_T4J_INTERNAL_Factory 
         };
     }
 
+    public ResponseList<Trends> createEmptyTrendsList(final TwitterException te) {
+        return new LazyResponseList<Trends>() {
+            @Override
+            protected ResponseList<Trends> createActualResponseList() throws TwitterException {
+                return new ResponseListImpl<Trends>(te.getRateLimitStatus(),
+                            te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
+            }
+        };
+
+    }
+
     public User createUser(HttpResponse res) throws TwitterException {
         return new LazyUser(res, factory);
     }

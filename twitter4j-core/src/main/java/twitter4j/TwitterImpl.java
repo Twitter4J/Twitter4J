@@ -130,16 +130,32 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     public ResponseList<Trends> getDailyTrends() throws TwitterException {
-        return factory.createTrendsList(get(conf.getRestBaseURL() + "trends/daily.json"));
+        try {
+            return factory.createTrendsList(get(conf.getRestBaseURL() + "trends/daily.json"));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyTrendsList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Trends> getDailyTrends(Date date, boolean excludeHashTags) throws TwitterException {
-        return factory.createTrendsList(get(conf.getRestBaseURL()
-                + "trends/daily.json?date=" + toDateStr(date)
-                + (excludeHashTags ? "&exclude=hashtags" : "")));
+        try {
+            return factory.createTrendsList(get(conf.getRestBaseURL()
+                    + "trends/daily.json?date=" + toDateStr(date)
+                    + (excludeHashTags ? "&exclude=hashtags" : "")));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyTrendsList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     private String toDateStr(Date date) {
@@ -154,17 +170,33 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     public ResponseList<Trends> getWeeklyTrends() throws TwitterException {
-        return factory.createTrendsList(get(conf.getRestBaseURL()
-                + "trends/weekly.json"));
+        try {
+            return factory.createTrendsList(get(conf.getRestBaseURL()
+                    + "trends/weekly.json"));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyTrendsList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Trends> getWeeklyTrends(Date date, boolean excludeHashTags) throws TwitterException {
-        return factory.createTrendsList(get(conf.getRestBaseURL()
-                + "trends/weekly.json?date=" + toDateStr(date)
-                + (excludeHashTags ? "&exclude=hashtags" : "")));
+        try {
+            return factory.createTrendsList(get(conf.getRestBaseURL()
+                    + "trends/weekly.json?date=" + toDateStr(date)
+                    + (excludeHashTags ? "&exclude=hashtags" : "")));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyTrendsList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /* Status Methods */
