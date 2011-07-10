@@ -174,8 +174,16 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getPublicTimeline() throws
             TwitterException {
-        return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/public_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled()));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL() +
+                    "statuses/public_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled()));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -184,7 +192,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getHomeTimeline() throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/home_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled()));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/home_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled()));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -193,8 +209,16 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getHomeTimeline(Paging paging) throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), INCLUDE_ENTITIES)));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), INCLUDE_ENTITIES)));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -203,9 +227,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getFriendsTimeline() throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/friends_timeline.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled()));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/friends_timeline.json?include_entities="
+                    + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled()));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -215,10 +247,18 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getFriendsTimeline(Paging paging) throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/friends_timeline.json",
-                mergeParameters(new HttpParameter[]{INCLUDE_RTS, INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray())));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/friends_timeline.json",
+                    mergeParameters(new HttpParameter[]{INCLUDE_RTS, INCLUDE_ENTITIES}
+                            , paging.asPostParameterArray())));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
 
     }
 
@@ -228,12 +268,20 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getUserTimeline(String screenName, Paging paging)
             throws TwitterException {
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/user_timeline.json",
-                mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)
-                        , INCLUDE_RTS
-                        , INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray())));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/user_timeline.json",
+                    mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)
+                            , INCLUDE_RTS
+                            , INCLUDE_ENTITIES}
+                            , paging.asPostParameterArray())));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -241,26 +289,50 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getUserTimeline(long userId, Paging paging)
             throws TwitterException {
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/user_timeline.json",
-                mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)
-                        , INCLUDE_RTS
-                        , INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray())));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/user_timeline.json",
+                    mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)
+                            , INCLUDE_RTS
+                            , INCLUDE_ENTITIES}
+                            , paging.asPostParameterArray())));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getUserTimeline(String screenName) throws TwitterException {
-        return getUserTimeline(screenName, new Paging());
+        try {
+            return getUserTimeline(screenName, new Paging());
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getUserTimeline(long userId) throws TwitterException {
-        return getUserTimeline(userId, new Paging());
+        try {
+            return getUserTimeline(userId, new Paging());
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -268,7 +340,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getUserTimeline() throws
             TwitterException {
-        return getUserTimeline(new Paging());
+        try {
+            return getUserTimeline(new Paging());
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -277,11 +357,20 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getUserTimeline(Paging paging) throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/user_timeline.json",
-                mergeParameters(new HttpParameter[]{INCLUDE_RTS
-                        , INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray())));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL() +
+                    "statuses/user_timeline.json",
+                    mergeParameters(new HttpParameter[]{INCLUDE_RTS
+                            , INCLUDE_ENTITIES}
+                            , paging.asPostParameterArray())));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
+
     }
 
     /**
@@ -289,9 +378,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getMentions() throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/mentions.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled()));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL() +
+                    "statuses/mentions.json?include_entities="
+                    + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled()));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -299,11 +396,19 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getMentions(Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/mentions.json",
-                mergeParameters(new HttpParameter[]{INCLUDE_RTS
-                        , INCLUDE_ENTITIES}
-                        , paging.asPostParameterArray())));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/mentions.json",
+                    mergeParameters(new HttpParameter[]{INCLUDE_RTS
+                            , INCLUDE_ENTITIES}
+                            , paging.asPostParameterArray())));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -311,8 +416,16 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getRetweetedByMe() throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/retweeted_by_me.json?include_entities=" + conf.isIncludeEntitiesEnabled()));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/retweeted_by_me.json?include_entities=" + conf.isIncludeEntitiesEnabled()));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -320,9 +433,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getRetweetedByMe(Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/retweeted_by_me.json", mergeParameters(paging.asPostParameterArray()
-                , INCLUDE_ENTITIES)));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/retweeted_by_me.json", mergeParameters(paging.asPostParameterArray()
+                    , INCLUDE_ENTITIES)));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -330,9 +451,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getRetweetedToMe() throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/retweeted_to_me.json?include_entities="
-                + conf.isIncludeEntitiesEnabled()));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/retweeted_to_me.json?include_entities="
+                    + conf.isIncludeEntitiesEnabled()));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -340,9 +469,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getRetweetedToMe(Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/retweeted_to_me.json", mergeParameters(paging.asPostParameterArray()
-                , INCLUDE_ENTITIES)));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL() +
+                    "statuses/retweeted_to_me.json", mergeParameters(paging.asPostParameterArray()
+                    , INCLUDE_ENTITIES)));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -350,9 +487,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getRetweetsOfMe() throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/retweets_of_me.json?include_entities="
-                + conf.isIncludeEntitiesEnabled()));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/retweets_of_me.json?include_entities="
+                    + conf.isIncludeEntitiesEnabled()));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -360,53 +505,93 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ResponseList<Status> getRetweetsOfMe(Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/retweets_of_me.json", mergeParameters(paging.asPostParameterArray()
-                , INCLUDE_ENTITIES)));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL()
+                    + "statuses/retweets_of_me.json", mergeParameters(paging.asPostParameterArray()
+                    , INCLUDE_ENTITIES)));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetedToUser(String screenName, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
-                , new HttpParameter[]{
-                new HttpParameter("screen_name", screenName)
-                , INCLUDE_ENTITIES})));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL() +
+                    "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
+                    , new HttpParameter[]{
+                    new HttpParameter("screen_name", screenName)
+                    , INCLUDE_ENTITIES})));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetedToUser(long userId, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
-                , new HttpParameter[]{
-                new HttpParameter("user_id", userId)
-                , INCLUDE_ENTITIES})));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL() +
+                    "statuses/retweeted_to_user.json", mergeParameters(paging.asPostParameterArray()
+                    , new HttpParameter[]{
+                    new HttpParameter("user_id", userId)
+                    , INCLUDE_ENTITIES})));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetedByUser(String screenName, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
-                , new HttpParameter[]{
-                new HttpParameter("screen_name", screenName)
-                , INCLUDE_ENTITIES})));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL() +
+                    "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
+                    , new HttpParameter[]{
+                    new HttpParameter("screen_name", screenName)
+                    , INCLUDE_ENTITIES})));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getRetweetedByUser(long userId, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
-                , new HttpParameter[]{
-                new HttpParameter("user_id", userId)
-                , INCLUDE_ENTITIES})));
+        try {
+            return factory.createStatusList(get(conf.getRestBaseURL() +
+                    "statuses/retweeted_by_user.json", mergeParameters(paging.asPostParameterArray()
+                    , new HttpParameter[]{
+                    new HttpParameter("user_id", userId)
+                    , INCLUDE_ENTITIES})));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyStatusList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**

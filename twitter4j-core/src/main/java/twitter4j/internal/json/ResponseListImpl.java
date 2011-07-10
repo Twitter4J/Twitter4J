@@ -42,6 +42,12 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
         super(size);
         init(res);
     }
+    ResponseListImpl(RateLimitStatus rateLimitStatus, RateLimitStatus featureSpecificRateLimitStatus, int accessLevel) {
+        super();
+        this.rateLimitStatus = rateLimitStatus;
+        this.featureSpecificRateLimitStatus = featureSpecificRateLimitStatus;
+        this.accessLevel = accessLevel;
+    }
     private void init(HttpResponse res){
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
         this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);

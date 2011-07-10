@@ -63,6 +63,11 @@ public class zzzz_T4J_INTERNAL_JSONImplFactory implements zzzz_T4J_INTERNAL_Fact
         return StatusJSONImpl.createStatusList(res, conf);
     }
 
+    public ResponseList<Status> createEmptyStatusList(TwitterException te) {
+        return new ResponseListImpl<Status>(te.getRateLimitStatus(),
+                        te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
+    }
+
     /**
      * returns a GeoLocation instance if a "geo" element is found.
      *
