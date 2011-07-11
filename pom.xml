@@ -95,7 +95,7 @@
         <module>twitter4j-async</module>
         <module>twitter4j-core</module>
         <module>twitter4j-examples</module>
-        <module>twitter4j-gae</module>
+        <module>twitter4j-appengine</module>
         <module>twitter4j-stream</module>
         <module>twitter4j-httpclient-support</module>
         <module>twitter4j-media-support</module>
