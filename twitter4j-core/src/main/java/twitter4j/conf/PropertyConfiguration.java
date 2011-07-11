@@ -20,6 +20,7 @@ import twitter4j.internal.util.T4JInternalStringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -123,8 +124,14 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         loadProperties(props, "." + File.separatorChar + TWITTER4J_PROPERTIES);
         // then, override with /twiter4j.properties in the classpath
         loadProperties(props, Configuration.class.getResourceAsStream("/" + TWITTER4J_PROPERTIES));
-        // then, override with /WEB/INF/twiter4j.properties in the classpath
+        // then, override with /WEB/INF/twitter4j.properties in the classpath
         loadProperties(props, Configuration.class.getResourceAsStream("/WEB-INF/" + TWITTER4J_PROPERTIES));
+        // for Google App Engine
+        try {
+            loadProperties(props, new FileInputStream("WEB-INF/" + TWITTER4J_PROPERTIES));
+        } catch (SecurityException ignore) {
+        } catch (FileNotFoundException ignore) {
+        }
 
         setFieldsWithTreePath(props, treePath);
     }
