@@ -188,7 +188,7 @@ public abstract class HttpResponse {
                     jsonArray = new JSONArray(responseAsString);
                 }
                 if (CONF.isPrettyDebugEnabled()) {
-                    logger.debug(json.toString(1));
+                    logger.debug(jsonArray.toString(1));
                 }
             } catch (JSONException jsone) {
                 if (logger.isDebugEnabled()) {
