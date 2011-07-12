@@ -11,12 +11,12 @@ import twitter4j.internal.org.json.JSONObject;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class zzzz_T4J_INTERNAL_LazyFactory implements zzzz_T4J_INTERNAL_Factory {
-    private final zzzz_T4J_INTERNAL_Factory factory;
+public class zzzz_T4J_INTERNAL_LazyFactory implements z_T4JInternalFactory {
+    private final z_T4JInternalFactory factory;
     private final Configuration conf;
 
     public zzzz_T4J_INTERNAL_LazyFactory(Configuration conf) {
-        factory = new zzzz_T4J_INTERNAL_JSONImplFactory(conf);
+        factory = new z_T4JInternalJSONImplFactory(conf);
         this.conf = conf;
     }
 

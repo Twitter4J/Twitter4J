@@ -23,7 +23,7 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -210,7 +210,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 params.add(new HttpParameter("replies", "all"));
             }
             if (track != null) {
-                params.add(new HttpParameter("track", T4JInternalStringUtil.join(track)));
+                params.add(new HttpParameter("track", z_T4JInternalStringUtil.join(track)));
             }
             return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
                     , params.toArray(new HttpParameter[params.size()])
@@ -263,7 +263,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return http.post(conf.getSiteStreamBaseURL() + "site.json",
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
-                        , new HttpParameter("follow", T4JInternalStringUtil.join(follow))}
+                        , new HttpParameter("follow", z_T4JInternalStringUtil.join(follow))}
                 , auth).asStream();
     }
 

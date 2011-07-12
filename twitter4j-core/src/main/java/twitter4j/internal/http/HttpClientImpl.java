@@ -19,7 +19,7 @@ package twitter4j.internal.http;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -236,7 +236,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
         String authorizationHeader;
         if (req.getAuthorization() != null && (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req)) != null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Authorization: ", T4JInternalStringUtil.maskString(authorizationHeader));
+                logger.debug("Authorization: ", z_T4JInternalStringUtil.maskString(authorizationHeader));
             }
             connection.addRequestProperty("Authorization", authorizationHeader);
         }
@@ -254,7 +254,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
             if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
-                    logger.debug("Proxy AuthPassword: " + T4JInternalStringUtil.maskString(CONF.getHttpProxyPassword()));
+                    logger.debug("Proxy AuthPassword: " + z_T4JInternalStringUtil.maskString(CONF.getHttpProxyPassword()));
                 }
                 Authenticator.setDefault(new Authenticator() {
                     @Override

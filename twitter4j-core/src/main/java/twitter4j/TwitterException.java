@@ -18,10 +18,10 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseCode;
-import twitter4j.internal.json.zzzz_T4J_INTERNAL_JSONImplFactory;
+import twitter4j.internal.json.z_T4JInternalJSONImplFactory;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.ParseUtil;
+import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 import java.util.List;
 
@@ -127,14 +127,14 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         if (null == response) {
             return null;
         }
-        return zzzz_T4J_INTERNAL_JSONImplFactory.createRateLimitStatusFromResponseHeader(response);
+        return z_T4JInternalJSONImplFactory.createRateLimitStatusFromResponseHeader(response);
     }
 
     /**
      * {@inheritDoc}
      */
     public int getAccessLevel() {
-        return ParseUtil.toAccessLevel(response);
+        return z_T4JInternalParseUtil.toAccessLevel(response);
     }
 
     /**
@@ -149,7 +149,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         if (null == response) {
             return null;
         }
-        return zzzz_T4J_INTERNAL_JSONImplFactory.createFeatureSpecificRateLimitStatusFromResponseHeader(response);
+        return z_T4JInternalJSONImplFactory.createFeatureSpecificRateLimitStatusFromResponseHeader(response);
     }
 
     /**

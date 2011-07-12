@@ -19,7 +19,7 @@ package twitter4j.internal.json;
 import twitter4j.RateLimitStatus;
 import twitter4j.ResponseList;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.util.ParseUtil;
+import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 import java.util.ArrayList;
 
@@ -45,7 +45,7 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
     private void init(HttpResponse res){
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
         this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
-        accessLevel = ParseUtil.toAccessLevel(res);
+        accessLevel = z_T4JInternalParseUtil.toAccessLevel(res);
     }
 
     /**

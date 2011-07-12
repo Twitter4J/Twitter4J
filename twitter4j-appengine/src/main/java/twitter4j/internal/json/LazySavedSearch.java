@@ -16,9 +16,12 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.*;
-import javax.annotation.Generated;
+import twitter4j.RateLimitStatus;
+import twitter4j.SavedSearch;
+import twitter4j.TwitterException;
+import twitter4j.TwitterRuntimeException;
 
+import javax.annotation.Generated;
 import java.util.Date;
 
 /**
@@ -34,10 +37,10 @@ import java.util.Date;
 )
 final class LazySavedSearch implements twitter4j.SavedSearch {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private SavedSearch target = null;
 
-    LazySavedSearch(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazySavedSearch(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

@@ -27,10 +27,10 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.Arrays;
 import java.util.Date;
 
-import static twitter4j.internal.util.ParseUtil.getBoolean;
-import static twitter4j.internal.util.ParseUtil.getDate;
-import static twitter4j.internal.util.ParseUtil.getLong;
-import static twitter4j.internal.util.ParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
 
 /**
  * A data class representing one single status of a user.
@@ -99,7 +99,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-        geoLocation = zzzz_T4J_INTERNAL_JSONImplFactory.createGeoLocation(json);
+        geoLocation = z_T4JInternalJSONImplFactory.createGeoLocation(json);
         if (!json.isNull("place")) {
             try {
                 place = new PlaceJSONImpl(json.getJSONObject("place"));

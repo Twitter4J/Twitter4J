@@ -17,8 +17,8 @@
 package twitter4j.internal.json;
 
 import twitter4j.*;
-import javax.annotation.Generated;
 
+import javax.annotation.Generated;
 import java.util.Date;
 
 /**
@@ -33,10 +33,10 @@ import java.util.Date;
 )
 final class LazyStatus implements twitter4j.Status {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private Status target = null;
 
-    LazyStatus(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyStatus(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

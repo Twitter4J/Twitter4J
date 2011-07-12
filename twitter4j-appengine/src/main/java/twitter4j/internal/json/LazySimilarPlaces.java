@@ -17,7 +17,11 @@
 // generated with generate-lazy-objects.sh
 package twitter4j.internal.json;
 
-import twitter4j.*;
+import twitter4j.GeoLocation;
+import twitter4j.Place;
+import twitter4j.ResponseList;
+import twitter4j.SimilarPlaces;
+import twitter4j.TwitterException;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -25,9 +29,9 @@ import twitter4j.*;
  */
 final class LazySimilarPlaces extends LazyResponseList<Place> implements SimilarPlaces {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
 
-    LazySimilarPlaces(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazySimilarPlaces(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         super();
         this.res = res;
         this.factory = factory;

@@ -16,9 +16,14 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.*;
-import javax.annotation.Generated;
+import twitter4j.Location;
+import twitter4j.RateLimitStatus;
+import twitter4j.Trend;
+import twitter4j.Trends;
+import twitter4j.TwitterException;
+import twitter4j.TwitterRuntimeException;
 
+import javax.annotation.Generated;
 import java.util.Date;
 
 /**
@@ -35,10 +40,10 @@ import java.util.Date;
 )
 final class LazyTrends implements twitter4j.Trends {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private Trends target = null;
 
-    LazyTrends(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyTrends(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

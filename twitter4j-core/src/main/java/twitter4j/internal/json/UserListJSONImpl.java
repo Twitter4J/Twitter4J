@@ -23,7 +23,6 @@ import twitter4j.User;
 import twitter4j.UserList;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -31,9 +30,9 @@ import twitter4j.internal.org.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static twitter4j.internal.util.ParseUtil.getBoolean;
-import static twitter4j.internal.util.ParseUtil.getInt;
-import static twitter4j.internal.util.ParseUtil.getRawString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
 
 /**
  * A data class representing Basic list information element

@@ -16,9 +16,13 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.*;
-import javax.annotation.Generated;
+import twitter4j.RateLimitStatus;
+import twitter4j.TwitterException;
+import twitter4j.TwitterRuntimeException;
+import twitter4j.User;
+import twitter4j.UserList;
 
+import javax.annotation.Generated;
 import java.net.URI;
 
 /**
@@ -34,10 +38,10 @@ import java.net.URI;
 )
 final class LazyUserList implements twitter4j.UserList {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private UserList target = null;
 
-    LazyUserList(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyUserList(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

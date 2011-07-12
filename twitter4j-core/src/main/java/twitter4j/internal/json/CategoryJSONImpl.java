@@ -21,11 +21,10 @@ import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.ParseUtil;
+import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -45,7 +44,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
     void init(JSONObject json) throws JSONException {
         this.name = json.getString("name");
         this.slug = json.getString("slug");
-        this.size = ParseUtil.getInt("size", json);
+        this.size = z_T4JInternalParseUtil.getInt("size", json);
     }
 
     static ResponseList<Category> createCategoriesList(HttpResponse res, Configuration conf) throws TwitterException {

@@ -17,7 +17,10 @@
 // generated with generate-lazy-objects.sh
 package twitter4j.internal.json;
 
-import twitter4j.*;
+import twitter4j.QueryResult;
+import twitter4j.Tweet;
+import twitter4j.TwitterException;
+import twitter4j.TwitterRuntimeException;
 
 import java.util.List;
 
@@ -28,10 +31,10 @@ import java.util.List;
  */
 final class LazyQueryResult implements twitter4j.QueryResult {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private QueryResult target = null;
 
-    LazyQueryResult(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyQueryResult(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

@@ -21,7 +21,7 @@ import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.ParseUtil;
+import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,8 +87,8 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
                 ((StatusListener) listener).onDeletionNotice(new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
             } else {
                 JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
-                ((UserStreamListener) listener).onDeletionNotice(ParseUtil.getLong("id", directMessage)
-                        , ParseUtil.getLong("user_id", directMessage));
+                ((UserStreamListener) listener).onDeletionNotice(z_T4JInternalParseUtil.getLong("id", directMessage)
+                        , z_T4JInternalParseUtil.getLong("user_id", directMessage));
             }
         }
     }
@@ -96,7 +96,7 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     @Override
     protected void onLimit(JSONObject json) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
-            ((StatusListener) listener).onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
+            ((StatusListener) listener).onTrackLimitationNotice(z_T4JInternalParseUtil.getInt("track", json.getJSONObject("limit")));
         }
     }
 
@@ -104,8 +104,8 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     protected void onScrubGeo(JSONObject json) throws TwitterException, JSONException {
         JSONObject scrubGeo = json.getJSONObject("scrub_geo");
         for (StreamListener listener : listeners) {
-            ((StatusListener) listener).onScrubGeo(ParseUtil.getLong("user_id", scrubGeo)
-                    , ParseUtil.getLong("up_to_status_id", scrubGeo));
+            ((StatusListener) listener).onScrubGeo(z_T4JInternalParseUtil.getLong("user_id", scrubGeo)
+                    , z_T4JInternalParseUtil.getLong("up_to_status_id", scrubGeo));
         }
 
     }

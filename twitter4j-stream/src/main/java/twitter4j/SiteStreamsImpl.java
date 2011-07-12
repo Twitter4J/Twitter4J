@@ -21,7 +21,7 @@ import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.ParseUtil;
+import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,8 +82,8 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
             listener.onDeletionNotice(forUser.get(), new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
         } else {
             JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
-            listener.onDeletionNotice(forUser.get(), ParseUtil.getInt("id", directMessage)
-                    , ParseUtil.getLong("user_id", directMessage));
+            listener.onDeletionNotice(forUser.get(), z_T4JInternalParseUtil.getInt("id", directMessage)
+                    , z_T4JInternalParseUtil.getLong("user_id", directMessage));
         }
     }
 

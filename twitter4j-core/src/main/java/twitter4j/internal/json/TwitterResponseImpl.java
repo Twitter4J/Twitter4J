@@ -19,7 +19,7 @@ package twitter4j.internal.json;
 import twitter4j.RateLimitStatus;
 import twitter4j.TwitterResponse;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.util.ParseUtil;
+import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 
 /**
@@ -42,7 +42,7 @@ import twitter4j.internal.util.ParseUtil;
 
     public TwitterResponseImpl(HttpResponse res) {
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
-        accessLevel = ParseUtil.toAccessLevel(res);
+        accessLevel = z_T4JInternalParseUtil.toAccessLevel(res);
     }
 
     /**

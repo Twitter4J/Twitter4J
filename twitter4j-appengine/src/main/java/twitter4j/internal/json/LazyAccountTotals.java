@@ -16,7 +16,11 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.*;
+import twitter4j.AccountTotals;
+import twitter4j.RateLimitStatus;
+import twitter4j.TwitterException;
+import twitter4j.TwitterRuntimeException;
+
 import javax.annotation.Generated;
 
 /**
@@ -30,10 +34,10 @@ import javax.annotation.Generated;
 )
 final class LazyAccountTotals implements twitter4j.AccountTotals {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private AccountTotals target = null;
 
-    LazyAccountTotals(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyAccountTotals(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

@@ -16,9 +16,13 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.*;
-import javax.annotation.Generated;
+import twitter4j.RateLimitStatus;
+import twitter4j.Status;
+import twitter4j.TwitterException;
+import twitter4j.TwitterRuntimeException;
+import twitter4j.User;
 
+import javax.annotation.Generated;
 import java.net.URL;
 import java.util.Date;
 
@@ -35,10 +39,10 @@ import java.util.Date;
 )
 final class LazyUser implements twitter4j.User {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private User target = null;
 
-    LazyUser(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyUser(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

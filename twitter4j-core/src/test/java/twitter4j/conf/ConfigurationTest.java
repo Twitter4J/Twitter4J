@@ -20,7 +20,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import twitter4j.Version;
 import twitter4j.auth.RequestToken;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -62,7 +62,7 @@ public class ConfigurationTest extends TestCase {
 
     public void testSplit() throws Exception {
         String original = "foo/bar";
-        String[] split = T4JInternalStringUtil.split(original, "/");
+        String[] split = z_T4JInternalStringUtil.split(original, "/");
         assertEquals("foo", split[0]);
         assertEquals("bar", split[1]);
         assertEquals(2, split.length);

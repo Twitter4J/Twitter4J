@@ -20,8 +20,8 @@ import twitter4j.conf.Configuration;
 import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.json.DataObjectFactoryUtil;
-import twitter4j.internal.json.zzzz_T4J_INTERNAL_Factory;
-import twitter4j.internal.json.zzzz_T4J_INTERNAL_JSONImplFactory;
+import twitter4j.internal.json.z_T4JInternalFactory;
+import twitter4j.internal.json.z_T4JInternalJSONImplFactory;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
@@ -46,7 +46,7 @@ abstract class AbstractStreamImplementation {
     private HttpResponse response;
     protected final Dispatcher dispatcher;
     private final Configuration CONF;
-    protected zzzz_T4J_INTERNAL_Factory factory;
+    protected z_T4JInternalFactory factory;
 
     /*package*/
 
@@ -55,7 +55,7 @@ abstract class AbstractStreamImplementation {
         this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
         this.dispatcher = dispatcher;
         this.CONF = conf;
-        this.factory = new zzzz_T4J_INTERNAL_JSONImplFactory(conf);
+        this.factory = new z_T4JInternalJSONImplFactory(conf);
     }
     /*package*/
 

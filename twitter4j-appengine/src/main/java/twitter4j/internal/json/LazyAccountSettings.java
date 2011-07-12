@@ -16,7 +16,13 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.*;
+import twitter4j.AccountSettings;
+import twitter4j.Location;
+import twitter4j.RateLimitStatus;
+import twitter4j.TimeZone;
+import twitter4j.TwitterException;
+import twitter4j.TwitterRuntimeException;
+
 import javax.annotation.Generated;
 
 /**
@@ -30,10 +36,10 @@ import javax.annotation.Generated;
 )
 final class LazyAccountSettings implements twitter4j.AccountSettings {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private AccountSettings target = null;
 
-    LazyAccountSettings(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyAccountSettings(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

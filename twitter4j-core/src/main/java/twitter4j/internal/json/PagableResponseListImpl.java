@@ -19,7 +19,7 @@ package twitter4j.internal.json;
 import twitter4j.PagableResponseList;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.ParseUtil;
+import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -32,8 +32,8 @@ class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResp
 
     PagableResponseListImpl(int size, JSONObject json, HttpResponse res) {
         super(size, res);
-        this.previousCursor = ParseUtil.getLong("previous_cursor", json);
-        this.nextCursor = ParseUtil.getLong("next_cursor", json);
+        this.previousCursor = z_T4JInternalParseUtil.getLong("previous_cursor", json);
+        this.nextCursor = z_T4JInternalParseUtil.getLong("next_cursor", json);
     }
 
     /**

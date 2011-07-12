@@ -21,16 +21,15 @@ import twitter4j.SavedSearch;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Date;
 
-import static twitter4j.internal.util.ParseUtil.getDate;
-import static twitter4j.internal.util.ParseUtil.getInt;
-import static twitter4j.internal.util.ParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
 
 /**
  * A data class representing a Saved Search

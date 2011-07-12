@@ -23,19 +23,17 @@ import twitter4j.Trends;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.util.z_T4JInternalParseUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
-import static twitter4j.internal.util.ParseUtil.getDate;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
 
 /**
  * A data class representing Trends.
@@ -84,7 +82,7 @@ import static twitter4j.internal.util.ParseUtil.getDate;
             } else {
                 json = new JSONObject(jsonStr);
             }
-            this.asOf = parseTrendsDate(json.getString("as_of"));
+            this.asOf = z_T4JInternalParseUtil.parseTrendsDate(json.getString("as_of"));
             this.location = extractLocation(json, storeJSON);
             JSONArray array = json.getJSONArray("trends");
             this.trendAt = asOf;
@@ -108,7 +106,7 @@ import static twitter4j.internal.util.ParseUtil.getDate;
         JSONObject json = res.asJSONObject();
         ResponseList<Trends> trends;
         try {
-            Date asOf = parseTrendsDate(json.getString("as_of"));
+            Date asOf = z_T4JInternalParseUtil.parseTrendsDate(json.getString("as_of"));
             JSONObject trendsJson = json.getJSONObject("trends");
             Location location = extractLocation(json, storeJSON);
             trends = new ResponseListImpl<Trends>(trendsJson.length(), res);
@@ -155,22 +153,6 @@ import static twitter4j.internal.util.ParseUtil.getDate;
             location = null;
         }
         return location;
-    }
-
-
-    private static Date parseTrendsDate(String asOfStr) throws TwitterException {
-        Date parsed;
-        switch (asOfStr.length()) {
-            case 10:
-                parsed = new Date(Long.parseLong(asOfStr) * 1000);
-                break;
-            case 20:
-                parsed = getDate(asOfStr, "yyyy-mm-dd'T'HH:mm:ss'Z'");
-                break;
-            default:
-                parsed = getDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
-        }
-        return parsed;
     }
 
     private static Trend[] jsonArrayToTrendArray(JSONArray array, boolean storeJSON) throws JSONException {

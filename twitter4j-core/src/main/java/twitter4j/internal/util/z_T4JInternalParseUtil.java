@@ -38,8 +38,8 @@ import java.util.TimeZone;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class ParseUtil {
-    private ParseUtil() {
+public final class z_T4JInternalParseUtil {
+    private z_T4JInternalParseUtil() {
         // should never be instantiated
         throw new AssertionError();
     }
@@ -77,6 +77,22 @@ public final class ParseUtil {
         }
         return returnValue;
     }
+
+    public static Date parseTrendsDate(String asOfStr) throws TwitterException {
+        Date parsed;
+        switch (asOfStr.length()) {
+            case 10:
+                parsed = new Date(Long.parseLong(asOfStr) * 1000);
+                break;
+            case 20:
+                parsed = getDate(asOfStr, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+                break;
+            default:
+                parsed = getDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
+        }
+        return parsed;
+    }
+
 
     public static Date getDate(String name, JSONObject json) throws TwitterException {
         return getDate(name, json, "EEE MMM d HH:mm:ss z yyyy");

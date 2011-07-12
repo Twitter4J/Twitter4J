@@ -17,10 +17,9 @@
 package twitter4j.internal.json;
 
 import twitter4j.Trend;
-import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONObject;
 
-import static twitter4j.internal.util.ParseUtil.getRawString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
 
 /**
  * A data class representing Trend.

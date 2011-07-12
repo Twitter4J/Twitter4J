@@ -23,7 +23,7 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -239,10 +239,10 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     private void parseGetParameters(String url, List<HttpParameter> signatureBaseParams) {
         int queryStart = url.indexOf("?");
         if (-1 != queryStart) {
-            String[] queryStrs = T4JInternalStringUtil.split(url.substring(queryStart + 1), "&");
+            String[] queryStrs = z_T4JInternalStringUtil.split(url.substring(queryStart + 1), "&");
             try {
                 for (String query : queryStrs) {
-                    String[] split = T4JInternalStringUtil.split(query, "=");
+                    String[] split = z_T4JInternalStringUtil.split(query, "=");
                     if (split.length == 2) {
                         signatureBaseParams.add(
                                 new HttpParameter(URLDecoder.decode(split[0],

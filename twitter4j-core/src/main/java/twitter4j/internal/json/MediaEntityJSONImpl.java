@@ -26,7 +26,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import static twitter4j.internal.util.ParseUtil.getLong;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

@@ -3,16 +3,13 @@ package twitter4j.internal.json;
 import twitter4j.*;
 import twitter4j.api.HelpMethods;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public interface zzzz_T4J_INTERNAL_Factory extends java.io.Serializable {
+public interface z_T4JInternalFactory extends java.io.Serializable {
     Status createStatus(JSONObject json) throws TwitterException;
 
     User createUser(JSONObject json) throws TwitterException;

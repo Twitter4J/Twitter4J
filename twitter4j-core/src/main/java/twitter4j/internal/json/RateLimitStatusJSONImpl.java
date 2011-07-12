@@ -24,8 +24,8 @@ import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Date;
 
-import static twitter4j.internal.util.ParseUtil.getDate;
-import static twitter4j.internal.util.ParseUtil.getInt;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
 
 /**
  * A data class representing Twitter REST API's rate limit status

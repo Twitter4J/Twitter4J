@@ -29,7 +29,7 @@ import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -131,7 +131,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient {
         String authorizationHeader;
         if (req.getAuthorization() != null && (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req)) != null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Authorization: ", T4JInternalStringUtil.maskString(authorizationHeader));
+                logger.debug("Authorization: ", z_T4JInternalStringUtil.maskString(authorizationHeader));
             }
             request.setHeader(new HTTPHeader("Authorization", authorizationHeader));
         }

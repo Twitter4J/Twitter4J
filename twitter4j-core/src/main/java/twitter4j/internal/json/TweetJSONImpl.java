@@ -28,10 +28,10 @@ import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Date;
 
-import static twitter4j.internal.util.ParseUtil.getDate;
-import static twitter4j.internal.util.ParseUtil.getLong;
-import static twitter4j.internal.util.ParseUtil.getRawString;
-import static twitter4j.internal.util.ParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
 
 /**
  * A data class representing a Tweet in the search response
@@ -68,7 +68,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         profileImageUrl = getUnescapedString("profile_image_url", tweet);
         createdAt = getDate("created_at", tweet, "EEE, dd MMM yyyy HH:mm:ss z");
         location = getRawString("location", tweet);
-        geoLocation = zzzz_T4J_INTERNAL_JSONImplFactory.createGeoLocation(tweet);
+        geoLocation = z_T4JInternalJSONImplFactory.createGeoLocation(tweet);
         if (!tweet.isNull("annotations")) {
             try {
                 JSONArray annotationsArray = tweet.getJSONArray("annotations");

@@ -22,16 +22,16 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class zzzz_T4J_INTERNAL_JSONImplFactory implements zzzz_T4J_INTERNAL_Factory {
+public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     private Configuration conf;
 
-    public zzzz_T4J_INTERNAL_JSONImplFactory(Configuration conf) {
+    public z_T4JInternalJSONImplFactory(Configuration conf) {
         this.conf = conf;
     }
 
@@ -77,7 +77,7 @@ public class zzzz_T4J_INTERNAL_JSONImplFactory implements zzzz_T4J_INTERNAL_Fact
                 String coordinates = json.getJSONObject("geo")
                         .getString("coordinates");
                 coordinates = coordinates.substring(1, coordinates.length() - 1);
-                String[] point = T4JInternalStringUtil.split(coordinates, ",");
+                String[] point = z_T4JInternalStringUtil.split(coordinates, ",");
                 return new GeoLocation(Double.parseDouble(point[0]),
                         Double.parseDouble(point[1]));
             }
@@ -244,9 +244,9 @@ public class zzzz_T4J_INTERNAL_JSONImplFactory implements zzzz_T4J_INTERNAL_Fact
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof zzzz_T4J_INTERNAL_JSONImplFactory)) return false;
+        if (!(o instanceof z_T4JInternalJSONImplFactory)) return false;
 
-        zzzz_T4J_INTERNAL_JSONImplFactory that = (zzzz_T4J_INTERNAL_JSONImplFactory) o;
+        z_T4JInternalJSONImplFactory that = (z_T4JInternalJSONImplFactory) o;
 
         if (conf != null ? !conf.equals(that.conf) : that.conf != null)
             return false;

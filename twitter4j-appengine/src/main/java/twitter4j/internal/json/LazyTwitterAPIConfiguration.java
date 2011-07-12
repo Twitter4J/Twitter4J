@@ -15,10 +15,13 @@
  */
 package twitter4j.internal.json;
 
-import twitter4j.*;
-import javax.annotation.Generated;
+import twitter4j.MediaEntity;
+import twitter4j.RateLimitStatus;
+import twitter4j.TwitterAPIConfiguration;
+import twitter4j.TwitterException;
+import twitter4j.TwitterRuntimeException;
 
-import java.io.Serializable;
+import javax.annotation.Generated;
 import java.util.Map;
 
 /**
@@ -32,10 +35,10 @@ import java.util.Map;
 )
 final class LazyTwitterAPIConfiguration implements twitter4j.TwitterAPIConfiguration {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private TwitterAPIConfiguration target = null;
 
-    LazyTwitterAPIConfiguration(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyTwitterAPIConfiguration(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

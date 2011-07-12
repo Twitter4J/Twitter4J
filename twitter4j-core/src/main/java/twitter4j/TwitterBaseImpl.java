@@ -30,8 +30,8 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseEvent;
 import twitter4j.internal.http.HttpResponseListener;
 import twitter4j.internal.http.XAuthAuthorization;
-import twitter4j.internal.json.zzzz_T4J_INTERNAL_Factory;
-import twitter4j.internal.json.zzzz_T4J_INTERNAL_JSONImplFactory;
+import twitter4j.internal.json.z_T4JInternalFactory;
+import twitter4j.internal.json.z_T4JInternalJSONImplFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -54,7 +54,7 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
     protected transient HttpClientWrapper http;
     private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
 
-    protected zzzz_T4J_INTERNAL_Factory factory;
+    protected z_T4JInternalFactory factory;
 
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
@@ -89,7 +89,7 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
     }
 
     protected void setFactory() {
-        factory = new zzzz_T4J_INTERNAL_JSONImplFactory(conf);
+        factory = new z_T4JInternalJSONImplFactory(conf);
     }
 
     /**
@@ -156,7 +156,7 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
                 rateLimitStatus = te.getRateLimitStatus();
                 statusCode = te.getStatusCode();
             } else {
-                rateLimitStatus = zzzz_T4J_INTERNAL_JSONImplFactory.createRateLimitStatusFromResponseHeader(res);
+                rateLimitStatus = z_T4JInternalJSONImplFactory.createRateLimitStatusFromResponseHeader(res);
                 statusCode = res.getStatusCode();
             }
             if (rateLimitStatus != null) {

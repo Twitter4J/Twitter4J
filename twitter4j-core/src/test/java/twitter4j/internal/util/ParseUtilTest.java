@@ -18,6 +18,8 @@ package twitter4j.internal.util;
 
 import junit.framework.TestCase;
 
+import java.text.SimpleDateFormat;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.5
@@ -36,10 +38,17 @@ public class ParseUtilTest extends TestCase {
     }
 
     public void testParseLongReturns101() {
-        assertEquals(101, ParseUtil.getLong("100+"));
+        assertEquals(101, z_T4JInternalParseUtil.getLong("100+"));
     }
 
     public void testParseIntOverflow() {
-        assertEquals(-1, ParseUtil.getInt("4294967295"));
+        assertEquals(-1, z_T4JInternalParseUtil.getInt("4294967295"));
     }
+
+    public void testParseTrendDate() throws Exception{
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        assertEquals("2011-07-11"
+                ,sdf.format(z_T4JInternalParseUtil.parseTrendsDate("2011-07-11T05:31:52Z")));
+    }
+
 }
