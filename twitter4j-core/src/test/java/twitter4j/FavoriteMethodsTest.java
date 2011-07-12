@@ -35,7 +35,7 @@ public class FavoriteMethodsTest extends TwitterTestBase {
     }
 
     public void testFavoriteMethods() throws Exception {
-        Status status = twitter1.getHomeTimeline(new Paging().count(1)).get(0);
+        Status status = twitter1.getPublicTimeline().get(0);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
         status = twitter2.createFavorite(status.getId());
