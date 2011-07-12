@@ -118,24 +118,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         waitForResponse();
         Assert.assertTrue("size", 10 < statuses.size());
         async2.getUserTimeline(new Paging(999383469l));
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        async2.getUserTimeline(id1.screenName);
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        async2.getUserTimeline(id1.screenName, new Paging(999383469l));
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        async2.getUserTimeline(id1.screenName, new Paging().count(10));
-        waitForResponse();
-        Assert.assertTrue("size", 5 < statuses.size());
-        async2.getUserTimeline(id1.screenName, new Paging(999383469l).count(15));
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        async1.getUserTimeline(new Paging(999383469l).count(25));
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        assertDeserializedFormIsEqual(statuses);
     }
 
     public void testAccountProfileImageUpdates() throws Exception {
