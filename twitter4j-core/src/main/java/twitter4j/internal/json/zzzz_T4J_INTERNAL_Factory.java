@@ -27,13 +27,11 @@ public interface zzzz_T4J_INTERNAL_Factory extends java.io.Serializable {
 
     ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException;
 
-    ResponseList<Status> createEmptyStatusList(TwitterException te);
+    <T> ResponseList<T> createEmptyResponseList(TwitterException te);
 
     Trends createTrends(HttpResponse res) throws TwitterException;
 
     ResponseList<Trends> createTrendsList(HttpResponse res) throws TwitterException;
-
-    ResponseList<Trends> createEmptyTrendsList(TwitterException te);
 
     User createUser(HttpResponse res) throws TwitterException;
 

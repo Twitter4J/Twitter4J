@@ -63,8 +63,8 @@ public class zzzz_T4J_INTERNAL_JSONImplFactory implements zzzz_T4J_INTERNAL_Fact
         return StatusJSONImpl.createStatusList(res, conf);
     }
 
-    public ResponseList<Status> createEmptyStatusList(TwitterException te) {
-        return new ResponseListImpl<Status>(te.getRateLimitStatus(),
+    public <T> ResponseList<T> createEmptyResponseList(TwitterException te) {
+        return new ResponseListImpl<T>(te.getRateLimitStatus(),
                         te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
     }
 
@@ -124,11 +124,6 @@ public class zzzz_T4J_INTERNAL_JSONImplFactory implements zzzz_T4J_INTERNAL_Fact
 
     public ResponseList<Trends> createTrendsList(HttpResponse res) throws TwitterException {
         return TrendsJSONImpl.createTrendsList(res, conf.isJSONStoreEnabled());
-    }
-
-    public ResponseList<Trends> createEmptyTrendsList(TwitterException te) {
-        return new ResponseListImpl<Trends>(te.getRateLimitStatus(),
-                            te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
     }
 
     public User createUser(HttpResponse res) throws TwitterException {

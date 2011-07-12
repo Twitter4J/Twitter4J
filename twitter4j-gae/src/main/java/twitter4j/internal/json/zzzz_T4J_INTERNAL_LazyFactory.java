@@ -53,15 +53,6 @@ public class zzzz_T4J_INTERNAL_LazyFactory implements zzzz_T4J_INTERNAL_Factory 
         };
     }
 
-    public ResponseList<Status> createEmptyStatusList(final TwitterException te) {
-        return new LazyResponseList<Status>() {
-            @Override
-            protected ResponseList<Status> createActualResponseList() throws TwitterException {
-                return new ResponseListImpl<Status>(te.getRateLimitStatus(),
-                        te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
-            }
-        };
-    }
 
     public Trends createTrends(HttpResponse res) throws TwitterException {
         return new LazyTrends(res, factory);
@@ -76,11 +67,11 @@ public class zzzz_T4J_INTERNAL_LazyFactory implements zzzz_T4J_INTERNAL_Factory 
         };
     }
 
-    public ResponseList<Trends> createEmptyTrendsList(final TwitterException te) {
-        return new LazyResponseList<Trends>() {
+    public <T> ResponseList<T> createEmptyResponseList(final TwitterException te) {
+        return new LazyResponseList<T>() {
             @Override
-            protected ResponseList<Trends> createActualResponseList() throws TwitterException {
-                return new ResponseListImpl<Trends>(te.getRateLimitStatus(),
+            protected ResponseList<T> createActualResponseList() throws TwitterException {
+                return new ResponseListImpl<T>(te.getRateLimitStatus(),
                             te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
             }
         };
