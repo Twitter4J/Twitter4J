@@ -17,6 +17,7 @@
 package twitter4j.internal.json;
 
 import twitter4j.PagableResponseList;
+import twitter4j.RateLimitStatus;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.util.z_T4JInternalParseUtil;
@@ -29,6 +30,13 @@ class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResp
     private final long previousCursor;
     private final long nextCursor;
     private static final long serialVersionUID = 1531950333538983361L;
+
+    PagableResponseListImpl(RateLimitStatus rateLimitStatus, RateLimitStatus featureSpecificRateLimitStatus,
+                            int accessLevel) {
+        super(rateLimitStatus, featureSpecificRateLimitStatus, accessLevel);
+        previousCursor = 0;
+        nextCursor = 0;
+    }
 
     PagableResponseListImpl(int size, JSONObject json, HttpResponse res) {
         super(size, res);

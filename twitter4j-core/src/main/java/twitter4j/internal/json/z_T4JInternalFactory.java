@@ -24,6 +24,10 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
 
     ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException;
 
+    <T> ResponseList<T> createEmptyResponseList(TwitterException te);
+
+    <T extends TwitterResponse> PagableResponseList<T> createEmptyPagableResponseList(TwitterException te);
+
     Trends createTrends(HttpResponse res) throws TwitterException;
 
     ResponseList<Trends> createTrendsList(HttpResponse res) throws TwitterException;

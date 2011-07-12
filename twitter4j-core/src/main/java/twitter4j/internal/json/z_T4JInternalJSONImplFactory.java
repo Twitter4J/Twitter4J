@@ -63,6 +63,16 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         return StatusJSONImpl.createStatusList(res, conf);
     }
 
+    public <T> ResponseList<T> createEmptyResponseList(TwitterException te) {
+        return new ResponseListImpl<T>(te.getRateLimitStatus(),
+                        te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
+    }
+
+    public <T extends TwitterResponse> PagableResponseList<T> createEmptyPagableResponseList(TwitterException te) {
+        return new PagableResponseListImpl<T>(te.getRateLimitStatus(),
+                        te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
+    }
+
     /**
      * returns a GeoLocation instance if a "geo" element is found.
      *

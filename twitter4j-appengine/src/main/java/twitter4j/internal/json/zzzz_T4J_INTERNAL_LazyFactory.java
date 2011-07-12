@@ -53,6 +53,7 @@ public class zzzz_T4J_INTERNAL_LazyFactory implements z_T4JInternalFactory {
         };
     }
 
+
     public Trends createTrends(HttpResponse res) throws TwitterException {
         return new LazyTrends(res, factory);
     }
@@ -62,6 +63,28 @@ public class zzzz_T4J_INTERNAL_LazyFactory implements z_T4JInternalFactory {
             @Override
             protected ResponseList<Trends> createActualResponseList() throws TwitterException {
                 return TrendsJSONImpl.createTrendsList(res, conf.isJSONStoreEnabled());
+            }
+        };
+    }
+
+    public <T> ResponseList<T> createEmptyResponseList(final TwitterException te) {
+        return new LazyResponseList<T>() {
+            @Override
+            protected ResponseList<T> createActualResponseList() throws TwitterException {
+                return new ResponseListImpl<T>(te.getRateLimitStatus(),
+                            te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
+            }
+        };
+
+    }
+
+    public <T extends TwitterResponse> PagableResponseList<T> createEmptyPagableResponseList(
+            final TwitterException te) {
+        return new LazyPagableResponseList<T>() {
+            @Override
+            protected ResponseList<T> createActualResponseList() throws TwitterException {
+                return new PagableResponseListImpl<T>(te.getRateLimitStatus(),
+                            te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
             }
         };
     }
