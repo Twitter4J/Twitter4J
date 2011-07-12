@@ -68,6 +68,11 @@ public class zzzz_T4J_INTERNAL_JSONImplFactory implements zzzz_T4J_INTERNAL_Fact
                         te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
     }
 
+    public <T extends TwitterResponse> PagableResponseList<T> createEmptyPagableResponseList(TwitterException te) {
+        return new PagableResponseListImpl<T>(te.getRateLimitStatus(),
+                        te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
+    }
+
     /**
      * returns a GeoLocation instance if a "geo" element is found.
      *

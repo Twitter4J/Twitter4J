@@ -881,56 +881,104 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFriendsStatuses(long cursor) throws TwitterException {
+        try {
         return factory.createPagableUserList(get(conf.getRestBaseURL()
                 + "statuses/friends.json?include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFriendsStatuses(String screenName, long cursor) throws TwitterException {
-        return factory.createPagableUserList(get(conf.getRestBaseURL()
-                + "statuses/friends.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName + "&cursor="
-                + cursor));
+        try {
+            return factory.createPagableUserList(get(conf.getRestBaseURL()
+                    + "statuses/friends.json?include_entities="
+                    + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName + "&cursor="
+                    + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFriendsStatuses(long userId, long cursor) throws TwitterException {
-        return factory.createPagableUserList(get(conf.getRestBaseURL()
-                + "statuses/friends.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId
-                + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserList(get(conf.getRestBaseURL()
+                    + "statuses/friends.json?include_entities="
+                    + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId
+                    + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFollowersStatuses(long cursor) throws TwitterException {
-        return factory.createPagableUserList(get(conf.getRestBaseURL()
-                + "statuses/followers.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserList(get(conf.getRestBaseURL()
+                    + "statuses/followers.json?include_entities="
+                    + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFollowersStatuses(String screenName, long cursor) throws TwitterException {
-        return factory.createPagableUserList(get(conf.getRestBaseURL()
-                + "statuses/followers.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserList(get(conf.getRestBaseURL()
+                    + "statuses/followers.json?include_entities="
+                    + conf.isIncludeEntitiesEnabled() + "&screen_name=" + screenName + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<User> getFollowersStatuses(long userId, long cursor) throws TwitterException {
-        return factory.createPagableUserList(get(conf.getRestBaseURL()
-                + "statuses/followers.json?include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserList(get(conf.getRestBaseURL()
+                    + "statuses/followers.json?include_entities="
+                    + conf.isIncludeEntitiesEnabled() + "&user_id=" + userId + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /*List Methods*/
@@ -971,14 +1019,30 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor) throws TwitterException {
-        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?screen_name=" + listOwnerScreenName + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?screen_name=" + listOwnerScreenName + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserLists(long listOwnerUserId, long cursor) throws TwitterException {
-        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?user_id=" + listOwnerUserId + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?user_id=" + listOwnerUserId + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -1058,16 +1122,32 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
-        return factory.createPagableUserListList(get(conf.getRestBaseURL()
-                + "lists/memberships.json?screen_name=" + listMemberScreenName + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserListList(get(conf.getRestBaseURL()
+                    + "lists/memberships.json?screen_name=" + listMemberScreenName + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor) throws TwitterException {
-        return factory.createPagableUserListList(get(conf.getRestBaseURL() +
-                "lists/subscriptions.json?screen_name=" + listOwnerScreenName + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserListList(get(conf.getRestBaseURL() +
+                    "lists/subscriptions.json?screen_name=" + listOwnerScreenName + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -1111,7 +1191,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public PagableResponseList<User> getUserListMembers(String listOwnerScreenName, int listId
             , long cursor) throws TwitterException {
-        return getUserListMembers(listId, cursor);
+        try {
+            return getUserListMembers(listId, cursor);
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -1119,7 +1207,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public PagableResponseList<User> getUserListMembers(long listOwnerId, int listId
             , long cursor) throws TwitterException {
-        return getUserListMembers(listId, cursor);
+        try {
+            return getUserListMembers(listId, cursor);
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -1127,9 +1223,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public PagableResponseList<User> getUserListMembers(int listId
             , long cursor) throws TwitterException {
-        return factory.createPagableUserList(get(conf.getRestBaseURL() +
-                "lists/members.json?list_id=" + listId + "&include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserList(get(conf.getRestBaseURL() +
+                    "lists/members.json?list_id=" + listId + "&include_entities="
+                    + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
@@ -1205,16 +1309,32 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public PagableResponseList<User> getUserListSubscribers(String listOwnerScreenName
             , int listId, long cursor) throws TwitterException {
-        return getUserListSubscribers(listId, cursor);
+        try {
+            return getUserListSubscribers(listId, cursor);
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public PagableResponseList<User> getUserListSubscribers(int listId, long cursor) throws TwitterException {
-        return factory.createPagableUserList(get(conf.getRestBaseURL() +
-                "lists/subscribers.json?list_id=" + listId + "&include_entities="
-                + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor));
+        try {
+            return factory.createPagableUserList(get(conf.getRestBaseURL() +
+                    "lists/subscribers.json?list_id=" + listId + "&include_entities="
+                    + conf.isIncludeEntitiesEnabled() + "&cursor=" + cursor));
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return factory.createEmptyPagableResponseList(te);
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**

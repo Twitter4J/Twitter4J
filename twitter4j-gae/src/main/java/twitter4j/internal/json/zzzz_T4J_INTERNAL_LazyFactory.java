@@ -78,6 +78,17 @@ public class zzzz_T4J_INTERNAL_LazyFactory implements zzzz_T4J_INTERNAL_Factory 
 
     }
 
+    public <T extends TwitterResponse> PagableResponseList<T> createEmptyPagableResponseList(
+            final TwitterException te) {
+        return new LazyPagableResponseList<T>() {
+            @Override
+            protected ResponseList<T> createActualResponseList() throws TwitterException {
+                return new PagableResponseListImpl<T>(te.getRateLimitStatus(),
+                            te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
+            }
+        };
+    }
+
     public User createUser(HttpResponse res) throws TwitterException {
         return new LazyUser(res, factory);
     }
