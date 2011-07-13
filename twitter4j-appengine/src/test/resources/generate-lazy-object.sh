@@ -11,7 +11,7 @@ import javax.annotation.Generated;/g' $TARGET
 sed -i "" "s/public interface $1/final class Lazy$1/g" $TARGET
 sed -i "" 's/final class/@Generated(\
         value = "generate-lazy-objects.sh",\
-        comments = "This is Tool Generated Code. NO NOT EDIT",\
+        comments = "This is Tool Generated Code. DO NOT EDIT",\
         date = "5 June 2007"\
 )\
 final class/g' $TARGET

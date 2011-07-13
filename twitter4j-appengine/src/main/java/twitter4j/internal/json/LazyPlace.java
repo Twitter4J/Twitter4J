@@ -14,15 +14,15 @@ import javax.annotation.Generated;
  */
 @Generated(
         value = "generate-lazy-objects.sh",
-        comments = "This is Tool Generated Code. NO NOT EDIT",
+        comments = "This is Tool Generated Code. DO NOT EDIT",
         date = "5 June 2007"
 )
 final class LazyPlace implements twitter4j.Place {
     private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private zzzz_T4J_INTERNAL_Factory factory;
     private Place target = null;
 
-    LazyPlace(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyPlace(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
         this.res = res;
         this.factory = factory;
     }

@@ -31,15 +31,15 @@ import javax.annotation.Generated;
  */
 @Generated(
         value = "generate-lazy-objects.sh",
-        comments = "This is Tool Generated Code. NO NOT EDIT",
+        comments = "This is Tool Generated Code. DO NOT EDIT",
         date = "5 June 2007"
 )
 final class LazyIDs implements twitter4j.IDs {
     private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private zzzz_T4J_INTERNAL_Factory factory;
     private IDs target = null;
 
-    LazyIDs(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyIDs(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
         this.res = res;
         this.factory = factory;
     }

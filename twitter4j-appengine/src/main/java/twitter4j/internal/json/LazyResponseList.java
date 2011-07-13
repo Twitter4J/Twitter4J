@@ -15,11 +15,9 @@
  */
 package twitter4j.internal.json;
 
-import twitter4j.PagableResponseList;
 import twitter4j.RateLimitStatus;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
-import twitter4j.TwitterResponse;
 import twitter4j.TwitterRuntimeException;
 
 import java.util.Collection;
