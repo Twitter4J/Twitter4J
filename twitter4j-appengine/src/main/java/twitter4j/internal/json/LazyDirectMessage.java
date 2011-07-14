@@ -33,14 +33,14 @@ import java.util.Date;
 @Generated(
         value = "generate-lazy-objects.sh",
         comments = "This is Tool Generated Code. DO NOT EDIT",
-        date = "5 June 2007"
+        date = "2011-07-13"
 )
 final class LazyDirectMessage implements twitter4j.DirectMessage {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private DirectMessage target = null;
 
-    LazyDirectMessage(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyDirectMessage(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }
@@ -96,11 +96,9 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
     }
 
 
-
     public User getSender() {
         return getTarget().getSender();
     }
-
 
 
     public User getRecipient() {

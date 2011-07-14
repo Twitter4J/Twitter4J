@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-// generated with generate-lazy-objects.sh
 package twitter4j.internal.json;
 
+import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Tweet;
 import twitter4j.TwitterException;
@@ -28,21 +28,24 @@ import java.util.List;
  * A data class representing search API response
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 2.2.4
  */
 final class LazyQueryResult implements twitter4j.QueryResult {
     private twitter4j.internal.http.HttpResponse res;
     private z_T4JInternalFactory factory;
     private QueryResult target = null;
+    private Query query;
 
-    LazyQueryResult(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyQueryResult(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory, Query query) {
         this.res = res;
         this.factory = factory;
+        this.query = query;
     }
 
     private QueryResult getTarget() {
         if (target == null) {
             try {
-                target = factory.createQueryResult(res);
+                target = factory.createQueryResult(res, query);
             } catch (TwitterException e) {
                 throw new TwitterRuntimeException(e);
             }

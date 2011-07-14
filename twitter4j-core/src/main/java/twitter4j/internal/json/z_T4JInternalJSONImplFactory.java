@@ -63,16 +63,6 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         return StatusJSONImpl.createStatusList(res, conf);
     }
 
-    public <T> ResponseList<T> createEmptyResponseList(TwitterException te) {
-        return new ResponseListImpl<T>(te.getRateLimitStatus(),
-                        te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
-    }
-
-    public <T extends TwitterResponse> PagableResponseList<T> createEmptyPagableResponseList(TwitterException te) {
-        return new PagableResponseListImpl<T>(te.getRateLimitStatus(),
-                        te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
-    }
-
     /**
      * returns a GeoLocation instance if a "geo" element is found.
      *
@@ -151,12 +141,16 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         }
     }
 
-    public QueryResult createQueryResult(HttpResponse res) throws TwitterException {
-        return new QueryResultJSONImpl(res, conf);
-    }
-
-    public QueryResult createQueryResult(Query query) {
-        return new QueryResultJSONImpl(query);
+    public QueryResult createQueryResult(HttpResponse res, Query query) throws TwitterException {
+        try {
+            return new QueryResultJSONImpl(res, conf);
+        } catch (TwitterException te) {
+            if (404 == te.getStatusCode()) {
+                return new QueryResultJSONImpl(query);
+            } else {
+                throw te;
+            }
+        }
     }
 
     public IDs createIDs(HttpResponse res) throws TwitterException {
@@ -228,11 +222,15 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     }
 
     public ResponseList<Place> createPlaceList(HttpResponse res) throws TwitterException {
-        return PlaceJSONImpl.createPlaceList(res, conf);
-    }
-
-    public ResponseList<Place> createEmptyPlaceList() {
-        return new ResponseListImpl<Place>(0, null);
+        try {
+            return PlaceJSONImpl.createPlaceList(res, conf);
+        } catch (TwitterException te) {
+            if (te.getStatusCode() == 404) {
+                return new ResponseListImpl<Place>(0, null);
+            } else {
+                throw te;
+            }
+        }
     }
 
     public SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException {

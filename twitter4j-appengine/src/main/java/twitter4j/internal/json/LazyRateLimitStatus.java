@@ -32,14 +32,14 @@ import java.util.Date;
 @Generated(
         value = "generate-lazy-objects.sh",
         comments = "This is Tool Generated Code. DO NOT EDIT",
-        date = "5 June 2007"
+        date = "2011-07-13"
 )
 final class LazyRateLimitStatus implements twitter4j.RateLimitStatus {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private RateLimitStatus target = null;
 
-    LazyRateLimitStatus(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyRateLimitStatus(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }
@@ -58,9 +58,9 @@ final class LazyRateLimitStatus implements twitter4j.RateLimitStatus {
     /**
      * Returns the remaining number of API requests available.<br>
      * This public value is identical to the &quot {
-        return getTarget().is identical to the &quot;
-    }
-X-RateLimit-Remaining&quot; response header.
+     * return getTarget().is identical to the &quot;
+     * }
+     * X-RateLimit-Remaining&quot; response header.
      *
      * @return the remaining number of API requests available
      */
@@ -72,9 +72,9 @@ X-RateLimit-Remaining&quot; response header.
     /**
      * Returns the current limit in effect<br>
      * This public value is identical to the &quot {
-        return getTarget().is identical to the &quot;
-    }
-X-RateLimit-Limit&quot; response header.
+     * return getTarget().is identical to the &quot;
+     * }
+     * X-RateLimit-Limit&quot; response header.
      *
      * @return the current limit in effect
      */
@@ -107,13 +107,12 @@ X-RateLimit-Limit&quot; response header.
     }
 
 
-
     /**
      * Returns the time the current rate limiting period ends.<br>
      * This public value is a java.util.Date-typed variation of the &quot {
-        return getTarget().is a java.util.Date-typed variation of the &quot;
-    }
-X-RateLimit-Reset&quot; response header.
+     * return getTarget().is a java.util.Date-typed variation of the &quot;
+     * }
+     * X-RateLimit-Reset&quot; response header.
      *
      * @return the time the current rate limiting period ends
      * @since Twitter4J 2.0.9
@@ -121,7 +120,6 @@ X-RateLimit-Reset&quot; response header.
     public Date getResetTime() {
         return getTarget().getResetTime();
     }
-
 
 
     @Override

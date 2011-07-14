@@ -11,11 +11,11 @@ import twitter4j.internal.org.json.JSONObject;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class zzzz_T4J_INTERNAL_LazyFactory implements z_T4JInternalFactory {
+public class z_T4JInternalLazyFactory implements z_T4JInternalFactory {
     private final z_T4JInternalFactory factory;
     private final Configuration conf;
 
-    public zzzz_T4J_INTERNAL_LazyFactory(Configuration conf) {
+    public z_T4JInternalLazyFactory(Configuration conf) {
         factory = new z_T4JInternalJSONImplFactory(conf);
         this.conf = conf;
     }
@@ -67,28 +67,6 @@ public class zzzz_T4J_INTERNAL_LazyFactory implements z_T4JInternalFactory {
         };
     }
 
-    public <T> ResponseList<T> createEmptyResponseList(final TwitterException te) {
-        return new LazyResponseList<T>() {
-            @Override
-            protected ResponseList<T> createActualResponseList() throws TwitterException {
-                return new ResponseListImpl<T>(te.getRateLimitStatus(),
-                            te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
-            }
-        };
-
-    }
-
-    public <T extends TwitterResponse> PagableResponseList<T> createEmptyPagableResponseList(
-            final TwitterException te) {
-        return new LazyPagableResponseList<T>() {
-            @Override
-            protected ResponseList<T> createActualResponseList() throws TwitterException {
-                return new PagableResponseListImpl<T>(te.getRateLimitStatus(),
-                            te.getFeatureSpecificRateLimitStatus(), te.getAccessLevel());
-            }
-        };
-    }
-
     public User createUser(HttpResponse res) throws TwitterException {
         return new LazyUser(res, factory);
     }
@@ -124,12 +102,8 @@ public class zzzz_T4J_INTERNAL_LazyFactory implements z_T4JInternalFactory {
         };
     }
 
-    public QueryResult createQueryResult(HttpResponse res) throws TwitterException {
-        return new LazyQueryResult(res, factory);
-    }
-
-    public QueryResult createQueryResult(Query query) {
-        return new QueryResultJSONImpl(query);
+    public QueryResult createQueryResult(HttpResponse res, Query query) throws TwitterException {
+        return new LazyQueryResult(res, factory, query);
     }
 
     public IDs createIDs(HttpResponse res) throws TwitterException {
@@ -277,9 +251,9 @@ public class zzzz_T4J_INTERNAL_LazyFactory implements z_T4JInternalFactory {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof zzzz_T4J_INTERNAL_LazyFactory)) return false;
+        if (!(o instanceof z_T4JInternalLazyFactory)) return false;
 
-        zzzz_T4J_INTERNAL_LazyFactory that = (zzzz_T4J_INTERNAL_LazyFactory) o;
+        z_T4JInternalLazyFactory that = (z_T4JInternalLazyFactory) o;
 
         if (factory != null ? !factory.equals(that.factory) : that.factory != null)
             return false;

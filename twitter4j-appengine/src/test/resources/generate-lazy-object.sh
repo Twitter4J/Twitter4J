@@ -12,18 +12,19 @@ sed -i "" "s/public interface $1/final class Lazy$1/g" $TARGET
 sed -i "" 's/final class/@Generated(\
         value = "generate-lazy-objects.sh",\
         comments = "This is Tool Generated Code. DO NOT EDIT",\
-        date = "5 June 2007"\
+        date = "NOW"\
 )\
 final class/g' $TARGET
 
 sed -i "" "s/extends .*{$/implements twitter4j.$1 {/g" $TARGET
+sed -i "" "s/NOW/$NOW/g" $TARGET
 
 sed -i "" 's/{$/{\
     private twitter4j.internal.http.HttpResponse res;\
-    private zzzz_T4J_INTERNAL_Factory factory;\
+    private z_T4JInternalFactory factory;\
     private XXX target = null;\
 \
-    LazyXXX(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {\
+    LazyXXX(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {\
         this.res = res;\
         this.factory = factory;\
     }\

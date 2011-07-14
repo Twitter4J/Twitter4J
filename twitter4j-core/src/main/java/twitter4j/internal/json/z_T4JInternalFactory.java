@@ -24,10 +24,6 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
 
     ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException;
 
-    <T> ResponseList<T> createEmptyResponseList(TwitterException te);
-
-    <T extends TwitterResponse> PagableResponseList<T> createEmptyPagableResponseList(TwitterException te);
-
     Trends createTrends(HttpResponse res) throws TwitterException;
 
     ResponseList<Trends> createTrendsList(HttpResponse res) throws TwitterException;
@@ -40,9 +36,7 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
 
     ResponseList<User> createUserListFromJSONArray_Users(HttpResponse res) throws TwitterException;
 
-    QueryResult createQueryResult(HttpResponse res) throws TwitterException;
-
-    QueryResult createQueryResult(Query query);
+    QueryResult createQueryResult(HttpResponse res, Query query) throws TwitterException;
 
     IDs createIDs(HttpResponse res) throws TwitterException;
 
@@ -77,13 +71,15 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
     ResponseList<Location> createLocationList(HttpResponse res) throws TwitterException;
 
     Place createPlace(HttpResponse res) throws TwitterException;
+
     ResponseList<Place> createPlaceList(HttpResponse res) throws TwitterException;
-    ResponseList<Place> createEmptyPlaceList();
 
     SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException;
 
     RelatedResults createRelatedResults(HttpResponse res) throws TwitterException;
-     TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException;
+
+    TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException;
+
     ResponseList<HelpMethods.Language> createLanguageList(HttpResponse res) throws TwitterException;
 
 }

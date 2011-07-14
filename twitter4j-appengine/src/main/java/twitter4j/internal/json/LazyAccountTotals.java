@@ -30,14 +30,14 @@ import javax.annotation.Generated;
 @Generated(
         value = "generate-lazy-objects.sh",
         comments = "This is Tool Generated Code. DO NOT EDIT",
-        date = "5 June 2007"
+        date = "2011-07-13"
 )
 final class LazyAccountTotals implements twitter4j.AccountTotals {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private AccountTotals target = null;
 
-    LazyAccountTotals(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyAccountTotals(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }

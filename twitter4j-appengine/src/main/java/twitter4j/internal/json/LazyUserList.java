@@ -34,14 +34,14 @@ import java.net.URI;
 @Generated(
         value = "generate-lazy-objects.sh",
         comments = "This is Tool Generated Code. DO NOT EDIT",
-        date = "5 June 2007"
+        date = "2011-07-13"
 )
 final class LazyUserList implements twitter4j.UserList {
     private twitter4j.internal.http.HttpResponse res;
-    private zzzz_T4J_INTERNAL_Factory factory;
+    private z_T4JInternalFactory factory;
     private UserList target = null;
 
-    LazyUserList(twitter4j.internal.http.HttpResponse res, zzzz_T4J_INTERNAL_Factory factory) {
+    LazyUserList(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }
