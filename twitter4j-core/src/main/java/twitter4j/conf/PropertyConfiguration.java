@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Set;
@@ -120,9 +121,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             props = new Properties();
         }
         final String TWITTER4J_PROPERTIES = "twitter4j.properties";
-        // override System properties with ./twiter4j.properties in the classpath
+        // override System properties with ./twitter4j.properties in the classpath
         loadProperties(props, "." + File.separatorChar + TWITTER4J_PROPERTIES);
-        // then, override with /twiter4j.properties in the classpath
+        // then, override with /twitter4j.properties in the classpath
         loadProperties(props, Configuration.class.getResourceAsStream("/" + TWITTER4J_PROPERTIES));
         // then, override with /WEB/INF/twitter4j.properties in the classpath
         loadProperties(props, Configuration.class.getResourceAsStream("/WEB-INF/" + TWITTER4J_PROPERTIES));
@@ -370,6 +371,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             }
             setMediaProviderParameters(p);
         }
+        cacheInstance();
     }
 
     protected boolean getBoolean(Properties props, String prefix, String name) {
@@ -388,5 +390,10 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     protected String getString(Properties props, String prefix, String name) {
         return props.getProperty(prefix + name);
+    }
+
+    // assures equality after deserialization
+    protected Object readResolve() throws ObjectStreamException {
+        return super.readResolve();
     }
 }
