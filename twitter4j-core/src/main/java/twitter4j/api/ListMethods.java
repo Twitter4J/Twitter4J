@@ -36,7 +36,7 @@ public interface ListMethods {
      * @param description  The description of the list you are creating. Optional.
      * @return the list that was created
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable, or the authenticated user already has 20 lists(TwitterException.getStatusCode() == 403).
-     * @see <a href="http://dev.twitter.com/doc/post/lists/create ">POST lists/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/create ">POST lists/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     UserList createUserList(String listName, boolean isPublicList, String description)
@@ -52,7 +52,7 @@ public interface ListMethods {
      * @param newDescription What you'd like to change the list description to.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/lists/update ">POST lists/update | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/update ">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     UserList updateUserList(int listId, String newListName, boolean isPublicList, String newDescription)
@@ -66,7 +66,7 @@ public interface ListMethods {
      * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists">GET lists | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor)
@@ -77,10 +77,10 @@ public interface ListMethods {
      * <br>This method calls http://api.twitter.com/1/lists.json
      *
      * @param listOwnerUserId The id of the list owner
-     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists">GET lists | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     PagableResponseList<UserList> getUserLists(long listOwnerUserId, long cursor)
@@ -94,7 +94,7 @@ public interface ListMethods {
      * @param id                  The id of the list to show
      * @return the specified list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists/show">http://dev.twitter.com/doc/get/lists/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/show">https://dev.twitter.com/docs/api/1/get/lists/show | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link #showUserList(int)} instead
      */
@@ -105,10 +105,10 @@ public interface ListMethods {
      * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
      * <br>This method calls http://api.twitter.com/1/lists/show.json
      *
-     * @param listId                  The id of the list to show
+     * @param listId The id of the list to show
      * @return the specified list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists/show">http://dev.twitter.com/doc/get/lists/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/show">https://dev.twitter.com/docs/api/1/get/lists/show | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     UserList showUserList(int listId) throws TwitterException;
@@ -120,7 +120,7 @@ public interface ListMethods {
      * @param listId The id of the list to delete
      * @return the deleted list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/lists/destroy">POST lists/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/destroy">POST lists/destroy | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     UserList destroyUserList(int listId) throws TwitterException;
@@ -134,7 +134,7 @@ public interface ListMethods {
      * @param paging              controls pagination. Supports since_id, max_id, count and page parameters.
      * @return list of statuses for members of the specified list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists/statuses">GET lists/statuses | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link #getUserListStatuses(int, twitter4j.Paging)} instead
      */
@@ -150,7 +150,7 @@ public interface ListMethods {
      * @param paging      controls pagination. Supports since_id, max_id, count and page parameters.
      * @return list of statuses for members of the specified list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists/statuses">GET lists/statuses | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link #getUserListStatuses(int, twitter4j.Paging)} instead
      */
@@ -165,7 +165,7 @@ public interface ListMethods {
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return list of statuses for members of the specified list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists/statuses">GET lists/statuses | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     ResponseList<Status> getUserListStatuses(int listId, Paging paging)
@@ -179,7 +179,7 @@ public interface ListMethods {
      * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/:user/lists/memberships">GET :user/lists/memberships | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/:user/lists/memberships">GET :user/lists/memberships | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor)
@@ -193,7 +193,7 @@ public interface ListMethods {
      * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists/subscriptions">GET lists/subscriptions | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor)

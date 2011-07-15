@@ -41,7 +41,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
  * A data class representing Basic user information element
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
 /*package*/ final class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
 
@@ -201,20 +200,20 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
             return null;
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public URL getProfileImageUrlHttps() {
-    	if (null == profileImageUrlHttps)
-    		return null;
+        if (null == profileImageUrlHttps)
+            return null;
         try {
             return new URL(profileImageUrlHttps);
         } catch (MalformedURLException ex) {
             return null;
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -333,14 +332,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
      * {@inheritDoc}
      */
     public String getProfileBackgroundImageUrl() {
-    	return profileBackgroundImageUrl;
+        return profileBackgroundImageUrl;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public String getProfileBackgroundImageUrlHttps() {
-    	return profileBackgroundImageUrlHttps;
+        return profileBackgroundImageUrlHttps;
     }
 
     /**
@@ -413,7 +412,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
             for (int i = 0; i < size; i++) {
                 JSONObject userJson = list.getJSONObject(i);
                 User user = new UserJSONImpl(userJson);
-                if(conf.isJSONStoreEnabled()){
+                if (conf.isJSONStoreEnabled()) {
                     DataObjectFactoryUtil.registerJSONObject(user, userJson);
                 }
                 users.add(user);
@@ -447,7 +446,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
                 JSONObject json = list.getJSONObject(i);
                 User user = new UserJSONImpl(json);
                 users.add(user);
-                if(conf.isJSONStoreEnabled()){
+                if (conf.isJSONStoreEnabled()) {
                     DataObjectFactoryUtil.registerJSONObject(user, json);
                 }
             }

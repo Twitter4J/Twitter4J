@@ -36,7 +36,7 @@ public interface FriendshipMethods {
      * @param screenName the screen name of the user to be befriended
      * @return the befriended user
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/create">POST friendships/create | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     User createFriendship(String screenName)
@@ -50,7 +50,7 @@ public interface FriendshipMethods {
      * @param userId the ID of the user to be befriended
      * @return the befriended user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/create">POST friendships/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     User createFriendship(long userId)
@@ -65,7 +65,7 @@ public interface FriendshipMethods {
      * @param follow     Enable notifications for the target user in addition to becoming friends.
      * @return the befriended user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/create">POST friendships/create | Twitter Developers</a>
      * @since Twitter4J 2.0.2
      */
     User createFriendship(String screenName, boolean follow)
@@ -80,7 +80,7 @@ public interface FriendshipMethods {
      * @param follow Enable notifications for the target user in addition to becoming friends.
      * @return the befriended user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/create">POST friendships/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     User createFriendship(long userId, boolean follow)
@@ -94,7 +94,7 @@ public interface FriendshipMethods {
      * @param screenName the screen name of the user for whom to request a list of friends
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/destroy">POST friendships/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/destroy">POST friendships/destroy | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     User destroyFriendship(String screenName)
@@ -108,7 +108,7 @@ public interface FriendshipMethods {
      * @param userId the ID of the user for whom to request a list of friends
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/destroy">POST friendships/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/destroy">POST friendships/destroy | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     User destroyFriendship(long userId)
@@ -122,7 +122,7 @@ public interface FriendshipMethods {
      * @param userB The ID or screen_name of the second user to test friendship for.
      * @return if a friendship exists between two users.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/exists">GET friendships/exists | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/exists">GET friendships/exists | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     boolean existsFriendship(String userA, String userB)
@@ -136,7 +136,7 @@ public interface FriendshipMethods {
      * @param targetScreenName the screen name of the target user
      * @return Relationship
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/show">GET friendships/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/show">GET friendships/show | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     Relationship showFriendship(String sourceScreenName, String targetScreenName)
@@ -150,7 +150,7 @@ public interface FriendshipMethods {
      * @param targetId the ID of the target user
      * @return Relationship
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/show">GET friendships/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/show">GET friendships/show | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     Relationship showFriendship(long sourceId, long targetId)
@@ -163,7 +163,7 @@ public interface FriendshipMethods {
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
      * @return an array of numeric IDs for every user who has a pending request to follow the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/incoming">GET friendships/incoming | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/incoming">GET friendships/incoming | Twitter Developers</a>
      * @since Twitter4J 2.1.2
      */
     IDs getIncomingFriendships(long cursor) throws TwitterException;
@@ -175,7 +175,7 @@ public interface FriendshipMethods {
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
      * @return an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/outgoing">GET friendships/outgoing | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/outgoing">GET friendships/outgoing | Twitter Developers</a>
      * @since Twitter4J 2.1.2
      */
     IDs getOutgoingFriendships(long cursor) throws TwitterException;

@@ -37,7 +37,7 @@ public interface GeoMethods {
      * @param query search query
      * @return places (cities and neighborhoods) that can be attached to a statuses/update
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/geo/search">GET geo/search | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/geo/search">GET geo/search | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     ResponseList<Place> searchPlaces(GeoQuery query) throws TwitterException;
@@ -67,7 +67,7 @@ public interface GeoMethods {
      * @param query search query
      * @return places (cities and neighborhoods) that can be attached to a statuses/update
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/geo/reverse_geocode">GET geo/reverse_geocode | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/geo/reverse_geocode">GET geo/reverse_geocode | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException;
@@ -79,7 +79,7 @@ public interface GeoMethods {
      * @param id The ID of the location to query about.
      * @return details of the specified place
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/geo/id/:place_id">GET geo/id/:place_id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/geo/id/:place_id">GET geo/id/:place_id | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     Place getGeoDetails(String id) throws TwitterException;
@@ -95,7 +95,7 @@ public interface GeoMethods {
      * @param streetAddress   optional: This parameter searches for places which have this given street address. There are other well-known, and application specific attributes available. Custom attributes are also permitted. Learn more about Place Attributes.
      * @return the created place
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/geo/place">POST geo/place | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/geo/place">POST geo/place | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     Place createPlace(String name, String containedWithin, String token, GeoLocation location, String streetAddress)

@@ -38,7 +38,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
  * A data class representing Basic list information element
  *
  * @author Dan Checkoway - dcheckoway at gmail.com
- * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-id">REST API Documentation - Basic list information element</a>
  */
 /*package*/ class UserListJSONImpl extends TwitterResponseImpl implements UserList, java.io.Serializable {
 
@@ -222,7 +221,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
                 JSONObject userListJson = list.getJSONObject(i);
                 UserList userList = new UserListJSONImpl(userListJson);
                 users.add(userList);
-                if(conf.isJSONStoreEnabled()){
+                if (conf.isJSONStoreEnabled()) {
                     DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
                 }
             }

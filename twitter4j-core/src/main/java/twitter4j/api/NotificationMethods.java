@@ -30,7 +30,7 @@ public interface NotificationMethods {
      * @param screenName Specifies the screen name of the user to follow with device updates.
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/notifications/follow">POST notifications/follow | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/notifications/follow">POST notifications/follow | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     User enableNotification(String screenName)
@@ -43,7 +43,7 @@ public interface NotificationMethods {
      * @param userId Specifies the ID of the user to follow with device updates.
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/notifications/follow">POST notifications/follow | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/notifications/follow">POST notifications/follow | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     User enableNotification(long userId)
@@ -56,7 +56,7 @@ public interface NotificationMethods {
      * @param screenName Specifies the screen name of the user to disable device notifications.
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/notifications/leave">POST notifications/leave | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/notifications/leave">POST notifications/leave | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     User disableNotification(String screenName)
@@ -69,7 +69,7 @@ public interface NotificationMethods {
      * @param userId Specifies the ID of the user to disable device notifications.
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/notifications/leave">POST notifications/leave | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/notifications/leave">POST notifications/leave | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     User disableNotification(long userId)

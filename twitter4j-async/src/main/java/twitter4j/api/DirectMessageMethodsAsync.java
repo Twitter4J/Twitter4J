@@ -26,7 +26,7 @@ public interface DirectMessageMethodsAsync {
      * Returns a list of the direct messages sent to the authenticating user.
      * <br>This method calls http://api.twitter.com/1/direct_messages
      *
-     * @see <a href="http://dev.twitter.com/doc/get/direct_messages">GET direct_messages | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/direct_messages">GET direct_messages | Twitter Developers</a>
      */
     void getDirectMessages();
 
@@ -35,7 +35,7 @@ public interface DirectMessageMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/direct_messages
      *
      * @param paging controls pagination
-     * @see <a href="http://dev.twitter.com/doc/get/direct_messages">GET direct_messages | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/direct_messages">GET direct_messages | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void getDirectMessages(Paging paging);
@@ -44,7 +44,7 @@ public interface DirectMessageMethodsAsync {
      * Returns a list of the direct messages sent by the authenticating user.
      * <br>This method calls http://api.twitter.com/1/direct_messages/sent
      *
-     * @see <a href="http://dev.twitter.com/doc/get/direct_messages/sent">GET direct_messages/sent | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
      */
     void getSentDirectMessages();
 
@@ -53,7 +53,7 @@ public interface DirectMessageMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/direct_messages/sent
      *
      * @param paging controls pagination
-     * @see <a href="http://dev.twitter.com/doc/get/direct_messages/sent">GET direct_messages/sent | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void getSentDirectMessages(Paging paging);
@@ -65,7 +65,7 @@ public interface DirectMessageMethodsAsync {
      *
      * @param screenName the screen name of the user to whom send the direct message
      * @param text       The text of your direct message.
-     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/new">POST direct_messages/new | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
      */
     void sendDirectMessage(String screenName, String text);
 
@@ -76,7 +76,7 @@ public interface DirectMessageMethodsAsync {
      *
      * @param userId the screen name of the user to whom send the direct message
      * @param text   The text of your direct message.
-     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/new">POST direct_messages/new | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
      * @since Twitter4j 2.1.0
      */
     void sendDirectMessage(long userId, String text);
@@ -86,7 +86,7 @@ public interface DirectMessageMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/direct_messages/destroy
      *
      * @param id int
-     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void destroyDirectMessage(long id);

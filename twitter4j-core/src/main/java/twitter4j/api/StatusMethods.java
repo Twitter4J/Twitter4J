@@ -35,7 +35,7 @@ public interface StatusMethods {
      * @param id the numerical ID of the status you're trying to retrieve
      * @return a single status
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/show/:id">GET statuses/show/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/show/:id">GET statuses/show/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     Status showStatus(long id) throws TwitterException;
@@ -47,7 +47,7 @@ public interface StatusMethods {
      * @param status the text of your status update
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/statuses/update">POST statuses/update | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/update">POST statuses/update | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     Status updateStatus(String status) throws TwitterException;
@@ -59,7 +59,7 @@ public interface StatusMethods {
      * @param latestStatus the latest status to be updated.
      * @return the latest status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/statuses/update">POST statuses/update | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/update">POST statuses/update | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     Status updateStatus(StatusUpdate latestStatus) throws TwitterException;
@@ -72,7 +72,7 @@ public interface StatusMethods {
      * @param statusId The ID of the status to destroy.
      * @return the deleted status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/statuses/destroy/:id">POST statuses/destroy/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/destroy/:id">POST statuses/destroy/:id | Twitter Developers</a>
      * @since 1.0.5
      */
     Status destroyStatus(long statusId) throws TwitterException;
@@ -84,7 +84,7 @@ public interface StatusMethods {
      * @param statusId The ID of the status to retweet.
      * @return the retweeted status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/statuses/retweet/:id">POST statuses/retweet/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/retweet/:id">POST statuses/retweet/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.10
      */
     Status retweetStatus(long statusId) throws TwitterException;
@@ -96,7 +96,7 @@ public interface StatusMethods {
      * @param statusId The numerical ID of the tweet you want the retweets of.
      * @return the retweets of a given tweet
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets/:id">Tweets Resources › statuses/retweets/:id</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/retweets/:id">Tweets Resources › statuses/retweets/:id</a>
      * @since Twitter4J 2.0.10
      */
     ResponseList<Status> getRetweets(long statusId) throws TwitterException;
@@ -108,7 +108,7 @@ public interface StatusMethods {
      * @param statusId The ID of the status you want to get retweeters of
      * @return the list of users who retweeted your status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | Twitter Developers</a>
      * @since Twitter4J 2.1.3
      * @deprecated use {@link #getRetweetedBy(long, twitter4j.Paging)} instead
      */
@@ -119,10 +119,10 @@ public interface StatusMethods {
      * <br>This method calls http://api.twitter.com/1/statuses/:id/retweeted_by
      *
      * @param statusId The ID of the status you want to get retweeters of
-     * @param paging controls pagination. Supports count and page parameters.
+     * @param paging   controls pagination. Supports count and page parameters.
      * @return the list of users who retweeted your status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     ResponseList<User> getRetweetedBy(long statusId, Paging paging) throws TwitterException;
@@ -134,7 +134,7 @@ public interface StatusMethods {
      * @param statusId The ID of the status you want to get retweeters of
      * @return IDs of users who retweeted the stats
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | Twitter Developers</a>
      * @since Twitter4J 2.1.3
      * @deprecated use {@link #getRetweetedByIDs(long, twitter4j.Paging)} instead
      */
@@ -145,10 +145,10 @@ public interface StatusMethods {
      * <br />This method calls http://api.twitter.com/1/statuses/:id/retweeted_by/ids.format
      *
      * @param statusId The ID of the status you want to get retweeters of
+     * @param paging   controls pagination. Supports count and page parameters.
      * @return IDs of users who retweeted the stats
-     * @param paging controls pagination. Supports count and page parameters.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     IDs getRetweetedByIDs(long statusId, Paging paging) throws TwitterException;

@@ -32,7 +32,7 @@ public interface LocalTrendsMethods {
      *
      * @return the locations
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/available">GET trends/available | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/available">GET trends/available | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<Location> getAvailableTrends() throws TwitterException;
@@ -44,7 +44,7 @@ public interface LocalTrendsMethods {
      * @param location the available trend locations will be sorted by distance to the lat and long passed in. The sort is nearest to furthest.
      * @return the locations
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/available">GET trends/available | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/available">GET trends/available | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<Location> getAvailableTrends(GeoLocation location) throws TwitterException;
@@ -56,7 +56,7 @@ public interface LocalTrendsMethods {
      * @param woeid The WOEID of the location to be querying for
      * @return trends
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/:woeid">GET trends/:woeid | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/:woeid">GET trends/:woeid | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     Trends getLocationTrends(int woeid) throws TwitterException;

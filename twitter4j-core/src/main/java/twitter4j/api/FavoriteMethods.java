@@ -30,7 +30,7 @@ public interface FavoriteMethods {
      *
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/favorites">GET favorites | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     ResponseList<Status> getFavorites()
@@ -43,7 +43,7 @@ public interface FavoriteMethods {
      * @param page the number of page
      * @return ResponseList<Status>
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/favorites">GET favorites | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     ResponseList<Status> getFavorites(int page)
@@ -55,7 +55,7 @@ public interface FavoriteMethods {
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses
      * @return ResponseList<Status>
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/favorites">GET favorites | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     ResponseList<Status> getFavorites(String id)
@@ -69,7 +69,7 @@ public interface FavoriteMethods {
      * @param page the number of page
      * @return ResponseList<Status>
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/favorites">GET favorites | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     ResponseList<Status> getFavorites(String id, int page)
@@ -82,7 +82,7 @@ public interface FavoriteMethods {
      * @param id the ID of the status to favorite
      * @return Status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/favorites/create/:id">POST favorites/create/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/favorites/create/:id">POST favorites/create/:id | Twitter Developers</a>
      */
     Status createFavorite(long id)
             throws TwitterException;
@@ -94,7 +94,7 @@ public interface FavoriteMethods {
      * @param id the ID of the status to un-favorite
      * @return Status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/favorites/destroy/:id">POST favorites/destroy/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/favorites/destroy/:id">POST favorites/destroy/:id | Twitter Developers</a>
      */
     Status destroyFavorite(long id)
             throws TwitterException;

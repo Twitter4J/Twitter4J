@@ -29,7 +29,6 @@ import java.net.URI;
  * A data class representing Basic list information element
  *
  * @author Dan Checkoway - dcheckoway at gmail.com
- * @see <a href="http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-GET-list-id">REST API Documentation - Basic list information element</a>
  */
 @Generated(
         value = "generate-lazy-objects.sh",

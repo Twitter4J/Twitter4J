@@ -27,7 +27,7 @@ public interface SearchMethodsAsync {
      * <br>This method calls http://search.twitter.com/search.json
      *
      * @param query - the search condition
-     * @see <a href="http://dev.twitter.com/doc/get/search">GET search | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/search">GET search | Twitter Developers</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      * @since Twitter4J 1.1.7
      */

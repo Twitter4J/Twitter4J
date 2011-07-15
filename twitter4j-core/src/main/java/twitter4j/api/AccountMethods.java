@@ -35,7 +35,7 @@ public interface AccountMethods {
      *
      * @return user
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable, or if supplied credential is wrong (TwitterException.getStatusCode() == 401)
-     * @see <a href="http://dev.twitter.com/doc/get/account/verify_credentials">GET account/verify_credentials | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/verify_credentials">GET account/verify_credentials | Twitter Developers</a>
      * @since Twitter4J 2.0.0
      */
     User verifyCredentials() throws TwitterException;
@@ -46,7 +46,7 @@ public interface AccountMethods {
      *
      * @return the rate limit status
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/account/rate_limit_status">GET account/rate_limit_status | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/rate_limit_status">GET account/rate_limit_status | Twitter Developers</a>
      * @since Twitter4J 1.1.4
      */
     RateLimitStatus getRateLimitStatus() throws TwitterException;
@@ -62,7 +62,7 @@ public interface AccountMethods {
      * @param profileSidebarBorderColor optional, can be null
      * @return the updated user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_colors">POST account/update_profile_colors | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_colors">POST account/update_profile_colors | Twitter Developers</a>
      * @since Twitter4J 2.0.0
      */
     User updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor)
@@ -77,7 +77,7 @@ public interface AccountMethods {
      * @throws TwitterException when Twitter service or network is unavailable,
      *                          or when the specified file is not found (FileNotFoundException will be nested),
      *                          or when the specified file object in not representing a file (IOException will be nested)
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_image">POST account/update_profile_image | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_image">POST account/update_profile_image | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     User updateProfileImage(File image) throws TwitterException;
@@ -91,7 +91,7 @@ public interface AccountMethods {
      * @throws TwitterException when Twitter service or network is unavailable,
      *                          or when the specified file is not found (FileNotFoundException will be nested),
      *                          or when the specified file object in not representing a file (IOException will be nested)
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_image">POST account/update_profile_image | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_image">POST account/update_profile_image | Twitter Developers</a>
      * @since Twitter4J 2.1.11
      */
     User updateProfileImage(InputStream image) throws TwitterException;
@@ -106,7 +106,7 @@ public interface AccountMethods {
      * @throws TwitterException when Twitter service or network is unavailable,
      *                          or when the specified file is not found (FileNotFoundException will be nested),
      *                          or when the specified file object in not representing a file (IOException will be nested)
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_background_image">POST account/update_profile_background_image | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_background_image">POST account/update_profile_background_image | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     User updateProfileBackgroundImage(File image, boolean tile)
@@ -122,7 +122,7 @@ public interface AccountMethods {
      * @throws TwitterException when Twitter service or network is unavailable,
      *                          or when the specified file is not found (FileNotFoundException will be nested),
      *                          or when the specified file object in not representing a file (IOException will be nested)
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_background_image">POST account/update_profile_background_image | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_background_image">POST account/update_profile_background_image | Twitter Developers</a>
      * @since Twitter4J 2.1.11
      */
     User updateProfileBackgroundImage(InputStream image, boolean tile)
@@ -138,7 +138,7 @@ public interface AccountMethods {
      * @param description Optional. Maximum of 160 characters.
      * @return the updated user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile">POST account/update_profile | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile">POST account/update_profile | Twitter Developers</a>
      * @since Twitter4J 2.1.8
      */
     User updateProfile(String name, String url, String location, String description)
@@ -151,7 +151,7 @@ public interface AccountMethods {
      *
      * @return the current count of friends, followers, updates (statuses) and favorites of the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/account/totals">GET account/totals | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/totals">GET account/totals | Twitter Developers</a>
      * @since Twitter4J 2.1.9
      */
     AccountTotals getAccountTotals() throws TwitterException;
@@ -163,25 +163,25 @@ public interface AccountMethods {
      *
      * @return the current trend, geo and sleep time information for the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/account/totals">GET account/settings | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/totals">GET account/settings | Twitter Developers</a>
      * @since Twitter4J 2.1.9
      */
     AccountSettings getAccountSettings() throws TwitterException;
-    
+
     /**
      * Updates the current trend, geo, language, timezone and sleep time information for the authenticating user.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
      * <br>This method calls http://api.twitter.com/1/account/settings.json
      *
-     * @param trendLocationWoeid  Optional. The Yahoo! Where On Earth ID to use as the user's default trend location.
-     * @param sleepTimeEnabled    Optional. Whether sleep time is enabled for the user
-     * @param startSleepTime      Optional. The hour that sleep time should begin if it is enabled.
-     * @param endSleepTime        Optional. The hour that sleep time should end if it is enabled.
-     * @param timeZone             Optional. The timezone dates and times should be displayed in for the user.
-     * @param lang                  Optional. The language which Twitter should render in for this user. (two letter ISO 639-1)
+     * @param trendLocationWoeid Optional. The Yahoo! Where On Earth ID to use as the user's default trend location.
+     * @param sleepTimeEnabled   Optional. Whether sleep time is enabled for the user
+     * @param startSleepTime     Optional. The hour that sleep time should begin if it is enabled.
+     * @param endSleepTime       Optional. The hour that sleep time should end if it is enabled.
+     * @param timeZone           Optional. The timezone dates and times should be displayed in for the user.
+     * @param lang               Optional. The language which Twitter should render in for this user. (two letter ISO 639-1)
      * @return the current trend, geo and sleep time information for the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/account/settings">POST account/settings | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/settings">POST account/settings | Twitter Developers</a>
      * @since Twitter4J 2.2.4
      */
     AccountSettings updateAccountSettings(Integer trendLocationWoeid, Boolean sleepTimeEnabled, String startSleepTime, String endSleepTime, String timeZone, String lang) throws TwitterException;

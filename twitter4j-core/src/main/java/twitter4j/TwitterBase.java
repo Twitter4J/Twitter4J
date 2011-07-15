@@ -55,7 +55,7 @@ public interface TwitterBase {
      * Registers a RateLimitStatusListener for account associated rate limits
      *
      * @param listener the listener to be added
-     * @see <a href="http://dev.twitter.com/pages/rate-limiting">Rate Limiting | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
      * @since Twitter4J 2.1.12
      */
     void addRateLimitStatusListener(RateLimitStatusListener listener);

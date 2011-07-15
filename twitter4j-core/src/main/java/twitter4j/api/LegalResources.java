@@ -29,7 +29,7 @@ public interface LegalResources {
      *
      * @return Terms of Service
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/legal/tos">GET legal/tos | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/legal/tos">GET legal/tos | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     String getTermsOfService() throws TwitterException;
@@ -40,7 +40,7 @@ public interface LegalResources {
      *
      * @return privacy policy
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/legal/privacy">GET legal/privacy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/legal/privacy">GET legal/privacy | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     String getPrivacyPolicy() throws TwitterException;

@@ -27,7 +27,7 @@ import java.util.List;
  * Instances can be shared across threads, but should not be mutated while a search is ongoing.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see <a href="http://dev.twitter.com/doc/get/search">GET search | dev.twitter.com</a>
+ * @see <a href="https://dev.twitter.com/docs/api/1/get/search">GET search | Twitter Developers</a>
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  */
 public final class Query implements java.io.Serializable {
@@ -64,7 +64,7 @@ public final class Query implements java.io.Serializable {
      * Sets the query string
      *
      * @param query the query string
-     * @see <a href="http://dev.twitter.com/doc/get/search">GET search | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/search">GET search | Twitter Developers</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      */
     public void setQuery(String query) {
@@ -76,7 +76,7 @@ public final class Query implements java.io.Serializable {
      *
      * @param query the query string
      * @return the instance
-     * @see <a href="http://dev.twitter.com/doc/get/search">GET search | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/search">GET search | Twitter Developers</a>
      * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
      * @since Twitter4J 2.1.0
      */

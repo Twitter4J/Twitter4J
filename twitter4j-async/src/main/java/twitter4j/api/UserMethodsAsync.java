@@ -28,7 +28,7 @@ public interface UserMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/users/show.json
      *
      * @param screenName the screen name of the user for whom to request the detail
-     * @see <a href="http://dev.twitter.com/doc/get/users/show">GET users/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/show">GET users/show | Twitter Developers</a>
      */
     void showUser(String screenName);
 
@@ -37,7 +37,7 @@ public interface UserMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/users/show.json
      *
      * @param userId the ID of the user for whom to request the retrieve
-     * @see <a href="http://dev.twitter.com/doc/get/users/show">GET users/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/show">GET users/show | Twitter Developers</a>
      */
     void showUser(long userId);
 
@@ -46,7 +46,7 @@ public interface UserMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/users/lookup.json
      *
      * @param screenNames Specifies the screen names of the users to retrieve.
-     * @see <a href="http://dev.twitter.com/doc/get/users/lookup">GET users/lookup | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/lookup">GET users/lookup | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void lookupUsers(String[] screenNames);
@@ -57,7 +57,7 @@ public interface UserMethodsAsync {
      *
      * @param ids Specifies the screen names of the users to retrieve.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/lookup">GET users/lookup | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/lookup">GET users/lookup | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void lookupUsers(long[] ids);
@@ -70,7 +70,7 @@ public interface UserMethodsAsync {
      * @param query The query to run against people search.
      * @param page  Specifies the page of results to retrieve. Number of statuses per page is fixed to 20.
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/search">GET users/search | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/search">GET users/search | Twitter Developers</a>
      */
     void searchUsers(String query, int page);
 
@@ -78,7 +78,7 @@ public interface UserMethodsAsync {
      * Access to Twitter's suggested user list. This returns the list of suggested user categories. The category can be used in the users/suggestions/category endpoint to get the users in that category.
      * <br>This method calls http://api.twitter.com/1/users/suggestions/:slug.json
      *
-     * @see <a href="http://dev.twitter.com/doc/get/users/suggestions/:slug">GET users/suggestions/:slug | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/suggestions/:slug">GET users/suggestions/:slug | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void getSuggestedUserCategories();
@@ -89,7 +89,7 @@ public interface UserMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/users/suggestions/:slug.json
      *
      * @param categorySlug slug
-     * @see <a href="http://dev.twitter.com/doc/get/users/suggestions/slug">GET users/suggestions/slug | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/suggestions/slug">GET users/suggestions/slug | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void getUserSuggestions(String categorySlug);
@@ -112,7 +112,7 @@ public interface UserMethodsAsync {
      *
      * @param screenName The screen name of the user for whom to return results for.
      * @param size       Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: BIGGER - 73px by 73px NORMAL - 48px by 48px MINI - 24px by 24px
-     * @see <a href="http://dev.twitter.com/doc/get/users/profile_image/:screen_name">GET users/profile_image/:screen_name | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/profile_image/:screen_name">GET users/profile_image/:screen_name | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     void getProfileImage(String screenName, ProfileImage.ImageSize size);
@@ -122,7 +122,7 @@ public interface UserMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/friends
      *
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends">GET statuses/friends | Twitter Developers</a>
      * @since Twitter4J 2.0.9
      * @deprecated use {@link FriendsFollowersMethodsAsync#getFriendsIDs(long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
@@ -134,7 +134,7 @@ public interface UserMethodsAsync {
      *
      * @param screenName the screen name of the user for whom to request a list of friends
      * @param cursor     Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends">GET statuses/friends | Twitter Developers</a>
      * @since Twitter4J 2.0.9
      * @deprecated use {@link FriendsFollowersMethodsAsync#getFriendsIDs(String, long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
@@ -146,7 +146,7 @@ public interface UserMethodsAsync {
      *
      * @param userId the screen name of the user for whom to request a list of friends
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends">GET statuses/friends | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link FriendsFollowersMethodsAsync#getFriendsIDs(long, long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
@@ -157,7 +157,7 @@ public interface UserMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/followers.json
      *
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/followers">GET statuses/followers | Twitter Developers</a>
      * @since Twitter4J 2.0.9
      * @deprecated use {@link FriendsFollowersMethodsAsync#getFollowersIDs(long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
@@ -169,7 +169,7 @@ public interface UserMethodsAsync {
      *
      * @param screenName The screen name of the user for whom to request a list of followers.
      * @param cursor     Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/followers">GET statuses/followers | Twitter Developers</a>
      * @since Twitter4J 2.0.9
      * @deprecated use {@link FriendsFollowersMethodsAsync#getFollowersIDs(String, long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
@@ -181,7 +181,7 @@ public interface UserMethodsAsync {
      *
      * @param userId The ID of the user for whom to request a list of followers.
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/followers">GET statuses/followers | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link FriendsFollowersMethodsAsync#getFollowersIDs(long, long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */

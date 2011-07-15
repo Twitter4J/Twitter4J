@@ -29,7 +29,7 @@ public interface ListMethodsAsync {
      * @param listName     The name of the list you are creating. Required.
      * @param isPublicList set true if you wish to make a public list
      * @param description  The description of the list you are creating. Optional.
-     * @see <a href="http://dev.twitter.com/doc/post/lists/create ">POST lists/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/create ">POST lists/create | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void createUserList(String listName, boolean isPublicList, String description);
@@ -42,7 +42,7 @@ public interface ListMethodsAsync {
      * @param newListName    What you'd like to change the list's name to.
      * @param isPublicList   Whether your list is public or private. Optional. Values can be public or private. Lists are public by default if no mode is specified.
      * @param newDescription What you'd like to change the list description to.
-     * @see <a href="http://dev.twitter.com/doc/post/lists/update ">POST lists/update | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/update ">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void updateUserList(int listId, String newListName, boolean isPublicList, String newDescription);
@@ -53,7 +53,7 @@ public interface ListMethodsAsync {
      *
      * @param listOwnerScreenName The screen name of the list owner
      * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/lists">GET lists | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void getUserLists(String listOwnerScreenName, long cursor);
@@ -63,8 +63,8 @@ public interface ListMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/lists.json
      *
      * @param listOwnerUserId The id of the list owner
-     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/lists">GET lists | dev.twitter.com</a>
+     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     void getUserLists(long listOwnerUserId, long cursor);
@@ -75,7 +75,7 @@ public interface ListMethodsAsync {
      *
      * @param listOwnerScreenName The screen name of the list owner
      * @param id                  The id of the list to show
-     * @see <a href="http://dev.twitter.com/doc/get/:user/lists/:id">GET :user/lists/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/:user/lists/:id">GET :user/lists/:id | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      * @deprecated use {@link #showUserList(int)} instead
      */
@@ -85,8 +85,8 @@ public interface ListMethodsAsync {
      * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
      * <br>This method calls http://api.twitter.com/1/lists/show.json
      *
-     * @param listId                  The id of the list to show
-     * @see <a href="http://dev.twitter.com/doc/get/lists/show">http://dev.twitter.com/doc/get/lists/show | dev.twitter.com</a>
+     * @param listId The id of the list to show
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/show">https://dev.twitter.com/docs/api/1/get/lists/show | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     void showUserList(int listId);
@@ -96,8 +96,8 @@ public interface ListMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/lists/destroy.json
      *
      * @param listId The id of the list to delete
-     * @see <a href="http://dev.twitter.com/doc/post/lists/destroy">POST lists/destroy | dev.twitter.com</a>
-      * @since Twitter4J 2.1.1
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/destroy">POST lists/destroy | Twitter Developers</a>
+     * @since Twitter4J 2.1.1
      */
     void destroyUserList(int listId);
 
@@ -108,7 +108,7 @@ public interface ListMethodsAsync {
      * @param listOwnerScreenName The screen name of the list owner
      * @param id                  The id of the list to delete
      * @param paging              controls pagination. Supports since_id, max_id, count and page parameters.
-     * @see <a href="http://dev.twitter.com/doc/get/lists/statuses">GET lists/statuses | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      * @deprecated use {@link #getUserListStatuses(int, twitter4j.Paging)} instead
      */
@@ -121,7 +121,7 @@ public interface ListMethodsAsync {
      * @param listOwnerId The screen name of the list owner
      * @param id          The id of the list to delete
      * @param paging      controls pagination. Supports since_id, max_id, count and page parameters.
-     * @see <a href="http://dev.twitter.com/doc/get/lists/statuses">GET lists/statuses | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      * @deprecated use {@link #getUserListStatuses(int, twitter4j.Paging)} instead
      */
@@ -133,7 +133,7 @@ public interface ListMethodsAsync {
      *
      * @param listId The id of the list
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
-     * @see <a href="http://dev.twitter.com/doc/get/lists/statuses">GET lists/statuses | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     void getUserListStatuses(int listId, Paging paging);
@@ -144,7 +144,7 @@ public interface ListMethodsAsync {
      *
      * @param listMemberScreenName The screen name of the list member
      * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/:user/lists/memberships">GET :user/lists/memberships | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/:user/lists/memberships">GET :user/lists/memberships | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void getUserListMemberships(String listMemberScreenName, long cursor);
@@ -155,7 +155,7 @@ public interface ListMethodsAsync {
      *
      * @param listOwnerScreenName The screen name of the list owner
      * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @see <a href="http://dev.twitter.com/doc/get/lists/subscriptions">GET lists/subscriptions | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void getUserListSubscriptions(String listOwnerScreenName, long cursor);

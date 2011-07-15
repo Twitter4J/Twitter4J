@@ -28,7 +28,7 @@ public interface StatusMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/show
      *
      * @param id int
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/show/:id">GET statuses/show/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/show/:id">GET statuses/show/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void showStatus(long id);
@@ -38,7 +38,7 @@ public interface StatusMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/update
      *
      * @param status String
-     * @see <a href="http://dev.twitter.com/doc/post/statuses/update">POST statuses/update | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/update">POST statuses/update | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void updateStatus(String status);
@@ -49,7 +49,7 @@ public interface StatusMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/update
      *
      * @param latestStatus the latest status to be updated.
-     * @see <a href="http://dev.twitter.com/doc/post/statuses/update">POST statuses/update | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/update">POST statuses/update | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void updateStatus(StatusUpdate latestStatus);
@@ -60,7 +60,7 @@ public interface StatusMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/destroy
      *
      * @param statusId String
-     * @see <a href="http://dev.twitter.com/doc/post/statuses/destroy/:id">POST statuses/destroy/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/destroy/:id">POST statuses/destroy/:id | Twitter Developers</a>
      * @since 1.1.2
      */
     void destroyStatus(long statusId);
@@ -70,7 +70,7 @@ public interface StatusMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/retweet
      *
      * @param statusId The ID of the status to retweet.
-     * @see <a href="http://dev.twitter.com/doc/post/statuses/retweet/:id">POST statuses/retweet/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/retweet/:id">POST statuses/retweet/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.10
      */
     void retweetStatus(long statusId);
@@ -80,7 +80,7 @@ public interface StatusMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/retweets
      *
      * @param statusId The numerical ID of the tweet you want the retweets of.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/retweets/:id">Tweets Resources › statuses/retweets/:id</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/retweets/:id">Tweets Resources › statuses/retweets/:id</a>
      * @since Twitter4J 2.1.0
      */
     void getRetweets(long statusId);
@@ -90,7 +90,7 @@ public interface StatusMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/:id/retweeted_by
      *
      * @param statusId The ID of the status you want to get retweeters of
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | Twitter Developers</a>
      * @since Twitter4J 2.1.3
      * @deprecated use {@link #getRetweetedBy(long, twitter4j.Paging)} instead
      */
@@ -101,8 +101,8 @@ public interface StatusMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/statuses/:id/retweeted_by
      *
      * @param statusId The ID of the status you want to get retweeters of
-     * @param paging controls pagination. Supports count and page parameters.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | dev.twitter.com</a>
+     * @param paging   controls pagination. Supports count and page parameters.
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/:id/retweeted_by">GET statuses/:id/retweeted_by | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     void getRetweetedBy(long statusId, Paging paging);
@@ -112,7 +112,7 @@ public interface StatusMethodsAsync {
      * <br />This method calls http://api.twitter.com/1/statuses/:id/retweeted_by/ids.format
      *
      * @param statusId The ID of the status you want to get retweeters of
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | Twitter Developers</a>
      * @since Twitter4J 2.1.3
      * @deprecated use {@link #getRetweetedByIDs(long, twitter4j.Paging)} instead
      */
@@ -123,8 +123,8 @@ public interface StatusMethodsAsync {
      * <br />This method calls http://api.twitter.com/1/statuses/:id/retweeted_by/ids.format
      *
      * @param statusId The ID of the status you want to get retweeters of
-     * @param paging controls pagination. Supports count and page parameters.
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | dev.twitter.com</a>
+     * @param paging   controls pagination. Supports count and page parameters.
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/:id/retweeted_by/ids">GET statuses/:id/retweeted_by/ids | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     void getRetweetedByIDs(long statusId, Paging paging);

@@ -34,7 +34,7 @@ public interface ListMembersMethods {
      * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the members of the specified list.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists/members">GET lists/members | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/members">GET lists/members | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link #getUserListMembers(int, long)} instead
      */
@@ -50,7 +50,7 @@ public interface ListMembersMethods {
      * @param cursor      Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the members of the specified list.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/:user/:list_id/members">GET :user/:list_id/members | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/:user/:list_id/members">GET :user/:list_id/members | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link #getUserListMembers(int, long)} instead
      */
@@ -61,11 +61,11 @@ public interface ListMembersMethods {
      * Returns the members of the specified list.
      * <br>This method calls http://api.twitter.com/1/lists/members.json
      *
-     * @param listId              The id of the list
-     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param listId The id of the list
+     * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the members of the specified list.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/lists/members">GET lists/members | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/members">GET lists/members | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     PagableResponseList<User> getUserListMembers(int listId, long cursor)
@@ -79,7 +79,7 @@ public interface ListMembersMethods {
      * @param userId The id of the user to add as a member of the list.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/lists/members/create">POST lists/members/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/members/create">POST lists/members/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     UserList addUserListMember(int listId, long userId) throws TwitterException;
@@ -90,7 +90,7 @@ public interface ListMembersMethods {
      *
      * @param listId  The id of the list.
      * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
-     * @see <a href="http://dev.twitter.com/doc/post/lists/members/create_all">POST lists/members/create_all | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     UserList addUserListMembers(int listId, long[] userIds) throws TwitterException;
@@ -101,7 +101,7 @@ public interface ListMembersMethods {
      *
      * @param listId      The id of the list.
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
-     * @see <a href="http://dev.twitter.com/doc/post/lists/members/create_all">POST lists/members/create_all | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException;
@@ -114,7 +114,7 @@ public interface ListMembersMethods {
      * @param userId The screen name of the member you wish to remove from the list.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/lists/members/destroy">POST lists/members/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/members/destroy">POST lists/members/destroy | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     UserList deleteUserListMember(int listId, long userId)
@@ -130,7 +130,7 @@ public interface ListMembersMethods {
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
      *                          , or the user is not a member of the specified list(TwitterException.getStatusCode() returns 404 in that case.)
-     * @see <a href="http://dev.twitter.com/doc/get/lists/members/show">GET lists/members/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/members/show">GET lists/members/show | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link #showUserListMembership(int, long)} instead
      */
@@ -146,7 +146,7 @@ public interface ListMembersMethods {
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
      *                          , or the user is not a member of the specified list(TwitterException.getStatusCode() returns 404 in that case.)
-     * @see <a href="http://dev.twitter.com/doc/get/lists/members/show">GET lists/members/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/members/show">GET lists/members/show | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     User showUserListMembership(int listId, long userId)

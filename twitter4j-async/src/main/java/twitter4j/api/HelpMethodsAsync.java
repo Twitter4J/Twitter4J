@@ -24,7 +24,7 @@ public interface HelpMethodsAsync {
      * Returns the string "ok" in the requested format with a 200 OK HTTP status code.
      * <br>This method calls http://api.twitter.com/1/help/test
      *
-     * @see <a href="http://dev.twitter.com/doc/get/help/test">GET help/test | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/help/test">GET help/test | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void test();
@@ -33,7 +33,7 @@ public interface HelpMethodsAsync {
      * Returns the current configuration used by Twitter including twitter.com slugs which are not usernames, maximum photo resolutions, and t.co URL lengths.</br>
      * It is recommended applications request this endpoint when they are loaded, but no more than once a day.
      *
-     * @see <a href="http://dev.twitter.com/doc/get/help/configuration">GET help/configuration | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/help/configuration">GET help/configuration | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     void getAPIConfiguration();
@@ -41,7 +41,7 @@ public interface HelpMethodsAsync {
     /**
      * Returns the list of languages supported by Twitter along with their ISO 639-1 code. The ISO 639-1 code is the two letter value to use if you include lang with any of your requests.
      *
-     * @see <a href="http://dev.twitter.com/doc/get/help/languages">GET help/languages | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/help/languages">GET help/languages | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     void getLanguages();

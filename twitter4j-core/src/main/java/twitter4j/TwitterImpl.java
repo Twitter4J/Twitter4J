@@ -35,7 +35,7 @@ import java.util.List;
 import static twitter4j.internal.http.HttpParameter.getParameterArray;
 
 /**
- * A java representation of the <a href="http://apiwiki.twitter.com/">Twitter API</a><br>
+ * A java representation of the <a href="https://dev.twitter.com/docs/api">Twitter REST API</a><br>
  * This class is thread safe and can be cached/re-used and used concurrently.<br>
  * Currently this class is not carefully designed to be extended. It is suggested to extend this class only for mock testing purpose.<br>
  *

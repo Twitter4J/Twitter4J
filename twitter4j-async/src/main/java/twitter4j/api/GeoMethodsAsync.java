@@ -32,7 +32,7 @@ public interface GeoMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/geo/search.json
      *
      * @param query search query
-     * @see <a href="http://dev.twitter.com/doc/get/geo/search">GET geo/search | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/geo/search">GET geo/search | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     void searchPlaces(GeoQuery query);
@@ -58,7 +58,7 @@ public interface GeoMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/geo/reverse_geocode.json
      *
      * @param query search query
-     * @see <a href="http://dev.twitter.com/doc/get/geo/reverse_geocode">GET geo/reverse_geocode | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/geo/reverse_geocode">GET geo/reverse_geocode | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void reverseGeoCode(GeoQuery query);
@@ -68,7 +68,7 @@ public interface GeoMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/geo/id/:id.json
      *
      * @param id The ID of the location to query about.
-     * @see <a href="http://dev.twitter.com/doc/get/geo/id/:place_id">GET geo/id/:place_id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/geo/id/:place_id">GET geo/id/:place_id | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void getGeoDetails(String id);
@@ -82,7 +82,7 @@ public interface GeoMethodsAsync {
      * @param token           The token found in the response from geo/similar_places.
      * @param location        The latitude and longitude the place is located at.
      * @param streetAddress   optional: This parameter searches for places which have this given street address. There are other well-known, and application specific attributes available. Custom attributes are also permitted. Learn more about Place Attributes.
-     * @see <a href="http://dev.twitter.com/doc/post/geo/place">POST geo/place | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/geo/place">POST geo/place | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     void createPlace(String name, String containedWithin, String token, GeoLocation location, String streetAddress);

@@ -27,7 +27,7 @@ public interface AccountMethodsAsync {
      * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not.  Use this method to test if supplied user credentials are valid.
      * <br>This method calls http://api.twitter.com/1/account/verify_credentials.json
      *
-     * @see <a href="http://dev.twitter.com/doc/get/account/verify_credentials">GET account/verify_credentials | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/verify_credentials">GET account/verify_credentials | Twitter Developers</a>
      * @since Twitter4J 2.1.3
      */
     void verifyCredentials();
@@ -36,7 +36,7 @@ public interface AccountMethodsAsync {
      * Gets the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.
      * <br>This method calls http://api.twitter.com/1/account/rate_limit_status
      *
-     * @see <a href="http://dev.twitter.com/doc/get/account/rate_limit_status">GET account/rate_limit_status | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/rate_limit_status">GET account/rate_limit_status | Twitter Developers</a>
      * @since Twitter4J 1.1.4
      */
     void getRateLimitStatus();
@@ -50,7 +50,7 @@ public interface AccountMethodsAsync {
      * @param profileLinkColor          optional, can be null
      * @param profileSidebarFillColor   optional, can be null
      * @param profileSidebarBorderColor optional, can be null
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_colors">POST account/update_profile_colors | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_colors">POST account/update_profile_colors | Twitter Developers</a>
      * @since Twitter4J 2.0.0
      */
     void updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor);
@@ -60,7 +60,7 @@ public interface AccountMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
      *
      * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_image">POST account/update_profile_image | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_image">POST account/update_profile_image | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void updateProfileImage(File image);
@@ -70,7 +70,7 @@ public interface AccountMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/account/update_profile_image.json
      *
      * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_image">POST account/update_profile_image | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_image">POST account/update_profile_image | Twitter Developers</a>
      * @since Twitter4J 2.1.11
      */
     void updateProfileImage(InputStream image);
@@ -81,7 +81,7 @@ public interface AccountMethodsAsync {
      *
      * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forcibly scaled down.
      * @param tile  If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_background_image">POST account/update_profile_background_image | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_background_image">POST account/update_profile_background_image | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void updateProfileBackgroundImage(File image, boolean tile);
@@ -92,7 +92,7 @@ public interface AccountMethodsAsync {
      *
      * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forcibly scaled down.
      * @param tile  If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile_background_image">POST account/update_profile_background_image | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile_background_image">POST account/update_profile_background_image | Twitter Developers</a>
      * @since Twitter4J 2.1.11
      */
     void updateProfileBackgroundImage(InputStream image, boolean tile);
@@ -104,7 +104,7 @@ public interface AccountMethodsAsync {
      * @param url         Optional. Maximum of 100 characters. Will be prepended with "http://" if not present.
      * @param location    Optional. Maximum of 30 characters. The contents are not normalized or geocoded in any way.
      * @param description Optional. Maximum of 160 characters.
-     * @see <a href="http://dev.twitter.com/doc/post/account/update_profile">POST account/update_profile | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/update_profile">POST account/update_profile | Twitter Developers</a>
      * @since Twitter4J 2.1.8
      */
     void updateProfile(String name, String url, String location, String description);
@@ -114,7 +114,7 @@ public interface AccountMethodsAsync {
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
      * <br>This method calls http://api.twitter.com/1/account/totals.json
      *
-     * @see <a href="http://dev.twitter.com/doc/get/account/totals">GET account/totals | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/totals">GET account/totals | Twitter Developers</a>
      * @since Twitter4J 2.1.9
      */
     void getAccountTotals();
@@ -124,7 +124,7 @@ public interface AccountMethodsAsync {
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
      * <br>This method calls http://api.twitter.com/1/account/settings.json
      *
-     * @see <a href="http://dev.twitter.com/doc/get/account/totals">GET account/settings | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/totals">GET account/settings | Twitter Developers</a>
      * @since Twitter4J 2.1.9
      */
     void getAccountSettings();
@@ -140,7 +140,7 @@ public interface AccountMethodsAsync {
      * @param endSleepTime       Optional. The hour that sleep time should end if it is enabled.
      * @param timeZone           Optional. The timezone dates and times should be displayed in for the user.
      * @param lang               Optional. The language which Twitter should render in for this user. (two letter ISO 639-1)
-     * @see <a href="http://dev.twitter.com/doc/post/account/settings">POST account/settings | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/account/settings">POST account/settings | Twitter Developers</a>
      * @since Twitter4J 2.2.4
      */
     void updateAccountSettings(Integer trendLocationWoeid, Boolean sleepTimeEnabled, String startSleepTime, String endSleepTime, String timeZone, String lang);

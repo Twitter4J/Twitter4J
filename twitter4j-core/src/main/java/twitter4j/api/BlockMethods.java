@@ -32,7 +32,7 @@ public interface BlockMethods {
      * @param screenName the screen_name of the user to block
      * @return the blocked user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/blocks/create">POST blocks/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/blocks/create">POST blocks/create | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     User createBlock(String screenName) throws TwitterException;
@@ -44,7 +44,7 @@ public interface BlockMethods {
      * @param userId the ID of the user to block
      * @return the blocked user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/blocks/create">POST blocks/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/blocks/create">POST blocks/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     User createBlock(long userId) throws TwitterException;
@@ -56,7 +56,7 @@ public interface BlockMethods {
      * @param screen_name the screen_name of the user to block
      * @return the unblocked user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/blocks/destroy">POST blocks/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/blocks/destroy">POST blocks/destroy | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     User destroyBlock(String screen_name) throws TwitterException;
@@ -68,7 +68,7 @@ public interface BlockMethods {
      * @param userId the ID of the user to block
      * @return the unblocked user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/blocks/destroy">POST blocks/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/blocks/destroy">POST blocks/destroy | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     User destroyBlock(long userId) throws TwitterException;
@@ -80,7 +80,7 @@ public interface BlockMethods {
      * @param screenName The screen_name of the potentially blocked user.
      * @return if the authenticating user is blocking a target user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/exists">GET blocks/exists | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/exists">GET blocks/exists | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
     boolean existsBlock(String screenName) throws TwitterException;
@@ -92,7 +92,7 @@ public interface BlockMethods {
      * @param userId The ID of the potentially blocked user.
      * @return if the authenticating user is blocking a target user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/exists">GET blocks/exists | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/exists">GET blocks/exists | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     boolean existsBlock(long userId) throws TwitterException;
@@ -103,7 +103,7 @@ public interface BlockMethods {
      *
      * @return a list of user objects that the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking">GET blocks/blocking | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
     ResponseList<User> getBlockingUsers() throws TwitterException;
@@ -115,7 +115,7 @@ public interface BlockMethods {
      * @param page the number of page
      * @return a list of user objects that the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking">GET blocks/blocking | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
     ResponseList<User> getBlockingUsers(int page) throws TwitterException;
@@ -126,7 +126,7 @@ public interface BlockMethods {
      *
      * @return Returns an array of numeric user ids the authenticating user is blocking.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking/ids">GET blocks/blocking/ids | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/blocking/ids">GET blocks/blocking/ids | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
     IDs getBlockingUsersIDs() throws TwitterException;

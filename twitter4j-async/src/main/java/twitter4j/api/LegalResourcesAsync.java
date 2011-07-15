@@ -25,7 +25,7 @@ public interface LegalResourcesAsync {
      * Returns Twitter's' Terms of Service.
      * <br>This method calls http://api.twitter.com/1/legal/tos.json
      *
-     * @see <a href="http://dev.twitter.com/doc/get/legal/tos">GET legal/tos | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/legal/tos">GET legal/tos | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     void getTermsOfService();
@@ -34,7 +34,7 @@ public interface LegalResourcesAsync {
      * Returns Twitter's Privacy Policy.
      * <br>This method calls http://api.twitter.com/1/legal/privacy.json
      *
-     * @see <a href="http://dev.twitter.com/doc/get/legal/privacy">GET legal/privacy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/legal/privacy">GET legal/privacy | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     void getPrivacyPolicy();

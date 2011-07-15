@@ -36,7 +36,7 @@ import static twitter4j.internal.http.HttpResponseCode.FORBIDDEN;
 import static twitter4j.internal.http.HttpResponseCode.NOT_ACCEPTABLE;
 
 /**
- * A java representation of the <a href="http://dev.twitter.com/pages/streaming_api_methods">Streaming API: Methods</a><br>
+ * A java representation of the <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods</a><br>
  * Note that this class is NOT compatible with Google App Engine as GAE is not capable of handling requests longer than 30 seconds.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -390,7 +390,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     /*
-     http://apiwiki.twitter.com/Streaming-API-Documentation#Connecting
+     https://dev.twitter.com/docs/streaming-api/concepts#connecting
      When a network error (TCP/IP level) is encountered, back off linearly. Perhaps start at 250 milliseconds, double, and cap at 16 seconds
      When a HTTP error (> 200) is returned, back off exponentially.
      Perhaps start with a 10 second wait, double on each subsequent failure, and finally cap the wait at 240 seconds. Consider sending an alert to a human operator after multiple HTTP errors, as there is probably a client configuration issue that is unlikely to be resolved without human intervention. There's not much point in polling any faster in the face of HTTP error codes and your client is may run afoul of a rate limit.

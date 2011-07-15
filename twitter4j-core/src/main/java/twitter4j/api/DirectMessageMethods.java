@@ -31,7 +31,7 @@ public interface DirectMessageMethods {
      *
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/direct_messages">GET direct_messages | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/direct_messages">GET direct_messages | Twitter Developers</a>
      */
     ResponseList<DirectMessage> getDirectMessages()
             throws TwitterException;
@@ -43,7 +43,7 @@ public interface DirectMessageMethods {
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/direct_messages">GET direct_messages | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/direct_messages">GET direct_messages | Twitter Developers</a>
      */
     ResponseList<DirectMessage> getDirectMessages(Paging paging)
             throws TwitterException;
@@ -54,7 +54,7 @@ public interface DirectMessageMethods {
      *
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/direct_messages/sent">GET direct_messages/sent | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
      */
     ResponseList<DirectMessage> getSentDirectMessages()
             throws TwitterException;
@@ -66,7 +66,7 @@ public interface DirectMessageMethods {
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/direct_messages/sent">GET direct_messages/sent | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     ResponseList<DirectMessage> getSentDirectMessages(Paging paging)
@@ -82,7 +82,7 @@ public interface DirectMessageMethods {
      * @param text       The text of your direct message.
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/new">POST direct_messages/new | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
      */
     DirectMessage sendDirectMessage(String screenName, String text)
             throws TwitterException;
@@ -96,7 +96,7 @@ public interface DirectMessageMethods {
      * @param text   The text of your direct message.
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/new">POST direct_messages/new | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
      * @since Twitter4j 2.1.0
      */
     DirectMessage sendDirectMessage(long userId, String text)
@@ -109,7 +109,7 @@ public interface DirectMessageMethods {
      * @param id the ID of the direct message to destroy
      * @return the deleted direct message
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     DirectMessage destroyDirectMessage(long id)

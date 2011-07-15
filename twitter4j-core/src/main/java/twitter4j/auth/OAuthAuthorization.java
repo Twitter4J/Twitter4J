@@ -168,7 +168,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
             String url = conf.getOAuthAccessTokenURL();
             if (0 == url.indexOf("http://")) {
                 // SSL is required
-                // @see http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-oauth-access_token-for-xAuth
+                // @see https://dev.twitter.com/docs/oauth/xauth
                 url = "https://" + url.substring(7);
             }
             oauthToken = new AccessToken(http.post(url, new HttpParameter[]{

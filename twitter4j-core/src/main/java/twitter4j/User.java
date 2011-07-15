@@ -23,7 +23,6 @@ import java.util.Date;
  * A data interface representing Basic user information element
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
 public interface User extends Comparable<User>, TwitterResponse, java.io.Serializable {
     /**
@@ -75,7 +74,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return the profile image url of the user
      */
     URL getProfileImageURL();
-    
+
     /**
      * Returns the profile image url of the user, served over SSL
      *
@@ -139,7 +138,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     String getTimeZone();
 
     String getProfileBackgroundImageUrl();
-    
+
     String getProfileBackgroundImageUrlHttps();
 
     boolean isProfileBackgroundTiled();

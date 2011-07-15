@@ -34,7 +34,7 @@ public interface UserMethods {
      * @param screenName the screen name of the user for whom to request the detail
      * @return User
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/show">GET users/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/show">GET users/show | Twitter Developers</a>
      */
     User showUser(String screenName) throws TwitterException;
 
@@ -45,7 +45,7 @@ public interface UserMethods {
      * @param userId the ID of the user for whom to request the detail
      * @return users
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/show">GET users/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/show">GET users/show | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     User showUser(long userId) throws TwitterException;
@@ -57,7 +57,7 @@ public interface UserMethods {
      * @param screenNames Specifies the screen names of the users to return.
      * @return users
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/lookup">GET users/lookup | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/lookup">GET users/lookup | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException;
@@ -69,7 +69,7 @@ public interface UserMethods {
      * @param ids Specifies the screen names of the users to return.
      * @return users
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/lookup">GET users/lookup | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/lookup">GET users/lookup | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<User> lookupUsers(long[] ids) throws TwitterException;
@@ -83,7 +83,7 @@ public interface UserMethods {
      * @param page  Specifies the page of results to retrieve. Number of statuses per page is fixed to 20.
      * @return the list of Users matches the provided
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/search">GET users/search | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/search">GET users/search | Twitter Developers</a>
      */
     ResponseList<User> searchUsers(String query, int page) throws TwitterException;
 
@@ -93,7 +93,7 @@ public interface UserMethods {
      *
      * @return list of suggested user categories.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/suggestions/:slug">GET users/suggestions/:slug | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/suggestions/:slug">GET users/suggestions/:slug | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<Category> getSuggestedUserCategories() throws TwitterException;
@@ -106,7 +106,7 @@ public interface UserMethods {
      * @param categorySlug slug
      * @return list of suggested users
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/suggestions/slug">GET users/suggestions/slug | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/suggestions/slug">GET users/suggestions/slug | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException;
@@ -133,7 +133,7 @@ public interface UserMethods {
      * @param size       Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: BIGGER - 73px by 73px NORMAL - 48px by 48px MINI - 24px by 24px
      * @return profile image
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/users/profile_image/:screen_name">GET users/profile_image/:screen_name | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/profile_image/:screen_name">GET users/profile_image/:screen_name | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     ProfileImage getProfileImage(String screenName, ProfileImage.ImageSize size) throws TwitterException;
@@ -145,7 +145,7 @@ public interface UserMethods {
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends">GET statuses/friends | Twitter Developers</a>
      * @since Twitter4J 2.0.9
      * @deprecated use {@link FriendsFollowersMethods#getFriendsIDs(long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
@@ -160,7 +160,7 @@ public interface UserMethods {
      * @param cursor     Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends">GET statuses/friends | Twitter Developers</a>
      * @since Twitter4J 2.0.9
      * @deprecated use {@link FriendsFollowersMethods#getFriendsIDs(String, long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
@@ -175,7 +175,7 @@ public interface UserMethods {
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of friends
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends">GET statuses/friends | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link FriendsFollowersMethods#getFriendsIDs(long, long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
@@ -189,7 +189,7 @@ public interface UserMethods {
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/followers">GET statuses/followers | Twitter Developers</a>
      * @since Twitter4J 2.0.9
      * @deprecated use {@link FriendsFollowersMethods#getFollowersIDs(long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
@@ -204,7 +204,7 @@ public interface UserMethods {
      * @param cursor     Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/followers">GET statuses/followers | Twitter Developers</a>
      * @since Twitter4J 2.0.9
      * @deprecated use {@link FriendsFollowersMethods#getFollowersIDs(String, long)} and {@link UserMethods#lookupUsers(long[])} instead
      */
@@ -219,7 +219,7 @@ public interface UserMethods {
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/followers">GET statuses/followers | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      * @deprecated use {@link FriendsFollowersMethods#getFollowersIDs(long, long)} and {@link UserMethods#lookupUsers(long[])} instead
      */

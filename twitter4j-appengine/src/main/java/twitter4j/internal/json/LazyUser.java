@@ -30,7 +30,6 @@ import java.util.Date;
  * A data class representing Basic user information element
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see <a href="http://apiwiki.twitter.com/REST+API+Documentation#Basicuserinformationelement">REST API Documentation - Basic user information element</a>
  */
 @Generated(
         value = "generate-lazy-objects.sh",

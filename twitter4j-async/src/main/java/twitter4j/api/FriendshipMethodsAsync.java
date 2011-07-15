@@ -27,7 +27,7 @@ public interface FriendshipMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/friendships/create
      *
      * @param screenName the screen name of the user to be befriended
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/create">POST friendships/create | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void createFriendship(String screenName);
@@ -38,7 +38,7 @@ public interface FriendshipMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/friendships/create
      *
      * @param userId the ID of the user to be befriended
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/create">POST friendships/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void createFriendship(long userId);
@@ -50,7 +50,7 @@ public interface FriendshipMethodsAsync {
      *
      * @param screenName the screen name of the user to be befriended
      * @param follow     Enable notifications for the target user in addition to becoming friends.
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/create">POST friendships/create | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void createFriendship(String screenName, boolean follow);
@@ -62,7 +62,7 @@ public interface FriendshipMethodsAsync {
      *
      * @param userId the ID of the user to be befriended
      * @param follow Enable notifications for the target user in addition to becoming friends.
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/create">POST friendships/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/create">POST friendships/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void createFriendship(long userId, boolean follow);
@@ -73,7 +73,7 @@ public interface FriendshipMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/friendships/destroy
      *
      * @param screenName the screen name of the user to be befriended
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/destroy">POST friendships/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/destroy">POST friendships/destroy | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void destroyFriendship(String screenName);
@@ -84,7 +84,7 @@ public interface FriendshipMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/friendships/destroy
      *
      * @param userId the screen name of the user to be befriended
-     * @see <a href="http://dev.twitter.com/doc/post/friendships/destroy">POST friendships/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/friendships/destroy">POST friendships/destroy | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void destroyFriendship(long userId);
@@ -95,7 +95,7 @@ public interface FriendshipMethodsAsync {
      *
      * @param userA The ID or screen_name of the first user to test friendship for.
      * @param userB The ID or screen_name of the second user to test friendship for.
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/exists">GET friendships/exists | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/exists">GET friendships/exists | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void existsFriendship(String userA, String userB);
@@ -106,7 +106,7 @@ public interface FriendshipMethodsAsync {
      *
      * @param sourceScreenName the screen name of the source user
      * @param targetScreenName the screen name of the target user
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/show">GET friendships/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/show">GET friendships/show | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void showFriendship(String sourceScreenName, String targetScreenName);
@@ -117,7 +117,7 @@ public interface FriendshipMethodsAsync {
      *
      * @param sourceId the ID of the source user
      * @param targetId the ID of the target user
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/show">GET friendships/show | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/show">GET friendships/show | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void showFriendship(long sourceId, long targetId);
@@ -127,7 +127,7 @@ public interface FriendshipMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/friendships/incoming.json
      *
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/incoming">GET friendships/incoming | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/incoming">GET friendships/incoming | Twitter Developers</a>
      * @since Twitter4J 2.1.2
      */
     void getIncomingFriendships(long cursor);
@@ -137,7 +137,7 @@ public interface FriendshipMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/friendships/outgoing.json
      *
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
-     * @see <a href="http://dev.twitter.com/doc/get/friendships/outgoing">GET friendships/outgoing | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/outgoing">GET friendships/outgoing | Twitter Developers</a>
      * @since Twitter4J 2.1.2
      */
     void getOutgoingFriendships(long cursor);

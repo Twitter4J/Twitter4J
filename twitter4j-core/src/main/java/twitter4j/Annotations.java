@@ -28,7 +28,7 @@ import java.util.List;
  * A data class representing the Annotations of a Status or a Tweet
  *
  * @author Roy Reshef - royreshef at gmail.com
- * @see <a href="http://dev.twitter.com/pages/annotations_overview">Annotations Overview | dev.twitter.com</a>
+ * @see <a href="http://dev.twitter.com/pages/annotations_overview">Annotations Overview | Twitter Developers</a>
  * @since Twitter4J 2.1.4
  */
 public class Annotations implements java.io.Serializable {

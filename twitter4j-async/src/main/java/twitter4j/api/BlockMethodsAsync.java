@@ -25,7 +25,7 @@ public interface BlockMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/blocks/create%C2%A0
      *
      * @param screenName the screen_name of the user to block
-     * @see <a href="http://dev.twitter.com/doc/post/blocks/create">POST blocks/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/blocks/create">POST blocks/create | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void createBlock(String screenName);
@@ -35,7 +35,7 @@ public interface BlockMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/blocks/create%C2%A0
      *
      * @param userId the screen_name of the user to block
-     * @see <a href="http://dev.twitter.com/doc/post/blocks/create">POST blocks/create | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/blocks/create">POST blocks/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void createBlock(long userId);
@@ -45,7 +45,7 @@ public interface BlockMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/blocks/create%C2%A0
      *
      * @param screenName the screen_name of the user to block
-     * @see <a href="http://dev.twitter.com/doc/post/blocks/destroy">POST blocks/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/blocks/destroy">POST blocks/destroy | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void destroyBlock(String screenName);
@@ -55,7 +55,7 @@ public interface BlockMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/blocks/create%C2%A0
      *
      * @param userId the ID of the user to block
-     * @see <a href="http://dev.twitter.com/doc/post/blocks/destroy">POST blocks/destroy | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/blocks/destroy">POST blocks/destroy | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void destroyBlock(long userId);
@@ -65,7 +65,7 @@ public interface BlockMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/blocks/exists/id.xml
      *
      * @param screenName The screen_name of the potentially blocked user.
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/exists">GET blocks/exists | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/exists">GET blocks/exists | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
     void existsBlock(String screenName);
@@ -75,7 +75,7 @@ public interface BlockMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/blocks/exists/id.xml
      *
      * @param userId The ID of the potentially blocked user.
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/exists">GET blocks/exists | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/exists">GET blocks/exists | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     void existsBlock(long userId);
@@ -84,7 +84,7 @@ public interface BlockMethodsAsync {
      * Returns a list of user objects that the authenticating user is blocking.
      * <br>This method calls http://api.twitter.com/1/blocks/blocking.xml
      *
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking">GET blocks/blocking | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
     void getBlockingUsers();
@@ -94,7 +94,7 @@ public interface BlockMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/blocks/blocking.xml
      *
      * @param page the number of page
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking">GET blocks/blocking | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
     void getBlockingUsers(int page);
@@ -103,7 +103,7 @@ public interface BlockMethodsAsync {
      * Returns an array of numeric user ids the authenticating user is blocking.
      * <br>This method calls http://api.twitter.com/1/blocks/blocking/ids
      *
-     * @see <a href="http://dev.twitter.com/doc/get/blocks/blocking/ids">GET blocks/blocking/ids | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/blocking/ids">GET blocks/blocking/ids | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
     void getBlockingUsersIDs();

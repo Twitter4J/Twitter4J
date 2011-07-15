@@ -36,8 +36,8 @@ public interface ResponseList<T> extends TwitterResponse, List<T> {
      * This method is available in conjunction with Twitter#searchUsers()<br>
      *
      * @return current rate limit status
-     * @see <a href="http://dev.twitter.com/pages/rate-limiting">Rate Limiting | dev.twitter.com</a>
-     * @see <a href="http://dev.twitter.com/pages/rate_limiting_faq">Rate Limiting FAQ | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/rate-limiting/faq">Rate Limiting FAQ | Twitter Developers</a>
      * @since Twitter4J 2.1.2
      */
     public RateLimitStatus getFeatureSpecificRateLimitStatus();

@@ -142,7 +142,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * This method is available in conjunction with Twitter#searchUsers()<br>
      *
      * @return current rate limit status
-     * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
+     * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
      * @since Twitter4J 2.1.2
      */
     public RateLimitStatus getFeatureSpecificRateLimitStatus() {
@@ -162,7 +162,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * apis.<br>
      *
      * @return instructs the application when it is safe to continue in seconds
-     * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
+     * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     public int getRetryAfter() {
@@ -198,7 +198,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      * Tests if the exception is caused by rate limitation exceed
      *
      * @return if the exception is caused by rate limitation exceed
-     * @see <a href="http://apiwiki.twitter.com/Rate-limiting">Rate limiting</a>
+     * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
      * @since Twitter4J 2.1.2
      */
     public boolean exceededRateLimitation() {
@@ -323,19 +323,19 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     private static String getCause(int statusCode) {
         String cause;
-        // http://apiwiki.twitter.com/HTTP-Response-Codes-and-Errors
+        // https://dev.twitter.com/docs/error-codes-responses
         switch (statusCode) {
             case NOT_MODIFIED:
                 cause = "There was no new data to return.";
                 break;
             case BAD_REQUEST:
-                cause = "The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.";
+                cause = "The request was invalid. An accompanying error message will explain why. This is the status code will be returned during rate limiting (https://dev.twitter.com/pages/rate-limiting).";
                 break;
             case UNAUTHORIZED:
-                cause = "Authentication credentials (http://dev.twitter.com/pages/auth) were missing or incorrect. Ensure that you have set valid conumer key/secret, access token/secret, and the system clock in in sync.";
+                cause = "Authentication credentials (https://dev.twitter.com/docs/auth) were missing or incorrect. Ensure that you have set valid conumer key/secret, access token/secret, and the system clock in in sync.";
                 break;
             case FORBIDDEN:
-                cause = "The request is understood, but it has been refused. An accompanying error message will explain why. This code is used when requests are being denied due to update limits (http://support.twitter.com/forums/10711/entries/15364).";
+                cause = "The request is understood, but it has been refused. An accompanying error message will explain why. This code is used when requests are being denied due to update limits (https://support.twitter.com/articles/15364-about-twitter-limits-update-api-dm-and-following).";
                 break;
             case NOT_FOUND:
                 cause = "The URI requested is invalid or the resource requested, such as a user, does not exist.";
@@ -355,12 +355,12 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                         " Too many follow userids specified for role; contact API team for increased access.";
                 break;
             case ENHANCE_YOUR_CLAIM:
-                cause = "Returned by the Search and Trends API when you are being rate limited (http://dev.twitter.com/pages/rate-limiting).\n"
+                cause = "Returned by the Search and Trends API when you are being rate limited (https://dev.twitter.com/docs/rate-limiting).\n"
                         + "Returned by the Streaming API:\n Too many login attempts in a short period of time.\n" +
                         " Running too many copies of the same application authenticating with the same account name.";
                 break;
             case INTERNAL_SERVER_ERROR:
-                cause = "Something is broken. Please post to the group (http://dev.twitter.com/pages/support) so the Twitter team can investigate.";
+                cause = "Something is broken. Please post to the group (https://dev.twitter.com/docs/support) so the Twitter team can investigate.";
                 break;
             case BAD_GATEWAY:
                 cause = "Twitter is down or being upgraded.";

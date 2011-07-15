@@ -24,7 +24,7 @@ public interface FavoriteMethodsAsync {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://api.twitter.com/1/favorites
      *
-     * @see <a href="http://dev.twitter.com/doc/get/favorites">GET favorites | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void getFavorites();
@@ -34,7 +34,7 @@ public interface FavoriteMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/favorites
      *
      * @param page number of page to retrieve favorites
-     * @see <a href="http://dev.twitter.com/doc/get/favorites">GET favorites | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void getFavorites(int page);
@@ -44,7 +44,7 @@ public interface FavoriteMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/favorites
      *
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses
-     * @see <a href="http://dev.twitter.com/doc/get/favorites">GET favorites | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void getFavorites(String id);
@@ -55,7 +55,7 @@ public interface FavoriteMethodsAsync {
      *
      * @param id   the ID or screen name of the user for whom to request a list of favorite statuses.
      * @param page retrieves the 20 next most recent favorite statuses.
-     * @see <a href="http://dev.twitter.com/doc/get/favorites">GET favorites | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void getFavorites(String id, int page);
@@ -65,7 +65,7 @@ public interface FavoriteMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/favorites/create%C2%A0
      *
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses.
-     * @see <a href="http://dev.twitter.com/doc/post/favorites/create/:id">POST favorites/create/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/favorites/create/:id">POST favorites/create/:id | Twitter Developers</a>
      * @since 1.1.2
      */
     void createFavorite(long id);
@@ -75,7 +75,7 @@ public interface FavoriteMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/favorites/destroy
      *
      * @param id the ID or screen name of the user for whom to request a list of un-favorite statuses.
-     * @see <a href="http://dev.twitter.com/doc/post/favorites/destroy/:id">POST favorites/destroy/:id | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/favorites/destroy/:id">POST favorites/destroy/:id | Twitter Developers</a>
      * @since 1.1.2
      */
     void destroyFavorite(long id);

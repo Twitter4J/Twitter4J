@@ -20,7 +20,7 @@ package twitter4j;
  * A data interface representing Twitter REST API's rate limit status
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see <a href="http://dev.twitter.com/pages/rate-limiting">Rate Limiting | dev.twitter.com</a>
+ * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
  */
 public final class RateLimitStatusEvent extends java.util.EventObject {
 

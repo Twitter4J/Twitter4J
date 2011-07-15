@@ -21,7 +21,6 @@ import twitter4j.Trends;
 import twitter4j.TwitterException;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -34,7 +33,7 @@ public interface TrendsMethods {
      *
      * @return the result
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends">GET trends | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends">GET trends | Twitter Developers</a>
      * @since Twitter4J 2.0.2
      */
     Trends getTrends() throws TwitterException;
@@ -45,7 +44,7 @@ public interface TrendsMethods {
      *
      * @return the result
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/current">GET trends/current | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/current">GET trends/current | Twitter Developers</a>
      * @since Twitter4J 2.0.2
      */
     Trends getCurrentTrends() throws TwitterException;
@@ -57,7 +56,7 @@ public interface TrendsMethods {
      * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
      * @return the result
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/current">GET trends/current | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/current">GET trends/current | Twitter Developers</a>
      * @since Twitter4J 2.0.2
      */
     Trends getCurrentTrends(boolean excludeHashTags) throws TwitterException;
@@ -68,7 +67,7 @@ public interface TrendsMethods {
      *
      * @return the result
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/daily">GET trends/daily | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/daily">GET trends/daily | Twitter Developers</a>
      * @since Twitter4J 2.0.2
      */
     ResponseList<Trends> getDailyTrends() throws TwitterException;
@@ -81,7 +80,7 @@ public interface TrendsMethods {
      * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
      * @return the result
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/daily">GET trends/daily | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/daily">GET trends/daily | Twitter Developers</a>
      * @since Twitter4J 2.0.2
      */
     ResponseList<Trends> getDailyTrends(Date date, boolean excludeHashTags)
@@ -93,7 +92,7 @@ public interface TrendsMethods {
      *
      * @return the result
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/weekly">GET trends/weekly | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/weekly">GET trends/weekly | Twitter Developers</a>
      * @since Twitter4J 2.0.2
      */
     ResponseList<Trends> getWeeklyTrends() throws TwitterException;
@@ -106,7 +105,7 @@ public interface TrendsMethods {
      * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
      * @return the result
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/doc/get/trends/weekly">GET trends/weekly | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/weekly">GET trends/weekly | Twitter Developers</a>
      * @since Twitter4J 2.0.2
      */
     ResponseList<Trends> getWeeklyTrends(Date date, boolean excludeHashTags)

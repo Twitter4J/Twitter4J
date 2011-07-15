@@ -53,7 +53,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      *
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @see twitter4j.StatusStream
-     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-firehose">Streaming API: Methods statuses/firehose</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/firehose</a>
      * @since Twitter4J 2.0.4
      */
     void firehose(final int count);
@@ -65,7 +65,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-firehose">Streaming API: Methods statuses/firehose</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/firehose</a>
      * @since Twitter4J 2.0.4
      */
     StatusStream getFirehoseStream(int count) throws TwitterException;
@@ -75,7 +75,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      *
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @see twitter4j.StatusStream
-     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-links">Streaming API: Methods statuses/links</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/links</a>
      * @since Twitter4J 2.1.1
      */
     void links(final int count);
@@ -87,7 +87,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-links">Streaming API: Methods statuses/links</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/links</a>
      * @since Twitter4J 2.1.1
      */
     StatusStream getLinksStream(int count) throws TwitterException;
@@ -96,7 +96,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * Starts listening on all retweets. The retweet stream is not a generally available resource. Few applications require this level of access. Creative use of a combination of other resources and various access levels can satisfy nearly every application use case. As of 9/11/2009, the site-wide retweet feature has not yet launched, so there are currently few, if any, retweets on this stream.
      *
      * @see twitter4j.StatusStream
-     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-retweet">Streaming API: Methods statuses/retweet</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/retweet</a>
      * @since Twitter4J 2.0.10
      */
     void retweet();
@@ -107,7 +107,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-retweet">Streaming API: Methods statuses/retweet</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/retweet</a>
      * @since Twitter4J 2.0.10
      */
     StatusStream getRetweetStream() throws TwitterException;
@@ -116,7 +116,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * Starts listening on random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
      *
      * @see twitter4j.StatusStream
-     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-sample">Streaming API: Methods statuses/sample</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
      */
     void sample();
@@ -127,7 +127,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-sample">Streaming API: Methods statuses/sample</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
      */
     StatusStream getSampleStream() throws TwitterException;
@@ -136,7 +136,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
      *
      * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
-     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
      */
     void user();
 
@@ -145,7 +145,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      *
      * @param track keywords to track
      * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
-     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
      * @since Twitter4J 2.1.9
      */
     void user(final String[] track);
@@ -155,7 +155,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      *
      * @return UserStream
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
      */
     UserStream getUserStream() throws TwitterException;
 
@@ -165,7 +165,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @param track keywords to track
      * @return UserStream
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://dev.twitter.com/pages/user_streams">User Streams</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
      * @since Twitter4J 2.1.9
      */
     UserStream getUserStream(String[] track) throws TwitterException;
@@ -178,7 +178,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      *
      * @param withFollowings whether to receive status updates from people following
      * @param follow         an array of users to include in the stream
-     * @see <a href="http://dev.twitter.com/pages/site_streams">Site Streams | dev.twitter.com</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/site-streams">Site Streams | Twitter Developers</a>
      * @since Twitter4J 2.1.8
      */
     void site(final boolean withFollowings, final long[] follow);
@@ -189,7 +189,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      *
      * @param query Filter query
      * @see twitter4j.StatusStream
-     * @see <a href="http://dev.twitter.com/pages/streaming_api_methods#statuses-filter">Streaming API: Methods statuses/filter</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/filter</a>
      * @since Twitter4J 2.1.2
      */
     void filter(final FilterQuery query);
@@ -202,7 +202,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see twitter4j.StatusStream
-     * @see <a href="http://apiwiki.twitter.com/Streaming-API-Documentation#statuses/filter">Twitter API Wiki / Streaming API Documentation - filter</a>
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods | Twitter Developers</a>
      * @since Twitter4J 2.1.2
      */
     StatusStream getFilterStream(FilterQuery query) throws TwitterException;
