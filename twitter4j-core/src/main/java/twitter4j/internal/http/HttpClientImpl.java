@@ -53,14 +53,14 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
     static {
         try {
             String versionStr = System.getProperty("java.specification.version");
-            if (versionStr != null) {
-                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
-            }
             if (ConfigurationContext.getInstance().isDalvik()) {
                 isJDK14orEarlier = false;
                 // quick and dirty workaround for TFJ-296
                 // it must be an Android/Dalvik/Harmony side issue!!!!
                 System.setProperty("http.keepAlive", "false");
+            }
+            if (versionStr != null) {
+                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
             }
         } catch (SecurityException ignore) {
             // Unsigned applets are not allowed to access System properties
