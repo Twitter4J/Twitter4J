@@ -16,6 +16,7 @@
 
 package twitter4j.api;
 
+import twitter4j.ResponseList;
 import twitter4j.SavedSearch;
 import twitter4j.TwitterException;
 
@@ -34,7 +35,7 @@ public interface SavedSearchesMethods {
      * @see <a href="http://dev.twitter.com/doc/get/saved_searches">GET saved_searches | dev.twitter.com</a>
      * @since Twitter4J 2.0.8
      */
-    List<SavedSearch> getSavedSearches() throws TwitterException;
+    ResponseList<SavedSearch> getSavedSearches() throws TwitterException;
 
     /**
      * Retrieve the data for a saved search owned by the authenticating user specified by the given id.

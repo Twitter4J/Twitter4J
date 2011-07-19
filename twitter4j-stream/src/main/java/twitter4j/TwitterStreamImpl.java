@@ -23,7 +23,7 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpClientWrapperConfiguration;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,12 +54,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     /*package*/
     TwitterStreamImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
-        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
-    }
-
-    /*package*/
-    TwitterStreamImpl(Configuration conf) {
-        super(conf);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
     }
 
@@ -215,8 +209,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
             if (conf.isUserStreamRepliesAllEnabled()) {
                 params.add(new HttpParameter("replies", "all"));
             }
-            if (null != track) {
-                params.add(new HttpParameter("track", T4JInternalStringUtil.join(track)));
+            if (track != null) {
+                params.add(new HttpParameter("track", z_T4JInternalStringUtil.join(track)));
             }
             return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
                     , params.toArray(new HttpParameter[params.size()])
@@ -269,7 +263,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return http.post(conf.getSiteStreamBaseURL() + "site.json",
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
-                        , new HttpParameter("follow", T4JInternalStringUtil.join(follow))}
+                        , new HttpParameter("follow", z_T4JInternalStringUtil.join(follow))}
                 , auth).asStream();
     }
 
@@ -338,7 +332,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
      * {@inheritDoc}
      */
     public synchronized void cleanUp() {
-        if (null != handler) {
+        if (handler != null) {
             handler.close();
             numberOfHandlers--;
         }
@@ -522,7 +516,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                     }
                 }
             }
-            if (null != this.stream && connected) {
+            if (this.stream != null && connected) {
                 try {
                     this.stream.close();
                 } catch (IOException ignore) {
@@ -551,7 +545,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         public synchronized void close() {
             setStatus("[Disposing thread]");
             try {
-                if (null != stream) {
+                if (stream != null) {
                     try {
                         stream.close();
                     } catch (IOException ignore) {
@@ -603,6 +597,16 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         result = 31 * result + (lifeCycleListeners != null ? lifeCycleListeners.hashCode() : 0);
         result = 31 * result + (handler != null ? handler.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TwitterStreamImpl{" +
+                "http=" + http +
+                ", streamListeners=" + (streamListeners == null ? null : Arrays.asList(streamListeners)) +
+                ", lifeCycleListeners=" + lifeCycleListeners +
+                ", handler=" + handler +
+                '}';
     }
 }
 

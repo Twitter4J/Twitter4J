@@ -35,19 +35,19 @@ public final class AuthorizationFactory {
         String consumerKey = conf.getOAuthConsumerKey();
         String consumerSecret = conf.getOAuthConsumerSecret();
 
-        if (null != consumerKey && null != consumerSecret) {
+        if (consumerKey != null && consumerSecret != null) {
             OAuthAuthorization oauth;
             oauth = new OAuthAuthorization(conf);
             String accessToken = conf.getOAuthAccessToken();
             String accessTokenSecret = conf.getOAuthAccessTokenSecret();
-            if (null != accessToken && null != accessTokenSecret) {
+            if (accessToken != null && accessTokenSecret != null) {
                 oauth.setOAuthAccessToken(new AccessToken(accessToken, accessTokenSecret));
             }
             auth = oauth;
         } else {
             String screenName = conf.getUser();
             String password = conf.getPassword();
-            if (null != screenName && null != password) {
+            if (screenName != null && password != null) {
                 auth = new BasicAuthorization(screenName, password);
             }
         }

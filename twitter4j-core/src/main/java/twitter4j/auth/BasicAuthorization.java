@@ -47,7 +47,7 @@ public class BasicAuthorization implements Authorization, java.io.Serializable {
     }
 
     private String encodeBasicAuthenticationString() {
-        if (null != userId && null != password) {
+        if (userId != null && password != null) {
             return "Basic " + BASE64Encoder.encode((userId + ":" + password).getBytes());
         }
         return null;

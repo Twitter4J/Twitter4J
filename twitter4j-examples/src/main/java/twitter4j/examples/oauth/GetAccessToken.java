@@ -73,13 +73,13 @@ public class GetAccessToken {
             ioe.printStackTrace();
             System.exit(-1);
         } finally {
-            if (null != is) {
+            if (is != null) {
                 try {
                     is.close();
                 } catch (IOException ignore) {
                 }
             }
-            if (null != os) {
+            if (os != null) {
                 try {
                     os.close();
                 } catch (IOException ignore) {
@@ -134,7 +134,7 @@ public class GetAccessToken {
                 ioe.printStackTrace();
                 System.exit(-1);
             } finally {
-                if (null != os) {
+                if (os != null) {
                     try {
                         os.close();
                     } catch (IOException ignore) {

@@ -17,7 +17,7 @@
 package twitter4j;
 
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,15 +156,15 @@ public final class FilterQuery implements java.io.Serializable {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
 
         params.add(new HttpParameter("count", count));
-        if (null != follow && follow.length > 0) {
+        if (follow != null && follow.length > 0) {
             params.add(new HttpParameter("follow"
-                    , T4JInternalStringUtil.join(follow)));
+                    , z_T4JInternalStringUtil.join(follow)));
         }
-        if (null != track && track.length > 0) {
+        if (track != null && track.length > 0) {
             params.add(new HttpParameter("track"
-                    , T4JInternalStringUtil.join(track)));
+                    , z_T4JInternalStringUtil.join(track)));
         }
-        if (null != locations && locations.length > 0) {
+        if (locations != null && locations.length > 0) {
             params.add(new HttpParameter("locations"
                     , toLocationsString(locations)));
         }

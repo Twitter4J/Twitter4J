@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import twitter4j.api.HelpMethods;
+
 import java.util.List;
 
 /**
@@ -42,12 +44,12 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.0.2
      */
-    void gotDailyTrends(List<Trends> trendsList);
+    void gotDailyTrends(ResponseList<Trends> trendsList);
 
     /**
      * @since Twitter4J 2.0.2
      */
-    void gotWeeklyTrends(List<Trends> trendsList);
+    void gotWeeklyTrends(ResponseList<Trends> trendsList);
 
     /*Timeline Methods*/
     void gotPublicTimeline(ResponseList<Status> statuses);
@@ -320,6 +322,11 @@ public interface TwitterListener {
      */
     void updatedFriendship(Relationship relationship);
 
+    /**
+     * @since
+     */
+    void gotNoRetweetIds(IDs ids);
+
     /*Account Methods*/
 
     void verifiedCredentials(User user);
@@ -339,6 +346,12 @@ public interface TwitterListener {
      * @since Twitter4J 2.1.9
      */
     void gotAccountSettings(AccountSettings settings);
+
+    /**
+     * @param settings account settings
+     * @since Twitter4J 2.2.4
+     */
+    void updatedAccountSettings(AccountSettings settings);
 
     /**
      * @since Twitter4J 2.1.0
@@ -456,6 +469,10 @@ public interface TwitterListener {
     /*Help Methods*/
     void tested(boolean test);
 
+    void gotAPIConfiguration(TwitterAPIConfiguration conf);
+
+    void gotLanguages(ResponseList<HelpMethods.Language> languages);
+
     /**
      * @param te     TwitterException
      * @param method
@@ -473,6 +490,9 @@ public interface TwitterListener {
     /*Timeline Methods*/
     TwitterMethod PUBLIC_TIMELINE = TwitterMethod.PUBLIC_TIMELINE;
     TwitterMethod HOME_TIMELINE = TwitterMethod.HOME_TIMELINE;
+    /**
+     * @deprecated use {@link #HOME_TIMELINE} instead
+     */
     TwitterMethod FRIENDS_TIMELINE = TwitterMethod.FRIENDS_TIMELINE;
     TwitterMethod USER_TIMELINE = TwitterMethod.USER_TIMELINE;
     TwitterMethod MENTIONS = TwitterMethod.MENTIONS;
@@ -556,6 +576,7 @@ public interface TwitterListener {
     TwitterMethod UPDATE_PROFILE = TwitterMethod.UPDATE_PROFILE;
     TwitterMethod ACCOUNT_TOTALS = TwitterMethod.ACCOUNT_TOTALS;
     TwitterMethod ACCOUNT_SETTINGS = TwitterMethod.ACCOUNT_SETTINGS;
+    TwitterMethod UPDATE_ACCOUNT_SETTINGS = TwitterMethod.UPDATE_ACCOUNT_SETTINGS;
 
     /*Favorite Methods*/
     TwitterMethod FAVORITES = TwitterMethod.FAVORITES;
@@ -603,5 +624,7 @@ public interface TwitterListener {
 
     /*Help Methods*/
     TwitterMethod TEST = TwitterMethod.TEST;
+    TwitterMethod CONFIGURATION = TwitterMethod.CONFIGURATION;
+    TwitterMethod LANGUAGES = TwitterMethod.LANGUAGES;
 
 }

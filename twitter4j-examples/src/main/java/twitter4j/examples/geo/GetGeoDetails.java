@@ -48,7 +48,7 @@ public final class GetGeoDetails {
             System.out.println("place type: " + place.getPlaceType());
             System.out.println("street address: " + place.getStreetAddress());
             Place[] containedWithinArray = place.getContainedWithIn();
-            if (null != containedWithinArray && containedWithinArray.length != 0) {
+            if (containedWithinArray != null && containedWithinArray.length != 0) {
                 System.out.println("  contained within:");
                 for (Place containedWithinPlace : containedWithinArray) {
                     System.out.println("  id: " + containedWithinPlace.getId() + " name: " + containedWithinPlace.getFullName());

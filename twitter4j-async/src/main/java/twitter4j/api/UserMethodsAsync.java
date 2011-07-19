@@ -124,6 +124,7 @@ public interface UserMethodsAsync {
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
      * @since Twitter4J 2.0.9
+     * @deprecated use {@link FriendsFollowersMethodsAsync#getFriendsIDs(long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
     void getFriendsStatuses(long cursor);
 
@@ -135,6 +136,7 @@ public interface UserMethodsAsync {
      * @param cursor     Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
      * @since Twitter4J 2.0.9
+     * @deprecated use {@link FriendsFollowersMethodsAsync#getFriendsIDs(String, long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
     void getFriendsStatuses(String screenName, long cursor);
 
@@ -146,6 +148,7 @@ public interface UserMethodsAsync {
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends">GET statuses/friends | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
+     * @deprecated use {@link FriendsFollowersMethodsAsync#getFriendsIDs(long, long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
     void getFriendsStatuses(long userId, long cursor);
 
@@ -156,6 +159,7 @@ public interface UserMethodsAsync {
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
      * @since Twitter4J 2.0.9
+     * @deprecated use {@link FriendsFollowersMethodsAsync#getFollowersIDs(long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
     void getFollowersStatuses(long cursor);
 
@@ -167,6 +171,7 @@ public interface UserMethodsAsync {
      * @param cursor     Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
      * @since Twitter4J 2.0.9
+     * @deprecated use {@link FriendsFollowersMethodsAsync#getFollowersIDs(String, long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
     void getFollowersStatuses(String screenName, long cursor);
 
@@ -178,6 +183,7 @@ public interface UserMethodsAsync {
      * @param cursor Breaks the results into pages. A single page contains 100 users. This is recommended for users who are followed by many other users. Provide a value of  -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="http://dev.twitter.com/doc/get/statuses/followers">GET statuses/followers | dev.twitter.com</a>
      * @since Twitter4J 2.1.0
+     * @deprecated use {@link FriendsFollowersMethodsAsync#getFollowersIDs(long, long)} and {@link UserMethodsAsync#lookupUsers(long[])} instead
      */
     void getFollowersStatuses(long userId, long cursor);
 }

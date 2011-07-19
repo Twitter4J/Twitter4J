@@ -16,11 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.T4JInternalStringUtil;
-
 /**
  * A data class representing geo location.
  *
@@ -41,59 +36,6 @@ public class GeoLocation implements java.io.Serializable {
     public GeoLocation(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    /**
-     * returns a GeoLocation instance if a "geo" element is found.
-     *
-     * @param json JSONObject to be parsed
-     * @return GeoLocation instance
-     * @throws TwitterException when coordinates is not included in geo element (should be an API side issue)
-     */
-    /*package*/
-    static GeoLocation getInstance(JSONObject json) throws TwitterException {
-        try {
-            if (!json.isNull("geo")) {
-<<<<<<< HEAD
-                String coordinates = json.getJSONObject("geo")
-                        .getString("coordinates");
-                coordinates = coordinates.substring(1, coordinates.length() - 1);
-                String[] point = T4JInternalStringUtil.split(coordinates, ",");
-                return new GeoLocation(Double.parseDouble(point[0]),
-                        Double.parseDouble(point[1]));
-=======
-            	JSONObject geo = json.getJSONObject("geo");
-            	if (geo!=null) {
-	                String coordinates = geo.getString("coordinates");
-	                coordinates = coordinates.substring(1, coordinates.length() - 1);
-	                String[] point = coordinates.split(",");
-	                return new GeoLocation(Double.parseDouble(point[0]),
-	                        Double.parseDouble(point[1]));
-            	}
->>>>>>> Branch_2.1.4
-            }
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-        return null;
-    }
-
-    /*package*/
-    static GeoLocation[][] coordinatesAsGeoLocationArray(JSONArray coordinates) throws TwitterException {
-        try {
-            GeoLocation[][] boundingBox = new GeoLocation[coordinates.length()][];
-            for (int i = 0; i < coordinates.length(); i++) {
-                JSONArray array = coordinates.getJSONArray(i);
-                boundingBox[i] = new GeoLocation[array.length()];
-                for (int j = 0; j < array.length(); j++) {
-                    JSONArray coordinate = array.getJSONArray(j);
-                    boundingBox[i][j] = new GeoLocation(coordinate.getDouble(1), coordinate.getDouble(0));
-                }
-            }
-            return boundingBox;
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
     }
 
     /**

@@ -25,7 +25,7 @@ import java.util.Date;
  * @since Twitter4J 2.0.2
  */
 
-public interface Trends extends Comparable<Trends>, java.io.Serializable {
+public interface Trends extends TwitterResponse, Comparable<Trends>, java.io.Serializable {
     Trend[] getTrends();
 
     /**

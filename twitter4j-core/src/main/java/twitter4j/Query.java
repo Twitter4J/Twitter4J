@@ -431,7 +431,7 @@ public final class Query implements java.io.Serializable {
     }
 
     private void appendParameter(String name, String value, List<HttpParameter> params) {
-        if (null != value) {
+        if (value != null) {
             params.add(new HttpParameter(name, value));
         }
     }

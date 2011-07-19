@@ -26,58 +26,47 @@ public abstract class Logger {
 
     static {
         LoggerFactory loggerFactory = null;
-        try {
-            //-Dtwitter4j.debug=true -Dtwitter4j.loggerFactory=twitter4j.internal.logging.StdOutLoggerFactory
-            String loggerFactoryImpl = System.getProperty(LOGGER_FACTORY_IMPLEMENTATION);
-            if (null != loggerFactoryImpl) {
-                loggerFactory = (LoggerFactory) Class.forName(loggerFactoryImpl).newInstance();
-            }
-        } catch (NoClassDefFoundError ignore) {
-        } catch (ClassNotFoundException ignore) {
-        } catch (InstantiationException e) {
-            throw new AssertionError(e);
-        } catch (IllegalAccessException ignore) {
-        } catch (SecurityException ignore) {
-            // Unsigned applets are not allowed to access System properties
+        //-Dtwitter4j.debug=true -Dtwitter4j.loggerFactory=twitter4j.internal.logging.StdOutLoggerFactory
+        String loggerFactoryImpl = System.getProperty(LOGGER_FACTORY_IMPLEMENTATION);
+        if (loggerFactoryImpl != null) {
+            loggerFactory = getLoggerFactoryIfAvailable(loggerFactoryImpl, loggerFactoryImpl);
         }
         // use SLF4J if it's found in the classpath
         if (null == loggerFactory) {
-            try {
-                // To use SLF4J, StaticLoggerBinder should be existing in the classpath
-                // http://www.slf4j.org/codes.html#StaticLoggerBinder
-                Class.forName("org.slf4j.impl.StaticLoggerBinder");
-                loggerFactory = getLoggerFactory("org.slf4j.Logger", "twitter4j.internal.logging.SLF4JLoggerFactory");
-            } catch (ClassNotFoundException ignore) {
-            }
+            loggerFactory = getLoggerFactoryIfAvailable("org.slf4j.impl.StaticLoggerBinder", "twitter4j.internal.logging.SLF4JLoggerFactory");
         }
         // otherwise, use commons-logging if it's found in the classpath
         if (null == loggerFactory) {
-            loggerFactory = getLoggerFactory("org.apache.commons.logging.Log", "twitter4j.internal.logging.CommonsLoggingLoggerFactory");
+            loggerFactory = getLoggerFactoryIfAvailable("org.apache.commons.logging.Log", "twitter4j.internal.logging.CommonsLoggingLoggerFactory");
         }
         // otherwise, use log4j if it's found in the classpath
         if (null == loggerFactory) {
-            loggerFactory = getLoggerFactory("org.apache.log4j.Logger", "twitter4j.internal.logging.Log4JLoggerFactory");
+            loggerFactory = getLoggerFactoryIfAvailable("org.apache.log4j.Logger", "twitter4j.internal.logging.Log4JLoggerFactory");
+        }
+        // on Google App Engine, use java.util.logging
+        if (null == loggerFactory) {
+            loggerFactory = getLoggerFactoryIfAvailable("com.google.appengine.api.urlfetch.URLFetchService", "twitter4j.internal.logging.JULLoggerFactory");
         }
         // otherwise, use the default logger
         if (null == loggerFactory) {
             loggerFactory = new StdOutLoggerFactory();
         }
         LOGGER_FACTORY = loggerFactory;
-        loggerFactory.getLogger(Logger.class).debug("Will use " + loggerFactory.getClass() + " as logging factory.");
     }
 
-    private static LoggerFactory getLoggerFactory(String checkClassName, String implementationClass) {
-        LoggerFactory logger = null;
+    private static LoggerFactory getLoggerFactoryIfAvailable(String checkClassName, String implementationClass) {
         try {
             Class.forName(checkClassName);
-            logger = (LoggerFactory) Class.forName(implementationClass).newInstance();
+            return (LoggerFactory) Class.forName(implementationClass).newInstance();
         } catch (ClassNotFoundException ignore) {
         } catch (InstantiationException e) {
             throw new AssertionError(e);
+        } catch (SecurityException ignore) {
+            // Unsigned applets are not allowed to access System properties
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         }
-        return logger;
+        return null;
     }
 
     /**
@@ -112,6 +101,13 @@ public abstract class Logger {
     public abstract boolean isWarnEnabled();
 
     /**
+     * tests if error level logging is enabled
+     *
+     * @return if error level logging is enabled
+     */
+    public abstract boolean isErrorEnabled();
+
+    /**
      * @param message message
      */
     public abstract void debug(String message);
@@ -143,5 +139,16 @@ public abstract class Logger {
      * @param message2 message2
      */
     public abstract void warn(String message, String message2);
+
+    /**
+     * @param message message
+     */
+    public abstract void error(String message);
+
+    /**
+     * @param message message
+     * @param th      throwable
+     */
+    public abstract void error(String message, Throwable th);
 
 }

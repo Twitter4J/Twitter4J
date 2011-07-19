@@ -45,7 +45,7 @@ public final class SearchUsers {
             do {
                 users = twitter.searchUsers(args[0], page);
                 for (User user : users) {
-                    if (null != user.getStatus()) {
+                    if (user.getStatus() != null) {
                         System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());
                     } else {
                         // the user is protected

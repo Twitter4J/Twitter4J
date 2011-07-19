@@ -68,6 +68,7 @@ public interface TimelineMethods {
      * @return list of the Friends Timeline
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends_timeline">GET statuses/friends_timeline | dev.twitter.com</a>
+     * @deprecated use {@link #getHomeTimeline()} instead
      */
     ResponseList<Status> getFriendsTimeline() throws TwitterException;
 
@@ -80,6 +81,7 @@ public interface TimelineMethods {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/statuses/friends_timeline">GET statuses/friends_timeline | dev.twitter.com</a>
      * @since Twitter4J 2.0.1
+     * @deprecated use {@link #getHomeTimeline(twitter4j.Paging)} instead
      */
     ResponseList<Status> getFriendsTimeline(Paging paging) throws TwitterException;
 

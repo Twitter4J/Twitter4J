@@ -17,6 +17,7 @@
 package twitter4j;
 
 import twitter4j.internal.http.HttpParameter;
+import twitter4j.json.DataObjectFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,6 +73,7 @@ public class SearchAPITest extends TwitterTestBase {
 
         List<Tweet> tweets = queryResult.getTweets();
         assertTrue(1 <= tweets.size());
+        assertEquals(tweets.get(0), DataObjectFactory.createTweet(DataObjectFactory.getRawJSON(tweets.get(0))));
         assertNotNull(tweets.get(0).getText());
         assertNotNull(tweets.get(0).getCreatedAt());
         assertNotNull("from user", tweets.get(0).getFromUser());
@@ -96,7 +98,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertEquals(1, queryResult.getPage());
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
 
-        queryStr = "%... 日本語 ";
+        queryStr = "%... 日本語";
 
         twitter1.updateStatus(queryStr + new Date());
         query = new Query(queryStr);
@@ -176,8 +178,8 @@ public class SearchAPITest extends TwitterTestBase {
     private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception {
         Date trendAt = null;
         for (Trends singleTrends : trendsArray) {
-            assertEquals(expectedSize, singleTrends.getTrends().length);
-            if (null != trendAt) {
+            assertTrue((expectedSize-10) < singleTrends.getTrends().length);
+            if (trendAt != null) {
                 assertTrue(trendAt.before(singleTrends.getTrendAt()));
             }
             trendAt = singleTrends.getTrendAt();

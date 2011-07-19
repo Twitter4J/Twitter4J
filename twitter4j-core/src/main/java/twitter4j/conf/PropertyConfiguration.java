@@ -16,12 +16,14 @@
 
 package twitter4j.conf;
 
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Set;
@@ -79,6 +81,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String INCLUDE_RTS = "includeRTs";
     public static final String INCLUDE_ENTITIES = "includeEntities";
     public static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
+    public static final String MBEAN_ENABLED = "mbeanEnabled";
     public static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
 
     public static final String MEDIA_PROVIDER = "media.provider";
@@ -118,12 +121,18 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             props = new Properties();
         }
         final String TWITTER4J_PROPERTIES = "twitter4j.properties";
-        // override System properties with ./twiter4j.properties in the classpath
+        // override System properties with ./twitter4j.properties in the classpath
         loadProperties(props, "." + File.separatorChar + TWITTER4J_PROPERTIES);
-        // then, override with /twiter4j.properties in the classpath
+        // then, override with /twitter4j.properties in the classpath
         loadProperties(props, Configuration.class.getResourceAsStream("/" + TWITTER4J_PROPERTIES));
-        // then, override with /WEB/INF/twiter4j.properties in the classpath
+        // then, override with /WEB/INF/twitter4j.properties in the classpath
         loadProperties(props, Configuration.class.getResourceAsStream("/WEB-INF/" + TWITTER4J_PROPERTIES));
+        // for Google App Engine
+        try {
+            loadProperties(props, new FileInputStream("WEB-INF/" + TWITTER4J_PROPERTIES));
+        } catch (SecurityException ignore) {
+        } catch (FileNotFoundException ignore) {
+        }
 
         setFieldsWithTreePath(props, treePath);
     }
@@ -136,7 +145,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     private boolean notNull(Properties props, String prefix, String name) {
-        return null != props.getProperty(prefix + name);
+        return props.getProperty(prefix + name) != null;
     }
 
     private boolean loadProperties(Properties props, String path) {
@@ -152,7 +161,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         } catch (Exception ignore) {
         } finally {
             try {
-                if (null != fis) {
+                if (fis != null) {
                     fis.close();
                 }
             } catch (IOException ignore) {
@@ -200,7 +209,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
      */
     private void setFieldsWithTreePath(Properties props, String treePath) {
         setFieldsWithPrefix(props, "");
-        String[] splitArray = T4JInternalStringUtil.split(treePath, "/");
+        String[] splitArray = z_T4JInternalStringUtil.split(treePath, "/");
         String prefix = null;
         for (String split : splitArray) {
             if (!"".equals(split)) {
@@ -227,10 +236,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, HTTP_USE_SSL)) {
             setUseSSL(getBoolean(props, prefix, HTTP_USE_SSL));
-        } else if (notNull(props, prefix, USER) &&
-                notNull(props, prefix, PASSWORD)) {
-            // use SSL with Basic Auth
-            setUseSSL(true);
         }
         if (notNull(props, prefix, HTTP_PRETTY_DEBUG)) {
             setPrettyDebugEnabled(getBoolean(props, prefix, HTTP_PRETTY_DEBUG));
@@ -345,6 +350,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, JSON_STORE_ENABLED)) {
             setJSONStoreEnabled(getBoolean(props, prefix, JSON_STORE_ENABLED));
         }
+        if (notNull(props, prefix, MBEAN_ENABLED)) {
+            setMBeanEnabled(getBoolean(props, prefix, MBEAN_ENABLED));
+        }
         if (notNull(props, prefix, STREAM_USER_REPLIES_ALL)) {
             setUserStreamRepliesAllEnabled(getBoolean(props, prefix, STREAM_USER_REPLIES_ALL));
         }
@@ -355,14 +363,15 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             setMediaProviderAPIKey(getString(props, prefix, MEDIA_PROVIDER_API_KEY));
         }
         if (notNull(props, prefix, MEDIA_PROVIDER_PARAMETERS)) {
-            String[] propsAry = T4JInternalStringUtil.split(getString(props, prefix, MEDIA_PROVIDER_PARAMETERS), "&");
+            String[] propsAry = z_T4JInternalStringUtil.split(getString(props, prefix, MEDIA_PROVIDER_PARAMETERS), "&");
             Properties p = new Properties();
             for (String str : propsAry) {
-                String[] parameter = T4JInternalStringUtil.split(str, "=");
+                String[] parameter = z_T4JInternalStringUtil.split(str, "=");
                 p.setProperty(parameter[0], parameter[1]);
             }
             setMediaProviderParameters(p);
         }
+        cacheInstance();
     }
 
     protected boolean getBoolean(Properties props, String prefix, String name) {
@@ -381,5 +390,10 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     protected String getString(Properties props, String prefix, String name) {
         return props.getProperty(prefix + name);
+    }
+
+    // assures equality after deserialization
+    protected Object readResolve() throws ObjectStreamException {
+        return super.readResolve();
     }
 }

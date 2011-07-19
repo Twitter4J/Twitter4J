@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public abstract class HttpResponse {
     protected InputStream is;
     private boolean streamConsumed = false;
 
-    public final int getStatusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
@@ -72,7 +73,7 @@ public abstract class HttpResponse {
      * @throws TwitterException
      * @see #disconnect()
      */
-    public final InputStream asStream() {
+    public InputStream asStream() {
         if (streamConsumed) {
             throw new IllegalStateException("Stream has already been consumed.");
         }
@@ -86,7 +87,7 @@ public abstract class HttpResponse {
      * @return response body
      * @throws TwitterException
      */
-    public final String asString() throws TwitterException {
+    public String asString() throws TwitterException {
         if (null == responseAsString) {
             BufferedReader br = null;
             InputStream stream = null;
@@ -98,7 +99,7 @@ public abstract class HttpResponse {
                 br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
                 StringBuffer buf = new StringBuffer();
                 String line;
-                while (null != (line = br.readLine())) {
+                while ((line = br.readLine()) != null) {
                     buf.append(line).append("\n");
                 }
                 this.responseAsString = buf.toString();
@@ -108,13 +109,13 @@ public abstract class HttpResponse {
             } catch (IOException ioe) {
                 throw new TwitterException(ioe.getMessage(), ioe);
             } finally {
-                if (null != stream) {
+                if (stream != null) {
                     try {
                         stream.close();
                     } catch (IOException ignore) {
                     }
                 }
-                if (null != br) {
+                if (br != null) {
                     try {
                         br.close();
                     } catch (IOException ignore) {
@@ -135,30 +136,27 @@ public abstract class HttpResponse {
      * @return response body as twitter4j.internal.org.json.JSONObject
      * @throws TwitterException
      */
-    public final JSONObject asJSONObject() throws TwitterException {
-        if (null == json) {
-            InputStreamReader reader = null;
+    public JSONObject asJSONObject() throws TwitterException {
+        if (json == null) {
+            Reader reader = null;
             try {
-                if (logger.isDebugEnabled()) {
-                    if (CONF.isPrettyDebugEnabled()) {
-                        reader = asReader();
-                        json = new JSONObject(new JSONTokener(reader));
-                        logger.debug(json.toString(1));
-                    } else {
-                        json = new JSONObject(asString());
-                    }
-                } else {
+                if (responseAsString == null) {
                     reader = asReader();
                     json = new JSONObject(new JSONTokener(reader));
+                } else {
+                    json = new JSONObject(responseAsString);
+                }
+                if (CONF.isPrettyDebugEnabled()) {
+                    logger.debug(json.toString(1));
                 }
             } catch (JSONException jsone) {
-                if (logger.isDebugEnabled()) {
-                    throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
-                } else {
+                if (responseAsString == null) {
                     throw new TwitterException(jsone.getMessage(), jsone);
+                } else {
+                    throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
                 }
             } finally {
-                if (null != reader) {
+                if (reader != null) {
                     try {
                         reader.close();
                     } catch (IOException ignore) {
@@ -170,6 +168,8 @@ public abstract class HttpResponse {
         return json;
     }
 
+    private JSONArray jsonArray = null;
+
     /**
      * Returns the response body as twitter4j.internal.org.json.JSONArray.<br>
      * Disconnects the internal HttpURLConnection silently.
@@ -177,43 +177,41 @@ public abstract class HttpResponse {
      * @return response body as twitter4j.internal.org.json.JSONArray
      * @throws TwitterException
      */
-    public final JSONArray asJSONArray() throws TwitterException {
-        JSONArray json = null;
-        InputStreamReader reader = null;
-        try {
-            if (logger.isDebugEnabled()) {
-                if (CONF.isPrettyDebugEnabled()) {
+    public JSONArray asJSONArray() throws TwitterException {
+        if (jsonArray == null) {
+            Reader reader = null;
+            try {
+                if (responseAsString == null) {
                     reader = asReader();
-                    json = new JSONArray(new JSONTokener(reader));
-                    logger.debug(json.toString(1));
+                    jsonArray = new JSONArray(new JSONTokener(reader));
                 } else {
-                    json = new JSONArray(asString());
+                    jsonArray = new JSONArray(responseAsString);
                 }
-            } else {
-                reader = asReader();
-                json = new JSONArray(new JSONTokener(reader));
-            }
-        } catch (JSONException jsone) {
-            if (logger.isDebugEnabled()) {
-                throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
-            } else {
-                throw new TwitterException(jsone.getMessage(), jsone);
-            }
-        } finally {
-            if (null != reader) {
-                try {
-                    reader.close();
-                } catch (IOException ignore) {
+                if (CONF.isPrettyDebugEnabled()) {
+                    logger.debug(jsonArray.toString(1));
                 }
+            } catch (JSONException jsone) {
+                if (logger.isDebugEnabled()) {
+                    throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
+                } else {
+                    throw new TwitterException(jsone.getMessage(), jsone);
+                }
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+                disconnectForcibly();
             }
-            disconnectForcibly();
         }
-        return json;
+        return jsonArray;
     }
 
-    public final InputStreamReader asReader() {
+    public Reader asReader() {
         try {
-            return new InputStreamReader(is, "UTF-8");
+            return new BufferedReader(new InputStreamReader(is, "UTF-8"));
         } catch (java.io.UnsupportedEncodingException uee) {
             return new InputStreamReader(is);
         }

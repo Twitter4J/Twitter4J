@@ -17,6 +17,7 @@ Contributors
 ------------
 Adam Samet <asamet at twitter.com> @damnitsamet
 Alan Gutierrez <alan at blogometer.com>
+Alessandro Bahgat <ale.bahgat at gmail.com> @abahgat
 Anton Evane <antonevane at gmail.com> @anton_evane
 Blake Barnes <blake.barnes at gmail.com>
 Bruno Torres Goyanna <bgoyanna at gmail.com> @bgoyanna
@@ -34,6 +35,7 @@ Ludovico Fischer @ludovicofischer
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 Mocel <docel77 at gmail.com> @Mocel
 Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
+Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
 Perry Sakkaris <psakkaris at gmail.com>
 Roberto Estrada <robestradac at gmail.com>
 Roy Reshef Roy Reshef <royreshef at gmail.com>

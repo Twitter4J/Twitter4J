@@ -53,6 +53,10 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         super.tearDown();
     }
 
+    public void testToString() throws Exception {
+        new TwitterStreamFactory().getInstance().toString();
+    }
+
     public void testEquality() throws Exception {
         Map map = new HashMap();
         TwitterStream twitterStream1 = new TwitterStreamFactory().getInstance();
@@ -113,7 +117,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     public void testSamplePush() throws Exception {
         twitterStream.sample();
         waitForStatus();
-        assertTrue(null != status || null != deletionNotice);
+        assertTrue(status != null || deletionNotice != null);
         twitterStream.cleanUp();
     }
 

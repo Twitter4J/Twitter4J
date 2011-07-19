@@ -19,7 +19,7 @@ package twitter4j.internal.http;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -43,48 +43,40 @@ import static twitter4j.internal.http.RequestMethod.POST;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Serializable {
+public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
 
     private static boolean isJDK14orEarlier = false;
-    private final HttpClientConfiguration CONF;
 
     private static final long serialVersionUID = -8819171414069621503L;
 
     static {
         try {
-        	// LevelUp Studio reorder
             String versionStr = System.getProperty("java.specification.version");
+            if (versionStr != null) {
+                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
+            }
             if (ConfigurationContext.getInstance().isDalvik()) {
+                isJDK14orEarlier = false;
                 // quick and dirty workaround for TFJ-296
                 // it must be an Android/Dalvik/Harmony side issue!!!!
                 System.setProperty("http.keepAlive", "false");
             }
-<<<<<<< HEAD
         } catch (SecurityException ignore) {
             // Unsigned applets are not allowed to access System properties
-=======
-            else if (null != versionStr) {
-                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
-            }
-        } catch (AccessControlException ace) {
->>>>>>> Branch_2.1.4
             isJDK14orEarlier = true;
         }
     }
 
     public HttpClientImpl() {
-        this.CONF = ConfigurationContext.getInstance();
+        super(ConfigurationContext.getInstance());
     }
 
     public HttpClientImpl(HttpClientConfiguration conf) {
-        this.CONF = conf;
+        super(conf);
         if (isProxyConfigured() && isJDK14orEarlier) {
             logger.warn("HTTP Proxy is not supported on JDK1.4 or earlier. Try twitter4j-httpclient-supoprt artifact");
         }
-    }
-
-    public void shutdown() {
     }
 
     private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<HttpClientConfiguration, HttpClient>(1);
@@ -112,8 +104,6 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         HttpResponse res = null;
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
-            if (retriedCount>0)
-            	logger.info("HTTP retry "+retriedCount+" for "+req.getURL());
             try {
                 HttpURLConnection con;
                 OutputStream os = null;
@@ -138,7 +128,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                                     BufferedInputStream in = new BufferedInputStream(
                                             param.hasFileBody() ? param.getFileBody() : new FileInputStream(param.getFile())
                                     );
-                                    int buff = 0;
+                                    int buff;
                                     while ((buff = in.read()) != -1) {
                                         out.write(buff);
                                     }
@@ -149,7 +139,6 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"\r\n");
                                     write(out, "Content-Type: text/plain; charset=UTF-8\r\n\r\n");
                                     logger.debug(param.getValue());
-//                                    out.write(encode(param.getValue()).getBytes("UTF-8"));
                                     out.write(param.getValue().getBytes("UTF-8"));
                                     write(out, "\r\n");
                                 }
@@ -180,7 +169,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                         for (String key : responseHeaders.keySet()) {
                             List<String> values = responseHeaders.get(key);
                             for (String value : values) {
-                                if (null != key) {
+                                if (key != null) {
                                     logger.debug(key + ": " + value);
                                 } else {
                                     logger.debug(value);
@@ -188,22 +177,12 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                             }
                         }
                     }
-<<<<<<< HEAD
                     if (responseCode < OK || (responseCode != FOUND && MULTIPLE_CHOICES <= responseCode)) {
                         if (responseCode == ENHANCE_YOUR_CLAIM ||
                                 responseCode == BAD_REQUEST ||
                                 responseCode < INTERNAL_SERVER_ERROR ||
                                 retriedCount == CONF.getHttpRetryCount()) {
                             throw new TwitterException(res.asString(), res);
-=======
-                    if (responseCode < OK || MULTIPLE_CHOICES <= responseCode) {
-                        if (responseCode!=-1 && (responseCode == ENHANCE_YOUR_CLAIM ||
-                                responseCode == SERVICE_UNAVAILABLE ||
-                                responseCode == BAD_REQUEST ||
-                                responseCode < INTERNAL_SERVER_ERROR ||
-                                retriedCount == retryCount)) {
-                            throw new TwitterException(res.asString() +" responseCode:"+responseCode+" retriedCount:"+retriedCount+" vs "+retryCount+"\n", res);
->>>>>>> Branch_2.1.4
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR
                     } else {
@@ -222,7 +201,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                 }
             }
             try {
-                if (logger.isDebugEnabled() && null != res) {
+                if (logger.isDebugEnabled() && res != null) {
                     res.asString();
                 }
                 logger.debug("Sleeping " + CONF.getHttpRetryIntervalSeconds() + " seconds until the next retry.");
@@ -232,11 +211,6 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
             }
         }
         return res;
-    }
-
-    private void write(DataOutputStream out, String outStr) throws IOException {
-        out.writeBytes(outStr);
-        logger.debug(outStr);
     }
 
     public static String encode(String str) {
@@ -260,13 +234,13 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         }
 
         String authorizationHeader;
-        if (null != req.getAuthorization() && null != (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req))) {
+        if (req.getAuthorization() != null && (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req)) != null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Authorization: ", T4JInternalStringUtil.maskString(authorizationHeader));
+                logger.debug("Authorization: ", z_T4JInternalStringUtil.maskString(authorizationHeader));
             }
             connection.addRequestProperty("Authorization", authorizationHeader);
         }
-        if (null != req.getRequestHeaders()) {
+        if (req.getRequestHeaders() != null) {
             for (String key : req.getRequestHeaders().keySet()) {
                 connection.addRequestProperty(key, req.getRequestHeaders().get(key));
                 logger.debug(key + ": " + req.getRequestHeaders().get(key));
@@ -280,7 +254,7 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
             if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
-                    logger.debug("Proxy AuthPassword: " + T4JInternalStringUtil.maskString(CONF.getHttpProxyPassword()));
+                    logger.debug("Proxy AuthPassword: " + z_T4JInternalStringUtil.maskString(CONF.getHttpProxyPassword()));
                 }
                 Authenticator.setDefault(new Authenticator() {
                     @Override
@@ -313,34 +287,5 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         }
         con.setInstanceFollowRedirects(false);
         return con;
-    }
-
-    private boolean isProxyConfigured() {
-        return CONF.getHttpProxyHost() != null && !CONF.getHttpProxyHost().equals("");
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        HttpClientImpl that = (HttpClientImpl) o;
-
-        if (CONF != null ? !CONF.equals(that.CONF) : that.CONF != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return CONF != null ? CONF.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "HttpClientImpl{" +
-                "CONF=" + CONF +
-                '}';
     }
 }

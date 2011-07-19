@@ -30,6 +30,8 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseEvent;
 import twitter4j.internal.http.HttpResponseListener;
 import twitter4j.internal.http.XAuthAuthorization;
+import twitter4j.internal.json.z_T4JInternalFactory;
+import twitter4j.internal.json.z_T4JInternalJSONImplFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -52,13 +54,10 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
     protected transient HttpClientWrapper http;
     private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
 
+    protected z_T4JInternalFactory factory;
+
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
-
-    /*package*/ TwitterBaseImpl(Configuration conf) {
-        this.conf = conf;
-        init();
-    }
 
     /*package*/ TwitterBaseImpl(Configuration conf, Authorization auth) {
         this.conf = conf;
@@ -72,11 +71,11 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
             String consumerKey = conf.getOAuthConsumerKey();
             String consumerSecret = conf.getOAuthConsumerSecret();
             // try to find oauth tokens in the configuration
-            if (null != consumerKey && null != consumerSecret) {
+            if (consumerKey != null && consumerSecret != null) {
                 OAuthAuthorization oauth = new OAuthAuthorization(conf);
                 String accessToken = conf.getOAuthAccessToken();
                 String accessTokenSecret = conf.getOAuthAccessTokenSecret();
-                if (null != accessToken && null != accessTokenSecret) {
+                if (accessToken != null && accessTokenSecret != null) {
                     oauth.setOAuthAccessToken(new AccessToken(accessToken, accessTokenSecret));
                 }
                 this.auth = oauth;
@@ -86,6 +85,11 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
         }
         http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
+        setFactory();
+    }
+
+    protected void setFactory() {
+        factory = new z_T4JInternalJSONImplFactory(conf);
     }
 
     /**
@@ -128,8 +132,8 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
 
     protected User fillInIDAndScreenName() throws TwitterException {
         ensureAuthorizationEnabled();
-        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json?include_entities="
-                + conf.isIncludeEntitiesEnabled(), auth), conf);
+        User user = factory.createUser(http.get(conf.getRestBaseURL() + "account/verify_credentials.json?include_entities="
+                + conf.isIncludeEntitiesEnabled(), auth));
         this.screenName = user.getScreenName();
         this.id = user.getId();
         return user;
@@ -148,14 +152,14 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
             TwitterException te = event.getTwitterException();
             RateLimitStatus rateLimitStatus;
             int statusCode;
-            if (null != te) {
+            if (te != null) {
                 rateLimitStatus = te.getRateLimitStatus();
                 statusCode = te.getStatusCode();
             } else {
-                rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
+                rateLimitStatus = z_T4JInternalJSONImplFactory.createRateLimitStatusFromResponseHeader(res);
                 statusCode = res.getStatusCode();
             }
-            if (null != rateLimitStatus) {
+            if (rateLimitStatus != null) {
                 RateLimitStatusEvent statusEvent
                         = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
                 if (statusCode == ENHANCE_YOUR_CLAIM
@@ -229,6 +233,7 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
         rateLimitStatusListeners = (List<RateLimitStatusListener>) stream.readObject();
         http = new HttpClientWrapper(conf);
         http.setHttpResponseListener(this);
+        setFactory();
     }
 
 
@@ -269,6 +274,13 @@ abstract class TwitterBaseImpl implements java.io.Serializable, OAuthSupport, Ht
      */
     public RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException {
         return getOAuth().getOAuthRequestToken(callbackUrl);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public RequestToken getOAuthRequestToken(String callbackUrl, String xAuthAccessType) throws TwitterException {
+        return getOAuth().getOAuthRequestToken(callbackUrl, xAuthAccessType);
     }
 
     /**

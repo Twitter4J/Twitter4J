@@ -18,7 +18,10 @@ package twitter4j.conf;
 
 import twitter4j.Version;
 
+import java.io.ObjectStreamException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -28,7 +31,6 @@ import java.util.Properties;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class ConfigurationBase implements Configuration, java.io.Serializable {
-
     private boolean debug;
     private String userAgent;
     private String user;
@@ -74,6 +76,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean jsonStoreEnabled;
 
+    private boolean mbeanEnabled;
+
     private boolean userStreamRepliesAllEnabled;
 
     private String mediaProvider;
@@ -86,6 +90,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String clientURL;
 
     public static final String DALVIK = "twitter4j.dalvik";
+    public static final String GAE = "twitter4j.gae";
 
     private static final String DEFAULT_OAUTH_REQUEST_TOKEN_URL = "http://api.twitter.com/oauth/request_token";
     private static final String DEFAULT_OAUTH_AUTHORIZATION_URL = "http://api.twitter.com/oauth/authorize";
@@ -93,19 +98,17 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "http://api.twitter.com/oauth/authenticate";
 
     private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1/";
-<<<<<<< HEAD
     private static final String DEFAULT_SEARCH_BASE_URL = "http://search.twitter.com/";
     private static final String DEFAULT_STREAM_BASE_URL = "http://stream.twitter.com/1/";
     private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/2/";
     private static final String DEFAULT_SITE_STREAM_BASE_URL = "http://sitestream.twitter.com/2b/";
-=======
-	private static final String DEFAULT_SEARCH_BASE_URL = "http://search.twitter.com/";
->>>>>>> Branch_2.1.4
 
     private boolean IS_DALVIK;
+    private boolean IS_GAE;
     private static final long serialVersionUID = -6610497517837844232L;
 
     static String dalvikDetected;
+    static String gaeDetected;
 
     static {
         // detecting dalvik (Android platform)
@@ -116,6 +119,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             dalvikDetected = "true";
         } catch (ClassNotFoundException cnfe) {
             dalvikDetected = "false";
+        }
+
+        // detecting Google App Engine
+        try {
+            Class.forName("com.google.appengine.api.urlfetch.URLFetchService");
+            gaeDetected = "true";
+        } catch (ClassNotFoundException cnfe) {
+            gaeDetected = "false";
         }
     }
 
@@ -148,9 +159,11 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         setIncludeRTsEnbled(true);
 
-        setIncludeEntitiesEnbled(false);
+        setIncludeEntitiesEnbled(true);
 
         setJSONStoreEnabled(false);
+
+        setMBeanEnabled(false);
 
         setOAuthRequestTokenURL(DEFAULT_OAUTH_REQUEST_TOKEN_URL);
         setOAuthAuthorizationURL(DEFAULT_OAUTH_AUTHORIZATION_URL);
@@ -160,7 +173,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setRestBaseURL(DEFAULT_REST_BASE_URL);
         // search api tends to fail with SSL as of 12/31/2009
         // setSearchBaseURL(fixURL(useSSL, "http://search.twitter.com/"));
-<<<<<<< HEAD
         setSearchBaseURL(DEFAULT_SEARCH_BASE_URL);
         // streaming api doesn't support SSL as of 12/30/2009
         // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
@@ -168,18 +180,10 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setUserStreamBaseURL(DEFAULT_USER_STREAM_BASE_URL);
         setSiteStreamBaseURL(DEFAULT_SITE_STREAM_BASE_URL);
 
-=======
-		setSearchBaseURL(DEFAULT_SEARCH_BASE_URL);
-        // streaming api doesn't support SSL as of 12/30/2009
-        // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
-        setStreamBaseURL("http://stream.twitter.com/1/");
-		setUserStreamBaseURL("https://userstream.twitter.com/2/");
-        
->>>>>>> Branch_2.1.4
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
         setIncludeRTsEnbled(true);
-        setUserStreamRepliesAllEnabled(false);
+        setUserStreamRepliesAllEnabled(true);
         String isDalvik;
         try {
             isDalvik = System.getProperty(DALVIK, dalvikDetected);
@@ -189,14 +193,26 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         }
         IS_DALVIK = Boolean.valueOf(isDalvik);
 
+        String isGAE;
+        try {
+            isGAE = System.getProperty(GAE, gaeDetected);
+        } catch (SecurityException ignore) {
+            // Unsigned applets are not allowed to access System properties
+            isGAE = gaeDetected;
+        }
+        IS_GAE = Boolean.valueOf(isGAE);
+
         setMediaProvider("YFROG");
         setMediaProviderAPIKey(null);
         setMediaProviderParameters(null);
     }
 
-
     public final boolean isDalvik() {
         return IS_DALVIK;
+    }
+
+    public boolean isGAE() {
+        return IS_GAE;
     }
 
     public final boolean isDebugEnabled() {
@@ -440,11 +456,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private void fixRestBaseURL() {
         if (DEFAULT_REST_BASE_URL.equals(fixURL(false, restBaseURL))) {
-			/*if (null != oAuthConsumerKey && null != oAuthConsumerSecret) {
-                this.restBaseURL = fixURL(false, restBaseURL);
-            } else*/ {
-                this.restBaseURL = fixURL(useSSL, restBaseURL);
-            }
+            this.restBaseURL = fixURL(useSSL, restBaseURL);
         }
         if (DEFAULT_OAUTH_ACCESS_TOKEN_URL.equals(fixURL(false, oAuthAccessTokenURL))) {
             this.oAuthAccessTokenURL = fixURL(useSSL, oAuthAccessTokenURL);
@@ -457,9 +469,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         }
         if (DEFAULT_OAUTH_REQUEST_TOKEN_URL.equals(fixURL(false, oAuthRequestTokenURL))) {
             this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
-		}
-		if (DEFAULT_SEARCH_BASE_URL.equals(fixURL(false, searchBaseURL))) {
-			this.searchBaseURL = fixURL(useSSL, searchBaseURL);
         }
     }
 
@@ -563,6 +572,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.jsonStoreEnabled = enabled;
     }
 
+    public boolean isMBeanEnabled() {
+        return this.mbeanEnabled;
+    }
+
+    protected final void setMBeanEnabled(boolean enabled) {
+        this.mbeanEnabled = enabled;
+    }
+
     public boolean isUserStreamRepliesAllEnabled() {
         return this.userStreamRepliesAllEnabled;
     }
@@ -595,17 +612,84 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.mediaProviderParameters = props;
     }
 
+    static String fixURL(boolean useSSL, String url) {
+        if (null == url) {
+            return null;
+        }
+        int index = url.indexOf("://");
+        if (-1 == index) {
+            throw new IllegalArgumentException("url should contain '://'");
+        }
+        String hostAndLater = url.substring(index + 3);
+        if (useSSL) {
+            return "https://" + hostAndLater;
+        } else {
+            return "http://" + hostAndLater;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (debug ? 1 : 0);
+        result = 31 * result + (userAgent != null ? userAgent.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (useSSL ? 1 : 0);
+        result = 31 * result + (prettyDebug ? 1 : 0);
+        result = 31 * result + (gzipEnabled ? 1 : 0);
+        result = 31 * result + (httpProxyHost != null ? httpProxyHost.hashCode() : 0);
+        result = 31 * result + (httpProxyUser != null ? httpProxyUser.hashCode() : 0);
+        result = 31 * result + (httpProxyPassword != null ? httpProxyPassword.hashCode() : 0);
+        result = 31 * result + httpProxyPort;
+        result = 31 * result + httpConnectionTimeout;
+        result = 31 * result + httpReadTimeout;
+        result = 31 * result + httpStreamingReadTimeout;
+        result = 31 * result + httpRetryCount;
+        result = 31 * result + httpRetryIntervalSeconds;
+        result = 31 * result + maxTotalConnections;
+        result = 31 * result + defaultMaxPerRoute;
+        result = 31 * result + (oAuthConsumerKey != null ? oAuthConsumerKey.hashCode() : 0);
+        result = 31 * result + (oAuthConsumerSecret != null ? oAuthConsumerSecret.hashCode() : 0);
+        result = 31 * result + (oAuthAccessToken != null ? oAuthAccessToken.hashCode() : 0);
+        result = 31 * result + (oAuthAccessTokenSecret != null ? oAuthAccessTokenSecret.hashCode() : 0);
+        result = 31 * result + (oAuthRequestTokenURL != null ? oAuthRequestTokenURL.hashCode() : 0);
+        result = 31 * result + (oAuthAuthorizationURL != null ? oAuthAuthorizationURL.hashCode() : 0);
+        result = 31 * result + (oAuthAccessTokenURL != null ? oAuthAccessTokenURL.hashCode() : 0);
+        result = 31 * result + (oAuthAuthenticationURL != null ? oAuthAuthenticationURL.hashCode() : 0);
+        result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
+        result = 31 * result + (searchBaseURL != null ? searchBaseURL.hashCode() : 0);
+        result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
+        result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
+        result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
+        result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
+        result = 31 * result + asyncNumThreads;
+        result = 31 * result + (includeRTsEnabled ? 1 : 0);
+        result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
+        result = 31 * result + (jsonStoreEnabled ? 1 : 0);
+        result = 31 * result + (mbeanEnabled ? 1 : 0);
+        result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
+        result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
+        result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
+        result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
+        result = 31 * result + (clientVersion != null ? clientVersion.hashCode() : 0);
+        result = 31 * result + (clientURL != null ? clientURL.hashCode() : 0);
+        result = 31 * result + (IS_DALVIK ? 1 : 0);
+        result = 31 * result + (IS_GAE ? 1 : 0);
+        result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof ConfigurationBase)) return false;
 
         ConfigurationBase that = (ConfigurationBase) o;
 
-        if (IS_DALVIK != that.IS_DALVIK) return false;
         if (asyncNumThreads != that.asyncNumThreads) return false;
         if (debug != that.debug) return false;
         if (defaultMaxPerRoute != that.defaultMaxPerRoute) return false;
+        if (gzipEnabled != that.gzipEnabled) return false;
         if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
         if (httpProxyPort != that.httpProxyPort) return false;
         if (httpReadTimeout != that.httpReadTimeout) return false;
@@ -616,7 +700,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
         if (includeRTsEnabled != that.includeRTsEnabled) return false;
+        if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (maxTotalConnections != that.maxTotalConnections) return false;
+        if (mbeanEnabled != that.mbeanEnabled) return false;
         if (prettyDebug != that.prettyDebug) return false;
         if (useSSL != that.useSSL) return false;
         if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled)
@@ -677,53 +763,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = (debug ? 1 : 0);
-        result = 31 * result + (userAgent != null ? userAgent.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (useSSL ? 1 : 0);
-        result = 31 * result + (prettyDebug ? 1 : 0);
-        result = 31 * result + (httpProxyHost != null ? httpProxyHost.hashCode() : 0);
-        result = 31 * result + (httpProxyUser != null ? httpProxyUser.hashCode() : 0);
-        result = 31 * result + (httpProxyPassword != null ? httpProxyPassword.hashCode() : 0);
-        result = 31 * result + httpProxyPort;
-        result = 31 * result + httpConnectionTimeout;
-        result = 31 * result + httpReadTimeout;
-        result = 31 * result + httpStreamingReadTimeout;
-        result = 31 * result + httpRetryCount;
-        result = 31 * result + httpRetryIntervalSeconds;
-        result = 31 * result + maxTotalConnections;
-        result = 31 * result + defaultMaxPerRoute;
-        result = 31 * result + (oAuthConsumerKey != null ? oAuthConsumerKey.hashCode() : 0);
-        result = 31 * result + (oAuthConsumerSecret != null ? oAuthConsumerSecret.hashCode() : 0);
-        result = 31 * result + (oAuthAccessToken != null ? oAuthAccessToken.hashCode() : 0);
-        result = 31 * result + (oAuthAccessTokenSecret != null ? oAuthAccessTokenSecret.hashCode() : 0);
-        result = 31 * result + (oAuthRequestTokenURL != null ? oAuthRequestTokenURL.hashCode() : 0);
-        result = 31 * result + (oAuthAuthorizationURL != null ? oAuthAuthorizationURL.hashCode() : 0);
-        result = 31 * result + (oAuthAccessTokenURL != null ? oAuthAccessTokenURL.hashCode() : 0);
-        result = 31 * result + (oAuthAuthenticationURL != null ? oAuthAuthenticationURL.hashCode() : 0);
-        result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
-        result = 31 * result + (searchBaseURL != null ? searchBaseURL.hashCode() : 0);
-        result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
-        result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
-        result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
-        result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
-        result = 31 * result + asyncNumThreads;
-        result = 31 * result + (includeRTsEnabled ? 1 : 0);
-        result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
-        result = 31 * result + (clientVersion != null ? clientVersion.hashCode() : 0);
-        result = 31 * result + (clientURL != null ? clientURL.hashCode() : 0);
-        result = 31 * result + (IS_DALVIK ? 1 : 0);
-        result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
-        result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
-        result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
-        result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "ConfigurationBase{" +
                 "debug=" + debug +
@@ -731,6 +770,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
                 ", useSSL=" + useSSL +
+                ", prettyDebug=" + prettyDebug +
+                ", gzipEnabled=" + gzipEnabled +
                 ", httpProxyHost='" + httpProxyHost + '\'' +
                 ", httpProxyUser='" + httpProxyUser + '\'' +
                 ", httpProxyPassword='" + httpProxyPassword + '\'' +
@@ -759,31 +800,44 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", asyncNumThreads=" + asyncNumThreads +
                 ", includeRTsEnabled=" + includeRTsEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
+                ", jsonStoreEnabled=" + jsonStoreEnabled +
+                ", mbeanEnabled=" + mbeanEnabled +
                 ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +
+                ", mediaProvider='" + mediaProvider + '\'' +
+                ", mediaProviderAPIKey='" + mediaProviderAPIKey + '\'' +
+                ", mediaProviderParameters=" + mediaProviderParameters +
                 ", clientVersion='" + clientVersion + '\'' +
                 ", clientURL='" + clientURL + '\'' +
                 ", IS_DALVIK=" + IS_DALVIK +
+                ", IS_GAE=" + IS_GAE +
                 ", requestHeaders=" + requestHeaders +
-                ", mediaProvider=" + mediaProvider +
-                ", mediaProviderAPIKey=" + mediaProviderAPIKey +
-                ", mediaProviderParameters=" + mediaProviderParameters +
                 '}';
     }
 
-    static String fixURL(boolean useSSL, String url) {
-        if (null == url) {
-            return null;
-        }
-        int index = url.indexOf("://");
-        if (-1 == index) {
-            throw new IllegalArgumentException("url should contain '://'");
-        }
-        String hostAndLater = url.substring(index + 3);
-        if (useSSL) {
-            return "https://" + hostAndLater;
-        } else {
-            return "http://" + hostAndLater;
+    private static final List<ConfigurationBase> instances = new ArrayList<ConfigurationBase>();
+
+    private static void cacheInstance(ConfigurationBase conf) {
+        if (!instances.contains(conf)) {
+            instances.add(conf);
         }
     }
-    //@todo implement readresolve to save memory usage
+
+    protected void cacheInstance() {
+        cacheInstance(this);
+    }
+
+    private static ConfigurationBase getInstance(ConfigurationBase configurationBase) {
+        int index;
+        if ((index = instances.indexOf(configurationBase)) == -1) {
+            instances.add(configurationBase);
+            return configurationBase;
+        } else {
+            return instances.get(index);
+        }
+    }
+
+    // assures equality after deserializedation
+    protected Object readResolve() throws ObjectStreamException {
+        return getInstance(this);
+    }
 }

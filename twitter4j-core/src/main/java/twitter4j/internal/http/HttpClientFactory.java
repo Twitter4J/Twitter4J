@@ -16,8 +16,6 @@
 
 package twitter4j.internal.http;
 
-import twitter4j.internal.logging.Logger;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -27,13 +25,23 @@ import java.lang.reflect.InvocationTargetException;
  */
 public final class HttpClientFactory {
     private static final Constructor HTTP_CLIENT_CONSTRUCTOR;
-    private static final Logger logger = Logger.getLogger(HttpClientFactory.class);
+    private static final String HTTP_CLIENT_IMPLEMENTATION = "twitter4j.http.httpClient";
 
     static {
         Class clazz = null;
-        try {
-            clazz = Class.forName("twitter4j.internal.http.alternative.HttpClientImpl");
-        } catch (ClassNotFoundException ignore) {
+        //-Dtwitter4j.http.httpClient=twitter4j.internal.http.HttpClient
+        String httpClientImpl = System.getProperty(HTTP_CLIENT_IMPLEMENTATION);
+        if (httpClientImpl != null) {
+            try {
+                clazz = Class.forName(httpClientImpl);
+            } catch (ClassNotFoundException ignore) {
+            }
+        }
+        if (null == clazz) {
+            try {
+                clazz = Class.forName("twitter4j.internal.http.alternative.HttpClientImpl");
+            } catch (ClassNotFoundException ignore) {
+            }
         }
         if (null == clazz) {
             try {
@@ -42,7 +50,6 @@ public final class HttpClientFactory {
                 throw new AssertionError(cnfe);
             }
         }
-        logger.debug("Will use " + clazz.getName() + " as HttpClient implementation.");
         try {
             HTTP_CLIENT_CONSTRUCTOR = clazz.getConstructor(HttpClientConfiguration.class);
         } catch (NoSuchMethodException nsme) {

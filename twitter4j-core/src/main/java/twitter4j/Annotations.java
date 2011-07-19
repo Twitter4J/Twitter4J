@@ -58,7 +58,7 @@ public class Annotations implements java.io.Serializable {
      *
      * @param jsonArray - the JSON Array
      */
-    Annotations(JSONArray jsonArray) {
+    public Annotations(JSONArray jsonArray) {
         setAnnotations(null);
         try {
             for (int i = 0; i < jsonArray.length(); i++) {

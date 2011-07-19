@@ -22,15 +22,7 @@ import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 
-import static twitter4j.media.MediaProvider.IMG_LY;
-import static twitter4j.media.MediaProvider.MOBYPICTURE;
-import static twitter4j.media.MediaProvider.PLIXI;
-import static twitter4j.media.MediaProvider.POSTEROUS;
-import static twitter4j.media.MediaProvider.TWIPL;
-import static twitter4j.media.MediaProvider.TWIPPLE;
-import static twitter4j.media.MediaProvider.TWITGOO;
-import static twitter4j.media.MediaProvider.TWITPIC;
-import static twitter4j.media.MediaProvider.YFROG;
+import static twitter4j.media.MediaProvider.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -57,6 +49,8 @@ public class ImageUploadFactory {
             defaultMediaProvider = IMG_LY;
         } else if ("plixi".equals(mediaProvider)) {
             defaultMediaProvider = PLIXI;
+        } else if ("lockerz".equals(mediaProvider)) {
+            defaultMediaProvider = LOCKERZ;
         } else if ("twipple".equals(mediaProvider)) {
             defaultMediaProvider = TWIPPLE;
         } else if ("twitgoo".equals(mediaProvider)) {

@@ -55,55 +55,55 @@ public final class DataObjectFactory {
 
     static {
         try {
-            statusConstructor = (Constructor<Status>) Class.forName("twitter4j.StatusJSONImpl").getDeclaredConstructor(JSONObject.class);
+            statusConstructor = (Constructor<Status>) Class.forName("twitter4j.internal.json.StatusJSONImpl").getDeclaredConstructor(JSONObject.class);
             statusConstructor.setAccessible(true);
 
-            userConstructor = (Constructor<User>) Class.forName("twitter4j.UserJSONImpl").getDeclaredConstructor(JSONObject.class);
+            userConstructor = (Constructor<User>) Class.forName("twitter4j.internal.json.UserJSONImpl").getDeclaredConstructor(JSONObject.class);
             userConstructor.setAccessible(true);
 
-            tweetConstructor = (Constructor<Tweet>) Class.forName("twitter4j.TweetJSONImpl").getDeclaredConstructor(JSONObject.class);
+            tweetConstructor = (Constructor<Tweet>) Class.forName("twitter4j.internal.json.TweetJSONImpl").getDeclaredConstructor(JSONObject.class);
             tweetConstructor.setAccessible(true);
 
-            relationshipConstructor = (Constructor<Relationship>) Class.forName("twitter4j.RelationshipJSONImpl").getDeclaredConstructor(JSONObject.class);
+            relationshipConstructor = (Constructor<Relationship>) Class.forName("twitter4j.internal.json.RelationshipJSONImpl").getDeclaredConstructor(JSONObject.class);
             relationshipConstructor.setAccessible(true);
 
-            placeConstructor = (Constructor<Place>) Class.forName("twitter4j.PlaceJSONImpl").getDeclaredConstructor(JSONObject.class);
+            placeConstructor = (Constructor<Place>) Class.forName("twitter4j.internal.json.PlaceJSONImpl").getDeclaredConstructor(JSONObject.class);
             placeConstructor.setAccessible(true);
 
-            savedSearchConstructor = (Constructor<SavedSearch>) Class.forName("twitter4j.SavedSearchJSONImpl").getDeclaredConstructor(JSONObject.class);
+            savedSearchConstructor = (Constructor<SavedSearch>) Class.forName("twitter4j.internal.json.SavedSearchJSONImpl").getDeclaredConstructor(JSONObject.class);
             savedSearchConstructor.setAccessible(true);
 
-            trendConstructor = (Constructor<Trend>) Class.forName("twitter4j.TrendJSONImpl").getDeclaredConstructor(JSONObject.class);
+            trendConstructor = (Constructor<Trend>) Class.forName("twitter4j.internal.json.TrendJSONImpl").getDeclaredConstructor(JSONObject.class);
             trendConstructor.setAccessible(true);
 
-            trendsConstructor = (Constructor<Trends>) Class.forName("twitter4j.TrendsJSONImpl").getDeclaredConstructor(String.class);
+            trendsConstructor = (Constructor<Trends>) Class.forName("twitter4j.internal.json.TrendsJSONImpl").getDeclaredConstructor(String.class);
             trendsConstructor.setAccessible(true);
 
-            IDsConstructor = (Constructor<IDs>) Class.forName("twitter4j.IDsJSONImpl").getDeclaredConstructor(String.class);
+            IDsConstructor = (Constructor<IDs>) Class.forName("twitter4j.internal.json.IDsJSONImpl").getDeclaredConstructor(String.class);
             IDsConstructor.setAccessible(true);
 
-            rateLimitStatusConstructor = (Constructor<RateLimitStatus>) Class.forName("twitter4j.RateLimitStatusJSONImpl").getDeclaredConstructor(JSONObject.class);
+            rateLimitStatusConstructor = (Constructor<RateLimitStatus>) Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl").getDeclaredConstructor(JSONObject.class);
             rateLimitStatusConstructor.setAccessible(true);
 
-            categoryConstructor = (Constructor<Category>) Class.forName("twitter4j.CategoryJSONImpl").getDeclaredConstructor(JSONObject.class);
+            categoryConstructor = (Constructor<Category>) Class.forName("twitter4j.internal.json.CategoryJSONImpl").getDeclaredConstructor(JSONObject.class);
             categoryConstructor.setAccessible(true);
 
-            directMessageConstructor = (Constructor<DirectMessage>) Class.forName("twitter4j.DirectMessageJSONImpl").getDeclaredConstructor(JSONObject.class);
+            directMessageConstructor = (Constructor<DirectMessage>) Class.forName("twitter4j.internal.json.DirectMessageJSONImpl").getDeclaredConstructor(JSONObject.class);
             directMessageConstructor.setAccessible(true);
 
-            locationConstructor = (Constructor<Location>) Class.forName("twitter4j.LocationJSONImpl").getDeclaredConstructor(JSONObject.class);
+            locationConstructor = (Constructor<Location>) Class.forName("twitter4j.internal.json.LocationJSONImpl").getDeclaredConstructor(JSONObject.class);
             locationConstructor.setAccessible(true);
 
-            userListConstructor = (Constructor<UserList>) Class.forName("twitter4j.UserListJSONImpl").getDeclaredConstructor(JSONObject.class);
+            userListConstructor = (Constructor<UserList>) Class.forName("twitter4j.internal.json.UserListJSONImpl").getDeclaredConstructor(JSONObject.class);
             userListConstructor.setAccessible(true);
 
-            relatedResultsConstructor = (Constructor<RelatedResults>) Class.forName("twitter4j.RelatedResultsJSONImpl").getDeclaredConstructor(JSONArray.class);
+            relatedResultsConstructor = (Constructor<RelatedResults>) Class.forName("twitter4j.internal.json.RelatedResultsJSONImpl").getDeclaredConstructor(JSONArray.class);
             relatedResultsConstructor.setAccessible(true);
 
             statusDeletionNoticeConstructor = (Constructor<StatusDeletionNotice>) Class.forName("twitter4j.StatusDeletionNoticeImpl").getDeclaredConstructor(JSONObject.class);
             statusDeletionNoticeConstructor.setAccessible(true);
 
-            accountTotalsConstructor = (Constructor<AccountTotals>) Class.forName("twitter4j.AccountTotalsJSONImpl").getDeclaredConstructor(JSONObject.class);
+            accountTotalsConstructor = (Constructor<AccountTotals>) Class.forName("twitter4j.internal.json.AccountTotalsJSONImpl").getDeclaredConstructor(JSONObject.class);
             accountTotalsConstructor.setAccessible(true);
         } catch (NoSuchMethodException e) {
             throw new ExceptionInInitializerError(e);
@@ -156,7 +156,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -179,7 +179,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -202,7 +202,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -225,7 +225,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -248,7 +248,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -271,7 +271,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -294,7 +294,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -317,7 +317,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -337,7 +337,7 @@ public final class DataObjectFactory {
         } catch (InstantiationException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (InvocationTargetException e) {
             throw new AssertionError(e);
         }
@@ -359,7 +359,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         }
     }
 
@@ -380,7 +380,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -403,7 +403,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -426,7 +426,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -449,7 +449,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -472,7 +472,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -495,7 +495,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -549,7 +549,7 @@ public final class DataObjectFactory {
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
+            throw new TwitterException(e);
         } catch (JSONException e) {
             throw new TwitterException(e);
         }

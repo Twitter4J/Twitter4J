@@ -17,7 +17,8 @@
 package twitter4j;
 
 import junit.framework.Assert;
-import twitter4j.auth.AccessToken;
+import twitter4j.api.HelpMethods;
+import twitter4j.json.DataObjectFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,6 +35,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     private AsyncTwitter async1 = null;
     private AsyncTwitter async2 = null;
+    private AsyncTwitter async3 = null;
     private AsyncTwitter bestFriend1Async = null;
     private ResponseList<Location> locations;
     private ResponseList<Place> places;
@@ -43,6 +45,8 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private AccountSettings settings;
     private ResponseList<Friendship> friendships;
     private ResponseList<UserList> userLists;
+    private ResponseList<HelpMethods.Language> languages;
+    private TwitterAPIConfiguration apiConf;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -50,21 +54,18 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     protected void setUp() throws Exception {
         super.setUp();
-        AsyncTwitterFactory factory = new AsyncTwitterFactory();
+        AsyncTwitterFactory factory = new AsyncTwitterFactory(conf1);
         async1 = factory.getInstance();
         async1.addListener(this);
-        async1.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        async1.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
 
-        async2 = factory.getInstance();
+        async2 = new AsyncTwitterFactory(conf2).getInstance();
         async2.addListener(this);
-        async2.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        async2.setOAuthAccessToken(new AccessToken(id2.accessToken, id2.accessTokenSecret));
 
-        bestFriend1Async = factory.getInstance();
+        async3 = new AsyncTwitterFactory(conf3).getInstance();
+        async3.addListener(this);
+
+        bestFriend1Async = new AsyncTwitterFactory(bestFriend1Conf).getInstance();
         bestFriend1Async.addListener(this);
-        bestFriend1Async.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        bestFriend1Async.setOAuthAccessToken(new AccessToken(bestFriend1.accessToken, bestFriend1.accessTokenSecret));
 
         statuses = null;
         users = null;
@@ -84,15 +85,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.getPublicTimeline();
         waitForResponse();
         Assert.assertTrue("size", 0 < statuses.size());
-        assertDeserializedFormIsEqual(statuses);
-    }
-
-    public void testGetFriendsTimeline() throws Exception {
-        async1.getFriendsTimeline();
-        waitForResponse();
-        Assert.assertNotNull(statuses);
-        Assert.assertTrue(statuses.size() > 0);
-
         assertDeserializedFormIsEqual(statuses);
     }
 
@@ -126,24 +118,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         waitForResponse();
         Assert.assertTrue("size", 10 < statuses.size());
         async2.getUserTimeline(new Paging(999383469l));
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        async2.getUserTimeline(id1.screenName);
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        async2.getUserTimeline(id1.screenName, new Paging(999383469l));
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        async2.getUserTimeline(id1.screenName, new Paging().count(10));
-        waitForResponse();
-        Assert.assertTrue("size", 5 < statuses.size());
-        async2.getUserTimeline(id1.screenName, new Paging(999383469l).count(15));
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        async1.getUserTimeline(new Paging(999383469l).count(25));
-        waitForResponse();
-        Assert.assertTrue("size", 10 < statuses.size());
-        assertDeserializedFormIsEqual(statuses);
     }
 
     public void testAccountProfileImageUpdates() throws Exception {
@@ -169,7 +143,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         Thread.sleep(5000);
         async2.destroyFavorite(status.getId());
         waitForResponse();
-        if (null != te && te.getStatusCode() == 404) {
+        if (te != null && te.getStatusCode() == 404) {
             // sometimes destorying favorite fails with 404
         } else {
             Assert.assertEquals(status, this.status);
@@ -355,36 +329,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertDeserializedFormIsEqual(status);
     }
 
-    public void testGetFriendsStatuses() throws Exception {
-        users = null;
-        async1.getFriendsStatuses(id2.screenName, -1);
-        waitForResponse();
-        Assert.assertNotNull(users);
-
-        users = null;
-        async2.getFriendsStatuses(-1);
-        waitForResponse();
-        Assert.assertNotNull(users);
-        assertDeserializedFormIsEqual(users);
-    }
-
-    public void testFollowers() throws Exception {
-        async1.getFollowersStatuses(-1);
-        waitForResponse();
-        Assert.assertTrue(users.size() > 0);
-
-        async2.getFollowersStatuses(-1);
-        waitForResponse();
-        Assert.assertTrue(users.size() > 0);
-        assertDeserializedFormIsEqual(users);
-    }
-
     public void testDirectMessages() throws Exception {
         String expectedReturn = new Date() + ":directmessage test";
-        async1.sendDirectMessage("twit4jnoupdate", expectedReturn);
+        async1.sendDirectMessage(id3.id, expectedReturn);
         waitForResponse();
         Assert.assertEquals(expectedReturn, message.getText());
-        async1.getDirectMessages();
+        async3.getDirectMessages();
         waitForResponse();
         Assert.assertTrue(1 <= messages.size());
     }
@@ -440,6 +390,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     }
 
+    public void testNoRetweet() throws Exception {
+        async1.getNoRetweetIds();
+        waitForResponse();
+        assertNotNull(this.ids);
+    }
+
     private ResponseList<Status> statuses = null;
     private ResponseList<User> users = null;
     private ResponseList<DirectMessage> messages = null;
@@ -476,12 +432,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
-    public void gotDailyTrends(List<Trends> trendsList) {
+    public void gotDailyTrends(ResponseList<Trends> trendsList) {
         this.trendsList = trendsList;
         notifyResponse();
     }
 
-    public void gotWeeklyTrends(List<Trends> trendsList) {
+    public void gotWeeklyTrends(ResponseList<Trends> trendsList) {
         this.trendsList = trendsList;
         notifyResponse();
     }
@@ -817,6 +773,17 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    public void gotNoRetweetIds(IDs ids) {
+        this.ids = ids;
+        assertNotNull(DataObjectFactory.getRawJSON(this.ids));
+        try {
+            assertEquals(this.ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
+        } catch (TwitterException e) {
+            fail("");
+        }
+        notifyResponse();
+    }
+
     /*Account Methods*/
 
     public void gotRateLimitStatus(RateLimitStatus status) {
@@ -840,6 +807,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     public void gotAccountSettings(AccountSettings settings) {
+        this.settings = settings;
+        notifyResponse();
+    }
+
+    public void updatedAccountSettings(AccountSettings settings) {
         this.settings = settings;
         notifyResponse();
     }
@@ -1013,6 +985,16 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     /*Help Methods*/
     public void tested(boolean test) {
         this.test = test;
+        notifyResponse();
+    }
+
+    public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
+        this.apiConf = conf;
+        notifyResponse();
+    }
+
+    public void gotLanguages(ResponseList<HelpMethods.Language> languages) {
+        this.languages = languages;
         notifyResponse();
     }
 

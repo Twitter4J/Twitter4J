@@ -16,10 +16,13 @@ id3.password=
 id3.id=
 id3.oauth.accessToken=
 id3.oauth.accessTokenSecret=
+id3.oauth.consumerKey=
+id3.oauth.consumerSecret=
+
 
 # a user who's screen name consists of numbers
 numberid.user=
-numberpass.password=
+numberid.password=
 numberid.id=
 
 followsOneWay=
@@ -45,6 +48,11 @@ oauth.consumerSecret=
 browser.oauth.consumerKey=
 browser.oauth.consumerSecret=
 includeEntities=true
+
+r-w-private.oauth.consumerKey=
+r-w-private.oauth.consumerSecret=
+r-w-private.oauth.accessToken=
+r-w-private.oauth.accessTokenSecret=
 
 twitpic.apiKey=
 tweetPhoto.apiKey=

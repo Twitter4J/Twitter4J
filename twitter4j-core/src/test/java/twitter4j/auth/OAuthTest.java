@@ -19,6 +19,7 @@ package twitter4j.auth;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.TwitterResponse;
 import twitter4j.TwitterTestBase;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -106,7 +107,7 @@ public class OAuthTest extends TwitterTestBase {
             assertEquals(401, te.getStatusCode());
         }
         twitter.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        rt = twitter.getOAuthRequestToken();
+        rt = twitter.getOAuthRequestToken(null, "read");
         // trying to get an access token without permitting the request token.
         try {
             twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret());
@@ -120,17 +121,17 @@ public class OAuthTest extends TwitterTestBase {
 //        http.setRequestHeader("Cookie", cookie);
         props.put("Cookie", cookie);
         resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
+        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
         params = new HttpParameter[4];
         params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
         params[1] = new HttpParameter("oauth_token",
                 catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
-        params[3] = new HttpParameter("session[password]", id1.password);
+        params[2] = new HttpParameter("session[username_or_email]", numberId);
+        params[3] = new HttpParameter("session[password]", numberPass);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
         resStr = response.asString();
-        String pin = catchPattern(resStr, "<div id=\"oauth_pin\">\n  ", "\n</div>");
+        String pin = catchPattern(resStr, "<kbd aria-labelledby=\"code-desc\"><code>", "</code></kbd>");
         at = twitter.getOAuthAccessToken(rt, pin);
         try {
             twitter.getOAuthRequestToken();
@@ -140,10 +141,12 @@ public class OAuthTest extends TwitterTestBase {
         }
 
 
-        assertEquals(at.getScreenName(), id1.screenName);
-        assertEquals(at.getUserId(), 6358482);
+        assertEquals(at.getScreenName(), numberId);
+        assertEquals(at.getUserId(), 96154916);
         AccessToken at1 = twitter.getOAuthAccessToken();
         assertEquals(at, at1);
+        TwitterResponse res = twitter.getLanguages();
+        assertEquals(TwitterResponse.READ, res.getAccessLevel());
 
     }
 
@@ -178,7 +181,7 @@ public class OAuthTest extends TwitterTestBase {
         props.put("Cookie", cookie);
 
         resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
+        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
         params = new HttpParameter[4];
         params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
@@ -216,7 +219,7 @@ public class OAuthTest extends TwitterTestBase {
         cookie = response.getResponseHeader("Set-Cookie");
         props.put("Cookie", cookie);
         resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
+        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
         params = new HttpParameter[4];
         params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
@@ -257,7 +260,7 @@ public class OAuthTest extends TwitterTestBase {
 //        http.setRequestHeader("Cookie", cookie);
         props.put("Cookie", cookie);
         resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"login_form\"");
+        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
         params = new HttpParameter[4];
         params[0] = new HttpParameter("authenticity_token"
                 , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));

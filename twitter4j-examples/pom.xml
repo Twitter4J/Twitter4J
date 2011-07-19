@@ -1,14 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.twitter4j</groupId>
-        <artifactId>twitter4j</artifactId>
-        <version>2.2.1-SNAPSHOT</version>
-    </parent>
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-examples</artifactId>
-    <version>2.2.1-SNAPSHOT</version>
+    <version>2.2.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>twitter4j-examples</name>
     <description>A Java library for the Twitter API</description>
@@ -101,22 +98,22 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>2.2.1-SNAPSHOT</version>
+            <version>2.2.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-async</artifactId>
-            <version>2.2.1-SNAPSHOT</version>
+            <version>2.2.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-stream</artifactId>
-            <version>2.2.1-SNAPSHOT</version>
+            <version>2.2.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-media-support</artifactId>
-            <version>2.2.1-SNAPSHOT</version>
+            <version>2.2.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -131,16 +128,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.0-beta-9</version>
+                <version>2.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.5</source>
+                    <source>6</source>
                     <target>jsr14</target>
                 </configuration>
+                <version>2.3.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -157,6 +155,7 @@
                         </manifest>
                     </archive>
                 </configuration>
+                <version>2.3.1</version>
             </plugin>
 
             <plugin>
@@ -169,6 +168,7 @@
                         </goals>
                     </execution>
                 </executions>
+                <version>2.1.2</version>
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -189,6 +189,7 @@
                     <charset>UTF-8</charset>
                     <show>public</show>
                 </configuration>
+                <version>2.7</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -196,6 +197,7 @@
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
+                <version>2.4.3</version>
             </plugin>
         </plugins>
     </build>

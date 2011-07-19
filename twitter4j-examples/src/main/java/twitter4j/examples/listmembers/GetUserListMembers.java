@@ -34,8 +34,8 @@ public final class GetUserListMembers {
      * @param args message
      */
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Usage: java twitter4j.examples.listmembers.GetUserListMembers [list owner screen name] [list id]");
+        if (args.length < 1) {
+            System.out.println("Usage: java twitter4j.examples.listmembers.GetUserListMembers [list id]");
             System.exit(-1);
         }
         try {
@@ -43,7 +43,7 @@ public final class GetUserListMembers {
             long cursor = -1;
             PagableResponseList<User> usres;
             do {
-                usres = twitter.getUserListMembers(args[0], Integer.parseInt(args[1]), cursor);
+                usres = twitter.getUserListMembers(Integer.parseInt(args[0]), cursor);
                 for (User list : usres) {
                     System.out.println("@" + list.getScreenName());
                 }

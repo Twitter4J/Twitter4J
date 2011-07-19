@@ -40,7 +40,7 @@ public final class ShowUser {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             User user = twitter.showUser(args[0]);
-            if (null != user.getStatus()) {
+            if (user.getStatus() != null) {
                 System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());
             } else {
                 // the user is protected

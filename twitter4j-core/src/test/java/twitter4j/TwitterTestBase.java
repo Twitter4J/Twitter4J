@@ -18,6 +18,7 @@ package twitter4j;
 
 import junit.framework.TestCase;
 import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.PropertyConfiguration;
 
 import java.io.InputStream;
@@ -29,7 +30,8 @@ public class TwitterTestBase extends TestCase {
     }
 
     protected Twitter twitter1, twitter2, twitter3,
-            unauthenticated, twitterAPIBestFriend1, twitterAPIBestFriend2;
+            unauthenticated, twitterAPIBestFriend1, twitterAPIBestFriend2,
+            rwPrivateMessage;
     protected Properties p = new Properties();
 
     protected String numberId, numberPass, followsOneWay;
@@ -75,6 +77,7 @@ public class TwitterTestBase extends TestCase {
         id2 = new TestUserInfo("id2");
         conf3 = new PropertyConfiguration(p, "/id3");
         id3 = new TestUserInfo("id3");
+        rwPrivateMessage = new TwitterFactory(new PropertyConfiguration(p, "/r-w-private")).getInstance();
         Configuration bestFriend1Conf = new PropertyConfiguration(p, "/bestFriend1");
         bestFriend1 = new TestUserInfo("bestFriend1");
         Configuration bestFriend2Conf = new PropertyConfiguration(p, "/bestFriend2");
@@ -95,7 +98,7 @@ public class TwitterTestBase extends TestCase {
 
         twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
 
-        unauthenticated = new TwitterFactory().getInstance();
+        unauthenticated = new TwitterFactory(new ConfigurationBuilder().setJSONStoreEnabled(true).build()).getInstance();
 
         followsOneWay = p.getProperty("followsOneWay");
     }

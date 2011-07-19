@@ -188,7 +188,7 @@ public class JSONObject {
         String key;
 
         if (x.nextClean() != '{') {
-            throw x.syntaxError("A JSONObject text must begin with '{'");
+            throw x.syntaxError("A JSONObject text must begin with '{' found:" +x.nextClean());
         }
         for (; ;) {
             c = x.nextClean();
@@ -551,7 +551,6 @@ public class JSONObject {
     /**
      * Get the JSONObject value associated with a key.
      *
-<<<<<<< HEAD
      * @param key A key string.
      * @return A JSONObject which is the value.
      * @throws JSONException if the key is not found or
@@ -561,20 +560,9 @@ public class JSONObject {
         Object object = get(key);
         if (object instanceof JSONObject) {
             return (JSONObject) object;
-=======
-     * @param key   A key string.
-     * @return      A JSONObject which is the value.
-     * @throws   JSONException if the value is not a JSONObject.
-     */
-    public JSONObject getJSONObject(String key) throws JSONException {
-        Object o = get(key);
-        if (o == null)
-        	return null;
-        if (o instanceof JSONObject) {
-            return (JSONObject)o;
->>>>>>> Branch_2.1.4
         }
-        throw new JSONException("JSONObject[" + quote(key) + "] is not a JSONObject.");
+        throw new JSONException("JSONObject[" + quote(key) +
+                "] is not a JSONObject.");
     }
 
 

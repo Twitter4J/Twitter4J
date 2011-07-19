@@ -21,6 +21,11 @@ package twitter4j;
  */
 public interface CursorSupport {
     /**
+     * @since Twitter4J 2.2.3
+     */
+    long START = -1L;
+
+    /**
      * @since Twitter4J 2.0.10
      */
     boolean hasPrevious();

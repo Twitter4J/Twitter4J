@@ -126,7 +126,7 @@ public final class StatusUpdate implements java.io.Serializable {
         if (-1 != inReplyToStatusId) {
             appendParameter("in_reply_to_status_id", inReplyToStatusId, params);
         }
-        if (null != location) {
+        if (location != null) {
             appendParameter("lat", location.getLatitude(), params);
             appendParameter("long", location.getLongitude(), params);
 
@@ -135,7 +135,7 @@ public final class StatusUpdate implements java.io.Serializable {
         if (!displayCoordinates) {
             appendParameter("display_coordinates", "false", params);
         }
-        if ((null != annotations) && (!annotations.isEmpty())) {
+        if ((annotations != null) && (!annotations.isEmpty())) {
             appendParameter("annotations", annotations.asParameterValue(), params);
         }
         HttpParameter[] paramArray = new HttpParameter[params.size()];
@@ -143,7 +143,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     private void appendParameter(String name, String value, List<HttpParameter> params) {
-        if (null != value) {
+        if (value != null) {
             params.add(new HttpParameter(name, value));
         }
     }

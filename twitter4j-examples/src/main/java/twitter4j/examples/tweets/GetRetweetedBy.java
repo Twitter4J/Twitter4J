@@ -16,6 +16,8 @@
 
 package twitter4j.examples.tweets;
 
+import twitter4j.IDs;
+import twitter4j.Paging;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -42,10 +44,16 @@ public final class GetRetweetedBy {
         System.out.println("Showing users who retweeted status id - [" + args[0] + "].");
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            List<User> users = twitter.getRetweetedBy(Long.parseLong(args[0]));
-            for (User user : users) {
-                System.out.println("@" + user.getScreenName());
-            }
+
+            int page = 1;
+             List<User> users;
+            do {
+                users = twitter.getRetweetedBy(Long.parseLong(args[0]), new Paging(page, 100));
+                for (User user : users) {
+                    System.out.println("@" + user.getScreenName());
+                }
+                page++;
+            } while (users.size() != 0);
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {

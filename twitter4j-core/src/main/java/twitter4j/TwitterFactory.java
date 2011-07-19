@@ -23,6 +23,9 @@ import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * A factory class for Twitter.
  * <br>An instance of this class is completely thread safe and can be re-used and used concurrently.
@@ -31,6 +34,34 @@ import twitter4j.conf.ConfigurationContext;
  * @since Twitter4J 2.1.0
  */
 public final class TwitterFactory implements java.io.Serializable {
+    static final Constructor<Twitter> twitterConstructor;
+
+    static {
+        String className = null;
+        if (ConfigurationContext.getInstance().isGAE()) {
+            final String APP_ENGINE_TWITTER_IMPL = "twitter4j.AppEngineTwitterImpl";
+            try {
+                Class.forName(APP_ENGINE_TWITTER_IMPL);
+                className = APP_ENGINE_TWITTER_IMPL;
+            } catch (ClassNotFoundException ignore) {
+            }
+        }
+        if (className == null) {
+            className = "twitter4j.TwitterImpl";
+        }
+        Constructor<Twitter> constructor;
+        Class clazz;
+        try {
+            clazz = Class.forName(className);
+            constructor = clazz.getDeclaredConstructor(Configuration.class, Authorization.class);
+        } catch (NoSuchMethodException e) {
+            throw new AssertionError(e);
+        } catch (ClassNotFoundException e) {
+            throw new AssertionError(e);
+        }
+        twitterConstructor = constructor;
+    }
+
     private static final long serialVersionUID = 5193900138477709155L;
     private final Configuration conf;
 
@@ -69,7 +100,7 @@ public final class TwitterFactory implements java.io.Serializable {
      * @return default singleton instance
      */
     public Twitter getInstance() {
-        return new TwitterImpl(conf, AuthorizationFactory.getInstance(conf));
+        return getInstance(AuthorizationFactory.getInstance(conf));
     }
 
     /**
@@ -89,10 +120,18 @@ public final class TwitterFactory implements java.io.Serializable {
         }
         OAuthAuthorization oauth = new OAuthAuthorization(conf);
         oauth.setOAuthAccessToken(accessToken);
-        return new TwitterImpl(conf, oauth);
+        return getInstance(oauth);
     }
 
     public Twitter getInstance(Authorization auth) {
-        return new TwitterImpl(conf, auth);
+        try {
+            return twitterConstructor.newInstance(conf, auth);
+        } catch (InstantiationException e) {
+            throw new AssertionError(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new AssertionError(e);
+        }
     }
 }

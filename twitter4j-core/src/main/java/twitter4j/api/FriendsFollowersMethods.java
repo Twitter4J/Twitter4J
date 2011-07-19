@@ -28,7 +28,8 @@ public interface FriendsFollowersMethods {
      * Returns an array of numeric IDs for every user the authenticating user is following.
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
      *
-     * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     * To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return an array of numeric IDs for every user the authenticating user is following
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
@@ -41,7 +42,8 @@ public interface FriendsFollowersMethods {
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
      *
      * @param userId Specifies the ID of the user for whom to return the friends list.
-     * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     * To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
@@ -54,7 +56,8 @@ public interface FriendsFollowersMethods {
      * <br>This method calls http://api.twitter.com/1/friends/ids.json
      *
      * @param screenName Specifies the screen name of the user for whom to return the friends list.
-     * @param cursor     Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     * To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/friends/ids">GET friends/ids | dev.twitter.com</a>
@@ -66,7 +69,8 @@ public interface FriendsFollowersMethods {
      * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>This method calls http://api.twitter.com/1/followers/ids.json
      *
-     * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     * To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
@@ -79,7 +83,8 @@ public interface FriendsFollowersMethods {
      * <br>This method calls http://api.twitter.com/1/followers/ids.json
      *
      * @param userId Specifies the ID of the user for whom to return the followers list.
-     * @param cursor Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     * To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>
@@ -92,7 +97,8 @@ public interface FriendsFollowersMethods {
      * <br>This method calls http://api.twitter.com/1/followers/ids.json
      *
      * @param screenName Specifies the screen name of the user for whom to return the followers list.
-     * @param cursor     Specifies the page number of the results beginning at 1. A single page contains 5000 ids. This is recommended for users with large ID lists. If not provided all ids are returned.
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     * To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://dev.twitter.com/doc/get/followers/ids">GET followers/ids | dev.twitter.com</a>

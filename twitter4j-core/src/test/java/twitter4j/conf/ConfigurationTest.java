@@ -20,12 +20,16 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import twitter4j.Version;
 import twitter4j.auth.RequestToken;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Properties;
 
 /**
@@ -60,9 +64,9 @@ public class ConfigurationTest extends TestCase {
         assertNull(ConfigurationBase.fixURL(true, null));
     }
 
-    public void testSprit() throws Exception {
+    public void testSplit() throws Exception {
         String original = "foo/bar";
-        String[] split = T4JInternalStringUtil.split(original, "/");
+        String[] split = z_T4JInternalStringUtil.split(original, "/");
         assertEquals("foo", split[0]);
         assertEquals("bar", split[1]);
         assertEquals(2, split.length);
@@ -322,6 +326,20 @@ public class ConfigurationTest extends TestCase {
         Configuration conf;
         builder = new ConfigurationBuilder();
         conf = builder.build();
+
+        Configuration t = (Configuration) serializeDeserialize(conf);
+        System.out.println("-------");
+        System.out.println(conf);
+        System.out.println(t);
+        System.out.println("-------");
+        System.out.println(conf.hashCode());
+        System.out.println(t.hashCode());
+        System.out.println("-------");
+        System.out.println(conf.equals(t));
+        System.out.println(conf == t);
+
+        assertSame(conf, (Configuration) serializeDeserialize(conf));
+
         assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
@@ -348,6 +366,7 @@ public class ConfigurationTest extends TestCase {
         assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
+        assertTrue(0 == conf.getUserStreamBaseURL().indexOf("https://"));
 
         builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey("key");
@@ -382,6 +401,21 @@ public class ConfigurationTest extends TestCase {
         assertEquals("bar", mediaProps.getProperty("foo"));
 
         deleteFile("./twitter4j.properties");
+    }
+
+
+    private static Object serializeDeserialize(Object obj) throws Exception {
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
+        oos.writeObject(obj);
+        byteOutputStream.close();
+        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteOutputStream.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(byteInputStream);
+        Object that = ois.readObject();
+        System.out.println(that);
+        byteInputStream.close();
+        ois.close();
+        return that;
     }
 
     private void writeFile(String path, String content) throws IOException {

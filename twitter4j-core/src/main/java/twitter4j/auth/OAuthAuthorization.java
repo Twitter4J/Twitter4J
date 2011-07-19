@@ -23,7 +23,7 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.T4JInternalStringUtil;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -65,7 +65,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         this.conf = conf;
         http = new HttpClientWrapper(conf);
         setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
-        if (null != conf.getOAuthAccessToken() && null != conf.getOAuthAccessTokenSecret()) {
+        if (conf.getOAuthAccessToken() != null && conf.getOAuthAccessTokenSecret() != null) {
             setOAuthAccessToken(new AccessToken(conf.getOAuthAccessToken(), conf.getOAuthAccessTokenSecret()));
         }
     }
@@ -85,7 +85,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      * #{inheritDoc}
      */
     public boolean isEnabled() {
-        return null != oauthToken && oauthToken instanceof AccessToken;
+        return oauthToken != null && oauthToken instanceof AccessToken;
     }
 
     // implementation for OAuthSupport interface
@@ -94,18 +94,31 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      * {@inheritDoc}
      */
     public RequestToken getOAuthRequestToken() throws TwitterException {
-        return getOAuthRequestToken(null);
+        return getOAuthRequestToken(null, null);
     }
 
     /**
      * {@inheritDoc}
      */
     public RequestToken getOAuthRequestToken(String callbackURL) throws TwitterException {
+        return getOAuthRequestToken(callbackURL, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public RequestToken getOAuthRequestToken(String callbackURL, String xAuthAccessType) throws TwitterException {
         if (oauthToken instanceof AccessToken) {
             throw new IllegalStateException("Access token already available.");
         }
-        HttpParameter[] params = null != callbackURL ? new HttpParameter[]{new HttpParameter("oauth_callback", callbackURL)} : new HttpParameter[0];
-        oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params, this), this);
+        List<HttpParameter> params = new ArrayList<HttpParameter>();
+        if (callbackURL != null) {
+            params.add(new HttpParameter("oauth_callback", callbackURL));
+        }
+        if (xAuthAccessType != null) {
+            params.add(new HttpParameter("x_auth_access_type", xAuthAccessType));
+        }
+        oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[params.size()]), this), this);
         return (RequestToken) oauthToken;
     }
 
@@ -197,7 +210,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         oauthHeaderParams.add(new HttpParameter("oauth_timestamp", timestamp));
         oauthHeaderParams.add(new HttpParameter("oauth_nonce", nonce));
         oauthHeaderParams.add(new HttpParameter("oauth_version", "1.0"));
-        if (null != otoken) {
+        if (otoken != null) {
             oauthHeaderParams.add(new HttpParameter("oauth_token", otoken.getToken()));
         }
         List<HttpParameter> signatureBaseParams = new ArrayList<HttpParameter>(oauthHeaderParams.size() + params.length);
@@ -217,7 +230,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         oauthHeaderParams.add(new HttpParameter("oauth_signature", signature));
 
         // http://oauth.net/core/1.0/#rfc.section.9.1.1
-        if (null != realm) {
+        if (realm != null) {
             oauthHeaderParams.add(new HttpParameter("realm", realm));
         }
         return "OAuth " + encodeParameters(oauthHeaderParams, ",", true);
@@ -226,10 +239,10 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     private void parseGetParameters(String url, List<HttpParameter> signatureBaseParams) {
         int queryStart = url.indexOf("?");
         if (-1 != queryStart) {
-            String[] queryStrs = T4JInternalStringUtil.split(url.substring(queryStart + 1), "&");
+            String[] queryStrs = z_T4JInternalStringUtil.split(url.substring(queryStart + 1), "&");
             try {
                 for (String query : queryStrs) {
-                    String[] split = T4JInternalStringUtil.split(query, "=");
+                    String[] split = z_T4JInternalStringUtil.split(query, "=");
                     if (split.length == 2) {
                         signatureBaseParams.add(
                                 new HttpParameter(URLDecoder.decode(split[0],
@@ -270,7 +283,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         oauthHeaderParams.add(new HttpParameter("oauth_timestamp", timestamp));
         oauthHeaderParams.add(new HttpParameter("oauth_nonce", nonce));
         oauthHeaderParams.add(new HttpParameter("oauth_version", "1.0"));
-        if (null != oauthToken) {
+        if (oauthToken != null) {
             oauthHeaderParams.add(new HttpParameter("oauth_token", oauthToken.getToken()));
         }
 
@@ -316,10 +329,12 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
             }
             mac.init(spec);
             byteHMAC = mac.doFinal(data.getBytes());
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException ignore) {
-            // should never happen
+        } catch (InvalidKeyException ike) {
+            logger.error("Failed initialize \"Message Authentication Code\" (MAC)", ike);
+            throw new AssertionError(ike);
+        } catch (NoSuchAlgorithmException nsae) {
+            logger.error("Failed to get HmacSHA1 \"Message Authentication Code\" (MAC)", nsae);
+            throw new AssertionError(nsae);
         }
         return BASE64Encoder.encode(byteHMAC);
     }
@@ -443,8 +458,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     }
 
     public void setOAuthConsumer(String consumerKey, String consumerSecret) {
-        this.consumerKey = null != consumerKey ? consumerKey : "";
-        this.consumerSecret = null != consumerSecret ? consumerSecret : "";
+        this.consumerKey = consumerKey != null ? consumerKey : "";
+        this.consumerSecret = consumerSecret != null ? consumerSecret : "";
     }
 
     @Override

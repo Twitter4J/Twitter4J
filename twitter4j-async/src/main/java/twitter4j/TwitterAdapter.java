@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import twitter4j.api.HelpMethods;
+
 import java.util.List;
 
 /**
@@ -48,13 +50,13 @@ public class TwitterAdapter implements TwitterListener {
     /**
      * @since Twitter4J 2.0.2
      */
-    public void gotDailyTrends(List<Trends> trendsList) {
+    public void gotDailyTrends(ResponseList<Trends> trendsList) {
     }
 
     /**
      * @since Twitter4J 2.0.2
      */
-    public void gotWeeklyTrends(List<Trends> trendsList) {
+    public void gotWeeklyTrends(ResponseList<Trends> trendsList) {
     }
 
     /*Timeline Methods*/
@@ -379,6 +381,12 @@ public class TwitterAdapter implements TwitterListener {
     public void updatedFriendship(Relationship relationship) {
     }
 
+    /**
+     * @since
+     */
+    public void gotNoRetweetIds(IDs ids) {
+    }
+
     /*Social Graph Methods*/
     public void gotFriendsIDs(IDs ids) {
     }
@@ -407,6 +415,13 @@ public class TwitterAdapter implements TwitterListener {
      * @since Twitter4J 2.1.9
      */
     public void gotAccountSettings(AccountSettings settings) {
+    }
+
+    /**
+     * @param settings account settings
+     * @since Twitter4J 2.2.4
+     */
+    public void updatedAccountSettings(AccountSettings settings) {
     }
 
     /**
@@ -565,6 +580,12 @@ public class TwitterAdapter implements TwitterListener {
 
     /*Help Methods*/
     public void tested(boolean test) {
+    }
+
+    public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
+    }
+
+    public void gotLanguages(ResponseList<HelpMethods.Language> languages) {
     }
 
     /**

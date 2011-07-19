@@ -34,6 +34,8 @@ public interface Configuration extends HttpClientConfiguration
 
     boolean isDalvik();
 
+    boolean isGAE();
+
     boolean isDebugEnabled();
 
     String getUserAgent();
@@ -105,6 +107,8 @@ public interface Configuration extends HttpClientConfiguration
     boolean isIncludeEntitiesEnabled();
 
     boolean isJSONStoreEnabled();
+
+    boolean isMBeanEnabled();
 
     boolean isUserStreamRepliesAllEnabled();
 

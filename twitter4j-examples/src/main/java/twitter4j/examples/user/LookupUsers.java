@@ -43,7 +43,7 @@ public final class LookupUsers {
             Twitter twitter = new TwitterFactory().getInstance();
             ResponseList<User> users = twitter.lookupUsers(args[0].split(","));
             for (User user : users) {
-                if (null != user.getStatus()) {
+                if (user.getStatus() != null) {
                     System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());
                 } else {
                     // the user is protected
