@@ -1826,12 +1826,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
-            long start = System.currentTimeMillis();
+            //long start = System.currentTimeMillis();
             try {
                 response = http.get(url, auth);
             } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
+                //long elapsedTime = System.currentTimeMillis() - start;
+                //TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
             }
             return response;
         }
@@ -1843,12 +1843,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
-            long start = System.currentTimeMillis();
+            //long start = System.currentTimeMillis();
             try {
                 response = http.get(url, parameters, auth);
             } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
+                //long elapsedTime = System.currentTimeMillis() - start;
+                //TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
             }
             return response;
         }
@@ -1860,12 +1860,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
-            long start = System.currentTimeMillis();
+            //long start = System.currentTimeMillis();
             try {
                 response = http.post(url, auth);
             } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
+                //long elapsedTime = System.currentTimeMillis() - start;
+                //TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
             }
             return response;
         }
@@ -1877,12 +1877,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
-            long start = System.currentTimeMillis();
+            //long start = System.currentTimeMillis();
             try {
                 response = http.post(url, parameters, auth);
             } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
+                //long elapsedTime = System.currentTimeMillis() - start;
+                //TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
             }
             return response;
         }
@@ -1894,21 +1894,21 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
-            long start = System.currentTimeMillis();
+            //long start = System.currentTimeMillis();
             try {
                 response = http.delete(url, auth);
             } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
+                //long elapsedTime = System.currentTimeMillis() - start;
+                //TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
             }
             return response;
         }
     }
 
 
-    private boolean isOk(HttpResponse response) {
+    /*private boolean isOk(HttpResponse response) {
         return response != null && response.getStatusCode() < 300;
-    }
+    }*/
 
     @Override
     public int hashCode() {
