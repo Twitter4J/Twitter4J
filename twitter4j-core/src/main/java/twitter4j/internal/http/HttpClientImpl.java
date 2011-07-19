@@ -105,6 +105,8 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
             try {
+				if (retriedCount>0)
+					logger.info("HTTP retry "+retriedCount+" for "+req.getURL());
                 HttpURLConnection con;
                 OutputStream os = null;
                 try {
