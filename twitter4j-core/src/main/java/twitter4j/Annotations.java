@@ -30,6 +30,7 @@ import java.util.List;
  * @author Roy Reshef - royreshef at gmail.com
  * @see <a href="http://dev.twitter.com/pages/annotations_overview">Annotations Overview | Twitter Developers</a>
  * @since Twitter4J 2.1.4
+ * @deprecated Annotations is not available for now. <a href="http://groups.google.com/group/twitter-development-talk/browse_thread/thread/4d5ff2ec4d2ce4a7">Annotations - Twitter Development Talk | Google Groups</a>
  */
 public class Annotations implements java.io.Serializable {
     private static final long serialVersionUID = 7928827620306593741L;
