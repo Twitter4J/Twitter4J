@@ -54,12 +54,23 @@ public class GeoLocation implements java.io.Serializable {
     static GeoLocation getInstance(JSONObject json) throws TwitterException {
         try {
             if (!json.isNull("geo")) {
+<<<<<<< HEAD
                 String coordinates = json.getJSONObject("geo")
                         .getString("coordinates");
                 coordinates = coordinates.substring(1, coordinates.length() - 1);
                 String[] point = T4JInternalStringUtil.split(coordinates, ",");
                 return new GeoLocation(Double.parseDouble(point[0]),
                         Double.parseDouble(point[1]));
+=======
+            	JSONObject geo = json.getJSONObject("geo");
+            	if (geo!=null) {
+	                String coordinates = geo.getString("coordinates");
+	                coordinates = coordinates.substring(1, coordinates.length() - 1);
+	                String[] point = coordinates.split(",");
+	                return new GeoLocation(Double.parseDouble(point[0]),
+	                        Double.parseDouble(point[1]));
+            	}
+>>>>>>> Branch_2.1.4
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);

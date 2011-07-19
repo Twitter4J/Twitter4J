@@ -64,8 +64,15 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
             JSONObject relationship = json.getJSONObject("relationship");
             JSONObject sourceJson = relationship.getJSONObject("source");
             JSONObject targetJson = relationship.getJSONObject("target");
+<<<<<<< HEAD
             sourceUserId = getLong("id", sourceJson);
             targetUserId = getLong("id", targetJson);
+=======
+            if (relationship==null || sourceJson==null || targetJson==null)
+            	throw new TwitterException("Trying to create a bogus relationship");
+            sourceUserId = getInt("id", sourceJson);
+            targetUserId = getInt("id", targetJson);
+>>>>>>> Branch_2.1.4
             sourceUserScreenName = getUnescapedString("screen_name", sourceJson);
             targetUserScreenName = getUnescapedString("screen_name", targetJson);
             sourceBlockingTarget = getBoolean("blocking", sourceJson);

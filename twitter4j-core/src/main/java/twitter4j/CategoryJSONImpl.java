@@ -49,6 +49,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
         return createCategoriesList(res.asJSONArray(), res, conf);
     }
 
+<<<<<<< HEAD
     static ResponseList<Category> createCategoriesList(JSONArray array, HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
@@ -71,6 +72,22 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
+=======
+    public static ResponseList<Category> createCategoriesList(JSONArray array, HttpResponse res) throws TwitterException {
+    	ResponseList<Category> categories =
+    		new ResponseListImpl<Category>(array.getJSONObjectCount(), res);
+    	for (int i = 0; i < array.length(); i++) {
+    		JSONObject json;
+    		try {
+    			json = array.getJSONObject(i);
+    			if (json!=null)
+    				categories.add(new CategoryJSONImpl(json.getString("name"), json.getString("slug")));
+    		} catch (JSONException e) {
+    			continue;
+    		}
+    	}
+    	return categories;
+>>>>>>> Branch_2.1.4
     }
 
     public String getName() {

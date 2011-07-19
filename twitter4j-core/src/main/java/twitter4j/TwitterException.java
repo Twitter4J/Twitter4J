@@ -273,10 +273,15 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     @Override
     public String toString() {
+<<<<<<< HEAD
         return getMessage() + (nested ? "" : "Relevant discussions can be on the Internet at:\n"
                 + "\thttp://www.google.co.jp/search?q=" + getExceptionDiagnosis().getStackLineHashAsHex()
                 + " or\n\thttp://www.google.co.jp/search?q=" + getExceptionDiagnosis().getLineNumberHashAsHex())
                 + "\nTwitterException{" + (nested ? "" : "exceptionCode=[" + getExceptionCode() + "], ") +
+=======
+        return getMessage() + "TwitterException{" +
+                (nested ? "" : "exceptionCode=[" + getExceptionCode() + "], ") +
+>>>>>>> Branch_2.1.4
                 "statusCode=" + statusCode +
                 ", retryAfter=" + retryAfter +
                 ", rateLimitStatus=" + rateLimitStatus +

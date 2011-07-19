@@ -52,7 +52,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     private String inReplyToScreenName;
     private GeoLocation geoLocation = null;
     private Place place = null;
-    private long retweetCount;
+    private String retweetCount;
     private boolean wasRetweetedByMe;
 
     private String[] contributors;
@@ -79,6 +79,8 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     }
 
     private void init(JSONObject json) throws TwitterException {
+    	if (json==null)
+    		throw new TwitterException("trying to create a null StatusJSONImpl");
         id = getLong("id", json);
         text = getUnescapedString("text", json);
         source = getUnescapedString("source", json);
@@ -88,11 +90,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         inReplyToUserId = getLong("in_reply_to_user_id", json);
         isFavorited = getBoolean("favorited", json);
         inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
-        retweetCount = getLong("retweet_count", json);
+        retweetCount = getUnescapedString("retweet_count", json);
         wasRetweetedByMe = getBoolean("retweeted", json);
         try {
             if (!json.isNull("user")) {
-                user = new UserJSONImpl(json.getJSONObject("user"));
+            	JSONObject u = json.getJSONObject("user");
+            	if (u!=null)
+            		user = new UserJSONImpl(u);
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -100,7 +104,13 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         geoLocation = GeoLocation.getInstance(json);
         if (!json.isNull("place")) {
             try {
+<<<<<<< HEAD
                 place = new PlaceJSONImpl(json.getJSONObject("place"));
+=======
+            	JSONObject p = json.getJSONObject("place");
+            	if (p!=null)
+            		place = new PlaceJSONImpl(p, null);
+>>>>>>> Branch_2.1.4
             } catch (JSONException ignore) {
                 ignore.printStackTrace();
                 logger.warn("failed to parse place:" + json);
@@ -109,7 +119,9 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
 
         if (!json.isNull("retweeted_status")) {
             try {
-                retweetedStatus = new StatusJSONImpl(json.getJSONObject("retweeted_status"));
+            	JSONObject rts = json.getJSONObject("retweeted_status");
+            	if (rts!=null)
+            		retweetedStatus = new StatusJSONImpl(rts);
             } catch (JSONException ignore) {
                 ignore.printStackTrace();
                 logger.warn("failed to parse retweeted_status:" + json);
@@ -295,7 +307,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
-    public long getRetweetCount() {
+    public String getRetweetCount() {
         return retweetCount;
     }
 
@@ -327,6 +339,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         return hashtagEntities;
     }
 
+<<<<<<< HEAD
     /*package*/
     static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -353,7 +366,67 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         } catch (TwitterException te) {
             throw te;
         }
+=======
+    /*package*/ static ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
+    	try {
+    		JSONArray list = res.asJSONArray();
+    		int size = list.length();
+    		ResponseList<Status> statuses = new ResponseListImpl<Status>(list.getJSONObjectCount(), res);
+    		for (int i = 0; i < size; i++) {
+    			JSONObject json;
+    			try {
+    				json = list.getJSONObject(i);
+    			} catch (JSONException e) {
+    				continue;
+    			}
+    			if (json!=null)
+    				statuses.add(new StatusJSONImpl(json));
+    		}
+    		return statuses;
+    	} catch (JSONException jsone) {
+    		throw new TwitterException(jsone);
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
+>>>>>>> Branch_2.1.4
     }
+
+    /*package*/ static ResponseList<Status> createResultStatusList(HttpResponse res) throws TwitterException {
+    	try {
+    		JSONArray results = res.asJSONArray();
+			ResponseList<Status> statuses = new ResponseListImpl<Status>(0, res);
+
+			for (int j=0; j < results.getJSONObjectCount(); ++j) {
+				JSONObject obj1 = results.getJSONObject(j);
+
+				//String kind = obj1.getString("groupName");
+				//if (kind.equalsIgnoreCase("TweetsWithReply")) {
+					JSONArray list = obj1.getJSONArray("results");
+					int size = list.length();
+					for (int i = 0; i < size; i++) {
+						JSONObject json;
+						double score;
+						try {
+							json = list.getJSONObject(i);
+							score = json.getDouble("score");
+							json = json.getJSONObject("value");
+						} catch (JSONException e) {
+							continue;
+						}
+						if (score==1.0 && json!=null)
+							statuses.add(new StatusJSONImpl(json));
+					}
+				//}
+			}
+    		return statuses;
+    	} catch (JSONException jsone) {
+    		throw new TwitterException(jsone);
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
+    }
+
+
 
     @Override
     public int hashCode() {

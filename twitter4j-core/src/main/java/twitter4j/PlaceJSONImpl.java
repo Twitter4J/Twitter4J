@@ -113,9 +113,22 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
 
             if (!json.isNull("contained_within")) {
                 JSONArray containedWithInJSON = json.getJSONArray("contained_within");
+<<<<<<< HEAD
                 containedWithIn = new Place[containedWithInJSON.length()];
                 for (int i = 0; i < containedWithInJSON.length(); i++) {
                     containedWithIn[i] = new PlaceJSONImpl(containedWithInJSON.getJSONObject(i));
+=======
+                containedWithIn = new Place[containedWithInJSON.getJSONObjectCount()];
+                for(int i=0;i<containedWithInJSON.length();i++){
+                	JSONObject jsono;
+                	try {
+                		jsono = containedWithInJSON.getJSONObject(i);
+                	} catch (JSONException e) {
+                		continue;
+                	}
+                	if (jsono!=null)
+                		containedWithIn[i] = new PlaceJSONImpl(jsono, null);
+>>>>>>> Branch_2.1.4
                 }
             } else {
                 containedWithIn = null;
@@ -134,12 +147,23 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         JSONObject json = null;
         try {
             json = res.asJSONObject();
+<<<<<<< HEAD
             return createPlaceList(json.getJSONObject("result").getJSONArray("places"), res, conf);
+=======
+            json = json.getJSONObject("result");
+            if (json!=null) {
+            	JSONArray places = json.getJSONArray("places");
+            	if (places!=null)
+            		return createPlaceList(places, res);
+            }
+>>>>>>> Branch_2.1.4
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
+        return null;
     }
 
+<<<<<<< HEAD
     /*package*/
     static ResponseList<Place> createPlaceList(JSONArray list, HttpResponse res
             , Configuration conf) throws TwitterException {
@@ -167,6 +191,27 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         } catch (TwitterException te) {
             throw te;
         }
+=======
+    /*package*/ static ResponseList<Place> createPlaceList(JSONArray list, HttpResponse res) throws TwitterException {
+    	try {
+    		int size = list.length();
+    		ResponseList<Place> places =
+    			new ResponseListImpl<Place>(list.getJSONObjectCount(), res);
+    		for (int i = 0; i < size; i++) {
+    			JSONObject json;
+    			try {
+    				json = list.getJSONObject(i);
+    			} catch (JSONException jsone) {
+    				continue;
+    			}
+    			if (json!=null)
+    				places.add(new PlaceJSONImpl(json, null));
+    		}
+    		return places;
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
+>>>>>>> Branch_2.1.4
     }
 
     public String getName() {

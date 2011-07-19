@@ -115,6 +115,7 @@ public interface DirectMessageMethods {
     DirectMessage destroyDirectMessage(long id)
             throws TwitterException;
 
+<<<<<<< HEAD
     /**
      * Returns a single direct message, specified by an id parameter.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
@@ -127,4 +128,18 @@ public interface DirectMessageMethods {
      * @since Twitter4J 2.1.9
      */
     DirectMessage showDirectMessage(long id) throws TwitterException;
+=======
+	/**
+	 * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
+	 * <br>This method calls http://api.twitter.com/1/direct_messages/destroy
+	 *
+	 * @param id the ID of the direct message to destroy
+	 * @return the deleted direct message
+	 * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="http://dev.twitter.com/doc/post/direct_messages/destroy">POST direct_messages/destroy | dev.twitter.com</a>
+	 * @since Twitter4J 2.0.1
+	 */
+	DirectMessage destroyDirectMessage(long id)
+			throws TwitterException;
+>>>>>>> Branch_2.1.4
 }

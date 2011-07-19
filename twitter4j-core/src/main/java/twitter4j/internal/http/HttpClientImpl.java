@@ -53,17 +53,22 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
 
     static {
         try {
+        	// LevelUp Studio reorder
             String versionStr = System.getProperty("java.specification.version");
-            if (null != versionStr) {
-                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
-            }
             if (ConfigurationContext.getInstance().isDalvik()) {
                 // quick and dirty workaround for TFJ-296
                 // it must be an Android/Dalvik/Harmony side issue!!!!
                 System.setProperty("http.keepAlive", "false");
             }
+<<<<<<< HEAD
         } catch (SecurityException ignore) {
             // Unsigned applets are not allowed to access System properties
+=======
+            else if (null != versionStr) {
+                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
+            }
+        } catch (AccessControlException ace) {
+>>>>>>> Branch_2.1.4
             isJDK14orEarlier = true;
         }
     }
@@ -107,6 +112,8 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
         HttpResponse res = null;
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
+            if (retriedCount>0)
+            	logger.info("HTTP retry "+retriedCount+" for "+req.getURL());
             try {
                 HttpURLConnection con;
                 OutputStream os = null;
@@ -181,12 +188,22 @@ public class HttpClientImpl implements HttpClient, HttpResponseCode, java.io.Ser
                             }
                         }
                     }
+<<<<<<< HEAD
                     if (responseCode < OK || (responseCode != FOUND && MULTIPLE_CHOICES <= responseCode)) {
                         if (responseCode == ENHANCE_YOUR_CLAIM ||
                                 responseCode == BAD_REQUEST ||
                                 responseCode < INTERNAL_SERVER_ERROR ||
                                 retriedCount == CONF.getHttpRetryCount()) {
                             throw new TwitterException(res.asString(), res);
+=======
+                    if (responseCode < OK || MULTIPLE_CHOICES <= responseCode) {
+                        if (responseCode!=-1 && (responseCode == ENHANCE_YOUR_CLAIM ||
+                                responseCode == SERVICE_UNAVAILABLE ||
+                                responseCode == BAD_REQUEST ||
+                                responseCode < INTERNAL_SERVER_ERROR ||
+                                retriedCount == retryCount)) {
+                            throw new TwitterException(res.asString() +" responseCode:"+responseCode+" retriedCount:"+retriedCount+" vs "+retryCount+"\n", res);
+>>>>>>> Branch_2.1.4
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR
                     } else {

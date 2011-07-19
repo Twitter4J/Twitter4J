@@ -157,12 +157,15 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     boolean isVerified();
 
+<<<<<<< HEAD
     /**
      * @return returns true if the user is a translator
      * @since Twitter4J 2.1.9
      */
     boolean isTranslator();
 
+=======
+>>>>>>> Branch_2.1.4
     /**
      * Returns the number of public lists the user is listed on, or -1
      * if the count is unavailable.

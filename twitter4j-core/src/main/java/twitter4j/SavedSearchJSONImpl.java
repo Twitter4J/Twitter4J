@@ -60,6 +60,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         init(savedSearch);
     }
 
+<<<<<<< HEAD
     /*package*/
     static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res, Configuration conf) throws TwitterException {
         if (conf.isJSONStoreEnabled()) {
@@ -84,6 +85,23 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + res.asString(), jsone);
         }
+=======
+    /*package*/ static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res) throws TwitterException {
+    	JSONArray json = res.asJSONArray();
+    	ResponseList<SavedSearch> savedSearches;
+    	savedSearches = new ResponseListImpl<SavedSearch>(json.getJSONObjectCount(), res);
+    	for(int i=0;i<json.length();i++){
+    		JSONObject jsono;
+    		try {
+    			jsono = json.getJSONObject(i);
+    		} catch (JSONException e) {
+    			continue;
+    		}
+    		if (jsono!=null)
+    			savedSearches.add(new SavedSearchJSONImpl(jsono));
+    	}
+    	return savedSearches;
+>>>>>>> Branch_2.1.4
     }
 
     private void init(JSONObject savedSearch) throws TwitterException {

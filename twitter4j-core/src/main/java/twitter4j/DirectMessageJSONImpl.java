@@ -35,7 +35,10 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class DirectMessageJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
+<<<<<<< HEAD
     private static final long serialVersionUID = -7104233663827757577L;
+=======
+>>>>>>> Branch_2.1.4
     private long id;
     private String text;
     private long senderId;
@@ -58,8 +61,14 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
     /*package*/DirectMessageJSONImpl(JSONObject json) throws TwitterException {
         init(json);
     }
+<<<<<<< HEAD
 
     private void init(JSONObject json) throws TwitterException {
+=======
+    private void init(JSONObject json) throws TwitterException{
+    	if (json==null)
+    		throw new TwitterException("trying to create a null DirectMessageJSONImpl");
+>>>>>>> Branch_2.1.4
         id = getLong("id", json);
         text = getUnescapedString("text", json);
         senderId = getLong("sender_id", json);
@@ -142,6 +151,7 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         return recipient;
     }
 
+<<<<<<< HEAD
     /*package*/
     static ResponseList<DirectMessage> createDirectMessageList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -168,11 +178,36 @@ import static twitter4j.internal.util.ParseUtil.getUnescapedString;
         } catch (TwitterException te) {
             throw te;
         }
+=======
+    /*package*/ static ResponseList<DirectMessage> createDirectMessageList(HttpResponse res) throws TwitterException {
+    	try {
+    		JSONArray list = res.asJSONArray();
+    		int size = list.length();
+    		ResponseList<DirectMessage> directMessages = new ResponseListImpl<DirectMessage>(list.getJSONObjectCount(), res);
+    		for (int i = 0; i < size; i++) {
+    			JSONObject json;
+    			try {
+    				json = list.getJSONObject(i);
+    			} catch (JSONException jsone) {
+    				continue;
+    			}
+    			if (json!=null)
+    				directMessages.add(new DirectMessageJSONImpl(json));
+    		}
+    		return directMessages;
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
+>>>>>>> Branch_2.1.4
     }
 
     @Override
     public int hashCode() {
+<<<<<<< HEAD
         return (int) id;
+=======
+        return (int)id;
+>>>>>>> Branch_2.1.4
     }
 
     @Override

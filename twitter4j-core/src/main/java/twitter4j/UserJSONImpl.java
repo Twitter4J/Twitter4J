@@ -72,7 +72,10 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     private int statusesCount;
     private boolean isGeoEnabled;
     private boolean isVerified;
+<<<<<<< HEAD
     private boolean translator;
+=======
+>>>>>>> Branch_2.1.4
     private int listedCount;
     private boolean isFollowRequestSent;
     private static final long serialVersionUID = -6345893237975349030L;
@@ -95,6 +98,8 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     }
 
     private void init(JSONObject json) throws TwitterException {
+    	if (json==null)
+    		throw new TwitterException("trying to create a null UserJSONImpl");
         try {
             id = getLong("id", json);
             name = getRawString("name", json);
@@ -130,7 +135,8 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
             isFollowRequestSent = getBoolean("follow_request_sent", json);
             if (!json.isNull("status")) {
                 JSONObject statusJSON = json.getJSONObject("status");
-                status = new StatusJSONImpl(statusJSON);
+                if (statusJSON!=null)
+                	status = new StatusJSONImpl(statusJSON);
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
@@ -353,6 +359,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+<<<<<<< HEAD
     public boolean isTranslator() {
         return translator;
     }
@@ -360,6 +367,8 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+=======
+>>>>>>> Branch_2.1.4
     public int getListedCount() {
         return listedCount;
     }
@@ -383,6 +392,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
             PagableResponseList<User> users =
                     new PagableResponseListImpl<User>(size, json, res);
             for (int i = 0; i < size; i++) {
+<<<<<<< HEAD
                 JSONObject userJson = list.getJSONObject(i);
                 User user = new UserJSONImpl(userJson);
                 if(conf.isJSONStoreEnabled()){
@@ -392,6 +402,11 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
             }
             if (conf.isJSONStoreEnabled()) {
                 DataObjectFactoryUtil.registerJSONObject(users, json);
+=======
+            	JSONObject jsono = list.getJSONObject(i);
+            	if (jsono!=null)
+            		users.add(new UserJSONImpl(jsono));
+>>>>>>> Branch_2.1.4
             }
             return users;
         } catch (JSONException jsone) {
@@ -406,6 +421,7 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
         return createUserList(res.asJSONArray(), res, conf);
     }
 
+<<<<<<< HEAD
     /*package*/
     static ResponseList<User> createUserList(JSONArray list, HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -432,6 +448,27 @@ import static twitter4j.internal.util.ParseUtil.getRawString;
         } catch (TwitterException te) {
             throw te;
         }
+=======
+    /*package*/ static ResponseList<User> createUserList(JSONArray list, HttpResponse res) throws TwitterException {
+    	try {
+    		int size = list.length();
+    		ResponseList<User> users =
+    			new ResponseListImpl<User>(list.getJSONObjectCount(), res);
+    		for (int i = 0; i < size; i++) {
+    			JSONObject json;
+    			try {
+    				json = list.getJSONObject(i);
+    			} catch (JSONException jsone) {
+    				continue;
+    			}
+    			if (json!=null)
+    				users.add(new UserJSONImpl(json));
+    		}
+    		return users;
+    	} catch (TwitterException te) {
+    		throw te;
+    	}
+>>>>>>> Branch_2.1.4
     }
 
     @Override
