@@ -470,6 +470,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (DEFAULT_OAUTH_REQUEST_TOKEN_URL.equals(fixURL(false, oAuthRequestTokenURL))) {
             this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
         }
+        if (DEFAULT_SEARCH_BASE_URL.equals(fixURL(false, searchBaseURL))) {
+            this.searchBaseURL = fixURL(useSSL, searchBaseURL);
+        }
     }
 
     public String getSearchBaseURL() {
