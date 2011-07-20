@@ -40,6 +40,7 @@ Perry Sakkaris <psakkaris at gmail.com>
 Roberto Estrada <robestradac at gmail.com>
 Roy Reshef Roy Reshef <royreshef at gmail.com>
 Rui Silva
+Steve Lhomme <slhomme at matroska.org> @robux4
 Rémy Rakic <remy.rakic at gmail.com> @lqd
 Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
 Tomohisa Igarashi <tm.igarashi at gmail.com>
