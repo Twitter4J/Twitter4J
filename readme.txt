@@ -38,7 +38,7 @@ Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
 Perry Sakkaris <psakkaris at gmail.com>
 Roberto Estrada <robestradac at gmail.com>
-Roy Reshef Roy Reshef <royreshef at gmail.com>
+Roy Reshef <royreshef at gmail.com> @tsipo
 Rui Silva
 Steve Lhomme <slhomme at matroska.org> @robux4
 Rémy Rakic <remy.rakic at gmail.com> @lqd
