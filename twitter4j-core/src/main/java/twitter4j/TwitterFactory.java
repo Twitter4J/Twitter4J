@@ -34,7 +34,12 @@ import java.lang.reflect.InvocationTargetException;
  * @since Twitter4J 2.1.0
  */
 public final class TwitterFactory implements java.io.Serializable {
-    static final Constructor<Twitter> twitterConstructor;
+    private static final Constructor<Twitter> TWITTER_CONSTRUCTOR;
+    /*AsyncTwitterFactory and TWitterStream will access this field*/
+    static final Authorization DEFAULT_AUTHORIZATION = AuthorizationFactory.getInstance(ConfigurationContext.getInstance());
+    private static final Twitter SINGLETON;
+    private static final long serialVersionUID = 5193900138477709155L;
+    private final Configuration conf;
 
     static {
         String className = null;
@@ -59,11 +64,18 @@ public final class TwitterFactory implements java.io.Serializable {
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }
-        twitterConstructor = constructor;
-    }
+        TWITTER_CONSTRUCTOR = constructor;
 
-    private static final long serialVersionUID = 5193900138477709155L;
-    private final Configuration conf;
+        try {
+            SINGLETON = TWITTER_CONSTRUCTOR.newInstance(ConfigurationContext.getInstance(), DEFAULT_AUTHORIZATION);
+        } catch (InstantiationException e) {
+            throw new AssertionError(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new AssertionError(e);
+        }
+    }
 
     /**
      * Creates a TwitterFactory with the root configuration.
@@ -100,7 +112,7 @@ public final class TwitterFactory implements java.io.Serializable {
      * @return default singleton instance
      */
     public Twitter getInstance() {
-        return getInstance(AuthorizationFactory.getInstance(conf));
+        return SINGLETON;
     }
 
     /**
@@ -125,7 +137,7 @@ public final class TwitterFactory implements java.io.Serializable {
 
     public Twitter getInstance(Authorization auth) {
         try {
-            return twitterConstructor.newInstance(conf, auth);
+            return TWITTER_CONSTRUCTOR.newInstance(conf, auth);
         } catch (InstantiationException e) {
             throw new AssertionError(e);
         } catch (IllegalAccessException e) {
@@ -133,5 +145,15 @@ public final class TwitterFactory implements java.io.Serializable {
         } catch (InvocationTargetException e) {
             throw new AssertionError(e);
         }
+    }
+
+    /**
+     * Returns default singleton Twitter instance. This is equivalent to new TwitterFactory().getInstance().
+     *
+     * @return default singleton Twitter instance
+     * @since Twitter4J 2.2.4
+     */
+    public static Twitter getSingleton() {
+        return SINGLETON;
     }
 }

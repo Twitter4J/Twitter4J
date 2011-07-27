@@ -1,4 +1,4 @@
-Twittetr4J is a Twitter API binding library for the Java language licensed under Apache License 2.0.
+Twittetr4J is a Twitter Aw binding library for the Java language licensed under Apache License 2.0.
 
 Twitter4J includes software from JSON.org to parse JSON response from the Twitter API. You can see the license term at http://www.JSON.org/license.html
 
@@ -22,6 +22,7 @@ Anton Evane <antonevane at gmail.com> @anton_evane
 Blake Barnes <blake.barnes at gmail.com>
 Bruno Torres Goyanna <bgoyanna at gmail.com> @bgoyanna
 Ciaran Jessup <ciaranj at gmail.com> @ciaran_j
+Cole Wen <wennnnke at gmail.com> @Pigwen
 Dan Checkoway <dcheckoway at gmail.com>
 Dong Wang <dong at twitter.com> @dongwang218
 Eric Jensen <ej at twitter.com> @ej
