@@ -64,6 +64,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
+    private Status myRetweetedStatus;
 
     /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -91,7 +92,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         isFavorited = getBoolean("favorited", json);
         inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
         retweetCount = getLong("retweet_count", json);
-        wasRetweetedByMe = getBoolean("retweeted", json);
         try {
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
@@ -174,6 +174,15 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                 annotations = new Annotations(annotationsArray);
             } catch (JSONException ignore) {
             }
+        }
+        if (!json.isNull("current_user_retweet")) {
+            try {
+              myRetweetedStatus = new StatusJSONImpl(json.getJSONObject("current_user_retweet"));
+              wasRetweetedByMe = true;
+            } catch (JSONException ignore) {
+              ignore.printStackTrace();
+              logger.warn("failed to parse current_user_retweet:" + json);
+          }
         }
     }
 

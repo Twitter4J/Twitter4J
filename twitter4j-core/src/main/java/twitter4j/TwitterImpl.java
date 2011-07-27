@@ -49,10 +49,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         super(conf, auth);
         INCLUDE_ENTITIES = new HttpParameter("include_entities", conf.isIncludeEntitiesEnabled());
         INCLUDE_RTS = new HttpParameter("include_rts", conf.isIncludeRTsEnabled());
+        INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", 1);
     }
 
     private final HttpParameter INCLUDE_ENTITIES;
     private final HttpParameter INCLUDE_RTS;
+    private final HttpParameter INCLUDE_MY_RETWEET;
 
     private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter[] params2) {
         if (params1 != null && params2 != null) {
@@ -167,7 +169,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getPublicTimeline() throws
             TwitterException {
         return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/public_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled()));
+                "statuses/public_timeline.json?include_my_retweet=1&include_entities=" + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled()));
     }
 
     /**
@@ -176,7 +178,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getHomeTimeline() throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/home_timeline.json?include_entities=" + conf.isIncludeEntitiesEnabled()));
+        return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/home_timeline.json?include_my_retweet=1&include_entities=" + conf.isIncludeEntitiesEnabled()));
     }
 
     /**
@@ -186,7 +188,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             TwitterException {
         ensureAuthorizationEnabled();
         return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), INCLUDE_ENTITIES)));
+                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), new HttpParameter[] {INCLUDE_ENTITIES, INCLUDE_MY_RETWEET})));
     }
 
     /**
@@ -196,7 +198,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             TwitterException {
         ensureAuthorizationEnabled();
         return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/friends_timeline.json?include_entities="
+                + "statuses/friends_timeline.json?include_my_retweet=1&include_entities="
                 + conf.isIncludeEntitiesEnabled() + "&include_rts=" + conf.isIncludeRTsEnabled()));
     }
 
@@ -209,7 +211,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         ensureAuthorizationEnabled();
         return factory.createStatusList(get(conf.getRestBaseURL()
                 + "statuses/friends_timeline.json",
-                mergeParameters(new HttpParameter[]{INCLUDE_RTS, INCLUDE_ENTITIES}
+                mergeParameters(new HttpParameter[]{INCLUDE_RTS, INCLUDE_ENTITIES, INCLUDE_MY_RETWEET}
                         , paging.asPostParameterArray())));
     }
 
@@ -223,7 +225,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 + "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)
                         , INCLUDE_RTS
-                        , INCLUDE_ENTITIES}
+                        , INCLUDE_ENTITIES
+                        , INCLUDE_MY_RETWEET}
                         , paging.asPostParameterArray())));
     }
 
@@ -236,7 +239,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 + "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)
                         , INCLUDE_RTS
-                        , INCLUDE_ENTITIES}
+                        , INCLUDE_ENTITIES
+                        , INCLUDE_MY_RETWEET}
                         , paging.asPostParameterArray())));
     }
 
@@ -271,7 +275,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createStatusList(get(conf.getRestBaseURL() +
                 "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{INCLUDE_RTS
-                        , INCLUDE_ENTITIES}
+                        , INCLUDE_ENTITIES
+                        , INCLUDE_MY_RETWEET}
                         , paging.asPostParameterArray())));
     }
 
