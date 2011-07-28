@@ -740,10 +740,49 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     /**
      * {@inheritDoc}
      */
-    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
         return factory.createPagableUserListList(get(conf.getRestBaseURL()
-                + "lists/memberships.json?screen_name=" + listMemberScreenName + "&cursor=" + cursor));
+                + "lists/memberships.json?cursor=" + cursor));
+
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
+        return getUserListMemberships(listMemberScreenName, cursor, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor) throws TwitterException {
+        return getUserListMemberships(listMemberId, cursor, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists) throws TwitterException {
+        if (filterToOwnedLists) {
+            ensureAuthorizationEnabled();
+        }
+        return factory.createPagableUserListList(get(conf.getRestBaseURL()
+                + "lists/memberships.json?user_id=" + listMemberId + "&cursor=" + cursor + "&filter_to_owned_lists=" + filterToOwnedLists));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists) throws TwitterException {
+        if (filterToOwnedLists) {
+            ensureAuthorizationEnabled();
+        }
+        return factory.createPagableUserListList(get(conf.getRestBaseURL()
+                + "lists/memberships.json?screen_name=" + listMemberScreenName + "&cursor=" + cursor + "&filter_to_owned_lists=" + filterToOwnedLists));
+    }
+
 
     /**
      * {@inheritDoc}

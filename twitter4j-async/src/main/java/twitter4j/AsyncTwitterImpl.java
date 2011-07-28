@@ -1179,13 +1179,61 @@ class AsyncTwitterImpl extends TwitterBaseImpl
         });
     }
 
+     /**
+     * {@inheritDoc}
+     */
+    public void getUserListMemberships(final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(USER_LIST_MEMBERSHIPS, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<UserList> lists = twitter.getUserListMemberships(cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotUserListMemberships(lists);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
     /**
      * {@inheritDoc}
      */
     public void getUserListMemberships(final String listMemberScreenName, final long cursor) {
+        getUserListMemberships(listMemberScreenName, cursor, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getUserListMemberships(final long listMemberId, final long cursor) {
+        getUserListMemberships(listMemberId, cursor, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getUserListMemberships(final String listMemberScreenName, final long cursor, final boolean filterToOwnedLists) {
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_MEMBERSHIPS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<UserList> lists = twitter.getUserListMemberships(listMemberScreenName, cursor);
+                PagableResponseList<UserList> lists = twitter.getUserListMemberships(listMemberScreenName, cursor, filterToOwnedLists);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotUserListMemberships(lists);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getUserListMemberships(final long listMemberId, final long cursor, final boolean filterToOwnedLists) {
+        getDispatcher().invokeLater(new AsyncTask(USER_LIST_MEMBERSHIPS, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<UserList> lists = twitter.getUserListMemberships(listMemberId, cursor, filterToOwnedLists);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMemberships(lists);
