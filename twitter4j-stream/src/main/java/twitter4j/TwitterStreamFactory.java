@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.Authorization;
+import twitter4j.auth.AuthorizationFactory;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
@@ -68,12 +69,12 @@ public final class TwitterStreamFactory implements java.io.Serializable {
     // implementations for BasicSupportFactory
 
     /**
-     * Returns an instance.
+     * Returns a instance associated with the configuration bound to this factory.
      *
      * @return default instance
      */
     public TwitterStream getInstance() {
-        return SINGLETON;
+        return getInstance(AuthorizationFactory.getInstance(conf));
     }
 
     /**
@@ -109,7 +110,7 @@ public final class TwitterStreamFactory implements java.io.Serializable {
     }
 
     /**
-     * Returns default singleton TwitterStream instance. This is equivalent to new TwitterStreamFactory().getInstance().
+     * Returns default singleton TwitterStream instance.
      *
      * @return default singleton TwitterStream instance
      * @since Twitter4J 2.2.4

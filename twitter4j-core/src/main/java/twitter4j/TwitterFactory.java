@@ -107,12 +107,12 @@ public final class TwitterFactory implements java.io.Serializable {
     }
 
     /**
-     * Returns a instance.
+     * Returns a instance associated with the configuration bound to this factory.
      *
      * @return default singleton instance
      */
     public Twitter getInstance() {
-        return SINGLETON;
+        return getInstance(AuthorizationFactory.getInstance(conf));
     }
 
     /**
@@ -148,7 +148,7 @@ public final class TwitterFactory implements java.io.Serializable {
     }
 
     /**
-     * Returns default singleton Twitter instance. This is equivalent to new TwitterFactory().getInstance().
+     * Returns default singleton Twitter instance.
      *
      * @return default singleton Twitter instance
      * @since Twitter4J 2.2.4

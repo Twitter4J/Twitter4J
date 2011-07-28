@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.Authorization;
+import twitter4j.auth.AuthorizationFactory;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
@@ -71,12 +72,12 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
     }
 
     /**
-     * Returns a default singleton instance.
+     * Returns an instance associated with the configuration bound to this factory.
      *
      * @return default singleton instance
      */
     public AsyncTwitter getInstance() {
-        return SINGLETON;
+        return getInstance(AuthorizationFactory.getInstance(conf));
     }
 
     /**
@@ -108,7 +109,7 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
     }
 
     /**
-     * Returns default singleton AsyncTwitter instance. This is equivalent to new AsyncTwitterFactory().getInstance().
+     * Returns default singleton AsyncTwitter instance.
      *
      * @return default singleton AsyncTwitter instance
      * @since Twitter4J 2.2.4
