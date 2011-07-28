@@ -172,6 +172,34 @@ public interface ListMethods {
             throws TwitterException;
 
     /**
+     * List the lists the authenticating user has been added to.
+     * <br>This method calls http://api.twitter.com/1/lists/memberships.json
+     *
+     * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @throws IllegalStateException when authorization is not enabled
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
+     * @since Twitter4J 2.2.4
+     */
+    PagableResponseList<UserList> getUserListMemberships(long cursor)
+            throws TwitterException;
+
+    /**
+     * List the lists the specified user has been added to.
+     * <br>This method calls http://api.twitter.com/1/lists/memberships.json
+     *
+     * @param listMemberId  The id of the list member
+     * @param cursor        Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
+     * @since Twitter4J 2.2.4
+     */
+    PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor)
+    throws TwitterException;
+
+    /**
      * List the lists the specified user has been added to.
      * <br>This method calls http://api.twitter.com/1/lists/memberships.json
      *
@@ -179,10 +207,42 @@ public interface ListMethods {
      * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/:user/lists/memberships">GET :user/lists/memberships | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor)
+            throws TwitterException;
+
+    /**
+     * List the lists the specified user has been added to.
+     * <br>This method calls http://api.twitter.com/1/lists/memberships.json
+     *
+     * @param listMemberScreenName The screen name of the list member
+     * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param filterToOwnedLists   Whether to return just lists the authenticating user owns, and the user represented by listMemberScreenName is a member of.
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @throws IllegalStateException when filerToOwnedLists is true but authorization is not enabled
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
+     * @since Twitter4J 2.2.4
+     */
+    PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists)
+            throws TwitterException;
+
+        /**
+     * List the lists the specified user has been added to.
+     * <br>This method calls http://api.twitter.com/1/lists/memberships.json
+     *
+     * @param listMemberId         The id of the list member
+     * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param filterToOwnedLists   Whether to return just lists the authenticating user owns, and the user represented by listMemberId is a member of.
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @throws IllegalStateException when filerToOwnedLists is true but authorization is not enabled
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
+     * @since Twitter4J 2.2.4
+     */
+    PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists)
             throws TwitterException;
 
     /**
