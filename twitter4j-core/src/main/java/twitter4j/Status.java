@@ -193,4 +193,10 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
      * @since Twitter4J 2.2.3
      */
     MediaEntity[] getMediaEntities();
+    
+    /**
+     * Returns the status (only contains id) which was retweeted by me via current status
+     * @since Twitter4j 2.2.4
+     */
+    Status getMyRetweetStatus();
 }

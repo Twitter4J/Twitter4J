@@ -367,6 +367,15 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     public MediaEntity[] getMediaEntities() {
         return mediaEntities;
     }
+    
+    
+
+    /** 
+     * {@inheritDoc}
+     */
+    public Status getMyRetweetStatus() {
+      return myRetweetedStatus;
+    }
 
     /*package*/
     static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
@@ -431,6 +440,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                 ", contributors=" + (contributorsIDs == null ? null : Arrays.asList(contributorsIDs)) +
                 ", annotations=" + annotations +
                 ", retweetedStatus=" + retweetedStatus +
+                ", myRetweetedStatus=" + myRetweetedStatus +
                 ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
                 ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
                 ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
