@@ -34,6 +34,11 @@ import twitter4j.conf.ConfigurationContext;
 public final class TwitterStreamFactory implements java.io.Serializable {
     private static final long serialVersionUID = 8146074704915782233L;
     private final Configuration conf;
+    private static final TwitterStream SINGLETON;
+
+    static {
+        SINGLETON = new TwitterStreamImpl(ConfigurationContext.getInstance(), TwitterFactory.DEFAULT_AUTHORIZATION);
+    }
 
     /**
      * Creates a TwitterStreamFactory with the root configuration.
@@ -64,7 +69,7 @@ public final class TwitterStreamFactory implements java.io.Serializable {
     // implementations for BasicSupportFactory
 
     /**
-     * Returns an instance.
+     * Returns a instance associated with the configuration bound to this factory.
      *
      * @return default instance
      */
@@ -102,5 +107,15 @@ public final class TwitterStreamFactory implements java.io.Serializable {
 
     private TwitterStream getInstance(Configuration conf, Authorization auth) {
         return new TwitterStreamImpl(conf, auth);
+    }
+
+    /**
+     * Returns default singleton TwitterStream instance.
+     *
+     * @return default singleton TwitterStream instance
+     * @since Twitter4J 2.2.4
+     */
+    public static TwitterStream getSingleton() {
+        return SINGLETON;
     }
 }
