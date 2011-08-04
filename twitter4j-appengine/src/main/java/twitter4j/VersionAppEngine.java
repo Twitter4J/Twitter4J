@@ -21,7 +21,7 @@ package twitter4j;
  * @since Twitter4J 2.2.4
  */
 public final class VersionAppEngine {
-    private static final String VERSION = "2.2.4-SNAPSHOT";
+    private static final String VERSION = "2.2.5-SNAPSHOT";
     private static final String TITLE = "Twitter4J App Engine Support";
 
     private VersionAppEngine() {
