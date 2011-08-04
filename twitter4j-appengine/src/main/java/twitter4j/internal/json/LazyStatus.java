@@ -296,6 +296,10 @@ final class LazyStatus implements twitter4j.Status {
     public int compareTo(Status target) {
         return getTarget().compareTo(target);
     }
+    
+    public Status getMyRetweetStatus() {
+      return getTarget().getMyRetweetStatus();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -315,4 +319,5 @@ final class LazyStatus implements twitter4j.Status {
                 "target=" + getTarget() +
                 "}";
     }
+
 }
