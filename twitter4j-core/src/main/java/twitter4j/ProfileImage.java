@@ -30,6 +30,7 @@ public interface ProfileImage extends TwitterResponse, java.io.Serializable {
     ImageSize BIGGER = new ImageSize("bigger");
     ImageSize NORMAL = new ImageSize("normal");
     ImageSize MINI = new ImageSize("mini");
+    ImageSize ORIGINAL = new ImageSize("original");
 
     static class ImageSize implements java.io.Serializable {
 
