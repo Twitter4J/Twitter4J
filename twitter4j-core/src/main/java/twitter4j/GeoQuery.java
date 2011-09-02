@@ -71,8 +71,8 @@ public final class GeoQuery implements java.io.Serializable {
         return query
     }
     
-    public String setQuery(String query) {
-        return this.query
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     public String getIp() {
