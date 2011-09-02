@@ -28,6 +28,7 @@ import java.util.List;
 public final class GeoQuery implements java.io.Serializable {
 
     private GeoLocation location;
+    private String query;
     private String ip;
     private String accuracy;
     private String granularity;
@@ -58,6 +59,20 @@ public final class GeoQuery implements java.io.Serializable {
 
     public GeoLocation getLocation() {
         return location;
+    }
+
+    /**
+     * Gets and Sets the query to filter Place results from geo/search
+     *
+     * @param query filters the results from geo/search by name
+     */
+    
+    public String getQuery() {
+        return query
+    }
+    
+    public String setQuery(String query) {
+        return this.query
     }
 
     public String getIp() {
@@ -186,6 +201,7 @@ public final class GeoQuery implements java.io.Serializable {
     public String toString() {
         return "GeoQuery{" +
                 "location=" + location +
+                ", query='" + query + '\'' +
                 ", ip='" + ip + '\'' +
                 ", accuracy='" + accuracy + '\'' +
                 ", granularity='" + granularity + '\'' +
