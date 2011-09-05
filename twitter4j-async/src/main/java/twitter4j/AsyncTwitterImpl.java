@@ -2273,6 +2273,40 @@ class AsyncTwitterImpl extends TwitterBaseImpl
             }
         });
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void getFavorites(final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(FAVORITES, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<Status> statuses = twitter.getFavorites(paging);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotFavorites(statuses);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void getFavorites(final String id, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(FAVORITES, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<Status> statuses = twitter.getFavorites(id, paging);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotFavorites(statuses);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
 
     /**
      * {@inheritDoc}
