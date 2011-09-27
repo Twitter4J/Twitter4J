@@ -1489,6 +1489,27 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 mergeParameters(getParameterArray("page", page)
                         , INCLUDE_ENTITIES)));
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getFavorites(Paging paging) throws TwitterException {
+      ensureAuthorizationEnabled();
+      return factory.createStatusList(get(conf.getRestBaseURL() + "favorites.json",
+      		mergeParameters(paging.asPostParameterArray()
+              , INCLUDE_ENTITIES)));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getFavorites(String id, Paging paging) throws TwitterException {
+      ensureAuthorizationEnabled();
+      return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/"+ id +".json",
+      		mergeParameters(paging.asPostParameterArray()
+              , INCLUDE_ENTITIES)));
+    }
+    
 
     /**
      * {@inheritDoc}
