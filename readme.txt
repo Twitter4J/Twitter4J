@@ -41,6 +41,7 @@ Perry Sakkaris <psakkaris at gmail.com>
 Roberto Estrada <robestradac at gmail.com>
 Roy Reshef <royreshef at gmail.com> @tsipo
 Rui Silva
+Sam Pullara <sam at sampullara.com> @sampullara
 Steve Lhomme <slhomme at matroska.org> @robux4
 Rémy Rakic <remy.rakic at gmail.com> @lqd
 Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
