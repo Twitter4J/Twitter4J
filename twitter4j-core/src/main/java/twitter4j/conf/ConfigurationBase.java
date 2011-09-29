@@ -99,9 +99,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1/";
     private static final String DEFAULT_SEARCH_BASE_URL = "http://search.twitter.com/";
-    private static final String DEFAULT_STREAM_BASE_URL = "http://stream.twitter.com/1/";
+    private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1/";
     private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/2/";
-    private static final String DEFAULT_SITE_STREAM_BASE_URL = "http://sitestream.twitter.com/2b/";
+    private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com/2b/";
 
     private boolean IS_DALVIK;
     private boolean IS_GAE;
