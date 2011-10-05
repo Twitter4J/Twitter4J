@@ -65,6 +65,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String streamBaseURL;
     private String userStreamBaseURL;
     private String siteStreamBaseURL;
+    private String uploadBaseURL;
 
     private String dispatcherImpl;
 
@@ -102,6 +103,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1/";
     private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/2/";
     private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com/2b/";
+    private static final String DEFAULT_UPLOAD_BASE_URL = "http://upload.twitter.com/1/";
 
     private boolean IS_DALVIK;
     private boolean IS_GAE;
@@ -179,6 +181,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setStreamBaseURL(DEFAULT_STREAM_BASE_URL);
         setUserStreamBaseURL(DEFAULT_USER_STREAM_BASE_URL);
         setSiteStreamBaseURL(DEFAULT_SITE_STREAM_BASE_URL);
+        setUploadBaseURL(DEFAULT_UPLOAD_BASE_URL);
 
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
@@ -507,6 +510,21 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.siteStreamBaseURL = siteStreamBaseURL;
     }
 
+    public String getUploadBaseURL() {
+        return uploadBaseURL;
+    }
+
+    protected final void setUploadBaseURL(String uploadBaseURL) {
+        this.uploadBaseURL = uploadBaseURL;
+        fixUploadBaseURL();
+    }
+
+    private void fixUploadBaseURL() {
+        if (DEFAULT_UPLOAD_BASE_URL.equals(fixURL(false, this.uploadBaseURL))) {
+            this.uploadBaseURL = fixURL(useSSL, this.uploadBaseURL);
+        }
+    }
+
     public String getOAuthRequestTokenURL() {
         return oAuthRequestTokenURL;
     }
@@ -664,6 +682,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
         result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
         result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
+        result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
         result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
         result = 31 * result + (includeRTsEnabled ? 1 : 0);
@@ -756,6 +775,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (streamBaseURL != null ? !streamBaseURL.equals(that.streamBaseURL) : that.streamBaseURL != null)
             return false;
+        if (uploadBaseURL != null ? !uploadBaseURL.equals(that.uploadBaseURL) : that.uploadBaseURL != null)
+            return false;
         if (user != null ? !user.equals(that.user) : that.user != null)
             return false;
         if (userAgent != null ? !userAgent.equals(that.userAgent) : that.userAgent != null)
@@ -799,6 +820,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", streamBaseURL='" + streamBaseURL + '\'' +
                 ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
                 ", siteStreamBaseURL='" + siteStreamBaseURL + '\'' +
+                ", uploadBaseURL='" + uploadBaseURL + '\'' +
                 ", dispatcherImpl='" + dispatcherImpl + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
                 ", includeRTsEnabled=" + includeRTsEnabled +

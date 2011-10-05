@@ -18,8 +18,6 @@ package twitter4j;
 
 import twitter4j.api.HelpMethods;
 
-import java.util.List;
-
 /**
  * A listner for receiving asynchronous responses from Twitter Async APIs.
  *
@@ -101,6 +99,11 @@ public interface TwitterListener {
     void gotShowStatus(Status status);
 
     void updatedStatus(Status status);
+
+    /**
+     * @since Twitter4J 2.2.5
+     */
+    void updatedStatusWithMedia(Status status);
 
     void destroyedStatus(Status destroyedStatus);
 

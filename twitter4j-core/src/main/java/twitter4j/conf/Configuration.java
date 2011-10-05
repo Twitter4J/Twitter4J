@@ -102,6 +102,8 @@ public interface Configuration extends HttpClientConfiguration
 
     String getSiteStreamBaseURL();
 
+    String getUploadBaseURL();
+
     boolean isIncludeRTsEnabled();
 
     boolean isIncludeEntitiesEnabled();
