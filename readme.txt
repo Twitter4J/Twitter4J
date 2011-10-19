@@ -49,4 +49,4 @@ Tomohisa Igarashi <tm.igarashi at gmail.com>
 Will Glozer <will at glozer.net> @ar3te
 William Morgan <william at twitter.com> @wm
 withgod <noname at withgod.jp> @withgod
-Yusuke Yamamoto <yusuke at mac.com> @yusukey
+Yusuke Yamamoto <yusuke at mac.com> @yusuke

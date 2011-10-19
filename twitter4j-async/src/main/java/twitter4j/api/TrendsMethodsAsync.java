@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 Yusuke Yamamoto
+ * Copyright (C) 2007 Yusuke Yamamoto
+ * Copyright (C) 2011 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,34 +24,6 @@ import java.util.Date;
  * @since Twitter4J 2.1.3
  */
 public interface TrendsMethodsAsync {
-    /**
-     * Returns the top ten topics that are currently trending on Twitter. The response includes the time of the request, the name of each trend, and the url to the Twitter Search results page for that topic.
-     * <br>This method calls http://search.twitter.com/trends.json
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends">GET trends | Twitter Developers</a>
-     * @since Twitter4J 2.0.2
-     */
-    void getTrends();
-
-    /**
-     * Returns the current top 10 trending topics on Twitter. The response includes the time of the request, the name of each trending topic, and query used on Twitter Search results page for that topic.
-     * <br>This method calls http://search.twitter.com/trends/current.json
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/current">GET trends/current | Twitter Developers</a>
-     * @since Twitter4J 2.0.2
-     */
-    void getCurrentTrends();
-
-    /**
-     * Returns the current top 10 trending topics on Twitter. The response includes the time of the request, the name of each trending topic, and query used on Twitter Search results page for that topic.
-     * <br>This method calls http://search.twitter.com/trends/current.json
-     *
-     * @param excludeHashTags Setting this to true will remove all hashtags from the trends list.
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/current">GET trends/current | Twitter Developers</a>
-     * @since Twitter4J 2.0.2
-     */
-    void getCurrentTrends(boolean excludeHashTags);
-
     /**
      * Returns the top 20 trending topics for each hour in a given day.
      * <br>This method calls http://search.twitter.com/trends/daily.json

@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 Yusuke Yamamoto
+ * Copyright (C) 2007 Yusuke Yamamoto
+ * Copyright (C) 2011 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,28 +97,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public QueryResult search(Query query) throws TwitterException {
         return factory.createQueryResult(get(conf.getSearchBaseURL()
                 + "search.json", query.asHttpParameterArray()), query);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Trends getTrends() throws TwitterException {
-        return factory.createTrends(get(conf.getRestBaseURL() + "trends.json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Trends getCurrentTrends() throws TwitterException {
-        return factory.createTrendsList(get(conf.getRestBaseURL() + "trends/current.json")).get(0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Trends getCurrentTrends(boolean excludeHashTags) throws TwitterException {
-        return factory.createTrendsList(get(conf.getRestBaseURL() + "trends/current.json"
-                + (excludeHashTags ? "?exclude=hashtags" : ""))).get(0);
     }
 
     /**

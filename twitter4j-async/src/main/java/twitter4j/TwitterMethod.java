@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 Yusuke Yamamoto
+ * Copyright (C) 2007 Yusuke Yamamoto
+ * Copyright (C) 2011 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,8 +79,6 @@ public final class TwitterMethod implements java.io.Serializable {
     /*Search API Methods*/
     public static final TwitterMethod SEARCH = getInstance("SEARCH");
 
-    public static final TwitterMethod TRENDS = new TwitterMethod("TRENDS");
-    public static final TwitterMethod CURRENT_TRENDS = new TwitterMethod("CURRENT_TRENDS");
     public static final TwitterMethod DAILY_TRENDS = new TwitterMethod("DAILY_TRENDS");
     public static final TwitterMethod WEEKLY_TRENDS = new TwitterMethod("WEEKLY_TRENDS");
 
