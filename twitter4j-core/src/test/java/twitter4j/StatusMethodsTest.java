@@ -68,16 +68,18 @@ public class StatusMethodsTest extends TwitterTestBase {
     }
 
     public void testStatusMethods() throws Exception {
-        String date = new java.util.Date().toString() + "test http://t.co/VEDROet @twit4j2 #twitter4jtest";
+        String dateStr = new java.util.Date().toString();
+        String date = dateStr + "test http://t.co/VEDROet @twit4j2 #twitter4jtest";
         Status status = twitter1.updateStatus(date);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+        System.out.println(status.getText());
 
-        assertEquals(date, status.getText());
+        assertTrue(status.getText().matches(dateStr + "test http://t.co/.* @twit4j2 #twitter4jtest"));
         Status status2 = twitter2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
         assertNotNull(DataObjectFactory.getRawJSON(status2));
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
-        assertEquals("@" + id1.screenName + " " + date, status2.getText());
+        assertTrue(status2.getText().matches("@" + id1.screenName + " " + dateStr + "test http://t.co/.* @twit4j2 #twitter4jtest"));
         assertEquals(status.getId(), status2.getInReplyToStatusId());
         assertEquals(id1.id, status2.getInReplyToUserId());
         status = twitter1.destroyStatus(status.getId());
