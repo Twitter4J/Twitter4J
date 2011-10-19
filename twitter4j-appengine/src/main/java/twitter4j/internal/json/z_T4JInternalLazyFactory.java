@@ -223,8 +223,8 @@ public class z_T4JInternalLazyFactory implements z_T4JInternalFactory {
         };
     }
 
-    public ResponseList<Place> createEmptyPlaceList() {
-        return new ResponseListImpl<Place>(0, null);
+    public <T> ResponseList<T> createEmptyResponseList() {
+        return new ResponseListImpl<T>(0, null);
     }
 
     public SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException {

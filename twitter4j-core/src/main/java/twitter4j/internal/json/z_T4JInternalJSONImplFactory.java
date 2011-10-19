@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 Yusuke Yamamoto
+ * Copyright (C) 2007 Yusuke Yamamoto
+ * Copyright (C) 2011 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -247,6 +248,10 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
 
     public ResponseList<HelpMethods.Language> createLanguageList(HttpResponse res) throws TwitterException {
         return LanguageJSONImpl.createLanguageList(res, conf);
+    }
+
+    public <T> ResponseList<T> createEmptyResponseList() {
+        return new ResponseListImpl<T>(0, null);
     }
 
     @Override
