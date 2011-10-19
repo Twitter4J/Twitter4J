@@ -115,6 +115,7 @@ mkdir $DIR/twitter4j-appengine/javadoc/
 unzip twitter4j-appengine/target/twitter4j-appengine-$1-javadoc.jar -d $DIR/twitter4j-appengine/javadoc/
 cp twitter4j-appengine/target/twitter4j-appengine-$1-javadoc.jar -d $DIR/twitter4j-appengine/
 cp twitter4j-appengine/target/twitter4j-appengine-$1-sources.jar -d $DIR/twitter4j-appengine/
+cp twitter4j-appengine/target/twitter4j-appengine-$1.jar -d $DIR/twitter4j-appengine/
 
 mkdir $DIR/lib
 cp readme-libs.txt $DIR/lib
@@ -123,7 +124,6 @@ cp twitter4j-media-support/target/twitter4j-media-support-$1.jar $DIR/lib
 cp twitter4j-examples/target/twitter4j-examples-$1.jar $DIR/lib
 cp twitter4j-async/target/twitter4j-async-$1.jar $DIR/lib
 cp twitter4j-stream/target/twitter4j-stream-$1.jar $DIR/lib
-cp twitter4j-appengine/target/twitter4j-appengine-$1.jar $DIR/lib
 
 cd $DIR/
 find . -name ".svn" -print -exec rm -rf {} ";"
