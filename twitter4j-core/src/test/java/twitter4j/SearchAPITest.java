@@ -115,6 +115,7 @@ public class SearchAPITest extends TwitterTestBase {
         query.setSinceId(1671199128);
         queryResult = unauthenticated.search(query);
         assertTrue(0 < queryResult.getTweets().size());
+        assertEquals(6358482, queryResult.getTweets().get(0).getFromUserId());
 
         query = new Query("\\u5e30%u5e30 <%}& foobar").rpp(100).page(1);
         QueryResult result = twitter1.search(query);
@@ -139,7 +140,7 @@ public class SearchAPITest extends TwitterTestBase {
     private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception {
         Date trendAt = null;
         for (Trends singleTrends : trendsArray) {
-            assertTrue((expectedSize-10) < singleTrends.getTrends().length);
+            assertTrue((expectedSize - 10) < singleTrends.getTrends().length);
             if (trendAt != null) {
                 assertTrue(trendAt.before(singleTrends.getTrendAt()));
             }

@@ -426,6 +426,7 @@ public final class Query implements java.io.Serializable {
         appendParameter("geocode", geocode, params);
         appendParameter("until", until, params);
         appendParameter("result_type", resultType, params);
+        appendParameter("with_twitter_user_id", "true", params);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
