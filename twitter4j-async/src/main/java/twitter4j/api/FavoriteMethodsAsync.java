@@ -17,9 +17,6 @@
 package twitter4j.api;
 
 import twitter4j.Paging;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.TwitterException;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -64,7 +61,7 @@ public interface FavoriteMethodsAsync {
      * @since Twitter4J 2.0.1
      */
     void getFavorites(String id, int page);
-    
+
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://api.twitter.com/1/favorites.json
@@ -74,7 +71,7 @@ public interface FavoriteMethodsAsync {
      * @since Twitter4J 2.2.5
      */
     void getFavorites(Paging paging);
-    
+
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://api.twitter.com/1/favorites/[id].json

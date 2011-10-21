@@ -580,6 +580,82 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
+    public void updateStatusWithMedia(final String statusText,
+            final boolean possiblySensitive, final File file) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS_WITH_MEDIA, listeners) {
+            @Override
+            void invoke(List<TwitterListener> listeners) throws TwitterException {
+                Status status = twitter.updateStatusWithMedia(statusText, possiblySensitive, file);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.updatedStatusWithMedia(status);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void updateStatusWithMedia(final String statusText, final boolean possiblySensitive,
+            final String mediaFilename, final InputStream mediaBody) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS_WITH_MEDIA, listeners) {
+            @Override
+            void invoke(List<TwitterListener> listeners) throws TwitterException {
+                Status status = twitter.updateStatusWithMedia(statusText, possiblySensitive, mediaFilename, mediaBody);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.updatedStatusWithMedia(status);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void updateStatusWithMedia(final StatusUpdate latestStatus,
+            final boolean possiblySensitive, final File file) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS_WITH_MEDIA, listeners) {
+            @Override
+            void invoke(List<TwitterListener> listeners) throws TwitterException {
+                Status status = twitter.updateStatusWithMedia(latestStatus, possiblySensitive, file);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.updatedStatusWithMedia(status);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void updateStatusWithMedia(final StatusUpdate latestStatus,
+            final boolean possiblySensitive, final String mediaFilename, final InputStream mediaBody) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_STATUS_WITH_MEDIA, listeners) {
+            @Override
+            void invoke(List<TwitterListener> listeners) throws TwitterException {
+                Status status = twitter.updateStatusWithMedia(latestStatus, possiblySensitive, mediaFilename, mediaBody);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.updatedStatusWithMedia(status);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void destroyStatus(final long statusId) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_STATUS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2220,7 +2296,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl
             }
         });
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -2237,7 +2313,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl
             }
         });
     }
-    
+
     /**
      * {@inheritDoc}
      */

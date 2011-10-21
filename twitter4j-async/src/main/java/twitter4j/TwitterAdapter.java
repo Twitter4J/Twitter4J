@@ -115,6 +115,12 @@ public class TwitterAdapter implements TwitterListener {
     public void updatedStatus(Status statuses) {
     }
 
+    /**
+     * @since Twitter4J 2.2.5
+     */
+    public void updatedStatusWithMedia(Status status) {
+    }
+
     public void destroyedStatus(Status destroyedStatus) {
     }
 

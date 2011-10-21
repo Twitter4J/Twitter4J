@@ -504,6 +504,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    public void updatedStatusWithMedia(Status status) {
+        this.status = status;
+        notifyResponse();
+    }
+
     public void destroyedStatus(Status destroyedStatus) {
         this.status = destroyedStatus;
         notifyResponse();
