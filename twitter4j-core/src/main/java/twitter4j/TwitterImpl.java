@@ -96,7 +96,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public QueryResult search(Query query) throws TwitterException {
         return factory.createQueryResult(get(conf.getSearchBaseURL()
-                + "search.json", query.asHttpParameterArray()), query);
+                + "search.json", query.asHttpParameterArray(INCLUDE_ENTITIES)), query);
     }
 
     /**
@@ -167,7 +167,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             TwitterException {
         ensureAuthorizationEnabled();
         return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), new HttpParameter[] {INCLUDE_ENTITIES, INCLUDE_MY_RETWEET})));
+                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), new HttpParameter[]{INCLUDE_ENTITIES, INCLUDE_MY_RETWEET})));
     }
 
     /**
@@ -1468,27 +1468,27 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 mergeParameters(getParameterArray("page", page)
                         , INCLUDE_ENTITIES)));
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getFavorites(Paging paging) throws TwitterException {
-      ensureAuthorizationEnabled();
-      return factory.createStatusList(get(conf.getRestBaseURL() + "favorites.json",
-      		mergeParameters(paging.asPostParameterArray()
-              , INCLUDE_ENTITIES)));
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites.json",
+                mergeParameters(paging.asPostParameterArray()
+                        , INCLUDE_ENTITIES)));
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public ResponseList<Status> getFavorites(String id, Paging paging) throws TwitterException {
-      ensureAuthorizationEnabled();
-      return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/"+ id +".json",
-      		mergeParameters(paging.asPostParameterArray()
-              , INCLUDE_ENTITIES)));
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/" + id + ".json",
+                mergeParameters(paging.asPostParameterArray()
+                        , INCLUDE_ENTITIES)));
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -1761,10 +1761,10 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     public ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException {
-        try{
-        return factory.createPlaceList(get(conf.getRestBaseURL()
-                + "geo/reverse_geocode.json", query.asHttpParameterArray()));
-        }catch(TwitterException te){
+        try {
+            return factory.createPlaceList(get(conf.getRestBaseURL()
+                    + "geo/reverse_geocode.json", query.asHttpParameterArray()));
+        } catch (TwitterException te) {
             if (te.getStatusCode() == 404) {
                 return factory.createEmptyResponseList();
             } else {
