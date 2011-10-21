@@ -143,7 +143,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setHttpProxyPort(-1);
         setHttpConnectionTimeout(20000);
         setHttpReadTimeout(120000);
-        setHttpStreamingReadTimeout(60 * 5 * 1000);
+        setHttpStreamingReadTimeout(40 * 1000);
         setHttpRetryCount(0);
         setHttpRetryIntervalSeconds(5);
         setHttpMaxTotalConnections(20);
