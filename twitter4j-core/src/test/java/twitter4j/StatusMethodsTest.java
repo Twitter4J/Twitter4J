@@ -17,6 +17,7 @@ package twitter4j;
 
 import twitter4j.json.DataObjectFactory;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -85,6 +86,15 @@ public class StatusMethodsTest extends TwitterTestBase {
         status = twitter1.destroyStatus(status.getId());
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+
+        date = new java.util.Date().toString() + "test http://t.co/VEDROet @twit4j2 #twitter4jtest";
+        status = twitter1.updateStatusWithMedia(date, false, getRandomlyChosenFile());
+        assertNotNull(DataObjectFactory.getRawJSON(status));
+        assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+
+        assertTrue(status.getText().startsWith(date));
+        assertNotNull(status.getMediaEntities());
+        assertEquals(1, status.getMediaEntities().length);
     }
 
     public void testRetweetMethods() throws Exception {
@@ -218,22 +228,21 @@ public class StatusMethodsTest extends TwitterTestBase {
         assertEquals(150, thumb.getHeight());
     }
 
-//    public void testAnnotations() throws Exception {
-//    	final String failMessage =
-//    		"Annotations were not added to the status, please make sure that your account is whitelisted for Annotations by Twitter";
-//    	Annotation annotation = new Annotation("review");
-//    	annotation.attribute("content", "Yahoo! landing page").
-//    		attribute("url", "http://yahoo.com").attribute("rating", "0.6");
-//
-//    	StatusUpdate update = new StatusUpdate(new java.util.Date().toString() + ": annotated status");
-//    	update.addAnnotation(annotation);
-//
-//        Status withAnnos = twitterAPI1.updateStatus(update);
-//        Annotations annotations = withAnnos.getAnnotations();
-//        assertNotNull(failMessage, annotations);
-//
-//        List<Annotation> annos = annotations.getAnnotations();
-//        assertEquals(1, annos.size());
-//        assertEquals(annotation, annos.get(0));
-//    }
+    static final String[] files = {"src/test/resources/t4j-reverse.jpeg",
+        "src/test/resources/t4j-reverse.png",
+        "src/test/resources/t4j-reverse.gif",
+        "src/test/resources/t4j.jpeg",
+        "src/test/resources/t4j.png",
+        "src/test/resources/t4j.gif",
+    };
+
+    private static File getRandomlyChosenFile() {
+        int rand = (int) (System.currentTimeMillis() % 6);
+        File file = new File(files[rand]);
+        if (!file.exists()) {
+            file = new File("twitter4j-core/" + files[rand]);
+        }
+        return file;
+    }
+
 }

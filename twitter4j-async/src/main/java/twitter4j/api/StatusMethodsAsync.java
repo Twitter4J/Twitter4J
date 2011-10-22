@@ -16,6 +16,9 @@
 
 package twitter4j.api;
 
+import java.io.File;
+import java.io.InputStream;
+
 import twitter4j.Paging;
 import twitter4j.StatusUpdate;
 
@@ -128,4 +131,55 @@ public interface StatusMethodsAsync {
      * @since Twitter4J 2.2.3
      */
     void getRetweetedByIDs(long statusId, Paging paging);
+
+    /**
+     * Updates the authenticating user's status and attaches media for upload. The Tweet text will be rewritten to include the media URL(s), which will reduce the number of characters allowed in the Tweet text. If the URL(s) cannot be appended without text truncation, the tweet will be rejected and this method will return an HTTP 403 error.
+     * <br>This method calls http://upload.twitter.com/1/statuses/update_with_media
+     *
+     * @param status the text of your status update
+     * @param possiblySensitive Set to true for content which may not be suitable for every audience
+     * @param file the file of the media uploaded
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/update_with_media">POST statuses/update_with_media | Twitter Developers</a>
+     * @since Twitter4J 2.2.5
+     */
+    void updateStatusWithMedia(String statusText, boolean possiblySensitive, File file);
+
+    /**
+     * Updates the authenticating user's status and attaches media for upload. The Tweet text will be rewritten to include the media URL(s), which will reduce the number of characters allowed in the Tweet text. If the URL(s) cannot be appended without text truncation, the tweet will be rejected and this method will return an HTTP 403 error.
+     * <br>This method calls http://upload.twitter.com/1/statuses/update_with_media
+     *
+     * @param status the text of your status update
+     * @param possiblySensitive Set to true for content which may not be suitable for every audience
+     * @param mediaFilename the filename of the media uploaded
+     * @param mediaBody the body of the media uploaded
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/update_with_media">POST statuses/update_with_media | Twitter Developers</a>
+     * @since Twitter4J 2.2.5
+     */
+    void updateStatusWithMedia(String statusText, boolean possiblySensitive, String mediaFilename, InputStream mediaBody);
+
+    /**
+     * Updates the authenticating user's status and attaches media for upload. The Tweet text will be rewritten to include the media URL(s), which will reduce the number of characters allowed in the Tweet text. If the URL(s) cannot be appended without text truncation, the tweet will be rejected and this method will return an HTTP 403 error.
+     * <br>This method calls http://upload.twitter.com/1/statuses/update_with_media
+     *
+     * @param latestStatus the latest status to be updated.
+     * @param possiblySensitive Set to true for content which may not be suitable for every audience
+     * @param file the file of the media uploaded
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/update">POST statuses/update | Twitter Developers</a>
+     * @since Twitter4J 2.2.5
+     */
+    void updateStatusWithMedia(StatusUpdate latestStatus, boolean possiblySensitive, File file);
+
+    /**
+     * Updates the authenticating user's status and attaches media for upload. The Tweet text will be rewritten to include the media URL(s), which will reduce the number of characters allowed in the Tweet text. If the URL(s) cannot be appended without text truncation, the tweet will be rejected and this method will return an HTTP 403 error.
+     * <br>This method calls http://upload.twitter.com/1/statuses/update_with_media
+     *
+     * @param latestStatus the latest status to be updated.
+     * @param possiblySensitive Set to true for content which may not be suitable for every audience
+     * @param mediaFilename the filename of the media uploaded
+     * @param mediaBody the body of the media uploaded
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/update">POST statuses/update | Twitter Developers</a>
+     * @since Twitter4J 2.2.5
+     */
+    void updateStatusWithMedia(StatusUpdate latestStatus, boolean possiblySensitive, String mediaFilename, InputStream mediaBody);
+
 }
