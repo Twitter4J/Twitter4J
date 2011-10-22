@@ -3,7 +3,7 @@
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-stream</artifactId>
-    <version>2.2.5-SNAPSHOT</version>
+    <version>2.2.5</version>
     <packaging>jar</packaging>
     <name>twitter4j-stream</name>
     <description>A Java library for the Twitter API</description>
@@ -96,12 +96,12 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>2.2.5-SNAPSHOT</version>
+            <version>2.2.5</version>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-async</artifactId>
-            <version>2.2.5-SNAPSHOT</version>
+            <version>2.2.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
