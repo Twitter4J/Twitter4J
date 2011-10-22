@@ -19,11 +19,7 @@ package twitter4j.conf;
 import twitter4j.Version;
 
 import java.io.ObjectStreamException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Configuration base class with default settings.
@@ -205,7 +201,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         }
         IS_GAE = Boolean.valueOf(isGAE);
 
-        setMediaProvider("YFROG");
+        setMediaProvider("TWITTER");
         setMediaProviderAPIKey(null);
         setMediaProviderParameters(null);
     }

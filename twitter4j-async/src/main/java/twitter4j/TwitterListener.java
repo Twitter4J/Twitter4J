@@ -96,11 +96,6 @@ public interface TwitterListener {
 
     void updatedStatus(Status status);
 
-    /**
-     * @since Twitter4J 2.2.5
-     */
-    void updatedStatusWithMedia(Status status);
-
     void destroyedStatus(Status destroyedStatus);
 
     /**

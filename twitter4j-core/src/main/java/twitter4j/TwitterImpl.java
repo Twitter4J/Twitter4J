@@ -438,68 +438,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     /**
      * {@inheritDoc}
      */
-    public Status updateStatus(StatusUpdate latestStatus) throws TwitterException {
+    public Status updateStatus(StatusUpdate status) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatus(post(conf.getRestBaseURL()
-                + "statuses/update.json",
-                mergeParameters(latestStatus.asHttpParameterArray(),
-                        INCLUDE_ENTITIES)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Status updateStatusWithMedia(String status,
-            boolean possiblySensitive, File file) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatus(post(conf.getUploadBaseURL()
-                + "statuses/update_with_media.json",
-                new HttpParameter[]{ new HttpParameter("status", status)
-                    , new HttpParameter("possibly_sensitive", possiblySensitive)
-                    , new HttpParameter("media[]", file)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Status updateStatusWithMedia(String status, boolean possiblySensitive,
-            String mediaFilename, InputStream mediaBody) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatus(post(conf.getUploadBaseURL()
-                + "statuses/update_with_media.json",
-                new HttpParameter[]{ new HttpParameter("status", status)
-                    , new HttpParameter("possibly_sensitive", possiblySensitive)
-                    , new HttpParameter("media[]", mediaFilename, mediaBody)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Status updateStatusWithMedia(StatusUpdate latestStatus,
-            boolean possiblySensitive, File file) throws TwitterException {
-        ensureAuthorizationEnabled();
-        HttpParameter[] params = new HttpParameter[]{
-                new HttpParameter("possibly_sensitive", possiblySensitive),
-                new HttpParameter("media[]", file),
-        };
-        return factory.createStatus(post(conf.getUploadBaseURL()
-                + "statuses/update_with_media.json",
-                mergeParameters(latestStatus.asHttpParameterArray(), params)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Status updateStatusWithMedia(StatusUpdate latestStatus, boolean possiblySensitive,
-            String mediaFilename, InputStream mediaBody) throws TwitterException {
-        ensureAuthorizationEnabled();
-        HttpParameter[] params = new HttpParameter[]{
-                new HttpParameter("possibly_sensitive", possiblySensitive),
-                new HttpParameter("media[]", mediaFilename, mediaBody),
-        };
-        return factory.createStatus(post(conf.getUploadBaseURL()
-                + "statuses/update_with_media.json",
-                mergeParameters(latestStatus.asHttpParameterArray(), params)));
+        String url = status.isWithMedia() ?
+                conf.getUploadBaseURL() + "statuses/update_with_media.json" :
+                conf.getRestBaseURL() + "statuses/update.json";
+        return factory.createStatus(post(url,
+                status.asHttpParameterArray(INCLUDE_ENTITIES)));
     }
 
     /**

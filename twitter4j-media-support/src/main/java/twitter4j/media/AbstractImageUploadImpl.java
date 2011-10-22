@@ -26,10 +26,7 @@ import twitter4j.internal.logging.Logger;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Rémy Rakic - remy.rakic at gmail.com
@@ -140,5 +137,60 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
     protected String generateVerifyCredentialsAuthorizationURL(String verifyCredentialsUrl) {
         List<HttpParameter> oauthSignatureParams = oauth.generateOAuthSignatureHttpParams("GET", verifyCredentialsUrl);
         return verifyCredentialsUrl + "?" + OAuthAuthorization.encodeParameters(oauthSignatureParams);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractImageUploadImpl that = (AbstractImageUploadImpl) o;
+
+        if (apiKey != null ? !apiKey.equals(that.apiKey) : that.apiKey != null) return false;
+        if (!Arrays.equals(appendParameter, that.appendParameter)) return false;
+        if (client != null ? !client.equals(that.client) : that.client != null) return false;
+        if (conf != null ? !conf.equals(that.conf) : that.conf != null) return false;
+        if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
+        if (httpResponse != null ? !httpResponse.equals(that.httpResponse) : that.httpResponse != null) return false;
+        if (image != null ? !image.equals(that.image) : that.image != null) return false;
+        if (message != null ? !message.equals(that.message) : that.message != null) return false;
+        if (oauth != null ? !oauth.equals(that.oauth) : that.oauth != null) return false;
+        if (!Arrays.equals(postParameter, that.postParameter)) return false;
+        if (uploadUrl != null ? !uploadUrl.equals(that.uploadUrl) : that.uploadUrl != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = client != null ? client.hashCode() : 0;
+        result = 31 * result + (conf != null ? conf.hashCode() : 0);
+        result = 31 * result + (apiKey != null ? apiKey.hashCode() : 0);
+        result = 31 * result + (oauth != null ? oauth.hashCode() : 0);
+        result = 31 * result + (uploadUrl != null ? uploadUrl.hashCode() : 0);
+        result = 31 * result + (postParameter != null ? Arrays.hashCode(postParameter) : 0);
+        result = 31 * result + (appendParameter != null ? Arrays.hashCode(appendParameter) : 0);
+        result = 31 * result + (image != null ? image.hashCode() : 0);
+        result = 31 * result + (message != null ? message.hashCode() : 0);
+        result = 31 * result + (headers != null ? headers.hashCode() : 0);
+        result = 31 * result + (httpResponse != null ? httpResponse.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractImageUploadImpl{" +
+                "client=" + client +
+                ", conf=" + conf +
+                ", apiKey='" + apiKey + '\'' +
+                ", oauth=" + oauth +
+                ", uploadUrl='" + uploadUrl + '\'' +
+                ", postParameter=" + (postParameter == null ? null : Arrays.asList(postParameter)) +
+                ", appendParameter=" + (appendParameter == null ? null : Arrays.asList(appendParameter)) +
+                ", image=" + image +
+                ", message=" + message +
+                ", headers=" + headers +
+                ", httpResponse=" + httpResponse +
+                '}';
     }
 }

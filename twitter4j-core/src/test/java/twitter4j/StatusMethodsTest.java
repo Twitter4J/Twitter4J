@@ -87,8 +87,9 @@ public class StatusMethodsTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
-        date = new java.util.Date().toString() + "test http://t.co/VEDROet @twit4j2 #twitter4jtest";
-        status = twitter1.updateStatusWithMedia(date, false, getRandomlyChosenFile());
+        date = new java.util.Date().toString();
+        String tweet = date + "test http://t.co/VEDROet @twit4j2 #twitter4jtest";
+        status = twitter1.updateStatus(new StatusUpdate(tweet).possiblySensitive(false).media(getRandomlyChosenFile()));
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 

@@ -100,7 +100,6 @@ public final class TwitterMethod implements java.io.Serializable {
     /*Status Methods*/
     public static final TwitterMethod SHOW_STATUS = new TwitterMethod("SHOW_STATUS");
     public static final TwitterMethod UPDATE_STATUS = new TwitterMethod("UPDATE_STATUS");
-    public static final TwitterMethod UPDATE_STATUS_WITH_MEDIA = new TwitterMethod("UPDATE_STATUS_WITH_MEDIA");
     public static final TwitterMethod DESTROY_STATUS = new TwitterMethod("DESTROY_STATUS");
     public static final TwitterMethod RETWEET_STATUS = new TwitterMethod("RETWEET_STATUS");
     public static final TwitterMethod RETWEETS = new TwitterMethod("RETWEETS");

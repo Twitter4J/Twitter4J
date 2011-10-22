@@ -20,11 +20,7 @@ import junit.framework.Assert;
 import twitter4j.api.HelpMethods;
 import twitter4j.json.DataObjectFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Date;
 import java.util.List;
 
@@ -500,11 +496,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     public void updatedStatus(Status status) {
-        this.status = status;
-        notifyResponse();
-    }
-
-    public void updatedStatusWithMedia(Status status) {
         this.status = status;
         notifyResponse();
     }

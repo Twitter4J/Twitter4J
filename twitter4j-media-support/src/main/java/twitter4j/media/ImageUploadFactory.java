@@ -45,7 +45,9 @@ public class ImageUploadFactory {
      */
     public ImageUploadFactory(Configuration conf) {
         String mediaProvider = conf.getMediaProvider().toLowerCase();
-        if ("imgly".equals(mediaProvider) || "img_ly".equals(mediaProvider)) {
+        if ("twitter".equals(mediaProvider)) {
+            defaultMediaProvider = TWITTER;
+        } else if ("imgly".equals(mediaProvider) || "img_ly".equals(mediaProvider)) {
             defaultMediaProvider = IMG_LY;
         } else if ("plixi".equals(mediaProvider)) {
             defaultMediaProvider = PLIXI;
@@ -116,8 +118,10 @@ public class ImageUploadFactory {
             throw new IllegalArgumentException("OAuth authorization is required.");
         }
         OAuthAuthorization oauth = (OAuthAuthorization) authorization;
-        if (mediaProvider == IMG_LY) {
-            return new ImgLyUpload(conf, oauth);
+        if (mediaProvider == TWITTER) {
+            return new TwitterUpload(conf, oauth);
+        }else if (mediaProvider == IMG_LY) {
+                return new ImgLyUpload(conf, oauth);
         } else if (mediaProvider == PLIXI) {
             return new PlixiUpload(conf, apiKey, oauth);
         } else if (mediaProvider == TWIPPLE) {
