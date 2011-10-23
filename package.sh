@@ -1,18 +1,7 @@
+#!/bin/sh
 LANG=C
 
 export HASH=`git log|head -n 1|sed "s/^commit //g"`
-
-mkdir /tmp/t4jbuild
-cp -r ./* /tmp/t4jbuild/
-cd /tmp/t4jbuild/
-rm twitter4j-core/src/test/resources/test.properties
-rm twitter4j-core/src/test/resources/xauth-test.properties
-rm twitter4j-httpclient-support/src/test/resources/twitter4j.properties
-rm twitter4j-media-support/src/test/resources/twitter4j.properties
-rm twitter4j-async/src/test/resources/test.properties
-rm twitter4j-stream/src/test/resources/test.properties
-rm twitter4j-stream/src/test/resources/sitestream-test.properties
-rm twitter4j-appengine/src/test/resources/twitter4j.properties
 
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusukey\/maven2\//g" pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusukey\/maven2\//g" twitter4j-core/pom.xml
