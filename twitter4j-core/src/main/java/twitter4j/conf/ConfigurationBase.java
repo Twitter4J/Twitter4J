@@ -111,9 +111,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     static {
         // detecting dalvik (Android platform)
         try {
-            // dalvik.system.VMRuntime class should be existing on Android platform.
-            // @see http://developer.android.com/reference/dalvik/system/VMRuntime.html
-            Class.forName("dalvik.system.VMRuntime");
+            // dalvik.system.DexFile class should be existing on Android platform.
+            // @see http://developer.android.com/reference/dalvik/system/DexFile.html
+            Class.forName("dalvik.system.DexFile");
             dalvikDetected = "true";
         } catch (ClassNotFoundException cnfe) {
             dalvikDetected = "false";
