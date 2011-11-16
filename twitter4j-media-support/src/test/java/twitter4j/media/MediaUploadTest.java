@@ -51,6 +51,8 @@ public class MediaUploadTest extends TestCase {
     public void testProviders() throws Exception {
         Configuration conf;
         ImageUploadFactory factory;
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITTER.getName()).build();
+        factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.getName()).build();
         factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.PLIXI.getName()).build();
@@ -89,6 +91,18 @@ public class MediaUploadTest extends TestCase {
         try {
             ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
             ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
+            String url = upload.upload(fileName, is, message);
+            assertTrue(url.length() > 0);
+        } finally {
+            is.close();
+        }
+    }
+
+    public void testTwitterUpload() throws Exception {
+        InputStream is = getClass().getResourceAsStream("/" + fileName);
+        try {
+            ImageUploadFactory factory = new ImageUploadFactory();
+            ImageUpload upload = factory.getInstance(MediaProvider.TWITTER);
             String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {

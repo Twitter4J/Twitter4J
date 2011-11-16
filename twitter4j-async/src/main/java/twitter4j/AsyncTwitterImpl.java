@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 Yusuke Yamamoto
+ * Copyright (C) 2007 Yusuke Yamamoto
+ * Copyright (C) 2011 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,60 +72,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.searched(result);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getTrends() {
-        getDispatcher().invokeLater(new AsyncTask(TRENDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws
-                    TwitterException {
-                Trends trends = twitter.getTrends();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotTrends(trends);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getCurrentTrends() {
-        getDispatcher().invokeLater(new AsyncTask(CURRENT_TRENDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws
-                    TwitterException {
-                Trends trends = twitter.getCurrentTrends();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotCurrentTrends(trends);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getCurrentTrends(final boolean excludeHashTags) {
-        getDispatcher().invokeLater(new AsyncTask(CURRENT_TRENDS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws
-                    TwitterException {
-                Trends trends = twitter.getCurrentTrends(excludeHashTags);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotCurrentTrends(trends);
                     } catch (Exception ignore) {
                     }
                 }
@@ -2264,6 +2211,40 @@ class AsyncTwitterImpl extends TwitterBaseImpl
         getDispatcher().invokeLater(new AsyncTask(FAVORITES, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 ResponseList<Status> statuses = twitter.getFavorites(id, page);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotFavorites(statuses);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getFavorites(final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(FAVORITES, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<Status> statuses = twitter.getFavorites(paging);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotFavorites(statuses);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getFavorites(final String id, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(FAVORITES, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<Status> statuses = twitter.getFavorites(id, paging);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFavorites(statuses);

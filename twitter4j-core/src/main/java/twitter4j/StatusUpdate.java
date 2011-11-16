@@ -18,6 +18,8 @@ package twitter4j;
 
 import twitter4j.internal.http.HttpParameter;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,10 @@ public final class StatusUpdate implements java.io.Serializable {
     private String placeId = null;
     private boolean displayCoordinates = true;
     private Annotations annotations = null;
+    private boolean possiblySensitive;
+    private String mediaName;
+    private transient InputStream mediaBody;
+    private File mediaFile;
     private static final long serialVersionUID = -3595502688477609916L;
 
     public StatusUpdate(String status) {
@@ -95,6 +101,63 @@ public final class StatusUpdate implements java.io.Serializable {
         return this;
     }
 
+    /**
+     * @since Twitter4J 2.2.5
+     */
+    public void setMedia(File file){
+        this.mediaFile = file;
+    }
+
+    /**
+     * @since Twitter4J 2.2.5
+     */
+    public StatusUpdate media(File file){
+        setMedia(file);
+        return this;
+    }
+
+    /**
+     * @since Twitter4J 2.2.5
+     */
+    public void setMedia(String name, InputStream body){
+        this.mediaName = name;
+        this.mediaBody = body;
+    }
+
+    /*package*/ boolean isWithMedia(){
+        return mediaFile != null || mediaName != null;
+    }
+
+    /**
+     * @since Twitter4J 2.2.5
+     */
+    public StatusUpdate media(String name, InputStream body){
+        setMedia(name, body);
+        return this;
+    }
+
+    /**
+     * @since Twitter4J 2.2.5
+     */
+    public void setPossiblySensitive(boolean possiblySensitive){
+        this.possiblySensitive = possiblySensitive;
+    }
+
+    /**
+     * @since Twitter4J 2.2.5
+     */
+    public StatusUpdate possiblySensitive(boolean possiblySensitive){
+        setPossiblySensitive(possiblySensitive);
+        return this;
+    }
+
+    /**
+     * @since Twitter4J 2.2.5
+     */
+    public boolean isPossiblySensitive(){
+        return possiblySensitive;
+    }
+
     public Annotations getAnnotations() {
         return annotations;
     }
@@ -120,7 +183,7 @@ public final class StatusUpdate implements java.io.Serializable {
         return this;
     }
 
-    /*package*/ HttpParameter[] asHttpParameterArray() {
+    /*package*/ HttpParameter[] asHttpParameterArray(HttpParameter includeEntities) {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("status", status, params);
         if (-1 != inReplyToStatusId) {
@@ -138,6 +201,15 @@ public final class StatusUpdate implements java.io.Serializable {
         if ((annotations != null) && (!annotations.isEmpty())) {
             appendParameter("annotations", annotations.asParameterValue(), params);
         }
+        params.add(includeEntities);
+        if(null != mediaFile){
+            params.add(new HttpParameter("media[]", mediaFile));
+            params.add(new HttpParameter("possibly_sensitive", possiblySensitive));
+        }else if(mediaName != null && mediaBody != null){
+            params.add(new HttpParameter("media[]", mediaName, mediaBody));
+            params.add(new HttpParameter("possibly_sensitive", possiblySensitive));
+        }
+
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
@@ -165,25 +237,30 @@ public final class StatusUpdate implements java.io.Serializable {
 
         if (displayCoordinates != that.displayCoordinates) return false;
         if (inReplyToStatusId != that.inReplyToStatusId) return false;
-        if (location != null ? !location.equals(that.location) : that.location != null)
-            return false;
-        if (placeId != null ? !placeId.equals(that.placeId) : that.placeId != null)
-            return false;
-        if (annotations != null ? !annotations.equals(that.annotations) : that.annotations != null)
-            return false;
-        if (!status.equals(that.status)) return false;
+        if (possiblySensitive != that.possiblySensitive) return false;
+        if (annotations != null ? !annotations.equals(that.annotations) : that.annotations != null) return false;
+        if (location != null ? !location.equals(that.location) : that.location != null) return false;
+        if (mediaBody != null ? !mediaBody.equals(that.mediaBody) : that.mediaBody != null) return false;
+        if (mediaFile != null ? !mediaFile.equals(that.mediaFile) : that.mediaFile != null) return false;
+        if (mediaName != null ? !mediaName.equals(that.mediaName) : that.mediaName != null) return false;
+        if (placeId != null ? !placeId.equals(that.placeId) : that.placeId != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = status.hashCode();
+        int result = status != null ? status.hashCode() : 0;
         result = 31 * result + (int) (inReplyToStatusId ^ (inReplyToStatusId >>> 32));
         result = 31 * result + (location != null ? location.hashCode() : 0);
         result = 31 * result + (placeId != null ? placeId.hashCode() : 0);
         result = 31 * result + (displayCoordinates ? 1 : 0);
         result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
+        result = 31 * result + (possiblySensitive ? 1 : 0);
+        result = 31 * result + (mediaName != null ? mediaName.hashCode() : 0);
+        result = 31 * result + (mediaBody != null ? mediaBody.hashCode() : 0);
+        result = 31 * result + (mediaFile != null ? mediaFile.hashCode() : 0);
         return result;
     }
 
@@ -196,6 +273,10 @@ public final class StatusUpdate implements java.io.Serializable {
                 ", placeId='" + placeId + '\'' +
                 ", displayCoordinates=" + displayCoordinates +
                 ", annotations=" + annotations +
+                ", possiblySensitive=" + possiblySensitive +
+                ", mediaName='" + mediaName + '\'' +
+                ", mediaBody=" + mediaBody +
+                ", mediaFile=" + mediaFile +
                 '}';
     }
 }

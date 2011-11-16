@@ -16,13 +16,7 @@
 
 package twitter4j.api;
 
-import twitter4j.IDs;
-import twitter4j.Paging;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.StatusUpdate;
-import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.*;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -54,7 +48,8 @@ public interface StatusMethods {
 
     /**
      * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
-     * <br>This method calls http://api.twitter.com/1/statuses/update
+     * <br>This method calls http://api.twitter.com/1/statuses/update or<br>
+     *     This method calls https://upload.twitter.com/1/statuses/update_with_media
      *
      * @param latestStatus the latest status to be updated.
      * @return the latest status

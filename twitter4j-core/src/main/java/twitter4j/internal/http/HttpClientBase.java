@@ -1,11 +1,10 @@
 package twitter4j.internal.http;
 
-import twitter4j.conf.ConfigurationContext;
-import twitter4j.internal.logging.Logger;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+
+import twitter4j.internal.logging.Logger;
 
 public class HttpClientBase implements Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientBase.class);

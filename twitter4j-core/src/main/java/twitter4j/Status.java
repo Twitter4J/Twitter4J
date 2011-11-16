@@ -23,7 +23,8 @@ import java.util.Date;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface Status extends Comparable<Status>, TwitterResponse, java.io.Serializable {
+public interface Status extends Comparable<Status>, TwitterResponse,
+        EntitySupport, java.io.Serializable {
     /**
      * Return the created_at
      *
@@ -155,42 +156,10 @@ public interface Status extends Comparable<Status>, TwitterResponse, java.io.Ser
     boolean isRetweetedByMe();
 
     /**
-     * Returns an array of user mentions in the tweet, or null if no users were mentioned.
-     *
-     * @return An array of user mention entities in the tweet.
-     * @since Twitter4J 2.1.9
-     */
-    UserMentionEntity[] getUserMentionEntities();
-
-    /**
-     * Returns an array if URLEntity mentioned in the tweet, or null if no URLs were mentioned.
-     *
-     * @return An array of URLEntity mentioned in the tweet.
-     * @since Twitter4J 2.1.9
-     */
-    URLEntity[] getURLEntities();
-
-    /**
-     * Returns an array if hashtag mentioned in the tweet, or null if no hashtag were mentioned.
-     *
-     * @return An array of Hashtag mentioned in the tweet.
-     * @since Twitter4J 2.1.9
-     */
-    HashtagEntity[] getHashtagEntities();
-
-    /**
      * Returns the annotations, or null if no annotations are associated with this status.
      *
      * @since Twitter4J 2.1.4
      * @deprecated Annotations is not available for now. <a href="http://groups.google.com/group/twitter-development-talk/browse_thread/thread/4d5ff2ec4d2ce4a7">Annotations - Twitter Development Talk | Google Groups</a>
      */
     Annotations getAnnotations();
-
-    /**
-     * Returns an array of MediaEntities if medias are available in the tweet, or null if no media is included in the tweet.
-     *
-     * @return an array of MediaEntities.
-     * @since Twitter4J 2.2.3
-     */
-    MediaEntity[] getMediaEntities();
 }

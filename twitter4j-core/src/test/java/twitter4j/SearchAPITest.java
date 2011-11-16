@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 Yusuke Yamamoto
+ * Copyright (C) 2007 Yusuke Yamamoto
+ * Copyright (C) 2011 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +42,7 @@ public class SearchAPITest extends TwitterTestBase {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Query query = new Query("test")
                 .until(format.format(new java.util.Date(System.currentTimeMillis() - 3600 * 24)));
-        HttpParameter[] params = query.asHttpParameterArray();
+        HttpParameter[] params = query.asHttpParameterArray(new HttpParameter("include_entities", "true"));
         assertTrue(findParameter(params, "q"));
         assertTrue(findParameter(params, "until"));
     }
@@ -114,71 +115,37 @@ public class SearchAPITest extends TwitterTestBase {
         query.setSinceId(1671199128);
         queryResult = unauthenticated.search(query);
         assertTrue(0 < queryResult.getTweets().size());
+        assertEquals(6358482, queryResult.getTweets().get(0).getFromUserId());
 
         query = new Query("\\u5e30%u5e30 <%}& foobar").rpp(100).page(1);
         QueryResult result = twitter1.search(query);
+
+        query = new Query("#sendro").rpp(1).page(1);
+        result = twitter1.search(query);
+        System.out.println(result.getTweets().get(0));
+        assertNotNull(result.getTweets().get(0).getHashtagEntities());
     }
 
     public void testTrends() throws Exception {
-        Trends trends;
-        trends = unauthenticated.getTrends();
-
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertEquals(10, trends.getTrends().length);
-        for (int i = 0; i < 10; i++) {
-            assertNotNull(trends.getTrends()[i].getName());
-            assertNotNull(trends.getTrends()[i].getUrl());
-            assertNull(trends.getTrends()[i].getQuery());
-            trends.getTrends()[i].hashCode();
-            trends.getTrends()[i].toString();
-        }
-
-        trends = unauthenticated.getCurrentTrends();
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        assertEquals(10, trends.getTrends().length);
-        for (Trend trend : trends.getTrends()) {
-            assertNotNull(trend.getName());
-            assertNull(trend.getUrl());
-            assertNotNull(trend.getQuery());
-            trend.hashCode();
-            trend.toString();
-        }
-
-        trends = unauthenticated.getCurrentTrends(true);
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
-        Trend[] trendArray = trends.getTrends();
-        assertEquals(10, trendArray.length);
-        for (Trend trend : trends.getTrends()) {
-            assertNotNull(trend.getName());
-            assertNull(trend.getUrl());
-            assertNotNull(trend.getQuery());
-            trend.hashCode();
-            trend.toString();
-        }
-
         List<Trends> trendsList;
 
         trendsList = unauthenticated.getDailyTrends();
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
         assertTrends(trendsList, 20);
 
         trendsList = unauthenticated.getDailyTrends(new Date(), true);
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
         assertTrends(trendsList, 20);
 
         trendsList = unauthenticated.getWeeklyTrends();
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
         assertTrends(trendsList, 30);
 
         trendsList = unauthenticated.getWeeklyTrends(new Date(), true);
-        assertTrue(100000 > (trends.getAsOf().getTime() - System.currentTimeMillis()));
         assertTrends(trendsList, 30);
     }
 
     private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception {
         Date trendAt = null;
         for (Trends singleTrends : trendsArray) {
-            assertTrue((expectedSize-10) < singleTrends.getTrends().length);
+            assertTrue((expectedSize - 10) < singleTrends.getTrends().length);
             if (trendAt != null) {
                 assertTrue(trendAt.before(singleTrends.getTrendAt()));
             }

@@ -245,37 +245,44 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onStatus(Status status) {
+        System.out.println("onStatus");
         received.add(new Object[]{"onstatus", status});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(status));
         notifyResponse();
     }
 
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+        System.out.println("onDeletionNotice");
         received.add(new Object[]{TwitterMethod.DESTROY_STATUS, statusDeletionNotice});
         notifyResponse();
     }
 
     public void onDeletionNotice(long directMessageId, long userId) {
+        System.out.println("onDeletionNotice");
         received.add(new Object[]{TwitterMethod.DESTROY_DIRECT_MESSAGE, directMessageId, userId});
         notifyResponse();
     }
 
     public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
+        System.out.println("onTrackLimitationNotice");
         received.add(new Object[]{"tracklimitation", numberOfLimitedStatuses});
         notifyResponse();
     }
 
     public void onScrubGeo(long userId, long upToStatusId) {
+        System.out.println("onScrubGeo");
         received.add(new Object[]{"scrubgeo", userId, upToStatusId});
         notifyResponse();
     }
 
     public void onFriendList(long[] friendIds) {
+        System.out.println("onFriendList");
         received.add(new Object[]{"onfriendlist", friendIds});
         notifyResponse();
     }
 
     public void onFavorite(User source, User target, Status favoritedStatus) {
+        System.out.println("onFavorite");
         received.add(new Object[]{TwitterMethod.CREATE_FAVORITE, source, target, favoritedStatus});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(target));
@@ -284,6 +291,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onUnfavorite(User source, User target, Status unfavoritedStatus) {
+        System.out.println("onUnfavorite");
         received.add(new Object[]{TwitterMethod.DESTROY_FAVORITE, source, target, unfavoritedStatus});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(target));
@@ -302,18 +310,21 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onRetweet(User source, User target, Status retweetedStatus) {
+        System.out.println("onRetweet");
         received.add(new Object[]{TwitterMethod.RETWEET_STATUS, retweetedStatus});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(retweetedStatus));
         notifyResponse();
     }
 
     public void onDirectMessage(DirectMessage directMessage) {
+        System.out.println("onDirectMessage");
         received.add(new Object[]{TwitterMethod.SEND_DIRECT_MESSAGE, directMessage});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(directMessage));
         notifyResponse();
     }
 
     public void onUserListMemberAddition(User addedMember, User listOwner, UserList list) {
+        System.out.println("onUserListMemberAddition");
         received.add(new Object[]{TwitterMethod.ADD_LIST_MEMBER, addedMember, listOwner, list});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(addedMember));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
@@ -322,6 +333,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onUserListMemberDeletion(User deletedMember, User listOwner, UserList list) {
+        System.out.println("onUserListMemberDeletion");
         received.add(new Object[]{TwitterMethod.DELETE_LIST_MEMBER, deletedMember, listOwner, list});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(deletedMember));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
@@ -330,6 +342,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onUserListSubscription(User subscriber, User listOwner, UserList list) {
+        System.out.println("onUserListSubscription");
         received.add(new Object[]{TwitterMethod.SUBSCRIBE_LIST, subscriber, listOwner, list});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(subscriber));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
@@ -338,6 +351,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onUserListUnsubscription(User subscriber, User listOwner, UserList list) {
+        System.out.println("onUserListUnsubscription");
         received.add(new Object[]{TwitterMethod.UNSUBSCRIBE_LIST, subscriber, listOwner, list});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(subscriber));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
@@ -346,6 +360,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onUserListCreation(User listOwner, UserList list) {
+        System.out.println("onUserListCreation");
         received.add(new Object[]{TwitterMethod.CREATE_USER_LIST, listOwner, list});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
@@ -353,6 +368,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onUserListUpdate(User listOwner, UserList list) {
+        System.out.println("onUserListUpdate");
         received.add(new Object[]{TwitterMethod.UPDATE_USER_LIST, listOwner, list});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
@@ -360,6 +376,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onUserListDeletion(User listOwner, UserList list) {
+        System.out.println("onUserListDeletion");
         received.add(new Object[]{TwitterMethod.DESTROY_USER_LIST, listOwner, list});
         notifyResponse();
         Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
@@ -367,12 +384,14 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onUserProfileUpdate(User updatedUser) {
+        System.out.println("onUserProfileUpdate");
         received.add(new Object[]{TwitterMethod.UPDATE_PROFILE, updatedUser});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(updatedUser));
         notifyResponse();
     }
 
     public void onBlock(User source, User blockedUser) {
+        System.out.println("onBlock");
         received.add(new Object[]{TwitterMethod.CREATE_BLOCK, source, blockedUser});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(blockedUser));
@@ -380,6 +399,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onUnblock(User source, User unblockedUser) {
+        System.out.println("onUnblock");
         received.add(new Object[]{TwitterMethod.DESTROY_BLOCK, source, unblockedUser});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(unblockedUser));
@@ -387,6 +407,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void onException(Exception ex) {
+        System.out.println("onException");
         received.add(new Object[]{ex});
         ex.printStackTrace();
         notifyResponse();

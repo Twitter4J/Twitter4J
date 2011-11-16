@@ -413,7 +413,9 @@ public final class Query implements java.io.Serializable {
         return this;
     }
 
-    /*package*/ HttpParameter[] asHttpParameterArray() {
+    private static HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
+
+    /*package*/ HttpParameter[] asHttpParameterArray(HttpParameter includeEntities) {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("q", query, params);
         appendParameter("lang", lang, params);
@@ -426,6 +428,8 @@ public final class Query implements java.io.Serializable {
         appendParameter("geocode", geocode, params);
         appendParameter("until", until, params);
         appendParameter("result_type", resultType, params);
+        params.add(WITH_TWITTER_USER_ID);
+        params.add(includeEntities);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }

@@ -16,6 +16,8 @@
 
 package twitter4j.api;
 
+import twitter4j.Paging;
+
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
@@ -59,6 +61,27 @@ public interface FavoriteMethodsAsync {
      * @since Twitter4J 2.0.1
      */
     void getFavorites(String id, int page);
+
+    /**
+     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+     * <br>This method calls http://api.twitter.com/1/favorites.json
+     *
+     * @param paging controls pagination. Supports sinceId and page parameters.
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
+     * @since Twitter4J 2.2.5
+     */
+    void getFavorites(Paging paging);
+
+    /**
+     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+     * <br>This method calls http://api.twitter.com/1/favorites/[id].json
+     *
+     * @param id   the ID or screen name of the user for whom to request a list of favorite statuses
+     * @param paging controls pagination. Supports sinceId and page parameters.
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
+     * @since Twitter4J 2.2.5
+     */
+    void getFavorites(String id, Paging paging);
 
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.

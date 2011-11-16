@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 Yusuke Yamamoto
+ * Copyright (C) 2007 Yusuke Yamamoto
+ * Copyright (C) 2011 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +23,7 @@ import twitter4j.Version;
 import twitter4j.auth.RequestToken;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -328,17 +322,8 @@ public class ConfigurationTest extends TestCase {
         conf = builder.build();
 
         Configuration t = (Configuration) serializeDeserialize(conf);
-        System.out.println("-------");
-        System.out.println(conf);
-        System.out.println(t);
-        System.out.println("-------");
-        System.out.println(conf.hashCode());
-        System.out.println(t.hashCode());
-        System.out.println("-------");
-        System.out.println(conf.equals(t));
-        System.out.println(conf == t);
 
-        assertSame(conf, (Configuration) serializeDeserialize(conf));
+        assertEquals(conf, (Configuration) serializeDeserialize(conf));
 
         assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
@@ -351,7 +336,7 @@ public class ConfigurationTest extends TestCase {
         builder.setUseSSL(true);
         conf = builder.build();
         assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
-        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
+        assertTrue(0 == conf.getSearchBaseURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
@@ -412,7 +397,6 @@ public class ConfigurationTest extends TestCase {
         ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteOutputStream.toByteArray());
         ObjectInputStream ois = new ObjectInputStream(byteInputStream);
         Object that = ois.readObject();
-        System.out.println(that);
         byteInputStream.close();
         ois.close();
         return that;

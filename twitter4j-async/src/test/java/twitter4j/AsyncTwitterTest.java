@@ -20,11 +20,7 @@ import junit.framework.Assert;
 import twitter4j.api.HelpMethods;
 import twitter4j.json.DataObjectFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Date;
 import java.util.List;
 

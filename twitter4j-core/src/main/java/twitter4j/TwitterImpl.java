@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 Yusuke Yamamoto
+ * Copyright (C) 2007 Yusuke Yamamoto
+ * Copyright (C) 2011 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,29 +96,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public QueryResult search(Query query) throws TwitterException {
         return factory.createQueryResult(get(conf.getSearchBaseURL()
-                + "search.json", query.asHttpParameterArray()), query);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Trends getTrends() throws TwitterException {
-        return factory.createTrends(get(conf.getRestBaseURL() + "trends.json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Trends getCurrentTrends() throws TwitterException {
-        return factory.createTrendsList(get(conf.getRestBaseURL() + "trends/current.json")).get(0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Trends getCurrentTrends(boolean excludeHashTags) throws TwitterException {
-        return factory.createTrendsList(get(conf.getRestBaseURL() + "trends/current.json"
-                + (excludeHashTags ? "?exclude=hashtags" : ""))).get(0);
+                + "search.json", query.asHttpParameterArray(INCLUDE_ENTITIES)), query);
     }
 
     /**
@@ -188,7 +167,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             TwitterException {
         ensureAuthorizationEnabled();
         return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), new HttpParameter[] {INCLUDE_ENTITIES, INCLUDE_MY_RETWEET})));
+                + "statuses/home_timeline.json", mergeParameters(paging.asPostParameterArray(), new HttpParameter[]{INCLUDE_ENTITIES, INCLUDE_MY_RETWEET})));
     }
 
     /**
@@ -459,12 +438,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     /**
      * {@inheritDoc}
      */
-    public Status updateStatus(StatusUpdate latestStatus) throws TwitterException {
+    public Status updateStatus(StatusUpdate status) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatus(post(conf.getRestBaseURL()
-                + "statuses/update.json",
-                mergeParameters(latestStatus.asHttpParameterArray(),
-                        INCLUDE_ENTITIES)));
+        String url = status.isWithMedia() ?
+                conf.getUploadBaseURL() + "statuses/update_with_media.json" :
+                conf.getRestBaseURL() + "statuses/update.json";
+        return factory.createStatus(post(url,
+                status.asHttpParameterArray(INCLUDE_ENTITIES)));
     }
 
     /**
@@ -1493,6 +1473,27 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Status> getFavorites(Paging paging) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites.json",
+                mergeParameters(paging.asPostParameterArray()
+                        , INCLUDE_ENTITIES)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getFavorites(String id, Paging paging) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/" + id + ".json",
+                mergeParameters(paging.asPostParameterArray()
+                        , INCLUDE_ENTITIES)));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public Status createFavorite(long id) throws TwitterException {
         ensureAuthorizationEnabled();
         return factory.createStatus(post(conf.getRestBaseURL() + "favorites/create/" + id + ".json?include_entities="
@@ -1761,8 +1762,16 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     public ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException {
-        return factory.createPlaceList(get(conf.getRestBaseURL()
-                + "geo/reverse_geocode.json", query.asHttpParameterArray()));
+        try {
+            return factory.createPlaceList(get(conf.getRestBaseURL()
+                    + "geo/reverse_geocode.json", query.asHttpParameterArray()));
+        } catch (TwitterException te) {
+            if (te.getStatusCode() == 404) {
+                return factory.createEmptyResponseList();
+            } else {
+                throw te;
+            }
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 /*
- * Copyright 2007 Yusuke Yamamoto
+ * Copyright (C) 2007 Yusuke Yamamoto
+ * Copyright (C) 2011 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +19,6 @@ package twitter4j;
 
 import twitter4j.api.HelpMethods;
 
-import java.util.List;
-
 /**
  * A handy adapter of TwitterListener.
  *
@@ -33,12 +32,6 @@ public class TwitterAdapter implements TwitterListener {
 
     /*Search API Methods*/
     public void searched(QueryResult result) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    public void gotTrends(Trends trends) {
     }
 
     /**

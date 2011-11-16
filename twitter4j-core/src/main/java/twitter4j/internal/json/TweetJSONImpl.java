@@ -18,14 +18,19 @@ package twitter4j.internal.json;
 
 import twitter4j.Annotations;
 import twitter4j.GeoLocation;
+import twitter4j.HashtagEntity;
+import twitter4j.MediaEntity;
 import twitter4j.Place;
 import twitter4j.Tweet;
 import twitter4j.TwitterException;
+import twitter4j.URLEntity;
+import twitter4j.UserMentionEntity;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
@@ -55,6 +60,10 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
 
     private GeoLocation geoLocation = null;
     private Annotations annotations = null;
+    private UserMentionEntity[] userMentionEntities;
+    private URLEntity[] urlEntities;
+    private HashtagEntity[] hashtagEntities;
+    private MediaEntity[] mediaEntities;
 
     /*package*/ TweetJSONImpl(JSONObject tweet) throws TwitterException {
         text = getUnescapedString("text", tweet);
@@ -84,6 +93,49 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
             }
         } else {
             place = null;
+        }
+        if (!tweet.isNull("entities")) {
+            try {
+                JSONObject entities = tweet.getJSONObject("entities");
+                int len;
+                if (!entities.isNull("user_mentions")) {
+                    JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
+                    len = userMentionsArray.length();
+                    userMentionEntities = new UserMentionEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
+                    }
+
+                }
+                if (!entities.isNull("urls")) {
+                    JSONArray urlsArray = entities.getJSONArray("urls");
+                    len = urlsArray.length();
+                    urlEntities = new URLEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                    }
+                }
+
+                if (!entities.isNull("hashtags")) {
+                    JSONArray hashtagsArray = entities.getJSONArray("hashtags");
+                    len = hashtagsArray.length();
+                    hashtagEntities = new HashtagEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
+                    }
+                }
+
+                if (!entities.isNull("media")) {
+                    JSONArray mediaArray = entities.getJSONArray("media");
+                    len = mediaArray.length();
+                    mediaEntities = new MediaEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
+                    }
+                }
+            } catch (JSONException jsone) {
+                throw new TwitterException(jsone);
+            }
         }
     }
 
@@ -198,6 +250,34 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    public UserMentionEntity[] getUserMentionEntities() {
+        return userMentionEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public URLEntity[] getURLEntities() {
+        return urlEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public HashtagEntity[] getHashtagEntities() {
+        return hashtagEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public MediaEntity[] getMediaEntities() {
+        return mediaEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Annotations getAnnotations() {
         return annotations;
     }
@@ -230,6 +310,10 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         result = 31 * result + (place != null ? place.hashCode() : 0);
         result = 31 * result + (geoLocation != null ? geoLocation.hashCode() : 0);
         result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
+        result = 31 * result + (userMentionEntities != null ? Arrays.hashCode(userMentionEntities) : 0);
+        result = 31 * result + (urlEntities != null ? Arrays.hashCode(urlEntities) : 0);
+        result = 31 * result + (hashtagEntities != null ? Arrays.hashCode(hashtagEntities) : 0);
+        result = 31 * result + (mediaEntities != null ? Arrays.hashCode(mediaEntities) : 0);
         return result;
     }
 
@@ -250,6 +334,10 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                 ", place=" + place +
                 ", geoLocation=" + geoLocation +
                 ", annotations=" + annotations +
+                ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
+                ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
+                ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
+                ", mediaEntities=" + (mediaEntities == null ? null : Arrays.asList(mediaEntities)) +
                 '}';
     }
 }

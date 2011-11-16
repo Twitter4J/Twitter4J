@@ -48,11 +48,11 @@ public interface StatusMethodsAsync {
      * <br>Statuses over 140 characters will be forcibly truncated.
      * <br>This method calls http://api.twitter.com/1/statuses/update
      *
-     * @param latestStatus the latest status to be updated.
+     * @param status the latest status to be updated.
      * @see <a href="https://dev.twitter.com/docs/api/1/post/statuses/update">POST statuses/update | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
-    void updateStatus(StatusUpdate latestStatus);
+    void updateStatus(StatusUpdate status);
 
     /**
      * Destroys the status specified by the required ID parameter.<br>

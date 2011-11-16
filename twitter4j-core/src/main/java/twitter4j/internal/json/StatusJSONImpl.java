@@ -137,35 +137,44 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         if (!json.isNull("entities")) {
             try {
                 JSONObject entities = json.getJSONObject("entities");
+                int len;
+                if (!entities.isNull("user_mentions")) {
+                    JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
+                    len = userMentionsArray.length();
+                    userMentionEntities = new UserMentionEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
+                    }
 
-                JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
-                int len = userMentionsArray.length();
-                userMentionEntities = new UserMentionEntity[len];
-                for (int i = 0; i < len; i++) {
-                    userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
+                }
+                if (!entities.isNull("urls")) {
+                    JSONArray urlsArray = entities.getJSONArray("urls");
+                    len = urlsArray.length();
+                    urlEntities = new URLEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                    }
                 }
 
-                JSONArray urlsArray = entities.getJSONArray("urls");
-                len = urlsArray.length();
-                urlEntities = new URLEntity[len];
-                for (int i = 0; i < len; i++) {
-                    urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                if (!entities.isNull("hashtags")) {
+                    JSONArray hashtagsArray = entities.getJSONArray("hashtags");
+                    len = hashtagsArray.length();
+                    hashtagEntities = new HashtagEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
+                    }
                 }
 
-                JSONArray hashtagsArray = entities.getJSONArray("hashtags");
-                len = hashtagsArray.length();
-                hashtagEntities = new HashtagEntity[len];
-                for (int i = 0; i < len; i++) {
-                    hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
+                if (!entities.isNull("media")) {
+                    JSONArray mediaArray = entities.getJSONArray("media");
+                    len = mediaArray.length();
+                    mediaEntities = new MediaEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
+                    }
                 }
-
-                JSONArray mediaArray = entities.getJSONArray("media");
-                len = mediaArray.length();
-                mediaEntities = new MediaEntity[len];
-                for (int i = 0; i < len; i++) {
-                    mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
-                }
-            } catch (JSONException ignore) {
+            } catch (JSONException jsone) {
+                throw new TwitterException(jsone);
             }
         }
         if (!json.isNull("annotations")) {
@@ -177,12 +186,12 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         }
         if (!json.isNull("current_user_retweet")) {
             try {
-              myRetweetedStatus = new StatusJSONImpl(json.getJSONObject("current_user_retweet"));
-              wasRetweetedByMe = true;
+                myRetweetedStatus = new StatusJSONImpl(json.getJSONObject("current_user_retweet"));
+                wasRetweetedByMe = true;
             } catch (JSONException ignore) {
-              ignore.printStackTrace();
-              logger.warn("failed to parse current_user_retweet:" + json);
-          }
+                ignore.printStackTrace();
+                logger.warn("failed to parse current_user_retweet:" + json);
+            }
         }
     }
 
