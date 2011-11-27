@@ -48,7 +48,9 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     private String text;
     private long toUserId = -1;
     private String toUser = null;
-    private String fromUser;
+    private String toUserName = null;
+    private String fromUser = null;
+    private String fromUserName = null;
     private long id;
     private long fromUserId;
     private String isoLanguageCode = null;
@@ -69,7 +71,9 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         text = getUnescapedString("text", tweet);
         toUserId = getLong("to_user_id", tweet);
         toUser = getRawString("to_user", tweet);
+        toUserName = getRawString("to_user_name", tweet);
         fromUser = getRawString("from_user", tweet);
+        fromUserName = getRawString("from_user_name", tweet);
         id = getLong("id", tweet);
         fromUserId = getLong("from_user_id", tweet);
         isoLanguageCode = getRawString("iso_language_code", tweet);
@@ -180,8 +184,22 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    public String getToUserName() {
+        return toUserName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getFromUser() {
         return fromUser;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getFromUserName() {
+        return fromUserName;
     }
 
     /**

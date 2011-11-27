@@ -78,6 +78,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertNotNull(tweets.get(0).getText());
         assertNotNull(tweets.get(0).getCreatedAt());
         assertNotNull("from user", tweets.get(0).getFromUser());
+        assertNotNull("from_user_name", tweets.get(0).getFromUserName());
         assertTrue("fromUserId", -1 != tweets.get(0).getFromUserId());
         assertTrue(-1 != tweets.get(0).getId());
 //        assertNotNull(tweets.get(0).getIsoLanguageCode());
