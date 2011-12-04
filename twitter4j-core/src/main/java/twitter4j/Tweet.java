@@ -23,7 +23,7 @@ import java.util.Date;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface Tweet extends Comparable<Tweet>, EntitySupport,
+public interface Tweet extends Comparable<Tweet>, EntitySupport, Twt,
         java.io.Serializable {
     /**
      * returns the text
@@ -97,6 +97,14 @@ public interface Tweet extends Comparable<Tweet>, EntitySupport,
      * @return the source of the tweet
      */
     String getSource();
+
+    /**
+     * Returns the in_reply_tostatus_id
+     *
+     * @return the in_reply_tostatus_id
+     * @since Twitter4J 2.2.6
+     */
+    long getInReplyToStatusId();
 
     /**
      * returns the profile_image_url
