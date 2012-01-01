@@ -45,6 +45,11 @@ import java.net.URL;
         super();
         init(json);
     }
+    
+    /* For serialization purposes only. */
+    /* package */ URLEntityJSONImpl() {
+    	
+    }
 
     private void init(JSONObject json) throws TwitterException {
         try {
