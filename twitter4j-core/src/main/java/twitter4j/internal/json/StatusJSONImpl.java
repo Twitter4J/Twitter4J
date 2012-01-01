@@ -80,6 +80,11 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         super();
         init(json);
     }
+    
+    /* Only for serialization purposes. */
+    /*package*/ StatusJSONImpl() {
+    	
+    }
 
     private void init(JSONObject json) throws TwitterException {
         id = getLong("id", json);
