@@ -41,6 +41,11 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
         super();
         init(json);
     }
+    
+    /* For serialization purposes only. */
+    /* package */ UserMentionEntityJSONImpl() {
+    
+    }
 
     private void init(JSONObject json) throws TwitterException {
         try {
