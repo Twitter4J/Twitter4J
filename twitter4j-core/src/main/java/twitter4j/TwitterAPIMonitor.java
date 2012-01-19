@@ -44,11 +44,11 @@ public class TwitterAPIMonitor {
     // https?:\/\/[^\/]+\/([a-zA-Z_\.]*).*
     // finds the "method" part a Twitter REST API url, ignoring member-specific resource names
     private static final Pattern pattern =
-            Pattern.compile("https?:\\/\\/[^\\/]+\\/([a-zA-Z_\\.]*).*");
+            Pattern.compile("https?:\\/\\/[^\\/]+\\/\\d+\\/([a-zA-Z_\\.]*).*");
 
     private static final TwitterAPIMonitor SINGLETON = new TwitterAPIMonitor();
 
-    private final APIStatistics STATISTICS = new APIStatistics(100);
+    private static final APIStatistics STATISTICS = new APIStatistics(100);
 
 
     static {
@@ -70,13 +70,12 @@ public class TwitterAPIMonitor {
         try {
 
             MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-            APIStatistics statsMBean = new APIStatistics(100);
             if (isJDK14orEarlier) {
                 ObjectName oName = new ObjectName("twitter4j.mbean:type=APIStatistics");
-                mbs.registerMBean(statsMBean, oName);
+                mbs.registerMBean(STATISTICS, oName);
             } else {
                 ObjectName oName = new ObjectName("twitter4j.mbean:type=APIStatisticsOpenMBean");
-                APIStatisticsOpenMBean openMBean = new APIStatisticsOpenMBean(statsMBean);
+                APIStatisticsOpenMBean openMBean = new APIStatisticsOpenMBean(STATISTICS);
                 mbs.registerMBean(openMBean, oName);
             }
         } catch (InstanceAlreadyExistsException e) {
@@ -111,7 +110,7 @@ public class TwitterAPIMonitor {
     void methodCalled(String twitterUrl, long elapsedTime, boolean success) {
         Matcher matcher = pattern.matcher(twitterUrl);
         if (matcher.matches() && matcher.groupCount() > 0) {
-            String method = matcher.group();
+            String method = matcher.group(1);
             STATISTICS.methodCalled(method, elapsedTime, success);
         }
     }
