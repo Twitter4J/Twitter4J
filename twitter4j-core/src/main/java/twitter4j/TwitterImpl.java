@@ -1832,7 +1832,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public RelatedResults getRelatedResults(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return factory.createRelatedResults(get(conf.getRestBaseURL() + "related_results/show/"
-                + Long.toString(statusId) + ".json"));
+                + Long.toString(statusId) + ".json?include_entities=" + conf.isIncludeEntitiesEnabled()));
     }
 
     /* Help Methods */
