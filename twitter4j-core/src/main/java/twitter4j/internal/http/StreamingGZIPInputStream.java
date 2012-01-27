@@ -1,5 +1,6 @@
 /*
  * Copyright 2007 Yusuke Yamamoto
+ * Copyright 2012 Twitter, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 
-public class StreamingGZIPInputStream extends GZIPInputStream {
+final class StreamingGZIPInputStream extends GZIPInputStream {
 
     private final InputStream wrapped;
 
