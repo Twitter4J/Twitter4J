@@ -27,6 +27,7 @@ Cole Wen <wennnnke at gmail.com> @Pigwen
 Dan Checkoway <dcheckoway at gmail.com>
 Dong Wang <dong at twitter.com> @dongwang218
 Eric Jensen <ej at twitter.com> @ej
+Fiaz Hossain <fiaz at twitter.com> @fiazhossain
 Hitoshi Kunimatsu <hkhumanoid at gmail.com>
 Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
 Jenny Loomis <jenny at rockmelt.com>

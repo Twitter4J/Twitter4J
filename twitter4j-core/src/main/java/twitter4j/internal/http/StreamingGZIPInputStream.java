@@ -31,7 +31,7 @@ final class StreamingGZIPInputStream extends GZIPInputStream {
 
     /**
      * Overrides behavior of GZIPInputStream which assumes we have all the data available
-     * which is not true for streaming. We instead realy on the underlying stream to tell us
+     * which is not true for streaming. We instead rely on the underlying stream to tell us
      * how much data is available.
      * <p>
      * Programs should not count on this method to return the actual number
