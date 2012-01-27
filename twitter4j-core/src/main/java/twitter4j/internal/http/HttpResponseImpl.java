@@ -38,7 +38,7 @@ public class HttpResponseImpl extends HttpResponse {
         }
         if (is != null && "gzip".equals(con.getContentEncoding())) {
             // the response is gzipped
-            is = new GZIPInputStream(is);
+            is = new StreamingGZIPInputStream(is);
         }
     }
 
