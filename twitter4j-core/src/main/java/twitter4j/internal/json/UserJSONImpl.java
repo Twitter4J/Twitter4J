@@ -98,6 +98,11 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
         super();
         init(json);
     }
+    
+    /* Only for serialization purposes. */
+    /*package*/UserJSONImpl() {
+    	
+    }
 
     private void init(JSONObject json) throws TwitterException {
         try {

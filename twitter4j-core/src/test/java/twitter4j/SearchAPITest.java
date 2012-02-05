@@ -78,6 +78,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertNotNull(tweets.get(0).getText());
         assertNotNull(tweets.get(0).getCreatedAt());
         assertNotNull("from user", tweets.get(0).getFromUser());
+        assertNotNull("from_user_name", tweets.get(0).getFromUserName());
         assertTrue("fromUserId", -1 != tweets.get(0).getFromUserId());
         assertTrue(-1 != tweets.get(0).getId());
 //        assertNotNull(tweets.get(0).getIsoLanguageCode());
@@ -120,10 +121,11 @@ public class SearchAPITest extends TwitterTestBase {
         query = new Query("\\u5e30%u5e30 <%}& foobar").rpp(100).page(1);
         QueryResult result = twitter1.search(query);
 
-        query = new Query("#sendro").rpp(1).page(1);
+        query = new Query("#sendro to:yusukey").rpp(1).page(1);
         result = twitter1.search(query);
-        System.out.println(result.getTweets().get(0));
         assertNotNull(result.getTweets().get(0).getHashtagEntities());
+        assertNotNull(result.getTweets().get(0).getUserMentionEntities());
+        assertNotNull(result.getTweets().get(0).getURLEntities());
     }
 
     public void testTrends() throws Exception {

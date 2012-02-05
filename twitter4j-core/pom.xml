@@ -100,6 +100,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.googlecode</groupId>
+            <artifactId>kryo</artifactId>
+            <version>1.04</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.5.8</version>

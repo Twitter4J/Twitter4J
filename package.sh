@@ -1,8 +1,7 @@
 #!/bin/sh
 LANG=C
 
-export HASH=`git log|head -n 1|sed "s/^commit //g"`
-
+#export HASH=`git log|head -n 1|sed "s/^commit //g"`
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusukey\/maven2\//g" pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusukey\/maven2\//g" twitter4j-core/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusukey\/maven2\//g" twitter4j-appengine/pom.xml

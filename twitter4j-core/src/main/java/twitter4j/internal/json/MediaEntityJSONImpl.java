@@ -88,6 +88,11 @@ public class MediaEntityJSONImpl implements MediaEntity {
         }
 
     }
+    
+    /* For serialization purposes only. */
+    /* package */ MediaEntityJSONImpl() {
+    	
+    }
 
     /**
      * {@inheritDoc}
