@@ -11,7 +11,7 @@ twitter4j-apache-httpclient-support - optional component adds Apache HttpClient 
 twitter4j-examples - examples
 twitter4j-media-support - media API support
 twitter4j-async - Async API support : depending on twitter4j-core
-twitter4j-stream - Streaming API support : depeinding on twitter4j-core and twitter4j-async
+twitter4j-stream - Streaming API support : depending on twitter4j-core and twitter4j-async
 
 Contributors
 ------------
