@@ -309,7 +309,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     @Override
     public String toString() {
-        return getMessage() + (nested ? "" : "Relevant discussions can be on the Internet at:\n"
+        return getMessage() + (nested ? "" : "Relevant discussions can be found on the Internet at:\n"
                 + "\thttp://www.google.co.jp/search?q=" + getExceptionDiagnosis().getStackLineHashAsHex()
                 + " or\n\thttp://www.google.co.jp/search?q=" + getExceptionDiagnosis().getLineNumberHashAsHex())
                 + "\nTwitterException{" + (nested ? "" : "exceptionCode=[" + getExceptionCode() + "], ") +
@@ -329,10 +329,10 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 cause = "There was no new data to return.";
                 break;
             case BAD_REQUEST:
-                cause = "The request was invalid. An accompanying error message will explain why. This is the status code will be returned during rate limiting (https://dev.twitter.com/pages/rate-limiting).";
+                cause = "The request was invalid. An accompanying error message will explain why. This is the status code that will be returned during rate limiting (https://dev.twitter.com/pages/rate-limiting).";
                 break;
             case UNAUTHORIZED:
-                cause = "Authentication credentials (https://dev.twitter.com/docs/auth) were missing or incorrect. Ensure that you have set valid conumer key/secret, access token/secret, and the system clock in in sync.";
+                cause = "Authentication credentials (https://dev.twitter.com/docs/auth) were missing or incorrect. Ensure that you have set valid consumer key/secret, access token/secret, and the system clock is in sync.";
                 break;
             case FORBIDDEN:
                 cause = "The request is understood, but it has been refused. An accompanying error message will explain why. This code is used when requests are being denied due to update limits (https://support.twitter.com/articles/15364-about-twitter-limits-update-api-dm-and-following).";
