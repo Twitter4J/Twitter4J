@@ -110,7 +110,7 @@ public final class z_T4JInternalParseUtil {
     public static Date getDate(String name, String format) throws TwitterException {
         SimpleDateFormat sdf = formatMap.get().get(format);
         if (null == sdf) {
-            sdf = new SimpleDateFormat(format);
+            sdf = new SimpleDateFormat(format, Locale.US);
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             formatMap.get().put(format, sdf);
         }
