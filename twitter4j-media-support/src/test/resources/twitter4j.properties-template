@@ -5,6 +5,6 @@ oauth.consumerKey=
 oauth.consumerSecret=
 
 media.provider=Twitpic
-media.providerParameter=foo=bar&fizz=bazz
+media.providerParameters=foo=bar&fizz=bazz
 
 media.providerAPIKey=***twitpic api key***
