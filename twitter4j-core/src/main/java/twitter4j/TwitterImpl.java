@@ -421,7 +421,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     public Status showStatus(long id) throws TwitterException {
-        return factory.createStatus(get(conf.getRestBaseURL() + "statuses/show/" + id + ".json?include_entities="
+        return factory.createStatus(get(conf.getRestBaseURL() + "statuses/show/" + id + ".json?include_my_retweet=1&include_entities="
                 + conf.isIncludeEntitiesEnabled()));
     }
 
