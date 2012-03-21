@@ -119,26 +119,22 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
     }
 
     @Override
-    public UserMentionEntity[] getUserMentionEntities()
-    {
+    public UserMentionEntity[] getUserMentionEntities() {
         return getTarget().getUserMentionEntities();
     }
 
     @Override
-    public URLEntity[] getURLEntities()
-    {
+    public URLEntity[] getURLEntities() {
         return getTarget().getURLEntities();
     }
 
     @Override
-    public HashtagEntity[] getHashtagEntities()
-    {
+    public HashtagEntity[] getHashtagEntities() {
         return getTarget().getHashtagEntities();
     }
 
     @Override
-    public MediaEntity[] getMediaEntities()
-    {
+    public MediaEntity[] getMediaEntities() {
         return getTarget().getMediaEntities();
     }
 
