@@ -23,7 +23,7 @@ import java.util.Date;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface DirectMessage extends TwitterResponse, java.io.Serializable {
+public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.Serializable {
 
     long getId();
 
