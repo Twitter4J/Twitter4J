@@ -111,7 +111,7 @@ public final class z_T4JInternalParseUtil {
         SimpleDateFormat sdf = formatMap.get().get(format);
         if (null == sdf) {
             sdf = new SimpleDateFormat(format, Locale.US);
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             formatMap.get().put(format, sdf);
         }
         try {
