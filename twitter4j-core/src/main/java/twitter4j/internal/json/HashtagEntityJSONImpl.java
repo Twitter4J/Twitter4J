@@ -40,6 +40,13 @@ import twitter4j.internal.org.json.JSONObject;
         init(json);
     }
     
+    /* package */ HashtagEntityJSONImpl(int start, int end, String text) {
+        super();
+        this.start = start;
+        this.end = end;
+        this.text = text;
+    }
+
     /* For serialization purposes only. */
     /* package */ HashtagEntityJSONImpl() {
     	

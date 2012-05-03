@@ -42,6 +42,15 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
         init(json);
     }
     
+    /* package */ UserMentionEntityJSONImpl(int start, int end, String name, String screenName, long id) {
+        super();
+        this.start = start;
+        this.end = end;
+        this.name = name;
+        this.screenName = screenName;
+        this.id = id;
+    }
+
     /* For serialization purposes only. */
     /* package */ UserMentionEntityJSONImpl() {
     

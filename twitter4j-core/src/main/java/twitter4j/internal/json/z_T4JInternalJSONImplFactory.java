@@ -254,6 +254,34 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         return new ResponseListImpl<T>(0, null);
     }
 
+    /**
+     * static factory method for twitter-text-java
+     * @return hashtag entity
+     * @since Twitter4J 2.2.6
+     */
+    public static HashtagEntity createHashtagEntity(int start, int end, String text){
+        return new HashtagEntityJSONImpl(start, end, text);
+    }
+
+    /**
+     * static factory method for twitter-text-java
+     * @return user mention entity
+     * @since Twitter4J 2.2.6
+     */
+    public static UserMentionEntity createUserMentionEntity(int start, int end, String name, String screenName,
+                                                            long id) {
+        return new UserMentionEntityJSONImpl(start, end, name, screenName, id);
+    }
+
+    /**
+     * static factory method for twitter-text-java
+     * @return url entity
+     * @since Twitter4J 2.2.6
+     */
+    public static URLEntity createUrlEntity(int start, int end, String url, String expandedURL, String displayURL) {
+        return new URLEntityJSONImpl(start, end, url, expandedURL, displayURL);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
