@@ -29,38 +29,6 @@ public interface ListMembersMethods {
      * Returns the members of the specified list.
      * <br>This method calls http://api.twitter.com/1/lists/members.json
      *
-     * @param listOwnerScreenName The screen name of the list owner
-     * @param listId              The id of the list
-     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @return the members of the specified list.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/members">GET lists/members | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #getUserListMembers(int, long)} instead
-     */
-    PagableResponseList<User> getUserListMembers(String listOwnerScreenName, int listId, long cursor)
-            throws TwitterException;
-
-    /**
-     * Returns the members of the specified list.
-     * <br>This method calls http://api.twitter.com/1/lists/members.json
-     *
-     * @param listOwnerId The id of the list owner
-     * @param listId      The id of the list
-     * @param cursor      Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @return the members of the specified list.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/:user/:list_id/members">GET :user/:list_id/members | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #getUserListMembers(int, long)} instead
-     */
-    PagableResponseList<User> getUserListMembers(long listOwnerId, int listId, long cursor)
-            throws TwitterException;
-
-    /**
-     * Returns the members of the specified list.
-     * <br>This method calls http://api.twitter.com/1/lists/members.json
-     *
      * @param listId The id of the list
      * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the members of the specified list.
@@ -118,23 +86,6 @@ public interface ListMembersMethods {
      * @since Twitter4J 2.1.0
      */
     UserList deleteUserListMember(int listId, long userId)
-            throws TwitterException;
-
-    /**
-     * Check if a user is a member of the specified list.<br>
-     * <br>This method calls http://api.twitter.com/1/lists/members/show.json
-     *
-     * @param listOwnerScreenName The screen name of the list owner
-     * @param listId              The id of the list.
-     * @param userId              The id of the user who you want to know is a member or not of the specified list.
-     * @return the updated list
-     * @throws TwitterException when Twitter service or network is unavailable
-     *                          , or the user is not a member of the specified list(TwitterException.getStatusCode() returns 404 in that case.)
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/members/show">GET lists/members/show | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #showUserListMembership(int, long)} instead
-     */
-    User checkUserListMembership(String listOwnerScreenName, int listId, long userId)
             throws TwitterException;
 
     /**

@@ -45,15 +45,10 @@ public interface TwitterListener {
      */
     void gotWeeklyTrends(ResponseList<Trends> trendsList);
 
-    /*Timeline Methods*/
-    void gotPublicTimeline(ResponseList<Status> statuses);
-
     /**
      * @since Twitter4J 2.0.10
      */
     void gotHomeTimeline(ResponseList<Status> statuses);
-
-    void gotFriendsTimeline(ResponseList<Status> statuses);
 
     void gotUserTimeline(ResponseList<Status> statuses);
 
@@ -150,11 +145,6 @@ public interface TwitterListener {
      * @since Twitter4J 2.1.7
      */
     void gotProfileImage(ProfileImage image);
-
-
-    void gotFriendsStatuses(PagableResponseList<User> users);
-
-    void gotFollowersStatuses(PagableResponseList<User> users);
 
     /*List Methods*/
 
@@ -436,8 +426,6 @@ public interface TwitterListener {
 
     void gotSimilarPlaces(SimilarPlaces places);
 
-    void gotNearByPlaces(ResponseList<Place> places);
-
     void gotReverseGeoCode(ResponseList<Place> places);
 
     void gotGeoDetails(Place place);
@@ -480,12 +468,7 @@ public interface TwitterListener {
     TwitterMethod WEEKLY_TRENDS = TwitterMethod.WEEKLY_TRENDS;
 
     /*Timeline Methods*/
-    TwitterMethod PUBLIC_TIMELINE = TwitterMethod.PUBLIC_TIMELINE;
     TwitterMethod HOME_TIMELINE = TwitterMethod.HOME_TIMELINE;
-    /**
-     * @deprecated use {@link #HOME_TIMELINE} instead
-     */
-    TwitterMethod FRIENDS_TIMELINE = TwitterMethod.FRIENDS_TIMELINE;
     TwitterMethod USER_TIMELINE = TwitterMethod.USER_TIMELINE;
     TwitterMethod MENTIONS = TwitterMethod.MENTIONS;
     TwitterMethod RETWEETED_BY_ME = TwitterMethod.RETWEETED_BY_ME;
@@ -512,8 +495,6 @@ public interface TwitterListener {
     TwitterMethod USER_SUGGESTIONS = TwitterMethod.USER_SUGGESTIONS;
     TwitterMethod MEMBER_SUGGESTIONS = TwitterMethod.MEMBER_SUGGESTIONS;
     TwitterMethod PROFILE_IMAGE = TwitterMethod.PROFILE_IMAGE;
-    TwitterMethod FRIENDS_STATUSES = TwitterMethod.FRIENDS_STATUSES;
-    TwitterMethod FOLLOWERS_STATUSES = TwitterMethod.FOLLOWERS_STATUSES;
 
     /*List Methods*/
     TwitterMethod CREATE_USER_LIST = TwitterMethod.CREATE_USER_LIST;
@@ -602,7 +583,6 @@ public interface TwitterListener {
     /*Geo Methods*/
     TwitterMethod SEARCH_PLACES = TwitterMethod.SEARCH_PLACES;
     TwitterMethod SIMILAR_PLACES = TwitterMethod.SIMILAR_PLACES;
-    TwitterMethod NEAR_BY_PLACES = TwitterMethod.NEAR_BY_PLACES;
     TwitterMethod REVERSE_GEO_CODE = TwitterMethod.REVERSE_GEO_CODE;
     TwitterMethod GEO_DETAILS = TwitterMethod.GEO_DETAILS;
     TwitterMethod CREATE_PLACE = TwitterMethod.CREATE_PLACE;

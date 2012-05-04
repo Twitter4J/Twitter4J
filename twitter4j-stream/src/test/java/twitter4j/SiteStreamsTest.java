@@ -176,9 +176,9 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             waitForStatus();
             twit4j.addUserListMember(list.getId(), id2.id);
             waitForStatus();
-            twit4j2.subscribeUserList("twit4j", list.getId());
+            twit4j2.createUserListSubscription(list.getId());
             waitForStatus();
-            twit4j2.unsubscribeUserList("twit4j", list.getId());
+            twit4j2.destroyUserListSubscription(list.getId());
             waitForStatus();
             twit4j.deleteUserListMember(list.getId(), id2.id);
             waitForStatus();

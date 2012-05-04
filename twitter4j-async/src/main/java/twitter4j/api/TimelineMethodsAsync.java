@@ -23,14 +23,6 @@ import twitter4j.Paging;
  */
 public interface TimelineMethodsAsync {
     /**
-     * Returns the 20 most recent statuses from non-protected users who have set a custom user icon. The public timeline is cached for 60 seconds and requesting it more often than that is unproductive and a waste of resources.
-     * <br>This method calls http://api.twitter.com/1/statuses/public_timeline
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/public_timeline">GET statuses/public_timeline | Twitter Developers</a>
-     */
-    void getPublicTimeline();
-
-    /**
      * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.<br>
      * Usage note: This home_timeline call is identical to statuses/friends_timeline, except that home_timeline also contains retweets, while statuses/friends_timeline does not for backwards compatibility reasons. In a future version of the API, statuses/friends_timeline will be deprected and replaced by home_timeline.
      * <br>This method calls http://api.twitter.com/1/statuses/home_timeline
@@ -50,26 +42,6 @@ public interface TimelineMethodsAsync {
      * @since Twitter4J 2.0.10
      */
     void getHomeTimeline(Paging paging);
-
-
-    /**
-     * Returns the 20 most recent statuses posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends_timeline">GET statuses/friends_timeline | Twitter Developers</a>
-     * @deprecated use {@link #getHomeTimeline()} instead
-     */
-    void getFriendsTimeline();
-
-    /**
-     * Returns the 20 most recent statuses posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
-     * <br>This method calls http://api.twitter.com/1/statuses/friends_timeline
-     *
-     * @param paging controls pagination
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends_timeline">GET statuses/friends_timeline | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     * @deprecated use {@link #getHomeTimeline(Paging)} instead
-     */
-    void getFriendsTimeline(Paging paging);
 
     /**
      * Returns the 20 most recent statuses posted from the authenticating user. It's also possible to request another user's timeline via the id parameter.<br>

@@ -154,23 +154,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
-    public void getPublicTimeline() {
-        getDispatcher().invokeLater(new AsyncTask(PUBLIC_TIMELINE, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<Status> statuses = twitter.getPublicTimeline();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotPublicTimeline(statuses);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getHomeTimeline() {
         getDispatcher().invokeLater(new AsyncTask(HOME_TIMELINE, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -195,40 +178,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotHomeTimeline(statuses);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFriendsTimeline() {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<Status> statuses = twitter.getFriendsTimeline();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFriendsTimeline(statuses);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFriendsTimeline(final Paging paging) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_TIMELINE, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<Status> statuses = twitter.getFriendsTimeline(paging);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFriendsTimeline(statuses);
                     } catch (Exception ignore) {
                     }
                 }
@@ -882,108 +831,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void getFriendsStatuses(final long cursor) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getFriendsStatuses(cursor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFriendsStatuses(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFriendsStatuses(final String screenName, final long cursor) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getFriendsStatuses(screenName, cursor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFriendsStatuses(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFriendsStatuses(final long userId, final long cursor) {
-        getDispatcher().invokeLater(new AsyncTask(FRIENDS_STATUSES, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getFriendsStatuses(userId, cursor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFriendsStatuses(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFollowersStatuses(final long cursor) {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_STATUSES, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getFollowersStatuses(cursor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFollowersStatuses(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFollowersStatuses(final String screenName, final long cursor) {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_STATUSES, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getFollowersStatuses(screenName, cursor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFollowersStatuses(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getFollowersStatuses(final long userId, final long cursor) {
-        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_STATUSES, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getFollowersStatuses(userId, cursor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotFollowersStatuses(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
     /*List Methods*/
 
     /**
@@ -1057,13 +904,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
-    public void showUserList(final String listOwnerScreenName, final int listId) {
-        showUserList(listId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void showUserList(final int listId) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_USER_LIST, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1093,20 +933,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
                 }
             }
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getUserListStatuses(final String listOwnerScreenName, final int id, final Paging paging) {
-        getUserListStatuses(id, paging);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getUserListStatuses(final long listOwnerId, final int id, final Paging paging) {
-        getUserListStatuses(id, paging);
     }
 
     /**
@@ -1247,30 +1073,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
-    public void getUserListMembers(final String listOwnerScreenName, final int listId, final long cursor) {
-        getDispatcher().invokeLater(new AsyncTask(LIST_MEMBERS, listeners) {
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<User> users = twitter.getUserListMembers(listOwnerScreenName, listId, cursor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotUserListMembers(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void getUserListMembers(final long listOwnerId, final int listId, final long cursor) {
-        getUserListMembers(listId, cursor);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getUserListMembers(final int listId, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(LIST_MEMBERS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1356,13 +1158,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
-    public void checkUserListMembership(final String listOwnerScreenName, final int listId, final long userId) {
-        showUserListMembership(listId, userId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void showUserListMembership(final int listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CHECK_LIST_MEMBERSHIP, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1382,13 +1177,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
-    public void getUserListSubscribers(final String listOwnerScreenName, final int listId, final long cursor) {
-        getUserListSubscribers(listId, cursor);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void getUserListSubscribers(final int listId, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(LIST_SUBSCRIBERS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1401,13 +1189,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
                 }
             }
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void subscribeUserList(final String listOwnerScreenName, final int listId) {
-        createUserListSubscription(listId);
     }
 
     /**
@@ -1430,13 +1211,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
     /**
      * {@inheritDoc}
      */
-    public void unsubscribeUserList(final String listOwnerScreenName, final int listId) {
-        destroyUserListSubscription(listId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void destroyUserListSubscription(final int listId) {
         getDispatcher().invokeLater(new AsyncTask(UNSUBSCRIBE_LIST, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1449,13 +1223,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl
                 }
             }
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void checkUserListSubscription(final String listOwnerScreenName, final int listId, final long userId) {
-        showUserListSubscription(listId, userId);
     }
 
     /**
