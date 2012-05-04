@@ -146,12 +146,12 @@ public class StatusMethodsTest extends TwitterTestBase {
         assertTrue(20 < statuses.size());
 
         List<User> users = unauthenticated.getRetweetedBy(47621163517624320L, new Paging(1, 100));
-        assertTrue(users.size() > 90);
+        assertTrue(users.size() > 50);
         users = unauthenticated.getRetweetedBy(47621163517624320L, new Paging(2, 100));
         assertTrue(users.size() > 10);
 
         IDs ids = twitter1.getRetweetedByIDs(47621163517624320L, new Paging(1, 100));
-        assertTrue(ids.getIDs().length > 90);
+        assertTrue(ids.getIDs().length > 50);
         ids = twitter1.getRetweetedByIDs(47621163517624320L, new Paging(2, 100));
         assertTrue(ids.getIDs().length > 10);
     }
