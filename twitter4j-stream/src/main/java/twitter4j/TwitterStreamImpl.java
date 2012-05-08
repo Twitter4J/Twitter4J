@@ -223,9 +223,10 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     /**
      * {@inheritDoc}
      */
-    public void site(final boolean withFollowings, final long[] follow) {
+    public StreamController site(final boolean withFollowings, final long[] follow) {
         ensureOAuthEnabled();
         ensureListenerIsSet();
+        final StreamController cs = new StreamController(http,auth);
         for (StreamListener listener : streamListeners) {
             if (!(listener instanceof SiteStreamsListener)) {
                 throw new IllegalStateException("Only SiteStreamListener is supported. found: " + listener.getClass());
@@ -234,12 +235,13 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         startHandler(new TwitterStreamConsumer() {
             public StreamImplementation getStream() throws TwitterException {
                 try {
-                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow), conf);
+                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow), conf,cs);
                 } catch (IOException e) {
                     throw new TwitterException(e);
                 }
             }
         });
+        return cs;
     }
 
     private Dispatcher getDispatcher() {
@@ -260,7 +262,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     InputStream getSiteStream(boolean withFollowings, long[] follow) throws TwitterException {
         ensureOAuthEnabled();
-        return http.post(conf.getSiteStreamBaseURL() + "site.json",
+        return http.post(conf.getSiteStreamBaseURL() + "/2b/site.json",
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
                         , new HttpParameter("follow", z_T4JInternalStringUtil.join(follow))}
