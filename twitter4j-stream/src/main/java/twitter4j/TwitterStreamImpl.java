@@ -661,7 +661,9 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
     }
 
     public Map<String, String> getRequestHeaders() {
-        return nestedConf.getRequestHeaders();
+        Map<String, String> headers = nestedConf.getRequestHeaders();
+        headers.put("Connection", "close");
+        return headers;
     }
 
     public boolean isPrettyDebugEnabled() {
@@ -671,5 +673,4 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
     public boolean isGZIPEnabled() {
         return nestedConf.isGZIPEnabled();
     }
-
 }
