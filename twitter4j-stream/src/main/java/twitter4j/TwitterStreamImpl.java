@@ -27,10 +27,7 @@ import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static twitter4j.internal.http.HttpResponseCode.FORBIDDEN;
 import static twitter4j.internal.http.HttpResponseCode.NOT_ACCEPTABLE;
@@ -661,7 +658,10 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
     }
 
     public Map<String, String> getRequestHeaders() {
-        Map<String, String> headers = nestedConf.getRequestHeaders();
+        // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
+        // and this will reduce the shutdown latency of streaming api connection
+        // see also - http://jira.twitter4j.org/browse/TFJ-556
+        Map<String, String> headers = new HashMap<String, String>(nestedConf.getRequestHeaders());
         headers.put("Connection", "close");
         return headers;
     }
