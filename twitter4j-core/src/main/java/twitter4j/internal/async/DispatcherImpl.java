@@ -113,7 +113,7 @@ class ExecuteThread extends Thread {
                 try {
                     task.run();
                 } catch (Exception ex) {
-                    logger.error("Got an exception while running a taks:", ex);
+                    logger.error("Got an exception while running a task:", ex);
                 }
             }
         }

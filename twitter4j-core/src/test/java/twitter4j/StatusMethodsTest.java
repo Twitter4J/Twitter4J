@@ -205,6 +205,7 @@ public class StatusMethodsTest extends TwitterTestBase {
         assertEquals("http://t.co/qbJx26r", media.getURL().toString());
         assertEquals(34, media.getStart());
         assertEquals(53, media.getEnd());
+        assertEquals("photo", media.getType());
         Map<Integer, MediaEntity.Size> sizes = media.getSizes();
         assertEquals(4, sizes.size());
         MediaEntity.Size large = sizes.get(MediaEntity.Size.LARGE);
