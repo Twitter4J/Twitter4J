@@ -53,16 +53,10 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     /*Timeline Methods*/
-    public void gotPublicTimeline(ResponseList<Status> statuses) {
-    }
-
     /**
      * @since Twitter4J 2.0.10
      */
     public void gotHomeTimeline(ResponseList<Status> statuses) {
-    }
-
-    public void gotFriendsTimeline(ResponseList<Status> statuses) {
     }
 
     public void gotUserTimeline(ResponseList<Status> statuses) {
@@ -184,11 +178,6 @@ public class TwitterAdapter implements TwitterListener {
     public void gotProfileImage(ProfileImage image) {
     }
 
-    public void gotFriendsStatuses(PagableResponseList<User> users) {
-    }
-
-    public void gotFollowersStatuses(PagableResponseList<User> users) {
-    }
     /*List Methods*/
 
     /**
@@ -530,9 +519,6 @@ public class TwitterAdapter implements TwitterListener {
      * @since Twitter4J 2.1.7
      */
     public void gotSimilarPlaces(SimilarPlaces places) {
-    }
-
-    public void gotNearByPlaces(ResponseList<Place> places) {
     }
 
     public void gotReverseGeoCode(ResponseList<Place> places) {

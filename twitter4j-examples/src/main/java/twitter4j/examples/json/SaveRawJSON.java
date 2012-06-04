@@ -45,7 +45,7 @@ public final class SaveRawJSON {
         System.out.println("Saving public timeline.");
         try {
             new File("statuses").mkdir();
-            List<Status> statuses = twitter.getPublicTimeline();
+            List<Status> statuses = twitter.getHomeTimeline();
             for (Status status : statuses) {
                 String rawJSON = DataObjectFactory.getRawJSON(status);
                 String fileName = "statuses/" + status.getId() + ".json";

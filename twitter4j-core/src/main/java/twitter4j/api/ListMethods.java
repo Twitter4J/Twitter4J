@@ -90,21 +90,6 @@ public interface ListMethods {
      * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
      * <br>This method calls http://api.twitter.com/1/lists/show.json
      *
-     * @param listOwnerScreenName The screen name of the list owner
-     * @param id                  The id of the list to show
-     * @return the specified list
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/show">https://dev.twitter.com/docs/api/1/get/lists/show | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #showUserList(int)} instead
-     */
-    UserList showUserList(String listOwnerScreenName, int id)
-            throws TwitterException;
-
-    /**
-     * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
-     * <br>This method calls http://api.twitter.com/1/lists/show.json
-     *
      * @param listId The id of the list to show
      * @return the specified list
      * @throws TwitterException when Twitter service or network is unavailable
@@ -124,38 +109,6 @@ public interface ListMethods {
      * @since Twitter4J 2.1.0
      */
     UserList destroyUserList(int listId) throws TwitterException;
-
-    /**
-     * Show tweet timeline for members of the specified list.
-     * <br>http://api.twitter.com/1/user/lists/list_id/statuses.json
-     *
-     * @param listOwnerScreenName The screen name of the list owner
-     * @param id                  The id of the list
-     * @param paging              controls pagination. Supports since_id, max_id, count and page parameters.
-     * @return list of statuses for members of the specified list
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #getUserListStatuses(int, twitter4j.Paging)} instead
-     */
-    ResponseList<Status> getUserListStatuses(String listOwnerScreenName, int id, Paging paging)
-            throws TwitterException;
-
-    /**
-     * Show tweet timeline for members of the specified list.
-     * <br>http://api.twitter.com/1/user/lists/list_id/statuses.json
-     *
-     * @param listOwnerId The id of the list owner
-     * @param id          The id of the list
-     * @param paging      controls pagination. Supports since_id, max_id, count and page parameters.
-     * @return list of statuses for members of the specified list
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated use {@link #getUserListStatuses(int, twitter4j.Paging)} instead
-     */
-    ResponseList<Status> getUserListStatuses(long listOwnerId, int id, Paging paging)
-            throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.

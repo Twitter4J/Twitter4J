@@ -33,34 +33,51 @@ import java.io.InputStream;
 class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImplementation, StreamListener {
 
     SiteStreamsListener listener;
+    private final StreamController cs;
 
-    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
+    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, InputStream stream, Configuration conf, StreamController cs) throws IOException {
         super(dispatcher, stream, conf);
+        this.cs = cs;
     }
 
-    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, HttpResponse response, Configuration conf) throws IOException {
+    /*package*/ SiteStreamsImpl(Dispatcher dispatcher, HttpResponse response, Configuration conf, StreamController cs) throws IOException {
         super(dispatcher, response, conf);
+        this.cs = cs;
     }
 
     public void next(StreamListener[] listeners) throws TwitterException {
         this.listener = (SiteStreamsListener) listeners[0];
         handleNextElement();
     }
-
+    
     protected String parseLine(String line) {
         if ("".equals(line) || null == line) {
             return line;
         }
         int userIdEnd = line.indexOf(',', 12);
         // in the documentation for_user is not quoted, but actually it is quoted
-        // n
+        if(cs.getControlURI() == null &&
+                line.charAt(2) == 'c' &&
+                line.charAt(3) == 'o' &&
+                line.charAt(4) == 'n'){
+            // control endpoint uri
+            // https://dev.twitter.com/docs/streaming-api/control-streams
+            JSONObject control = null;
+            try {
+                control = new JSONObject(line);
+                cs.setControlURI(CONF.getSiteStreamBaseURL()+ control.getJSONObject("control").getString("control_uri"));
+                logger.info("control_uri:" + cs.getControlURI());
+            } catch (JSONException e) {
+                logger.warn("received unexpected event:" + line);
+            }
+            return null;
+        }
         if (line.charAt(12) == '"') {
             forUser.set(Integer.parseInt(line.substring(13, userIdEnd - 1)));
-            return line.substring(userIdEnd + 11, line.length() - 1);
         } else {
             forUser.set(Integer.parseInt(line.substring(12, userIdEnd)));
-            return line.substring(userIdEnd + 11, line.length() - 1);
         }
+        return line.substring(userIdEnd + 11, line.length() - 1);
     }
 
     private static ThreadLocal<Integer> forUser =

@@ -77,13 +77,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         super.tearDown();
     }
 
-    public void testGetPublicTimeline() throws Exception {
-        async1.getPublicTimeline();
-        waitForResponse();
-        Assert.assertTrue("size", 0 < statuses.size());
-        assertDeserializedFormIsEqual(statuses);
-    }
-
     public void testShowUser() throws Exception {
         async1.showUser(id1.screenName);
         waitForResponse();
@@ -418,11 +411,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
-    public void gotTrends(Trends trends) {
-        this.trends = trends;
-        notifyResponse();
-    }
-
     public void gotCurrentTrends(Trends trends) {
         this.trends = trends;
         notifyResponse();
@@ -439,17 +427,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     /*Timeline Methods*/
-    public void gotPublicTimeline(ResponseList<Status> statuses) {
-        this.statuses = statuses;
-        notifyResponse();
-    }
-
     public void gotHomeTimeline(ResponseList<Status> statuses) {
-        this.statuses = statuses;
-        notifyResponse();
-    }
-
-    public void gotFriendsTimeline(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
@@ -581,16 +559,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
      * @since Twitter4J 2.1.7
      */
     public void gotProfileImage(ProfileImage image) {
-        notifyResponse();
-    }
-
-    public void gotFriendsStatuses(PagableResponseList<User> users) {
-        this.users = users;
-        notifyResponse();
-    }
-
-    public void gotFollowersStatuses(PagableResponseList<User> users) {
-        this.users = users;
         notifyResponse();
     }
 
@@ -927,12 +895,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     public void gotSimilarPlaces(SimilarPlaces places) {
-        this.places = places;
-        notifyResponse();
-    }
-
-
-    public void gotNearByPlaces(ResponseList<Place> places) {
         this.places = places;
         notifyResponse();
     }

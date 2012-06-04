@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.zip.GZIPInputStream;
@@ -161,11 +162,11 @@ final class AppEngineHttpResponseImpl extends HttpResponse implements HttpRespon
             statusCode = r.getResponseCode();
             headers = new HashMap<String, String>();
             for (HTTPHeader h : r.getHeaders()) {
-                headers.put(h.getName(), h.getValue());
+                headers.put(h.getName().toLowerCase(Locale.ENGLISH), h.getValue());
             }
             byte[] content = r.getContent();
             is = new ByteArrayInputStream(content);
-            if ("gzip".equals(headers.get("Content-Encoding"))) {
+            if ("gzip".equals(headers.get("content-encoding"))) {
                 // the response is gzipped
                 try {
                     is = new GZIPInputStream(is);

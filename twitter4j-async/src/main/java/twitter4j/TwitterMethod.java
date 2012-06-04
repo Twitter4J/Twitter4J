@@ -83,12 +83,7 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod WEEKLY_TRENDS = new TwitterMethod("WEEKLY_TRENDS");
 
     /*Timeline Methods*/
-    public static final TwitterMethod PUBLIC_TIMELINE = new TwitterMethod("PUBLIC_TIMELINE");
     public static final TwitterMethod HOME_TIMELINE = new TwitterMethod("HOME_TIMELINE");
-    /**
-     * @deprecated use {@link #HOME_TIMELINE} instead
-     */
-    public static final TwitterMethod FRIENDS_TIMELINE = new TwitterMethod("FRIENDS_TIMELINE");
     public static final TwitterMethod USER_TIMELINE = new TwitterMethod("USER_TIMELINE");
     public static final TwitterMethod MENTIONS = new TwitterMethod("MENTIONS");
     public static final TwitterMethod RETWEETED_BY_ME = new TwitterMethod("RETWEETED_BY_ME");
@@ -114,14 +109,6 @@ public final class TwitterMethod implements java.io.Serializable {
     public static final TwitterMethod PROFILE_IMAGE = new TwitterMethod("PROFILE_IMAGE");
     public static final TwitterMethod USER_SUGGESTIONS = new TwitterMethod("USER_SUGGESTIONS");
     public static final TwitterMethod MEMBER_SUGGESTIONS = new TwitterMethod("MEMBER_SUGGESTIONS");
-    /**
-     * @deprecated use {@link #FRIENDS_IDS} and {@link #LOOKUP_USERS} instead
-     */
-    public static final TwitterMethod FRIENDS_STATUSES = new TwitterMethod("FRIENDS_STATUSES");
-    /**
-     * @deprecated use {@link #FOLLOWERS_IDS} and {@link #LOOKUP_USERS} instead
-     */
-    public static final TwitterMethod FOLLOWERS_STATUSES = new TwitterMethod("FOLLOWERS_STATUSES");
 
     /*List Methods*/
     public static final TwitterMethod CREATE_USER_LIST = new TwitterMethod("CREATE_USER_LIST");
@@ -212,7 +199,6 @@ public final class TwitterMethod implements java.io.Serializable {
     /*Geo Methods*/
     public static final TwitterMethod SEARCH_PLACES = new TwitterMethod("SEARCH_PLACES");
     public static final TwitterMethod SIMILAR_PLACES = new TwitterMethod("SIMILAR_PLACES");
-    public static final TwitterMethod NEAR_BY_PLACES = new TwitterMethod("NEAR_BY_PLACES");
     public static final TwitterMethod REVERSE_GEO_CODE = new TwitterMethod("REVERSE_GEO_CODE");
     public static final TwitterMethod GEO_DETAILS = new TwitterMethod("GEO_DETAILS");
     public static final TwitterMethod CREATE_PLACE = new TwitterMethod("CREATE_PLACE");

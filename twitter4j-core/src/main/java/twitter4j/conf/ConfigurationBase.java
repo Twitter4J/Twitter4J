@@ -98,7 +98,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final String DEFAULT_SEARCH_BASE_URL = "http://search.twitter.com/";
     private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1/";
     private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/2/";
-    private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com/2b/";
+    private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com";
     private static final String DEFAULT_UPLOAD_BASE_URL = "http://upload.twitter.com/1/";
 
     private boolean IS_DALVIK;
@@ -182,7 +182,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
         setIncludeRTsEnbled(true);
-        setUserStreamRepliesAllEnabled(true);
+        setUserStreamRepliesAllEnabled(false);
         String isDalvik;
         try {
             isDalvik = System.getProperty(DALVIK, dalvikDetected);

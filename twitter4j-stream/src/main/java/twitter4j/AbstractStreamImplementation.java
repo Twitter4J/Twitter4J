@@ -45,7 +45,7 @@ abstract class AbstractStreamImplementation {
     private InputStream is;
     private HttpResponse response;
     protected final Dispatcher dispatcher;
-    private final Configuration CONF;
+    protected final Configuration CONF;
     protected z_T4JInternalFactory factory;
 
     /*package*/
@@ -91,7 +91,7 @@ abstract class AbstractStreamImplementation {
             dispatcher.invokeLater(new StreamEvent(line) {
                 public void run() {
                     line = parseLine(line);
-                    if (line.length() > 0) {
+                    if (line != null && line.length() > 0) {
                         try {
                             if (CONF.isJSONStoreEnabled()) {
                                 DataObjectFactoryUtil.clearThreadLocalMap();

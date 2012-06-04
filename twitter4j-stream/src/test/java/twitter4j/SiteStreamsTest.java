@@ -48,7 +48,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
     public void testStream() throws Exception {
         InputStream is = SiteStreamsTest.class.getResourceAsStream("/sitestream-testcase.json");
-        SiteStreamsImpl siteStreams = new SiteStreamsImpl(new DispatcherFactory(ConfigurationContext.getInstance()).getInstance(), is, conf1);
+        SiteStreamsImpl siteStreams = new SiteStreamsImpl(new DispatcherFactory(ConfigurationContext.getInstance()).getInstance(), is, conf1, new StreamController(conf1));
         SiteStreamsListener[] listeners = new SiteStreamsListener[1];
         listeners[0] = this;
         received.clear();
@@ -108,9 +108,24 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             //twit4j: 6358482
             //twit4j2: 6377362
-            twitterStream.site(true, new long[]{6377362, 6358482});
+            StreamController cs = twitterStream.site(true, new long[]{6377362,4933401});
             //expecting onFriendList for twit4j and twit4j2
             waitForStatus();
+            waitForStatus();
+
+            ControlStreamInfo info = cs.getInfo();
+            assertEquals(2, info.getUsers().length);
+
+            cs.addUsers(new long[]{6358482L});
+
+            waitForStatus();
+
+            info = cs.getInfo();
+            assertEquals(3, info.getUsers().length);
+            StreamController.FriendsIDs ids = cs.getFriendsIDs(4933401L, -1);
+            assertTrue(ids.getIds().length > 100);
+            assertEquals("yusukey", ids.getUser().getName());
+            cs.removeUsers(new long[]{4933401L});
             waitForStatus();
 
             Status status = twit4j2.updateStatus("@twit4j " + new Date());
@@ -146,8 +161,8 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             twitter2.destroyStatus(status.getId());
             waitForStatus();
 
-            twitter1.destroyDirectMessage(dm.getId());
-            waitForStatus();
+//            twitter1.destroyDirectMessage(dm.getId());
+//            waitForStatus();
 
             // block twit4j
             twit4j2.createBlock(6358482);
@@ -172,13 +187,14 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             UserList list = twit4j.createUserList("test", true, "desctription");
             waitForStatus();
+            waitForStatus();
             list = twit4j.updateUserList(list.getId(), "test2", true, "description2");
             waitForStatus();
             twit4j.addUserListMember(list.getId(), id2.id);
             waitForStatus();
-            twit4j2.subscribeUserList("twit4j", list.getId());
+            twit4j2.createUserListSubscription(list.getId());
             waitForStatus();
-            twit4j2.unsubscribeUserList("twit4j", list.getId());
+            twit4j2.destroyUserListSubscription(list.getId());
             waitForStatus();
             twit4j.deleteUserListMember(list.getId(), id2.id);
             waitForStatus();
@@ -190,10 +206,10 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             assertReceived("onFavorite", TwitterMethod.CREATE_FAVORITE);
             assertReceived("onUnfavorite", TwitterMethod.DESTROY_FAVORITE);
 //            assertReceived(TwitterMethod.RETWEET_STATUS);
-            assertReceived("onDirectMessage", TwitterMethod.SEND_DIRECT_MESSAGE);
+//            assertReceived("onDirectMessage", TwitterMethod.SEND_DIRECT_MESSAGE);
 
             assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
-            assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
+//            assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
             assertReceived("onUserListMemberAddition", TwitterMethod.ADD_LIST_MEMBER);
             assertReceived("onUserListMemberDeletion", TwitterMethod.DELETE_LIST_MEMBER);
@@ -223,26 +239,6 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         }
         Assert.assertTrue(assertion, received);
     }
-
-//    public void testSiteStreamPull() throws Exception {
-//        InputStream is = SiteStreamTest.class.getResourceAsStream("/sitestream-test.properties");
-//        if (null == is) {
-//            System.out.println("sitestream-test.properties not found. skipping Site Streams test.");
-//        } else {
-//            Properties props = new Properties();
-//            props.load(is);
-//            is.close();
-//            Configuration conf = new PropertyConfiguration(props,"/yusukey");
-//            TwitterStream twitterStream = new TwitterStreamFactory(conf).getInstance();
-//            is = twitterStream.getSiteStream(true, new int[]{4933401, 6358482});
-//            InputStreamReader isr = new InputStreamReader(is);
-//            BufferedReader br = new BufferedReader(isr);
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                System.out.println(line);
-//            }
-//        }
-//    }
 
     private synchronized void waitForStatus() {
         try {

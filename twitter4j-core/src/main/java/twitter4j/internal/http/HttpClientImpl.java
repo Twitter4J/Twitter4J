@@ -248,7 +248,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
         }
     }
 
-    private HttpURLConnection getConnection(String url) throws IOException {
+    protected HttpURLConnection getConnection(String url) throws IOException {
         HttpURLConnection con;
         if (isProxyConfigured() && !isJDK14orEarlier) {
             if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {

@@ -96,27 +96,12 @@ public class TwitterTest extends TwitterTestBase {
         assertFalse(ipLimitStatusAcquired);
         assertTrue(previous.getRemainingHits() > this.rateLimitStatus.getRemainingHits());
         assertEquals(previous.getHourlyLimit(), this.rateLimitStatus.getHourlyLimit());
-
-        try {
-            unauthenticated.getPublicTimeline();
-            assertFalse(accountLimitStatusAcquired);
-            assertTrue(ipLimitStatusAcquired);
-            previous = this.rateLimitStatus;
-            unauthenticated.getPublicTimeline();
-            assertFalse(accountLimitStatusAcquired);
-            assertTrue(ipLimitStatusAcquired);
-            assertTrue(previous.getRemainingHits() > this.rateLimitStatus.getRemainingHits());
-            assertEquals(previous.getHourlyLimit(), this.rateLimitStatus.getHourlyLimit());
-        } catch (TwitterException te) {
-            // is being rate limited;
-            assertEquals(400, te.getStatusCode());
-        }
     }
 
     public void testGetAccessLevel() throws Exception {
         TwitterResponse response;
         try {
-            response = unauthenticated.getPublicTimeline();
+            response = unauthenticated.getDailyTrends();
             assertEquals(TwitterResponse.NONE, response.getAccessLevel());
         } catch (TwitterException te) {
             // the account is being rate limited

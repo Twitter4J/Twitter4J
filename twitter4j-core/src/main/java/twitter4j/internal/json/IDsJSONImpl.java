@@ -54,7 +54,6 @@ import java.util.Arrays;
     }
 
     private void init(String jsonStr) throws TwitterException {
-
         JSONArray idList;
         try {
             if (jsonStr.startsWith("{")) {
@@ -84,8 +83,6 @@ import java.util.Arrays;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-
-
     }
 
     /**

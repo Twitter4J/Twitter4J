@@ -45,6 +45,33 @@ import java.net.URL;
         super();
         init(json);
     }
+    
+    /* package */ URLEntityJSONImpl(int start, int end, String url, String expandedURL, String displayURL) {
+        super();
+        this.start = start;
+        this.end = end;
+        try {
+            this.url = new URL(url);
+        } catch (MalformedURLException e) {
+            try {
+                this.url = new URL("http://example.com/");
+            } catch (MalformedURLException ignore) {
+            }
+        }
+        try {
+            this.expandedURL = new URL(expandedURL);
+        } catch (MalformedURLException e) {
+            try {
+                this.expandedURL = new URL("http://example.com/");
+            } catch (MalformedURLException ignore) {
+            }
+        }
+        this.displayURL = displayURL;
+    }
+    /* For serialization purposes only. */
+    /* package */ URLEntityJSONImpl() {
+    	
+    }
 
     private void init(JSONObject json) throws TwitterException {
         try {

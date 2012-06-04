@@ -27,10 +27,7 @@ import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static twitter4j.internal.http.HttpResponseCode.FORBIDDEN;
 import static twitter4j.internal.http.HttpResponseCode.NOT_ACCEPTABLE;
@@ -223,9 +220,10 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     /**
      * {@inheritDoc}
      */
-    public void site(final boolean withFollowings, final long[] follow) {
+    public StreamController site(final boolean withFollowings, final long[] follow) {
         ensureOAuthEnabled();
         ensureListenerIsSet();
+        final StreamController cs = new StreamController(http,auth);
         for (StreamListener listener : streamListeners) {
             if (!(listener instanceof SiteStreamsListener)) {
                 throw new IllegalStateException("Only SiteStreamListener is supported. found: " + listener.getClass());
@@ -234,12 +232,13 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         startHandler(new TwitterStreamConsumer() {
             public StreamImplementation getStream() throws TwitterException {
                 try {
-                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow), conf);
+                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow), conf,cs);
                 } catch (IOException e) {
                     throw new TwitterException(e);
                 }
             }
         });
+        return cs;
     }
 
     private Dispatcher getDispatcher() {
@@ -260,7 +259,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     InputStream getSiteStream(boolean withFollowings, long[] follow) throws TwitterException {
         ensureOAuthEnabled();
-        return http.post(conf.getSiteStreamBaseURL() + "site.json",
+        return http.post(conf.getSiteStreamBaseURL() + "/2b/site.json",
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
                         , new HttpParameter("follow", z_T4JInternalStringUtil.join(follow))}
@@ -659,7 +658,12 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
     }
 
     public Map<String, String> getRequestHeaders() {
-        return nestedConf.getRequestHeaders();
+        // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
+        // and this will reduce the shutdown latency of streaming api connection
+        // see also - http://jira.twitter4j.org/browse/TFJ-556
+        Map<String, String> headers = new HashMap<String, String>(nestedConf.getRequestHeaders());
+        headers.put("Connection", "close");
+        return headers;
     }
 
     public boolean isPrettyDebugEnabled() {
@@ -669,5 +673,4 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
     public boolean isGZIPEnabled() {
         return nestedConf.isGZIPEnabled();
     }
-
 }

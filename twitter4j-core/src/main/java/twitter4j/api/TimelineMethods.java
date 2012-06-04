@@ -26,16 +26,6 @@ import twitter4j.TwitterException;
  */
 public interface TimelineMethods {
     /**
-     * Returns the 20 most recent statuses from non-protected users who have set a custom user icon. The public timeline is cached for 60 seconds and requesting it more often than that is unproductive and a waste of resources.
-     * <br>This method calls http://api.twitter.com/1/statuses/public_timeline
-     *
-     * @return list of statuses of the Public Timeline
-     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/public_timeline">GET statuses/public_timeline | Twitter Developers</a>
-     */
-    ResponseList<Status> getPublicTimeline() throws TwitterException;
-
-    /**
      * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.<br>
      * Usage note: This home_timeline call is identical to statuses/friends_timeline, except that home_timeline also contains retweets, while statuses/friends_timeline does not for backwards compatibility reasons. In a future version of the API, statuses/friends_timeline will be deprected and replaced by home_timeline.
      * <br>This method calls http://api.twitter.com/1/statuses/home_timeline
@@ -60,31 +50,6 @@ public interface TimelineMethods {
      * @since Twitter4J 2.0.10
      */
     ResponseList<Status> getHomeTimeline(Paging paging) throws TwitterException;
-
-    /**
-     * Returns the 20 most recent statuses posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
-     * <br>This method calls http://api.twitter.com/1/statuses/friends_timeline
-     *
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends_timeline">GET statuses/friends_timeline | Twitter Developers</a>
-     * @deprecated use {@link #getHomeTimeline()} instead
-     */
-    ResponseList<Status> getFriendsTimeline() throws TwitterException;
-
-    /**
-     * Returns the 20 most recent statuses posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.
-     * <br>This method calls http://api.twitter.com/1/statuses/friends_timeline
-     *
-     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
-     * @return list of the Friends Timeline
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/friends_timeline">GET statuses/friends_timeline | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     * @deprecated use {@link #getHomeTimeline(twitter4j.Paging)} instead
-     */
-    ResponseList<Status> getFriendsTimeline(Paging paging) throws TwitterException;
-
 
     /**
      * Returns the 20 most recent statuses posted from the authenticating user. It's also possible to request another user's timeline via the id parameter.<br>

@@ -148,6 +148,9 @@ public abstract class HttpResponse {
                 }
                 if (CONF.isPrettyDebugEnabled()) {
                     logger.debug(json.toString(1));
+                } else {
+                    logger.debug(responseAsString != null ? responseAsString :
+                            json.toString());
                 }
             } catch (JSONException jsone) {
                 if (responseAsString == null) {
@@ -189,6 +192,9 @@ public abstract class HttpResponse {
                 }
                 if (CONF.isPrettyDebugEnabled()) {
                     logger.debug(jsonArray.toString(1));
+                } else {
+                    logger.debug(responseAsString != null ? responseAsString :
+                            jsonArray.toString());
                 }
             } catch (JSONException jsone) {
                 if (logger.isDebugEnabled()) {

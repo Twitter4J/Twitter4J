@@ -23,7 +23,7 @@ import java.util.Date;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface Tweet extends Comparable<Tweet>, EntitySupport,
+public interface Tweet extends Comparable<Tweet>, EntitySupport, Twt,
         java.io.Serializable {
     /**
      * returns the text
@@ -47,11 +47,26 @@ public interface Tweet extends Comparable<Tweet>, EntitySupport,
     String getToUser();
 
     /**
+     * returns the to_user_name
+     *
+     * @return the to_user_name value or null if to_user is not specified by the tweet
+     */
+    String getToUserName();
+
+    /**
      * returns the from_user
      *
      * @return the from_user
      */
     String getFromUser();
+
+    /**
+     * returns the from_user_name
+     *
+     * @return the from_user_name
+     * @since Twitter4J 2.2.6
+     */
+    String getFromUserName();
 
     /**
      * returns the status id of the tweet
@@ -82,6 +97,14 @@ public interface Tweet extends Comparable<Tweet>, EntitySupport,
      * @return the source of the tweet
      */
     String getSource();
+
+    /**
+     * Returns the in_reply_tostatus_id
+     *
+     * @return the in_reply_tostatus_id
+     * @since Twitter4J 2.2.6
+     */
+    long getInReplyToStatusId();
 
     /**
      * returns the profile_image_url

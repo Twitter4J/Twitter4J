@@ -39,6 +39,18 @@ import twitter4j.internal.org.json.JSONObject;
         super();
         init(json);
     }
+    
+    /* package */ HashtagEntityJSONImpl(int start, int end, String text) {
+        super();
+        this.start = start;
+        this.end = end;
+        this.text = text;
+    }
+
+    /* For serialization purposes only. */
+    /* package */ HashtagEntityJSONImpl() {
+    	
+    }
 
     private void init(JSONObject json) throws TwitterException {
         try {

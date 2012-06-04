@@ -48,11 +48,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     private String text;
     private long toUserId = -1;
     private String toUser = null;
-    private String fromUser;
+    private String toUserName = null;
+    private String fromUser = null;
+    private String fromUserName = null;
     private long id;
     private long fromUserId;
     private String isoLanguageCode = null;
     private String source;
+    private long inReplyToStatusId = -1;
     private String profileImageUrl;
     private Date createdAt;
     private String location;
@@ -69,11 +72,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         text = getUnescapedString("text", tweet);
         toUserId = getLong("to_user_id", tweet);
         toUser = getRawString("to_user", tweet);
+        toUserName = getRawString("to_user_name", tweet);
         fromUser = getRawString("from_user", tweet);
+        fromUserName = getRawString("from_user_name", tweet);
         id = getLong("id", tweet);
         fromUserId = getLong("from_user_id", tweet);
         isoLanguageCode = getRawString("iso_language_code", tweet);
         source = getUnescapedString("source", tweet);
+        inReplyToStatusId = getLong("in_reply_to_status_id", tweet);
         profileImageUrl = getUnescapedString("profile_image_url", tweet);
         createdAt = getDate("created_at", tweet, "EEE, dd MMM yyyy HH:mm:ss z");
         location = getRawString("location", tweet);
@@ -180,8 +186,22 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    public String getToUserName() {
+        return toUserName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String getFromUser() {
         return fromUser;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getFromUserName() {
+        return fromUserName;
     }
 
     /**
@@ -210,6 +230,13 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
      */
     public String getSource() {
         return source;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public long getInReplyToStatusId() {
+        return inReplyToStatusId;
     }
 
     /**
@@ -299,11 +326,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         int result = text != null ? text.hashCode() : 0;
         result = 31 * result + (int) (toUserId ^ (toUserId >>> 32));
         result = 31 * result + (toUser != null ? toUser.hashCode() : 0);
+        result = 31 * result + (toUserName != null ? toUserName.hashCode() : 0);
         result = 31 * result + (fromUser != null ? fromUser.hashCode() : 0);
+        result = 31 * result + (fromUserName != null ? fromUserName.hashCode() : 0);
         result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + (int) (fromUserId ^ (fromUserId >>> 32));
         result = 31 * result + (isoLanguageCode != null ? isoLanguageCode.hashCode() : 0);
         result = 31 * result + (source != null ? source.hashCode() : 0);
+        result = 31 * result + (int) (inReplyToStatusId ^ (inReplyToStatusId >>> 32));
         result = 31 * result + (profileImageUrl != null ? profileImageUrl.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (location != null ? location.hashCode() : 0);
@@ -323,11 +353,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                 "text='" + text + '\'' +
                 ", toUserId=" + toUserId +
                 ", toUser='" + toUser + '\'' +
+                ", toUserName='" + toUserName + '\'' +
                 ", fromUser='" + fromUser + '\'' +
+                ", fromUserName='" + fromUserName + '\'' +
                 ", id=" + id +
                 ", fromUserId=" + fromUserId +
                 ", isoLanguageCode='" + isoLanguageCode + '\'' +
                 ", source='" + source + '\'' +
+                ", inReplyToStatusId=" + inReplyToStatusId +
                 ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", createdAt=" + createdAt +
                 ", location='" + location + '\'' +
