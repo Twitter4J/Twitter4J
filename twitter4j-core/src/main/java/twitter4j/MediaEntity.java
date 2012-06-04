@@ -65,4 +65,12 @@ public interface MediaEntity extends URLEntity {
 
         int getResize();
     }
+
+    /**
+     * Returns the media type ("photo").
+     *
+     * @return the media type ("photo").
+     */
+    String getType();
+
 }

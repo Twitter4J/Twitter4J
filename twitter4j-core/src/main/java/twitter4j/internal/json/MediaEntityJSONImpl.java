@@ -43,6 +43,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
     private URL expandedURL;
     private String displayURL;
     private Map<Integer, MediaEntity.Size> sizes;
+    private String type;
 
     public MediaEntityJSONImpl(JSONObject json) throws TwitterException {
         try {
@@ -83,6 +84,9 @@ public class MediaEntityJSONImpl implements MediaEntity {
             this.sizes.put(MediaEntity.Size.MEDIUM, new Size(sizes.getJSONObject("medium")));
             this.sizes.put(MediaEntity.Size.SMALL, new Size(sizes.getJSONObject("small")));
             this.sizes.put(MediaEntity.Size.THUMB, new Size(sizes.getJSONObject("thumb")));
+            if (!json.isNull("type")) {
+                this.type = json.getString("type");
+            }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -138,6 +142,13 @@ public class MediaEntityJSONImpl implements MediaEntity {
 
     public Map<Integer, MediaEntity.Size> getSizes() {
         return sizes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getType() {
+        return type;
     }
 
     /**
@@ -239,6 +250,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
                 ", expandedURL=" + expandedURL +
                 ", displayURL='" + displayURL + '\'' +
                 ", sizes=" + sizes +
+                ", type=" + type +
                 '}';
     }
 }
