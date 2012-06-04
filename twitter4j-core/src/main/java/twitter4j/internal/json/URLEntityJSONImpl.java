@@ -144,9 +144,9 @@ import java.net.URL;
         if (start != that.start) return false;
         if (displayURL != null ? !displayURL.equals(that.displayURL) : that.displayURL != null)
             return false;
-        if (expandedURL != null ? !expandedURL.equals(that.expandedURL) : that.expandedURL != null)
+        if (expandedURL != null ? !expandedURL.toString().equalsIgnoreCase(that.expandedURL.toString()) : that.expandedURL != null)
             return false;
-        if (url != null ? !url.equals(that.url) : that.url != null)
+        if (url != null ? !url.toString().equalsIgnoreCase(that.url.toString()) : that.url != null)
             return false;
 
         return true;
@@ -156,8 +156,8 @@ import java.net.URL;
     public int hashCode() {
         int result = start;
         result = 31 * result + end;
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (expandedURL != null ? expandedURL.hashCode() : 0);
+        result = 31 * result + (url != null ? url.toString().hashCode() : 0);
+        result = 31 * result + (expandedURL != null ? expandedURL.toString().hashCode() : 0);
         result = 31 * result + (displayURL != null ? displayURL.hashCode() : 0);
         return result;
     }
