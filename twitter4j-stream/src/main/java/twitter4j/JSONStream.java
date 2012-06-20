@@ -2,7 +2,7 @@ package twitter4j;
 
 import java.io.IOException;
 
-interface JSONStream extends StreamImplementation {
+public interface JSONStream extends StreamImplementation {
     /**
      * Reads next status from this stream.
      *
