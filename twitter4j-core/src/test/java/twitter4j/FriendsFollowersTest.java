@@ -39,8 +39,8 @@ public class FriendsFollowersTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         int yusukey = 4933401;
         assertIDExsits("twit4j is following yusukey", ids, yusukey);
-        int ryunosukey = 48528137;
-        ids = twitter1.getFriendsIDs(ryunosukey);
+        long ryunosukey = 48528137;
+        ids = twitter1.getFriendsIDs(ryunosukey,-1);
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
         assertEquals("ryunosukey is not following anyone", 0, ids.getIDs().length);
@@ -115,7 +115,7 @@ public class FriendsFollowersTest extends TwitterTestBase {
         assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
     }
 
-    private void assertIDExsits(String assertion, IDs ids, int idToFind) {
+    private void assertIDExsits(String assertion, IDs ids, long idToFind) {
         boolean found = false;
         for (long id : ids.getIDs()) {
             if (id == idToFind) {
