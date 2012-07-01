@@ -163,7 +163,7 @@ public interface AccountMethods {
      *
      * @return the current trend, geo and sleep time information for the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/totals">GET account/settings | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/settings">GET account/settings | Twitter Developers</a>
      * @since Twitter4J 2.1.9
      */
     AccountSettings getAccountSettings() throws TwitterException;
