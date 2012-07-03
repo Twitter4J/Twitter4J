@@ -19,7 +19,9 @@ package twitter4j;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.AuthorizationFactory;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.*;
+import twitter4j.internal.http.HttpClientWrapper;
+import twitter4j.internal.http.HttpParameter;
+import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -29,9 +31,7 @@ import twitter4j.internal.util.z_T4JInternalStringUtil;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com
@@ -65,11 +65,12 @@ public class StreamController {
         return controlURI;
     }
 
-    void ensureControlURISet() {
+    void ensureControlURISet() throws TwitterException {
         synchronized (lock) {
             try {
                 while (controlURI == null) {
-                    lock.wait(1000);
+                    lock.wait(30000);
+                    throw new TwitterException("timed out for control uri to be ready");
                 }
             } catch (InterruptedException e) {
             }
@@ -108,6 +109,7 @@ public class StreamController {
                         new HttpParameter("cursor", cursor)}, AUTH);
         return new FriendsIDs(res);
     }
+
     public final class FriendsIDs implements CursorSupport, Serializable {
         private static final long serialVersionUID = -6282978710522199102L;
         private long[] ids;
@@ -174,6 +176,7 @@ public class StreamController {
         public long[] getIds() {
             return ids;
         }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -209,7 +212,7 @@ public class StreamController {
         }
     }
 
-    /*package*/ User createUser(JSONObject json){
+    /*package*/ User createUser(JSONObject json) {
         return new User(json);
     }
 

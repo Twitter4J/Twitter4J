@@ -24,7 +24,8 @@ import twitter4j.internal.org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com
@@ -47,29 +48,6 @@ public final class ControlStreamInfo implements Serializable {
             includeUserChanges = getBoolean("include_user_changes", info);
             replies = getRawString("replies", info);
             with = getRawString("with", info);
-/*
-{
-	"info": {
-		"users": [
-			{
-				"id": 6358482,
-				"name": "twit4j",
-				"dm": false
-			},
-			{
-				"id": 6377362,
-				"name": "twit4j2",
-				"dm": false
-			}
-		],
-		"delimited": "none",
-		"include_followings_activity": false,
-		"include_user_changes": false,
-		"replies": "none",
-		"with": "followings"
-	}
-}
- */
             JSONArray usersJSON = info.getJSONArray("users");
             users = new StreamController.User[usersJSON.length()];
             for (int i = 0; i < usersJSON.length(); i++) {
