@@ -27,6 +27,8 @@ class PropertyConfigurationFactory implements ConfigurationFactory {
 
     static {
         ROOT_CONFIGURATION = new PropertyConfiguration();
+        // calling ROOT_CONFIGURATION.dumpConfiguration() will cause ExceptionInInitializerError as Logger has not been initialized.
+        // as a quick and dirty solution, static initializer of twitter4j.internal.logging.Logger will call dumpConfiguration() on behalf.
     }
 
     /**
@@ -42,7 +44,9 @@ class PropertyConfigurationFactory implements ConfigurationFactory {
      * {@inheritDoc}
      */
     public Configuration getInstance(String configTreePath) {
-        return new PropertyConfiguration(configTreePath);
+        PropertyConfiguration conf = new PropertyConfiguration(configTreePath);
+        conf.dumpConfiguration();
+        return conf;
     }
 
     /**

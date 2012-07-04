@@ -17,8 +17,11 @@
 package twitter4j.conf;
 
 import twitter4j.Version;
+import twitter4j.internal.logging.Logger;
+import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.ObjectStreamException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -204,6 +207,24 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setMediaProvider("TWITTER");
         setMediaProviderAPIKey(null);
         setMediaProviderParameters(null);
+    }
+
+    public void dumpConfiguration(){
+        if (debug) {
+            Logger log = Logger.getLogger(ConfigurationBase.class);
+            Field[] fields = ConfigurationBase.class.getDeclaredFields();
+            for (Field field : fields) {
+                try {
+                    Object value = field.get(this);
+                    String strValue = String.valueOf(value);
+                    if (value != null && field.getName().matches("oAuthConsumerSecret|oAuthAccessTokenSecret|password")) {
+                        strValue = z_T4JInternalStringUtil.maskString(String.valueOf(value));
+                    }
+                    log.debug(field.getName() + ": " + strValue);
+                } catch (IllegalAccessException ignore) {
+                }
+            }
+        }
     }
 
     public final boolean isDalvik() {

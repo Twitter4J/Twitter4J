@@ -16,6 +16,12 @@
 
 package twitter4j.internal.logging;
 
+import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationContext;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
@@ -52,6 +58,16 @@ public abstract class Logger {
             loggerFactory = new StdOutLoggerFactory();
         }
         LOGGER_FACTORY = loggerFactory;
+
+        Configuration conf = ConfigurationContext.getInstance();
+        try {
+            Method method = conf.getClass().getMethod("dumpConfiguration",new Class[]{});
+            method.setAccessible(true);
+            method.invoke(conf);
+        } catch (IllegalAccessException ignore) {
+        } catch (InvocationTargetException ignore) {
+        } catch (NoSuchMethodException ignore) {
+        }
     }
 
     private static LoggerFactory getLoggerFactoryIfAvailable(String checkClassName, String implementationClass) {
