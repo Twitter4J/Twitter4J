@@ -210,8 +210,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     public void dumpConfiguration(){
+        Logger log = Logger.getLogger(ConfigurationBase.class);
         if (debug) {
-            Logger log = Logger.getLogger(ConfigurationBase.class);
             Field[] fields = ConfigurationBase.class.getDeclaredFields();
             for (Field field : fields) {
                 try {
@@ -224,6 +224,12 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 } catch (IllegalAccessException ignore) {
                 }
             }
+        }
+        if(!includeRTsEnabled){
+            log.warn("includeRTsEnabled is set to false. This configuration may not take effect after May 14th, 2012. https://dev.twitter.com/blog/api-housekeeping");
+        }
+        if(!includeEntitiesEnabled){
+            log.warn("includeEntitiesEnabled is set to false. This configuration may not take effect after May 14th, 2012. https://dev.twitter.com/blog/api-housekeeping");
         }
     }
 
