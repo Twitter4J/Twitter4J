@@ -17,6 +17,8 @@ package twitter4j;
 
 import twitter4j.auth.OAuthSupport;
 
+import java.io.InputStream;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.0
@@ -47,6 +49,9 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @since Twitter4J 2.1.8
      */
     void addListener(SiteStreamsListener listener);
+
+
+    void addListener(JSONListener listener);
 
     /**
      * Starts listening on all public statuses. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the firehose. If your service warrants access to it, we'll contact you.
@@ -182,6 +187,26 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @since Twitter4J 2.1.8
      */
     StreamController site(final boolean withFollowings, final long[] follow);
+
+
+    /**
+     * Returns a json stream for any specified endpoint.
+     *
+     * @return JSONStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API</a>
+     */
+    JSONStream getJSONStream(String endpoint) throws TwitterException;
+
+
+    /**
+     * Returns a raw input stream for any specified endpoint.
+     *
+     * @return InputStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API</a>
+     */
+    InputStream getRawInputStream(String endpoint) throws TwitterException;
 
     /**
      * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>

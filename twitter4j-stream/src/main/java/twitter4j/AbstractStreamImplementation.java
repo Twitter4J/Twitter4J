@@ -101,6 +101,7 @@ abstract class AbstractStreamImplementation {
                             if (logger.isDebugEnabled()) {
                                 logger.debug("Received:", CONF.isPrettyDebugEnabled() ? json.toString(1) : json.toString());
                             }
+                            onMessage(json);
                             if (JSONObjectType.SENDER == jsonObjectType) {
                                 onSender(json);
                             } else if (JSONObjectType.STATUS == jsonObjectType) {
@@ -168,6 +169,8 @@ abstract class AbstractStreamImplementation {
             }
         }
     }
+
+    protected void onMessage(JSONObject json) throws TwitterException {}
 
     protected void onSender(JSONObject json) throws TwitterException {
         logger.warn("Unhandled event: onSender");

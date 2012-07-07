@@ -167,6 +167,27 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     /**
      * {@inheritDoc}
      */
+    public JSONStream getJSONStream(String endpoint) throws TwitterException {
+        ensureAuthorizationEnabled();
+        try {
+            return new JSONStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + endpoint,
+                    auth), conf);
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public InputStream getRawInputStream(String endpoint) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return http.get(conf.getStreamBaseURL() + endpoint, auth).asStream();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void user() {
         user(null);
     }
@@ -378,6 +399,13 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
      * {@inheritDoc}
      */
     public void addListener(SiteStreamsListener listener) {
+        addListener((StreamListener) listener);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addListener(JSONListener listener) {
         addListener((StreamListener) listener);
     }
 
