@@ -80,17 +80,23 @@ public class MediaEntityJSONImpl implements MediaEntity {
             }
             JSONObject sizes = json.getJSONObject("sizes");
             this.sizes = new HashMap<Integer, MediaEntity.Size>(4);
-            this.sizes.put(MediaEntity.Size.LARGE, new Size(sizes.getJSONObject("large")));
-            this.sizes.put(MediaEntity.Size.MEDIUM, new Size(sizes.getJSONObject("medium")));
-            this.sizes.put(MediaEntity.Size.SMALL, new Size(sizes.getJSONObject("small")));
-            this.sizes.put(MediaEntity.Size.THUMB, new Size(sizes.getJSONObject("thumb")));
+            addSize(this.sizes, sizes, MediaEntity.Size.LARGE, "large");
+            addSize(this.sizes, sizes, MediaEntity.Size.MEDIUM, "medium");
+            addSize(this.sizes, sizes, MediaEntity.Size.SMALL, "small");
+            addSize(this.sizes, sizes, MediaEntity.Size.THUMB, "thumb");
             if (!json.isNull("type")) {
                 this.type = json.getString("type");
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-
+    }
+    
+    private void addSize(Map<Integer, MediaEntity.Size> sizes, JSONObject sizes_json, Integer size, String key) throws JSONException {
+        JSONObject size_json = sizes_json.optJSONObject(key);
+    	if(size_json != null) {
+    		sizes.put(size, new Size(size_json));
+    	}
     }
     
     /* For serialization purposes only. */
