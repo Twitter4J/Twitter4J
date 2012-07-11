@@ -127,7 +127,7 @@ public class HTTP {
     public static String toString(JSONObject jo) throws JSONException {
         Iterator     keys = jo.keys();
         String       string;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (jo.has("Status-Code") && jo.has("Reason-Phrase")) {
             sb.append(jo.getString("HTTP-Version"));
             sb.append(' ');

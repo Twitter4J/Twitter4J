@@ -181,7 +181,7 @@ public class Annotations implements java.io.Serializable {
     */
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer("Annotations{");
+        StringBuilder sb = new StringBuilder("Annotations{");
         for (int i = 0; i < size(); i++) {
             if (i > 0) {
                 sb.append(", ");

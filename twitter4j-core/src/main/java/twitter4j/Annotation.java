@@ -288,7 +288,7 @@ public class Annotation implements Comparable<Annotation>, java.io.Serializable 
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer("Annotation{type='");
+        StringBuilder sb = new StringBuilder("Annotation{type='");
         sb.append(type).append("', attributes={");
         Iterator<String> nameIt = attributes.keySet().iterator();
         while (nameIt.hasNext()) {

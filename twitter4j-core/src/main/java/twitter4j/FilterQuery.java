@@ -177,7 +177,7 @@ public final class FilterQuery implements java.io.Serializable {
     }
 
     private String toLocationsString(final double[][] keywords) {
-        final StringBuffer buf = new StringBuffer(20 * keywords.length * 2);
+        final StringBuilder buf = new StringBuilder(20 * keywords.length * 2);
         for (double[] keyword : keywords) {
             if (0 != buf.length()) {
                 buf.append(",");

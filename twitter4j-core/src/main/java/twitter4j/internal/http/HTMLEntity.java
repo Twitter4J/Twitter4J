@@ -21,12 +21,12 @@ import java.util.Map;
 
 public final class HTMLEntity {
     public static String escape(String original) {
-        StringBuffer buf = new StringBuffer(original);
+        StringBuilder buf = new StringBuilder(original);
         escape(buf);
         return buf.toString();
     }
 
-    public static void escape(StringBuffer original) {
+    public static void escape(StringBuilder original) {
         int index = 0;
         String escaped;
         while (index < original.length()) {
@@ -43,14 +43,14 @@ public final class HTMLEntity {
     public static String unescape(String original) {
         String returnValue = null;
         if (original != null) {
-            StringBuffer buf = new StringBuffer(original);
+            StringBuilder buf = new StringBuilder(original);
             unescape(buf);
             returnValue = buf.toString();
         }
         return returnValue;
     }
 
-    public static void unescape(StringBuffer original) {
+    public static void unescape(StringBuilder original) {
         int index = 0;
         int semicolonIndex;
         String escaped;

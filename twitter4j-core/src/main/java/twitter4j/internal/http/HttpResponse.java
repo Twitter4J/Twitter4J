@@ -97,7 +97,7 @@ public abstract class HttpResponse {
                     return null;
                 }
                 br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-                StringBuffer buf = new StringBuffer();
+                StringBuilder buf = new StringBuilder();
                 String line;
                 while ((line = br.readLine()) != null) {
                     buf.append(line).append("\n");

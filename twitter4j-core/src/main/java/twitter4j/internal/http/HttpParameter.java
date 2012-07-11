@@ -233,7 +233,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
         if (null == httpParams) {
             return "";
         }
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int j = 0; j < httpParams.length; j++) {
             if (httpParams[j].isFile()) {
                 throw new IllegalArgumentException("parameter [" + httpParams[j].name + "]should be text");
@@ -260,7 +260,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
             encoded = URLEncoder.encode(value, "UTF-8");
         } catch (UnsupportedEncodingException ignore) {
         }
-        StringBuffer buf = new StringBuffer(encoded.length());
+        StringBuilder buf = new StringBuilder(encoded.length());
         char focus;
         for (int i = 0; i < encoded.length(); i++) {
             focus = encoded.charAt(i);

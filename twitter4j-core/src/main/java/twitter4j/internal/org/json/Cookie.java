@@ -47,7 +47,7 @@ public class Cookie {
     public static String escape(String string) {
         char         c;
         String       s = string.trim();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int          length = s.length();
         for (int i = 0; i < length; i += 1) {
             c = s.charAt(i);
@@ -116,7 +116,7 @@ public class Cookie {
      * @throws JSONException
      */
     public static String toString(JSONObject jo) throws JSONException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append(escape(jo.getString("name")));
         sb.append("=");
@@ -149,7 +149,7 @@ public class Cookie {
      */
     public static String unescape(String string) {
         int length = string.length();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; ++i) {
             char c = string.charAt(i);
             if (c == '+') {

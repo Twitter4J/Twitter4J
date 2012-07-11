@@ -219,7 +219,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
             signatureBaseParams.addAll(toParamList(params));
         }
         parseGetParameters(url, signatureBaseParams);
-        StringBuffer base = new StringBuffer(method).append("&")
+        StringBuilder base = new StringBuilder(method).append("&")
                 .append(HttpParameter.encode(constructRequestURL(url))).append("&");
         base.append(HttpParameter.encode(normalizeRequestParameters(signatureBaseParams)));
         String oauthBaseString = base.toString();
@@ -291,7 +291,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         signatureBaseParams.addAll(oauthHeaderParams);
         parseGetParameters(url, signatureBaseParams);
 
-        StringBuffer base = new StringBuffer(method).append("&")
+        StringBuilder base = new StringBuilder(method).append("&")
                 .append(HttpParameter.encode(constructRequestURL(url))).append("&");
         base.append(HttpParameter.encode(normalizeRequestParameters(signatureBaseParams)));
 
@@ -396,7 +396,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     }
 
     public static String encodeParameters(List<HttpParameter> httpParams, String splitter, boolean quot) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (HttpParameter param : httpParams) {
             if (!param.isFile()) {
                 if (buf.length() != 0) {

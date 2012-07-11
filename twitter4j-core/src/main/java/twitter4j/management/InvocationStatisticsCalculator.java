@@ -91,7 +91,7 @@ public class InvocationStatisticsCalculator implements InvocationStatistics {
     @Override
     public String toString() {
         // StringBuilder is faster... do we still need to support JDK 1.4?
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("calls=").append(getCallCount()).append(",")
                 .append("errors=").append(getErrorCount()).append(",")
                 .append("totalTime=").append(getTotalTime()).append(",")

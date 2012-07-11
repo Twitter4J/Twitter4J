@@ -72,7 +72,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      */
     @Override
     public String getMessage() {
-        StringBuffer value = new StringBuffer();
+        StringBuilder value = new StringBuilder();
         if (errorMessage != null && requestPath != null) {
             value.append("error - ").append(errorMessage)
                     .append("\n");

@@ -533,7 +533,7 @@ public class DAOTest extends TwitterTestBase {
             }
             isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
                 buf.append(line);
