@@ -20,7 +20,7 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class VersionAsync {
-    private static final String VERSION = "2.2.6";
+    private static final String VERSION = "2.2.7-SNAPSHOT";
     private static final String TITLE = "Twitter4J Async API";
 
     private VersionAsync() {
