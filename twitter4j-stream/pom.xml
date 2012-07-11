@@ -68,7 +68,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.0-alpha-4</version>
+                        <version>1.4</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -131,9 +131,9 @@
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <source>6</source>
-                    <target>jsr14</target>
+                    <target>6</target>
                 </configuration>
-                <version>2.3.2</version>
+                <version>2.5.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -150,7 +150,7 @@
                         </manifest>
                     </archive>
                 </configuration>
-                <version>2.3.1</version>
+                <version>2.4</version>
             </plugin>
 
             <plugin>
