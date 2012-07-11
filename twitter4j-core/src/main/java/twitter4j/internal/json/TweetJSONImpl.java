@@ -26,6 +26,7 @@ import twitter4j.TwitterException;
 import twitter4j.URLEntity;
 import twitter4j.UserMentionEntity;
 import twitter4j.conf.Configuration;
+import twitter4j.internal.http.HTMLEntityString;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -37,6 +38,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
 import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
 import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
 import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedEntityString;
 
 /**
  * A data class representing a Tweet in the search response
@@ -69,7 +71,8 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     private MediaEntity[] mediaEntities;
 
     /*package*/ TweetJSONImpl(JSONObject tweet) throws TwitterException {
-        text = getUnescapedString("text", tweet);
+    	HTMLEntityString unescapedText=getUnescapedEntityString("text", tweet);
+    	text = unescapedText.getConvertedText().toString();
         toUserId = getLong("to_user_id", tweet);
         toUser = getRawString("to_user", tweet);
         toUserName = getRawString("to_user_name", tweet);
@@ -102,6 +105,8 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         }
         if (!tweet.isNull("entities")) {
             try {
+            	HTMLEntityString.IndexMapper indexMapper=unescapedText.createIndexMapper();
+            	
                 JSONObject entities = tweet.getJSONObject("entities");
                 int len;
                 if (!entities.isNull("user_mentions")) {
@@ -109,7 +114,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                     len = userMentionsArray.length();
                     userMentionEntities = new UserMentionEntity[len];
                     for (int i = 0; i < len; i++) {
-                        userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
+                        userMentionEntities[i] = new UserMentionEntityJSONImpl(indexMapper, userMentionsArray.getJSONObject(i));
                     }
 
                 }
@@ -118,7 +123,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                     len = urlsArray.length();
                     urlEntities = new URLEntity[len];
                     for (int i = 0; i < len; i++) {
-                        urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                        urlEntities[i] = new URLEntityJSONImpl(indexMapper, urlsArray.getJSONObject(i));
                     }
                 }
 
@@ -127,7 +132,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                     len = hashtagsArray.length();
                     hashtagEntities = new HashtagEntity[len];
                     for (int i = 0; i < len; i++) {
-                        hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
+                        hashtagEntities[i] = new HashtagEntityJSONImpl(indexMapper, hashtagsArray.getJSONObject(i));
                     }
                 }
 
@@ -136,7 +141,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                     len = mediaArray.length();
                     mediaEntities = new MediaEntity[len];
                     for (int i = 0; i < len; i++) {
-                        mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
+                        mediaEntities[i] = new MediaEntityJSONImpl(indexMapper, mediaArray.getJSONObject(i));
                     }
                 }
             } catch (JSONException jsone) {

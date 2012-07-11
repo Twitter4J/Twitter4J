@@ -228,6 +228,23 @@ public class StatusMethodsTest extends TwitterTestBase {
         assertEquals(MediaEntity.Size.CROP, thumb.getResize());
         assertEquals(150, thumb.getWidth());
         assertEquals(150, thumb.getHeight());
+        
+        status = twitter1.showStatus(199523167482548224L);
+        assertEquals(2, status.getUserMentionEntities().length);
+        
+        assertEquals("Reading: New stories on power of Twitter in political campaigns: @adweek (http://t.co/Mje7dQRD) & @AP (http://t.co/wTjyJuyN)", status.getText());
+        assertEquals(" & ", status.getText().substring(95, 98));
+        
+        UserMentionEntity mention=status.getUserMentionEntities()[0];
+        assertEquals("adweek", mention.getScreenName().toLowerCase());
+        assertEquals("@adweek", status.getText().substring(mention.getStart(), mention.getEnd()).toLowerCase());
+        
+        mention = status.getUserMentionEntities()[1];
+        assertEquals("ap", status.getUserMentionEntities()[1].getScreenName().toLowerCase());
+        assertEquals("@ap", status.getText().substring(mention.getStart(), mention.getEnd()).toLowerCase());
+        
+        for(URLEntity entity : status.getURLEntities())
+        	assertEquals(entity.getURL().toString(), status.getText().substring(entity.getStart(), entity.getEnd()));
     }
 
     static final String[] files = {"src/test/resources/t4j-reverse.jpeg",

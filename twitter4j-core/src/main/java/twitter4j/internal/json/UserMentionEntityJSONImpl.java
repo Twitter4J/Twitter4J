@@ -18,6 +18,7 @@ package twitter4j.internal.json;
 
 import twitter4j.TwitterException;
 import twitter4j.UserMentionEntity;
+import twitter4j.internal.http.HTMLEntityString;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -37,9 +38,9 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     private String screenName;
     private long id;
 
-    /* package */ UserMentionEntityJSONImpl(JSONObject json) throws TwitterException {
+    /* package */ UserMentionEntityJSONImpl(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
         super();
-        init(json);
+        init(indexMapper, json);
     }
     
     /* package */ UserMentionEntityJSONImpl(int start, int end, String name, String screenName, long id) {
@@ -56,11 +57,11 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     
     }
 
-    private void init(JSONObject json) throws TwitterException {
+    private void init(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
-            this.start = indicesArray.getInt(0);
-            this.end = indicesArray.getInt(1);
+            this.start = indexMapper.mapIndex(indicesArray.getInt(0));
+            this.end = indexMapper.mapIndex(indicesArray.getInt(1));
 
             if (!json.isNull("name")) {
                 this.name = json.getString("name");
