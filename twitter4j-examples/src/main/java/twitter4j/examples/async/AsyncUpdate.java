@@ -16,12 +16,9 @@
 
 package twitter4j.examples.async;
 
-import twitter4j.AsyncTwitter;
-import twitter4j.AsyncTwitterFactory;
-import twitter4j.Status;
-import twitter4j.TwitterAdapter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterMethod;
+import twitter4j.*;
+
+import static twitter4j.TwitterMethod.*;
 
 /**
  * <p>This is a code example of Twitter4J async API.<br>

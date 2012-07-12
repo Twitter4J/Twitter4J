@@ -51,25 +51,25 @@ public class MediaUploadTest extends TestCase {
     public void testProviders() throws Exception {
         Configuration conf;
         ImageUploadFactory factory;
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITTER.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITTER.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.PLIXI.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.PLIXI.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITGOO.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITGOO.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITPIC.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITPIC.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.YFROG.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.YFROG.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.MOBYPICTURE.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.MOBYPICTURE.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPL.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPL.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.POSTEROUS.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.POSTEROUS.name()).build();
         factory = new ImageUploadFactory(conf);
     }
 

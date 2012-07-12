@@ -27,60 +27,12 @@ import java.util.Map;
 public interface ProfileImage extends TwitterResponse, java.io.Serializable {
     String getURL();
 
-    ImageSize BIGGER = new ImageSize("bigger");
-    ImageSize NORMAL = new ImageSize("normal");
-    ImageSize MINI = new ImageSize("mini");
-    ImageSize ORIGINAL = new ImageSize("original");
+    ImageSize BIGGER = ImageSize.BIGGER;
+    ImageSize NORMAL = ImageSize.NORMAL;
+    ImageSize MINI = ImageSize.MINI;
+    ImageSize ORIGINAL = ImageSize.ORIGINAL;
 
-    static class ImageSize implements java.io.Serializable {
-
-        private static final Map<String, ImageSize> instances = new HashMap<String, ImageSize>();
-
-        private static final long serialVersionUID = 3363026523372848987L;
-
-        private final String name;
-
-        private ImageSize() {
-            throw new AssertionError();
-        }
-
-        private ImageSize(String name) {
-            this.name = name;
-            instances.put(name, this);
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            ImageSize imageSize = (ImageSize) o;
-
-            if (!name.equals(imageSize.name)) return false;
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            return name.hashCode();
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-
-        private static ImageSize getInstance(String name) {
-            return instances.get(name);
-        }
-
-        private Object readResolve() throws ObjectStreamException {
-            return getInstance(name);
-        }
+    enum ImageSize{
+        BIGGER, NORMAL, MINI, ORIGINAL
     }
 }

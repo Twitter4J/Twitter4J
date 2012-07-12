@@ -124,6 +124,8 @@ public class ImageUploadFactory {
                 return new ImgLyUpload(conf, oauth);
         } else if (mediaProvider == PLIXI) {
             return new PlixiUpload(conf, apiKey, oauth);
+        } else if (mediaProvider == LOCKERZ) {
+            return new PlixiUpload(conf, apiKey, oauth);
         } else if (mediaProvider == TWIPPLE) {
             return new TwippleUpload(conf, oauth);
         } else if (mediaProvider == TWITGOO) {

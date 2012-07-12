@@ -525,7 +525,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     public ProfileImage getProfileImage(String screenName, ProfileImage.ImageSize size) throws TwitterException {
         return factory.createProfileImage(get(conf.getRestBaseURL() + "users/profile_image/"
-                + screenName + ".json?size=" + size.getName()));
+                + screenName + ".json?size=" + size.name()));
     }
 
     /*List Methods*/
