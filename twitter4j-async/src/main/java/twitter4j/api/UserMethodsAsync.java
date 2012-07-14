@@ -111,7 +111,7 @@ public interface UserMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/users/profile_image/:screen_name.json
      *
      * @param screenName The screen name of the user for whom to return results for.
-     * @param size       Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: BIGGER - 73px by 73px NORMAL - 48px by 48px MINI - 24px by 24px
+     * @param size       Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: bigger - 73px by 73px normal - 48px by 48px mini - 24px by 24px
      * @see <a href="https://dev.twitter.com/docs/api/1/get/users/profile_image/:screen_name">GET users/profile_image/:screen_name | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */

@@ -16,10 +16,6 @@
 
 package twitter4j;
 
-import java.io.ObjectStreamException;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
@@ -27,12 +23,12 @@ import java.util.Map;
 public interface ProfileImage extends TwitterResponse, java.io.Serializable {
     String getURL();
 
-    ImageSize BIGGER = ImageSize.BIGGER;
-    ImageSize NORMAL = ImageSize.NORMAL;
-    ImageSize MINI = ImageSize.MINI;
-    ImageSize ORIGINAL = ImageSize.ORIGINAL;
+    ImageSize BIGGER = ImageSize.bigger;
+    ImageSize NORMAL = ImageSize.normal;
+    ImageSize MINI = ImageSize.mini;
+    ImageSize ORIGINAL = ImageSize.original;
 
     enum ImageSize{
-        BIGGER, NORMAL, MINI, ORIGINAL
+        bigger, normal, mini, original
     }
 }
