@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -48,6 +47,7 @@ public class HttpResponseImpl extends HttpResponse {
         this.responseAsString = content;
     }
 
+    @Override
     public String getResponseHeader(String name) {
         return con.getHeaderField(name);
     }
@@ -60,6 +60,7 @@ public class HttpResponseImpl extends HttpResponse {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void disconnect() {
         con.disconnect();
     }

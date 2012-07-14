@@ -27,10 +27,7 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.Arrays;
 import java.util.Date;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing one single status of a user.
@@ -80,10 +77,10 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         super();
         init(json);
     }
-    
+
     /* Only for serialization purposes. */
     /*package*/ StatusJSONImpl() {
-    	
+
     }
 
     private void init(JSONObject json) throws TwitterException {
@@ -200,6 +197,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         }
     }
 
+    @Override
     public int compareTo(Status that) {
         long delta = this.id - that.getId();
         if (delta < Integer.MIN_VALUE) {
@@ -213,6 +211,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Date getCreatedAt() {
         return this.createdAt;
     }
@@ -220,6 +219,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getId() {
         return this.id;
     }
@@ -227,6 +227,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getText() {
         return this.text;
     }
@@ -234,6 +235,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSource() {
         return this.source;
     }
@@ -242,6 +244,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isTruncated() {
         return isTruncated;
     }
@@ -249,6 +252,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getInReplyToStatusId() {
         return inReplyToStatusId;
     }
@@ -256,6 +260,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getInReplyToUserId() {
         return inReplyToUserId;
     }
@@ -263,6 +268,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getInReplyToScreenName() {
         return inReplyToScreenName;
     }
@@ -270,6 +276,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public GeoLocation getGeoLocation() {
         return geoLocation;
     }
@@ -277,6 +284,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Place getPlace() {
         return place;
     }
@@ -284,6 +292,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long[] getContributors() {
         if (contributors != null) {
             // http://twitter4j.org/jira/browse/TFJ-592
@@ -305,6 +314,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Annotations getAnnotations() {
         return annotations;
     }
@@ -312,6 +322,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isFavorited() {
         return isFavorited;
     }
@@ -322,6 +333,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public User getUser() {
         return user;
     }
@@ -329,6 +341,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRetweet() {
         return retweetedStatus != null;
     }
@@ -336,6 +349,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Status getRetweetedStatus() {
         return retweetedStatus;
     }
@@ -343,6 +357,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getRetweetCount() {
         return retweetCount;
     }
@@ -350,6 +365,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isRetweetedByMe() {
         return wasRetweetedByMe;
     }
@@ -357,6 +373,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public UserMentionEntity[] getUserMentionEntities() {
         return userMentionEntities;
     }
@@ -364,6 +381,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public URLEntity[] getURLEntities() {
         return urlEntities;
     }
@@ -371,6 +389,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public HashtagEntity[] getHashtagEntities() {
         return hashtagEntities;
     }
@@ -378,6 +397,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public MediaEntity[] getMediaEntities() {
         return mediaEntities;
     }

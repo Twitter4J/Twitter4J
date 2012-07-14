@@ -16,11 +16,7 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.PagableResponseList;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
@@ -31,11 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing Basic user information element
@@ -98,10 +90,10 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
         super();
         init(json);
     }
-    
+
     /* Only for serialization purposes. */
     /*package*/UserJSONImpl() {
-    	
+
     }
 
     private void init(JSONObject json) throws TwitterException {
@@ -149,6 +141,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
         }
     }
 
+    @Override
     public int compareTo(User that) {
         return (int) (this.id - that.getId());
     }
@@ -156,6 +149,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getId() {
         return id;
     }
@@ -163,6 +157,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -170,6 +165,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getScreenName() {
         return screenName;
     }
@@ -177,6 +173,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLocation() {
         return location;
     }
@@ -184,6 +181,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDescription() {
         return description;
     }
@@ -191,6 +189,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isContributorsEnabled() {
         return isContributorsEnabled;
     }
@@ -198,6 +197,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public URL getProfileImageURL() {
         try {
             return new URL(profileImageUrl);
@@ -209,6 +209,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public URL getProfileImageUrlHttps() {
         if (null == profileImageUrlHttps)
             return null;
@@ -222,6 +223,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public URL getURL() {
         try {
             return new URL(url);
@@ -233,6 +235,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isProtected() {
         return isProtected;
     }
@@ -240,6 +243,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFollowersCount() {
         return followersCount;
     }
@@ -247,10 +251,12 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProfileBackgroundColor() {
         return profileBackgroundColor;
     }
 
+    @Override
     public String getProfileTextColor() {
         return profileTextColor;
     }
@@ -258,6 +264,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProfileLinkColor() {
         return profileLinkColor;
     }
@@ -265,6 +272,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProfileSidebarFillColor() {
         return profileSidebarFillColor;
     }
@@ -272,6 +280,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProfileSidebarBorderColor() {
         return profileSidebarBorderColor;
     }
@@ -279,6 +288,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isProfileUseBackgroundImage() {
         return profileUseBackgroundImage;
     }
@@ -286,6 +296,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isShowAllInlineMedia() {
         return showAllInlineMedia;
     }
@@ -293,6 +304,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFriendsCount() {
         return friendsCount;
     }
@@ -300,6 +312,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Status getStatus() {
         return status;
     }
@@ -308,6 +321,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -315,6 +329,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFavouritesCount() {
         return favouritesCount;
     }
@@ -322,6 +337,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getUtcOffset() {
         return utcOffset;
     }
@@ -329,6 +345,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getTimeZone() {
         return timeZone;
     }
@@ -336,6 +353,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProfileBackgroundImageUrl() {
         return profileBackgroundImageUrl;
     }
@@ -343,6 +361,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProfileBackgroundImageUrlHttps() {
         return profileBackgroundImageUrlHttps;
     }
@@ -350,6 +369,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isProfileBackgroundTiled() {
         return profileBackgroundTiled;
     }
@@ -357,6 +377,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLang() {
         return lang;
     }
@@ -364,6 +385,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getStatusesCount() {
         return statusesCount;
     }
@@ -371,6 +393,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isGeoEnabled() {
         return isGeoEnabled;
     }
@@ -378,6 +401,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isVerified() {
         return isVerified;
     }
@@ -385,6 +409,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isTranslator() {
         return translator;
     }
@@ -392,6 +417,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getListedCount() {
         return listedCount;
     }
@@ -399,6 +425,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isFollowRequestSent() {
         return isFollowRequestSent;
     }

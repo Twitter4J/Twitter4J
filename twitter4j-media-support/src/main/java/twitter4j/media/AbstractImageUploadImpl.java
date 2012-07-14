@@ -63,29 +63,33 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
         this.apiKey = apiKey;
     }
 
+    @Override
     public String upload(String imageFileName, InputStream imageBody) throws TwitterException {
         this.image = new HttpParameter("media", imageFileName, imageBody);
         return upload();
     }
 
+    @Override
     public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException {
         this.image = new HttpParameter("media", imageFileName, imageBody);
         this.message = new HttpParameter("message", message);
         return upload();
     }
 
+    @Override
     public String upload(File file, String message) throws TwitterException {
         this.image = new HttpParameter("media", file);
         this.message = new HttpParameter("message", message);
         return upload();
     }
 
+    @Override
     public String upload(File file) throws TwitterException {
         this.image = new HttpParameter("media", file);
         return upload();
     }
 
-    public String upload() throws TwitterException {
+    private String upload() throws TwitterException {
         if (conf.getMediaProviderParameters() != null) {
             Set set = conf.getMediaProviderParameters().keySet();
             HttpParameter[] params = new HttpParameter[set.size()];

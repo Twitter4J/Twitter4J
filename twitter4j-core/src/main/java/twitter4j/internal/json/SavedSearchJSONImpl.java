@@ -27,9 +27,7 @@ import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Date;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing a Saved Search
@@ -75,7 +73,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                 JSONObject savedSearchesJSON = json.getJSONObject(i);
                 SavedSearch savedSearch = new SavedSearchJSONImpl(savedSearchesJSON);
                 savedSearches.add(savedSearch);
-                if(conf.isJSONStoreEnabled()){
+                if (conf.isJSONStoreEnabled()) {
                     DataObjectFactoryUtil.registerJSONObject(savedSearch, savedSearchesJSON);
                 }
             }
@@ -96,6 +94,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         id = getInt("id", savedSearch);
     }
 
+    @Override
     public int compareTo(SavedSearch that) {
         return this.id - that.getId();
     }
@@ -103,6 +102,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -110,6 +110,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getQuery() {
         return query;
     }
@@ -117,6 +118,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPosition() {
         return position;
     }
@@ -124,6 +126,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -131,6 +134,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getId() {
         return id;
     }

@@ -209,7 +209,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setMediaProviderParameters(null);
     }
 
-    public void dumpConfiguration(){
+    public void dumpConfiguration() {
         Logger log = Logger.getLogger(ConfigurationBase.class);
         if (debug) {
             Field[] fields = ConfigurationBase.class.getDeclaredFields();
@@ -225,10 +225,10 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 }
             }
         }
-        if(!includeRTsEnabled){
+        if (!includeRTsEnabled) {
             log.warn("includeRTsEnabled is set to false. This configuration may not take effect after May 14th, 2012. https://dev.twitter.com/blog/api-housekeeping");
         }
-        if(!includeEntitiesEnabled){
+        if (!includeEntitiesEnabled) {
             log.warn("includeEntitiesEnabled is set to false. This configuration may not take effect after May 14th, 2012. https://dev.twitter.com/blog/api-housekeeping");
         }
     }

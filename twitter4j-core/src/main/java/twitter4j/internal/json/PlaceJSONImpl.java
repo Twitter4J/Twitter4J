@@ -70,10 +70,10 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         super();
         init(json);
     }
-    
+
     /* For serialization purposes only. */
     PlaceJSONImpl() {
-    	
+
     }
 
     private void init(JSONObject json) throws TwitterException {
@@ -133,6 +133,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         }
     }
 
+    @Override
     public int compareTo(Place that) {
         return this.id.compareTo(that.getId());
     }
@@ -177,54 +178,67 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         }
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getStreetAddress() {
         return streetAddress;
     }
 
+    @Override
     public String getCountryCode() {
         return countryCode;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getCountry() {
         return country;
     }
 
+    @Override
     public String getPlaceType() {
         return placeType;
     }
 
+    @Override
     public String getURL() {
         return url;
     }
 
+    @Override
     public String getFullName() {
         return fullName;
     }
 
+    @Override
     public String getBoundingBoxType() {
         return boundingBoxType;
     }
 
+    @Override
     public GeoLocation[][] getBoundingBoxCoordinates() {
         return boundingBoxCoordinates;
     }
 
+    @Override
     public String getGeometryType() {
         return geometryType;
     }
 
+    @Override
     public GeoLocation[][] getGeometryCoordinates() {
         return geometryCoordinates;
     }
 
+    @Override
     public Place[] getContainedWithIn() {
         return containedWithIn;
     }

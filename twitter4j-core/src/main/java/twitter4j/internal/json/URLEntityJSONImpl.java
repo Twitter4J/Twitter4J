@@ -45,7 +45,7 @@ import java.net.URL;
         super();
         init(json);
     }
-    
+
     /* package */ URLEntityJSONImpl(int start, int end, String url, String expandedURL, String displayURL) {
         super();
         this.start = start;
@@ -68,9 +68,10 @@ import java.net.URL;
         }
         this.displayURL = displayURL;
     }
+
     /* For serialization purposes only. */
     /* package */ URLEntityJSONImpl() {
-    	
+
     }
 
     private void init(JSONObject json) throws TwitterException {
@@ -101,6 +102,7 @@ import java.net.URL;
     /**
      * {@inheritDoc}
      */
+    @Override
     public URL getURL() {
         return url;
     }
@@ -108,6 +110,7 @@ import java.net.URL;
     /**
      * {@inheritDoc}
      */
+    @Override
     public URL getExpandedURL() {
         return expandedURL;
     }
@@ -115,6 +118,7 @@ import java.net.URL;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDisplayURL() {
         return displayURL;
     }
@@ -122,6 +126,7 @@ import java.net.URL;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getStart() {
         return start;
     }
@@ -129,6 +134,7 @@ import java.net.URL;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getEnd() {
         return end;
     }

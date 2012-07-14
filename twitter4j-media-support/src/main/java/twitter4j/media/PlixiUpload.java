@@ -43,11 +43,11 @@ class PlixiUpload extends AbstractImageUploadImpl {
 
         String response = httpResponse.asString();
 
-        if (-1 != response.indexOf("<Error><ErrorCode>")) {
+        if (response.contains("<Error><ErrorCode>")) {
             String error = response.substring(response.indexOf("<ErrorCode>") + "<ErrorCode>".length(), response.lastIndexOf("</ErrorCode>"));
             throw new TwitterException("Plixi image upload failed with this error message: " + error, httpResponse);
         }
-        if (-1 != response.indexOf("<Status>OK</Status>")) {
+        if (response.contains("<Status>OK</Status>")) {
             return response.substring(response.indexOf("<MediaUrl>") + "<MediaUrl>".length(), response.indexOf("</MediaUrl>"));
         }
 

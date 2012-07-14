@@ -25,9 +25,7 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
 /**
  * A data class that has detailed information about a relationship between two users
@@ -111,6 +109,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getSourceUserId() {
         return sourceUserId;
     }
@@ -118,6 +117,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getTargetUserId() {
         return targetUserId;
     }
@@ -125,6 +125,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSourceBlockingTarget() {
         return sourceBlockingTarget;
     }
@@ -132,6 +133,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSourceUserScreenName() {
         return sourceUserScreenName;
     }
@@ -139,6 +141,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getTargetUserScreenName() {
         return targetUserScreenName;
     }
@@ -146,6 +149,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSourceFollowingTarget() {
         return sourceFollowingTarget;
     }
@@ -153,6 +157,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isTargetFollowingSource() {
         return sourceFollowedByTarget;
     }
@@ -160,6 +165,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSourceFollowedByTarget() {
         return sourceFollowedByTarget;
     }
@@ -167,6 +173,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isTargetFollowedBySource() {
         return sourceFollowingTarget;
     }
@@ -174,6 +181,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSourceNotificationsEnabled() {
         return sourceNotificationsEnabled;
     }

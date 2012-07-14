@@ -30,36 +30,44 @@ import twitter4j.internal.util.z_T4JInternalStringUtil;
  * @since Twitter4J 2.2.4
  */
 public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
+    private static final long serialVersionUID = 5217622295050444866L;
     private Configuration conf;
 
     public z_T4JInternalJSONImplFactory(Configuration conf) {
         this.conf = conf;
     }
 
+    @Override
     public Status createStatus(JSONObject json) throws TwitterException {
         return new StatusJSONImpl(json);
     }
 
+    @Override
     public User createUser(JSONObject json) throws TwitterException {
         return new UserJSONImpl(json);
     }
 
+    @Override
     public UserList createAUserList(JSONObject json) throws TwitterException {
         return new UserListJSONImpl(json);
     }
 
+    @Override
     public DirectMessage createDirectMessage(JSONObject json) throws TwitterException {
         return new DirectMessageJSONImpl(json);
     }
 
+    @Override
     public RateLimitStatus createRateLimitStatus(HttpResponse res) throws TwitterException {
         return new RateLimitStatusJSONImpl(res, conf);
     }
 
+    @Override
     public Status createStatus(HttpResponse res) throws TwitterException {
         return new StatusJSONImpl(res, conf);
     }
 
+    @Override
     public ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
         return StatusJSONImpl.createStatusList(res, conf);
     }
@@ -114,26 +122,32 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         return RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
     }
 
+    @Override
     public Trends createTrends(HttpResponse res) throws TwitterException {
         return new TrendsJSONImpl(res, conf);
     }
 
+    @Override
     public ResponseList<Trends> createTrendsList(HttpResponse res) throws TwitterException {
         return TrendsJSONImpl.createTrendsList(res, conf.isJSONStoreEnabled());
     }
 
+    @Override
     public User createUser(HttpResponse res) throws TwitterException {
         return new UserJSONImpl(res, conf);
     }
 
+    @Override
     public ResponseList<User> createUserList(HttpResponse res) throws TwitterException {
         return UserJSONImpl.createUserList(res, conf);
     }
 
+    @Override
     public ResponseList<User> createUserListFromJSONArray(HttpResponse res) throws TwitterException {
         return UserJSONImpl.createUserList(res.asJSONArray(), res, conf);
     }
 
+    @Override
     public ResponseList<User> createUserListFromJSONArray_Users(HttpResponse res) throws TwitterException {
         try {
             return UserJSONImpl.createUserList(res.asJSONObject().getJSONArray("users"), res, conf);
@@ -142,6 +156,7 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         }
     }
 
+    @Override
     public QueryResult createQueryResult(HttpResponse res, Query query) throws TwitterException {
         try {
             return new QueryResultJSONImpl(res, conf);
@@ -154,74 +169,92 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         }
     }
 
+    @Override
     public IDs createIDs(HttpResponse res) throws TwitterException {
         return new IDsJSONImpl(res, conf);
     }
 
+    @Override
     public PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException {
         return UserJSONImpl.createPagableUserList(res, conf);
     }
 
+    @Override
     public UserList createAUserList(HttpResponse res) throws TwitterException {
         return new UserListJSONImpl(res, conf);
     }
 
+    @Override
     public PagableResponseList<UserList> createPagableUserListList(HttpResponse res) throws TwitterException {
         return UserListJSONImpl.createPagableUserListList(res, conf);
     }
 
+    @Override
     public ResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException {
         return UserListJSONImpl.createUserListList(res, conf);
     }
 
+    @Override
     public ResponseList<Category> createCategoryList(HttpResponse res) throws TwitterException {
         return CategoryJSONImpl.createCategoriesList(res, conf);
     }
 
+    @Override
     public ProfileImage createProfileImage(HttpResponse res) throws TwitterException {
         return new ProfileImageImpl(res);
     }
 
+    @Override
     public DirectMessage createDirectMessage(HttpResponse res) throws TwitterException {
         return new DirectMessageJSONImpl(res, conf);
     }
 
+    @Override
     public ResponseList<DirectMessage> createDirectMessageList(HttpResponse res) throws TwitterException {
         return DirectMessageJSONImpl.createDirectMessageList(res, conf);
     }
 
+    @Override
     public Relationship createRelationship(HttpResponse res) throws TwitterException {
         return new RelationshipJSONImpl(res, conf);
     }
 
+    @Override
     public ResponseList<Friendship> createFriendshipList(HttpResponse res) throws TwitterException {
         return FriendshipJSONImpl.createFriendshipList(res, conf);
     }
 
+    @Override
     public AccountTotals createAccountTotals(HttpResponse res) throws TwitterException {
         return new AccountTotalsJSONImpl(res, conf);
     }
 
+    @Override
     public AccountSettings createAccountSettings(HttpResponse res) throws TwitterException {
         return new AccountSettingsJSONImpl(res, conf);
     }
 
+    @Override
     public SavedSearch createSavedSearch(HttpResponse res) throws TwitterException {
         return new SavedSearchJSONImpl(res, conf);
     }
 
+    @Override
     public ResponseList<SavedSearch> createSavedSearchList(HttpResponse res) throws TwitterException {
         return SavedSearchJSONImpl.createSavedSearchList(res, conf);
     }
 
+    @Override
     public ResponseList<Location> createLocationList(HttpResponse res) throws TwitterException {
         return LocationJSONImpl.createLocationList(res, conf);
     }
 
+    @Override
     public Place createPlace(HttpResponse res) throws TwitterException {
         return new PlaceJSONImpl(res, conf);
     }
 
+    @Override
     public ResponseList<Place> createPlaceList(HttpResponse res) throws TwitterException {
         try {
             return PlaceJSONImpl.createPlaceList(res, conf);
@@ -234,37 +267,44 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         }
     }
 
+    @Override
     public SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException {
         return SimilarPlacesImpl.createSimilarPlaces(res, conf);
     }
 
+    @Override
     public RelatedResults createRelatedResults(HttpResponse res) throws TwitterException {
         return new RelatedResultsJSONImpl(res, conf);
     }
 
+    @Override
     public TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException {
         return new TwitterAPIConfigurationJSONImpl(res, conf);
     }
 
+    @Override
     public ResponseList<HelpMethods.Language> createLanguageList(HttpResponse res) throws TwitterException {
         return LanguageJSONImpl.createLanguageList(res, conf);
     }
 
+    @Override
     public <T> ResponseList<T> createEmptyResponseList() {
         return new ResponseListImpl<T>(0, null);
     }
 
     /**
      * static factory method for twitter-text-java
+     *
      * @return hashtag entity
      * @since Twitter4J 2.2.6
      */
-    public static HashtagEntity createHashtagEntity(int start, int end, String text){
+    public static HashtagEntity createHashtagEntity(int start, int end, String text) {
         return new HashtagEntityJSONImpl(start, end, text);
     }
 
     /**
      * static factory method for twitter-text-java
+     *
      * @return user mention entity
      * @since Twitter4J 2.2.6
      */
@@ -275,6 +315,7 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
 
     /**
      * static factory method for twitter-text-java
+     *
      * @return url entity
      * @since Twitter4J 2.2.6
      */

@@ -60,6 +60,7 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
         }
     }
 
+    @Override
     public MBeanInfo getMBeanInfo() {
         OpenMBeanInfoSupport info;
         OpenMBeanAttributeInfoSupport[] attributes = new OpenMBeanAttributeInfoSupport[5];
@@ -143,7 +144,7 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
         API_STATISTICS.reset();
     }
 
-
+    @Override
     public Object getAttribute(String attribute)
             throws AttributeNotFoundException, MBeanException, ReflectionException {
         if (attribute.equals("statisticsTable")) {
@@ -160,6 +161,7 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
         throw new AttributeNotFoundException("Cannot find " + attribute + " attribute ");
     }
 
+    @Override
     public AttributeList getAttributes(String[] attributeNames) {
         AttributeList resultList = new AttributeList();
         if (attributeNames.length == 0)
@@ -175,6 +177,7 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
         return (resultList);
     }
 
+    @Override
     public Object invoke(String actionName, Object[] params, String[] signature)
             throws MBeanException, ReflectionException {
         if (actionName.equals("reset")) {
@@ -186,6 +189,7 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
         }
     }
 
+    @Override
     public void setAttribute(Attribute attribute)
             throws AttributeNotFoundException, InvalidAttributeValueException, MBeanException,
             ReflectionException {
@@ -193,6 +197,7 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
                 "No attributes can be set in this MBean");
     }
 
+    @Override
     public AttributeList setAttributes(AttributeList attributes) {
         return new AttributeList();
     }

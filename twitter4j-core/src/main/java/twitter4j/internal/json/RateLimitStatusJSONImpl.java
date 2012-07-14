@@ -138,6 +138,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getRemainingHits() {
         return remainingHits;
     }
@@ -145,6 +146,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getHourlyLimit() {
         return hourlyLimit;
     }
@@ -152,6 +154,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getResetTimeInSeconds() {
         return resetTimeInSeconds;
     }
@@ -159,6 +162,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getSecondsUntilReset() {
         return secondsUntilReset;
     }
@@ -166,6 +170,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Date getResetTime() {
         return resetTime;
     }

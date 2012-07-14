@@ -42,13 +42,15 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
         super(size);
         init(res);
     }
+
     ResponseListImpl(RateLimitStatus rateLimitStatus, RateLimitStatus featureSpecificRateLimitStatus, int accessLevel) {
         super();
         this.rateLimitStatus = rateLimitStatus;
         this.featureSpecificRateLimitStatus = featureSpecificRateLimitStatus;
         this.accessLevel = accessLevel;
     }
-    private void init(HttpResponse res){
+
+    private void init(HttpResponse res) {
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
         this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
         accessLevel = z_T4JInternalParseUtil.toAccessLevel(res);
@@ -57,6 +59,7 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RateLimitStatus getRateLimitStatus() {
         return rateLimitStatus;
     }
@@ -64,6 +67,7 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RateLimitStatus getFeatureSpecificRateLimitStatus() {
         return featureSpecificRateLimitStatus;
     }
@@ -71,6 +75,7 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getAccessLevel() {
         return accessLevel;
     }

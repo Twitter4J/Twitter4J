@@ -219,6 +219,7 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
                 '}';
     }
 
+    @Override
     public int compareTo(Object o) {
         int compared;
         HttpParameter that = (HttpParameter) o;

@@ -47,6 +47,7 @@ class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResp
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasPrevious() {
         return 0 != previousCursor;
     }
@@ -54,6 +55,7 @@ class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResp
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getPreviousCursor() {
         return previousCursor;
     }
@@ -61,6 +63,7 @@ class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResp
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasNext() {
         return 0 != nextCursor;
     }
@@ -68,6 +71,7 @@ class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResp
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getNextCursor() {
         return nextCursor;
     }

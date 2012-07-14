@@ -21,18 +21,8 @@ import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
 
-import java.io.BufferedInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.*;
+import java.net.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +33,7 @@ import static twitter4j.internal.http.RequestMethod.POST;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpResponseCode, java.io.Serializable {
+public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
 
     private static boolean isJDK14orEarlier = false;
@@ -98,6 +88,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
         return request(new HttpRequest(RequestMethod.POST, url, params, null, null));
     }
 
+    @Override
     public HttpResponse request(HttpRequest req) throws TwitterException {
         int retriedCount;
         int retry = CONF.getHttpRetryCount() + 1;
@@ -211,14 +202,6 @@ public class HttpClientImpl extends HttpClientBase implements HttpClient, HttpRe
             }
         }
         return res;
-    }
-
-    public static String encode(String str) {
-        try {
-            return URLEncoder.encode(str, "UTF-8");
-        } catch (java.io.UnsupportedEncodingException neverHappen) {
-            throw new AssertionError("will never happen");
-        }
     }
 
     /**

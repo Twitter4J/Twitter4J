@@ -49,6 +49,7 @@ final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.Htt
     /**
      * {@inheritDoc}
      */
+    @Override
     public final String getResponseHeader(String name) {
         Header[] headers = res.getHeaders(name);
         if (headers != null && headers.length > 0) {
@@ -79,6 +80,7 @@ final class ApacheHttpClientHttpResponseImpl extends twitter4j.internal.http.Htt
     /**
      * {@inheritDoc}
      */
+    @Override
     public void disconnect() throws IOException {
         if (res != null) {
             res.getEntity().consumeContent();

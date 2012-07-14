@@ -36,14 +36,17 @@ class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializ
         this.userId = z_T4JInternalParseUtil.getLong("user_id", status);
     }
 
+    @Override
     public long getStatusId() {
         return statusId;
     }
 
+    @Override
     public long getUserId() {
         return userId;
     }
 
+    @Override
     public int compareTo(StatusDeletionNotice that) {
         long delta = this.statusId - that.getStatusId();
         if (delta < Integer.MIN_VALUE) {

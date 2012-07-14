@@ -34,6 +34,7 @@ class PropertyConfigurationFactory implements ConfigurationFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Configuration getInstance() {
         return ROOT_CONFIGURATION;
     }
@@ -43,6 +44,7 @@ class PropertyConfigurationFactory implements ConfigurationFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Configuration getInstance(String configTreePath) {
         PropertyConfiguration conf = new PropertyConfiguration(configTreePath);
         conf.dumpConfiguration();
@@ -52,6 +54,7 @@ class PropertyConfigurationFactory implements ConfigurationFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void dispose() {
         // nothing to do for property based configuration
     }

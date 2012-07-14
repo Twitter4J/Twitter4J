@@ -75,10 +75,12 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
         }
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getSlug() {
         return slug;
     }
@@ -87,6 +89,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
      * @return
      * @since Twitter4J 2.1.9
      */
+    @Override
     public int getSize() {
         return size;
     }

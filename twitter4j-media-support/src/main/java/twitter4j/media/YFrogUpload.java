@@ -43,11 +43,11 @@ class YFrogUpload extends AbstractImageUploadImpl {
         }
 
         String response = httpResponse.asString();
-        if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
+        if (response.contains("<rsp stat=\"fail\">")) {
             String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
             throw new TwitterException("YFrog image upload failed with this error message: " + error, httpResponse);
         }
-        if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
+        if (response.contains("<rsp stat=\"ok\">")) {
             return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
         }
 

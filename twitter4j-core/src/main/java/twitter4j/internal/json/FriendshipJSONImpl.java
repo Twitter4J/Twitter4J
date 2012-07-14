@@ -87,22 +87,27 @@ class FriendshipJSONImpl implements Friendship {
         }
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getScreenName() {
         return screenName;
     }
 
+    @Override
     public boolean isFollowing() {
         return following;
     }
 
+    @Override
     public boolean isFollowedBy() {
         return followedBy;
     }

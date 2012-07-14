@@ -16,15 +16,7 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.Annotations;
-import twitter4j.GeoLocation;
-import twitter4j.HashtagEntity;
-import twitter4j.MediaEntity;
-import twitter4j.Place;
-import twitter4j.Tweet;
-import twitter4j.TwitterException;
-import twitter4j.URLEntity;
-import twitter4j.UserMentionEntity;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
@@ -33,10 +25,7 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.Arrays;
 import java.util.Date;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing a Tweet in the search response
@@ -152,6 +141,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         }
     }
 
+    @Override
     public int compareTo(Tweet that) {
         long delta = this.id - that.getId();
         if (delta < Integer.MIN_VALUE) {
@@ -165,6 +155,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getText() {
         return text;
     }
@@ -172,6 +163,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getToUserId() {
         return toUserId;
     }
@@ -179,6 +171,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getToUser() {
         return toUser;
     }
@@ -186,6 +179,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getToUserName() {
         return toUserName;
     }
@@ -193,6 +187,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFromUser() {
         return fromUser;
     }
@@ -200,6 +195,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFromUserName() {
         return fromUserName;
     }
@@ -207,6 +203,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getId() {
         return id;
     }
@@ -214,6 +211,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getFromUserId() {
         return fromUserId;
     }
@@ -221,6 +219,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getIsoLanguageCode() {
         return isoLanguageCode;
     }
@@ -228,6 +227,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSource() {
         return source;
     }
@@ -235,6 +235,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getInReplyToStatusId() {
         return inReplyToStatusId;
     }
@@ -242,6 +243,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
@@ -249,6 +251,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -256,6 +259,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public GeoLocation getGeoLocation() {
         return geoLocation;
     }
@@ -263,6 +267,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLocation() {
         return location;
     }
@@ -270,6 +275,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Place getPlace() {
         return place;
     }
@@ -277,6 +283,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public UserMentionEntity[] getUserMentionEntities() {
         return userMentionEntities;
     }
@@ -284,6 +291,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public URLEntity[] getURLEntities() {
         return urlEntities;
     }
@@ -291,6 +299,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public HashtagEntity[] getHashtagEntities() {
         return hashtagEntities;
     }
@@ -298,6 +307,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public MediaEntity[] getMediaEntities() {
         return mediaEntities;
     }
@@ -305,6 +315,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public Annotations getAnnotations() {
         return annotations;
     }

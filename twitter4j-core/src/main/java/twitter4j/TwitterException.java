@@ -123,6 +123,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      *
      * @since Twitter4J 2.1.2
      */
+    @Override
     public RateLimitStatus getRateLimitStatus() {
         if (null == response) {
             return null;
@@ -133,6 +134,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getAccessLevel() {
         return z_T4JInternalParseUtil.toAccessLevel(response);
     }

@@ -21,18 +21,23 @@ package twitter4j;
  * @since Twitter4J 2.1.3
  */
 public class StatusAdapter implements StatusListener {
+    @Override
     public void onStatus(Status status) {
     }
 
+    @Override
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
     }
 
+    @Override
     public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
     }
 
+    @Override
     public void onScrubGeo(long userId, long upToStatusId) {
     }
 
+    @Override
     public void onException(Exception ex) {
     }
 }

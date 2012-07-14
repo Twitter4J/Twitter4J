@@ -86,6 +86,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPhotoSizeLimit() {
         return photoSizeLimit;
     }
@@ -93,6 +94,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getShortURLLength() {
         return shortURLLength;
     }
@@ -100,6 +102,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getShortURLLengthHttps() {
         return shortURLLengthHttps;
     }
@@ -107,6 +110,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getCharactersReservedPerMedia() {
         return charactersReservedPerMedia;
     }
@@ -114,6 +118,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<Integer, MediaEntity.Size> getPhotoSizes() {
         return photoSizes;
     }
@@ -121,6 +126,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
     /**
      * {@inheritDoc}
      */
+    @Override
     public String[] getNonUsernamePaths() {
         return nonUsernamePaths;
     }
@@ -128,6 +134,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMaxMediaPerUpload() {
         return maxMediaPerUpload;
     }

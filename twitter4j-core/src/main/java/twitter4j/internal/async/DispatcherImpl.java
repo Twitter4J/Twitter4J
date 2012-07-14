@@ -45,6 +45,7 @@ final class DispatcherImpl implements Dispatcher {
         });
     }
 
+    @Override
     public synchronized void invokeLater(Runnable task) {
         synchronized (q) {
             q.add(task);
@@ -78,6 +79,7 @@ final class DispatcherImpl implements Dispatcher {
 
     private boolean active = true;
 
+    @Override
     public synchronized void shutdown() {
         if (active) {
             active = false;

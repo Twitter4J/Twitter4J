@@ -42,6 +42,7 @@ public class SimilarPlacesImpl extends ResponseListImpl<Place> implements Simila
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getToken() {
         return token;
     }

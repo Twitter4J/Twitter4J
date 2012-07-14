@@ -32,6 +32,7 @@ class ProfileImageImpl extends TwitterResponseImpl implements ProfileImage {
         url = res.getResponseHeader("Location");
     }
 
+    @Override
     public String getURL() {
         return url;
     }

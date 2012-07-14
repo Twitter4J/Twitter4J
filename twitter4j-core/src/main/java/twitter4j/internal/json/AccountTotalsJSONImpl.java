@@ -56,18 +56,22 @@ class AccountTotalsJSONImpl extends TwitterResponseImpl implements AccountTotals
         this(null, json);
     }
 
+    @Override
     public int getUpdates() {
         return updates;
     }
 
+    @Override
     public int getFollowers() {
         return followers;
     }
 
+    @Override
     public int getFavorites() {
         return favorites;
     }
 
+    @Override
     public int getFriends() {
         return friends;
     }

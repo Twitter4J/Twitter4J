@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package twitter4j;
+package twitter4j.management;
 
 import junit.framework.TestCase;
-import twitter4j.management.APIStatistics;
-import twitter4j.management.APIStatisticsOpenMBean;
-import twitter4j.management.InvocationStatistics;
-import twitter4j.management.InvocationStatisticsCalculator;
 
 import javax.management.AttributeList;
 import javax.management.MBeanAttributeInfo;

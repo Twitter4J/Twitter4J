@@ -55,6 +55,7 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
      * @throws TwitterException      when the end of the stream has been reached.
      * @throws IllegalStateException when the end of the stream had been reached.
      */
+    @Override
     public void next(StatusListener listener) throws TwitterException {
         StreamListener[] list = new StreamListener[1];
         list[0] = listener;
@@ -62,6 +63,7 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
         handleNextElement();
     }
 
+    @Override
     public void next(StreamListener[] listeners) throws TwitterException {
         this.listeners = listeners;
         handleNextElement();

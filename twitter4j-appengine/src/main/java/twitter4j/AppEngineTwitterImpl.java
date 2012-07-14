@@ -24,6 +24,8 @@ import twitter4j.internal.json.z_T4JInternalLazyFactory;
  * @since Twitter4J 2.2.4
  */
 class AppEngineTwitterImpl extends TwitterImpl {
+    private static final long serialVersionUID = -2740925801854937207L;
+
     AppEngineTwitterImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
     }

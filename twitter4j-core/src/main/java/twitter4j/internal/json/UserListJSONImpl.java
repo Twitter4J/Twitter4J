@@ -16,11 +16,7 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.PagableResponseList;
-import twitter4j.ResponseList;
-import twitter4j.TwitterException;
-import twitter4j.User;
-import twitter4j.UserList;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
@@ -30,9 +26,7 @@ import twitter4j.internal.org.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing Basic list information element
@@ -92,6 +86,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
         }
     }
 
+    @Override
     public int compareTo(UserList that) {
         return this.id - that.getId();
     }
@@ -99,6 +94,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getId() {
         return id;
     }
@@ -106,6 +102,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -113,6 +110,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFullName() {
         return fullName;
     }
@@ -120,6 +118,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSlug() {
         return slug;
     }
@@ -127,6 +126,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDescription() {
         return description;
     }
@@ -134,6 +134,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getSubscriberCount() {
         return subscriberCount;
     }
@@ -141,6 +142,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMemberCount() {
         return memberCount;
     }
@@ -148,6 +150,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public URI getURI() {
         try {
             return new URI(uri);
@@ -159,6 +162,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPublic() {
         return mode;
     }
@@ -166,6 +170,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isFollowing() {
         return following;
     }
@@ -173,6 +178,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public User getUser() {
         return user;
     }

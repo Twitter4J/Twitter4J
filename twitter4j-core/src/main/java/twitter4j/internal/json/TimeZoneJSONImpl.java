@@ -41,14 +41,17 @@ public class TimeZoneJSONImpl implements TimeZone {
         }
     }
 
+    @Override
     public String getName() {
         return NAME;
     }
 
+    @Override
     public String tzinfoName() {
         return TZINFO_NAME;
     }
 
+    @Override
     public int utcOffset() {
         return UTC_OFFSET;
     }

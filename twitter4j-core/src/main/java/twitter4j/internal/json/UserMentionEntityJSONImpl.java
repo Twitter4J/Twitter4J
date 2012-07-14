@@ -41,7 +41,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
         super();
         init(json);
     }
-    
+
     /* package */ UserMentionEntityJSONImpl(int start, int end, String name, String screenName, long id) {
         super();
         this.start = start;
@@ -53,7 +53,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
 
     /* For serialization purposes only. */
     /* package */ UserMentionEntityJSONImpl() {
-    
+
     }
 
     private void init(JSONObject json) throws TwitterException {
@@ -77,6 +77,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -84,6 +85,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getScreenName() {
         return screenName;
     }
@@ -91,6 +93,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getId() {
         return id;
     }
@@ -98,6 +101,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getStart() {
         return start;
     }
@@ -105,6 +109,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getEnd() {
         return end;
     }

@@ -39,7 +39,7 @@ import twitter4j.internal.org.json.JSONObject;
         super();
         init(json);
     }
-    
+
     /* package */ HashtagEntityJSONImpl(int start, int end, String text) {
         super();
         this.start = start;
@@ -49,7 +49,7 @@ import twitter4j.internal.org.json.JSONObject;
 
     /* For serialization purposes only. */
     /* package */ HashtagEntityJSONImpl() {
-    	
+
     }
 
     private void init(JSONObject json) throws TwitterException {
@@ -69,6 +69,7 @@ import twitter4j.internal.org.json.JSONObject;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getText() {
         return text;
     }
@@ -76,6 +77,7 @@ import twitter4j.internal.org.json.JSONObject;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getStart() {
         return start;
     }
@@ -83,6 +85,7 @@ import twitter4j.internal.org.json.JSONObject;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getEnd() {
         return end;
     }

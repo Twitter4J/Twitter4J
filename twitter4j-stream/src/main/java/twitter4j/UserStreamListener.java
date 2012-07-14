@@ -17,7 +17,7 @@
 package twitter4j;
 
 /**
- * @author Rémy Rakic at gmail.com
+ * @author yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
 public interface UserStreamListener extends StatusListener {

@@ -40,7 +40,7 @@ class TwitgooUpload extends AbstractImageUploadImpl {
             throw new TwitterException("Twitgoo image upload returned invalid status code", httpResponse);
 
         String response = httpResponse.asString();
-        if (-1 != response.indexOf("<rsp status=\"ok\">")) {
+        if (response.contains("<rsp status=\"ok\">")) {
             String h = "<mediaurl>";
             int i = response.indexOf(h);
             if (i != -1) {
@@ -49,7 +49,7 @@ class TwitgooUpload extends AbstractImageUploadImpl {
                     return response.substring(i + h.length(), j);
                 }
             }
-        } else if (-1 != response.indexOf("<rsp status=\"fail\">")) {
+        } else if (response.contains("<rsp status=\"fail\">")) {
             String h = "msg=\"";
             int i = response.indexOf(h);
             if (i != -1) {

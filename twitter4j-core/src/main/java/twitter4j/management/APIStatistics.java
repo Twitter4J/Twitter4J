@@ -59,6 +59,7 @@ public class APIStatistics implements APIStatisticsMBean {
         return methodStats;
     }
 
+    @Override
     public synchronized Iterable<? extends InvocationStatistics> getInvocationStatistics() {
         return METHOD_STATS_MAP.values();
     }
@@ -92,7 +93,7 @@ public class APIStatistics implements APIStatisticsMBean {
         return API_STATS_CALCULATOR.getAverageTime();
     }
 
-
+    @Override
     public synchronized Map<String, String> getMethodLevelSummariesAsString() {
         Map<String, String> summariesMap = new HashMap<String, String>();
 
@@ -104,6 +105,7 @@ public class APIStatistics implements APIStatisticsMBean {
         return summariesMap;
     }
 
+    @Override
     public synchronized String getMethodLevelSummary(String methodName) {
         return METHOD_STATS_MAP.get(methodName).toString();
     }

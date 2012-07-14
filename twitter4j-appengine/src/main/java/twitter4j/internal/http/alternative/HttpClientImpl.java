@@ -16,26 +16,13 @@
 package twitter4j.internal.http.alternative;
 
 import com.google.appengine.api.urlfetch.FetchOptions.Builder;
-import com.google.appengine.api.urlfetch.HTTPHeader;
-import com.google.appengine.api.urlfetch.HTTPMethod;
-import com.google.appengine.api.urlfetch.HTTPRequest;
-import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
+import com.google.appengine.api.urlfetch.*;
 import twitter4j.TwitterException;
-import twitter4j.internal.http.HttpClient;
-import twitter4j.internal.http.HttpClientBase;
-import twitter4j.internal.http.HttpClientConfiguration;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpRequest;
-import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.http.*;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -45,13 +32,15 @@ import static twitter4j.internal.http.RequestMethod.POST;
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @since Twitter4J 2.2.4
  */
-public class HttpClientImpl extends HttpClientBase implements HttpClient {
+public class HttpClientImpl extends HttpClientBase {
     private static Logger logger = Logger.getLogger(HttpClientImpl.class);
+    private static final long serialVersionUID = -6969046478967208236L;
 
     public HttpClientImpl(HttpClientConfiguration conf) {
         super(conf);
     }
 
+    @Override
     public HttpResponse request(HttpRequest req) throws TwitterException {
         HTTPRequest request;
         try {

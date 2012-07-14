@@ -20,7 +20,6 @@ import twitter4j.TwitterException;
 import twitter4j.api.HelpMethods;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -50,14 +49,17 @@ public class LanguageJSONImpl implements HelpMethods.Language {
         }
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
 
+    @Override
     public String getStatus() {
         return status;
     }

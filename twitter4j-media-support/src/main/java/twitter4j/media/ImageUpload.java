@@ -28,11 +28,11 @@ import java.io.InputStream;
  * @since Twitter4J 2.1.8
  */
 public interface ImageUpload {
-    public String upload(File image, String message) throws TwitterException;
+    String upload(File image, String message) throws TwitterException;
 
-    public String upload(File image) throws TwitterException;
+    String upload(File image) throws TwitterException;
 
-    public String upload(String imageFileName, InputStream imageBody) throws TwitterException;
+    String upload(String imageFileName, InputStream imageBody) throws TwitterException;
 
-    public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException;
+    String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException;
 }

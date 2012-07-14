@@ -34,6 +34,7 @@ public class XAuthAuthorization implements Authorization, java.io.Serializable {
         this.basic = basic;
     }
 
+    @Override
     public String getAuthorizationHeader(HttpRequest req) {
         return basic.getAuthorizationHeader(req);
     }
@@ -59,6 +60,7 @@ public class XAuthAuthorization implements Authorization, java.io.Serializable {
         this.consumerSecret = consumerSecret;
     }
 
+    @Override
     public boolean isEnabled() {
         return basic.isEnabled();
     }

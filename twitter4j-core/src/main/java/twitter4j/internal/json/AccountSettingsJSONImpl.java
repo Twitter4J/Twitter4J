@@ -82,38 +82,47 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
         this(null, json);
     }
 
+    @Override
     public boolean isSleepTimeEnabled() {
         return SLEEP_TIME_ENABLED;
     }
 
+    @Override
     public String getSleepStartTime() {
         return SLEEP_START_TIME;
     }
 
+    @Override
     public String getSleepEndTime() {
         return SLEEP_END_TIME;
     }
 
+    @Override
     public Location[] getTrendLocations() {
         return TREND_LOCATION;
     }
 
+    @Override
     public boolean isGeoEnabled() {
         return GEO_ENABLED;
     }
 
+    @Override
     public boolean isDiscoverableByEmail() {
         return DISCOVERABLE_BY_EMAIL;
     }
-    
+
+    @Override
     public boolean isAlwaysUseHttps() {
         return ALWAYS_USE_HTTPS;
     }
 
+    @Override
     public String getLanguage() {
         return LANGUAGE;
     }
 
+    @Override
     public TimeZone getTimeZone() {
         return TIMEZONE;
     }

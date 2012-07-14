@@ -48,6 +48,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     /**
      * {@inheritDoc}
      */
+    @Override
     public RateLimitStatus getRateLimitStatus() {
         return rateLimitStatus;
     }
@@ -55,6 +56,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getAccessLevel() {
         return accessLevel;
     }

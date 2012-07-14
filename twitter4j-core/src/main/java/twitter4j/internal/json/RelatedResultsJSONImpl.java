@@ -100,6 +100,7 @@ import java.util.Map;
     /**
      * {@inheritDoc}
      */
+    @Override
     public ResponseList<Status> getTweetsWithConversation() {
         ResponseList<Status> statuses = this.tweetsMap.get(TWEETS_WITH_CONVERSATION);
         if (statuses != null) {
@@ -112,6 +113,7 @@ import java.util.Map;
     /**
      * {@inheritDoc}
      */
+    @Override
     public ResponseList<Status> getTweetsWithReply() {
         ResponseList<Status> statuses = this.tweetsMap.get(TWEETS_WITH_REPLY);
         if (statuses != null) {
@@ -124,6 +126,7 @@ import java.util.Map;
     /**
      * {@inheritDoc}
      */
+    @Override
     public ResponseList<Status> getTweetsFromUser() {
         ResponseList<Status> statuses = this.tweetsMap.get(TWEETS_FROM_USER);
         if (statuses != null) {

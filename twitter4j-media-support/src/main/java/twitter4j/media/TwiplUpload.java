@@ -40,7 +40,7 @@ class TwiplUpload extends AbstractImageUploadImpl {
             throw new TwitterException("Twipl image upload returned invalid status code", httpResponse);
 
         String response = httpResponse.asString();
-        if (-1 != response.indexOf("<response status=\"ok\">")) {
+        if (response.contains("<response status=\"ok\">")) {
             String h = "<mediaurl>";
             int i = response.indexOf(h);
             if (i != -1) {
@@ -49,7 +49,7 @@ class TwiplUpload extends AbstractImageUploadImpl {
                     return response.substring(i + h.length(), j);
                 }
             }
-        } else if (-1 != response.indexOf("<rsp status=\"fail\">")) {
+        } else if (response.contains("<rsp status=\"fail\">")) {
             String h = "msg=\"";
             int i = response.indexOf(h);
             if (i != -1) {

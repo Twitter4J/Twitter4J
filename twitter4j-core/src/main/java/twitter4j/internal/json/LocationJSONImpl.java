@@ -25,9 +25,7 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -84,7 +82,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                     DataObjectFactoryUtil.registerJSONObject(location, json);
                 }
             }
-            if(storeJSON){
+            if (storeJSON) {
                 DataObjectFactoryUtil.registerJSONObject(locations, list);
             }
             return locations;
@@ -98,6 +96,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getWoeid() {
         return woeid;
     }
@@ -105,6 +104,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getCountryName() {
         return countryName;
     }
@@ -112,6 +112,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getCountryCode() {
         return countryCode;
     }
@@ -119,6 +120,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getPlaceName() {
         return placeName;
     }
@@ -126,6 +128,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPlaceCode() {
         return placeCode;
     }
@@ -133,6 +136,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -140,6 +144,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getURL() {
         return url;
     }

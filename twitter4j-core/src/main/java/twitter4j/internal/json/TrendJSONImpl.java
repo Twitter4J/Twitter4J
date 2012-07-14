@@ -49,6 +49,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -56,6 +57,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getUrl() {
         return url;
     }
@@ -63,6 +65,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getQuery() {
         return query;
     }

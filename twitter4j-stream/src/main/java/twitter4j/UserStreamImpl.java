@@ -41,6 +41,7 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void next(UserStreamListener listener) throws TwitterException {
         StreamListener[] list = new StreamListener[1];
         list[0] = listener;
@@ -48,6 +49,7 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream {
         handleNextElement();
     }
 
+    @Override
     public void next(StreamListener[] listeners) throws TwitterException {
         this.listeners = listeners;
         handleNextElement();

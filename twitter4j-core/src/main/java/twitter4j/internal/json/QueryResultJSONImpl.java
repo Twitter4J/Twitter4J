@@ -29,12 +29,7 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getDouble;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getURLDecodedString;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
+import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing search API response
@@ -91,6 +86,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getSinceId() {
         return sinceId;
     }
@@ -98,6 +94,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getMaxId() {
         return maxId;
     }
@@ -105,6 +102,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getRefreshUrl() {
         return refreshUrl;
     }
@@ -112,6 +110,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getResultsPerPage() {
         return resultsPerPage;
     }
@@ -119,6 +118,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getWarning() {
         return warning;
     }
@@ -126,6 +126,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public double getCompletedIn() {
         return completedIn;
     }
@@ -133,6 +134,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPage() {
         return page;
     }
@@ -140,6 +142,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getQuery() {
         return query;
     }
@@ -147,6 +150,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Tweet> getTweets() {
         return tweets;
     }
