@@ -16,6 +16,7 @@
 package twitter4j;
 
 import twitter4j.api.*;
+import twitter4j.auth.AsyncOAuthSupport;
 import twitter4j.auth.OAuthSupport;
 
 /**
@@ -24,6 +25,7 @@ import twitter4j.auth.OAuthSupport;
  */
 public interface AsyncTwitter extends java.io.Serializable,
         OAuthSupport,
+        AsyncOAuthSupport,
         TwitterBase,
         SearchMethodsAsync,
         TrendsMethodsAsync,

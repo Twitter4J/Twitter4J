@@ -952,7 +952,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl
         });
     }
 
-     /**
+    /**
      * {@inheritDoc}
      */
     public void getUserListMemberships(final long cursor) {
@@ -2549,6 +2549,153 @@ class AsyncTwitterImpl extends TwitterBaseImpl
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotLanguages(languages);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+
+    // implementation for AsyncOAuthSupport
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getOAuthRequestTokenAsync() {
+        getDispatcher().invokeLater(new AsyncTask(OAUTH_REQUEST_TOKEN, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                RequestToken token = twitter.getOAuthRequestToken();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotOAuthRequestToken(token);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getOAuthRequestTokenAsync(final String callbackURL) {
+        getDispatcher().invokeLater(new AsyncTask(OAUTH_REQUEST_TOKEN, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                RequestToken token = twitter.getOAuthRequestToken(callbackURL);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotOAuthRequestToken(token);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getOAuthRequestTokenAsync(final String callbackURL, final String xAuthAccessType) {
+        getDispatcher().invokeLater(new AsyncTask(OAUTH_REQUEST_TOKEN, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                RequestToken token = twitter.getOAuthRequestToken(callbackURL, xAuthAccessType);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotOAuthRequestToken(token);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getOAuthAccessTokenAsync() {
+        getDispatcher().invokeLater(new AsyncTask(OAUTH_ACCESS_TOKEN, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                AccessToken token = twitter.getOAuthAccessToken();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotOAuthAccessToken(token);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getOAuthAccessTokenAsync(final String oauthVerifier) {
+        getDispatcher().invokeLater(new AsyncTask(OAUTH_ACCESS_TOKEN, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                AccessToken token = twitter.getOAuthAccessToken(oauthVerifier);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotOAuthAccessToken(token);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getOAuthAccessTokenAsync(final RequestToken requestToken) {
+        getDispatcher().invokeLater(new AsyncTask(OAUTH_ACCESS_TOKEN, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                AccessToken token = twitter.getOAuthAccessToken(requestToken);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotOAuthAccessToken(token);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getOAuthAccessTokenAsync(final RequestToken requestToken, final String oauthVerifier) {
+        getDispatcher().invokeLater(new AsyncTask(OAUTH_ACCESS_TOKEN, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                AccessToken token = twitter.getOAuthAccessToken(requestToken, oauthVerifier);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotOAuthAccessToken(token);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getOAuthAccessTokenAsync(final String screenName, final String password) {
+        getDispatcher().invokeLater(new AsyncTask(OAUTH_ACCESS_TOKEN, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                AccessToken token = twitter.getOAuthAccessToken(screenName, password);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotOAuthAccessToken(token);
                     } catch (Exception ignore) {
                     }
                 }

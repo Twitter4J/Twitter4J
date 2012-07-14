@@ -159,4 +159,8 @@ public enum TwitterMethod {
     TEST,
     CONFIGURATION,
     LANGUAGES,
+
+    /*OAuth Methods*/
+    OAUTH_REQUEST_TOKEN,
+    OAUTH_ACCESS_TOKEN
 }

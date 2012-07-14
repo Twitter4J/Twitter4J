@@ -18,6 +18,8 @@
 package twitter4j;
 
 import twitter4j.api.HelpMethods;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 
 /**
  * A listner for receiving asynchronous responses from Twitter Async APIs.
@@ -460,4 +462,9 @@ public interface TwitterListener {
      * @param method
      */
     void onException(TwitterException te, TwitterMethod method);
+
+    /*OAuth Methods*/
+    void gotOAuthRequestToken(RequestToken token);
+
+    void gotOAuthAccessToken(AccessToken token);
 }
