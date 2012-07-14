@@ -49,7 +49,7 @@ public interface StatusMethods {
     /**
      * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
      * <br>This method calls http://api.twitter.com/1/statuses/update or<br>
-     *     This method calls https://upload.twitter.com/1/statuses/update_with_media
+     * This method calls https://upload.twitter.com/1/statuses/update_with_media
      *
      * @param latestStatus the latest status to be updated.
      * @return the latest status

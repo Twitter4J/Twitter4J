@@ -75,7 +75,7 @@ public interface FavoriteMethods {
      */
     ResponseList<Status> getFavorites(String id, int page)
             throws TwitterException;
-    
+
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://api.twitter.com/1/favorites.json
@@ -88,12 +88,12 @@ public interface FavoriteMethods {
      */
     ResponseList<Status> getFavorites(Paging paging)
             throws TwitterException;
-    
+
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://api.twitter.com/1/favorites/[id].json
      *
-     * @param id   the ID or screen name of the user for whom to request a list of favorite statuses
+     * @param id     the ID or screen name of the user for whom to request a list of favorite statuses
      * @param paging controls pagination. Supports sinceId and page parameters.
      * @return ResponseList<Status>
      * @throws TwitterException when Twitter service or network is unavailable

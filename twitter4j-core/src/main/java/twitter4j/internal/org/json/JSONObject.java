@@ -29,14 +29,7 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its
@@ -188,9 +181,9 @@ public class JSONObject {
         String key;
 
         if (x.nextClean() != '{') {
-            throw x.syntaxError("A JSONObject text must begin with '{' found:" +x.nextClean());
+            throw x.syntaxError("A JSONObject text must begin with '{' found:" + x.nextClean());
         }
-        for (; ;) {
+        for (; ; ) {
             c = x.nextClean();
             switch (c) {
                 case 0:

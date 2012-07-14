@@ -16,12 +16,7 @@
 
 package twitter4j.api;
 
-import twitter4j.GeoLocation;
-import twitter4j.GeoQuery;
-import twitter4j.Place;
-import twitter4j.ResponseList;
-import twitter4j.SimilarPlaces;
-import twitter4j.TwitterException;
+import twitter4j.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

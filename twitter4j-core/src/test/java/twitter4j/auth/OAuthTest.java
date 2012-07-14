@@ -16,30 +16,18 @@
 
 package twitter4j.auth;
 
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.TwitterResponse;
-import twitter4j.TwitterTestBase;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
-import twitter4j.internal.http.HttpClientImpl;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpRequest;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.http.RequestMethod;
+import twitter4j.internal.http.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

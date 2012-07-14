@@ -16,11 +16,7 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.Tweet;
-import twitter4j.TwitterException;
-import twitter4j.TwitterRuntimeException;
+import twitter4j.*;
 
 import java.util.List;
 

@@ -49,23 +49,23 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
         this.listener = (SiteStreamsListener) listeners[0];
         handleNextElement();
     }
-    
+
     protected String parseLine(String line) {
         if ("".equals(line) || null == line) {
             return line;
         }
         int userIdEnd = line.indexOf(',', 12);
         // in the documentation for_user is not quoted, but actually it is quoted
-        if(cs.getControlURI() == null &&
+        if (cs.getControlURI() == null &&
                 line.charAt(2) == 'c' &&
                 line.charAt(3) == 'o' &&
-                line.charAt(4) == 'n'){
+                line.charAt(4) == 'n') {
             // control endpoint uri
             // https://dev.twitter.com/docs/streaming-api/control-streams
             JSONObject control = null;
             try {
                 control = new JSONObject(line);
-                cs.setControlURI(CONF.getSiteStreamBaseURL()+ control.getJSONObject("control").getString("control_uri"));
+                cs.setControlURI(CONF.getSiteStreamBaseURL() + control.getJSONObject("control").getString("control_uri"));
                 logger.info("control_uri:" + cs.getControlURI());
             } catch (JSONException e) {
                 logger.warn("received unexpected event:" + line);

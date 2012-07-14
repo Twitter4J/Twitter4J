@@ -16,11 +16,7 @@
 
 package twitter4j.api;
 
-import twitter4j.AccountSettings;
-import twitter4j.AccountTotals;
-import twitter4j.RateLimitStatus;
-import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.*;
 
 import java.io.File;
 import java.io.InputStream;

@@ -40,7 +40,7 @@ public class FriendsFollowersTest extends TwitterTestBase {
         int yusukey = 4933401;
         assertIDExsits("twit4j is following yusukey", ids, yusukey);
         long ryunosukey = 48528137;
-        ids = twitter1.getFriendsIDs(ryunosukey,-1);
+        ids = twitter1.getFriendsIDs(ryunosukey, -1);
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
         assertEquals("ryunosukey is not following anyone", 0, ids.getIDs().length);

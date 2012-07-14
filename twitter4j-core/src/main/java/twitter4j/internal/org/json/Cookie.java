@@ -27,6 +27,7 @@ SOFTWARE.
 /**
  * Convert a web browser cookie specification to a JSONObject and back.
  * JSON and Cookies are both notations for name/value pairs.
+ *
  * @author JSON.org
  * @version 2010-12-24
  */
@@ -41,20 +42,21 @@ public class Cookie {
      * only a convention, not a standard. Often, cookies are expected to have
      * encoded values. We encode '=' and ';' because we must. We encode '%' and
      * '+' because they are meta characters in URL encoding.
+     *
      * @param string The source string.
-     * @return       The escaped result.
+     * @return The escaped result.
      */
     public static String escape(String string) {
-        char         c;
-        String       s = string.trim();
+        char c;
+        String s = string.trim();
         StringBuilder sb = new StringBuilder();
-        int          length = s.length();
+        int length = s.length();
         for (int i = 0; i < length; i += 1) {
             c = s.charAt(i);
             if (c < ' ' || c == '+' || c == '%' || c == '=' || c == ';') {
                 sb.append('%');
-                sb.append(Character.forDigit((char)((c >>> 4) & 0x0f), 16));
-                sb.append(Character.forDigit((char)(c & 0x0f), 16));
+                sb.append(Character.forDigit((char) ((c >>> 4) & 0x0f), 16));
+                sb.append(Character.forDigit((char) (c & 0x0f), 16));
             } else {
                 sb.append(c);
             }
@@ -73,15 +75,16 @@ public class Cookie {
      * stored under the key "value". This method does not do checking or
      * validation of the parameters. It only converts the cookie string into
      * a JSONObject.
+     *
      * @param string The cookie specification string.
      * @return A JSONObject containing "name", "value", and possibly other
-     *  members.
+     *         members.
      * @throws JSONException
      */
     public static JSONObject toJSONObject(String string) throws JSONException {
-        String         name;
-        JSONObject     jo = new JSONObject();
-        Object         value;
+        String name;
+        JSONObject jo = new JSONObject();
+        Object value;
         JSONTokener x = new JSONTokener(string);
         jo.put("name", x.nextTo('='));
         x.next('=');
@@ -111,6 +114,7 @@ public class Cookie {
      * If the JSONObject contains "expires", "domain", "path", or "secure"
      * members, they will be appended to the cookie specification string.
      * All other members are ignored.
+     *
      * @param jo A JSONObject
      * @return A cookie specification string
      * @throws JSONException
@@ -142,9 +146,10 @@ public class Cookie {
     /**
      * Convert <code>%</code><i>hh</i> sequences to single characters, and
      * convert plus to space.
+     *
      * @param string A string that may contain
-     *      <code>+</code>&nbsp;<small>(plus)</small> and
-     *      <code>%</code><i>hh</i> sequences.
+     *               <code>+</code>&nbsp;<small>(plus)</small> and
+     *               <code>%</code><i>hh</i> sequences.
      * @return The unescaped string.
      */
     public static String unescape(String string) {
@@ -158,7 +163,7 @@ public class Cookie {
                 int d = JSONTokener.dehexchar(string.charAt(i + 1));
                 int e = JSONTokener.dehexchar(string.charAt(i + 2));
                 if (d >= 0 && e >= 0) {
-                    c = (char)(d * 16 + e);
+                    c = (char) (d * 16 + e);
                     i += 2;
                 }
             }

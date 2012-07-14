@@ -16,11 +16,7 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.DirectMessage;
-import twitter4j.RateLimitStatus;
-import twitter4j.TwitterException;
-import twitter4j.TwitterRuntimeException;
-import twitter4j.User;
+import twitter4j.*;
 
 import javax.annotation.Generated;
 import java.util.Date;

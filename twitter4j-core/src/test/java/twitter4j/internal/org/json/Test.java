@@ -1,12 +1,9 @@
 package twitter4j.internal.org.json;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.io.StringWriter;
 import junit.framework.TestCase;
+
+import java.io.StringWriter;
+import java.util.*;
 
 /*
 Copyright (c) 2002 JSON.org
@@ -35,7 +32,7 @@ SOFTWARE.
 /**
  * Test class. This file is not formally a member of the org.json library.
  * It is just a test tool.
- *
+ * <p/>
  * Issue: JSONObject does not specify the ordering of keys, so simple-minded
  * comparisons of .toString to a string literal are likely to fail.
  *
@@ -83,13 +80,13 @@ public class Test extends TestCase {
     }
 
     public void testJSON() throws Exception {
-    	double       eps = 2.220446049250313e-16;
-        Iterator     iterator;
-        JSONArray    jsonarray;
-        JSONObject   jsonobject;
+        double eps = 2.220446049250313e-16;
+        Iterator iterator;
+        JSONArray jsonarray;
+        JSONObject jsonobject;
         JSONStringer jsonstringer;
-        Object       object;
-        String       string;
+        Object object;
+        String string;
 
         Beany beanie = new Beany("A beany object", 42, true);
 

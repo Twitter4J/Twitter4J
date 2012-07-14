@@ -29,7 +29,7 @@ public class StringUtilTest extends TestCase {
 
     public void testJoin() throws Exception {
         assertEquals("6358482", z_T4JInternalStringUtil.join(new long[]{6358482L}));
-        assertEquals("6358482,6358483", z_T4JInternalStringUtil.join(new long[]{6358482L,6358483L}));
+        assertEquals("6358482,6358483", z_T4JInternalStringUtil.join(new long[]{6358482L, 6358483L}));
     }
 
     public void testSplit() throws Exception {

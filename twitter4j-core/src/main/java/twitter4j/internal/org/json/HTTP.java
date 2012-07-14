@@ -28,12 +28,15 @@ import java.util.Iterator;
 
 /**
  * Convert an HTTP header to a JSONObject and back.
+ *
  * @author JSON.org
  * @version 2010-12-24
  */
 public class HTTP {
 
-    /** Carriage return/line feed. */
+    /**
+     * Carriage return/line feed.
+     */
     public static final String CRLF = "\r\n";
 
     /**
@@ -63,15 +66,16 @@ public class HTTP {
      * ...}</pre>
      * It does no further checking or conversion. It does not parse dates.
      * It does not do '%' transforms on URLs.
+     *
      * @param string An HTTP header string.
      * @return A JSONObject containing the elements and attributes
-     * of the XML string.
+     *         of the XML string.
      * @throws JSONException
      */
     public static JSONObject toJSONObject(String string) throws JSONException {
-        JSONObject     jo = new JSONObject();
-        HTTPTokener    x = new HTTPTokener(string);
-        String         token;
+        JSONObject jo = new JSONObject();
+        HTTPTokener x = new HTTPTokener(string);
+        String token;
 
         token = x.nextToken();
         if (token.toUpperCase().startsWith("HTTP")) {
@@ -119,14 +123,15 @@ public class HTTP {
      * }</pre>
      * Any other members of the JSONObject will be output as HTTP fields.
      * The result will end with two CRLF pairs.
+     *
      * @param jo A JSONObject
      * @return An HTTP header string.
      * @throws JSONException if the object does not contain enough
-     *  information.
+     *                       information.
      */
     public static String toString(JSONObject jo) throws JSONException {
-        Iterator     keys = jo.keys();
-        String       string;
+        Iterator keys = jo.keys();
+        String string;
         StringBuilder sb = new StringBuilder();
         if (jo.has("Status-Code") && jo.has("Reason-Phrase")) {
             sb.append(jo.getString("HTTP-Version"));
@@ -148,9 +153,9 @@ public class HTTP {
         sb.append(CRLF);
         while (keys.hasNext()) {
             string = keys.next().toString();
-            if (!string.equals("HTTP-Version")      && !string.equals("Status-Code") &&
+            if (!string.equals("HTTP-Version") && !string.equals("Status-Code") &&
                     !string.equals("Reason-Phrase") && !string.equals("Method") &&
-                    !string.equals("Request-URI")   && !jo.isNull(string)) {
+                    !string.equals("Request-URI") && !jo.isNull(string)) {
                 sb.append(string);
                 sb.append(": ");
                 sb.append(jo.getString(string));

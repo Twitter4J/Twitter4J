@@ -5,6 +5,6 @@ package twitter4j.internal.http;
  */
 public interface HttpResponseListener {
 
-	public void httpResponseReceived(HttpResponseEvent event);
-	
+    public void httpResponseReceived(HttpResponseEvent event);
+
 }

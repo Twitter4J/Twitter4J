@@ -15,7 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.json.DataObjectFactory;
 
 import java.util.List;

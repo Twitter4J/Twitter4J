@@ -16,11 +16,7 @@
 
 package twitter4j.examples.user;
 
-import twitter4j.Category;
-import twitter4j.ResponseList;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 
 /**
  * Shows authenticated user's suggested user categories.

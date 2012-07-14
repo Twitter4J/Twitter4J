@@ -108,7 +108,7 @@ public class JSONArray {
         }
         if (x.nextClean() != ']') {
             x.back();
-            for (; ;) {
+            for (; ; ) {
                 if (x.nextClean() == ',') {
                     x.back();
                     this.myArrayList.add(JSONObject.NULL);

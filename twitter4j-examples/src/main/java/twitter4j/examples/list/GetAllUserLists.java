@@ -16,11 +16,7 @@
 
 package twitter4j.examples.list;
 
-import twitter4j.ResponseList;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.UserList;
+import twitter4j.*;
 
 /**
  * List the all lists the authenticating or specified user subscribes to, including their own.

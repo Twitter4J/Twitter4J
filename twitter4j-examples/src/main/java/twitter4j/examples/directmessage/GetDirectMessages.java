@@ -16,11 +16,7 @@
 
 package twitter4j.examples.directmessage;
 
-import twitter4j.DirectMessage;
-import twitter4j.Paging;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 
 import java.util.List;
 

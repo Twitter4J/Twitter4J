@@ -231,11 +231,11 @@ public class StatusMethodsTest extends TwitterTestBase {
     }
 
     static final String[] files = {"src/test/resources/t4j-reverse.jpeg",
-        "src/test/resources/t4j-reverse.png",
-        "src/test/resources/t4j-reverse.gif",
-        "src/test/resources/t4j.jpeg",
-        "src/test/resources/t4j.png",
-        "src/test/resources/t4j.gif",
+            "src/test/resources/t4j-reverse.png",
+            "src/test/resources/t4j-reverse.gif",
+            "src/test/resources/t4j.jpeg",
+            "src/test/resources/t4j.png",
+            "src/test/resources/t4j.gif",
     };
 
     private static File getRandomlyChosenFile() {

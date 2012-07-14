@@ -16,12 +16,7 @@
 
 package twitter4j.examples.trends;
 
-import twitter4j.GeoLocation;
-import twitter4j.Location;
-import twitter4j.ResponseList;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 
 /**
  * Shows the locations that Twitter has trending topic information for.

@@ -28,7 +28,7 @@ public interface ProfileImage extends TwitterResponse, java.io.Serializable {
     ImageSize MINI = ImageSize.mini;
     ImageSize ORIGINAL = ImageSize.original;
 
-    enum ImageSize{
+    enum ImageSize {
         bigger, normal, mini, original
     }
 }

@@ -16,12 +16,7 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.AccountSettings;
-import twitter4j.Location;
-import twitter4j.RateLimitStatus;
-import twitter4j.TimeZone;
-import twitter4j.TwitterException;
-import twitter4j.TwitterRuntimeException;
+import twitter4j.*;
 
 import javax.annotation.Generated;
 

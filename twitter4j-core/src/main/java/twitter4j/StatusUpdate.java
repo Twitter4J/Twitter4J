@@ -104,14 +104,14 @@ public final class StatusUpdate implements java.io.Serializable {
     /**
      * @since Twitter4J 2.2.5
      */
-    public void setMedia(File file){
+    public void setMedia(File file) {
         this.mediaFile = file;
     }
 
     /**
      * @since Twitter4J 2.2.5
      */
-    public StatusUpdate media(File file){
+    public StatusUpdate media(File file) {
         setMedia(file);
         return this;
     }
@@ -119,19 +119,19 @@ public final class StatusUpdate implements java.io.Serializable {
     /**
      * @since Twitter4J 2.2.5
      */
-    public void setMedia(String name, InputStream body){
+    public void setMedia(String name, InputStream body) {
         this.mediaName = name;
         this.mediaBody = body;
     }
 
-    /*package*/ boolean isWithMedia(){
+    /*package*/ boolean isWithMedia() {
         return mediaFile != null || mediaName != null;
     }
 
     /**
      * @since Twitter4J 2.2.5
      */
-    public StatusUpdate media(String name, InputStream body){
+    public StatusUpdate media(String name, InputStream body) {
         setMedia(name, body);
         return this;
     }
@@ -139,14 +139,14 @@ public final class StatusUpdate implements java.io.Serializable {
     /**
      * @since Twitter4J 2.2.5
      */
-    public void setPossiblySensitive(boolean possiblySensitive){
+    public void setPossiblySensitive(boolean possiblySensitive) {
         this.possiblySensitive = possiblySensitive;
     }
 
     /**
      * @since Twitter4J 2.2.5
      */
-    public StatusUpdate possiblySensitive(boolean possiblySensitive){
+    public StatusUpdate possiblySensitive(boolean possiblySensitive) {
         setPossiblySensitive(possiblySensitive);
         return this;
     }
@@ -154,7 +154,7 @@ public final class StatusUpdate implements java.io.Serializable {
     /**
      * @since Twitter4J 2.2.5
      */
-    public boolean isPossiblySensitive(){
+    public boolean isPossiblySensitive() {
         return possiblySensitive;
     }
 
@@ -202,10 +202,10 @@ public final class StatusUpdate implements java.io.Serializable {
             appendParameter("annotations", annotations.asParameterValue(), params);
         }
         params.add(includeEntities);
-        if(null != mediaFile){
+        if (null != mediaFile) {
             params.add(new HttpParameter("media[]", mediaFile));
             params.add(new HttpParameter("possibly_sensitive", possiblySensitive));
-        }else if(mediaName != null && mediaBody != null){
+        } else if (mediaName != null && mediaBody != null) {
             params.add(new HttpParameter("media[]", mediaName, mediaBody));
             params.add(new HttpParameter("possibly_sensitive", possiblySensitive));
         }

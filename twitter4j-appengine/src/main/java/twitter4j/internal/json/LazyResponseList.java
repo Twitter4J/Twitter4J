@@ -31,11 +31,12 @@ import java.util.ListIterator;
  */
 abstract class LazyResponseList<T> implements ResponseList<T> {
     ResponseList<T> target = null;
-    LazyResponseList(){
+
+    LazyResponseList() {
     }
 
     protected ResponseList<T> getTarget() {
-        if(target == null){
+        if (target == null) {
             try {
                 target = createActualResponseList();
             } catch (TwitterException e) {

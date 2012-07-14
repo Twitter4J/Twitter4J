@@ -23,11 +23,7 @@ import twitter4j.conf.ConfigurationContext;
 import java.util.HashMap;
 import java.util.Map;
 
-import static twitter4j.internal.http.RequestMethod.DELETE;
-import static twitter4j.internal.http.RequestMethod.GET;
-import static twitter4j.internal.http.RequestMethod.HEAD;
-import static twitter4j.internal.http.RequestMethod.POST;
-import static twitter4j.internal.http.RequestMethod.PUT;
+import static twitter4j.internal.http.RequestMethod.*;
 
 /**
  * HTTP Client wrapper with handy request methods, ResponseListener mechanism

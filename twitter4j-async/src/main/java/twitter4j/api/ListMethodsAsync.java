@@ -115,8 +115,8 @@ public interface ListMethodsAsync {
      * List the lists the specified user has been added to.
      * <br>This method calls http://api.twitter.com/1/lists/memberships.json
      *
-     * @param listMemberId  The id of the list member
-     * @param cursor        Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param listMemberId The id of the list member
+     * @param cursor       Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
      * @since Twitter4J 2.2.4
      */
@@ -137,9 +137,9 @@ public interface ListMethodsAsync {
      * List the lists the specified user has been added to.
      * <br>This method calls http://api.twitter.com/1/lists/memberships.json
      *
-     * @param listMemberId  The id of the list member
-     * @param cursor        Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @param filterToOwnedLists   Whether to return just lists the authenticating user owns, and the user represented by listMemberScreenName is a member of.
+     * @param listMemberId       The id of the list member
+     * @param cursor             Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param filterToOwnedLists Whether to return just lists the authenticating user owns, and the user represented by listMemberScreenName is a member of.
      * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
      * @since Twitter4J 2.2.4
      */
@@ -150,7 +150,7 @@ public interface ListMethodsAsync {
      * <br>This method calls http://api.twitter.com/1/lists/memberships.json
      *
      * @param listMemberScreenName The screen name of the list member
-     * @param cursor        Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @param filterToOwnedLists   Whether to return just lists the authenticating user owns, and the user represented by listMemberScreenName is a member of.
      * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
      * @since Twitter4J 2.2.4

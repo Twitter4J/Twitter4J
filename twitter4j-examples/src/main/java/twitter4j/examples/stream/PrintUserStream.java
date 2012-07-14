@@ -16,15 +16,7 @@
 
 package twitter4j.examples.stream;
 
-import twitter4j.DirectMessage;
-import twitter4j.Status;
-import twitter4j.StatusDeletionNotice;
-import twitter4j.TwitterException;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
-import twitter4j.User;
-import twitter4j.UserList;
-import twitter4j.UserStreamListener;
+import twitter4j.*;
 
 /**
  * <p>

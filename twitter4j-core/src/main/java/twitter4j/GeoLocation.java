@@ -37,10 +37,10 @@ public class GeoLocation implements java.io.Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-    
+
     /* For serialization purposes only. */
     /* package */ GeoLocation() {
-    	
+
     }
 
     /**

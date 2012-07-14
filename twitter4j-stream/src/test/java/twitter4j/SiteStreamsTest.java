@@ -108,7 +108,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             //twit4j: 6358482
             //twit4j2: 6377362
-            StreamController cs = twitterStream.site(true, new long[]{6377362,4933401});
+            StreamController cs = twitterStream.site(true, new long[]{6377362, 4933401});
             //expecting onFriendList for twit4j and twit4j2
             waitForStatus();
             waitForStatus();

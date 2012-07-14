@@ -17,11 +17,7 @@
 // generated with generate-lazy-objects.sh
 package twitter4j.internal.json;
 
-import twitter4j.GeoLocation;
-import twitter4j.Place;
-import twitter4j.ResponseList;
-import twitter4j.SimilarPlaces;
-import twitter4j.TwitterException;
+import twitter4j.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -47,7 +43,7 @@ final class LazySimilarPlaces extends LazyResponseList<Place> implements Similar
      * @return token the token needed to be able to create a new place with {@link twitter4j.api.GeoMethods#createPlace(String, String, String, GeoLocation, String)}
      */
     public String getToken() {
-        return ((SimilarPlaces)getTarget()).getToken();
+        return ((SimilarPlaces) getTarget()).getToken();
     }
 
     @Override

@@ -24,19 +24,19 @@ import twitter4j.TwitterResponse;
  */
 abstract class LazyPagableResponseList<T extends TwitterResponse> extends LazyResponseList<T> implements PagableResponseList<T> {
     public boolean hasPrevious() {
-        return ((PagableResponseList)getTarget()).hasPrevious();
+        return ((PagableResponseList) getTarget()).hasPrevious();
     }
 
     public long getPreviousCursor() {
-        return ((PagableResponseList)getTarget()).getPreviousCursor();
+        return ((PagableResponseList) getTarget()).getPreviousCursor();
     }
 
     public boolean hasNext() {
-        return ((PagableResponseList)getTarget()).hasNext();
+        return ((PagableResponseList) getTarget()).hasNext();
     }
 
     public long getNextCursor() {
-        return ((PagableResponseList)getTarget()).getNextCursor();
+        return ((PagableResponseList) getTarget()).getNextCursor();
     }
 
 }

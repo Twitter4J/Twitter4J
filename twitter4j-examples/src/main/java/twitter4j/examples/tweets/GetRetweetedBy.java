@@ -16,12 +16,7 @@
 
 package twitter4j.examples.tweets;
 
-import twitter4j.IDs;
-import twitter4j.Paging;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
+import twitter4j.*;
 
 import java.util.List;
 
@@ -46,7 +41,7 @@ public final class GetRetweetedBy {
             Twitter twitter = new TwitterFactory().getInstance();
 
             int page = 1;
-             List<User> users;
+            List<User> users;
             do {
                 users = twitter.getRetweetedBy(Long.parseLong(args[0]), new Paging(page, 100));
                 for (User user : users) {

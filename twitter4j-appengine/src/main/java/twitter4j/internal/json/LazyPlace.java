@@ -1,10 +1,6 @@
 package twitter4j.internal.json;
 
-import twitter4j.GeoLocation;
-import twitter4j.Place;
-import twitter4j.RateLimitStatus;
-import twitter4j.TwitterException;
-import twitter4j.TwitterRuntimeException;
+import twitter4j.*;
 
 import javax.annotation.Generated;
 
