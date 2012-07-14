@@ -640,8 +640,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public UserList destroyUserList(int listId) throws TwitterException {
         ensureAuthorizationEnabled();
         return factory.createAUserList(post(conf.getRestBaseURL() + "lists/destroy.json",
-                new HttpParameter[]{
-                        new HttpParameter("list_id", listId)}));
+                new HttpParameter[]{new HttpParameter("list_id", listId)}));
     }
 
     /**

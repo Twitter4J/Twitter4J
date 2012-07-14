@@ -120,12 +120,6 @@ public class SearchAPITest extends TwitterTestBase {
 
         query = new Query("\\u5e30%u5e30 <%}& foobar").rpp(100).page(1);
         QueryResult result = twitter1.search(query);
-
-        query = new Query("#sendro to:yusukey").rpp(1).page(1);
-        result = twitter1.search(query);
-        assertNotNull(result.getTweets().get(0).getHashtagEntities());
-        assertNotNull(result.getTweets().get(0).getUserMentionEntities());
-        assertNotNull(result.getTweets().get(0).getURLEntities());
     }
 
     public void testTrends() throws Exception {
