@@ -109,6 +109,15 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
     }
 
     /**
+     * a kind of copy factory method constructs an AsyncTwitter from Twitter instance
+     * @param twitter Twitter instance
+     * @return an instance
+     */
+    public AsyncTwitter getInstance(Twitter twitter) {
+        return new AsyncTwitterImpl(twitter.getConfiguration(), twitter.getAuthorization());
+    }
+
+    /**
      * Returns default singleton AsyncTwitter instance.
      *
      * @return default singleton AsyncTwitter instance
