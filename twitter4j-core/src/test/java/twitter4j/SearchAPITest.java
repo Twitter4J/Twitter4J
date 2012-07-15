@@ -42,7 +42,7 @@ public class SearchAPITest extends TwitterTestBase {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Query query = new Query("test")
                 .until(format.format(new java.util.Date(System.currentTimeMillis() - 3600 * 24)));
-        HttpParameter[] params = query.asHttpParameterArray(new HttpParameter("include_entities", "true"));
+        HttpParameter[] params = query.asHttpParameterArray();
         assertTrue(findParameter(params, "q"));
         assertTrue(findParameter(params, "until"));
     }

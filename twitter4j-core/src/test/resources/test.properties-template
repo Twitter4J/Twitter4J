@@ -47,7 +47,6 @@ oauth.consumerKey=
 oauth.consumerSecret=
 browser.oauth.consumerKey=
 browser.oauth.consumerSecret=
-includeEntities=true
 
 r-w-private.oauth.consumerKey=
 r-w-private.oauth.consumerSecret=

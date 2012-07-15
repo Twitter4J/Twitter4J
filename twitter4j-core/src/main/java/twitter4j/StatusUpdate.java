@@ -183,7 +183,7 @@ public final class StatusUpdate implements java.io.Serializable {
         return this;
     }
 
-    /*package*/ HttpParameter[] asHttpParameterArray(HttpParameter includeEntities) {
+    /*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("status", status, params);
         if (-1 != inReplyToStatusId) {
@@ -201,7 +201,6 @@ public final class StatusUpdate implements java.io.Serializable {
         if ((annotations != null) && (!annotations.isEmpty())) {
             appendParameter("annotations", annotations.asParameterValue(), params);
         }
-        params.add(includeEntities);
         if (null != mediaFile) {
             params.add(new HttpParameter("media[]", mediaFile));
             params.add(new HttpParameter("possibly_sensitive", possiblySensitive));

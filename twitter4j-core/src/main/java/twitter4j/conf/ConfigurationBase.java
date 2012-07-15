@@ -70,9 +70,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private int asyncNumThreads;
 
-    private boolean includeRTsEnabled;
+    private boolean includeRTsEnabled = true;
 
-    private boolean includeEntitiesEnabled;
+    private boolean includeEntitiesEnabled = true;
 
     private boolean jsonStoreEnabled;
 
@@ -158,10 +158,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setClientURL("http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
         setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
 
-        setIncludeRTsEnbled(true);
-
-        setIncludeEntitiesEnbled(true);
-
         setJSONStoreEnabled(false);
 
         setMBeanEnabled(false);
@@ -184,7 +180,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
 
-        setIncludeRTsEnbled(true);
         setUserStreamRepliesAllEnabled(false);
         String isDalvik;
         try {
@@ -241,6 +236,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return IS_GAE;
     }
 
+    @Override
     public final boolean isDebugEnabled() {
         return debug;
     }
@@ -249,6 +245,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.debug = debug;
     }
 
+    @Override
     public final String getUserAgent() {
         return this.userAgent;
     }
@@ -258,6 +255,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         initRequestHeaders();
     }
 
+    @Override
     public final String getUser() {
         return user;
     }
@@ -266,6 +264,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.user = user;
     }
 
+    @Override
     public final String getPassword() {
         return password;
     }
@@ -274,6 +273,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.password = password;
     }
 
+    @Override
     public boolean isPrettyDebugEnabled() {
         return prettyDebug;
     }
@@ -292,6 +292,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         initRequestHeaders();
     }
 
+    @Override
     public boolean isGZIPEnabled() {
         return gzipEnabled;
     }
@@ -314,12 +315,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         }
     }
 
+    @Override
     public Map<String, String> getRequestHeaders() {
         return requestHeaders;
     }
 
     // methods for HttpClientConfiguration
 
+    @Override
     public final String getHttpProxyHost() {
         return httpProxyHost;
     }
@@ -328,6 +331,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpProxyHost = proxyHost;
     }
 
+    @Override
     public final String getHttpProxyUser() {
         return httpProxyUser;
     }
@@ -336,6 +340,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpProxyUser = proxyUser;
     }
 
+    @Override
     public final String getHttpProxyPassword() {
         return httpProxyPassword;
     }
@@ -344,6 +349,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpProxyPassword = proxyPassword;
     }
 
+    @Override
     public final int getHttpProxyPort() {
         return httpProxyPort;
     }
@@ -352,6 +358,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpProxyPort = proxyPort;
     }
 
+    @Override
     public final int getHttpConnectionTimeout() {
         return httpConnectionTimeout;
     }
@@ -360,6 +367,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpConnectionTimeout = connectionTimeout;
     }
 
+    @Override
     public final int getHttpReadTimeout() {
         return httpReadTimeout;
     }
@@ -368,6 +376,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpReadTimeout = readTimeout;
     }
 
+    @Override
     public int getHttpStreamingReadTimeout() {
         return httpStreamingReadTimeout;
     }
@@ -377,6 +386,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
 
+    @Override
     public final int getHttpRetryCount() {
         return httpRetryCount;
     }
@@ -385,6 +395,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpRetryCount = retryCount;
     }
 
+    @Override
     public final int getHttpRetryIntervalSeconds() {
         return httpRetryIntervalSeconds;
     }
@@ -393,6 +404,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpRetryIntervalSeconds = retryIntervalSeconds;
     }
 
+    @Override
     public final int getHttpMaxTotalConnections() {
         return maxTotalConnections;
     }
@@ -401,6 +413,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.maxTotalConnections = maxTotalConnections;
     }
 
+    @Override
     public final int getHttpDefaultMaxPerRoute() {
         return defaultMaxPerRoute;
     }
@@ -411,6 +424,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     // oauth related setter/getters
 
+    @Override
     public final String getOAuthConsumerKey() {
         return oAuthConsumerKey;
     }
@@ -420,6 +434,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         fixRestBaseURL();
     }
 
+    @Override
     public final String getOAuthConsumerSecret() {
         return oAuthConsumerSecret;
     }
@@ -429,6 +444,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         fixRestBaseURL();
     }
 
+    @Override
     public String getOAuthAccessToken() {
         return oAuthAccessToken;
     }
@@ -437,6 +453,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.oAuthAccessToken = oAuthAccessToken;
     }
 
+    @Override
     public String getOAuthAccessTokenSecret() {
         return oAuthAccessTokenSecret;
     }
@@ -445,6 +462,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
     }
 
+    @Override
     public final int getAsyncNumThreads() {
         return asyncNumThreads;
     }
@@ -453,6 +471,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.asyncNumThreads = asyncNumThreads;
     }
 
+    @Override
     public final String getClientVersion() {
         return clientVersion;
     }
@@ -462,6 +481,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         initRequestHeaders();
     }
 
+    @Override
     public final String getClientURL() {
         return clientURL;
     }
@@ -471,6 +491,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         initRequestHeaders();
     }
 
+    @Override
     public String getRestBaseURL() {
         return restBaseURL;
     }
@@ -501,6 +522,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         }
     }
 
+    @Override
     public String getSearchBaseURL() {
         return searchBaseURL;
     }
@@ -509,6 +531,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.searchBaseURL = searchBaseURL;
     }
 
+    @Override
     public String getStreamBaseURL() {
         return streamBaseURL;
     }
@@ -517,6 +540,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.streamBaseURL = streamBaseURL;
     }
 
+    @Override
     public String getUserStreamBaseURL() {
         return userStreamBaseURL;
     }
@@ -525,6 +549,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.userStreamBaseURL = siteStreamBaseURL;
     }
 
+    @Override
     public String getSiteStreamBaseURL() {
         return siteStreamBaseURL;
     }
@@ -533,6 +558,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.siteStreamBaseURL = siteStreamBaseURL;
     }
 
+    @Override
     public String getUploadBaseURL() {
         return uploadBaseURL;
     }
@@ -548,6 +574,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         }
     }
 
+    @Override
     public String getOAuthRequestTokenURL() {
         return oAuthRequestTokenURL;
     }
@@ -557,6 +584,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         fixRestBaseURL();
     }
 
+    @Override
     public String getOAuthAuthorizationURL() {
         return oAuthAuthorizationURL;
     }
@@ -566,6 +594,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         fixRestBaseURL();
     }
 
+    @Override
     public String getOAuthAccessTokenURL() {
         return oAuthAccessTokenURL;
     }
@@ -575,6 +604,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         fixRestBaseURL();
     }
 
+    @Override
     public String getOAuthAuthenticationURL() {
         return oAuthAuthenticationURL;
     }
@@ -584,6 +614,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         fixRestBaseURL();
     }
 
+    @Override
     public String getDispatcherImpl() {
         return dispatcherImpl;
     }
@@ -592,16 +623,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.dispatcherImpl = dispatcherImpl;
     }
 
-    public boolean isIncludeRTsEnabled() {
-        return this.includeRTsEnabled;
-    }
-
     protected final void setIncludeRTsEnbled(boolean enabled) {
         this.includeRTsEnabled = enabled;
-    }
-
-    public boolean isIncludeEntitiesEnabled() {
-        return this.includeEntitiesEnabled;
     }
 
     protected final void setIncludeEntitiesEnbled(boolean enabled) {
@@ -616,6 +639,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.jsonStoreEnabled = enabled;
     }
 
+    @Override
     public boolean isMBeanEnabled() {
         return this.mbeanEnabled;
     }
@@ -624,6 +648,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.mbeanEnabled = enabled;
     }
 
+    @Override
     public boolean isUserStreamRepliesAllEnabled() {
         return this.userStreamRepliesAllEnabled;
     }
@@ -632,6 +657,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.userStreamRepliesAllEnabled = enabled;
     }
 
+    @Override
     public String getMediaProvider() {
         return this.mediaProvider;
     }
@@ -640,6 +666,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.mediaProvider = mediaProvider;
     }
 
+    @Override
     public String getMediaProviderAPIKey() {
         return this.mediaProviderAPIKey;
     }
@@ -648,6 +675,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.mediaProviderAPIKey = mediaProviderAPIKey;
     }
 
+    @Override
     public Properties getMediaProviderParameters() {
         return this.mediaProviderParameters;
     }
@@ -708,8 +736,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
         result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
-        result = 31 * result + (includeRTsEnabled ? 1 : 0);
-        result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
         result = 31 * result + (mbeanEnabled ? 1 : 0);
         result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
@@ -743,8 +769,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout)
             return false;
-        if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
-        if (includeRTsEnabled != that.includeRTsEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (maxTotalConnections != that.maxTotalConnections) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
@@ -810,6 +834,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return true;
     }
 
+    @Override
     public String toString() {
         return "ConfigurationBase{" +
                 "debug=" + debug +
@@ -846,8 +871,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", uploadBaseURL='" + uploadBaseURL + '\'' +
                 ", dispatcherImpl='" + dispatcherImpl + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
-                ", includeRTsEnabled=" + includeRTsEnabled +
-                ", includeEntitiesEnabled=" + includeEntitiesEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
                 ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +

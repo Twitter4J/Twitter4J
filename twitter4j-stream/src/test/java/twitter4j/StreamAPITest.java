@@ -174,7 +174,6 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         this.ex = null;
 
         FilterQuery query = new FilterQuery(0, null, new String[]{"http", "#", "@"});
-        query.setIncludeEntities(true);
         twitterStream.filter(query);
 
         boolean sawURL, sawMention, sawHashtag;

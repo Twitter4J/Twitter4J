@@ -32,7 +32,6 @@ public final class FilterQuery implements java.io.Serializable {
     private long[] follow;
     private String[] track;
     private double[][] locations;
-    private boolean includeEntities;
 
     /**
      * Creates a new FilterQuery
@@ -140,18 +139,6 @@ public final class FilterQuery implements java.io.Serializable {
         return this;
     }
 
-    /**
-     * Set whether to include extracted entities in the stream.
-     *
-     * @param include True if entities should be included, else false.
-     * @return this instance
-     * @since Twitter4J 2.1.4
-     */
-    public FilterQuery setIncludeEntities(boolean include) {
-        includeEntities = include;
-        return this;
-    }
-
     /*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
 
@@ -168,10 +155,6 @@ public final class FilterQuery implements java.io.Serializable {
             params.add(new HttpParameter("locations"
                     , toLocationsString(locations)));
         }
-        if (includeEntities) {
-            params.add(new HttpParameter("include_entities", true));
-        }
-
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
@@ -218,7 +201,6 @@ public final class FilterQuery implements java.io.Serializable {
                 ", follow=" + Arrays.toString(follow) +
                 ", track=" + (track == null ? null : Arrays.asList(track)) +
                 ", locations=" + (locations == null ? null : Arrays.asList(locations)) +
-                ", includeEntities=" + includeEntities +
                 '}';
     }
 }

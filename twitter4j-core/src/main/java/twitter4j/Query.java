@@ -415,7 +415,7 @@ public final class Query implements java.io.Serializable {
 
     private static HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
 
-    /*package*/ HttpParameter[] asHttpParameterArray(HttpParameter includeEntities) {
+    /*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("q", query, params);
         appendParameter("lang", lang, params);
@@ -429,7 +429,6 @@ public final class Query implements java.io.Serializable {
         appendParameter("until", until, params);
         appendParameter("result_type", resultType, params);
         params.add(WITH_TWITTER_USER_ID);
-        params.add(includeEntities);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
