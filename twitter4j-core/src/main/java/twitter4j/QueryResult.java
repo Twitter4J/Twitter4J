@@ -43,7 +43,8 @@ public interface QueryResult extends java.io.Serializable {
     List<Tweet> getTweets();
 
     /**
-     * Returns a Query instance to fetch next page
+     * Returns a Query instance to fetch next page or null if there is no next page.
+     *
      * @return Query instance to fetch next page
      * @since Twitter4J 3.0.0
      */
@@ -51,6 +52,7 @@ public interface QueryResult extends java.io.Serializable {
 
     /**
      * test if there is next page
+     *
      * @return if there is next page
      * @since Twitter4J 3.0.0
      */

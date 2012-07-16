@@ -50,23 +50,24 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     private String query;
     private List<Tweet> tweets;
     private static final long serialVersionUID = -9059136565234613286L;
-    private String nextQuery;
+    private String nextPage;
 
     // private static factory method to instantiate Query class with "next_page"
     // http://jira.twitter4j.org/browse/TFJ-549
     static Method queryFactoryMethod;
+
     static {
-            Method[] methods = Query.class.getDeclaredMethods();
-            for(Method method : methods){
-                if(method.getName().equals("createWithNextPageQuery")){
-                    queryFactoryMethod = method;
-                    queryFactoryMethod.setAccessible(true);
-                    break;
-                }
+        Method[] methods = Query.class.getDeclaredMethods();
+        for (Method method : methods) {
+            if (method.getName().equals("createWithNextPageQuery")) {
+                queryFactoryMethod = method;
+                queryFactoryMethod.setAccessible(true);
+                break;
             }
-            if(queryFactoryMethod == null){
-                throw new ExceptionInInitializerError(new NoSuchMethodException("twitter4j.Query.createWithNextPageQuery(java.lang.String)"));
-            }
+        }
+        if (queryFactoryMethod == null) {
+            throw new ExceptionInInitializerError(new NoSuchMethodException("twitter4j.Query.createWithNextPageQuery(java.lang.String)"));
+        }
     }
 
     /*package*/ QueryResultJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
@@ -90,7 +91,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 JSONObject tweet = array.getJSONObject(i);
                 tweets.add(new TweetJSONImpl(tweet, conf));
             }
-            nextQuery = json.has("next_page") ? json.getString("next_page") : null;
+            nextPage = json.has("next_page") ? json.getString("next_page") : null;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
@@ -176,10 +177,16 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         return tweets;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Query nextQuery() {
+        if (nextPage == null) {
+            return null;
+        }
         try {
-            return (Query) queryFactoryMethod.invoke(null, new String[]{nextQuery});
+            return (Query) queryFactoryMethod.invoke(null, new String[]{nextPage});
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -187,9 +194,12 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasNext() {
-        return nextQuery != null;
+        return nextPage != null;
     }
 
     @Override
