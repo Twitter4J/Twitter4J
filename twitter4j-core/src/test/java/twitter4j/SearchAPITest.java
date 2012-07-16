@@ -128,17 +128,8 @@ public class SearchAPITest extends TwitterTestBase {
         assertFalse(result.hasNext());
 
         query = new Query("from:yusukey");
-        result = twitter1.search(query);
-        assertTrue(result.hasNext());
-        query = result.nextQuery();
-        result = twitter1.search(query);
-        assertTrue(result.getTweets().size() > 0);
-
         do {
             result = twitter1.search(query);
-            if (result.getTweets().size() == 0) {
-                break;
-            }
             // do something
         } while ((query = result.nextQuery()) != null);
     }

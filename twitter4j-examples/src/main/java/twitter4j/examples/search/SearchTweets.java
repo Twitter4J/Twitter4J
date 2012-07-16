@@ -37,11 +37,15 @@ public class SearchTweets {
         }
         Twitter twitter = new TwitterFactory().getInstance();
         try {
-            QueryResult result = twitter.search(new Query(args[0]));
-            List<Tweet> tweets = result.getTweets();
-            for (Tweet tweet : tweets) {
-                System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText());
-            }
+            Query query = new Query(args[0]);
+            QueryResult result;
+            do {
+                result = twitter.search(query);
+                List<Tweet> tweets = result.getTweets();
+                for (Tweet tweet : tweets) {
+                    System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText());
+                }
+            } while ((query = result.nextQuery()) != null);
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
