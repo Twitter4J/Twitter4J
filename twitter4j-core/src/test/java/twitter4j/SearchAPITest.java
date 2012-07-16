@@ -122,6 +122,19 @@ public class SearchAPITest extends TwitterTestBase {
         QueryResult result = twitter1.search(query);
     }
 
+    public void testEasyPaging() throws Exception {
+        Query query = new Query("from:twit4j doesnothit");
+        QueryResult result = twitter1.search(query);
+        assertFalse(result.hasNext());
+
+        query = new Query("from:yusukey");
+        result = twitter1.search(query);
+        assertTrue(result.hasNext());
+        query = result.nextQuery();
+        result = twitter1.search(query);
+        assertTrue(result.getTweets().size() > 0);
+    }
+
     public void testTrends() throws Exception {
         List<Trends> trendsList;
 

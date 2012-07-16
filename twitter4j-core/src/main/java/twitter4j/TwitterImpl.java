@@ -92,8 +92,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public QueryResult search(Query query) throws TwitterException {
-        return factory.createQueryResult(get(conf.getSearchBaseURL()
-                + "search.json", query.asHttpParameterArray()), query);
+        if (query.nextPage() != null) {
+            System.out.println(conf.getSearchBaseURL()
+                                + "search.json" + query.nextPage());
+            return factory.createQueryResult(get(conf.getSearchBaseURL()
+                    + "search.json" + query.nextPage()), query);
+        } else {
+            return factory.createQueryResult(get(conf.getSearchBaseURL()
+                    + "search.json", query.asHttpParameterArray()), query);
+        }
     }
 
     /**
@@ -1800,5 +1807,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     private boolean isOk(HttpResponse response) {
         return response != null && response.getStatusCode() < 300;
+    }
+
+    @Override
+    public String toString() {
+        return "TwitterImpl{" +
+                "INCLUDE_MY_RETWEET=" + INCLUDE_MY_RETWEET +
+                '}';
     }
 }
