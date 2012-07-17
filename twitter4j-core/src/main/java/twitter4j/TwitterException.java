@@ -311,7 +311,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     @Override
     public String toString() {
-        return getMessage() + (nested ? "" : "Relevant discussions can be found on the Internet at:\n"
+        return getMessage() + (nested ? "" : "\nRelevant discussions can be found on the Internet at:\n"
                 + "\thttp://www.google.co.jp/search?q=" + getExceptionDiagnosis().getStackLineHashAsHex()
                 + " or\n\thttp://www.google.co.jp/search?q=" + getExceptionDiagnosis().getLineNumberHashAsHex())
                 + "\nTwitterException{" + (nested ? "" : "exceptionCode=[" + getExceptionCode() + "], ") +
