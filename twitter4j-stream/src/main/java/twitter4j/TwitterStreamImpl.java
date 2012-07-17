@@ -48,10 +48,15 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<ConnectionLifeCycleListener>(0);
     private TwitterStreamConsumer handler = null;
 
+    private String stallWarningsGetParam;
+    private HttpParameter stallWarningsParam;
+
     /*package*/
     TwitterStreamImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
+        stallWarningsGetParam = "stall_warnings=" + (conf.isStallWarningsEnabled() ? "true" : "false");
+        stallWarningsParam = new HttpParameter("stall_warnings", conf.isStallWarningsEnabled());
     }
 
     /* Streaming API */
@@ -110,7 +115,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + relativeUrl
-                    , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))}, auth), conf);
+                    , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))
+                    , stallWarningsParam}, auth), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -140,7 +146,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
-                    , new HttpParameter[]{}, auth), conf);
+                    , new HttpParameter[]{stallWarningsParam}, auth), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -169,8 +175,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     public StatusStream getSampleStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json"
-                    , auth), conf);
+            return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json?"
+                    + stallWarningsGetParam, auth), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -220,6 +226,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             List<HttpParameter> params = new ArrayList<HttpParameter>();
+            params.add(stallWarningsParam);
             if (conf.isUserStreamRepliesAllEnabled()) {
                 params.add(new HttpParameter("replies", "all"));
             }
@@ -281,8 +288,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return http.post(conf.getSiteStreamBaseURL() + "/2b/site.json",
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
-                        , new HttpParameter("follow", z_T4JInternalStringUtil.join(follow))}
-                , auth).asStream();
+                        , new HttpParameter("follow", z_T4JInternalStringUtil.join(follow))
+                        , stallWarningsParam}, auth).asStream();
     }
 
     /**
@@ -310,7 +317,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         try {
             return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL()
                     + "statuses/filter.json"
-                    , query.asHttpParameterArray(), auth), conf);
+                    , query.asHttpParameterArray(stallWarningsParam), auth), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }

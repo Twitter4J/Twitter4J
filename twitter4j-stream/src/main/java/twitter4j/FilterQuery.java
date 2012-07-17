@@ -139,7 +139,7 @@ public final class FilterQuery implements java.io.Serializable {
         return this;
     }
 
-    /*package*/ HttpParameter[] asHttpParameterArray() {
+    /*package*/ HttpParameter[] asHttpParameterArray(HttpParameter stallWarningsParam) {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
 
         params.add(new HttpParameter("count", count));
@@ -155,6 +155,7 @@ public final class FilterQuery implements java.io.Serializable {
             params.add(new HttpParameter("locations"
                     , toLocationsString(locations)));
         }
+        params.add(stallWarningsParam);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
