@@ -78,6 +78,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
     public static final String MBEAN_ENABLED = "mbeanEnabled";
     public static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
+    public static final String STREAM_STALL_WARNINGS_ENABLED = "stream.enableStallWarnings";
 
     public static final String MEDIA_PROVIDER = "media.provider";
     public static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
@@ -353,6 +354,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, STREAM_USER_REPLIES_ALL)) {
             setUserStreamRepliesAllEnabled(getBoolean(props, prefix, STREAM_USER_REPLIES_ALL));
+        }
+        if (notNull(props, prefix, STREAM_STALL_WARNINGS_ENABLED)) {
+            setStallWarningsEnabled(getBoolean(props, prefix, STREAM_STALL_WARNINGS_ENABLED));
         }
         if (notNull(props, prefix, MEDIA_PROVIDER)) {
             setMediaProvider(getString(props, prefix, MEDIA_PROVIDER));

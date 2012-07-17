@@ -103,6 +103,13 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     }
 
     @Override
+    protected void onStallWarning(JSONObject json) throws TwitterException, JSONException {
+        for (StreamListener listener : listeners) {
+            ((StatusListener) listener).onStallWarning(new StallWarning(json));
+        }
+    }
+
+    @Override
     protected void onScrubGeo(JSONObject json) throws TwitterException, JSONException {
         JSONObject scrubGeo = json.getJSONObject("scrub_geo");
         for (StreamListener listener : listeners) {

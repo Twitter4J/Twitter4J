@@ -21,6 +21,8 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
 import twitter4j.internal.async.DispatcherFactory;
+import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.org.json.JSONTokener;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
@@ -44,6 +46,16 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
     protected void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    public void testStallWarnings() throws Exception{
+        InputStream is = SiteStreamsTest.class.getResourceAsStream("/stallwarning.json");
+        StallWarning stallWarning = new StallWarning(new JSONObject(new JSONTokener(is)));
+        is.close();
+        assertEquals("FALLING_BEHIND", stallWarning.getCode());
+        assertEquals("Your connection is falling behind and messages are being queued for delivery to you. Your queue is now over 60% full. You will be disconnected when the queue is full."
+        , stallWarning.getMessage());
+        assertEquals(60, stallWarning.getPercentFull());
     }
 
     public void testStream() throws Exception {

@@ -17,7 +17,7 @@
 package twitter4j;
 
 /**
- * @author Rémy Rakic at gmail.com
+ * @author yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
 public class StatusAdapter implements StatusListener {
@@ -39,5 +39,9 @@ public class StatusAdapter implements StatusListener {
 
     @Override
     public void onException(Exception ex) {
+    }
+
+    @Override
+    public void onStallWarning(StallWarning warning) {
     }
 }

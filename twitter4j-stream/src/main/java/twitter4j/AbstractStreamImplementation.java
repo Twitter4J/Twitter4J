@@ -111,6 +111,8 @@ abstract class AbstractStreamImplementation {
                                 onDelete(json);
                             } else if (JSONObjectType.LIMIT == jsonObjectType) {
                                 onLimit(json);
+                            } else if (JSONObjectType.STALL_WARNING == jsonObjectType) {
+                                onStallWarning(json);
                             } else if (JSONObjectType.SCRUB_GEO == jsonObjectType) {
                                 onScrubGeo(json);
                             } else if (JSONObjectType.FRIENDS == jsonObjectType) {
@@ -187,6 +189,10 @@ abstract class AbstractStreamImplementation {
 
     protected void onLimit(JSONObject json) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onLimit");
+    }
+
+    protected void onStallWarning(JSONObject json) throws TwitterException, JSONException {
+        logger.warn("Unhandled event: onStallWarning");
     }
 
     protected void onScrubGeo(JSONObject json) throws TwitterException, JSONException {

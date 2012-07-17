@@ -31,6 +31,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     protected Properties p = new Properties();
     private long userId;
     private long upToStatusId;
+    private StallWarning warning;
 
     public StreamAPITest(String name) {
         super(name);
@@ -288,6 +289,11 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         this.upToStatusId = upToStatusId;
         System.out.println("got onScrubGeo");
         notifyResponse();
+    }
+
+    @Override
+    public void onStallWarning(StallWarning warning) {
+        this.warning = warning;
     }
 
     Exception ex;

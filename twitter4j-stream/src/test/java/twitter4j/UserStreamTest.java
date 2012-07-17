@@ -275,6 +275,13 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
 
+    @Override
+    public void onStallWarning(StallWarning warning) {
+        System.out.println("onStallWarning");
+        received.add(new Object[]{"stallwarning", warning});
+        notifyResponse();
+    }
+
     public void onFriendList(long[] friendIds) {
         System.out.println("onFriendList");
         received.add(new Object[]{"onfriendlist", friendIds});

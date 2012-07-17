@@ -32,6 +32,7 @@ public final class JSONObjectType implements java.io.Serializable {
     public static final JSONObjectType DIRECT_MESSAGE = new JSONObjectType("DIRECT_MESSAGE");
     public static final JSONObjectType DELETE = new JSONObjectType("DELETE");
     public static final JSONObjectType LIMIT = new JSONObjectType("LIMIT");
+    public static final JSONObjectType STALL_WARNING = new JSONObjectType("STALL_WARNING");
     public static final JSONObjectType SCRUB_GEO = new JSONObjectType("SCRUB_GEO");
     public static final JSONObjectType FRIENDS = new JSONObjectType("FRIENDS");
     public static final JSONObjectType FAVORITE = new JSONObjectType("FAVORITE");
@@ -89,6 +90,8 @@ public final class JSONObjectType implements java.io.Serializable {
             return DELETE;
         } else if (!json.isNull("limit")) {
             return LIMIT;
+        } else if (!json.isNull("warning")) {
+            return STALL_WARNING;
         } else if (!json.isNull("scrub_geo")) {
             return SCRUB_GEO;
         } else if (!json.isNull("friends")) {

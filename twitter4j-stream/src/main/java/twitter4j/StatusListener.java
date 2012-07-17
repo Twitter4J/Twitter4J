@@ -52,4 +52,14 @@ public interface StatusListener extends StreamListener {
      * @since Twitter4J 2.1.9
      */
     void onScrubGeo(long userId, long upToStatusId);
+
+
+    /**
+     * Called when receiving stall warnings.
+     *
+     * @param warning StallWaning
+     * @see <a href="https://dev.twitter.com/docs/streaming-apis/parameters#stall_warnings">Streaming API request parameters - stall_warnings</a>
+     * @since Twitter4J 3.0.0
+     */
+    void onStallWarning(StallWarning warning);
 }
