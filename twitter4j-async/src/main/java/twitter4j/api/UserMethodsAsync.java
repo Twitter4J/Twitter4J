@@ -116,4 +116,40 @@ public interface UserMethodsAsync {
      * @since Twitter4J 2.1.7
      */
     void getProfileImage(String screenName, ProfileImage.ImageSize size);
+
+    /**
+     * Returns an array of users who can contribute to the specified account.
+     *
+     * @param screenName The screen name of the user for whom to return results for
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/contributors">GET users/contributors | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void getContributors(String screenName);
+
+    /**
+     * Returns an array of users who can contribute to the specified account.
+     *
+     * @param userId The user id of the user for whom to return results for
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/contributors">GET users/contributors | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void getContributors(long userId);
+
+    /**
+     * Returns an array of users that the specified user can contribute to.
+     *
+     * @param screenName The screen name of the user for whom to return results for
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/contributees">GET users/contributors | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void getContributees(String screenName);
+
+    /**
+     * Returns an array of users that the specified user can contribute to.
+     *
+     * @param userId The user id of the user for whom to return results for
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/users/contributees">GET users/contributors | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void getContributees(long userId);
 }

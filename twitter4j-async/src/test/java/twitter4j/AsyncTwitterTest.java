@@ -590,6 +590,16 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    @Override
+    public void gotContributors(ResponseList<User> users) {
+        notifyResponse();
+    }
+
+    @Override
+    public void gotContributees(ResponseList<User> users) {
+        notifyResponse();
+    }
+
     /*List Methods*/
 
     @Override

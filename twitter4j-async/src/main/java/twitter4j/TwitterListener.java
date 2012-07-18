@@ -148,6 +148,16 @@ public interface TwitterListener {
      */
     void gotProfileImage(ProfileImage image);
 
+    /**
+     * @since Twitter4J 3.0.0
+     */
+    void gotContributors(ResponseList<User> users);
+
+    /**
+     * @since Twitter4J 3.0.0
+     */
+    void gotContributees(ResponseList<User> users);
+
     /*List Methods*/
 
     /**

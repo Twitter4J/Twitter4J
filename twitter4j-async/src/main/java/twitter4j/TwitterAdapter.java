@@ -207,6 +207,14 @@ public class TwitterAdapter implements TwitterListener {
     public void gotProfileImage(ProfileImage image) {
     }
 
+    @Override
+    public void gotContributors(ResponseList<User> users) {
+    }
+
+    @Override
+    public void gotContributees(ResponseList<User> users) {
+    }
+
     /*List Methods*/
 
     /**

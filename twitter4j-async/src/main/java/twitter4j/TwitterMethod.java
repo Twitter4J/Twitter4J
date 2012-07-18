@@ -54,6 +54,8 @@ public enum TwitterMethod {
     PROFILE_IMAGE,
     USER_SUGGESTIONS,
     MEMBER_SUGGESTIONS,
+    CONTRIBUTORS,
+    CONTRIBUTEEES,
 
     /*List Methods*/
     CREATE_USER_LIST,

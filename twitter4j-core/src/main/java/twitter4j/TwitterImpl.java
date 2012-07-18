@@ -94,7 +94,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public QueryResult search(Query query) throws TwitterException {
         if (query.nextPage() != null) {
             System.out.println(conf.getSearchBaseURL()
-                                + "search.json" + query.nextPage());
+                    + "search.json" + query.nextPage());
             return factory.createQueryResult(get(conf.getSearchBaseURL()
                     + "search.json" + query.nextPage()), query);
         } else {
@@ -251,7 +251,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getMentions(Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
         return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/mentions.json",paging.asPostParameterArray()));
+                + "statuses/mentions.json", paging.asPostParameterArray()));
     }
 
     /**
@@ -524,6 +524,38 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ProfileImage getProfileImage(String screenName, ProfileImage.ImageSize size) throws TwitterException {
         return factory.createProfileImage(get(conf.getRestBaseURL() + "users/profile_image/" + screenName
                 + ".json?size=" + size.name()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getContributors(String screenName) throws TwitterException {
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributors.json?screen_name=" + screenName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getContributors(long userId) throws TwitterException {
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributors.json?user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getContributees(String screenName) throws TwitterException {
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributees.json?screen_name=" + screenName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getContributees(long userId) throws TwitterException {
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributees.json?user_id=" + userId));
     }
 
     /*List Methods*/
@@ -1294,7 +1326,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<Status> getFavorites(int page) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites.json?page="+ page));
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites.json?page=" + page));
     }
 
     /**
@@ -1312,7 +1344,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<Status> getFavorites(String id, int page) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/" + id + ".json?page="+page));
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/" + id + ".json?page=" + page));
     }
 
     /**
@@ -1331,7 +1363,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getFavorites(String id, Paging paging) throws TwitterException {
         ensureAuthorizationEnabled();
         return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/" + id
-                + ".json",paging.asPostParameterArray()));
+                + ".json", paging.asPostParameterArray()));
     }
 
     /**

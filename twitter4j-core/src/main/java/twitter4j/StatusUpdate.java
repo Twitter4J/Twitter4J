@@ -30,7 +30,7 @@ import java.util.List;
 public final class StatusUpdate implements java.io.Serializable {
 
     private String status;
-    private long inReplyToStatusId = -1l;
+    private long inReplyToStatusId = -1L;
     private GeoLocation location = null;
     private String placeId = null;
     private boolean displayCoordinates = true;
@@ -39,6 +39,7 @@ public final class StatusUpdate implements java.io.Serializable {
     private String mediaName;
     private transient InputStream mediaBody;
     private File mediaFile;
+    private long contributingTo = -1L;
     private static final long serialVersionUID = -3595502688477609916L;
 
     public StatusUpdate(String status) {
@@ -137,6 +138,39 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * Sets the user id contributing to
+     *
+     * @param contributingTo the user id contributing to
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/12273c2d03c1b606">Developer Preview: Contributor API</a>
+     * @since Twitter4J 3.0.0
+     */
+    public void setContributingTo(long contributingTo) {
+        this.contributingTo = contributingTo;
+    }
+
+    /**
+     * Sets the user id contributing to and returns this instance
+     *
+     * @param contributingTo the user id contributing to
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/12273c2d03c1b606">Developer Preview: Contributor API</a>
+     * @since Twitter4J 3.0.0
+     */
+    public StatusUpdate contributingTo(long contributingTo) {
+        this.contributingTo = contributingTo;
+        return this;
+    }
+
+    /**
+     * Returns the user id contributing to
+     *
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/12273c2d03c1b606">Developer Preview: Contributor API</a>
+     * @since Twitter4J 3.0.0
+     */
+    public long getContributingTo() {
+        return this.contributingTo;
+    }
+
+    /**
      * @since Twitter4J 2.2.5
      */
     public void setPossiblySensitive(boolean possiblySensitive) {
@@ -208,7 +242,9 @@ public final class StatusUpdate implements java.io.Serializable {
             params.add(new HttpParameter("media[]", mediaName, mediaBody));
             params.add(new HttpParameter("possibly_sensitive", possiblySensitive));
         }
-
+        if (-1 != contributingTo) {
+            appendParameter("contributingto", contributingTo, params);
+        }
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }

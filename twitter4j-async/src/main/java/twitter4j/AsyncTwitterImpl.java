@@ -43,8 +43,7 @@ import static twitter4j.TwitterMethod.*;
  * @see twitter4j.AsyncTwitter
  * @see twitter4j.TwitterListener
  */
-class AsyncTwitterImpl extends TwitterBaseImpl
-        implements AsyncTwitter {
+class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     private static final long serialVersionUID = -2008667933225051907L;
     private final Twitter twitter;
     private final List<TwitterListener> listeners = new ArrayList<TwitterListener>();
@@ -858,6 +857,70 @@ class AsyncTwitterImpl extends TwitterBaseImpl
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotProfileImage(profileImage);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getContributors(final String screenName) {
+        getDispatcher().invokeLater(new AsyncTask(CONTRIBUTORS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<User> users = twitter.getContributors(screenName);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotContributors(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getContributors(final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(CONTRIBUTORS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<User> users = twitter.getContributors(userId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotContributors(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getContributees(final String screenName) {
+        getDispatcher().invokeLater(new AsyncTask(CONTRIBUTEEES, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<User> users = twitter.getContributors(screenName);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotContributees(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getContributees(final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(CONTRIBUTEEES, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<User> users = twitter.getContributors(userId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotContributees(users);
                     } catch (Exception ignore) {
                     }
                 }

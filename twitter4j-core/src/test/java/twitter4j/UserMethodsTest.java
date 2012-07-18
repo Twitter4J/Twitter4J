@@ -157,4 +157,11 @@ public class UserMethodsTest extends TwitterTestBase {
         ProfileImage image = twitter1.getProfileImage(id1.screenName, ProfileImage.BIGGER);
         assertNotNull(image.getURL());
     }
+
+    public void testContributors() throws Exception {
+        ResponseList<User> users = twitter1.getContributors("twitter");
+        assertTrue(users.size() > 0);
+        users = twitter1.getContributees(users.get(0).getId());
+        assertTrue(users.size() > 0);
+    }
 }
