@@ -217,6 +217,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setContributingTo(long contributingTo) {
+        checkNotBuilt();
+        configurationBean.setContributingTo(contributingTo);
+        return this;
+    }
+
     public ConfigurationBuilder setClientVersion(String clientVersion) {
         checkNotBuilt();
         configurationBean.setClientVersion(clientVersion);

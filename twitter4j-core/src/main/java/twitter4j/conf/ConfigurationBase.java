@@ -70,6 +70,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private int asyncNumThreads;
 
+    private long contributingTo;
     private boolean includeRTsEnabled = true;
 
     private boolean includeEntitiesEnabled = true;
@@ -156,6 +157,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setOAuthAccessToken(null);
         setOAuthAccessTokenSecret(null);
         setAsyncNumThreads(1);
+        setContributingTo(-1L);
         setClientVersion(Version.getVersion());
         setClientURL("http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
         setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
@@ -472,6 +474,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setAsyncNumThreads(int asyncNumThreads) {
         this.asyncNumThreads = asyncNumThreads;
+    }
+
+    @Override
+    public final long getContributingTo() {
+        return contributingTo;
+    }
+
+    protected final void setContributingTo(long contributingTo) {
+        this.contributingTo = contributingTo;
     }
 
     @Override

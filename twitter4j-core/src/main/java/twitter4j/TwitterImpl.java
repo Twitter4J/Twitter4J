@@ -49,9 +49,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     TwitterImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
         INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", 1);
+        if (conf.getContributingTo() != -1L) {
+            CONTRIBUTING_TO = new HttpParameter("contributingto", conf.getContributingTo());
+        } else {
+            CONTRIBUTING_TO = null;
+        }
     }
 
     private final HttpParameter INCLUDE_MY_RETWEET;
+    private final HttpParameter CONTRIBUTING_TO;
 
     private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter[] params2) {
         if (params1 != null && params2 != null) {
@@ -1753,6 +1759,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     private HttpResponse get(String url) throws TwitterException {
+        if (CONTRIBUTING_TO != null) {
+            if (url.contains("?")) {
+                url = url + "&contributingto=" + conf.getContributingTo();
+            } else {
+                url = url + "?contributingto=" + conf.getContributingTo();
+            }
+        }
         if (!conf.isMBeanEnabled()) {
             return http.get(url, auth);
         } else {
@@ -1769,15 +1782,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         }
     }
 
-    private HttpResponse get(String url, HttpParameter[] parameters) throws TwitterException {
+    private HttpResponse get(String url, HttpParameter[] params) throws TwitterException {
         if (!conf.isMBeanEnabled()) {
-            return http.get(url, parameters, auth);
+            return http.get(url, mergeContributingTo(params), auth);
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
             long start = System.currentTimeMillis();
             try {
-                response = http.get(url, parameters, auth);
+                response = http.get(url, mergeContributingTo(params), auth);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
@@ -1787,6 +1800,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     private HttpResponse post(String url) throws TwitterException {
+        if (CONTRIBUTING_TO != null) {
+            return post(url, new HttpParameter[0]);
+        }
         if (!conf.isMBeanEnabled()) {
             return http.post(url, auth);
         } else {
@@ -1803,15 +1819,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         }
     }
 
-    private HttpResponse post(String url, HttpParameter[] parameters) throws TwitterException {
+    private HttpResponse post(String url, HttpParameter[] params) throws TwitterException {
         if (!conf.isMBeanEnabled()) {
-            return http.post(url, parameters, auth);
+            return http.post(url, mergeContributingTo(params), auth);
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
             long start = System.currentTimeMillis();
             try {
-                response = http.post(url, parameters, auth);
+                response = http.post(url, mergeContributingTo(params), auth);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
@@ -1820,20 +1836,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         }
     }
 
-    private HttpResponse delete(String url) throws TwitterException {
-        if (!conf.isMBeanEnabled()) {
-            return http.delete(url, auth);
+    private HttpParameter[] mergeContributingTo(HttpParameter[] params) {
+        if (CONTRIBUTING_TO == null) {
+            return params;
         } else {
-            // intercept HTTP call for monitoring purposes
-            HttpResponse response = null;
-            long start = System.currentTimeMillis();
-            try {
-                response = http.delete(url, auth);
-            } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
-            }
-            return response;
+            return mergeParameters(params, CONTRIBUTING_TO);
         }
     }
 

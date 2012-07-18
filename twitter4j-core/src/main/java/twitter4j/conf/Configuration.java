@@ -120,5 +120,7 @@ public interface Configuration extends HttpClientConfiguration
 
     int getAsyncNumThreads();
 
+    long getContributingTo();
+
     String getDispatcherImpl();
 }
