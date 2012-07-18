@@ -47,6 +47,21 @@ public interface ListMethodsAsync {
      */
     void updateUserList(int listId, String newListName, boolean isPublicList, String newDescription);
 
+
+    /**
+     * Updates the specified list.
+     * <br>This method calls http://api.twitter.com/1/lists/update.json
+     *
+     * @param ownerId        The user ID of the user who owns the list being requested by a slug.
+     * @param slug           slug of the list
+     * @param newListName    What you'd like to change the list's name to.
+     * @param isPublicList   Whether your list is public or private. Optional. Values can be public or private. Lists are public by default if no mode is specified.
+     * @param newDescription What you'd like to change the list description to.
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription);
+
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
      * <br>This method calls http://api.twitter.com/1/lists.json
@@ -79,6 +94,18 @@ public interface ListMethodsAsync {
      */
     void showUserList(int listId);
 
+
+    /**
+     * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
+     * <br>This method calls http://api.twitter.com/1/lists/show.json
+     *
+     * @param ownerId The user ID of the user who owns the list being requested by a slug.
+     * @param slug    slug of the list
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/show">https://dev.twitter.com/docs/api/1/get/lists/show | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void showUserList(long ownerId, String slug);
+
     /**
      * Deletes the specified list. Must be owned by the authenticated user.
      * <br>This method calls http://api.twitter.com/1/lists/destroy.json
@@ -88,6 +115,18 @@ public interface ListMethodsAsync {
      * @since Twitter4J 2.1.1
      */
     void destroyUserList(int listId);
+
+
+    /**
+     * Deletes the specified list. Must be owned by the authenticated user.
+     * <br>This method calls http://api.twitter.com/1/lists/destroy.json
+     *
+     * @param ownerId The user ID of the user who owns the list being requested by a slug.
+     * @param slug    slug of the list
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/destroy">POST lists/destroy | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void destroyUserList(long ownerId, String slug);
 
     /**
      * Show tweet timeline for members of the specified list.
@@ -101,11 +140,22 @@ public interface ListMethodsAsync {
     void getUserListStatuses(int listId, Paging paging);
 
     /**
+     * Show tweet timeline for members of the specified list.
+     * <br>http://api.twitter.com/1/user/lists/list_id/statuses.json
+     *
+     * @param ownerId The user ID of the user who owns the list being requested by a slug.
+     * @param slug    slug of the list
+     * @param paging  controls pagination. Supports since_id, max_id, count and page parameters.
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void getUserListStatuses(long ownerId, String slug, Paging paging);
+
+    /**
      * List the lists the authenticating user has been added to.
      * <br>This method calls http://api.twitter.com/1/lists/memberships.json
      *
      * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @return the list of lists
      * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
      * @since Twitter4J 2.2.4
      */

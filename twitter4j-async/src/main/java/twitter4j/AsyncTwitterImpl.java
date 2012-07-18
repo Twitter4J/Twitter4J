@@ -1029,6 +1029,25 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
+    public void updateUserList(final long ownerId, final String slug, final String newListName, final boolean isPublicList, final String newDescription) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_USER_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.updateUserList(ownerId, slug, newListName, isPublicList, newDescription);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.updatedUserList(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void getUserLists(final String listOwnerScreenName, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(USER_LISTS, listeners) {
             @Override
@@ -1086,6 +1105,25 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
+    public void showUserList(final long ownerId, final String slug) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_USER_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.showUserList(ownerId, slug);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotShowUserList(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void destroyUserList(final int listId) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_USER_LIST, listeners) {
             @Override
@@ -1105,11 +1143,49 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
+    public void destroyUserList(final long ownerId, final String slug) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY_USER_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.destroyUserList(ownerId, slug);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.destroyedUserList(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void getUserListStatuses(final int listId, final Paging paging) {
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_STATUSES, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 ResponseList<Status> statuses = twitter.getUserListStatuses(listId, paging);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotUserListStatuses(statuses);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getUserListStatuses(final long ownerId, final String slug, final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(USER_LIST_STATUSES, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<Status> statuses = twitter.getUserListStatuses(ownerId, slug, paging);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListStatuses(statuses);

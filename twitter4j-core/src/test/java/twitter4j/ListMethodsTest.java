@@ -58,6 +58,11 @@ public class ListMethodsTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
 
+        userList = twitter1.showUserList(twitter1.getId(), userList.getSlug());
+        assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
+        assertNotNull(DataObjectFactory.getRawJSON(userList));
+        assertNotNull(userList);
+
         List<Status> statuses = twitter1.getUserListStatuses(userList.getId(), new Paging());
         if (statuses.size() > 0) {
             assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
@@ -85,6 +90,17 @@ public class ListMethodsTest extends TwitterTestBase {
         assertNotNull(userList);
         assertEquals("testpoint2", userList.getName());
         assertEquals("description2", userList.getDescription());
+
+        userList = twitter1.updateUserList(twitter1.getId(), userList.getSlug(), "testpoint3", true, "description3");
+        assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
+        // workarounding issue 2166
+        // http://code.google.com/p/twitter-api/issues/detail?id=2166
+        userList = twitter1.showUserList(userList.getId());
+        assertTrue(userList.isPublic());
+        assertNotNull(DataObjectFactory.getRawJSON(userList));
+        assertNotNull(userList);
+        assertEquals("testpoint3", userList.getName());
+        assertEquals("description3", userList.getDescription());
     }
 
     public void testListMemberMethods() throws Exception {
