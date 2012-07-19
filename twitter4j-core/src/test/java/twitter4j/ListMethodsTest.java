@@ -93,12 +93,10 @@ public class ListMethodsTest extends TwitterTestBase {
 
         userList = twitter1.updateUserList(twitter1.getId(), userList.getSlug(), "testpoint3", true, "description3");
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
-        // workarounding issue 2166
-        // http://code.google.com/p/twitter-api/issues/detail?id=2166
-        userList = twitter1.showUserList(userList.getId());
         assertTrue(userList.isPublic());
         assertNotNull(DataObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
+        System.out.println(userList);
         assertEquals("testpoint3", userList.getName());
         assertEquals("description3", userList.getDescription());
     }
@@ -239,7 +237,8 @@ public class ListMethodsTest extends TwitterTestBase {
         userLists = twitter1.getUserLists(id1.screenName, -1l);
         assertNotNull(DataObjectFactory.getRawJSON(userLists));
         for (UserList alist : userLists) {
-            twitter1.destroyUserList(alist.getId());
+            System.out.println(alist);
+            twitter1.destroyUserList(twitter1.getId(), alist.getSlug());
         }
         return twitter1.createUserList("testpoint1", false, "description1");
     }
