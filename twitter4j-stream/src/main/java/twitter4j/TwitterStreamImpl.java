@@ -498,11 +498,17 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                             if (te.getStatusCode() == FORBIDDEN) {
                                 logger.warn("This account is not in required role. ", te.getMessage());
                                 closed = true;
+                                for (StreamListener statusListener : streamListeners) {
+                                    statusListener.onException(te);
+                                }                                                        
                                 break;
                             }
                             if (te.getStatusCode() == NOT_ACCEPTABLE) {
                                 logger.warn("Parameter not accepted with the role. ", te.getMessage());
                                 closed = true;
+                                for (StreamListener statusListener : streamListeners) {
+                                    statusListener.onException(te);
+                                }                                                        
                                 break;
                             }
                             connected = false;
@@ -531,6 +537,9 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                                 }
                             }
                         }
+                        for (StreamListener statusListener : streamListeners) {
+                            statusListener.onException(te);
+                        }                        
                         // there was a problem establishing the connection, or the connection closed by peer
                         if (!closed) {
                             // wait for a moment not to overload Twitter API
@@ -544,9 +553,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                         }
                         stream = null;
                         logger.debug(te.getMessage());
-                        for (StreamListener statusListener : streamListeners) {
-                            statusListener.onException(te);
-                        }
                         connected = false;
                     }
                 }
@@ -593,7 +599,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 closed = true;
             }
         }
-
+                                        
         private void setStatus(String message) {
             String actualMessage = NAME + message;
             setName(actualMessage);
