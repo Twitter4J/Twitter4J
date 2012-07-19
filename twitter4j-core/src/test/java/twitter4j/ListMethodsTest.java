@@ -96,7 +96,6 @@ public class ListMethodsTest extends TwitterTestBase {
         assertTrue(userList.isPublic());
         assertNotNull(DataObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
-        System.out.println(userList);
         assertEquals("testpoint3", userList.getName());
         assertEquals("description3", userList.getDescription());
     }
@@ -173,7 +172,7 @@ public class ListMethodsTest extends TwitterTestBase {
         /*List Subscribers Methods*/
         PagableResponseList<User> users;
 
-        users = twitter1.getUserListSubscribers(userList.getId(), -1);
+        users = twitter1.getUserListSubscribers(twitter1.getId(), userList.getSlug(), -1);
         assertNotNull(DataObjectFactory.getRawJSON(users));
         assertEquals(0, users.size());
         try {
@@ -237,7 +236,6 @@ public class ListMethodsTest extends TwitterTestBase {
         userLists = twitter1.getUserLists(id1.screenName, -1l);
         assertNotNull(DataObjectFactory.getRawJSON(userLists));
         for (UserList alist : userLists) {
-            System.out.println(alist);
             twitter1.destroyUserList(twitter1.getId(), alist.getSlug());
         }
         return twitter1.createUserList("testpoint1", false, "description1");
