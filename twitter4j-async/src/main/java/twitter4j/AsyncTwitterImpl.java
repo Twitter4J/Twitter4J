@@ -1351,11 +1351,49 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
+    public void getUserListMembers(final long ownerId, final String slug, final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(LIST_MEMBERS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<User> users = twitter.getUserListMembers(ownerId, slug, cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotUserListMembers(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void addUserListMember(final int listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBER, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 UserList list = twitter.addUserListMember(listId, userId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.addedUserListMember(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addUserListMember(final long ownerId, final String slug, final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBER, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.addUserListMember(ownerId, slug, userId);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.addedUserListMember(list);
@@ -1389,11 +1427,49 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
+    public void addUserListMembers(final long ownerId, final String slug, final long[] userIds) {
+        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBERS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.addUserListMembers(ownerId, slug, userIds);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.addedUserListMembers(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void addUserListMembers(final int listId, final String[] screenNames) {
         getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 UserList list = twitter.addUserListMembers(listId, screenNames);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.addedUserListMembers(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addUserListMembers(final long ownerId, final String slug, final String[] screenNames) {
+        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBERS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.addUserListMembers(ownerId, slug, screenNames);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.addedUserListMembers(list);
@@ -1427,11 +1503,49 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
+    public void deleteUserListMember(final long ownerId, final String slug, final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(DELETE_LIST_MEMBER, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.deleteUserListMember(ownerId, slug, userId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.deletedUserListMember(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void showUserListMembership(final int listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CHECK_LIST_MEMBERSHIP, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 User user = twitter.showUserListMembership(listId, userId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.checkedUserListMembership(user);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showUserListMembership(final long ownerId, final String slug, final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(CHECK_LIST_MEMBERSHIP, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                User user = twitter.showUserListMembership(ownerId, slug, userId);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.checkedUserListMembership(user);
