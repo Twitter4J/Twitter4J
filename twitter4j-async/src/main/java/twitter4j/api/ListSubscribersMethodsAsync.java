@@ -16,7 +16,6 @@
 
 package twitter4j.api;
 
-
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
@@ -34,6 +33,18 @@ public interface ListSubscribersMethodsAsync {
     void getUserListSubscribers(int listId, long cursor);
 
     /**
+     * Returns the subscribers of the specified list.
+     * <br>This method calls http://api.twitter.com/1/lists/subscribers.json
+     *
+     * @param ownerId The user ID of the user who owns the list being requested by a slug.
+     * @param slug    slug of the list
+     * @param cursor  Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void getUserListSubscribers(long ownerId, String slug, long cursor);
+
+    /**
      * Make the authenticated user follow the specified list.
      * <br>This method calls http://api.twitter.com/1/list/subscribers/create.json
      *
@@ -42,6 +53,17 @@ public interface ListSubscribersMethodsAsync {
      * @since Twitter4J 2.2.3
      */
     void createUserListSubscription(int listId);
+
+    /**
+     * Make the authenticated user follow the specified list.
+     * <br>This method calls http://api.twitter.com/1/list/subscribers/create.json
+     *
+     * @param ownerId The user ID of the user who owns the list being requested by a slug.
+     * @param slug    slug of the list
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/subscribers/create">POST lists/subscribers/create | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void createUserListSubscription(long ownerId, String slug);
 
     /**
      * Unsubscribes the authenticated user form the specified list.
@@ -54,6 +76,17 @@ public interface ListSubscribersMethodsAsync {
     void destroyUserListSubscription(int listId);
 
     /**
+     * Unsubscribes the authenticated user form the specified list.
+     * <br>This method calls http://api.twitter.com/1/subscribers/destroy.json
+     *
+     * @param ownerId The user ID of the user who owns the list being requested by a slug.
+     * @param slug    slug of the list
+     * @see <a href="https://dev.twitter.com/docs/api/1/post/lists/subscribers/destroy">POST lists/subscribers/destroy | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void destroyUserListSubscription(long ownerId, String slug);
+
+    /**
      * Check if the specified user is a subscriber of the specified list.
      * <br>This method calls http://api.twitter.com/1/lists/subscribers/show.json
      *
@@ -64,4 +97,17 @@ public interface ListSubscribersMethodsAsync {
      * @since Twitter4J 2.2.3
      */
     void showUserListSubscription(int listId, long userId);
+
+    /**
+     * Check if the specified user is a subscriber of the specified list.
+     * <br>This method calls http://api.twitter.com/1/lists/subscribers/show.json
+     *
+     * @param ownerId The user ID of the user who owns the list being requested by a slug.
+     * @param slug    slug of the list
+     * @param userId  The id of the user who you want to know is a member or not of the specified list.
+     *                , or the user is not a member of the specified list(TwitterException.getStatusCode() returns 404 in that case.)
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/lists/subscribers/show">GET lists/subscribers/show | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void showUserListSubscription(long ownerId, String slug, long userId);
 }

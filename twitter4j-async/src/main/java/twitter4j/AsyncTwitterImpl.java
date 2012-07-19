@@ -1581,11 +1581,49 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
+    public void getUserListSubscribers(final long ownerId, final String slug, final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(LIST_SUBSCRIBERS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<User> users = twitter.getUserListSubscribers(ownerId, slug, cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotUserListSubscribers(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void createUserListSubscription(final int listId) {
         getDispatcher().invokeLater(new AsyncTask(SUBSCRIBE_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 UserList list = twitter.createUserListSubscription(listId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.subscribedUserList(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createUserListSubscription(final long ownerId, final String slug) {
+        getDispatcher().invokeLater(new AsyncTask(SUBSCRIBE_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.createUserListSubscription(ownerId, slug);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.subscribedUserList(list);
@@ -1619,11 +1657,49 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
+    public void destroyUserListSubscription(final long ownerId, final String slug) {
+        getDispatcher().invokeLater(new AsyncTask(UNSUBSCRIBE_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.destroyUserListSubscription(ownerId, slug);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.unsubscribedUserList(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void showUserListSubscription(final int listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CHECK_LIST_SUBSCRIPTION, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 User user = twitter.showUserListSubscription(listId, userId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.checkedUserListSubscription(user);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showUserListSubscription(final long ownerId, final String slug, final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(CHECK_LIST_SUBSCRIPTION, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                User user = twitter.showUserListSubscription(ownerId, slug, userId);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.checkedUserListSubscription(user);
