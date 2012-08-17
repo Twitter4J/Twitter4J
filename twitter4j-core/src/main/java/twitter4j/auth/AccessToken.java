@@ -43,11 +43,10 @@ public class AccessToken extends OAuthToken implements java.io.Serializable {
 
     public AccessToken(String token, String tokenSecret) {
         super(token, tokenSecret);
-        String sUserId;
-        try {
-        sUserId = token.substring(0, token.indexOf("-"));
-        } catch (IndexOutOfBoundsException e) {
-             throw new IllegalArgumentException("Invalid access token format.");
+        String sUserId = null;
+        int dashIndex = token.indexOf("-");
+        if (dashIndex != -1) {
+            sUserId = token.substring(0, dashIndex);
         }
         if (sUserId != null) userId = Long.parseLong(sUserId);
     }
