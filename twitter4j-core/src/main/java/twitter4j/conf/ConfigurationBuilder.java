@@ -253,6 +253,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setIncludeMyRetweetEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setIncludeMyRetweetEnabled(enabled);
+        return this;
+    }
+
     public ConfigurationBuilder setJSONStoreEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setJSONStoreEnabled(enabled);

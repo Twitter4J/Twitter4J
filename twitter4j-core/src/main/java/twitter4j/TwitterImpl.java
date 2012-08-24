@@ -52,7 +52,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     /*package*/
     TwitterImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
-        INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", 1);
+        INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", conf.isIncludeMyRetweetEnabled());
         if (conf.getContributingTo() != -1L) {
             IMPLICIT_PARAMS_STR = "include_entities=1&include_rts=1&contributingto=" + conf.getContributingTo();
             IMPLICIT_PARAMS = new HttpParameter[]{new HttpParameter("include_entities", "1")
@@ -169,7 +169,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getHomeTimeline() throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/home_timeline.json?include_my_retweet=1"));
+        return factory.createStatusList(get(conf.getRestBaseURL()
+                + "statuses/home_timeline.json", new HttpParameter[] { INCLUDE_MY_RETWEET }));
     }
 
     /**
