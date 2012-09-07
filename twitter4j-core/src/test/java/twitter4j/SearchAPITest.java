@@ -137,32 +137,17 @@ public class SearchAPITest extends TwitterTestBase {
     public void testTrends() throws Exception {
         List<Trends> trendsList;
 
-        trendsList = unauthenticated.getDailyTrends();
-        assertTrends(trendsList, 20);
+        trendsList = twitter1.getDailyTrends();
+        assertTrue(trendsList.size() > 0);
 
-        trendsList = unauthenticated.getDailyTrends(new Date(), true);
-        assertTrends(trendsList, 20);
+        trendsList = twitter1.getDailyTrends(new Date(), true);
+        assertTrue(trendsList.size() > 0);
 
-        trendsList = unauthenticated.getWeeklyTrends();
-        assertTrends(trendsList, 30);
+        trendsList = twitter1.getWeeklyTrends();
+        assertTrue(trendsList.size() > 0);
 
-        trendsList = unauthenticated.getWeeklyTrends(new Date(), true);
-        assertTrends(trendsList, 30);
+        trendsList = twitter1.getWeeklyTrends(new Date(), true);
+        assertTrue(trendsList.size() > 0);
     }
 
-    private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception {
-        Date trendAt = null;
-        for (Trends singleTrends : trendsArray) {
-            assertTrue((expectedSize - 10) < singleTrends.getTrends().length);
-            if (trendAt != null) {
-                assertTrue(trendAt.before(singleTrends.getTrendAt()));
-            }
-            trendAt = singleTrends.getTrendAt();
-            for (int i = 0; i < singleTrends.getTrends().length; i++) {
-                assertNotNull(singleTrends.getTrends()[i].getName());
-                assertNull(singleTrends.getTrends()[i].getUrl());
-                assertNotNull(singleTrends.getTrends()[i].getQuery());
-            }
-        }
-    }
 }
