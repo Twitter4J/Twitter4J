@@ -51,6 +51,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     private Place place = null;
     private long retweetCount;
     private boolean wasRetweetedByMe;
+    private boolean isPossiblySensitive;
 
     private String[] contributors = null;
     private long[] contributorsIDs;
@@ -94,6 +95,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         isFavorited = getBoolean("favorited", json);
         inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
         retweetCount = getLong("retweet_count", json);
+        isPossiblySensitive = getBoolean("possibly_sensitive", json);
         try {
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
@@ -374,6 +376,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
+    public boolean isPossiblySensitive() {
+        return isPossiblySensitive;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserMentionEntity[] getUserMentionEntities() {
         return userMentionEntities;
     }
@@ -462,6 +472,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 ", place=" + place +
                 ", retweetCount=" + retweetCount +
                 ", wasRetweetedByMe=" + wasRetweetedByMe +
+                ", isPossiblySensitive=" + isPossiblySensitive +
                 ", contributors=" + (contributorsIDs == null ? null : Arrays.asList(contributorsIDs)) +
                 ", annotations=" + annotations +
                 ", retweetedStatus=" + retweetedStatus +
