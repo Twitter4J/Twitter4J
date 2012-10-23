@@ -154,6 +154,14 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      */
     boolean isRetweetedByMe();
 
+     /**
+     * Returns true if the status contains a link that is identified as sensitive.
+     *
+     * @return whether the status contains sensitive links
+     * @since Twitter4J 3.0.0
+     */
+    boolean isPossiblySensitive();
+
     /**
      * Returns the annotations, or null if no annotations are associated with this status.
      *
