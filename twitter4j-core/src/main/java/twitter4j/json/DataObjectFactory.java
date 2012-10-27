@@ -22,6 +22,7 @@ import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +45,7 @@ public final class DataObjectFactory {
     private static final Constructor<Trend> trendConstructor;
     private static final Constructor<Trends> trendsConstructor;
     private static final Constructor<IDs> IDsConstructor;
-    private static final Constructor<RateLimitStatus> rateLimitStatusConstructor;
+    private static final Method rateLimitStatusConstructor;
     private static final Constructor<Category> categoryConstructor;
     private static final Constructor<DirectMessage> directMessageConstructor;
     private static final Constructor<Location> locationConstructor;
@@ -82,7 +83,7 @@ public final class DataObjectFactory {
             IDsConstructor = (Constructor<IDs>) Class.forName("twitter4j.internal.json.IDsJSONImpl").getDeclaredConstructor(String.class);
             IDsConstructor.setAccessible(true);
 
-            rateLimitStatusConstructor = (Constructor<RateLimitStatus>) Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl").getDeclaredConstructor(JSONObject.class);
+            rateLimitStatusConstructor = Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl").getDeclaredMethod("createRateLimitStatuses",JSONObject.class);
             rateLimitStatusConstructor.setAccessible(true);
 
             categoryConstructor = (Constructor<Category>) Class.forName("twitter4j.internal.json.CategoryJSONImpl").getDeclaredConstructor(JSONObject.class);
@@ -371,11 +372,11 @@ public final class DataObjectFactory {
      * @throws TwitterException when provided string is not a valid JSON string.
      * @since Twitter4J 2.1.7
      */
-    public static RateLimitStatus createRateLimitStatus(String rawJSON) throws TwitterException {
+    public static Map<String ,RateLimitStatus> createRateLimitStatus(String rawJSON) throws TwitterException {
         try {
             JSONObject json = new JSONObject(rawJSON);
-            return rateLimitStatusConstructor.newInstance(json);
-        } catch (InstantiationException e) {
+            return (Map<String ,RateLimitStatus>)rateLimitStatusConstructor.invoke(Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl"), json);
+        } catch (ClassNotFoundException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);

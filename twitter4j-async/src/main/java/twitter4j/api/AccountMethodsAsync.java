@@ -110,16 +110,6 @@ public interface AccountMethodsAsync {
     void updateProfile(String name, String url, String location, String description);
 
     /**
-     * Returns the current count of friends, followers, updates (statuses) and favorites of the authenticating user.
-     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1/account/totals.json
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/totals">GET account/totals | Twitter Developers</a>
-     * @since Twitter4J 2.1.9
-     */
-    void getAccountTotals();
-
-    /**
      * Returns the current trend, geo and sleep time information for the authenticating user.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
      * <br>This method calls http://api.twitter.com/1/account/settings.json

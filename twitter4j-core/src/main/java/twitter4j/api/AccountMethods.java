@@ -20,6 +20,7 @@ import twitter4j.*;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -45,7 +46,7 @@ public interface AccountMethods {
      * @see <a href="https://dev.twitter.com/docs/api/1/get/account/rate_limit_status">GET account/rate_limit_status | Twitter Developers</a>
      * @since Twitter4J 1.1.4
      */
-    RateLimitStatus getRateLimitStatus() throws TwitterException;
+    Map<String ,RateLimitStatus> getRateLimitStatus() throws TwitterException;
 
     /**
      * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexidecimal value, and may be either three or six characters (ex: #fff or #ffffff).
@@ -139,18 +140,6 @@ public interface AccountMethods {
      */
     User updateProfile(String name, String url, String location, String description)
             throws TwitterException;
-
-    /**
-     * Returns the current count of friends, followers, updates (statuses) and favorites of the authenticating user.
-     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1/account/totals.json
-     *
-     * @return the current count of friends, followers, updates (statuses) and favorites of the authenticating user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/account/totals">GET account/totals | Twitter Developers</a>
-     * @since Twitter4J 2.1.9
-     */
-    AccountTotals getAccountTotals() throws TwitterException;
 
     /**
      * Returns the current trend, geo, language, timezone and sleep time information for the authenticating user.

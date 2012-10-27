@@ -25,6 +25,8 @@ import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
 
+import java.util.Map;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
@@ -58,8 +60,8 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     }
 
     @Override
-    public RateLimitStatus createRateLimitStatus(HttpResponse res) throws TwitterException {
-        return new RateLimitStatusJSONImpl(res, conf);
+    public Map<String ,RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException {
+        return RateLimitStatusJSONImpl.createRateLimitStatuses(res, conf);
     }
 
     @Override

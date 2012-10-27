@@ -39,19 +39,6 @@ public interface FavoriteMethods {
 
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * <br>This method calls http://api.twitter.com/1/favorites.json
-     *
-     * @param page the number of page
-     * @return ResponseList<Status>
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     */
-    ResponseList<Status> getFavorites(int page)
-            throws TwitterException;
-
-    /**
-     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      *
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses
      * @return ResponseList<Status>
@@ -60,20 +47,6 @@ public interface FavoriteMethods {
      * @since Twitter4J 2.0.1
      */
     ResponseList<Status> getFavorites(String id)
-            throws TwitterException;
-
-    /**
-     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * <br>This method calls http://api.twitter.com/1/favorites/[id].json
-     *
-     * @param id   the ID or screen name of the user for whom to request a list of favorite statuses
-     * @param page the number of page
-     * @return ResponseList<Status>
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     */
-    ResponseList<Status> getFavorites(String id, int page)
             throws TwitterException;
 
     /**

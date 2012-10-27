@@ -21,6 +21,8 @@ import twitter4j.api.HelpMethods;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
+import java.util.Map;
+
 /**
  * A handy adapter of TwitterListener.
  *
@@ -44,20 +46,6 @@ public class TwitterAdapter implements TwitterListener {
     public void gotCurrentTrends(Trends trends) {
     }
 
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    @Override
-    public void gotDailyTrends(ResponseList<Trends> trendsList) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    @Override
-    public void gotWeeklyTrends(ResponseList<Trends> trendsList) {
-    }
-
     /*Timeline Methods*/
 
     /**
@@ -76,41 +64,6 @@ public class TwitterAdapter implements TwitterListener {
      */
     @Override
     public void gotMentions(ResponseList<Status> statuses) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    @Override
-    public void gotRetweetedByMe(ResponseList<Status> statuses) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    @Override
-    public void gotRetweetedToMe(ResponseList<Status> statuses) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    @Override
-    public void gotRetweetsOfMe(ResponseList<Status> statuses) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    @Override
-    public void gotRetweetedByUser(ResponseList<Status> statuses) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    @Override
-    public void gotRetweetedToUser(ResponseList<Status> statuses) {
     }
 
     /*Status Methods*/
@@ -390,13 +343,6 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     /**
-     * @since Twitter4J 2.0.1
-     */
-    @Override
-    public void gotExistsFriendship(boolean exists) {
-    }
-
-    /**
      * @since Twitter4J 2.1.0
      */
     @Override
@@ -431,13 +377,6 @@ public class TwitterAdapter implements TwitterListener {
     public void updatedFriendship(Relationship relationship) {
     }
 
-    /**
-     * @since
-     */
-    @Override
-    public void gotNoRetweetIds(IDs ids) {
-    }
-
     /*Social Graph Methods*/
     @Override
     public void gotFriendsIDs(IDs ids) {
@@ -454,18 +393,12 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void gotRateLimitStatus(RateLimitStatus status) {
+    public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
+
     }
 
     @Override
     public void updatedProfileColors(User user) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    @Override
-    public void gotAccountTotals(AccountTotals totals) {
     }
 
     /**
@@ -517,21 +450,6 @@ public class TwitterAdapter implements TwitterListener {
     public void destroyedFavorite(Status status) {
     }
 
-    /*Notification Methods*/
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    @Override
-    public void enabledNotification(User user) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    @Override
-    public void disabledNotification(User user) {
-    }
     /*Block Methods*/
 
     /**
@@ -552,21 +470,14 @@ public class TwitterAdapter implements TwitterListener {
      * @since Twitter4J 2.0.4
      */
     @Override
-    public void gotExistsBlock(boolean blockExists) {
+    public void gotBlocksList(ResponseList<User> blockingUsers) {
     }
 
     /**
      * @since Twitter4J 2.0.4
      */
     @Override
-    public void gotBlockingUsers(ResponseList<User> blockingUsers) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.4
-     */
-    @Override
-    public void gotBlockingUsersIDs(IDs blockingUsersIDs) {
+    public void gotBlockIDs(IDs blockingUsersIDs) {
     }
 
     /*Spam Reporting Methods*/
@@ -659,12 +570,6 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     /*Help Methods*/
-
-    @Override
-    public void tested(boolean test) {
-    }
-
-
     @Override
     public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
     }

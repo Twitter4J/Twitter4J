@@ -21,6 +21,8 @@ import twitter4j.api.HelpMethods;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
+import java.util.Map;
+
 /**
  * A listner for receiving asynchronous responses from Twitter Async APIs.
  *
@@ -38,16 +40,6 @@ public interface TwitterListener {
     void gotCurrentTrends(Trends trends);
 
     /**
-     * @since Twitter4J 2.0.2
-     */
-    void gotDailyTrends(ResponseList<Trends> trendsList);
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    void gotWeeklyTrends(ResponseList<Trends> trendsList);
-
-    /**
      * @since Twitter4J 2.0.10
      */
     void gotHomeTimeline(ResponseList<Status> statuses);
@@ -58,31 +50,6 @@ public interface TwitterListener {
      * @since Twitter4J 2.0.1
      */
     void gotMentions(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    void gotRetweetedByMe(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    void gotRetweetedToMe(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    void gotRetweetsOfMe(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    void gotRetweetedByUser(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    void gotRetweetedToUser(ResponseList<Status> statuses);
 
     /*Status Methods*/
 
@@ -284,11 +251,6 @@ public interface TwitterListener {
     void destroyedFriendship(User user);
 
     /**
-     * @since Twitter4J 2.0.1
-     */
-    void gotExistsFriendship(boolean exists);
-
-    /**
      * @since Twitter4J 2.1.0
      */
     void gotShowFriendship(Relationship relationship);
@@ -318,24 +280,13 @@ public interface TwitterListener {
      */
     void updatedFriendship(Relationship relationship);
 
-    /**
-     * @since
-     */
-    void gotNoRetweetIds(IDs ids);
-
     /*Account Methods*/
 
     void verifiedCredentials(User user);
 
-    void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
+    void gotRateLimitStatus(Map<String ,RateLimitStatus> rateLimitStatus);
 
     void updatedProfileColors(User user);
-
-    /**
-     * @param totals account totals
-     * @since Twitter4J 2.1.9
-     */
-    void gotAccountTotals(AccountTotals totals);
 
     /**
      * @param settings account settings
@@ -371,18 +322,6 @@ public interface TwitterListener {
 
     void destroyedFavorite(Status status);
 
-    /*Notification Methods*/
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void enabledNotification(User user);
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void disabledNotification(User user);
-
     /*Block Methods*/
 
     /**
@@ -398,17 +337,12 @@ public interface TwitterListener {
     /**
      * @since Twitter4J 2.0.4
      */
-    void gotExistsBlock(boolean blockExists);
+    void gotBlocksList(ResponseList<User> blockingUsers);
 
     /**
      * @since Twitter4J 2.0.4
      */
-    void gotBlockingUsers(ResponseList<User> blockingUsers);
-
-    /**
-     * @since Twitter4J 2.0.4
-     */
-    void gotBlockingUsersIDs(IDs blockingUsersIDs);
+    void gotBlockIDs(IDs blockingUsersIDs);
 
     /*Spam Reporting Methods*/
     void reportedSpam(User reportedSpammer);
@@ -461,7 +395,6 @@ public interface TwitterListener {
     void gotRelatedResults(RelatedResults relatedResults);
 
     /*Help Methods*/
-    void tested(boolean test);
 
     void gotAPIConfiguration(TwitterAPIConfiguration conf);
 

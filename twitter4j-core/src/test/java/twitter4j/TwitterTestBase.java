@@ -30,7 +30,7 @@ public class TwitterTestBase extends TestCase {
     }
 
     protected Twitter twitter1, twitter2, twitter3,
-            unauthenticated, twitterAPIBestFriend1, twitterAPIBestFriend2,
+            twitterAPIBestFriend1, twitterAPIBestFriend2,
             rwPrivateMessage;
     protected Properties p = new Properties();
 
@@ -98,9 +98,11 @@ public class TwitterTestBase extends TestCase {
 
         twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
 
-        unauthenticated = new TwitterFactory(new ConfigurationBuilder().setJSONStoreEnabled(true).build()).getInstance();
-
         followsOneWay = p.getProperty("followsOneWay");
+    }
+
+    public void testDummy(){
+        // just to suppress warning
     }
 
     protected void tearDown() throws Exception {

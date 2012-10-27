@@ -29,7 +29,7 @@ public class TwitterTestBase extends TestCase {
     }
 
     protected Twitter twitter1, twitter2, twitter3,
-            unauthenticated, twitterAPIBestFriend1, twitterAPIBestFriend2;
+             twitterAPIBestFriend1, twitterAPIBestFriend2;
     protected Properties p = new Properties();
 
     protected String numberId, numberPass, followsOneWay;
@@ -94,8 +94,6 @@ public class TwitterTestBase extends TestCase {
         twitterAPIBestFriend1 = new TwitterFactory(bestFriend1Conf).getInstance();
 
         twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
-
-        unauthenticated = new TwitterFactory().getInstance();
 
         followsOneWay = p.getProperty("followsOneWay");
     }

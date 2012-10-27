@@ -59,7 +59,7 @@ public class GeoMethodsTest extends TwitterTestBase {
         assertTrue(places.size() > 0);
 
         try {
-            Place place = this.unauthenticated.getGeoDetails("5a110d312052166f");
+            Place place = twitter1.getGeoDetails("5a110d312052166f");
             assertNotNull(DataObjectFactory.getRawJSON(place));
             assertEquals(place, DataObjectFactory.createPlace(DataObjectFactory.getRawJSON(place)));
             assertEquals("San Francisco, CA", place.getFullName());

@@ -61,43 +61,23 @@ public interface BlockMethodsAsync {
     void destroyBlock(long userId);
 
     /**
-     * Returns if the authenticating user is blocking a target user. Will return the blocked user's object if a block exists, and error with a HTTP 404 response code otherwise.
-     * <br>This method calls http://api.twitter.com/1/blocks/exists/id.xml
-     *
-     * @param screenName The screen_name of the potentially blocked user.
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/exists">GET blocks/exists | Twitter Developers</a>
-     * @since Twitter4J 2.0.4
-     */
-    void existsBlock(String screenName);
-
-    /**
-     * Returns if the authenticating user is blocking a target user. Will return the blocked user's object if a block exists, and error with a HTTP 404 response code otherwise.
-     * <br>This method calls http://api.twitter.com/1/blocks/exists/id.xml
-     *
-     * @param userId The ID of the potentially blocked user.
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/exists">GET blocks/exists | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     */
-    void existsBlock(long userId);
-
-    /**
      * Returns a list of user objects that the authenticating user is blocking.
      * <br>This method calls http://api.twitter.com/1/blocks/blocking.xml
      *
      * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
-    void getBlockingUsers();
+    void getBlocksList();
 
     /**
      * Returns a list of user objects that the authenticating user is blocking.
      * <br>This method calls http://api.twitter.com/1/blocks/blocking.xml
      *
-     * @param page the number of page
+     * @param cursor Causes the list of blocked users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
      * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
-    void getBlockingUsers(int page);
+    void getBlocksList(long cursor);
 
     /**
      * Returns an array of numeric user ids the authenticating user is blocking.
@@ -106,5 +86,5 @@ public interface BlockMethodsAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1/get/blocks/blocking/ids">GET blocks/blocking/ids | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
-    void getBlockingUsersIDs();
+    void getBlocksIDs();
 }

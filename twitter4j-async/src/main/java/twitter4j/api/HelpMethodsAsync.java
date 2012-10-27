@@ -20,14 +20,6 @@ package twitter4j.api;
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
 public interface HelpMethodsAsync {
-    /**
-     * Returns the string "ok" in the requested format with a 200 OK HTTP status code.
-     * <br>This method calls http://api.twitter.com/1/help/test
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/help/test">GET help/test | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     */
-    void test();
 
     /**
      * Returns the current configuration used by Twitter including twitter.com slugs which are not usernames, maximum photo resolutions, and t.co URL lengths.</br>

@@ -84,6 +84,7 @@ public class OAuthTest extends TwitterTestBase {
         http = new HttpClientImpl();
 
         // desktop client - requiring pin
+        Twitter unauthenticated = new TwitterFactory().getInstance();
         unauthenticated.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
         rt = unauthenticated.getOAuthRequestToken();
         rt.hashCode();

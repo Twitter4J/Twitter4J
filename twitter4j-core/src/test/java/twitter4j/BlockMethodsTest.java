@@ -17,8 +17,6 @@ package twitter4j;
 
 import twitter4j.json.DataObjectFactory;
 
-import java.util.List;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
@@ -43,20 +41,13 @@ public class BlockMethodsTest extends TwitterTestBase {
         User user2 = twitter2.destroyBlock(id1.screenName);
         assertNotNull(DataObjectFactory.getRawJSON(user2));
         assertEquals(user2, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user2)));
-        assertFalse(twitter1.existsBlock("twit4j2"));
-        assertTrue(twitter1.existsBlock("twit4jblock"));
-        List<User> users = twitter1.getBlockingUsers();
-        assertNotNull(DataObjectFactory.getRawJSON(users));
-        assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
-        assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
-        users = twitter1.getBlockingUsers(1);
+        PagableResponseList<User> users = twitter1.getBlocksList();
         assertNotNull(DataObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
         assertEquals(1, users.size());
         assertEquals(39771963, users.get(0).getId());
 
-        IDs ids = twitter1.getBlockingUsersIDs();
+        IDs ids = twitter1.getBlocksIDs();
         assertNull(DataObjectFactory.getRawJSON(users));
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertEquals(1, ids.getIDs().length);

@@ -25,8 +25,8 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class StatusMethodsTest extends TwitterTestBase {
-    public StatusMethodsTest(String name) {
+public class TweetsMethodsTest extends TwitterTestBase {
+    public TweetsMethodsTest(String name) {
         super(name);
     }
 
@@ -99,61 +99,12 @@ public class StatusMethodsTest extends TwitterTestBase {
     }
 
     public void testRetweetMethods() throws Exception {
-        List<Status> statuses = twitter1.getRetweetedByMe();
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-        assertIsRetweet(statuses);
-        statuses = twitter1.getRetweetedByMe(new Paging(1));
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-        assertIsRetweet(statuses);
-        statuses = twitter1.getRetweetedByUser(id1.id, new Paging(1));
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-        assertIsRetweet(statuses);
-        statuses = twitter1.getRetweetedByUser(id1.screenName, new Paging(1));
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-        assertIsRetweet(statuses);
-        statuses = twitter1.getRetweetedToMe();
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-        assertIsRetweet(statuses);
-        statuses = twitter1.getRetweetedToMe(new Paging(1));
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-        assertIsRetweet(statuses);
-        statuses = twitter1.getRetweetedToUser(id1.id, new Paging(1));
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-        assertIsRetweet(statuses);
-        statuses = twitter1.getRetweetedToUser(id1.screenName, new Paging(1));
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-        assertIsRetweet(statuses);
-        statuses = twitter1.getRetweetsOfMe();
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-//        assertIsRetweet(statuses);
-        statuses = twitter1.getRetweetsOfMe(new Paging(1));
-        assertNotNull(DataObjectFactory.getRawJSON(statuses));
-        assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
-//        assertIsRetweet(statuses);
+        List<Status> statuses;
         statuses = twitter1.getRetweets(18594701629l);
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         assertIsRetweet(statuses);
         assertTrue(20 < statuses.size());
-
-        List<User> users = unauthenticated.getRetweetedBy(47621163517624320L, new Paging(1, 100));
-        assertTrue(users.size() > 50);
-        users = unauthenticated.getRetweetedBy(47621163517624320L, new Paging(2, 100));
-        assertTrue(users.size() > 10);
-
-        IDs ids = twitter1.getRetweetedByIDs(47621163517624320L, new Paging(1, 100));
-        assertTrue(ids.getIDs().length > 50);
-        ids = twitter1.getRetweetedByIDs(47621163517624320L, new Paging(2, 100));
-        assertTrue(ids.getIDs().length > 10);
     }
 
     private void assertIsRetweet(List<Status> statuses) {

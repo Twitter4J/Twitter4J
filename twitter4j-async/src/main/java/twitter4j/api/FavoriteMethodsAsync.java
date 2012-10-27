@@ -35,32 +35,11 @@ public interface FavoriteMethodsAsync {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls http://api.twitter.com/1/favorites
      *
-     * @param page number of page to retrieve favorites
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     */
-    void getFavorites(int page);
-
-    /**
-     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * <br>This method calls http://api.twitter.com/1/favorites
-     *
      * @param id the ID or screen name of the user for whom to request a list of favorite statuses
      * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
      */
     void getFavorites(String id);
-
-    /**
-     * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * <br>This method calls http://api.twitter.com/1/favorites
-     *
-     * @param id   the ID or screen name of the user for whom to request a list of favorite statuses.
-     * @param page retrieves the 20 next most recent favorite statuses.
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/favorites">GET favorites | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     */
-    void getFavorites(String id, int page);
 
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.

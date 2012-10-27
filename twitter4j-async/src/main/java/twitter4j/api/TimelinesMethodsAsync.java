@@ -21,7 +21,7 @@ import twitter4j.Paging;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface TimelineMethodsAsync {
+public interface TimelinesMethodsAsync {
     /**
      * Returns the 20 most recent statuses, including retweets, posted by the authenticating user and that user's friends. This is the equivalent of /timeline/home on the Web.<br>
      * Usage note: This home_timeline call is identical to statuses/friends_timeline, except that home_timeline also contains retweets, while statuses/friends_timeline does not for backwards compatibility reasons. In a future version of the API, statuses/friends_timeline will be deprected and replaced by home_timeline.
@@ -133,108 +133,4 @@ public interface TimelineMethodsAsync {
      */
     void getMentions(Paging paging);
 
-    /**
-     * Returns the 20 most recent retweets posted by the authenticating user.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_me
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/retweeted_by_me">GET statuses/retweeted_by_me | Twitter Developers</a>
-     * @since Twitter4J 2.0.10
-     */
-    void getRetweetedByMe();
-
-    /**
-     * Returns the 20 most recent retweets posted by the authenticating user.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_me
-     *
-     * @param paging controls pagination
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/retweeted_by_me">GET statuses/retweeted_by_me | Twitter Developers</a>
-     * @since Twitter4J 2.0.10
-     */
-    void getRetweetedByMe(Paging paging);
-
-    /**
-     * Returns the 20 most recent retweets posted by the authenticating user's friends.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_to_me
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/retweeted_to_me">GET statuses/retweeted_to_me | Twitter Developers</a>
-     * @since Twitter4J 2.0.10
-     */
-    void getRetweetedToMe();
-
-    /**
-     * Returns the 20 most recent retweets posted by the authenticating user's friends.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_to_me
-     *
-     * @param paging controls pagination
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/retweeted_to_me">GET statuses/retweeted_to_me | Twitter Developers</a>
-     * @since Twitter4J 2.0.10
-     */
-    void getRetweetedToMe(Paging paging);
-
-    /**
-     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/retweets_of_me">GET statuses/retweets_of_me | Twitter Developers</a>
-     * @since Twitter4J 2.0.10
-     */
-    void getRetweetsOfMe();
-
-    /**
-     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweets_of_me
-     *
-     * @param paging controls pagination
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/statuses/retweets_of_me">GET statuses/retweets_of_me | Twitter Developers</a>
-     * @since Twitter4J 2.0.10
-     */
-    void getRetweetsOfMe(Paging paging);
-
-    /**
-     * Returns the 20 most recent retweets posted by users the specified user follows. This method is identical to statuses/retweeted_to_me except you can choose the user to view.
-     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_to_user
-     *
-     * @param screenName the user to view
-     * @param paging     controls pagination. Supports since_id, max_id, count and page parameters.
-     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
-     * @since Twitter4J 2.1.9
-     */
-    void getRetweetedToUser(String screenName, Paging paging);
-
-    /**
-     * Returns the 20 most recent retweets posted by users the specified user follows. This method is identical to statuses/retweeted_to_me except you can choose the user to view.
-     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_to_user
-     *
-     * @param userId the user to view
-     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
-     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
-     * @since Twitter4J 2.1.9
-     */
-    void getRetweetedToUser(long userId, Paging paging);
-
-    /**
-     * Returns the 20 most recent retweets posted by the specified user. This method is identical to statuses/retweeted_by_me except you can choose the user to view.
-     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_user
-     *
-     * @param screenName the user to view
-     * @param paging     controls pagination. Supports since_id, max_id, count and page parameters.
-     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
-     * @since Twitter4J 2.0.10
-     */
-    void getRetweetedByUser(String screenName, Paging paging);
-
-    /**
-     * Returns the 20 most recent retweets posted by the specified user. This method is identical to statuses/retweeted_by_me except you can choose the user to view.
-     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1/statuses/retweeted_by_user
-     *
-     * @param userId the user to view
-     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
-     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
-     * @since Twitter4J 2.0.10
-     */
-    void getRetweetedByUser(long userId, Paging paging);
 }

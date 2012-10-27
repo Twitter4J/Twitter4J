@@ -24,18 +24,10 @@ public enum TwitterMethod {
     /*Search API Methods*/
     SEARCH,
 
-    DAILY_TRENDS,
-    WEEKLY_TRENDS,
-
     /*Timeline Methods*/
     HOME_TIMELINE,
     USER_TIMELINE,
     MENTIONS,
-    RETWEETED_BY_ME,
-    RETWEETED_TO_ME,
-    RETWEETS_OF_ME,
-    RETWEETED_BY_USER,
-    RETWEETED_TO_USER,
 
     /*Status Methods*/
     SHOW_STATUS,
@@ -43,8 +35,6 @@ public enum TwitterMethod {
     DESTROY_STATUS,
     RETWEET_STATUS,
     RETWEETS,
-    RETWEETED_BY,
-    RETWEETED_BY_IDS,
 
     /*User Methods*/
     SHOW_USER,
@@ -61,7 +51,6 @@ public enum TwitterMethod {
     CREATE_USER_LIST,
     UPDATE_USER_LIST,
     USER_LISTS,
-    SHOW_USER_LIST,
     DESTROY_USER_LIST,
     USER_LIST_STATUSES,
     USER_LIST_MEMBERSHIPS,
@@ -91,13 +80,11 @@ public enum TwitterMethod {
     /*Friendship Methods*/
     CREATE_FRIENDSHIP,
     DESTROY_FRIENDSHIP,
-    EXISTS_FRIENDSHIP,
     SHOW_FRIENDSHIP,
     INCOMING_FRIENDSHIPS,
     OUTGOING_FRIENDSHIPS,
     LOOKUP_FRIENDSHIPS,
     UPDATE_FRIENDSHIP,
-    NO_RETWEET_IDS,
 
     /*Social Graph Methods*/
     FRIENDS_IDS,
@@ -110,7 +97,6 @@ public enum TwitterMethod {
     UPDATE_PROFILE_IMAGE,
     UPDATE_PROFILE_BACKGROUND_IMAGE,
     UPDATE_PROFILE,
-    ACCOUNT_TOTALS,
     ACCOUNT_SETTINGS,
     UPDATE_ACCOUNT_SETTINGS,
 
@@ -119,16 +105,11 @@ public enum TwitterMethod {
     CREATE_FAVORITE,
     DESTROY_FAVORITE,
 
-    /*Notification Methods*/
-    ENABLE_NOTIFICATION,
-    DISABLE_NOTIFICATION,
-
     /*Block Methods*/
     CREATE_BLOCK,
     DESTROY_BLOCK,
-    EXISTS_BLOCK,
-    BLOCKING_USERS,
-    BLOCKING_USERS_IDS,
+    BLOCK_LIST,
+    BLOCK_LIST_IDS,
 
     /*Spam Reporting Methods*/
     REPORT_SPAM,
@@ -158,7 +139,6 @@ public enum TwitterMethod {
     RELATED_RESULTS,
 
     /*Help Methods*/
-    TEST,
     CONFIGURATION,
     LANGUAGES,
 

@@ -69,7 +69,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String STREAM_BASE_URL = "streamBaseURL";
     public static final String USER_STREAM_BASE_URL = "userStreamBaseURL";
     public static final String SITE_STREAM_BASE_URL = "siteStreamBaseURL";
-    public static final String UPLOAD_BASE_URL = "uploadBaseURL";
 
     public static final String ASYNC_NUM_THREADS = "async.numThreads";
     public static final String CONTRIBUTING_TO = "contributingTo";
@@ -340,9 +339,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, SITE_STREAM_BASE_URL)) {
             setSiteStreamBaseURL(getString(props, prefix, SITE_STREAM_BASE_URL));
-        }
-        if (notNull(props, prefix, UPLOAD_BASE_URL)) {
-            setUploadBaseURL(getString(props, prefix, UPLOAD_BASE_URL));
         }
         if (notNull(props, prefix, INCLUDE_RTS)) {
             setIncludeRTsEnbled(getBoolean(props, prefix, INCLUDE_RTS));

@@ -724,7 +724,7 @@ public class DAOTest extends TwitterTestBase {
 
     public void testTwitterMethod() throws Exception {
         assertDeserializedFormIsSingleton(TwitterMethod.ADD_LIST_MEMBER);
-        assertDeserializedFormIsSingleton(TwitterMethod.BLOCKING_USERS);
+        assertDeserializedFormIsSingleton(TwitterMethod.BLOCK_LIST);
     }
 
     /**

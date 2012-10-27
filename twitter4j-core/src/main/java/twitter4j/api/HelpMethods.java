@@ -25,16 +25,6 @@ import twitter4j.TwitterException;
  */
 public interface HelpMethods {
     /**
-     * Returns the string "ok" in the requested format with a 200 OK HTTP status code.
-     *
-     * @return true if the API is working
-     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/help/test">GET help/test | Twitter Developers</a>
-     * @since Twitter4J 1.0.4
-     */
-    boolean test() throws TwitterException;
-
-    /**
      * Returns the current configuration used by Twitter including twitter.com slugs which are not usernames, maximum photo resolutions, and t.co URL lengths.</br>
      * It is recommended applications request this endpoint when they are loaded, but no more than once a day.
      *

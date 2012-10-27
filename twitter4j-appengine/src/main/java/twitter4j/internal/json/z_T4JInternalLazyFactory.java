@@ -7,11 +7,14 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
+import java.util.Map;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
 public class z_T4JInternalLazyFactory implements z_T4JInternalFactory {
+    private static final long serialVersionUID = 8032710811910749119L;
     private final z_T4JInternalFactory factory;
     private final Configuration conf;
 
@@ -36,8 +39,8 @@ public class z_T4JInternalLazyFactory implements z_T4JInternalFactory {
         return new DirectMessageJSONImpl(json);
     }
 
-    public RateLimitStatus createRateLimitStatus(HttpResponse res) throws TwitterException {
-        return new LazyRateLimitStatus(res, factory);
+    public Map<String ,RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException {
+        return factory.createRateLimitStatuses(res);
     }
 
     public Status createStatus(HttpResponse res) throws TwitterException {

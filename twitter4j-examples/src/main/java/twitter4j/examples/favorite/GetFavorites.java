@@ -37,15 +37,10 @@ public final class GetFavorites {
     public static void main(String[] args) {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            int page = 1;
-            List<Status> statuses;
-            do {
-                statuses = twitter.getFavorites(page);
-                for (Status status : statuses) {
-                    System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
-                }
-                page++;
-            } while (statuses.size() > 0 && page < 10);
+            List<Status> statuses = twitter.getFavorites();
+            for (Status status : statuses) {
+                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+            }
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {

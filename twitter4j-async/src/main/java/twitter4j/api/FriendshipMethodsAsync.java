@@ -90,17 +90,6 @@ public interface FriendshipMethodsAsync {
     void destroyFriendship(long userId);
 
     /**
-     * Tests for the existence of friendship between two users. Will return true if user_a follows user_b, otherwise will return false.
-     * <br>This method calls http://api.twitter.com/1/friendships/exists
-     *
-     * @param userA The ID or screen_name of the first user to test friendship for.
-     * @param userB The ID or screen_name of the second user to test friendship for.
-     * @see <a href="https://dev.twitter.com/docs/api/1/get/friendships/exists">GET friendships/exists | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     */
-    void existsFriendship(String userA, String userB);
-
-    /**
      * Returns detailed information about the relationship between two users.
      * <br>This method calls http://api.twitter.com/1/friendships/show.json
      *
@@ -192,13 +181,4 @@ public interface FriendshipMethodsAsync {
      */
     void updateFriendship(long userId, boolean enableDeviceNotification
             , boolean retweets);
-
-    /**
-     * Returns the list of user_ids for which the authenticating user has said they do not want to receive retweets from when successful.
-     * <br>Now the return value had no data for paging.
-     * <br>This methos calls http://api.twitter.com/1/friendships/no_retweet_ids.json
-     *
-     * @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/6f734611ac57e281">Some changes and updates to the API and Tweet Button - Twitter API Announcements | Google Groups</a>
-     */
-    void getNoRetweetIds();
 }

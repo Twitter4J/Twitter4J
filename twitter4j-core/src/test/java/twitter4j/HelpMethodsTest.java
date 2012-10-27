@@ -35,7 +35,6 @@ public class HelpMethodsTest extends TwitterTestBase {
     }
 
     public void testHelpMethods() throws Exception {
-        assertTrue(unauthenticated.test());
         ResponseList<HelpMethods.Language> languages = twitter1.getLanguages();
         assertTrue(languages.size() > 5);
         HelpMethods.Language language = languages.get(0);

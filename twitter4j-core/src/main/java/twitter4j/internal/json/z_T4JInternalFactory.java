@@ -21,6 +21,8 @@ import twitter4j.api.HelpMethods;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONObject;
 
+import java.util.Map;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
@@ -34,7 +36,7 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
 
     DirectMessage createDirectMessage(JSONObject json) throws TwitterException;
 
-    RateLimitStatus createRateLimitStatus(HttpResponse res) throws TwitterException;
+    Map<String ,RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException;
 
     Status createStatus(HttpResponse res) throws TwitterException;
 

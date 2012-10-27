@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2007 Yusuke Yamamoto
- * Copyright (C) 2011 Twitter, Inc.
+ * Copyright 2007 Yusuke Yamamoto
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package twitter4j.api;
-
-import java.util.Date;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.3
  */
-public interface TrendsMethodsAsync {
+public interface UndocumentedMethods {
 }

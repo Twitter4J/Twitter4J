@@ -35,7 +35,7 @@ public final class GetBlockingUsersIDs {
     public static void main(String[] args) {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            IDs ids = twitter.getBlockingUsersIDs();
+            IDs ids = twitter.getBlocksIDs();
             for (long id : ids.getIDs()) {
                 System.out.println(id);
             }

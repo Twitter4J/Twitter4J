@@ -68,9 +68,6 @@ public class AccountMethodsTest extends TwitterTestBase {
         assertEquals(newLocation, altered.getLocation());
         assertEquals(newDescription, altered.getDescription());
 
-        assertTrue(twitterAPIBestFriend1.existsFriendship(bestFriend1.screenName, bestFriend2.screenName));
-        assertFalse(twitter1.existsFriendship(id1.screenName, "al3x"));
-
         User eu;
         eu = twitter1.updateProfileColors("f00", "f0f", "0ff", "0f0", "f0f");
         assertNotNull(DataObjectFactory.getRawJSON(eu));
@@ -91,13 +88,6 @@ public class AccountMethodsTest extends TwitterTestBase {
         assertEquals("000000", eu.getProfileLinkColor());
         assertEquals("0000ff", eu.getProfileSidebarFillColor());
         assertEquals("e0ff92", eu.getProfileSidebarBorderColor());
-
-        AccountTotals totals = twitter1.getAccountTotals();
-        assertTrue(0 < totals.getFavorites());
-        assertTrue(0 < totals.getFollowers());
-        assertTrue(0 < totals.getFriends());
-        assertTrue(0 < totals.getUpdates());
-        assertEquals(totals, DataObjectFactory.createAccountTotals(DataObjectFactory.getRawJSON(totals)));
 
         AccountSettings settings = twitter1.getAccountSettings();
         assertTrue(settings.isSleepTimeEnabled());

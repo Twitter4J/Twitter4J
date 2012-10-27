@@ -49,23 +49,23 @@ public class TimelineMethodsTest extends TwitterTestBase {
         statuses = twitter1.getUserTimeline();
         assertTrue("size", 0 < statuses.size());
         try {
-            statuses = unauthenticated.getUserTimeline("1000");
+            statuses = twitter1.getUserTimeline("1000");
             assertNotNull(DataObjectFactory.getRawJSON(statuses));
             assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
             assertTrue("size", 0 < statuses.size());
             assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
             assertEquals(9737332, statuses.get(0).getUser().getId());
-            statuses = unauthenticated.getUserTimeline(1000);
+            statuses = twitter1.getUserTimeline(1000);
             assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
             assertNotNull(DataObjectFactory.getRawJSON(statuses));
             assertTrue("size", 0 < statuses.size());
             assertEquals(1000, statuses.get(0).getUser().getId());
 
-            statuses = unauthenticated.getUserTimeline(id1.screenName, new Paging().count(10));
+            statuses = twitter1.getUserTimeline(id1.screenName, new Paging().count(10));
             assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
             assertNotNull(DataObjectFactory.getRawJSON(statuses));
             assertTrue("size", 0 < statuses.size());
-            statuses = unauthenticated.getUserTimeline(id1.screenName, new Paging(999383469l));
+            statuses = twitter1.getUserTimeline(id1.screenName, new Paging(999383469l));
             assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
             assertNotNull(DataObjectFactory.getRawJSON(statuses));
             assertTrue("size", 0 < statuses.size());
