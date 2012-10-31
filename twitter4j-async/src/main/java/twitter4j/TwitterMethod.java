@@ -21,104 +21,123 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public enum TwitterMethod {
-    /*Search API Methods*/
+    /* Timelines Resources */
+    MENTIONS_TIMELINE,
+    USER_TIMELINE,
+    HOME_TIMELINE,
+
+    /* Tweets Resources */
+    RETWEETS,
+    SHOW_STATUS,
+    DESTROY_STATUS,
+    UPDATE_STATUS,
+    RETWEET_STATUS,
+
+    /* Search Resources */
     SEARCH,
 
-    /*Timeline Methods*/
-    HOME_TIMELINE,
-    USER_TIMELINE,
-    MENTIONS,
+    /* Direct Messages Resources */
+    DIRECT_MESSAGES,
+    SENT_DIRECT_MESSAGES,
+    DIRECT_MESSAGE,
+    DESTROY_DIRECT_MESSAGE,
+    SEND_DIRECT_MESSAGE,
 
-    /*Status Methods*/
-    SHOW_STATUS,
-    UPDATE_STATUS,
-    DESTROY_STATUS,
-    RETWEET_STATUS,
-    RETWEETS,
+    /* Friends & Followers Resources */
+    FRIENDS_IDS,
+    FOLLOWERS_IDS,
+    LOOKUP_FRIENDSHIPS,
+    INCOMING_FRIENDSHIPS,
+    OUTGOING_FRIENDSHIPS,
+    CREATE_FRIENDSHIP,
+    DESTROY_FRIENDSHIP,
+    UPDATE_FRIENDSHIP,
+    SHOW_FRIENDSHIP,
 
-    /*User Methods*/
+    /* Users Resources */
+    ACCOUNT_SETTINGS,
+    VERIFY_CREDENTIALS,
+    UPDATE_ACCOUNT_SETTINGS,
+    // UPDATE_DELIVERY_DEVICE
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_BACKGROUND_IMAGE,
+    UPDATE_PROFILE_COLORS,
+    UPDATE_PROFILE_IMAGE,
+    BLOCK_LIST,
+    BLOCK_LIST_IDS,
+    CREATE_BLOCK,
+    DESTROY_BLOCK,
+
     SHOW_USER,
     LOOKUP_USERS,
     SEARCH_USERS,
-    SUGGESTED_USER_CATEGORIES,
-    PROFILE_IMAGE,
-    USER_SUGGESTIONS,
-    MEMBER_SUGGESTIONS,
+
     CONTRIBUTORS,
     CONTRIBUTEEES,
 
-    /*List Methods*/
-    CREATE_USER_LIST,
-    UPDATE_USER_LIST,
+    RATE_LIMIT_STATUS,
+
+    /* Suggested Users Resources */
+    USER_SUGGESTIONS,
+    SUGGESTED_USER_CATEGORIES,
+    MEMBER_SUGGESTIONS,
+
+    /* Favorites Resources */
+    FAVORITES,
+    DESTROY_FAVORITE,
+    CREATE_FAVORITE,
+
+    /* Lists Resources */
     USER_LISTS,
-    DESTROY_USER_LIST,
     USER_LIST_STATUSES,
-    USER_LIST_MEMBERSHIPS,
-    USER_LIST_SUBSCRIPTIONS,
-    ALL_USER_LISTS,
-
-    /*List Members Methods*/
-    LIST_MEMBERS,
-    ADD_LIST_MEMBER,
-    ADD_LIST_MEMBERS,
     DELETE_LIST_MEMBER,
-    CHECK_LIST_MEMBERSHIP,
-
-    /*List Subscribers Methods*/
+    USER_LIST_MEMBERSHIPS,
     LIST_SUBSCRIBERS,
     SUBSCRIBE_LIST,
-    UNSUBSCRIBE_LIST,
     CHECK_LIST_SUBSCRIPTION,
+    UNSUBSCRIBE_LIST,
+    ADD_LIST_MEMBERS,
+    CHECK_LIST_MEMBERSHIP,
+    LIST_MEMBERS,
+    ADD_LIST_MEMBER,
+    DESTROY_USER_LIST,
+    UPDATE_USER_LIST,
+    CREATE_USER_LIST,
+    SHOW_USER_LIST,
+    USER_LIST_SUBSCRIPTIONS,
 
-    /*Direct Message Methods*/
-    DIRECT_MESSAGES,
-    SENT_DIRECT_MESSAGES,
-    SEND_DIRECT_MESSAGE,
-    DESTROY_DIRECT_MESSAGE,
-    DIRECT_MESSAGE,
+    /* Saved Searches Resources */
+    SAVED_SEARCHES,
+    SAVED_SEARCH,
+    CREATE_SAVED_SEARCH,
+    DESTROY_SAVED_SEARCH,
 
-    /*Friendship Methods*/
-    CREATE_FRIENDSHIP,
-    DESTROY_FRIENDSHIP,
-    SHOW_FRIENDSHIP,
-    INCOMING_FRIENDSHIPS,
-    OUTGOING_FRIENDSHIPS,
-    LOOKUP_FRIENDSHIPS,
-    UPDATE_FRIENDSHIP,
+    //getSavedSearches()
+    //showSavedSearch()
+    //createSavedSearch()
+    //destroySavedSearch()
 
-    /*Social Graph Methods*/
-    FRIENDS_IDS,
-    FOLLOWERS_IDS,
+    /* Places & Geo Resources */
+    /* Trends Resources */
+    /* Spam Reporting Resources */
+    /* OAuth Resources */
+    /* Help Resources */
+
+
+    /*User Methods*/
+    /*List Methods*/
+
+
 
     /*Account Methods*/
-    VERIFY_CREDENTIALS,
-    RATE_LIMIT_STATUS,
-    UPDATE_PROFILE_COLORS,
-    UPDATE_PROFILE_IMAGE,
-    UPDATE_PROFILE_BACKGROUND_IMAGE,
-    UPDATE_PROFILE,
-    ACCOUNT_SETTINGS,
-    UPDATE_ACCOUNT_SETTINGS,
-
     /*Favorite Methods*/
-    FAVORITES,
-    CREATE_FAVORITE,
-    DESTROY_FAVORITE,
 
     /*Block Methods*/
-    CREATE_BLOCK,
-    DESTROY_BLOCK,
-    BLOCK_LIST,
-    BLOCK_LIST_IDS,
 
     /*Spam Reporting Methods*/
     REPORT_SPAM,
 
     /*Saved Searches Methods*/
-    //getSavedSearches()
-    //showSavedSearch()
-    //createSavedSearch()
-    //destroySavedSearch()
 
     /*Local Trends Methods*/
     AVAILABLE_TRENDS,

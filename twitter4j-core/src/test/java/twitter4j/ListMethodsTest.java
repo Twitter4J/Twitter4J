@@ -75,11 +75,6 @@ public class ListMethodsTest extends TwitterTestBase {
         assertNull(DataObjectFactory.getRawJSON(userList));
         assertNotNull(statuses);
 
-        ResponseList<UserList> lists = twitter1.getAllUserLists(id1.id);
-        assertTrue(0 < lists.size());
-        lists = twitter1.getAllUserLists("yusukey");
-        assertTrue(0 < lists.size());
-
         userList = twitter1.updateUserList(userList.getId(), "testpoint2", true, "description2");
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         // workarounding issue 2166

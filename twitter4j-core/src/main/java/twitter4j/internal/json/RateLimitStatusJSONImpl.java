@@ -36,11 +36,11 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
  */
 /*package*/ final class RateLimitStatusJSONImpl implements RateLimitStatus, java.io.Serializable {
 
+    private static final long serialVersionUID = 1625565652687304084L;
     private int remaining;
     private int limit;
     private int resetTimeInSeconds;
     private int secondsUntilReset;
-    private static final long serialVersionUID = 832355052293658614L;
     static Map<String,RateLimitStatus> createRateLimitStatuses(HttpResponse res, Configuration conf) throws TwitterException {
         JSONObject json = res.asJSONObject();
         Map<String, RateLimitStatus> map = createRateLimitStatuses(json);

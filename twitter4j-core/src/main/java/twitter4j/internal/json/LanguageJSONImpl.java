@@ -17,7 +17,7 @@ package twitter4j.internal.json;
 
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
-import twitter4j.api.HelpMethods;
+import twitter4j.api.HelpResources;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
@@ -28,7 +28,7 @@ import twitter4j.internal.org.json.JSONObject;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.3
  */
-public class LanguageJSONImpl implements HelpMethods.Language {
+public class LanguageJSONImpl implements HelpResources.Language {
     private String name;
     private String code;
     private String status;
@@ -64,23 +64,23 @@ public class LanguageJSONImpl implements HelpMethods.Language {
         return status;
     }
 
-    static ResponseList<HelpMethods.Language> createLanguageList(HttpResponse res, Configuration conf) throws TwitterException {
+    static ResponseList<HelpResources.Language> createLanguageList(HttpResponse res, Configuration conf) throws TwitterException {
         return createLanguageList(res.asJSONArray(), res, conf);
     }
 
     /*package*/
-    static ResponseList<HelpMethods.Language> createLanguageList(JSONArray list, HttpResponse res
+    static ResponseList<HelpResources.Language> createLanguageList(JSONArray list, HttpResponse res
             , Configuration conf) throws TwitterException {
         if (conf.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.clearThreadLocalMap();
         }
         try {
             int size = list.length();
-            ResponseList<HelpMethods.Language> languages =
-                    new ResponseListImpl<HelpMethods.Language>(size, res);
+            ResponseList<HelpResources.Language> languages =
+                    new ResponseListImpl<HelpResources.Language>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
-                HelpMethods.Language language = new LanguageJSONImpl(json);
+                HelpResources.Language language = new LanguageJSONImpl(json);
                 languages.add(language);
                 if (conf.isJSONStoreEnabled()) {
                     DataObjectFactoryUtil.registerJSONObject(language, json);

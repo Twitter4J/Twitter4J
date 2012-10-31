@@ -40,7 +40,7 @@ public interface OAuthSupport {
      * @throws IllegalStateException access token is already available
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
      * @since Twitter4J 2.0.0
      */
     RequestToken getOAuthRequestToken() throws TwitterException;
@@ -54,7 +54,7 @@ public interface OAuthSupport {
      * @throws IllegalStateException access token is already available
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
      * @since Twitter4J 2.0.0
      */
     RequestToken getOAuthRequestToken(String callbackURL) throws TwitterException;
@@ -69,7 +69,7 @@ public interface OAuthSupport {
      * @throws IllegalStateException access token is already available
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     RequestToken getOAuthRequestToken(String callbackURL, String xAuthAccessType) throws TwitterException;
@@ -83,7 +83,7 @@ public interface OAuthSupport {
      * @throws IllegalStateException when RequestToken has never been acquired
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter4J 2.0.0
      */
     AccessToken getOAuthAccessToken() throws TwitterException;
@@ -96,7 +96,7 @@ public interface OAuthSupport {
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter4J 2.0.0
      */
     AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException;
@@ -109,7 +109,7 @@ public interface OAuthSupport {
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter4J 2.0.0
      */
     AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException;
@@ -122,7 +122,7 @@ public interface OAuthSupport {
      * @return access token associated with the supplied request token.
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter 2.1.1
      */
     AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException;
@@ -138,7 +138,7 @@ public interface OAuthSupport {
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="https://dev.twitter.com/docs/oauth/xauth">xAuth | Twitter Developers</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter 2.1.1
      */
     AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException;

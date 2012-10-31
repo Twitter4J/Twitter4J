@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import twitter4j.api.HelpMethods;
+import twitter4j.api.HelpResources;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
@@ -42,8 +42,10 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private AccountSettings settings;
     private ResponseList<Friendship> friendships;
     private ResponseList<UserList> userLists;
-    private ResponseList<HelpMethods.Language> languages;
+    private ResponseList<HelpResources.Language> languages;
     private TwitterAPIConfiguration apiConf;
+    private SavedSearch savedSearch;
+    private ResponseList<SavedSearch> savedSearches;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -447,24 +449,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
-    /**
-     * @since Twitter4J 2.1.3
-     */
-    @Override
-    public void gotRetweetedBy(ResponseList<User> users) {
-        this.users = users;
-        notifyResponse();
-    }
-
-    /**
-     * @since Twitter4J 2.1.3
-     */
-    @Override
-    public void gotRetweetedByIDs(IDs ids) {
-        this.ids = ids;
-        notifyResponse();
-    }
-
     /*User Methods*/
     @Override
     public void gotUserDetail(User user) {
@@ -508,14 +492,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     @Override
     public void gotMemberSuggestions(ResponseList<User> users) {
         this.users = users;
-        notifyResponse();
-    }
-
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    @Override
-    public void gotProfileImage(ProfileImage image) {
         notifyResponse();
     }
 
@@ -579,17 +555,36 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
-    @Override
-    public void gotAllUserLists(ResponseList<UserList> userLists) {
-        this.userLists = userLists;
-        notifyResponse();
-    }
-
     /*List Members Methods*/
 
     @Override
     public void gotUserListMembers(PagableResponseList<User> users) {
         this.users = users;
+        notifyResponse();
+    }
+
+    @Override
+    public void gotSavedSearches(ResponseList<SavedSearch> savedSearches) {
+        this.savedSearches = savedSearches;
+        notifyResponse();
+    }
+
+    @Override
+    public void gotSavedSearch(SavedSearch savedSearch) {
+        this.savedSearch = savedSearch;
+        notifyResponse();
+    }
+
+    @Override
+    public void createdSavedSearch(SavedSearch savedSearch) {
+        this.savedSearch = savedSearch;
+        notifyResponse();
+    }
+
+    @Override
+    public void destroyedSavedSearch(SavedSearch savedSearch) {
+        this.savedSearch = savedSearch;
+        notifyResponse();
     }
 
     @Override
@@ -936,7 +931,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     @Override
-    public void gotLanguages(ResponseList<HelpMethods.Language> languages) {
+    public void gotLanguages(ResponseList<HelpResources.Language> languages) {
         this.languages = languages;
         notifyResponse();
     }

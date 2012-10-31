@@ -17,7 +17,7 @@
 package twitter4j.internal.json;
 
 import twitter4j.*;
-import twitter4j.api.HelpMethods;
+import twitter4j.api.HelpResources;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -68,8 +68,6 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
 
     ResponseList<Category> createCategoryList(HttpResponse res) throws TwitterException;
 
-    ProfileImage createProfileImage(HttpResponse res) throws TwitterException;
-
     DirectMessage createDirectMessage(HttpResponse res) throws TwitterException;
 
     ResponseList<DirectMessage> createDirectMessageList(HttpResponse res) throws TwitterException;
@@ -98,7 +96,7 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
 
     TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException;
 
-    ResponseList<HelpMethods.Language> createLanguageList(HttpResponse res) throws TwitterException;
+    ResponseList<HelpResources.Language> createLanguageList(HttpResponse res) throws TwitterException;
 
     <T> ResponseList<T> createEmptyResponseList();
 }

@@ -17,7 +17,7 @@
 package twitter4j.internal.json;
 
 import twitter4j.*;
-import twitter4j.api.HelpMethods;
+import twitter4j.api.HelpResources;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
@@ -202,11 +202,6 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     }
 
     @Override
-    public ProfileImage createProfileImage(HttpResponse res) throws TwitterException {
-        return new ProfileImageImpl(res);
-    }
-
-    @Override
     public DirectMessage createDirectMessage(HttpResponse res) throws TwitterException {
         return new DirectMessageJSONImpl(res, conf);
     }
@@ -285,7 +280,7 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     }
 
     @Override
-    public ResponseList<HelpMethods.Language> createLanguageList(HttpResponse res) throws TwitterException {
+    public ResponseList<HelpResources.Language> createLanguageList(HttpResponse res) throws TwitterException {
         return LanguageJSONImpl.createLanguageList(res, conf);
     }
 

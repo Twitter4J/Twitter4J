@@ -62,58 +62,42 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         }
     }
 
-    private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter[] params2) {
-        if (params1 != null && params2 != null) {
-            HttpParameter[] params = new HttpParameter[params1.length + params2.length];
-            System.arraycopy(params1, 0, params, 0, params1.length);
-            System.arraycopy(params2, 0, params, params1.length, params2.length);
-            return params;
-        }
-        if (null == params1 && null == params2) {
-            return new HttpParameter[0];
-        }
-        if (params1 != null) {
-            return params1;
-        } else {
-            return params2;
-        }
-    }
-
-    private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter params2) {
-        if (params1 != null && params2 != null) {
-            HttpParameter[] params = new HttpParameter[params1.length + 1];
-            System.arraycopy(params1, 0, params, 0, params1.length);
-            params[params.length - 1] = params2;
-            return params;
-        }
-        if (null == params1 && null == params2) {
-            return new HttpParameter[0];
-        }
-        if (params1 != null) {
-            return params1;
-        } else {
-            return new HttpParameter[]{params2};
-        }
+    /* Timelines Resources */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getMentions() throws TwitterException {
+        return getMentionsTimeline();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public QueryResult search(Query query) throws TwitterException {
+    public ResponseList<Status> getMentionsTimeline() throws TwitterException {
         ensureAuthorizationEnabled();
-        if (query.nextPage() != null) {
-            System.out.println(conf.getSearchBaseURL()
-                    + "search.json" + query.nextPage());
-            return factory.createQueryResult(get(conf.getSearchBaseURL()
-                    + "search.json" + query.nextPage()), query);
-        } else {
-            return factory.createQueryResult(get(conf.getSearchBaseURL()
-                    + "search.json", query.asHttpParameterArray()), query);
-        }
+        return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/mentions_timeline.json"));
     }
 
-    /* Timelines Methods */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getMentions(Paging paging) throws TwitterException {
+        return getMentionsTimeline(paging);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getMentionsTimeline(Paging paging) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL()
+                + "statuses/mentions_timeline.json", paging.asPostParameterArray()));
+    }
+
 
     /**
      * {@inheritDoc}
@@ -206,23 +190,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                         , paging.asPostParameterArray())));
     }
 
+    /* Tweets Resources */
     /**
      * {@inheritDoc}
      */
     @Override
-    public ResponseList<Status> getMentions() throws TwitterException {
+    public ResponseList<Status> getRetweets(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/mentions_timeline.json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Status> getMentions(Paging paging) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/mentions_timeline.json", paging.asPostParameterArray()));
+        return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/retweets/" + statusId
+                + ".json?count=100"));
     }
 
     /**
@@ -232,6 +208,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public Status showStatus(long id) throws TwitterException {
         ensureAuthorizationEnabled();
         return factory.createStatus(get(conf.getRestBaseURL() + "statuses/show/" + id + ".json"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Status destroyStatus(long statusId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatus(post(conf.getRestBaseURL() + "statuses/destroy/" + statusId + ".json"));
     }
 
     /**
@@ -257,594 +242,30 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
-    public Status destroyStatus(long statusId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatus(post(conf.getRestBaseURL() + "statuses/destroy/" + statusId + ".json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Status retweetStatus(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
         return factory.createStatus(post(conf.getRestBaseURL() + "statuses/retweet/" + statusId + ".json"));
     }
 
+    /* Search Resources */
     /**
      * {@inheritDoc}
      */
     @Override
-    public ResponseList<Status> getRetweets(long statusId) throws TwitterException {
+    public QueryResult search(Query query) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/retweets/" + statusId
-                + ".json?count=100"));
-    }
-
-    /* User Methods */
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User showUser(String screenName) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(get(conf.getRestBaseURL() + "users/show.json?screen_name=" + screenName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User showUser(long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(get(conf.getRestBaseURL() + "users/show.json?user_id=" + userId));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUserList(get(conf.getRestBaseURL() + "users/lookup.json"
-                , new HttpParameter[]{new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<User> lookupUsers(long[] ids) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUserList(get(conf.getRestBaseURL() + "users/lookup.json"
-                , new HttpParameter[]{new HttpParameter("user_id", z_T4JInternalStringUtil.join(ids))}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<User> searchUsers(String query, int page) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUserList(get(conf.getRestBaseURL() + "users/search.json"
-                , new HttpParameter[]{new HttpParameter("q", query), new HttpParameter("per_page", 20)
-                , new HttpParameter("page", page)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Category> getSuggestedUserCategories() throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createCategoryList(get(conf.getRestBaseURL() + "users/suggestions.json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException {
-        ensureAuthorizationEnabled();
-        HttpResponse res = get(conf.getRestBaseURL() + "users/suggestions/" + categorySlug + ".json");
-        return factory.createUserListFromJSONArray_Users(res);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<User> getMemberSuggestions(String categorySlug) throws TwitterException {
-        ensureAuthorizationEnabled();
-        HttpResponse res = get(conf.getRestBaseURL() + "users/suggestions/" + categorySlug + "/members.json");
-        return factory.createUserListFromJSONArray(res);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ProfileImage getProfileImage(String screenName, ProfileImage.ImageSize size) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createProfileImage(get(conf.getRestBaseURL() + "users/profile_image/" + screenName
-                + ".json?size=" + size.name()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<User> getContributors(String screenName) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributors.json?screen_name=" + screenName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<User> getContributors(long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributors.json?user_id=" + userId));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<User> getContributees(String screenName) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributees.json?screen_name=" + screenName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<User> getContributees(long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributees.json?user_id=" + userId));
-    }
-
-    /*List Methods*/
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList createUserList(String listName, boolean isPublicList, String description) throws TwitterException {
-        ensureAuthorizationEnabled();
-        List<HttpParameter> httpParams = new ArrayList<HttpParameter>();
-        httpParams.add(new HttpParameter("name", listName));
-        httpParams.add(new HttpParameter("mode", isPublicList ? "public" : "private"));
-        if (description != null) {
-            httpParams.add(new HttpParameter("description", description));
+        if (query.nextPage() != null) {
+            System.out.println(conf.getSearchBaseURL()
+                    + "search.json" + query.nextPage());
+            return factory.createQueryResult(get(conf.getSearchBaseURL()
+                    + "search.json" + query.nextPage()), query);
+        } else {
+            return factory.createQueryResult(get(conf.getSearchBaseURL()
+                    + "search.json", query.asHttpParameterArray()), query);
         }
-        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/create.json",
-                httpParams.toArray(new HttpParameter[httpParams.size()])));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList updateUserList(int listId, String newListName, boolean isPublicList, String newDescription) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return updateUserList(newListName, isPublicList, newDescription, new HttpParameter("list_id", listId));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return updateUserList(newListName, isPublicList, newDescription, new HttpParameter("owner_id", ownerId)
-                , new HttpParameter("slug", slug));
-    }
-
-    private UserList updateUserList(String newListName, boolean isPublicList, String newDescription, HttpParameter... params) throws TwitterException {
-        ensureAuthorizationEnabled();
-        List<HttpParameter> httpParams = new ArrayList<HttpParameter>();
-        Collections.addAll(httpParams, params);
-        if (newListName != null) {
-            httpParams.add(new HttpParameter("name", newListName));
-        }
-        httpParams.add(new HttpParameter("mode", isPublicList ? "public" : "private"));
-        if (newDescription != null) {
-            httpParams.add(new HttpParameter("description", newDescription));
-        }
-        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/update.json", httpParams.toArray(new HttpParameter[httpParams.size()])));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?screen_name=" + listOwnerScreenName + "&cursor=" + cursor));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<UserList> getUserLists(long listOwnerUserId, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?user_id=" + listOwnerUserId + "&cursor=" + cursor));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList showUserList(int listId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(get(conf.getRestBaseURL() + "lists/show.json?list_id=" + listId));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList showUserList(long ownerId, String slug) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(get(conf.getRestBaseURL() + "lists/show.json?owner_id=" + ownerId + "&slug="
-                + slug));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList destroyUserList(int listId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/destroy.json",
-                new HttpParameter[]{new HttpParameter("list_id", listId)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList destroyUserList(long ownerId, String slug) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/destroy.json",
-                new HttpParameter[]{new HttpParameter("owner_id", ownerId)
-                        , new HttpParameter("slug", slug)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Status> getUserListStatuses(int listId, Paging paging) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "lists/statuses.json"
-                , mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
-                , new HttpParameter("list_id", listId))));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Status> getUserListStatuses(long ownerId, String slug, Paging paging) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "lists/statuses.json"
-                , mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
-                , new HttpParameter[]{new HttpParameter("owner_id", ownerId)
-                , new HttpParameter("slug", slug)})));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<UserList> getUserListMemberships(long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/memberships.json?cursor=" + cursor));
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return getUserListMemberships(listMemberScreenName, cursor, false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return getUserListMemberships(listMemberId, cursor, false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists) throws TwitterException {
-        ensureAuthorizationEnabled();
-        if (filterToOwnedLists) {
-            ensureAuthorizationEnabled();
-        }
-        return factory.createPagableUserListList(get(conf.getRestBaseURL()
-                + "lists/memberships.json?user_id=" + listMemberId + "&cursor=" + cursor + "&filter_to_owned_lists="
-                + filterToOwnedLists));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists) throws TwitterException {
-        ensureAuthorizationEnabled();
-        if (filterToOwnedLists) {
-            ensureAuthorizationEnabled();
-        }
-        return factory.createPagableUserListList(get(conf.getRestBaseURL()
-                + "lists/memberships.json?screen_name=" + listMemberScreenName + "&cursor=" + cursor
-                + "&filter_to_owned_lists=" + filterToOwnedLists));
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/subscriptions.json?screen_name="
-                + listOwnerScreenName + "&cursor=" + cursor));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<UserList> getAllUserLists(String screenName)
-            throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUserListList(get(conf.getRestBaseURL() + "lists/all.json?screen_name=" + screenName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<UserList> getAllUserLists(long userId)
-            throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUserListList(get(conf.getRestBaseURL()
-                + "lists/all.json?user_id=" + userId));
-    }
-
-    /*List Members Methods*/
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<User> getUserListMembers(int listId
-            , long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createPagableUserList(get(conf.getRestBaseURL() +
-                "lists/members.json?list_id=" + listId + "&cursor=" + cursor));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<User> getUserListMembers(long ownerId, String slug, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createPagableUserList(get(conf.getRestBaseURL() +
-                "lists/members.json?owner_id=" + ownerId + "&slug=" + slug + "&cursor=" + cursor));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList addUserListMember(int listId, long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/create.json", new HttpParameter[]{new HttpParameter("user_id", userId)
-                , new HttpParameter("list_id", listId)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList addUserListMember(long ownerId, String slug, long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/create.json", new HttpParameter[]{new HttpParameter("user_id", userId)
-                , new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList addUserListMembers(int listId, long[] userIds) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/members/create_all.json",
-                new HttpParameter[]{new HttpParameter("list_id", listId), new HttpParameter("user_id"
-                        , z_T4JInternalStringUtil.join(userIds))}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList addUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/members/create_all.json",
-                new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)
-                        , new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/create_all.json",
-                new HttpParameter[]{
-                        new HttpParameter("list_id", listId),
-                        new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList addUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/create_all.json",
-                new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)
-                        , new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList deleteUserListMember(int listId, long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/destroy.json",
-                new HttpParameter[]{new HttpParameter("list_id", listId), new HttpParameter("user_id", userId)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList deleteUserListMember(long ownerId, String slug, long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/destroy.json", new HttpParameter[]{new HttpParameter("owner_id", ownerId)
-                , new HttpParameter("slug", slug), new HttpParameter("user_id", userId)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User showUserListMembership(int listId, long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(get(conf.getRestBaseURL() +
-                "lists/members/show.json?list_id=" + listId + "&user_id=" + userId));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User showUserListMembership(long ownerId, String slug, long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(get(conf.getRestBaseURL() +
-                "lists/members/show.json?owner_id=" + ownerId + "&slug=" + slug + "&user_id=" + userId));
-    }
-
-    /*List Subscribers Methods*/
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<User> getUserListSubscribers(int listId, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createPagableUserList(get(conf.getRestBaseURL() + "lists/subscribers.json?list_id=" + listId + "&cursor=" + cursor));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createPagableUserList(get(conf.getRestBaseURL() + "lists/subscribers.json?owner_id=" + ownerId
-                + "&slug=" + slug + "&cursor=" + cursor));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList createUserListSubscription(int listId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/subscribers/create.json", new HttpParameter[]{new HttpParameter("list_id", listId)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList createUserListSubscription(long ownerId, String slug) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/subscribers/create.json", new HttpParameter[]{new HttpParameter("owner_id", ownerId)
-                , new HttpParameter("slug", slug)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList destroyUserListSubscription(int listId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/subscribers/destroy.json", new HttpParameter[]{new HttpParameter("list_id", listId)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList destroyUserListSubscription(long ownerId, String slug) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/subscribers/destroy.json"
-                , new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User showUserListSubscription(int listId, long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(get(conf.getRestBaseURL() +
-                "lists/subscribers/show.json?list_id=" + listId + "&user_id=" + userId));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User showUserListSubscription(long ownerId, String slug, long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(get(conf.getRestBaseURL() +
-                "lists/subscribers/show.json?owner_id=" + ownerId + "&slug=" + slug + "&user_id=" + userId));
-    }
-
-    /*Direct Message Methods */
-
+    /* Direct Messages Resources */
     /**
      * {@inheritDoc}
      */
@@ -889,10 +310,19 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
-    public DirectMessage sendDirectMessage(String screenName, String text) throws TwitterException {
+    public DirectMessage showDirectMessage(long id) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/new.json",
-                new HttpParameter[]{new HttpParameter("screen_name", screenName), new HttpParameter("text", text)}));
+        return factory.createDirectMessage(get(conf.getRestBaseURL() + "direct_messages/show/" + id + ".json"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DirectMessage destroyDirectMessage(long id) throws
+            TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy/" + id + ".json"));
     }
 
     /**
@@ -910,166 +340,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
-    public DirectMessage destroyDirectMessage(long id) throws
-            TwitterException {
+    public DirectMessage sendDirectMessage(String screenName, String text) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy/" + id + ".json"));
+        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/new.json",
+                new HttpParameter[]{new HttpParameter("screen_name", screenName), new HttpParameter("text", text)}));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DirectMessage showDirectMessage(long id) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createDirectMessage(get(conf.getRestBaseURL() + "direct_messages/show/" + id + ".json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User createFriendship(String screenName) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "friendships/create.json?screen_name=" + screenName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User createFriendship(long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "friendships/create.json?user_id=" + userId));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User createFriendship(String screenName, boolean follow) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "friendships/create.json?screen_name="
-                + screenName + "&follow=" + follow));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User createFriendship(long userId, boolean follow) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "friendships/create.json?user_id=" + userId + "&follow="
-                + follow));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User destroyFriendship(String screenName) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "friendships/destroy.json?screen_name=" + screenName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User destroyFriendship(long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "friendships/destroy.json?user_id=" + userId));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Relationship showFriendship(String sourceScreenName, String targetScreenName) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createRelationship(get(conf.getRestBaseURL() + "friendships/show.json",
-                getParameterArray("source_screen_name", sourceScreenName, "target_screen_name", targetScreenName)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Relationship showFriendship(long sourceId, long targetId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createRelationship(get(conf.getRestBaseURL() + "friendships/show.json"
-                , new HttpParameter[]{new HttpParameter("source_id", sourceId), new HttpParameter("target_id", targetId)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IDs getIncomingFriendships(long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createIDs(get(conf.getRestBaseURL() + "friendships/incoming.json?cursor=" + cursor));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IDs getOutgoingFriendships(long cursor) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createIDs(get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Friendship> lookupFriendships(String[] screenNames) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createFriendshipList(get(conf.getRestBaseURL()
-                + "friendships/lookup.json?screen_name=" + z_T4JInternalStringUtil.join(screenNames)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Friendship> lookupFriendships(long[] ids) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createFriendshipList(get(conf.getRestBaseURL() + "friendships/lookup.json?user_id=" + z_T4JInternalStringUtil.join(ids)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Relationship updateFriendship(String screenName, boolean enableDeviceNotification
-            , boolean retweets) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createRelationship(post(conf.getRestBaseURL() + "friendships/update.json",
-                new HttpParameter[]{
-                        new HttpParameter("screen_name", screenName),
-                        new HttpParameter("device", enableDeviceNotification),
-                        new HttpParameter("retweets", enableDeviceNotification)
-                }));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Relationship updateFriendship(long userId, boolean enableDeviceNotification
-            , boolean retweets) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createRelationship((post(conf.getRestBaseURL() + "friendships/update.json",
-                new HttpParameter[]{
-                        new HttpParameter("user_id", userId),
-                        new HttpParameter("device", enableDeviceNotification),
-                        new HttpParameter("retweets", enableDeviceNotification)
-                })));
-    }
-
-    /* Social Graph Methods */
-
+    /* Friends & Followers Resources */
     /**
      * {@inheritDoc}
      */
@@ -1132,36 +409,147 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
-    public User verifyCredentials() throws TwitterException {
+    public ResponseList<Friendship> lookupFriendships(long[] ids) throws TwitterException {
         ensureAuthorizationEnabled();
-        return super.fillInIDAndScreenName();
+        return factory.createFriendshipList(get(conf.getRestBaseURL() + "friendships/lookup.json?user_id=" + z_T4JInternalStringUtil.join(ids)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String ,RateLimitStatus> getRateLimitStatus() throws TwitterException {
+    public ResponseList<Friendship> lookupFriendships(String[] screenNames) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createRateLimitStatuses(get(conf.getRestBaseURL() + "application/rate_limit_status.json"));
+        return factory.createFriendshipList(get(conf.getRestBaseURL()
+                + "friendships/lookup.json?screen_name=" + z_T4JInternalStringUtil.join(screenNames)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public User updateProfile(String name, String url
-            , String location, String description) throws TwitterException {
+    public IDs getIncomingFriendships(long cursor) throws TwitterException {
         ensureAuthorizationEnabled();
-        List<HttpParameter> profile = new ArrayList<HttpParameter>(4);
-        addParameterToList(profile, "name", name);
-        addParameterToList(profile, "url", url);
-        addParameterToList(profile, "location", location);
-        addParameterToList(profile, "description", description);
-        return factory.createUser(post(conf.getRestBaseURL() + "account/update_profile.json"
-                , profile.toArray(new HttpParameter[profile.size()])));
+        return factory.createIDs(get(conf.getRestBaseURL() + "friendships/incoming.json?cursor=" + cursor));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IDs getOutgoingFriendships(long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createIDs(get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User createFriendship(long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "friendships/create.json?user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User createFriendship(String screenName) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "friendships/create.json?screen_name=" + screenName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User createFriendship(long userId, boolean follow) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "friendships/create.json?user_id=" + userId + "&follow="
+                + follow));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User createFriendship(String screenName, boolean follow) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "friendships/create.json?screen_name="
+                + screenName + "&follow=" + follow));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User destroyFriendship(long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "friendships/destroy.json?user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User destroyFriendship(String screenName) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "friendships/destroy.json?screen_name=" + screenName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Relationship updateFriendship(long userId, boolean enableDeviceNotification
+            , boolean retweets) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createRelationship((post(conf.getRestBaseURL() + "friendships/update.json",
+                new HttpParameter[]{
+                        new HttpParameter("user_id", userId),
+                        new HttpParameter("device", enableDeviceNotification),
+                        new HttpParameter("retweets", enableDeviceNotification)
+                })));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Relationship updateFriendship(String screenName, boolean enableDeviceNotification
+            , boolean retweets) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createRelationship(post(conf.getRestBaseURL() + "friendships/update.json",
+                new HttpParameter[]{
+                        new HttpParameter("screen_name", screenName),
+                        new HttpParameter("device", enableDeviceNotification),
+                        new HttpParameter("retweets", enableDeviceNotification)
+                }));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Relationship showFriendship(long sourceId, long targetId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createRelationship(get(conf.getRestBaseURL() + "friendships/show.json"
+                , new HttpParameter[]{new HttpParameter("source_id", sourceId), new HttpParameter("target_id", targetId)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Relationship showFriendship(String sourceScreenName, String targetScreenName) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createRelationship(get(conf.getRestBaseURL() + "friendships/show.json",
+                getParameterArray("source_screen_name", sourceScreenName, "target_screen_name", targetScreenName)));
+    }
+
+
+    /* Users Resources */
     /**
      * {@inheritDoc}
      */
@@ -1171,6 +559,14 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createAccountSettings(get(conf.getRestBaseURL() + "account/settings.json"));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User verifyCredentials() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return super.fillInIDAndScreenName();
+    }
 
     /**
      * {@inheritDoc}
@@ -1203,6 +599,45 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createAccountSettings(post(conf.getRestBaseURL() + "account/settings.json"
                 , profile.toArray(new HttpParameter[profile.size()])));
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User updateProfile(String name, String url
+            , String location, String description) throws TwitterException {
+        ensureAuthorizationEnabled();
+        List<HttpParameter> profile = new ArrayList<HttpParameter>(4);
+        addParameterToList(profile, "name", name);
+        addParameterToList(profile, "url", url);
+        addParameterToList(profile, "location", location);
+        addParameterToList(profile, "description", description);
+        return factory.createUser(post(conf.getRestBaseURL() + "account/update_profile.json"
+                , profile.toArray(new HttpParameter[profile.size()])));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User updateProfileBackgroundImage(File image, boolean tile)
+            throws TwitterException {
+        ensureAuthorizationEnabled();
+        checkFileValidity(image);
+        return factory.createUser(post(conf.getRestBaseURL() + "account/update_profile_background_image.json",
+                new HttpParameter[]{new HttpParameter("image", image), new HttpParameter("tile", tile)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User updateProfileBackgroundImage(InputStream image, boolean tile)
+            throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "account/update_profile_background_image.json"
+                , new HttpParameter[]{new HttpParameter("image", "image", image), new HttpParameter("tile", tile)}));
     }
 
     /**
@@ -1264,29 +699,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User updateProfileBackgroundImage(File image, boolean tile)
-            throws TwitterException {
-        ensureAuthorizationEnabled();
-        checkFileValidity(image);
-        return factory.createUser(post(conf.getRestBaseURL() + "account/update_profile_background_image.json",
-                new HttpParameter[]{new HttpParameter("image", image), new HttpParameter("tile", tile)}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User updateProfileBackgroundImage(InputStream image, boolean tile)
-            throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "account/update_profile_background_image.json"
-                , new HttpParameter[]{new HttpParameter("image", "image", image), new HttpParameter("tile", tile)}));
-    }
-
-    /**
      * Check the existence, and the type of the specified file.
      *
      * @param image image to be uploaded
@@ -1302,99 +714,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             //noinspection ThrowableInstanceNeverThrown
             throw new TwitterException(new IOException(image + " is not a file."));
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Status> getFavorites() throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Status> getFavorites(String id) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/" + id + ".json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Status> getFavorites(Paging paging) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites.json", paging.asPostParameterArray()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Status> getFavorites(String id, Paging paging) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/" + id
-                + ".json", paging.asPostParameterArray()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Status createFavorite(long id) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatus(post(conf.getRestBaseURL() + "favorites/create.json?id=" + id));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Status destroyFavorite(long id) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createStatus(post(conf.getRestBaseURL() + "favorites/destroy.json?id=" + id));
-    }
-
-    /* Block Methods */
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User createBlock(String screenName) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "blocks/create.json?screen_name=" + screenName));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User createBlock(long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "blocks/create.json?user_id=" + userId));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User destroyBlock(String screen_name) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "blocks/destroy.json?screen_name=" + screen_name));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User destroyBlock(long userId) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "blocks/destroy.json?user_id=" + userId));
     }
 
     /**
@@ -1425,28 +744,644 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createIDs(get(conf.getRestBaseURL() + "blocks/ids.json"));
     }
 
-    /* Spam Reporting Methods */
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public User reportSpam(long userId) throws TwitterException {
+    public User createBlock(long userId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "report_spam.json?user_id=" + userId));
+        return factory.createUser(post(conf.getRestBaseURL() + "blocks/create.json?user_id=" + userId));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public User reportSpam(String screenName) throws TwitterException {
+    public User createBlock(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createUser(post(conf.getRestBaseURL() + "report_spam.json?screen_name=" + screenName));
+        return factory.createUser(post(conf.getRestBaseURL() + "blocks/create.json?screen_name=" + screenName));
     }
 
-    /* Saved Searches Methods */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User destroyBlock(long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "blocks/destroy.json?user_id=" + userId));
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User destroyBlock(String screen_name) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "blocks/destroy.json?screen_name=" + screen_name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> lookupUsers(long[] ids) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/lookup.json"
+                , new HttpParameter[]{new HttpParameter("user_id", z_T4JInternalStringUtil.join(ids))}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/lookup.json"
+                , new HttpParameter[]{new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User showUser(long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(get(conf.getRestBaseURL() + "users/show.json?user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User showUser(String screenName) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(get(conf.getRestBaseURL() + "users/show.json?screen_name=" + screenName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> searchUsers(String query, int page) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/search.json"
+                , new HttpParameter[]{new HttpParameter("q", query), new HttpParameter("per_page", 20)
+                , new HttpParameter("page", page)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getContributees(long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributees.json?user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getContributees(String screenName) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributees.json?screen_name=" + screenName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getContributors(long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributors.json?user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getContributors(String screenName) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUserList(get(conf.getRestBaseURL() + "users/contributors.json?screen_name=" + screenName));
+    }
+
+    /* Suggested Users Resources */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException {
+        ensureAuthorizationEnabled();
+        HttpResponse res = get(conf.getRestBaseURL() + "users/suggestions/" + categorySlug + ".json");
+        return factory.createUserListFromJSONArray_Users(res);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Category> getSuggestedUserCategories() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createCategoryList(get(conf.getRestBaseURL() + "users/suggestions.json"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<User> getMemberSuggestions(String categorySlug) throws TwitterException {
+        ensureAuthorizationEnabled();
+        HttpResponse res = get(conf.getRestBaseURL() + "users/suggestions/" + categorySlug + "/members.json");
+        return factory.createUserListFromJSONArray(res);
+    }
+
+    /* Favorites Resources */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getFavorites() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getFavorites(long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json?user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getFavorites(String screenName) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json?screen_name=" + screenName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getFavorites(Paging paging) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json", paging.asPostParameterArray()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getFavorites(long userId, Paging paging) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json?user_id=" + userId, paging.asPostParameterArray()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getFavorites(String screenName, Paging paging) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json?screen_name=" + screenName, paging.asPostParameterArray()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Status destroyFavorite(long id) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatus(post(conf.getRestBaseURL() + "favorites/destroy.json?id=" + id));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Status createFavorite(long id) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatus(post(conf.getRestBaseURL() + "favorites/create.json?id=" + id));
+    }
+
+    /* Lists Resources */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?screen_name=" + listOwnerScreenName + "&cursor=" + cursor));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<UserList> getUserLists(long listOwnerUserId, long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists.json?user_id=" + listOwnerUserId + "&cursor=" + cursor));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getUserListStatuses(int listId, Paging paging) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "lists/statuses.json"
+                , mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
+                , new HttpParameter("list_id", listId))));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Status> getUserListStatuses(long ownerId, String slug, Paging paging) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL() + "lists/statuses.json"
+                , mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
+                , new HttpParameter[]{new HttpParameter("owner_id", ownerId)
+                , new HttpParameter("slug", slug)})));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList deleteUserListMember(int listId, long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/destroy.json",
+                new HttpParameter[]{new HttpParameter("list_id", listId), new HttpParameter("user_id", userId)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList deleteUserListMember(long ownerId, String slug, long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/destroy.json", new HttpParameter[]{new HttpParameter("owner_id", ownerId)
+                , new HttpParameter("slug", slug), new HttpParameter("user_id", userId)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/memberships.json?cursor=" + cursor));
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return getUserListMemberships(listMemberScreenName, cursor, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return getUserListMemberships(listMemberId, cursor, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists) throws TwitterException {
+        ensureAuthorizationEnabled();
+        if (filterToOwnedLists) {
+            ensureAuthorizationEnabled();
+        }
+        return factory.createPagableUserListList(get(conf.getRestBaseURL()
+                + "lists/memberships.json?user_id=" + listMemberId + "&cursor=" + cursor + "&filter_to_owned_lists="
+                + filterToOwnedLists));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists) throws TwitterException {
+        ensureAuthorizationEnabled();
+        if (filterToOwnedLists) {
+            ensureAuthorizationEnabled();
+        }
+        return factory.createPagableUserListList(get(conf.getRestBaseURL()
+                + "lists/memberships.json?screen_name=" + listMemberScreenName + "&cursor=" + cursor
+                + "&filter_to_owned_lists=" + filterToOwnedLists));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<User> getUserListSubscribers(int listId, long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createPagableUserList(get(conf.getRestBaseURL() + "lists/subscribers.json?list_id=" + listId + "&cursor=" + cursor));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createPagableUserList(get(conf.getRestBaseURL() + "lists/subscribers.json?owner_id=" + ownerId
+                + "&slug=" + slug + "&cursor=" + cursor));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList createUserListSubscription(int listId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/subscribers/create.json", new HttpParameter[]{new HttpParameter("list_id", listId)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList createUserListSubscription(long ownerId, String slug) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/subscribers/create.json", new HttpParameter[]{new HttpParameter("owner_id", ownerId)
+                , new HttpParameter("slug", slug)}));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User showUserListSubscription(int listId, long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(get(conf.getRestBaseURL() +
+                "lists/subscribers/show.json?list_id=" + listId + "&user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User showUserListSubscription(long ownerId, String slug, long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(get(conf.getRestBaseURL() +
+                "lists/subscribers/show.json?owner_id=" + ownerId + "&slug=" + slug + "&user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList destroyUserListSubscription(int listId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/subscribers/destroy.json", new HttpParameter[]{new HttpParameter("list_id", listId)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList destroyUserListSubscription(long ownerId, String slug) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/subscribers/destroy.json"
+                , new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList addUserListMembers(int listId, long[] userIds) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/members/create_all.json",
+                new HttpParameter[]{new HttpParameter("list_id", listId), new HttpParameter("user_id"
+                        , z_T4JInternalStringUtil.join(userIds))}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList addUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/members/create_all.json",
+                new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)
+                        , new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/create_all.json",
+                new HttpParameter[]{
+                        new HttpParameter("list_id", listId),
+                        new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList addUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/create_all.json",
+                new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)
+                        , new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User showUserListMembership(int listId, long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(get(conf.getRestBaseURL() +
+                "lists/members/show.json?list_id=" + listId + "&user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User showUserListMembership(long ownerId, String slug, long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(get(conf.getRestBaseURL() +
+                "lists/members/show.json?owner_id=" + ownerId + "&slug=" + slug + "&user_id=" + userId));
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<User> getUserListMembers(int listId
+            , long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createPagableUserList(get(conf.getRestBaseURL() +
+                "lists/members.json?list_id=" + listId + "&cursor=" + cursor));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<User> getUserListMembers(long ownerId, String slug, long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createPagableUserList(get(conf.getRestBaseURL() +
+                "lists/members.json?owner_id=" + ownerId + "&slug=" + slug + "&cursor=" + cursor));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList addUserListMember(int listId, long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/create.json", new HttpParameter[]{new HttpParameter("user_id", userId)
+                , new HttpParameter("list_id", listId)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList addUserListMember(long ownerId, String slug, long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/create.json", new HttpParameter[]{new HttpParameter("user_id", userId)
+                , new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList destroyUserList(int listId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/destroy.json",
+                new HttpParameter[]{new HttpParameter("list_id", listId)}));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList destroyUserList(long ownerId, String slug) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/destroy.json",
+                new HttpParameter[]{new HttpParameter("owner_id", ownerId)
+                        , new HttpParameter("slug", slug)}));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList updateUserList(int listId, String newListName, boolean isPublicList, String newDescription) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return updateUserList(newListName, isPublicList, newDescription, new HttpParameter("list_id", listId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return updateUserList(newListName, isPublicList, newDescription, new HttpParameter("owner_id", ownerId)
+                , new HttpParameter("slug", slug));
+    }
+
+    private UserList updateUserList(String newListName, boolean isPublicList, String newDescription, HttpParameter... params) throws TwitterException {
+        ensureAuthorizationEnabled();
+        List<HttpParameter> httpParams = new ArrayList<HttpParameter>();
+        Collections.addAll(httpParams, params);
+        if (newListName != null) {
+            httpParams.add(new HttpParameter("name", newListName));
+        }
+        httpParams.add(new HttpParameter("mode", isPublicList ? "public" : "private"));
+        if (newDescription != null) {
+            httpParams.add(new HttpParameter("description", newDescription));
+        }
+        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/update.json", httpParams.toArray(new HttpParameter[httpParams.size()])));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList createUserList(String listName, boolean isPublicList, String description) throws TwitterException {
+        ensureAuthorizationEnabled();
+        List<HttpParameter> httpParams = new ArrayList<HttpParameter>();
+        httpParams.add(new HttpParameter("name", listName));
+        httpParams.add(new HttpParameter("mode", isPublicList ? "public" : "private"));
+        if (description != null) {
+            httpParams.add(new HttpParameter("description", description));
+        }
+        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/create.json",
+                httpParams.toArray(new HttpParameter[httpParams.size()])));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList showUserList(int listId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(get(conf.getRestBaseURL() + "lists/show.json?list_id=" + listId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList showUserList(long ownerId, String slug) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createAUserList(get(conf.getRestBaseURL() + "lists/show.json?owner_id=" + ownerId + "&slug="
+                + slug));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/subscriptions.json?screen_name="
+                + listOwnerScreenName + "&cursor=" + cursor));
+    }
+
+    /* Saved Searches Resources */
     /**
      * {@inheritDoc}
      */
@@ -1485,42 +1420,35 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createSavedSearch(post(conf.getRestBaseURL()
                 + "saved_searches/destroy/" + id + ".json"));
     }
-    /* Local Trends Methods */
 
+    /* Places & Geo Resources */
     /**
      * {@inheritDoc}
      */
     @Override
-    public ResponseList<Location> getAvailableTrends() throws TwitterException {
+    public Place getGeoDetails(String placeId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createLocationList(get(conf.getRestBaseURL()
-                + "trends/available.json"));
+        return factory.createPlace(get(conf.getRestBaseURL() + "geo/id/" + placeId
+                + ".json"));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ResponseList<Location> getAvailableTrends(GeoLocation location) throws TwitterException {
+    public ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createLocationList(get(conf.getRestBaseURL()
-                + "trends/available.json",
-                new HttpParameter[]{new HttpParameter("lat", location.getLatitude())
-                        , new HttpParameter("long", location.getLongitude())
-                }));
+        try {
+            return factory.createPlaceList(get(conf.getRestBaseURL()
+                    + "geo/reverse_geocode.json", query.asHttpParameterArray()));
+        } catch (TwitterException te) {
+            if (te.getStatusCode() == 404) {
+                return factory.createEmptyResponseList();
+            } else {
+                throw te;
+            }
+        }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Trends getLocationTrends(int woeid) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createTrends(get(conf.getRestBaseURL()
-                + "trends/" + woeid + ".json"));
-    }
-
-    /* Geo Methods */
 
     /**
      * {@inheritDoc}
@@ -1556,34 +1484,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
-    public ResponseList<Place> reverseGeoCode(GeoQuery query) throws TwitterException {
-        ensureAuthorizationEnabled();
-        try {
-            return factory.createPlaceList(get(conf.getRestBaseURL()
-                    + "geo/reverse_geocode.json", query.asHttpParameterArray()));
-        } catch (TwitterException te) {
-            if (te.getStatusCode() == 404) {
-                return factory.createEmptyResponseList();
-            } else {
-                throw te;
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Place getGeoDetails(String id) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createPlace(get(conf.getRestBaseURL() + "geo/id/" + id
-                + ".json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Place createPlace(String name, String containedWithin, String token, GeoLocation location, String streetAddress) throws TwitterException {
         ensureAuthorizationEnabled();
         List<HttpParameter> params = new ArrayList<HttpParameter>(3);
@@ -1599,7 +1499,91 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , params.toArray(new HttpParameter[params.size()])));
     }
 
-    /* Legal Resources */
+    /* Trends Resources */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Location> getAvailableTrends() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createLocationList(get(conf.getRestBaseURL()
+                + "trends/available.json"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Location> getAvailableTrends(GeoLocation location) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createLocationList(get(conf.getRestBaseURL()
+                + "trends/available.json",
+                new HttpParameter[]{new HttpParameter("lat", location.getLatitude())
+                        , new HttpParameter("long", location.getLongitude())
+                }));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Trends getLocationTrends(int woeid) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createTrends(get(conf.getRestBaseURL()
+                + "trends/" + woeid + ".json"));
+    }
+
+    /* Spam Reporting Resources */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User reportSpam(long userId) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "report_spam.json?user_id=" + userId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User reportSpam(String screenName) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createUser(post(conf.getRestBaseURL() + "report_spam.json?screen_name=" + screenName));
+    }
+
+    /* Help Resources */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TwitterAPIConfiguration getAPIConfiguration() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createTwitterAPIConfiguration(get(conf.getRestBaseURL() + "help/configuration.json"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResponseList<Language> getLanguages() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createLanguageList(get(conf.getRestBaseURL() + "help/languages.json"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPrivacyPolicy() throws TwitterException {
+        ensureAuthorizationEnabled();
+        try {
+            return get(conf.getRestBaseURL() + "legal/privacy.json").asJSONObject().getString("privacy");
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -1618,17 +1602,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
-    public String getPrivacyPolicy() throws TwitterException {
+    public Map<String ,RateLimitStatus> getRateLimitStatus() throws TwitterException {
         ensureAuthorizationEnabled();
-        try {
-            return get(conf.getRestBaseURL() + "legal/privacy.json").asJSONObject().getString("privacy");
-        } catch (JSONException e) {
-            throw new TwitterException(e);
-        }
+        return factory.createRateLimitStatuses(get(conf.getRestBaseURL() + "application/rate_limit_status.json"));
     }
 
-    /* #newtwitter Methods */
-
+    /* Undocumented Resources */
     /**
      * {@inheritDoc}
      */
@@ -1637,26 +1616,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         ensureAuthorizationEnabled();
         return factory.createRelatedResults(get(conf.getRestBaseURL() + "related_results/show/"
                 + Long.toString(statusId) + ".json"));
-    }
-
-    /* Help Methods */
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TwitterAPIConfiguration getAPIConfiguration() throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createTwitterAPIConfiguration(get(conf.getRestBaseURL() + "help/configuration.json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Language> getLanguages() throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createLanguageList(get(conf.getRestBaseURL() + "help/languages.json"));
     }
 
     private HttpResponse get(String url) throws TwitterException {
@@ -1729,6 +1688,40 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
             }
             return response;
+        }
+    }
+
+    private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter[] params2) {
+        if (params1 != null && params2 != null) {
+            HttpParameter[] params = new HttpParameter[params1.length + params2.length];
+            System.arraycopy(params1, 0, params, 0, params1.length);
+            System.arraycopy(params2, 0, params, params1.length, params2.length);
+            return params;
+        }
+        if (null == params1 && null == params2) {
+            return new HttpParameter[0];
+        }
+        if (params1 != null) {
+            return params1;
+        } else {
+            return params2;
+        }
+    }
+
+    private HttpParameter[] mergeParameters(HttpParameter[] params1, HttpParameter params2) {
+        if (params1 != null && params2 != null) {
+            HttpParameter[] params = new HttpParameter[params1.length + 1];
+            System.arraycopy(params1, 0, params, 0, params1.length);
+            params[params.length - 1] = params2;
+            return params;
+        }
+        if (null == params1 && null == params2) {
+            return new HttpParameter[0];
+        }
+        if (params1 != null) {
+            return params1;
+        } else {
+            return new HttpParameter[]{params2};
         }
     }
 

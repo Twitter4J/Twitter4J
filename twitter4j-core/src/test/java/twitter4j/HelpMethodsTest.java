@@ -15,7 +15,7 @@
  */
 package twitter4j;
 
-import twitter4j.api.HelpMethods;
+import twitter4j.api.HelpResources;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -35,9 +35,9 @@ public class HelpMethodsTest extends TwitterTestBase {
     }
 
     public void testHelpMethods() throws Exception {
-        ResponseList<HelpMethods.Language> languages = twitter1.getLanguages();
+        ResponseList<HelpResources.Language> languages = twitter1.getLanguages();
         assertTrue(languages.size() > 5);
-        HelpMethods.Language language = languages.get(0);
+        HelpResources.Language language = languages.get(0);
         assertNotNull(language.getCode());
         assertNotNull(language.getName());
         assertNotNull(language.getStatus());
