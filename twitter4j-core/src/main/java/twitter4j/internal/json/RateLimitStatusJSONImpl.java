@@ -120,36 +120,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
         return new RateLimitStatusJSONImpl(limit, remainingHits, resetTimeInSeconds);
     }
 
-    static RateLimitStatus createFeatureSpecificRateLimitStatusFromResponseHeader(HttpResponse res) {
-        if (null == res) {
-            return null;
-        }
-        int remainingHits;//"X-FeatureRateLimit-Remaining"
-        int hourlyLimit;//"X-FeatureRateLimit-Limit"
-        int resetTimeInSeconds;//not included in the response header. Need to be calculated.
-
-        String limit = res.getResponseHeader("X-FeatureRateLimit-Limit");
-        if (limit != null) {
-            hourlyLimit = Integer.parseInt(limit);
-        } else {
-            return null;
-        }
-        String remaining = res.getResponseHeader("X-FeatureRateLimit-Remaining");
-        if (remaining != null) {
-            remainingHits = Integer.parseInt(remaining);
-        } else {
-            return null;
-        }
-        String reset = res.getResponseHeader("X-FeatureRateLimit-Reset");
-        if (reset != null) {
-            long longReset = Long.parseLong(reset);
-            resetTimeInSeconds = (int) (longReset / 1000);
-        } else {
-            return null;
-        }
-        return new RateLimitStatusJSONImpl(hourlyLimit, remainingHits, resetTimeInSeconds);
-    }
-
     /**
      * {@inheritDoc}
      */

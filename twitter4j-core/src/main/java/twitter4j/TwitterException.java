@@ -140,21 +140,6 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     /**
-     * Returns the current feature-specific rate limit status if available.<br>
-     * This method is available in conjunction with Twitter#searchUsers()<br>
-     *
-     * @return current rate limit status
-     * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
-     * @since Twitter4J 2.1.2
-     */
-    public RateLimitStatus getFeatureSpecificRateLimitStatus() {
-        if (null == response) {
-            return null;
-        }
-        return z_T4JInternalJSONImplFactory.createFeatureSpecificRateLimitStatusFromResponseHeader(response);
-    }
-
-    /**
      * Returns int value of "Retry-After" response header (Search API) or seconds_until_reset (REST API).
      * An application that exceeds the rate limitations of the Search API will receive HTTP 420 response codes to requests. It is a best
      * practice to watch for this error condition and honor the Retry-After header that instructs the application when it is safe to
@@ -318,7 +303,6 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 "statusCode=" + statusCode +
                 ", retryAfter=" + getRetryAfter() +
                 ", rateLimitStatus=" + getRateLimitStatus() +
-                ", featureSpecificRateLimitStatus=" + getFeatureSpecificRateLimitStatus() +
                 ", version=" + Version.getVersion() +
                 '}';
     }

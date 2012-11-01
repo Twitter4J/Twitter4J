@@ -107,7 +107,6 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertEquals(2, users.size());
         assertContains(users, id1);
         assertContains(users, id2);
-        assertNull(users.getFeatureSpecificRateLimitStatus());
         assertNotNull(DataObjectFactory.getRawJSON(users.get(0)));
         assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
         assertNotNull(DataObjectFactory.getRawJSON(users));
@@ -130,7 +129,6 @@ public class UsersResourcesTest extends TwitterTestBase {
     public void testSearchUser() throws TwitterException {
         ResponseList<User> users = twitter1.searchUsers("Doug Williams", 1);
         assertTrue(4 < users.size());
-        assertNotNull(users.getFeatureSpecificRateLimitStatus());
         assertNotNull(DataObjectFactory.getRawJSON(users.get(0)));
         assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
         assertNotNull(DataObjectFactory.getRawJSON(users));

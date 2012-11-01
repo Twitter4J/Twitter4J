@@ -56,10 +56,6 @@ abstract class LazyResponseList<T> implements ResponseList<T> {
         return getTarget().getAccessLevel();
     }
 
-    public RateLimitStatus getFeatureSpecificRateLimitStatus() {
-        return getTarget().getFeatureSpecificRateLimitStatus();
-    }
-
     public int size() {
         return getTarget().size();
     }

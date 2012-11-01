@@ -29,7 +29,6 @@ import java.util.ArrayList;
  */
 class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
     private transient RateLimitStatus rateLimitStatus = null;
-    private transient RateLimitStatus featureSpecificRateLimitStatus = null;
     private transient int accessLevel;
     private static final long serialVersionUID = 5646617841989265312L;
 
@@ -43,16 +42,14 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
         init(res);
     }
 
-    ResponseListImpl(RateLimitStatus rateLimitStatus, RateLimitStatus featureSpecificRateLimitStatus, int accessLevel) {
+    ResponseListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
         super();
         this.rateLimitStatus = rateLimitStatus;
-        this.featureSpecificRateLimitStatus = featureSpecificRateLimitStatus;
         this.accessLevel = accessLevel;
     }
 
     private void init(HttpResponse res) {
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
-        this.featureSpecificRateLimitStatus = RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
         accessLevel = z_T4JInternalParseUtil.toAccessLevel(res);
     }
 
@@ -62,14 +59,6 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
     @Override
     public RateLimitStatus getRateLimitStatus() {
         return rateLimitStatus;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public RateLimitStatus getFeatureSpecificRateLimitStatus() {
-        return featureSpecificRateLimitStatus;
     }
 
     /**

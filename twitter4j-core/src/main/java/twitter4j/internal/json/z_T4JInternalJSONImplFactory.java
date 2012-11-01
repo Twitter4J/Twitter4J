@@ -120,10 +120,6 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         return RateLimitStatusJSONImpl.createFromResponseHeader(res);
     }
 
-    public static RateLimitStatus createFeatureSpecificRateLimitStatusFromResponseHeader(HttpResponse res) {
-        return RateLimitStatusJSONImpl.createFeatureSpecificRateLimitStatusFromResponseHeader(res);
-    }
-
     @Override
     public Trends createTrends(HttpResponse res) throws TwitterException {
         return new TrendsJSONImpl(res, conf);
