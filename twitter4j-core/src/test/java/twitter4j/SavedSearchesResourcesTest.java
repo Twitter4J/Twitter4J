@@ -23,8 +23,8 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class SavedSearchesMethodsTest extends TwitterTestBase {
-    public SavedSearchesMethodsTest(String name) {
+public class SavedSearchesResourcesTest extends TwitterTestBase {
+    public SavedSearchesResourcesTest(String name) {
         super(name);
     }
 

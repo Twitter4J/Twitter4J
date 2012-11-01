@@ -1396,7 +1396,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<SavedSearch> getSavedSearches() throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createSavedSearchList(get(conf.getRestBaseURL() + "saved_searches.json"));
+        return factory.createSavedSearchList(get(conf.getRestBaseURL() + "saved_searches/list.json"));
     }
 
     /**
