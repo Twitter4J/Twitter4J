@@ -25,8 +25,8 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class TweetsMethodsTest extends TwitterTestBase {
-    public TweetsMethodsTest(String name) {
+public class TweetsResourcesTest extends TwitterTestBase {
+    public TweetsResourcesTest(String name) {
         super(name);
     }
 
@@ -94,7 +94,6 @@ public class TweetsMethodsTest extends TwitterTestBase {
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
         assertTrue(status.getText().startsWith(date));
-        assertNotNull(status.getMediaEntities());
         assertEquals(1, status.getMediaEntities().length);
     }
 
