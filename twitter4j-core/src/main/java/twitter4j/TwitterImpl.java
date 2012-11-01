@@ -24,10 +24,8 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -872,7 +870,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException {
         ensureAuthorizationEnabled();
-        HttpResponse res = get(conf.getRestBaseURL() + "users/suggestions/" + categorySlug + ".json");
+        HttpResponse res = null;
+        try {
+            res = get(conf.getRestBaseURL() + "users/suggestions/" + URLEncoder.encode(categorySlug, "UTF-8") + ".json");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         return factory.createUserListFromJSONArray_Users(res);
     }
 
@@ -891,7 +894,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<User> getMemberSuggestions(String categorySlug) throws TwitterException {
         ensureAuthorizationEnabled();
-        HttpResponse res = get(conf.getRestBaseURL() + "users/suggestions/" + categorySlug + "/members.json");
+        HttpResponse res = null;
+        try {
+            res = get(conf.getRestBaseURL() + "users/suggestions/" + URLEncoder.encode(categorySlug, "UTF-8") + "/members.json");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         return factory.createUserListFromJSONArray(res);
     }
 
