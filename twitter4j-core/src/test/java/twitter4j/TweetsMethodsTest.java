@@ -115,31 +115,30 @@ public class TweetsMethodsTest extends TwitterTestBase {
 
 
     public void testEntities() throws Exception {
-        Status status = twitter2.showStatus(25733871525957632l);
+        Status status = twitter2.showStatus(263908367406350337L);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
         URLEntity[] entities = status.getURLEntities();
-        assertEquals(2, entities.length);
-        assertEquals("http://t.co/ppLTMVO", entities[0].getURL().toString());
+        assertEquals(1, entities.length);
+        assertEquals("http://t.co/tf474NCg", entities[0].getURL().toString());
         assertEquals("http://twitter4j.org/en/index.html#download", entities[0].getExpandedURL().toString());
         assertEquals("twitter4j.org/en/index.html#…", entities[0].getDisplayURL());
         assertTrue(0 < entities[0].getStart());
         assertTrue(entities[0].getStart() < entities[0].getEnd());
 
         UserMentionEntity[] userMentions = status.getUserMentionEntities();
-        assertEquals(1, userMentions.length);
-        assertEquals(15928023, userMentions[0].getId());
-        assertEquals("SonatypeNexus", userMentions[0].getScreenName());
-        assertEquals("Sonatype Nexus", userMentions[0].getName());
-        assertEquals(111, userMentions[0].getStart());
-        assertEquals(125, userMentions[0].getEnd());
+        assertEquals(2, userMentions.length);
+        assertEquals(4933401, userMentions[1].getId());
+        assertEquals("yusuke", userMentions[1].getScreenName());
+        assertEquals(28, userMentions[1].getStart());
+        assertEquals(35, userMentions[1].getEnd());
 
         HashtagEntity[] hashtags = status.getHashtagEntities();
         assertEquals(1, hashtags.length);
-        assertEquals("twitter4j", hashtags[0].getText());
-        assertEquals(126, hashtags[0].getStart());
-        assertEquals(136, hashtags[0].getEnd());
+        assertEquals("test", hashtags[0].getText());
+        assertEquals(36, hashtags[0].getStart());
+        assertEquals(41, hashtags[0].getEnd());
 
         status = twitter1.showStatus(76360760606986241L);
         assertNotNull(DataObjectFactory.getRawJSON(status));
@@ -151,8 +150,8 @@ public class TweetsMethodsTest extends TwitterTestBase {
         assertEquals("pic.twitter.com/qbJx26r", media.getDisplayURL());
         assertEquals("http://twitter.com/twitter/status/76360760606986241/photo/1", media.getExpandedURL().toString());
         assertEquals(76360760611180544L, media.getId());
-        assertEquals("http://p.twimg.com/AQ9JtQsCEAA7dEN.jpg", media.getMediaURL().toString());
-        assertEquals("https://p.twimg.com/AQ9JtQsCEAA7dEN.jpg", media.getMediaURLHttps().toString());
+        assertEquals("http://pbs.twimg.com/media/AQ9JtQsCEAA7dEN.jpg", media.getMediaURL().toString());
+        assertEquals("https://pbs.twimg.com/media/AQ9JtQsCEAA7dEN.jpg", media.getMediaURLHttps().toString());
         assertEquals("http://t.co/qbJx26r", media.getURL().toString());
         assertEquals(34, media.getStart());
         assertEquals(53, media.getEnd());
