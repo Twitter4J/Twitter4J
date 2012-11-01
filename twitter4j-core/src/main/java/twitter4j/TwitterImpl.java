@@ -310,7 +310,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public DirectMessage showDirectMessage(long id) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createDirectMessage(get(conf.getRestBaseURL() + "direct_messages/show/" + id + ".json"));
+        return factory.createDirectMessage(get(conf.getRestBaseURL() + "direct_messages/show.json?id=" + id));
     }
 
     /**
@@ -320,7 +320,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public DirectMessage destroyDirectMessage(long id) throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy/" + id + ".json"));
+        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy/show.json?id=" + id));
     }
 
     /**

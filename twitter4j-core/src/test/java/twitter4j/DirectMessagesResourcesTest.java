@@ -24,8 +24,8 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class DirectMessageMethodsTest extends TwitterTestBase {
-    public DirectMessageMethodsTest(String name) {
+public class DirectMessagesResourcesTest extends TwitterTestBase {
+    public DirectMessagesResourcesTest(String name) {
         super(name);
     }
 
