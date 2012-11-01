@@ -31,362 +31,118 @@ import java.util.Map;
  * @see twitter4j.TwitterListener
  */
 public class TwitterAdapter implements TwitterListener {
-    public TwitterAdapter() {
-    }
-    /*Search API Methods*/
-    @Override
-    public void searched(QueryResult result) {
-    }
-    /*Timeline Methods*/
-    @Override
-    public void gotHomeTimeline(ResponseList<Status> statuses) {
-    }
-    @Override
-    public void gotUserTimeline(ResponseList<Status> statuses) {
-    }
-    @Override
-    public void gotMentions(ResponseList<Status> statuses) {
-    }
-
-    /*Status Methods*/
-    @Override
-    public void gotShowStatus(Status statuses) {
-    }
-    @Override
-    public void updatedStatus(Status statuses) {
-    }
-
-    @Override
-    public void destroyedStatus(Status destroyedStatus) {
-    }
-
-    @Override
-    public void retweetedStatus(Status retweetedStatus) {
-    }
-
-    @Override
-    public void gotRetweets(ResponseList<Status> retweets) {
-    }
-
-
-    /*User Methods*/
-    @Override
-    public void gotUserDetail(User user) {
-    }
-
-    @Override
-    public void lookedupUsers(ResponseList<User> users) {
-    }
-
-    @Override
-    public void searchedUser(ResponseList<User> userList) {
-    }
-
-    @Override
-    public void gotSuggestedUserCategories(ResponseList<Category> categories) {
-    }
-
-    @Override
-    public void gotUserSuggestions(ResponseList<User> users) {
-    }
-
-    @Override
-    public void gotMemberSuggestions(ResponseList<User> users) {
-    }
-
-    @Override
-    public void gotContributors(ResponseList<User> users) {
-    }
-
-    @Override
-    public void gotContributees(ResponseList<User> users) {
-    }
-
-    /*List Methods*/
-
-    @Override
-    public void createdUserList(UserList userList) {
-    }
-
-    @Override
-    public void updatedUserList(UserList userList) {
-    }
-
-    @Override
-    public void gotUserLists(PagableResponseList<UserList> userLists) {
-    }
-
-    @Override
-    public void gotShowUserList(UserList userList) {
-    }
-
-    @Override
-    public void destroyedUserList(UserList userList) {
-    }
-
-    @Override
-    public void gotUserListStatuses(ResponseList<Status> statuses) {
-    }
-
-    @Override
-    public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
-    }
-
-    @Override
-    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {
-    }
-
-    /*List Members Methods*/
-
-    @Override
-    public void gotUserListMembers(PagableResponseList<User> users) {
-    }
-
-    @Override
-    public void addedUserListMember(UserList userList) {
-    }
-
-    @Override
-    public void addedUserListMembers(UserList userList) {
-    }
-
-    @Override
-    public void deletedUserListMember(UserList userList) {
-    }
-
-    @Override
-    public void checkedUserListMembership(User user) {
-    }
-
-    /*List Subscribers Methods*/
-
-    @Override
-    public void gotUserListSubscribers(PagableResponseList<User> users) {
-    }
-
-    @Override
-    public void subscribedUserList(UserList userList) {
-    }
-
-    @Override
-    public void unsubscribedUserList(UserList userList) {
-    }
-
-    @Override
-    public void checkedUserListSubscription(User user) {
-    }
-
-    /*Direct Message Methods*/
-    @Override
-    public void gotDirectMessages(ResponseList<DirectMessage> messages) {
-    }
-
-    @Override
-    public void gotSentDirectMessages(ResponseList<DirectMessage> messages) {
-    }
-
-    @Override
-    public void sentDirectMessage(DirectMessage message) {
-    }
-
-    @Override
-    public void destroyedDirectMessage(DirectMessage message) {
-    }
-
-    @Override
-    public void gotDirectMessage(DirectMessage message) {
-    }
-    /*Friendship Methods*/
-
-    @Override
-    public void createdFriendship(User user) {
-    }
-
-    @Override
-    public void destroyedFriendship(User user) {
-    }
-
-    @Override
-    public void gotShowFriendship(Relationship relationship) {
-    }
-
-    @Override
-    public void gotIncomingFriendships(IDs ids) {
-    }
-
-    @Override
-    public void gotOutgoingFriendships(IDs ids) {
-    }
-
-    @Override
-    public void lookedUpFriendships(ResponseList<Friendship> friendships) {
-    }
-
-    @Override
-    public void updatedFriendship(Relationship relationship) {
-    }
-
-    /*Social Graph Methods*/
-    @Override
-    public void gotFriendsIDs(IDs ids) {
-    }
-
-    @Override
-    public void gotFollowersIDs(IDs ids) {
-    }
-
-    /*Account Methods*/
-
-    @Override
-    public void verifiedCredentials(User user) {
-    }
-
-    @Override
-    public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
-
-    }
-
-    @Override
-    public void updatedProfileColors(User user) {
-    }
-
-    @Override
-    public void gotAccountSettings(AccountSettings settings) {
-    }
-
-    @Override
-    public void updatedAccountSettings(AccountSettings settings) {
-    }
-
-    @Override
-    public void updatedProfileImage(User user) {
-    }
-
-    @Override
-    public void updatedProfileBackgroundImage(User user) {
-    }
-
-    @Override
-    public void updatedProfile(User user) {
-    }
-
-    /*Favorite Methods*/
-    @Override
-    public void gotFavorites(ResponseList<Status> statuses) {
-    }
-
-    @Override
-    public void createdFavorite(Status status) {
-    }
-
-    @Override
-    public void destroyedFavorite(Status status) {
-    }
-
-    /*Block Methods*/
-
-    @Override
-    public void createdBlock(User user) {
-    }
-
-    @Override
-    public void destroyedBlock(User user) {
-    }
-
-    @Override
-    public void gotBlocksList(ResponseList<User> blockingUsers) {
-    }
-
-    @Override
-    public void gotBlockIDs(IDs blockingUsersIDs) {
-    }
-
-    /*Spam Reporting Methods*/
-
-    @Override
-    public void reportedSpam(User reportedSpammer) {
-    }
-
-
-    /*Saved Searches Methods*/
+    /* Timelines Resources */
+    public void gotMentions(ResponseList<Status> statuses){}
+    public void gotHomeTimeline(ResponseList<Status> statuses){}
+    public void gotUserTimeline(ResponseList<Status> statuses){}
+
+    /* Tweets Resources */
+    public void gotRetweets(ResponseList<Status> retweets){}
+    public void gotShowStatus(Status status){}
+    public void destroyedStatus(Status destroyedStatus){}
+    public void updatedStatus(Status status){}
+    public void retweetedStatus(Status retweetedStatus){}
+
+    /* Search Resources */
+    public void searched(QueryResult queryResult){}
+
+    /* Direct Messages Resources */
+    public void gotDirectMessages(ResponseList<DirectMessage> messages){}
+    public void gotSentDirectMessages(ResponseList<DirectMessage> messages){}
+    public void gotDirectMessage(DirectMessage message){}
+    public void destroyedDirectMessage(DirectMessage message){}
+    public void sentDirectMessage(DirectMessage message){}
+
+    /* Friends & Followers Resources */
+    public void gotFriendsIDs(IDs ids){}
+    public void gotFollowersIDs(IDs ids){}
+    public void lookedUpFriendships(ResponseList<Friendship> friendships){}
+    public void gotIncomingFriendships(IDs ids){}
+    public void gotOutgoingFriendships(IDs ids){}
+    public void createdFriendship(User user){}
+    public void destroyedFriendship(User user){}
+    public void updatedFriendship(Relationship relationship){}
+    public void gotShowFriendship(Relationship relationship){}
+
+    /* Users Resources */
+    public void gotAccountSettings(AccountSettings settings){}
+    public void verifiedCredentials(User user){}
+    public void updatedAccountSettings(AccountSettings settings){}
+    // updatedDeliveryDevice
+    public void updatedProfile(User user){}
+    public void updatedProfileBackgroundImage(User user){}
+    public void updatedProfileColors(User user){}
+    public void updatedProfileImage(User user){}
+    public void gotBlocksList(ResponseList<User> blockingUsers){}
+    public void gotBlockIDs(IDs blockingUsersIDs){}
+    public void createdBlock(User user){}
+    public void destroyedBlock(User user){}
+    public void lookedupUsers(ResponseList<User> users){}
+    public void gotUserDetail(User user){}
+    public void searchedUser(ResponseList<User> userList){}
+    public void gotContributees(ResponseList<User> users){}
+    public void gotContributors(ResponseList<User> users){}
+
+    /* Suggested Users Resources */
+    public void gotUserSuggestions(ResponseList<User> users){}
+    public void gotSuggestedUserCategories(ResponseList<Category> category){}
+    public void gotMemberSuggestions(ResponseList<User> users){}
+
+    /* Favorites Resources */
+    public void gotFavorites(ResponseList<Status> statuses){}
+    public void createdFavorite(Status status){}
+    public void destroyedFavorite(Status status){}
+
+    /* Lists Resources */
+    public void gotUserLists(PagableResponseList<UserList> userLists){}
+    public void gotUserListStatuses(ResponseList<Status> statuses){}
+    public void deletedUserListMember(UserList userList){}
+    public void gotUserListMemberships(PagableResponseList<UserList> userLists){}
+    public void gotUserListSubscribers(PagableResponseList<User> users){}
+    public void subscribedUserList(UserList userList){}
+    public void checkedUserListSubscription(User user){}
+    public void unsubscribedUserList(UserList userList){}
+    public void addedUserListMembers(UserList userList){}
+    public void checkedUserListMembership(User users){}
+    public void addedUserListMember(UserList userList){}
+    public void destroyedUserList(UserList userList){}
+    public void updatedUserList(UserList userList){}
+    public void createdUserList(UserList userList){}
+    public void gotShowUserList(UserList userList){}
+    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists){}
+    public void gotUserListMembers(PagableResponseList<User> users){}
+
+    /* Saved Searches Resources */
     public void gotSavedSearches(ResponseList<SavedSearch> savedSearches){}
     public void gotSavedSearch(SavedSearch savedSearch){}
     public void createdSavedSearch(SavedSearch savedSearch){}
     public void destroyedSavedSearch(SavedSearch savedSearch){}
 
-    /*Local Trends Methods*/
+    /* Places & Geo Resources */
+    public void gotGeoDetails(Place place){}
+    public void gotReverseGeoCode(ResponseList<Place> places){}
+    public void searchedPlaces(ResponseList<Place> places){}
+    public void gotSimilarPlaces(SimilarPlaces places){}
+    public void createdPlace(Place place){}
 
-    @Override
-    public void gotAvailableTrends(ResponseList<Location> locations) {
-    }
+    /* Trends Resources */
+    public void gotAvailableTrends(ResponseList<Location> locations){}
 
-    /*Geo Methods*/
+    /* Spam Reporting Resources */
+    public void reportedSpam(User reportedSpammer){}
 
-    @Override
-    public void searchedPlaces(ResponseList<Place> places) {
-    }
+    /* OAuth Resources */
+    public void gotOAuthRequestToken(RequestToken token){}
+    public void gotOAuthAccessToken(AccessToken token){}
 
-    @Override
-    public void gotSimilarPlaces(SimilarPlaces places) {
-    }
+    /* Help Resources */
+    public void gotAPIConfiguration(TwitterAPIConfiguration conf){}
+    public void gotLanguages(ResponseList<HelpResources.Language> languages){}
+    public void gotPrivacyPolicy(String privacyPolicy){}
+    public void gotTermsOfService(String tof){}
+    public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus){}
+    public void onException(TwitterException te, TwitterMethod method){}
 
-    @Override
-    public void gotReverseGeoCode(ResponseList<Place> places) {
-    }
-
-    @Override
-    public void gotGeoDetails(Place place) {
-    }
-
-    @Override
-    public void createdPlace(Place place) {
-    }
-
-    /* Legal Resources*/
-
-    @Override
-    public void gotTermsOfService(String tof) {
-
-    }
-
-    @Override
-    public void gotPrivacyPolicy(String privacyPolicy) {
-
-    }
-
-    /* #newtwitter Methods */
-
-    /**
-     *
-     */
-    @Override
-    public void gotRelatedResults(RelatedResults relatedResults) {
-    }
-
-    /*Help Methods*/
-    @Override
-    public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
-    }
-
-    @Override
-    public void gotLanguages(ResponseList<HelpResources.Language> languages) {
-    }
-
-    /* OAuth Methods*/
-
-    @Override
-    public void gotOAuthRequestToken(RequestToken token) {
-    }
-
-    @Override
-    public void gotOAuthAccessToken(AccessToken token) {
-    }
-
-    /**
-     * @param ex     TwitterException
-     * @param method
-     */
-    @Override
-    public void onException(TwitterException ex, TwitterMethod method) {
-    }
+    /* Undocumented Resources */
+    public void gotRelatedResults(RelatedResults relatedResults){}
 }

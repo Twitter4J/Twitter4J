@@ -112,55 +112,29 @@ public enum TwitterMethod {
     CREATE_SAVED_SEARCH,
     DESTROY_SAVED_SEARCH,
 
-    //getSavedSearches()
-    //showSavedSearch()
-    //createSavedSearch()
-    //destroySavedSearch()
-
     /* Places & Geo Resources */
-    /* Trends Resources */
-    /* Spam Reporting Resources */
-    /* OAuth Resources */
-    /* Help Resources */
-
-
-    /*User Methods*/
-    /*List Methods*/
-
-
-
-    /*Account Methods*/
-    /*Favorite Methods*/
-
-    /*Block Methods*/
-
-    /*Spam Reporting Methods*/
-    REPORT_SPAM,
-
-    /*Saved Searches Methods*/
-
-    /*Local Trends Methods*/
-    AVAILABLE_TRENDS,
-
-    /*Geo Methods*/
     SEARCH_PLACES,
     SIMILAR_PLACES,
     REVERSE_GEO_CODE,
     GEO_DETAILS,
     CREATE_PLACE,
 
-    /* Legal Resources */
+    /* Trends Resources */
+    AVAILABLE_TRENDS,
+
+    /* Spam Reporting Resources */
+    REPORT_SPAM,
+
+    /* OAuth Resources */
+    OAUTH_REQUEST_TOKEN,
+    OAUTH_ACCESS_TOKEN,
+
+    /* Help Resources */
     TERMS_OF_SERVICE,
-    PRIVACY_POLICY,
-
-    /* #newtwitter Methods */
-    RELATED_RESULTS,
-
-    /*Help Methods*/
     CONFIGURATION,
     LANGUAGES,
+    PRIVACY_POLICY,
 
-    /*OAuth Methods*/
-    OAUTH_REQUEST_TOKEN,
-    OAUTH_ACCESS_TOKEN
+    /* Undocumented Resources */
+    RELATED_RESULTS,
 }
