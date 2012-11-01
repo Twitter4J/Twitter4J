@@ -58,3 +58,4 @@ tweetPhoto.apiKey=
 
 http.prettyDebug=true
 jsonStoreEnabled=true
+mbeanEnabled=true

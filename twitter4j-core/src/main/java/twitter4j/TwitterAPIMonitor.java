@@ -36,10 +36,10 @@ import java.util.regex.Pattern;
  */
 public class TwitterAPIMonitor {
     private static final Logger logger = Logger.getLogger(TwitterAPIMonitor.class);
-    // https?:\/\/[^\/]+\/([a-zA-Z_\.]*).*
+    // https?:\/\/[^\/]+\/[0-9.]*\/([a-zA-Z_\.]*).*
     // finds the "method" part a Twitter REST API url, ignoring member-specific resource names
     private static final Pattern pattern =
-            Pattern.compile("https?:\\/\\/[^\\/]+\\/\\d+\\/([a-zA-Z_\\.]*).*");
+            Pattern.compile("https?:\\/\\/[^\\/]+\\/[0-9.]*\\/([a-zA-Z_\\.]*).*");
 
     private static final TwitterAPIMonitor SINGLETON = new TwitterAPIMonitor();
 
