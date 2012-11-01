@@ -122,9 +122,7 @@ public interface TwitterListener {
     void createdPlace(Place place);
 
     /* Trends Resources */
-    void gotCurrentTrends(Trends trends);
     void gotAvailableTrends(ResponseList<Location> locations);
-    void gotLocationTrends(Trends trends);
 
     /* Spam Reporting Resources */
     void reportedSpam(User reportedSpammer);

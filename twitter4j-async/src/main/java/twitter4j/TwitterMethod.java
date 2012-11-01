@@ -141,7 +141,6 @@ public enum TwitterMethod {
 
     /*Local Trends Methods*/
     AVAILABLE_TRENDS,
-    LOCATION_TRENDS,
 
     /*Geo Methods*/
     SEARCH_PLACES,

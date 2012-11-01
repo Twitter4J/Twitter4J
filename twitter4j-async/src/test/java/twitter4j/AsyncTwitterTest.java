@@ -387,12 +387,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
-    @Override
-    public void gotCurrentTrends(Trends trends) {
-        this.trends = trends;
-        notifyResponse();
-    }
-
     /*Timeline Methods*/
     @Override
     public void gotHomeTimeline(ResponseList<Status> statuses) {
@@ -850,16 +844,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     @Override
     public void gotAvailableTrends(ResponseList<Location> locations) {
         this.locations = locations;
-        notifyResponse();
-    }
-
-    /**
-     * @param trends trends
-     * @since Twitter4J 2.1.1
-     */
-    @Override
-    public void gotLocationTrends(Trends trends) {
-        this.trends = trends;
         notifyResponse();
     }
 

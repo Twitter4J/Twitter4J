@@ -1519,29 +1519,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 + "trends/available.json"));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Location> getAvailableTrends(GeoLocation location) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createLocationList(get(conf.getRestBaseURL()
-                + "trends/available.json",
-                new HttpParameter[]{new HttpParameter("lat", location.getLatitude())
-                        , new HttpParameter("long", location.getLongitude())
-                }));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Trends getLocationTrends(int woeid) throws TwitterException {
-        ensureAuthorizationEnabled();
-        return factory.createTrends(get(conf.getRestBaseURL()
-                + "trends/" + woeid + ".json"));
-    }
-
     /* Spam Reporting Resources */
     /**
      * {@inheritDoc}

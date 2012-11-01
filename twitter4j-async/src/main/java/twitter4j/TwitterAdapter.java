@@ -37,9 +37,6 @@ public class TwitterAdapter implements TwitterListener {
     @Override
     public void searched(QueryResult result) {
     }
-    @Override
-    public void gotCurrentTrends(Trends trends) {
-    }
     /*Timeline Methods*/
     @Override
     public void gotHomeTimeline(ResponseList<Status> statuses) {
@@ -321,10 +318,6 @@ public class TwitterAdapter implements TwitterListener {
 
     @Override
     public void gotAvailableTrends(ResponseList<Location> locations) {
-    }
-
-    @Override
-    public void gotLocationTrends(Trends trends) {
     }
 
     /*Geo Methods*/

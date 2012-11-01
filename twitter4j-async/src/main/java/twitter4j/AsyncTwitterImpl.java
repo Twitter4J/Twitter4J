@@ -2485,44 +2485,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void getAvailableTrends(final GeoLocation location) {
-        getDispatcher().invokeLater(new AsyncTask(AVAILABLE_TRENDS, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<Location> locations = twitter.getAvailableTrends(location);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotAvailableTrends(locations);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void getLocationTrends(final int woeid) {
-        getDispatcher().invokeLater(new AsyncTask(LOCATION_TRENDS, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                Trends trends = twitter.getLocationTrends(woeid);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotLocationTrends(trends);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
     /* Spam Reporting Resources */
     /**
      * {@inheritDoc}

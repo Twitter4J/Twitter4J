@@ -21,8 +21,8 @@ import twitter4j.json.DataObjectFactory;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class TrendMethodsTest extends TwitterTestBase {
-    public TrendMethodsTest(String name) {
+public class TrendsResourcesTest extends TwitterTestBase {
+    public TrendsResourcesTest(String name) {
         super(name);
     }
 
@@ -40,25 +40,5 @@ public class TrendMethodsTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(locations));
         assertEquals(locations.get(0), DataObjectFactory.createLocation(DataObjectFactory.getRawJSON(locations.get(0))));
         assertTrue(locations.size() > 0);
-        locations = twitter1.getAvailableTrends(new GeoLocation(0, 0));
-        assertNotNull(DataObjectFactory.getRawJSON(locations));
-        assertTrue(locations.size() > 0);
-
-        Trends trends = twitter1.getLocationTrends(locations.get(0).getWoeid());
-        System.out.println(DataObjectFactory.getRawJSON(trends));
-        assertEquals(trends, DataObjectFactory.createTrends(DataObjectFactory.getRawJSON(trends)));
-        assertNull(DataObjectFactory.getRawJSON(locations));
-        System.out.println(DataObjectFactory.getRawJSON(trends));
-        assertNotNull(DataObjectFactory.getRawJSON(trends));
-        assertEquals(locations.get(0), trends.getLocation());
-        assertTrue(trends.getTrends().length > 0);
-
-        try {
-            trends = twitter1.getLocationTrends(2345889/*woeid of Tokyo*/);
-            fail("should fail.");
-        } catch (Exception ignore) {
-        }
-        assertEquals(locations.get(0), trends.getLocation());
-        assertTrue(trends.getTrends().length > 0);
     }
 }
