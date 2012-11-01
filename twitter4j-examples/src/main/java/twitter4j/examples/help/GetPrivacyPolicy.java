@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.examples.legal;
+package twitter4j.examples.help;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -24,19 +24,19 @@ import twitter4j.TwitterFactory;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */
-public class GetTermsOfService {
+public class GetPrivacyPolicy {
     /**
-     * Usage: java twitter4j.examples.legal.GetTermsOfService
+     * Usage: java twitter4j.examples.help.GetPrivacyPolicy
      *
      * @param args String[]
      */
     public static void main(String[] args) {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            System.out.println(twitter.getTermsOfService());
+            System.out.println(twitter.getPrivacyPolicy());
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to get tems of service: " + te.getMessage());
+            System.out.println("Failed to get privacy policy: " + te.getMessage());
             System.exit(-1);
         }
     }

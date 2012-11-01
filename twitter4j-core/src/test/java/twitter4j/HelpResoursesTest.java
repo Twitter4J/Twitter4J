@@ -15,12 +15,14 @@
  */
 package twitter4j;
 
+import twitter4j.api.HelpResources;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class LegalMethodsTest extends TwitterTestBase {
-    public LegalMethodsTest(String name) {
+public class HelpResoursesTest extends TwitterTestBase {
+    public HelpResoursesTest(String name) {
         super(name);
     }
 
@@ -30,6 +32,24 @@ public class LegalMethodsTest extends TwitterTestBase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    public void testHelpMethods() throws Exception {
+        ResponseList<HelpResources.Language> languages = twitter1.getLanguages();
+        assertTrue(languages.size() > 5);
+        HelpResources.Language language = languages.get(0);
+        assertNotNull(language.getCode());
+        assertNotNull(language.getName());
+        assertNotNull(language.getStatus());
+
+        TwitterAPIConfiguration conf = twitter1.getAPIConfiguration();
+        assertEquals(3145728, conf.getPhotoSizeLimit());
+        assertEquals(21, conf.getCharactersReservedPerMedia());
+        assertEquals(20, conf.getShortURLLength());
+        assertEquals(21, conf.getShortURLLengthHttps());
+        assertEquals(4, conf.getPhotoSizes().size());
+        assertTrue(20 < conf.getNonUsernamePaths().length);
+        assertEquals(1, conf.getMaxMediaPerUpload());
     }
 
     public void testLegalResources() throws Exception {

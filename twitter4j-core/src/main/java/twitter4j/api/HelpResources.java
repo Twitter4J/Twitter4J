@@ -58,22 +58,22 @@ public interface HelpResources {
 
     /**
      * Returns Twitter's Privacy Policy.
-     * <br>This method calls http://api.twitter.com/1.1/legal/privacy.json
+     * <br>This method calls http://api.twitter.com/1.1/help/privacy.json
      *
      * @return privacy policy
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/legal/privacy">GET legal/privacy | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/help/privacy">GET help/privacy | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     String getPrivacyPolicy() throws TwitterException;
 
     /**
      * Returns Twitter's' Terms of Service.
-     * <br>This method calls http://api.twitter.com/1.1/legal/tos.json
+     * <br>This method calls http://api.twitter.com/1.1/help/tos.json
      *
      * @return Terms of Service
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/legal/tos">GET legal/tos | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/help/tos">GET help/tos | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
     String getTermsOfService() throws TwitterException;

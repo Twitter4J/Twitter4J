@@ -1564,7 +1564,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public String getPrivacyPolicy() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return get(conf.getRestBaseURL() + "legal/privacy.json").asJSONObject().getString("privacy");
+            return get(conf.getRestBaseURL() + "help/privacy.json").asJSONObject().getString("privacy");
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -1577,7 +1577,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public String getTermsOfService() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return get(conf.getRestBaseURL() + "legal/tos.json").asJSONObject().getString("tos");
+            return get(conf.getRestBaseURL() + "help/tos.json").asJSONObject().getString("tos");
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
