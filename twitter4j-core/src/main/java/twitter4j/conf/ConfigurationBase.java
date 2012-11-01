@@ -317,8 +317,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (IS_DALVIK) {
             requestHeaders.put("Connection", "close");
         }
-        // temporal workaround for https://dev.twitter.com/discussions/12107
-        requestHeaders.put("Content-Length", "0");
     }
 
     @Override
