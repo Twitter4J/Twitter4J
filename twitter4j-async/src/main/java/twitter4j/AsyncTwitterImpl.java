@@ -71,7 +71,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(MENTIONS_TIMELINE, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<Status> statuses = twitter.getMentions();
+                ResponseList<Status> statuses = twitter.getMentionsTimeline();
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotMentions(statuses);
@@ -90,7 +90,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(MENTIONS_TIMELINE, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<Status> statuses = twitter.getMentions(paging);
+                ResponseList<Status> statuses = twitter.getMentionsTimeline(paging);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotMentions(statuses);
@@ -1619,11 +1619,11 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void getUserLists(final long listOwnerUserId, final long cursor) {
+    public void getUserLists(final long listOwnerUserId) {
         getDispatcher().invokeLater(new AsyncTask(USER_LISTS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<UserList> lists = twitter.getUserLists(listOwnerUserId, cursor);
+                ResponseList<UserList> lists = twitter.getUserLists(listOwnerUserId);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserLists(lists);
@@ -1638,11 +1638,11 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void getUserLists(final String listOwnerScreenName, final long cursor) {
+    public void getUserLists(final String listOwnerScreenName) {
         getDispatcher().invokeLater(new AsyncTask(USER_LISTS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PagableResponseList<UserList> lists = twitter.getUserLists(listOwnerScreenName, cursor);
+                ResponseList<UserList> lists = twitter.getUserLists(listOwnerScreenName);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserLists(lists);

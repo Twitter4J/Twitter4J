@@ -514,8 +514,8 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     @Override
-    public void gotUserLists(PagableResponseList<UserList> userLists) {
-        this.pagableUserLists = userLists;
+    public void gotUserLists(ResponseList<UserList> userLists) {
+        this.userLists = userLists;
         notifyResponse();
     }
 

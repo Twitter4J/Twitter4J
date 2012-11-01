@@ -90,7 +90,7 @@ public interface TwitterListener {
     void destroyedFavorite(Status status);
 
     /* Lists Resources */
-    void gotUserLists(PagableResponseList<UserList> userLists);
+    void gotUserLists(ResponseList<UserList> userLists);
     void gotUserListStatuses(ResponseList<Status> statuses);
     void deletedUserListMember(UserList userList);
     void gotUserListMemberships(PagableResponseList<UserList> userLists);

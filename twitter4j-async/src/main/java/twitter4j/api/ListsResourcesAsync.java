@@ -31,7 +31,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
-    void getUserLists(String listOwnerScreenName, long cursor);
+    void getUserLists(String listOwnerScreenName);
 
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
@@ -42,7 +42,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    void getUserLists(long listOwnerUserId, long cursor);
+    void getUserLists(long listOwnerUserId);
 
     /**
      * Show tweet timeline for members of the specified list.

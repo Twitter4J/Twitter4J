@@ -95,24 +95,24 @@ public class TimelineMethodsTest extends TwitterTestBase {
     public void testGetMentions() throws Exception {
         Status status = twitter2.updateStatus("@" + id1.screenName + " reply to id1 " + new java.util.Date());
         assertNotNull(DataObjectFactory.getRawJSON(status));
-        List<Status> statuses = twitter1.getMentions();
+        List<Status> statuses = twitter1.getMentionsTimeline();
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         assertTrue(statuses.size() > 0);
 
-        statuses = twitter1.getMentions(new Paging(1));
+        statuses = twitter1.getMentionsTimeline(new Paging(1));
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         assertTrue(statuses.size() > 0);
-        statuses = twitter1.getMentions(new Paging(1));
+        statuses = twitter1.getMentionsTimeline(new Paging(1));
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         assertTrue(statuses.size() > 0);
-        statuses = twitter1.getMentions(new Paging(1, 1l));
+        statuses = twitter1.getMentionsTimeline(new Paging(1, 1l));
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         assertTrue(statuses.size() > 0);
-        statuses = twitter1.getMentions(new Paging(1l));
+        statuses = twitter1.getMentionsTimeline(new Paging(1l));
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         assertTrue(statuses.size() > 0);

@@ -190,7 +190,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 DataObjectFactoryUtil.clearThreadLocalMap();
             }
             JSONObject json = res.asJSONObject();
-            JSONArray list = json.getJSONArray("lists");
+            JSONArray list = res.asJSONArray();
             int size = list.length();
             PagableResponseList<UserList> users =
                     new PagableResponseListImpl<UserList>(size, json, res);

@@ -33,7 +33,7 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
-    PagableResponseList<UserList> getUserLists(String listOwnerScreenName, long cursor)
+    ResponseList<UserList> getUserLists(String listOwnerScreenName)
             throws TwitterException;
 
     /**
@@ -47,7 +47,7 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    PagableResponseList<UserList> getUserLists(long listOwnerUserId, long cursor)
+    ResponseList<UserList> getUserLists(long listOwnerUserId)
             throws TwitterException;
 
 

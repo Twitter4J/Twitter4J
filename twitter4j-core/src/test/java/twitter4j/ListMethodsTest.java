@@ -37,7 +37,7 @@ public class ListMethodsTest extends TwitterTestBase {
     }
 
     public void testListMethods() throws Exception {
-        PagableResponseList<UserList> userLists;
+        ResponseList<UserList> userLists;
         UserList userList;
         userList = prepareListTest();
         /*List Methods*/
@@ -48,7 +48,7 @@ public class ListMethodsTest extends TwitterTestBase {
 //        assertEquals("@twit4j/testpoint1", userList.getFullName());
         assertEquals("description1", userList.getDescription());
 
-        userLists = twitter1.getUserLists(id1.screenName, -1l);
+        userLists = twitter1.getUserLists(id1.screenName);
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(DataObjectFactory.getRawJSON(userList));
         assertFalse(userLists.size() == 0);
@@ -227,8 +227,8 @@ public class ListMethodsTest extends TwitterTestBase {
     }
 
     private UserList prepareListTest() throws Exception {
-        PagableResponseList<UserList> userLists;
-        userLists = twitter1.getUserLists(id1.screenName, -1l);
+        ResponseList<UserList> userLists;
+        userLists = twitter1.getUserLists(id1.screenName);
         assertNotNull(DataObjectFactory.getRawJSON(userLists));
         for (UserList alist : userLists) {
             twitter1.destroyUserList(twitter1.getId(), alist.getSlug());

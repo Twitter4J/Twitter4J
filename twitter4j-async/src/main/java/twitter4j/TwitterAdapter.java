@@ -94,7 +94,7 @@ public class TwitterAdapter implements TwitterListener {
     public void destroyedFavorite(Status status){}
 
     /* Lists Resources */
-    public void gotUserLists(PagableResponseList<UserList> userLists){}
+    public void gotUserLists(ResponseList<UserList> userLists){}
     public void gotUserListStatuses(ResponseList<Status> statuses){}
     public void deletedUserListMember(UserList userList){}
     public void gotUserListMemberships(PagableResponseList<UserList> userLists){}
