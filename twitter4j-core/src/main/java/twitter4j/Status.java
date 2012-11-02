@@ -154,11 +154,4 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      */
     boolean isRetweetedByMe();
 
-    /**
-     * Returns the annotations, or null if no annotations are associated with this status.
-     *
-     * @since Twitter4J 2.1.4
-     * @deprecated Annotations is not available for now. <a href="http://groups.google.com/group/twitter-development-talk/browse_thread/thread/4d5ff2ec4d2ce4a7">Annotations - Twitter Development Talk | Google Groups</a>
-     */
-    Annotations getAnnotations();
 }

@@ -51,7 +51,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     private Place place;
 
     private GeoLocation geoLocation = null;
-    private Annotations annotations = null;
     private UserMentionEntity[] userMentionEntities;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
@@ -73,13 +72,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         createdAt = getDate("created_at", tweet, "EEE, dd MMM yyyy HH:mm:ss z");
         location = getRawString("location", tweet);
         geoLocation = z_T4JInternalJSONImplFactory.createGeoLocation(tweet);
-        if (!tweet.isNull("annotations")) {
-            try {
-                JSONArray annotationsArray = tweet.getJSONArray("annotations");
-                annotations = new Annotations(annotationsArray);
-            } catch (JSONException ignore) {
-            }
-        }
         if (!tweet.isNull("place")) {
             try {
                 place = new PlaceJSONImpl(tweet.getJSONObject("place"));
@@ -312,14 +304,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         return mediaEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Annotations getAnnotations() {
-        return annotations;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -350,7 +334,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         result = 31 * result + (location != null ? location.hashCode() : 0);
         result = 31 * result + (place != null ? place.hashCode() : 0);
         result = 31 * result + (geoLocation != null ? geoLocation.hashCode() : 0);
-        result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
         result = 31 * result + (userMentionEntities != null ? Arrays.hashCode(userMentionEntities) : 0);
         result = 31 * result + (urlEntities != null ? Arrays.hashCode(urlEntities) : 0);
         result = 31 * result + (hashtagEntities != null ? Arrays.hashCode(hashtagEntities) : 0);
@@ -377,7 +360,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 ", location='" + location + '\'' +
                 ", place=" + place +
                 ", geoLocation=" + geoLocation +
-                ", annotations=" + annotations +
                 ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
                 ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
                 ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +

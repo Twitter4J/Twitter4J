@@ -54,7 +54,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
     private String[] contributors = null;
     private long[] contributorsIDs;
-    private Annotations annotations = null;
 
     private Status retweetedStatus;
     private UserMentionEntity[] userMentionEntities;
@@ -177,13 +176,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 }
             } catch (JSONException jsone) {
                 throw new TwitterException(jsone);
-            }
-        }
-        if (!json.isNull("annotations")) {
-            try {
-                JSONArray annotationsArray = json.getJSONArray("annotations");
-                annotations = new Annotations(annotationsArray);
-            } catch (JSONException ignore) {
             }
         }
         if (!json.isNull("current_user_retweet")) {
@@ -309,14 +301,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
             contributors = null;
         }
         return contributorsIDs;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Annotations getAnnotations() {
-        return annotations;
     }
 
     /**
@@ -463,7 +447,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 ", retweetCount=" + retweetCount +
                 ", wasRetweetedByMe=" + wasRetweetedByMe +
                 ", contributors=" + (contributorsIDs == null ? null : Arrays.asList(contributorsIDs)) +
-                ", annotations=" + annotations +
                 ", retweetedStatus=" + retweetedStatus +
                 ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
                 ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
