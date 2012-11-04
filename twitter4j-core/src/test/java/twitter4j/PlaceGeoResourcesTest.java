@@ -21,8 +21,8 @@ import twitter4j.json.DataObjectFactory;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class GeoMethodsTest extends TwitterTestBase {
-    public GeoMethodsTest(String name) {
+public class PlaceGeoResourcesTest extends TwitterTestBase {
+    public PlaceGeoResourcesTest(String name) {
         super(name);
     }
 
@@ -74,7 +74,6 @@ public class GeoMethodsTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
         assertEquals(sanFrancisco, status.getPlace().getId());
-        assertEquals(null, status.getContributors());
     }
 
     public void testGeoLocation() throws Exception {
