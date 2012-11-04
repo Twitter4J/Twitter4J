@@ -35,8 +35,8 @@ public class MBeansIntegrationTest extends TwitterTestBase {
     public void testMonitoringIntegration() throws Exception {
         // monitoring is turned on with mbeanEnabled=true
         TwitterAPIMonitor monitor = TwitterAPIMonitor.getInstance();
-        assertEquals(0, monitor.getStatistics().getCallCount());
+        long count = monitor.getStatistics().getCallCount();
         twitter1.getHomeTimeline();
-        assertEquals(1, monitor.getStatistics().getCallCount());
+        assertEquals(count + 1, monitor.getStatistics().getCallCount());
     }
 }
