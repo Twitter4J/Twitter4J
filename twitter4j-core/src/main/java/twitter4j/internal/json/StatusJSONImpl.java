@@ -52,7 +52,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     private long retweetCount;
     private boolean wasRetweetedByMe;
 
-    private String[] contributors = null;
     private long[] contributorsIDs;
 
     private Status retweetedStatus;
@@ -133,7 +132,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 logger.warn("failed to parse contributors:" + json);
             }
         } else {
-            contributors = null;
+            contributorsIDs = new long[0];
         }
         if (!json.isNull("entities")) {
             try {
@@ -146,7 +145,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                     for (int i = 0; i < len; i++) {
                         userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
                     }
-
                 }
                 if (!entities.isNull("urls")) {
                     JSONArray urlsArray = entities.getJSONArray("urls");
@@ -178,6 +176,19 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 throw new TwitterException(jsone);
             }
         }
+        if (userMentionEntities == null) {
+            userMentionEntities = new UserMentionEntity[0];
+        }
+        if (urlEntities == null) {
+            urlEntities = new URLEntity[0];
+        }
+        if (hashtagEntities == null) {
+            hashtagEntities = new HashtagEntity[0];
+        }
+        if (mediaEntities == null) {
+            mediaEntities = new MediaEntity[0];
+        }
+
         if (!json.isNull("current_user_retweet")) {
             try {
                 myRetweetedStatus = new StatusJSONImpl(json.getJSONObject("current_user_retweet"));
@@ -286,20 +297,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      */
     @Override
     public long[] getContributors() {
-        if (contributors != null) {
-            // http://twitter4j.org/jira/browse/TFJ-592
-            // preserving serialized form compatibility with older versions
-            contributorsIDs = new long[contributors.length];
-            for (int i = 0; i < contributors.length; i++) {
-                try {
-                    contributorsIDs[i] = Long.parseLong(contributors[i]);
-                } catch (NumberFormatException nfe) {
-                    nfe.printStackTrace();
-                    logger.warn("failed to parse contributors:" + nfe);
-                }
-            }
-            contributors = null;
-        }
         return contributorsIDs;
     }
 

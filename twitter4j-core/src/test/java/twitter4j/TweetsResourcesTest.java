@@ -94,7 +94,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
         assertTrue(status.getText().startsWith(date));
-        assertEquals(1, status.getMediaEntities().length);
+        assertEquals(0, status.getMediaEntities().length);
     }
 
     public void testRetweetMethods() throws Exception {
