@@ -1605,8 +1605,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public RelatedResults getRelatedResults(long statusId) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createRelatedResults(get(conf.getRestBaseURL() + "related_results/show/"
-                + Long.toString(statusId) + ".json"));
+        return factory.createRelatedResults(get("https://api.twitter.com/1/related_results/show.json?id="+ Long.toString(statusId)));
     }
 
     private HttpResponse get(String url) throws TwitterException {

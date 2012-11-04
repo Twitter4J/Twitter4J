@@ -21,8 +21,8 @@ import twitter4j.json.DataObjectFactory;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class NewTwitterMethodsTest extends TwitterTestBase {
-    public NewTwitterMethodsTest(String name) {
+public class UndocumentedResourcesTest extends TwitterTestBase {
+    public UndocumentedResourcesTest(String name) {
         super(name);
     }
 
