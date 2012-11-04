@@ -25,6 +25,8 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 import java.util.List;
 
+import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
+
 /**
  * An exception class that will be thrown when TwitterAPI calls are failed.<br>
  * In case the Twitter server returned HTTP error code, you can get the HTTP status code using getStatusCode() method.
@@ -33,11 +35,11 @@ import java.util.List;
  */
 public class TwitterException extends Exception implements TwitterResponse, HttpResponseCode {
     private int statusCode = -1;
+    private int errorCode = -1;
     private static final long serialVersionUID = -2623309261327598087L;
     private ExceptionDiagnosis exceptionDiagnosis = null;
     private HttpResponse response;
     private String errorMessage = null;
-    private String requestPath = null;
 
     public TwitterException(String message, Throwable cause) {
         super(message, cause);
@@ -73,10 +75,10 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     @Override
     public String getMessage() {
         StringBuilder value = new StringBuilder();
-        if (errorMessage != null && requestPath != null) {
-            value.append("error - ").append(errorMessage)
+        if (errorMessage != null && errorCode != -1) {
+            value.append("message - ").append(errorMessage)
                     .append("\n");
-            value.append("request - ").append(requestPath)
+            value.append("code - ").append(errorCode)
                     .append("\n");
         } else {
             value.append(super.getMessage());
@@ -92,11 +94,10 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         if (str != null && str.startsWith("{")) {
             try {
                 JSONObject json = new JSONObject(str);
-                if (!json.isNull("error")) {
-                    this.errorMessage = json.getString("error");
-                }
-                if (!json.isNull("request")) {
-                    this.requestPath = json.getString("request");
+                if (!json.isNull("errors")) {
+                    JSONObject error = json.getJSONArray("errors").getJSONObject(0);
+                    this.errorMessage = error.getString("message");
+                    this.errorCode = getInt("code", error);
                 }
             } catch (JSONException ignore) {
             }
@@ -105,6 +106,10 @@ public class TwitterException extends Exception implements TwitterResponse, Http
 
     public int getStatusCode() {
         return this.statusCode;
+    }
+
+    public int getErrorCode() {
+        return this.errorCode;
     }
 
     public String getResponseHeader(String name) {
@@ -243,16 +248,6 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     /**
-     * Returns the request path returned by the API.
-     *
-     * @return the request path returned by the API
-     * @since Twitter4J 2.2.3
-     */
-    public String getRequestPath() {
-        return requestPath;
-    }
-
-    /**
      * Tests if error message from the API is available
      *
      * @return true if error message from the API is available
@@ -265,20 +260,17 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TwitterException)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         TwitterException that = (TwitterException) o;
 
+        if (errorCode != that.errorCode) return false;
         if (nested != that.nested) return false;
         if (statusCode != that.statusCode) return false;
-        if (errorMessage != null ? !errorMessage.equals(that.errorMessage) : that.errorMessage != null)
-            return false;
+        if (errorMessage != null ? !errorMessage.equals(that.errorMessage) : that.errorMessage != null) return false;
         if (exceptionDiagnosis != null ? !exceptionDiagnosis.equals(that.exceptionDiagnosis) : that.exceptionDiagnosis != null)
             return false;
-        if (requestPath != null ? !requestPath.equals(that.requestPath) : that.requestPath != null)
-            return false;
-        if (response != null ? !response.equals(that.response) : that.response != null)
-            return false;
+        if (response != null ? !response.equals(that.response) : that.response != null) return false;
 
         return true;
     }
@@ -286,10 +278,10 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     @Override
     public int hashCode() {
         int result = statusCode;
+        result = 31 * result + errorCode;
         result = 31 * result + (exceptionDiagnosis != null ? exceptionDiagnosis.hashCode() : 0);
         result = 31 * result + (response != null ? response.hashCode() : 0);
         result = 31 * result + (errorMessage != null ? errorMessage.hashCode() : 0);
-        result = 31 * result + (requestPath != null ? requestPath.hashCode() : 0);
         result = 31 * result + (nested ? 1 : 0);
         return result;
     }
@@ -301,6 +293,8 @@ public class TwitterException extends Exception implements TwitterResponse, Http
                 + " or\n\thttp://www.google.co.jp/search?q=" + getExceptionDiagnosis().getLineNumberHashAsHex())
                 + "\nTwitterException{" + (nested ? "" : "exceptionCode=[" + getExceptionCode() + "], ") +
                 "statusCode=" + statusCode +
+                ", message=" + errorMessage +
+                ", code=" + errorCode +
                 ", retryAfter=" + getRetryAfter() +
                 ", rateLimitStatus=" + getRateLimitStatus() +
                 ", version=" + Version.getVersion() +

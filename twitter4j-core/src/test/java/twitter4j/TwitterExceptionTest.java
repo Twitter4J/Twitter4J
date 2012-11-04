@@ -56,11 +56,11 @@ public class TwitterExceptionTest extends TestCase {
     }
 
     public void testEncodedMessage() throws Exception {
-        TwitterException te = new TwitterException("{\"error\":\"\\u3042\\u306a\\u305f\\u3092\\u30d5\\u30a9\\u30ed\\u30fc\\u3057\\u3066\\u3044\\u306a\\u3044\\u30e6\\u30fc\\u30b6\\u30fc\\u306b\\u30c0\\u30a4\\u30ec\\u30af\\u30c8\\u30e1\\u30c3\\u30bb\\u30fc\\u30b8\\u3092\\u9001\\u308b\\u3053\\u3068\\u304c\\u3067\\u304d\\u307e\\u305b\\u3093\\u3002\",\"request\":\"\\/1\\/direct_messages\\/new.json\"}");
-        assertTrue(-1 != te.getMessage().indexOf("あなたをフォローしていないユーザーにダイレクトメッセージを送ることができません。"));
+        TwitterException te = new TwitterException("{\"errors\":[{\"message\":\"Sorry, that page does not exist\",\"code\":34}]}");
+        assertTrue(-1 != te.getMessage().indexOf("Sorry, that page does not exist"));
         assertTrue(te.isErrorMessageAvailable());
-        assertEquals("あなたをフォローしていないユーザーにダイレクトメッセージを送ることができません。", te.getErrorMessage());
-        assertEquals("/1/direct_messages/new.json", te.getRequestPath());
+        assertEquals("Sorry, that page does not exist", te.getErrorMessage());
+        assertEquals(34, te.getErrorCode());
 
         te = new TwitterException("error message");
         assertFalse(te.isErrorMessageAvailable());
