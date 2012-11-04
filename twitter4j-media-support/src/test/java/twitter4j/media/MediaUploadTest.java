@@ -67,8 +67,6 @@ public class MediaUploadTest extends TestCase {
         factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.MOBYPICTURE.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPL.name()).build();
-        factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.POSTEROUS.name()).build();
         factory = new ImageUploadFactory(conf);
     }
@@ -175,18 +173,6 @@ public class MediaUploadTest extends TestCase {
         try {
             ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("IOUxMoqc8Snms9nU"));
             ImageUpload upload = factory.getInstance(MediaProvider.MOBYPICTURE);
-            String url = upload.upload(fileName, is);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testTwiplUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("56fd1892dcf34c14beb7e2eecfc65c81"));
-            ImageUpload upload = factory.getInstance(MediaProvider.TWIPL);
             String url = upload.upload(fileName, is);
             assertTrue(url.length() > 0);
         } finally {

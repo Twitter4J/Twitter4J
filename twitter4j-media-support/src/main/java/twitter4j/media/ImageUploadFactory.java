@@ -63,8 +63,6 @@ public class ImageUploadFactory {
             defaultMediaProvider = YFROG;
         } else if ("mobypicture".equals(mediaProvider)) {
             defaultMediaProvider = MOBYPICTURE;
-        } else if ("twipl".equals(mediaProvider)) {
-            defaultMediaProvider = TWIPL;
         } else if ("posterous".equals(mediaProvider)) {
             defaultMediaProvider = POSTEROUS;
         } else {
@@ -136,8 +134,6 @@ public class ImageUploadFactory {
             return new YFrogUpload(conf, oauth);
         } else if (mediaProvider == MOBYPICTURE) {
             return new MobypictureUpload(conf, apiKey, oauth);
-        } else if (mediaProvider == TWIPL) {
-            return new TwiplUpload(conf, apiKey, oauth);
         } else if (mediaProvider == POSTEROUS) {
             return new PosterousUpload(conf, oauth);
         } else {
