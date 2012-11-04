@@ -93,4 +93,15 @@ public class z_T4JInternalStringUtil {
         }
         return buf.toString();
     }
+
+    public static String join(List<String> strs) {
+        StringBuilder buf = new StringBuilder(11 * strs.size());
+        for (String str : strs) {
+            if (0 != buf.length()) {
+                buf.append(",");
+            }
+            buf.append(str);
+        }
+        return buf.toString();
+    }
 }

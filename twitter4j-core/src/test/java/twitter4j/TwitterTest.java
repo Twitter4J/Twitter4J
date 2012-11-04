@@ -60,6 +60,9 @@ public class TwitterTest extends TwitterTestBase {
         assertTrue(10 < status.getLimit());
         assertTrue(10 < status.getRemaining());
 
+        rateLimitStatus = twitter1.getRateLimitStatus("block", "statuses");
+        assertTrue(rateLimitStatus.values().size() < 10);
+
         twitter1.addRateLimitStatusListener(new RateLimitStatusListener() {
             public void onRateLimitStatus(RateLimitStatusEvent event) {
                 System.out.println("onRateLimitStatus" + event);
@@ -89,11 +92,11 @@ public class TwitterTest extends TwitterTestBase {
         // the listener doesn't implement serializable and deserialized form should not be equal to the original object
         assertDeserializedFormIsNotEqual(twitter1);
 
-        twitter1.getMentionsTimeline();
+        twitter1.getMentions();
         assertTrue(accountLimitStatusAcquired);
         assertFalse(ipLimitStatusAcquired);
         RateLimitStatus previous = this.rateLimitStatus;
-        twitter1.getMentionsTimeline();
+        twitter1.getMentions();
         assertTrue(accountLimitStatusAcquired);
         assertFalse(ipLimitStatusAcquired);
         assertTrue(previous.getRemaining() > this.rateLimitStatus.getRemaining());
@@ -101,7 +104,15 @@ public class TwitterTest extends TwitterTestBase {
     }
 
     public void testGetAccessLevel() throws Exception {
-        TwitterResponse response = twitter1.verifyCredentials();
+        TwitterResponse response;
+        try {
+            response = twitter1.getAccountSettings();
+            assertEquals(TwitterResponse.NONE, response.getAccessLevel());
+        } catch (TwitterException te) {
+            // the account is being rate limited
+            assertEquals(te.getStatusCode(), 400);
+        }
+        response = twitter1.verifyCredentials();
         assertEquals(TwitterResponse.READ_WRITE, response.getAccessLevel());
         response = rwPrivateMessage.verifyCredentials();
         assertEquals(TwitterResponse.READ_WRITE_DIRECTMESSAGES, response.getAccessLevel());

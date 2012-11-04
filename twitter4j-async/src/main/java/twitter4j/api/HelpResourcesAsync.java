@@ -57,11 +57,30 @@ public interface HelpResourcesAsync {
     void getTermsOfService();
 
     /**
-     * Gets the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned.
-     * <br>This method calls http://api.twitter.com/1.1/account/rate_limit_status
+     * Returns the current rate limits for methods belonging to the specified resource families.<br>
+     * Each 1.1 API resource belongs to a "resource family" which is indicated in its method documentation. You can typically determine a method's resource family from the first component of the path after the resource version.<br>
+     * This method responds with a map of methods belonging to the families specified by the resources parameter, the current remaining uses for each of those resources within the current rate limiting window, and its expiration time in epoch time. It also includes a rate_limit_context field that indicates the current access token context.<br>
+     * You may also issue requests to this method without any parameters to receive a map of all rate limited GET methods. If your application only uses a few of methods, please explicitly provide a resources parameter with the specified resource families you work with.<br>
+     * Read more about REST API Rate Limiting in v1.1 and review the limits.<br>
+     * <br>This method calls http://api.twitter.com/1.1/application/rate_limit_status.json
      *
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/account/rate_limit_status">GET account/rate_limit_status | Twitter Developers</a>
-     * @since Twitter4J 1.1.4
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/application/rate_limit_status">GET application/rate_limit_status</a>
+     * @since Twitter4J 3.0.0
      */
     void getRateLimitStatus();
+
+    /**
+     * Returns the current rate limits for methods belonging to the specified resource families.<br>
+     * Each 1.1 API resource belongs to a "resource family" which is indicated in its method documentation. You can typically determine a method's resource family from the first component of the path after the resource version.<br>
+     * This method responds with a map of methods belonging to the families specified by the resources parameter, the current remaining uses for each of those resources within the current rate limiting window, and its expiration time in epoch time. It also includes a rate_limit_context field that indicates the current access token context.<br>
+     * You may also issue requests to this method without any parameters to receive a map of all rate limited GET methods. If your application only uses a few of methods, please explicitly provide a resources parameter with the specified resource families you work with.<br>
+     * Read more about REST API Rate Limiting in v1.1 and review the limits.<br>
+     * As of Nov 4th 2012, supported resource names are as follows:
+     * &quot;trends&quot;,&quot;application&quot;,&quot;users&quot;,&quot;saved_searches&quot;,&quot;geo&quot;,&quot;direct_messages&quot;,&quot;blocks&quot;,&quot;favorites&quot;,&quot;statuses&quot;,&quot;followers&quot;,&quot;help&quot;,&quot;friends&quot;,&quot;search&quot;,&quot;friendships&quot;,&quot;account&quot;,&quot;lists&quot;
+     * <br>This method calls http://api.twitter.com/1.1/application/rate_limit_status.json
+     *
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/application/rate_limit_status">GET application/rate_limit_status</a>
+     * @since Twitter4J 3.0.0
+     */
+    void getRateLimitStatus(String... resources);
 }

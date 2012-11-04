@@ -2620,6 +2620,25 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getRateLimitStatus(final String... resources) {
+        getDispatcher().invokeLater(new AsyncTask(RATE_LIMIT_STATUS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus(resources);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotRateLimitStatus(rateLimitStatus);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
     /* Undocumented Resources */
     @Override
     public void getRelatedResults(final long statusId) {

@@ -1592,6 +1592,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createRateLimitStatuses(get(conf.getRestBaseURL() + "application/rate_limit_status.json"));
     }
 
+    @Override
+    public Map<String, RateLimitStatus> getRateLimitStatus(String... resources) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createRateLimitStatuses(get(conf.getRestBaseURL() + "application/rate_limit_status.json?resources="+ z_T4JInternalStringUtil.join(resources)));
+    }
+
     /* Undocumented Resources */
     /**
      * {@inheritDoc}
