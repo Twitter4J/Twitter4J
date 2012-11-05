@@ -253,13 +253,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public QueryResult search(Query query) throws TwitterException {
         ensureAuthorizationEnabled();
         if (query.nextPage() != null) {
-            System.out.println(conf.getSearchBaseURL()
-                    + "search.json" + query.nextPage());
-            return factory.createQueryResult(get(conf.getSearchBaseURL()
-                    + "search.json" + query.nextPage()), query);
+            return factory.createQueryResult(get(conf.getRestBaseURL()
+                    + "search/tweets.json" + query.nextPage()), query);
         } else {
-            return factory.createQueryResult(get(conf.getSearchBaseURL()
-                    + "search.json", query.asHttpParameterArray()), query);
+            return factory.createQueryResult(get(conf.getRestBaseURL()
+                    + "search/tweets.json", query.asHttpParameterArray()), query);
         }
     }
 

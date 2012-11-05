@@ -38,7 +38,6 @@ public final class DataObjectFactory {
 
     private static final Constructor<Status> statusConstructor;
     private static final Constructor<User> userConstructor;
-    private static final Constructor<Tweet> tweetConstructor;
     private static final Constructor<Relationship> relationshipConstructor;
     private static final Constructor<Place> placeConstructor;
     private static final Constructor<SavedSearch> savedSearchConstructor;
@@ -61,9 +60,6 @@ public final class DataObjectFactory {
 
             userConstructor = (Constructor<User>) Class.forName("twitter4j.internal.json.UserJSONImpl").getDeclaredConstructor(JSONObject.class);
             userConstructor.setAccessible(true);
-
-            tweetConstructor = (Constructor<Tweet>) Class.forName("twitter4j.internal.json.TweetJSONImpl").getDeclaredConstructor(JSONObject.class);
-            tweetConstructor.setAccessible(true);
 
             relationshipConstructor = (Constructor<Relationship>) Class.forName("twitter4j.internal.json.RelationshipJSONImpl").getDeclaredConstructor(JSONObject.class);
             relationshipConstructor.setAccessible(true);
@@ -198,29 +194,6 @@ public final class DataObjectFactory {
         try {
             JSONObject json = new JSONObject(rawJSON);
             return accountTotalsConstructor.newInstance(json);
-        } catch (InstantiationException e) {
-            throw new TwitterException(e);
-        } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
-        } catch (InvocationTargetException e) {
-            throw new TwitterException(e);
-        } catch (JSONException e) {
-            throw new TwitterException(e);
-        }
-    }
-
-    /**
-     * Constructs a Tweet object from rawJSON string.
-     *
-     * @param rawJSON raw JSON form as String
-     * @return Tweet
-     * @throws TwitterException when provided string is not a valid JSON string.
-     * @since Twitter4J 2.1.7
-     */
-    public static Tweet createTweet(String rawJSON) throws TwitterException {
-        try {
-            JSONObject json = new JSONObject(rawJSON);
-            return tweetConstructor.newInstance(json);
         } catch (InstantiationException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {

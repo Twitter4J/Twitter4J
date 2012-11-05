@@ -30,17 +30,13 @@ public interface QueryResult extends java.io.Serializable {
 
     String getRefreshUrl();
 
-    int getResultsPerPage();
-
-    String getWarning();
+    int getCount();
 
     double getCompletedIn();
 
-    int getPage();
-
     String getQuery();
 
-    List<Tweet> getTweets();
+    List<Status> getTweets();
 
     /**
      * Returns a Query instance to fetch next page or null if there is no next page.

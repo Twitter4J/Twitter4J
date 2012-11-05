@@ -65,7 +65,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String OAUTH_AUTHENTICATION_URL = "oauth.authenticationURL";
 
     public static final String REST_BASE_URL = "restBaseURL";
-    public static final String SEARCH_BASE_URL = "searchBaseURL";
     public static final String STREAM_BASE_URL = "streamBaseURL";
     public static final String USER_STREAM_BASE_URL = "userStreamBaseURL";
     public static final String SITE_STREAM_BASE_URL = "siteStreamBaseURL";
@@ -325,10 +324,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
         if (notNull(props, prefix, REST_BASE_URL)) {
             setRestBaseURL(getString(props, prefix, REST_BASE_URL));
-        }
-
-        if (notNull(props, prefix, SEARCH_BASE_URL)) {
-            setSearchBaseURL(getString(props, prefix, SEARCH_BASE_URL));
         }
 
         if (notNull(props, prefix, STREAM_BASE_URL)) {

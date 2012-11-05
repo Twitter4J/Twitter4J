@@ -41,9 +41,9 @@ public class SearchTweets {
             QueryResult result;
             do {
                 result = twitter.search(query);
-                List<Tweet> tweets = result.getTweets();
-                for (Tweet tweet : tweets) {
-                    System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText());
+                List<Status> tweets = result.getTweets();
+                for (Status tweet : tweets) {
+                    System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                 }
             } while ((query = result.nextQuery()) != null);
             System.exit(0);

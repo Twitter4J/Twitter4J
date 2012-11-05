@@ -63,28 +63,22 @@ public class SearchAPITest extends TwitterTestBase {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = format.format(new java.util.Date(System.currentTimeMillis() - 24 * 3600 * 1000));
         Query query = new Query(queryStr).until(dateStr);
-        System.out.println(twitter1.getAuthorization());
         QueryResult queryResult = twitter1.search(query);
         assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
         assertTrue(-1 != queryResult.getRefreshUrl().indexOf(queryStr));
-        assertEquals(15, queryResult.getResultsPerPage());
+        assertEquals(15, queryResult.getCount());
         assertTrue(0 < queryResult.getCompletedIn());
-        assertEquals(1, queryResult.getPage());
         assertEquals(queryStr + " until:" + dateStr, queryResult.getQuery());
 
-        List<Tweet> tweets = queryResult.getTweets();
+        List<Status> tweets = queryResult.getTweets();
         assertTrue(1 <= tweets.size());
-        assertEquals(tweets.get(0), DataObjectFactory.createTweet(DataObjectFactory.getRawJSON(tweets.get(0))));
+        assertEquals(tweets.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(tweets.get(0))));
         assertNotNull(tweets.get(0).getText());
         assertNotNull(tweets.get(0).getCreatedAt());
-        assertNotNull("from user", tweets.get(0).getFromUser());
-        assertNotNull("from_user_name", tweets.get(0).getFromUserName());
-        assertTrue("fromUserId", -1 != tweets.get(0).getFromUserId());
+        assertNotNull("user", tweets.get(0).getUser());
         assertTrue(-1 != tweets.get(0).getId());
-//        assertNotNull(tweets.get(0).getIsoLanguageCode());
-        String profileImageURL = tweets.get(0).getProfileImageUrl();
-        assertNotNull(profileImageURL);
+        assertNotNull(tweets.get(0).getUser().getProfileImageURL());
         String source = tweets.get(0).getSource();
         assertTrue(-1 != source.indexOf("<a href=\"") || "web".equals(source) || "API".equals(source));
 
@@ -94,11 +88,8 @@ public class SearchAPITest extends TwitterTestBase {
         assertEquals(0, queryResult.getSinceId());
 //        assertEquals(-1, queryResult.getMaxId());
 //        assertNull(queryResult.getRefreshUrl());
-        assertEquals(15, queryResult.getResultsPerPage());
-//        assertEquals(-1, queryResult.getTotal());
-        assertNull(queryResult.getWarning());
+        assertEquals(15, queryResult.getCount());
         assertTrue(4 > queryResult.getCompletedIn());
-        assertEquals(1, queryResult.getPage());
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
 
         queryStr = "%... 日本語";
@@ -117,9 +108,9 @@ public class SearchAPITest extends TwitterTestBase {
         query.setSinceId(1671199128);
         queryResult = twitter1.search(query);
         assertTrue(0 < queryResult.getTweets().size());
-        assertEquals(4171231, queryResult.getTweets().get(0).getFromUserId());
+        assertEquals(4171231, queryResult.getTweets().get(0).getUser().getId());
 
-        query = new Query("\\u5e30%u5e30 <%}& foobar").rpp(100).page(1);
+        query = new Query("\\u5e30%u5e30 <%}& foobar").count(100);
         QueryResult result = twitter1.search(query);
     }
 

@@ -102,7 +102,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "http://api.twitter.com/oauth/authenticate";
 
     private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1.1/";
-    private static final String DEFAULT_SEARCH_BASE_URL = "http://search.twitter.com/";
     private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1/";
     private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/2/";
     private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com";
@@ -172,11 +171,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setOAuthAuthenticationURL(DEFAULT_OAUTH_AUTHENTICATION_URL);
 
         setRestBaseURL(DEFAULT_REST_BASE_URL);
-        // search api tends to fail with SSL as of 12/31/2009
-        // setSearchBaseURL(fixURL(useSSL, "http://search.twitter.com/"));
-        setSearchBaseURL(DEFAULT_SEARCH_BASE_URL);
-        // streaming api doesn't support SSL as of 12/30/2009
-        // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
         setStreamBaseURL(DEFAULT_STREAM_BASE_URL);
         setUserStreamBaseURL(DEFAULT_USER_STREAM_BASE_URL);
         setSiteStreamBaseURL(DEFAULT_SITE_STREAM_BASE_URL);
@@ -530,18 +524,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (DEFAULT_OAUTH_REQUEST_TOKEN_URL.equals(fixURL(false, oAuthRequestTokenURL))) {
             this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
         }
-        if (DEFAULT_SEARCH_BASE_URL.equals(fixURL(false, searchBaseURL))) {
-            this.searchBaseURL = fixURL(useSSL, searchBaseURL);
-        }
-    }
-
-    @Override
-    public String getSearchBaseURL() {
-        return searchBaseURL;
-    }
-
-    protected final void setSearchBaseURL(String searchBaseURL) {
-        this.searchBaseURL = searchBaseURL;
     }
 
     @Override

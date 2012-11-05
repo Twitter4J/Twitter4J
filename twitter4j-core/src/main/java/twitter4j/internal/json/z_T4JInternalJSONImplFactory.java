@@ -126,11 +126,6 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     }
 
     @Override
-    public ResponseList<Trends> createTrendsList(HttpResponse res) throws TwitterException {
-        return TrendsJSONImpl.createTrendsList(res, conf.isJSONStoreEnabled());
-    }
-
-    @Override
     public User createUser(HttpResponse res) throws TwitterException {
         return new UserJSONImpl(res, conf);
     }

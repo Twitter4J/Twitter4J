@@ -35,8 +35,7 @@ public final class Query implements java.io.Serializable {
     private String lang = null;
     private String locale = null;
     private long maxId = -1l;
-    private int rpp = -1;
-    private int page = -1;
+    private int count = -1;
     private String since = null;
     private long sinceId = -1;
     private String geocode = null;
@@ -192,60 +191,30 @@ public final class Query implements java.io.Serializable {
     /**
      * Returns the number of tweets to return per page, up to a max of 100
      *
-     * @return rpp
+     * @return count
      */
-    public int getRpp() {
-        return rpp;
+    public int getCount() {
+        return count;
     }
 
     /**
      * sets the number of tweets to return per page, up to a max of 100
      *
-     * @param rpp the number of tweets to return per page
+     * @param count the number of tweets to return per page
      */
-    public void setRpp(int rpp) {
-        this.rpp = rpp;
+    public void setCount(int count) {
+        this.count = count;
     }
 
     /**
      * sets the number of tweets to return per page, up to a max of 100
      *
-     * @param rpp the number of tweets to return per page
+     * @param count the number of tweets to return per page
      * @return the instance
      * @since Twitter4J 2.1.0
      */
-    public Query rpp(int rpp) {
-        setRpp(rpp);
-        return this;
-    }
-
-    /**
-     * Returns the page number (starting at 1) to return, up to a max of roughly 1500 results
-     *
-     * @return the page number (starting at 1) to return
-     */
-    public int getPage() {
-        return page;
-    }
-
-    /**
-     * sets the page number (starting at 1) to return, up to a max of roughly 1500 results
-     *
-     * @param page the page number (starting at 1) to return
-     */
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    /**
-     * sets the page number (starting at 1) to return, up to a max of roughly 1500 results
-     *
-     * @param page the page number (starting at 1) to return
-     * @return the instance
-     * @since Twitter4J 2.1.0
-     */
-    public Query page(int page) {
-        setPage(page);
+    public Query count(int count) {
+        setCount(count);
         return this;
     }
 
@@ -431,8 +400,7 @@ public final class Query implements java.io.Serializable {
         appendParameter("lang", lang, params);
         appendParameter("locale", locale, params);
         appendParameter("max_id", maxId, params);
-        appendParameter("rpp", rpp, params);
-        appendParameter("page", page, params);
+        appendParameter("count", count, params);
         appendParameter("since", since, params);
         appendParameter("since_id", sinceId, params);
         appendParameter("geocode", geocode, params);
@@ -467,8 +435,7 @@ public final class Query implements java.io.Serializable {
         Query query1 = (Query) o;
 
         if (maxId != query1.maxId) return false;
-        if (page != query1.page) return false;
-        if (rpp != query1.rpp) return false;
+        if (count != query1.count) return false;
         if (sinceId != query1.sinceId) return false;
         if (geocode != null ? !geocode.equals(query1.geocode) : query1.geocode != null) return false;
         if (lang != null ? !lang.equals(query1.lang) : query1.lang != null) return false;
@@ -489,8 +456,7 @@ public final class Query implements java.io.Serializable {
         result = 31 * result + (lang != null ? lang.hashCode() : 0);
         result = 31 * result + (locale != null ? locale.hashCode() : 0);
         result = 31 * result + (int) (maxId ^ (maxId >>> 32));
-        result = 31 * result + rpp;
-        result = 31 * result + page;
+        result = 31 * result + count;
         result = 31 * result + (since != null ? since.hashCode() : 0);
         result = 31 * result + (int) (sinceId ^ (sinceId >>> 32));
         result = 31 * result + (geocode != null ? geocode.hashCode() : 0);
@@ -507,8 +473,7 @@ public final class Query implements java.io.Serializable {
                 ", lang='" + lang + '\'' +
                 ", locale='" + locale + '\'' +
                 ", maxId=" + maxId +
-                ", rpp=" + rpp +
-                ", page=" + page +
+                ", count=" + count +
                 ", since='" + since + '\'' +
                 ", sinceId=" + sinceId +
                 ", geocode='" + geocode + '\'' +

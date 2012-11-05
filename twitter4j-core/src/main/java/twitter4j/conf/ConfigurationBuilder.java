@@ -187,12 +187,6 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder setSearchBaseURL(String searchBaseURL) {
-        checkNotBuilt();
-        configurationBean.setSearchBaseURL(searchBaseURL);
-        return this;
-    }
-
     public ConfigurationBuilder setStreamBaseURL(String streamBaseURL) {
         checkNotBuilt();
         configurationBean.setStreamBaseURL(streamBaseURL);

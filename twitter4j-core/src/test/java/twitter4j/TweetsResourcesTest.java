@@ -64,7 +64,6 @@ public class TweetsResourcesTest extends TwitterTestBase {
         status2 = twitter1.showStatus(12029015787307008l);
         assertNotNull(DataObjectFactory.getRawJSON(status2));
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
-        System.out.println(DataObjectFactory.getRawJSON(status2));
         assertEquals("\\u5e30%u5e30 <%}& foobar <&Cynthia>", status2.getText());
     }
 
@@ -74,7 +73,6 @@ public class TweetsResourcesTest extends TwitterTestBase {
         Status status = twitter1.updateStatus(date);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
-        System.out.println(status.getText());
 
         assertTrue(status.getText().matches(dateStr + "test http://t.co/.* @twit4j2 #twitter4jtest"));
         Status status2 = twitter2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));

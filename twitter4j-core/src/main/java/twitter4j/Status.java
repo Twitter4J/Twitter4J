@@ -24,7 +24,7 @@ import java.util.Date;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface Status extends Comparable<Status>, TwitterResponse,
-        EntitySupport, Twt, java.io.Serializable {
+        EntitySupport, java.io.Serializable {
     /**
      * Return the created_at
      *

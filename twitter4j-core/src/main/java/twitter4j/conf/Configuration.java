@@ -86,8 +86,6 @@ public interface Configuration extends HttpClientConfiguration
 
     String getRestBaseURL();
 
-    String getSearchBaseURL();
-
     String getStreamBaseURL();
 
     String getOAuthRequestTokenURL();

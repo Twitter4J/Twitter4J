@@ -71,6 +71,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         }
     }
 
+    /*package*/StatusJSONImpl(JSONObject json, Configuration conf) throws TwitterException {
+        super();
+        init(json);
+        if (conf.isJSONStoreEnabled()) {
+            DataObjectFactoryUtil.registerJSONObject(this, json);
+        }
+    }
+
     /*package*/ StatusJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);

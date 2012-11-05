@@ -75,23 +75,6 @@ public class DAOTest extends TwitterTestBase {
         assertDeserializedFormIsEqual(trends);
     }
 
-    public void testTweet() throws Exception {
-        JSONObject json = new JSONObject("{\"profile_image_url\":\"http://a3.twimg.com/profile_images/554278229/twitterProfilePhoto_normal.jpg\",\"created_at\":\"Thu, 24 Dec 2009 18:30:56 +0000\",\"from_user\":\"pskh\",\"to_user_id\":null,\"text\":\"test\",\"id\":7007483122,\"from_user_id\":215487,\"geo\":{\"type\":\"Point\",\"coordinates\":[37.78029, -122.39697]},\"source\":\"&lt;a href=&quot;http://twitter4j.org/&quot; rel=&quot;nofollow&quot;&gt;Twitter4J&lt;/a&gt;\"}");
-        Tweet tweet = new TweetJSONImpl(json, conf);
-        GeoLocation geo = tweet.getGeoLocation();
-        assertNotNull(geo);
-        assertEquals(37.78029, geo.getLatitude());
-        assertEquals(-122.39697, geo.getLongitude());
-
-        JSONObject json2 = new JSONObject("{\"from_user_id_str\": \"178849153\", \"profile_image_url\": \"http://a2.twimg.com/sticky/default_profile_images/default_profile_1_normal.png\", \"created_at\": \"Thu, 24 Feb 2011 16:52:19 +0000\", \"from_user\": \"jscottdawson\", \"id_str\": \"40816302931181569\", \"metadata\": {\"result_type\": \"recent\"}, \"to_user_id\": null, \"text\": \"Schluzz and stuff\", \"id\": 40816302931181570, \"from_user_id\": 178849153, \"geo\": null, \"iso_language_code\": \"de\", \"place\": {\"id\": \"33fe3f451651a7c1\", \"type\": \"neighborhood\", \"full_name\": \"Old Town West, Fort Collins\"}, \"to_user_id_str\": null, \"source\": \"&lt;a href=&quot;http://twitter.com/&quot;&gt;web&lt;/a&gt;\"}");
-        Tweet tweet2 = new TweetJSONImpl(json2, conf);
-        Place place = tweet2.getPlace();
-        assertNotNull(place);
-        assertEquals("33fe3f451651a7c1", place.getId());
-        assertEquals("neighborhood", place.getPlaceType());
-        assertEquals("Old Town West, Fort Collins", place.getFullName());
-    }
-
     public void testLocation() throws Exception {
         JSONArray array = getJSONArrayFromClassPath("/dao/trends-available.json");
         ResponseList<Location> locations = LocationJSONImpl.createLocationList(array, conf.isJSONStoreEnabled());
@@ -111,14 +94,14 @@ public class DAOTest extends TwitterTestBase {
         String str;
         str = "";
         try {
-            DataObjectFactory.createTweet(str);
+            DataObjectFactory.createStatus(str);
             fail("should fail");
         } catch (TwitterException expected) {
         } catch (Error notExpected) {
             fail("failed" + notExpected.getMessage());
         }
         try {
-            DataObjectFactory.createTweet(str);
+            DataObjectFactory.createStatus(str);
             fail("should fail");
         } catch (TwitterException expected) {
         } catch (Error notExpected) {
@@ -127,7 +110,7 @@ public class DAOTest extends TwitterTestBase {
         str = "{\"in_reply_to_status_id_str\":null,\"place\":null,\"in_reply_to_user_id\":null,\"text\":\"working\",\"contributors\":null,\"retweet_count\":0,\"in_reply_to_user_id_str\":null,\"retweeted\":false,\"id_str\":\"794626207\",\"source\":\"\\u003Ca href=\\\"http:\\/\\/twitterhelp.blogspot.com\\/2008\\/05\\/twitter-via-mobile-web-mtwittercom.html\\\" rel=\\\"nofollow\\\"\\u003Emobile web\\u003C\\/a\\u003E\",\"truncated\":false,\"geo\":null,\"in_reply_to_status_id\":null,\"favorited\":false,\"user\":{\"show_all_inline_media\":false,\"geo_enabled\":false,\"profile_background_tile\":false,\"time_zone\":null,\"favourites_count\":0,\"description\":null,\"friends_count\":0,\"profile_link_color\":\"0084B4\",\"location\":null,\"profile_sidebar_border_color\":\"C0DEED\",\"id_str\":\"14481043\",\"url\":null,\"follow_request_sent\":false,\"statuses_count\":1,\"profile_use_background_image\":true,\"lang\":\"en\",\"profile_background_color\":\"C0DEED\",\"profile_image_url\":\"http:\\/\\/a3.twimg.com\\/a\\/1292975674\\/images\\/default_profile_3_normal.png\",\"profile_background_image_url\":\"http:\\/\\/a3.twimg.com\\/a\\/1292975674\\/images\\/themes\\/theme1\\/bg.png\",\"followers_count\":44,\"protected\":false,\"contributors_enabled\":false,\"notifications\":false,\"screen_name\":\"Yusuke\",\"name\":\"Yusuke\",\"is_translator\":false,\"listed_count\":1,\"following\":false,\"verified\":false,\"profile_text_color\":\"333333\",\"id\":14481043,\"utc_offset\":null,\"created_at\":\"Tue Apr 22 21:49:13 +0000 2008\",\"profile_sidebar_fill_color\":\"DDEEF6\"},\"id\":794626207,\"coordinates\":null,\"in_reply_to_screen_name\":null,\"created_at\":\"Tue Apr 2200 21:49:34 +0000 2008\"}";
 
         try {
-            DataObjectFactory.createTweet(str);
+            DataObjectFactory.createCategory(str);
             fail("should fail");
         } catch (TwitterException expected) {
             expected.printStackTrace();
@@ -135,7 +118,7 @@ public class DAOTest extends TwitterTestBase {
             fail("failed" + notExpected.getMessage());
         }
         try {
-            DataObjectFactory.createTweet(str);
+            DataObjectFactory.createCategory(str);
             fail("should fail");
         } catch (TwitterException expected) {
         } catch (Error notExpected) {

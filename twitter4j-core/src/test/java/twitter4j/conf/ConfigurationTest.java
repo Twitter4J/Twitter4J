@@ -326,7 +326,6 @@ public class ConfigurationTest extends TestCase {
         assertEquals(conf, (Configuration) serializeDeserialize(conf));
 
         assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
@@ -336,7 +335,6 @@ public class ConfigurationTest extends TestCase {
         builder.setUseSSL(true);
         conf = builder.build();
         assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
-        assertTrue(0 == conf.getSearchBaseURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
@@ -346,7 +344,6 @@ public class ConfigurationTest extends TestCase {
         builder.setUseSSL(false);
         conf = builder.build();
         assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
@@ -358,7 +355,6 @@ public class ConfigurationTest extends TestCase {
         builder.setOAuthConsumerSecret("secret");
         conf = builder.build();
         assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
         assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));

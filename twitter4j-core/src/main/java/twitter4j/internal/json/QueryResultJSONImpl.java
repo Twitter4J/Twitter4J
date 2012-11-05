@@ -16,10 +16,7 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.Tweet;
-import twitter4j.TwitterException;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
@@ -40,17 +37,15 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
  */
 /*package*/ final class QueryResultJSONImpl implements QueryResult, java.io.Serializable {
 
+    private static final long serialVersionUID = -6781654399437121238L;
     private long sinceId;
     private long maxId;
     private String refreshUrl;
-    private int resultsPerPage;
-    private String warning;
+    private int count;
     private double completedIn;
-    private int page;
     private String query;
-    private List<Tweet> tweets;
-    private static final long serialVersionUID = -9059136565234613286L;
-    private String nextPage;
+    private List<Status> tweets;
+    private String nextResults;
 
     // private static factory method to instantiate Query class with "next_page"
     // http://jira.twitter4j.org/browse/TFJ-549
@@ -73,25 +68,24 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     /*package*/ QueryResultJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         JSONObject json = res.asJSONObject();
         try {
-            sinceId = getLong("since_id", json);
-            maxId = getLong("max_id", json);
-            refreshUrl = getUnescapedString("refresh_url", json);
+            JSONObject searchMetaData = json.getJSONObject("search_metadata");
+            completedIn = getDouble("completed_in", searchMetaData);
+            count = getInt("count", searchMetaData);
+            maxId = getLong("max_id", searchMetaData);
+            nextResults = json.has("next_results") ? json.getString("next_results") : null;
+            query = getURLDecodedString("query", searchMetaData);
+            refreshUrl = getUnescapedString("refresh_url", searchMetaData);
+            sinceId = getLong("since_id", searchMetaData);
 
-            resultsPerPage = getInt("results_per_page", json);
-            warning = getRawString("warning", json);
-            completedIn = getDouble("completed_in", json);
-            page = getInt("page", json);
-            query = getURLDecodedString("query", json);
-            JSONArray array = json.getJSONArray("results");
-            tweets = new ArrayList<Tweet>(array.length());
+            JSONArray array = json.getJSONArray("statuses");
+            tweets = new ArrayList<Status>(array.length());
             if (conf.isJSONStoreEnabled()) {
                 DataObjectFactoryUtil.clearThreadLocalMap();
             }
             for (int i = 0; i < array.length(); i++) {
                 JSONObject tweet = array.getJSONObject(i);
-                tweets.add(new TweetJSONImpl(tweet, conf));
+                tweets.add(new StatusJSONImpl(tweet, conf));
             }
-            nextPage = json.has("next_page") ? json.getString("next_page") : null;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
@@ -100,9 +94,8 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     /*package*/ QueryResultJSONImpl(Query query) {
         super();
         sinceId = query.getSinceId();
-        resultsPerPage = query.getRpp();
-        page = query.getPage();
-        tweets = new ArrayList<Tweet>(0);
+        count = query.getCount();
+        tweets = new ArrayList<Status>(0);
     }
 
     /**
@@ -133,16 +126,8 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
-    public int getResultsPerPage() {
-        return resultsPerPage;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getWarning() {
-        return warning;
+    public int getCount() {
+        return count;
     }
 
     /**
@@ -157,14 +142,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
-    public int getPage() {
-        return page;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getQuery() {
         return query;
     }
@@ -173,7 +150,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
-    public List<Tweet> getTweets() {
+    public List<Status> getTweets() {
         return tweets;
     }
 
@@ -182,11 +159,11 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      */
     @Override
     public Query nextQuery() {
-        if (nextPage == null) {
+        if (nextResults == null) {
             return null;
         }
         try {
-            return (Query) queryFactoryMethod.invoke(null, new String[]{nextPage});
+            return (Query) queryFactoryMethod.invoke(null, new String[]{nextResults});
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
@@ -199,7 +176,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      */
     @Override
     public boolean hasNext() {
-        return nextPage != null;
+        return nextResults != null;
     }
 
     @Override
@@ -212,15 +189,12 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         if (Double.compare(that.getCompletedIn(), completedIn) != 0)
             return false;
         if (maxId != that.getMaxId()) return false;
-        if (page != that.getPage()) return false;
-        if (resultsPerPage != that.getResultsPerPage()) return false;
+        if (count != that.getCount()) return false;
         if (sinceId != that.getSinceId()) return false;
         if (!query.equals(that.getQuery())) return false;
         if (refreshUrl != null ? !refreshUrl.equals(that.getRefreshUrl()) : that.getRefreshUrl() != null)
             return false;
         if (tweets != null ? !tweets.equals(that.getTweets()) : that.getTweets() != null)
-            return false;
-        if (warning != null ? !warning.equals(that.getWarning()) : that.getWarning() != null)
             return false;
 
         return true;
@@ -233,11 +207,9 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         result = (int) (sinceId ^ (sinceId >>> 32));
         result = 31 * result + (int) (maxId ^ (maxId >>> 32));
         result = 31 * result + (refreshUrl != null ? refreshUrl.hashCode() : 0);
-        result = 31 * result + resultsPerPage;
-        result = 31 * result + (warning != null ? warning.hashCode() : 0);
+        result = 31 * result + count;
         temp = completedIn != +0.0d ? Double.doubleToLongBits(completedIn) : 0L;
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + page;
         result = 31 * result + query.hashCode();
         result = 31 * result + (tweets != null ? tweets.hashCode() : 0);
         return result;
@@ -249,10 +221,8 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 "sinceId=" + sinceId +
                 ", maxId=" + maxId +
                 ", refreshUrl='" + refreshUrl + '\'' +
-                ", resultsPerPage=" + resultsPerPage +
-                ", warning='" + warning + '\'' +
+                ", count=" + count +
                 ", completedIn=" + completedIn +
-                ", page=" + page +
                 ", query='" + query + '\'' +
                 ", tweets=" + tweets +
                 '}';
