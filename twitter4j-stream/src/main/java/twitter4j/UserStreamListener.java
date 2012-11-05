@@ -53,14 +53,6 @@ public interface UserStreamListener extends StatusListener {
     void onFollow(User source, User followedUser);
 
     /**
-     * @param source
-     * @param target
-     * @param retweetedStatus
-     * @since Twitter4J 2.1.3
-     */
-    void onRetweet(User source, User target, Status retweetedStatus);
-
-    /**
      * @param directMessage
      * @since Twitter4J 2.1.3
      */

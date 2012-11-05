@@ -318,7 +318,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public DirectMessage destroyDirectMessage(long id) throws
             TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy/show.json?id=" + id));
+        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy.json?id=" + id));
     }
 
     /**

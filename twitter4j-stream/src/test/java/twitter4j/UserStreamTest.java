@@ -56,7 +56,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         ex = null;
 
         stream.next(this);
-        waitForStatus();
+        waitForStatus("follow");
         Assert.assertEquals(23456789, source.getId());
         Assert.assertEquals(12345678, target.getId());
         Assert.assertNull(ex);
@@ -65,12 +65,12 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         target = null;
         ex = null;
         stream.next(this);
-        waitForStatus();
+        waitForStatus("delete direct message");
         assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
 
         // This one is an unknown event type.  We should safely ignore it.
         stream.next(this);
-        waitForStatus();
+        waitForStatus("unknown");
         Assert.assertNull(source);
         Assert.assertNull(target);
         Assert.assertNull(ex);
@@ -100,84 +100,95 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         //twit4j2: 6377362
         twitterStream.user(new String[]{"BAh7CToPY3JlYXR"});
         //expecting onFriendList for twit4j and twit4j2
-        waitForStatus();
-        waitForStatus();
+        waitForStatus("friend list");
+        assertReceived("onfriendlist", "onfriendlist");
+
+
+        DirectMessage dm = twitter2.sendDirectMessage(id1.id, "test " + new Date());
+        waitForStatus("sentDirectMessage");
+        assertReceived("onDirectMessage", TwitterMethod.SEND_DIRECT_MESSAGE);
+
+        twitter1.destroyDirectMessage(dm.getId());
+        waitForStatus("destroyedDirectMessage");
+
 
         Status status = twitter2.updateStatus("@twit4j " + new Date());
         //expecting onStatus for twit4j from twit4j
-        waitForStatus();
-
-        twitter1.createFavorite(status.getId());
-        waitForStatus();
-
-        twitter1.destroyFavorite(status.getId());
-        waitForStatus();
-
-        // unfollow twit4j
-        twitter2.destroyFriendship(id1.id);
-        waitForStatus();
-
-        // follow twit4j
-        twitter2.createFriendship(id1.id);
-        waitForStatus();
-
-        // unfollow twit4j2
-        twitter1.destroyFriendship(id2.id);
-        waitForStatus();
-
-        status = twitter2.updateStatus("somerandometext " + new Date());
-        waitForStatus();
-        // follow twit4j2
-        twitter1.createFriendship(id2.id);
-        waitForStatus();
+        waitForStatus("onStatus");
+        assertReceived("onstatus", "onstatus");
 
         twitter1.retweetStatus(status.getId());
-        waitForStatus();
-        DirectMessage dm = twitter1.sendDirectMessage(id2.id, "test " + new Date());
-        waitForStatus();
+        waitForStatus("onStatus");
+        assertReceived("onstatus", "onstatus");
 
-        twitter2.destroyStatus(status.getId());
-        waitForStatus();
-        // twitter1 is not permitted to delete direct message
-        // twitter1.destroyDirectMessage(dm.getId());
-        // waitForStatus();
+        twitter1.createFavorite(status.getId());
+        waitForStatus("createdFavorite");
+        assertReceived("onFavorite", TwitterMethod.CREATE_FAVORITE);
 
-        // block twit4j
+        twitter1.destroyFavorite(status.getId());
+        waitForStatus("destroyedFavorite");
+        assertReceived("onUnfavorite", TwitterMethod.DESTROY_FAVORITE);
+
+        // unfollow twit4j
+        twitter1.destroyFriendship(id2.id);
+        waitForStatus("destroyedFriendship");
+
+        // follow twit4j
+        twitter1.createFriendship(id2.id);
+        waitForStatus("createdFriendship");
+        assertReceived("onFollow", TwitterMethod.CREATE_FRIENDSHIP);
+
+        status = twitter1.updateStatus("somerandometext " + new Date());
+        waitForStatus("updatedStatus");
+        assertReceived("onstatus", "onstatus");
+
+        twitter1.destroyStatus(status.getId());
+        waitForStatus("destroyedStatus");
+        assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
+
+        // block twit4j2
         twitter1.createBlock(id2.id);
-        waitForStatus();
+        waitForStatus("createdBlock");
+        assertReceived("onBlock", TwitterMethod.CREATE_BLOCK);
 
-        // unblock twit4j
+        // unblock twit4j2
         twitter1.destroyBlock(id2.id);
-        waitForStatus();
+        waitForStatus("destroyedBlock");
+        assertReceived("onUnblock", TwitterMethod.DESTROY_BLOCK);
 
-        try {
-            twitter1.createFriendship(id2.id);
-            waitForStatus();
-        } catch (TwitterException ignore) {
-        }
-        try {
-            twitter2.createFriendship(id1.id);
-            waitForStatus();
-        } catch (TwitterException ignore) {
-        }
         twitter1.updateProfile(null, null, new Date().toString(), null);
-        waitForStatus();
+        waitForStatus("updateProfile");
+        assertReceived("onUserProfileUpdated", TwitterMethod.UPDATE_PROFILE);
 
         UserList list = twitter1.createUserList("test", true, "desctription");
-        waitForStatus();
-        list = twitter1.updateUserList(list.getId(), "test2", true, "description2");
-        waitForStatus();
-        twitter1.addUserListMember(list.getId(), id2.id);
-        waitForStatus();
-        twitter2.createUserListSubscription(list.getId());
-        waitForStatus();
-        twitter1.deleteUserListMember(list.getId(), id2.id);
-        waitForStatus();
-        twitter2.destroyUserListSubscription(list.getId());
-        waitForStatus();
-        twitter1.destroyUserList(list.getId());
-        waitForStatus();
+        waitForStatus("createdUserList");
+        assertReceived("onUserListCreated", TwitterMethod.CREATE_USER_LIST);
 
+        list = twitter1.updateUserList(list.getId(), "test2", true, "description2");
+        waitForStatus("updatedUserList");
+        assertReceived("onUserListUpdated", TwitterMethod.UPDATE_USER_LIST);
+
+        twitter1.addUserListMember(list.getId(), id2.id);
+        waitForStatus("addedListMember");
+        assertReceived("onUserListMemberAddition", TwitterMethod.ADD_LIST_MEMBER);
+
+        twitter2.createUserListSubscription(list.getId());
+        waitForStatus("createdUserListSubscription");
+        assertReceived("onUserListSubscription", TwitterMethod.SUBSCRIBE_LIST);
+
+        twitter1.deleteUserListMember(list.getId(), id2.id);
+        waitForStatus("deletedUserListMember");
+        assertReceived("onUserListMemberDeletion", TwitterMethod.DELETE_LIST_MEMBER);
+
+        twitter2.destroyUserListSubscription(list.getId());
+        waitForStatus("destroiedUserListSubscription");
+        assertReceived("onUserListUnsubscription", TwitterMethod.UNSUBSCRIBE_LIST);
+
+        twitter1.destroyUserList(list.getId());
+        waitForStatus("destroyedUserList");
+        assertReceived("onUserListDestoyed", TwitterMethod.DESTROY_USER_LIST);
+
+        assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
         // confirm if tracking term is effective
         boolean found = false;
         for (Object[] event : this.received) {
@@ -190,32 +201,6 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
             }
         }
         Assert.assertTrue(found);
-
-
-        assertReceived("onstatus", "onstatus");
-        assertReceived("onfriendlist", "onfriendlist");
-        assertReceived("onFavorite", TwitterMethod.CREATE_FAVORITE);
-        assertReceived("onUnfavorite", TwitterMethod.DESTROY_FAVORITE);
-        assertReceived("onFollow", TwitterMethod.CREATE_FRIENDSHIP);
-//            assertReceived(TwitterMethod.RETWEET_STATUS);
-        assertReceived("onDirectMessage", TwitterMethod.SEND_DIRECT_MESSAGE);
-
-        assertReceived("onDeletionNotice-status", TwitterMethod.DESTROY_STATUS);
-//        assertReceived("onDeletionNotice-directmessage", TwitterMethod.DESTROY_DIRECT_MESSAGE);
-
-        assertReceived("onUserListMemberAddition", TwitterMethod.ADD_LIST_MEMBER);
-        assertReceived("onUserListMemberDeletion", TwitterMethod.DELETE_LIST_MEMBER);
-        assertReceived("onUserListSubscription", TwitterMethod.SUBSCRIBE_LIST);
-        assertReceived("onUserListUnsubscription", TwitterMethod.UNSUBSCRIBE_LIST);
-        assertReceived("onUserListCreated", TwitterMethod.CREATE_USER_LIST);
-        assertReceived("onUserListUpdated", TwitterMethod.UPDATE_USER_LIST);
-        assertReceived("onUserListDestoyed", TwitterMethod.DESTROY_USER_LIST);
-
-
-        assertReceived("onUserProfileUpdated", TwitterMethod.UPDATE_PROFILE);
-
-        assertReceived("onBlock", TwitterMethod.CREATE_BLOCK);
-        assertReceived("onUnblock", TwitterMethod.DESTROY_BLOCK);
     }
 
     private void assertReceived(String assertion, Object obj) {
@@ -229,10 +214,11 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         Assert.assertTrue(assertion, received);
     }
 
-    private synchronized void waitForStatus() {
+    private synchronized void waitForStatus(String waitFor) {
+        System.out.println("waiting for:" + waitFor);
         try {
-            this.wait(5000);
-            System.out.println("notified.");
+            this.wait(20000);
+            System.out.println(received.size() +" events notified so far. last notification:"+ received.get(received.size()-1)[0]);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -313,13 +299,6 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         received.add(new Object[]{TwitterMethod.CREATE_FRIENDSHIP, source, followedUser});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(followedUser));
-        notifyResponse();
-    }
-
-    public void onRetweet(User source, User target, Status retweetedStatus) {
-        System.out.println("onRetweet");
-        received.add(new Object[]{TwitterMethod.RETWEET_STATUS, retweetedStatus});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(retweetedStatus));
         notifyResponse();
     }
 

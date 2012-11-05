@@ -102,9 +102,9 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "http://api.twitter.com/oauth/authenticate";
 
     private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1.1/";
-    private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1/";
-    private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/2/";
-    private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com";
+    private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1.1/";
+    private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/1.1/";
+    private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com/1.1/";
 
     private boolean IS_DALVIK;
     private boolean IS_GAE;

@@ -285,7 +285,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     InputStream getSiteStream(boolean withFollowings, long[] follow) throws TwitterException {
         ensureOAuthEnabled();
-        return http.post(conf.getSiteStreamBaseURL() + "/2b/site.json",
+        return http.post(conf.getSiteStreamBaseURL() + "site.json",
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
                         , new HttpParameter("follow", z_T4JInternalStringUtil.join(follow))

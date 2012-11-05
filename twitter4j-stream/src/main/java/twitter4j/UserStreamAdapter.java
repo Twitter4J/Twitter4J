@@ -42,10 +42,6 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     }
 
     @Override
-    public void onRetweet(User source, User target, Status retweetedStatus) {
-    }
-
-    @Override
     public void onDirectMessage(DirectMessage directMessage) {
     }
 
