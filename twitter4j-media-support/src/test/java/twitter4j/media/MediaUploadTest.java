@@ -24,6 +24,7 @@ import twitter4j.conf.ConfigurationBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Date;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
@@ -37,7 +38,7 @@ public class MediaUploadTest extends TestCase {
     }
 
     private String fileName = "t4j.jpeg";
-    private String message = "Twitter4J image upload test";
+    private String message = "Twitter4J image upload test" + new Date().toString();
 
     @Override
     protected void setUp() throws Exception {
