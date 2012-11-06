@@ -784,7 +784,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<User> lookupUsers(long[] ids) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createUserList(get(conf.getRestBaseURL() + "users/lookup.json"
+        return factory.createUserList(post(conf.getRestBaseURL() + "users/lookup.json"
                 , new HttpParameter[]{new HttpParameter("user_id", z_T4JInternalStringUtil.join(ids))}));
     }
 
@@ -794,7 +794,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException {
         ensureAuthorizationEnabled();
-        return factory.createUserList(get(conf.getRestBaseURL() + "users/lookup.json"
+        return factory.createUserList(post(conf.getRestBaseURL() + "users/lookup.json"
                 , new HttpParameter[]{new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
     }
 
