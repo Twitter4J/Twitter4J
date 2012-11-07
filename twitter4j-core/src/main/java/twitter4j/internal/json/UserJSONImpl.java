@@ -64,6 +64,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     private String timeZone;
     private String profileBackgroundImageUrl;
     private String profileBackgroundImageUrlHttps;
+    private String profileBannerImageUrl;
     private boolean profileBackgroundTiled;
     private String lang;
     private int statusesCount;
@@ -127,6 +128,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
             timeZone = getRawString("time_zone", json);
             profileBackgroundImageUrl = getRawString("profile_background_image_url", json);
             profileBackgroundImageUrlHttps = getRawString("profile_background_image_url_https", json);
+            profileBannerImageUrl = getRawString("profile_banner_url", json);
             profileBackgroundTiled = getBoolean("profile_background_tile", json);
             lang = getRawString("lang", json);
             statusesCount = getInt("statuses_count", json);
@@ -364,6 +366,39 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     @Override
     public String getProfileBackgroundImageUrlHttps() {
         return profileBackgroundImageUrlHttps;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getProfileBannerUrl() {
+        return profileBannerImageUrl != null ? profileBannerImageUrl+"/web" : null;
+    }
+
+    @Override
+    public String getProfileBannerRetinaUrl() {
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/web_retina" : null;
+    }
+
+    @Override
+    public String getProfileBannerIPadUrl() {
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/ipad" : null;
+    }
+
+    @Override
+    public String getProfileBannerIPadRetinaUrl() {
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/ipad_retina" : null;
+    }
+
+    @Override
+    public String getProfileBannerMobileUrl() {
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/mobile" : null;
+    }
+
+    @Override
+    public String getProfileBannerMobileRetinaUrl() {
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/ipad_retina" : null;
     }
 
     /**

@@ -141,6 +141,31 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     String getProfileBackgroundImageUrlHttps();
 
+    /**
+     * @since Twitter4J 3.0.0
+     */
+    String getProfileBannerUrl();
+    /**
+     * @since Twitter4J 3.0.0
+     */
+    String getProfileBannerRetinaUrl();
+    /**
+     * @since Twitter4J 3.0.0
+     */
+    String getProfileBannerIPadUrl();
+    /**
+     * @since Twitter4J 3.0.0
+     */
+    String getProfileBannerIPadRetinaUrl();
+    /**
+     * @since Twitter4J 3.0.0
+     */
+    String getProfileBannerMobileUrl();
+    /**
+     * @since Twitter4J 3.0.0
+     */
+    String getProfileBannerMobileRetinaUrl();
+
     boolean isProfileBackgroundTiled();
 
     /**

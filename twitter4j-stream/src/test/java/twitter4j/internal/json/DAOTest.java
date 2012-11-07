@@ -107,7 +107,7 @@ public class DAOTest extends TwitterTestBase {
         } catch (Error notExpected) {
             fail("failed" + notExpected.getMessage());
         }
-        str = "{\"in_reply_to_status_id_str\":null,\"place\":null,\"in_reply_to_user_id\":null,\"text\":\"working\",\"contributors\":null,\"retweet_count\":0,\"in_reply_to_user_id_str\":null,\"retweeted\":false,\"id_str\":\"794626207\",\"source\":\"\\u003Ca href=\\\"http:\\/\\/twitterhelp.blogspot.com\\/2008\\/05\\/twitter-via-mobile-web-mtwittercom.html\\\" rel=\\\"nofollow\\\"\\u003Emobile web\\u003C\\/a\\u003E\",\"truncated\":false,\"geo\":null,\"in_reply_to_status_id\":null,\"favorited\":false,\"user\":{\"show_all_inline_media\":false,\"geo_enabled\":false,\"profile_background_tile\":false,\"time_zone\":null,\"favourites_count\":0,\"description\":null,\"friends_count\":0,\"profile_link_color\":\"0084B4\",\"location\":null,\"profile_sidebar_border_color\":\"C0DEED\",\"id_str\":\"14481043\",\"url\":null,\"follow_request_sent\":false,\"statuses_count\":1,\"profile_use_background_image\":true,\"lang\":\"en\",\"profile_background_color\":\"C0DEED\",\"profile_image_url\":\"http:\\/\\/a3.twimg.com\\/a\\/1292975674\\/images\\/default_profile_3_normal.png\",\"profile_background_image_url\":\"http:\\/\\/a3.twimg.com\\/a\\/1292975674\\/images\\/themes\\/theme1\\/bg.png\",\"followers_count\":44,\"protected\":false,\"contributors_enabled\":false,\"notifications\":false,\"screen_name\":\"Yusuke\",\"name\":\"Yusuke\",\"is_translator\":false,\"listed_count\":1,\"following\":false,\"verified\":false,\"profile_text_color\":\"333333\",\"id\":14481043,\"utc_offset\":null,\"created_at\":\"Tue Apr 22 21:49:13 +0000 2008\",\"profile_sidebar_fill_color\":\"DDEEF6\"},\"id\":794626207,\"coordinates\":null,\"in_reply_to_screen_name\":null,\"created_at\":\"Tue Apr 2200 21:49:34 +0000 2008\"}";
+        str = "{\"in_reply_to_status_id_str\":null,\"place\":null,\"in_reply_to_user_id\":null,\"text\":\"working\",\"contributors\":null,\"retweet_count\":0,\"in_reply_to_user_id_str\":null,\"retweeted\":false,\"id_str\":\"794626207\",\"source\":\"\\u003Ca href=\\\"http:\\/\\/twitterhelp.blogspot.com\\/2008\\/05\\/twitter-via-mobile-web-mtwittercom.html\\\" rel=\\\"nofollow\\\"\\u003Emobile web\\u003C\\/a\\u003E\",\"truncated\":false,\"geo\":null,\"in_reply_to_status_id\":null,\"favorited\":false,\"user\":{\"show_all_inline_media\":false,\"geo_enabled\":false,\"profile_background_tile\":false,\"time_zone\":null,\"favourites_count\":0,\"description\":null,\"friends_count\":0,\"profile_link_color\":\"0084B4\",\"location\":null,\"profile_sidebar_border_color\":\"C0DEED\",\"id_str\":\"14481043\",\"url\":null,\"follow_request_sent\":false,\"statuses_count\":1,\"profile_use_background_image\":true,\"lang\":\"en\",\"profile_background_color\":\"C0DEED\",\"profile_image_url\":\"http:\\/\\/a3.twimg.com\\/a\\/1292975674\\/images\\/default_profile_3_normal.png\",\"profile_background_image_url\":\"http:\\/\\/a3.twimg.com\\/a\\/1292975674\\/images\\/themes\\/theme1\\/bg.png\",\"followers_count\":44,\"protected\":false,\"contributors_enabled\":false,\"notifications\":false,\"screen_name\":\"Yusuke\",\"name\":\"Yusuke\",\"is_translator\":false,\"listed_count\":1,\"following\":false,\"verified\":false,\"profile_text_color\":\"333333\",\"id\":14481043,\"utc_offset\":null,\"created_at\":\"Tue Apr 22 21:49:13 +0000 2008\",\"profile_sidebar_fill_color\":\"DDEEF6\"},\"id\":794626207,\"coordinates\":null,\"in_reply_to_screen_name\":null,\"created_at\":\"Tue Apr 2200 21:49:34 +0000 2008\"";
 
         try {
             DataObjectFactory.createCategory(str);
@@ -165,7 +165,7 @@ public class DAOTest extends TwitterTestBase {
         // Location
 
 //        schema = new String[]{"url","country","woeid","placeType/name","placeType/code","name","countryCode"};
-//        url = "http://api.twitter.com/1/trends/available.json";
+//        url = "http://api.twitter.com/1.1/trends/available.json";
 //        validateJSONArraySchema(url, schema);
         // Place
         if (!Boolean.valueOf(System.getProperties().getProperty("twitter4j.test.schema"))) {
@@ -178,7 +178,7 @@ public class DAOTest extends TwitterTestBase {
                 "name",
                 "size",
         };
-        url = "http://api.twitter.com/1/users/suggestions.json";
+        url = "http://api.twitter.com/1.1/users/suggestions.json";
         List categories = CategoryJSONImpl.createCategoriesList(validateJSONArraySchema(url, schema), null, conf);
         Assert.assertEquals(20, categories.size());
 
@@ -189,7 +189,7 @@ public class DAOTest extends TwitterTestBase {
                 "categories/*",
                 "users/*"
         };
-        url = "http://api.twitter.com/1/users/suggestions/art-design.json";
+        url = "http://api.twitter.com/1.1/users/suggestions/art-design.json";
         validateJSONObjectSchema(url, schema);
 
 
@@ -226,7 +226,7 @@ public class DAOTest extends TwitterTestBase {
                 "query/params/coordinates/coordinates/*",
                 "query/params/accuracy",
         };
-        url = "http://api.twitter.com/1/geo/reverse_geocode.json?lat=37.78215&long=-122.40060";
+        url = "http://api.twitter.com/1.1/geo/reverse_geocode.json?lat=37.78215&long=-122.40060";
         validateJSONObjectSchema(url, schema);
 
 
@@ -249,7 +249,7 @@ public class DAOTest extends TwitterTestBase {
                 "lists/following",
 
         };
-        url = "http://api.twitter.com/1/twit4j2/lists.json";
+        url = "http://api.twitter.com/1.1/twit4j2/lists.json";
         validateJSONObjectSchema(url, schema);
 
         schema = new String[]{
@@ -267,7 +267,7 @@ public class DAOTest extends TwitterTestBase {
                 "following",
 
         };
-        url = "http://api.twitter.com/1/twit4j2/lists/9499823.json";
+        url = "http://api.twitter.com/1.1/twit4j2/lists/9499823.json";
         UserList userList = new UserListJSONImpl(validateJSONObjectSchema(url, schema));
         Assert.assertEquals("", userList.getDescription());
         Assert.assertEquals("@twit4j2/test", userList.getFullName());
@@ -304,7 +304,7 @@ public class DAOTest extends TwitterTestBase {
                 "retweet_count"
 
         };
-        url = "http://api.twitter.com/1/statuses/show/2245071380.json";
+        url = "http://api.twitter.com/1.1/statuses/show/2245071380.json";
         Status status = new StatusJSONImpl(validateJSONObjectSchema(url, schema));
 
         schema = new String[]{
@@ -344,7 +344,7 @@ public class DAOTest extends TwitterTestBase {
                 "is_translator",
                 "show_all_inline_media"};
 
-        url = "http://api.twitter.com/1/users/show/yusukey.json";
+        url = "http://api.twitter.com/1.1/users/show/yusukey.json";
         User user = new UserJSONImpl(validateJSONObjectSchema(url, schema));
     }
 
@@ -630,7 +630,7 @@ public class DAOTest extends TwitterTestBase {
         Assert.assertEquals("2b6ff8c22edd9576", place.getId());
         Assert.assertEquals("", place.getCountry());
         Assert.assertEquals("neighborhood", place.getPlaceType());
-        Assert.assertEquals("http://api.twitter.com/1/geo/id/2b6ff8c22edd9576.json", place.getURL());
+        Assert.assertEquals("http://api.twitter.com/1.1/geo/id/2b6ff8c22edd9576.json", place.getURL());
         Assert.assertEquals("SoMa, San Francisco", place.getFullName());
         Assert.assertEquals("Polygon", place.getBoundingBoxType());
         GeoLocation[][] boundingBox = place.getBoundingBoxCoordinates();
@@ -656,7 +656,7 @@ public class DAOTest extends TwitterTestBase {
         Assert.assertEquals("5a110d312052166f", containedWithin.getId());
         Assert.assertEquals("", containedWithin.getCountry());
         Assert.assertEquals("city", containedWithin.getPlaceType());
-        Assert.assertEquals("http://api.twitter.com/1/geo/id/5a110d312052166f.json", containedWithin.getURL());
+        Assert.assertEquals("http://api.twitter.com/1.1/geo/id/5a110d312052166f.json", containedWithin.getURL());
         Assert.assertEquals("San Francisco", containedWithin.getFullName());
         boundingBox = containedWithin.getBoundingBoxCoordinates();
         Assert.assertEquals("Polygon", place.getBoundingBoxType());

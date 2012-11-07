@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.File;
@@ -39,11 +40,19 @@ public class UsersResourcesTest extends TwitterTestBase {
     }
 
     public void testShowUser() throws Exception {
-        User user = twitter1.showUser(id1.screenName);
-        assertEquals(id1.screenName, user.getScreenName());
+        User user = twitter1.showUser("yusuke");
+        assertEquals("yusuke", user.getScreenName());
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());
         assertNotNull(user.getProfileImageURL());
+        assertNotNull(user.getProfileBannerUrl());
+        HttpClientWrapper wrapper = new HttpClientWrapper();
+        wrapper.head(user.getProfileBannerUrl());
+        wrapper.head(user.getProfileBannerRetinaUrl());
+        wrapper.head(user.getProfileBannerIPadUrl());
+        wrapper.head(user.getProfileBannerIPadRetinaUrl());
+        wrapper.head(user.getProfileBannerMobileUrl());
+        wrapper.head(user.getProfileBannerMobileRetinaUrl());
         assertNotNull(user.getURL());
         assertFalse(user.isProtected());
 
@@ -79,7 +88,9 @@ public class UsersResourcesTest extends TwitterTestBase {
 
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
-        twitter1.showUser("twit4jnoupdate");
+        user = twitter1.showUser("twit4jnoupdate");
+        System.out.println("----"+user.getProfileBannerUrl());
+        assertNull(user.getProfileBannerUrl());
         user = twitter1.showUser("tigertest");
         User previousUser = user;
         assertNotNull(DataObjectFactory.getRawJSON(user));
