@@ -23,8 +23,8 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class TimelineMethodsTest extends TwitterTestBase {
-    public TimelineMethodsTest(String name) {
+public class TimelineResourcesTest extends TwitterTestBase {
+    public TimelineResourcesTest(String name) {
         super(name);
     }
 

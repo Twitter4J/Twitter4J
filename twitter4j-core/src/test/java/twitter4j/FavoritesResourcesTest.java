@@ -21,8 +21,8 @@ import twitter4j.json.DataObjectFactory;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class FavoriteMethodsTest extends TwitterTestBase {
-    public FavoriteMethodsTest(String name) {
+public class FavoritesResourcesTest extends TwitterTestBase {
+    public FavoritesResourcesTest(String name) {
         super(name);
     }
 

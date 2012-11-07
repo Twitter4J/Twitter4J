@@ -19,8 +19,8 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class SpamReportingMethodsTest extends TwitterTestBase {
-    public SpamReportingMethodsTest(String name) {
+public class SpamReportingResourceTest extends TwitterTestBase {
+    public SpamReportingResourceTest(String name) {
         super(name);
     }
 

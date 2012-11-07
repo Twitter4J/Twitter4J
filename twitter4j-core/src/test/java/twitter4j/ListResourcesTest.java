@@ -23,8 +23,8 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class ListMethodsTest extends TwitterTestBase {
-    public ListMethodsTest(String name) {
+public class ListResourcesTest extends TwitterTestBase {
+    public ListResourcesTest(String name) {
         super(name);
     }
 

@@ -249,4 +249,24 @@ public class UsersResourcesTest extends TwitterTestBase {
         }
         return file;
     }
+
+    public void testBlockMethods() throws Exception {
+        User user1 = twitter2.createBlock(id1.screenName);
+        assertNotNull(DataObjectFactory.getRawJSON(user1));
+        assertEquals(user1, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user1)));
+        User user2 = twitter2.destroyBlock(id1.screenName);
+        assertNotNull(DataObjectFactory.getRawJSON(user2));
+        assertEquals(user2, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user2)));
+        PagableResponseList<User> users = twitter1.getBlocksList();
+        assertNotNull(DataObjectFactory.getRawJSON(users));
+        assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
+        assertEquals(1, users.size());
+        assertEquals(39771963, users.get(0).getId());
+
+        IDs ids = twitter1.getBlocksIDs();
+        assertNull(DataObjectFactory.getRawJSON(users));
+        assertNotNull(DataObjectFactory.getRawJSON(ids));
+        assertEquals(1, ids.getIDs().length);
+        assertEquals(39771963, ids.getIDs()[0]);
+    }
 }
