@@ -76,7 +76,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
         this.limit = limit;
         this.remaining = remaining;
         this.resetTimeInSeconds = resetTimeInSeconds;
-        this.secondsUntilReset = (int) ((resetTimeInSeconds * 1000 - System.currentTimeMillis()) / 1000);
+        this.secondsUntilReset = (int) ((resetTimeInSeconds * 1000L - System.currentTimeMillis()) / 1000);
     }
 
     RateLimitStatusJSONImpl(JSONObject json) throws TwitterException {
@@ -87,7 +87,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
         this.limit = getInt("limit", json);
         this.remaining = getInt("remaining", json);
         this.resetTimeInSeconds = getInt("reset", json);
-        this.secondsUntilReset = (int) ((resetTimeInSeconds * 1000 - System.currentTimeMillis()) / 1000);
+        this.secondsUntilReset = (int) ((resetTimeInSeconds * 1000L - System.currentTimeMillis()) / 1000);
     }
 
     static RateLimitStatus createFromResponseHeader(HttpResponse res) {
@@ -113,7 +113,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
         String reset = res.getResponseHeader("X-Rate-Limit-Reset");
         if (reset != null) {
             long longReset = Long.parseLong(reset);
-            resetTimeInSeconds = (int) (longReset / 1000);
+            resetTimeInSeconds = (int) longReset;
         } else {
             return null;
         }
