@@ -1335,6 +1335,9 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void getContributees(final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CONTRIBUTEEES, listeners) {
@@ -1351,6 +1354,9 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void getContributees(final String screenName) {
         getDispatcher().invokeLater(new AsyncTask(CONTRIBUTEEES, listeners) {
@@ -1367,22 +1373,9 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    @Override
-    public void getContributors(final String screenName) {
-        getDispatcher().invokeLater(new AsyncTask(CONTRIBUTORS, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<User> users = twitter.getContributors(screenName);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotContributors(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void getContributors(final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CONTRIBUTORS, listeners) {
@@ -1399,6 +1392,81 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getContributors(final String screenName) {
+        getDispatcher().invokeLater(new AsyncTask(CONTRIBUTORS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<User> users = twitter.getContributors(screenName);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotContributors(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeProfileBanner() {
+        getDispatcher().invokeLater(new AsyncTask(REMOVE_PROFILE_BANNER, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                twitter.removeProfileBanner();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.removedProfileBanner();
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateProfileBanner(final File image) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE_BANNER, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                twitter.updateProfileBanner(image);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.updatedProfileBanner();
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateProfileBanner(final InputStream image) {
+        getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE_BANNER, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                twitter.updateProfileBanner(image);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.updatedProfileBanner();
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
 
     /* Suggested Users Resources */
 

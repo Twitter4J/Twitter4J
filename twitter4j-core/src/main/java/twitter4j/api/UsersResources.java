@@ -329,6 +329,17 @@ public interface UsersResources {
     /**
      * Returns an array of users who can contribute to the specified account.
      *
+     * @param userId The user id of the user for whom to return results for
+     * @return list of contributors
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/contributors">GET users/contributors | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    ResponseList<User> getContributors(long userId) throws TwitterException;
+
+    /**
+     * Returns an array of users who can contribute to the specified account.
+     *
      * @param screenName The screen name of the user for whom to return results for
      * @return list of contributors
      * @throws TwitterException when Twitter service or network is unavailable
@@ -338,13 +349,39 @@ public interface UsersResources {
     ResponseList<User> getContributors(String screenName) throws TwitterException;
 
     /**
-     * Returns an array of users who can contribute to the specified account.
+     * Removes the uploaded profile banner for the authenticating user. Returns HTTP 200 upon success.
+     * <br>This method calls https://api.twitter.com/1.1/account/remove_profile_banner.json
      *
-     * @param userId The user id of the user for whom to return results for
-     * @return list of contributors
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/contributors">GET users/contributors | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/remove_profile_banner">POST account/remove_profile_banner | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    ResponseList<User> getContributors(long userId) throws TwitterException;
+    void removeProfileBanner() throws TwitterException;
+
+    /**
+     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an <5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
+     * Profile banner images are processed asynchronously. The profile_banner_url and its variant sizes will not necessary be available directly after upload.<br>
+     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_banner.json
+     *
+     * @param image For best results, upload an <5MB image that is exactly 1252px by 626px.
+     * @throws TwitterException when Twitter service or network is unavailable,
+     *                          or when the specified file is not found (FileNotFoundException will be nested),
+     *                          or when the specified file object in not representing a file (IOException will be nested)
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_banner">POST account/update_profile_banner | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void updateProfileBanner(File image) throws TwitterException;
+
+    /**
+     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an <5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
+     * Profile banner images are processed asynchronously. The profile_banner_url and its variant sizes will not necessary be available directly after upload.<br>
+     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_banner.json
+     *
+     * @param image For best results, upload an <5MB image that is exactly 1252px by 626px.
+     * @throws TwitterException when Twitter service or network is unavailable,
+     *                          or when the specified file is not found (FileNotFoundException will be nested),
+     *                          or when the specified file object in not representing a file (IOException will be nested)
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_banner">POST account/update_profile_banner | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void updateProfileBanner(InputStream image) throws TwitterException;
 }

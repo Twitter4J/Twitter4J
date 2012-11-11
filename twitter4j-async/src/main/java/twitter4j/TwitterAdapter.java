@@ -82,6 +82,8 @@ public class TwitterAdapter implements TwitterListener {
     public void searchedUser(ResponseList<User> userList){}
     public void gotContributees(ResponseList<User> users){}
     public void gotContributors(ResponseList<User> users){}
+    public void removedProfileBanner() {}
+    public void updatedProfileBanner() {}
 
     /* Suggested Users Resources */
     public void gotUserSuggestions(ResponseList<User> users){}

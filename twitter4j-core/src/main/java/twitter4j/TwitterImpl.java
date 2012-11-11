@@ -26,7 +26,6 @@ import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static twitter4j.internal.http.HttpParameter.getParameterArray;
@@ -861,6 +860,39 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<User> getContributors(String screenName) throws TwitterException {
         ensureAuthorizationEnabled();
         return factory.createUserList(get(conf.getRestBaseURL() + "users/contributors.json?screen_name=" + screenName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeProfileBanner() throws TwitterException {
+        ensureAuthorizationEnabled();
+        post(conf.getRestBaseURL()
+                + "account/remove_profile_banner.json");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateProfileBanner(File image) throws TwitterException {
+        ensureAuthorizationEnabled();
+        checkFileValidity(image);
+        post(conf.getRestBaseURL()
+                + "account/update_profile_banner.json"
+                , new HttpParameter[]{new HttpParameter("banner", image)});
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateProfileBanner(InputStream image) throws TwitterException {
+        ensureAuthorizationEnabled();
+        post(conf.getRestBaseURL()
+                + "account/update_profile_banner.json"
+                , new HttpParameter[]{new HttpParameter("banner", "banner", image)});
     }
 
     /* Suggested Users Resources */

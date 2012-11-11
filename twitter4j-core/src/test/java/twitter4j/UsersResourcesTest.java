@@ -153,6 +153,10 @@ public class UsersResourcesTest extends TwitterTestBase {
         users = twitter1.getContributees(users.get(0).getId());
         assertTrue(users.size() > 0);
     }
+    public void testBanner() throws Exception {
+        twitter1.updateProfileBanner(getRandomlyChosenFile(banners));
+        twitter1.removeProfileBanner();
+    }
     public void testAccountMethods() throws Exception {
         User original = twitter1.verifyCredentials();
         assertNotNull(DataObjectFactory.getRawJSON(original));
@@ -244,7 +248,7 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertEquals(user2, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user2)));
     }
 
-    static final String[] files = {"src/test/resources/t4j-reverse.jpeg",
+    static final String[] profileImages = {"src/test/resources/t4j-reverse.jpeg",
             "src/test/resources/t4j-reverse.png",
             "src/test/resources/t4j-reverse.gif",
             "src/test/resources/t4j.jpeg",
@@ -252,8 +256,19 @@ public class UsersResourcesTest extends TwitterTestBase {
             "src/test/resources/t4j.gif",
     };
 
+    static final String[] banners = {
+            // gif format fails with {"errors":[{"message":"Image error: is not an accepted format","code":211}]}
+//            "src/test/resources/t4j-banner.gif",
+            "src/test/resources/t4j-banner.jpeg",
+            "src/test/resources/t4j-banner.png",
+    };
+
     private static File getRandomlyChosenFile() {
-        int rand = (int) (System.currentTimeMillis() % 6);
+        return getRandomlyChosenFile(profileImages);
+    }
+
+    private static File getRandomlyChosenFile(String[] files) {
+        int rand = (int) (System.currentTimeMillis() % files.length);
         File file = new File(files[rand]);
         if (!file.exists()) {
             file = new File("twitter4j-core/" + files[rand]);

@@ -78,6 +78,8 @@ public interface TwitterListener {
     void searchedUser(ResponseList<User> userList);
     void gotContributees(ResponseList<User> users);
     void gotContributors(ResponseList<User> users);
+    void removedProfileBanner();
+    void updatedProfileBanner();
 
     /* Suggested Users Resources */
     void gotUserSuggestions(ResponseList<User> users);

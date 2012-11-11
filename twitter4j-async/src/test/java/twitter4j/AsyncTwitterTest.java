@@ -496,6 +496,16 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     @Override
+    public void removedProfileBanner() {
+        notifyResponse();
+    }
+
+    @Override
+    public void updatedProfileBanner() {
+        notifyResponse();
+    }
+
+    @Override
     public void gotContributees(ResponseList<User> users) {
         notifyResponse();
     }
