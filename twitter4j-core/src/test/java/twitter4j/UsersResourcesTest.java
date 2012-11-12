@@ -155,7 +155,10 @@ public class UsersResourcesTest extends TwitterTestBase {
     }
     public void testBanner() throws Exception {
         twitter1.updateProfileBanner(getRandomlyChosenFile(banners));
-        twitter1.removeProfileBanner();
+        User user = twitter1.verifyCredentials();
+        if (user.getProfileBannerUrl() != null) {
+            twitter1.removeProfileBanner();
+        }
     }
     public void testAccountMethods() throws Exception {
         User original = twitter1.verifyCredentials();
