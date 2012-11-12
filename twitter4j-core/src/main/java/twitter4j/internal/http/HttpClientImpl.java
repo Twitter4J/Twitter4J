@@ -119,9 +119,10 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
                                     BufferedInputStream in = new BufferedInputStream(
                                             param.hasFileBody() ? param.getFileBody() : new FileInputStream(param.getFile())
                                     );
-                                    int buff;
-                                    while ((buff = in.read()) != -1) {
-                                        out.write(buff);
+                                    byte[] buff = new byte[1024];
+                                    int length;
+                                    while ((length = in.read(buff)) != -1) {
+                                        out.write(buff, 0, length);
                                     }
                                     write(out, "\r\n");
                                     in.close();
