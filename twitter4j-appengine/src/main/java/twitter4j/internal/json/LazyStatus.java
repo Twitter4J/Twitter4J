@@ -231,6 +231,11 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().isRetweetedByMe();
     }
 
+    @Override
+    public boolean isPossiblySensitive() {
+        return getTarget().isPossiblySensitive();
+    }
+
 
     /**
      * Returns an array of user mentions in the tweet, or null if no users were mentioned.

@@ -51,6 +51,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     private Place place = null;
     private long retweetCount;
     private boolean wasRetweetedByMe;
+    private boolean isPossiblySensitive;
 
     private long[] contributorsIDs;
 
@@ -100,6 +101,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         isFavorited = getBoolean("favorited", json);
         inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
         retweetCount = getLong("retweet_count", json);
+        isPossiblySensitive = getBoolean("possibly_sensitive", json);
         try {
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
@@ -363,6 +365,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
+    public boolean isPossiblySensitive() {
+        return isPossiblySensitive;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserMentionEntity[] getUserMentionEntities() {
         return userMentionEntities;
     }
@@ -451,11 +461,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 ", place=" + place +
                 ", retweetCount=" + retweetCount +
                 ", wasRetweetedByMe=" + wasRetweetedByMe +
-                ", contributors=" + (contributorsIDs == null ? null : Arrays.asList(contributorsIDs)) +
+                ", isPossiblySensitive=" + isPossiblySensitive +
+                ", contributorsIDs=" + contributorsIDs +
                 ", retweetedStatus=" + retweetedStatus +
                 ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
                 ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
                 ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
+                ", mediaEntities=" + (mediaEntities == null ? null : Arrays.asList(mediaEntities)) +
+                ", myRetweetedStatus=" + myRetweetedStatus +
                 ", user=" + user +
                 '}';
     }
