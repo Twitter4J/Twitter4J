@@ -21,8 +21,6 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,14 +31,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
  * @since Twitter4J 2.2.3
  */
 public class MediaEntityJSONImpl implements MediaEntity {
-    private static final long serialVersionUID = -5196438049688518593L;
+    private static final long serialVersionUID = 224487082931268487L;
     private long id;
     private int start = -1;
     private int end = -1;
-    private URL url;
-    private URL mediaURL;
-    private URL mediaURLHttps;
-    private URL expandedURL;
+    private String url;
+    private String mediaURL;
+    private String mediaURLHttps;
+    private String expandedURL;
     private String displayURL;
     private Map<Integer, MediaEntity.Size> sizes;
     private String type;
@@ -52,32 +50,12 @@ public class MediaEntityJSONImpl implements MediaEntity {
             this.end = indicesArray.getInt(1);
             this.id = getLong("id", json);
 
-            try {
-                this.url = new URL(json.getString("url"));
-            } catch (MalformedURLException ignore) {
-            }
+            this.url = json.getString("url");
+            this.expandedURL = json.getString("expanded_url");
+            this.mediaURL = json.getString("media_url");
+            this.mediaURLHttps = json.getString("media_url_https");
+            this.displayURL = json.getString("display_url");
 
-            if (!json.isNull("expanded_url")) {
-                try {
-                    this.expandedURL = new URL(json.getString("expanded_url"));
-                } catch (MalformedURLException ignore) {
-                }
-            }
-            if (!json.isNull("media_url")) {
-                try {
-                    this.mediaURL = new URL(json.getString("media_url"));
-                } catch (MalformedURLException ignore) {
-                }
-            }
-            if (!json.isNull("media_url_https")) {
-                try {
-                    this.mediaURLHttps = new URL(json.getString("media_url_https"));
-                } catch (MalformedURLException ignore) {
-                }
-            }
-            if (!json.isNull("display_url")) {
-                this.displayURL = json.getString("display_url");
-            }
             JSONObject sizes = json.getJSONObject("sizes");
             this.sizes = new HashMap<Integer, MediaEntity.Size>(4);
             // thumbworkarounding API side issue
@@ -117,7 +95,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
      * {@inheritDoc}
      */
     @Override
-    public URL getMediaURL() {
+    public String getMediaURL() {
         return mediaURL;
     }
 
@@ -125,7 +103,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
      * {@inheritDoc}
      */
     @Override
-    public URL getMediaURLHttps() {
+    public String getMediaURLHttps() {
         return mediaURLHttps;
     }
 
@@ -133,7 +111,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
      * {@inheritDoc}
      */
     @Override
-    public URL getURL() {
+    public String getURL() {
         return url;
     }
 
@@ -149,7 +127,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
      * {@inheritDoc}
      */
     @Override
-    public URL getExpandedURL() {
+    public String getExpandedURL() {
         return expandedURL;
     }
 

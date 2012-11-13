@@ -22,9 +22,6 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 /**
  * A data class representing one single URL entity.
  *
@@ -33,13 +30,13 @@ import java.net.URL;
  */
 /* package */ final class URLEntityJSONImpl implements URLEntity {
 
+    private static final long serialVersionUID = -8948472760821379376L;
     private int start = -1;
     private int end = -1;
-    private URL url;
-    private URL expandedURL;
+    private String url;
+    private String expandedURL;
     private String displayURL;
 
-    private static final long serialVersionUID = 1165188478018146676L;
 
     /* package */ URLEntityJSONImpl(JSONObject json) throws TwitterException {
         super();
@@ -50,22 +47,8 @@ import java.net.URL;
         super();
         this.start = start;
         this.end = end;
-        try {
-            this.url = new URL(url);
-        } catch (MalformedURLException e) {
-            try {
-                this.url = new URL("http://example.com/");
-            } catch (MalformedURLException ignore) {
-            }
-        }
-        try {
-            this.expandedURL = new URL(expandedURL);
-        } catch (MalformedURLException e) {
-            try {
-                this.expandedURL = new URL("http://example.com/");
-            } catch (MalformedURLException ignore) {
-            }
-        }
+        this.url = url;
+        this.expandedURL = expandedURL;
         this.displayURL = displayURL;
     }
 
@@ -80,20 +63,9 @@ import java.net.URL;
             this.start = indicesArray.getInt(0);
             this.end = indicesArray.getInt(1);
 
-            try {
-                this.url = new URL(json.getString("url"));
-            } catch (MalformedURLException ignore) {
-            }
-
-            if (!json.isNull("expanded_url")) {
-                try {
-                    this.expandedURL = new URL(json.getString("expanded_url"));
-                } catch (MalformedURLException ignore) {
-                }
-            }
-            if (!json.isNull("display_url")) {
-                this.displayURL = json.getString("display_url");
-            }
+            this.url = json.getString("url");
+            this.expandedURL = json.getString("expanded_url");
+            this.displayURL = json.getString("display_url");
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -103,7 +75,7 @@ import java.net.URL;
      * {@inheritDoc}
      */
     @Override
-    public URL getURL() {
+    public String getURL() {
         return url;
     }
 
@@ -111,7 +83,7 @@ import java.net.URL;
      * {@inheritDoc}
      */
     @Override
-    public URL getExpandedURL() {
+    public String getExpandedURL() {
         return expandedURL;
     }
 

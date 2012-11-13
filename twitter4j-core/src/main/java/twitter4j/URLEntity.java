@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import java.net.URL;
-
 /**
  * A data interface representing one single URL entity.
  *
@@ -31,14 +29,14 @@ public interface URLEntity extends java.io.Serializable {
      *
      * @return the mentioned URL
      */
-    URL getURL();
+    String getURL();
 
     /**
      * Returns the expanded URL if mentioned URL is shorten.
      *
      * @return the expanded URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
      */
-    URL getExpandedURL();
+    String getExpandedURL();
 
     /**
      * Returns the display URL if mentioned URL is shorten.
