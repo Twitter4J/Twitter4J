@@ -112,30 +112,30 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
 
     public void testEntities() throws Exception {
-        Status status = twitter2.showStatus(263908367406350337L);
+        Status status = twitter2.showStatus(268294645526708226L);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
-        URLEntity[] entities = status.getURLEntities();
-        assertEquals(1, entities.length);
-        assertEquals("http://t.co/tf474NCg", entities[0].getURL().toString());
-        assertEquals("http://twitter4j.org/en/index.html#download", entities[0].getExpandedURL().toString());
-        assertEquals("twitter4j.org/en/index.html#…", entities[0].getDisplayURL());
-        assertTrue(0 < entities[0].getStart());
-        assertTrue(entities[0].getStart() < entities[0].getEnd());
+        URLEntity[] urlEntities = status.getURLEntities();
+        assertEquals(1, urlEntities.length);
+        assertEquals("http://t.co/HwbSpYFr", urlEntities[0].getURL().toString());
+        assertEquals("http://twitter4j.org/en/index.html#download", urlEntities[0].getExpandedURL().toString());
+        assertEquals("twitter4j.org/en/index.html#…", urlEntities[0].getDisplayURL());
+        assertTrue(0 < urlEntities[0].getStart());
+        assertTrue(urlEntities[0].getStart() < urlEntities[0].getEnd());
+        System.out.println(status.getText());
+        assertEquals(urlEntities[0].getURL(), status.getText().substring(urlEntities[0].getStart(),urlEntities[0].getEnd()));
 
         UserMentionEntity[] userMentions = status.getUserMentionEntities();
         assertEquals(2, userMentions.length);
-        assertEquals(4933401, userMentions[1].getId());
-        assertEquals("yusuke", userMentions[1].getScreenName());
-        assertEquals(28, userMentions[1].getStart());
-        assertEquals(35, userMentions[1].getEnd());
+        assertEquals(72297675, userMentions[1].getId());
+        assertEquals("t4j_news", userMentions[1].getScreenName());
+        assertEquals(userMentions[1].getScreenName(), status.getText().substring(userMentions[1].getStart(),userMentions[1].getEnd()));
 
         HashtagEntity[] hashtags = status.getHashtagEntities();
         assertEquals(1, hashtags.length);
         assertEquals("test", hashtags[0].getText());
-        assertEquals(36, hashtags[0].getStart());
-        assertEquals(41, hashtags[0].getEnd());
+        assertEquals(hashtags[0].getText(), status.getText().substring(hashtags[0].getStart(),hashtags[0].getEnd()));
 
         status = twitter1.showStatus(76360760606986241L);
         assertNotNull(DataObjectFactory.getRawJSON(status));
