@@ -94,15 +94,15 @@ public interface TwitterListener {
     /* Lists Resources */
     void gotUserLists(ResponseList<UserList> userLists);
     void gotUserListStatuses(ResponseList<Status> statuses);
-    void deletedUserListMember(UserList userList);
+    void destroyedUserListMember(UserList userList);
     void gotUserListMemberships(PagableResponseList<UserList> userLists);
     void gotUserListSubscribers(PagableResponseList<User> users);
     void subscribedUserList(UserList userList);
     void checkedUserListSubscription(User user);
     void unsubscribedUserList(UserList userList);
-    void addedUserListMembers(UserList userList);
+    void createdUserListMembers(UserList userList);
     void checkedUserListMembership(User users);
-    void addedUserListMember(UserList userList);
+    void createdUserListMember(UserList userList);
     void destroyedUserList(UserList userList);
     void updatedUserList(UserList userList);
     void createdUserList(UserList userList);

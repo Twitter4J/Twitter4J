@@ -98,15 +98,15 @@ public class TwitterAdapter implements TwitterListener {
     /* Lists Resources */
     public void gotUserLists(ResponseList<UserList> userLists){}
     public void gotUserListStatuses(ResponseList<Status> statuses){}
-    public void deletedUserListMember(UserList userList){}
+    public void destroyedUserListMember(UserList userList){}
     public void gotUserListMemberships(PagableResponseList<UserList> userLists){}
     public void gotUserListSubscribers(PagableResponseList<User> users){}
     public void subscribedUserList(UserList userList){}
     public void checkedUserListSubscription(User user){}
     public void unsubscribedUserList(UserList userList){}
-    public void addedUserListMembers(UserList userList){}
+    public void createdUserListMembers(UserList userList){}
     public void checkedUserListMembership(User users){}
-    public void addedUserListMember(UserList userList){}
+    public void createdUserListMember(UserList userList){}
     public void destroyedUserList(UserList userList){}
     public void updatedUserList(UserList userList){}
     public void createdUserList(UserList userList){}

@@ -1763,14 +1763,38 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void deleteUserListMember(final int listId, final long userId) {
-        getDispatcher().invokeLater(new AsyncTask(DELETE_LIST_MEMBER, listeners) {
+    public void destroyUserListMember(final int listId, final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY_LIST_MEMBER, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.deleteUserListMember(listId, userId);
+                UserList list = twitter.destroyUserListMember(listId, userId);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.deletedUserListMember(list);
+                        listener.destroyedUserListMember(list);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteUserListMember(int listId, long userId) {
+        destroyUserListMember(listId, userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void destroyUserListMember(final long ownerId, final String slug, final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY_LIST_MEMBER, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                UserList list = twitter.destroyUserListMember(ownerId, slug, userId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.destroyedUserListMember(list);
                     } catch (Exception ignore) {
                     }
                 }
@@ -1783,18 +1807,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      */
     @Override
     public void deleteUserListMember(final long ownerId, final String slug, final long userId) {
-        getDispatcher().invokeLater(new AsyncTask(DELETE_LIST_MEMBER, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.deleteUserListMember(ownerId, slug, userId);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.deletedUserListMember(list);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
+        destroyUserListMember(ownerId, slug, userId);
     }
 
     /**
@@ -2027,14 +2040,14 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void addUserListMembers(final int listId, final long[] userIds) {
-        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBERS, listeners) {
+    public void createUserListMembers(final int listId, final long[] userIds) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.addUserListMembers(listId, userIds);
+                UserList list = twitter.createUserListMembers(listId, userIds);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.addedUserListMembers(list);
+                        listener.createdUserListMembers(list);
                     } catch (Exception ignore) {
                     }
                 }
@@ -2042,18 +2055,23 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    @Override
+    public void addUserListMembers(int listId, long[] userIds) {
+        createUserListMembers(listId, userIds);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addUserListMembers(final long ownerId, final String slug, final long[] userIds) {
-        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBERS, listeners) {
+    public void createUserListMembers(final long ownerId, final String slug, final long[] userIds) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.addUserListMembers(ownerId, slug, userIds);
+                UserList list = twitter.createUserListMembers(ownerId, slug, userIds);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.addedUserListMembers(list);
+                        listener.createdUserListMembers(list);
                     } catch (Exception ignore) {
                     }
                 }
@@ -2061,18 +2079,23 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    @Override
+    public void addUserListMembers(long ownerId, String slug, long[] userIds) {
+        createUserListMembers(ownerId, slug, userIds);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addUserListMembers(final int listId, final String[] screenNames) {
-        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBERS, listeners) {
+    public void createUserListMembers(final int listId, final String[] screenNames) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.addUserListMembers(listId, screenNames);
+                UserList list = twitter.createUserListMembers(listId, screenNames);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.addedUserListMembers(list);
+                        listener.createdUserListMembers(list);
                     } catch (Exception ignore) {
                     }
                 }
@@ -2080,23 +2103,33 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    @Override
+    public void addUserListMembers(int listId, String[] screenNames) {
+        createUserListMembers(listId, screenNames);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addUserListMembers(final long ownerId, final String slug, final String[] screenNames) {
-        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBERS, listeners) {
+    public void createUserListMembers(final long ownerId, final String slug, final String[] screenNames) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.addUserListMembers(ownerId, slug, screenNames);
+                UserList list = twitter.createUserListMembers(ownerId, slug, screenNames);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.addedUserListMembers(list);
+                        listener.createdUserListMembers(list);
                     } catch (Exception ignore) {
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void addUserListMembers(long ownerId, String slug, String[] screenNames) {
+        createUserListMembers(ownerId, slug, screenNames);
     }
 
     /**
@@ -2179,14 +2212,14 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void addUserListMember(final int listId, final long userId) {
-        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBER, listeners) {
+    public void createUserListMember(final int listId, final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBER, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.addUserListMember(listId, userId);
+                UserList list = twitter.createUserListMember(listId, userId);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.addedUserListMember(list);
+                        listener.createdUserListMember(list);
                     } catch (Exception ignore) {
                     }
                 }
@@ -2194,23 +2227,33 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    @Override
+    public void addUserListMember(int listId, long userId) {
+        createUserListMember(listId, userId);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addUserListMember(final long ownerId, final String slug, final long userId) {
-        getDispatcher().invokeLater(new AsyncTask(ADD_LIST_MEMBER, listeners) {
+    public void createUserListMember(final long ownerId, final String slug, final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBER, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                UserList list = twitter.addUserListMember(ownerId, slug, userId);
+                UserList list = twitter.createUserListMember(ownerId, slug, userId);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.addedUserListMember(list);
+                        listener.createdUserListMember(list);
                     } catch (Exception ignore) {
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void addUserListMember(long ownerId, String slug, long userId) {
+        createUserListMember(ownerId, slug, userId);
     }
 
     /**

@@ -27,7 +27,7 @@ public interface ListsResourcesAsync {
      * <br>This method calls http://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerScreenName The screen name of the list owner
-     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
@@ -38,7 +38,7 @@ public interface ListsResourcesAsync {
      * <br>This method calls http://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerUserId The id of the list owner
-     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
@@ -76,6 +76,11 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy">POST lists/members/destroy | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
+    void destroyUserListMember(int listId, long userId);
+
+    /**
+     * @deprecated use {@link #destroyUserListMember(int, long)} instead
+     */
     void deleteUserListMember(int listId, long userId);
 
     /**
@@ -87,6 +92,11 @@ public interface ListsResourcesAsync {
      * @param userId  The screen name of the member you wish to remove from the list.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy">POST lists/members/destroy | Twitter Developers</a>
      * @since Twitter4J 3.0.0
+     */
+    void destroyUserListMember(long ownerId, String slug, long userId);
+
+    /**
+     * @deprecated use {@link #destroyUserListMember(int, long)} instead
      */
     void deleteUserListMember(long ownerId, String slug, long userId);
 
@@ -245,6 +255,11 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
+    void createUserListMembers(int listId, long[] userIds);
+
+    /**
+     * @deprecated use {@link #createUserListMembers(int, long[])} instead
+     */
     void addUserListMembers(int listId, long[] userIds);
 
     /**
@@ -257,6 +272,11 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
+    void createUserListMembers(long ownerId, String slug, long[] userIds);
+
+    /**
+     * @deprecated use {@link #createUserListMembers(int, long[])} instead
+     */
     void addUserListMembers(long ownerId, String slug, long[] userIds);
 
     /**
@@ -267,6 +287,11 @@ public interface ListsResourcesAsync {
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
+     */
+    void createUserListMembers(int listId, String[] screenNames);
+
+    /**
+     * @deprecated use {@link #createUserListMembers(int, String[])} instead
      */
     void addUserListMembers(int listId, String[] screenNames);
 
@@ -279,6 +304,11 @@ public interface ListsResourcesAsync {
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
+     */
+    void createUserListMembers(long ownerId, String slug, String[] screenNames);
+
+    /**
+     * @deprecated use {@link #createUserListMembers(int, String[])} instead
      */
     void addUserListMembers(long ownerId, String slug, String[] screenNames);
 
@@ -338,6 +368,11 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create">POST lists/members/create | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
+    void createUserListMember(int listId, long userId);
+
+    /**
+     * @deprecated use {@link #createUserListMember(int, long)} instead
+     */
     void addUserListMember(int listId, long userId);
 
     /**
@@ -349,6 +384,11 @@ public interface ListsResourcesAsync {
      * @param userId  The id of the user to add as a member of the list.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create">POST lists/members/create | Twitter Developers</a>
      * @since Twitter4J 3.0.0
+     */
+    void createUserListMember(long ownerId, String slug, long userId);
+
+    /**
+     * @deprecated use {@link #createUserListMember(long, String, long)} instead
      */
     void addUserListMember(long ownerId, String slug, long userId);
 

@@ -27,7 +27,7 @@ public interface ListsResources {
      * <br>This method calls http://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerScreenName The screen name of the list owner
-     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
@@ -41,7 +41,6 @@ public interface ListsResources {
      * <br>This method calls http://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerUserId The id of the list owner
-     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
@@ -91,6 +90,11 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy">POST lists/members/destroy | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
+    UserList destroyUserListMember(int listId, long userId) throws TwitterException;
+
+    /**
+     * @deprecated use {@link #destroyUserList(int)} instead
+     */
     UserList deleteUserListMember(int listId, long userId) throws TwitterException;
 
     /**
@@ -104,6 +108,11 @@ public interface ListsResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy">POST lists/members/destroy | Twitter Developers</a>
      * @since Twitter4J 3.0.0
+     */
+    UserList destroyUserListMember(long ownerId, String slug, long userId) throws TwitterException;
+
+    /**
+     * @deprecated use {@link #destroyUserListMember(long, String, long)} List(int)} instead
      */
     UserList deleteUserListMember(long ownerId, String slug, long userId) throws TwitterException;
 
@@ -295,7 +304,12 @@ public interface ListsResources {
      * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
-     * @since Twitter4J 2.1.7
+     * @since Twitter4J 3.0.0
+     */
+    UserList createUserListMembers(int listId, long[] userIds) throws TwitterException;
+
+    /**
+     * @deprecated use {@link #createUserListMembers(int, long[])} instead
      */
     UserList addUserListMembers(int listId, long[] userIds) throws TwitterException;
 
@@ -310,6 +324,11 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
+    UserList createUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
+
+    /**
+     * @deprecated use {@link #createUserListMembers(int, long[])} instead
+     */
     UserList addUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
 
     /**
@@ -320,6 +339,11 @@ public interface ListsResources {
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
+     */
+    UserList createUserListMembers(int listId, String[] screenNames) throws TwitterException;
+
+    /**
+     * @deprecated use {@link #createUserListMembers(int, String[])} instead
      */
     UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException;
 
@@ -332,6 +356,11 @@ public interface ListsResources {
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
+     */
+    UserList createUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
+
+    /**
+     * @deprecated use {@link #createUserListMembers(int, String[])} instead
      */
     UserList addUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
 
@@ -404,6 +433,11 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create">POST lists/members/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
+    UserList createUserListMember(int listId, long userId) throws TwitterException;
+
+    /**
+     * @deprecated use {@link #createUserListMember(int, long)}} instead
+     */
     UserList addUserListMember(int listId, long userId) throws TwitterException;
 
     /**
@@ -417,6 +451,11 @@ public interface ListsResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create">POST lists/members/create | Twitter Developers</a>
      * @since Twitter4J 3.0.0
+     */
+    UserList createUserListMember(long ownerId, String slug, long userId) throws TwitterException;
+
+    /**
+     * @deprecated use {@link #createUserListMember(long, String, long)} instead
      */
     UserList addUserListMember(long ownerId, String slug, long userId) throws TwitterException;
 

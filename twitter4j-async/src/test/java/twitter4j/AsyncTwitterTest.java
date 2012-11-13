@@ -593,17 +593,17 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     @Override
-    public void addedUserListMember(UserList userList) {
+    public void createdUserListMember(UserList userList) {
         this.userList = userList;
     }
 
     @Override
-    public void addedUserListMembers(UserList userList) {
+    public void createdUserListMembers(UserList userList) {
         this.userList = userList;
     }
 
     @Override
-    public void deletedUserListMember(UserList userList) {
+    public void destroyedUserListMember(UserList userList) {
         this.userList = userList;
     }
 
