@@ -28,7 +28,12 @@ public interface QueryResult extends java.io.Serializable {
 
     long getMaxId();
 
+    /**
+     * @deprecated use {@link #getRefreshURL()} instead
+     */
     String getRefreshUrl();
+
+    String getRefreshURL();
 
     int getCount();
 

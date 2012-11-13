@@ -66,7 +66,7 @@ public class SearchAPITest extends TwitterTestBase {
         QueryResult queryResult = twitter1.search(query);
         assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
-        assertTrue(-1 != queryResult.getRefreshUrl().indexOf(queryStr));
+        assertTrue(-1 != queryResult.getRefreshURL().indexOf(queryStr));
         assertEquals(15, queryResult.getCount());
         assertTrue(0 < queryResult.getCompletedIn());
         assertEquals(queryStr + " until:" + dateStr, queryResult.getQuery());

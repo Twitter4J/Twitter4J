@@ -145,34 +145,38 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     String getTimeZone();
 
+    /**
+     * @deprecated use {@link #getProfileImageURL()} instead
+     */
     String getProfileBackgroundImageUrl();
+    String getProfileBackgroundImageURL();
 
     String getProfileBackgroundImageUrlHttps();
 
     /**
      * @since Twitter4J 3.0.0
      */
-    String getProfileBannerUrl();
+    String getProfileBannerURL();
     /**
      * @since Twitter4J 3.0.0
      */
-    String getProfileBannerRetinaUrl();
+    String getProfileBannerRetinaURL();
     /**
      * @since Twitter4J 3.0.0
      */
-    String getProfileBannerIPadUrl();
+    String getProfileBannerIPadURL();
     /**
      * @since Twitter4J 3.0.0
      */
-    String getProfileBannerIPadRetinaUrl();
+    String getProfileBannerIPadRetinaURL();
     /**
      * @since Twitter4J 3.0.0
      */
-    String getProfileBannerMobileUrl();
+    String getProfileBannerMobileURL();
     /**
      * @since Twitter4J 3.0.0
      */
-    String getProfileBannerMobileRetinaUrl();
+    String getProfileBannerMobileRetinaURL();
 
     boolean isProfileBackgroundTiled();
 

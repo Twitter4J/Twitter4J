@@ -140,7 +140,7 @@ final class LazyUser implements twitter4j.User {
 
     @Override
     public URL getProfileImageUrlHttps() {
-        return getTarget().getProfileImageUrlHttps();
+        return getProfileImageUrlHttps();
     }
 
 
@@ -270,9 +270,14 @@ final class LazyUser implements twitter4j.User {
         return getTarget().getTimeZone();
     }
 
-
+    @Override
     public String getProfileBackgroundImageUrl() {
-        return getTarget().getProfileBackgroundImageUrl();
+        return getProfileBackgroundImageURL();
+    }
+
+
+    public String getProfileBackgroundImageURL() {
+        return getTarget().getProfileBackgroundImageURL();
     }
 
 
@@ -280,33 +285,33 @@ final class LazyUser implements twitter4j.User {
         return getTarget().getProfileBackgroundImageUrlHttps();
     }
 
-    public String getProfileBannerUrl() {
-        return getTarget().getProfileBannerUrl();
+    public String getProfileBannerURL() {
+        return getTarget().getProfileBannerURL();
     }
 
     @Override
-    public String getProfileBannerRetinaUrl() {
-        return getTarget().getProfileBannerRetinaUrl();
+    public String getProfileBannerRetinaURL() {
+        return getTarget().getProfileBannerRetinaURL();
     }
 
     @Override
-    public String getProfileBannerIPadUrl() {
-        return getTarget().getProfileBannerIPadUrl();
+    public String getProfileBannerIPadURL() {
+        return getTarget().getProfileBannerIPadURL();
     }
 
     @Override
-    public String getProfileBannerIPadRetinaUrl() {
-        return getTarget().getProfileBannerIPadRetinaUrl();
+    public String getProfileBannerIPadRetinaURL() {
+        return getTarget().getProfileBannerIPadRetinaURL();
     }
 
     @Override
-    public String getProfileBannerMobileUrl() {
-        return getTarget().getProfileBannerMobileUrl();
+    public String getProfileBannerMobileURL() {
+        return getTarget().getProfileBannerMobileURL();
     }
 
     @Override
-    public String getProfileBannerMobileRetinaUrl() {
-        return getTarget().getProfileBannerMobileRetinaUrl();
+    public String getProfileBannerMobileRetinaURL() {
+        return getTarget().getProfileBannerMobileRetinaURL();
     }
 
     public boolean isProfileBackgroundTiled() {

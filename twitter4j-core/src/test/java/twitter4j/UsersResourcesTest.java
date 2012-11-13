@@ -54,14 +54,14 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertNotNull(user.getMiniProfileImageURLHttps());
         assertNotNull(user.getOriginalProfileImageURLHttps());
 
-        assertNotNull(user.getProfileBannerUrl());
+        assertNotNull(user.getProfileBannerURL());
         HttpClientWrapper wrapper = new HttpClientWrapper();
-        wrapper.head(user.getProfileBannerUrl());
-        wrapper.head(user.getProfileBannerRetinaUrl());
-        wrapper.head(user.getProfileBannerIPadUrl());
-        wrapper.head(user.getProfileBannerIPadRetinaUrl());
-        wrapper.head(user.getProfileBannerMobileUrl());
-        wrapper.head(user.getProfileBannerMobileRetinaUrl());
+        wrapper.head(user.getProfileBannerURL());
+        wrapper.head(user.getProfileBannerRetinaURL());
+        wrapper.head(user.getProfileBannerIPadURL());
+        wrapper.head(user.getProfileBannerIPadRetinaURL());
+        wrapper.head(user.getProfileBannerMobileURL());
+        wrapper.head(user.getProfileBannerMobileRetinaURL());
         assertNotNull(user.getURL());
         assertFalse(user.isProtected());
 
@@ -70,7 +70,7 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertTrue(0 <= user.getFriendsCount());
         assertNotNull(user.getCreatedAt());
         assertNotNull(user.getTimeZone());
-        assertNotNull(user.getProfileBackgroundImageUrl());
+        assertNotNull(user.getProfileBackgroundImageURL());
 
         assertTrue(0 <= user.getStatusesCount());
         assertNotNull(user.getProfileBackgroundColor());
@@ -93,8 +93,8 @@ public class UsersResourcesTest extends TwitterTestBase {
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
         user = twitter1.showUser("twit4jnoupdate");
-        System.out.println("----"+user.getProfileBannerUrl());
-        assertNull(user.getProfileBannerUrl());
+        System.out.println("----"+user.getProfileBannerURL());
+        assertNull(user.getProfileBannerURL());
         user = twitter1.showUser("tigertest");
         User previousUser = user;
         assertNotNull(DataObjectFactory.getRawJSON(user));
@@ -160,7 +160,7 @@ public class UsersResourcesTest extends TwitterTestBase {
     public void testBanner() throws Exception {
         twitter1.updateProfileBanner(getRandomlyChosenFile(banners));
         User user = twitter1.verifyCredentials();
-        if (user.getProfileBannerUrl() != null) {
+        if (user.getProfileBannerURL() != null) {
             twitter1.removeProfileBanner();
         }
     }

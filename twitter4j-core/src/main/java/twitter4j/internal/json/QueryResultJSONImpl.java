@@ -119,6 +119,11 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      */
     @Override
     public String getRefreshUrl() {
+        return getRefreshURL();
+    }
+
+    @Override
+    public String getRefreshURL() {
         return refreshUrl;
     }
 

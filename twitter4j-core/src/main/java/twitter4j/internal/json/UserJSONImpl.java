@@ -392,6 +392,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      */
     @Override
     public String getProfileBackgroundImageUrl() {
+        return getProfileBackgroundImageURL();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getProfileBackgroundImageURL() {
         return profileBackgroundImageUrl;
     }
 
@@ -407,32 +415,32 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
-    public String getProfileBannerUrl() {
+    public String getProfileBannerURL() {
         return profileBannerImageUrl != null ? profileBannerImageUrl+"/web" : null;
     }
 
     @Override
-    public String getProfileBannerRetinaUrl() {
+    public String getProfileBannerRetinaURL() {
         return profileBannerImageUrl != null ? profileBannerImageUrl + "/web_retina" : null;
     }
 
     @Override
-    public String getProfileBannerIPadUrl() {
+    public String getProfileBannerIPadURL() {
         return profileBannerImageUrl != null ? profileBannerImageUrl + "/ipad" : null;
     }
 
     @Override
-    public String getProfileBannerIPadRetinaUrl() {
+    public String getProfileBannerIPadRetinaURL() {
         return profileBannerImageUrl != null ? profileBannerImageUrl + "/ipad_retina" : null;
     }
 
     @Override
-    public String getProfileBannerMobileUrl() {
+    public String getProfileBannerMobileURL() {
         return profileBannerImageUrl != null ? profileBannerImageUrl + "/mobile" : null;
     }
 
     @Override
-    public String getProfileBannerMobileRetinaUrl() {
+    public String getProfileBannerMobileRetinaURL() {
         return profileBannerImageUrl != null ? profileBannerImageUrl + "/ipad_retina" : null;
     }
 

@@ -61,9 +61,13 @@ final class LazyQueryResult implements twitter4j.QueryResult {
 
 
     public String getRefreshUrl() {
-        return getTarget().getRefreshUrl();
+        return getRefreshURL();
     }
 
+    @Override
+    public String getRefreshURL() {
+        return getTarget().getRefreshURL();
+    }
 
     public int getCount() {
         return getTarget().getCount();

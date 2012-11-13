@@ -541,7 +541,7 @@ public class DAOTest extends TwitterTestBase {
         Assert.assertTrue(0 <= user.getFriendsCount());
         Assert.assertNotNull(user.getCreatedAt());
         Assert.assertNotNull(user.getTimeZone());
-        Assert.assertNotNull(user.getProfileBackgroundImageUrl());
+        Assert.assertNotNull(user.getProfileBackgroundImageURL());
 
         Assert.assertTrue(0 <= user.getStatusesCount());
         Assert.assertNotNull(user.getProfileBackgroundColor());
