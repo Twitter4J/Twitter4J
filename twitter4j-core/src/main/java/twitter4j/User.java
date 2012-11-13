@@ -73,21 +73,29 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      *
      * @return the profile image url of the user
      */
-    URL getProfileImageURL();
+    String getProfileImageURL();
+    String getBiggerProfileImageURL();
+    String getMiniProfileImageURL();
+    String getOriginalProfileImageURL();
 
     /**
      * Returns the profile image url of the user, served over SSL
      *
      * @return the profile image url of the user, served over SSL
+     * @deprecated use {@link #getProfileImageURL()} instead
      */
     URL getProfileImageUrlHttps();
+    String getProfileImageURLHttps();
+    String getBiggerProfileImageURLHttps();
+    String getMiniProfileImageURLHttps();
+    String getOriginalProfileImageURLHttps();
 
     /**
      * Returns the url of the user
      *
      * @return the url of the user
      */
-    URL getURL();
+    String getURL();
 
     /**
      * Test if the user status is protected

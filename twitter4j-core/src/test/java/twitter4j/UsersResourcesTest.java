@@ -45,6 +45,15 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());
         assertNotNull(user.getProfileImageURL());
+        assertNotNull(user.getBiggerProfileImageURL());
+        assertNotNull(user.getMiniProfileImageURL());
+        assertNotNull(user.getOriginalProfileImageURL());
+
+        assertNotNull(user.getProfileImageURLHttps());
+        assertNotNull(user.getBiggerProfileImageURLHttps());
+        assertNotNull(user.getMiniProfileImageURLHttps());
+        assertNotNull(user.getOriginalProfileImageURLHttps());
+
         assertNotNull(user.getProfileBannerUrl());
         HttpClientWrapper wrapper = new HttpClientWrapper();
         wrapper.head(user.getProfileBannerUrl());
@@ -76,11 +85,6 @@ public class UsersResourcesTest extends TwitterTestBase {
             assertNotNull(user.getStatus().getCreatedAt());
             assertNotNull(user.getStatus().getText());
             assertNotNull(user.getStatus().getSource());
-            assertFalse(user.getStatus().isFavorited());
-            assertEquals(-1, user.getStatus().getInReplyToStatusId());
-            assertEquals(-1, user.getStatus().getInReplyToUserId());
-            assertFalse(user.getStatus().isFavorited());
-            assertNull(user.getStatus().getInReplyToScreenName());
         }
 
         assertTrue(1 <= user.getListedCount());

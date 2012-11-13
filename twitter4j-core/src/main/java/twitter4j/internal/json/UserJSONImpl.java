@@ -200,12 +200,34 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
-    public URL getProfileImageURL() {
-        try {
-            return new URL(profileImageUrl);
-        } catch (MalformedURLException ex) {
-            return null;
+    public String getProfileImageURL() {
+        return profileImageUrl;
+    }
+
+    @Override
+    public String getBiggerProfileImageURL() {
+        return toResizedURL(profileImageUrl, "_bigger");
+    }
+
+    @Override
+    public String getMiniProfileImageURL() {
+        return toResizedURL(profileImageUrl, "_mini");
+    }
+
+    @Override
+    public String getOriginalProfileImageURL() {
+        return toResizedURL(profileImageUrl, "");
+    }
+
+    private String toResizedURL(String originalURL, String sizeSuffix) {
+        if(null != originalURL){
+            int index = originalURL.lastIndexOf("_");
+            int suffixIndex = originalURL.lastIndexOf(".");
+            return originalURL.substring(0,index)
+                    +sizeSuffix
+                    +originalURL.substring(suffixIndex);
         }
+        return null;
     }
 
     /**
@@ -213,25 +235,38 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      */
     @Override
     public URL getProfileImageUrlHttps() {
-        if (null == profileImageUrlHttps)
-            return null;
         try {
             return new URL(profileImageUrlHttps);
-        } catch (MalformedURLException ex) {
+        } catch (MalformedURLException e) {
             return null;
         }
+    }
+    @Override
+    public String getProfileImageURLHttps() {
+        return profileImageUrlHttps;
+    }
+
+    @Override
+    public String getBiggerProfileImageURLHttps() {
+        return toResizedURL(profileImageUrlHttps, "_bigger");
+    }
+
+    @Override
+    public String getMiniProfileImageURLHttps() {
+        return toResizedURL(profileImageUrlHttps, "_mini");
+    }
+
+    @Override
+    public String getOriginalProfileImageURLHttps() {
+        return toResizedURL(profileImageUrlHttps, "");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public URL getURL() {
-        try {
-            return new URL(url);
-        } catch (MalformedURLException ex) {
-            return null;
-        }
+    public String getURL() {
+        return url;
     }
 
     /**

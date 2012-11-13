@@ -119,8 +119,28 @@ final class LazyUser implements twitter4j.User {
      *
      * @return the profile image url of the user
      */
-    public URL getProfileImageURL() {
+    public String getProfileImageURL() {
         return getTarget().getProfileImageURL();
+    }
+
+    @Override
+    public String getBiggerProfileImageURL() {
+        return getTarget().getBiggerProfileImageURL();
+    }
+
+    @Override
+    public String getMiniProfileImageURL() {
+        return getTarget().getMiniProfileImageURL();
+    }
+
+    @Override
+    public String getOriginalProfileImageURL() {
+        return getTarget().getOriginalProfileImageURL();
+    }
+
+    @Override
+    public URL getProfileImageUrlHttps() {
+        return getTarget().getProfileImageUrlHttps();
     }
 
 
@@ -129,8 +149,23 @@ final class LazyUser implements twitter4j.User {
      *
      * @return the profile image url of the user, served over SSL
      */
-    public URL getProfileImageUrlHttps() {
-        return getTarget().getProfileImageUrlHttps();
+    public String getProfileImageURLHttps() {
+        return getTarget().getProfileImageURLHttps();
+    }
+
+    @Override
+    public String getBiggerProfileImageURLHttps() {
+        return getTarget().getBiggerProfileImageURLHttps();
+    }
+
+    @Override
+    public String getMiniProfileImageURLHttps() {
+        return getTarget().getMiniProfileImageURLHttps();
+    }
+
+    @Override
+    public String getOriginalProfileImageURLHttps() {
+        return getTarget().getOriginalProfileImageURLHttps();
     }
 
 
@@ -139,10 +174,9 @@ final class LazyUser implements twitter4j.User {
      *
      * @return the url of the user
      */
-    public URL getURL() {
+    public String getURL() {
         return getTarget().getURL();
     }
-
 
     /**
      * Test if the user status is protected
