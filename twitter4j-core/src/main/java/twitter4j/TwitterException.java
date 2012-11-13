@@ -195,7 +195,8 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      */
     public boolean exceededRateLimitation() {
         return (statusCode == 400 && getRateLimitStatus() != null) // REST API
-                || (statusCode == 420); // Search API
+                || (statusCode == 420) // Search API
+                || (statusCode == 429); // API 1.1
     }
 
     /**
