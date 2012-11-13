@@ -30,12 +30,11 @@ public interface HttpResponseCode {
     int FORBIDDEN = 403;// Forbidden: The request is understood, but it has been refused.  An accompanying error message will explain why.
     int NOT_FOUND = 404;// Not Found: The URI requested is invalid or the resource requested, such as a user, does not exists.
     int NOT_ACCEPTABLE = 406;// Not Acceptable: Returned by the Search API when an invalid format is specified in the request.
-    int TOO_LONG = 413;// Not Acceptable: Returned by the Search API when an invalid format is specified in the request.
-    /**
-     * @see <a href="http://groups.google.com/group/twitter-api-announce/browse_thread/thread/3f3b0fd38deb9b0f?hl=en">Search API: new HTTP response code 420 for rate limiting starting 1/18/2010</a>
-     */
     int ENHANCE_YOUR_CLAIM = 420;// Enhance Your Calm: Returned by the Search and Trends API  when you are being rate limited. Not registered in RFC.
+    int UNPROCESSABLE_ENTITY = 422;//Returned when an image uploaded to POST account/update_profile_banner is unable to be processed.
+    int TOO_MANY_REQUESTS = 429;//Returned in API v1.1 when a request cannot be served due to the application's rate limit having been exhausted for the resource. See Rate Limiting in API v1.1.
     int INTERNAL_SERVER_ERROR = 500;// Internal Server Error: Something is broken. Please post to the group so the Twitter team can investigate.
     int BAD_GATEWAY = 502;// Bad Gateway: Twitter is down or being upgraded.
     int SERVICE_UNAVAILABLE = 503;// Service Unavailable: The Twitter servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
+    int GATEWAY_TIMEOUT = 504;// The Twitter servers are up, but the request couldn't be serviced due to some failure within our stack. Try again later.
 }
