@@ -65,7 +65,9 @@ import twitter4j.internal.org.json.JSONObject;
 
             this.url = json.getString("url");
             this.expandedURL = json.getString("expanded_url");
-            this.displayURL = json.getString("display_url");
+            if (!json.isNull("display_url")) {
+                this.displayURL = json.getString("display_url");
+            }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
