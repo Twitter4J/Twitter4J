@@ -18,6 +18,7 @@ package twitter4j.internal.json;
 
 import twitter4j.HashtagEntity;
 import twitter4j.TwitterException;
+import twitter4j.internal.http.HTMLEntityString;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -35,9 +36,9 @@ import twitter4j.internal.org.json.JSONObject;
     private String text;
 
 
-    /* package */ HashtagEntityJSONImpl(JSONObject json) throws TwitterException {
+    /* package */ HashtagEntityJSONImpl(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
         super();
-        init(json);
+        init(indexMapper, json);
     }
 
     /* package */ HashtagEntityJSONImpl(int start, int end, String text) {
@@ -52,11 +53,11 @@ import twitter4j.internal.org.json.JSONObject;
 
     }
 
-    private void init(JSONObject json) throws TwitterException {
+    private void init(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
-            this.start = indicesArray.getInt(0);
-            this.end = indicesArray.getInt(1);
+            this.start = indexMapper.mapIndex(indicesArray.getInt(0));
+            this.end = indexMapper.mapIndex(indicesArray.getInt(1));
 
             if (!json.isNull("text")) {
                 this.text = json.getString("text");

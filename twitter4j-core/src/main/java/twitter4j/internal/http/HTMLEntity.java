@@ -16,28 +16,17 @@
 
 package twitter4j.internal.http;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
 public final class HTMLEntity {
     public static String escape(String original) {
-        StringBuilder buf = new StringBuilder(original);
-        escape(buf);
-        return buf.toString();
+		return HTMLEntityString.escape(original).getConvertedText().toString();
     }
 
     public static void escape(StringBuilder original) {
-        int index = 0;
-        String escaped;
-        while (index < original.length()) {
-            escaped = entityEscapeMap.get(original.substring(index, index + 1));
-            if (escaped != null) {
-                original.replace(index, index + 1, escaped);
-                index += escaped.length();
-            } else {
-                index++;
-            }
-        }
+		HTMLEntityString.escape(original);
     }
 
     public static String unescape(String original) {
@@ -51,32 +40,11 @@ public final class HTMLEntity {
     }
 
     public static void unescape(StringBuilder original) {
-        int index = 0;
-        int semicolonIndex;
-        String escaped;
-        String entity;
-        while (index < original.length()) {
-            index = original.indexOf("&", index);
-            if (-1 == index) {
-                break;
-            }
-            semicolonIndex = original.indexOf(";", index);
-            if (-1 != semicolonIndex) {
-                escaped = original.substring(index, semicolonIndex + 1);
-                entity = escapeEntityMap.get(escaped);
-                if (entity != null) {
-                    original.replace(index, semicolonIndex + 1, entity);
-                }
-                index++;
-            } else {
-                break;
-            }
-        }
+    	HTMLEntityString.unescape(original);
     }
 
-    private static Map<String, String> entityEscapeMap = new HashMap<String, String>();
-    private static Map<String, String> escapeEntityMap = new HashMap<String, String>();
-
+    static Map<String, String> entityEscapeMap = new HashMap<String, String>();
+    static Map<String, String> escapeEntityMap = new HashMap<String, String>();
     static {
         String[][] entities =
                 {{"&nbsp;", "&#160;"/* no-break space = non-breaking space */, "\u00A0"}
@@ -363,6 +331,4 @@ public final class HTMLEntity {
             escapeEntityMap.put(entity[0], entity[2]);
             escapeEntityMap.put(entity[1], entity[2]);
         }
-    }
-
-}
+    }}

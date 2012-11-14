@@ -17,6 +17,7 @@ package twitter4j.internal.json;
 
 import twitter4j.MediaEntity;
 import twitter4j.TwitterException;
+import twitter4j.internal.http.HTMLEntityString;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -43,11 +44,11 @@ public class MediaEntityJSONImpl implements MediaEntity {
     private Map<Integer, MediaEntity.Size> sizes;
     private String type;
 
-    MediaEntityJSONImpl(JSONObject json) throws TwitterException {
+    public MediaEntityJSONImpl(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
-            this.start = indicesArray.getInt(0);
-            this.end = indicesArray.getInt(1);
+            this.start = indexMapper.mapIndex(indicesArray.getInt(0));
+            this.end = indexMapper.mapIndex(indicesArray.getInt(1));
             this.id = getLong("id", json);
 
             this.url = json.getString("url");

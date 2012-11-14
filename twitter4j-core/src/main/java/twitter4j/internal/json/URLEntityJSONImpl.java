@@ -18,6 +18,7 @@ package twitter4j.internal.json;
 
 import twitter4j.TwitterException;
 import twitter4j.URLEntity;
+import twitter4j.internal.http.HTMLEntityString;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -38,9 +39,9 @@ import twitter4j.internal.org.json.JSONObject;
     private String displayURL;
 
 
-    /* package */ URLEntityJSONImpl(JSONObject json) throws TwitterException {
+    /* package */ URLEntityJSONImpl(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
         super();
-        init(json);
+        init(indexMapper, json);
     }
 
     /* package */ URLEntityJSONImpl(int start, int end, String url, String expandedURL, String displayURL) {
@@ -57,11 +58,11 @@ import twitter4j.internal.org.json.JSONObject;
 
     }
 
-    private void init(JSONObject json) throws TwitterException {
+    private void init(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
-            this.start = indicesArray.getInt(0);
-            this.end = indicesArray.getInt(1);
+            this.start = indexMapper.mapIndex(indicesArray.getInt(0));
+            this.end = indexMapper.mapIndex(indicesArray.getInt(1));
 
             this.url = json.getString("url");
             this.expandedURL = json.getString("expanded_url");

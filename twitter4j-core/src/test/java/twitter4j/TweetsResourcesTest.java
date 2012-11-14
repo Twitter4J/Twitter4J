@@ -109,6 +109,23 @@ public class TweetsResourcesTest extends TwitterTestBase {
             assertTrue(status.getText().startsWith("RT "));
         }
     }
+    public void testTest() throws Exception{
+
+        Status status = twitter1.showStatus(199523167482548224L);
+        assertEquals(2, status.getUserMentionEntities().length);
+        assertEquals("Reading: New stories on power of Twitter in political campaigns: @adweek (http://t.co/Mje7dQRD) & @AP (http://t.co/wTjyJuyN)", status.getText());
+        assertEquals(" & ", status.getText().substring(95, 98));
+        UserMentionEntity mention = status.getUserMentionEntities()[0];
+        assertEquals("adweek", mention.getScreenName().toLowerCase());
+        assertEquals("@adweek", status.getText().substring(mention.getStart(), mention.getEnd()).toLowerCase());
+        mention = status.getUserMentionEntities()[1];
+        assertEquals("ap", status.getUserMentionEntities()[1].getScreenName().toLowerCase());
+        assertEquals("@ap", status.getText().substring(mention.getStart(), mention.getEnd()).toLowerCase());
+
+        for (URLEntity entity : status.getURLEntities())
+            assertEquals(entity.getURL(), status.getText().substring(entity.getStart(), entity.getEnd()));
+
+    }
 
 
     public void testEntities() throws Exception {
