@@ -56,6 +56,11 @@ public class AccessToken extends OAuthToken implements java.io.Serializable {
         }
     }
 
+    public AccessToken(String token, String tokenSecret, long userId) {
+        super(token, tokenSecret);
+        this.userId = userId;
+    }
+
     /**
      * @return screen name
      * @since Twitter4J 2.0.4
