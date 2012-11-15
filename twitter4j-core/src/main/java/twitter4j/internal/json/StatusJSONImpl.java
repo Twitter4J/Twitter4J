@@ -50,7 +50,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     private GeoLocation geoLocation = null;
     private Place place = null;
     private long retweetCount;
-    private boolean wasRetweetedByMe;
     private boolean isPossiblySensitive;
 
     private long[] contributorsIDs;
@@ -202,7 +201,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         if (!json.isNull("current_user_retweet")) {
             try {
                 myRetweetedStatus = new StatusJSONImpl(json.getJSONObject("current_user_retweet"));
-                wasRetweetedByMe = true;
             } catch (JSONException ignore) {
                 ignore.printStackTrace();
                 logger.warn("failed to parse current_user_retweet:" + json);
@@ -358,7 +356,14 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
      */
     @Override
     public boolean isRetweetedByMe() {
-        return wasRetweetedByMe;
+        return myRetweetedStatus != null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Status getMyRetweet() {
+    	return myRetweetedStatus;
     }
 
     /**
@@ -460,7 +465,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
                 ", geoLocation=" + geoLocation +
                 ", place=" + place +
                 ", retweetCount=" + retweetCount +
-                ", wasRetweetedByMe=" + wasRetweetedByMe +
                 ", isPossiblySensitive=" + isPossiblySensitive +
                 ", contributorsIDs=" + contributorsIDs +
                 ", retweetedStatus=" + retweetedStatus +
