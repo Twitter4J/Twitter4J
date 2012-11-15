@@ -42,6 +42,7 @@ Ludovico Fischer @ludovicofischer
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 Max Penet <m at qbits.cc> @mpenet
 Mocel <docel77 at gmail.com> @Mocel
+Ngoc Dao <ngocdaothanh@gmail.com> @ngocdaothanh
 Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
 Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
