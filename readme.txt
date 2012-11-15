@@ -19,6 +19,7 @@ Adam Samet <asamet at twitter.com> @damnitsamet
 Adrian Petrescu <apetresc at gmail.com> @apetresc
 Alan Gutierrez <alan at blogometer.com>
 Alessandro Bahgat <ale.bahgat at gmail.com> @abahgat
+Alex Kira <alex.kira at gmail.com> @alexkira
 Anton Evane <antonevane at gmail.com> @anton_evane
 Blake Barnes <blake.barnes at gmail.com>
 Bruno Torres Goyanna <bgoyanna at gmail.com> @bgoyanna
