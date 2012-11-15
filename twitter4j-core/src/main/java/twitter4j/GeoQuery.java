@@ -28,13 +28,11 @@ import java.util.List;
 public final class GeoQuery implements java.io.Serializable {
 
     private GeoLocation location;
-    private String query;
-    private String ip;
-    private String accuracy;
-    private String granularity;
-    private int maxResults;
-    public static final String NEIGHBORHOOD = "neighborhood";
-    public static final String CITY = "city";
+    private String query = null;
+    private String ip = null;
+    private String accuracy = null;
+    private String granularity = null;
+    private int maxResults = -1;
     private static final long serialVersionUID = 927081526936169802L;
 
     /**
@@ -44,7 +42,6 @@ public final class GeoQuery implements java.io.Serializable {
      */
     public GeoQuery(GeoLocation location) {
         this.location = location;
-        this.ip = null;
     }
 
     /**
@@ -54,7 +51,6 @@ public final class GeoQuery implements java.io.Serializable {
      */
     public GeoQuery(String ip) {
         this.ip = ip;
-        this.location = null;
     }
 
     public GeoLocation getLocation() {
@@ -63,12 +59,10 @@ public final class GeoQuery implements java.io.Serializable {
 
     /**
      * Gets and Sets the query to filter Place results from geo/search
-     *
-     * @param query filters the results from geo/search by name
      */
     
     public String getQuery() {
-        return query
+        return query;
     }
     
     public void setQuery(String query) {
@@ -145,6 +139,7 @@ public final class GeoQuery implements java.io.Serializable {
 
         }
         appendParameter("accuracy", accuracy, params);
+        appendParameter("query", query, params);
         appendParameter("granularity", granularity, params);
         appendParameter("max_results", maxResults, params);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
