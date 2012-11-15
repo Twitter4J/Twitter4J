@@ -46,8 +46,16 @@ class SiteStreamsImpl extends AbstractStreamImplementation implements StreamImpl
     }
 
     public void next(StreamListener[] listeners) throws TwitterException {
-        this.listener = (SiteStreamsListener) listeners[0];
-        handleNextElement();
+        try {
+            this.listener = (SiteStreamsListener) listeners[0];
+            handleNextElement();
+        } catch (TwitterException e) {
+            if ("Stream closed.".equals(e.getMessage())) {
+                // Reset control URI since stream is closed
+                cs.setControlURI(null);
+            }
+            throw e;
+        }
     }
 
     protected String parseLine(String line) {

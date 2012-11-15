@@ -29,6 +29,7 @@ Dan Checkoway <dcheckoway at gmail.com>
 Dong Wang <dong at twitter.com> @dongwang218
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
+Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
 Hitoshi Kunimatsu <hkhumanoid at gmail.com>
 Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
 Jenny Loomis <jenny at rockmelt.com>
@@ -41,6 +42,7 @@ marr-masaaki <marr fiveflavors at gmail.com> @marr
 Max Penet <m at qbits.cc> @mpenet
 Mocel <docel77 at gmail.com> @Mocel
 Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
+Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
 Perry Sakkaris <psakkaris at gmail.com>
 Roberto Estrada <robestradac at gmail.com>
