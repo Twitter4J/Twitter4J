@@ -31,6 +31,7 @@ Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
 Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
 Hitoshi Kunimatsu <hkhumanoid at gmail.com>
+JJ Kelley <jjthemachine at gmail.com> @jjthemachine
 Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
 Jenny Loomis <jenny at rockmelt.com>
 John Corwin <jcorwin at twitter.com> @johnxorz
