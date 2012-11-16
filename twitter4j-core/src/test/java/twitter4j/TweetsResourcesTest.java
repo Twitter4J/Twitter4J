@@ -135,8 +135,8 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
         URLEntity[] urlEntities = status.getURLEntities();
         assertEquals(1, urlEntities.length);
-        assertEquals("http://t.co/HwbSpYFr", urlEntities[0].getURL().toString());
-        assertEquals("http://twitter4j.org/en/index.html#download", urlEntities[0].getExpandedURL().toString());
+        assertEquals("http://t.co/HwbSpYFr", urlEntities[0].getURL());
+        assertEquals("http://twitter4j.org/en/index.html#download", urlEntities[0].getExpandedURL());
         assertEquals("twitter4j.org/en/index.html#…", urlEntities[0].getDisplayURL());
         assertTrue(0 < urlEntities[0].getStart());
         assertTrue(urlEntities[0].getStart() < urlEntities[0].getEnd());
@@ -162,11 +162,11 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertEquals(1, medias.length);
         MediaEntity media = medias[0];
         assertEquals("pic.twitter.com/qbJx26r", media.getDisplayURL());
-        assertEquals("http://twitter.com/twitter/status/76360760606986241/photo/1", media.getExpandedURL().toString());
+        assertEquals("http://twitter.com/twitter/status/76360760606986241/photo/1", media.getExpandedURL());
         assertEquals(76360760611180544L, media.getId());
-        assertEquals("http://pbs.twimg.com/media/AQ9JtQsCEAA7dEN.jpg", media.getMediaURL().toString());
-        assertEquals("https://pbs.twimg.com/media/AQ9JtQsCEAA7dEN.jpg", media.getMediaURLHttps().toString());
-        assertEquals("http://t.co/qbJx26r", media.getURL().toString());
+        assertEquals("http://pbs.twimg.com/media/AQ9JtQsCEAA7dEN.jpg", media.getMediaURL());
+        assertEquals("https://pbs.twimg.com/media/AQ9JtQsCEAA7dEN.jpg", media.getMediaURLHttps());
+        assertEquals("http://t.co/qbJx26r", media.getURL());
         assertEquals(34, media.getStart());
         assertEquals(53, media.getEnd());
         assertEquals("photo", media.getType());
