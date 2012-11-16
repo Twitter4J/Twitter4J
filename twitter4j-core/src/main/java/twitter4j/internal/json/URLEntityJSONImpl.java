@@ -64,9 +64,20 @@ import twitter4j.internal.org.json.JSONObject;
             this.end = indicesArray.getInt(1);
 
             this.url = json.getString("url");
-            this.expandedURL = json.getString("expanded_url");
+            if (!json.isNull("expanded_url")) {
+                // sets expandedURL to url if expanded_url is null
+                // http://jira.twitter4j.org/browse/TFJ-704
+                this.expandedURL = json.getString("expanded_url");
+            }else{
+                this.expandedURL = url;
+            }
+
             if (!json.isNull("display_url")) {
+                // sets displayURL to url if expanded_url is null
+                // http://jira.twitter4j.org/browse/TFJ-704
                 this.displayURL = json.getString("display_url");
+            }else{
+                this.displayURL = url;
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
