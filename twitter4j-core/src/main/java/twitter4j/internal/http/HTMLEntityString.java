@@ -276,16 +276,19 @@ public final class HTMLEntityString {
     public static HTMLEntityString convert(StringBuilder s, Escapedness fromEscapedness, Escapedness toEscapedness) {
         HTMLEntityString result = new HTMLEntityString(s.length(), fromEscapedness, toEscapedness);
 
-        int index = 0;
-        while (index < s.length()) {
-            String token = fromEscapedness.getTokenAtPosition(s, index);
+        int unescapedIndex=0, escapedIndex=0;
+        while (escapedIndex < s.length()) {
+            String token = fromEscapedness.getTokenAtPosition(s, escapedIndex);
             if (token != null) {
                 String escaped = fromEscapedness.escapeToken(toEscapedness, token);
-                result.addEntity(new Entity(index, index + token.length(), token, index, index + escaped.length(), escaped));
-                s.replace(index, index + token.length(), escaped);
-                index = index + escaped.length();
-            } else
-                index = index + 1;
+                result.addEntity(new Entity(unescapedIndex, unescapedIndex + token.length(), token, escapedIndex, escapedIndex + escaped.length(), escaped));
+                s.replace(escapedIndex, escapedIndex + token.length(), escaped);
+                escapedIndex   = escapedIndex + escaped.length();
+                unescapedIndex = unescapedIndex + token.length();
+            } else {
+                unescapedIndex = unescapedIndex + 1;
+                escapedIndex = escapedIndex + 1;
+            }
         }
 
         result.setConvertedString(s);
