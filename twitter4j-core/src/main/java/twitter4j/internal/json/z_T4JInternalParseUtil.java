@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package twitter4j.internal.util;
+package twitter4j.internal.json;
+
+import twitter4j.TwitterException;
+import twitter4j.TwitterResponse;
+import twitter4j.internal.http.HttpResponse;
+import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import twitter4j.TwitterException;
-import twitter4j.TwitterResponse;
-import twitter4j.internal.http.HTMLEntity;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.http.HTMLEntityString;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 
 /**
  * A tiny parse utility class.
@@ -48,12 +46,8 @@ public final class z_T4JInternalParseUtil {
         }
     };
 
-    public static String getUnescapedString(String str, JSONObject json) {
+    static String getUnescapedString(String str, JSONObject json) {
         return HTMLEntity.unescape(getRawString(str, json));
-    }
-
-    public static HTMLEntityString getUnescapedEntityString(String str, JSONObject json) {
-        return HTMLEntityString.unescape(new StringBuilder(getRawString(str, json)));
     }
 
     public static String getRawString(String name, JSONObject json) {
@@ -68,7 +62,7 @@ public final class z_T4JInternalParseUtil {
         }
     }
 
-    public static String getURLDecodedString(String name, JSONObject json) {
+    static String getURLDecodedString(String name, JSONObject json) {
         String returnValue = getRawString(name, json);
         if (returnValue != null) {
             try {

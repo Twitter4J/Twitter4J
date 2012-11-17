@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing search API response
@@ -72,7 +72,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
             completedIn = getDouble("completed_in", searchMetaData);
             count = getInt("count", searchMetaData);
             maxId = getLong("max_id", searchMetaData);
-            nextResults = json.has("next_results") ? json.getString("next_results") : null;
+            nextResults = searchMetaData.has("next_results") ? searchMetaData.getString("next_results") : null;
             query = getURLDecodedString("query", searchMetaData);
             refreshUrl = getUnescapedString("refresh_url", searchMetaData);
             sinceId = getLong("since_id", searchMetaData);

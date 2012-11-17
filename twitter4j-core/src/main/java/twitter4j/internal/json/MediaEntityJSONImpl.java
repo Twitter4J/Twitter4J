@@ -17,7 +17,6 @@ package twitter4j.internal.json;
 
 import twitter4j.MediaEntity;
 import twitter4j.TwitterException;
-import twitter4j.internal.http.HTMLEntityString;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -25,17 +24,15 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.getLong;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.3
  */
-public class MediaEntityJSONImpl implements MediaEntity {
+public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     private static final long serialVersionUID = 224487082931268487L;
     private long id;
-    private int start = -1;
-    private int end = -1;
     private String url;
     private String mediaURL;
     private String mediaURLHttps;
@@ -44,11 +41,11 @@ public class MediaEntityJSONImpl implements MediaEntity {
     private Map<Integer, MediaEntity.Size> sizes;
     private String type;
 
-    public MediaEntityJSONImpl(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
+    MediaEntityJSONImpl(JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
-            this.start = indexMapper.mapIndex(indicesArray.getInt(0));
-            this.end = indexMapper.mapIndex(indicesArray.getInt(1));
+            setStart(indicesArray.getInt(0));
+            setEnd(indicesArray.getInt(1));
             this.id = getLong("id", json);
 
             this.url = json.getString("url");
@@ -150,7 +147,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
      */
     @Override
     public int getStart() {
-        return start;
+        return super.getStart();
     }
 
     /**
@@ -158,7 +155,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
      */
     @Override
     public int getEnd() {
-        return end;
+        return super.getEnd();
     }
 
     static class Size implements MediaEntity.Size {
@@ -241,8 +238,6 @@ public class MediaEntityJSONImpl implements MediaEntity {
     public String toString() {
         return "MediaEntityJSONImpl{" +
                 "id=" + id +
-                ", start=" + start +
-                ", end=" + end +
                 ", url=" + url +
                 ", mediaURL=" + mediaURL +
                 ", mediaURLHttps=" + mediaURLHttps +

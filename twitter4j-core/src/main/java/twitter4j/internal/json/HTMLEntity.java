@@ -14,22 +14,35 @@
  * limitations under the License.
  */
 
-package twitter4j.internal.http;
+package twitter4j.internal.json;
 
-
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class HTMLEntity {
-    public static String escape(String original) {
-		return HTMLEntityString.escape(original).getConvertedText().toString();
+final class HTMLEntity {
+
+    static String escape(String original) {
+        StringBuilder buf = new StringBuilder(original);
+        escape(buf);
+        return buf.toString();
     }
 
-    public static void escape(StringBuilder original) {
-		HTMLEntityString.escape(original);
+    static void escape(StringBuilder original) {
+        int index = 0;
+        String escaped;
+        while (index < original.length()) {
+            escaped = entityEscapeMap.get(original.substring(index, index + 1));
+            if (escaped != null) {
+                original.replace(index, index + 1, escaped);
+                index += escaped.length();
+            } else {
+                index++;
+            }
+        }
     }
 
-    public static String unescape(String original) {
+    static String unescape(String original) {
         String returnValue = null;
         if (original != null) {
             StringBuilder buf = new StringBuilder(original);
@@ -39,12 +52,79 @@ public final class HTMLEntity {
         return returnValue;
     }
 
-    public static void unescape(StringBuilder original) {
-    	HTMLEntityString.unescape(original);
+    static void unescape(StringBuilder original) {
+        int index = 0;
+        int semicolonIndex;
+        String escaped;
+        String entity;
+        while (index < original.length()) {
+            index = original.indexOf("&", index);
+            if (-1 == index) {
+                break;
+            }
+            semicolonIndex = original.indexOf(";", index);
+            if (-1 != semicolonIndex) {
+                escaped = original.substring(index, semicolonIndex + 1);
+                entity = escapeEntityMap.get(escaped);
+                if (entity != null) {
+                    original.replace(index, semicolonIndex + 1, entity);
+                }
+                index++;
+            } else {
+                break;
+            }
+        }
     }
 
-    static Map<String, String> entityEscapeMap = new HashMap<String, String>();
-    static Map<String, String> escapeEntityMap = new HashMap<String, String>();
+    static String unescapeAndSlideEntityIncdices(String text, EntityIndex[] entities) {
+        Arrays.sort(entities);
+        boolean handlingStart = true;
+        int entityIndex = 0;
+
+        int delta = 0;
+        int semicolonIndex;
+        String escaped;
+        String entity;
+        StringBuilder unescaped = new StringBuilder(text.length());
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == '&') {
+                semicolonIndex = text.indexOf(";", i);
+                if (-1 != semicolonIndex) {
+                    escaped = text.substring(i, semicolonIndex + 1);
+                    entity = escapeEntityMap.get(escaped);
+                    if (entity != null) {
+                        unescaped.append(entity);
+                        i = semicolonIndex;
+                    }else{
+                        unescaped.append(c);
+                    }
+                }else{
+                    unescaped.append(c);
+                }
+            } else {
+                unescaped.append(c);
+            }
+            if (entityIndex < entities.length) {
+                if (handlingStart) {
+                    if (entities[entityIndex].getStart() == (delta + i)) {
+                        entities[entityIndex].setStart(unescaped.length() - 1);
+                        handlingStart = false;
+                    }
+                } else if (entities[entityIndex].getEnd() == (delta + i)) {
+                    entities[entityIndex].setEnd(unescaped.length() - 1);
+                    entityIndex++;
+                    handlingStart = true;
+                }
+            }
+        }
+        return unescaped.toString();
+    }
+
+    private static final Map<String, String> entityEscapeMap = new HashMap<String, String>();
+    private static final Map<String, String> escapeEntityMap = new HashMap<String, String>();
+
     static {
         String[][] entities =
                 {{"&nbsp;", "&#160;"/* no-break space = non-breaking space */, "\u00A0"}
@@ -331,4 +411,5 @@ public final class HTMLEntity {
             escapeEntityMap.put(entity[0], entity[2]);
             escapeEntityMap.put(entity[1], entity[2]);
         }
-    }}
+    }
+}

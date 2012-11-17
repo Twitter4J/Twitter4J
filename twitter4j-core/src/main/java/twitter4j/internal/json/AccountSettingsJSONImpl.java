@@ -26,7 +26,7 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.getBoolean;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

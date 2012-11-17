@@ -21,11 +21,11 @@ import twitter4j.internal.http.HttpResponseCode;
 import twitter4j.internal.json.z_T4JInternalJSONImplFactory;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.z_T4JInternalParseUtil;
+import twitter4j.internal.json.z_T4JInternalParseUtil;
 
 import java.util.List;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.getInt;
 
 /**
  * An exception class that will be thrown when TwitterAPI calls are failed.<br>

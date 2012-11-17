@@ -19,7 +19,6 @@ package twitter4j.internal.json;
 import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.http.HTMLEntityString;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
@@ -28,11 +27,7 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.Arrays;
 import java.util.Date;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedEntityString;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing one single status of a user.
@@ -96,8 +91,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
 
     private void init(JSONObject json) throws TwitterException {
         id = getLong("id", json);
-        HTMLEntityString unescapedText = getUnescapedEntityString("text", json);
-        text = unescapedText.getConvertedText().toString();
         source = getUnescapedString("source", json);
         createdAt = getDate("created_at", json);
         isTruncated = getBoolean("truncated", json);
@@ -151,8 +144,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         }
         if (!json.isNull("entities")) {
             try {
-                HTMLEntityString.IndexMapper indexMapper = unescapedText.createIndexMapper();
-
                 JSONObject entities = json.getJSONObject("entities");
                 int len;
                 if (!entities.isNull("user_mentions")) {
@@ -160,7 +151,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                     len = userMentionsArray.length();
                     userMentionEntities = new UserMentionEntity[len];
                     for (int i = 0; i < len; i++) {
-                        userMentionEntities[i] = new UserMentionEntityJSONImpl(indexMapper, userMentionsArray.getJSONObject(i));
+                        userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
                     }
                 }
                 if (!entities.isNull("urls")) {
@@ -168,7 +159,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                     len = urlsArray.length();
                     urlEntities = new URLEntity[len];
                     for (int i = 0; i < len; i++) {
-                        urlEntities[i] = new URLEntityJSONImpl(indexMapper, urlsArray.getJSONObject(i));
+                        urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
                     }
                 }
 
@@ -177,7 +168,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                     len = hashtagsArray.length();
                     hashtagEntities = new HashtagEntity[len];
                     for (int i = 0; i < len; i++) {
-                        hashtagEntities[i] = new HashtagEntityJSONImpl(indexMapper, hashtagsArray.getJSONObject(i));
+                        hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
                     }
                 }
 
@@ -186,7 +177,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                     len = mediaArray.length();
                     mediaEntities = new MediaEntity[len];
                     for (int i = 0; i < len; i++) {
-                        mediaEntities[i] = new MediaEntityJSONImpl(indexMapper, mediaArray.getJSONObject(i));
+                        mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
                     }
                 }
             } catch (JSONException jsone) {
@@ -204,6 +195,17 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
         }
         if (mediaEntities == null) {
             mediaEntities = new MediaEntity[0];
+        }
+        EntityIndex[] entityIndexes = new EntityIndex[userMentionEntities.length
+                + urlEntities.length + hashtagEntities.length + mediaEntities.length];
+        System.arraycopy(userMentionEntities, 0, entityIndexes, 0, userMentionEntities.length);
+        System.arraycopy(urlEntities, 0, entityIndexes, userMentionEntities.length, urlEntities.length);
+        System.arraycopy(hashtagEntities, 0, entityIndexes, userMentionEntities.length + urlEntities.length, hashtagEntities.length);
+        System.arraycopy(mediaEntities, 0, entityIndexes, userMentionEntities.length + urlEntities.length + hashtagEntities.length, mediaEntities.length);
+        try {
+            text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), entityIndexes);
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
         }
 
         if (!json.isNull("current_user_retweet")) {
@@ -366,7 +368,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
     public boolean isRetweetedByMe() {
         return myRetweetedStatus != null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -474,7 +476,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.getUnescapedString;
                 ", place=" + place +
                 ", retweetCount=" + retweetCount +
                 ", isPossiblySensitive=" + isPossiblySensitive +
-                ", contributorsIDs=" + Arrays.toString(contributorsIDs) +
+                ", contributorsIDs=" + contributorsIDs +
                 ", retweetedStatus=" + retweetedStatus +
                 ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
                 ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +

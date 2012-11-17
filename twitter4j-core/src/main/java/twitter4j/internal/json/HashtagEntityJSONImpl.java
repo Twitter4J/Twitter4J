@@ -18,7 +18,6 @@ package twitter4j.internal.json;
 
 import twitter4j.HashtagEntity;
 import twitter4j.TwitterException;
-import twitter4j.internal.http.HTMLEntityString;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
@@ -29,22 +28,20 @@ import twitter4j.internal.org.json.JSONObject;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-/*package*/ class HashtagEntityJSONImpl implements HashtagEntity {
+/*package*/ class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity {
     private static final long serialVersionUID = 4068992372784813200L;
-    private int start = -1;
-    private int end = -1;
     private String text;
 
 
-    /* package */ HashtagEntityJSONImpl(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
+    /* package */ HashtagEntityJSONImpl(JSONObject json) throws TwitterException {
         super();
-        init(indexMapper, json);
+        init(json);
     }
 
     /* package */ HashtagEntityJSONImpl(int start, int end, String text) {
         super();
-        this.start = start;
-        this.end = end;
+        setStart(start);
+        setEnd(end);
         this.text = text;
     }
 
@@ -53,11 +50,11 @@ import twitter4j.internal.org.json.JSONObject;
 
     }
 
-    private void init(HTMLEntityString.IndexMapper indexMapper, JSONObject json) throws TwitterException {
+    private void init(JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
-            this.start = indexMapper.mapIndex(indicesArray.getInt(0));
-            this.end = indexMapper.mapIndex(indicesArray.getInt(1));
+            setStart(indicesArray.getInt(0));
+            setEnd(indicesArray.getInt(1));
 
             if (!json.isNull("text")) {
                 this.text = json.getString("text");
@@ -80,7 +77,7 @@ import twitter4j.internal.org.json.JSONObject;
      */
     @Override
     public int getStart() {
-        return start;
+        return super.getStart();
     }
 
     /**
@@ -88,7 +85,7 @@ import twitter4j.internal.org.json.JSONObject;
      */
     @Override
     public int getEnd() {
-        return end;
+        return super.getEnd();
     }
 
     @Override
@@ -98,28 +95,20 @@ import twitter4j.internal.org.json.JSONObject;
 
         HashtagEntityJSONImpl that = (HashtagEntityJSONImpl) o;
 
-        if (end != that.end) return false;
-        if (start != that.start) return false;
-        if (text != null ? !text.equals(that.text) : that.text != null)
-            return false;
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = start;
-        result = 31 * result + end;
-        result = 31 * result + (text != null ? text.hashCode() : 0);
-        return result;
+        return text != null ? text.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "HashtagEntityJSONImpl{" +
-                "start=" + start +
-                ", end=" + end +
-                ", text='" + text + '\'' +
+                "text='" + text + '\'' +
                 '}';
     }
 }

@@ -27,8 +27,6 @@ import java.util.Properties;
 public class TwitterTestBase extends TestCase {
     public TwitterTestBase(String name) {
         super(name);
-        System.setProperty("twitter4j.debug","true");
-        System.setProperty("twitter4j.loggerFactory","twitter4j.internal.logging.StdOutLoggerFactory");
     }
 
     protected Twitter twitter1, twitter2, twitter3,

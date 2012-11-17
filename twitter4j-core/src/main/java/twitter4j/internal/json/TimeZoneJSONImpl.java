@@ -21,7 +21,7 @@ import twitter4j.TwitterException;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.getInt;
 
 /**
  * @author Alessandro Bahgat - ale.bahgat at gmail.com

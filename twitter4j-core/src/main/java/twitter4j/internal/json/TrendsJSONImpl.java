@@ -22,14 +22,13 @@ import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getDate;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.getDate;
 
 /**
  * A data class representing Trends.
