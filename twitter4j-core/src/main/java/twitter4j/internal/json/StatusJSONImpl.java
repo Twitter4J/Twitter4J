@@ -27,7 +27,7 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.Arrays;
 import java.util.Date;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing one single status of a user.
@@ -91,7 +91,6 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
 
     private void init(JSONObject json) throws TwitterException {
         id = getLong("id", json);
-        text = getUnescapedString("text", json);
         source = getUnescapedString("source", json);
         createdAt = getDate("created_at", json);
         isTruncated = getBoolean("truncated", json);
@@ -196,6 +195,17 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
         }
         if (mediaEntities == null) {
             mediaEntities = new MediaEntity[0];
+        }
+        EntityIndex[] entityIndexes = new EntityIndex[userMentionEntities.length
+                + urlEntities.length + hashtagEntities.length + mediaEntities.length];
+        System.arraycopy(userMentionEntities, 0, entityIndexes, 0, userMentionEntities.length);
+        System.arraycopy(urlEntities, 0, entityIndexes, userMentionEntities.length, urlEntities.length);
+        System.arraycopy(hashtagEntities, 0, entityIndexes, userMentionEntities.length + urlEntities.length, hashtagEntities.length);
+        System.arraycopy(mediaEntities, 0, entityIndexes, userMentionEntities.length + urlEntities.length + hashtagEntities.length, mediaEntities.length);
+        try {
+            text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), entityIndexes);
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
         }
 
         if (!json.isNull("current_user_retweet")) {
@@ -358,7 +368,7 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
     public boolean isRetweetedByMe() {
         return myRetweetedStatus != null;
     }
-    
+
     /**
      * {@inheritDoc}
      */

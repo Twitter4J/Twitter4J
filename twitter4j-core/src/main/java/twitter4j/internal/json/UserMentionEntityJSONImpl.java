@@ -21,7 +21,6 @@ import twitter4j.UserMentionEntity;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.z_T4JInternalParseUtil;
 
 /**
  * A data interface representing one single user mention entity.
@@ -29,10 +28,8 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-/*package*/ class UserMentionEntityJSONImpl implements UserMentionEntity {
+/*package*/ class UserMentionEntityJSONImpl extends EntityIndex implements UserMentionEntity {
     private static final long serialVersionUID = 6580431141350059702L;
-    private int start = -1;
-    private int end = -1;
     private String name;
     private String screenName;
     private long id;
@@ -44,8 +41,8 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
 
     /* package */ UserMentionEntityJSONImpl(int start, int end, String name, String screenName, long id) {
         super();
-        this.start = start;
-        this.end = end;
+        setStart(start);
+        setEnd(end);
         this.name = name;
         this.screenName = screenName;
         this.id = id;
@@ -59,8 +56,8 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     private void init(JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
-            this.start = indicesArray.getInt(0);
-            this.end = indicesArray.getInt(1);
+            setStart(indicesArray.getInt(0));
+            setEnd(indicesArray.getInt(1));
 
             if (!json.isNull("name")) {
                 this.name = json.getString("name");
@@ -103,7 +100,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
      */
     @Override
     public int getStart() {
-        return start;
+        return super.getStart();
     }
 
     /**
@@ -111,7 +108,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
      */
     @Override
     public int getEnd() {
-        return end;
+        return super.getEnd();
     }
 
     @Override
@@ -121,22 +118,16 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
 
         UserMentionEntityJSONImpl that = (UserMentionEntityJSONImpl) o;
 
-        if (end != that.end) return false;
         if (id != that.id) return false;
-        if (start != that.start) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null)
-            return false;
-        if (screenName != null ? !screenName.equals(that.screenName) : that.screenName != null)
-            return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (screenName != null ? !screenName.equals(that.screenName) : that.screenName != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = start;
-        result = 31 * result + end;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
         result = 31 * result + (int) (id ^ (id >>> 32));
         return result;
@@ -145,9 +136,7 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
     @Override
     public String toString() {
         return "UserMentionEntityJSONImpl{" +
-                "start=" + start +
-                ", end=" + end +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", screenName='" + screenName + '\'' +
                 ", id=" + id +
                 '}';

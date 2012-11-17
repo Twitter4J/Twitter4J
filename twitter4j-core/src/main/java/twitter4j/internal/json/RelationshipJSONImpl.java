@@ -25,7 +25,7 @@ import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
 /**
  * A data class that has detailed information about a relationship between two users

@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing search API response

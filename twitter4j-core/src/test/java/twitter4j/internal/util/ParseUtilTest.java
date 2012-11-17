@@ -17,6 +17,7 @@
 package twitter4j.internal.util;
 
 import junit.framework.TestCase;
+import twitter4j.internal.json.z_T4JInternalParseUtil;
 
 import java.text.SimpleDateFormat;
 

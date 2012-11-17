@@ -24,8 +24,8 @@ import twitter4j.internal.org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.getBoolean;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.getRawString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com

@@ -24,17 +24,15 @@ import twitter4j.internal.org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getLong;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.getLong;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.3
  */
-public class MediaEntityJSONImpl implements MediaEntity {
+public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     private static final long serialVersionUID = 224487082931268487L;
     private long id;
-    private int start = -1;
-    private int end = -1;
     private String url;
     private String mediaURL;
     private String mediaURLHttps;
@@ -46,8 +44,8 @@ public class MediaEntityJSONImpl implements MediaEntity {
     MediaEntityJSONImpl(JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
-            this.start = indicesArray.getInt(0);
-            this.end = indicesArray.getInt(1);
+            setStart(indicesArray.getInt(0));
+            setEnd(indicesArray.getInt(1));
             this.id = getLong("id", json);
 
             this.url = json.getString("url");
@@ -149,7 +147,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
      */
     @Override
     public int getStart() {
-        return start;
+        return super.getStart();
     }
 
     /**
@@ -157,7 +155,7 @@ public class MediaEntityJSONImpl implements MediaEntity {
      */
     @Override
     public int getEnd() {
-        return end;
+        return super.getEnd();
     }
 
     static class Size implements MediaEntity.Size {
@@ -240,8 +238,6 @@ public class MediaEntityJSONImpl implements MediaEntity {
     public String toString() {
         return "MediaEntityJSONImpl{" +
                 "id=" + id +
-                ", start=" + start +
-                ", end=" + end +
                 ", url=" + url +
                 ", mediaURL=" + mediaURL +
                 ", mediaURLHttps=" + mediaURLHttps +

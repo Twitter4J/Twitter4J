@@ -27,7 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing Basic user information element

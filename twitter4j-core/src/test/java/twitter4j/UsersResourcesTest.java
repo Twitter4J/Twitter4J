@@ -93,7 +93,6 @@ public class UsersResourcesTest extends TwitterTestBase {
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
         user = twitter1.showUser("twit4jnoupdate");
-        System.out.println("----"+user.getProfileBannerURL());
         assertNull(user.getProfileBannerURL());
         user = twitter1.showUser("tigertest");
         User previousUser = user;

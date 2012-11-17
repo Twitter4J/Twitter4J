@@ -28,7 +28,7 @@ import twitter4j.internal.org.json.JSONObject;
 
 import java.util.Date;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
+import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
 /**
  * A data class representing sent/received direct message.
