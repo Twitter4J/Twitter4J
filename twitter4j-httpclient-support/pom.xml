@@ -134,8 +134,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>6</source>
-                    <target>6</target>
+                    <source>5</source>
+                    <target>5</target>
                 </configuration>
                 <version>2.5.1</version>
             </plugin>

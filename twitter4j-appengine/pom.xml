@@ -102,19 +102,19 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.7.0</version>
+            <version>1.7.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-testing</artifactId>
-            <version>1.7.0</version>
+            <version>1.7.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-stubs</artifactId>
-            <version>1.6.5</version>
+            <version>1.7.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -137,8 +137,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>6</source>
-                    <target>6</target>
+                    <source>5</source>
+                    <target>5</target>
                 </configuration>
                 <version>2.5.1</version>
             </plugin>
