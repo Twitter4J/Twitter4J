@@ -58,7 +58,7 @@ public class HTMLEntityTest extends TestCase {
 
         JSONObject json = new JSONObject(rawJSON);
         String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), entities.toArray(new EntityIndex[entities.size()]));
-        assertEquals("@null < #test > &???? @t4j_news %& http://t.co/HwbSpYFr http://t.co/d4G7MQ62"
+        assertEquals("@null < #test > &ほげほげ @t4j_news %& http://t.co/HwbSpYFr http://t.co/d4G7MQ62"
                 , escaped);
         assertEquals("#test", escaped.substring(test.getStart(), test.getEnd()));
         assertEquals("http://t.co/HwbSpYFr", escaped.substring(t4jURL.getStart(), t4jURL.getEnd()));

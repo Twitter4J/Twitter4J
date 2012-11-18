@@ -630,7 +630,7 @@ public class DAOTest extends TwitterTestBase {
         Assert.assertEquals("2b6ff8c22edd9576", place.getId());
         Assert.assertEquals("", place.getCountry());
         Assert.assertEquals("neighborhood", place.getPlaceType());
-        Assert.assertEquals("http://api.twitter.com/1.1/geo/id/2b6ff8c22edd9576.json", place.getURL());
+        Assert.assertEquals("http://api.twitter.com/1/geo/id/2b6ff8c22edd9576.json", place.getURL());
         Assert.assertEquals("SoMa, San Francisco", place.getFullName());
         Assert.assertEquals("Polygon", place.getBoundingBoxType());
         GeoLocation[][] boundingBox = place.getBoundingBoxCoordinates();
@@ -656,7 +656,7 @@ public class DAOTest extends TwitterTestBase {
         Assert.assertEquals("5a110d312052166f", containedWithin.getId());
         Assert.assertEquals("", containedWithin.getCountry());
         Assert.assertEquals("city", containedWithin.getPlaceType());
-        Assert.assertEquals("http://api.twitter.com/1.1/geo/id/5a110d312052166f.json", containedWithin.getURL());
+        Assert.assertEquals("http://api.twitter.com/1/geo/id/5a110d312052166f.json", containedWithin.getURL());
         Assert.assertEquals("San Francisco", containedWithin.getFullName());
         boundingBox = containedWithin.getBoundingBoxCoordinates();
         Assert.assertEquals("Polygon", place.getBoundingBoxType());

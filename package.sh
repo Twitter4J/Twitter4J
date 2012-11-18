@@ -140,8 +140,9 @@ echo building android-jar remove org.json
 pwd
 
 cd ../
-rm -Rf 	twitter4j-core/src/main/java/twitter4j/internal/org
-find . -type f |while read file; do sed -e 's/import twitter4j.internal.org.json/import org.json/' $file > $file.tmp && mv $file.tmp $file; done
+rm -Rf twitter4j-core/src/main/java/twitter4j/internal/org
+rm -Rf twitter4j-$LATEST_VERSION/twitter4j-core/src/main/java/twitter4j/internal/org
+find . -type f -name *.java |while read file; do sed -e 's/import twitter4j.internal.org.json/import org.json/' $file > $file.tmp && mv $file.tmp $file; done
 sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/groupId><artifactId>json<\/artifactId><version>20090211<\/version><scope>provided<\/scope><\/dependency>/' twitter4j-core/pom.xml
 sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/groupId><artifactId>json<\/artifactId><version>20090211<\/version><scope>provided<\/scope><\/dependency>/' twitter4j-media-support/pom.xml
 sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/groupId><artifactId>json<\/artifactId><version>20090211<\/version><scope>provided<\/scope><\/dependency>/' twitter4j-async/pom.xml
@@ -184,4 +185,4 @@ cd ../..
 packageZip
 buildAndroid
 cd /tmp
-rm -Rf t4jbuild/
+#rm -Rf t4jbuild/
