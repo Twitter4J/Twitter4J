@@ -7,7 +7,6 @@ export DEPLOY=$2
 packageZip(){
 rm twitter4j-core/src/test/resources/test.properties
 rm twitter4j-core/src/test/resources/xauth-test.properties
-rm twitter4j-httpclient-support/src/test/resources/twitter4j.properties
 rm twitter4j-media-support/src/test/resources/twitter4j.properties
 rm twitter4j-async/src/test/resources/test.properties
 rm twitter4j-stream/src/test/resources/test.properties
@@ -20,13 +19,11 @@ sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/ma
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-core/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-appengine/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-examples/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-httpclient-support/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-media-support/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-async/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-stream/pom.xml
 
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-core/src/main/java/twitter4j/Version.java
-sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-httpclient-support/src/main/java/twitter4j/internal/http/alternative/Version.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-media-support/src/main/java/twitter4j/media/Version.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-async/src/main/java/twitter4j/VersionAsync.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-appengine/src/main/java/twitter4j/VersionAppEngine.java
@@ -185,4 +182,4 @@ cd ../..
 packageZip
 buildAndroid
 cd /tmp
-#rm -Rf t4jbuild/
+rm -Rf t4jbuild/
