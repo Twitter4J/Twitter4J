@@ -59,7 +59,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
-    private Status myRetweetedStatus;
+    private long currentUserRetweetId = -1L;
 
     /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -210,7 +210,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
         if (!json.isNull("current_user_retweet")) {
             try {
-                myRetweetedStatus = new StatusJSONImpl(json.getJSONObject("current_user_retweet"));
+                currentUserRetweetId = json.getJSONObject("current_user_retweet").getLong("id");
             } catch (JSONException ignore) {
                 ignore.printStackTrace();
                 logger.warn("failed to parse current_user_retweet:" + json);
@@ -366,14 +366,15 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
      */
     @Override
     public boolean isRetweetedByMe() {
-        return myRetweetedStatus != null;
+        return currentUserRetweetId != -1L;
     }
 
     /**
      * {@inheritDoc}
      */
-    public Status getMyRetweet() {
-    	return myRetweetedStatus;
+    @Override
+    public long getCurrentUserRetweetId() {
+    	return currentUserRetweetId;
     }
 
     /**
@@ -439,8 +440,6 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             return statuses;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 
@@ -482,7 +481,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
                 ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
                 ", mediaEntities=" + (mediaEntities == null ? null : Arrays.asList(mediaEntities)) +
-                ", myRetweetedStatus=" + myRetweetedStatus +
+                ", currentUserRetweetId=" + currentUserRetweetId +
                 ", user=" + user +
                 '}';
     }

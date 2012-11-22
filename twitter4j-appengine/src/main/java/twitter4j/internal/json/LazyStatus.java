@@ -232,14 +232,14 @@ final class LazyStatus implements twitter4j.Status {
     }
     
     /**
-     * Returns the authenticating user's retweet of this tweet, or null when the tweet was created
-     * before this feature was enabled. Note that the available information is restricted to its id.
+     * Returns the authenticating user's retweet's id of this tweet, or -1L when the tweet was created
+     * before this feature was enabled.
      *
-     * @return the authenticating user's retweet of this tweet
-     * @since Twitter4J 3.0.0
+     * @return the authenticating user's retweet's id of this tweet
+     * @since Twitter4J 3.0.1
      */
-    public Status getMyRetweet() {
-    	return getTarget().getMyRetweet();
+    public long getCurrentUserRetweetId() {
+    	return getTarget().getCurrentUserRetweetId();
     }
 
     @Override

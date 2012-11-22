@@ -71,6 +71,14 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
         assertTrue(status.getText().matches(dateStr + "test http://t.co/.* @twit4j2 #twitter4jtest"));
+
+        // http://jira.twitter4j.org/browse/TFJ-715
+        // current_user_retweet contains only id
+        Status retweeted = twitter2.retweetStatus(status.getId());
+        List<Status> statuses = twitter2.getHomeTimeline();
+        assertTrue(retweeted.getText().endsWith(status.getText()));
+        assertTrue(-1L !=  statuses.get(0).getCurrentUserRetweetId());
+
         Status status2 = twitter2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
         assertNotNull(DataObjectFactory.getRawJSON(status2));
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
