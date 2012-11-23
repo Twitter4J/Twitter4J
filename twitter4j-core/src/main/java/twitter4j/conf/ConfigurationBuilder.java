@@ -289,6 +289,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setLoggerImpl(String loggerImpl) {
+        checkNotBuilt();
+        configurationBean.setLoggerFactory(loggerImpl);
+        return this;
+    }
+
     public Configuration build() {
         checkNotBuilt();
         configurationBean.cacheInstance();

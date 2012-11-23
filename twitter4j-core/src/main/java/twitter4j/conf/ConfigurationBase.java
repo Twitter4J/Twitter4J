@@ -60,12 +60,12 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String oAuthAuthenticationURL;
 
     private String restBaseURL;
-    private String searchBaseURL;
     private String streamBaseURL;
     private String userStreamBaseURL;
     private String siteStreamBaseURL;
 
     private String dispatcherImpl;
+    private String loggerFactory;
 
     private int asyncNumThreads;
 
@@ -176,6 +176,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setSiteStreamBaseURL(DEFAULT_SITE_STREAM_BASE_URL);
 
         setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
+        setLoggerFactory(null);
 
         setUserStreamRepliesAllEnabled(false);
         setStallWarningsEnabled(true);
@@ -602,6 +603,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.dispatcherImpl = dispatcherImpl;
     }
 
+    @Override
+    public String getLoggerFactory() {
+        return loggerFactory;
+    }
+
+    protected final void setLoggerFactory(String loggerImpl) {
+        this.loggerFactory = loggerImpl;
+    }
+
     protected final void setIncludeRTsEnbled(boolean enabled) {
         this.includeRTsEnabled = enabled;
     }
@@ -706,6 +716,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (IS_DALVIK != that.IS_DALVIK) return false;
         if (IS_GAE != that.IS_GAE) return false;
         if (asyncNumThreads != that.asyncNumThreads) return false;
+        if (contributingTo != that.contributingTo) return false;
         if (debug != that.debug) return false;
         if (defaultMaxPerRoute != that.defaultMaxPerRoute) return false;
         if (gzipEnabled != that.gzipEnabled) return false;
@@ -716,6 +727,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
         if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
+        if (includeMyRetweetEnabled != that.includeMyRetweetEnabled) return false;
         if (includeRTsEnabled != that.includeRTsEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (maxTotalConnections != that.maxTotalConnections) return false;
@@ -734,6 +746,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
             return false;
         if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
+            return false;
+        if (loggerFactory != null ? !loggerFactory.equals(that.loggerFactory) : that.loggerFactory != null)
             return false;
         if (mediaProvider != null ? !mediaProvider.equals(that.mediaProvider) : that.mediaProvider != null)
             return false;
@@ -761,8 +775,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (requestHeaders != null ? !requestHeaders.equals(that.requestHeaders) : that.requestHeaders != null)
             return false;
         if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null) return false;
-        if (searchBaseURL != null ? !searchBaseURL.equals(that.searchBaseURL) : that.searchBaseURL != null)
-            return false;
         if (siteStreamBaseURL != null ? !siteStreamBaseURL.equals(that.siteStreamBaseURL) : that.siteStreamBaseURL != null)
             return false;
         if (streamBaseURL != null ? !streamBaseURL.equals(that.streamBaseURL) : that.streamBaseURL != null)
@@ -804,14 +816,16 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (oAuthAccessTokenURL != null ? oAuthAccessTokenURL.hashCode() : 0);
         result = 31 * result + (oAuthAuthenticationURL != null ? oAuthAuthenticationURL.hashCode() : 0);
         result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
-        result = 31 * result + (searchBaseURL != null ? searchBaseURL.hashCode() : 0);
         result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
         result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
         result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
         result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
+        result = 31 * result + (loggerFactory != null ? loggerFactory.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
+        result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
         result = 31 * result + (includeRTsEnabled ? 1 : 0);
         result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
+        result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
         result = 31 * result + (mbeanEnabled ? 1 : 0);
         result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
@@ -857,14 +871,16 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", oAuthAccessTokenURL='" + oAuthAccessTokenURL + '\'' +
                 ", oAuthAuthenticationURL='" + oAuthAuthenticationURL + '\'' +
                 ", restBaseURL='" + restBaseURL + '\'' +
-                ", searchBaseURL='" + searchBaseURL + '\'' +
                 ", streamBaseURL='" + streamBaseURL + '\'' +
                 ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
                 ", siteStreamBaseURL='" + siteStreamBaseURL + '\'' +
                 ", dispatcherImpl='" + dispatcherImpl + '\'' +
+                ", loggerFactory='" + loggerFactory + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
+                ", contributingTo=" + contributingTo +
                 ", includeRTsEnabled=" + includeRTsEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
+                ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
                 ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +

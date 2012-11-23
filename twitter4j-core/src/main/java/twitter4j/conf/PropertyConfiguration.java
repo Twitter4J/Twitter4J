@@ -75,6 +75,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String INCLUDE_RTS = "includeRTs";
     public static final String INCLUDE_ENTITIES = "includeEntities";
     public static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
+    public static final String LOGGER_FACTORY = "loggerFactory";
     public static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
     public static final String MBEAN_ENABLED = "mbeanEnabled";
     public static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
@@ -344,6 +345,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, INCLUDE_MY_RETWEET)) {
             setIncludeMyRetweetEnabled(getBoolean(props, prefix, INCLUDE_MY_RETWEET));
+        }
+        if (notNull(props, prefix, LOGGER_FACTORY)) {
+            setLoggerFactory(getString(props, prefix, LOGGER_FACTORY));
         }
         if (notNull(props, prefix, JSON_STORE_ENABLED)) {
             setJSONStoreEnabled(getBoolean(props, prefix, JSON_STORE_ENABLED));

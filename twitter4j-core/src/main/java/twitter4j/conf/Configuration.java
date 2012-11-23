@@ -121,4 +121,6 @@ public interface Configuration extends HttpClientConfiguration
     long getContributingTo();
 
     String getDispatcherImpl();
+
+    String getLoggerFactory();
 }

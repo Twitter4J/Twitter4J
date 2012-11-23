@@ -32,8 +32,16 @@ public abstract class Logger {
 
     static {
         LoggerFactory loggerFactory = null;
-        //-Dtwitter4j.debug=true -Dtwitter4j.loggerFactory=twitter4j.internal.logging.StdOutLoggerFactory
+        // -Dtwitter4j.debug=true -Dtwitter4j.loggerFactory=twitter4j.internal.logging.StdOutLoggerFactory
         String loggerFactoryImpl = System.getProperty(LOGGER_FACTORY_IMPLEMENTATION);
+        if (loggerFactoryImpl != null) {
+            loggerFactory = getLoggerFactoryIfAvailable(loggerFactoryImpl, loggerFactoryImpl);
+        }
+
+        Configuration conf = ConfigurationContext.getInstance();
+        // configuration in twitter4j.properties
+        // loggerFactory=twitter4j.internal.logging.StdOutLoggerFactory
+        loggerFactoryImpl = conf.getLoggerFactory();
         if (loggerFactoryImpl != null) {
             loggerFactory = getLoggerFactoryIfAvailable(loggerFactoryImpl, loggerFactoryImpl);
         }
@@ -59,7 +67,6 @@ public abstract class Logger {
         }
         LOGGER_FACTORY = loggerFactory;
 
-        Configuration conf = ConfigurationContext.getInstance();
         try {
             Method method = conf.getClass().getMethod("dumpConfiguration", new Class[]{});
             method.setAccessible(true);
