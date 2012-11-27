@@ -31,6 +31,7 @@ Dong Wang <dong at twitter.com> @dongwang218
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
 Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
+Hiroshi Sugimori <mamamadata at gmail.com> @ham1975
 Hitoshi Kunimatsu <hkhumanoid at gmail.com>
 JJ Kelley <jjthemachine at gmail.com> @jjthemachine
 Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
