@@ -402,6 +402,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     @Override
+    public void gotRetweetsOfMe(ResponseList<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
+
+    @Override
     public void gotMentions(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();

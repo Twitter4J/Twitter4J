@@ -117,4 +117,9 @@ public class TimelineResourcesTest extends TwitterTestBase {
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         assertTrue(statuses.size() > 0);
     }
+
+    public void testRetweetsOfMe() throws Exception {
+        List<Status> statuses = twitter2.getRetweetsOfMe();
+        assertTrue(0 < statuses.size());
+    }
 }

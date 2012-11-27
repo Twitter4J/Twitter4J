@@ -35,6 +35,7 @@ public class TwitterAdapter implements TwitterListener {
     public void gotMentions(ResponseList<Status> statuses){}
     public void gotHomeTimeline(ResponseList<Status> statuses){}
     public void gotUserTimeline(ResponseList<Status> statuses){}
+    public void gotRetweetsOfMe(ResponseList<Status> statuses){}
 
     /* Tweets Resources */
     public void gotRetweets(ResponseList<Status> retweets){}

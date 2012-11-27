@@ -132,4 +132,23 @@ public interface TimelinesResourcesAsync {
      * @since Twitter4J 2.0.10
      */
     void getHomeTimeline(Paging paging);
+
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://api.twitter.com/1.1/statuses/retweets_of_me.json
+     *
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/retweets_of_me">GET statuses/retweets_of_me | Twitter Developers</a>
+     * @since Twitter4J 2.0.10
+     */
+    void getRetweetsOfMe();
+
+    /**
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
+     * <br>This method calls http://api.twitter.com/1.1/statuses/retweets_of_me.json
+     *
+     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/retweets_of_me">GET statuses/retweets_of_me | Twitter Developers</a>
+     * @since Twitter4J 2.0.10
+     */
+    void getRetweetsOfMe(Paging paging);
 }

@@ -235,6 +235,40 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetsOfMe() {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETS_OF_ME, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<Status> statuses = twitter.getRetweetsOfMe();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotRetweetsOfMe(statuses);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void getRetweetsOfMe(final Paging paging) {
+        getDispatcher().invokeLater(new AsyncTask(RETWEETS_OF_ME, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<Status> statuses = twitter.getRetweetsOfMe(paging);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotRetweetsOfMe(statuses);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
     /* Tweets Resources */
 
     /**

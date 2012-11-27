@@ -25,6 +25,7 @@ public enum TwitterMethod {
     MENTIONS_TIMELINE,
     USER_TIMELINE,
     HOME_TIMELINE,
+    RETWEETS_OF_ME,
 
     /* Tweets Resources */
     RETWEETS,

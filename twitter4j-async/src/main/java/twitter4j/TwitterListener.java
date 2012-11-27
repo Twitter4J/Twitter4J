@@ -31,6 +31,7 @@ public interface TwitterListener {
     void gotMentions(ResponseList<Status> statuses);
     void gotHomeTimeline(ResponseList<Status> statuses);
     void gotUserTimeline(ResponseList<Status> statuses);
+    void gotRetweetsOfMe(ResponseList<Status> statuses);
 
     /* Tweets Resources */
     void gotRetweets(ResponseList<Status> retweets);

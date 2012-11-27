@@ -121,6 +121,24 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     /**
      * {@inheritDoc}
      */
+    public ResponseList<Status> getRetweetsOfMe() throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL()
+                + "statuses/retweets_of_me.json"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ResponseList<Status> getRetweetsOfMe(Paging paging) throws TwitterException {
+        ensureAuthorizationEnabled();
+        return factory.createStatusList(get(conf.getRestBaseURL()
+                + "statuses/retweets_of_me.json"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponseList<Status> getUserTimeline(String screenName, Paging paging)
             throws TwitterException {
