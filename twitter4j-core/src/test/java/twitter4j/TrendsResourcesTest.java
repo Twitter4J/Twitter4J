@@ -35,6 +35,8 @@ public class TrendsResourcesTest extends TwitterTestBase {
     }
 
     public void testLocalTrendsMethods() throws Exception {
+        Trends trends = twitter2.getPlaceTrends(1);
+        assertEquals("Worldwide",trends.getLocation().getName());
         ResponseList<Location> locations;
         locations = twitter1.getAvailableTrends();
         assertNotNull(DataObjectFactory.getRawJSON(locations));

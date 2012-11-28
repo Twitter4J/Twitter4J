@@ -40,8 +40,8 @@ import static twitter4j.TwitterMethod.*;
  * Currently this class is not carefully designed to be extended. It is suggested to extend this class only for mock testing purporse.<br>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see twitter4j.AsyncTwitter
- * @see twitter4j.TwitterListener
+ * @see {@link twitter4j.AsyncTwitter}
+ * @see {@link twitter4j.TwitterListener}
  */
 class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     private static final long serialVersionUID = -2008667933225051907L;
@@ -2611,6 +2611,33 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     /* Trends Resources */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getLocationTrends(int woeid) {
+        getPlaceTrends(woeid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getPlaceTrends(final int woeid) {
+        getDispatcher().invokeLater(new AsyncTask(PLACE_TRENDS, listeners) {
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                Trends trends = twitter.getPlaceTrends(woeid);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotPlaceTrends(trends);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -895,6 +895,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    @Override
+    public void gotPlaceTrends(Trends trends) {
+        this.trends = trends;
+        notifyResponse();
+    }
+
     /* Legal Resources */
 
     /**

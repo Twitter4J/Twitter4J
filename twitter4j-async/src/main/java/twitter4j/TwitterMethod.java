@@ -123,6 +123,7 @@ public enum TwitterMethod {
     CREATE_PLACE,
 
     /* Trends Resources */
+    PLACE_TRENDS,
     AVAILABLE_TRENDS,
 
     /* Spam Reporting Resources */

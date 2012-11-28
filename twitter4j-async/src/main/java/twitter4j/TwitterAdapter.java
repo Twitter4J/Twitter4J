@@ -129,6 +129,7 @@ public class TwitterAdapter implements TwitterListener {
     public void createdPlace(Place place){}
 
     /* Trends Resources */
+    public void gotPlaceTrends(Trends trends) {}
     public void gotAvailableTrends(ResponseList<Location> locations){}
 
     /* Spam Reporting Resources */
