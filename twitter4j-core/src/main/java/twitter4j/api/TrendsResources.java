@@ -65,4 +65,31 @@ public interface TrendsResources {
      * @since Twitter4J 2.1.1
      */
     ResponseList<Location> getAvailableTrends() throws TwitterException;
+
+    /**
+     * Returns the sorted locations that Twitter has trending topic information for. The response is an array of &quot;locations&quot; that encode the location's WOEID (a <a href="http://developer.yahoo.com/geo/geoplanet/">Yahoo! Where On Earth ID</a>) and some other human-readable information such as a canonical name and country the location belongs in.
+     * <br>This method calls http://api.twitter.com/1/trends/available.json
+     *
+     * @param location the available trend locations will be sorted by distance to the lat and long passed in. The sort is nearest to furthest.
+     * @return the locations
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/available">GET trends/available | Twitter Developers</a>
+     * @since Twitter4J 2.1.1
+     * @deprecated use {@link #getClosestTrends(twitter4j.GeoLocation)} instead
+     */
+    ResponseList<Location> getAvailableTrends(GeoLocation location) throws TwitterException;
+
+    /**
+     * Returns the locations that Twitter has trending topic information for, closest to a specified location.<br>
+     * The response is an array of "locations" that encode the location's WOEID and some other human-readable information such as a canonical name and country the location belongs in.<br>
+     * A WOEID is a <a href="http://developer.yahoo.com/geo/geoplanet/">Yahoo! Where On Earth ID</a>.
+     * <br>This method calls http://api.twitter.com/1.1/trends/closest.json
+     *
+     * @param location the available trend locations will be sorted by distance to the lat and long passed in. The sort is nearest to furthest.
+     * @return the locations
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/trends/closest">GET trends/closest | Twitter Developers</a>
+     * @since Twitter4J 3.0.2
+     */
+    ResponseList<Location> getClosestTrends(GeoLocation location) throws TwitterException;
 }

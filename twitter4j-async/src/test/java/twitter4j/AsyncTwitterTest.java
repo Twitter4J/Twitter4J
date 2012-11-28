@@ -864,6 +864,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    @Override
+    public void gotClosestTrends(ResponseList<Location> locations) {
+        this.locations = locations;
+        notifyResponse();
+    }
+
     /*Geo Methods*/
     @Override
     public void searchedPlaces(ResponseList<Place> places) {

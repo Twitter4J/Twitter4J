@@ -17,6 +17,9 @@
 
 package twitter4j.api;
 
+import twitter4j.GeoLocation;
+import twitter4j.TwitterException;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3
@@ -55,4 +58,27 @@ public interface TrendsResourcesAsync {
      * @since Twitter4J 2.1.1
      */
     void getAvailableTrends();
+
+    /**
+     * Retrieves the sorted locations that Twitter has trending topic information for. The response is an array of &quot;locations&quot; that encode the location's WOEID (a <a href="http://developer.yahoo.com/geo/geoplanet/">Yahoo! Where On Earth ID</a>) and some other human-readable information such as a canonical name and country the location belongs in.
+     * <br>This method calls http://api.twitter.com/1/trends/available.json
+     *
+     * @param location the available trend locations will be sorted by distance to the lat and long passed in. The sort is nearest to furthest.
+     * @see <a href="https://dev.twitter.com/docs/api/1/get/trends/available">GET trends/available | Twitter Developers</a>
+     * @since Twitter4J 2.1.1
+     * @deprecated use {@link #getClosestTrends(twitter4j.GeoLocation)} instead
+     */
+    void getAvailableTrends(GeoLocation location);
+
+    /**
+     * Returns the locations that Twitter has trending topic information for, closest to a specified location.<br>
+     * The response is an array of "locations" that encode the location's WOEID and some other human-readable information such as a canonical name and country the location belongs in.<br>
+     * A WOEID is a <a href="http://developer.yahoo.com/geo/geoplanet/">Yahoo! Where On Earth ID</a>.
+     * <br>This method calls http://api.twitter.com/1.1/trends/closest.json
+     *
+     * @param location the available trend locations will be sorted by distance to the lat and long passed in. The sort is nearest to furthest.
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/trends/closest">GET trends/closest | Twitter Developers</a>
+     * @since Twitter4J 3.0.2
+     */
+    void getClosestTrends(GeoLocation location) throws TwitterException;
 }

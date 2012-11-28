@@ -125,6 +125,7 @@ public enum TwitterMethod {
     /* Trends Resources */
     PLACE_TRENDS,
     AVAILABLE_TRENDS,
+    CLOSEST_TRENDS,
 
     /* Spam Reporting Resources */
     REPORT_SPAM,

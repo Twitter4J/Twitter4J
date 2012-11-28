@@ -127,6 +127,7 @@ public interface TwitterListener {
     /* Trends Resources */
     void gotPlaceTrends(Trends trends);
     void gotAvailableTrends(ResponseList<Location> locations);
+    void gotClosestTrends(ResponseList<Location> locations);
 
     /* Spam Reporting Resources */
     void reportedSpam(User reportedSpammer);

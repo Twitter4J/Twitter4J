@@ -36,11 +36,14 @@ public class TrendsResourcesTest extends TwitterTestBase {
 
     public void testLocalTrendsMethods() throws Exception {
         Trends trends = twitter2.getPlaceTrends(1);
-        assertEquals("Worldwide",trends.getLocation().getName());
+        assertEquals("Worldwide", trends.getLocation().getName());
         ResponseList<Location> locations;
         locations = twitter1.getAvailableTrends();
         assertNotNull(DataObjectFactory.getRawJSON(locations));
         assertEquals(locations.get(0), DataObjectFactory.createLocation(DataObjectFactory.getRawJSON(locations.get(0))));
         assertTrue(locations.size() > 0);
+
+        locations = twitter2.getClosestTrends(new GeoLocation(35.677248D, 139.72911D));
+        assertEquals("Tokyo", locations.get(0).getName());
     }
 }
