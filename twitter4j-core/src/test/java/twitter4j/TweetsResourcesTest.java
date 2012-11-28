@@ -114,6 +114,23 @@ public class TweetsResourcesTest extends TwitterTestBase {
         }
     }
 
+    public void testOEmbed() throws TwitterException{
+        OEmbed oembed = twitter1.getOEmbed(new OEmbedRequest(240192632003911681L,"http://samuraism.com/"));
+        assertNotNull(DataObjectFactory.getRawJSON(oembed));
+        assertEquals(oembed, DataObjectFactory.createOEmbed(DataObjectFactory.getRawJSON(oembed)));
+
+        assertNotNull(oembed.getHtml());
+        assertEquals("Jason Costa",oembed.getAuthorName());
+        assertEquals("http://twitter.com/jasoncosta/status/240192632003911681",oembed.getURL());
+        assertEquals("1.0",oembed.getVersion());
+        assertEquals(31536000000L,oembed.getCacheAge());
+        assertEquals("http://twitter.com/jasoncosta",oembed.getAuthorURL());
+        assertTrue(0 < oembed.getWidth());
+
+        oembed = twitter1.getOEmbed(new OEmbedRequest(273685580615913473L,"http://samuraism.com/"));
+
+    }
+
     public void testEntities() throws Exception {
         Status status = twitter2.showStatus(268294645526708226L);
         assertNotNull(DataObjectFactory.getRawJSON(status));

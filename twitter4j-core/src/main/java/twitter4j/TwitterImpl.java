@@ -246,6 +246,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createStatus(post(conf.getRestBaseURL() + "statuses/retweet/" + statusId + ".json"));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OEmbed getOEmbed(OEmbedRequest req) throws TwitterException {
+        return factory.createOEmbed(get(conf.getRestBaseURL()
+                + "statuses/oembed.json", req.asHttpParameterArray()));
+    }
+
     /* Search Resources */
     /**
      * {@inheritDoc}

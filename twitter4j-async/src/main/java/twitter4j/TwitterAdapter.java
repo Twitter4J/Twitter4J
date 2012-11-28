@@ -52,6 +52,8 @@ public class TwitterAdapter implements TwitterListener {
     public void updatedStatus(Status status){}
     @Override
     public void retweetedStatus(Status retweetedStatus){}
+    @Override
+    public void gotOEmbed(OEmbed oembed) {}
 
     /* Search Resources */
     @Override

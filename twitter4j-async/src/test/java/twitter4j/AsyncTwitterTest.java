@@ -46,6 +46,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private TwitterAPIConfiguration apiConf;
     private SavedSearch savedSearch;
     private ResponseList<SavedSearch> savedSearches;
+    private OEmbed oembed;
 
     public AsyncTwitterTest(String name) {
         super(name);
@@ -438,6 +439,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     @Override
     public void retweetedStatus(Status retweetedStatus) {
         this.status = retweetedStatus;
+        notifyResponse();
+    }
+
+    @Override
+    public void gotOEmbed(OEmbed oembed) {
+        this.oembed = oembed;
         notifyResponse();
     }
 

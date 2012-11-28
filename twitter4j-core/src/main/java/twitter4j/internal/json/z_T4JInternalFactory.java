@@ -97,4 +97,6 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
     ResponseList<HelpResources.Language> createLanguageList(HttpResponse res) throws TwitterException;
 
     <T> ResponseList<T> createEmptyResponseList();
+
+    OEmbed createOEmbed(HttpResponse res) throws TwitterException;
 }

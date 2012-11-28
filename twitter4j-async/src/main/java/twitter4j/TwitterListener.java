@@ -39,6 +39,7 @@ public interface TwitterListener {
     void destroyedStatus(Status destroyedStatus);
     void updatedStatus(Status status);
     void retweetedStatus(Status retweetedStatus);
+    void gotOEmbed(OEmbed oembed);
 
     /* Search Resources */
     void searched(QueryResult queryResult);

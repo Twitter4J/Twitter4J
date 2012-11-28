@@ -16,7 +16,8 @@
 
 package twitter4j.api;
 
-import twitter4j.Paging;
+
+import twitter4j.OEmbedRequest;
 import twitter4j.StatusUpdate;
 
 /**
@@ -85,4 +86,13 @@ public interface TweetsResourcesAsync {
      */
     void retweetStatus(long statusId);
 
+    /**
+     * Returns information allowing the creation of an embedded representation of a Tweet on third party sites. See the <a href="http://oembed.com/">oEmbed</a> specification for information about the response format.
+     * While this endpoint allows a bit of customization for the final appearance of the embedded Tweet, be aware that the appearance of the rendered Tweet may change over time to be consistent with Twitter's <a href="https://dev.twitter.com/terms/display-requirements">Display Requirements</a>. Do not rely on any class or id parameters to stay constant in the returned markup.
+     * <br>This method calls http://api.twitter.com/1.1/statuses/oembed.json
+     * @param req request
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/oembed">GET statuses/oembed | Twitter Developers</a>
+     * @since Twitter4J 3.0.2
+     */
+    void getOEmbed(OEmbedRequest req);
 }

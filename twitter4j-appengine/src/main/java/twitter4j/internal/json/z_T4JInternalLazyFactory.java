@@ -226,6 +226,11 @@ public class z_T4JInternalLazyFactory implements z_T4JInternalFactory {
         return new ResponseListImpl<T>(0, null);
     }
 
+    @Override
+    public OEmbed createOEmbed(HttpResponse res) throws TwitterException {
+        return new LazyOEmbed(res, factory);
+    }
+
     public SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException {
         return new LazySimilarPlaces(res, factory);
     }

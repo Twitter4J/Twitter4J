@@ -52,6 +52,7 @@ public final class DataObjectFactory {
     private static final Constructor<RelatedResults> relatedResultsConstructor;
     private static final Constructor<StatusDeletionNotice> statusDeletionNoticeConstructor;
     private static final Constructor<AccountTotals> accountTotalsConstructor;
+    private static final Constructor<OEmbed> oembedConstructor;
 
     static {
         try {
@@ -102,6 +103,8 @@ public final class DataObjectFactory {
 
             accountTotalsConstructor = (Constructor<AccountTotals>) Class.forName("twitter4j.internal.json.AccountTotalsJSONImpl").getDeclaredConstructor(JSONObject.class);
             accountTotalsConstructor.setAccessible(true);
+            oembedConstructor = (Constructor<OEmbed>) Class.forName("twitter4j.internal.json.OEmbedJSONImpl").getDeclaredConstructor(JSONObject.class);
+            oembedConstructor.setAccessible(true);
         } catch (NoSuchMethodException e) {
             throw new ExceptionInInitializerError(e);
         } catch (ClassNotFoundException e) {
@@ -125,6 +128,8 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static String getRawJSON(Object obj) {
+        System.out.println("obj:"+obj.hashCode());
+        System.out.println("key:"+rawJsonMap.get().keySet().iterator().next().hashCode());
         Object json = rawJsonMap.get().get(obj);
         if (json instanceof String) {
             return (String) json;
@@ -464,6 +469,29 @@ public final class DataObjectFactory {
         try {
             JSONArray json = new JSONArray(rawJSON);
             return relatedResultsConstructor.newInstance(json);
+        } catch (InstantiationException e) {
+            throw new TwitterException(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new TwitterException(e);
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    /**
+     * Constructs an OEmbed object from rawJSON string.
+     *
+     * @param rawJSON raw JSON form as String
+     * @return OEmbed
+     * @throws TwitterException when provided string is not a valid JSON string.
+     * @since Twitter4J 3.0.2
+     */
+    public static OEmbed createOEmbed(String rawJSON) throws TwitterException {
+        try {
+            JSONObject json = new JSONObject(rawJSON);
+            return oembedConstructor.newInstance(json);
         } catch (InstantiationException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {

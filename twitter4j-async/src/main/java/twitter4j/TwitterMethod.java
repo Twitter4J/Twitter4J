@@ -33,6 +33,7 @@ public enum TwitterMethod {
     DESTROY_STATUS,
     UPDATE_STATUS,
     RETWEET_STATUS,
+    OEMBED,
 
     /* Search Resources */
     SEARCH,

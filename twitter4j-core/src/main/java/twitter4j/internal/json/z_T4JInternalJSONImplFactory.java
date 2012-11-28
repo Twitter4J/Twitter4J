@@ -280,6 +280,11 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
         return new ResponseListImpl<T>(0, null);
     }
 
+    @Override
+    public OEmbed createOEmbed(HttpResponse res) throws TwitterException {
+        return new OEmbedJSONImpl(res, conf);
+    }
+
     /**
      * static factory method for twitter-text-java
      *
