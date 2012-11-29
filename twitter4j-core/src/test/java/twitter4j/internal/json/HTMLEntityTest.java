@@ -17,11 +17,11 @@
 package twitter4j.internal.json;
 
 import junit.framework.TestCase;
-import twitter4j.internal.json.HTMLEntity;
+import twitter4j.HashtagEntity;
+import twitter4j.MediaEntity;
+import twitter4j.URLEntity;
+import twitter4j.UserMentionEntity;
 import twitter4j.internal.org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HTMLEntityTest extends TestCase {
     public HTMLEntityTest(String name) {
@@ -41,29 +41,26 @@ public class HTMLEntityTest extends TestCase {
 
 //"entities":{"hashtags":[{"text":"test","indices":[11,16]}],"urls":[{"url":"http:\/\/t.co\/HwbSpYFr","expanded_url":"http:\/\/twitter4j.org\/en\/index.html#download","display_url":"twitter4j.org\/en\/index.html#\u2026","indices":[49,69]}],"user_mentions":[{"screen_name":"null","name":"not quite nothing","id":3562471,"id_str":"3562471","indices":[0,5]},{"screen_name":"t4j_news","name":"t4j_news","id":72297675,"id_str":"72297675","indices":[32,41]}],"media":[{"id":268294645535096832,"id_str":"268294645535096832","indices":[70,90],"media_url":"http:\/\/pbs.twimg.com\/media\/A7ksjwJCQAAyvx5.jpg","media_url_https":"https:\/\/pbs.twimg.com\/media\/A7ksjwJCQAAyvx5.jpg","url":"http:\/\/t.co\/d4G7MQ62","display_url":"pic.twitter.com\/d4G7MQ62","expanded_url":"http:\/\/twitter.com\/yusuke\/status\/268294645526708226\/photo\/1","type":"photo","sizes":{"medium":{"w":600,"h":450,"resize":"fit"},"thumb":{"w":150,"h":150,"resize":"crop"},"small":{"w":340,"h":255,"resize":"fit"},"large":{"w":640,"h":480,"resize":"fit"}}}]}
 
-        List<EntityIndex> entities = new ArrayList<EntityIndex>(2);
-        HashtagEntityJSONImpl test = new HashtagEntityJSONImpl(11,16,"test");
-        entities.add(test);
+        HashtagEntityJSONImpl test = new HashtagEntityJSONImpl(11, 16, "test");
         URLEntityJSONImpl t4jURL = new URLEntityJSONImpl(49, 69, "http://t.co/HwbSpYFr"
                 , "http://twitter4j.org/en/index.html#download", "twitter4j.org/en/index.html#\u2026");
-        entities.add(t4jURL);
-        UserMentionEntityJSONImpl t4j_news = new UserMentionEntityJSONImpl(32,41,"t4j_news","t4j_news",11);
-        entities.add(t4j_news);
-        UserMentionEntityJSONImpl nil = new UserMentionEntityJSONImpl(0,5,"null","null",10);
-        entities.add(nil);
+        UserMentionEntityJSONImpl t4j_news = new UserMentionEntityJSONImpl(32, 41, "t4j_news", "t4j_news", 11);
+        UserMentionEntityJSONImpl nil = new UserMentionEntityJSONImpl(0, 5, "null", "null", 10);
         MediaEntityJSONImpl media = new MediaEntityJSONImpl(new JSONObject("{\"id\":268294645535096832,\"id_str\":\"268294645535096832\",\"indices\":[70,90],\"media_url\":\"http:\\/\\/pbs.twimg.com\\/media\\/A7ksjwJCQAAyvx5.jpg\",\"media_url_https\":\"https:\\/\\/pbs.twimg.com\\/media\\/A7ksjwJCQAAyvx5.jpg\",\"url\":\"http:\\/\\/t.co\\/d4G7MQ62\",\"display_url\":\"pic.twitter.com\\/d4G7MQ62\",\"expanded_url\":\"http:\\/\\/twitter.com\\/yusuke\\/status\\/268294645526708226\\/photo\\/1\",\"type\":\"photo\",\"sizes\":{\"medium\":{\"w\":600,\"h\":450,\"resize\":\"fit\"},\"thumb\":{\"w\":150,\"h\":150,\"resize\":\"crop\"},\"small\":{\"w\":340,\"h\":255,\"resize\":\"fit\"},\"large\":{\"w\":640,\"h\":480,\"resize\":\"fit\"}}}]}"));
-        entities.add(media);
 
         String rawJSON = "{\"text\":\"@null &lt; #test &gt; &amp;\\u307b\\u3052\\u307b\\u3052 @t4j_news %&amp; http:\\/\\/t.co\\/HwbSpYFr http:\\/\\/t.co\\/d4G7MQ62\"}";
 
         JSONObject json = new JSONObject(rawJSON);
-        String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), entities.toArray(new EntityIndex[entities.size()]));
+        String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"),
+                new UserMentionEntity[]{t4j_news, nil}, new URLEntity[]{t4jURL}, new HashtagEntity[]{test},
+                new MediaEntity[]{media});
         assertEquals("@null < #test > &ほげほげ @t4j_news %& http://t.co/HwbSpYFr http://t.co/d4G7MQ62"
                 , escaped);
         assertEquals("#test", escaped.substring(test.getStart(), test.getEnd()));
         assertEquals("http://t.co/HwbSpYFr", escaped.substring(t4jURL.getStart(), t4jURL.getEnd()));
         assertEquals("@t4j_news", escaped.substring(t4j_news.getStart(), t4j_news.getEnd()));
         assertEquals("@null", escaped.substring(nil.getStart(), nil.getEnd()));
+        assertEquals("http://t.co/d4G7MQ62", escaped.substring(media.getStart(), media.getEnd()));
 
     }
 
@@ -108,6 +105,7 @@ public class HTMLEntityTest extends TestCase {
 
         original = "\\u5e30%u5e30 &lt;%}& foobar &lt;&Cynthia&gt;";
         expected = "\\u5e30%u5e30 <%}& foobar <&Cynthia>";
-        assertEquals(expected, HTMLEntity.unescapeAndSlideEntityIncdices(original, new EntityIndex[0]));
+        assertEquals(expected, HTMLEntity.unescapeAndSlideEntityIncdices(original, new UserMentionEntity[]{},
+                new URLEntity[]{}, new HashtagEntity[]{}, new MediaEntity[]{}));
     }
 }

@@ -16,16 +16,14 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.DirectMessage;
-import twitter4j.ResponseList;
-import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
@@ -44,6 +42,10 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private Date createdAt;
     private String senderScreenName;
     private String recipientScreenName;
+    private UserMentionEntity[] userMentionEntities;
+    private URLEntity[] urlEntities;
+    private HashtagEntity[] hashtagEntities;
+    private MediaEntity[] mediaEntities;
 
 
     /*package*/DirectMessageJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
@@ -62,7 +64,6 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
     private void init(JSONObject json) throws TwitterException {
         id = getLong("id", json);
-        text = getUnescapedString("text", json);
         senderId = getLong("sender_id", json);
         recipientId = getLong("recipient_id", json);
         createdAt = getDate("created_at", json);
@@ -71,6 +72,51 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         try {
             sender = new UserJSONImpl(json.getJSONObject("sender"));
             recipient = new UserJSONImpl(json.getJSONObject("recipient"));
+            if (!json.isNull("entities")) {
+                JSONObject entities = json.getJSONObject("entities");
+                int len;
+                if (!entities.isNull("user_mentions")) {
+                    JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
+                    len = userMentionsArray.length();
+                    userMentionEntities = new UserMentionEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
+                    }
+
+                }
+                if (!entities.isNull("urls")) {
+                    JSONArray urlsArray = entities.getJSONArray("urls");
+                    len = urlsArray.length();
+                    urlEntities = new URLEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                    }
+                }
+
+                if (!entities.isNull("hashtags")) {
+                    JSONArray hashtagsArray = entities.getJSONArray("hashtags");
+                    len = hashtagsArray.length();
+                    hashtagEntities = new HashtagEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
+                    }
+                }
+
+                if (!entities.isNull("media")) {
+                    JSONArray mediaArray = entities.getJSONArray("media");
+                    len = mediaArray.length();
+                    mediaEntities = new MediaEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
+                    }
+                }
+            }
+            userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
+            urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
+            hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
+            mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
+            text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
+                    urlEntities, hashtagEntities, mediaEntities);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -152,6 +198,38 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         return recipient;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserMentionEntity[] getUserMentionEntities() {
+        return userMentionEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public URLEntity[] getURLEntities() {
+        return urlEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HashtagEntity[] getHashtagEntities() {
+        return hashtagEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MediaEntity[] getMediaEntities() {
+        return mediaEntities;
+    }
+
     /*package*/
     static ResponseList<DirectMessage> createDirectMessageList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -204,10 +282,16 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", sender_id=" + senderId +
                 ", recipient_id=" + recipientId +
                 ", created_at=" + createdAt +
+                ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
+                ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
+                ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
                 ", sender_screen_name='" + senderScreenName + '\'' +
                 ", recipient_screen_name='" + recipientScreenName + '\'' +
                 ", sender=" + sender +
                 ", recipient=" + recipient +
+                ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
+                ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
+                ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
                 '}';
     }
 }

@@ -16,6 +16,11 @@
 
 package twitter4j.internal.json;
 
+import twitter4j.HashtagEntity;
+import twitter4j.MediaEntity;
+import twitter4j.URLEntity;
+import twitter4j.UserMentionEntity;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,8 +81,21 @@ final class HTMLEntity {
         }
     }
 
-    static String unescapeAndSlideEntityIncdices(String text, EntityIndex[] entities) {
-        Arrays.sort(entities);
+    static String unescapeAndSlideEntityIncdices(String text, UserMentionEntity[] userMentionEntities,
+                                                 URLEntity[] urlEntities, HashtagEntity[] hashtagEntities,
+                                                 MediaEntity[] mediaEntities) {
+        EntityIndex[] entityIndexes = new EntityIndex[userMentionEntities.length + urlEntities.length +
+                hashtagEntities.length + mediaEntities.length];
+        int copyStartIndex = 0;
+        System.arraycopy(userMentionEntities, 0, entityIndexes, copyStartIndex, userMentionEntities.length);
+        copyStartIndex += userMentionEntities.length;
+        System.arraycopy(urlEntities, 0, entityIndexes, copyStartIndex, urlEntities.length);
+        copyStartIndex += urlEntities.length;
+        System.arraycopy(hashtagEntities, 0, entityIndexes, copyStartIndex, hashtagEntities.length);
+        copyStartIndex += hashtagEntities.length;
+        System.arraycopy(mediaEntities, 0, entityIndexes, copyStartIndex, mediaEntities.length);
+
+        Arrays.sort(entityIndexes);
         boolean handlingStart = true;
         int entityIndex = 0;
 
@@ -97,28 +115,34 @@ final class HTMLEntity {
                     if (entity != null) {
                         unescaped.append(entity);
                         i = semicolonIndex;
-                    }else{
+                    } else {
                         unescaped.append(c);
                     }
-                }else{
+                } else {
                     unescaped.append(c);
                 }
             } else {
                 unescaped.append(c);
             }
-            if (entityIndex < entities.length) {
+            if (entityIndex < entityIndexes.length) {
                 if (handlingStart) {
-                    if (entities[entityIndex].getStart() == (delta + i)) {
-                        entities[entityIndex].setStart(unescaped.length() - 1);
+                    if (entityIndexes[entityIndex].getStart() == (delta + i)) {
+                        entityIndexes[entityIndex].setStart(unescaped.length() - 1);
                         handlingStart = false;
                     }
-                } else if (entities[entityIndex].getEnd() == (delta + i)) {
-                    entities[entityIndex].setEnd(unescaped.length() - 1);
+                } else if (entityIndexes[entityIndex].getEnd() == (delta + i)) {
+                    entityIndexes[entityIndex].setEnd(unescaped.length() - 1);
                     entityIndex++;
                     handlingStart = true;
                 }
             }
         }
+        if (entityIndex < entityIndexes.length) {
+            if (entityIndexes[entityIndex].getEnd() == (text.length())) {
+                entityIndexes[entityIndex].setEnd(unescaped.length());
+            }
+        }
+
         return unescaped.toString();
     }
 

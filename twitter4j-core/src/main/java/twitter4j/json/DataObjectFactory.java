@@ -128,8 +128,6 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static String getRawJSON(Object obj) {
-        System.out.println("obj:"+obj.hashCode());
-        System.out.println("key:"+rawJsonMap.get().keySet().iterator().next().hashCode());
         Object json = rawJsonMap.get().get(obj);
         if (json instanceof String) {
             return (String) json;
