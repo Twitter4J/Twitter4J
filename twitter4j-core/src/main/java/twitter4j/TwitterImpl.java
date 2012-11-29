@@ -924,7 +924,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public ResponseList<Status> getFavorites(long userId, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json?user_id=" + userId, paging.asPostParameterArray()));
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json" ,
+                mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)}
+                        , paging.asPostParameterArray())));
     }
 
     /**
@@ -932,7 +934,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public ResponseList<Status> getFavorites(String screenName, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json?screen_name=" + screenName, paging.asPostParameterArray()));
+        return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json" ,
+                mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)}
+                        , paging.asPostParameterArray())));
     }
 
     /**
