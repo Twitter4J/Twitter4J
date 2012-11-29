@@ -50,6 +50,7 @@ Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
 Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
 Perry Sakkaris <psakkaris at gmail.com>
+Rajesh Koilpillai <rajesh.koilpillai at gmail.com> @rajeshkp
 Roberto Estrada <robestradac at gmail.com>
 Roy Reshef <royreshef at gmail.com> @tsipo
 Rui Silva
