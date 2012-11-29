@@ -300,5 +300,8 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertNotNull(DataObjectFactory.getRawJSON(ids));
         assertEquals(1, ids.getIDs().length);
         assertEquals(39771963, ids.getIDs()[0]);
+
+        ids = twitter1.getBlocksIDs(-1);
+        assertTrue(ids.getIDs().length > 0);
     }
 }

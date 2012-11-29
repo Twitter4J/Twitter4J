@@ -1218,6 +1218,25 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
+    public void getBlocksIDs(final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(BLOCK_LIST_IDS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                IDs ids = twitter.getBlocksIDs(cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotBlockIDs(ids);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void createBlock(final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_BLOCK, listeners) {
             @Override

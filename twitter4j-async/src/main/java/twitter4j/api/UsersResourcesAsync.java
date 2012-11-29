@@ -151,10 +151,19 @@ public interface UsersResourcesAsync {
      * Returns an array of numeric user ids the authenticating user is blocking.
      * <br>This method calls http://api.twitter.com/1.1/blocks/blocking/ids
      *
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/blocking/ids">GET blocks/blocking/ids | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/ids">GET blocks/ids | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
     void getBlocksIDs();
+
+    /**
+     * Returns an array of numeric user ids the authenticating user is blocking.
+     * <br>This method calls http://api.twitter.com/1.1/blocks/blocking/ids
+     *
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/ids">GET blocks/ids | Twitter Developers</a>
+     * @since Twitter4J 3.0.2
+     */
+    void getBlocksIDs(long cursor);
 
     /**
      * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.

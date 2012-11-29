@@ -714,6 +714,14 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
+    public IDs getBlocksIDs(long cursor) throws TwitterException {
+        return factory.createIDs(get(conf.getRestBaseURL() + "blocks/ids.json?cursor=" + cursor));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public User createBlock(long userId) throws TwitterException {
         return factory.createUser(post(conf.getRestBaseURL() + "blocks/create.json?user_id=" + userId));
     }
