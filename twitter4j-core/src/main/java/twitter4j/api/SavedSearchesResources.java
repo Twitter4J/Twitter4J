@@ -23,7 +23,7 @@ import twitter4j.TwitterException;
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
-public interface SavedSearchesResource {
+public interface SavedSearchesResources {
     /**
      * Returns the authenticated user's saved search queries.
      * <br>This method calls http://api.twitter.com/1.1/saved_searches.json
