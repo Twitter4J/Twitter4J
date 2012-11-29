@@ -974,7 +974,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<Status> getUserListStatuses(int listId, Paging paging) throws TwitterException {
         return factory.createStatusList(get(conf.getRestBaseURL() + "lists/statuses.json"
-                , mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
+                , mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.COUNT)
                 , new HttpParameter("list_id", listId))));
     }
 
@@ -984,7 +984,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<Status> getUserListStatuses(long ownerId, String slug, Paging paging) throws TwitterException {
         return factory.createStatusList(get(conf.getRestBaseURL() + "lists/statuses.json"
-                , mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.PER_PAGE)
+                , mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.COUNT)
                 , new HttpParameter[]{new HttpParameter("owner_id", ownerId)
                 , new HttpParameter("slug", slug)})));
     }
