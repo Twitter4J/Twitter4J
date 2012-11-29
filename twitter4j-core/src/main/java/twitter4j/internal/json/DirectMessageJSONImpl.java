@@ -16,14 +16,7 @@
 
 package twitter4j.internal.json;
 
-import twitter4j.DirectMessage;
-import twitter4j.HashtagEntity;
-import twitter4j.MediaEntity;
-import twitter4j.ResponseList;
-import twitter4j.TwitterException;
-import twitter4j.URLEntity;
-import twitter4j.User;
-import twitter4j.UserMentionEntity;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.org.json.JSONArray;
@@ -79,11 +72,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         try {
             sender = new UserJSONImpl(json.getJSONObject("sender"));
             recipient = new UserJSONImpl(json.getJSONObject("recipient"));
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-        if (!json.isNull("entities")) {
-            try {
+            if (!json.isNull("entities")) {
                 JSONObject entities = json.getJSONObject("entities");
                 int len;
                 if (!entities.isNull("user_mentions")) {
@@ -121,23 +110,11 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                         mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
                     }
                 }
-            } catch (JSONException jsone) {
-                throw new TwitterException(jsone);
             }
-        }
-        if (userMentionEntities == null) {
-            userMentionEntities = new UserMentionEntity[0];
-        }
-        if (urlEntities == null) {
-            urlEntities = new URLEntity[0];
-        }
-        if (hashtagEntities == null) {
-            hashtagEntities = new HashtagEntity[0];
-        }
-        if (mediaEntities == null) {
-            mediaEntities = new MediaEntity[0];
-        }
-        try {
+            userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
+            urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
+            hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
+            mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
             text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
                     urlEntities, hashtagEntities, mediaEntities);
         } catch (JSONException jsone) {
@@ -220,7 +197,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     public User getRecipient() {
         return recipient;
     }
-    
+
     /**
      * {@inheritDoc}
      */

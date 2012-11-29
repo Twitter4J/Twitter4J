@@ -104,46 +104,24 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
             }
-        } catch (JSONException jsone) {
-            throw new TwitterException(jsone);
-        }
-        geoLocation = z_T4JInternalJSONImplFactory.createGeoLocation(json);
-        if (!json.isNull("place")) {
-            try {
+            geoLocation = z_T4JInternalJSONImplFactory.createGeoLocation(json);
+            if (!json.isNull("place")) {
                 place = new PlaceJSONImpl(json.getJSONObject("place"));
-            } catch (JSONException ignore) {
-                ignore.printStackTrace();
-                logger.warn("failed to parse place:" + json);
             }
-        }
 
-        if (!json.isNull("retweeted_status")) {
-            try {
+            if (!json.isNull("retweeted_status")) {
                 retweetedStatus = new StatusJSONImpl(json.getJSONObject("retweeted_status"));
-            } catch (JSONException ignore) {
-                ignore.printStackTrace();
-                logger.warn("failed to parse retweeted_status:" + json);
             }
-        }
-        if (!json.isNull("contributors")) {
-            try {
+            if (!json.isNull("contributors")) {
                 JSONArray contributorsArray = json.getJSONArray("contributors");
                 contributorsIDs = new long[contributorsArray.length()];
                 for (int i = 0; i < contributorsArray.length(); i++) {
                     contributorsIDs[i] = Long.parseLong(contributorsArray.getString(i));
                 }
-            } catch (NumberFormatException ignore) {
-                ignore.printStackTrace();
-                logger.warn("failed to parse contributors:" + json);
-            } catch (JSONException ignore) {
-                ignore.printStackTrace();
-                logger.warn("failed to parse contributors:" + json);
+            } else {
+                contributorsIDs = new long[0];
             }
-        } else {
-            contributorsIDs = new long[0];
-        }
-        if (!json.isNull("entities")) {
-            try {
+            if (!json.isNull("entities")) {
                 JSONObject entities = json.getJSONObject("entities");
                 int len;
                 if (!entities.isNull("user_mentions")) {
@@ -180,36 +158,23 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                         mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
                     }
                 }
+            }
+            userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
+            urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
+            hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
+            mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
+            try {
+                text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
+                        urlEntities, hashtagEntities, mediaEntities);
             } catch (JSONException jsone) {
                 throw new TwitterException(jsone);
             }
-        }
-        if (userMentionEntities == null) {
-            userMentionEntities = new UserMentionEntity[0];
-        }
-        if (urlEntities == null) {
-            urlEntities = new URLEntity[0];
-        }
-        if (hashtagEntities == null) {
-            hashtagEntities = new HashtagEntity[0];
-        }
-        if (mediaEntities == null) {
-            mediaEntities = new MediaEntity[0];
-        }
-        try {
-            text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
-                    urlEntities, hashtagEntities, mediaEntities);
+
+            if (!json.isNull("current_user_retweet")) {
+                currentUserRetweetId = json.getJSONObject("current_user_retweet").getLong("id");
+            }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        }
-
-        if (!json.isNull("current_user_retweet")) {
-            try {
-                currentUserRetweetId = json.getJSONObject("current_user_retweet").getLong("id");
-            } catch (JSONException ignore) {
-                ignore.printStackTrace();
-                logger.warn("failed to parse current_user_retweet:" + json);
-            }
         }
     }
 
@@ -369,7 +334,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
      */
     @Override
     public long getCurrentUserRetweetId() {
-    	return currentUserRetweetId;
+        return currentUserRetweetId;
     }
 
     /**
