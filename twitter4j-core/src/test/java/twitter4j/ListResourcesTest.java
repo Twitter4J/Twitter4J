@@ -225,6 +225,52 @@ public class ListResourcesTest extends TwitterTestBase {
         assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
         assertNotNull(userList);
     }
+    
+    // test case for TFJ-726
+    public void testPagingCountDosentWork1() throws TwitterException {
+        final int COUNT = 10;
+
+        Paging paging = new Paging();
+        paging.count(COUNT);
+
+        // twitterapi/team
+        ResponseList<Status> res =
+            twitter1
+                .getUserListStatuses(6253282L, "team", paging);
+
+        int actual = res.size();
+
+        assertTrue(
+            String.format(
+                "Twitter#getUserListStatuses(userId, slug, new Paging().count(%d)).size() must be equal or less than %d, but %d",
+                COUNT,
+                COUNT,
+                actual),
+            actual <= COUNT);
+    }
+
+    // test case for TFJ-726
+    public void testPagingCountDosentWork2() throws TwitterException {
+        final int COUNT = 10;
+
+        Paging paging = new Paging();
+        paging.count(COUNT);
+
+        // twitterapi/team
+        ResponseList<Status> res =
+            twitter1
+                .getUserListStatuses(2031945, paging);
+
+        int actual = res.size();
+
+        assertTrue(
+            String.format(
+                "Twitter#getUserListStatuses(userId, slug, new Paging().count(%d)).size() must be equal or less than %d, but %d",
+                COUNT,
+                COUNT,
+                actual),
+            actual <= COUNT);
+    }
 
     private UserList prepareListTest() throws Exception {
         ResponseList<UserList> userLists;
