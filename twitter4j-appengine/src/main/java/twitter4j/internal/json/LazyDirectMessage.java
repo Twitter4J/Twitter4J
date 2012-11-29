@@ -17,8 +17,8 @@
 package twitter4j.internal.json;
 
 import twitter4j.*;
-
 import javax.annotation.Generated;
+
 import java.util.Date;
 
 /**
@@ -29,7 +29,7 @@ import java.util.Date;
 @Generated(
         value = "generate-lazy-objects.sh",
         comments = "This is Tool Generated Code. DO NOT EDIT",
-        date = "2011-07-13"
+        date = "2012-11-29"
 )
 final class LazyDirectMessage implements twitter4j.DirectMessage {
     private twitter4j.internal.http.HttpResponse res;
@@ -92,9 +92,11 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
     }
 
 
+
     public User getSender() {
         return getTarget().getSender();
     }
+
 
 
     public User getRecipient() {
@@ -110,6 +112,21 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
         return getTarget().getAccessLevel();
     }
 
+    public UserMentionEntity[] getUserMentionEntities(){
+        return getTarget().getUserMentionEntities();
+    }
+
+    public URLEntity[] getURLEntities(){
+        return getTarget().getURLEntities();
+    }
+
+    public HashtagEntity[] getHashtagEntities(){
+        return getTarget().getHashtagEntities();
+    }
+
+    public MediaEntity[] getMediaEntities(){
+        return getTarget().getMediaEntities();
+    }
 
     @Override
     public boolean equals(Object o) {
