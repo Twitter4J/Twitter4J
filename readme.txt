@@ -17,6 +17,7 @@ Contributors
 ------------
 Adam Samet <asamet at twitter.com> @damnitsamet
 Adrian Petrescu <apetresc at gmail.com> @apetresc
+Akash Nawani <akash.nawani at gmail.com> @AkashNawani
 Alan Gutierrez <alan at blogometer.com>
 Alessandro Bahgat <ale.bahgat at gmail.com> @abahgat
 Alex Kira <alex.kira at gmail.com> @alexkira

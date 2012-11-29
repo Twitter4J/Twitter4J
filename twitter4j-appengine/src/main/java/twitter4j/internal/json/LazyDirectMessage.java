@@ -111,22 +111,26 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
     public int getAccessLevel() {
         return getTarget().getAccessLevel();
     }
+    
+    @Override
+	public UserMentionEntity[] getUserMentionEntities() {
+		return getTarget().getUserMentionEntities();
+	}
 
-    public UserMentionEntity[] getUserMentionEntities(){
-        return getTarget().getUserMentionEntities();
-    }
+	@Override
+	public URLEntity[] getURLEntities() {
+		return getTarget().getURLEntities();
+	}
 
-    public URLEntity[] getURLEntities(){
-        return getTarget().getURLEntities();
-    }
+	@Override
+	public HashtagEntity[] getHashtagEntities() {
+		return getTarget().getHashtagEntities();
+	}
 
-    public HashtagEntity[] getHashtagEntities(){
-        return getTarget().getHashtagEntities();
-    }
-
-    public MediaEntity[] getMediaEntities(){
-        return getTarget().getMediaEntities();
-    }
+	@Override
+	public MediaEntity[] getMediaEntities() {
+		return getTarget().getMediaEntities();
+	}
 
     @Override
     public boolean equals(Object o) {

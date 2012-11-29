@@ -203,10 +203,11 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     public User getRecipient() {
         return recipient;
     }
-
+    
     /**
      * {@inheritDoc}
      */
+    @Override
     public UserMentionEntity[] getUserMentionEntities() {
         return userMentionEntities;
     }
@@ -214,6 +215,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     /**
      * {@inheritDoc}
      */
+    @Override
     public URLEntity[] getURLEntities() {
         return urlEntities;
     }
@@ -221,6 +223,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     /**
      * {@inheritDoc}
      */
+    @Override
     public HashtagEntity[] getHashtagEntities() {
         return hashtagEntities;
     }
@@ -228,6 +231,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     /**
      * {@inheritDoc}
      */
+    @Override
     public MediaEntity[] getMediaEntities() {
         return mediaEntities;
     }
@@ -284,6 +288,9 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", sender_id=" + senderId +
                 ", recipient_id=" + recipientId +
                 ", created_at=" + createdAt +
+                ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
+                ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
+                ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
                 ", sender_screen_name='" + senderScreenName + '\'' +
                 ", recipient_screen_name='" + recipientScreenName + '\'' +
                 ", sender=" + sender +
