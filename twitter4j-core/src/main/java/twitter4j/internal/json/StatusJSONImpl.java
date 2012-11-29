@@ -196,14 +196,9 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         if (mediaEntities == null) {
             mediaEntities = new MediaEntity[0];
         }
-        EntityIndex[] entityIndexes = new EntityIndex[userMentionEntities.length
-                + urlEntities.length + hashtagEntities.length + mediaEntities.length];
-        System.arraycopy(userMentionEntities, 0, entityIndexes, 0, userMentionEntities.length);
-        System.arraycopy(urlEntities, 0, entityIndexes, userMentionEntities.length, urlEntities.length);
-        System.arraycopy(hashtagEntities, 0, entityIndexes, userMentionEntities.length + urlEntities.length, hashtagEntities.length);
-        System.arraycopy(mediaEntities, 0, entityIndexes, userMentionEntities.length + urlEntities.length + hashtagEntities.length, mediaEntities.length);
         try {
-            text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), entityIndexes);
+            text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
+                    urlEntities, hashtagEntities, mediaEntities);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }

@@ -71,7 +71,6 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
     private void init(JSONObject json) throws TwitterException {
         id = getLong("id", json);
-        text = getUnescapedString("text", json);
         senderId = getLong("sender_id", json);
         recipientId = getLong("recipient_id", json);
         createdAt = getDate("created_at", json);
@@ -125,6 +124,24 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             } catch (JSONException jsone) {
                 throw new TwitterException(jsone);
             }
+        }
+        if (userMentionEntities == null) {
+            userMentionEntities = new UserMentionEntity[0];
+        }
+        if (urlEntities == null) {
+            urlEntities = new URLEntity[0];
+        }
+        if (hashtagEntities == null) {
+            hashtagEntities = new HashtagEntity[0];
+        }
+        if (mediaEntities == null) {
+            mediaEntities = new MediaEntity[0];
+        }
+        try {
+            text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
+                    urlEntities, hashtagEntities, mediaEntities);
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
         }
     }
 
