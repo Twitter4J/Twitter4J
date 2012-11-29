@@ -19,7 +19,8 @@ package twitter4j.internal.json;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-abstract class EntityIndex implements Comparable<EntityIndex> {
+abstract class EntityIndex implements Comparable<EntityIndex>, java.io.Serializable {
+    private static final long serialVersionUID = 3864336402689899384L;
     private int start = -1;
     private int end = -1;
 
