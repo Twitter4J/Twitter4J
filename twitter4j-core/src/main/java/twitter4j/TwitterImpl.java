@@ -1534,7 +1534,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public User reportSpam(long userId) throws TwitterException {
-        return factory.createUser(post(conf.getRestBaseURL() + "report_spam.json?user_id=" + userId));
+        return factory.createUser(post(conf.getRestBaseURL() + "users/report_spam.json?user_id=" + userId));
     }
 
     /**
@@ -1542,7 +1542,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public User reportSpam(String screenName) throws TwitterException {
-        return factory.createUser(post(conf.getRestBaseURL() + "report_spam.json?screen_name=" + screenName));
+        return factory.createUser(post(conf.getRestBaseURL() + "users/report_spam.json?screen_name=" + screenName));
     }
 
     /* Help Resources */
