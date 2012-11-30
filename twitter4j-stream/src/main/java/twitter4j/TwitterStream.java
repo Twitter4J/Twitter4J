@@ -49,6 +49,12 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
     void addListener(SiteStreamsListener listener);
 
     /**
+     * @param listener listener to add
+     * @since Twitter4J 3.0.2
+     */
+    void addListener(RawStreamListener listener);
+
+    /**
      * Starts listening on all public statuses. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the firehose. If your service warrants access to it, we'll contact you.
      *
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.

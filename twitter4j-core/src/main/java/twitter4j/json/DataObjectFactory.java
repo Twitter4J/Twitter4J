@@ -523,27 +523,26 @@ public final class DataObjectFactory {
     public static Object createObject(String rawJSON) throws TwitterException {
         try {
             JSONObject json = new JSONObject(rawJSON);
-            JSONObjectType jsonObjectType = JSONObjectType.determine(json);
-            if (JSONObjectType.SENDER == jsonObjectType) {
-                return registerJSONObject(directMessageConstructor.newInstance(json.getJSONObject("direct_message")), json);
-            } else if (JSONObjectType.STATUS == jsonObjectType) {
-                return registerJSONObject(statusConstructor.newInstance(json), json);
-            } else if (JSONObjectType.DIRECT_MESSAGE == jsonObjectType) {
-                return registerJSONObject(directMessageConstructor.newInstance(json.getJSONObject("direct_message")), json);
-            } else if (JSONObjectType.DELETE == jsonObjectType) {
-                return registerJSONObject(statusDeletionNoticeConstructor.newInstance(json.getJSONObject("delete").getJSONObject("status")), json);
-            } else if (JSONObjectType.LIMIT == jsonObjectType) {
-                // TODO: Perhaps there should be a TrackLimitationNotice object?
-                // The onTrackLimitationNotice method could take that as an arg.
-                return json;
-            } else if (JSONObjectType.SCRUB_GEO == jsonObjectType) {
-                // TODO: Perhaps there should be a ScrubGeo object?
-                // The onScrubGeo method could take that as an arg.
-                return json;
-            } else {
-                // The object type is unrecognized...just return the json
-                return json;
-            }
+            JSONObjectType.Type jsonObjectType = JSONObjectType.determine(json);
+            switch(jsonObjectType){
+            case SENDER:
+                    return registerJSONObject(directMessageConstructor.newInstance(json.getJSONObject("direct_message")), json);
+                case STATUS:
+                    return registerJSONObject(statusConstructor.newInstance(json), json);
+                case DIRECT_MESSAGE:
+                    return registerJSONObject(directMessageConstructor.newInstance(json.getJSONObject("direct_message")), json);
+                case DELETE:
+                   return registerJSONObject(statusDeletionNoticeConstructor.newInstance(json.getJSONObject("delete").getJSONObject("status")), json);
+                case LIMIT:
+                    // TODO: Perhaps there should be a TrackLimitationNotice object?
+                    // The onTrackLimitationNotice method could take that as an arg.
+                    return json;
+                case SCRUB_GEO:
+                    return json;
+                default:
+                    // The object type is unrecognized...just return the json
+                    return json;
+                }
         } catch (InstantiationException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {

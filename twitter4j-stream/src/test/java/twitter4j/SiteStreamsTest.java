@@ -62,23 +62,24 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         InputStream is = SiteStreamsTest.class.getResourceAsStream("/sitestream-testcase.json");
         SiteStreamsImpl siteStreams = new SiteStreamsImpl(new DispatcherFactory(ConfigurationContext.getInstance()).getInstance(), is, conf1, new StreamController(conf1));
         SiteStreamsListener[] listeners = new SiteStreamsListener[1];
+        RawStreamListener[] rawStreamListeners = new RawStreamListener[0];
         listeners[0] = this;
         received.clear();
-        siteStreams.next(listeners);
+        siteStreams.next(listeners, rawStreamListeners);
         synchronized (this) {
             this.wait(200);
         }
         Assert.assertEquals("onfriendlist", received.get(0)[0]);
         Assert.assertEquals(6358482l, received.get(0)[1]);
         received.clear();
-        siteStreams.next(listeners);
+        siteStreams.next(listeners, rawStreamListeners);
         synchronized (this) {
             this.wait(200);
         }
         Assert.assertEquals("onfriendlist", received.get(0)[0]);
         Assert.assertEquals(6358481l, received.get(0)[1]);
         received.clear();
-        siteStreams.next(listeners);
+        siteStreams.next(listeners, rawStreamListeners);
         synchronized (this) {
             this.wait(200);
         }
@@ -122,96 +123,94 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             //twit4j2: 6377362
             StreamController cs = twitterStream.site(true, new long[]{6377362, 4933401});
             //expecting onFriendList for twit4j and twit4j2
-            waitForStatus();
-            waitForStatus();
+            waitForStatus("onFriendList");
 
             ControlStreamInfo info = cs.getInfo();
             assertEquals(2, info.getUsers().length);
 
             cs.addUsers(new long[]{6358482L});
 
-            waitForStatus();
+            waitForStatus("new User");
 
             info = cs.getInfo();
             assertEquals(3, info.getUsers().length);
             StreamController.FriendsIDs ids = cs.getFriendsIDs(4933401L, -1);
             assertTrue(ids.getIds().length > 100);
-            assertEquals("yusukey", ids.getUser().getName());
+            assertEquals("yusuke", ids.getUser().getName());
             cs.removeUsers(new long[]{4933401L});
-            waitForStatus();
+            waitForStatus("remove user");
 
             Status status = twit4j2.updateStatus("@twit4j " + new Date());
             //expecting onStatus for twit4j from twit4j
-            waitForStatus();
+            waitForStatus("update status");
 
             twit4j.createFavorite(status.getId());
-            waitForStatus();
+            waitForStatus("crate favorite");
 
             twit4j.destroyFavorite(status.getId());
-            waitForStatus();
+            waitForStatus("destroy favorite");
 
             // unfollow twit4j
             twit4j2.destroyFriendship(6358482);
-            waitForStatus();
+            waitForStatus("destroy friendship");
 
             // follow twit4j
             twit4j2.createFriendship(6358482);
-            waitForStatus();
+            waitForStatus("create friendship");
 
             // unfollow twit4j2
             twit4j.destroyFriendship(6377362);
 
             // follow twit4j2
             twit4j.createFriendship(6377362);
-            waitForStatus();
+            waitForStatus("create friendship");
 
             twit4j.retweetStatus(status.getId());
-            waitForStatus();
+            waitForStatus("retweeet status");
             DirectMessage dm = twit4j.sendDirectMessage(42419133, "test " + new Date());
-            waitForStatus();
+            waitForStatus("dm");
 
             twitter2.destroyStatus(status.getId());
-            waitForStatus();
+            waitForStatus("destory status");
 
 //            twitter1.destroyDirectMessage(dm.getId());
 //            waitForStatus();
 
             // block twit4j
             twit4j2.createBlock(6358482);
-            waitForStatus();
+            waitForStatus("create block");
 
             // unblock twit4j
             twit4j2.destroyBlock(6358482);
-            waitForStatus();
+            waitForStatus("destroy block");
 
             try {
                 twit4j.createFriendship(6377362);
-                waitForStatus();
+                waitForStatus("create friendship");
             } catch (TwitterException ignore) {
             }
             try {
                 twit4j2.createFriendship(6358482);
-                waitForStatus();
+                waitForStatus("create friendship");
             } catch (TwitterException ignore) {
             }
             twitter1.updateProfile(null, null, new Date().toString(), null);
-            waitForStatus();
+            waitForStatus("update profile");
 
             UserList list = twit4j.createUserList("test", true, "desctription");
-            waitForStatus();
-            waitForStatus();
+            waitForStatus("create userlist");
             list = twit4j.updateUserList(list.getId(), "test2", true, "description2");
-            waitForStatus();
+            waitForStatus("update userlist");
             twit4j.createUserListMember(list.getId(), id2.id);
-            waitForStatus();
+            waitForStatus("create userlist member");
             twit4j2.createUserListSubscription(list.getId());
-            waitForStatus();
+            waitForStatus("create userlist subscription");
             twit4j2.destroyUserListSubscription(list.getId());
-            waitForStatus();
+            waitForStatus("destroy userlist subscription");
             twit4j.destroyUserListMember(list.getId(), id2.id);
-            waitForStatus();
+            waitForStatus("destroy userlist member");
             twit4j.destroyUserList(list.getId());
-            waitForStatus();
+            waitForStatus("destroy userlist");
 
             assertReceived("onstatus", "onstatus");
             assertReceived("onfriendlist", "onfriendlist");
@@ -252,10 +251,11 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         Assert.assertTrue(assertion, received);
     }
 
-    private synchronized void waitForStatus() {
+    private synchronized void waitForStatus(String waitFor) {
+        System.out.println("waiting for:" + waitFor);
         try {
             this.wait(5000);
-            System.out.println("notified.");
+            System.out.println(received.size() + " events received so far. last notification:" + received.get(received.size() - 1)[0]);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -394,6 +394,12 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         received.add(new Object[]{TwitterMethod.DESTROY_BLOCK, forUser, source, unblockedUser});
         Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
         Assert.assertNotNull(DataObjectFactory.getRawJSON(unblockedUser));
+        notifyResponse();
+    }
+
+    @Override
+    public void onDisconnectionNotice(String screenName) {
+        received.add(new Object[]{"Disconnect"});
         notifyResponse();
     }
 

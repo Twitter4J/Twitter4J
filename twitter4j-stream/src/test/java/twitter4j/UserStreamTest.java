@@ -218,7 +218,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         System.out.println("waiting for:" + waitFor);
         try {
             this.wait(20000);
-            System.out.println(received.size() + " events notified so far. last notification:" + received.get(received.size() - 1)[0]);
+            System.out.println(received.size() + " events received so far. last notification:" + received.get(received.size() - 1)[0]);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

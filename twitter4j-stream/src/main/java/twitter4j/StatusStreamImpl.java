@@ -25,6 +25,7 @@ import twitter4j.internal.json.z_T4JInternalParseUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * StatusStream implementation. This class is NOT intended to be extended but left non-final for the ease of mock testing.
@@ -32,7 +33,7 @@ import java.io.InputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-class StatusStreamImpl extends AbstractStreamImplementation implements StatusStream {
+class StatusStreamImpl extends AbstractStreamImplementation {
     /*package*/
 
     StatusStreamImpl(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
@@ -46,27 +47,15 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
 
     protected String line;
 
-    protected StreamListener[] listeners;
-
-    /**
-     * Reads next status from this stream.
-     *
-     * @param listener a StatusListener implementation
-     * @throws TwitterException      when the end of the stream has been reached.
-     * @throws IllegalStateException when the end of the stream had been reached.
-     */
+    protected static final RawStreamListener[] EMPTY = new RawStreamListener[0];
     @Override
     public void next(StatusListener listener) throws TwitterException {
-        StreamListener[] list = new StreamListener[1];
-        list[0] = listener;
-        this.listeners = list;
-        handleNextElement();
+        handleNextElement(new StatusListener[]{listener}, EMPTY);
     }
 
     @Override
-    public void next(StreamListener[] listeners) throws TwitterException {
-        this.listeners = listeners;
-        handleNextElement();
+    public void next(StreamListener[] listeners, RawStreamListener[] rawStreamListeners) throws TwitterException {
+        handleNextElement(listeners, rawStreamListeners);
     }
 
     protected String parseLine(String line) {
@@ -75,14 +64,14 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     }
 
     @Override
-    protected void onStatus(JSONObject json) throws TwitterException {
+    protected void onStatus(JSONObject json, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((StatusListener) listener).onStatus(asStatus(json));
         }
     }
 
     @Override
-    protected void onDelete(JSONObject json) throws TwitterException, JSONException {
+    protected void onDelete(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
             JSONObject deletionNotice = json.getJSONObject("delete");
             if (deletionNotice.has("status")) {
@@ -96,21 +85,21 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     }
 
     @Override
-    protected void onLimit(JSONObject json) throws TwitterException, JSONException {
+    protected void onLimit(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
             ((StatusListener) listener).onTrackLimitationNotice(z_T4JInternalParseUtil.getInt("track", json.getJSONObject("limit")));
         }
     }
 
     @Override
-    protected void onStallWarning(JSONObject json) throws TwitterException, JSONException {
+    protected void onStallWarning(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
             ((StatusListener) listener).onStallWarning(new StallWarning(json));
         }
     }
 
     @Override
-    protected void onScrubGeo(JSONObject json) throws TwitterException, JSONException {
+    protected void onScrubGeo(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         JSONObject scrubGeo = json.getJSONObject("scrub_geo");
         for (StreamListener listener : listeners) {
             ((StatusListener) listener).onScrubGeo(z_T4JInternalParseUtil.getLong("user_id", scrubGeo)
@@ -120,7 +109,7 @@ class StatusStreamImpl extends AbstractStreamImplementation implements StatusStr
     }
 
     @Override
-    public void onException(Exception e) {
+    public void onException(Exception e, StreamListener[] listeners) {
         for (StreamListener listener : listeners) {
             listener.onException(e);
         }

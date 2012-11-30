@@ -83,6 +83,10 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     }
 
     @Override
+    public void onDisconnectionNotice(String screenName) {
+    }
+
+    @Override
     public void onException(Exception ex) {
     }
 }

@@ -53,7 +53,7 @@ public class StreamController {
     }
 
     void setControlURI(String controlURI) {
-        this.controlURI = controlURI;
+        this.controlURI = controlURI.replace("/1.1//1.1/", "/1.1/");
         synchronized (lock) {
             lock.notifyAll();
         }

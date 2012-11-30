@@ -37,7 +37,7 @@ import java.io.InputStreamReader;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-abstract class AbstractStreamImplementation {
+abstract class AbstractStreamImplementation implements StatusStream{
     protected static final Logger logger = Logger.getLogger(StatusStreamImpl.class);
 
     private boolean streamAlive = true;
@@ -76,9 +76,8 @@ abstract class AbstractStreamImplementation {
         }
     }
 
-    abstract void next(StreamListener[] listeners) throws TwitterException;
-
-    protected void handleNextElement() throws TwitterException {
+    protected void handleNextElement(final StreamListener[] listeners,
+                                     final RawStreamListener[] rawStreamListeners) throws TwitterException {
         if (!streamAlive) {
             throw new IllegalStateException("Stream already closed.");
         }
@@ -90,70 +89,101 @@ abstract class AbstractStreamImplementation {
             }
             dispatcher.invokeLater(new StreamEvent(line) {
                 public void run() {
-                    line = parseLine(line);
-                    if (line != null && line.length() > 0) {
-                        try {
-                            if (CONF.isJSONStoreEnabled()) {
-                                DataObjectFactoryUtil.clearThreadLocalMap();
-                            }
-                            JSONObject json = new JSONObject(line);
-                            JSONObjectType jsonObjectType = JSONObjectType.determine(json);
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("Received:", CONF.isPrettyDebugEnabled() ? json.toString(1) : json.toString());
-                            }
-                            if (JSONObjectType.SENDER == jsonObjectType) {
-                                onSender(json);
-                            } else if (JSONObjectType.STATUS == jsonObjectType) {
-                                onStatus(json);
-                            } else if (JSONObjectType.DIRECT_MESSAGE == jsonObjectType) {
-                                onDirectMessage(json);
-                            } else if (JSONObjectType.DELETE == jsonObjectType) {
-                                onDelete(json);
-                            } else if (JSONObjectType.LIMIT == jsonObjectType) {
-                                onLimit(json);
-                            } else if (JSONObjectType.STALL_WARNING == jsonObjectType) {
-                                onStallWarning(json);
-                            } else if (JSONObjectType.SCRUB_GEO == jsonObjectType) {
-                                onScrubGeo(json);
-                            } else if (JSONObjectType.FRIENDS == jsonObjectType) {
-                                onFriends(json);
-                            } else if (JSONObjectType.FAVORITE == jsonObjectType) {
-                                onFavorite(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
-                            } else if (JSONObjectType.UNFAVORITE == jsonObjectType) {
-                                onUnfavorite(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
-                            } else if (JSONObjectType.RETWEET == jsonObjectType) {
-                                // note: retweet events also show up as statuses
-                                onRetweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
-                            } else if (JSONObjectType.FOLLOW == jsonObjectType) {
-                                onFollow(json.getJSONObject("source"), json.getJSONObject("target"));
-                            } else if (JSONObjectType.UNFOLLOW == jsonObjectType) {
-                                onUnfollow(json.getJSONObject("source"), json.getJSONObject("target"));
-                            } else if (JSONObjectType.USER_LIST_MEMBER_ADDED == jsonObjectType) {
-                                onUserListMemberAddition(json.getJSONObject("target"), json.getJSONObject("source"), json.getJSONObject("target_object"));
-                            } else if (JSONObjectType.USER_LIST_MEMBER_DELETED == jsonObjectType) {
-                                onUserListMemberDeletion(json.getJSONObject("target"), json.getJSONObject("source"), json.getJSONObject("target_object"));
-                            } else if (JSONObjectType.USER_LIST_SUBSCRIBED == jsonObjectType) {
-                                onUserListSubscription(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
-                            } else if (JSONObjectType.USER_LIST_UNSUBSCRIBED == jsonObjectType) {
-                                onUserListUnsubscription(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"));
-                            } else if (JSONObjectType.USER_LIST_CREATED == jsonObjectType) {
-                                onUserListCreation(json.getJSONObject("source"), json.getJSONObject("target"));
-                            } else if (JSONObjectType.USER_LIST_UPDATED == jsonObjectType) {
-                                onUserListUpdated(json.getJSONObject("source"), json.getJSONObject("target"));
-                            } else if (JSONObjectType.USER_LIST_DESTROYED == jsonObjectType) {
-                                onUserListDestroyed(json.getJSONObject("source"), json.getJSONObject("target"));
-                            } else if (JSONObjectType.USER_UPDATE == jsonObjectType) {
-                                onUserUpdate(json.getJSONObject("source"), json.getJSONObject("target"));
-                            } else if (JSONObjectType.BLOCK == jsonObjectType) {
-                                onBlock(json.getJSONObject("source"), json.getJSONObject("target"));
-                            } else if (JSONObjectType.UNBLOCK == jsonObjectType) {
-                                onUnblock(json.getJSONObject("source"), json.getJSONObject("target"));
-                            } else {
-                                logger.warn("Received unknown event:", CONF.isPrettyDebugEnabled() ? json.toString(1) : json.toString());
-                            }
-                        } catch (Exception ex) {
-                            onException(ex);
+                    try {
+                        if (rawStreamListeners.length > 0) {
+                            onMessage(line, rawStreamListeners);
                         }
+                        // SiteStreamsImpl will parse "forUser" attribute
+                        line = parseLine(line);
+                        if (line != null && line.length() > 0) {
+                            // parsing JSON is an expensive process and can be avoided when all listeners are instanceof RawStreamListener
+                            if (listeners.length > 0) {
+                                if (CONF.isJSONStoreEnabled()) {
+                                    DataObjectFactoryUtil.clearThreadLocalMap();
+                                }
+                                JSONObject json = new JSONObject(line);
+                                JSONObjectType.Type event = JSONObjectType.determine(json);
+                                if (logger.isDebugEnabled()) {
+                                    logger.debug("Received:", CONF.isPrettyDebugEnabled() ? json.toString(1) : json.toString());
+                                }
+                                switch (event) {
+                                    case SENDER:
+                                        onSender(json, listeners);
+                                        break;
+                                    case STATUS:
+                                        onStatus(json, listeners);
+                                        break;
+                                    case DIRECT_MESSAGE:
+                                        onDirectMessage(json, listeners);
+                                        break;
+                                    case DELETE:
+                                        onDelete(json, listeners);
+                                        break;
+                                    case LIMIT:
+                                        onLimit(json, listeners);
+                                        break;
+                                    case STALL_WARNING:
+                                        onStallWarning(json, listeners);
+                                        break;
+                                    case SCRUB_GEO:
+                                        onScrubGeo(json, listeners);
+                                        break;
+                                    case FRIENDS:
+                                        onFriends(json, listeners);
+                                        break;
+                                    case FAVORITE:
+                                        onFavorite(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
+                                        break;
+                                    case UNFAVORITE:
+                                        onUnfavorite(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
+                                        break;
+                                    case FOLLOW:
+                                        onFollow(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case UNFOLLOW:
+                                        onUnfollow(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case USER_LIST_MEMBER_ADDED:
+                                        onUserListMemberAddition(json.getJSONObject("target"), json.getJSONObject("source"), json.getJSONObject("target_object"), listeners);
+                                        break;
+                                    case USER_LIST_MEMBER_DELETED:
+                                        onUserListMemberDeletion(json.getJSONObject("target"), json.getJSONObject("source"), json.getJSONObject("target_object"), listeners);
+                                        break;
+                                    case USER_LIST_SUBSCRIBED:
+                                        onUserListSubscription(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
+                                        break;
+                                    case USER_LIST_UNSUBSCRIBED:
+                                        onUserListUnsubscription(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
+                                        break;
+                                    case USER_LIST_CREATED:
+                                        onUserListCreation(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case USER_LIST_UPDATED:
+                                        onUserListUpdated(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case USER_LIST_DESTROYED:
+                                        onUserListDestroyed(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case USER_UPDATE:
+                                        onUserUpdate(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case BLOCK:
+                                        onBlock(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case UNBLOCK:
+                                        onUnblock(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case DISCONNECTION:
+                                        onDisconnectionNotice(line, listeners);
+                                        break;
+                                    case UNKNOWN:
+                                    default:
+                                        logger.warn("Received unknown event:", CONF.isPrettyDebugEnabled() ? json.toString(1) : json.toString());
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                        onException(ex, listeners);
                     }
                 }
             });
@@ -171,99 +201,103 @@ abstract class AbstractStreamImplementation {
         }
     }
 
-    protected void onSender(JSONObject json) throws TwitterException {
+    protected void onMessage(String rawString, RawStreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onSender");
     }
 
-    protected void onStatus(JSONObject json) throws TwitterException {
+    protected void onSender(JSONObject json, StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onSender");
+    }
+
+    protected void onStatus(JSONObject json, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onStatus");
     }
 
-    protected void onDirectMessage(JSONObject json) throws TwitterException, JSONException {
+    protected void onDirectMessage(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onDirectMessage");
     }
 
-    protected void onDelete(JSONObject json) throws TwitterException, JSONException {
+    protected void onDelete(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onDelete");
     }
 
-    protected void onLimit(JSONObject json) throws TwitterException, JSONException {
+    protected void onLimit(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onLimit");
     }
 
-    protected void onStallWarning(JSONObject json) throws TwitterException, JSONException {
+    protected void onStallWarning(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onStallWarning");
     }
 
-    protected void onScrubGeo(JSONObject json) throws TwitterException, JSONException {
+    protected void onScrubGeo(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onScrubGeo");
     }
 
-    protected void onFriends(JSONObject json) throws TwitterException, JSONException {
+    protected void onFriends(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onFriends");
     }
 
-    protected void onFavorite(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {
+    protected void onFavorite(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onFavorite");
     }
 
-    protected void onUnfavorite(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {
+    protected void onUnfavorite(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onUnfavorite");
     }
 
-    protected void onRetweet(JSONObject source, JSONObject target, JSONObject targetObject) throws TwitterException {
-        logger.warn("Unhandled event: onRetweet");
-    }
-
-    protected void onFollow(JSONObject source, JSONObject target) throws TwitterException {
+    protected void onFollow(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onFollow");
     }
 
-    protected void onUnfollow(JSONObject source, JSONObject target) throws TwitterException {
+    protected void onUnfollow(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onUnfollow");
     }
 
-    protected void onUserListMemberAddition(JSONObject addedMember, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListMemberAddition(JSONObject addedMember, JSONObject owner, JSONObject userList, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onUserListMemberAddition");
     }
 
-    protected void onUserListMemberDeletion(JSONObject deletedMember, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListMemberDeletion(JSONObject deletedMember, JSONObject owner, JSONObject userList, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onUserListMemberDeletion");
     }
 
-    protected void onUserListSubscription(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListSubscription(JSONObject source, JSONObject owner, JSONObject userList, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onUserListSubscription");
     }
 
-    protected void onUserListUnsubscription(JSONObject source, JSONObject owner, JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListUnsubscription(JSONObject source, JSONObject owner, JSONObject userList, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onUserListUnsubscription");
     }
 
-    protected void onUserListCreation(JSONObject source, JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListCreation(JSONObject source, JSONObject userList, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onUserListCreation");
     }
 
-    protected void onUserListUpdated(JSONObject source, JSONObject userList) throws TwitterException, JSONException {
+    protected void onUserListUpdated(JSONObject source, JSONObject userList, StreamListener[] listeners) throws TwitterException, JSONException {
         logger.warn("Unhandled event: onUserListUpdated");
     }
 
-    protected void onUserListDestroyed(JSONObject source, JSONObject userList) throws TwitterException {
+    protected void onUserListDestroyed(JSONObject source, JSONObject userList, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onUserListDestroyed");
     }
 
-    protected void onUserUpdate(JSONObject source, JSONObject target) throws TwitterException {
+    protected void onUserUpdate(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onUserUpdate");
     }
 
-    protected void onBlock(JSONObject source, JSONObject target) throws TwitterException {
+    protected void onBlock(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onBlock");
     }
 
-    protected void onUnblock(JSONObject source, JSONObject target) throws TwitterException {
+    protected void onUnblock(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onUnblock");
     }
 
-    protected void onException(Exception e) {
+    protected void onDisconnectionNotice(String line, StreamListener[] listeners) {
+        logger.warn("Unhandled event: ", line);
+    }
+
+    protected void onException(Exception e, StreamListener[] listeners) {
         logger.warn("Unhandled event: ", e.getMessage());
     }
 
@@ -327,4 +361,16 @@ abstract class AbstractStreamImplementation {
         return userList;
     }
 
+    public abstract void next(StatusListener listener) throws TwitterException;
+
+    public abstract void next(StreamListener[] listeners, RawStreamListener[] rawStreamListeners) throws TwitterException;
+
+    public void onException(Exception e,StreamListener[] listeners, RawStreamListener[] rawStreamListeners) {
+        for (StreamListener listener : listeners) {
+            listener.onException(e);
+        }
+        for(RawStreamListener listener : rawStreamListeners){
+            listener.onException(e);
+        }
+    }
 }

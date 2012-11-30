@@ -143,5 +143,10 @@ public interface SiteStreamsListener extends StreamListener {
      */
     void onUnblock(long forUser, User source, User unblockedUser);
 
+    /**
+     * callback method for {@link StreamController#removeUsers(long[])}
+     */
+    void onDisconnectionNotice(String line);
+
     void onException(Exception ex);
 }

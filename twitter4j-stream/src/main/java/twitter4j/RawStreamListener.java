@@ -13,25 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package twitter4j;
-
-import java.io.IOException;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.0.4
+ * @since Twitter4J 3.0.2
  */
-public interface StatusStream {
-
-    /**
-     * Reads next status from this stream.
-     *
-     * @param listener a StatusListener implementation
-     * @throws TwitterException      when the end of the stream has been reached.
-     * @throws IllegalStateException when the end of the stream had been reached.
-     */
-    void next(StatusListener listener) throws TwitterException;
-
-    void close() throws IOException;
+public interface RawStreamListener extends StreamListener {
+    void onMessage(String rawString);
 }
