@@ -17,6 +17,7 @@
 package twitter4j;
 
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.AuthorizationFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
@@ -65,6 +66,52 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         map.put(twitterStream1, "value");
         map.put(twitterStream2, "value");
         assertEquals(2, map.size());
+    }
+
+    public void testNoListener() throws Exception {
+        TwitterStream twitterStream;
+        twitterStream = new TwitterStreamFactory().getInstance();
+        twitterStream.setOAuthConsumer("dummy","dummy");
+        twitterStream.setOAuthAccessToken(new AccessToken("dummy", "dummy"));
+        try {
+            twitterStream.sample();
+            fail("expecting IllegalStateException");
+        } catch (IllegalStateException expected) {
+        }
+        try {
+            twitterStream.filter(new FilterQuery().track(new String[]{"twitter"}));
+            fail("expecting IllegalStateException");
+        } catch (IllegalStateException expected) {
+        }
+        try {
+            twitterStream.user();
+            fail("expecting IllegalStateException");
+        } catch (IllegalStateException expected) {
+        }
+        try {
+            twitterStream.firehose(0);
+            fail("expecting IllegalStateException");
+        } catch (IllegalStateException expected) {
+        }
+        try {
+            twitterStream.retweet();
+            fail("expecting IllegalStateException");
+        } catch (IllegalStateException expected) {
+        }
+
+        twitterStream.addListener(new RawStreamListener() {
+            @Override
+            public void onMessage(String rawString) {
+            }
+
+            @Override
+            public void onException(Exception ex) {
+            }
+        });
+
+        twitterStream.sample();
+        twitterStream.cleanUp();
+        twitterStream.shutdown();
     }
 
     public void testStatusStream() throws Exception {

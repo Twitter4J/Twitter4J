@@ -317,19 +317,19 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
      */
 
     private void ensureStatusStreamListenerIsSet() {
-        if (statusListeners.size() == 0) {
+        if (statusListeners.size() == 0 && rawStreamListeners.size() == 0) {
             throw new IllegalStateException("StatusListener is not set.");
         }
     }
 
     private void ensureUserStreamListenerIsSet() {
-        if (userStreamListeners.size() == 0) {
+        if (userStreamListeners.size() == 0 && rawStreamListeners.size() == 0) {
             throw new IllegalStateException("UserStreamListener is not set.");
         }
     }
 
     private void ensureSiteStreamsListenerIsSet() {
-        if (siteStreamsListeners.size() == 0) {
+        if (siteStreamsListeners.size() == 0 && rawStreamListeners.size() == 0) {
             throw new IllegalStateException("SiteStreamsListener is not set.");
         }
     }

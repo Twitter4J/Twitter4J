@@ -22,8 +22,8 @@ import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,7 +80,7 @@ public final class DataObjectFactory {
             IDsConstructor = (Constructor<IDs>) Class.forName("twitter4j.internal.json.IDsJSONImpl").getDeclaredConstructor(String.class);
             IDsConstructor.setAccessible(true);
 
-            rateLimitStatusConstructor = Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl").getDeclaredMethod("createRateLimitStatuses",JSONObject.class);
+            rateLimitStatusConstructor = Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl").getDeclaredMethod("createRateLimitStatuses", JSONObject.class);
             rateLimitStatusConstructor.setAccessible(true);
 
             categoryConstructor = (Constructor<Category>) Class.forName("twitter4j.internal.json.CategoryJSONImpl").getDeclaredConstructor(JSONObject.class);
@@ -348,10 +348,10 @@ public final class DataObjectFactory {
      * @throws TwitterException when provided string is not a valid JSON string.
      * @since Twitter4J 2.1.7
      */
-    public static Map<String ,RateLimitStatus> createRateLimitStatus(String rawJSON) throws TwitterException {
+    public static Map<String, RateLimitStatus> createRateLimitStatus(String rawJSON) throws TwitterException {
         try {
             JSONObject json = new JSONObject(rawJSON);
-            return (Map<String ,RateLimitStatus>)rateLimitStatusConstructor.invoke(Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl"), json);
+            return (Map<String, RateLimitStatus>) rateLimitStatusConstructor.invoke(Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl"), json);
         } catch (ClassNotFoundException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {
@@ -524,15 +524,15 @@ public final class DataObjectFactory {
         try {
             JSONObject json = new JSONObject(rawJSON);
             JSONObjectType.Type jsonObjectType = JSONObjectType.determine(json);
-            switch(jsonObjectType){
-            case SENDER:
+            switch (jsonObjectType) {
+                case SENDER:
                     return registerJSONObject(directMessageConstructor.newInstance(json.getJSONObject("direct_message")), json);
                 case STATUS:
                     return registerJSONObject(statusConstructor.newInstance(json), json);
                 case DIRECT_MESSAGE:
                     return registerJSONObject(directMessageConstructor.newInstance(json.getJSONObject("direct_message")), json);
                 case DELETE:
-                   return registerJSONObject(statusDeletionNoticeConstructor.newInstance(json.getJSONObject("delete").getJSONObject("status")), json);
+                    return registerJSONObject(statusDeletionNoticeConstructor.newInstance(json.getJSONObject("delete").getJSONObject("status")), json);
                 case LIMIT:
                     // TODO: Perhaps there should be a TrackLimitationNotice object?
                     // The onTrackLimitationNotice method could take that as an arg.
@@ -542,7 +542,7 @@ public final class DataObjectFactory {
                 default:
                     // The object type is unrecognized...just return the json
                     return json;
-                }
+            }
         } catch (InstantiationException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {

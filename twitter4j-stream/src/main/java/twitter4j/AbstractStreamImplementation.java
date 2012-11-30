@@ -37,7 +37,7 @@ import java.io.InputStreamReader;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-abstract class AbstractStreamImplementation implements StatusStream{
+abstract class AbstractStreamImplementation implements StatusStream {
     protected static final Logger logger = Logger.getLogger(StatusStreamImpl.class);
 
     private boolean streamAlive = true;
@@ -365,11 +365,11 @@ abstract class AbstractStreamImplementation implements StatusStream{
 
     public abstract void next(StreamListener[] listeners, RawStreamListener[] rawStreamListeners) throws TwitterException;
 
-    public void onException(Exception e,StreamListener[] listeners, RawStreamListener[] rawStreamListeners) {
+    public void onException(Exception e, StreamListener[] listeners, RawStreamListener[] rawStreamListeners) {
         for (StreamListener listener : listeners) {
             listener.onException(e);
         }
-        for(RawStreamListener listener : rawStreamListeners){
+        for (RawStreamListener listener : rawStreamListeners) {
             listener.onException(e);
         }
     }
