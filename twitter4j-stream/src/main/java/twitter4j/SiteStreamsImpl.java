@@ -89,6 +89,12 @@ class SiteStreamsImpl extends StatusStreamBase {
             };
 
     @Override
+    protected void onMessage(String rawString, RawStreamListener[] listeners) throws TwitterException {
+        for (RawStreamListener listener : listeners) {
+            listener.onMessage(rawString);
+        }
+    }
+    @Override
     protected void onStatus(final JSONObject json, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((SiteStreamsListener) listener).onStatus(forUser.get(), asStatus(json));
