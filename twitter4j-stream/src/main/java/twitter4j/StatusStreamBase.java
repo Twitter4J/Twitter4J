@@ -37,7 +37,7 @@ import java.io.InputStreamReader;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-abstract class AbstractStreamImplementation implements StatusStream {
+abstract class StatusStreamBase implements StatusStream {
     protected static final Logger logger = Logger.getLogger(StatusStreamImpl.class);
 
     private boolean streamAlive = true;
@@ -50,7 +50,7 @@ abstract class AbstractStreamImplementation implements StatusStream {
 
     /*package*/
 
-    AbstractStreamImplementation(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
+    StatusStreamBase(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
         this.is = stream;
         this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
         this.dispatcher = dispatcher;
@@ -59,7 +59,7 @@ abstract class AbstractStreamImplementation implements StatusStream {
     }
     /*package*/
 
-    AbstractStreamImplementation(Dispatcher dispatcher, HttpResponse response, Configuration conf) throws IOException {
+    StatusStreamBase(Dispatcher dispatcher, HttpResponse response, Configuration conf) throws IOException {
         this(dispatcher, response.asStream(), conf);
         this.response = response;
     }
@@ -202,7 +202,7 @@ abstract class AbstractStreamImplementation implements StatusStream {
     }
 
     protected void onMessage(String rawString, RawStreamListener[] listeners) throws TwitterException {
-        logger.warn("Unhandled event: onSender");
+        logger.warn("Unhandled event: onMessage");
     }
 
     protected void onSender(JSONObject json, StreamListener[] listeners) throws TwitterException {

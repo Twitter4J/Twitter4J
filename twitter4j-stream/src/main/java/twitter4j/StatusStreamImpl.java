@@ -25,7 +25,6 @@ import twitter4j.internal.json.z_T4JInternalParseUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * StatusStream implementation. This class is NOT intended to be extended but left non-final for the ease of mock testing.
@@ -33,7 +32,7 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-class StatusStreamImpl extends AbstractStreamImplementation {
+class StatusStreamImpl extends StatusStreamBase {
     /*package*/
 
     StatusStreamImpl(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
@@ -61,6 +60,13 @@ class StatusStreamImpl extends AbstractStreamImplementation {
     protected String parseLine(String line) {
         this.line = line;
         return line;
+    }
+
+    @Override
+    protected void onMessage(String rawString, RawStreamListener[] listeners) throws TwitterException {
+        for (RawStreamListener listener : listeners) {
+            listener.onMessage(rawString);
+        }
     }
 
     @Override

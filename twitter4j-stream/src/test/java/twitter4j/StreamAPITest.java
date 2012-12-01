@@ -23,9 +23,7 @@ import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class StreamAPITest extends TwitterTestBase implements StatusListener, ConnectionLifeCycleListener {
     protected TwitterStream twitterStream = null;
@@ -53,6 +51,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     protected void tearDown() throws Exception {
         super.tearDown();
+        twitterStream.shutdown();
     }
 
     public void testToString() throws Exception {
@@ -68,6 +67,28 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         assertEquals(2, map.size());
     }
 
+    List<String> received = new ArrayList<String>();
+    Object lock = new Object();
+    public void testRawStreamListener() throws Exception{
+        twitterStream.addListener(new RawStreamListener() {
+            @Override
+            public void onMessage(String rawString) {
+                received.add(rawString);
+                synchronized (lock) {
+                    lock.notify();
+                }
+            }
+
+            @Override
+            public void onException(Exception ex) {
+            }
+        });
+        twitterStream.sample();
+        synchronized (lock) {
+            lock.wait();
+        }
+        assertTrue(received.size() > 0);
+    }
     public void testNoListener() throws Exception {
         TwitterStream twitterStream;
         twitterStream = new TwitterStreamFactory().getInstance();

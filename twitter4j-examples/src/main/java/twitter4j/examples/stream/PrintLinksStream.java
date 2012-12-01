@@ -22,7 +22,7 @@ import twitter4j.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */
-public class PrintLinksStream extends StatusAdapter {
+public class PrintLinksStream {
     /**
      * Main entry of this application.
      *

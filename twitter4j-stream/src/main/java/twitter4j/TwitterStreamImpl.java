@@ -436,7 +436,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     static int count = 0;
 
     abstract class TwitterStreamConsumer extends Thread {
-        private AbstractStreamImplementation stream = null;
+        private StatusStreamBase stream = null;
         private final String NAME = "Twitter Stream consumer-" + (++count);
         private volatile boolean closed = false;
         private final StreamListener[] streamListeners;
@@ -459,7 +459,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                         // try establishing connection
                         logger.info("Establishing connection.");
                         setStatus("[Establishing connection]");
-                        stream = (AbstractStreamImplementation) getStream();
+                        stream = (StatusStreamBase) getStream();
                         connected = true;
                         logger.info("Connection established.");
                         for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
