@@ -35,6 +35,7 @@ Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
 Hiroshi Sugimori <mamamadata at gmail.com> @ham1975
 Hitoshi Kunimatsu <hkhumanoid at gmail.com>
 JJ Kelley <jjthemachine at gmail.com> @jjthemachine
+Jacob Elder <jacob.elder@gmail.com> @jelder
 Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
 Jenny Loomis <jenny at rockmelt.com>
 John Corwin <jcorwin at twitter.com> @johnxorz
