@@ -80,6 +80,21 @@ as returned to in the response body's next_cursor and previous_cursor attributes
             throws TwitterException;
 
     /**
+     * Show tweet timeline for members of the specified list.
+     * <br>http://api.twitter.com/1.1/lists/statuses.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param paging          controls pagination. Supports since_id, max_id, count and page parameters.
+     * @return list of statuses for members of the specified list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
+     * @since Twitter4J TODO version
+     */
+    ResponseList<Status> getUserListStatuses(String ownerScreenName, String slug, Paging paging)
+            throws TwitterException;
+
+    /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
      * <br>This method calls http://api.twitter.com/1.1/lists/members/destroy.json
      *
@@ -115,6 +130,21 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @deprecated use {@link #destroyUserListMember(long, String, long)} List(int)} instead
      */
     UserList deleteUserListMember(long ownerId, String slug, long userId) throws TwitterException;
+
+
+    /**
+     * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
+     * <br>This method calls http://api.twitter.com/1.1/lists/members/destroy.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param userId          The screen name of the member you wish to remove from the list.
+     * @return the updated list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy">POST lists/members/destroy | Twitter Developers</a>
+     * @since Twitter4J TODO version
+     */
+    UserList destroyUserListMember(String ownerScreenName, String slug, long userId) throws TwitterException;
 
     /**
      * List the lists the authenticating user has been added to.
@@ -218,6 +248,20 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, long cursor) throws TwitterException;
 
     /**
+     * Returns the subscribers of the specified list.
+     * <br>This method calls http://api.twitter.com/1.1/lists/subscribers.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the members of the specified list.
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
+     * @since Twitter4J TODO version
+     */
+    PagableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, long cursor) throws TwitterException;
+
+    /**
      * Make the authenticated user follow the specified list.
      * <br>This method calls http://api.twitter.com/1.1/list/subscribers/create.json
      *
@@ -241,6 +285,19 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @since Twitter4J 3.0.0
      */
     UserList createUserListSubscription(long ownerId, String slug) throws TwitterException;
+
+    /**
+     * Make the authenticated user follow the specified list.
+     * <br>This method calls http://api.twitter.com/1.1/list/subscribers/create.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @return the updated list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/subscribers/create">POST lists/subscribers/create | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    UserList createUserListSubscription(String ownerScreenName, String slug) throws TwitterException;
 
     /**
      * Check if the specified user is a subscriber of the specified list.
@@ -272,6 +329,21 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     User showUserListSubscription(long ownerId, String slug, long userId) throws TwitterException;
 
     /**
+     * Check if the specified user is a subscriber of the specified list.
+     * <br>This method calls http://api.twitter.com/1.1/lists/subscribers/show.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param userId          The id of the user who you want to know is a member or not of the specified list.
+     * @return the updated list
+     * @throws TwitterException when Twitter service or network is unavailable
+     *                          , or the user is not a member of the specified list(TwitterException.getStatusCode() returns 404 in that case.)
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers/show">GET lists/subscribers/show | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    User showUserListSubscription(String ownerScreenName, String slug, long userId) throws TwitterException;
+
+    /**
      * Unsubscribes the authenticated user form the specified list.
      * <br>This method calls http://api.twitter.com/1.1/subscribers/destroy.json
      *
@@ -295,6 +367,19 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @since Twitter4J 3.0.0
      */
     UserList destroyUserListSubscription(long ownerId, String slug) throws TwitterException;
+
+    /**
+     * Unsubscribes the authenticated user form the specified list.
+     * <br>This method calls http://api.twitter.com/1.1/subscribers/destroy.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @return the updated list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/subscribers/destroy">POST lists/subscribers/destroy | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO
+     */
+    UserList destroyUserListSubscription(String ownerScreenName, String slug) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -331,6 +416,20 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      */
     UserList addUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
 
+
+    /**
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * <br>This method calls http://api.twitter.com/1.1/lists/members/create_all.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param userIds         The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    UserList createUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException;
+
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls http://api.twitter.com/1.1/lists/members/create_all.json
@@ -365,6 +464,18 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList addUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
 
     /**
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * <br>This method calls http://api.twitter.com/1.1/lists/members/create_all.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param screenNames     The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    UserList createUserListMembers(String ownerScreenName, String slug, String[] screenNames) throws TwitterException;
+
+    /**
      * Check if a user is a member of the specified list.<br>
      * <br>This method calls http://api.twitter.com/1.1/lists/members/show.json
      *
@@ -394,6 +505,21 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     User showUserListMembership(long ownerId, String slug, long userId) throws TwitterException;
 
     /**
+     * Check if a user is a member of the specified list.<br>
+     * <br>This method calls http://api.twitter.com/1.1/lists/members/show.json
+     *
+     * @param ownerScreenName Id The user ID of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param userId          The id of the user who you want to know is a member or not of the specified list.
+     * @return the updated list
+     * @throws TwitterException when Twitter service or network is unavailable
+     *                          , or the user is not a member of the specified list(TwitterException.getStatusCode() returns 404 in that case.)
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members/show">GET lists/members/show | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    User showUserListMembership(String ownerScreenName, String slug, long userId) throws TwitterException;
+
+    /**
      * Returns the members of the specified list.
      * <br>This method calls http://api.twitter.com/1.1/lists/members.json
      *
@@ -420,6 +546,21 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @since Twitter4J 3.0.0
      */
     PagableResponseList<User> getUserListMembers(long ownerId, String slug, long cursor)
+            throws TwitterException;
+
+    /**
+     * Returns the members of the specified list.
+     * <br>This method calls http://api.twitter.com/1.1/lists/members.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the members of the specified list.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, long cursor)
             throws TwitterException;
 
     /**
@@ -460,6 +601,20 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList addUserListMember(long ownerId, String slug, long userId) throws TwitterException;
 
     /**
+     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
+     * <br>This method calls http://api.twitter.com/1.1/lists/members/create.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param userId          The id of the user to add as a member of the list.
+     * @return the updated list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create">POST lists/members/create | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    UserList createUserListMember(String ownerScreenName, String slug, long userId) throws TwitterException;
+
+    /**
      * Deletes the specified list. Must be owned by the authenticated user.
      * <br>This method calls http://api.twitter.com/1.1/lists/destroy.json
      *
@@ -483,6 +638,19 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @since Twitter4J 3.0.0
      */
     UserList destroyUserList(long ownerId, String slug) throws TwitterException;
+
+    /**
+     * Deletes the specified list. Must be owned by the authenticated user.
+     * <br>This method calls http://api.twitter.com/1.1/lists/destroy.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @return the deleted list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/destroy">POST lists/destroy | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    UserList destroyUserList(String ownerScreenName, String slug) throws TwitterException;
 
     /**
      * Updates the specified list.
@@ -515,6 +683,23 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @since Twitter4J 3.0.0
      */
     UserList updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription)
+            throws TwitterException;
+
+    /**
+     * Updates the specified list.
+     * <br>This method calls http://api.twitter.com/1.1/lists/update.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param newListName     What you'd like to change the list's name to.
+     * @param isPublicList    Whether your list is public or private. Optional. Values can be public or private. Lists are public by default if no mode is specified.
+     * @param newDescription  What you'd like to change the list description to.
+     * @return the updated list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    UserList updateUserList(String ownerScreenName, String slug, String newListName, boolean isPublicList, String newDescription)
             throws TwitterException;
 
     /**
@@ -556,6 +741,19 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @since Twitter4J 3.0.0
      */
     UserList showUserList(long ownerId, String slug) throws TwitterException;
+
+    /**
+     * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
+     * <br>This method calls http://api.twitter.com/1.1/lists/show.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @return the specified list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/show">https://dev.twitter.com/docs/api/1.1/get/lists/show | Twitter Developers</a>
+     * @since Twitter4J 3.0.0 TODO version
+     */
+    UserList showUserList(String ownerScreenName, String slug) throws TwitterException;
 
     /**
      * List the lists the specified user follows.
