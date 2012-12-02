@@ -89,7 +89,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return list of statuses for members of the specified list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
-     * @since Twitter4J TODO version
+     * @since Twitter4J 3.0.2
      */
     ResponseList<Status> getUserListStatuses(String ownerScreenName, String slug, Paging paging)
             throws TwitterException;
@@ -142,7 +142,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy">POST lists/members/destroy | Twitter Developers</a>
-     * @since Twitter4J TODO version
+     * @since Twitter4J 3.0.2
      */
     UserList destroyUserListMember(String ownerScreenName, String slug, long userId) throws TwitterException;
 
@@ -257,7 +257,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return the members of the specified list.
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
-     * @since Twitter4J TODO version
+     * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, long cursor) throws TwitterException;
 
@@ -295,7 +295,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/subscribers/create">POST lists/subscribers/create | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     UserList createUserListSubscription(String ownerScreenName, String slug) throws TwitterException;
 
@@ -339,7 +339,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @throws TwitterException when Twitter service or network is unavailable
      *                          , or the user is not a member of the specified list(TwitterException.getStatusCode() returns 404 in that case.)
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers/show">GET lists/subscribers/show | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     User showUserListSubscription(String ownerScreenName, String slug, long userId) throws TwitterException;
 
@@ -377,7 +377,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/subscribers/destroy">POST lists/subscribers/destroy | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO
+     * @since Twitter4J 3.0.2
      */
     UserList destroyUserListSubscription(String ownerScreenName, String slug) throws TwitterException;
 
@@ -426,7 +426,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @param userIds         The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     UserList createUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException;
 
@@ -471,7 +471,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @param slug            slug of the list
      * @param screenNames     The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     UserList createUserListMembers(String ownerScreenName, String slug, String[] screenNames) throws TwitterException;
 
@@ -515,7 +515,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @throws TwitterException when Twitter service or network is unavailable
      *                          , or the user is not a member of the specified list(TwitterException.getStatusCode() returns 404 in that case.)
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members/show">GET lists/members/show | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     User showUserListMembership(String ownerScreenName, String slug, long userId) throws TwitterException;
 
@@ -558,7 +558,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return the members of the specified list.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, long cursor)
             throws TwitterException;
@@ -610,7 +610,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create">POST lists/members/create | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     UserList createUserListMember(String ownerScreenName, String slug, long userId) throws TwitterException;
 
@@ -648,7 +648,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return the deleted list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/destroy">POST lists/destroy | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     UserList destroyUserList(String ownerScreenName, String slug) throws TwitterException;
 
@@ -697,7 +697,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     UserList updateUserList(String ownerScreenName, String slug, String newListName, boolean isPublicList, String newDescription)
             throws TwitterException;
@@ -751,7 +751,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @return the specified list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/show">https://dev.twitter.com/docs/api/1.1/get/lists/show | Twitter Developers</a>
-     * @since Twitter4J 3.0.0 TODO version
+     * @since Twitter4J 3.0.2
      */
     UserList showUserList(String ownerScreenName, String slug) throws TwitterException;
 
