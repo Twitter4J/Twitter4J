@@ -158,6 +158,100 @@ public class ListResourcesTest extends TwitterTestBase {
         assertNotNull(userLists);
         assertEquals(0, userLists.size());
     }
+    
+    public void testUsingOwnerScreenName() throws Exception {
+        UserList userList;
+        userList = prepareListTest();
+        String ownerScreenName = id1.screenName;
+        String slug = userList.getSlug();
+        
+        User user = null;
+        try {
+            user = twitter1.showUserListMembership(ownerScreenName, slug, id2.id);
+            fail("id2 shouldn't be a member of the userList yet. expecting a TwitterException");
+        } catch (TwitterException te) {
+            assertEquals(404, te.getStatusCode());
+        }
+        
+        userList = twitter1.createUserListMember(ownerScreenName, slug, id2.id);
+        assertNotNull(userList);
+        assertNotNull(DataObjectFactory.getRawJSON(userList));
+        assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
+
+        userList = twitter1.createUserListMember(ownerScreenName, slug, id2.id);
+        assertNotNull(userList);
+        assertNotNull(DataObjectFactory.getRawJSON(userList));
+        assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
+
+        userList = twitter1.createUserListMembers(ownerScreenName, slug, new long[]{id3.id, id2.id});
+        assertNotNull(userList);
+        assertNotNull(DataObjectFactory.getRawJSON(userList));
+        assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
+
+        userList = twitter1.createUserListMembers(ownerScreenName, slug, new String[]{"akr", "yusukey"});
+        assertNotNull(userList);
+        assertNotNull(DataObjectFactory.getRawJSON(userList));
+        assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
+
+        PagableResponseList<User> users = twitter1.getUserListMembers(ownerScreenName, slug, -1);
+        assertNotNull(users);
+        assertNotNull(DataObjectFactory.getRawJSON(users));
+        assertTrue(users.size() > 0);
+        assertEquals(users.get(0), DataObjectFactory.createUser(DataObjectFactory.getRawJSON(users.get(0))));
+        
+        userList = twitter1.updateUserList(ownerScreenName, slug, slug, true, "new-description");
+        assertTrue(userList.isPublic());
+        assertEquals("new-description", userList.getDescription());
+        assertEquals(0, userList.getSubscriberCount());
+        
+        userList = twitter2.createUserListSubscription(ownerScreenName, slug);
+        assertNotNull(userList);
+        assertNotNull(DataObjectFactory.getRawJSON(userList));
+
+        List<Status> statuses = twitter2.getUserListStatuses(ownerScreenName, slug, new Paging());
+        assertNotNull(statuses);
+        assertNotNull(DataObjectFactory.getRawJSON(statuses));
+        if (statuses.size() > 0) {
+            assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
+        }
+        
+        user = twitter1.showUserListSubscription(ownerScreenName, slug, id2.id);
+        assertNotNull(user);
+        assertNotNull(DataObjectFactory.getRawJSON(user));
+        assertEquals(user, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user)));
+        assertEquals(id2.id, user.getId());
+
+        userList = twitter2.showUserList(ownerScreenName, slug);
+        assertNotNull(userList);
+        assertNotNull(DataObjectFactory.getRawJSON(userList));
+        assertTrue(userList.isPublic());
+        assertEquals("testpoint1", userList.getName());
+        assertEquals("new-description", userList.getDescription());
+        assertEquals(1, userList.getSubscriberCount());
+        
+        users = twitter1.getUserListSubscribers(ownerScreenName, slug, -1);
+        assertNotNull(users);
+        assertNotNull(DataObjectFactory.getRawJSON(users));
+        assertEquals(1, users.size());
+        
+        userList = twitter2.destroyUserListSubscription(ownerScreenName, slug);
+        assertNotNull(userList);
+        assertEquals(1, userList.getSubscriberCount());
+        
+        userList = twitter1.destroyUserListMember(ownerScreenName, slug, id2.id);
+        assertNotNull(userList);
+        assertEquals(3, userList.getMemberCount());
+        
+        twitter1.destroyUserList(ownerScreenName, slug);
+        
+        try {
+            twitter1.showUserList(ownerScreenName, slug);
+            fail(String.format("%s/%s was destroyed", ownerScreenName, slug));
+            
+        } catch (TwitterException e){
+            assertEquals(404, e.getStatusCode());
+        }
+    }
 
     public void testListSubscribersMethods() throws Exception {
         PagableResponseList<UserList> userLists;
