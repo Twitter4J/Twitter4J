@@ -90,6 +90,10 @@ public class TwitterAdapter implements TwitterListener {
     public void updatedFriendship(Relationship relationship){}
     @Override
     public void gotShowFriendship(Relationship relationship){}
+    @Override
+    public void gotFriendsList(PagableResponseList<User> users) {}
+    @Override
+    public void gotFollowersList(PagableResponseList<User> users) {}
 
     /* Users Resources */
     @Override

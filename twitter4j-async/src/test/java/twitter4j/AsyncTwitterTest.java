@@ -700,6 +700,18 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    @Override
+    public void gotFriendsList(PagableResponseList<User> users) {
+        this.users = users;
+        notifyResponse();
+    }
+
+    @Override
+    public void gotFollowersList(PagableResponseList<User> users) {
+        this.users = users;
+        notifyResponse();
+    }
+
     /**
      * @since Twitter4J 2.1.2
      */

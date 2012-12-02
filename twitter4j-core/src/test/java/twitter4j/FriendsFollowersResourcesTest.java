@@ -235,4 +235,15 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         //assertTrue(ids.getIDs().length > 0);
     }
 
+    public void testFriendsFollowersList() throws Exception {
+        PagableResponseList<User> t4jfriends = twitter1.getFriendsList("t4j_news", -1L);
+        PagableResponseList<User> t4jfriends2 = twitter1.getFriendsList(72297675L, -1L);
+        assertEquals(t4jfriends, t4jfriends2);
+        assertTrue(t4jfriends.size() > 0);
+
+        PagableResponseList<User> t4jfollowers = twitter1.getFollowersList("t4j_news", -1L);
+        PagableResponseList<User> t4jfollowers2 = twitter1.getFollowersList(72297675L, -1L);
+        assertEquals(t4jfollowers, t4jfollowers2);
+        assertTrue(t4jfollowers.size() > 0);
+    }
 }

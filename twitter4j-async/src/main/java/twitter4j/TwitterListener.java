@@ -61,6 +61,8 @@ public interface TwitterListener {
     void destroyedFriendship(User user);
     void updatedFriendship(Relationship relationship);
     void gotShowFriendship(Relationship relationship);
+    void gotFriendsList(PagableResponseList<User> users);
+    void gotFollowersList(PagableResponseList<User> users);
 
     /* Users Resources */
     void gotAccountSettings(AccountSettings settings);

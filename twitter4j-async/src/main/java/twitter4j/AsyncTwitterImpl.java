@@ -965,6 +965,82 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getFriendsList(final long userId, final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<User> users = twitter.getFriendsList(userId, cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotFriendsList(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getFriendsList(final String screenName, final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(FRIENDS_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<User> users = twitter.getFriendsList(screenName, cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotFriendsList(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getFollowersList(final long userId, final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<User> users = twitter.getFollowersList(userId, cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotFollowersList(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getFollowersList(final String screenName, final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<User> users = twitter.getFollowersList(screenName, cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotFollowersList(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
     /* Users Resources */
 
     /**

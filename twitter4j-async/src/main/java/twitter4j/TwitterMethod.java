@@ -55,6 +55,8 @@ public enum TwitterMethod {
     DESTROY_FRIENDSHIP,
     UPDATE_FRIENDSHIP,
     SHOW_FRIENDSHIP,
+    FRIENDS_LIST,
+    FOLLOWERS_LIST,
 
     /* Users Resources */
     ACCOUNT_SETTINGS,
