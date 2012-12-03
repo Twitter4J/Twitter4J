@@ -69,10 +69,9 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
         }
     }
 
-    private void addMediaEntitySizeIfNotNull(Map<Integer, MediaEntity.Size> sizes, JSONObject sizes_json, Integer size, String key) throws JSONException {
-        JSONObject size_json = sizes_json.optJSONObject(key);
-        if (size_json != null) {
-            sizes.put(size, new Size(size_json));
+    private void addMediaEntitySizeIfNotNull(Map<Integer, MediaEntity.Size> sizes, JSONObject sizesJSON, Integer size, String key) throws JSONException {
+        if(!sizesJSON.isNull(key)){
+            sizes.put(size, new Size(sizesJSON.getJSONObject(key)));
         }
     }
 

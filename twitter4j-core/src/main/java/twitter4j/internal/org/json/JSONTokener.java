@@ -96,26 +96,6 @@ public class JSONTokener {
     }
 
 
-    /**
-     * Get the hex value of a character (base16).
-     *
-     * @param c A character between '0' and '9' or between 'A' and 'F' or
-     *          between 'a' and 'f'.
-     * @return An int between 0 and 15, or -1 if c was not a hex digit.
-     */
-    public static int dehexchar(char c) {
-        if (c >= '0' && c <= '9') {
-            return c - '0';
-        }
-        if (c >= 'A' && c <= 'F') {
-            return c - ('A' - 10);
-        }
-        if (c >= 'a' && c <= 'f') {
-            return c - ('a' - 10);
-        }
-        return -1;
-    }
-
     public boolean end() {
         return eof && !usePrevious;
     }
@@ -297,53 +277,6 @@ public class JSONTokener {
         }
     }
 
-
-    /**
-     * Get the text up but not including the specified character or the
-     * end of line, whichever comes first.
-     *
-     * @param delimiter A delimiter character.
-     * @return A string.
-     */
-    public String nextTo(char delimiter) throws JSONException {
-        StringBuilder sb = new StringBuilder();
-        for (; ; ) {
-            char c = next();
-            if (c == delimiter || c == 0 || c == '\n' || c == '\r') {
-                if (c != 0) {
-                    back();
-                }
-                return sb.toString().trim();
-            }
-            sb.append(c);
-        }
-    }
-
-
-    /**
-     * Get the text up but not including one of the specified delimiter
-     * characters or the end of line, whichever comes first.
-     *
-     * @param delimiters A set of delimiter characters.
-     * @return A string, trimmed.
-     */
-    public String nextTo(String delimiters) throws JSONException {
-        char c;
-        StringBuilder sb = new StringBuilder();
-        for (; ; ) {
-            c = next();
-            if (delimiters.indexOf(c) >= 0 || c == 0 ||
-                    c == '\n' || c == '\r') {
-                if (c != 0) {
-                    back();
-                }
-                return sb.toString().trim();
-            }
-            sb.append(c);
-        }
-    }
-
-
     /**
      * Get the next value. The value can be a Boolean, Double, Integer,
      * JSONArray, JSONObject, Long, or String, or the JSONObject.NULL object.
@@ -390,39 +323,6 @@ public class JSONTokener {
         return JSONObject.stringToValue(string);
     }
 
-
-    /**
-     * Skip characters until the next character is the requested character.
-     * If the requested character is not found, no characters are skipped.
-     *
-     * @param to A character to skip to.
-     * @return The requested character, or zero if the requested character
-     *         is not found.
-     */
-    public char skipTo(char to) throws JSONException {
-        char c;
-        try {
-            int startIndex = this.index;
-            int startCharacter = this.character;
-            int startLine = this.line;
-            reader.mark(Integer.MAX_VALUE);
-            do {
-                c = next();
-                if (c == 0) {
-                    reader.reset();
-                    this.index = startIndex;
-                    this.character = startCharacter;
-                    this.line = startLine;
-                    return c;
-                }
-            } while (c != to);
-        } catch (IOException exc) {
-            throw new JSONException(exc);
-        }
-
-        back();
-        return c;
-    }
 
 
     /**

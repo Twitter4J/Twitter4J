@@ -26,7 +26,6 @@ SOFTWARE.
 
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -341,7 +340,8 @@ public class JSONObject {
                 JSONObject target = this;
                 for (int i = 0; i < last; i += 1) {
                     String segment = path[i];
-                    JSONObject nextTarget = target.optJSONObject(segment);
+                    Object object = target.opt(segment);
+                    JSONObject nextTarget = object instanceof JSONObject ? (JSONObject) object : null;
                     if (nextTarget == null) {
                         nextTarget = new JSONObject();
                         target.put(segment, nextTarget);
@@ -408,35 +408,6 @@ public class JSONObject {
         }
         return this;
     }
-
-
-    /**
-     * Produce a string from a double. The string "null" will be returned if
-     * the number is not finite.
-     *
-     * @param d A double.
-     * @return A String.
-     */
-    public static String doubleToString(double d) {
-        if (Double.isInfinite(d) || Double.isNaN(d)) {
-            return "null";
-        }
-
-// Shave off trailing zeros and decimal point, if possible.
-
-        String string = Double.toString(d);
-        if (string.indexOf('.') > 0 && string.indexOf('e') < 0 &&
-                string.indexOf('E') < 0) {
-            while (string.endsWith("0")) {
-                string = string.substring(0, string.length() - 1);
-            }
-            if (string.endsWith(".")) {
-                string = string.substring(0, string.length() - 1);
-            }
-        }
-        return string;
-    }
-
 
     /**
      * Get the value object associated with a key.
@@ -579,51 +550,6 @@ public class JSONObject {
         }
     }
 
-
-    /**
-     * Get an array of field names from a JSONObject.
-     *
-     * @return An array of field names, or null if there are no names.
-     */
-    public static String[] getNames(JSONObject jo) {
-        int length = jo.length();
-        if (length == 0) {
-            return null;
-        }
-        Iterator iterator = jo.keys();
-        String[] names = new String[length];
-        int i = 0;
-        while (iterator.hasNext()) {
-            names[i] = (String) iterator.next();
-            i += 1;
-        }
-        return names;
-    }
-
-
-    /**
-     * Get an array of field names from an Object.
-     *
-     * @return An array of field names, or null if there are no names.
-     */
-    public static String[] getNames(Object object) {
-        if (object == null) {
-            return null;
-        }
-        Class klass = object.getClass();
-        Field[] fields = klass.getFields();
-        int length = fields.length;
-        if (length == 0) {
-            return null;
-        }
-        String[] names = new String[length];
-        for (int i = 0; i < length; i += 1) {
-            names[i] = fields[i].getName();
-        }
-        return names;
-    }
-
-
     /**
      * Get the string associated with a key.
      *
@@ -646,36 +572,6 @@ public class JSONObject {
     public boolean has(String key) {
         return this.map.containsKey(key);
     }
-
-
-    /**
-     * Increment a property of a JSONObject. If there is no such property,
-     * create one with a value of 1. If there is such a property, and if
-     * it is an Integer, Long, Double, or Float, then add one to it.
-     *
-     * @param key A key string.
-     * @return this.
-     * @throws JSONException If there is already a property with this name
-     *                       that is not an Integer, Long, Double, or Float.
-     */
-    public JSONObject increment(String key) throws JSONException {
-        Object value = opt(key);
-        if (value == null) {
-            put(key, 1);
-        } else if (value instanceof Integer) {
-            put(key, ((Integer) value).intValue() + 1);
-        } else if (value instanceof Long) {
-            put(key, ((Long) value).longValue() + 1);
-        } else if (value instanceof Double) {
-            put(key, ((Double) value).doubleValue() + 1);
-        } else if (value instanceof Float) {
-            put(key, ((Float) value).floatValue() + 1);
-        } else {
-            throw new JSONException("Unable to increment [" + quote(key) + "].");
-        }
-        return this;
-    }
-
 
     /**
      * Determine if the value associated with the key is null or if there is
@@ -764,191 +660,6 @@ public class JSONObject {
      */
     public Object opt(String key) {
         return key == null ? null : this.map.get(key);
-    }
-
-
-    /**
-     * Get an optional boolean associated with a key.
-     * It returns false if there is no such key, or if the value is not
-     * Boolean.TRUE or the String "true".
-     *
-     * @param key A key string.
-     * @return The truth.
-     */
-    public boolean optBoolean(String key) {
-        return optBoolean(key, false);
-    }
-
-
-    /**
-     * Get an optional boolean associated with a key.
-     * It returns the defaultValue if there is no such key, or if it is not
-     * a Boolean or the String "true" or "false" (case insensitive).
-     *
-     * @param key          A key string.
-     * @param defaultValue The default.
-     * @return The truth.
-     */
-    public boolean optBoolean(String key, boolean defaultValue) {
-        try {
-            return getBoolean(key);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-
-    /**
-     * Get an optional double associated with a key,
-     * or NaN if there is no such key or if its value is not a number.
-     * If the value is a string, an attempt will be made to evaluate it as
-     * a number.
-     *
-     * @param key A string which is the key.
-     * @return An object which is the value.
-     */
-    public double optDouble(String key) {
-        return optDouble(key, Double.NaN);
-    }
-
-
-    /**
-     * Get an optional double associated with a key, or the
-     * defaultValue if there is no such key or if its value is not a number.
-     * If the value is a string, an attempt will be made to evaluate it as
-     * a number.
-     *
-     * @param key          A key string.
-     * @param defaultValue The default.
-     * @return An object which is the value.
-     */
-    public double optDouble(String key, double defaultValue) {
-        try {
-            return getDouble(key);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-
-    /**
-     * Get an optional int value associated with a key,
-     * or zero if there is no such key or if the value is not a number.
-     * If the value is a string, an attempt will be made to evaluate it as
-     * a number.
-     *
-     * @param key A key string.
-     * @return An object which is the value.
-     */
-    public int optInt(String key) {
-        return optInt(key, 0);
-    }
-
-
-    /**
-     * Get an optional int value associated with a key,
-     * or the default if there is no such key or if the value is not a number.
-     * If the value is a string, an attempt will be made to evaluate it as
-     * a number.
-     *
-     * @param key          A key string.
-     * @param defaultValue The default.
-     * @return An object which is the value.
-     */
-    public int optInt(String key, int defaultValue) {
-        try {
-            return getInt(key);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-
-    /**
-     * Get an optional JSONArray associated with a key.
-     * It returns null if there is no such key, or if its value is not a
-     * JSONArray.
-     *
-     * @param key A key string.
-     * @return A JSONArray which is the value.
-     */
-    public JSONArray optJSONArray(String key) {
-        Object o = opt(key);
-        return o instanceof JSONArray ? (JSONArray) o : null;
-    }
-
-
-    /**
-     * Get an optional JSONObject associated with a key.
-     * It returns null if there is no such key, or if its value is not a
-     * JSONObject.
-     *
-     * @param key A key string.
-     * @return A JSONObject which is the value.
-     */
-    public JSONObject optJSONObject(String key) {
-        Object object = opt(key);
-        return object instanceof JSONObject ? (JSONObject) object : null;
-    }
-
-
-    /**
-     * Get an optional long value associated with a key,
-     * or zero if there is no such key or if the value is not a number.
-     * If the value is a string, an attempt will be made to evaluate it as
-     * a number.
-     *
-     * @param key A key string.
-     * @return An object which is the value.
-     */
-    public long optLong(String key) {
-        return optLong(key, 0);
-    }
-
-
-    /**
-     * Get an optional long value associated with a key,
-     * or the default if there is no such key or if the value is not a number.
-     * If the value is a string, an attempt will be made to evaluate it as
-     * a number.
-     *
-     * @param key          A key string.
-     * @param defaultValue The default.
-     * @return An object which is the value.
-     */
-    public long optLong(String key, long defaultValue) {
-        try {
-            return getLong(key);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-
-    /**
-     * Get an optional string associated with a key.
-     * It returns an empty string if there is no such key. If the value is not
-     * a string and is not null, then it is converted to a string.
-     *
-     * @param key A key string.
-     * @return A string which is the value.
-     */
-    public String optString(String key) {
-        return optString(key, "");
-    }
-
-
-    /**
-     * Get an optional string associated with a key.
-     * It returns the defaultValue if there is no such key.
-     *
-     * @param key          A key string.
-     * @param defaultValue The default.
-     * @return A string which is the value.
-     */
-    public String optString(String key, String defaultValue) {
-        Object object = opt(key);
-        return NULL.equals(object) ? defaultValue : object.toString();
     }
 
 

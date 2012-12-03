@@ -175,28 +175,6 @@ public class JSONWriter {
     }
 
     /**
-     * End an array. This method most be called to balance calls to
-     * <code>array</code>.
-     *
-     * @return this
-     * @throws JSONException If incorrectly nested.
-     */
-    public JSONWriter endArray() throws JSONException {
-        return this.end('a', ']');
-    }
-
-    /**
-     * End an object. This method most be called to balance calls to
-     * <code>object</code>.
-     *
-     * @return this
-     * @throws JSONException If incorrectly nested.
-     */
-    public JSONWriter endObject() throws JSONException {
-        return this.end('k', '}');
-    }
-
-    /**
      * Append a key. The key will be associated with the next value. In an
      * object, every value must be preceded by a key.
      *
