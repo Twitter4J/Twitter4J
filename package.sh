@@ -132,54 +132,6 @@ rm ../twitter4j-$LATEST_VERSION.zip
 zip -r ../../twitter4j-$LATEST_VERSION.zip .
 }
 
-buildAndroid(){
-echo building android-jar remove org.json
-pwd
-
-cd ../
-rm -Rf twitter4j-core/src/main/java/twitter4j/internal/org
-rm -Rf twitter4j-$LATEST_VERSION/twitter4j-core/src/main/java/twitter4j/internal/org
-find . -type f -name *.java |while read file; do sed -e 's/import twitter4j.internal.org.json/import org.json/' $file > $file.tmp && mv $file.tmp $file; done
-sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/groupId><artifactId>json<\/artifactId><version>20090211<\/version><scope>provided<\/scope><\/dependency>/' twitter4j-core/pom.xml
-sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/groupId><artifactId>json<\/artifactId><version>20090211<\/version><scope>provided<\/scope><\/dependency>/' twitter4j-media-support/pom.xml
-sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/groupId><artifactId>json<\/artifactId><version>20090211<\/version><scope>provided<\/scope><\/dependency>/' twitter4j-async/pom.xml
-sed -i "" -e 's/<dependencies>/<dependencies><dependency><groupId>org.json<\/groupId><artifactId>json<\/artifactId><version>20090211<\/version><scope>provided<\/scope><\/dependency>/' twitter4j-stream/pom.xml
-
-sed -i "" -e 's/reader = asReader();/\/\/reader = asReader();/' twitter4j-core/src/main/java/twitter4j/internal/http/HttpResponse.java
-sed -i "" -e 's/new JSONTokener(reader)/asString()/' twitter4j-core/src/main/java/twitter4j/internal/http/HttpResponse.java
-sed -i "" -e 's/import twitter4j.internal.org.json.JSONTokener;/\/\/import twitter4j.internal.org.json.JSONTokener;/' twitter4j-core/src/main/java/twitter4j/internal/http/HttpResponse.java
-
-echo building android-jar
-pwd
-export HOME=/tmp
-cd twitter4j-core
-mvn clean compile jar:jar -Dmaven.test.skip=true
-mvn install:install-file -Dfile=target/twitter4j-core-$LATEST_VERSION.jar -DgroupId=org.twitter4j -DartifactId=twitter4j-core -Dversion=$LATEST_VERSION -Dpackaging=jar -DgeneratePom=true
-cd ../twitter4j-media-support
-mvn clean compile jar:jar -Dmaven.test.skip=true
-cd ../twitter4j-async
-mvn clean compile jar:jar -Dmaven.test.skip=true
-mvn install:install-file -Dfile=target/twitter4j-async-$LATEST_VERSION.jar -DgroupId=org.twitter4j -DartifactId=twitter4j-async -Dversion=$LATEST_VERSION -Dpackaging=jar -DgeneratePom=true
-cd ../twitter4j-stream
-mvn clean compile jar:jar -Dmaven.test.skip=true
-cd ..
-
-echo packaging android-zip
-pwd
-rm $DIR/lib/*.jar
-
-cp twitter4j-core/target/twitter4j-core-$LATEST_VERSION.jar $DIR/lib/twitter4j-core-android-$LATEST_VERSION.jar
-cp twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION.jar $DIR/lib/twitter4j-media-support-android-$LATEST_VERSION.jar
-cp twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION.jar $DIR/lib/
-cp twitter4j-async/target/twitter4j-async-$LATEST_VERSION.jar $DIR/lib/twitter4j-async-android-$LATEST_VERSION.jar
-cp twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION.jar $DIR/lib/twitter4j-stream-android-$LATEST_VERSION.jar
-
-cd $DIR
-zip -r ../../twitter4j-android-$LATEST_VERSION.zip .
-cd ../..
-}
-
 packageZip
-buildAndroid
 cd /tmp
 rm -Rf t4jbuild/
