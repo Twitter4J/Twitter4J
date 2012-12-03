@@ -326,7 +326,7 @@ public class JSONObject {
 
 // Iterate through the keys in the bundle.
 
-        Enumeration keys = r.getKeys();
+        Enumeration<String> keys = r.getKeys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             if (key instanceof String) {
@@ -352,36 +352,6 @@ public class JSONObject {
             }
         }
     }
-
-
-    /**
-     * Accumulate values under a key. It is similar to the put method except
-     * that if there is already an object stored under the key then a
-     * JSONArray is stored under the key to hold all of the accumulated values.
-     * If there is already a JSONArray, then the new value is appended to it.
-     * In contrast, the put method replaces the previous value.
-     *
-     * @param key   A key string.
-     * @param value An object to be accumulated under the key.
-     * @return this.
-     * @throws JSONException If the value is an invalid number
-     *                       or if the key is null.
-     */
-    public JSONObject accumulate(String key, Object value)
-            throws JSONException {
-        testValidity(value);
-        Object object = opt(key);
-        if (object == null) {
-            put(key, value instanceof JSONArray ?
-                    new JSONArray().put(value) : value);
-        } else if (object instanceof JSONArray) {
-            ((JSONArray) object).put(value);
-        } else {
-            put(key, new JSONArray().put(object).put(value));
-        }
-        return this;
-    }
-
 
     /**
      * Append values to the array under a key. If the key does not exist in the
@@ -450,28 +420,6 @@ public class JSONObject {
         throw new JSONException("JSONObject[" + quote(key) +
                 "] is not a Boolean.");
     }
-
-
-    /**
-     * Get the double value associated with a key.
-     *
-     * @param key A key string.
-     * @return The numeric value.
-     * @throws JSONException if the key is not found or
-     *                       if the value is not a Number object and cannot be converted to a number.
-     */
-    public double getDouble(String key) throws JSONException {
-        Object object = get(key);
-        try {
-            return object instanceof Number ?
-                    ((Number) object).doubleValue() :
-                    Double.parseDouble((String) object);
-        } catch (Exception e) {
-            throw new JSONException("JSONObject[" + quote(key) +
-                    "] is not a number.");
-        }
-    }
-
 
     /**
      * Get the int value associated with a key.
@@ -984,7 +932,7 @@ public class JSONObject {
             if (b == '0' && string.length() > 2 &&
                     (string.charAt(1) == 'x' || string.charAt(1) == 'X')) {
                 try {
-                    return new Integer(Integer.parseInt(string.substring(2), 16));
+                    return Integer.parseInt(string.substring(2), 16);
                 } catch (Exception ignore) {
                 }
             }
@@ -994,8 +942,8 @@ public class JSONObject {
                     return Double.valueOf(string);
                 } else {
                     Long myLong = new Long(string);
-                    if (myLong.longValue() == myLong.intValue()) {
-                        return new Integer(myLong.intValue());
+                    if (myLong == myLong.intValue()) {
+                        return myLong.intValue();
                     } else {
                         return myLong;
                     }
