@@ -1029,27 +1029,6 @@ public class JSONObject {
         }
     }
 
-
-    /**
-     * Produce a JSONArray containing the values of the members of this
-     * JSONObject.
-     *
-     * @param names A JSONArray containing a list of key strings. This
-     *              determines the sequence of the values in the result.
-     * @return A JSONArray of values.
-     * @throws JSONException If any of the values are non-finite numbers.
-     */
-    public JSONArray toJSONArray(JSONArray names) throws JSONException {
-        if (names == null || names.length() == 0) {
-            return null;
-        }
-        JSONArray ja = new JSONArray();
-        for (int i = 0; i < names.length(); i += 1) {
-            ja.put(this.opt(names.getString(i)));
-        }
-        return ja;
-    }
-
     /**
      * Make a JSON text of this JSONObject. For compactness, no whitespace
      * is added. If this would not result in a syntactically correct JSON text,
@@ -1186,18 +1165,6 @@ public class JSONObject {
         if (value == null || value.equals(null)) {
             return "null";
         }
-        if (value instanceof JSONString) {
-            Object object;
-            try {
-                object = ((JSONString) value).toJSONString();
-            } catch (Exception e) {
-                throw new JSONException(e);
-            }
-            if (object instanceof String) {
-                return (String) object;
-            }
-            throw new JSONException("Bad value from toJSONString: " + object);
-        }
         if (value instanceof Number) {
             return numberToString((Number) value);
         }
@@ -1237,15 +1204,6 @@ public class JSONObject {
             throws JSONException {
         if (value == null || value.equals(null)) {
             return "null";
-        }
-        try {
-            if (value instanceof JSONString) {
-                Object o = ((JSONString) value).toJSONString();
-                if (o instanceof String) {
-                    return (String) o;
-                }
-            }
-        } catch (Exception ignore) {
         }
         if (value instanceof Number) {
             return numberToString((Number) value);
@@ -1290,7 +1248,7 @@ public class JSONObject {
                 return NULL;
             }
             if (object instanceof JSONObject || object instanceof JSONArray ||
-                    NULL.equals(object) || object instanceof JSONString ||
+                    NULL.equals(object) ||
                     object instanceof Byte || object instanceof Character ||
                     object instanceof Short || object instanceof Integer ||
                     object instanceof Long || object instanceof Boolean ||
