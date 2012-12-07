@@ -41,6 +41,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private String screenName;
     private String location;
     private String description;
+    private URLEntity[] descriptionUrlEntities;
     private boolean isContributorsEnabled;
     private String profileImageUrl;
     private String profileImageUrlHttps;
@@ -104,6 +105,23 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             screenName = getRawString("screen_name", json);
             location = getRawString("location", json);
             description = getRawString("description", json);
+            
+            // descriptionUrlEntities <=> entities/descriptions/urls[]
+            if (!json.isNull("entities")) {
+                JSONObject entitiesJSON = json.getJSONObject("entities");
+                if (!entitiesJSON.isNull("description")) {
+                    JSONObject descriptionEntitiesJSON = entitiesJSON.getJSONObject("description");
+                    if (!descriptionEntitiesJSON.isNull("urls")) {
+                        JSONArray urlsArray = descriptionEntitiesJSON.getJSONArray("urls");
+                        int len = urlsArray.length();
+                        descriptionUrlEntities = new URLEntity[len];
+                        for (int i = 0; i < len; i++) {
+                            descriptionUrlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                        }
+                    }
+                }
+            }
+            
             isContributorsEnabled = getBoolean("contributors_enabled", json);
             profileImageUrl = getRawString("profile_image_url", json);
             profileImageUrlHttps = getRawString("profile_image_url_https", json);
@@ -508,6 +526,14 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         return isFollowRequestSent;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public URLEntity[] getDescriptionUrlEntities() {
+        return descriptionUrlEntities;
+    }
+    
     /*package*/
     static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -626,4 +652,5 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", isFollowRequestSent=" + isFollowRequestSent +
                 '}';
     }
+
 }
