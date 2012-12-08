@@ -163,13 +163,8 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
-            try {
-                text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
-                        urlEntities, hashtagEntities, mediaEntities);
-            } catch (JSONException jsone) {
-                throw new TwitterException(jsone);
-            }
-
+            text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
+                    urlEntities, hashtagEntities, mediaEntities);
             if (!json.isNull("current_user_retweet")) {
                 currentUserRetweetId = json.getJSONObject("current_user_retweet").getLong("id");
             }
