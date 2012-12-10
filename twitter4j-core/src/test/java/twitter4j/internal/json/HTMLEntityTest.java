@@ -63,6 +63,28 @@ public class HTMLEntityTest extends TestCase {
         assertEquals("http://t.co/d4G7MQ62", escaped.substring(media.getStart(), media.getEnd()));
 
     }
+    
+    public void testUnescapeAndSlideEntityIncdicesWithNullParameters() throws Exception {
+        String rawJSON = "{\"text\":\"@null &lt; #test &gt; &amp;\\u307b\\u3052\\u307b\\u3052 @t4j_news %&amp; http:\\/\\/t.co\\/HwbSpYFr http:\\/\\/t.co\\/d4G7MQ62\"}";
+        JSONObject json = new JSONObject(rawJSON);
+        String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"),
+                null, null, null, null);
+        assertEquals("@null < #test > &ほげほげ @t4j_news %& http://t.co/HwbSpYFr http://t.co/d4G7MQ62"
+                , escaped);
+    }
+    
+    public void testUnescapeAndSlideEntityIncdicesWithURLEntitiesOnly() throws Exception {
+        URLEntityJSONImpl t4jURL = new URLEntityJSONImpl(49, 69, "http://t.co/HwbSpYFr"
+                , "http://twitter4j.org/en/index.html#download", "twitter4j.org/en/index.html#\u2026");
+
+        String rawJSON = "{\"text\":\"@null &lt; #test &gt; &amp;\\u307b\\u3052\\u307b\\u3052 @t4j_news %&amp; http:\\/\\/t.co\\/HwbSpYFr http:\\/\\/t.co\\/d4G7MQ62\"}";
+        JSONObject json = new JSONObject(rawJSON);
+        String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"),
+                null, new URLEntity[]{t4jURL}, null, null);
+        assertEquals("@null < #test > &ほげほげ @t4j_news %& http://t.co/HwbSpYFr http://t.co/d4G7MQ62"
+                , escaped);
+        assertEquals("http://t.co/HwbSpYFr", escaped.substring(t4jURL.getStart(), t4jURL.getEnd()));
+    }
 
     public void testEscape() {
         String original = "<=% !>";
