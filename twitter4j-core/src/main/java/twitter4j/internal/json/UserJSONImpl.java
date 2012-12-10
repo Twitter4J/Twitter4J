@@ -126,8 +126,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             description = getRawString("description", json);
             if (description != null) {
                 description = HTMLEntity.unescapeAndSlideEntityIncdices(description, 
-                        new UserMentionEntity[0], descriptionURLEntities,
-                        new HashtagEntity[0], new MediaEntity[0]);
+                        null, descriptionURLEntities, null, null);
             }
             
             isContributorsEnabled = getBoolean("contributors_enabled", json);
