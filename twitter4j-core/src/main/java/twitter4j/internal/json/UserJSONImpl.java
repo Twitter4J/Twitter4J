@@ -41,7 +41,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private String screenName;
     private String location;
     private String description;
-    private URLEntity[] descriptionUrlEntities;
+    private URLEntity[] descriptionURLEntities;
     private boolean isContributorsEnabled;
     private String profileImageUrl;
     private String profileImageUrlHttps;
@@ -104,7 +104,6 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             name = getRawString("name", json);
             screenName = getRawString("screen_name", json);
             location = getRawString("location", json);
-            description = getRawString("description", json);
             
             // descriptionUrlEntities <=> entities/descriptions/urls[]
             if (!json.isNull("entities")) {
@@ -114,12 +113,21 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                     if (!descriptionEntitiesJSON.isNull("urls")) {
                         JSONArray urlsArray = descriptionEntitiesJSON.getJSONArray("urls");
                         int len = urlsArray.length();
-                        descriptionUrlEntities = new URLEntity[len];
+                        descriptionURLEntities = new URLEntity[len];
                         for (int i = 0; i < len; i++) {
-                            descriptionUrlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                            descriptionURLEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
                         }
                     }
                 }
+            }
+            
+            descriptionURLEntities = descriptionURLEntities == null ? new URLEntity[0] : descriptionURLEntities;
+            
+            description = getRawString("description", json);
+            if (description != null) {
+                description = HTMLEntity.unescapeAndSlideEntityIncdices(description, 
+                        new UserMentionEntity[0], descriptionURLEntities,
+                        new HashtagEntity[0], new MediaEntity[0]);
             }
             
             isContributorsEnabled = getBoolean("contributors_enabled", json);
@@ -530,8 +538,8 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
-    public URLEntity[] getDescriptionUrlEntities() {
-        return descriptionUrlEntities;
+    public URLEntity[] getDescriptionURLEntities() {
+        return descriptionURLEntities;
     }
     
     /*package*/

@@ -232,6 +232,6 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return URL entities for user description
      * @since Twitter4J 3.0.4
      */
-    URLEntity[] getDescriptionUrlEntities();
+    URLEntity[] getDescriptionURLEntities();
     
 }
