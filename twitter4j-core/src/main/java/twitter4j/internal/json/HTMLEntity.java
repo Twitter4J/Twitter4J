@@ -84,16 +84,33 @@ final class HTMLEntity {
     static String unescapeAndSlideEntityIncdices(String text, UserMentionEntity[] userMentionEntities,
                                                  URLEntity[] urlEntities, HashtagEntity[] hashtagEntities,
                                                  MediaEntity[] mediaEntities) {
-        EntityIndex[] entityIndexes = new EntityIndex[userMentionEntities.length + urlEntities.length +
-                hashtagEntities.length + mediaEntities.length];
+        
+        int entityIndexesLength = 0;
+        entityIndexesLength += userMentionEntities == null ? 0 : userMentionEntities.length;
+        entityIndexesLength += urlEntities == null ? 0 : urlEntities.length;
+        entityIndexesLength += hashtagEntities == null ? 0 : hashtagEntities.length;
+        entityIndexesLength += mediaEntities == null ? 0 : mediaEntities.length;
+
+        EntityIndex[] entityIndexes = new EntityIndex[entityIndexesLength];
         int copyStartIndex = 0;
-        System.arraycopy(userMentionEntities, 0, entityIndexes, copyStartIndex, userMentionEntities.length);
-        copyStartIndex += userMentionEntities.length;
-        System.arraycopy(urlEntities, 0, entityIndexes, copyStartIndex, urlEntities.length);
-        copyStartIndex += urlEntities.length;
-        System.arraycopy(hashtagEntities, 0, entityIndexes, copyStartIndex, hashtagEntities.length);
-        copyStartIndex += hashtagEntities.length;
-        System.arraycopy(mediaEntities, 0, entityIndexes, copyStartIndex, mediaEntities.length);
+        if (userMentionEntities != null) {
+            System.arraycopy(userMentionEntities, 0, entityIndexes, copyStartIndex, userMentionEntities.length);
+            copyStartIndex += userMentionEntities.length;
+        }
+        
+        if (urlEntities != null) {
+            System.arraycopy(urlEntities, 0, entityIndexes, copyStartIndex, urlEntities.length);
+            copyStartIndex += urlEntities.length;
+        }
+        
+        if (hashtagEntities != null) {
+            System.arraycopy(hashtagEntities, 0, entityIndexes, copyStartIndex, hashtagEntities.length);
+            copyStartIndex += hashtagEntities.length;
+        }
+        
+        if (mediaEntities != null) {
+            System.arraycopy(mediaEntities, 0, entityIndexes, copyStartIndex, mediaEntities.length);
+        }
 
         Arrays.sort(entityIndexes);
         boolean handlingStart = true;

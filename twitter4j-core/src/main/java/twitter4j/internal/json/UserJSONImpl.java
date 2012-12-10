@@ -41,6 +41,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private String screenName;
     private String location;
     private String description;
+    private URLEntity[] descriptionURLEntities;
     private boolean isContributorsEnabled;
     private String profileImageUrl;
     private String profileImageUrlHttps;
@@ -103,7 +104,31 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             name = getRawString("name", json);
             screenName = getRawString("screen_name", json);
             location = getRawString("location", json);
+            
+            // descriptionUrlEntities <=> entities/descriptions/urls[]
+            if (!json.isNull("entities")) {
+                JSONObject entitiesJSON = json.getJSONObject("entities");
+                if (!entitiesJSON.isNull("description")) {
+                    JSONObject descriptionEntitiesJSON = entitiesJSON.getJSONObject("description");
+                    if (!descriptionEntitiesJSON.isNull("urls")) {
+                        JSONArray urlsArray = descriptionEntitiesJSON.getJSONArray("urls");
+                        int len = urlsArray.length();
+                        descriptionURLEntities = new URLEntity[len];
+                        for (int i = 0; i < len; i++) {
+                            descriptionURLEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                        }
+                    }
+                }
+            }
+            
+            descriptionURLEntities = descriptionURLEntities == null ? new URLEntity[0] : descriptionURLEntities;
+            
             description = getRawString("description", json);
+            if (description != null) {
+                description = HTMLEntity.unescapeAndSlideEntityIncdices(description, 
+                        null, descriptionURLEntities, null, null);
+            }
+            
             isContributorsEnabled = getBoolean("contributors_enabled", json);
             profileImageUrl = getRawString("profile_image_url", json);
             profileImageUrlHttps = getRawString("profile_image_url_https", json);
@@ -508,6 +533,14 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         return isFollowRequestSent;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public URLEntity[] getDescriptionURLEntities() {
+        return descriptionURLEntities;
+    }
+    
     /*package*/
     static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -626,4 +659,5 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", isFollowRequestSent=" + isFollowRequestSent +
                 '}';
     }
+
 }
