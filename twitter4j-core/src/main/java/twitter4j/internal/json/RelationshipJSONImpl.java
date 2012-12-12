@@ -45,6 +45,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private final boolean sourceFollowedByTarget;
     private final long sourceUserId;
     private final String sourceUserScreenName;
+    private boolean wantRetweets;
 
     /*package*/ RelationshipJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
@@ -72,6 +73,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             sourceFollowingTarget = getBoolean("following", sourceJson);
             sourceFollowedByTarget = getBoolean("followed_by", sourceJson);
             sourceNotificationsEnabled = getBoolean("notifications_enabled", sourceJson);
+            wantRetweets = getBoolean("want_retweets", sourceJson);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
@@ -184,6 +186,14 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     @Override
     public boolean isSourceNotificationsEnabled() {
         return sourceNotificationsEnabled;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isWantRetweets() {
+        return wantRetweets;
     }
 
     @Override

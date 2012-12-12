@@ -489,7 +489,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 new HttpParameter[]{
                         new HttpParameter("user_id", userId),
                         new HttpParameter("device", enableDeviceNotification),
-                        new HttpParameter("retweets", enableDeviceNotification)
+                        new HttpParameter("retweets", retweets)
                 })));
     }
 
