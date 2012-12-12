@@ -192,7 +192,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
-    public boolean isWantRetweets() {
+    public boolean isSourceWantRetweets() {
         return wantRetweets;
     }
 

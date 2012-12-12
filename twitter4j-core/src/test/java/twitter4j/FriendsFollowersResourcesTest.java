@@ -219,8 +219,8 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
 
         Relationship updatedRelationship = twitter1.updateFriendship(id3.id, false, false);
         assertEquals(id3.screenName, updatedRelationship.getTargetUserScreenName());
-        assertEquals(false, updatedRelationship.isSourceNotificationsEnabled());
-        assertEquals(false, updatedRelationship.isWantRetweets());
+        assertFalse(updatedRelationship.isSourceNotificationsEnabled());
+        assertFalse(updatedRelationship.isSourceWantRetweets());
     }
 
     public void testIncomingOutgoingFriendships() throws Exception {

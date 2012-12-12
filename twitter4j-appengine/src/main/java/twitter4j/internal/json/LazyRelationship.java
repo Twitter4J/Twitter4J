@@ -159,8 +159,8 @@ final class LazyRelationship implements twitter4j.Relationship {
     }
 
     @Override
-    public boolean isWantRetweets() {
-        return getTarget().isWantRetweets();
+    public boolean isSourceWantRetweets() {
+        return getTarget().isSourceWantRetweets();
     }
 
 

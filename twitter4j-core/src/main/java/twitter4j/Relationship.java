@@ -103,6 +103,6 @@ public interface Relationship extends TwitterResponse, java.io.Serializable {
      * @return true if the retweets from the target user enabled
      * @since Twitter4J 3.0.3
      */
-    boolean isWantRetweets();
+    boolean isSourceWantRetweets();
 
 }
