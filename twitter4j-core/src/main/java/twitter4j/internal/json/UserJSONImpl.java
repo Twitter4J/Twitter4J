@@ -42,6 +42,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private String location;
     private String description;
     private URLEntity[] descriptionURLEntities;
+    private URLEntity urlEntity;
     private boolean isContributorsEnabled;
     private String profileImageUrl;
     private String profileImageUrlHttps;
@@ -106,22 +107,14 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             location = getRawString("location", json);
             
             // descriptionUrlEntities <=> entities/descriptions/urls[]
-            if (!json.isNull("entities")) {
-                JSONObject entitiesJSON = json.getJSONObject("entities");
-                if (!entitiesJSON.isNull("description")) {
-                    JSONObject descriptionEntitiesJSON = entitiesJSON.getJSONObject("description");
-                    if (!descriptionEntitiesJSON.isNull("urls")) {
-                        JSONArray urlsArray = descriptionEntitiesJSON.getJSONArray("urls");
-                        int len = urlsArray.length();
-                        descriptionURLEntities = new URLEntity[len];
-                        for (int i = 0; i < len; i++) {
-                            descriptionURLEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
-                        }
-                    }
-                }
-            }
-            
+            descriptionURLEntities = getURLEntitiesFromJSON(json, "description");
             descriptionURLEntities = descriptionURLEntities == null ? new URLEntity[0] : descriptionURLEntities;
+            
+            // urlEntity <=> entities/url/urls[]
+            URLEntity[] urlEntities = getURLEntitiesFromJSON(json, "url");
+            if (urlEntities != null && urlEntities.length > 0) {
+                urlEntity = urlEntities[0];
+            }
             
             description = getRawString("description", json);
             if (description != null) {
@@ -166,6 +159,35 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
+    }
+    
+    /**
+     * Get URL Entities from JSON Object.
+     * returns URLEntity array by entities/[category]/urls/url[]
+     * 
+     * @param json user json object
+     * @param category entities category. e.g. "description" or "url"
+     * @return URLEntity array by entities/[category]/urls/url[]
+     * @throws JSONException
+     * @throws TwitterException
+     */
+    private static URLEntity[] getURLEntitiesFromJSON(JSONObject json, String category) throws JSONException, TwitterException {
+        if (!json.isNull("entities")) {
+            JSONObject entitiesJSON = json.getJSONObject("entities");
+            if (!entitiesJSON.isNull(category)) {
+                JSONObject descriptionEntitiesJSON = entitiesJSON.getJSONObject(category);
+                if (!descriptionEntitiesJSON.isNull("urls")) {
+                    JSONArray urlsArray = descriptionEntitiesJSON.getJSONArray("urls");
+                    int len = urlsArray.length();
+                    URLEntity[] urlEntities = new URLEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
+                    }
+                    return urlEntities;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -539,6 +561,19 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     @Override
     public URLEntity[] getDescriptionURLEntities() {
         return descriptionURLEntities;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public URLEntity getURLEntity() {
+        if (urlEntity == null) {
+            String plainURL = url == null ? "" : url;
+            return new URLEntityJSONImpl(0, plainURL.length(), plainURL, plainURL, plainURL);
+        }
+        
+        return urlEntity;
     }
     
     /*package*/
