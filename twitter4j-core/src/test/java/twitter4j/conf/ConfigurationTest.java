@@ -398,6 +398,14 @@ public class ConfigurationTest extends TestCase {
         return that;
     }
 
+    public void testEnvironmentVariableBasedConfiguration() throws Exception{
+        Configuration conf = ConfigurationContext.getInstance();
+        // perquisite: export twitter4j.debug=true
+//        assertTrue(conf.isDebugEnabled());
+        // perquisite: export twitter4j.debug=false
+//        assertFalse(conf.isDebugEnabled());
+    }
+
     private void writeFile(String path, String content) throws IOException {
         File file = new File(path);
         file.delete();
