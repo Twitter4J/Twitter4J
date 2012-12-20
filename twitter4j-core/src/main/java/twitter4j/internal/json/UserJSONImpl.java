@@ -570,9 +570,8 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     public URLEntity getURLEntity() {
         if (urlEntity == null) {
             String plainURL = url == null ? "" : url;
-            return new URLEntityJSONImpl(0, plainURL.length(), plainURL, plainURL, plainURL);
+            urlEntity = new URLEntityJSONImpl(0, plainURL.length(), plainURL, plainURL, plainURL);
         }
-        
         return urlEntity;
     }
     
