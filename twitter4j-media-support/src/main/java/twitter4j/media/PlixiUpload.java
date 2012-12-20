@@ -56,9 +56,9 @@ class PlixiUpload extends AbstractImageUploadImpl {
 
     @Override
     protected void preUpload() throws TwitterException {
-        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_XML);
+        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_XML_V1);
 
-        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_XML);
+        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_XML_V1);
         headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
 
         if (null == apiKey) {

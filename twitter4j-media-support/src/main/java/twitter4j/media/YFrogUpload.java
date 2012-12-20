@@ -57,7 +57,7 @@ class YFrogUpload extends AbstractImageUploadImpl {
     @Override
     protected void preUpload() throws TwitterException {
         uploadUrl = "https://yfrog.com/api/upload";
-        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML);
+        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML_V1);
         Twitter tw = new TwitterFactory().getInstance(this.oauth);
 
         HttpParameter[] params = {
