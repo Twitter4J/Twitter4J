@@ -112,7 +112,18 @@ final class LazyUser implements twitter4j.User {
 	public URLEntity[] getDescriptionURLEntities() {
 		return getTarget().getDescriptionURLEntities();
 	}
-
+	
+    /**
+     * Returns URL entity for user's URL.
+     * 
+     * @return URL entity for user's URL.
+     * @since Twitter4J 3.0.3
+     */
+	@Override
+	public URLEntity getURLEntity() {
+		return getTarget().getURLEntity();
+	}
+	
     /**
      * Tests if the user is enabling contributors
      *
