@@ -267,12 +267,15 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     }
 
     private String toResizedURL(String originalURL, String sizeSuffix) {
-        if(null != originalURL){
+        if (null != originalURL) {
             int index = originalURL.lastIndexOf("_");
             int suffixIndex = originalURL.lastIndexOf(".");
-            return originalURL.substring(0,index)
-                    +sizeSuffix
-                    +originalURL.substring(suffixIndex);
+            int slashIndex = originalURL.lastIndexOf("/");
+            String url = originalURL.substring(0, index) + sizeSuffix;
+            if (suffixIndex > slashIndex) {
+                url += originalURL.substring(suffixIndex);
+            }
+            return url;
         }
         return null;
     }
