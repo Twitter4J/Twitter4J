@@ -132,6 +132,14 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.getInt;
      * {@inheritDoc}
      */
     @Override
+    public int getRemainingHits() {
+        return getRemaining();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getLimit() {
         return limit;
     }

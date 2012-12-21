@@ -25,15 +25,25 @@ package twitter4j;
 public interface RateLimitStatus extends java.io.Serializable {
     /**
      * Returns the remaining number of API requests available.<br>
-     * This value is identical to the &quot;X-RateLimit-Remaining&quot; response header.
+     * This value is identical to the &quot;X-Rate-Limit-Remaining&quot; response header.
      *
      * @return the remaining number of API requests available
+     * @since Twitter4J 3.0.0
      */
     int getRemaining();
 
     /**
+     * Returns the remaining number of API requests available.<br>
+     * This value is identical to the &quot;X-Rate-Limit-Remaining&quot; response header.
+     *
+     * @return the remaining number of API requests available
+     * @deprecated use {@link #getRemaining()} instead
+     */
+    int getRemainingHits();
+
+    /**
      * Returns the current limit in effect<br>
-     * This value is identical to the &quot;X-RateLimit-Limit&quot; response header.
+     * This value is identical to the &quot;X-Rate-Limit-Limit&quot; response header.
      *
      * @return the current limit in effect
      */

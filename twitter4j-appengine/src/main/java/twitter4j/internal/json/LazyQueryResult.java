@@ -116,4 +116,14 @@ final class LazyQueryResult implements twitter4j.QueryResult {
                 "target=" + getTarget() +
                 "}";
     }
+
+    @Override
+    public RateLimitStatus getRateLimitStatus() {
+        return getTarget().getRateLimitStatus();
+    }
+
+    @Override
+    public int getAccessLevel() {
+        return getTarget().getAccessLevel();
+    }
 }
