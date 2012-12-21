@@ -35,7 +35,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ final class QueryResultJSONImpl implements QueryResult, java.io.Serializable {
+/*package*/ final class QueryResultJSONImpl extends TwitterResponseImpl implements QueryResult, java.io.Serializable {
 
     private static final long serialVersionUID = -6781654399437121238L;
     private long sinceId;
@@ -66,6 +66,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     }
 
     /*package*/ QueryResultJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+        super(res);
         JSONObject json = res.asJSONObject();
         try {
             JSONObject searchMetaData = json.getJSONObject("search_metadata");

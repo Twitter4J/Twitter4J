@@ -64,6 +64,7 @@ public class SearchAPITest extends TwitterTestBase {
         String dateStr = format.format(new java.util.Date(System.currentTimeMillis() - 24 * 3600 * 1000));
         Query query = new Query(queryStr).until(dateStr);
         QueryResult queryResult = twitter1.search(query);
+        RateLimitStatus rateLimitStatus = queryResult.getRateLimitStatus();
         assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
         assertTrue(-1 != queryResult.getRefreshURL().indexOf(queryStr));
@@ -85,6 +86,7 @@ public class SearchAPITest extends TwitterTestBase {
 
         query = new Query("from:twit4j doesnothit");
         queryResult = twitter1.search(query);
+        assertEquals(queryResult.getRateLimitStatus().getRemaining() + 1, rateLimitStatus.getRemaining());
         assertEquals(0, queryResult.getSinceId());
 //        assertEquals(-1, queryResult.getMaxId());
 //        assertNull(queryResult.getRefreshUrl());
