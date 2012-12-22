@@ -608,6 +608,16 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return loggerFactory;
     }
 
+    @Override
+    public boolean isIncludeRTsEnabled() {
+        return includeRTsEnabled;
+    }
+
+    @Override
+    public boolean isIncludeEntitiesEnabled() {
+        return includeEntitiesEnabled;
+    }
+
     protected final void setLoggerFactory(String loggerImpl) {
         this.loggerFactory = loggerImpl;
     }

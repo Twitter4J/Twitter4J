@@ -123,4 +123,8 @@ public interface Configuration extends HttpClientConfiguration
     String getDispatcherImpl();
 
     String getLoggerFactory();
+
+    boolean isIncludeRTsEnabled();
+
+    boolean isIncludeEntitiesEnabled();
 }

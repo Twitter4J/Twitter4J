@@ -43,20 +43,34 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private final HttpParameter[] IMPLICIT_PARAMS;
     private final HttpParameter INCLUDE_MY_RETWEET;
 
+    private static final Map<Configuration, HttpParameter[]> implicitParamsMap = new HashMap<Configuration, HttpParameter[]>();
+    private static final Map<Configuration, String> implicitParamsStrMap = new HashMap<Configuration, String>();
+
     /*package*/
     TwitterImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
         INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", conf.isIncludeMyRetweetEnabled());
-        if (conf.getContributingTo() != -1L) {
-            IMPLICIT_PARAMS_STR = "include_entities=1&include_rts=1&contributingto=" + conf.getContributingTo();
-            IMPLICIT_PARAMS = new HttpParameter[]{new HttpParameter("include_entities", "1")
-                    , new HttpParameter("include_rts", "1")
-                    , new HttpParameter("contributingto", conf.getContributingTo())};
-        } else {
-            IMPLICIT_PARAMS_STR = "include_entities=1&include_rts=1";
-            IMPLICIT_PARAMS = new HttpParameter[]{new HttpParameter("include_entities", "1")
-                    , new HttpParameter("include_rts", "1")};
+        HttpParameter[] implicitParams = implicitParamsMap.get(conf);
+        String implicitParamsStr = implicitParamsStrMap.get(conf);
+        if (implicitParams == null) {
+            String includeEntities = conf.isIncludeEntitiesEnabled() ? "1" : "0";
+            String includeRTs = conf.isIncludeRTsEnabled() ? "1" : "0";
+            boolean contributorsEnabled = conf.getContributingTo() != -1L;
+            implicitParamsStr = "include_entities=" + includeEntities + "&include_rts=" + includeRTs
+                    + (contributorsEnabled ? "&contributingto=" + conf.getContributingTo() : "");
+            implicitParamsStrMap.put(conf, implicitParamsStr);
+
+            List<HttpParameter> params = new ArrayList<HttpParameter>();
+            params.add(new HttpParameter("include_entities", includeEntities));
+            params.add(new HttpParameter("include_rts", includeRTs));
+            if (contributorsEnabled) {
+                params.add(new HttpParameter("contributingto", conf.getContributingTo()));
+            }
+            implicitParams = params.toArray(new HttpParameter[params.size()]);
+            implicitParamsMap.put(conf, implicitParams);
         }
+        IMPLICIT_PARAMS = implicitParams;
+        IMPLICIT_PARAMS_STR = implicitParamsStr;
     }
 
     /* Timelines Resources */
