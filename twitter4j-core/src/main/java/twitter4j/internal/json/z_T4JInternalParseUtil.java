@@ -27,6 +27,7 @@ import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * A tiny parse utility class.
@@ -38,13 +39,6 @@ public final class z_T4JInternalParseUtil {
         // should never be instantiated
         throw new AssertionError();
     }
-
-    private static ThreadLocal<Map<String, SimpleDateFormat>> formatMap = new ThreadLocal<Map<String, SimpleDateFormat>>() {
-        @Override
-        protected Map<String, SimpleDateFormat> initialValue() {
-            return new HashMap<String, SimpleDateFormat>();
-        }
-    };
 
     static String getUnescapedString(String str, JSONObject json) {
         return HTMLEntity.unescape(getRawString(str, json));
@@ -102,17 +96,31 @@ public final class z_T4JInternalParseUtil {
         }
     }
 
-    public static Date getDate(String name, String format) throws TwitterException {
-        SimpleDateFormat sdf = formatMap.get().get(format);
+    private final static Map<String, LinkedBlockingQueue<SimpleDateFormat>> formatMapQueue = new HashMap<String,
+            LinkedBlockingQueue<SimpleDateFormat>>();
+
+    public static Date getDate(String dateString, String format) throws TwitterException {
+        LinkedBlockingQueue<SimpleDateFormat> simpleDateFormats = formatMapQueue.get(format);
+        if(simpleDateFormats == null){
+            simpleDateFormats = new LinkedBlockingQueue<SimpleDateFormat>();
+            formatMapQueue.put(format, simpleDateFormats);
+        }
+        SimpleDateFormat sdf = simpleDateFormats.poll();
         if (null == sdf) {
             sdf = new SimpleDateFormat(format, Locale.US);
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-            formatMap.get().put(format, sdf);
         }
         try {
-            return sdf.parse(name);
+            return sdf.parse(dateString);
         } catch (ParseException pe) {
-            throw new TwitterException("Unexpected date format(" + name + ") returned from twitter.com", pe);
+            throw new TwitterException("Unexpected date format(" + dateString + ") returned from twitter.com", pe);
+        }finally {
+            try {
+                simpleDateFormats.put(sdf);
+            } catch (InterruptedException ignore) {
+                // the size of LinkedBlockingQueue is Integer.MAX by default.
+                // there is no need to concern about this situation
+            }
         }
     }
 
