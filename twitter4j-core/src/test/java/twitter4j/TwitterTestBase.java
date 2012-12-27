@@ -31,7 +31,7 @@ public class TwitterTestBase extends TestCase {
 
     protected Twitter twitter1, twitter2, twitter3,
             twitterAPIBestFriend1, twitterAPIBestFriend2,
-            rwPrivateMessage;
+            rwPrivateMessage, readonly;
     protected Properties p = new Properties();
 
     protected String numberId, numberPass, followsOneWay;
@@ -99,6 +99,8 @@ public class TwitterTestBase extends TestCase {
         twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
 
         followsOneWay = p.getProperty("followsOneWay");
+
+        readonly = new TwitterFactory(new PropertyConfiguration(p, "/readonly")).getInstance();
     }
 
     public void testDummy(){
