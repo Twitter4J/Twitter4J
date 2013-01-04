@@ -30,7 +30,7 @@ public interface ListsResources {
 as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/list">GET lists/list | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     ResponseList<UserList> getUserLists(String listOwnerScreenName)
@@ -43,7 +43,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @param listOwnerUserId The id of the list owner
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/list">GET lists/list | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
     ResponseList<UserList> getUserLists(long listOwnerUserId)
