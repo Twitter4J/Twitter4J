@@ -36,25 +36,13 @@ import static twitter4j.internal.http.RequestMethod.POST;
 public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
 
-    private static boolean isJDK14orEarlier = false;
-
     private static final long serialVersionUID = -8819171414069621503L;
 
     static {
-        try {
-            String versionStr = System.getProperty("java.specification.version");
-            if (versionStr != null) {
-                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
-            }
-            if (ConfigurationContext.getInstance().isDalvik()) {
-                isJDK14orEarlier = false;
-                // quick and dirty workaround for TFJ-296
-                // it must be an Android/Dalvik/Harmony side issue!!!!
-                System.setProperty("http.keepAlive", "false");
-            }
-        } catch (SecurityException ignore) {
-            // Unsigned applets are not allowed to access System properties
-            isJDK14orEarlier = true;
+        if (ConfigurationContext.getInstance().isDalvik()) {
+            // quick and dirty workaround for TFJ-296
+            // it must be an Android/Dalvik/Harmony side issue!!!!
+            System.setProperty("http.keepAlive", "false");
         }
     }
 
@@ -64,9 +52,6 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
 
     public HttpClientImpl(HttpClientConfiguration conf) {
         super(conf);
-        if (isProxyConfigured() && isJDK14orEarlier) {
-            logger.warn("HTTP Proxy is not supported on JDK1.4 or earlier. Try twitter4j-httpclient-supoprt artifact");
-        }
     }
 
     private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<HttpClientConfiguration, HttpClient>(1);
@@ -234,7 +219,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
 
     protected HttpURLConnection getConnection(String url) throws IOException {
         HttpURLConnection con;
-        if (isProxyConfigured() && !isJDK14orEarlier) {
+        if (isProxyConfigured()) {
             if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
@@ -263,10 +248,10 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
         } else {
             con = (HttpURLConnection) new URL(url).openConnection();
         }
-        if (CONF.getHttpConnectionTimeout() > 0 && !isJDK14orEarlier) {
+        if (CONF.getHttpConnectionTimeout() > 0) {
             con.setConnectTimeout(CONF.getHttpConnectionTimeout());
         }
-        if (CONF.getHttpReadTimeout() > 0 && !isJDK14orEarlier) {
+        if (CONF.getHttpReadTimeout() > 0) {
             con.setReadTimeout(CONF.getHttpReadTimeout());
         }
         con.setInstanceFollowRedirects(false);
