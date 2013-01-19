@@ -47,6 +47,7 @@ marr-masaaki <marr fiveflavors at gmail.com> @marr
 matsumo <matsumo at ce.ns0.it>
 Max Penet <m at qbits.cc> @mpenet
 Mocel <docel77 at gmail.com> @Mocel
+Myyk Seok <myyk.seok at gmail.com> @myyk
 Naoya Hatayama <applepedlar at gmail.com> @ApplePedlar
 Ngoc Dao <ngocdaothanh@gmail.com> @ngocdaothanh
 Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
