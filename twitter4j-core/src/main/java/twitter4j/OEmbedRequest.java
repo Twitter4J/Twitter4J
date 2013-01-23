@@ -39,7 +39,7 @@ public final class OEmbedRequest implements Serializable {
     private String[] related = {};
     private String lang;
 
-    OEmbedRequest(long statusId, String url) {
+    public OEmbedRequest(long statusId, String url) {
         this.statusId = statusId;
         this.url = url;
     }
