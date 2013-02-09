@@ -173,6 +173,17 @@ final class LazyStatus implements twitter4j.Status {
 
 
     /**
+     * Test if the status is retweeted
+     *
+     * @return true if retweeted
+     * @since Twitter4J 3.0.4
+     */
+    public boolean isRetweeted() {
+        return getTarget().isRetweeted();
+    }
+
+
+    /**
      * Return the user associated with the status.<br>
      * This can be null if the instance if from User.getStatus().
      *
