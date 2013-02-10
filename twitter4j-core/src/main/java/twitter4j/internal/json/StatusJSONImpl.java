@@ -46,6 +46,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private long inReplyToStatusId;
     private long inReplyToUserId;
     private boolean isFavorited;
+    private boolean isRetweeted;
     private String inReplyToScreenName;
     private GeoLocation geoLocation = null;
     private Place place = null;
@@ -97,6 +98,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         inReplyToStatusId = getLong("in_reply_to_status_id", json);
         inReplyToUserId = getLong("in_reply_to_user_id", json);
         isFavorited = getBoolean("favorited", json);
+        isRetweeted = getBoolean("retweeted", json);
         inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
         retweetCount = getLong("retweet_count", json);
         isPossiblySensitive = getBoolean("possibly_sensitive", json);
@@ -281,6 +283,13 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         return isFavorited;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isRetweeted() {
+        return isRetweeted;
+    }
 
     private User user = null;
 
@@ -425,6 +434,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", inReplyToStatusId=" + inReplyToStatusId +
                 ", inReplyToUserId=" + inReplyToUserId +
                 ", isFavorited=" + isFavorited +
+                ", isRetweeted=" + isRetweeted +
                 ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
                 ", geoLocation=" + geoLocation +
                 ", place=" + place +
