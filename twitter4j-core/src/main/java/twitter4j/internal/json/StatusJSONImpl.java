@@ -51,6 +51,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private Place place = null;
     private long retweetCount;
     private boolean isPossiblySensitive;
+    private String isoLanguageCode;
 
     private long[] contributorsIDs;
 
@@ -157,6 +158,13 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                     for (int i = 0; i < len; i++) {
                         mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
                     }
+                }
+            }
+            if (!json.isNull("metadata")) {
+                JSONObject metadata = json.getJSONObject("metadata");
+                if (!metadata.isNull("iso_language_code")) {
+                    isoLanguageCode = getUnescapedString("iso_language_code", metadata);
+
                 }
             }
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
@@ -372,6 +380,13 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         return mediaEntities;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public String getIsoLanguageCode() {
+        return isoLanguageCode;
+    }
+
     /*package*/
     static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -430,6 +445,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", place=" + place +
                 ", retweetCount=" + retweetCount +
                 ", isPossiblySensitive=" + isPossiblySensitive +
+                ", isoLanguageCode=" + isoLanguageCode +
                 ", contributorsIDs=" + contributorsIDs +
                 ", retweetedStatus=" + retweetedStatus +
                 ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
