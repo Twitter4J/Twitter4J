@@ -170,4 +170,10 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * @since Twitter4J 3.0.0
      */
     boolean isPossiblySensitive();
+
+    /**
+     * Returns the iso language code set by the Twitter API (best-effort).
+     * @return two-letter iso language code
+     */
+    String getIsoLanguageCode();
 }
