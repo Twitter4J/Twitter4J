@@ -41,6 +41,7 @@ public final class FilterQuery implements java.io.Serializable {
         this.follow = null;
         this.track = null;
         this.locations = null;
+        this.language = null;
     }
 
     /**
@@ -96,6 +97,22 @@ public final class FilterQuery implements java.io.Serializable {
     }
 
     /**
+     * Creates a new FilterQuery
+     *
+     * @param count     Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @param follow    Specifies the users, by ID, to receive public tweets from.
+     * @param track     Specifies keywords to track.
+     * @param locations Specifies the locations to track. 2D array
+     * @param language  Specifies the tweets language of the stream
+     */
+    public FilterQuery(int count, long[] follow, String[] track, double[][] locations, String[] language) {
+        this.count = count;
+        this.follow = follow;
+        this.track = track;
+        this.language = language;
+    }
+
+    /**
      * Sets count
      *
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
@@ -139,6 +156,18 @@ public final class FilterQuery implements java.io.Serializable {
         return this;
     }
 
+    /**
+     * Sets language
+     *
+     * @param language Specifies languages to track.
+     * @return this instance
+     */
+    public FilterQuery language(String[] language) {
+        this.language = language;
+        return this;
+    }
+
+
     /*package*/ HttpParameter[] asHttpParameterArray(HttpParameter stallWarningsParam) {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
 
@@ -154,6 +183,10 @@ public final class FilterQuery implements java.io.Serializable {
         if (locations != null && locations.length > 0) {
             params.add(new HttpParameter("locations"
                     , toLocationsString(locations)));
+        }
+        if (language != null && language.length > 0) {
+            params.add(new HttpParameter("language"
+                    , z_T4JInternalStringUtil.join(language)));
         }
         params.add(stallWarningsParam);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
@@ -183,6 +216,7 @@ public final class FilterQuery implements java.io.Serializable {
         if (count != that.count) return false;
         if (!Arrays.equals(follow, that.follow)) return false;
         if (!Arrays.equals(track, that.track)) return false;
+        if (!Arrays.equals(language, that.language)) return false;
 
         return true;
     }
@@ -192,6 +226,7 @@ public final class FilterQuery implements java.io.Serializable {
         int result = count;
         result = 31 * result + (follow != null ? Arrays.hashCode(follow) : 0);
         result = 31 * result + (track != null ? Arrays.hashCode(track) : 0);
+        result = 31 * result + (language != null ? Arrays.hashCode(language) : 0);
         return result;
     }
 
@@ -202,6 +237,7 @@ public final class FilterQuery implements java.io.Serializable {
                 ", follow=" + Arrays.toString(follow) +
                 ", track=" + (track == null ? null : Arrays.asList(track)) +
                 ", locations=" + (locations == null ? null : Arrays.asList(locations)) +
+                ", language=" + (language == null ? null : Arrays.asList(language)) +
                 '}';
     }
 }
