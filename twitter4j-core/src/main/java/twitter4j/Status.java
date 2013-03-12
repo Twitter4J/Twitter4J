@@ -113,6 +113,14 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     boolean isFavorited();
 
     /**
+     * Test if the status is retweeted
+     *
+     * @return true if retweeted
+     * @since Twitter4J 3.0.4
+     */
+    boolean isRetweeted();
+
+    /**
      * Return the user associated with the status.<br>
      * This can be null if the instance if from User.getStatus().
      *
