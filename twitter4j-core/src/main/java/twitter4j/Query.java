@@ -41,6 +41,7 @@ public final class Query implements java.io.Serializable {
     private String geocode = null;
     private String until = null;
     private String resultType = null;
+    private boolean includeEntities = false;
     private static final long serialVersionUID = -8108425822233599808L;
     private String nextPageQuery = null;
 
@@ -392,6 +393,38 @@ public final class Query implements java.io.Serializable {
         return this;
     }
 
+    /**
+     * Returns includeEntities
+     *
+     * @return the includeEntities
+     * @since Twitter4J 3.0.4
+     */
+    public boolean getIncludeEntities() {
+        return includeEntities;
+    }
+
+    /**
+     * If specified, returned tweet(s) include entities information.
+     *
+     * @param includeEntities
+     * @since Twitter4J 3.0.4
+     */
+    public void setIncludeEntities(boolean includeEntities) {
+        this.includeEntities = includeEntities;
+    }
+
+    /**
+     * If specified, returned tweet(s) include entities information.
+     *
+     * @param includeEntities
+     * @return the instance
+     * @since Twitter4J 3.0.4
+     */
+    public Query includeEntities(boolean includeEntities) {
+        setIncludeEntities(includeEntities);
+        return this;
+    }
+
     private static HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
@@ -406,6 +439,7 @@ public final class Query implements java.io.Serializable {
         appendParameter("geocode", geocode, params);
         appendParameter("until", until, params);
         appendParameter("result_type", resultType, params);
+        appendParameter("include_entities", Boolean.toString(includeEntities), params);
         params.add(WITH_TWITTER_USER_ID);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
@@ -444,6 +478,7 @@ public final class Query implements java.io.Serializable {
             return false;
         if (query != null ? !query.equals(query1.query) : query1.query != null) return false;
         if (resultType != null ? !resultType.equals(query1.resultType) : query1.resultType != null) return false;
+        if (includeEntities != query1.includeEntities) return false;
         if (since != null ? !since.equals(query1.since) : query1.since != null) return false;
         if (until != null ? !until.equals(query1.until) : query1.until != null) return false;
 
@@ -462,6 +497,7 @@ public final class Query implements java.io.Serializable {
         result = 31 * result + (geocode != null ? geocode.hashCode() : 0);
         result = 31 * result + (until != null ? until.hashCode() : 0);
         result = 31 * result + (resultType != null ? resultType.hashCode() : 0);
+        result = 31 * result + Boolean.valueOf(includeEntities).hashCode();
         result = 31 * result + (nextPageQuery != null ? nextPageQuery.hashCode() : 0);
         return result;
     }
@@ -479,6 +515,7 @@ public final class Query implements java.io.Serializable {
                 ", geocode='" + geocode + '\'' +
                 ", until='" + until + '\'' +
                 ", resultType='" + resultType + '\'' +
+                ", includeEntities='" + includeEntities + '\'' +
                 ", nextPageQuery='" + nextPageQuery + '\'' +
                 '}';
     }
