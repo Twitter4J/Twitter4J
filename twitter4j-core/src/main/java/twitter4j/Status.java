@@ -121,6 +121,11 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     boolean isRetweeted();
 
     /**
+     * Indicates approximately how many times this Tweet has been "favorited" by Twitter users. 
+     */
+    long getFavoriteCount();
+    
+    /**
      * Return the user associated with the status.<br>
      * This can be null if the instance if from User.getStatus().
      *
