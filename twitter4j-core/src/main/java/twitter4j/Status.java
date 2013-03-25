@@ -122,6 +122,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
 
     /**
      * Indicates approximately how many times this Tweet has been "favorited" by Twitter users. 
+     * @return the favorite count
      */
     long getFavoriteCount();
     
