@@ -84,13 +84,15 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     /*package*/
     static GeoLocation createGeoLocation(JSONObject json) throws TwitterException {
         try {
-            if (!json.isNull("geo")) {
-                String coordinates = json.getJSONObject("geo")
+            if (!json.isNull("coordinates")) {
+                String coordinates = json.getJSONObject("coordinates")
                         .getString("coordinates");
+                String type = json.getJSONObject("coordinates")
+                        .getString("type");
                 coordinates = coordinates.substring(1, coordinates.length() - 1);
                 String[] point = z_T4JInternalStringUtil.split(coordinates, ",");
                 return new GeoLocation(Double.parseDouble(point[0]),
-                        Double.parseDouble(point[1]));
+                        Double.parseDouble(point[1]),type);
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
