@@ -32,6 +32,7 @@ public final class FilterQuery implements java.io.Serializable {
     private long[] follow;
     private String[] track;
     private double[][] locations;
+    private String[] language;
 
     /**
      * Creates a new FilterQuery
