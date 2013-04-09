@@ -296,7 +296,6 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     /**
      * {@inheritDoc}
      */
-<<<<<<< Upstream, based on master
     @Override
     public boolean isRetweeted() {
         return isRetweeted;
@@ -305,8 +304,6 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     /**
      * {@inheritDoc}
      */
-=======
->>>>>>> e8cdfdf add comments
     @Override
     public long getFavoriteCount() {
         return favoriteCount;
