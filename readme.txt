@@ -52,6 +52,7 @@ Myyk Seok <myyk.seok at gmail.com> @myyk
 Naoya Hatayama <applepedlar at gmail.com> @ApplePedlar
 Ngoc Dao <ngocdaothanh@gmail.com> @ngocdaothanh
 Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
+Norbert Bartels <n.bartels at phpmonkeys.de>
 Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
 Perry Sakkaris <psakkaris at gmail.com>
