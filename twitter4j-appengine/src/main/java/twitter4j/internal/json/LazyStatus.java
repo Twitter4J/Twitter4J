@@ -171,7 +171,14 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().isFavorited();
     }
 
-
+    /**
+     * Indicates approximately how many times this Tweet has been "favorited" by Twitter users. 
+     * @return the favorite count
+     */
+    public long getFavoriteCount() {
+        return getTarget().getFavoriteCount();
+    }
+    
     /**
      * Test if the status is retweeted
      *
