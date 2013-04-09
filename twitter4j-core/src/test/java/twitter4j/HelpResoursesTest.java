@@ -44,9 +44,9 @@ public class HelpResoursesTest extends TwitterTestBase {
 
         TwitterAPIConfiguration conf = twitter1.getAPIConfiguration();
         assertEquals(3145728, conf.getPhotoSizeLimit());
-        assertEquals(21, conf.getCharactersReservedPerMedia());
-        assertEquals(20, conf.getShortURLLength());
-        assertEquals(21, conf.getShortURLLengthHttps());
+        assertEquals(23, conf.getCharactersReservedPerMedia());
+        assertEquals(22, conf.getShortURLLength());
+        assertEquals(23, conf.getShortURLLengthHttps());
         assertEquals(4, conf.getPhotoSizes().size());
         assertTrue(20 < conf.getNonUsernamePaths().length);
         assertEquals(1, conf.getMaxMediaPerUpload());
