@@ -2557,36 +2557,39 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
 
 
     /* Saved Searches Resources */
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void getSavedSearches() {
-            getDispatcher().invokeLater(new AsyncTask(SAVED_SEARCHES, listeners) {
-                @Override
-                public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                    ResponseList<SavedSearch> savedSearches = twitter.getSavedSearches();
-                    for (TwitterListener listener : listeners) {
-                        try {
-                            listener.gotSavedSearches(savedSearches);                        } catch (Exception ignore) {
-                        }
-                    }
-                }
-            });
-        }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void showSavedSearch(final int id){
+    public void getSavedSearches() {
+        getDispatcher().invokeLater(new AsyncTask(SAVED_SEARCHES, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<SavedSearch> savedSearches = twitter.getSavedSearches();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotSavedSearches(savedSearches);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showSavedSearch(final int id) {
         getDispatcher().invokeLater(new AsyncTask(SAVED_SEARCH, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 SavedSearch savedSearch = twitter.showSavedSearch(id);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.gotSavedSearch(savedSearch);                        } catch (Exception ignore) {
+                        listener.gotSavedSearch(savedSearch);
+                    } catch (Exception ignore) {
                     }
                 }
             }
@@ -2597,14 +2600,15 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void createSavedSearch(final String query){
+    public void createSavedSearch(final String query) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_SAVED_SEARCH, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 SavedSearch savedSearch = twitter.createSavedSearch(query);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.createdSavedSearch(savedSearch);                        } catch (Exception ignore) {
+                        listener.createdSavedSearch(savedSearch);
+                    } catch (Exception ignore) {
                     }
                 }
             }
@@ -2615,14 +2619,15 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void destroySavedSearch(final int id){
+    public void destroySavedSearch(final int id) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_SAVED_SEARCH, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 SavedSearch savedSearch = twitter.destroySavedSearch(id);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.destroyedSavedSearch(savedSearch);                        } catch (Exception ignore) {
+                        listener.destroyedSavedSearch(savedSearch);
+                    } catch (Exception ignore) {
                     }
                 }
             }
@@ -2630,6 +2635,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     /* Places & Geo Resources */
+
     /**
      * {@inheritDoc}
      */
@@ -2796,6 +2802,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     /* Spam Reporting Resources */
+
     /**
      * {@inheritDoc}
      */
@@ -2835,6 +2842,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     /* Help Resources */
+
     /**
      * {@inheritDoc}
      */
@@ -2967,6 +2975,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     // implementation for AsyncOAuthSupport
+
     /**
      * {@inheritDoc}
      */
