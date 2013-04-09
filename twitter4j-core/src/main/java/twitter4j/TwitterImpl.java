@@ -60,11 +60,14 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                     + (contributorsEnabled ? "&contributingto=" + conf.getContributingTo() : "");
             implicitParamsStrMap.put(conf, implicitParamsStr);
 
-            List<HttpParameter> params = new ArrayList<HttpParameter>();
+            List<HttpParameter> params = new ArrayList<HttpParameter>(4);
             params.add(new HttpParameter("include_entities", includeEntities));
             params.add(new HttpParameter("include_rts", includeRTs));
             if (contributorsEnabled) {
                 params.add(new HttpParameter("contributingto", conf.getContributingTo()));
+            }
+            if (conf.isTrimUserEnabled()) {
+            	params.add(new HttpParameter("trim_user", "1"));
             }
             implicitParams = params.toArray(new HttpParameter[params.size()]);
             implicitParamsMap.put(conf, implicitParams);

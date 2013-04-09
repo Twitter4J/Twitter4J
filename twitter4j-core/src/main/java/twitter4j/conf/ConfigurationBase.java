@@ -16,13 +16,17 @@
 
 package twitter4j.conf;
 
+import java.io.ObjectStreamException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 import twitter4j.Version;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
-
-import java.io.ObjectStreamException;
-import java.lang.reflect.Field;
-import java.util.*;
 
 /**
  * Configuration base class with default settings.
@@ -75,6 +79,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private boolean includeEntitiesEnabled = true;
     
     private boolean includeMyRetweetEnabled = true;
+    
+    private boolean trimUserEnabled = false;
 
     private boolean jsonStoreEnabled;
 
@@ -637,6 +643,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 	public void setIncludeMyRetweetEnabled(boolean enabled) {
 		this.includeMyRetweetEnabled = enabled;
 	}
+	
+	public boolean isTrimUserEnabled() {
+		return this.trimUserEnabled;
+	}
+
+	public void setTrimUserEnabled(boolean enabled) {
+		this.trimUserEnabled = enabled;
+	}
 
 	public boolean isJSONStoreEnabled() {
         return this.jsonStoreEnabled;
@@ -738,6 +752,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
         if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
         if (includeMyRetweetEnabled != that.includeMyRetweetEnabled) return false;
+        if (trimUserEnabled != that.trimUserEnabled) return false;
         if (includeRTsEnabled != that.includeRTsEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (maxTotalConnections != that.maxTotalConnections) return false;
@@ -836,6 +851,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (includeRTsEnabled ? 1 : 0);
         result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
         result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
+        result = 31 * result + (trimUserEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
         result = 31 * result + (mbeanEnabled ? 1 : 0);
         result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
@@ -891,6 +907,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", includeRTsEnabled=" + includeRTsEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
                 ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
+                ", trimUserEnabled=" + trimUserEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
                 ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +
