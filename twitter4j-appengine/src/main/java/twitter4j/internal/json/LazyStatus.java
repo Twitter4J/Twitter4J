@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package twitter4j.internal.json;
 
 import twitter4j.*;
@@ -29,14 +28,15 @@ import java.util.Date;
 @Generated(
         value = "generate-lazy-objects.sh",
         comments = "This is Tool Generated Code. DO NOT EDIT",
-        date = "2011-07-13"
-)
+        date = "2011-07-13")
 final class LazyStatus implements twitter4j.Status {
+
     private twitter4j.internal.http.HttpResponse res;
     private z_T4JInternalFactory factory;
     private Status target = null;
 
-    LazyStatus(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyStatus(twitter4j.internal.http.HttpResponse res,
+            z_T4JInternalFactory factory) {
         this.res = res;
         this.factory = factory;
     }
@@ -58,11 +58,9 @@ final class LazyStatus implements twitter4j.Status {
      * @return created_at
      * @since Twitter4J 1.1.0
      */
-
     public Date getCreatedAt() {
         return getTarget().getCreatedAt();
     }
-
 
     /**
      * Returns the id of the status
@@ -73,7 +71,6 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getId();
     }
 
-
     /**
      * Returns the text of the status
      *
@@ -82,7 +79,6 @@ final class LazyStatus implements twitter4j.Status {
     public String getText() {
         return getTarget().getText();
     }
-
 
     /**
      * Returns the source
@@ -94,7 +90,6 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getSource();
     }
 
-
     /**
      * Test if the status is truncated
      *
@@ -104,7 +99,6 @@ final class LazyStatus implements twitter4j.Status {
     public boolean isTruncated() {
         return getTarget().isTruncated();
     }
-
 
     /**
      * Returns the in_reply_tostatus_id
@@ -116,7 +110,6 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getInReplyToStatusId();
     }
 
-
     /**
      * Returns the in_reply_user_id
      *
@@ -126,7 +119,6 @@ final class LazyStatus implements twitter4j.Status {
     public long getInReplyToUserId() {
         return getTarget().getInReplyToUserId();
     }
-
 
     /**
      * Returns the in_reply_to_screen_name
@@ -138,17 +130,16 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getInReplyToScreenName();
     }
 
-
     /**
      * Returns The location that this tweet refers to if available.
      *
-     * @return returns The location that this tweet refers to if available (can be null)
+     * @return returns The location that this tweet refers to if available (can
+     * be null)
      * @since Twitter4J 2.1.0
      */
     public GeoLocation getGeoLocation() {
         return getTarget().getGeoLocation();
     }
-
 
     /**
      * Returns the place attached to this status
@@ -160,7 +151,6 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getPlace();
     }
 
-
     /**
      * Test if the status is favorited
      *
@@ -169,6 +159,16 @@ final class LazyStatus implements twitter4j.Status {
      */
     public boolean isFavorited() {
         return getTarget().isFavorited();
+    }
+
+    /**
+     * Test if the status is retweeted
+     *
+     * @return true if retweeted
+     * @since Twitter4J 3.0.4
+     */
+    public boolean isRetweeted() {
+        return getTarget().isRetweeted();
     }
 
 
@@ -193,14 +193,12 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getUser();
     }
 
-
     /**
      * @since Twitter4J 2.0.10
      */
     public boolean isRetweet() {
         return getTarget().isRetweet();
     }
-
 
     /**
      * @since Twitter4J 2.1.0
@@ -209,9 +207,9 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getRetweetedStatus();
     }
 
-
     /**
-     * Returns an array of contributors, or null if no contributor is associated with this status.
+     * Returns an array of contributors, or null if no contributor is associated
+     * with this status.
      *
      * @since Twitter4J 2.2.3
      */
@@ -219,10 +217,9 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getContributors();
     }
 
-
     /**
-     * Returns the number of times this tweet has been retweeted, or -1 when the tweet was
-     * created before this feature was enabled.
+     * Returns the number of times this tweet has been retweeted, or -1 when the
+     * tweet was created before this feature was enabled.
      *
      * @return the retweet count.
      */
@@ -230,10 +227,9 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getRetweetCount();
     }
 
-
     /**
-     * Returns true if the authenticating user has retweeted this tweet, or false when the tweet was
-     * created before this feature was enabled.
+     * Returns true if the authenticating user has retweeted this tweet, or
+     * false when the tweet was created before this feature was enabled.
      *
      * @return whether the authenticating user has retweeted this tweet.
      * @since Twitter4J 2.1.4
@@ -241,16 +237,16 @@ final class LazyStatus implements twitter4j.Status {
     public boolean isRetweetedByMe() {
         return getTarget().isRetweetedByMe();
     }
-    
+
     /**
-     * Returns the authenticating user's retweet's id of this tweet, or -1L when the tweet was created
-     * before this feature was enabled.
+     * Returns the authenticating user's retweet's id of this tweet, or -1L when
+     * the tweet was created before this feature was enabled.
      *
      * @return the authenticating user's retweet's id of this tweet
      * @since Twitter4J 3.0.1
      */
     public long getCurrentUserRetweetId() {
-    	return getTarget().getCurrentUserRetweetId();
+        return getTarget().getCurrentUserRetweetId();
     }
 
     @Override
@@ -258,9 +254,9 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().isPossiblySensitive();
     }
 
-
     /**
-     * Returns an array of user mentions in the tweet, or null if no users were mentioned.
+     * Returns an array of user mentions in the tweet, or null if no users were
+     * mentioned.
      *
      * @return An array of user mention entities in the tweet.
      * @since Twitter4J 2.1.9
@@ -269,9 +265,9 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getUserMentionEntities();
     }
 
-
     /**
-     * Returns an array if URLEntity mentioned in the tweet, or null if no URLs were mentioned.
+     * Returns an array if URLEntity mentioned in the tweet, or null if no URLs
+     * were mentioned.
      *
      * @return An array of URLEntity mentioned in the tweet.
      * @since Twitter4J 2.1.9
@@ -280,9 +276,9 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getURLEntities();
     }
 
-
     /**
-     * Returns an array if hashtag mentioned in the tweet, or null if no hashtag were mentioned.
+     * Returns an array if hashtag mentioned in the tweet, or null if no hashtag
+     * were mentioned.
      *
      * @return An array of Hashtag mentioned in the tweet.
      * @since Twitter4J 2.1.9
@@ -292,7 +288,8 @@ final class LazyStatus implements twitter4j.Status {
     }
 
     /**
-     * Returns an array of MediaEntities if medias are available in the tweet, or null if no media is included in the tweet.
+     * Returns an array of MediaEntities if medias are available in the tweet,
+     * or null if no media is included in the tweet.
      *
      * @return an array of MediaEntities.
      * @since Twitter4J 2.2.3
@@ -314,9 +311,18 @@ final class LazyStatus implements twitter4j.Status {
     }
 
     @Override
+    public String getIsoLanguageCode() {
+        return getTarget().getIsoLanguageCode();
+    }
+
+    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Status)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Status)) {
+            return false;
+        }
         return getTarget().equals(o);
     }
 
@@ -327,8 +333,9 @@ final class LazyStatus implements twitter4j.Status {
 
     @Override
     public String toString() {
-        return "LazyStatus{" +
-                "target=" + getTarget() +
-                "}";
+        return "LazyStatus{"
+                + "target=" + getTarget()
+                + "}";
     }
+
 }
