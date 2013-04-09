@@ -198,14 +198,14 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     protected final void ensureAuthorizationEnabled() {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(
-                    "Authentication credentials are missing. See http://twitter4j.org/configuration.html for the detail.");
+                    "Authentication credentials are missing. See http://twitter4j.org/en/configuration.html for the detail.");
         }
     }
 
     protected final void ensureOAuthEnabled() {
         if (!(auth instanceof OAuthAuthorization)) {
             throw new IllegalStateException(
-                    "OAuth required. Authentication credentials are missing. See http://twitter4j.org/configuration.html for the detail.");
+                    "OAuth required. Authentication credentials are missing. See http://twitter4j.org/en/configuration.html for the detail.");
         }
     }
 

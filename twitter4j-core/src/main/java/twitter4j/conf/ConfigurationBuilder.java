@@ -246,6 +246,12 @@ public final class ConfigurationBuilder {
         configurationBean.setIncludeEntitiesEnbled(enabled);
         return this;
     }
+    
+    public ConfigurationBuilder setTrimUserEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setTrimUserEnabled(enabled);
+        return this;
+    }
 
     public ConfigurationBuilder setIncludeMyRetweetEnabled(boolean enabled) {
         checkNotBuilt();
