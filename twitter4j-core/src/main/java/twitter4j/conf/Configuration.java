@@ -127,4 +127,6 @@ public interface Configuration extends HttpClientConfiguration
     boolean isIncludeRTsEnabled();
 
     boolean isIncludeEntitiesEnabled();
+    
+    boolean isTrimUserEnabled();
 }
