@@ -65,12 +65,12 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
     public void testStatusMethods() throws Exception {
         String dateStr = new java.util.Date().toString();
-        String date = dateStr + "test http://t.co/VEDROet @twit4j2 #twitter4jtest";
+        String date = dateStr + "test http://t.co/VEDROet @" + id2.screenName +" #twitter4jtest";
         Status status = twitter1.updateStatus(date);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
-        assertTrue(status.getText().matches(dateStr + "test http://t.co/.* @twit4j2 #twitter4jtest"));
+        assertTrue(status.getText().matches(dateStr + "test http://t.co/.* @" + id2.screenName +" #twitter4jtest"));
 
         // http://jira.twitter4j.org/browse/TFJ-715
         // current_user_retweet contains only id
@@ -82,7 +82,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         Status status2 = twitter2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
         assertNotNull(DataObjectFactory.getRawJSON(status2));
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
-        assertTrue(status2.getText().matches("@" + id1.screenName + " " + dateStr + "test http://t.co/.* @twit4j2 #twitter4jtest"));
+        assertTrue(status2.getText().matches("@" + id1.screenName + " " + dateStr + "test http://t.co/.* @" + id2.screenName +" #twitter4jtest"));
         assertEquals(status.getId(), status2.getInReplyToStatusId());
         assertEquals(id1.id, status2.getInReplyToUserId());
         status = twitter1.destroyStatus(status.getId());
@@ -90,7 +90,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
         date = new java.util.Date().toString();
-        String tweet = date + "test http://t.co/VEDROet @twit4j2 #twitter4jtest";
+        String tweet = date + "test http://t.co/VEDROet @" + id2.screenName + " #twitter4jtest";
         status = twitter1.updateStatus(new StatusUpdate(tweet).possiblySensitive(false).media(getRandomlyChosenFile()));
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
