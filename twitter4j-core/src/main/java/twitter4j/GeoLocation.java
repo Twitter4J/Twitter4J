@@ -25,6 +25,7 @@ public class GeoLocation implements java.io.Serializable {
 
     protected double latitude;
     protected double longitude;
+    protected String type;
     private static final long serialVersionUID = -4847567157651889935L;
 
     /**
@@ -36,6 +37,19 @@ public class GeoLocation implements java.io.Serializable {
     public GeoLocation(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    /**
+     * Creates a GeoLocation instance
+     *
+     * @param latitude  the latitude
+     * @param longitude the longitude
+     * @param type the coordinates type
+     */
+    public GeoLocation(double latitude, double longitude, String type) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.type = type;
     }
 
     /* For serialization purposes only. */
@@ -61,6 +75,15 @@ public class GeoLocation implements java.io.Serializable {
         return longitude;
     }
 
+    /**
+     * returns the longitude of the geo location
+     *
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,6 +93,7 @@ public class GeoLocation implements java.io.Serializable {
 
         if (Double.compare(that.getLatitude(), latitude) != 0) return false;
         if (Double.compare(that.getLongitude(), longitude) != 0) return false;
+        if (!that.getType().equals(type)) return false;
 
         return true;
     }
@@ -82,6 +106,8 @@ public class GeoLocation implements java.io.Serializable {
         result = (int) (temp ^ (temp >>> 32));
         temp = longitude != +0.0d ? Double.doubleToLongBits(longitude) : 0L;
         result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = type.hashCode();
+        result =  31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
@@ -90,6 +116,7 @@ public class GeoLocation implements java.io.Serializable {
         return "GeoLocation{" +
                 "latitude=" + latitude +
                 ", longitude=" + longitude +
+                ",type="+type+
                 '}';
     }
 }
