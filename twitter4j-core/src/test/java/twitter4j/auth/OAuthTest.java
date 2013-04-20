@@ -264,7 +264,7 @@ public class OAuthTest extends TwitterTestBase {
 
         at = twitter.getOAuthAccessToken(rt, oauthVerifier);
         assertEquals(at.getScreenName(), id1.screenName);
-        assertEquals(at.getUserId(), 6358482);
+        assertEquals(at.getUserId(), id1.id);
     }
 
 
