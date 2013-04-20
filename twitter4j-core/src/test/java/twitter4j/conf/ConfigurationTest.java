@@ -242,7 +242,7 @@ public class ConfigurationTest extends TestCase {
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/");
         conf = new PropertyConfiguration("/");
         assertEquals("http://somewhere.com/", conf.getRestBaseURL());
-
+        deleteFile("./twitter4j.properties");
     }
 
     public void testTwitter4jPrefixOmittable() throws Exception {
