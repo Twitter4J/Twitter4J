@@ -28,6 +28,7 @@ Bruno Torres Goyanna <bgoyanna at gmail.com> @bgoyanna
 Ciaran Jessup <ciaranj at gmail.com> @ciaran_j
 Cole Wen <wennnnke at gmail.com> @Pigwen
 Dan Checkoway <dcheckoway at gmail.com>
+Danaja Maldeniya <danajamkdt at gmail.com> @DanajaT
 Dong Wang <dong at twitter.com> @dongwang218
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
