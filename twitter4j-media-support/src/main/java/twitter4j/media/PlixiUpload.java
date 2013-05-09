@@ -32,6 +32,7 @@ class PlixiUpload extends AbstractImageUploadImpl {
 
     public PlixiUpload(Configuration conf, String apiKey, OAuthAuthorization oauth) {
         super(conf, apiKey, oauth);
+        logger.warn("Lockerz is no longer providing API.");
         this.uploadUrl = "http://api.plixi.com/api/upload.aspx";//"https://api.plixi.com/api/tpapi.svc/upload2";
     }
 
