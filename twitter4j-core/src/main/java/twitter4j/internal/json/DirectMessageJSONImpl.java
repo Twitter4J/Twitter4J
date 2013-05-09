@@ -46,6 +46,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
+    private SymbolEntity[] symbolEntities;
 
 
     /*package*/DirectMessageJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
@@ -102,6 +103,16 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                     }
                 }
 
+                if (!entities.isNull("symbols")) {
+                    JSONArray symbolsArray = entities.getJSONArray("symbols");
+                    len = symbolsArray.length();
+                    symbolEntities = new SymbolEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        // HashtagEntityJSONImpl also implements SymbolEntities
+                        symbolEntities[i] = new HashtagEntityJSONImpl(symbolsArray.getJSONObject(i));
+                    }
+                }
+
                 if (!entities.isNull("media")) {
                     JSONArray mediaArray = entities.getJSONArray("media");
                     len = mediaArray.length();
@@ -114,6 +125,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
+            symbolEntities = symbolEntities == null ? new SymbolEntity[0] : symbolEntities;
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
             text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
                     urlEntities, hashtagEntities, mediaEntities);
@@ -228,6 +240,14 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     @Override
     public MediaEntity[] getMediaEntities() {
         return mediaEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SymbolEntity[] getSymbolEntities() {
+        return symbolEntities;
     }
 
     /*package*/

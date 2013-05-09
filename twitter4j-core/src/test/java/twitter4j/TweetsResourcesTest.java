@@ -132,9 +132,19 @@ public class TweetsResourcesTest extends TwitterTestBase {
     }
 
     public void testEntities() throws Exception {
-        Status status = twitter2.showStatus(268294645526708226L);
+        Status status = twitter2.showStatus(332341548203261953L);
+        SymbolEntity[] symbolEntities = status.getSymbolEntities();
+        assertEquals(4, symbolEntities.length);
+        assertEquals("$APPL", status.getText().substring(symbolEntities[0].getStart(), symbolEntities[0].getEnd()));
+        assertEquals("$C", status.getText().substring(symbolEntities[1].getStart(), symbolEntities[1].getEnd()));
+        assertEquals("$LNKD", status.getText().substring(symbolEntities[2].getStart(), symbolEntities[2].getEnd()));
+        assertEquals("$FB", status.getText().substring(symbolEntities[3].getStart(), symbolEntities[3].getEnd()));
+
+        status = twitter2.showStatus(268294645526708226L);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+        symbolEntities = status.getSymbolEntities();
+        assertEquals(0, symbolEntities.length);
 
         URLEntity[] urlEntities = status.getURLEntities();
         assertEquals(1, urlEntities.length);

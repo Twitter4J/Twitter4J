@@ -17,6 +17,7 @@
 package twitter4j.internal.json;
 
 import twitter4j.HashtagEntity;
+import twitter4j.SymbolEntity;
 import twitter4j.TwitterException;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
@@ -28,7 +29,7 @@ import twitter4j.internal.org.json.JSONObject;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-/*package*/ class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity {
+/*package*/ class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity, SymbolEntity {
     private static final long serialVersionUID = 4068992372784813200L;
     private String text;
 

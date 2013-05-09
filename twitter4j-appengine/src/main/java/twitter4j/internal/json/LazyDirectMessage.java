@@ -133,6 +133,11 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
 	}
 
     @Override
+    public SymbolEntity[] getSymbolEntities() {
+        return getTarget().getSymbolEntities();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DirectMessage)) return false;
