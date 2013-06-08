@@ -1130,11 +1130,32 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
+    public UserList destroyUserListMembers(int listId, long[] userIds) throws TwitterException {
+      return factory.createAUserList(post(conf.getRestBaseURL() +
+          "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("list_id", listId), 
+        new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserList destroyUserListMembers(String ownerScreenName, String slug, String[] screenNames) throws TwitterException {
       return factory.createAUserList(post(conf.getRestBaseURL() +
           "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName),
         new HttpParameter("slug", slug),
         new HttpParameter("screen_name",  z_T4JInternalStringUtil.join(screenNames))}));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserList destroyUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException {
+      return factory.createAUserList(post(conf.getRestBaseURL() +
+          "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName),
+        new HttpParameter("slug", slug),
+        new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
     }
     
     /**

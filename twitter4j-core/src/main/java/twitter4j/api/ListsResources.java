@@ -132,7 +132,20 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @since Twitter4J 3.0.4
      */
     UserList destroyUserListMembers(int listId, String[] screenNames) throws TwitterException;
-    
+
+    /**
+     * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy_all.json
+     *
+     * @param listId The id of the list.
+     * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the updated list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy_all">POST lists/members/destroy_all | Twitter Developers</a>
+     * @since Twitter4J 3.0.4
+     */
+    UserList destroyUserListMembers(int listId, long[] userIds) throws TwitterException;
+
     /**
      * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy_all.json
@@ -146,6 +159,20 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @since Twitter4J 3.0.4
      */
     UserList destroyUserListMembers(String ownerScreenName, String slug, String[] screenNames) throws TwitterException;
+
+    /**
+     * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy_all.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the updated list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy_all">POST lists/members/destroy_all | Twitter Developers</a>
+     * @since Twitter4J 3.0.4
+     */
+    UserList destroyUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException;
     
     /**
      * @deprecated use {@link #destroyUserList(int)} instead

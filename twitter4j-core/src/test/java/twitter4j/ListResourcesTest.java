@@ -202,6 +202,20 @@ public class ListResourcesTest extends TwitterTestBase {
       userList = twitter1.destroyUserListMembers(userList.getUser().getScreenName(), userList.getSlug(), screenNames);
       userList = twitter1.showUserList(userList.getId());
       assertEquals(0, userList.getMemberCount());
+      
+      // Add 2 users by ids
+      long[] userIds = new long[]{id1.id, id2.id};
+      userList = twitter1.createUserListMembers(userList.getId(), userIds);
+      assertEquals(userList, DataObjectFactory.createUserList(DataObjectFactory.getRawJSON(userList)));
+      assertNotNull(DataObjectFactory.getRawJSON(userList));
+      
+      users = twitter1.getUserListMembers(userList.getId(), -1);
+      assertEquals(2, users.size());
+      
+      // Remove 2 by screen name
+      userList = twitter1.destroyUserListMembers(userList.getId(), userIds);
+      userList = twitter1.showUserList(userList.getId());
+      assertEquals(0, userList.getMemberCount());
     }
 
     public void testUsingOwnerScreenName() throws Exception {
