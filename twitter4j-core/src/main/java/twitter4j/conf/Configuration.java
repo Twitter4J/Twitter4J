@@ -38,6 +38,8 @@ public interface Configuration extends HttpClientConfiguration
 
     boolean isDebugEnabled();
 
+    boolean isApplicationOnlyAuthEnabled();
+
     String getUserAgent();
 
     String getUser();
@@ -80,6 +82,10 @@ public interface Configuration extends HttpClientConfiguration
 
     String getOAuthAccessTokenSecret();
 
+    String getOAuth2TokenType();
+
+    String getOAuth2AccessToken();
+
     String getClientVersion();
 
     String getClientURL();
@@ -95,6 +101,10 @@ public interface Configuration extends HttpClientConfiguration
     String getOAuthAccessTokenURL();
 
     String getOAuthAuthenticationURL();
+
+    String getOAuth2TokenURL();
+
+    String getOAuth2InvalidateTokenURL();
 
     String getUserStreamBaseURL();
 
