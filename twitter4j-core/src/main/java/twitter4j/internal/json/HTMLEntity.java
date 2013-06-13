@@ -132,6 +132,7 @@ final class HTMLEntity {
                     if (entity != null) {
                         unescaped.append(entity);
                         i = semicolonIndex;
+                        delta=1-escaped.length();
                     } else {
                         unescaped.append(c);
                     }
@@ -153,6 +154,7 @@ final class HTMLEntity {
                     handlingStart = true;
                 }
             }
+            delta = 0;
         }
         if (entityIndex < entityIndexes.length) {
             if (entityIndexes[entityIndex].getEnd() == (text.length())) {
