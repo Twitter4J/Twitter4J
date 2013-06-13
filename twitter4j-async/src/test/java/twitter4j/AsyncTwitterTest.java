@@ -373,14 +373,13 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private Relationship relationship;
     private DirectMessage message = null;
     private TwitterException te = null;
-    private Map<String,RateLimitStatus> rateLimitStatus;
+    private Map<String, RateLimitStatus> rateLimitStatus;
     private boolean exists;
     private QueryResult queryResult;
     private IDs ids;
     private List<Trends> trendsList;
     private Trends trends;
     private boolean blockExists;
-    private RelatedResults relatedResults;
 
     /*Search API Methods*/
     @Override
@@ -759,7 +758,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     /*Account Methods*/
 
     @Override
-    public void gotRateLimitStatus(Map<String ,RateLimitStatus> rateLimitStatus) {
+    public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
         this.rateLimitStatus = rateLimitStatus;
         notifyResponse();
     }
@@ -941,17 +940,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
      */
     @Override
     public void gotPrivacyPolicy(String str) {
-        notifyResponse();
-    }
-
-    /* #newtwitter Methods */
-
-    /**
-     *
-     */
-    @Override
-    public void gotRelatedResults(RelatedResults relatedResults) {
-        this.relatedResults = relatedResults;
         notifyResponse();
     }
 

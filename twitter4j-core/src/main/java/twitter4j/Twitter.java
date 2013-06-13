@@ -38,6 +38,5 @@ public interface Twitter extends java.io.Serializable,
         PlacesGeoResources,
         TrendsResources,
         SpamReportingResource,
-        HelpResources,
-        UndocumentedResources {
+        HelpResources {
 }

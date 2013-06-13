@@ -2957,23 +2957,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    /* Undocumented Resources */
-    @Override
-    public void getRelatedResults(final long statusId) {
-        getDispatcher().invokeLater(new AsyncTask(RELATED_RESULTS, listeners) {
-            @Override
-            void invoke(List<TwitterListener> listeners) throws TwitterException {
-                RelatedResults relatedResults = twitter.getRelatedResults(statusId);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotRelatedResults(relatedResults);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
     // implementation for AsyncOAuthSupport
 
     /**

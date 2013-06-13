@@ -40,8 +40,7 @@ public interface AsyncTwitter extends java.io.Serializable,
         PlacesGeoResourcesAsync,
         TrendsResourcesAsync,
         SpamReportingResourceAsync,
-        HelpResourcesAsync,
-        UndocumentedResourcesAsync {
+        HelpResourcesAsync {
 
     /**
      * Adds twitter listener

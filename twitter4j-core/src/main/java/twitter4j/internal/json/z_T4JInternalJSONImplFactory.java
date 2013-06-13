@@ -60,7 +60,7 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     }
 
     @Override
-    public Map<String ,RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException {
+    public Map<String, RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException {
         return RateLimitStatusJSONImpl.createRateLimitStatuses(res, conf);
     }
 
@@ -258,11 +258,6 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
     @Override
     public SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException {
         return SimilarPlacesImpl.createSimilarPlaces(res, conf);
-    }
-
-    @Override
-    public RelatedResults createRelatedResults(HttpResponse res) throws TwitterException {
-        return new RelatedResultsJSONImpl(res, conf);
     }
 
     @Override
