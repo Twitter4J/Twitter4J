@@ -51,6 +51,7 @@ marr-masaaki <marr fiveflavors at gmail.com> @marr
 matsumo <matsumo at ce.ns0.it>
 Max Penet <m at qbits.cc> @mpenet
 Mocel <docel77 at gmail.com> @Mocel
+MortyChoi <soapsign at gmail.com> @Soapsign
 Myyk Seok <myyk.seok at gmail.com> @myyk
 Naoya Hatayama <applepedlar at gmail.com> @ApplePedlar
 Ngoc Dao <ngocdaothanh@gmail.com> @ngocdaothanh
