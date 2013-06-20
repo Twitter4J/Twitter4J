@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.api.HelpResources;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
 
 import java.util.Map;
@@ -210,6 +211,9 @@ public interface TwitterListener {
     void gotOAuthRequestToken(RequestToken token);
 
     void gotOAuthAccessToken(AccessToken token);
+    
+    /* OAuth2 Resources */
+    void gotOAuth2Token(OAuth2Token token);
 
     /* Help Resources */
     void gotAPIConfiguration(TwitterAPIConfiguration conf);

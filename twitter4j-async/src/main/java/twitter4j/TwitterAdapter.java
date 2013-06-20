@@ -19,6 +19,7 @@ package twitter4j;
 
 import twitter4j.api.HelpResources;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
 
 import java.util.Map;
@@ -378,6 +379,11 @@ public class TwitterAdapter implements TwitterListener {
     public void gotOAuthAccessToken(AccessToken token) {
     }
 
+    /* OAuth2 Resources */
+	@Override
+	public void gotOAuth2Token(OAuth2Token token) {
+	}
+    
     /* Help Resources */
     @Override
     public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
@@ -398,9 +404,10 @@ public class TwitterAdapter implements TwitterListener {
     @Override
     public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
     }
-
     @Override
     public void onException(TwitterException te, TwitterMethod method) {
     }
+
+
 
 }
