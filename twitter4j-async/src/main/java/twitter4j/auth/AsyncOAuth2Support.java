@@ -3,7 +3,7 @@ package twitter4j.auth;
 import twitter4j.TwitterException;
 
 /**
- * @author Amine Bezzarga - abezzarg at gmai.com
+ * @author Amine Bezzarga - abezzarg at gmail.com
  */
 public interface AsyncOAuth2Support {
 
