@@ -89,8 +89,8 @@ public class z_T4JInternalJSONImplFactory implements z_T4JInternalFactory {
                         .getString("coordinates");
                 coordinates = coordinates.substring(1, coordinates.length() - 1);
                 String[] point = z_T4JInternalStringUtil.split(coordinates, ",");
-                return new GeoLocation(Double.parseDouble(point[0]),
-                        Double.parseDouble(point[1]));
+                return new GeoLocation(Double.parseDouble(point[1]),
+                        Double.parseDouble(point[0]));
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
