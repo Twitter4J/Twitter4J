@@ -183,8 +183,14 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void user() {
         user(null);
+    }
+
+    @Override
+    public void user(final boolean withFollowing) {
+        user(null, false);
     }
 
     /**
@@ -192,12 +198,17 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
      */
     @Override
     public void user(final String[] track) {
+        user(track, false);
+    }
+
+    @Override
+    public void user(final String[] track, final boolean withFollowing) {
         ensureAuthorizationEnabled();
         ensureUserStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(statusListeners, rawStreamListeners) {
             @Override
             public StatusStream getStream() throws TwitterException {
-                return getUserStream(track);
+                return getUserStream(track, withFollowing);
             }
         });
     }
@@ -210,11 +221,21 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return getUserStream(null);
     }
 
+    @Override
+    public UserStream getUserStream(boolean withFollowing) throws TwitterException {
+        return getUserStream(null, withFollowing);
+    }
+
+    @Override
+    public UserStream getUserStream(String[] track) throws TwitterException {
+        return getUserStream(track, false);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public UserStream getUserStream(String[] track) throws TwitterException {
+    public UserStream getUserStream(String[] track, boolean withFollowing) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
             List<HttpParameter> params = new ArrayList<HttpParameter>();
@@ -225,6 +246,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
             if (track != null) {
                 params.add(new HttpParameter("track", z_T4JInternalStringUtil.join(track)));
             }
+            if(withFollowing)
+                params.add(new HttpParameter("with", "following"));
             return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
                     , params.toArray(new HttpParameter[params.size()])
                     , auth), conf);

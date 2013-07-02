@@ -150,6 +150,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      */
     void user();
 
+    void user(final boolean withFollowing);
     /**
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
      *
@@ -160,6 +161,8 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      */
     void user(final String[] track);
 
+    void user(final String[] track, final boolean withFollowing);
+
     /**
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
      *
@@ -169,6 +172,8 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @deprecated use {@link #user()} instead
      */
     UserStream getUserStream() throws TwitterException;
+
+    UserStream getUserStream(boolean withFollowing) throws TwitterException;
 
     /**
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
@@ -181,6 +186,8 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @deprecated use {@link #user()} instead
      */
     UserStream getUserStream(String[] track) throws TwitterException;
+
+    UserStream getUserStream(String[] track, boolean withFollowing) throws TwitterException;
 
     /**
      * Site Streams, a new feature on the Streaming API, is now available for beta testing. Site Streams allows services, such as web sites or mobile push services, to receive real-time updates for a large number of users without any of the hassles of managing REST API rate limits. The initial version delivers events created by, or directed to, users that have shared their OAuth token with your application. The following events are streamed immediately, and without rate limits: Home Timelines, Mentions Timelines, User Timelines, Direct Messages, Mentions, Follows, Favorites, Tweets, Retweets, Profile changes, and List changes.
