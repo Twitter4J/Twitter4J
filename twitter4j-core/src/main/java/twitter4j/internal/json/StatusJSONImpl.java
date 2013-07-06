@@ -46,11 +46,14 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private long inReplyToStatusId;
     private long inReplyToUserId;
     private boolean isFavorited;
+    private boolean isRetweeted;
+    private long favoriteCount;
     private String inReplyToScreenName;
     private GeoLocation geoLocation = null;
     private Place place = null;
     private long retweetCount;
     private boolean isPossiblySensitive;
+    private String isoLanguageCode;
 
     private long[] contributorsIDs;
 
@@ -59,6 +62,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
+    private SymbolEntity[] symbolEntities;
     private long currentUserRetweetId = -1L;
 
     /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
@@ -97,8 +101,10 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         inReplyToStatusId = getLong("in_reply_to_status_id", json);
         inReplyToUserId = getLong("in_reply_to_user_id", json);
         isFavorited = getBoolean("favorited", json);
+        isRetweeted = getBoolean("retweeted", json);
         inReplyToScreenName = getUnescapedString("in_reply_to_screen_name", json);
         retweetCount = getLong("retweet_count", json);
+        favoriteCount = getLong("favorite_count", json);
         isPossiblySensitive = getBoolean("possibly_sensitive", json);
         try {
             if (!json.isNull("user")) {
@@ -150,6 +156,16 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                     }
                 }
 
+                if (!entities.isNull("symbols")) {
+                    JSONArray hashtagsArray = entities.getJSONArray("symbols");
+                    len = hashtagsArray.length();
+                    symbolEntities = new SymbolEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        // HashtagEntityJSONImpl also implements SymbolEntities
+                        symbolEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
+                    }
+                }
+
                 if (!entities.isNull("media")) {
                     JSONArray mediaArray = entities.getJSONArray("media");
                     len = mediaArray.length();
@@ -159,9 +175,17 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                     }
                 }
             }
+            if (!json.isNull("metadata")) {
+                JSONObject metadata = json.getJSONObject("metadata");
+                if (!metadata.isNull("iso_language_code")) {
+                    isoLanguageCode = getUnescapedString("iso_language_code", metadata);
+
+                }
+            }
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
+            symbolEntities = symbolEntities == null ? new SymbolEntity[0] : symbolEntities;
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
             text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
                     urlEntities, hashtagEntities, mediaEntities);
@@ -281,6 +305,21 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         return isFavorited;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isRetweeted() {
+        return isRetweeted;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getFavoriteCount() {
+        return favoriteCount;
+    }
 
     private User user = null;
 
@@ -372,6 +411,21 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         return mediaEntities;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SymbolEntity[] getSymbolEntities() {
+        return symbolEntities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getIsoLanguageCode() {
+        return isoLanguageCode;
+    }
+
     /*package*/
     static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -425,11 +479,14 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", inReplyToStatusId=" + inReplyToStatusId +
                 ", inReplyToUserId=" + inReplyToUserId +
                 ", isFavorited=" + isFavorited +
+                ", isRetweeted=" + isRetweeted +
+                ", favoriteCount=" + favoriteCount +
                 ", inReplyToScreenName='" + inReplyToScreenName + '\'' +
                 ", geoLocation=" + geoLocation +
                 ", place=" + place +
                 ", retweetCount=" + retweetCount +
                 ", isPossiblySensitive=" + isPossiblySensitive +
+                ", isoLanguageCode=" + isoLanguageCode +
                 ", contributorsIDs=" + contributorsIDs +
                 ", retweetedStatus=" + retweetedStatus +
                 ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +

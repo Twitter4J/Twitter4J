@@ -75,6 +75,14 @@ import twitter4j.internal.org.json.JSONObject;
      * {@inheritDoc}
      */
     @Override
+    public String getText() {
+        return screenName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getName() {
         return name;
     }

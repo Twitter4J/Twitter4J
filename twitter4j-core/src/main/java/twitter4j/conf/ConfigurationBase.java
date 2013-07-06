@@ -53,11 +53,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String oAuthConsumerSecret;
     private String oAuthAccessToken;
     private String oAuthAccessTokenSecret;
+    private String oAuth2TokenType;
+    private String oAuth2AccessToken;
 
     private String oAuthRequestTokenURL;
     private String oAuthAuthorizationURL;
     private String oAuthAccessTokenURL;
     private String oAuthAuthenticationURL;
+    private String oAuth2TokenURL;
+    private String oAuth2InvalidateTokenURL;
 
     private String restBaseURL;
     private String streamBaseURL;
@@ -73,8 +77,10 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private boolean includeRTsEnabled = true;
 
     private boolean includeEntitiesEnabled = true;
-    
+
     private boolean includeMyRetweetEnabled = true;
+    
+    private boolean trimUserEnabled = false;
 
     private boolean jsonStoreEnabled;
 
@@ -83,6 +89,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private boolean userStreamRepliesAllEnabled;
 
     private boolean stallWarningsEnabled;
+
+    private boolean applicationOnlyAuthEnabled = false;
 
     private String mediaProvider;
 
@@ -100,6 +108,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final String DEFAULT_OAUTH_AUTHORIZATION_URL = "http://api.twitter.com/oauth/authorize";
     private static final String DEFAULT_OAUTH_ACCESS_TOKEN_URL = "http://api.twitter.com/oauth/access_token";
     private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "http://api.twitter.com/oauth/authenticate";
+    private static final String DEFAULT_OAUTH2_TOKEN_URL = "https://api.twitter.com/oauth2/token";
+    private static final String DEFAULT_OAUTH2_INVALIDATE_TOKEN_URL = "https://api.twitter.com/oauth2/invalidate_token";
 
     private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1.1/";
     private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1.1/";
@@ -137,7 +147,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setDebug(false);
         setUser(null);
         setPassword(null);
-        setUseSSL(false);
+        setUseSSL(true);
         setPrettyDebugEnabled(false);
         setGZIPEnabled(true);
         setHttpProxyHost(null);
@@ -169,6 +179,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setOAuthAuthorizationURL(DEFAULT_OAUTH_AUTHORIZATION_URL);
         setOAuthAccessTokenURL(DEFAULT_OAUTH_ACCESS_TOKEN_URL);
         setOAuthAuthenticationURL(DEFAULT_OAUTH_AUTHENTICATION_URL);
+        setOAuth2TokenURL(DEFAULT_OAUTH2_TOKEN_URL);
+        setOAuth2InvalidateTokenURL(DEFAULT_OAUTH2_INVALIDATE_TOKEN_URL);
 
         setRestBaseURL(DEFAULT_REST_BASE_URL);
         setStreamBaseURL(DEFAULT_STREAM_BASE_URL);
@@ -462,6 +474,24 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
+    public String getOAuth2TokenType() {
+        return oAuth2TokenType;
+    }
+
+    protected final void setOAuth2TokenType(String oAuth2TokenType) {
+        this.oAuth2TokenType = oAuth2TokenType;
+    }
+
+    @Override
+    public String getOAuth2AccessToken() {
+        return oAuth2AccessToken;
+    }
+
+    protected final void setOAuth2AccessToken(String oAuth2AccessToken) {
+        this.oAuth2AccessToken = oAuth2AccessToken;
+    }
+
+    @Override
     public final int getAsyncNumThreads() {
         return asyncNumThreads;
     }
@@ -595,6 +625,26 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
+    public String getOAuth2TokenURL() {
+        return oAuth2TokenURL;
+    }
+
+    protected final void setOAuth2TokenURL(String oAuth2TokenURL) {
+        this.oAuth2TokenURL = oAuth2TokenURL;
+        fixRestBaseURL();
+    }
+
+    @Override
+    public String getOAuth2InvalidateTokenURL() {
+        return oAuth2InvalidateTokenURL;
+    }
+
+    protected final void setOAuth2InvalidateTokenURL(String oAuth2InvalidateTokenURL) {
+        this.oAuth2InvalidateTokenURL = oAuth2InvalidateTokenURL;
+        fixRestBaseURL();
+    }
+
+    @Override
     public String getDispatcherImpl() {
         return dispatcherImpl;
     }
@@ -629,16 +679,24 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     protected final void setIncludeEntitiesEnbled(boolean enabled) {
         this.includeEntitiesEnabled = enabled;
     }
-    
+
     public boolean isIncludeMyRetweetEnabled() {
-		return this.includeMyRetweetEnabled;
-	}
+        return this.includeMyRetweetEnabled;
+    }
 
 	public void setIncludeMyRetweetEnabled(boolean enabled) {
 		this.includeMyRetweetEnabled = enabled;
 	}
+	
+	public boolean isTrimUserEnabled() {
+		return this.trimUserEnabled;
+	}
 
-	public boolean isJSONStoreEnabled() {
+	public void setTrimUserEnabled(boolean enabled) {
+		this.trimUserEnabled = enabled;
+	}
+
+    public boolean isJSONStoreEnabled() {
         return this.jsonStoreEnabled;
     }
 
@@ -671,6 +729,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setStallWarningsEnabled(boolean stallWarningsEnabled) {
         this.stallWarningsEnabled = stallWarningsEnabled;
+    }
+
+    @Override
+    public boolean isApplicationOnlyAuthEnabled() {
+        return applicationOnlyAuthEnabled;
+    }
+
+    protected final void setApplicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
+        this.applicationOnlyAuthEnabled = applicationOnlyAuthEnabled;
     }
 
     @Override
@@ -738,12 +805,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
         if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
         if (includeMyRetweetEnabled != that.includeMyRetweetEnabled) return false;
+        if (trimUserEnabled != that.trimUserEnabled) return false;
         if (includeRTsEnabled != that.includeRTsEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (maxTotalConnections != that.maxTotalConnections) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
         if (prettyDebug != that.prettyDebug) return false;
         if (stallWarningsEnabled != that.stallWarningsEnabled) return false;
+        if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
         if (useSSL != that.useSSL) return false;
         if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled) return false;
         if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null) return false;
@@ -769,11 +838,19 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (oAuthAccessTokenSecret != null ? !oAuthAccessTokenSecret.equals(that.oAuthAccessTokenSecret) : that.oAuthAccessTokenSecret != null)
             return false;
+        if (oAuth2TokenType != null ? !oAuth2TokenType.equals(that.oAuth2TokenType) : that.oAuth2TokenType != null)
+            return false;
+        if (oAuth2AccessToken != null ? !oAuth2AccessToken.equals(that.oAuth2AccessToken) : that.oAuth2AccessToken != null)
+            return false;
         if (oAuthAccessTokenURL != null ? !oAuthAccessTokenURL.equals(that.oAuthAccessTokenURL) : that.oAuthAccessTokenURL != null)
             return false;
         if (oAuthAuthenticationURL != null ? !oAuthAuthenticationURL.equals(that.oAuthAuthenticationURL) : that.oAuthAuthenticationURL != null)
             return false;
         if (oAuthAuthorizationURL != null ? !oAuthAuthorizationURL.equals(that.oAuthAuthorizationURL) : that.oAuthAuthorizationURL != null)
+            return false;
+        if (oAuth2TokenURL != null ? !oAuth2TokenURL.equals(that.oAuth2TokenURL) : that.oAuth2TokenURL != null)
+            return false;
+        if (oAuth2InvalidateTokenURL != null ? !oAuth2InvalidateTokenURL.equals(that.oAuth2InvalidateTokenURL) : that.oAuth2InvalidateTokenURL != null)
             return false;
         if (oAuthConsumerKey != null ? !oAuthConsumerKey.equals(that.oAuthConsumerKey) : that.oAuthConsumerKey != null)
             return false;
@@ -821,10 +898,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (oAuthConsumerSecret != null ? oAuthConsumerSecret.hashCode() : 0);
         result = 31 * result + (oAuthAccessToken != null ? oAuthAccessToken.hashCode() : 0);
         result = 31 * result + (oAuthAccessTokenSecret != null ? oAuthAccessTokenSecret.hashCode() : 0);
+        result = 31 * result + (oAuth2TokenType != null ? oAuth2TokenType.hashCode() : 0);
+        result = 31 * result + (oAuth2AccessToken != null ? oAuth2AccessToken.hashCode() : 0);
         result = 31 * result + (oAuthRequestTokenURL != null ? oAuthRequestTokenURL.hashCode() : 0);
         result = 31 * result + (oAuthAuthorizationURL != null ? oAuthAuthorizationURL.hashCode() : 0);
         result = 31 * result + (oAuthAccessTokenURL != null ? oAuthAccessTokenURL.hashCode() : 0);
         result = 31 * result + (oAuthAuthenticationURL != null ? oAuthAuthenticationURL.hashCode() : 0);
+        result = 31 * result + (oAuth2TokenURL != null ? oAuth2TokenURL.hashCode() : 0);
+        result = 31 * result + (oAuth2InvalidateTokenURL != null ? oAuth2InvalidateTokenURL.hashCode() : 0);
         result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
         result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
         result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
@@ -836,10 +917,12 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (includeRTsEnabled ? 1 : 0);
         result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
         result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
+        result = 31 * result + (trimUserEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
         result = 31 * result + (mbeanEnabled ? 1 : 0);
         result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
         result = 31 * result + (stallWarningsEnabled ? 1 : 0);
+        result = 31 * result + (applicationOnlyAuthEnabled ? 1 : 0);
         result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
         result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
         result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
@@ -876,10 +959,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", oAuthConsumerSecret='" + oAuthConsumerSecret + '\'' +
                 ", oAuthAccessToken='" + oAuthAccessToken + '\'' +
                 ", oAuthAccessTokenSecret='" + oAuthAccessTokenSecret + '\'' +
+                ", oAuth2TokenType='" + oAuth2TokenType + '\'' +
+                ", oAuth2AccessToken='" + oAuth2AccessToken + '\'' +
                 ", oAuthRequestTokenURL='" + oAuthRequestTokenURL + '\'' +
                 ", oAuthAuthorizationURL='" + oAuthAuthorizationURL + '\'' +
                 ", oAuthAccessTokenURL='" + oAuthAccessTokenURL + '\'' +
                 ", oAuthAuthenticationURL='" + oAuthAuthenticationURL + '\'' +
+                ", oAuth2TokenURL='" + oAuth2TokenURL + '\'' +
+                ", oAuth2InvalidateTokenURL='" + oAuth2InvalidateTokenURL + '\'' +
                 ", restBaseURL='" + restBaseURL + '\'' +
                 ", streamBaseURL='" + streamBaseURL + '\'' +
                 ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
@@ -891,10 +978,12 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", includeRTsEnabled=" + includeRTsEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
                 ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
+                ", trimUserEnabled=" + trimUserEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
                 ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +
                 ", stallWarningsEnabled=" + stallWarningsEnabled +
+                ", applicationOnlyAuthEnabled=" + applicationOnlyAuthEnabled +
                 ", mediaProvider='" + mediaProvider + '\'' +
                 ", mediaProviderAPIKey='" + mediaProviderAPIKey + '\'' +
                 ", mediaProviderParameters=" + mediaProviderParameters +

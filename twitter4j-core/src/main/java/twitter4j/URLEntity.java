@@ -22,7 +22,16 @@ package twitter4j;
  * @author Mocel - mocel at guma.jp
  * @since Twitter4J 2.1.9
  */
-public interface URLEntity extends java.io.Serializable {
+public interface URLEntity extends TweetEntity, java.io.Serializable {
+
+    /**
+     * Returns the URL mentioned in the tweet.<br>
+     * This method implementation is to meet TweetEntity interface and the behavior is equivalent to {@link #getURL()}
+     *
+     * @return the mentioned URL
+     */
+    @Override
+    String getText();
 
     /**
      * Returns the URL mentioned in the tweet.

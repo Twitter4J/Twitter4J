@@ -19,6 +19,7 @@ package twitter4j;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import twitter4j.auth.ApplicationOnlyAuthTest;
 import twitter4j.auth.OAuthTest;
 import twitter4j.conf.ConfigurationTest;
 import twitter4j.internal.json.HTMLEntityTest;
@@ -50,6 +51,8 @@ public class Twitter4JTestSuite extends TestCase {
         suite.addTestSuite(PagingTest.class);
         suite.addTestSuite(SearchAPITest.class);
         suite.addTestSuite(TwitterExceptionTest.class);
+
+        suite.addTestSuite(ApplicationOnlyAuthTest.class);
 
         return suite;
     }

@@ -131,7 +131,7 @@ public class OAuthTest extends TwitterTestBase {
 
 
         assertEquals(at.getScreenName(), numberId);
-        assertEquals(at.getUserId(), 96154916);
+        assertEquals(at.getUserId(), numberIdId);
         AccessToken at1 = twitter.getOAuthAccessToken();
         assertEquals(at, at1);
         TwitterResponse res = twitter.getLanguages();
@@ -181,9 +181,12 @@ public class OAuthTest extends TwitterTestBase {
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
 
 //        response = http.post(authorizeURL, params);
-        at = twitter.getOAuthAccessToken(rt);
+        resStr = response.asString();
+        String oauthVerifier = catchPattern(resStr, "&oauth_verifier=", "\">");
+
+        at = twitter.getOAuthAccessToken(rt, oauthVerifier);
         assertEquals(at.getScreenName(), id1.screenName);
-        assertEquals(at.getUserId(), 6358482);
+        assertEquals(at.getUserId(), id1.id);
 
     }
 
@@ -217,9 +220,12 @@ public class OAuthTest extends TwitterTestBase {
         params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
         params[3] = new HttpParameter("session[password]", id1.password);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
-        at = twitter.getOAuthAccessToken(rt);
+        resStr = response.asString();
+        String oauthVerifier = catchPattern(resStr, "&oauth_verifier=", "\">");
+
+        at = twitter.getOAuthAccessToken(rt, oauthVerifier);
         assertEquals(at.getScreenName(), id1.screenName);
-        assertEquals(at.getUserId(), 6358482);
+        assertEquals(at.getUserId(), id1.id);
 
 
     }
@@ -264,7 +270,7 @@ public class OAuthTest extends TwitterTestBase {
 
         at = twitter.getOAuthAccessToken(rt, oauthVerifier);
         assertEquals(at.getScreenName(), id1.screenName);
-        assertEquals(at.getUserId(), 6358482);
+        assertEquals(at.getUserId(), id1.id);
     }
 
 

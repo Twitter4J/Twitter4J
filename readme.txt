@@ -28,10 +28,13 @@ Bruno Torres Goyanna <bgoyanna at gmail.com> @bgoyanna
 Ciaran Jessup <ciaranj at gmail.com> @ciaran_j
 Cole Wen <wennnnke at gmail.com> @Pigwen
 Dan Checkoway <dcheckoway at gmail.com>
+Danaja Maldeniya <danajamkdt at gmail.com> @DanajaT
+Daniel Huckaby <handlerexploit at gmail.com> @HandlerExploit
 Dong Wang <dong at twitter.com> @dongwang218
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
 Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
+Hiroki Takemoto <pompopo at gmail.com> @pompopo
 Hiroshi Sugimori <mamamadata at gmail.com> @ham1975
 Hitoshi Kunimatsu <hkhumanoid at gmail.com>
 JJ Kelley <jjthemachine at gmail.com> @jjthemachine
@@ -48,10 +51,12 @@ marr-masaaki <marr fiveflavors at gmail.com> @marr
 matsumo <matsumo at ce.ns0.it>
 Max Penet <m at qbits.cc> @mpenet
 Mocel <docel77 at gmail.com> @Mocel
+MortyChoi <soapsign at gmail.com> @Soapsign
 Myyk Seok <myyk.seok at gmail.com> @myyk
 Naoya Hatayama <applepedlar at gmail.com> @ApplePedlar
 Ngoc Dao <ngocdaothanh@gmail.com> @ngocdaothanh
 Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
+Norbert Bartels <n.bartels at phpmonkeys.de>
 Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
 Perry Sakkaris <psakkaris at gmail.com>

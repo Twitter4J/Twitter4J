@@ -13,34 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package twitter4j;
 
-/**
- * A data interface representing one single Hashtag entity.
- *
- * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.9
- */
-public interface HashtagEntity extends TweetEntity, java.io.Serializable {
-    /**
-     * Returns the text of the hashtag without #.
-     *
-     * @return the text of the hashtag
-     */
-    String getText();
+import java.io.Serializable;
 
+/**
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 3.0.4
+ */
+public interface SymbolEntity extends TweetEntity, Serializable {
     /**
-     * Returns the index of the start character of the hashtag.
+     * Returns the index of the start character of the symbol.
      *
-     * @return the index of the start character of the hashtag
+     * @return the index of the start character of the symbol
      */
     int getStart();
 
     /**
-     * Returns the index of the end character of the hashtag.
+     * Returns the index of the end character of the symbol.
      *
-     * @return the index of the end character of the hashtag
+     * @return the index of the end character of the symbol
      */
     int getEnd();
 }

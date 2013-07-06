@@ -171,6 +171,24 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().isFavorited();
     }
 
+    /**
+     * Indicates approximately how many times this Tweet has been "favorited" by Twitter users. 
+     * @return the favorite count
+     */
+    public long getFavoriteCount() {
+        return getTarget().getFavoriteCount();
+    }
+    
+    /**
+     * Test if the status is retweeted
+     *
+     * @return true if retweeted
+     * @since Twitter4J 3.0.4
+     */
+    public boolean isRetweeted() {
+        return getTarget().isRetweeted();
+    }
+
 
     /**
      * Return the user associated with the status.<br>
@@ -247,6 +265,11 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().isPossiblySensitive();
     }
 
+    @Override
+    public String getIsoLanguageCode() {
+        return getTarget().getIsoLanguageCode();
+    }
+
 
     /**
      * Returns an array of user mentions in the tweet, or null if no users were mentioned.
@@ -288,6 +311,11 @@ final class LazyStatus implements twitter4j.Status {
      */
     public MediaEntity[] getMediaEntities() {
         return getTarget().getMediaEntities();
+    }
+
+    @Override
+    public SymbolEntity[] getSymbolEntities() {
+        return getTarget().getSymbolEntities();
     }
 
     public RateLimitStatus getRateLimitStatus() {

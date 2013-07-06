@@ -78,9 +78,9 @@ public class GeoLocation implements java.io.Serializable {
     public int hashCode() {
         int result;
         long temp;
-        temp = latitude != +0.0d ? Double.doubleToLongBits(latitude) : 0L;
+        temp = Double.doubleToLongBits(latitude);
         result = (int) (temp ^ (temp >>> 32));
-        temp = longitude != +0.0d ? Double.doubleToLongBits(longitude) : 0L;
+        temp = Double.doubleToLongBits(longitude);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }

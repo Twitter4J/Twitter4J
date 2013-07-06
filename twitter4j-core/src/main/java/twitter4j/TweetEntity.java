@@ -13,33 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package twitter4j;
 
 /**
- * @author Mocel - mocel at guma.jp
- * @since Twitter4J 2.1.8
+ * super interface of UserMentionEntity, URLEntity and HashtagEntity
+ *
+ * @author Yusuke Yamamoto - yusuke at mac.com
+ * @since Twitter4J 3.0.4
  */
-public interface RelatedResults extends TwitterResponse, java.io.Serializable {
+public interface TweetEntity {
+    /**
+     * Returns the text of the entity
+     *
+     * @return the text of the entity
+     */
+    String getText();
 
     /**
-     * Returns the 8 or less statuses with conversation
+     * Returns the index of the start character of the entity in the tweet.
      *
-     * @return list of statuses with conversation
+     * @return the index of the start character of the entity in the tweet
      */
-    ResponseList<Status> getTweetsWithConversation();
+    int getStart();
 
     /**
-     * Returns the 8 or less statuses with reply.
+     * Returns the index of the end character of the entity in the tweet.
      *
-     * @return list of statuses with reply
+     * @return the index of the end character of the entity in the tweet
      */
-    ResponseList<Status> getTweetsWithReply();
-
-    /**
-     * Return the 3 or less latest statuses from the user who sent the origin tweet.
-     *
-     * @return list of latest statuses
-     */
-    ResponseList<Status> getTweetsFromUser();
+    int getEnd();
 }

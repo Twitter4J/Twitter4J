@@ -85,6 +85,14 @@ import twitter4j.internal.org.json.JSONObject;
      * {@inheritDoc}
      */
     @Override
+    public String getText() {
+        return url;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getURL() {
         return url;
     }

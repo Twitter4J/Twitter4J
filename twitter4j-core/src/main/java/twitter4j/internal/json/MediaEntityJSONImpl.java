@@ -108,6 +108,14 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
      * {@inheritDoc}
      */
     @Override
+    public String getText() {
+        return url;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getURL() {
         return url;
     }
