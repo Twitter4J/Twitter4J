@@ -190,4 +190,10 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * @return two-letter iso language code
      */
     String getIsoLanguageCode();
+    
+    /**
+     * Returns the lang of the status text if available.
+     * @return two-letter iso language code
+     */
+    String getLang();
 }

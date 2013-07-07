@@ -84,4 +84,18 @@ public class StatusJSONImplTest extends TestCase {
         assertEquals(geoLocation.getLatitude(),0.70928444,0.00000001);
         assertEquals(geoLocation.getLongitude(),52.25604116,0.00000001);
     }
+    
+    
+    public void testLangWithLangFieldDefined() throws Exception{
+    	//given 
+    	String rawJson = "{ \"created_at\":\"Mon Mar 11 19:37:00 +0000 2013\", \"id\":311199093852618752, \"id_str\":\"311199093852618752\", \"text\":\"Introducing application-only authentication for the Twitter REST API v1.1 https:\\/\\/t.co\\/BrLLpVyuCe ^TS\", \"source\":\"web\", \"truncated\":false, \"in_reply_to_status_id\":null, \"in_reply_to_status_id_str\":null, \"in_reply_to_user_id\":null, \"in_reply_to_user_id_str\":null, \"in_reply_to_screen_name\":null, \"user\":{ \"id\":6253282, \"id_str\":\"6253282\", \"name\":\"Twitter API\", \"screen_name\":\"twitterapi\", \"location\":\"San Francisco, CA\", \"description\":\"The Real Twitter API. I tweet about API changes, service issues and happily answer questions about Twitter and our API. Don't get an answer? It's on my website.\", \"url\":\"http:\\/\\/dev.twitter.com\", \"entities\":{ \"url\":{ \"urls\":[ { \"url\":\"http:\\/\\/dev.twitter.com\", \"expanded_url\":null, \"indices\":[ 0, 22 ] } ] }, \"description\":{ \"urls\":[ ] } }, \"protected\":false, \"followers_count\":1533137, \"friends_count\":33, \"listed_count\":11369, \"created_at\":\"Wed May 23 06:01:13 +0000 2007\", \"favourites_count\":25, \"utc_offset\":-28800, \"time_zone\":\"Pacific Time (US & Canada)\", \"geo_enabled\":true, \"verified\":true, \"statuses_count\":3392, \"lang\":\"en\", \"contributors_enabled\":true, \"is_translator\":false, \"profile_background_color\":\"C0DEED\", \"profile_background_image_url\":\"http:\\/\\/a0.twimg.com\\/profile_background_images\\/656927849\\/miyt9dpjz77sc0w3d4vj.png\", \"profile_background_image_url_https\":\"https:\\/\\/si0.twimg.com\\/profile_background_images\\/656927849\\/miyt9dpjz77sc0w3d4vj.png\", \"profile_background_tile\":true, \"profile_image_url\":\"http:\\/\\/a0.twimg.com\\/profile_images\\/2284174872\\/7df3h38zabcvjylnyfe3_normal.png\", \"profile_image_url_https\":\"https:\\/\\/si0.twimg.com\\/profile_images\\/2284174872\\/7df3h38zabcvjylnyfe3_normal.png\", \"profile_banner_url\":\"https:\\/\\/si0.twimg.com\\/profile_banners\\/6253282\\/1347394302\", \"profile_link_color\":\"0084B4\", \"profile_sidebar_border_color\":\"C0DEED\", \"profile_sidebar_fill_color\":\"DDEEF6\", \"profile_text_color\":\"333333\", \"profile_use_background_image\":true, \"default_profile\":false, \"default_profile_image\":false, \"following\":null, \"follow_request_sent\":false, \"notifications\":null }, \"geo\":null, \"coordinates\":null, \"place\":null, \"contributors\":[ 819797 ], \"retweet_count\":131, \"entities\":{ \"hashtags\":[ ], \"urls\":[ { \"url\":\"https:\\/\\/t.co\\/BrLLpVyuCe\", \"expanded_url\":\"https:\\/\\/dev.twitter.com\\/docs\\/auth\\/application-only-auth\", \"display_url\":\"dev.twitter.com\\/docs\\/auth\\/appl…\", \"indices\":[ 74, 97 ] } ], \"user_mentions\":[ ] }, \"favorited\":false, \"retweeted\":true, \"possibly_sensitive\":false, \"lang\":\"en\" }";
+        
+    	//when
+    	JSONObject json = new JSONObject(rawJson);
+        StatusJSONImpl status = new StatusJSONImpl(json);
+
+        //then
+        assertNotNull(status.getLang());
+        assertEquals("en", status.getLang());
+    }
 }

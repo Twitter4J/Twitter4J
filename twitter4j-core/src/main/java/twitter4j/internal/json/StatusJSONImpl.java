@@ -54,6 +54,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private long retweetCount;
     private boolean isPossiblySensitive;
     private String isoLanguageCode;
+    private String lang;
 
     private long[] contributorsIDs;
 
@@ -191,6 +192,9 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                     urlEntities, hashtagEntities, mediaEntities);
             if (!json.isNull("current_user_retweet")) {
                 currentUserRetweetId = json.getJSONObject("current_user_retweet").getLong("id");
+            }
+            if(!json.isNull("lang")){
+            	lang = getUnescapedString("lang", json);
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -424,6 +428,13 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
      */
     public String getIsoLanguageCode() {
         return isoLanguageCode;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public String getLang() {
+        return lang;
     }
 
     /*package*/
