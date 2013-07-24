@@ -3,6 +3,7 @@ id1.password=
 id1.id=
 id1.oauth.accessToken=
 id1.oauth.accessTokenSecret=
+id1.stream.user.withFollowings=false
 
 id2.user=
 id2.password=
