@@ -222,6 +222,9 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
             if (conf.isUserStreamRepliesAllEnabled()) {
                 params.add(new HttpParameter("replies", "all"));
             }
+            if (!conf.isUserStreamWithFollowingsEnabled()) {
+                params.add(new HttpParameter("with", "user"));
+            }
             if (track != null) {
                 params.add(new HttpParameter("track", z_T4JInternalStringUtil.join(track)));
             }

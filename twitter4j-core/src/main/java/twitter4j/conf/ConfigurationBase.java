@@ -88,6 +88,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean userStreamRepliesAllEnabled;
 
+    private boolean userStreamWithFollowingsEnabled;
+    
     private boolean stallWarningsEnabled;
 
     private boolean applicationOnlyAuthEnabled = false;
@@ -191,6 +193,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setLoggerFactory(null);
 
         setUserStreamRepliesAllEnabled(false);
+        setUserStreamWithFollowingsEnabled(true);
         setStallWarningsEnabled(true);
         String isDalvik;
         try {
@@ -717,11 +720,20 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     public boolean isUserStreamRepliesAllEnabled() {
         return this.userStreamRepliesAllEnabled;
     }
+    
+    @Override
+    public boolean isUserStreamWithFollowingsEnabled() {
+        return this.userStreamWithFollowingsEnabled;
+    }
 
     protected final void setUserStreamRepliesAllEnabled(boolean enabled) {
         this.userStreamRepliesAllEnabled = enabled;
     }
-
+    
+    protected final void setUserStreamWithFollowingsEnabled(boolean enabled) {
+        this.userStreamWithFollowingsEnabled = enabled;
+    }
+    
     @Override
     public boolean isStallWarningsEnabled() {
         return stallWarningsEnabled;
@@ -815,6 +827,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
         if (useSSL != that.useSSL) return false;
         if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled) return false;
+        if (userStreamWithFollowingsEnabled != that.userStreamWithFollowingsEnabled) return false;
         if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null) return false;
         if (clientVersion != null ? !clientVersion.equals(that.clientVersion) : that.clientVersion != null)
             return false;
@@ -921,6 +934,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
         result = 31 * result + (mbeanEnabled ? 1 : 0);
         result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
+        result = 31 * result + (userStreamWithFollowingsEnabled ? 1 : 0);
         result = 31 * result + (stallWarningsEnabled ? 1 : 0);
         result = 31 * result + (applicationOnlyAuthEnabled ? 1 : 0);
         result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
@@ -982,6 +996,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
                 ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +
+                ", userStreamWithFollowingsEnabled=" + userStreamWithFollowingsEnabled +
                 ", stallWarningsEnabled=" + stallWarningsEnabled +
                 ", applicationOnlyAuthEnabled=" + applicationOnlyAuthEnabled +
                 ", mediaProvider='" + mediaProvider + '\'' +

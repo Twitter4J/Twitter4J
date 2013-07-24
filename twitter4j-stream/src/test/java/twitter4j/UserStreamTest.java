@@ -410,5 +410,10 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
 
-
+    public void testUserStreamWithFollowing(){
+    	TwitterStream twitterStream = new TwitterStreamFactory(conf1).getInstance();
+        twitterStream.addListener(this);
+        twitterStream.user();
+    }
+    
 }

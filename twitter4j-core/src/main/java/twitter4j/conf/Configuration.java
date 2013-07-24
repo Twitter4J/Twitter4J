@@ -117,6 +117,8 @@ public interface Configuration extends HttpClientConfiguration
     boolean isMBeanEnabled();
 
     boolean isUserStreamRepliesAllEnabled();
+    
+    boolean isUserStreamWithFollowingsEnabled();
 
     boolean isStallWarningsEnabled();
 
