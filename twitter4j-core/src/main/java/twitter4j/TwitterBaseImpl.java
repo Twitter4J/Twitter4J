@@ -29,6 +29,7 @@ import java.util.List;
 
 import static twitter4j.internal.http.HttpResponseCode.ENHANCE_YOUR_CLAIM;
 import static twitter4j.internal.http.HttpResponseCode.SERVICE_UNAVAILABLE;
+import static twitter4j.internal.http.HttpResponseCode.TOO_MANY_REQUESTS;
 
 /**
  * Base class of Twitter / AsyncTwitter / TwitterStream supports OAuth.
@@ -166,7 +167,8 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
                 RateLimitStatusEvent statusEvent
                         = new RateLimitStatusEvent(this, rateLimitStatus, event.isAuthenticated());
                 if (statusCode == ENHANCE_YOUR_CLAIM
-                        || statusCode == SERVICE_UNAVAILABLE) {
+                        || statusCode == SERVICE_UNAVAILABLE
+                        || statusCode == TOO_MANY_REQUESTS) {
                     // EXCEEDED_RATE_LIMIT_QUOTA is returned by Rest API
                     // SERVICE_UNAVAILABLE is returned by Search API
                     for (RateLimitStatusListener listener : rateLimitStatusListeners) {
