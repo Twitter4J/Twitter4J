@@ -101,11 +101,16 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
     public void testRetweetMethods() throws Exception {
         List<Status> statuses;
+        
         statuses = twitter1.getRetweets(18594701629l);
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         assertIsRetweet(statuses);
         assertTrue(20 < statuses.size());
+        
+        IDs retweeters=twitter1.getRetweeterIds(18594701629l, -1);
+        assertEquals(121079659l, retweeters.getIDs()[0]);
+        assertTrue(50 < statuses.size());
     }
 
     private void assertIsRetweet(List<Status> statuses) {
