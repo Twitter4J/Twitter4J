@@ -49,6 +49,22 @@ public interface TweetsResources {
     IDs getRetweeterIds(long statusId, long cursor) throws TwitterException;
 
     /**
+     * Returns a collection of up to {@count} user IDs belonging to users who
+     * have retweeted the tweet specified by the id parameter.
+     * <br>This method calls https://api.twitter.com/1.1/get/statuses/retweeters/ids
+     *
+     * @param statusId The numerical ID of the tweet you want the retweeters of.
+     * @param count The maximum number of retweeter IDs to retrieve. Must be
+     *              between 1 and 200, inclusive.
+     * @param cursor The cursor of the page to fetch. Use -1 to start.
+     * @return the retweets of a given tweet
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/retweeters/ids">Tweets Resources › statuses/retweeters/ids</a>
+     * @since Twitter4J 3.0.3
+     */
+    IDs getRetweeterIds(long statusId, int count, long cursor) throws TwitterException;
+
+    /**
      * Returns a single status, specified by the id parameter below. The status's author will be returned inline.
      * <br>This method calls http://api.twitter.com/1.1/statuses/show
      *
