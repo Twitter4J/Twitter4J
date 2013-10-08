@@ -234,7 +234,7 @@ final class LazyStatus implements twitter4j.Status {
      *
      * @return the retweet count.
      */
-    public long getRetweetCount() {
+    public int getRetweetCount() {
         return getTarget().getRetweetCount();
     }
 

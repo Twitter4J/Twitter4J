@@ -51,6 +51,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private String inReplyToScreenName;
     private GeoLocation geoLocation = null;
     private Place place = null;
+    // this field should be int in theory, but left as long for the serialized form compatibility - TFJ-790
     private long retweetCount;
     private boolean isPossiblySensitive;
     private String isoLanguageCode;
@@ -351,8 +352,8 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
-    public long getRetweetCount() {
-        return retweetCount;
+    public int getRetweetCount() {
+        return (int) retweetCount;
     }
 
     /**

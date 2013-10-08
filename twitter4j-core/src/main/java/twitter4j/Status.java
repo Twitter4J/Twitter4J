@@ -124,6 +124,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * Indicates approximately how many times this Tweet has been "favorited" by Twitter users.
      *
      * @return the favorite count
+     * @since Twitter4J 3.0.4
      */
     int getFavoriteCount();
 
@@ -158,7 +159,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      *
      * @return the retweet count.
      */
-    long getRetweetCount();
+    int getRetweetCount();
 
     /**
      * Returns true if the authenticating user has retweeted this tweet, or false when the tweet was
