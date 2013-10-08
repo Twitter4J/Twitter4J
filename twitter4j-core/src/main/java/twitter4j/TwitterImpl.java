@@ -17,6 +17,7 @@
 
 package twitter4j;
 
+import twitter4j.api.*;
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpParameter;
@@ -1810,6 +1811,76 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public Map<String, RateLimitStatus> getRateLimitStatus(String... resources) throws TwitterException {
         return factory.createRateLimitStatuses(get(conf.getRestBaseURL() + "application/rate_limit_status.json?resources=" + z_T4JInternalStringUtil.join(resources)));
+    }
+
+    @Override
+    public TimelinesResources timelines() {
+        return this;
+    }
+
+    @Override
+    public TweetsResources tweets() {
+        return this;
+    }
+
+    @Override
+    public SearchResource search() {
+        return this;
+    }
+
+    @Override
+    public DirectMessagesResources directMessages() {
+        return this;
+    }
+
+    @Override
+    public FriendsFollowersResources friendsFollowers() {
+        return this;
+    }
+
+    @Override
+    public UsersResources users() {
+        return this;
+    }
+
+    @Override
+    public SuggestedUsersResources suggestedUsers() {
+        return this;
+    }
+
+    @Override
+    public FavoritesResources favorites() {
+        return this;
+    }
+
+    @Override
+    public ListsResources list() {
+        return this;
+    }
+
+    @Override
+    public SavedSearchesResources savedSearches() {
+        return this;
+    }
+
+    @Override
+    public PlacesGeoResources placesGeo() {
+        return this;
+    }
+
+    @Override
+    public TrendsResources trends() {
+        return this;
+    }
+
+    @Override
+    public SpamReportingResource spamReporting() {
+        return this;
+    }
+
+    @Override
+    public HelpResources help() {
+        return this;
     }
 
     private HttpResponse get(String url) throws TwitterException {
