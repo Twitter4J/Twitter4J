@@ -132,49 +132,6 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-        if (!json.isNull("entities")) {
-            try {
-                JSONObject entities = json.getJSONObject("entities");
-                int len;
-                if (!entities.isNull("user_mentions")) {
-                    JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
-                    len = userMentionsArray.length();
-                    userMentionEntities = new UserMentionEntity[len];
-                    for (int i = 0; i < len; i++) {
-                        userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
-                    }
-
-                }
-                if (!entities.isNull("urls")) {
-                    JSONArray urlsArray = entities.getJSONArray("urls");
-                    len = urlsArray.length();
-                    urlEntities = new URLEntity[len];
-                    for (int i = 0; i < len; i++) {
-                        urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
-                    }
-                }
-
-                if (!entities.isNull("hashtags")) {
-                    JSONArray hashtagsArray = entities.getJSONArray("hashtags");
-                    len = hashtagsArray.length();
-                    hashtagEntities = new HashtagEntity[len];
-                    for (int i = 0; i < len; i++) {
-                        hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
-                    }
-                }
-
-                if (!entities.isNull("media")) {
-                    JSONArray mediaArray = entities.getJSONArray("media");
-                    len = mediaArray.length();
-                    mediaEntities = new MediaEntity[len];
-                    for (int i = 0; i < len; i++) {
-                        mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
-                    }
-                }
-            } catch (JSONException jsone) {
-                throw new TwitterException(jsone);
-            }
-        }
     }
 
     /**
