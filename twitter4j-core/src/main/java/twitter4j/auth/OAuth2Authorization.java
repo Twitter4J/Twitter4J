@@ -161,7 +161,7 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
         return "OAuth2Authorization{" +
                 "consumerKey='" + consumerKey + '\'' +
                 ", consumerSecret='******************************************\'" +
-                ", token=" + token.toString() +
+                ", token=" + ((token == null) ? "null" : token.toString()) +
                 '}';
     }
 }
