@@ -46,6 +46,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         status = twitter2.showStatus(1000l);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+        assertEquals("en", status.getIsoLanguageCode());
         assertEquals(52, status.getUser().getId());
         Status status2 = twitter1.showStatus(1000l);
         assertEquals(52, status2.getUser().getId());
@@ -54,6 +55,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
 
         status2 = twitter1.showStatus(999383469l);
+        assertEquals("et", status2.getIsoLanguageCode());
         assertNotNull(DataObjectFactory.getRawJSON(status2));
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
         assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3", status2.getText());
