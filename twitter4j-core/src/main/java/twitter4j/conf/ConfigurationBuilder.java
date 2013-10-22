@@ -276,7 +276,7 @@ public final class ConfigurationBuilder {
         configurationBean.setIncludeEntitiesEnbled(enabled);
         return this;
     }
-    
+
     public ConfigurationBuilder setTrimUserEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setTrimUserEnabled(enabled);
@@ -322,12 +322,6 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder setMediaProviderParameters(Properties props) {
         checkNotBuilt();
         configurationBean.setMediaProviderParameters(props);
-        return this;
-    }
-
-    public ConfigurationBuilder setLoggerImpl(String loggerImpl) {
-        checkNotBuilt();
-        configurationBean.setLoggerFactory(loggerImpl);
         return this;
     }
 
