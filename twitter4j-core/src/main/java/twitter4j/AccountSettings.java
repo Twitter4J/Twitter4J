@@ -88,6 +88,7 @@ public interface AccountSettings extends TwitterResponse, java.io.Serializable {
      * Returns the user's screen name
      *
      * @return the user's screen name
+     * @since Twitter4J 3.0.5
      */
     String getScreenName();
 }

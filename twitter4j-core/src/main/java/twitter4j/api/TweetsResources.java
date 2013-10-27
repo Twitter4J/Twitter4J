@@ -44,7 +44,7 @@ public interface TweetsResources {
      * @return the retweets of a given tweet
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/retweeters/ids">Tweets Resources › statuses/retweeters/ids</a>
-     * @since Twitter4J 3.0.3
+     * @since Twitter4J 3.0.5
      */
     IDs getRetweeterIds(long statusId, long cursor) throws TwitterException;
 
@@ -60,7 +60,7 @@ public interface TweetsResources {
      * @return the retweets of a given tweet
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/retweeters/ids">Tweets Resources › statuses/retweeters/ids</a>
-     * @since Twitter4J 3.0.3
+     * @since Twitter4J 3.0.5
      */
     IDs getRetweeterIds(long statusId, int count, long cursor) throws TwitterException;
 
