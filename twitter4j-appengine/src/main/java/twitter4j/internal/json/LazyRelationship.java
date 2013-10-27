@@ -150,6 +150,16 @@ final class LazyRelationship implements twitter4j.Relationship {
 
 
     /**
+     * Checks if source user can send dm to target user
+     *
+     * @return true if source user can send dm to target user
+     */
+    public boolean canSourceDm() {
+        return getTarget().canSourceDm();
+    }
+
+
+    /**
      * Checks if the source user has enabled notifications for updates of the target user
      *
      * @return true if source user enabled notifications for target user
