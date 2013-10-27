@@ -37,6 +37,7 @@ public final class GetAccountSettings {
             System.out.println("Sleep end time: " + settings.getSleepEndTime());
             System.out.println("Sleep start time: " + settings.getSleepStartTime());
             System.out.println("Geo enabled: " + settings.isGeoEnabled());
+            System.out.println("Screen name: " + settings.getScreenName());
             System.out.println("Listing trend locations:");
             Location[] locations = settings.getTrendLocations();
             for (Location location : locations) {

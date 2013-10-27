@@ -83,4 +83,11 @@ public interface AccountSettings extends TwitterResponse, java.io.Serializable {
      * @return true if the wants to always access twitter using HTTPS
      */
     boolean isAlwaysUseHttps();
+
+    /**
+     * Returns the user's screen name
+     *
+     * @return the user's screen name
+     */
+    String getScreenName();
 }
