@@ -30,6 +30,7 @@ Cole Wen <wennnnke at gmail.com> @Pigwen
 Dan Checkoway <dcheckoway at gmail.com>
 Danaja Maldeniya <danajamkdt at gmail.com> @DanajaT
 Daniel Huckaby <handlerexploit at gmail.com> @HandlerExploit
+Denis Bardadym <bardadymchik at gmail.com> @bardadymchik
 Dong Wang <dong at twitter.com> @dongwang218
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
