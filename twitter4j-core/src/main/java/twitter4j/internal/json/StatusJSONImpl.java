@@ -176,13 +176,8 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                     }
                 }
             }
-            if (!json.isNull("metadata")) {
-                JSONObject metadata = json.getJSONObject("metadata");
-                if (!metadata.isNull("iso_language_code")) {
-                    isoLanguageCode = getUnescapedString("iso_language_code", metadata);
 
-                }
-            }
+            isoLanguageCode = getRawString("lang", json);
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;

@@ -43,6 +43,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private final boolean sourceNotificationsEnabled;
     private final boolean sourceFollowingTarget;
     private final boolean sourceFollowedByTarget;
+    private final boolean sourceCanDm;
     private final long sourceUserId;
     private final String sourceUserScreenName;
     private boolean wantRetweets;
@@ -72,6 +73,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             sourceBlockingTarget = getBoolean("blocking", sourceJson);
             sourceFollowingTarget = getBoolean("following", sourceJson);
             sourceFollowedByTarget = getBoolean("followed_by", sourceJson);
+            sourceCanDm = getBoolean("can_dm", sourceJson);
             sourceNotificationsEnabled = getBoolean("notifications_enabled", sourceJson);
             wantRetweets = getBoolean("want_retweets", sourceJson);
         } catch (JSONException jsone) {
@@ -184,6 +186,14 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
      * {@inheritDoc}
      */
     @Override
+    public boolean canSourceDm() {
+        return sourceCanDm;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isSourceNotificationsEnabled() {
         return sourceNotificationsEnabled;
     }
@@ -221,6 +231,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         result = 31 * result + (sourceNotificationsEnabled ? 1 : 0);
         result = 31 * result + (sourceFollowingTarget ? 1 : 0);
         result = 31 * result + (sourceFollowedByTarget ? 1 : 0);
+        result = 31 * result + (sourceCanDm ? 1 : 0);
         result = 31 * result + (int) (sourceUserId ^ (sourceUserId >>> 32));
         result = 31 * result + (sourceUserScreenName != null ? sourceUserScreenName.hashCode() : 0);
         return result;
@@ -235,6 +246,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", targetUserScreenName='" + targetUserScreenName + '\'' +
                 ", sourceFollowingTarget=" + sourceFollowingTarget +
                 ", sourceFollowedByTarget=" + sourceFollowedByTarget +
+                ", sourceCanDm=" + sourceCanDm +
                 ", sourceNotificationsEnabled=" + sourceNotificationsEnabled +
                 '}';
     }

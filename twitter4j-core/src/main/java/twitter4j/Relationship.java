@@ -91,6 +91,14 @@ public interface Relationship extends TwitterResponse, java.io.Serializable {
     boolean isTargetFollowedBySource();
 
     /**
+     * Checks if source user can send dm to target user
+     *
+     * @return true if source user can send dm to target user
+     * @since Twitter4J 3.0.5
+     */
+    boolean canSourceDm();
+
+    /**
      * Checks if the source user has enabled notifications for updates of the target user
      *
      * @return true if source user enabled notifications for target user
