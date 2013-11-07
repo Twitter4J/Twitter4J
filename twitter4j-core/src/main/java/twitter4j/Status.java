@@ -193,4 +193,11 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * @return two-letter iso language code
      */
     String getIsoLanguageCode();
+    
+    /**
+     * Returns the targeting scopes applied to a status.
+     *
+     * @return the targeting scopes applied to a status.
+     */
+    Scopes getScopes();
 }
