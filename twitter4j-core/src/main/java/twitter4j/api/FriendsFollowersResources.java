@@ -360,4 +360,34 @@ public interface FriendsFollowersResources {
      * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getFollowersList(String screenName, long cursor) throws TwitterException;
+    
+    /**
+     * Returns a cursored collection of user objects for users following the specified user.<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of {count} users (default 20) and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls http://api.twitter.com/1.1/friends/list.json
+     *
+     * @param userId The ID of the user for whom to return results for.
+     * @param cursor Causes the results to be broken into pages of no more than {count} users (default 20) at a time.
+     * @param count No of records to fetch at a time with a cap of 200.
+     * @return list of followers
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
+     * @since Twitter4J 3.0.2
+     */
+    PagableResponseList<User> getFollowersList(long userId, long cursor, int count) throws TwitterException;
+
+    /**
+     * Returns a cursored collection of user objects for users following the specified user.<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of {count} users (default 20) users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls http://api.twitter.com/1.1/friends/list.json
+     *
+     * @param screenName The screen name of the user for whom to return results for.
+     * @param cursor Causes the results to be broken into pages of no more than {count} users (default 20) at a time.
+     * @param count No of records to fetch at a time with a cap of 200.
+     * @return list of followers
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
+     * @since Twitter4J 3.0.2
+     */
+    PagableResponseList<User> getFollowersList(String screenName, long cursor, int count) throws TwitterException;
 }
