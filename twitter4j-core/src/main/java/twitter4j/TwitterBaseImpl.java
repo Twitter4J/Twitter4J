@@ -106,7 +106,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         if (null == screenName) {
             if (auth instanceof BasicAuthorization) {
                 screenName = ((BasicAuthorization) auth).getUserId();
-                if (-1 != screenName.indexOf("@")) {
+                if (screenName.contains("@")) {
                     screenName = null;
                 }
             }
