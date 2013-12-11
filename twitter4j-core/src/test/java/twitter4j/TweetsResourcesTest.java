@@ -46,6 +46,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         status = twitter2.showStatus(1000l);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+        assertEquals("en", status.getIsoLanguageCode());
         assertEquals(52, status.getUser().getId());
         Status status2 = twitter1.showStatus(1000l);
         assertEquals(52, status2.getUser().getId());
@@ -54,6 +55,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
 
         status2 = twitter1.showStatus(999383469l);
+        assertEquals("et", status2.getIsoLanguageCode());
         assertNotNull(DataObjectFactory.getRawJSON(status2));
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
         assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3", status2.getText());
@@ -65,24 +67,24 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
     public void testStatusMethods() throws Exception {
         String dateStr = new java.util.Date().toString();
-        String date = dateStr + "test http://t.co/VEDROet @" + id2.screenName +" #twitter4jtest";
+        String date = dateStr + "test http://t.co/VEDROet @" + id2.screenName + " #twitter4jtest";
         Status status = twitter1.updateStatus(date);
         assertNotNull(DataObjectFactory.getRawJSON(status));
         assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
 
-        assertTrue(status.getText().matches(dateStr + "test http://t.co/.* @" + id2.screenName +" #twitter4jtest"));
+        assertTrue(status.getText().matches(dateStr + "test http://t.co/.* @" + id2.screenName + " #twitter4jtest"));
 
         // http://jira.twitter4j.org/browse/TFJ-715
         // current_user_retweet contains only id
         Status retweeted = twitter2.retweetStatus(status.getId());
         List<Status> statuses = twitter2.getHomeTimeline();
         assertTrue(retweeted.getText().endsWith(status.getText()));
-        assertTrue(-1L !=  statuses.get(0).getCurrentUserRetweetId());
+        assertTrue(-1L != statuses.get(0).getCurrentUserRetweetId());
 
         Status status2 = twitter2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
         assertNotNull(DataObjectFactory.getRawJSON(status2));
         assertEquals(status2, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status2)));
-        assertTrue(status2.getText().matches("@" + id1.screenName + " " + dateStr + "test http://t.co/.* @" + id2.screenName +" #twitter4jtest"));
+        assertTrue(status2.getText().matches("@" + id1.screenName + " " + dateStr + "test http://t.co/.* @" + id2.screenName + " #twitter4jtest"));
         assertEquals(status.getId(), status2.getInReplyToStatusId());
         assertEquals(id1.id, status2.getInReplyToUserId());
         status = twitter1.destroyStatus(status.getId());
@@ -101,11 +103,16 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
     public void testRetweetMethods() throws Exception {
         List<Status> statuses;
+        
         statuses = twitter1.getRetweets(18594701629l);
         assertNotNull(DataObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(statuses.get(0))));
         assertIsRetweet(statuses);
         assertTrue(20 < statuses.size());
+        
+        IDs retweeters=twitter1.getRetweeterIds(18594701629l, -1);
+        assertEquals(121079659l, retweeters.getIDs()[0]);
+        assertTrue(50 < statuses.size());
     }
 
     private void assertIsRetweet(List<Status> statuses) {
@@ -114,20 +121,20 @@ public class TweetsResourcesTest extends TwitterTestBase {
         }
     }
 
-    public void testOEmbed() throws TwitterException{
-        OEmbed oembed = twitter1.getOEmbed(new OEmbedRequest(240192632003911681L,"http://samuraism.com/"));
+    public void testOEmbed() throws TwitterException {
+        OEmbed oembed = twitter1.getOEmbed(new OEmbedRequest(240192632003911681L, "http://samuraism.com/"));
         assertNotNull(DataObjectFactory.getRawJSON(oembed));
         assertEquals(oembed, DataObjectFactory.createOEmbed(DataObjectFactory.getRawJSON(oembed)));
 
         assertNotNull(oembed.getHtml());
-        assertEquals("Jason Costa",oembed.getAuthorName());
-        assertEquals("http://twitter.com/jasoncosta/status/240192632003911681",oembed.getURL());
-        assertEquals("1.0",oembed.getVersion());
-        assertEquals(31536000000L,oembed.getCacheAge());
-        assertEquals("http://twitter.com/jasoncosta",oembed.getAuthorURL());
+        assertEquals("Jason Costa", oembed.getAuthorName());
+        assertEquals("https://twitter.com/jasoncosta/statuses/240192632003911681", oembed.getURL());
+        assertEquals("1.0", oembed.getVersion());
+        assertEquals(3153600000L, oembed.getCacheAge());
+        assertEquals("https://twitter.com/jasoncosta", oembed.getAuthorURL());
         assertTrue(0 < oembed.getWidth());
 
-        oembed = twitter1.getOEmbed(new OEmbedRequest(273685580615913473L,"http://samuraism.com/"));
+        oembed = twitter1.getOEmbed(new OEmbedRequest(273685580615913473L, "http://samuraism.com/"));
 
     }
 

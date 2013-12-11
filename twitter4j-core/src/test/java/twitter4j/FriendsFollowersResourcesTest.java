@@ -181,6 +181,16 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertFalse(rel1.isSourceFollowingTarget());
         assertTrue(rel1.isTargetFollowingSource());
         assertFalse(rel1.isTargetFollowedBySource());
+        assertTrue(rel1.canSourceDm());
+        
+        // reverse precondition
+        Relationship rel1r = twitter1.showFriendship(followsOneWay, id1.screenName);
+        assertNotNull(rel1r);
+        assertFalse(rel1r.isSourceFollowedByTarget());
+        assertTrue(rel1r.isSourceFollowingTarget());
+        assertFalse(rel1r.isTargetFollowingSource());
+        assertTrue(rel1r.isTargetFollowedBySource());
+        assertFalse(rel1r.canSourceDm());
 
         //  2) best_friend1 is following and followed by best_friend2
         Relationship rel2 = twitter1.showFriendship(bestFriend1.screenName, bestFriend2.screenName);

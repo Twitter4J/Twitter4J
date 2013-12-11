@@ -16,6 +16,7 @@
 package twitter4j;
 
 import twitter4j.api.*;
+import twitter4j.auth.OAuth2Support;
 import twitter4j.auth.OAuthSupport;
 
 /**
@@ -24,6 +25,7 @@ import twitter4j.auth.OAuthSupport;
  */
 public interface Twitter extends java.io.Serializable,
         OAuthSupport,
+        OAuth2Support,
         TwitterBase,
         TimelinesResources,
         TweetsResources,
@@ -38,6 +40,75 @@ public interface Twitter extends java.io.Serializable,
         PlacesGeoResources,
         TrendsResources,
         SpamReportingResource,
-        HelpResources,
-        UndocumentedResources {
+        HelpResources {
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    TimelinesResources timelines();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    TweetsResources tweets();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    SearchResource search();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    DirectMessagesResources directMessages();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    FriendsFollowersResources friendsFollowers();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    UsersResources users();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    SuggestedUsersResources suggestedUsers();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    FavoritesResources favorites();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    ListsResources list();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    SavedSearchesResources savedSearches();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    PlacesGeoResources placesGeo();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    TrendsResources trends();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    SpamReportingResource spamReporting();
+
+    /**
+     * @since Twitter4J 3.0.4
+     */
+    HelpResources help();
 }

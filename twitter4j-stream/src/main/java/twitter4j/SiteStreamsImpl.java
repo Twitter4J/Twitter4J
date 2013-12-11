@@ -73,18 +73,18 @@ class SiteStreamsImpl extends StatusStreamBase {
             return line;
         }
         if (line.charAt(12) == '"') {
-            forUser.set(Integer.parseInt(line.substring(13, userIdEnd - 1)));
+            forUser.set(Long.parseLong(line.substring(13, userIdEnd - 1)));
         } else {
-            forUser.set(Integer.parseInt(line.substring(12, userIdEnd)));
+            forUser.set(Long.parseLong(line.substring(12, userIdEnd)));
         }
         return line.substring(userIdEnd + 11, line.length() - 1);
     }
 
-    private static ThreadLocal<Integer> forUser =
-            new ThreadLocal<Integer>() {
+    private static ThreadLocal<Long> forUser =
+            new ThreadLocal<Long>() {
                 @Override
-                protected Integer initialValue() {
-                    return 0;
+                protected Long initialValue() {
+                    return 0L;
                 }
             };
 

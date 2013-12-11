@@ -43,6 +43,7 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
     private final TimeZone TIMEZONE;
     private final boolean ALWAYS_USE_HTTPS;
     private final boolean DISCOVERABLE_BY_EMAIL;
+    private final String SCREEN_NAME;
 
     private AccountSettingsJSONImpl(HttpResponse res, JSONObject json) throws TwitterException {
         super(res);
@@ -65,6 +66,7 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
             ALWAYS_USE_HTTPS = getBoolean("always_use_https", json);
             DISCOVERABLE_BY_EMAIL = getBoolean("discoverable_by_email", json);
             TIMEZONE = new TimeZoneJSONImpl(json.getJSONObject("time_zone"));
+            SCREEN_NAME = json.getString("screen_name");
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -115,6 +117,11 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
     @Override
     public boolean isAlwaysUseHttps() {
         return ALWAYS_USE_HTTPS;
+    }
+
+    @Override
+    public String getScreenName() {
+        return SCREEN_NAME;
     }
 
     @Override

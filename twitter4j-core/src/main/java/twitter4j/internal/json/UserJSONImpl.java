@@ -491,7 +491,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
     @Override
     public String getProfileBannerMobileRetinaURL() {
-        return profileBannerImageUrl != null ? profileBannerImageUrl + "/ipad_retina" : null;
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/mobile_retina" : null;
     }
 
     /**

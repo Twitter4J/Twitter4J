@@ -20,7 +20,7 @@ package twitter4j.media;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class Version {
-    private static final String VERSION = "3.0.4-SNAPSHOT";
+    private static final String VERSION = "3.0.5";
     private static final String TITLE = "Twitter4J Media support";
 
     private Version() {

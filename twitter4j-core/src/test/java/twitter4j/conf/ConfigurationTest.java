@@ -325,11 +325,11 @@ public class ConfigurationTest extends TestCase {
 
         assertEquals(conf, (Configuration) serializeDeserialize(conf));
 
-        assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
+        assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         builder = new ConfigurationBuilder();
         builder.setUseSSL(true);
@@ -354,19 +354,19 @@ public class ConfigurationTest extends TestCase {
         builder.setOAuthConsumerKey("key");
         builder.setOAuthConsumerSecret("secret");
         conf = builder.build();
-        assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
+        assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         RequestToken rt = new RequestToken("key", "secret");
 
         // TFJ-328 RequestToken.getAuthenticationURL()/getAuthorizationURL() should return URLs starting with https:// for security reasons
-        assertTrue(0 == rt.getAuthenticationURL().indexOf("http://"));
-        assertTrue(0 == rt.getAuthorizationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
+        assertTrue(0 == rt.getAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == rt.getAuthorizationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         // disable SSL
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
@@ -398,7 +398,7 @@ public class ConfigurationTest extends TestCase {
         return that;
     }
 
-    public void testEnvironmentVariableBasedConfiguration() throws Exception{
+    public void testEnvironmentVariableBasedConfiguration() throws Exception {
         Configuration conf = ConfigurationContext.getInstance();
         // perquisite: export twitter4j.debug=true
 //        assertTrue(conf.isDebugEnabled());

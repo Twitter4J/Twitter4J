@@ -3,7 +3,7 @@
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-media-support</artifactId>
-    <version>3.0.4-SNAPSHOT</version>
+    <version>3.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>twitter4j-media-support</name>
     <description>Twitter4J optional component adds multimedia support
@@ -97,7 +97,7 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>3.0.4-SNAPSHOT</version>
+            <version>3.0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

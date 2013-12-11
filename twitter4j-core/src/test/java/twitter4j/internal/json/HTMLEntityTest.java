@@ -130,4 +130,23 @@ public class HTMLEntityTest extends TestCase {
         assertEquals(expected, HTMLEntity.unescapeAndSlideEntityIncdices(original, new UserMentionEntity[]{},
                 new URLEntity[]{}, new HashtagEntity[]{}, new MediaEntity[]{}));
     }
+    public void testUnescapeAndSlideEntityIncdicesWithCorrectedIndices() throws Exception {
+        // #test&amp;test &amp;#test #test&amp; #test&gt;
+    	// 0123456789012345678901234567890123456789012345
+    	// 0         1         2         3         4
+    	//"entities":{"hashtags":[{"text":"test","indices":[0,5]},{"text":"test","indices":[20,25]},{"text":"test","indices":[26,31]},{"text":"test","indices":[37,42]}],"symbols":[],"urls":[],"user_mentions":[]}
+        HashtagEntityJSONImpl test1 = new HashtagEntityJSONImpl(0, 5, "test");
+        HashtagEntityJSONImpl test2 = new HashtagEntityJSONImpl(20, 25, "test");
+        HashtagEntityJSONImpl test3 = new HashtagEntityJSONImpl(26, 31, "test");
+        HashtagEntityJSONImpl test4 = new HashtagEntityJSONImpl(37, 42, "test");
+        String rawJSON = "{\"text\":\"#test&amp;test &amp;#test #test&amp; #test&gt;\"}";
+
+        JSONObject json = new JSONObject(rawJSON);
+        String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"),null, null, new HashtagEntity[]{test1,test2,test3,test4},null);
+        assertEquals("#test&test &#test #test& #test>", escaped);
+        assertEquals("#test", escaped.substring(test1.getStart(), test1.getEnd()));
+        assertEquals("#test", escaped.substring(test2.getStart(), test2.getEnd()));
+        assertEquals("#test", escaped.substring(test3.getStart(), test3.getEnd()));
+        assertEquals("#test", escaped.substring(test4.getStart(), test4.getEnd()));
+    }
 }

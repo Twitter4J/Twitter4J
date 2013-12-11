@@ -121,11 +121,13 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     boolean isRetweeted();
 
     /**
-     * Indicates approximately how many times this Tweet has been "favorited" by Twitter users. 
+     * Indicates approximately how many times this Tweet has been "favorited" by Twitter users.
+     *
      * @return the favorite count
+     * @since Twitter4J 3.0.4
      */
-    long getFavoriteCount();
-    
+    int getFavoriteCount();
+
     /**
      * Return the user associated with the status.<br>
      * This can be null if the instance if from User.getStatus().
@@ -157,7 +159,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      *
      * @return the retweet count.
      */
-    long getRetweetCount();
+    int getRetweetCount();
 
     /**
      * Returns true if the authenticating user has retweeted this tweet, or false when the tweet was
@@ -167,7 +169,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * @since Twitter4J 2.1.4
      */
     boolean isRetweetedByMe();
-    
+
     /**
      * Returns the authenticating user's retweet's id of this tweet, or -1L when the tweet was created
      * before this feature was enabled.
@@ -177,7 +179,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      */
     long getCurrentUserRetweetId();
 
-     /**
+    /**
      * Returns true if the status contains a link that is identified as sensitive.
      *
      * @return whether the status contains sensitive links
@@ -187,6 +189,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
 
     /**
      * Returns the iso language code set by the Twitter API (best-effort).
+     *
      * @return two-letter iso language code
      */
     String getIsoLanguageCode();

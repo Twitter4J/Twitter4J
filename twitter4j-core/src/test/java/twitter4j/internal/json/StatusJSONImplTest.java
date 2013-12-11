@@ -1,9 +1,6 @@
 package twitter4j.internal.json;
 
-import static org.junit.Assert.*;
-
 import junit.framework.TestCase;
-import twitter4j.GeoLocation;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.internal.org.json.JSONException;
@@ -69,19 +66,5 @@ public class StatusJSONImplTest extends TestCase {
         StatusJSONImpl status = new StatusJSONImpl(json);
 
         assertEquals(false, status.isRetweeted());
-    }
-
-    public void testLoadingGeoLocationWithCoordinatesField() throws Exception{
-
-        //given
-        String json ="{\"filter_level\":\"medium\",\"contributors\":null,\"text\":\"@Livvy_Scott1 because I am a clever  boy.\",\"geo\":{\"type\":\"Point\",\"coordinates\":[52.25604116,0.70928444]},\"retweeted\":false,\"in_reply_to_screen_name\":\"Livvy_Scott1\",\"truncated\":false,\"lang\":\"en\",\"entities\":{\"urls\":[],\"hashtags\":[],\"user_mentions\":[{\"id\":476669159,\"name\":\"livs ?\",\"indices\":[0,13],\"screen_name\":\"Livvy_Scott1\",\"id_str\":\"476669159\"}]},\"in_reply_to_status_id_str\":\"320934680662794241\",\"id\":320936613498744832,\"source\":\"<a href=\\\"http://twitter.com/download/android\\\" rel=\\\"nofollow\\\">Twitter for Android<\\/a>\",\"in_reply_to_user_id_str\":\"476669159\",\"favorited\":false,\"in_reply_to_status_id\":320934680662794241,\"retweet_count\":0,\"created_at\":\"Sun Apr 07 16:30:26 +0000 2013\",\"in_reply_to_user_id\":476669159,\"favorite_count\":0,\"id_str\":\"320936613498744832\",\"place\":{\"id\":\"55c6bcd3013a0607\",\"bounding_box\":{\"type\":\"Polygon\",\"coordinates\":[[[0.38178,52.055592],[0.38178,52.400796],[0.967452,52.400796],[0.967452,52.055592]]]},\"place_type\":\"city\",\"contained_within\":[],\"name\":\"St. Edmundsbury\",\"attributes\":{},\"country_code\":\"GB\",\"url\":\"http://api.twitter.com/1/geo/id/55c6bcd3013a0607.json\",\"polylines\":[],\"geometry\":null,\"country\":\"United Kingdom\",\"full_name\":\"St. Edmundsbury, Suffolk\"},\"user\":{\"location\":\"Attleborough\",\"default_profile\":false,\"profile_background_tile\":true,\"statuses_count\":2520,\"lang\":\"en\",\"profile_link_color\":\"009999\",\"profile_banner_url\":\"https://si0.twimg.com/profile_banners/448404395/1365018601\",\"id\":448404395,\"following\":null,\"protected\":false,\"favourites_count\":203,\"profile_text_color\":\"333333\",\"description\":\"Born at a very young age. Top Jock - DJ Bookings-maxwellDJ18@hotmail.co.uk \",\"verified\":false,\"contributors_enabled\":false,\"profile_sidebar_border_color\":\"EEEEEE\",\"name\":\"DJ MaxwellJ \",\"profile_background_color\":\"131516\",\"created_at\":\"Tue Dec 27 23:49:48 +0000 2011\",\"default_profile_image\":false,\"followers_count\":309,\"profile_image_url_https\":\"https://si0.twimg.com/profile_images/3472432483/07133836faedec0252f17d691cb7eb5d_normal.jpeg\",\"geo_enabled\":true,\"profile_background_image_url\":\"http://a0.twimg.com/images/themes/theme14/bg.gif\",\"profile_background_image_url_https\":\"https://si0.twimg.com/images/themes/theme14/bg.gif\",\"follow_request_sent\":null,\"url\":null,\"utc_offset\":0,\"time_zone\":\"Casablanca\",\"notifications\":null,\"profile_use_background_image\":true,\"friends_count\":342,\"profile_sidebar_fill_color\":\"EFEFEF\",\"screen_name\":\"maxwellDJ18\",\"id_str\":\"448404395\",\"profile_image_url\":\"http://a0.twimg.com/profile_images/3472432483/07133836faedec0252f17d691cb7eb5d_normal.jpeg\",\"listed_count\":0,\"is_translator\":false},\"coordinates\":{\"type\":\"Point\",\"coordinates\":[0.70928444,52.25604116]}}\n";
-
-        //when
-        Status status = DataObjectFactory.createStatus(json);
-        GeoLocation geoLocation = status.getGeoLocation();
-        //then
-        assertNotNull(geoLocation);
-        assertEquals(geoLocation.getLatitude(),0.70928444,0.00000001);
-        assertEquals(geoLocation.getLongitude(),52.25604116,0.00000001);
     }
 }

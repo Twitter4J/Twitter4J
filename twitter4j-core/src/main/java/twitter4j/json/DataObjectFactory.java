@@ -17,7 +17,6 @@
 package twitter4j.json;
 
 import twitter4j.*;
-import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
 
@@ -49,7 +48,6 @@ public final class DataObjectFactory {
     private static final Constructor<DirectMessage> directMessageConstructor;
     private static final Constructor<Location> locationConstructor;
     private static final Constructor<UserList> userListConstructor;
-    private static final Constructor<RelatedResults> relatedResultsConstructor;
     private static final Constructor<StatusDeletionNotice> statusDeletionNoticeConstructor;
     private static final Constructor<AccountTotals> accountTotalsConstructor;
     private static final Constructor<OEmbed> oembedConstructor;
@@ -94,9 +92,6 @@ public final class DataObjectFactory {
 
             userListConstructor = (Constructor<UserList>) Class.forName("twitter4j.internal.json.UserListJSONImpl").getDeclaredConstructor(JSONObject.class);
             userListConstructor.setAccessible(true);
-
-            relatedResultsConstructor = (Constructor<RelatedResults>) Class.forName("twitter4j.internal.json.RelatedResultsJSONImpl").getDeclaredConstructor(JSONArray.class);
-            relatedResultsConstructor.setAccessible(true);
 
             statusDeletionNoticeConstructor = (Constructor<StatusDeletionNotice>) Class.forName("twitter4j.StatusDeletionNoticeImpl").getDeclaredConstructor(JSONObject.class);
             statusDeletionNoticeConstructor.setAccessible(true);
@@ -444,29 +439,6 @@ public final class DataObjectFactory {
         try {
             JSONObject json = new JSONObject(rawJSON);
             return userListConstructor.newInstance(json);
-        } catch (InstantiationException e) {
-            throw new TwitterException(e);
-        } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
-        } catch (InvocationTargetException e) {
-            throw new TwitterException(e);
-        } catch (JSONException e) {
-            throw new TwitterException(e);
-        }
-    }
-
-    /**
-     * Constructs a RelatedResults object from rawJSON string.
-     *
-     * @param rawJSON raw JSON form as String
-     * @return RelatedResults
-     * @throws TwitterException when provided string is not a valid JSON string.
-     * @since Twitter4J 2.1.8
-     */
-    public static RelatedResults createRelatedResults(String rawJSON) throws TwitterException {
-        try {
-            JSONArray json = new JSONArray(rawJSON);
-            return relatedResultsConstructor.newInstance(json);
         } catch (InstantiationException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {

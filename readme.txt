@@ -34,12 +34,14 @@ Dong Wang <dong at twitter.com> @dongwang218
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
 Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
+Hiroaki Takeuchi <takke30 at gmail.com> @takke
 Hiroki Takemoto <pompopo at gmail.com> @pompopo
 Hiroshi Sugimori <mamamadata at gmail.com> @ham1975
 Hitoshi Kunimatsu <hkhumanoid at gmail.com>
 JJ Kelley <jjthemachine at gmail.com> @jjthemachine
 Jacob Elder <jacob.elder@gmail.com> @jelder
 Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
+Jason Webb <bigjasonwebb at gmail.com> @BigJasonWebb
 Jenny Loomis <jenny at rockmelt.com>
 John Corwin <jcorwin at twitter.com> @johnxorz
 John Sirois <jsirois at twitter.com> @johnsirois
@@ -52,6 +54,7 @@ matsumo <matsumo at ce.ns0.it>
 Max Penet <m at qbits.cc> @mpenet
 Mike Champion <mike at graysky.org> @graysky
 Mocel <docel77 at gmail.com> @Mocel
+MortyChoi <soapsign at gmail.com> @Soapsign
 Myyk Seok <myyk.seok at gmail.com> @myyk
 Naoya Hatayama <applepedlar at gmail.com> @ApplePedlar
 Ngoc Dao <ngocdaothanh@gmail.com> @ngocdaothanh

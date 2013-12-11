@@ -58,12 +58,15 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String OAUTH_CONSUMER_SECRET = "oauth.consumerSecret";
     public static final String OAUTH_ACCESS_TOKEN = "oauth.accessToken";
     public static final String OAUTH_ACCESS_TOKEN_SECRET = "oauth.accessTokenSecret";
-
+    public static final String OAUTH2_TOKEN_TYPE = "oauth2.tokenType";
+    public static final String OAUTH2_ACCESS_TOKEN = "oauth2.accessToken";
 
     public static final String OAUTH_REQUEST_TOKEN_URL = "oauth.requestTokenURL";
     public static final String OAUTH_AUTHORIZATION_URL = "oauth.authorizationURL";
     public static final String OAUTH_ACCESS_TOKEN_URL = "oauth.accessTokenURL";
     public static final String OAUTH_AUTHENTICATION_URL = "oauth.authenticationURL";
+    public static final String OAUTH2_TOKEN_URL = "oauth2.tokenURL";
+    public static final String OAUTH2_INVALIDATE_TOKEN_URL = "oauth2.invalidateTokenURL";
 
     public static final String REST_BASE_URL = "restBaseURL";
     public static final String STREAM_BASE_URL = "streamBaseURL";
@@ -81,6 +84,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String MBEAN_ENABLED = "mbeanEnabled";
     public static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
     public static final String STREAM_STALL_WARNINGS_ENABLED = "stream.enableStallWarnings";
+    public static final String APPLICATION_ONLY_AUTH_ENABLED = "enableApplicationOnlyAuth";
 
     public static final String MEDIA_PROVIDER = "media.provider";
     public static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
@@ -296,6 +300,12 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, OAUTH_ACCESS_TOKEN_SECRET)) {
             setOAuthAccessTokenSecret(getString(props, prefix, OAUTH_ACCESS_TOKEN_SECRET));
         }
+        if (notNull(props, prefix, OAUTH2_TOKEN_TYPE)) {
+            setOAuth2TokenType(getString(props, prefix, OAUTH2_TOKEN_TYPE));
+        }
+        if (notNull(props, prefix, OAUTH2_ACCESS_TOKEN)) {
+            setOAuth2AccessToken(getString(props, prefix, OAUTH2_ACCESS_TOKEN));
+        }
         if (notNull(props, prefix, ASYNC_NUM_THREADS)) {
             setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_NUM_THREADS));
         }
@@ -329,6 +339,14 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
         if (notNull(props, prefix, OAUTH_AUTHENTICATION_URL)) {
             setOAuthAuthenticationURL(getString(props, prefix, OAUTH_AUTHENTICATION_URL));
+        }
+
+        if (notNull(props, prefix, OAUTH2_TOKEN_URL)) {
+            setOAuth2TokenURL(getString(props, prefix, OAUTH2_TOKEN_URL));
+        }
+
+        if (notNull(props, prefix, OAUTH2_INVALIDATE_TOKEN_URL)) {
+            setOAuth2InvalidateTokenURL(getString(props, prefix, OAUTH2_INVALIDATE_TOKEN_URL));
         }
 
         if (notNull(props, prefix, REST_BASE_URL)) {
@@ -367,6 +385,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, STREAM_STALL_WARNINGS_ENABLED)) {
             setStallWarningsEnabled(getBoolean(props, prefix, STREAM_STALL_WARNINGS_ENABLED));
+        }
+        if (notNull(props, prefix, APPLICATION_ONLY_AUTH_ENABLED)) {
+            setApplicationOnlyAuthEnabled(getBoolean(props, prefix, APPLICATION_ONLY_AUTH_ENABLED));
         }
         if (notNull(props, prefix, MEDIA_PROVIDER)) {
             setMediaProvider(getString(props, prefix, MEDIA_PROVIDER));

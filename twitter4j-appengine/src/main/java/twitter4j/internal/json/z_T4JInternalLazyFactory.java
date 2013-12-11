@@ -39,7 +39,7 @@ public class z_T4JInternalLazyFactory implements z_T4JInternalFactory {
         return new DirectMessageJSONImpl(json);
     }
 
-    public Map<String ,RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException {
+    public Map<String, RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException {
         return factory.createRateLimitStatuses(res);
     }
 
@@ -233,10 +233,6 @@ public class z_T4JInternalLazyFactory implements z_T4JInternalFactory {
 
     public SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException {
         return new LazySimilarPlaces(res, factory);
-    }
-
-    public RelatedResults createRelatedResults(HttpResponse res) throws TwitterException {
-        return new LazyRelatedResults(res, factory);
     }
 
     public TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException {

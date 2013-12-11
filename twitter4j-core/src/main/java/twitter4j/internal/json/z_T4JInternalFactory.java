@@ -36,7 +36,7 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
 
     DirectMessage createDirectMessage(JSONObject json) throws TwitterException;
 
-    Map<String ,RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException;
+    Map<String, RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException;
 
     Status createStatus(HttpResponse res) throws TwitterException;
 
@@ -89,8 +89,6 @@ public interface z_T4JInternalFactory extends java.io.Serializable {
     ResponseList<Place> createPlaceList(HttpResponse res) throws TwitterException;
 
     SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException;
-
-    RelatedResults createRelatedResults(HttpResponse res) throws TwitterException;
 
     TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException;
 

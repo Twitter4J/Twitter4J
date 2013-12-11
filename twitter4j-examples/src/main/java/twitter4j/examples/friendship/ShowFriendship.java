@@ -44,6 +44,7 @@ public final class ShowFriendship {
             System.out.println("isSourceFollowedByTarget: " + relationship.isSourceFollowedByTarget());
             System.out.println("isSourceFollowingByTarget: " + relationship.isSourceFollowingTarget());
             System.out.println("isSourceNotificationsEnabled: " + relationship.isSourceNotificationsEnabled());
+            System.out.println("canSourceDm: " + relationship.canSourceDm());
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

@@ -172,13 +172,14 @@ final class LazyStatus implements twitter4j.Status {
     }
 
     /**
-     * Indicates approximately how many times this Tweet has been "favorited" by Twitter users. 
+     * Indicates approximately how many times this Tweet has been "favorited" by Twitter users.
+     *
      * @return the favorite count
      */
-    public long getFavoriteCount() {
+    public int getFavoriteCount() {
         return getTarget().getFavoriteCount();
     }
-    
+
     /**
      * Test if the status is retweeted
      *
@@ -233,7 +234,7 @@ final class LazyStatus implements twitter4j.Status {
      *
      * @return the retweet count.
      */
-    public long getRetweetCount() {
+    public int getRetweetCount() {
         return getTarget().getRetweetCount();
     }
 
@@ -248,7 +249,7 @@ final class LazyStatus implements twitter4j.Status {
     public boolean isRetweetedByMe() {
         return getTarget().isRetweetedByMe();
     }
-    
+
     /**
      * Returns the authenticating user's retweet's id of this tweet, or -1L when the tweet was created
      * before this feature was enabled.
@@ -257,7 +258,7 @@ final class LazyStatus implements twitter4j.Status {
      * @since Twitter4J 3.0.1
      */
     public long getCurrentUserRetweetId() {
-    	return getTarget().getCurrentUserRetweetId();
+        return getTarget().getCurrentUserRetweetId();
     }
 
     @Override

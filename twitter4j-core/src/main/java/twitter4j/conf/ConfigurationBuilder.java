@@ -54,6 +54,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setApplicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
+        checkNotBuilt();
+        configurationBean.setApplicationOnlyAuthEnabled(applicationOnlyAuthEnabled);
+        return this;
+    }
+
     public ConfigurationBuilder setUser(String user) {
         checkNotBuilt();
         configurationBean.setUser(user);
@@ -157,6 +163,18 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setOAuth2TokenType(String oAuth2TokenType) {
+        checkNotBuilt();
+        configurationBean.setOAuth2TokenType(oAuth2TokenType);
+        return this;
+    }
+
+    public ConfigurationBuilder setOAuth2AccessToken(String oAuth2AccessToken) {
+        checkNotBuilt();
+        configurationBean.setOAuth2AccessToken(oAuth2AccessToken);
+        return this;
+    }
+
     public ConfigurationBuilder setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
         checkNotBuilt();
         configurationBean.setOAuthRequestTokenURL(oAuthRequestTokenURL);
@@ -178,6 +196,18 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
         checkNotBuilt();
         configurationBean.setOAuthAuthenticationURL(oAuthAuthenticationURL);
+        return this;
+    }
+
+    public ConfigurationBuilder setOAuth2TokenURL(String oAuth2TokenURL) {
+        checkNotBuilt();
+        configurationBean.setOAuth2TokenURL(oAuth2TokenURL);
+        return this;
+    }
+
+    public ConfigurationBuilder setOAuth2InvalidateTokenURL(String invalidateTokenURL) {
+        checkNotBuilt();
+        configurationBean.setOAuth2InvalidateTokenURL(invalidateTokenURL);
         return this;
     }
 
@@ -246,7 +276,7 @@ public final class ConfigurationBuilder {
         configurationBean.setIncludeEntitiesEnbled(enabled);
         return this;
     }
-    
+
     public ConfigurationBuilder setTrimUserEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setTrimUserEnabled(enabled);
@@ -292,12 +322,6 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder setMediaProviderParameters(Properties props) {
         checkNotBuilt();
         configurationBean.setMediaProviderParameters(props);
-        return this;
-    }
-
-    public ConfigurationBuilder setLoggerImpl(String loggerImpl) {
-        checkNotBuilt();
-        configurationBean.setLoggerFactory(loggerImpl);
         return this;
     }
 
