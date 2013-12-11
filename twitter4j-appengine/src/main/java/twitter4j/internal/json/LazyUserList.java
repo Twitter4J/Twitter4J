@@ -57,7 +57,7 @@ final class LazyUserList implements twitter4j.UserList {
      *
      * @return the id of the list
      */
-    public int getId() {
+    public long getId() {
         return getTarget().getId();
     }
 
