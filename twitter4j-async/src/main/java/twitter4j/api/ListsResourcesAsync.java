@@ -79,7 +79,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void destroyUserListMember(long listId, long userId);
 
     /**
-     * @deprecated use {@link #destroyUserListMember(int, long)} instead
+     * @deprecated use {@link #destroyUserListMember(long, long)} instead
      */
     void deleteUserListMember(long listId, long userId);
 
@@ -96,7 +96,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void destroyUserListMember(long ownerId, String slug, long userId);
 
     /**
-     * @deprecated use {@link #destroyUserListMember(int, long)} instead
+     * @deprecated use {@link #destroyUserListMember(long, long)} instead
      */
     void deleteUserListMember(long ownerId, String slug, long userId);
 
@@ -258,7 +258,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void createUserListMembers(long listId, long[] userIds);
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, long[])} instead
+     * @deprecated use {@link #createUserListMembers(long, long[])} instead
      */
     void addUserListMembers(long listId, long[] userIds);
 
@@ -275,7 +275,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void createUserListMembers(long ownerId, String slug, long[] userIds);
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, long[])} instead
+     * @deprecated use {@link #createUserListMembers(long, long[])} instead
      */
     void addUserListMembers(long ownerId, String slug, long[] userIds);
 
@@ -291,7 +291,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void createUserListMembers(long listId, String[] screenNames);
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, String[])} instead
+     * @deprecated use {@link #createUserListMembers(long, String[])} instead
      */
     void addUserListMembers(long listId, String[] screenNames);
 
@@ -308,7 +308,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void createUserListMembers(long ownerId, String slug, String[] screenNames);
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, String[])} instead
+     * @deprecated use {@link #createUserListMembers(long, String[])} instead
      */
     void addUserListMembers(long ownerId, String slug, String[] screenNames);
 
@@ -371,7 +371,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void createUserListMember(long listId, long userId);
 
     /**
-     * @deprecated use {@link #createUserListMember(int, long)} instead
+     * @deprecated use {@link #createUserListMember(long, long)} instead
      */
     void addUserListMember(long listId, long userId);
 
