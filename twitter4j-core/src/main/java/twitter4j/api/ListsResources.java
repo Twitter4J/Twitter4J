@@ -108,9 +108,9 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList destroyUserListMember(long listId, long userId) throws TwitterException;
 
     /**
-     * @deprecated use {@link #destroyUserList(int)} instead
+     * @deprecated use {@link #destroyUserList(long)} instead
      */
-    UserList deleteUserListMember(int listId, long userId) throws TwitterException;
+    UserList deleteUserListMember(long listId, long userId) throws TwitterException;
 
     /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -394,9 +394,9 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList createUserListMembers(long listId, long[] userIds) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, long[])} instead
+     * @deprecated use {@link #createUserListMembers(long, long[])} instead
      */
-    UserList addUserListMembers(int listId, long[] userIds) throws TwitterException;
+    UserList addUserListMembers(long listId, long[] userIds) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -412,7 +412,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList createUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, long[])} instead
+     * @deprecated use {@link #createUserListMembers(long, long[])} instead
      */
     UserList addUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
 
@@ -442,9 +442,9 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList createUserListMembers(long listId, String[] screenNames) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, String[])} instead
+     * @deprecated use {@link #createUserListMembers(long, String[])} instead
      */
-    UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException;
+    UserList addUserListMembers(long listId, String[] screenNames) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -459,7 +459,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList createUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, String[])} instead
+     * @deprecated use {@link #createUserListMembers(long, String[])} instead
      */
     UserList addUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
 
@@ -577,9 +577,9 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList createUserListMember(long listId, long userId) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMember(int, long)}} instead
+     * @deprecated use {@link #createUserListMember(long, long)}} instead
      */
-    UserList addUserListMember(int listId, long userId) throws TwitterException;
+    UserList addUserListMember(long listId, long userId) throws TwitterException;
 
     /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.

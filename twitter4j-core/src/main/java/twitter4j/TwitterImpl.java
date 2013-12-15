@@ -1102,7 +1102,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public UserList deleteUserListMember(int listId, long userId) throws TwitterException {
+    public UserList deleteUserListMember(long listId, long userId) throws TwitterException {
         return destroyUserListMember(listId, userId);
     }
 
@@ -1303,7 +1303,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public UserList addUserListMembers(int listId, long[] userIds) throws TwitterException {
+    public UserList addUserListMembers(long listId, long[] userIds) throws TwitterException {
         return createUserListMembers(listId, userIds);
     }
 
@@ -1346,7 +1346,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException {
+    public UserList addUserListMembers(long listId, String[] screenNames) throws TwitterException {
         return createUserListMembers(listId, screenNames);
     }
 
@@ -1446,7 +1446,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public UserList addUserListMember(int listId, long userId) throws TwitterException {
+    public UserList addUserListMember(long listId, long userId) throws TwitterException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

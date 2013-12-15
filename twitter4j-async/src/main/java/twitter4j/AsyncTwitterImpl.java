@@ -1870,7 +1870,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void getUserListStatuses(final int listId, final Paging paging) {
+    public void getUserListStatuses(final long listId, final Paging paging) {
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_STATUSES, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1908,7 +1908,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void destroyUserListMember(final int listId, final long userId) {
+    public void destroyUserListMember(final long listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_LIST_MEMBER, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1924,7 +1924,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void deleteUserListMember(int listId, long userId) {
+    public void deleteUserListMember(long listId, long userId) {
         destroyUserListMember(listId, userId);
     }
 
@@ -2032,7 +2032,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void getUserListSubscribers(final int listId, final long cursor) {
+    public void getUserListSubscribers(final long listId, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(LIST_SUBSCRIBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2070,7 +2070,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void createUserListSubscription(final int listId) {
+    public void createUserListSubscription(final long listId) {
         getDispatcher().invokeLater(new AsyncTask(SUBSCRIBE_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2108,7 +2108,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void showUserListSubscription(final int listId, final long userId) {
+    public void showUserListSubscription(final long listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CHECK_LIST_SUBSCRIPTION, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2146,7 +2146,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void destroyUserListSubscription(final int listId) {
+    public void destroyUserListSubscription(final long listId) {
         getDispatcher().invokeLater(new AsyncTask(UNSUBSCRIBE_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2185,7 +2185,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void createUserListMembers(final int listId, final long[] userIds) {
+    public void createUserListMembers(final long listId, final long[] userIds) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2201,7 +2201,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void addUserListMembers(int listId, long[] userIds) {
+    public void addUserListMembers(long listId, long[] userIds) {
         createUserListMembers(listId, userIds);
     }
 
@@ -2233,7 +2233,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void createUserListMembers(final int listId, final String[] screenNames) {
+    public void createUserListMembers(final long listId, final String[] screenNames) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2249,7 +2249,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void addUserListMembers(int listId, String[] screenNames) {
+    public void addUserListMembers(long listId, String[] screenNames) {
         createUserListMembers(listId, screenNames);
     }
 
@@ -2281,7 +2281,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void showUserListMembership(final int listId, final long userId) {
+    public void showUserListMembership(final long listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CHECK_LIST_MEMBERSHIP, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2319,7 +2319,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void getUserListMembers(final int listId, final long cursor) {
+    public void getUserListMembers(final long listId, final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2357,7 +2357,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void createUserListMember(final int listId, final long userId) {
+    public void createUserListMember(final long listId, final long userId) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBER, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2373,7 +2373,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void addUserListMember(int listId, long userId) {
+    public void addUserListMember(long listId, long userId) {
         createUserListMember(listId, userId);
     }
 
@@ -2405,7 +2405,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void destroyUserList(final int listId) {
+    public void destroyUserList(final long listId) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_USER_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2443,7 +2443,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void updateUserList(final int listId, final String newListName, final boolean isPublicList, final String newDescription) {
+    public void updateUserList(final long listId, final String newListName, final boolean isPublicList, final String newDescription) {
         getDispatcher().invokeLater(new AsyncTask(UPDATE_USER_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2500,7 +2500,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void showUserList(final int listId) {
+    public void showUserList(final long listId) {
         getDispatcher().invokeLater(new AsyncTask(SHOW_USER_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
