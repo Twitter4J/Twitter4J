@@ -66,7 +66,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     }
 
     private void init(JSONObject json) throws TwitterException {
-        id = getInt("id", json);
+        id = getLong("id", json);
         name = getRawString("name", json);
         fullName = getRawString("full_name", json);
         slug = getRawString("slug", json);
