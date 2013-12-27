@@ -31,6 +31,7 @@ import twitter4j.internal.http.HttpResponseCode;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
 
+import com.squareup.okhttp.ConnectionPool;
 import com.squareup.okhttp.OkHttpClient;
 
 /**
@@ -39,6 +40,10 @@ import com.squareup.okhttp.OkHttpClient;
  */
 public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl implements HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
+
+    private static final int MAX_IDLE_CONNECTIONS = 5;
+
+    private static final long KEEP_ALIVE_DURATION_MS = 300;
 
     public static boolean sPreferSpdy = true;
 
@@ -57,21 +62,7 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
             return super.getConnection(url);
         }
         
-        if (client == null) {
-            client = new OkHttpClient();
-        
-            // to avoid the crash default to using a single global SSL context.
-            // see https://github.com/square/okhttp/issues/184#issuecomment-18772733
-            SSLContext sslContext;
-            try {
-                sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, null, null);
-            } catch (GeneralSecurityException e) {
-                throw new AssertionError(); // The system has no TLS. Just give up.
-            }
-            client.setSslSocketFactory(sslContext.getSocketFactory());
-        }
-        
+        prepareClient();
         
         HttpURLConnection con;
         if (isProxyConfigured()) {
@@ -111,5 +102,27 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
         }
         con.setInstanceFollowRedirects(false);
         return con;
+    }
+
+    private void prepareClient() {
+        
+        if (client == null) {
+            client = new OkHttpClient();
+            
+            // if not set connection-pool, 
+            // it used the default pool invalidly that is disabled the keep-alive feature for TFJ-296.
+            client.setConnectionPool(new ConnectionPool(MAX_IDLE_CONNECTIONS, KEEP_ALIVE_DURATION_MS));
+            
+            // to avoid the crash default to using a single global SSL context.
+            // see https://github.com/square/okhttp/issues/184#issuecomment-18772733
+            SSLContext sslContext;
+            try {
+                sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, null, null);
+            } catch (GeneralSecurityException e) {
+                throw new AssertionError(); // The system has no TLS. Just give up.
+            }
+            client.setSslSocketFactory(sslContext.getSocketFactory());
+        }
     }
 }
