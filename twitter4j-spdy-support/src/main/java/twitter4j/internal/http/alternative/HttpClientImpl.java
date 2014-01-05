@@ -26,7 +26,10 @@ import java.security.GeneralSecurityException;
 
 import javax.net.ssl.SSLContext;
 
+import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpClientConfiguration;
+import twitter4j.internal.http.HttpRequest;
+import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseCode;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
@@ -48,6 +51,8 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
     public static boolean sPreferSpdy = true;
 
     private OkHttpClient client = null;
+
+    private String lastRequestTransport = null;
     
     public HttpClientImpl() {
         super();
@@ -103,7 +108,22 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
         con.setInstanceFollowRedirects(false);
         return con;
     }
-
+    
+    @Override
+    public HttpResponse request(HttpRequest req) throws TwitterException {
+        HttpResponse res = super.request(req);
+        
+        if (res != null) {
+            lastRequestTransport = res.getResponseHeader("OkHttp-Selected-Transport");
+        }
+        
+        return res;
+    }
+    
+    public String getLastRequestTransport() {
+        return lastRequestTransport;
+    }
+    
     private void prepareClient() {
         
         if (client == null) {
