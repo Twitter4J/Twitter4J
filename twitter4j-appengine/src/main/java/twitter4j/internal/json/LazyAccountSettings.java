@@ -139,6 +139,16 @@ final class LazyAccountSettings implements twitter4j.AccountSettings {
         return getTarget().isAlwaysUseHttps();
     }
 
+    /**
+     * Returns the user's screen name
+     *
+     * @return the user's screen name
+     */
+    @Override
+    public String getScreenName() {
+        return getTarget().getScreenName();
+    }
+
     public RateLimitStatus getRateLimitStatus() {
         return getTarget().getRateLimitStatus();
     }

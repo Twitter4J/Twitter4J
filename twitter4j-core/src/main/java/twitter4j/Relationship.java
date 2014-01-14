@@ -94,6 +94,7 @@ public interface Relationship extends TwitterResponse, java.io.Serializable {
      * Checks if source user can send dm to target user
      *
      * @return true if source user can send dm to target user
+     * @since Twitter4J 3.0.5
      */
     boolean canSourceDm();
 
