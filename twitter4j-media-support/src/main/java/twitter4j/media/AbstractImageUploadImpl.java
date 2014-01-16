@@ -139,7 +139,7 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
 
     protected String generateVerifyCredentialsAuthorizationHeader(String verifyCredentialsUrl) {
         List<HttpParameter> oauthSignatureParams = oauth.generateOAuthSignatureHttpParams("GET", verifyCredentialsUrl);
-        return "OAuth realm=\"http://api.twitter.com/\"," + OAuthAuthorization.encodeParameters(oauthSignatureParams, ",", true);
+        return "OAuth realm=\"https://api.twitter.com/\"," + OAuthAuthorization.encodeParameters(oauthSignatureParams, ",", true);
     }
 
     protected String generateVerifyCredentialsAuthorizationURL(String verifyCredentialsUrl) {
