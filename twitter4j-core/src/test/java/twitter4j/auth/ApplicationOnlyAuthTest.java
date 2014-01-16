@@ -158,7 +158,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         // setup
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setUseSSL(false);
-        cb.setOAuth2TokenURL("http://api.twitter.com/oauth2/token");
+        cb.setOAuth2TokenURL("https://api.twitter.com/oauth2/token");
         cb.setApplicationOnlyAuthEnabled(true);
 
         Twitter twitter = new TwitterFactory(cb.build()).getInstance();

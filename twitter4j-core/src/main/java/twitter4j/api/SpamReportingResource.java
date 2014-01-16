@@ -26,7 +26,7 @@ public interface SpamReportingResource {
 
     /**
      * The user specified in the id is blocked by the authenticated user and reported as a spammer.
-     * <br>This method calls http://api.twitter.com/1.1/report_spam.json
+     * <br>This method calls https://api.twitter.com/1.1/report_spam.json
      *
      * @param userId The ID of the user you want to report as a spammer.
      * @return The User reported as a spammer.
@@ -38,7 +38,7 @@ public interface SpamReportingResource {
 
     /**
      * The user specified in the id is blocked by the authenticated user and reported as a spammer.
-     * <br>This method calls http://api.twitter.com/1.1/report_spam.json
+     * <br>This method calls https://api.twitter.com/1.1/report_spam.json
      *
      * @param screenName The screen name of the user you want to report as a spammer.
      * @return The User reported as a spammer.

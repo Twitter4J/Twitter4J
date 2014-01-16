@@ -28,7 +28,7 @@ public interface UsersResourcesAsync {
     /**
      * Returns the current trend, geo and sleep time information for the authenticating user.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1.1/account/settings.json
+     * <br>This method calls https://api.twitter.com/1.1/account/settings.json
      *
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/account/totals">GET account/settings | Twitter Developers</a>
      * @since Twitter4J 2.1.9
@@ -37,7 +37,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not.  Use this method to test if supplied user credentials are valid.
-     * <br>This method calls http://api.twitter.com/1.1/account/verify_credentials.json
+     * <br>This method calls https://api.twitter.com/1.1/account/verify_credentials.json
      *
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/account/verify_credentials">GET account/verify_credentials | Twitter Developers</a>
      * @since Twitter4J 2.1.3
@@ -47,7 +47,7 @@ public interface UsersResourcesAsync {
     /**
      * Updates the current trend, geo, language, timezone and sleep time information for the authenticating user.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1.1/account/settings.json
+     * <br>This method calls https://api.twitter.com/1.1/account/settings.json
      *
      * @param trendLocationWoeid Optional. The Yahoo! Where On Earth ID to use as the user's default trend location.
      * @param sleepTimeEnabled   Optional. Whether sleep time is enabled for the user
@@ -74,7 +74,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Updates the authenticating user's profile background image.
-     * <br>This method calls http://api.twitter.com/1.1/account/update_profile_background_image.json
+     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_background_image.json
      *
      * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forcibly scaled down.
      * @param tile  If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
@@ -85,7 +85,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Updates the authenticating user's profile background image.
-     * <br>This method calls http://api.twitter.com/1.1/account/update_profile_background_image.json
+     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_background_image.json
      *
      * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forcibly scaled down.
      * @param tile  If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
@@ -96,7 +96,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexadecimal value, and may be either three or six characters (ex: #fff or #ffffff).
-     * <br>This method calls http://api.twitter.com/1.1/account/update_profile_colors
+     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_colors
      *
      * @param profileBackgroundColor    optional, can be null
      * @param profileTextColor          optional, can be null
@@ -110,7 +110,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Updates the authenticating user's profile image.
-     * <br>This method calls http://api.twitter.com/1.1/account/update_profile_image.json
+     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_image.json
      *
      * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_image">POST account/update_profile_image | Twitter Developers</a>
@@ -120,7 +120,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Updates the authenticating user's profile image.
-     * <br>This method calls http://api.twitter.com/1.1/account/update_profile_image.json
+     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_image.json
      *
      * @param image Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size.  Images with width larger than 500 pixels will be scaled down.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_image">POST account/update_profile_image | Twitter Developers</a>
@@ -130,7 +130,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Returns a list of user objects that the authenticating user is blocking.
-     * <br>This method calls http://api.twitter.com/1.1/blocks/blocking.xml
+     * <br>This method calls https://api.twitter.com/1.1/blocks/blocking.xml
      *
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 2.0.4
@@ -139,7 +139,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Returns a list of user objects that the authenticating user is blocking.
-     * <br>This method calls http://api.twitter.com/1.1/blocks/blocking.xml
+     * <br>This method calls https://api.twitter.com/1.1/blocks/blocking.xml
      *
      * @param cursor Causes the list of blocked users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
@@ -149,7 +149,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Returns an array of numeric user ids the authenticating user is blocking.
-     * <br>This method calls http://api.twitter.com/1.1/blocks/blocking/ids
+     * <br>This method calls https://api.twitter.com/1.1/blocks/blocking/ids
      *
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/ids">GET blocks/ids | Twitter Developers</a>
      * @since Twitter4J 2.0.4
@@ -158,7 +158,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Returns an array of numeric user ids the authenticating user is blocking.
-     * <br>This method calls http://api.twitter.com/1.1/blocks/blocking/ids
+     * <br>This method calls https://api.twitter.com/1.1/blocks/blocking/ids
      *
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/ids">GET blocks/ids | Twitter Developers</a>
      * @since Twitter4J 3.0.2
@@ -167,7 +167,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
-     * <br>This method calls http://api.twitter.com/1.1/blocks/create%C2%A0
+     * <br>This method calls https://api.twitter.com/1.1/blocks/create%C2%A0
      *
      * @param userId the screen_name of the user to block
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/blocks/create">POST blocks/create | Twitter Developers</a>
@@ -177,7 +177,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Blocks the user specified in the ID parameter as the authenticating user.  Returns the blocked user in the requested format when successful.
-     * <br>This method calls http://api.twitter.com/1.1/blocks/create%C2%A0
+     * <br>This method calls https://api.twitter.com/1.1/blocks/create%C2%A0
      *
      * @param screenName the screen_name of the user to block
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/blocks/create">POST blocks/create | Twitter Developers</a>
@@ -187,7 +187,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
-     * <br>This method calls http://api.twitter.com/1.1/blocks/create%C2%A0
+     * <br>This method calls https://api.twitter.com/1.1/blocks/create%C2%A0
      *
      * @param userId the ID of the user to block
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/blocks/destroy">POST blocks/destroy | Twitter Developers</a>
@@ -197,7 +197,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Un-blocks the user specified in the ID parameter as the authenticating user.  Returns the un-blocked user in the requested format when successful.
-     * <br>This method calls http://api.twitter.com/1.1/blocks/create%C2%A0
+     * <br>This method calls https://api.twitter.com/1.1/blocks/create%C2%A0
      *
      * @param screenName the screen_name of the user to block
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/blocks/destroy">POST blocks/destroy | Twitter Developers</a>
@@ -207,7 +207,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
-     * <br>This method calls http://api.twitter.com/1.1/users/lookup.json
+     * <br>This method calls https://api.twitter.com/1.1/users/lookup.json
      *
      * @param ids Specifies the screen names of the users to retrieve.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/lookup">GET users/lookup | Twitter Developers</a>
@@ -217,7 +217,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
-     * <br>This method calls http://api.twitter.com/1.1/users/lookup.json
+     * <br>This method calls https://api.twitter.com/1.1/users/lookup.json
      *
      * @param screenNames Specifies the screen names of the users to retrieve.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/lookup">GET users/lookup | Twitter Developers</a>
@@ -227,7 +227,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Returns extended information of a given user, specified by ID or screen name as per the required id parameter. The author's most recent status will be returned inline.
-     * <br>This method calls http://api.twitter.com/1.1/users/show.json
+     * <br>This method calls https://api.twitter.com/1.1/users/show.json
      *
      * @param userId the ID of the user for whom to request the retrieve
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/show">GET users/show | Twitter Developers</a>
@@ -236,7 +236,7 @@ public interface UsersResourcesAsync {
 
     /**
      * Returns extended information of a given user, specified by ID or screen name as per the required id parameter. The author's most recent status will be returned inline.
-     * <br>This method calls http://api.twitter.com/1.1/users/show.json
+     * <br>This method calls https://api.twitter.com/1.1/users/show.json
      *
      * @param screenName the screen name of the user for whom to request the detail
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/show">GET users/show | Twitter Developers</a>
@@ -246,7 +246,7 @@ public interface UsersResourcesAsync {
     /**
      * Run a search for users similar to the Find People button on Twitter.com; the same results returned by people search on Twitter.com will be returned by using this API.<br>
      * Usage note: It is only possible to retrieve the first 1000 matches from this API.
-     * <br>This method calls http://api.twitter.com/1.1/users/search.json
+     * <br>This method calls https://api.twitter.com/1.1/users/search.json
      *
      * @param query The query to run against people search.
      * @param page  Specifies the page of results to retrieve. Number of statuses per page is fixed to 20.

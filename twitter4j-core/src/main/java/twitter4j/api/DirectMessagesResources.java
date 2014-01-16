@@ -27,7 +27,7 @@ import twitter4j.TwitterException;
 public interface DirectMessagesResources {
     /**
      * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls http://api.twitter.com/1.1/direct_messages
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages
      *
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
@@ -38,7 +38,7 @@ public interface DirectMessagesResources {
 
     /**
      * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls http://api.twitter.com/1.1/direct_messages
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return List
@@ -50,7 +50,7 @@ public interface DirectMessagesResources {
 
     /**
      * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls http://api.twitter.com/1.1/direct_messages/sent
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/sent
      *
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
@@ -61,7 +61,7 @@ public interface DirectMessagesResources {
 
     /**
      * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls http://api.twitter.com/1.1/direct_messages/sent
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/sent
      *
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
      * @return List
@@ -75,7 +75,7 @@ public interface DirectMessagesResources {
     /**
      * Returns a single direct message, specified by an id parameter.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1.1/direct_messages/show/:id.json
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/show/:id.json
      *
      * @param id message id
      * @return DirectMessage
@@ -87,7 +87,7 @@ public interface DirectMessagesResources {
 
     /**
      * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
-     * <br>This method calls http://api.twitter.com/1.1/direct_messages/destroy
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/destroy
      *
      * @param id the ID of the direct message to destroy
      * @return the deleted direct message
@@ -101,7 +101,7 @@ public interface DirectMessagesResources {
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimmed if the length of the text is exceeding 140 characters.
-     * <br>This method calls http://api.twitter.com/1.1/direct_messages/new
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/new
      *
      * @param userId the screen name of the user to whom send the direct message
      * @param text   The text of your direct message.
@@ -116,7 +116,7 @@ public interface DirectMessagesResources {
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimmed if the length of the text is exceeding 140 characters.
-     * <br>This method calls http://api.twitter.com/1.1/direct_messages/new
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/new
      *
      * @param screenName the screen name of the user to whom send the direct message
      * @param text       The text of your direct message.

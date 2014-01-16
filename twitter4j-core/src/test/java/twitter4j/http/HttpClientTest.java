@@ -56,7 +56,7 @@ public class HttpClientTest extends TwitterTestBase {
 //                new PostParameter("image", new File("src/test/resources/t4j.gif"))
 //        };
 
-//        User user = new User(client.post("http://api.twitter.com/1/account/update_profile_image.json",params, true));
+//        User user = new User(client.post("https://api.twitter.com/1/account/update_profile_image.json",params, true));
 //        User user = new User(client.post("http://localhost:9001/account/update_profile_image.json",params, true));
 //        System.out.println(user.getProfileImageURL().toString());
     }
