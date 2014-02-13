@@ -74,6 +74,7 @@ Steve Lhomme <slhomme at matroska.org> @robux4
 Steven Liu <steven at twitter.com> @steven
 Rémy Rakic <remy.rakic at gmail.com> @lqd
 Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
+Tomasz Nurkiewicz @tnurkiewicz
 Tomohisa Igarashi <tm.igarashi at gmail.com>
 Will Glozer <will at glozer.net> @ar3te
 William Morgan <william at twitter.com> @wm
