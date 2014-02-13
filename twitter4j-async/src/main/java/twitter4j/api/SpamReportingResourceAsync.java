@@ -28,7 +28,7 @@ package twitter4j.api;
 public interface SpamReportingResourceAsync {
     /**
      * The user specified in the id is blocked by the authenticated user and reported as a spammer.
-     * <br>This method calls http://api.twitter.com/1.1/report_spam.json
+     * <br>This method calls https://api.twitter.com/1.1/report_spam.json
      *
      * @param userId The ID of the user you want to report as a spammer.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/report_spam">POST report_spam | Twitter Developers</a>
@@ -38,7 +38,7 @@ public interface SpamReportingResourceAsync {
 
     /**
      * The user specified in the id is blocked by the authenticated user and reported as a spammer.
-     * <br>This method calls http://api.twitter.com/1.1/report_spam.json
+     * <br>This method calls https://api.twitter.com/1.1/report_spam.json
      *
      * @param screenName The screen name of the user you want to report as a spammer.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/report_spam">POST report_spam | Twitter Developers</a>

@@ -24,7 +24,7 @@ import twitter4j.Paging;
 public interface ListsResourcesAsync {
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
-     * <br>This method calls http://api.twitter.com/1.1/lists.json
+     * <br>This method calls https://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerScreenName The screen name of the list owner
 as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -35,7 +35,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
 
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
-     * <br>This method calls http://api.twitter.com/1.1/lists.json
+     * <br>This method calls https://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerUserId The id of the list owner
 returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -46,7 +46,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Show tweet timeline for members of the specified list.
-     * <br>http://api.twitter.com/1/user/lists/list_id/statuses.json
+     * <br>https://api.twitter.com/1/user/lists/list_id/statuses.json
      *
      * @param listId The id of the list
      * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
@@ -57,7 +57,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Show tweet timeline for members of the specified list.
-     * <br>http://api.twitter.com/1/user/lists/list_id/statuses.json
+     * <br>https://api.twitter.com/1/user/lists/list_id/statuses.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -69,7 +69,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/destroy.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy.json
      *
      * @param listId The id of the list.
      * @param userId The screen name of the member you wish to remove from the list.
@@ -85,7 +85,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/destroy.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -102,7 +102,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * List the lists the authenticating user has been added to.
-     * <br>This method calls http://api.twitter.com/1.1/lists/memberships.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
      *
      * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
@@ -112,7 +112,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * List the lists the specified user has been added to.
-     * <br>This method calls http://api.twitter.com/1.1/lists/memberships.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
      *
      * @param listMemberId The id of the list member
      * @param cursor       Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -123,7 +123,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * List the lists the specified user has been added to.
-     * <br>This method calls http://api.twitter.com/1.1/lists/memberships.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
      *
      * @param listMemberScreenName The screen name of the list member
      * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -134,7 +134,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * List the lists the specified user has been added to.
-     * <br>This method calls http://api.twitter.com/1.1/lists/memberships.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
      *
      * @param listMemberId       The id of the list member
      * @param cursor             Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -146,7 +146,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * List the lists the specified user has been added to.
-     * <br>This method calls http://api.twitter.com/1.1/lists/memberships.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
      *
      * @param listMemberScreenName The screen name of the list member
      * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -158,7 +158,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Returns the subscribers of the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/subscribers.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers.json
      *
      * @param listId The id of the list
      * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -169,7 +169,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Returns the subscribers of the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/subscribers.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -181,7 +181,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Make the authenticated user follow the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/list/subscribers/create.json
+     * <br>This method calls https://api.twitter.com/1.1/list/subscribers/create.json
      *
      * @param listId The id of the list.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/subscribers/create">POST lists/subscribers/create | Twitter Developers</a>
@@ -191,7 +191,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Make the authenticated user follow the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/list/subscribers/create.json
+     * <br>This method calls https://api.twitter.com/1.1/list/subscribers/create.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -202,7 +202,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Check if the specified user is a subscriber of the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/subscribers/show.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers/show.json
      *
      * @param listId The id of the list.
      * @param userId The id of the user who you want to know is a member or not of the specified list.
@@ -214,7 +214,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Check if the specified user is a subscriber of the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/subscribers/show.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers/show.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -227,7 +227,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Unsubscribes the authenticated user form the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/subscribers/destroy.json
+     * <br>This method calls https://api.twitter.com/1.1/subscribers/destroy.json
      *
      * @param listId The id of the list.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/subscribers/destroy">POST lists/subscribers/destroy | Twitter Developers</a>
@@ -237,7 +237,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Unsubscribes the authenticated user form the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/subscribers/destroy.json
+     * <br>This method calls https://api.twitter.com/1.1/subscribers/destroy.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -248,7 +248,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/create_all.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param listId  The id of the list.
      * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
@@ -264,7 +264,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/create_all.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -281,7 +281,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/create_all.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param listId      The id of the list.
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
@@ -297,7 +297,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/create_all.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerId     The user ID of the user who owns the list being requested by a slug.
      * @param slug        slug of the list
@@ -314,7 +314,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Check if a user is a member of the specified list.<br>
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/show.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/show.json
      *
      * @param listId The id of the list.
      * @param userId The id of the user who you want to know is a member or not of the specified list.
@@ -325,7 +325,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Check if a user is a member of the specified list.<br>
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/show.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/show.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -338,7 +338,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Returns the members of the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members.json
      *
      * @param listId The id of the list
      * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -349,7 +349,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Returns the members of the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -361,7 +361,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/create.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
      * @param listId The id of the list.
      * @param userId The id of the user to add as a member of the list.
@@ -377,7 +377,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
-     * <br>This method calls http://api.twitter.com/1.1/lists/members/create.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -394,7 +394,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Deletes the specified list. Must be owned by the authenticated user.
-     * <br>This method calls http://api.twitter.com/1.1/lists/destroy.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/destroy.json
      *
      * @param listId The id of the list to delete
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/destroy">POST lists/destroy | Twitter Developers</a>
@@ -404,7 +404,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Deletes the specified list. Must be owned by the authenticated user.
-     * <br>This method calls http://api.twitter.com/1.1/lists/destroy.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/destroy.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -415,7 +415,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Updates the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/update.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/update.json
      *
      * @param listId         The id of the list to update.
      * @param newListName    What you'd like to change the list's name to.
@@ -428,7 +428,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Updates the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/update.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/update.json
      *
      * @param ownerId        The user ID of the user who owns the list being requested by a slug.
      * @param slug           slug of the list
@@ -441,7 +441,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription);
     /**
      * Creates a new list for the authenticated user. Accounts are limited to 20 lists.
-     * <br>This method calls http://api.twitter.com/1.1/lists/create.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/create.json
      *
      * @param listName     The name of the list you are creating. Required.
      * @param isPublicList set true if you wish to make a public list
@@ -454,7 +454,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/show.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/show.json
      *
      * @param listId The id of the list to show
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/show">https://dev.twitter.com/docs/api/1.1/get/lists/show | Twitter Developers</a>
@@ -465,7 +465,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
-     * <br>This method calls http://api.twitter.com/1.1/lists/show.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/show.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
@@ -476,7 +476,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
 
     /**
      * List the lists the specified user follows.
-     * <br>This method calls http://api.twitter.com/1.1/lists/subscriptions.json
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
      *
      * @param listOwnerScreenName The screen name of the list owner
      * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.

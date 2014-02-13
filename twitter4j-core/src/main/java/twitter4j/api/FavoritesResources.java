@@ -27,7 +27,7 @@ import twitter4j.TwitterException;
 public interface FavoritesResources {
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * <br>This method calls http://api.twitter.com/1.1/favorites.json
+     * <br>This method calls https://api.twitter.com/1.1/favorites.json
      *
      * @return List<Status>
      * @throws TwitterException when Twitter service or network is unavailable
@@ -63,7 +63,7 @@ public interface FavoritesResources {
 
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * <br>This method calls http://api.twitter.com/1.1/favorites.json
+     * <br>This method calls https://api.twitter.com/1.1/favorites.json
      *
      * @param paging controls pagination. Supports sinceId and page parameters.
      * @return ResponseList<Status>
@@ -76,7 +76,7 @@ public interface FavoritesResources {
 
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * <br>This method calls http://api.twitter.com/1.1/favorites/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/favorites/[id].json
      *
      * @param userId the id of the user for whom to request a list of favorite statuses
      * @param paging controls pagination. Supports sinceId and page parameters.
@@ -90,7 +90,7 @@ public interface FavoritesResources {
 
     /**
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
-     * <br>This method calls http://api.twitter.com/1.1/favorites/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/favorites/[id].json
      *
      * @param screenName     the screen name of the user for whom to request a list of favorite statuses
      * @param paging controls pagination. Supports sinceId and page parameters.
@@ -104,7 +104,7 @@ public interface FavoritesResources {
 
     /**
      * Favorites the status specified in the ID parameter as the authenticating user.  Returns the favorite status when successful.
-     * <br>This method calls http://api.twitter.com/1.1/favorites/create/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/favorites/create/[id].json
      *
      * @param id the ID of the status to favorite
      * @return Status
@@ -116,7 +116,7 @@ public interface FavoritesResources {
 
     /**
      * Un-favorites the status specified in the ID parameter as the authenticating user.  Returns the un-favorited status in the requested format when successful.
-     * <br>This method calls http://api.twitter.com/1.1/favorites/destroy/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/favorites/destroy/[id].json
      *
      * @param id the ID of the status to un-favorite
      * @return Status

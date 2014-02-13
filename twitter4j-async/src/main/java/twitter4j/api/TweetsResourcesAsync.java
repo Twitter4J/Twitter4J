@@ -26,7 +26,7 @@ import twitter4j.StatusUpdate;
 public interface TweetsResourcesAsync {
     /**
      * Returns up to 100 of the first retweets of a given tweet.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/retweets
+     * <br>This method calls https://api.twitter.com/1.1/statuses/retweets
      *
      * @param statusId The numerical ID of the tweet you want the retweets of.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/retweets/:id">Tweets Resources › statuses/retweets/:id</a>
@@ -36,7 +36,7 @@ public interface TweetsResourcesAsync {
 
     /**
      * Returns a single status, specified by the id parameter below. The status's author will be returned inline.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/show
+     * <br>This method calls https://api.twitter.com/1.1/statuses/show
      *
      * @param id int
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/show/:id">GET statuses/show/:id | Twitter Developers</a>
@@ -47,7 +47,7 @@ public interface TweetsResourcesAsync {
     /**
      * Destroys the status specified by the required ID parameter.<br>
      * Usage note: The authenticating user must be the author of the specified status.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/destroy
+     * <br>This method calls https://api.twitter.com/1.1/statuses/destroy
      *
      * @param statusId String
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/destroy/:id">POST statuses/destroy/:id | Twitter Developers</a>
@@ -57,7 +57,7 @@ public interface TweetsResourcesAsync {
 
     /**
      * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/update
+     * <br>This method calls https://api.twitter.com/1.1/statuses/update
      *
      * @param status String
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/update">POST statuses/update | Twitter Developers</a>
@@ -68,7 +68,7 @@ public interface TweetsResourcesAsync {
     /**
      * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
      * <br>Statuses over 140 characters will be forcibly truncated.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/update
+     * <br>This method calls https://api.twitter.com/1.1/statuses/update
      *
      * @param status the latest status to be updated.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/update">POST statuses/update | Twitter Developers</a>
@@ -78,7 +78,7 @@ public interface TweetsResourcesAsync {
 
     /**
      * Retweets a tweet. Returns the original tweet with retweet details embedded.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/retweet
+     * <br>This method calls https://api.twitter.com/1.1/statuses/retweet
      *
      * @param statusId The ID of the status to retweet.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/retweet/:id">POST statuses/retweet/:id | Twitter Developers</a>
@@ -89,7 +89,7 @@ public interface TweetsResourcesAsync {
     /**
      * Returns information allowing the creation of an embedded representation of a Tweet on third party sites. See the <a href="http://oembed.com/">oEmbed</a> specification for information about the response format.
      * While this endpoint allows a bit of customization for the final appearance of the embedded Tweet, be aware that the appearance of the rendered Tweet may change over time to be consistent with Twitter's <a href="https://dev.twitter.com/terms/display-requirements">Display Requirements</a>. Do not rely on any class or id parameters to stay constant in the returned markup.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/oembed.json
+     * <br>This method calls https://api.twitter.com/1.1/statuses/oembed.json
      * @param req request
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/oembed">GET statuses/oembed | Twitter Developers</a>
      * @since Twitter4J 3.0.2

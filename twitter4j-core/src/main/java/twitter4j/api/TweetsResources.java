@@ -24,7 +24,7 @@ import twitter4j.*;
 public interface TweetsResources {
     /**
      * Returns up to 100 of the first retweets of a given tweet.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/retweets
+     * <br>This method calls https://api.twitter.com/1.1/statuses/retweets
      *
      * @param statusId The numerical ID of the tweet you want the retweets of.
      * @return the retweets of a given tweet
@@ -66,7 +66,7 @@ public interface TweetsResources {
 
     /**
      * Returns a single status, specified by the id parameter below. The status's author will be returned inline.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/show
+     * <br>This method calls https://api.twitter.com/1.1/statuses/show
      *
      * @param id the numerical ID of the status you're trying to retrieve
      * @return a single status
@@ -79,7 +79,7 @@ public interface TweetsResources {
     /**
      * Destroys the status specified by the required ID parameter.<br>
      * Usage note: The authenticating user must be the author of the specified status.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/destroy
+     * <br>This method calls https://api.twitter.com/1.1/statuses/destroy
      *
      * @param statusId The ID of the status to destroy.
      * @return the deleted status
@@ -91,7 +91,7 @@ public interface TweetsResources {
 
     /**
      * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/update
+     * <br>This method calls https://api.twitter.com/1.1/statuses/update
      *
      * @param status the text of your status update
      * @return the latest status
@@ -103,7 +103,7 @@ public interface TweetsResources {
 
     /**
      * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/update or<br>
+     * <br>This method calls https://api.twitter.com/1.1/statuses/update or<br>
      * This method calls https://upload.twitter.com/1/statuses/update_with_media
      *
      * @param latestStatus the latest status to be updated.
@@ -116,7 +116,7 @@ public interface TweetsResources {
 
     /**
      * Retweets a tweet. Returns the original tweet with retweet details embedded.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/retweet
+     * <br>This method calls https://api.twitter.com/1.1/statuses/retweet
      *
      * @param statusId The ID of the status to retweet.
      * @return the retweeted status
@@ -129,7 +129,7 @@ public interface TweetsResources {
     /**
      * Returns information allowing the creation of an embedded representation of a Tweet on third party sites. See the <a href="http://oembed.com/">oEmbed</a> specification for information about the response format.
      * While this endpoint allows a bit of customization for the final appearance of the embedded Tweet, be aware that the appearance of the rendered Tweet may change over time to be consistent with Twitter's <a href="https://dev.twitter.com/terms/display-requirements">Display Requirements</a>. Do not rely on any class or id parameters to stay constant in the returned markup.
-     * <br>This method calls http://api.twitter.com/1.1/statuses/oembed.json
+     * <br>This method calls https://api.twitter.com/1.1/statuses/oembed.json
      * @param req request
      * @return information allowing the creation of an embedded representation of a Tweet on third party sites
      * @throws TwitterException when Twitter service or network is unavailable

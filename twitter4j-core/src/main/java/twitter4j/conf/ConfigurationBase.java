@@ -104,14 +104,14 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     public static final String DALVIK = "twitter4j.dalvik";
     public static final String GAE = "twitter4j.gae";
 
-    private static final String DEFAULT_OAUTH_REQUEST_TOKEN_URL = "http://api.twitter.com/oauth/request_token";
-    private static final String DEFAULT_OAUTH_AUTHORIZATION_URL = "http://api.twitter.com/oauth/authorize";
-    private static final String DEFAULT_OAUTH_ACCESS_TOKEN_URL = "http://api.twitter.com/oauth/access_token";
-    private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "http://api.twitter.com/oauth/authenticate";
+    private static final String DEFAULT_OAUTH_REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
+    private static final String DEFAULT_OAUTH_AUTHORIZATION_URL = "https://api.twitter.com/oauth/authorize";
+    private static final String DEFAULT_OAUTH_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
+    private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "https://api.twitter.com/oauth/authenticate";
     private static final String DEFAULT_OAUTH2_TOKEN_URL = "https://api.twitter.com/oauth2/token";
     private static final String DEFAULT_OAUTH2_INVALIDATE_TOKEN_URL = "https://api.twitter.com/oauth2/invalidate_token";
 
-    private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1.1/";
+    private static final String DEFAULT_REST_BASE_URL = "https://api.twitter.com/1.1/";
     private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1.1/";
     private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/1.1/";
     private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com/1.1/";
