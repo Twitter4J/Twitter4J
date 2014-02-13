@@ -24,6 +24,7 @@ Alex Kira <alex.kira at gmail.com> @alexkira
 Anton Novopashin <antonevane at gmail.com> @anton_evane
 Andy Boothe <andy.boothe at gmail.com> @sigpwned
 Blake Barnes <blake.barnes at gmail.com>
+Borja Fernández @BorjaL
 Bruno Torres Goyanna <bgoyanna at gmail.com> @bgoyanna
 Ciaran Jessup <ciaranj at gmail.com> @ciaran_j
 Cole Wen <wennnnke at gmail.com> @Pigwen
