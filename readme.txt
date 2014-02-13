@@ -55,6 +55,7 @@ Ludovico Fischer @ludovicofischer
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 matsumo <matsumo at ce.ns0.it>
 Max Penet <m at qbits.cc> @mpenet
+Mike Champion <mike at graysky.org> @graysky
 Mocel <docel77 at gmail.com> @Mocel
 MortyChoi <soapsign at gmail.com> @Soapsign
 Myyk Seok <myyk.seok at gmail.com> @myyk
