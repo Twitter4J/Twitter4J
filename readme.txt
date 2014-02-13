@@ -42,6 +42,7 @@ JJ Kelley <jjthemachine at gmail.com> @jjthemachine
 Jacob Elder <jacob.elder@gmail.com> @jelder
 Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
 Jason Webb <bigjasonwebb at gmail.com> @BigJasonWebb
+Jeff Buchbinder @jbuchbinder
 Jenny Loomis <jenny at rockmelt.com>
 John Corwin <jcorwin at twitter.com> @johnxorz
 John Sirois <jsirois at twitter.com> @johnsirois
