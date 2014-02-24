@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 import twitter4j.internal.json.z_T4JInternalParseUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -48,6 +49,7 @@ public class ParseUtilTest extends TestCase {
 
     public void testParseTrendDate() throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         assertEquals("2011-07-11"
                 , sdf.format(z_T4JInternalParseUtil.parseTrendsDate("2011-07-11T05:31:52Z")));
     }
