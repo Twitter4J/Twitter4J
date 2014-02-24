@@ -65,7 +65,12 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
             LANGUAGE = json.getString("language");
             ALWAYS_USE_HTTPS = getBoolean("always_use_https", json);
             DISCOVERABLE_BY_EMAIL = getBoolean("discoverable_by_email", json);
-            TIMEZONE = new TimeZoneJSONImpl(json.getJSONObject("time_zone"));
+            // https://groups.google.com/forum/?fromgroups=#!topic/twitter4j/zPaAXP9gkU4
+            if (json.isNull("time_zone")) {
+                TIMEZONE = null;
+            } else {
+                TIMEZONE = new TimeZoneJSONImpl(json.getJSONObject("time_zone"));
+            }
             SCREEN_NAME = json.getString("screen_name");
         } catch (JSONException e) {
             throw new TwitterException(e);
