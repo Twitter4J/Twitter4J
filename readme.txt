@@ -80,6 +80,7 @@ Steve Lhomme <slhomme at matroska.org> @robux4
 Steven Liu <steven at twitter.com> @steven
 Q.P.Liu
 Rémy Rakic <remy.rakic at gmail.com> @lqd
+Talal Ahmed <talal at venexel.ca>
 Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
 Tomasz Nurkiewicz @tnurkiewicz
 Tomohisa Igarashi <tm.igarashi at gmail.com>
