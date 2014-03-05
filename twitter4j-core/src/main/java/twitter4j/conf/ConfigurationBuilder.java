@@ -306,6 +306,12 @@ public final class ConfigurationBuilder {
         configurationBean.setUserStreamRepliesAllEnabled(enabled);
         return this;
     }
+    
+    public ConfigurationBuilder setUserStreamWithFollowingsEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setUserStreamWithFollowingsEnabled(enabled);
+        return this;
+    }
 
     public ConfigurationBuilder setMediaProvider(String mediaProvider) {
         checkNotBuilt();
