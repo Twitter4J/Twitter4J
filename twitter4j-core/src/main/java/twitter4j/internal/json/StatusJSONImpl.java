@@ -55,6 +55,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private long retweetCount;
     private boolean isPossiblySensitive;
     private String isoLanguageCode;
+    private String lang;
 
     private long[] contributorsIDs;
 
@@ -177,7 +178,13 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 }
             }
 
-            isoLanguageCode = getRawString("lang", json);
+            if (!json.isNull("metadata")) {
+                JSONObject metadata = json.getJSONObject("metadata");
+                if (!metadata.isNull("iso_language_code")) {
+                    isoLanguageCode = getUnescapedString("iso_language_code", metadata);
+
+                }
+            }
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
@@ -187,6 +194,9 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                     urlEntities, hashtagEntities, mediaEntities);
             if (!json.isNull("current_user_retweet")) {
                 currentUserRetweetId = json.getJSONObject("current_user_retweet").getLong("id");
+            }
+            if (!json.isNull("lang")) {
+                lang = getUnescapedString("lang", json);
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -422,6 +432,13 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         return isoLanguageCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public String getLang() {
+        return lang;
+    }
+
     /*package*/
     static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -482,13 +499,15 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
                 ", place=" + place +
                 ", retweetCount=" + retweetCount +
                 ", isPossiblySensitive=" + isPossiblySensitive +
-                ", isoLanguageCode=" + isoLanguageCode +
-                ", contributorsIDs=" + contributorsIDs +
+                ", isoLanguageCode='" + isoLanguageCode + '\'' +
+                ", lang='" + lang + '\'' +
+                ", contributorsIDs=" + Arrays.toString(contributorsIDs) +
                 ", retweetedStatus=" + retweetedStatus +
-                ", userMentionEntities=" + (userMentionEntities == null ? null : Arrays.asList(userMentionEntities)) +
-                ", urlEntities=" + (urlEntities == null ? null : Arrays.asList(urlEntities)) +
-                ", hashtagEntities=" + (hashtagEntities == null ? null : Arrays.asList(hashtagEntities)) +
-                ", mediaEntities=" + (mediaEntities == null ? null : Arrays.asList(mediaEntities)) +
+                ", userMentionEntities=" + Arrays.toString(userMentionEntities) +
+                ", urlEntities=" + Arrays.toString(urlEntities) +
+                ", hashtagEntities=" + Arrays.toString(hashtagEntities) +
+                ", mediaEntities=" + Arrays.toString(mediaEntities) +
+                ", symbolEntities=" + Arrays.toString(symbolEntities) +
                 ", currentUserRetweetId=" + currentUserRetweetId +
                 ", user=" + user +
                 '}';

@@ -72,6 +72,7 @@ Roy Reshef <royreshef at gmail.com> @tsipo
 Rui Silva
 Sam Pullara <sam at sampullara.com> @sampullara
 Sdk0815 <developer at terumode.net> @Sdk0815
+Simone Aiello <aiello.simone103 at gmail.com> @saiello103
 Steve Lhomme <slhomme at matroska.org> @robux4
 Steven Liu <steven at twitter.com> @steven
 Rémy Rakic <remy.rakic at gmail.com> @lqd
