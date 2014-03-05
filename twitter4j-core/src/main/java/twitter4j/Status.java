@@ -199,6 +199,15 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * Returns the lang of the status text if available.
      *
      * @return two-letter iso language code
+     * @since Twitter4J 3.0.6
      */
     String getLang();
+
+    /**
+     * Returns the targeting scopes applied to a status.
+     *
+     * @return the targeting scopes applied to a status.
+     * @since Twitter4J 3.0.6
+     */
+    Scopes getScopes();
 }

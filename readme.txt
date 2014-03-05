@@ -15,6 +15,7 @@ twitter4j-stream - Streaming API support : depending on twitter4j-core and twitt
 
 Contributors
 ------------
+Aaron Rankin <aaron at sproutsocial.com> @aaronrankin
 Adam Samet <asamet at twitter.com> @damnitsamet
 Adrian Petrescu <apetresc at gmail.com> @apetresc
 Akash Nawani <akash.nawani at gmail.com> @AkashNawani

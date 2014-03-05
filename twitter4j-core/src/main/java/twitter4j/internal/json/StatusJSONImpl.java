@@ -66,6 +66,8 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     private MediaEntity[] mediaEntities;
     private SymbolEntity[] symbolEntities;
     private long currentUserRetweetId = -1L;
+    private Scopes scopes;
+    private User user = null;
 
     /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -198,6 +200,19 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
             if (!json.isNull("lang")) {
                 lang = getUnescapedString("lang", json);
             }
+
+            if (!json.isNull("scopes")) {
+            	JSONObject scopesJson = json.getJSONObject("scopes");
+            	 if (!scopesJson.isNull("place_ids")) {
+            		 JSONArray placeIdsArray = scopesJson.getJSONArray("place_ids");
+            		 int len = placeIdsArray.length();
+            		 String[] placeIds = new String[len];
+            		 for (int i = 0; i < len; i++) {
+            			 placeIds[i] = placeIdsArray.getString(i);
+            		 }
+            		 scopes = new ScopesImpl(placeIds);
+            	 }
+            }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -327,8 +342,6 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
         return favoriteCount;
     }
 
-    private User user = null;
-
     /**
      * {@inheritDoc}
      */
@@ -430,6 +443,13 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
      */
     public String getIsoLanguageCode() {
         return isoLanguageCode;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Scopes getScopes() {
+    	return scopes;
     }
 
     /**
