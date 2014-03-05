@@ -39,6 +39,7 @@ Dong Wang <dong at twitter.com> @dongwang218
 Eli Israel <eli at meshfire.com> @eliasisrael
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
+Gabriel Zanetti @pupi1985
 Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
 Hemant Kumar <hemant.singh13 at gmail.com> @hemantsingh1309
 Hiroaki Takeuchi <takke30 at gmail.com> @takke
