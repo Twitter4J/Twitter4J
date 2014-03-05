@@ -364,7 +364,7 @@ public interface FriendsFollowersResources {
     /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
      * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
-     * <br>This method calls http://api.twitter.com/1.1/friends/list.json
+     * <br>This method calls https://api.twitter.com/1.1/friends/list.json
      *
      * @param userId The ID of the user for whom to return results for.
      * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
@@ -379,7 +379,7 @@ public interface FriendsFollowersResources {
     /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
      * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
-     * <br>This method calls http://api.twitter.com/1.1/friends/list.json
+     * <br>This method calls https://api.twitter.com/1.1/friends/list.json
      *
      * @param screenName The screen name of the user for whom to return results for.
      * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.

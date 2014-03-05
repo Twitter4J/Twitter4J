@@ -271,6 +271,11 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getIsoLanguageCode();
     }
 
+    @Override
+    public String getLang() {
+        return getTarget().getLang();
+    }
+
 
     /**
      * Returns an array of user mentions in the tweet, or null if no users were mentioned.

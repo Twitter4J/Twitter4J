@@ -588,8 +588,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public PagableResponseList<User> getFollowersList(long userId, long cursor) throws TwitterException {
-        return factory.createPagableUserList(get(conf.getRestBaseURL() + "followers/list.json?user_id=" + userId
-                + "&cursor=" + cursor));
+        return getFollowersList(userId, cursor, 20);
     }
 
     /**
@@ -597,8 +596,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public PagableResponseList<User> getFollowersList(String screenName, long cursor) throws TwitterException {
-        return factory.createPagableUserList(get(conf.getRestBaseURL() + "followers/list.json?screen_name=" + screenName
-                + "&cursor=" + cursor));
+        return getFollowersList(screenName, cursor, 20);
     }
 
     /**
