@@ -156,13 +156,13 @@ abstract class StatusStreamBase implements StatusStream {
                                         onUserListUnsubscription(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
                                         break;
                                     case USER_LIST_CREATED:
-                                        onUserListCreation(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        onUserListCreation(json.getJSONObject("source"), json.getJSONObject("target_object"), listeners);
                                         break;
                                     case USER_LIST_UPDATED:
-                                        onUserListUpdated(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        onUserListUpdated(json.getJSONObject("source"), json.getJSONObject("target_object"), listeners);
                                         break;
                                     case USER_LIST_DESTROYED:
-                                        onUserListDestroyed(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        onUserListDestroyed(json.getJSONObject("source"), json.getJSONObject("target_object"), listeners);
                                         break;
                                     case USER_UPDATE:
                                         onUserUpdate(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
