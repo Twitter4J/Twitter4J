@@ -35,6 +35,7 @@ Danaja Maldeniya <danajamkdt at gmail.com> @DanajaT
 Daniel Huckaby <handlerexploit at gmail.com> @HandlerExploit
 Denis Bardadym <bardadymchik at gmail.com> @bardadymchik
 Dong Wang <dong at twitter.com> @dongwang218
+Eli Israel <eli at meshfire.com> @eliasisrael
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
 Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
