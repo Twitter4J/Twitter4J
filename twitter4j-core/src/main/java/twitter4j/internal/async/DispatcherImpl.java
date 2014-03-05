@@ -87,7 +87,7 @@ final class DispatcherImpl implements Dispatcher {
                 thread.shutdown();
             }
             synchronized (ticket) {
-                ticket.notify();
+                ticket.notifyAll();
             }
         }
     }
