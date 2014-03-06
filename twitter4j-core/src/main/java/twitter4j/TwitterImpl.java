@@ -386,7 +386,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
-    public InputStream getTwitterImage(String url) throws TwitterException {
+    public InputStream getDMImageAsStream(String url) throws TwitterException {
         return get(url).asStream();
     }
 

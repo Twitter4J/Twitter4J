@@ -16,12 +16,12 @@
 
 package twitter4j.api;
 
-import java.io.InputStream;
-
 import twitter4j.DirectMessage;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
+
+import java.io.InputStream;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -135,7 +135,8 @@ public interface DirectMessagesResources {
      * @return InputStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/discussions/24255">Access media shared in direct messages | Twitter Developers</a>
+     * @since Twitter4J 3.0.6
      */
-    InputStream getTwitterImage(String url)
+    InputStream getDMImageAsStream(String url)
             throws TwitterException;
 }
