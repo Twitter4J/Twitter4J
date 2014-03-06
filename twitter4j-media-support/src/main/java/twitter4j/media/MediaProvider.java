@@ -21,5 +21,5 @@ package twitter4j.media;
  * @since Twitter4J 2.1.8
  */
 public enum MediaProvider {
-    TWITTER, IMG_LY, PLIXI, LOCKERZ, TWIPPLE, TWITGOO, TWITPIC, YFROG, MOBYPICTURE, POSTEROUS
+    TWITTER, IMG_LY, @Deprecated PLIXI, @Deprecated LOCKERZ, TWIPPLE, TWITGOO, TWITPIC, YFROG, MOBYPICTURE, POSTEROUS
 }

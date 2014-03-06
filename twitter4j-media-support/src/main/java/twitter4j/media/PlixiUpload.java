@@ -25,6 +25,7 @@ import twitter4j.internal.http.HttpParameter;
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
+ * @deprecated They no longer privde API to publish pictures
  */
 class PlixiUpload extends AbstractImageUploadImpl {
 // Described at http://groups.google.com/group/tweetphoto/web/multipart-form-data-upload

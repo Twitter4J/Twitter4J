@@ -56,8 +56,6 @@ public class MediaUploadTest extends TestCase {
         factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.PLIXI.name()).build();
-        factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.name()).build();
         factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITGOO.name()).build();
@@ -114,18 +112,6 @@ public class MediaUploadTest extends TestCase {
         try {
             ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
             ImageUpload upload = factory.getInstance(MediaProvider.YFROG);
-            String url = upload.upload(fileName, is, message);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testPlixiUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("b30d6580-46ce-49a1-b469-31777a326938"));
-            ImageUpload upload = factory.getInstance(MediaProvider.PLIXI);
             String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
