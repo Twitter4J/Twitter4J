@@ -382,6 +382,14 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 new HttpParameter[]{new HttpParameter("screen_name", screenName), new HttpParameter("text", text)}));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public InputStream getTwitterImage(String url) throws TwitterException {
+        return get(url).asStream();
+    }
+
     /* Friends & Followers Resources */
 
     /**
