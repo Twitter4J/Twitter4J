@@ -22,12 +22,14 @@ sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/ma
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-media-support/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-async/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-stream/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-spdy-support/pom.xml
 
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-core/src/main/java/twitter4j/Version.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-media-support/src/main/java/twitter4j/media/Version.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-async/src/main/java/twitter4j/VersionAsync.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-appengine/src/main/java/twitter4j/VersionAppEngine.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-stream/src/main/java/twitter4j/VersionStream.java
+sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-spdy-support/src/main/java/twitter4j/VersionSPDY.java
 
 rm -Rf .git
 rm -Rf target
@@ -49,6 +51,8 @@ if [ -n "$DEPLOY" ];
   cd ../twitter4j-stream
   mvn clean package -Dmaven.test.skip=true
   cd ../twitter4j-appengine
+  mvn clean package -Dmaven.test.skip=true
+  cd ../twitter4j-spdy-support
   mvn clean package -Dmaven.test.skip=true
   cd ..
 fi
@@ -79,6 +83,10 @@ cp twitter4j-stream/pom.xml $DIR/twitter4j-stream/
 mkdir $DIR/twitter4j-appengine
 cp -r twitter4j-appengine/src $DIR/twitter4j-appengine/
 cp twitter4j-appengine/pom.xml $DIR/twitter4j-appengine/
+
+mkdir $DIR/twitter4j-spdy-support
+cp -r twitter4j-spdy-support/src $DIR/twitter4j-spdy-support/
+cp twitter4j-spdy-support/pom.xml $DIR/twitter4j-spdy-support/
 
 cp pom.xml $DIR/pom.xml
 cp LICENSE.txt $DIR/
@@ -115,6 +123,12 @@ unzip twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar
 cp twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-appengine/
 cp twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-sources.jar -d $DIR/twitter4j-appengine/
 cp twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION.jar -d $DIR/twitter4j-appengine/
+
+mkdir $DIR/twitter4j-spdy-support/javadoc/
+unzip twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-spdy-support/javadoc/
+cp twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-spdy-support/
+cp twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-sources.jar -d $DIR/twitter4j-spdy-support/
+cp twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION.jar -d $DIR/twitter4j-spdy-support/
 
 mkdir $DIR/lib
 cp readme-libs.txt $DIR/lib
