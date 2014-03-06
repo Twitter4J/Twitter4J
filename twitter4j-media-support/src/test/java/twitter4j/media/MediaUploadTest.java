@@ -58,8 +58,6 @@ public class MediaUploadTest extends TestCase {
         factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITGOO.name()).build();
-        factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITPIC.name()).build();
         factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.YFROG.name()).build();
@@ -122,18 +120,6 @@ public class MediaUploadTest extends TestCase {
         try {
             ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
             ImageUpload upload = factory.getInstance(MediaProvider.IMG_LY);
-            String url = upload.upload(fileName, is, message);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testTwitgooUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
-            ImageUpload upload = factory.getInstance(MediaProvider.TWITGOO);
             String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {

@@ -25,6 +25,7 @@ import twitter4j.internal.http.HttpParameter;
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
+ * @deprecated They're gone. TFJ-814
  */
 class TwitgooUpload extends AbstractImageUploadImpl {
 
