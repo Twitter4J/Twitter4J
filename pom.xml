@@ -96,6 +96,7 @@
         <module>twitter4j-core</module>
         <module>twitter4j-examples</module>
         <module>twitter4j-appengine</module>
+        <module>twitter4j-spdy-support</module>
         <module>twitter4j-stream</module>
         <module>twitter4j-media-support</module>
     </modules>
