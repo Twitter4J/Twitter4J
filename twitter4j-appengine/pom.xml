@@ -184,6 +184,7 @@
                             <excludePackageNames>
                                 twitter4j.internal.*
                             </excludePackageNames>
+                            <failOnError>false</failOnError>
                         </configuration>
                     </execution>
                 </executions>

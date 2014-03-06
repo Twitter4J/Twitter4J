@@ -177,6 +177,7 @@
                         <configuration>
                             <excludePackageNames>
                             </excludePackageNames>
+                            <failOnError>false</failOnError>
                         </configuration>
                     </execution>
                 </executions>
