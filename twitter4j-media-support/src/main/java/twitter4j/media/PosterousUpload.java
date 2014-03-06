@@ -27,11 +27,13 @@ import twitter4j.internal.org.json.JSONObject;
  * @author withgod - noname at withgod.jp
  * @see <a href="http://apidocs.posterous.com/pages/twitter">Posterous API Documentation</a>
  * @since Twitter4J 2.1.12
+ * @deprecated they're gone http://www.posterous.com/
  */
 class PosterousUpload extends AbstractImageUploadImpl {
 
     public PosterousUpload(Configuration conf, OAuthAuthorization oauth) {
         super(conf, oauth);
+        logger.warn("Posterous is gone ever after.");
     }
 
 

@@ -66,8 +66,6 @@ public class MediaUploadTest extends TestCase {
         factory = new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.MOBYPICTURE.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.POSTEROUS.name()).build();
-        factory = new ImageUploadFactory(conf);
     }
 
     public void testNonexistingFileUpload() throws Exception {
@@ -160,18 +158,6 @@ public class MediaUploadTest extends TestCase {
         try {
             ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("IOUxMoqc8Snms9nU"));
             ImageUpload upload = factory.getInstance(MediaProvider.MOBYPICTURE);
-            String url = upload.upload(fileName, is);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testPosterousUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
-            ImageUpload upload = factory.getInstance(MediaProvider.POSTEROUS);
             String url = upload.upload(fileName, is);
             assertTrue(url.length() > 0);
         } finally {
