@@ -270,7 +270,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
     List<Object[]> received = new ArrayList<Object[]>(3);
 
     private synchronized void notifyResponse() {
-        this.notify();
+        this.notifyAll();
     }
 
     public void onStatus(long forUser, Status status) {
