@@ -15,17 +15,8 @@
  */
 package twitter4j.internal.http.alternative;
 
-import java.io.IOException;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.URL;
-import java.security.GeneralSecurityException;
-
-import javax.net.ssl.SSLContext;
-
+import com.squareup.okhttp.ConnectionPool;
+import com.squareup.okhttp.OkHttpClient;
 import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpClientConfiguration;
 import twitter4j.internal.http.HttpRequest;
@@ -34,12 +25,14 @@ import twitter4j.internal.http.HttpResponseCode;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
 
-import com.squareup.okhttp.ConnectionPool;
-import com.squareup.okhttp.OkHttpClient;
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.net.*;
+import java.security.GeneralSecurityException;
 
 /**
  * @author Hiroaki Takeuchi - takke30 at gmail.com
- * @since Twitter4J 3.x.x
+ * @since Twitter4J 3.0.6
  */
 public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl implements HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
