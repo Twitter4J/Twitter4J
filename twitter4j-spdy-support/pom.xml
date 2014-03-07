@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.twitter4j</groupId>
@@ -109,10 +110,25 @@
             <version>3.8.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <!-- this is just to install npn-boot jar to local .m2 repository. to be used by maven-surefire-plugin and included in the bootclasspath -->
+            <groupId>org.mortbay.jetty.npn</groupId>
+            <artifactId>npn-boot</artifactId>
+            <version>1.1.6.v20130911</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.16</version>
+                <configuration combine.children="append">
+                    <argLine>-Xbootclasspath/p:${user.home}/.m2/repository/org/mortbay/jetty/npn/npn-boot/1.1.6.v20130911/npn-boot-1.1.6.v20130911.jar</argLine>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>

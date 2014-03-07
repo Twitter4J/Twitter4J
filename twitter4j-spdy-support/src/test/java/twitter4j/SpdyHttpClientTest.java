@@ -55,7 +55,7 @@ public class SpdyHttpClientTest extends TestCase {
         Field f = http.getClass().getDeclaredField("client");
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
-        assertNotNull(client);  // ensure that OkHttpClient is used
+        assertNotNull("ensure that OkHttpClient is used", client);
 
         ConnectionPool p = client.getConnectionPool();
         assertEquals(1, p.getConnectionCount());
