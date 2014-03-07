@@ -35,8 +35,8 @@
         </developer>
     </developers>
     <issueManagement>
-        <system>Jira</system>
-        <url>http://twitter4j.org/jira/browse/TFJ</url>
+        <system>YouTrack</system>
+        <url>http://issue.twitter4j.org/youtrack/issues?q=project%3A+Twitter4J</url>
     </issueManagement>
     <mailingLists>
         <mailingList>

@@ -101,7 +101,7 @@ public final class z_T4JInternalParseUtil {
 
     public static Date getDate(String dateString, String format) throws TwitterException {
         LinkedBlockingQueue<SimpleDateFormat> simpleDateFormats = formatMapQueue.get(format);
-        if(simpleDateFormats == null){
+        if (simpleDateFormats == null) {
             simpleDateFormats = new LinkedBlockingQueue<SimpleDateFormat>();
             formatMapQueue.put(format, simpleDateFormats);
         }
@@ -114,7 +114,7 @@ public final class z_T4JInternalParseUtil {
             return sdf.parse(dateString);
         } catch (ParseException pe) {
             throw new TwitterException("Unexpected date format(" + dateString + ") returned from twitter.com", pe);
-        }finally {
+        } finally {
             try {
                 simpleDateFormats.put(sdf);
             } catch (InterruptedException ignore) {
@@ -135,7 +135,7 @@ public final class z_T4JInternalParseUtil {
             try {
                 return Integer.valueOf(str);
             } catch (NumberFormatException nfe) {
-                // workaround for the API side issue http://twitter4j.org/jira/browse/TFJ-484
+                // workaround for the API side issue http://issue.twitter4j.org/youtrack/issue/TFJ-484
                 return -1;
             }
         }
