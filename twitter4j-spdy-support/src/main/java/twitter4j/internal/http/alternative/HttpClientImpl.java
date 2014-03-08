@@ -22,11 +22,8 @@ import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.SSLContext;
 
 import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpClientConfiguration;
@@ -148,17 +145,6 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
             // if not set connection-pool, 
             // it used the default pool invalidly that is disabled the keep-alive feature for TFJ-296.
             client.setConnectionPool(new ConnectionPool(MAX_IDLE_CONNECTIONS, KEEP_ALIVE_DURATION_MS));
-            
-            // to avoid the crash default to using a single global SSL context.
-            // see https://github.com/square/okhttp/issues/184#issuecomment-18772733
-            SSLContext sslContext;
-            try {
-                sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, null, null);
-            } catch (GeneralSecurityException e) {
-                throw new AssertionError(); // The system has no TLS. Just give up.
-            }
-            client.setSslSocketFactory(sslContext.getSocketFactory());
         }
     }
 }
