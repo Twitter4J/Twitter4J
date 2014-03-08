@@ -15,8 +15,16 @@
  */
 package twitter4j.internal.http.alternative;
 
-import com.squareup.okhttp.ConnectionPool;
-import com.squareup.okhttp.OkHttpClient;
+import java.io.IOException;
+import java.net.Authenticator;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpClientConfiguration;
 import twitter4j.internal.http.HttpRequest;
@@ -25,10 +33,9 @@ import twitter4j.internal.http.HttpResponseCode;
 import twitter4j.internal.logging.Logger;
 import twitter4j.internal.util.z_T4JInternalStringUtil;
 
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
-import java.net.*;
-import java.security.GeneralSecurityException;
+import com.squareup.okhttp.ConnectionPool;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Protocol;
 
 /**
  * @author Hiroaki Takeuchi - takke30 at gmail.com
@@ -42,10 +49,12 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
     private static final long KEEP_ALIVE_DURATION_MS = 300;
 
     public static boolean sPreferSpdy = true;
+    
+    public static boolean sPreferHttp2 = true;
 
     private OkHttpClient client = null;
 
-    private String lastRequestTransport = null;
+    private String lastRequestProtocol = null;
     
     public HttpClientImpl() {
         super();
@@ -56,7 +65,7 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
     }
     
     protected HttpURLConnection getConnection(String url) throws IOException {
-        if (!sPreferSpdy) {
+        if (!sPreferSpdy && !sPreferHttp2) {
             return super.getConnection(url);
         }
         
@@ -107,14 +116,14 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
         HttpResponse res = super.request(req);
         
         if (res != null) {
-            lastRequestTransport = res.getResponseHeader("OkHttp-Selected-Transport");
+            lastRequestProtocol = res.getResponseHeader("OkHttp-Selected-Protocol");
         }
         
         return res;
     }
     
-    public String getLastRequestTransport() {
-        return lastRequestTransport;
+    public String getLastRequestProtocol() {
+        return lastRequestProtocol;
     }
     
     private void prepareClient() {
@@ -122,20 +131,20 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
         if (client == null) {
             client = new OkHttpClient();
             
+            // set protocols
+            List<Protocol> protocols = new ArrayList<Protocol>();
+            protocols.add(Protocol.HTTP_11);
+            if (sPreferHttp2) {
+                protocols.add(Protocol.HTTP_2);
+            }
+            if (sPreferSpdy) {
+                protocols.add(Protocol.SPDY_3);
+            }
+            client.setProtocols(protocols);
+            
             // if not set connection-pool, 
             // it used the default pool invalidly that is disabled the keep-alive feature for TFJ-296.
             client.setConnectionPool(new ConnectionPool(MAX_IDLE_CONNECTIONS, KEEP_ALIVE_DURATION_MS));
-            
-            // to avoid the crash default to using a single global SSL context.
-            // see https://github.com/square/okhttp/issues/184#issuecomment-18772733
-            SSLContext sslContext;
-            try {
-                sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, null, null);
-            } catch (GeneralSecurityException e) {
-                throw new AssertionError(); // The system has no TLS. Just give up.
-            }
-            client.setSslSocketFactory(sslContext.getSocketFactory());
         }
     }
 }

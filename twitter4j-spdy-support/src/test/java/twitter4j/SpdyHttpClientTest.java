@@ -48,8 +48,27 @@ public class SpdyHttpClientTest extends TestCase {
     protected void tearDown() {
     }
 
+    public void testNoPreferOption() throws Exception {
+        HttpClientImpl http = callOembed();
+
+        // check HTTP/2.0
+        Field f = http.getClass().getDeclaredField("client");
+        f.setAccessible(true);
+        OkHttpClient client = (OkHttpClient) f.get(http);
+        assertNotNull("ensure that OkHttpClient is used", client);
+
+        ConnectionPool p = client.getConnectionPool();
+        assertEquals(1, p.getConnectionCount());
+        assertEquals(0, p.getHttpConnectionCount());
+        assertEquals(1, p.getSpdyConnectionCount());
+        
+        assertEquals("HTTP-draft-09/2.0", http.getLastRequestProtocol());
+    }
+    
     public void testSpdy() throws Exception {
-        HttpClientImpl http = callVerifyCredentials();
+        HttpClientImpl.sPreferSpdy = true;
+        HttpClientImpl.sPreferHttp2 = false;
+        HttpClientImpl http = callOembed();
 
         // check SPDY
         Field f = http.getClass().getDeclaredField("client");
@@ -61,12 +80,34 @@ public class SpdyHttpClientTest extends TestCase {
         assertEquals(1, p.getConnectionCount());
         assertEquals(0, p.getHttpConnectionCount());
         assertEquals(1, p.getSpdyConnectionCount());
+        
+        assertEquals("spdy/3.1", http.getLastRequestProtocol());
+    }
+
+    public void testHttp2() throws Exception {
+        HttpClientImpl.sPreferSpdy = false;
+        HttpClientImpl.sPreferHttp2 = true;
+        HttpClientImpl http = callOembed();
+
+        // check HTTP/2.0
+        Field f = http.getClass().getDeclaredField("client");
+        f.setAccessible(true);
+        OkHttpClient client = (OkHttpClient) f.get(http);
+        assertNotNull("ensure that OkHttpClient is used", client);
+
+        ConnectionPool p = client.getConnectionPool();
+        assertEquals(1, p.getConnectionCount());
+        assertEquals(0, p.getHttpConnectionCount());
+        assertEquals(1, p.getSpdyConnectionCount());
+        
+        assertEquals("HTTP-draft-09/2.0", http.getLastRequestProtocol());
     }
 
     public void testNoSpdy() throws Exception {
         HttpClientImpl.sPreferSpdy = false;
+        HttpClientImpl.sPreferHttp2 = false;
 
-        HttpClientImpl http = callVerifyCredentials();
+        HttpClientImpl http = callOembed();
 
         // check not SPDY
         Field f = http.getClass().getDeclaredField("client");
@@ -75,7 +116,7 @@ public class SpdyHttpClientTest extends TestCase {
         assertNull(client);     // OkHttpClient was NOT used
     }
 
-    private HttpClientImpl callVerifyCredentials() throws TwitterException, JSONException {
+    private HttpClientImpl callOembed() throws TwitterException, JSONException {
         HttpClientImpl http = new HttpClientImpl();
         String url = "https://api.twitter.com/1/statuses/oembed.json?id=441617258578583554";
 
