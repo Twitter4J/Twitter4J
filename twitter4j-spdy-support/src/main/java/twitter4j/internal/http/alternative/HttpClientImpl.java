@@ -45,7 +45,7 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
 
     private OkHttpClient client = null;
 
-    private String lastRequestTransport = null;
+    private String lastRequestProtocol = null;
     
     public HttpClientImpl() {
         super();
@@ -107,14 +107,14 @@ public class HttpClientImpl extends twitter4j.internal.http.HttpClientImpl imple
         HttpResponse res = super.request(req);
         
         if (res != null) {
-            lastRequestTransport = res.getResponseHeader("OkHttp-Selected-Transport");
+            lastRequestProtocol = res.getResponseHeader("OkHttp-Selected-Protocol");
         }
         
         return res;
     }
     
-    public String getLastRequestTransport() {
-        return lastRequestTransport;
+    public String getLastRequestProtocol() {
+        return lastRequestProtocol;
     }
     
     private void prepareClient() {
