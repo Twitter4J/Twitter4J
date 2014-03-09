@@ -18,14 +18,16 @@ package twitter4j;
 
 import com.squareup.okhttp.ConnectionPool;
 import com.squareup.okhttp.OkHttpClient;
+
+import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.http.RequestMethod;
 import twitter4j.internal.http.alternative.HttpClientImpl;
 import twitter4j.internal.org.json.JSONException;
 
 import java.lang.reflect.Field;
-import java.util.Properties;
 
 /**
  * Test case for HttpCient
@@ -35,8 +37,19 @@ import java.util.Properties;
  */
 public class SpdyHttpClientTest extends TestCase {
 
-    protected Properties p = new Properties();
-
+    // specify running order
+    public static Test suite() {
+        
+        TestSuite suite = new TestSuite();
+        
+        suite.addTest(new SpdyHttpClientTest("testNoPreferOption"));    // must be called first
+        suite.addTest(new SpdyHttpClientTest("testHttp2"));
+        suite.addTest(new SpdyHttpClientTest("testSpdy"));
+        suite.addTest(new SpdyHttpClientTest("testNoSpdy"));
+        
+        return suite;
+    }
+    
     public SpdyHttpClientTest(String name) {
         super(name);
     }
@@ -64,7 +77,7 @@ public class SpdyHttpClientTest extends TestCase {
         
         assertEquals("HTTP-draft-09/2.0", http.getLastRequestProtocol());
     }
-    
+
     public void testSpdy() throws Exception {
         HttpClientImpl.sPreferSpdy = true;
         HttpClientImpl.sPreferHttp2 = false;
