@@ -192,6 +192,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * It is suggested to use {@link #getLang()}
      *
      * @return two-letter iso language code
+     * @deprecated use {@link #getLang()} instead
      */
     String getIsoLanguageCode();
 
