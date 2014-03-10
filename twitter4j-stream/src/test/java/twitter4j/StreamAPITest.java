@@ -65,7 +65,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     List<String> received = new ArrayList<String>();
-    Object lock = new Object();
+    final Object lock = new Object();
 
     public void testRawStreamListener() throws Exception {
         twitterStream.addListener(new RawStreamListener() {
