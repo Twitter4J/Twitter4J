@@ -97,8 +97,7 @@ public class JSONObject {
          *
          * @return NULL.
          */
-        protected final Object clone() throws CloneNotSupportedException {
-            super.clone();
+        protected final Object clone() {
             return this;
         }
 
@@ -107,7 +106,7 @@ public class JSONObject {
          *
          * @param object An object to test for nullness.
          * @return true if the object parameter is the JSONObject.NULL object
-         *         or null.
+         * or null.
          */
         public boolean equals(Object object) {
             return object == null || object == this;
@@ -127,7 +126,7 @@ public class JSONObject {
     /**
      * The map where the JSONObject's properties are kept.
      */
-    private Map<Object, Object> map;
+    private Map map;
 
 
     /**
@@ -143,7 +142,7 @@ public class JSONObject {
      * Construct an empty JSONObject.
      */
     public JSONObject() {
-        this.map = new HashMap<Object, Object>();
+        this.map = new HashMap();
     }
 
 
@@ -154,12 +153,14 @@ public class JSONObject {
      *
      * @param jo    A JSONObject.
      * @param names An array of strings.
+     * @throws JSONException
+     * @throws JSONException If a value is a non-finite number or if a name is duplicated.
      */
     public JSONObject(JSONObject jo, String[] names) {
         this();
-        for (String name : names) {
+        for (int i = 0; i < names.length; i += 1) {
             try {
-                putOnce(name, jo.opt(name));
+                putOnce(names[i], jo.opt(names[i]));
             } catch (Exception ignore) {
             }
         }
@@ -229,12 +230,14 @@ public class JSONObject {
      *
      * @param map A map object that can be used to initialize the contents of
      *            the JSONObject.
+     * @throws JSONException
      */
     public JSONObject(Map map) {
-        this.map = new HashMap<Object, Object>();
+        this.map = new HashMap();
         if (map != null) {
-            for (Object o : map.entrySet()) {
-                Map.Entry e = (Map.Entry) o;
+            Iterator i = map.entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry e = (Map.Entry) i.next();
                 Object value = e.getValue();
                 if (value != null) {
                     this.map.put(e.getKey(), wrap(value));
@@ -284,7 +287,8 @@ public class JSONObject {
     public JSONObject(Object object, String names[]) {
         this();
         Class c = object.getClass();
-        for (String name : names) {
+        for (int i = 0; i < names.length; i += 1) {
+            String name = names[i];
             try {
                 putOpt(name, c.getField(name).get(object));
             } catch (Exception ignore) {
@@ -325,7 +329,7 @@ public class JSONObject {
         Enumeration<String> keys = r.getKeys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
-            if (key != null) {
+            if (key instanceof String) {
 
 // Go through the path, ensuring that there is a nested JSONObject for each 
 // segment except the last. Add the value using the last segment's name into
@@ -535,7 +539,7 @@ public class JSONObject {
      *
      * @return An iterator of the keys.
      */
-    public Iterator<Object> keys() {
+    public Iterator keys() {
         return this.map.keySet().iterator();
     }
 
@@ -559,7 +563,7 @@ public class JSONObject {
      */
     public JSONArray names() {
         JSONArray ja = new JSONArray();
-        Iterator<Object> keys = keys();
+        Iterator keys = keys();
         while (keys.hasNext()) {
             ja.put(keys.next());
         }
@@ -616,10 +620,11 @@ public class JSONObject {
 
         Method[] methods = (includeSuperClass) ?
                 klass.getMethods() : klass.getDeclaredMethods();
-        for (Method method1 : methods) {
+        for (int i = 0; i < methods.length; i += 1) {
             try {
-                if (Modifier.isPublic(method1.getModifiers())) {
-                    String name = method1.getName();
+                Method method = methods[i];
+                if (Modifier.isPublic(method.getModifiers())) {
+                    String name = method.getName();
                     String key = "";
                     if (name.startsWith("get")) {
                         if (name.equals("getClass") ||
@@ -633,7 +638,7 @@ public class JSONObject {
                     }
                     if (key.length() > 0 &&
                             Character.isUpperCase(key.charAt(0)) &&
-                            method1.getParameterTypes().length == 0) {
+                            method.getParameterTypes().length == 0) {
                         if (key.length() == 1) {
                             key = key.toLowerCase();
                         } else if (!Character.isUpperCase(key.charAt(1))) {
@@ -641,7 +646,7 @@ public class JSONObject {
                                     key.substring(1);
                         }
 
-                        Object result = method1.invoke(bean, (Object[]) null);
+                        Object result = method.invoke(bean, (Object[]) null);
                         if (result != null) {
                             map.put(key, wrap(result));
                         }
@@ -770,8 +775,8 @@ public class JSONObject {
      * value are both non-null, and only if there is not already a member
      * with that name.
      *
-     * @param key   key
-     * @param value value
+     * @param key
+     * @param value
      * @return his.
      * @throws JSONException if the key is a duplicate
      */
@@ -883,6 +888,16 @@ public class JSONObject {
     }
 
     /**
+     * Get an enumeration of the keys of the JSONObject.
+     * The keys will be sorted alphabetically.
+     *
+     * @return An iterator of the keys.
+     */
+    public Iterator sortedKeys() {
+        return new TreeSet(this.map.keySet()).iterator();
+    }
+
+    /**
      * Try to convert a string into a number, boolean, or null. If the string
      * can't be converted, return the string.
      *
@@ -976,7 +991,7 @@ public class JSONObject {
      */
     public String toString() {
         try {
-            Iterator<Object> keys = keys();
+            Iterator keys = keys();
             StringBuilder sb = new StringBuilder("{");
 
             while (keys.hasNext()) {
@@ -1034,7 +1049,7 @@ public class JSONObject {
         if (length == 0) {
             return "{}";
         }
-        Iterator keys = new TreeSet<Object>(this.map.keySet()).iterator();
+        Iterator keys = sortedKeys();
         int newindent = indent + indentFactor;
         Object object;
         StringBuilder sb = new StringBuilder("{");
@@ -1095,7 +1110,7 @@ public class JSONObject {
      * @throws JSONException If the value is or contains an invalid number.
      */
     public static String valueToString(Object value) throws JSONException {
-        if (value == null) {
+        if (value == null || value.equals(null)) {
             return "null";
         }
         if (value instanceof Number) {
@@ -1135,7 +1150,7 @@ public class JSONObject {
      */
     static String valueToString(Object value, int indentFactor, int indent)
             throws JSONException {
-        if (value == null) {
+        if (value == null || value.equals(null)) {
             return "null";
         }
         if (value instanceof Number) {
@@ -1225,7 +1240,7 @@ public class JSONObject {
     public Writer write(Writer writer) throws JSONException {
         try {
             boolean commanate = false;
-            Iterator<Object> keys = keys();
+            Iterator keys = keys();
             writer.write('{');
 
             while (keys.hasNext()) {
