@@ -18,8 +18,6 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,24 +37,6 @@ import java.util.List;
     private String query;
     private List<Status> tweets;
     private String nextResults;
-
-    // private static factory method to instantiate Query class with "next_page"
-    // http://jira.twitter4j.org/browse/TFJ-549
-    static Method queryFactoryMethod;
-
-    static {
-        Method[] methods = Query.class.getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.getName().equals("createWithNextPageQuery")) {
-                queryFactoryMethod = method;
-                queryFactoryMethod.setAccessible(true);
-                break;
-            }
-        }
-        if (queryFactoryMethod == null) {
-            throw new ExceptionInInitializerError(new NoSuchMethodException("twitter4j.Query.createWithNextPageQuery(java.lang.String)"));
-        }
-    }
 
     /*package*/ QueryResultJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -153,13 +133,7 @@ import java.util.List;
         if (nextResults == null) {
             return null;
         }
-        try {
-            return (Query) queryFactoryMethod.invoke(null, new String[]{nextResults});
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+        return Query.createWithNextPageQuery(nextResults);
     }
 
     /**
