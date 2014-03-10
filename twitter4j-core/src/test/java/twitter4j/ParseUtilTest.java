@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package twitter4j.internal.util;
+package twitter4j;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import twitter4j.z_T4JInternalParseUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -41,18 +40,18 @@ public class ParseUtilTest extends TestCase {
     }
 
     public void testParseLongReturns101() {
-        Assert.assertEquals(101, z_T4JInternalParseUtil.getLong("100+"));
+        Assert.assertEquals(101, ParseUtil.getLong("100+"));
     }
 
     public void testParseIntOverflow() {
-        Assert.assertEquals(-1, z_T4JInternalParseUtil.getInt("4294967295"));
+        Assert.assertEquals(-1, ParseUtil.getInt("4294967295"));
     }
 
     public void testParseTrendDate() throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         Assert.assertEquals("2011-07-11"
-                , sdf.format(z_T4JInternalParseUtil.parseTrendsDate("2011-07-11T05:31:52Z")));
+                , sdf.format(ParseUtil.parseTrendsDate("2011-07-11T05:31:52Z")));
     }
 
 }

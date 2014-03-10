@@ -172,11 +172,11 @@ public final class FilterQuery implements java.io.Serializable {
         params.add(new HttpParameter("count", count));
         if (follow != null && follow.length > 0) {
             params.add(new HttpParameter("follow"
-                    , z_T4JInternalStringUtil.join(follow)));
+                    , StringUtil.join(follow)));
         }
         if (track != null && track.length > 0) {
             params.add(new HttpParameter("track"
-                    , z_T4JInternalStringUtil.join(track)));
+                    , StringUtil.join(track)));
         }
         if (locations != null && locations.length > 0) {
             params.add(new HttpParameter("locations"
@@ -184,7 +184,7 @@ public final class FilterQuery implements java.io.Serializable {
         }
         if (language != null && language.length > 0) {
             params.add(new HttpParameter("language"
-                    , z_T4JInternalStringUtil.join(language)));
+                    , StringUtil.join(language)));
         }
         params.add(stallWarningsParam);
         HttpParameter[] paramArray = new HttpParameter[params.size()];

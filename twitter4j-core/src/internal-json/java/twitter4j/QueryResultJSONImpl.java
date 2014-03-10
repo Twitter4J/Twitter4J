@@ -63,18 +63,18 @@ import java.util.List;
         JSONObject json = res.asJSONObject();
         try {
             JSONObject searchMetaData = json.getJSONObject("search_metadata");
-            completedIn = z_T4JInternalParseUtil.getDouble("completed_in", searchMetaData);
-            count = z_T4JInternalParseUtil.getInt("count", searchMetaData);
-            maxId = z_T4JInternalParseUtil.getLong("max_id", searchMetaData);
+            completedIn = ParseUtil.getDouble("completed_in", searchMetaData);
+            count = ParseUtil.getInt("count", searchMetaData);
+            maxId = ParseUtil.getLong("max_id", searchMetaData);
             nextResults = searchMetaData.has("next_results") ? searchMetaData.getString("next_results") : null;
-            query = z_T4JInternalParseUtil.getURLDecodedString("query", searchMetaData);
-            refreshUrl = z_T4JInternalParseUtil.getUnescapedString("refresh_url", searchMetaData);
-            sinceId = z_T4JInternalParseUtil.getLong("since_id", searchMetaData);
+            query = ParseUtil.getURLDecodedString("query", searchMetaData);
+            refreshUrl = ParseUtil.getUnescapedString("refresh_url", searchMetaData);
+            sinceId = ParseUtil.getLong("since_id", searchMetaData);
 
             JSONArray array = json.getJSONArray("statuses");
             tweets = new ArrayList<Status>(array.length());
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             for (int i = 0; i < array.length(); i++) {
                 JSONObject tweet = array.getJSONObject(i);

@@ -45,8 +45,8 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         JSONObject json = res.asJSONObject();
         init(json);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(this, json);
+            TwitterObjectFactory.clearThreadLocalMap();
+            TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 
@@ -67,21 +67,21 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
 
     private void init(JSONObject json) throws TwitterException {
         try {
-            name = z_T4JInternalParseUtil.getUnescapedString("name", json);
-            streetAddress = z_T4JInternalParseUtil.getUnescapedString("street_address", json);
-            countryCode = z_T4JInternalParseUtil.getRawString("country_code", json);
-            id = z_T4JInternalParseUtil.getRawString("id", json);
-            country = z_T4JInternalParseUtil.getRawString("country", json);
+            name = ParseUtil.getUnescapedString("name", json);
+            streetAddress = ParseUtil.getUnescapedString("street_address", json);
+            countryCode = ParseUtil.getRawString("country_code", json);
+            id = ParseUtil.getRawString("id", json);
+            country = ParseUtil.getRawString("country", json);
             if (!json.isNull("place_type")) {
-                placeType = z_T4JInternalParseUtil.getRawString("place_type", json);
+                placeType = ParseUtil.getRawString("place_type", json);
             } else {
-                placeType = z_T4JInternalParseUtil.getRawString("type", json);
+                placeType = ParseUtil.getRawString("type", json);
             }
-            url = z_T4JInternalParseUtil.getRawString("url", json);
-            fullName = z_T4JInternalParseUtil.getRawString("full_name", json);
+            url = ParseUtil.getRawString("url", json);
+            fullName = ParseUtil.getRawString("full_name", json);
             if (!json.isNull("bounding_box")) {
                 JSONObject boundingBoxJSON = json.getJSONObject("bounding_box");
-                boundingBoxType = z_T4JInternalParseUtil.getRawString("type", boundingBoxJSON);
+                boundingBoxType = ParseUtil.getRawString("type", boundingBoxJSON);
                 JSONArray array = boundingBoxJSON.getJSONArray("coordinates");
                 boundingBoxCoordinates = JSONImplFactory.coordinatesAsGeoLocationArray(array);
             } else {
@@ -91,7 +91,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
 
             if (!json.isNull("geometry")) {
                 JSONObject geometryJSON = json.getJSONObject("geometry");
-                geometryType = z_T4JInternalParseUtil.getRawString("type", geometryJSON);
+                geometryType = ParseUtil.getRawString("type", geometryJSON);
                 JSONArray array = geometryJSON.getJSONArray("coordinates");
                 if (geometryType.equals("Point")) {
                     geometryCoordinates = new GeoLocation[1][1];
@@ -142,7 +142,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
     static ResponseList<Place> createPlaceList(JSONArray list, HttpResponse res
             , Configuration conf) throws TwitterException {
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            TwitterObjectFactory.clearThreadLocalMap();
         }
         try {
             int size = list.length();
@@ -153,11 +153,11 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
                 Place place = new PlaceJSONImpl(json);
                 places.add(place);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(place, json);
+                    TwitterObjectFactory.registerJSONObject(place, json);
                 }
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(places, list);
+                TwitterObjectFactory.registerJSONObject(places, list);
             }
             return places;
         } catch (JSONException jsone) {

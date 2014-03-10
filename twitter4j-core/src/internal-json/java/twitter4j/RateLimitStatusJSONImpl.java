@@ -41,8 +41,8 @@ import java.util.Map;
         JSONObject json = res.asJSONObject();
         Map<String, RateLimitStatus> map = createRateLimitStatuses(json);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(map, json);
+            TwitterObjectFactory.clearThreadLocalMap();
+            TwitterObjectFactory.registerJSONObject(map, json);
         }
         return map;
     }
@@ -80,9 +80,9 @@ import java.util.Map;
     }
 
     void init(JSONObject json) throws TwitterException {
-        this.limit = z_T4JInternalParseUtil.getInt("limit", json);
-        this.remaining = z_T4JInternalParseUtil.getInt("remaining", json);
-        this.resetTimeInSeconds = z_T4JInternalParseUtil.getInt("reset", json);
+        this.limit = ParseUtil.getInt("limit", json);
+        this.remaining = ParseUtil.getInt("remaining", json);
+        this.resetTimeInSeconds = ParseUtil.getInt("reset", json);
         this.secondsUntilReset = (int) ((resetTimeInSeconds * 1000L - System.currentTimeMillis()) / 1000);
     }
 

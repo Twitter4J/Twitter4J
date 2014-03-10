@@ -148,7 +148,7 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
     public Object getAttribute(String attribute)
             throws AttributeNotFoundException, MBeanException, ReflectionException {
         if (attribute.equals("statisticsTable")) {
-            return (TabularData) getStatistics();
+            return getStatistics();
         } else if (attribute.equals("callCount")) {
             return API_STATISTICS.getCallCount();
         } else if (attribute.equals("errorCount")) {

@@ -31,10 +31,10 @@ import java.net.URI;
 )
 final class LazyUserList implements twitter4j.UserList {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
     private UserList target = null;
 
-    LazyUserList(HttpResponse res, TwitterObjectFactory factory) {
+    LazyUserList(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

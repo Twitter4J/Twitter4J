@@ -44,12 +44,12 @@ import java.net.URISyntaxException;
     /*package*/ UserListJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONObject json = res.asJSONObject();
         init(json);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.registerJSONObject(this, json);
+            TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 
@@ -59,16 +59,16 @@ import java.net.URISyntaxException;
     }
 
     private void init(JSONObject json) throws TwitterException {
-        id = z_T4JInternalParseUtil.getLong("id", json);
-        name = z_T4JInternalParseUtil.getRawString("name", json);
-        fullName = z_T4JInternalParseUtil.getRawString("full_name", json);
-        slug = z_T4JInternalParseUtil.getRawString("slug", json);
-        description = z_T4JInternalParseUtil.getRawString("description", json);
-        subscriberCount = z_T4JInternalParseUtil.getInt("subscriber_count", json);
-        memberCount = z_T4JInternalParseUtil.getInt("member_count", json);
-        uri = z_T4JInternalParseUtil.getRawString("uri", json);
-        mode = "public".equals(z_T4JInternalParseUtil.getRawString("mode", json));
-        following = z_T4JInternalParseUtil.getBoolean("following", json);
+        id = ParseUtil.getLong("id", json);
+        name = ParseUtil.getRawString("name", json);
+        fullName = ParseUtil.getRawString("full_name", json);
+        slug = ParseUtil.getRawString("slug", json);
+        description = ParseUtil.getRawString("description", json);
+        subscriberCount = ParseUtil.getInt("subscriber_count", json);
+        memberCount = ParseUtil.getInt("member_count", json);
+        uri = ParseUtil.getRawString("uri", json);
+        mode = "public".equals(ParseUtil.getRawString("mode", json));
+        following = ParseUtil.getBoolean("following", json);
 
         try {
             if (!json.isNull("user")) {
@@ -186,7 +186,7 @@ import java.net.URISyntaxException;
     static PagableResponseList<UserList> createPagableUserListList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONObject json = res.asJSONObject();
             JSONArray list = json.getJSONArray("lists");
@@ -198,11 +198,11 @@ import java.net.URISyntaxException;
                 UserList userList = new UserListJSONImpl(userListJson);
                 users.add(userList);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
+                    TwitterObjectFactory.registerJSONObject(userList, userListJson);
                 }
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(users, json);
+                TwitterObjectFactory.registerJSONObject(users, json);
             }
             return users;
         } catch (JSONException jsone) {
@@ -216,7 +216,7 @@ import java.net.URISyntaxException;
     static ResponseList<UserList> createUserListList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
@@ -227,11 +227,11 @@ import java.net.URISyntaxException;
                 UserList userList = new UserListJSONImpl(userListJson);
                 users.add(userList);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(userList, userListJson);
+                    TwitterObjectFactory.registerJSONObject(userList, userListJson);
                 }
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(users, list);
+                TwitterObjectFactory.registerJSONObject(users, list);
             }
             return users;
         } catch (JSONException jsone) {

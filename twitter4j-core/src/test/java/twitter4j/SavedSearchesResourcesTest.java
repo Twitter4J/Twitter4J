@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.json.DataObjectFactory;
-
 import java.util.List;
 
 /**
@@ -39,18 +37,18 @@ public class SavedSearchesResourcesTest extends TwitterTestBase {
     /* Saved Searches Methods */
     public void testSavedSearches() throws Exception {
         List<SavedSearch> list = twitter1.getSavedSearches();
-        assertNotNull(DataObjectFactory.getRawJSON(list));
+        assertNotNull(TwitterObjectFactory.getRawJSON(list));
         for (SavedSearch savedSearch : list) {
             twitter1.destroySavedSearch(savedSearch.getId());
         }
         SavedSearch ss1 = twitter1.createSavedSearch("my search");
-        assertNotNull(DataObjectFactory.getRawJSON(ss1));
-        assertEquals(ss1, DataObjectFactory.createSavedSearch(DataObjectFactory.getRawJSON(ss1)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ss1));
+        assertEquals(ss1, TwitterObjectFactory.createSavedSearch(TwitterObjectFactory.getRawJSON(ss1)));
         assertEquals("my search", ss1.getQuery());
         assertEquals(-1, ss1.getPosition());
         list = twitter1.getSavedSearches();
-        assertNotNull(DataObjectFactory.getRawJSON(list));
-        assertEquals(list.get(0), DataObjectFactory.createSavedSearch(DataObjectFactory.getRawJSON(list.get(0))));
+        assertNotNull(TwitterObjectFactory.getRawJSON(list));
+        assertEquals(list.get(0), TwitterObjectFactory.createSavedSearch(TwitterObjectFactory.getRawJSON(list.get(0))));
         // http://code.google.com/p/twitter-api/issues/detail?id=1032
         // the saved search may not be immediately available
         assertTrue(0 <= list.size());

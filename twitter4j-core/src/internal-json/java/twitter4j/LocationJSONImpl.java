@@ -33,19 +33,19 @@ import twitter4j.conf.Configuration;
 
     /*package*/ LocationJSONImpl(JSONObject location) throws TwitterException {
         try {
-            woeid = z_T4JInternalParseUtil.getInt("woeid", location);
-            countryName = z_T4JInternalParseUtil.getUnescapedString("country", location);
-            countryCode = z_T4JInternalParseUtil.getRawString("countryCode", location);
+            woeid = ParseUtil.getInt("woeid", location);
+            countryName = ParseUtil.getUnescapedString("country", location);
+            countryCode = ParseUtil.getRawString("countryCode", location);
             if (!location.isNull("placeType")) {
                 JSONObject placeJSON = location.getJSONObject("placeType");
-                placeName = z_T4JInternalParseUtil.getUnescapedString("name", placeJSON);
-                placeCode = z_T4JInternalParseUtil.getInt("code", placeJSON);
+                placeName = ParseUtil.getUnescapedString("name", placeJSON);
+                placeCode = ParseUtil.getInt("code", placeJSON);
             } else {
                 placeName = null;
                 placeCode = -1;
             }
-            name = z_T4JInternalParseUtil.getUnescapedString("name", location);
-            url = z_T4JInternalParseUtil.getUnescapedString("url", location);
+            name = ParseUtil.getUnescapedString("name", location);
+            url = ParseUtil.getUnescapedString("url", location);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -54,7 +54,7 @@ import twitter4j.conf.Configuration;
     /*package*/
     static ResponseList<Location> createLocationList(HttpResponse res, Configuration conf) throws TwitterException {
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            TwitterObjectFactory.clearThreadLocalMap();
         }
         return createLocationList(res.asJSONArray(), conf.isJSONStoreEnabled());
     }
@@ -70,11 +70,11 @@ import twitter4j.conf.Configuration;
                 Location location = new LocationJSONImpl(json);
                 locations.add(location);
                 if (storeJSON) {
-                    DataObjectFactoryUtil.registerJSONObject(location, json);
+                    TwitterObjectFactory.registerJSONObject(location, json);
                 }
             }
             if (storeJSON) {
-                DataObjectFactoryUtil.registerJSONObject(locations, list);
+                TwitterObjectFactory.registerJSONObject(locations, list);
             }
             return locations;
         } catch (JSONException jsone) {

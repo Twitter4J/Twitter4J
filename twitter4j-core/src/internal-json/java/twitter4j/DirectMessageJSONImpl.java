@@ -47,8 +47,8 @@ import java.util.Date;
         JSONObject json = res.asJSONObject();
         init(json);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(this, json);
+            TwitterObjectFactory.clearThreadLocalMap();
+            TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 
@@ -57,12 +57,12 @@ import java.util.Date;
     }
 
     private void init(JSONObject json) throws TwitterException {
-        id = z_T4JInternalParseUtil.getLong("id", json);
-        senderId = z_T4JInternalParseUtil.getLong("sender_id", json);
-        recipientId = z_T4JInternalParseUtil.getLong("recipient_id", json);
-        createdAt = z_T4JInternalParseUtil.getDate("created_at", json);
-        senderScreenName = z_T4JInternalParseUtil.getUnescapedString("sender_screen_name", json);
-        recipientScreenName = z_T4JInternalParseUtil.getUnescapedString("recipient_screen_name", json);
+        id = ParseUtil.getLong("id", json);
+        senderId = ParseUtil.getLong("sender_id", json);
+        recipientId = ParseUtil.getLong("recipient_id", json);
+        createdAt = ParseUtil.getDate("created_at", json);
+        senderScreenName = ParseUtil.getUnescapedString("sender_screen_name", json);
+        recipientScreenName = ParseUtil.getUnescapedString("recipient_screen_name", json);
         try {
             sender = new UserJSONImpl(json.getJSONObject("sender"));
             recipient = new UserJSONImpl(json.getJSONObject("recipient"));
@@ -247,7 +247,7 @@ import java.util.Date;
     static ResponseList<DirectMessage> createDirectMessageList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
@@ -257,11 +257,11 @@ import java.util.Date;
                 DirectMessage directMessage = new DirectMessageJSONImpl(json);
                 directMessages.add(directMessage);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(directMessage, json);
+                    TwitterObjectFactory.registerJSONObject(directMessage, json);
                 }
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(directMessages, list);
+                TwitterObjectFactory.registerJSONObject(directMessages, list);
             }
             return directMessages;
         } catch (JSONException jsone) {

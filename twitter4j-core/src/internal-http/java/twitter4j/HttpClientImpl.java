@@ -200,7 +200,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
         String authorizationHeader;
         if (req.getAuthorization() != null && (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req)) != null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Authorization: ", z_T4JInternalStringUtil.maskString(authorizationHeader));
+                logger.debug("Authorization: ", authorizationHeader.replaceAll(".", "*"));
             }
             connection.addRequestProperty("Authorization", authorizationHeader);
         }
@@ -218,7 +218,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
             if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
-                    logger.debug("Proxy AuthPassword: " + z_T4JInternalStringUtil.maskString(CONF.getHttpProxyPassword()));
+                    logger.debug("Proxy AuthPassword: " + CONF.getHttpProxyPassword().replaceAll(".", "*"));
                 }
                 Authenticator.setDefault(new Authenticator() {
                     @Override

@@ -18,8 +18,6 @@ package twitter4j;
 import java.util.HashMap;
 import java.util.Map;
 
-import static twitter4j.z_T4JInternalParseUtil.getLong;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.3
@@ -40,7 +38,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
             JSONArray indicesArray = json.getJSONArray("indices");
             setStart(indicesArray.getInt(0));
             setEnd(indicesArray.getInt(1));
-            this.id = z_T4JInternalParseUtil.getLong("id", json);
+            this.id = ParseUtil.getLong("id", json);
 
             this.url = json.getString("url");
             this.expandedURL = json.getString("expanded_url");
@@ -64,7 +62,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     }
 
     private void addMediaEntitySizeIfNotNull(Map<Integer, MediaEntity.Size> sizes, JSONObject sizesJSON, Integer size, String key) throws JSONException {
-        if(!sizesJSON.isNull(key)){
+        if (!sizesJSON.isNull(key)) {
             sizes.put(size, new Size(sizesJSON.getJSONObject(key)));
         }
     }

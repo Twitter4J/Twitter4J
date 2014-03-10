@@ -29,11 +29,11 @@ package twitter4j;
     private static final long serialVersionUID = 1925956704460743946L;
 
     /*package*/ TrendJSONImpl(JSONObject json, boolean storeJSON) {
-        this.name = z_T4JInternalParseUtil.getRawString("name", json);
-        this.url = z_T4JInternalParseUtil.getRawString("url", json);
-        this.query = z_T4JInternalParseUtil.getRawString("query", json);
+        this.name = ParseUtil.getRawString("name", json);
+        this.url = ParseUtil.getRawString("url", json);
+        this.query = ParseUtil.getRawString("query", json);
         if (storeJSON) {
-            DataObjectFactoryUtil.registerJSONObject(this, json);
+            TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 

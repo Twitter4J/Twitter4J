@@ -29,8 +29,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class z_T4JInternalParseUtil {
-    private z_T4JInternalParseUtil() {
+final class ParseUtil {
+    private ParseUtil() {
         // should never be instantiated
         throw new AssertionError();
     }

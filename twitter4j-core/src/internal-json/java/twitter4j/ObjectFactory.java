@@ -24,7 +24,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-interface TwitterObjectFactory extends java.io.Serializable {
+interface ObjectFactory extends java.io.Serializable {
     Status createStatus(JSONObject json) throws TwitterException;
 
     User createUser(JSONObject json) throws TwitterException;

@@ -29,10 +29,10 @@ import javax.annotation.Generated;
 )
 final class LazyAccountSettings implements twitter4j.AccountSettings {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
     private AccountSettings target = null;
 
-    LazyAccountSettings(HttpResponse res, TwitterObjectFactory factory) {
+    LazyAccountSettings(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

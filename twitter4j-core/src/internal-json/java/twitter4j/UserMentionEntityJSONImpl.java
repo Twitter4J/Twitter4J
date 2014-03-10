@@ -59,7 +59,7 @@ package twitter4j;
             if (!json.isNull("screen_name")) {
                 this.screenName = json.getString("screen_name");
             }
-            id = z_T4JInternalParseUtil.getLong("id", json);
+            id = ParseUtil.getLong("id", json);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }

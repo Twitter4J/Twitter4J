@@ -33,10 +33,10 @@ import javax.annotation.Generated;
 )
 final class LazyRelationship implements twitter4j.Relationship {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
     private Relationship target = null;
 
-    LazyRelationship(HttpResponse res, TwitterObjectFactory factory) {
+    LazyRelationship(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

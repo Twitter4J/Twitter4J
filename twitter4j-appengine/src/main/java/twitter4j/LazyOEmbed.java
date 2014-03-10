@@ -29,10 +29,10 @@ import javax.annotation.Generated;
 )
 final class LazyOEmbed implements twitter4j.OEmbed {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
     private OEmbed target = null;
 
-    LazyOEmbed(HttpResponse res, TwitterObjectFactory factory) {
+    LazyOEmbed(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

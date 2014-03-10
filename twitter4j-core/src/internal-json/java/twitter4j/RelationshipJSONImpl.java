@@ -42,8 +42,8 @@ import twitter4j.conf.Configuration;
     /*package*/ RelationshipJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+            TwitterObjectFactory.clearThreadLocalMap();
+            TwitterObjectFactory.registerJSONObject(this, res.asJSONObject());
         }
     }
 
@@ -57,16 +57,16 @@ import twitter4j.conf.Configuration;
             JSONObject relationship = json.getJSONObject("relationship");
             JSONObject sourceJson = relationship.getJSONObject("source");
             JSONObject targetJson = relationship.getJSONObject("target");
-            sourceUserId = z_T4JInternalParseUtil.getLong("id", sourceJson);
-            targetUserId = z_T4JInternalParseUtil.getLong("id", targetJson);
-            sourceUserScreenName = z_T4JInternalParseUtil.getUnescapedString("screen_name", sourceJson);
-            targetUserScreenName = z_T4JInternalParseUtil.getUnescapedString("screen_name", targetJson);
-            sourceBlockingTarget = z_T4JInternalParseUtil.getBoolean("blocking", sourceJson);
-            sourceFollowingTarget = z_T4JInternalParseUtil.getBoolean("following", sourceJson);
-            sourceFollowedByTarget = z_T4JInternalParseUtil.getBoolean("followed_by", sourceJson);
-            sourceCanDm = z_T4JInternalParseUtil.getBoolean("can_dm", sourceJson);
-            sourceNotificationsEnabled = z_T4JInternalParseUtil.getBoolean("notifications_enabled", sourceJson);
-            wantRetweets = z_T4JInternalParseUtil.getBoolean("want_retweets", sourceJson);
+            sourceUserId = ParseUtil.getLong("id", sourceJson);
+            targetUserId = ParseUtil.getLong("id", targetJson);
+            sourceUserScreenName = ParseUtil.getUnescapedString("screen_name", sourceJson);
+            targetUserScreenName = ParseUtil.getUnescapedString("screen_name", targetJson);
+            sourceBlockingTarget = ParseUtil.getBoolean("blocking", sourceJson);
+            sourceFollowingTarget = ParseUtil.getBoolean("following", sourceJson);
+            sourceFollowedByTarget = ParseUtil.getBoolean("followed_by", sourceJson);
+            sourceCanDm = ParseUtil.getBoolean("can_dm", sourceJson);
+            sourceNotificationsEnabled = ParseUtil.getBoolean("notifications_enabled", sourceJson);
+            wantRetweets = ParseUtil.getBoolean("want_retweets", sourceJson);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
@@ -76,7 +76,7 @@ import twitter4j.conf.Configuration;
     static ResponseList<Relationship> createRelationshipList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
@@ -85,12 +85,12 @@ import twitter4j.conf.Configuration;
                 JSONObject json = list.getJSONObject(i);
                 Relationship relationship = new RelationshipJSONImpl(json);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(relationship, json);
+                    TwitterObjectFactory.registerJSONObject(relationship, json);
                 }
                 relationships.add(relationship);
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(relationships, list);
+                TwitterObjectFactory.registerJSONObject(relationships, list);
             }
             return relationships;
         } catch (JSONException jsone) {

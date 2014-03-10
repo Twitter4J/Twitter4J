@@ -29,10 +29,10 @@ import javax.annotation.Generated;
 )
 final class LazyAccountTotals implements twitter4j.AccountTotals {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
     private AccountTotals target = null;
 
-    LazyAccountTotals(HttpResponse res, TwitterObjectFactory factory) {
+    LazyAccountTotals(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

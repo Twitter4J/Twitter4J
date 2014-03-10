@@ -37,8 +37,8 @@ import java.util.Arrays;
         String json = res.asString();
         init(json);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(this, json);
+            TwitterObjectFactory.clearThreadLocalMap();
+            TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 
@@ -60,8 +60,8 @@ import java.util.Arrays;
                         throw new TwitterException("Twitter API returned malformed response: " + json, nfe);
                     }
                 }
-                previousCursor = z_T4JInternalParseUtil.getLong("previous_cursor", json);
-                nextCursor = z_T4JInternalParseUtil.getLong("next_cursor", json);
+                previousCursor = ParseUtil.getLong("previous_cursor", json);
+                nextCursor = ParseUtil.getLong("next_cursor", json);
             } else {
                 idList = new JSONArray(jsonStr);
                 ids = new long[idList.length()];

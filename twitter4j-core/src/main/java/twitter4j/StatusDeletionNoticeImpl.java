@@ -29,8 +29,8 @@ class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializ
     private static final long serialVersionUID = 1723338404242596062L;
 
     /*package*/ StatusDeletionNoticeImpl(JSONObject status) {
-        this.statusId = z_T4JInternalParseUtil.getLong("id", status);
-        this.userId = z_T4JInternalParseUtil.getLong("user_id", status);
+        this.statusId = ParseUtil.getLong("id", status);
+        this.userId = ParseUtil.getLong("user_id", status);
     }
 
     @Override

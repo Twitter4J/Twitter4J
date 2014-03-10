@@ -31,10 +31,10 @@ import java.util.Date;
 )
 final class LazyDirectMessage implements twitter4j.DirectMessage {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
     private DirectMessage target = null;
 
-    LazyDirectMessage(HttpResponse res, TwitterObjectFactory factory) {
+    LazyDirectMessage(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

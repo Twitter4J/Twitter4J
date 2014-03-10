@@ -32,17 +32,17 @@ class AccountTotalsJSONImpl extends TwitterResponseImpl implements AccountTotals
 
     private AccountTotalsJSONImpl(HttpResponse res, JSONObject json) {
         super(res);
-        updates = z_T4JInternalParseUtil.getInt("updates", json);
-        followers = z_T4JInternalParseUtil.getInt("followers", json);
-        favorites = z_T4JInternalParseUtil.getInt("favorites", json);
-        friends = z_T4JInternalParseUtil.getInt("friends", json);
+        updates = ParseUtil.getInt("updates", json);
+        followers = ParseUtil.getInt("followers", json);
+        favorites = ParseUtil.getInt("favorites", json);
+        friends = ParseUtil.getInt("friends", json);
     }
 
     /*package*/ AccountTotalsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+            TwitterObjectFactory.clearThreadLocalMap();
+            TwitterObjectFactory.registerJSONObject(this, res.asJSONObject());
         }
     }
 

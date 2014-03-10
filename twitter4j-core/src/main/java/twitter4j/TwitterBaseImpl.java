@@ -41,7 +41,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     protected transient HttpClientWrapper http;
     private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
 
-    protected TwitterObjectFactory factory;
+    protected ObjectFactory factory;
 
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;

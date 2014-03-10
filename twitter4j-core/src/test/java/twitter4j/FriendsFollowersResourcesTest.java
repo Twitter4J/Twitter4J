@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.json.DataObjectFactory;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
@@ -37,64 +35,64 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
     public void testSocialGraphMethods() throws Exception {
         IDs ids;
         ids = twitter1.getFriendsIDs(-1);
-        assertNotNull(DataObjectFactory.getRawJSON(ids));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
         int yusukey = 4933401;
         assertIDExsits("twit4j is following yusukey", ids, yusukey);
         long ryunosukey = 48528137;
         ids = twitter1.getFriendsIDs(ryunosukey, -1);
-        assertNotNull(DataObjectFactory.getRawJSON(ids));
-        assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
+        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
         assertEquals("ryunosukey is not following anyone", 0, ids.getIDs().length);
         ids = twitter1.getFriendsIDs("yusukey", -1);
-        assertNotNull(DataObjectFactory.getRawJSON(ids));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
         assertIDExsits("yusukey is following ryunosukey", ids, ryunosukey);
         IDs obamaFollowers;
         obamaFollowers = twitter1.getFollowersIDs("barackobama", -1);
-        assertNotNull(DataObjectFactory.getRawJSON(obamaFollowers));
-        assertEquals(obamaFollowers, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFollowers)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
+        assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
         assertTrue(obamaFollowers.hasNext());
         assertFalse(obamaFollowers.hasPrevious());
         obamaFollowers = twitter1.getFollowersIDs("barackobama", obamaFollowers.getNextCursor());
-        assertEquals(obamaFollowers, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFollowers)));
-        assertNotNull(DataObjectFactory.getRawJSON(obamaFollowers));
+        assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
         assertTrue(obamaFollowers.hasNext());
         assertTrue(obamaFollowers.hasPrevious());
 
         obamaFollowers = twitter1.getFollowersIDs(813286, -1);
-        assertNotNull(DataObjectFactory.getRawJSON(obamaFollowers));
-        assertEquals(obamaFollowers, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFollowers)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
+        assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
         assertTrue(obamaFollowers.hasNext());
         assertFalse(obamaFollowers.hasPrevious());
         obamaFollowers = twitter1.getFollowersIDs(813286, obamaFollowers.getNextCursor());
-        assertNotNull(DataObjectFactory.getRawJSON(obamaFollowers));
-        assertEquals(obamaFollowers, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFollowers)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
+        assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
         assertTrue(obamaFollowers.hasNext());
         assertTrue(obamaFollowers.hasPrevious());
 
         IDs obamaFriends;
         obamaFriends = twitter1.getFriendsIDs("barackobama", -1);
-        assertNull(DataObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(DataObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFriends)));
+        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
+        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
+        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
         assertTrue(obamaFriends.hasNext());
         assertFalse(obamaFriends.hasPrevious());
         obamaFriends = twitter1.getFriendsIDs("barackobama", obamaFriends.getNextCursor());
-        assertNull(DataObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(DataObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFriends)));
+        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
+        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
+        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
         assertTrue(obamaFriends.hasNext());
         assertTrue(obamaFriends.hasPrevious());
 
         obamaFriends = twitter1.getFriendsIDs(813286, -1);
-        assertNull(DataObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(DataObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFriends)));
+        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
+        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
+        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
         assertTrue(obamaFriends.hasNext());
         assertFalse(obamaFriends.hasPrevious());
         obamaFriends = twitter1.getFriendsIDs(813286, obamaFriends.getNextCursor());
-        assertNull(DataObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(DataObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(obamaFriends)));
+        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
+        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
+        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
         assertTrue(obamaFriends.hasNext());
         assertTrue(obamaFriends.hasPrevious());
 
@@ -103,16 +101,16 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         } catch (TwitterException ignore) {
         }
         ids = twitter1.getFollowersIDs(-1);
-        assertNotNull(DataObjectFactory.getRawJSON(ids));
-        assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
+        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
         assertIDExsits("twit4j2 is following twit4j", ids, 6377362);
         ids = twitter1.getFollowersIDs(ryunosukey, -1);
-        assertNotNull(DataObjectFactory.getRawJSON(ids));
-        assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
+        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
         assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
         ids = twitter1.getFollowersIDs("ryunosukey", -1);
-        assertNotNull(DataObjectFactory.getRawJSON(ids));
-        assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
+        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
         assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
     }
 
@@ -126,26 +124,27 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         }
         assertTrue(assertion, found);
     }
+
     public void testCreateDestroyFriend() throws Exception {
         User user;
         try {
             user = twitter2.destroyFriendship(id1.screenName);
-            assertNotNull(DataObjectFactory.getRawJSON(user));
-            assertEquals(user, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user)));
+            assertNotNull(TwitterObjectFactory.getRawJSON(user));
+            assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
         } catch (TwitterException te) {
             //ensure destory id1 before the actual test
         }
 
         try {
             user = twitter2.destroyFriendship(id1.screenName);
-            assertNotNull(DataObjectFactory.getRawJSON(user));
-            assertEquals(user, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user)));
+            assertNotNull(TwitterObjectFactory.getRawJSON(user));
+            assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
         } catch (TwitterException te) {
             assertEquals(403, te.getStatusCode());
         }
         user = twitter2.createFriendship(id1.screenName, true);
-        assertNotNull(DataObjectFactory.getRawJSON(user));
-        assertEquals(user, DataObjectFactory.createUser(DataObjectFactory.getRawJSON(user)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(user));
+        assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
         assertEquals(id1.screenName, user.getScreenName());
         // the Twitter API is not returning appropriate notifications value
         // http://code.google.com/p/twitter-api/issues/detail?id=474
@@ -172,8 +171,8 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         //  TESTING PRECONDITIONS:
         //  1) id1 is followed by "followsOneWay", but not following "followsOneWay"
         Relationship rel1 = twitter1.showFriendship(id1.screenName, followsOneWay);
-        assertNotNull(DataObjectFactory.getRawJSON(rel1));
-        assertEquals(rel1, DataObjectFactory.createRelationship(DataObjectFactory.getRawJSON(rel1)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(rel1));
+        assertEquals(rel1, TwitterObjectFactory.createRelationship(TwitterObjectFactory.getRawJSON(rel1)));
 
         // test second precondition
         assertNotNull(rel1);
@@ -182,7 +181,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertTrue(rel1.isTargetFollowingSource());
         assertFalse(rel1.isTargetFollowedBySource());
         assertTrue(rel1.canSourceDm());
-        
+
         // reverse precondition
         Relationship rel1r = twitter1.showFriendship(followsOneWay, id1.screenName);
         assertNotNull(rel1r);
@@ -194,9 +193,9 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
 
         //  2) best_friend1 is following and followed by best_friend2
         Relationship rel2 = twitter1.showFriendship(bestFriend1.screenName, bestFriend2.screenName);
-        assertNull(DataObjectFactory.getRawJSON(rel1));
-        assertNotNull(DataObjectFactory.getRawJSON(rel2));
-        assertEquals(rel2, DataObjectFactory.createRelationship(DataObjectFactory.getRawJSON(rel2)));
+        assertNull(TwitterObjectFactory.getRawJSON(rel1));
+        assertNotNull(TwitterObjectFactory.getRawJSON(rel2));
+        assertEquals(rel2, TwitterObjectFactory.createRelationship(TwitterObjectFactory.getRawJSON(rel2)));
 
         // test second precondition
         assertNotNull(rel2);
@@ -207,8 +206,8 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
 
         // test equality
         Relationship rel3 = twitter1.showFriendship(id1.screenName, followsOneWay);
-        assertNotNull(DataObjectFactory.getRawJSON(rel3));
-        assertEquals(rel3, DataObjectFactory.createRelationship(DataObjectFactory.getRawJSON(rel3)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(rel3));
+        assertEquals(rel3, TwitterObjectFactory.createRelationship(TwitterObjectFactory.getRawJSON(rel3)));
         assertEquals(rel1, rel3);
         assertFalse(rel1.equals(rel2));
 
@@ -233,20 +232,21 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertFalse(updatedRelationship.isSourceWantRetweets());
     }
 
-    public void testLookupFriendships() throws Exception{
+    public void testLookupFriendships() throws Exception {
         // https://dev.twitter.com/discussions/13658
         //http://jira.twitter4j.org/browse/TFJ-746
-        readonly.lookupUsers(new long[]{255794088L,441705930L,100581062L,49255734L,996328051L,559170296L,119261332L,373027695L,18515199L,83777877L,28973601L,228325562L,3474001L,297909405L,79159050L,94355673L,882514368L,97212832L,6459802L,124127525L,9121432L,57142748L,15797140L,985973888L,216250008L,121663344L,14832427L,54904048L,47539662L,22330739L,41032024L,24160034L,70614432L,489294299L,165725102L,203209274L,93831273L,49661959L,15670331L,30597967L,194643708L,70630881L,105973663L,114333005L,76407522L,5898822L,43796154L,5929112L,14118563L,64378588L,60287587L,28745562L,77718059L,106944925L,15744975L,81170234L,98512820L,20766533L,91238103L,15965719L,351559615L,5371072L,582489524L,367671660L,4037021L,52773639L,440662114L,14288985L,3868621L,13585812L,3811061L,14724896L,5491152L,4862261L,106114624L,459133564L,6609032L,4175171L,565734536L,174637883L,834785976L,338234111L,278590903L,205621126L,7362472L,329830408L,116640150L,52106559L,831322291L,53856691L,313143098L,563798434L,219589985L,5420012L,15142903L,107381955L,117652722L,188738873L,167628541L});
+        readonly.lookupUsers(new long[]{255794088L, 441705930L, 100581062L, 49255734L, 996328051L, 559170296L, 119261332L, 373027695L, 18515199L, 83777877L, 28973601L, 228325562L, 3474001L, 297909405L, 79159050L, 94355673L, 882514368L, 97212832L, 6459802L, 124127525L, 9121432L, 57142748L, 15797140L, 985973888L, 216250008L, 121663344L, 14832427L, 54904048L, 47539662L, 22330739L, 41032024L, 24160034L, 70614432L, 489294299L, 165725102L, 203209274L, 93831273L, 49661959L, 15670331L, 30597967L, 194643708L, 70630881L, 105973663L, 114333005L, 76407522L, 5898822L, 43796154L, 5929112L, 14118563L, 64378588L, 60287587L, 28745562L, 77718059L, 106944925L, 15744975L, 81170234L, 98512820L, 20766533L, 91238103L, 15965719L, 351559615L, 5371072L, 582489524L, 367671660L, 4037021L, 52773639L, 440662114L, 14288985L, 3868621L, 13585812L, 3811061L, 14724896L, 5491152L, 4862261L, 106114624L, 459133564L, 6609032L, 4175171L, 565734536L, 174637883L, 834785976L, 338234111L, 278590903L, 205621126L, 7362472L, 329830408L, 116640150L, 52106559L, 831322291L, 53856691L, 313143098L, 563798434L, 219589985L, 5420012L, 15142903L, 107381955L, 117652722L, 188738873L, 167628541L});
     }
+
     public void testIncomingOutgoingFriendships() throws Exception {
         IDs ids;
         ids = twitter3.getIncomingFriendships(-1);
-        assertNotNull(DataObjectFactory.getRawJSON(ids));
-        assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
+        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
         assertTrue(ids.getIDs().length > 0);
         ids = twitter2.getOutgoingFriendships(-1);
-        assertNotNull(DataObjectFactory.getRawJSON(ids));
-        assertEquals(ids, DataObjectFactory.createIDs(DataObjectFactory.getRawJSON(ids)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
+        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
         assertTrue(ids.getIDs().length > 0);
         // needs the account has at least one user who is not received any retweets.
         //assertTrue(ids.getIDs().length > 0);

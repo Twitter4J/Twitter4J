@@ -20,8 +20,8 @@ package twitter4j;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static twitter4j.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.ParseUtil.getBoolean;
+import static twitter4j.ParseUtil.getRawString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com

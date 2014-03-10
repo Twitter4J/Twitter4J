@@ -20,7 +20,6 @@ import junit.framework.Assert;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
-import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -272,7 +271,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
     public void onStatus(long forUser, Status status) {
         received.add(new Object[]{"onstatus", forUser, status});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(status));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(status));
         notifyResponse();
     }
 
@@ -293,110 +292,110 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
     public void onFavorite(long forUser, User source, User target, Status favoritedStatus) {
         received.add(new Object[]{TwitterMethod.CREATE_FAVORITE, forUser, source, target, favoritedStatus});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(target));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(favoritedStatus));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(favoritedStatus));
         notifyResponse();
     }
 
     public void onUnfavorite(long forUser, User source, User target, Status unfavoritedStatus) {
         received.add(new Object[]{TwitterMethod.DESTROY_FAVORITE, forUser, source, target, unfavoritedStatus});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(target));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(unfavoritedStatus));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(unfavoritedStatus));
         notifyResponse();
     }
 
     public void onFollow(long forUser, User source, User followedUser) {
         received.add(new Object[]{TwitterMethod.CREATE_FRIENDSHIP, forUser, source, followedUser});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(followedUser));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(followedUser));
         notifyResponse();
     }
 
     public void onUnfollow(long forUser, User source, User followedUser) {
         received.add(new Object[]{TwitterMethod.DESTROY_FRIENDSHIP, forUser, source, followedUser});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(followedUser));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(followedUser));
         notifyResponse();
     }
 
     public void onDirectMessage(long forUser, DirectMessage directMessage) {
         received.add(new Object[]{TwitterMethod.SEND_DIRECT_MESSAGE, forUser, directMessage});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(directMessage));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(directMessage));
         notifyResponse();
     }
 
     public void onUserListMemberAddition(long forUser, User addedMember, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.CREATE_LIST_MEMBER, forUser, addedMember, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(addedMember));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(addedMember));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListMemberDeletion(long forUser, User deletedMember, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.DESTROY_LIST_MEMBER, forUser, deletedMember, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(deletedMember));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(deletedMember));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListSubscription(long forUser, User subscriber, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.SUBSCRIBE_LIST, forUser, subscriber, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(subscriber));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(subscriber));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListUnsubscription(long forUser, User subscriber, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.UNSUBSCRIBE_LIST, forUser, subscriber, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(subscriber));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(subscriber));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListCreation(long forUser, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.CREATE_USER_LIST, forUser, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListUpdate(long forUser, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.UPDATE_USER_LIST, forUser, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListDeletion(long forUser, User listOwner, UserList list) {
         received.add(new Object[]{TwitterMethod.DESTROY_USER_LIST, forUser, listOwner, list});
         notifyResponse();
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
     }
 
     public void onUserProfileUpdate(long forUser, User updatedUser) {
         received.add(new Object[]{TwitterMethod.UPDATE_PROFILE, forUser, updatedUser});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(updatedUser));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(updatedUser));
         notifyResponse();
     }
 
     public void onBlock(long forUser, User source, User blockedUser) {
         received.add(new Object[]{TwitterMethod.CREATE_BLOCK, forUser, source, blockedUser});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(blockedUser));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(blockedUser));
         notifyResponse();
     }
 
     public void onUnblock(long forUser, User source, User unblockedUser) {
         received.add(new Object[]{TwitterMethod.DESTROY_BLOCK, forUser, source, unblockedUser});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(unblockedUser));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(unblockedUser));
         notifyResponse();
     }
 

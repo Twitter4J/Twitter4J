@@ -1,34 +1,23 @@
-/*
- * Copyright 2007 Yusuke Yamamoto
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package twitter4j;
 
-package twitter4j.json;
-
-import twitter4j.*;
-
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.7
- * @deprecated use {@link twitter4j.TwitterObjectFactory} instead
+ * @since Twitter4J 3.1.0
  */
-public final class DataObjectFactory {
-    private DataObjectFactory() {
+public final class TwitterObjectFactory {
+    private TwitterObjectFactory() {
         throw new AssertionError("not intended to be instantiated.");
     }
+
+    private static final ThreadLocal<Map> rawJsonMap = new ThreadLocal<Map>() {
+        @Override
+        protected Map initialValue() {
+            return new HashMap();
+        }
+    };
 
     /**
      * Returns a raw JSON form of the provided object.<br>
@@ -39,7 +28,15 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static String getRawJSON(Object obj) {
-        return TwitterObjectFactory.getRawJSON(obj);
+        Object json = rawJsonMap.get().get(obj);
+        if (json instanceof String) {
+            return (String) json;
+        } else if (json != null) {
+            // object must be instance of JSONObject
+            return json.toString();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -51,7 +48,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static Status createStatus(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createStatus(rawJSON);
+        try {
+            return new StatusJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -63,7 +64,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static User createUser(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createUser(rawJSON);
+        try {
+            return new UserJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -75,7 +80,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.9
      */
     public static AccountTotals createAccountTotals(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createAccountTotals(rawJSON);
+        try {
+            return new AccountTotalsJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -87,7 +96,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static Relationship createRelationship(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createRelationship(rawJSON);
+        try {
+            return new RelationshipJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -99,7 +112,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static Place createPlace(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createPlace(rawJSON);
+        try {
+            return new PlaceJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -111,7 +128,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static SavedSearch createSavedSearch(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createSavedSearch(rawJSON);
+        try {
+            return new SavedSearchJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -123,7 +144,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static Trend createTrend(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createTrend(rawJSON);
+        try {
+            return new TrendJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -135,7 +160,7 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static Trends createTrends(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createTrends(rawJSON);
+        return new TrendsJSONImpl(rawJSON);
     }
 
     /**
@@ -147,7 +172,7 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static IDs createIDs(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createIDs(rawJSON);
+        return new IDsJSONImpl(rawJSON);
     }
 
     /**
@@ -159,7 +184,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static Map<String, RateLimitStatus> createRateLimitStatus(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createRateLimitStatus(rawJSON);
+        try {
+            return RateLimitStatusJSONImpl.createRateLimitStatuses(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -171,7 +200,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static Category createCategory(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createCategory(rawJSON);
+        try {
+            return new CategoryJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -183,7 +216,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static DirectMessage createDirectMessage(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createDirectMessage(rawJSON);
+        try {
+            return new DirectMessageJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -195,7 +232,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static Location createLocation(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createLocation(rawJSON);
+        try {
+            return new LocationJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -207,7 +248,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static UserList createUserList(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createUserList(rawJSON);
+        try {
+            return new UserListJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -219,7 +264,11 @@ public final class DataObjectFactory {
      * @since Twitter4J 3.0.2
      */
     public static OEmbed createOEmbed(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createOEmbed(rawJSON);
+        try {
+            return new OEmbedJSONImpl(new JSONObject(rawJSON));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     /**
@@ -240,10 +289,53 @@ public final class DataObjectFactory {
      * case where we cannot determine the object type.
      * @throws TwitterException when provided string is not a valid JSON string.
      * @since Twitter4J 2.1.9
-     * @deprecated use {@link twitter4j.TwitterObjectFactory#createObject(String)} instead
      */
     public static Object createObject(String rawJSON) throws TwitterException {
-        return TwitterObjectFactory.createObject(rawJSON);
+        try {
+            JSONObject json = new JSONObject(rawJSON);
+            JSONObjectType.Type jsonObjectType = JSONObjectType.determine(json);
+            switch (jsonObjectType) {
+                case SENDER:
+                    return registerJSONObject(new DirectMessageJSONImpl(json.getJSONObject("direct_message")), json);
+                case STATUS:
+                    return registerJSONObject(new StatusJSONImpl(json), json);
+                case DIRECT_MESSAGE:
+                    return registerJSONObject(new DirectMessageJSONImpl(json.getJSONObject("direct_message")), json);
+                case DELETE:
+                    return registerJSONObject(new StatusDeletionNoticeImpl(json.getJSONObject("delete").getJSONObject("status")), json);
+                case LIMIT:
+                    // TODO: Perhaps there should be a TrackLimitationNotice object?
+                    // The onTrackLimitationNotice method could take that as an arg.
+                    return json;
+                case SCRUB_GEO:
+                    return json;
+                default:
+                    // The object type is unrecognized...just return the json
+                    return json;
+            }
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
+    /**
+     * clear raw JSON forms associated with the current thread.<br>
+     * Currently this method is called indirectly by twitter4j.internal.util.TwitterObjectFactory, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
+     *
+     * @since Twitter4J 2.1.7
+     */
+    static void clearThreadLocalMap() {
+        rawJsonMap.get().clear();
+    }
+
+    /**
+     * associate a raw JSON form to the current thread<br>
+     * Currently this method is called indirectly by twitter4j.internal.util.TwitterObjectFactory, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
+     *
+     * @since Twitter4J 2.1.7
+     */
+    static <T> T registerJSONObject(T key, Object json) {
+        rawJsonMap.get().put(key, json);
+        return key;
+    }
 }

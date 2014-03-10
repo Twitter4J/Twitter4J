@@ -219,7 +219,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 params.add(new HttpParameter("with", "user"));
             }
             if (track != null) {
-                params.add(new HttpParameter("track", z_T4JInternalStringUtil.join(track)));
+                params.add(new HttpParameter("track", StringUtil.join(track)));
             }
             return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
                     , params.toArray(new HttpParameter[params.size()])
@@ -271,7 +271,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return http.post(conf.getSiteStreamBaseURL() + "site.json",
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
-                        , new HttpParameter("follow", z_T4JInternalStringUtil.join(follow))
+                        , new HttpParameter("follow", StringUtil.join(follow))
                         , stallWarningsParam}, auth
         ).asStream();
     }

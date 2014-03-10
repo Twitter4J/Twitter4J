@@ -13,10 +13,10 @@ import javax.annotation.Generated;
 )
 final class LazyPlace implements twitter4j.Place {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
     private Place target = null;
 
-    LazyPlace(HttpResponse res, TwitterObjectFactory factory) {
+    LazyPlace(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

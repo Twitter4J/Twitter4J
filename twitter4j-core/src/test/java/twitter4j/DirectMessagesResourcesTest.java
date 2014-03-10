@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.json.DataObjectFactory;
-
 import java.util.Date;
 import java.util.List;
 
@@ -41,8 +39,8 @@ public class DirectMessagesResourcesTest extends TwitterTestBase {
         String expectedReturn = new Date() + " < #test > &ほげほげ @t4j_news %& http://twitter4j.org/en/index.html#download pic.twitter.com/d4G7MQ62";
         DirectMessage dm = twitter1.sendDirectMessage(id3.id, expectedReturn);
         assertTrue(0 <= dm.getId());
-        assertNotNull(DataObjectFactory.getRawJSON(dm));
-        assertEquals(dm, DataObjectFactory.createDirectMessage(DataObjectFactory.getRawJSON(dm)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(dm));
+        assertEquals(dm, TwitterObjectFactory.createDirectMessage(TwitterObjectFactory.getRawJSON(dm)));
         // urls are wrapped by t.co. thus assertEquals doesn't apply
         assertTrue(dm.getText().contains(" < #test > &ほげほげ @t4j_news %&"));
         assertEquals(id1.screenName, dm.getSender().getScreenName());
@@ -63,18 +61,18 @@ public class DirectMessagesResourcesTest extends TwitterTestBase {
         MediaEntity mediaEntity = dm.getMediaEntities()[0];
         // XXXXX of pic.twitter.com/XXXXX is altered by the API. assertEquals("pic.twitter.com/d4G7MQ62".. doesn't apply
         assertTrue(mediaEntity.getDisplayURL().startsWith("pic.twitter.com/"));
-        assertTrue(dm.getText().substring(mediaEntity.getStart(),mediaEntity.getEnd()).matches("http://t.co/[a-zA-Z0-9]+"));
+        assertTrue(dm.getText().substring(mediaEntity.getStart(), mediaEntity.getEnd()).matches("http://t.co/[a-zA-Z0-9]+"));
         assertEquals("http://twitter.com/yusuke/status/268294645526708226/photo/1", mediaEntity.getExpandedURL());
 
         assertTrue(dm.getURLEntities().length == 1);
         URLEntity urlEntity = dm.getURLEntities()[0];
         assertEquals("twitter4j.org/en/index.html#…", urlEntity.getDisplayURL());
-        assertTrue(dm.getText().substring(urlEntity.getStart(),urlEntity.getEnd()).matches("http://t.co/[a-zA-Z0-9]+"));
+        assertTrue(dm.getText().substring(urlEntity.getStart(), urlEntity.getEnd()).matches("http://t.co/[a-zA-Z0-9]+"));
         assertEquals("http://twitter4j.org/en/index.html#download", urlEntity.getExpandedURL());
 
         List<DirectMessage> actualReturnList = twitter3.getDirectMessages();
-        assertNotNull(DataObjectFactory.getRawJSON(actualReturnList));
-        assertEquals(actualReturnList.get(0), DataObjectFactory.createDirectMessage(DataObjectFactory.getRawJSON(actualReturnList.get(0))));
+        assertNotNull(TwitterObjectFactory.getRawJSON(actualReturnList));
+        assertEquals(actualReturnList.get(0), TwitterObjectFactory.createDirectMessage(TwitterObjectFactory.getRawJSON(actualReturnList.get(0))));
         assertTrue(1 <= actualReturnList.size());
         try {
             dm = twitter1.showDirectMessage(actualReturnList.get(0).getId());
@@ -83,8 +81,8 @@ public class DirectMessagesResourcesTest extends TwitterTestBase {
             assertEquals(403, te.getStatusCode());
         }
         dm = twitter3.showDirectMessage(actualReturnList.get(0).getId());
-        assertNotNull(DataObjectFactory.getRawJSON(dm));
-        assertEquals(dm, DataObjectFactory.createDirectMessage(DataObjectFactory.getRawJSON(dm)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(dm));
+        assertEquals(dm, TwitterObjectFactory.createDirectMessage(TwitterObjectFactory.getRawJSON(dm)));
         assertEquals(actualReturnList.get(0).getId(), dm.getId());
     }
 }

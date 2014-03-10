@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import static twitter4j.z_T4JInternalParseUtil.getInt;
-
 /**
  * @author Alessandro Bahgat - ale.bahgat at gmail.com
  */
@@ -28,7 +26,7 @@ public class TimeZoneJSONImpl implements TimeZone {
 
     TimeZoneJSONImpl(JSONObject jSONObject) throws TwitterException {
         try {
-            UTC_OFFSET = z_T4JInternalParseUtil.getInt("utc_offset", jSONObject);
+            UTC_OFFSET = ParseUtil.getInt("utc_offset", jSONObject);
             NAME = jSONObject.getString("name");
             TZINFO_NAME = jSONObject.getString("tzinfo_name");
         } catch (JSONException jsone) {

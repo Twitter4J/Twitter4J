@@ -45,8 +45,8 @@ import java.util.Iterator;
         super(res);
         init(res.asString(), conf.isJSONStoreEnabled());
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(this, res.asString());
+            TwitterObjectFactory.clearThreadLocalMap();
+            TwitterObjectFactory.registerJSONObject(this, res.asString());
         }
     }
 
@@ -71,7 +71,7 @@ import java.util.Iterator;
             } else {
                 json = new JSONObject(jsonStr);
             }
-            this.asOf = z_T4JInternalParseUtil.parseTrendsDate(json.getString("as_of"));
+            this.asOf = ParseUtil.parseTrendsDate(json.getString("as_of"));
             this.location = extractLocation(json, storeJSON);
             JSONArray array = json.getJSONArray("trends");
             this.trendAt = asOf;
@@ -95,7 +95,7 @@ import java.util.Iterator;
         JSONObject json = res.asJSONObject();
         ResponseList<Trends> trends;
         try {
-            Date asOf = z_T4JInternalParseUtil.parseTrendsDate(json.getString("as_of"));
+            Date asOf = ParseUtil.parseTrendsDate(json.getString("as_of"));
             JSONObject trendsJson = json.getJSONObject("trends");
             Location location = extractLocation(json, storeJSON);
             trends = new ResponseListImpl<Trends>(trendsJson.length(), res);
@@ -106,15 +106,15 @@ import java.util.Iterator;
                 Trend[] trendsArray = jsonArrayToTrendArray(array, storeJSON);
                 if (key.length() == 19) {
                     // current trends
-                    trends.add(new TrendsJSONImpl(asOf, location, z_T4JInternalParseUtil.getDate(key
+                    trends.add(new TrendsJSONImpl(asOf, location, ParseUtil.getDate(key
                             , "yyyy-MM-dd HH:mm:ss"), trendsArray));
                 } else if (key.length() == 16) {
                     // daily trends
-                    trends.add(new TrendsJSONImpl(asOf, location, z_T4JInternalParseUtil.getDate(key
+                    trends.add(new TrendsJSONImpl(asOf, location, ParseUtil.getDate(key
                             , "yyyy-MM-dd HH:mm"), trendsArray));
                 } else if (key.length() == 10) {
                     // weekly trends
-                    trends.add(new TrendsJSONImpl(asOf, location, z_T4JInternalParseUtil.getDate(key
+                    trends.add(new TrendsJSONImpl(asOf, location, ParseUtil.getDate(key
                             , "yyyy-MM-dd"), trendsArray));
                 }
             }

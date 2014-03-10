@@ -9,9 +9,9 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-class LazyJSONImplFactory implements TwitterObjectFactory {
+class LazyJSONImplFactory implements ObjectFactory {
     private static final long serialVersionUID = 8032710811910749119L;
-    private final TwitterObjectFactory factory;
+    private final ObjectFactory factory;
     private final Configuration conf;
 
     public LazyJSONImplFactory(Configuration conf) {

@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
 import java.util.*;
@@ -320,10 +319,10 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     public void onStatus(Status status) {
         this.status = status;
-        String json = DataObjectFactory.getRawJSON(status);
+        String json = TwitterObjectFactory.getRawJSON(status);
         try {
             assertNotNull(json);
-            Status statusFromJSON = DataObjectFactory.createStatus(json);
+            Status statusFromJSON = TwitterObjectFactory.createStatus(json);
             assertEquals(status, statusFromJSON);
         } catch (TwitterException e) {
             e.printStackTrace();

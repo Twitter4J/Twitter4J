@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.json.DataObjectFactory;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
@@ -44,24 +42,24 @@ public class PlaceGeoResourcesTest extends TwitterTestBase {
 
         query = new GeoQuery(new GeoLocation(37.78215, -122.40060));
         places = twitter1.reverseGeoCode(query);
-        assertNotNull(DataObjectFactory.getRawJSON(places));
-        assertEquals(places.get(0), DataObjectFactory.createPlace(DataObjectFactory.getRawJSON(places.get(0))));
+        assertNotNull(TwitterObjectFactory.getRawJSON(places));
+        assertEquals(places.get(0), TwitterObjectFactory.createPlace(TwitterObjectFactory.getRawJSON(places.get(0))));
 
         assertTrue(places.size() > 0);
 
         places = twitter1.searchPlaces(query);
-        assertNotNull(DataObjectFactory.getRawJSON(places));
-        assertEquals(places.get(0), DataObjectFactory.createPlace(DataObjectFactory.getRawJSON(places.get(0))));
+        assertNotNull(TwitterObjectFactory.getRawJSON(places));
+        assertEquals(places.get(0), TwitterObjectFactory.createPlace(TwitterObjectFactory.getRawJSON(places.get(0))));
         assertTrue(places.size() > 0);
         places = twitter1.getSimilarPlaces(new GeoLocation(37.78215, -122.40060), "SoMa", null, null);
-        assertNotNull(DataObjectFactory.getRawJSON(places));
-        assertEquals(places.get(0), DataObjectFactory.createPlace(DataObjectFactory.getRawJSON(places.get(0))));
+        assertNotNull(TwitterObjectFactory.getRawJSON(places));
+        assertEquals(places.get(0), TwitterObjectFactory.createPlace(TwitterObjectFactory.getRawJSON(places.get(0))));
         assertTrue(places.size() > 0);
 
         try {
             Place place = twitter1.getGeoDetails("5a110d312052166f");
-            assertNotNull(DataObjectFactory.getRawJSON(place));
-            assertEquals(place, DataObjectFactory.createPlace(DataObjectFactory.getRawJSON(place)));
+            assertNotNull(TwitterObjectFactory.getRawJSON(place));
+            assertEquals(place, TwitterObjectFactory.createPlace(TwitterObjectFactory.getRawJSON(place)));
             assertEquals("San Francisco, CA", place.getFullName());
             assertEquals("California, US", place.getContainedWithIn()[0].getFullName());
         } catch (TwitterException te) {
@@ -71,8 +69,8 @@ public class PlaceGeoResourcesTest extends TwitterTestBase {
         String sanFrancisco = "5a110d312052166f";
         Status status = twitter1.updateStatus(new StatusUpdate(new java.util.Date() + " status with place").
                 placeId(sanFrancisco));
-        assertNotNull(DataObjectFactory.getRawJSON(status));
-        assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(status));
+        assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
         assertEquals(sanFrancisco, status.getPlace().getId());
     }
 
@@ -81,8 +79,8 @@ public class PlaceGeoResourcesTest extends TwitterTestBase {
         final double LONGITUDE = -34.5678;
 
         Status withgeo = twitter1.updateStatus(new StatusUpdate(new java.util.Date().toString() + ": updating geo location").location(new GeoLocation(LATITUDE, LONGITUDE)));
-        assertNotNull(DataObjectFactory.getRawJSON(withgeo));
-        assertEquals(withgeo, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(withgeo)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(withgeo));
+        assertEquals(withgeo, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(withgeo)));
         assertTrue(withgeo.getUser().isGeoEnabled());
         assertEquals(LATITUDE, withgeo.getGeoLocation().getLatitude());
         assertEquals(LONGITUDE, withgeo.getGeoLocation().getLongitude());

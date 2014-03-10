@@ -1,12 +1,9 @@
-package twitter4j.json;
+package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.Status;
-import twitter4j.StatusDeletionNotice;
-import twitter4j.JSONObject;
 
 /**
- * Unit test for DataObjectFactory
+ * Unit test for TwitterObjectFactory
  *
  * @author Dan Checkoway - dcheckoway at gmail.com
  * @since Twitter4J 2.1.9
@@ -21,19 +18,19 @@ public class DataObjectFactoryTest extends TestCase {
     public void testCreateObject() throws Exception {
         Object obj;
 
-        obj = DataObjectFactory.createObject(statusJsonText);
+        obj = TwitterObjectFactory.createObject(statusJsonText);
         if (!(obj instanceof Status)) {
-            throw new Exception("DataObjectFactory.createObject failed for Status");
+            throw new Exception("TwitterObjectFactory.createObject failed for Status");
         }
 
-        obj = DataObjectFactory.createObject(deleteJsonText);
+        obj = TwitterObjectFactory.createObject(deleteJsonText);
         if (!(obj instanceof StatusDeletionNotice)) {
-            throw new Exception("DataObjectFactory.createObject failed for StatusDeletionNotice");
+            throw new Exception("TwitterObjectFactory.createObject failed for StatusDeletionNotice");
         }
 
-        obj = DataObjectFactory.createObject(randomJsonText);
+        obj = TwitterObjectFactory.createObject(randomJsonText);
         if (!(obj instanceof JSONObject)) {
-            throw new Exception("DataObjectFactory.createObject failed for random");
+            throw new Exception("TwitterObjectFactory.createObject failed for random");
         }
     }
 }

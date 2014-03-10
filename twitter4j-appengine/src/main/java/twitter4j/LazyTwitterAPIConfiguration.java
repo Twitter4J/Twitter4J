@@ -29,10 +29,10 @@ import java.util.Map;
 )
 final class LazyTwitterAPIConfiguration implements twitter4j.TwitterAPIConfiguration {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
     private TwitterAPIConfiguration target = null;
 
-    LazyTwitterAPIConfiguration(HttpResponse res, TwitterObjectFactory factory) {
+    LazyTwitterAPIConfiguration(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

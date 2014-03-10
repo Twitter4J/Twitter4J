@@ -25,7 +25,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-class JSONImplFactory implements TwitterObjectFactory {
+class JSONImplFactory implements ObjectFactory {
     private static final long serialVersionUID = 5217622295050444866L;
     private Configuration conf;
 
@@ -78,7 +78,7 @@ class JSONImplFactory implements TwitterObjectFactory {
                 String coordinates = json.getJSONObject("coordinates")
                         .getString("coordinates");
                 coordinates = coordinates.substring(1, coordinates.length() - 1);
-                String[] point = z_T4JInternalStringUtil.split(coordinates, ",");
+                String[] point = coordinates.split(",");
                 return new GeoLocation(Double.parseDouble(point[1]),
                         Double.parseDouble(point[0]));
             }

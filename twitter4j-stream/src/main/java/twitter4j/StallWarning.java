@@ -18,8 +18,8 @@ package twitter4j;
 
 import java.io.Serializable;
 
-import static twitter4j.z_T4JInternalParseUtil.getInt;
-import static twitter4j.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.ParseUtil.getInt;
+import static twitter4j.ParseUtil.getRawString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com

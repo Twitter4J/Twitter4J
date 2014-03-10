@@ -21,7 +21,7 @@ import twitter4j.conf.Configuration;
 import java.util.Arrays;
 import java.util.Date;
 
-import static twitter4j.z_T4JInternalParseUtil.getDate;
+import static twitter4j.ParseUtil.getDate;
 
 /**
  * A data class representing one single status of a user.
@@ -68,8 +68,8 @@ import static twitter4j.z_T4JInternalParseUtil.getDate;
         JSONObject json = res.asJSONObject();
         init(json);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(this, json);
+            TwitterObjectFactory.clearThreadLocalMap();
+            TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 
@@ -77,7 +77,7 @@ import static twitter4j.z_T4JInternalParseUtil.getDate;
         super();
         init(json);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.registerJSONObject(this, json);
+            TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 
@@ -92,18 +92,18 @@ import static twitter4j.z_T4JInternalParseUtil.getDate;
     }
 
     private void init(JSONObject json) throws TwitterException {
-        id = z_T4JInternalParseUtil.getLong("id", json);
-        source = z_T4JInternalParseUtil.getUnescapedString("source", json);
+        id = ParseUtil.getLong("id", json);
+        source = ParseUtil.getUnescapedString("source", json);
         createdAt = getDate("created_at", json);
-        isTruncated = z_T4JInternalParseUtil.getBoolean("truncated", json);
-        inReplyToStatusId = z_T4JInternalParseUtil.getLong("in_reply_to_status_id", json);
-        inReplyToUserId = z_T4JInternalParseUtil.getLong("in_reply_to_user_id", json);
-        isFavorited = z_T4JInternalParseUtil.getBoolean("favorited", json);
-        isRetweeted = z_T4JInternalParseUtil.getBoolean("retweeted", json);
-        inReplyToScreenName = z_T4JInternalParseUtil.getUnescapedString("in_reply_to_screen_name", json);
-        retweetCount = z_T4JInternalParseUtil.getLong("retweet_count", json);
-        favoriteCount = z_T4JInternalParseUtil.getInt("favorite_count", json);
-        isPossiblySensitive = z_T4JInternalParseUtil.getBoolean("possibly_sensitive", json);
+        isTruncated = ParseUtil.getBoolean("truncated", json);
+        inReplyToStatusId = ParseUtil.getLong("in_reply_to_status_id", json);
+        inReplyToUserId = ParseUtil.getLong("in_reply_to_user_id", json);
+        isFavorited = ParseUtil.getBoolean("favorited", json);
+        isRetweeted = ParseUtil.getBoolean("retweeted", json);
+        inReplyToScreenName = ParseUtil.getUnescapedString("in_reply_to_screen_name", json);
+        retweetCount = ParseUtil.getLong("retweet_count", json);
+        favoriteCount = ParseUtil.getInt("favorite_count", json);
+        isPossiblySensitive = ParseUtil.getBoolean("possibly_sensitive", json);
         try {
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
@@ -177,7 +177,7 @@ import static twitter4j.z_T4JInternalParseUtil.getDate;
             if (!json.isNull("metadata")) {
                 JSONObject metadata = json.getJSONObject("metadata");
                 if (!metadata.isNull("iso_language_code")) {
-                    isoLanguageCode = z_T4JInternalParseUtil.getUnescapedString("iso_language_code", metadata);
+                    isoLanguageCode = ParseUtil.getUnescapedString("iso_language_code", metadata);
 
                 }
             }
@@ -192,7 +192,7 @@ import static twitter4j.z_T4JInternalParseUtil.getDate;
                 currentUserRetweetId = json.getJSONObject("current_user_retweet").getLong("id");
             }
             if (!json.isNull("lang")) {
-                lang = z_T4JInternalParseUtil.getUnescapedString("lang", json);
+                lang = ParseUtil.getUnescapedString("lang", json);
             }
 
             if (!json.isNull("scopes")) {
@@ -457,7 +457,7 @@ import static twitter4j.z_T4JInternalParseUtil.getDate;
     static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
@@ -466,12 +466,12 @@ import static twitter4j.z_T4JInternalParseUtil.getDate;
                 JSONObject json = list.getJSONObject(i);
                 Status status = new StatusJSONImpl(json);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(status, json);
+                    TwitterObjectFactory.registerJSONObject(status, json);
                 }
                 statuses.add(status);
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(statuses, list);
+                TwitterObjectFactory.registerJSONObject(statuses, list);
             }
             return statuses;
         } catch (JSONException jsone) {

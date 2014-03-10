@@ -33,8 +33,8 @@ class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResp
 
     PagableResponseListImpl(int size, JSONObject json, HttpResponse res) {
         super(size, res);
-        this.previousCursor = z_T4JInternalParseUtil.getLong("previous_cursor", json);
-        this.nextCursor = z_T4JInternalParseUtil.getLong("next_cursor", json);
+        this.previousCursor = ParseUtil.getLong("previous_cursor", json);
+        this.nextCursor = ParseUtil.getLong("next_cursor", json);
     }
 
     /**

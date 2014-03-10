@@ -37,7 +37,7 @@ final class LazyUser implements twitter4j.User {
     private Configuration conf;
     private User target = null;
 
-    LazyUser(HttpResponse res, TwitterObjectFactory factory) {
+    LazyUser(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.conf = conf;
     }

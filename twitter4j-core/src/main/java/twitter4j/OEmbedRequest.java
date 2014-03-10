@@ -121,7 +121,7 @@ public final class OEmbedRequest implements Serializable {
         params.add(new HttpParameter("omit_script", omitScript));
         params.add(new HttpParameter("align", align.name().toLowerCase()));
         if (related.length > 0) {
-            appendParameter("related", z_T4JInternalStringUtil.join(related), params);
+            appendParameter("related", StringUtil.join(related), params);
         }
         appendParameter("lang", lang, params);
         HttpParameter[] paramArray = new HttpParameter[params.size()];

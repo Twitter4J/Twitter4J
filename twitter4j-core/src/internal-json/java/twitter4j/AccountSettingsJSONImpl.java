@@ -39,7 +39,7 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
         super(res);
         try {
             JSONObject sleepTime = json.getJSONObject("sleep_time");
-            SLEEP_TIME_ENABLED = z_T4JInternalParseUtil.getBoolean("enabled", sleepTime);
+            SLEEP_TIME_ENABLED = ParseUtil.getBoolean("enabled", sleepTime);
             SLEEP_START_TIME = sleepTime.getString("start_time");
             SLEEP_END_TIME = sleepTime.getString("end_time");
             if (json.isNull("trend_location")) {
@@ -51,10 +51,10 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
                     TREND_LOCATION[i] = new LocationJSONImpl(locations.getJSONObject(i));
                 }
             }
-            GEO_ENABLED = z_T4JInternalParseUtil.getBoolean("geo_enabled", json);
+            GEO_ENABLED = ParseUtil.getBoolean("geo_enabled", json);
             LANGUAGE = json.getString("language");
-            ALWAYS_USE_HTTPS = z_T4JInternalParseUtil.getBoolean("always_use_https", json);
-            DISCOVERABLE_BY_EMAIL = z_T4JInternalParseUtil.getBoolean("discoverable_by_email", json);
+            ALWAYS_USE_HTTPS = ParseUtil.getBoolean("always_use_https", json);
+            DISCOVERABLE_BY_EMAIL = ParseUtil.getBoolean("discoverable_by_email", json);
             // https://groups.google.com/forum/?fromgroups=#!topic/twitter4j/zPaAXP9gkU4
             if (json.isNull("time_zone")) {
                 TIMEZONE = null;
@@ -70,8 +70,8 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
     /*package*/ AccountSettingsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
-            DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+            TwitterObjectFactory.clearThreadLocalMap();
+            TwitterObjectFactory.registerJSONObject(this, res.asJSONObject());
         }
     }
 

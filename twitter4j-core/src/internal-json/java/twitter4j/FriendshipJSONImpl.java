@@ -33,7 +33,7 @@ class FriendshipJSONImpl implements Friendship {
     /*package*/ FriendshipJSONImpl(JSONObject json) throws TwitterException {
         super();
         try {
-            id = z_T4JInternalParseUtil.getLong("id", json);
+            id = ParseUtil.getLong("id", json);
             name = json.getString("name");
             screenName = json.getString("screen_name");
             JSONArray connections = json.getJSONArray("connections");
@@ -54,7 +54,7 @@ class FriendshipJSONImpl implements Friendship {
     static ResponseList<Friendship> createFriendshipList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
@@ -63,12 +63,12 @@ class FriendshipJSONImpl implements Friendship {
                 JSONObject json = list.getJSONObject(i);
                 Friendship friendship = new FriendshipJSONImpl(json);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(friendship, json);
+                    TwitterObjectFactory.registerJSONObject(friendship, json);
                 }
                 friendshipList.add(friendship);
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(friendshipList, list);
+                TwitterObjectFactory.registerJSONObject(friendshipList, list);
             }
             return friendshipList;
         } catch (JSONException jsone) {

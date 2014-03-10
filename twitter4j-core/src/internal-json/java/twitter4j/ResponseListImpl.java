@@ -45,7 +45,7 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
 
     private void init(HttpResponse res) {
         this.rateLimitStatus = RateLimitStatusJSONImpl.createFromResponseHeader(res);
-        accessLevel = z_T4JInternalParseUtil.toAccessLevel(res);
+        accessLevel = ParseUtil.toAccessLevel(res);
     }
 
     /**

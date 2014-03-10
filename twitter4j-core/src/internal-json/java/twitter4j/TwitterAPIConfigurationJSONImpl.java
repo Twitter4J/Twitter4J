@@ -41,10 +41,10 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
         super(res);
         try {
             JSONObject json = res.asJSONObject();
-            photoSizeLimit = z_T4JInternalParseUtil.getInt("photo_size_limit", json);
-            shortURLLength = z_T4JInternalParseUtil.getInt("short_url_length", json);
-            shortURLLengthHttps = z_T4JInternalParseUtil.getInt("short_url_length_https", json);
-            charactersReservedPerMedia = z_T4JInternalParseUtil.getInt("characters_reserved_per_media", json);
+            photoSizeLimit = ParseUtil.getInt("photo_size_limit", json);
+            shortURLLength = ParseUtil.getInt("short_url_length", json);
+            shortURLLengthHttps = ParseUtil.getInt("short_url_length_https", json);
+            charactersReservedPerMedia = ParseUtil.getInt("characters_reserved_per_media", json);
 
             JSONObject sizes = json.getJSONObject("photo_sizes");
             photoSizes = new HashMap<Integer, MediaEntity.Size>(4);
@@ -60,15 +60,15 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
             photoSizes.put(MediaEntity.Size.SMALL, new MediaEntityJSONImpl.Size(sizes.getJSONObject("small")));
             photoSizes.put(MediaEntity.Size.THUMB, new MediaEntityJSONImpl.Size(sizes.getJSONObject("thumb")));
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
-                DataObjectFactoryUtil.registerJSONObject(this, res.asJSONObject());
+                TwitterObjectFactory.clearThreadLocalMap();
+                TwitterObjectFactory.registerJSONObject(this, res.asJSONObject());
             }
             JSONArray nonUsernamePathsJSONArray = json.getJSONArray("non_username_paths");
             nonUsernamePaths = new String[nonUsernamePathsJSONArray.length()];
             for (int i = 0; i < nonUsernamePathsJSONArray.length(); i++) {
                 nonUsernamePaths[i] = nonUsernamePathsJSONArray.getString(i);
             }
-            maxMediaPerUpload = z_T4JInternalParseUtil.getInt("max_media_per_upload", json);
+            maxMediaPerUpload = ParseUtil.getInt("max_media_per_upload", json);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }

@@ -17,7 +17,6 @@
 package twitter4j;
 
 import junit.framework.Assert;
-import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -228,7 +227,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         // https://gist.github.com/4071950#file_2.parse_error_json_example.txt
         // sometimes display_url is null and display_url doesn't exist
         String rawJSON = "{  \"geo\": null,  \"in_reply_to_screen_name\": null,  \"favorited\": false,  \"text\": \"RT @fxThailandfans: RT @princezephyr: [PRESS PICS] 121114 f(x) - KOR-AUS Football Match Half-time Show http:\\/\\/t.co\\/cbm1aPCU http:\\/\\/t.co\\/ ...\",  \"possibly_sensitive\": false,  \"in_reply_to_status_id_str\": null,  \"created_at\": \"Wed Nov 14 12:03:02 +0000 2012\",  \"in_reply_to_user_id_str\": null,  \"retweet_count\": 2,  \"coordinates\": null,  \"source\": \"<a href=\\\"http:\\/\\/blackberry.com\\/twitter\\\" rel=\\\"nofollow\\\">Twitter for BlackBerry\\u00ae<\\/a>\",  \"entities\": {    \"hashtags\": [          ],    \"user_mentions\": [      {        \"indices\": [          3,          18        ],        \"screen_name\": \"fxThailandfans\",        \"id_str\": \"563934022\",        \"name\": \"fx_thailand\",        \"id\": 563934022      },      {        \"indices\": [          23,          36        ],        \"screen_name\": \"princezephyr\",        \"id_str\": \"251443396\",        \"name\": \"princezephyr\",        \"id\": 251443396      }    ],    \"urls\": [      {        \"indices\": [          103,          123        ],        \"display_url\": \"twitpic.com\\/bd46lk\",        \"url\": \"http:\\/\\/t.co\\/cbm1aPCU\",        \"expanded_url\": \"http:\\/\\/twitpic.com\\/bd46lk\"      },      {        \"indices\": [          124,          136        ],        \"url\": \"http:\\/\\/t.co\\/\",        \"expanded_url\": null      }    ]  },  \"place\": null,  \"retweeted\": false,  \"truncated\": false,  \"id_str\": \"268685470089764864\",  \"retweeted_status\": {    \"geo\": null,    \"in_reply_to_screen_name\": null,    \"favorited\": false,    \"text\": \"RT @princezephyr: [PRESS PICS] 121114 f(x) - KOR-AUS Football Match Half-time Show http:\\/\\/t.co\\/cbm1aPCU http:\\/\\/t.co\\/UW5HBXHn (7)\",    \"possibly_sensitive\": false,    \"in_reply_to_status_id_str\": null,    \"created_at\": \"Wed Nov 14 11:42:13 +0000 2012\",    \"in_reply_to_user_id_str\": null,    \"retweet_count\": 2,    \"coordinates\": null,    \"source\": \"<a href=\\\"http:\\/\\/www.tweetdeck.com\\\" rel=\\\"nofollow\\\">TweetDeck<\\/a>\",    \"entities\": {      \"hashtags\": [              ],      \"user_mentions\": [        {          \"indices\": [            3,            16          ],          \"screen_name\": \"princezephyr\",          \"id_str\": \"251443396\",          \"name\": \"princezephyr\",          \"id\": 251443396        }      ],      \"urls\": [        {          \"indices\": [            83,            103          ],          \"display_url\": \"twitpic.com\\/bd46lk\",          \"url\": \"http:\\/\\/t.co\\/cbm1aPCU\",          \"expanded_url\": \"http:\\/\\/twitpic.com\\/bd46lk\"        },        {          \"indices\": [            104,            124          ],          \"display_url\": \"twitpic.com\\/bd46tf\",          \"url\": \"http:\\/\\/t.co\\/UW5HBXHn\",          \"expanded_url\": \"http:\\/\\/twitpic.com\\/bd46tf\"        }      ]    },    \"place\": null,    \"retweeted\": false,    \"truncated\": false,    \"id_str\": \"268680229562744832\",    \"contributors\": null,    \"in_reply_to_user_id\": null,    \"in_reply_to_status_id\": null,    \"user\": {      \"friends_count\": 44,      \"profile_link_color\": \"939AED\",      \"followers_count\": 834,      \"is_translator\": false,      \"default_profile\": false,      \"follow_request_sent\": null,      \"contributors_enabled\": false,      \"time_zone\": \"Bangkok\",      \"created_at\": \"Thu Apr 26 18:22:34 +0000 2012\",      \"profile_background_color\": \"C0DEED\",      \"profile_background_tile\": true,      \"profile_background_image_url_https\": \"https:\\/\\/si0.twimg.com\\/profile_background_images\\/576266919\\/0bvixbmvg2lj69ajtg6i.jpeg\",      \"url\": \"http:\\/\\/www.fxthailand.com\\/\",      \"description\": \"f(x) Thailand Fans Board.\\r\\n\\r\\nhttps:\\/\\/www.facebook.com\\/Fxthailandfans\",      \"profile_sidebar_fill_color\": \"DDEEF6\",      \"default_profile_image\": false,      \"lang\": \"en\",      \"favourites_count\": 1,      \"profile_sidebar_border_color\": \"C0DEED\",      \"profile_image_url_https\": \"https:\\/\\/si0.twimg.com\\/profile_images\\/2592067376\\/3q4797y4mhfcvh7b7k14_normal.png\",      \"location\": \"\",      \"id_str\": \"563934022\",      \"verified\": false,      \"notifications\": null,      \"protected\": false,      \"screen_name\": \"fxThailandfans\",      \"following\": null,      \"geo_enabled\": false,      \"profile_use_background_image\": true,      \"profile_image_url\": \"http:\\/\\/a0.twimg.com\\/profile_images\\/2592067376\\/3q4797y4mhfcvh7b7k14_normal.png\",      \"name\": \"fx_thailand\",      \"profile_text_color\": \"333333\",      \"id\": 563934022,      \"listed_count\": 6,      \"statuses_count\": 1840,      \"profile_background_image_url\": \"http:\\/\\/a0.twimg.com\\/profile_background_images\\/576266919\\/0bvixbmvg2lj69ajtg6i.jpeg\",      \"utc_offset\": 25200    },    \"id\": 268680229562744832,    \"possibly_sensitive_editable\": true  },  \"contributors\": null,  \"in_reply_to_user_id\": null,  \"in_reply_to_status_id\": null,  \"user\": {    \"friends_count\": 96,    \"profile_link_color\": \"0084B4\",    \"followers_count\": 62,    \"is_translator\": false,    \"default_profile\": true,    \"follow_request_sent\": null,    \"contributors_enabled\": false,    \"time_zone\": null,    \"created_at\": \"Tue Jul 17 12:29:08 +0000 2012\",    \"profile_background_color\": \"C0DEED\",    \"profile_background_tile\": false,    \"profile_background_image_url_https\": \"https:\\/\\/si0.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",    \"url\": null,    \"description\": \"\\u0e2d\\u0e31\\u0e19\\u0e22\\u0e2d\\u0e07\\u0e04\\u0e48\\u0e30 !! \\u0e09\\u0e31\\u0e19\\u0e0b\\u0e39\\u0e08\\u0e35\\u0e27\\u0e07\\u0e21\\u0e34\\u0e2a\\u0e40\\u0e2d \\u0e09\\u0e31\\u0e19\\u0e23\\u0e31\\u0e48\\u0e27 \\u0e19\\u0e48\\u0e32\\u0e23\\u0e31\\u0e01 \\u0e25\\u0e2d\\u0e07\\u0e1f\\u0e2d\\u0e25\\u0e21\\u0e32\\u0e2a\\u0e34\\u0e04\\u0e48\\u0e30\\u0e41\\u0e25\\u0e49\\u0e27\\u0e04\\u0e38\\u0e13\\u0e08\\u0e30\\u0e23\\u0e39\\u0e49 *\\u0e22\\u0e34\\u0e49\\u0e21\\u0e2a\\u0e27\\u0e22*\",    \"profile_sidebar_fill_color\": \"DDEEF6\",    \"default_profile_image\": false,    \"lang\": \"th\",    \"favourites_count\": 2,    \"profile_sidebar_border_color\": \"C0DEED\",    \"profile_image_url_https\": \"https:\\/\\/si0.twimg.com\\/profile_images\\/2748527294\\/6cd82d00840820ddc2bedffdfb5e15bd_normal.jpeg\",    \"location\": \"\\u0e43\\u0e19\\u0e04\\u0e48\\u0e32\\u0e22 JYP \\u0e04\\u0e48\\u0e30\",    \"id_str\": \"700968576\",    \"verified\": false,    \"notifications\": null,    \"protected\": false,    \"screen_name\": \"suzy12missA\",    \"following\": null,    \"geo_enabled\": false,    \"profile_use_background_image\": true,    \"profile_image_url\": \"http:\\/\\/a0.twimg.com\\/profile_images\\/2748527294\\/6cd82d00840820ddc2bedffdfb5e15bd_normal.jpeg\",    \"name\": \"\\u0e19\\u0e32\\u0e07\\u0e40\\u0e1a!!\\u0e0b\\u0e39\\u0e08\\u0e35^^\",    \"profile_text_color\": \"333333\",    \"id\": 700968576,    \"listed_count\": 1,    \"statuses_count\": 428,    \"profile_background_image_url\": \"http:\\/\\/a0.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",    \"utc_offset\": null  },  \"id\": 268680229562744832,  \"possibly_sensitive_editable\": true}";
-        Status status = DataObjectFactory.createStatus(rawJSON);
+        Status status = TwitterObjectFactory.createStatus(rawJSON);
         URLEntity urlEntity = status.getURLEntities()[1];
         assertEquals(urlEntity.getURL(), urlEntity.getDisplayURL());
         assertEquals(urlEntity.getURL(), urlEntity.getExpandedURL());
@@ -243,7 +242,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     public void onStatus(Status status) {
         System.out.println("onStatus");
         received.add(new Object[]{"onstatus", status});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(status));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(status));
         notifyResponse();
     }
 
@@ -287,18 +286,18 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     public void onFavorite(User source, User target, Status favoritedStatus) {
         System.out.println("onFavorite");
         received.add(new Object[]{TwitterMethod.CREATE_FAVORITE, source, target, favoritedStatus});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(target));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(favoritedStatus));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(favoritedStatus));
         notifyResponse();
     }
 
     public void onUnfavorite(User source, User target, Status unfavoritedStatus) {
         System.out.println("onUnfavorite");
         received.add(new Object[]{TwitterMethod.DESTROY_FAVORITE, source, target, unfavoritedStatus});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(target));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(unfavoritedStatus));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(unfavoritedStatus));
         notifyResponse();
     }
 
@@ -307,67 +306,67 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         this.source = source;
         this.target = followedUser;
         received.add(new Object[]{TwitterMethod.CREATE_FRIENDSHIP, source, followedUser});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(followedUser));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(followedUser));
         notifyResponse();
     }
 
     public void onDirectMessage(DirectMessage directMessage) {
         System.out.println("onDirectMessage");
         received.add(new Object[]{TwitterMethod.SEND_DIRECT_MESSAGE, directMessage});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(directMessage));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(directMessage));
         notifyResponse();
     }
 
     public void onUserListMemberAddition(User addedMember, User listOwner, UserList list) {
         System.out.println("onUserListMemberAddition");
         received.add(new Object[]{TwitterMethod.CREATE_LIST_MEMBER, addedMember, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(addedMember));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(addedMember));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListMemberDeletion(User deletedMember, User listOwner, UserList list) {
         System.out.println("onUserListMemberDeletion");
         received.add(new Object[]{TwitterMethod.DESTROY_LIST_MEMBER, deletedMember, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(deletedMember));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(deletedMember));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListSubscription(User subscriber, User listOwner, UserList list) {
         System.out.println("onUserListSubscription");
         received.add(new Object[]{TwitterMethod.SUBSCRIBE_LIST, subscriber, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(subscriber));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(subscriber));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListUnsubscription(User subscriber, User listOwner, UserList list) {
         System.out.println("onUserListUnsubscription");
         received.add(new Object[]{TwitterMethod.UNSUBSCRIBE_LIST, subscriber, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(subscriber));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(subscriber));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListCreation(User listOwner, UserList list) {
         System.out.println("onUserListCreation");
         received.add(new Object[]{TwitterMethod.CREATE_USER_LIST, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
     public void onUserListUpdate(User listOwner, UserList list) {
         System.out.println("onUserListUpdate");
         received.add(new Object[]{TwitterMethod.UPDATE_USER_LIST, listOwner, list});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
         notifyResponse();
     }
 
@@ -375,30 +374,30 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         System.out.println("onUserListDeletion");
         received.add(new Object[]{TwitterMethod.DESTROY_USER_LIST, listOwner, list});
         notifyResponse();
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(listOwner));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(list));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(listOwner));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(list));
     }
 
     public void onUserProfileUpdate(User updatedUser) {
         System.out.println("onUserProfileUpdate");
         received.add(new Object[]{TwitterMethod.UPDATE_PROFILE, updatedUser});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(updatedUser));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(updatedUser));
         notifyResponse();
     }
 
     public void onBlock(User source, User blockedUser) {
         System.out.println("onBlock");
         received.add(new Object[]{TwitterMethod.CREATE_BLOCK, source, blockedUser});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(blockedUser));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(blockedUser));
         notifyResponse();
     }
 
     public void onUnblock(User source, User unblockedUser) {
         System.out.println("onUnblock");
         received.add(new Object[]{TwitterMethod.DESTROY_BLOCK, source, unblockedUser});
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(source));
-        Assert.assertNotNull(DataObjectFactory.getRawJSON(unblockedUser));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(unblockedUser));
         notifyResponse();
     }
 

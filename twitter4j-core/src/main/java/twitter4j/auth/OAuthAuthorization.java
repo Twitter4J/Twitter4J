@@ -240,10 +240,11 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     private void parseGetParameters(String url, List<HttpParameter> signatureBaseParams) {
         int queryStart = url.indexOf("?");
         if (-1 != queryStart) {
-            String[] queryStrs = z_T4JInternalStringUtil.split(url.substring(queryStart + 1), "&");
+            url.split("&");
+            String[] queryStrs = url.substring(queryStart + 1).split("&");
             try {
                 for (String query : queryStrs) {
-                    String[] split = z_T4JInternalStringUtil.split(query, "=");
+                    String[] split = query.split("=");
                     if (split.length == 2) {
                         signatureBaseParams.add(
                                 new HttpParameter(URLDecoder.decode(split[0],

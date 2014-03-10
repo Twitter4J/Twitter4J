@@ -31,10 +31,10 @@ import javax.annotation.Generated;
 )
 final class LazyIDs implements twitter4j.IDs {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
     private IDs target = null;
 
-    LazyIDs(HttpResponse res, TwitterObjectFactory factory) {
+    LazyIDs(HttpResponse res, ObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

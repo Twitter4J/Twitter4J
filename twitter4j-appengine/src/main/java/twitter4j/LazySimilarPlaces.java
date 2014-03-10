@@ -23,9 +23,9 @@ package twitter4j;
  */
 final class LazySimilarPlaces extends LazyResponseList<Place> implements SimilarPlaces {
     private HttpResponse res;
-    private TwitterObjectFactory factory;
+    private ObjectFactory factory;
 
-    LazySimilarPlaces(HttpResponse res, TwitterObjectFactory factory) {
+    LazySimilarPlaces(HttpResponse res, ObjectFactory factory) {
         super();
         this.res = res;
         this.factory = factory;

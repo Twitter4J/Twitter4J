@@ -38,12 +38,12 @@ import java.util.Date;
     /*package*/ SavedSearchJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONObject json = res.asJSONObject();
         init(json);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.registerJSONObject(this, json);
+            TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 
@@ -54,7 +54,7 @@ import java.util.Date;
     /*package*/
     static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res, Configuration conf) throws TwitterException {
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONArray json = res.asJSONArray();
         ResponseList<SavedSearch> savedSearches;
@@ -65,11 +65,11 @@ import java.util.Date;
                 SavedSearch savedSearch = new SavedSearchJSONImpl(savedSearchesJSON);
                 savedSearches.add(savedSearch);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(savedSearch, savedSearchesJSON);
+                    TwitterObjectFactory.registerJSONObject(savedSearch, savedSearchesJSON);
                 }
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(savedSearches, json);
+                TwitterObjectFactory.registerJSONObject(savedSearches, json);
             }
             return savedSearches;
         } catch (JSONException jsone) {
@@ -78,11 +78,11 @@ import java.util.Date;
     }
 
     private void init(JSONObject savedSearch) throws TwitterException {
-        createdAt = z_T4JInternalParseUtil.getDate("created_at", savedSearch, "EEE MMM dd HH:mm:ss z yyyy");
-        query = z_T4JInternalParseUtil.getUnescapedString("query", savedSearch);
-        position = z_T4JInternalParseUtil.getInt("position", savedSearch);
-        name = z_T4JInternalParseUtil.getUnescapedString("name", savedSearch);
-        id = z_T4JInternalParseUtil.getInt("id", savedSearch);
+        createdAt = ParseUtil.getDate("created_at", savedSearch, "EEE MMM dd HH:mm:ss z yyyy");
+        query = ParseUtil.getUnescapedString("query", savedSearch);
+        position = ParseUtil.getInt("position", savedSearch);
+        name = ParseUtil.getUnescapedString("name", savedSearch);
+        id = ParseUtil.getInt("id", savedSearch);
     }
 
     @Override

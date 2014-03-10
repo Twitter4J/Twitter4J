@@ -16,8 +16,6 @@
 
 package twitter4j.conf;
 
-import twitter4j.z_T4JInternalStringUtil;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Map;
@@ -120,10 +118,11 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             props = (Properties) System.getProperties().clone();
             try {
                 Map<String, String> envMap = System.getenv();
-                for(String key :envMap.keySet()){
+                for (String key : envMap.keySet()) {
                     props.setProperty(key, envMap.get(key));
                 }
-            }catch(SecurityException ignore){}
+            } catch (SecurityException ignore) {
+            }
             normalize(props);
         } catch (SecurityException ignore) {
             // Unsigned applets are not allowed to access System properties
@@ -218,7 +217,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
      */
     private void setFieldsWithTreePath(Properties props, String treePath) {
         setFieldsWithPrefix(props, "");
-        String[] splitArray = z_T4JInternalStringUtil.split(treePath, "/");
+        String[] splitArray = treePath.split("/");
         String prefix = null;
         for (String split : splitArray) {
             if (!"".equals(split)) {
@@ -400,10 +399,10 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             setMediaProviderAPIKey(getString(props, prefix, MEDIA_PROVIDER_API_KEY));
         }
         if (notNull(props, prefix, MEDIA_PROVIDER_PARAMETERS)) {
-            String[] propsAry = z_T4JInternalStringUtil.split(getString(props, prefix, MEDIA_PROVIDER_PARAMETERS), "&");
+            String[] propsAry = getString(props, prefix, MEDIA_PROVIDER_PARAMETERS).split("&");
             Properties p = new Properties();
             for (String str : propsAry) {
-                String[] parameter = z_T4JInternalStringUtil.split(str, "=");
+                String[] parameter = str.split("=");
                 p.setProperty(parameter[0], parameter[1]);
             }
             setMediaProviderParameters(p);

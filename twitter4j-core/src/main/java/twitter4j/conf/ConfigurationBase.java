@@ -18,7 +18,6 @@ package twitter4j.conf;
 
 import twitter4j.Logger;
 import twitter4j.Version;
-import twitter4j.z_T4JInternalStringUtil;
 
 import java.io.ObjectStreamException;
 import java.lang.reflect.Field;
@@ -227,7 +226,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                     Object value = field.get(this);
                     String strValue = String.valueOf(value);
                     if (value != null && field.getName().matches("oAuthConsumerSecret|oAuthAccessTokenSecret|password")) {
-                        strValue = z_T4JInternalStringUtil.maskString(String.valueOf(value));
+                        strValue = String.valueOf(value).replaceAll(".", "*");
                     }
                     log.debug(field.getName() + ": " + strValue);
                 } catch (IllegalAccessException ignore) {

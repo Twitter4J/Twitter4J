@@ -17,6 +17,7 @@
 package twitter4j.auth;
 
 import twitter4j.HttpResponse;
+import twitter4j.JSONException;
 import twitter4j.JSONObject;
 import twitter4j.TwitterException;
 
@@ -24,7 +25,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-import static twitter4j.z_T4JInternalParseUtil.getRawString;
 
 public class OAuth2Token implements java.io.Serializable {
     private static final long serialVersionUID = 358222644448390610L;
@@ -94,5 +94,17 @@ public class OAuth2Token implements java.io.Serializable {
                 "tokenType='" + tokenType + '\'' +
                 ", accessToken='" + accessToken + '\'' +
                 '}';
+    }
+
+    private static String getRawString(String name, JSONObject json) {
+        try {
+            if (json.isNull(name)) {
+                return null;
+            } else {
+                return json.getString(name);
+            }
+        } catch (JSONException jsone) {
+            return null;
+        }
     }
 }

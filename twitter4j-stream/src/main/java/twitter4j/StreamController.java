@@ -23,7 +23,7 @@ import twitter4j.conf.Configuration;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static twitter4j.z_T4JInternalParseUtil.*;
+import static twitter4j.ParseUtil.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com
@@ -78,7 +78,7 @@ public class StreamController {
     public String addUsers(long[] userIds) throws TwitterException {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
-                z_T4JInternalStringUtil.join(userIds));
+                StringUtil.join(userIds));
         HttpResponse res = HTTP.post(controlURI + "/add_user.json",
                 new HttpParameter[]{param}, AUTH);
         return res.asString();
@@ -87,7 +87,7 @@ public class StreamController {
     public String removeUsers(long[] userIds) throws TwitterException {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
-                z_T4JInternalStringUtil.join(userIds));
+                StringUtil.join(userIds));
         HttpResponse res = HTTP.post(controlURI + "/remove_user.json",
                 new HttpParameter[]{param}, AUTH);
         return res.asString();
@@ -127,8 +127,8 @@ public class StreamController {
                     }
                 }
                 user = new User(follow.getJSONObject("user"));
-                previousCursor = z_T4JInternalParseUtil.getLong("previous_cursor", json);
-                nextCursor = z_T4JInternalParseUtil.getLong("next_cursor", json);
+                previousCursor = ParseUtil.getLong("previous_cursor", json);
+                nextCursor = ParseUtil.getLong("next_cursor", json);
             } catch (JSONException jsone) {
                 throw new TwitterException(jsone);
             }

@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.json.DataObjectFactory;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
@@ -39,8 +37,8 @@ public class TrendsResourcesTest extends TwitterTestBase {
         assertEquals("Worldwide", trends.getLocation().getName());
         ResponseList<Location> locations;
         locations = twitter1.getAvailableTrends();
-        assertNotNull(DataObjectFactory.getRawJSON(locations));
-        assertEquals(locations.get(0), DataObjectFactory.createLocation(DataObjectFactory.getRawJSON(locations.get(0))));
+        assertNotNull(TwitterObjectFactory.getRawJSON(locations));
+        assertEquals(locations.get(0), TwitterObjectFactory.createLocation(TwitterObjectFactory.getRawJSON(locations.get(0))));
         assertTrue(locations.size() > 0);
 
         locations = twitter2.getClosestTrends(new GeoLocation(35.677248D, 139.72911D));

@@ -80,8 +80,8 @@ class StatusStreamImpl extends StatusStreamBase {
                 ((StatusListener) listener).onDeletionNotice(new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
             } else {
                 JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
-                ((UserStreamListener) listener).onDeletionNotice(z_T4JInternalParseUtil.getLong("id", directMessage)
-                        , z_T4JInternalParseUtil.getLong("user_id", directMessage));
+                ((UserStreamListener) listener).onDeletionNotice(ParseUtil.getLong("id", directMessage)
+                        , ParseUtil.getLong("user_id", directMessage));
             }
         }
     }
@@ -89,7 +89,7 @@ class StatusStreamImpl extends StatusStreamBase {
     @Override
     protected void onLimit(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
-            ((StatusListener) listener).onTrackLimitationNotice(z_T4JInternalParseUtil.getInt("track", json.getJSONObject("limit")));
+            ((StatusListener) listener).onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
         }
     }
 
@@ -104,8 +104,8 @@ class StatusStreamImpl extends StatusStreamBase {
     protected void onScrubGeo(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         JSONObject scrubGeo = json.getJSONObject("scrub_geo");
         for (StreamListener listener : listeners) {
-            ((StatusListener) listener).onScrubGeo(z_T4JInternalParseUtil.getLong("user_id", scrubGeo)
-                    , z_T4JInternalParseUtil.getLong("up_to_status_id", scrubGeo));
+            ((StatusListener) listener).onScrubGeo(ParseUtil.getLong("user_id", scrubGeo)
+                    , ParseUtil.getLong("up_to_status_id", scrubGeo));
         }
 
     }

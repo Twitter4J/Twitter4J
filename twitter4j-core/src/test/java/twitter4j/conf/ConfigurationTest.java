@@ -21,7 +21,6 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import twitter4j.Version;
 import twitter4j.auth.RequestToken;
-import twitter4j.z_T4JInternalStringUtil;
 
 import java.io.*;
 import java.util.Properties;
@@ -56,14 +55,6 @@ public class ConfigurationTest extends TestCase {
         assertEquals("https://www.bea.com", ConfigurationBase.fixURL(true, "https://www.bea.com"));
         assertNull(ConfigurationBase.fixURL(false, null));
         assertNull(ConfigurationBase.fixURL(true, null));
-    }
-
-    public void testSplit() throws Exception {
-        String original = "foo/bar";
-        String[] split = z_T4JInternalStringUtil.split(original, "/");
-        assertEquals("foo", split[0]);
-        assertEquals("bar", split[1]);
-        assertEquals(2, split.length);
     }
 
     public void testConfiguration() throws Exception {
@@ -277,12 +268,12 @@ public class ConfigurationTest extends TestCase {
 
         // configuration for two different countries and default
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/"
-                + "\n" + "http.useSSL=false"
-                + "\n" + "user=one"
-                + "\n" + "china.restBaseURL=http://somewhere.cn/"
-                + "\n" + "china.user=two"
-                + "\n" + "japan.restBaseURL=http://yusuke.homeip.net/"
-                + "\n" + "japan.user=three"
+                        + "\n" + "http.useSSL=false"
+                        + "\n" + "user=one"
+                        + "\n" + "china.restBaseURL=http://somewhere.cn/"
+                        + "\n" + "china.user=two"
+                        + "\n" + "japan.restBaseURL=http://yusuke.homeip.net/"
+                        + "\n" + "japan.user=three"
         );
         conf = new PropertyConfiguration();
         assertEquals("one", conf.getUser());
@@ -293,14 +284,14 @@ public class ConfigurationTest extends TestCase {
 
 
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/"
-                + "\n" + "http.useSSL=false"
-                + "\n" + "user=one"
-                + "\n" + "password=pasword-one"
-                + "\n" + "china.restBaseURL=http://somewhere.cn/"
-                + "\n" + "china.user1.user=two"
-                + "\n" + "china.user1.password=pasword-two"
-                + "\n" + "china.user2.user=three"
-                + "\n" + "china.user2.password=pasword-three"
+                        + "\n" + "http.useSSL=false"
+                        + "\n" + "user=one"
+                        + "\n" + "password=pasword-one"
+                        + "\n" + "china.restBaseURL=http://somewhere.cn/"
+                        + "\n" + "china.user1.user=two"
+                        + "\n" + "china.user1.password=pasword-two"
+                        + "\n" + "china.user2.user=three"
+                        + "\n" + "china.user2.password=pasword-three"
         );
         conf = new PropertyConfiguration();
         assertEquals("one", conf.getUser());

@@ -4,7 +4,7 @@ NOW=`date +'%Y-%m-%d'`
 cp $SOURCE $TARGET
 
 sed -i "" "s/A data interface/A data class/g" $TARGET
-sed -i "" 's/package twitter4j;/\package twitter4j.internal.json;\
+sed -i "" 's/package twitter4j;/\package twitter4j;\
 \
 import twitter4j.*;\
 import javax.annotation.Generated;/g' $TARGET

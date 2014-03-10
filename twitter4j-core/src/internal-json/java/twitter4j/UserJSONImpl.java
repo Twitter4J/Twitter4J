@@ -73,12 +73,12 @@ import java.util.Date;
     /*package*/UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.clearThreadLocalMap();
+            TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONObject json = res.asJSONObject();
         init(json);
         if (conf.isJSONStoreEnabled()) {
-            DataObjectFactoryUtil.registerJSONObject(this, json);
+            TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 
@@ -94,10 +94,10 @@ import java.util.Date;
 
     private void init(JSONObject json) throws TwitterException {
         try {
-            id = z_T4JInternalParseUtil.getLong("id", json);
-            name = z_T4JInternalParseUtil.getRawString("name", json);
-            screenName = z_T4JInternalParseUtil.getRawString("screen_name", json);
-            location = z_T4JInternalParseUtil.getRawString("location", json);
+            id = ParseUtil.getLong("id", json);
+            name = ParseUtil.getRawString("name", json);
+            screenName = ParseUtil.getRawString("screen_name", json);
+            location = ParseUtil.getRawString("location", json);
 
             // descriptionUrlEntities <=> entities/descriptions/urls[]
             descriptionURLEntities = getURLEntitiesFromJSON(json, "description");
@@ -109,42 +109,42 @@ import java.util.Date;
                 urlEntity = urlEntities[0];
             }
 
-            description = z_T4JInternalParseUtil.getRawString("description", json);
+            description = ParseUtil.getRawString("description", json);
             if (description != null) {
                 description = HTMLEntity.unescapeAndSlideEntityIncdices(description,
                         null, descriptionURLEntities, null, null);
             }
 
-            isContributorsEnabled = z_T4JInternalParseUtil.getBoolean("contributors_enabled", json);
-            profileImageUrl = z_T4JInternalParseUtil.getRawString("profile_image_url", json);
-            profileImageUrlHttps = z_T4JInternalParseUtil.getRawString("profile_image_url_https", json);
-            url = z_T4JInternalParseUtil.getRawString("url", json);
-            isProtected = z_T4JInternalParseUtil.getBoolean("protected", json);
-            isGeoEnabled = z_T4JInternalParseUtil.getBoolean("geo_enabled", json);
-            isVerified = z_T4JInternalParseUtil.getBoolean("verified", json);
-            translator = z_T4JInternalParseUtil.getBoolean("is_translator", json);
-            followersCount = z_T4JInternalParseUtil.getInt("followers_count", json);
+            isContributorsEnabled = ParseUtil.getBoolean("contributors_enabled", json);
+            profileImageUrl = ParseUtil.getRawString("profile_image_url", json);
+            profileImageUrlHttps = ParseUtil.getRawString("profile_image_url_https", json);
+            url = ParseUtil.getRawString("url", json);
+            isProtected = ParseUtil.getBoolean("protected", json);
+            isGeoEnabled = ParseUtil.getBoolean("geo_enabled", json);
+            isVerified = ParseUtil.getBoolean("verified", json);
+            translator = ParseUtil.getBoolean("is_translator", json);
+            followersCount = ParseUtil.getInt("followers_count", json);
 
-            profileBackgroundColor = z_T4JInternalParseUtil.getRawString("profile_background_color", json);
-            profileTextColor = z_T4JInternalParseUtil.getRawString("profile_text_color", json);
-            profileLinkColor = z_T4JInternalParseUtil.getRawString("profile_link_color", json);
-            profileSidebarFillColor = z_T4JInternalParseUtil.getRawString("profile_sidebar_fill_color", json);
-            profileSidebarBorderColor = z_T4JInternalParseUtil.getRawString("profile_sidebar_border_color", json);
-            profileUseBackgroundImage = z_T4JInternalParseUtil.getBoolean("profile_use_background_image", json);
-            showAllInlineMedia = z_T4JInternalParseUtil.getBoolean("show_all_inline_media", json);
-            friendsCount = z_T4JInternalParseUtil.getInt("friends_count", json);
-            createdAt = z_T4JInternalParseUtil.getDate("created_at", json, "EEE MMM dd HH:mm:ss z yyyy");
-            favouritesCount = z_T4JInternalParseUtil.getInt("favourites_count", json);
-            utcOffset = z_T4JInternalParseUtil.getInt("utc_offset", json);
-            timeZone = z_T4JInternalParseUtil.getRawString("time_zone", json);
-            profileBackgroundImageUrl = z_T4JInternalParseUtil.getRawString("profile_background_image_url", json);
-            profileBackgroundImageUrlHttps = z_T4JInternalParseUtil.getRawString("profile_background_image_url_https", json);
-            profileBannerImageUrl = z_T4JInternalParseUtil.getRawString("profile_banner_url", json);
-            profileBackgroundTiled = z_T4JInternalParseUtil.getBoolean("profile_background_tile", json);
-            lang = z_T4JInternalParseUtil.getRawString("lang", json);
-            statusesCount = z_T4JInternalParseUtil.getInt("statuses_count", json);
-            listedCount = z_T4JInternalParseUtil.getInt("listed_count", json);
-            isFollowRequestSent = z_T4JInternalParseUtil.getBoolean("follow_request_sent", json);
+            profileBackgroundColor = ParseUtil.getRawString("profile_background_color", json);
+            profileTextColor = ParseUtil.getRawString("profile_text_color", json);
+            profileLinkColor = ParseUtil.getRawString("profile_link_color", json);
+            profileSidebarFillColor = ParseUtil.getRawString("profile_sidebar_fill_color", json);
+            profileSidebarBorderColor = ParseUtil.getRawString("profile_sidebar_border_color", json);
+            profileUseBackgroundImage = ParseUtil.getBoolean("profile_use_background_image", json);
+            showAllInlineMedia = ParseUtil.getBoolean("show_all_inline_media", json);
+            friendsCount = ParseUtil.getInt("friends_count", json);
+            createdAt = ParseUtil.getDate("created_at", json, "EEE MMM dd HH:mm:ss z yyyy");
+            favouritesCount = ParseUtil.getInt("favourites_count", json);
+            utcOffset = ParseUtil.getInt("utc_offset", json);
+            timeZone = ParseUtil.getRawString("time_zone", json);
+            profileBackgroundImageUrl = ParseUtil.getRawString("profile_background_image_url", json);
+            profileBackgroundImageUrlHttps = ParseUtil.getRawString("profile_background_image_url_https", json);
+            profileBannerImageUrl = ParseUtil.getRawString("profile_banner_url", json);
+            profileBackgroundTiled = ParseUtil.getBoolean("profile_background_tile", json);
+            lang = ParseUtil.getRawString("lang", json);
+            statusesCount = ParseUtil.getInt("statuses_count", json);
+            listedCount = ParseUtil.getInt("listed_count", json);
+            isFollowRequestSent = ParseUtil.getBoolean("follow_request_sent", json);
             if (!json.isNull("status")) {
                 JSONObject statusJSON = json.getJSONObject("status");
                 status = new StatusJSONImpl(statusJSON);
@@ -576,7 +576,7 @@ import java.util.Date;
     static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONObject json = res.asJSONObject();
             JSONArray list = json.getJSONArray("users");
@@ -587,12 +587,12 @@ import java.util.Date;
                 JSONObject userJson = list.getJSONObject(i);
                 User user = new UserJSONImpl(userJson);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(user, userJson);
+                    TwitterObjectFactory.registerJSONObject(user, userJson);
                 }
                 users.add(user);
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(users, json);
+                TwitterObjectFactory.registerJSONObject(users, json);
             }
             return users;
         } catch (JSONException jsone) {
@@ -611,7 +611,7 @@ import java.util.Date;
     static ResponseList<User> createUserList(JSONArray list, HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             int size = list.length();
             ResponseList<User> users =
@@ -621,11 +621,11 @@ import java.util.Date;
                 User user = new UserJSONImpl(json);
                 users.add(user);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(user, json);
+                    TwitterObjectFactory.registerJSONObject(user, json);
                 }
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(users, list);
+                TwitterObjectFactory.registerJSONObject(users, list);
             }
             return users;
         } catch (JSONException jsone) {

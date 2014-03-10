@@ -18,7 +18,7 @@ package twitter4j;
 
 import java.util.List;
 
-import static twitter4j.z_T4JInternalParseUtil.getInt;
+import static twitter4j.ParseUtil.getInt;
 
 /**
  * An exception class that will be thrown when TwitterAPI calls are failed.<br>
@@ -134,7 +134,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
      */
     @Override
     public int getAccessLevel() {
-        return z_T4JInternalParseUtil.toAccessLevel(response);
+        return ParseUtil.toAccessLevel(response);
     }
 
     /**

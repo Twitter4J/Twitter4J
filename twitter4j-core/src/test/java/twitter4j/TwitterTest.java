@@ -17,7 +17,6 @@
 package twitter4j;
 
 import junit.framework.Assert;
-import twitter4j.json.DataObjectFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -54,8 +53,8 @@ public class TwitterTest extends TwitterTestBase {
     //need to think of a way to test this, perhaps mocking out Twitter is the way to go
     public void testRateLimitStatus() throws Exception {
         Map<String, RateLimitStatus> rateLimitStatus = twitter1.getRateLimitStatus();
-        assertNotNull(DataObjectFactory.getRawJSON(rateLimitStatus));
-        assertEquals(rateLimitStatus, DataObjectFactory.createRateLimitStatus(DataObjectFactory.getRawJSON(rateLimitStatus)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(rateLimitStatus));
+        assertEquals(rateLimitStatus, TwitterObjectFactory.createRateLimitStatus(TwitterObjectFactory.getRawJSON(rateLimitStatus)));
         RateLimitStatus status = rateLimitStatus.values().iterator().next();
         assertTrue(10 < status.getLimit());
         assertTrue(10 < status.getRemaining());

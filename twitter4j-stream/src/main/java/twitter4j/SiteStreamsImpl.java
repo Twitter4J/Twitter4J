@@ -107,8 +107,8 @@ class SiteStreamsImpl extends StatusStreamBase {
         } else {
             JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
             for (StreamListener listener : listeners) {
-                ((SiteStreamsListener) listener).onDeletionNotice(forUser.get(), z_T4JInternalParseUtil.getInt("id", directMessage)
-                        , z_T4JInternalParseUtil.getLong("user_id", directMessage));
+                ((SiteStreamsListener) listener).onDeletionNotice(forUser.get(), ParseUtil.getInt("id", directMessage)
+                        , ParseUtil.getLong("user_id", directMessage));
             }
         }
     }

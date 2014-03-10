@@ -36,7 +36,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
     void init(JSONObject json) throws JSONException {
         this.name = json.getString("name");
         this.slug = json.getString("slug");
-        this.size = z_T4JInternalParseUtil.getInt("size", json);
+        this.size = ParseUtil.getInt("size", json);
     }
 
     static ResponseList<Category> createCategoriesList(HttpResponse res, Configuration conf) throws TwitterException {
@@ -46,7 +46,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
     static ResponseList<Category> createCategoriesList(JSONArray array, HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.clearThreadLocalMap();
+                TwitterObjectFactory.clearThreadLocalMap();
             }
             ResponseList<Category> categories =
                     new ResponseListImpl<Category>(array.length(), res);
@@ -55,11 +55,11 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
                 Category category = new CategoryJSONImpl(json);
                 categories.add(category);
                 if (conf.isJSONStoreEnabled()) {
-                    DataObjectFactoryUtil.registerJSONObject(category, json);
+                    TwitterObjectFactory.registerJSONObject(category, json);
                 }
             }
             if (conf.isJSONStoreEnabled()) {
-                DataObjectFactoryUtil.registerJSONObject(categories, array);
+                TwitterObjectFactory.registerJSONObject(categories, array);
             }
             return categories;
         } catch (JSONException jsone) {

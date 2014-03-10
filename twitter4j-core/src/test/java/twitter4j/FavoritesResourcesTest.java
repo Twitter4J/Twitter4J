@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.json.DataObjectFactory;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
@@ -40,11 +38,11 @@ public class FavoritesResourcesTest extends TwitterTestBase {
             twitter2.destroyFavorite(status.getId());
         } catch (TwitterException te) {
         }
-        assertNotNull(DataObjectFactory.getRawJSON(status));
-        assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(status));
+        assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
         status = twitter2.createFavorite(status.getId());
-        assertNotNull(DataObjectFactory.getRawJSON(status));
-        assertEquals(status, DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(status)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(status));
+        assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
         assertTrue(twitter2.getFavorites().size() > 0);
         assertTrue(twitter2.getFavorites("t4j_news").size() > 0);
         assertTrue(twitter2.getFavorites("t4j_news", new Paging().count(1)).size() == 1);

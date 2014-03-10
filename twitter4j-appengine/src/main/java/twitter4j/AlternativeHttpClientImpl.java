@@ -116,7 +116,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase {
         String authorizationHeader;
         if (req.getAuthorization() != null && (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req)) != null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Authorization: ", z_T4JInternalStringUtil.maskString(authorizationHeader));
+                logger.debug("Authorization: ", authorizationHeader.replaceAll(".", "*"));
             }
             request.setHeader(new HTTPHeader("Authorization", authorizationHeader));
         }
