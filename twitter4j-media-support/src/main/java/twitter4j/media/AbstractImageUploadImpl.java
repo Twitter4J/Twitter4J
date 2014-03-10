@@ -31,11 +31,6 @@ import java.util.*;
  * @since Twitter4J 2.1.8
  */
 abstract class AbstractImageUploadImpl implements ImageUpload {
-    @Deprecated
-    public static final String TWITTER_VERIFY_CREDENTIALS_JSON_V1 = "https://api.twitter.com/1/account/verify_credentials.json";
-    @Deprecated
-    public static final String TWITTER_VERIFY_CREDENTIALS_XML_V1 = "https://api.twitter.com/1/account/verify_credentials.xml";
-
     public static final String TWITTER_VERIFY_CREDENTIALS_JSON_V1_1 = "https://api.twitter.com/1.1/account/verify_credentials.json";
 
     private HttpClientWrapper client;

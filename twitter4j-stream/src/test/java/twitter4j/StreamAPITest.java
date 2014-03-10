@@ -56,7 +56,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     public void testEquality() throws Exception {
-        Map map = new HashMap();
+        Map<TwitterStream, String> map = new HashMap<TwitterStream, String>();
         TwitterStream twitterStream1 = new TwitterStreamFactory().getInstance();
         TwitterStream twitterStream2 = new TwitterStreamFactory().getInstance();
         map.put(twitterStream1, "value");
@@ -175,7 +175,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     public void testSamplePull() throws Exception {
-        StatusStream stream = twitterStream.getSampleStream();
+        StatusStream stream = ((TwitterStreamImpl) twitterStream).getSampleStream();
         for (int i = 0; i < 10; i++) {
             stream.next(this);
         }
@@ -276,7 +276,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     public void testUnAuthorizedStreamMethods() throws Exception {
         try {
             twitterStream = new TwitterStreamFactory().getInstance();
-            StatusStream stream = twitterStream.getFirehoseStream(0);
+            StatusStream stream = ((TwitterStreamImpl) twitterStream).getFirehoseStream(0);
             fail();
         } catch (IllegalStateException ise) {
         } catch (TwitterException te) {
@@ -284,7 +284,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         }
         try {
             twitterStream = new TwitterStreamFactory().getInstance();
-            StatusStream stream = twitterStream.getFilterStream(new FilterQuery(new long[]{6358482}));
+            StatusStream stream = ((TwitterStreamImpl) twitterStream).getFilterStream(new FilterQuery(new long[]{6358482}));
             fail();
         } catch (IllegalStateException ise) {
         } catch (TwitterException te) {

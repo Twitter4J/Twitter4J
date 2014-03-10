@@ -378,11 +378,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return encodeParameters(params);
     }
 
-    static String normalizeAuthorizationHeaders(List<HttpParameter> params) {
-        Collections.sort(params);
-        return encodeParameters(params);
-    }
-
     static List<HttpParameter> toParamList(HttpParameter[] params) {
         List<HttpParameter> paramList = new ArrayList<HttpParameter>(params.length);
         paramList.addAll(Arrays.asList(params));

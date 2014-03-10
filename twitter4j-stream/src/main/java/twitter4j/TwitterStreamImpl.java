@@ -72,10 +72,16 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns a status stream of all public statuses. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the firehose. If your service warrants access to it, we'll contact you.
+     *
+     * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/firehose</a>
+     * @since Twitter4J 2.0.4
      */
-    @Override
-    public StatusStream getFirehoseStream(int count) throws TwitterException {
+    StatusStream getFirehoseStream(int count) throws TwitterException {
         ensureAuthorizationEnabled();
         return getCountStream("statuses/firehose.json", count);
     }
@@ -96,10 +102,16 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns a status stream of all public statuses containing links. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the links stream. If your service warrants access to it, we'll contact you.
+     *
+     * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/links</a>
+     * @since Twitter4J 2.1.1
      */
-    @Override
-    public StatusStream getLinksStream(int count) throws TwitterException {
+    StatusStream getLinksStream(int count) throws TwitterException {
         ensureAuthorizationEnabled();
         return getCountStream("statuses/links.json", count);
     }
@@ -131,10 +143,15 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns a stream of all retweets. The retweet stream is not a generally available resource. Few applications require this level of access. Creative use of a combination of other resources and various access levels can satisfy nearly every application use case. As of 9/11/2009, the site-wide retweet feature has not yet launched, so there are currently few, if any, retweets on this stream.
+     *
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/retweet</a>
+     * @since Twitter4J 2.0.10
      */
-    @Override
-    public StatusStream getRetweetStream() throws TwitterException {
+    StatusStream getRetweetStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
@@ -160,10 +177,15 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns a stream of random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
+     *
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
+     * @since Twitter4J 2.0.10
      */
-    @Override
-    public StatusStream getSampleStream() throws TwitterException {
+    StatusStream getSampleStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json?"
@@ -196,18 +218,26 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     /**
-     * {@inheritDoc}
+     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
+     *
+     * @return UserStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
      */
-    @Override
-    public UserStream getUserStream() throws TwitterException {
+    UserStream getUserStream() throws TwitterException {
         return getUserStream(null);
     }
 
     /**
-     * {@inheritDoc}
+     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
+     *
+     * @param track keywords to track
+     * @return UserStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
+     * @since Twitter4J 2.1.9
      */
-    @Override
-    public UserStream getUserStream(String[] track) throws TwitterException {
+    UserStream getUserStream(String[] track) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
             List<HttpParameter> params = new ArrayList<HttpParameter>();
@@ -292,10 +322,17 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
+     * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
+     *
+     * @param query Filter query
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods | Twitter Developers</a>
+     * @since Twitter4J 2.1.2
      */
-    @Override
-    public StatusStream getFilterStream(FilterQuery query) throws TwitterException {
+    StatusStream getFilterStream(FilterQuery query) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL()
