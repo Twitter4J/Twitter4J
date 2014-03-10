@@ -38,7 +38,7 @@ public final class Query implements java.io.Serializable {
     private long sinceId = -1;
     private String geocode = null;
     private String until = null;
-    private String resultType = null;
+    private ResultType resultType = null;
     private static final long serialVersionUID = -8108425822233599808L;
     private String nextPageQuery = null;
 
@@ -348,12 +348,20 @@ public final class Query implements java.io.Serializable {
 
     /**
      * mixed: Include both popular and real time results in the response.
-     * recent: return only the most recent results in the response
+     */
+    public final static ResultType MIXED = ResultType.mixed;
+    /**
      * popular: return only the most popular results in the response.
      */
-    public final static String MIXED = "mixed";
-    public final static String POPULAR = "popular";
-    public final static String RECENT = "recent";
+    public final static ResultType POPULAR = ResultType.popular;
+    /**
+     * recent: return only the most recent results in the response
+     */
+    public final static ResultType RECENT = ResultType.recent;
+
+    private enum ResultType {
+        popular, mixed, recent
+    }
 
     /**
      * Returns resultType
@@ -361,7 +369,7 @@ public final class Query implements java.io.Serializable {
      * @return the resultType
      * @since Twitter4J 2.1.3
      */
-    public String getResultType() {
+    public ResultType getResultType() {
         return resultType;
     }
 
@@ -371,7 +379,7 @@ public final class Query implements java.io.Serializable {
      * @param resultType Query.MIXED or Query.POPULAR or Query.RECENT
      * @since Twitter4J 2.1.3
      */
-    public void setResultType(String resultType) {
+    public void setResultType(ResultType resultType) {
         this.resultType = resultType;
     }
 
@@ -382,7 +390,7 @@ public final class Query implements java.io.Serializable {
      * @return the instance
      * @since Twitter4J 2.1.3
      */
-    public Query resultType(String resultType) {
+    public Query resultType(ResultType resultType) {
         setResultType(resultType);
         return this;
     }
@@ -400,7 +408,9 @@ public final class Query implements java.io.Serializable {
         appendParameter("since_id", sinceId, params);
         appendParameter("geocode", geocode, params);
         appendParameter("until", until, params);
-        appendParameter("result_type", resultType, params);
+        if(resultType != null){
+            params.add(new HttpParameter("result_type", resultType.name()));
+        }
         params.add(WITH_TWITTER_USER_ID);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);

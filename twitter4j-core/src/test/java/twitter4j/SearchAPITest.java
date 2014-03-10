@@ -116,7 +116,7 @@ public class SearchAPITest extends TwitterTestBase {
     }
 
     public void testEasyPaging() throws Exception {
-        Query query = new Query("from:twit4j doesnothit");
+        Query query = new Query("from:twit4j doesnothit").resultType(Query.POPULAR);
         QueryResult result = twitter1.search(query);
         assertFalse(result.hasNext());
 
