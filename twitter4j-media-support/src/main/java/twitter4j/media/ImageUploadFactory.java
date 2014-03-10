@@ -49,22 +49,14 @@ public class ImageUploadFactory {
             defaultMediaProvider = TWITTER;
         } else if ("imgly".equals(mediaProvider) || "img_ly".equals(mediaProvider)) {
             defaultMediaProvider = IMG_LY;
-        } else if ("plixi".equals(mediaProvider)) {
-            defaultMediaProvider = PLIXI;
-        } else if ("lockerz".equals(mediaProvider)) {
-            defaultMediaProvider = LOCKERZ;
         } else if ("twipple".equals(mediaProvider)) {
             defaultMediaProvider = TWIPPLE;
-        } else if ("twitgoo".equals(mediaProvider)) {
-            defaultMediaProvider = TWITGOO;
         } else if ("twitpic".equals(mediaProvider)) {
             defaultMediaProvider = TWITPIC;
         } else if ("yfrog".equals(mediaProvider)) {
             defaultMediaProvider = YFROG;
         } else if ("mobypicture".equals(mediaProvider)) {
             defaultMediaProvider = MOBYPICTURE;
-        } else if ("posterous".equals(mediaProvider)) {
-            defaultMediaProvider = POSTEROUS;
         } else {
             throw new IllegalArgumentException("unsupported media provider:" + mediaProvider);
         }
@@ -120,22 +112,14 @@ public class ImageUploadFactory {
             return new TwitterUpload(conf, oauth);
         } else if (mediaProvider == IMG_LY) {
             return new ImgLyUpload(conf, oauth);
-        } else if (mediaProvider == PLIXI) {
-            return new PlixiUpload(conf, apiKey, oauth);
-        } else if (mediaProvider == LOCKERZ) {
-            return new PlixiUpload(conf, apiKey, oauth);
         } else if (mediaProvider == TWIPPLE) {
             return new TwippleUpload(conf, oauth);
-        } else if (mediaProvider == TWITGOO) {
-            return new TwitgooUpload(conf, oauth);
         } else if (mediaProvider == TWITPIC) {
             return new TwitpicUpload(conf, apiKey, oauth);
         } else if (mediaProvider == YFROG) {
             return new YFrogUpload(conf, oauth);
         } else if (mediaProvider == MOBYPICTURE) {
             return new MobypictureUpload(conf, apiKey, oauth);
-        } else if (mediaProvider == POSTEROUS) {
-            return new PosterousUpload(conf, oauth);
         } else {
             throw new AssertionError("Unknown provider");
         }

@@ -33,15 +33,6 @@ public interface RateLimitStatus extends java.io.Serializable {
     int getRemaining();
 
     /**
-     * Returns the remaining number of API requests available.<br>
-     * This value is identical to the &quot;X-Rate-Limit-Remaining&quot; response header.
-     *
-     * @return the remaining number of API requests available
-     * @deprecated use {@link #getRemaining()} instead
-     */
-    int getRemainingHits();
-
-    /**
      * Returns the current limit in effect<br>
      * This value is identical to the &quot;X-Rate-Limit-Limit&quot; response header.
      *

@@ -27,7 +27,7 @@ public interface ListsResourcesAsync {
      * <br>This method calls https://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerScreenName The screen name of the list owner
-as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     *                            as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
@@ -38,7 +38,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * <br>This method calls https://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerUserId The id of the list owner
-returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     *                        returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists">GET lists | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
@@ -79,11 +79,6 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void destroyUserListMember(long listId, long userId);
 
     /**
-     * @deprecated use {@link #destroyUserListMember(long, long)} instead
-     */
-    void deleteUserListMember(long listId, long userId);
-
-    /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy.json
      *
@@ -94,11 +89,6 @@ returned to in the response body's next_cursor and previous_cursor attributes to
      * @since Twitter4J 3.0.0
      */
     void destroyUserListMember(long ownerId, String slug, long userId);
-
-    /**
-     * @deprecated use {@link #destroyUserListMember(long, long)} instead
-     */
-    void deleteUserListMember(long ownerId, String slug, long userId);
 
     /**
      * List the lists the authenticating user has been added to.
@@ -258,11 +248,6 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void createUserListMembers(long listId, long[] userIds);
 
     /**
-     * @deprecated use {@link #createUserListMembers(long, long[])} instead
-     */
-    void addUserListMembers(long listId, long[] userIds);
-
-    /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
@@ -273,11 +258,6 @@ returned to in the response body's next_cursor and previous_cursor attributes to
      * @since Twitter4J 3.0.0
      */
     void createUserListMembers(long ownerId, String slug, long[] userIds);
-
-    /**
-     * @deprecated use {@link #createUserListMembers(long, long[])} instead
-     */
-    void addUserListMembers(long ownerId, String slug, long[] userIds);
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -291,11 +271,6 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void createUserListMembers(long listId, String[] screenNames);
 
     /**
-     * @deprecated use {@link #createUserListMembers(long, String[])} instead
-     */
-    void addUserListMembers(long listId, String[] screenNames);
-
-    /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
@@ -306,11 +281,6 @@ returned to in the response body's next_cursor and previous_cursor attributes to
      * @since Twitter4J 3.0.0
      */
     void createUserListMembers(long ownerId, String slug, String[] screenNames);
-
-    /**
-     * @deprecated use {@link #createUserListMembers(long, String[])} instead
-     */
-    void addUserListMembers(long ownerId, String slug, String[] screenNames);
 
     /**
      * Check if a user is a member of the specified list.<br>
@@ -371,11 +341,6 @@ returned to in the response body's next_cursor and previous_cursor attributes to
     void createUserListMember(long listId, long userId);
 
     /**
-     * @deprecated use {@link #createUserListMember(long, long)} instead
-     */
-    void addUserListMember(long listId, long userId);
-
-    /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
@@ -386,11 +351,6 @@ returned to in the response body's next_cursor and previous_cursor attributes to
      * @since Twitter4J 3.0.0
      */
     void createUserListMember(long ownerId, String slug, long userId);
-
-    /**
-     * @deprecated use {@link #createUserListMember(long, String, long)} instead
-     */
-    void addUserListMember(long ownerId, String slug, long userId);
 
     /**
      * Deletes the specified list. Must be owned by the authenticated user.
@@ -439,6 +399,7 @@ returned to in the response body's next_cursor and previous_cursor attributes to
      * @since Twitter4J 3.0.0
      */
     void updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription);
+
     /**
      * Creates a new list for the authenticated user. Accounts are limited to 20 lists.
      * <br>This method calls https://api.twitter.com/1.1/lists/create.json

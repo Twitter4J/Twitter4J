@@ -435,13 +435,6 @@ import static twitter4j.ParseUtil.getDate;
     /**
      * {@inheritDoc}
      */
-    public String getIsoLanguageCode() {
-        return isoLanguageCode;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Scopes getScopes() {
         return scopes;
     }

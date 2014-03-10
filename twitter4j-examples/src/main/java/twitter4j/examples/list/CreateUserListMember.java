@@ -21,29 +21,29 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
 /**
- * Adds multiple users to a specified list.
+ * Adds a user to a specified list.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class AddUserListMembers {
+public final class CreateUserListMember {
     /**
-     * Usage: java twitter4j.examples.list.AddUserListMembers [list id] [screen name[,screen name..]]
+     * Usage: java twitter4j.examples.list.CreateUserListMember [list id] [user id]
      *
      * @param args message
      */
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("Usage: java twitter4j.examples.list.AddUserListMembers [list id] [screen name[,screen name..]]");
+            System.out.println("Usage: java twitter4j.examples.list.CreateUserListMember [list id] [user id]");
             System.exit(-1);
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            twitter.createUserListMembers(Integer.parseInt(args[0]), args[1].split(","));
-            System.out.println("Successfully added the user(s) to the specified list.");
+            twitter.createUserListMember(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+            System.out.println("Successfully added the user to the specified list.");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to add a user: " + te.getMessage());
+            System.out.println("Failed to add users: " + te.getMessage());
             System.exit(-1);
         }
     }

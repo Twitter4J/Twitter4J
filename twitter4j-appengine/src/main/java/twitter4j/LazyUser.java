@@ -19,7 +19,6 @@ package twitter4j;
 import twitter4j.conf.Configuration;
 
 import javax.annotation.Generated;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -159,12 +158,6 @@ final class LazyUser implements twitter4j.User {
         return getTarget().getOriginalProfileImageURL();
     }
 
-    @Override
-    public URL getProfileImageUrlHttps() {
-        return getProfileImageUrlHttps();
-    }
-
-
     /**
      * Returns the profile image url of the user, served over SSL
      *
@@ -231,81 +224,78 @@ final class LazyUser implements twitter4j.User {
         return getTarget().getStatus();
     }
 
-
+    @Override
     public String getProfileBackgroundColor() {
         return getTarget().getProfileBackgroundColor();
     }
 
-
+    @Override
     public String getProfileTextColor() {
         return getTarget().getProfileTextColor();
     }
 
-
+    @Override
     public String getProfileLinkColor() {
         return getTarget().getProfileLinkColor();
     }
 
-
+    @Override
     public String getProfileSidebarFillColor() {
         return getTarget().getProfileSidebarFillColor();
     }
 
-
+    @Override
     public String getProfileSidebarBorderColor() {
         return getTarget().getProfileSidebarBorderColor();
     }
 
-
+    @Override
     public boolean isProfileUseBackgroundImage() {
         return getTarget().isProfileUseBackgroundImage();
     }
 
-
+    @Override
     public boolean isShowAllInlineMedia() {
         return getTarget().isShowAllInlineMedia();
     }
 
-
+    @Override
     public int getFriendsCount() {
         return getTarget().getFriendsCount();
     }
 
-
+    @Override
     public Date getCreatedAt() {
         return getTarget().getCreatedAt();
     }
 
-
+    @Override
     public int getFavouritesCount() {
         return getTarget().getFavouritesCount();
     }
 
-
+    @Override
     public int getUtcOffset() {
         return getTarget().getUtcOffset();
     }
 
-
+    @Override
     public String getTimeZone() {
         return getTarget().getTimeZone();
     }
 
     @Override
-    public String getProfileBackgroundImageUrl() {
-        return getProfileBackgroundImageURL();
-    }
-
-
     public String getProfileBackgroundImageURL() {
         return getTarget().getProfileBackgroundImageURL();
     }
 
 
+    @Override
     public String getProfileBackgroundImageUrlHttps() {
         return getTarget().getProfileBackgroundImageUrlHttps();
     }
 
+    @Override
     public String getProfileBannerURL() {
         return getTarget().getProfileBannerURL();
     }

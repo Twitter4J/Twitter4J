@@ -26,18 +26,6 @@ import twitter4j.TwitterException;
  */
 public interface TimelinesResources {
     /**
-     * Returns the 20 most recent mentions (status containing @username) for the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/statuses/mentions
-     *
-     * @return the 20 most recent replies
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/mentions">GET statuses/mentions | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     * @deprecated use {@link #getMentionsTimeline()} instead
-     */
-    ResponseList<Status> getMentions() throws TwitterException;
-
-    /**
      * Returns the 20 most recent mentions (tweets containing a users's @screen_name) for the authenticating user.<br>
      * The timeline returned is the equivalent of the one seen when you view your mentions on twitter.com.<br>
      * This method can only return up to 800 tweets.<br>
@@ -50,19 +38,6 @@ public interface TimelinesResources {
      * @since Twitter4J 3.0.0
      */
     ResponseList<Status> getMentionsTimeline() throws TwitterException;
-
-    /**
-     * Returns the 20 most recent mentions (status containing @username) for the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/statuses/mentions
-     *
-     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
-     * @return the 20 most recent replies
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/mentions">GET statuses/mentions | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     * @deprecated use {@link #getMentionsTimeline(twitter4j.Paging)} instead
-     */
-    ResponseList<Status> getMentions(Paging paging) throws TwitterException;
 
     /**
      * Returns the 20 most recent mentions (tweets containing a users's @screen_name) for the authenticating user.<br>

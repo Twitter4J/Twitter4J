@@ -128,14 +128,6 @@ import java.util.Map;
      * {@inheritDoc}
      */
     @Override
-    public int getRemainingHits() {
-        return getRemaining();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public int getLimit() {
         return limit;
     }

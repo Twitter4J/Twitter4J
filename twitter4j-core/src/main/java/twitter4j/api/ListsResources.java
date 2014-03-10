@@ -27,7 +27,7 @@ public interface ListsResources {
      * <br>This method calls https://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerScreenName The screen name of the list owner
-    as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     *                            as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/list">GET lists/list | Twitter Developers</a>
@@ -111,7 +111,7 @@ public interface ListsResources {
      * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy.json
      *
-     * @param listId The id of the list.
+     * @param listId     The id of the list.
      * @param screenName The screen name of the member you wish to remove from the list.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
@@ -124,7 +124,7 @@ public interface ListsResources {
      * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy_all.json
      *
-     * @param listId The id of the list.
+     * @param listId      The id of the list.
      * @param screenNames The screen names of the members you wish to remove from the list.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
@@ -137,7 +137,7 @@ public interface ListsResources {
      * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy_all.json
      *
-     * @param listId The id of the list.
+     * @param listId  The id of the list.
      * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
@@ -152,32 +152,13 @@ public interface ListsResources {
      *
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
      * @param slug            slug of the list
-     * @param screenNames The screen names of the members you wish to remove from the list.
+     * @param screenNames     The screen names of the members you wish to remove from the list.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy_all">POST lists/members/destroy_all | Twitter Developers</a>
      * @since Twitter4J 3.0.6
      */
     UserList destroyUserListMembers(String ownerScreenName, String slug, String[] screenNames) throws TwitterException;
-
-    /**
-     * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
-     * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy_all.json
-     *
-     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
-     * @param slug            slug of the list
-     * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
-     * @return the updated list
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy_all">POST lists/members/destroy_all | Twitter Developers</a>
-     * @since Twitter4J 3.0.6
-     */
-    UserList destroyUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException;
-
-    /**
-     * @deprecated use {@link #destroyUserList(long)} instead
-     */
-    UserList deleteUserListMember(long listId, long userId) throws TwitterException;
 
     /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -192,12 +173,6 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     UserList destroyUserListMember(long ownerId, String slug, long userId) throws TwitterException;
-
-    /**
-     * @deprecated use {@link #destroyUserListMember(long, String, long)} instead
-     */
-    UserList deleteUserListMember(long ownerId, String slug, long userId) throws TwitterException;
-
 
     /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -461,11 +436,6 @@ public interface ListsResources {
     UserList createUserListMembers(long listId, long[] userIds) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(long, long[])} instead
-     */
-    UserList addUserListMembers(long listId, long[] userIds) throws TwitterException;
-
-    /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
@@ -477,12 +447,6 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     UserList createUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
-
-    /**
-     * @deprecated use {@link #createUserListMembers(long, long[])} instead
-     */
-    UserList addUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
-
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -509,11 +473,6 @@ public interface ListsResources {
     UserList createUserListMembers(long listId, String[] screenNames) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(long, String[])} instead
-     */
-    UserList addUserListMembers(long listId, String[] screenNames) throws TwitterException;
-
-    /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
@@ -524,11 +483,6 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     UserList createUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
-
-    /**
-     * @deprecated use {@link #createUserListMembers(long, String[])} instead
-     */
-    UserList addUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -644,11 +598,6 @@ public interface ListsResources {
     UserList createUserListMember(long listId, long userId) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMember(long, long)}} instead
-     */
-    UserList addUserListMember(long listId, long userId) throws TwitterException;
-
-    /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
@@ -661,11 +610,6 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     UserList createUserListMember(long ownerId, String slug, long userId) throws TwitterException;
-
-    /**
-     * @deprecated use {@link #createUserListMember(long, String, long)} instead
-     */
-    UserList addUserListMember(long ownerId, String slug, long userId) throws TwitterException;
 
     /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.

@@ -53,14 +53,6 @@ package twitter4j;
      * {@inheritDoc}
      */
     @Override
-    public String getUrl() {
-        return getURL();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getURL() {
         return url;
     }

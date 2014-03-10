@@ -1922,11 +1922,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    @Override
-    public void deleteUserListMember(long listId, long userId) {
-        destroyUserListMember(listId, userId);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -1944,14 +1939,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 }
             }
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void deleteUserListMember(final long ownerId, final String slug, final long userId) {
-        destroyUserListMember(ownerId, slug, userId);
     }
 
     /**
@@ -2199,11 +2186,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    @Override
-    public void addUserListMembers(long listId, long[] userIds) {
-        createUserListMembers(listId, userIds);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -2221,11 +2203,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 }
             }
         });
-    }
-
-    @Override
-    public void addUserListMembers(long ownerId, String slug, long[] userIds) {
-        createUserListMembers(ownerId, slug, userIds);
     }
 
     /**
@@ -2247,11 +2224,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    @Override
-    public void addUserListMembers(long listId, String[] screenNames) {
-        createUserListMembers(listId, screenNames);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -2269,11 +2241,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 }
             }
         });
-    }
-
-    @Override
-    public void addUserListMembers(long ownerId, String slug, String[] screenNames) {
-        createUserListMembers(ownerId, slug, screenNames);
     }
 
     /**
@@ -2371,11 +2338,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    @Override
-    public void addUserListMember(long listId, long userId) {
-        createUserListMember(listId, userId);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -2393,11 +2355,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 }
             }
         });
-    }
-
-    @Override
-    public void addUserListMember(long ownerId, String slug, long userId) {
-        createUserListMember(ownerId, slug, userId);
     }
 
     /**
@@ -2732,14 +2689,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      * {@inheritDoc}
      */
     @Override
-    public void getLocationTrends(int woeid) {
-        getPlaceTrends(woeid);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void getPlaceTrends(final int woeid) {
         getDispatcher().invokeLater(new AsyncTask(PLACE_TRENDS, listeners) {
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2771,14 +2720,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 }
             }
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void getAvailableTrends(GeoLocation location) {
-        getClosestTrends(location);
     }
 
     /**

@@ -79,24 +79,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
-    public ResponseList<Status> getMentions() throws TwitterException {
-        return getMentionsTimeline();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public ResponseList<Status> getMentionsTimeline() throws TwitterException {
         return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/mentions_timeline.json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Status> getMentions(Paging paging) throws TwitterException {
-        return getMentionsTimeline(paging);
     }
 
     /**
@@ -107,7 +91,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createStatusList(get(conf.getRestBaseURL()
                 + "statuses/mentions_timeline.json", paging.asPostParameterArray()));
     }
-
 
     /**
      * {@inheritDoc}
@@ -1130,11 +1113,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         ));
     }
 
-    @Override
-    public UserList deleteUserListMember(long listId, long userId) throws TwitterException {
-        return destroyUserListMember(listId, userId);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -1166,11 +1144,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , new HttpParameter("slug", slug), new HttpParameter("user_id", userId)}));
     }
 
-    @Override
-    public UserList deleteUserListMember(long ownerId, String slug, long userId) throws TwitterException {
-        return destroyUserListMember(ownerId, slug, userId);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -1200,17 +1173,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName),
                 new HttpParameter("slug", slug),
                 new HttpParameter("screen_name", StringUtil.join(screenNames))}));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UserList destroyUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException {
-        return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName),
-                new HttpParameter("slug", slug),
-                new HttpParameter("user_id", StringUtil.join(userIds))}));
     }
 
     /**
@@ -1384,11 +1346,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         ));
     }
 
-    @Override
-    public UserList addUserListMembers(long listId, long[] userIds) throws TwitterException {
-        return createUserListMembers(listId, userIds);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -1412,11 +1369,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         ));
     }
 
-    @Override
-    public UserList addUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException {
-        return createUserListMembers(ownerId, slug, userIds);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -1428,11 +1380,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                         new HttpParameter("list_id", listId),
                         new HttpParameter("screen_name", StringUtil.join(screenNames))}
         ));
-    }
-
-    @Override
-    public UserList addUserListMembers(long listId, String[] screenNames) throws TwitterException {
-        return createUserListMembers(listId, screenNames);
     }
 
     /**
@@ -1458,11 +1405,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName), new HttpParameter("slug", slug)
                         , new HttpParameter("screen_name", StringUtil.join(screenNames))}
         ));
-    }
-
-    @Override
-    public UserList addUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException {
-        return createUserListMembers(ownerId, slug, screenNames);
     }
 
     /**
@@ -1532,11 +1474,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , new HttpParameter("list_id", listId)}));
     }
 
-    @Override
-    public UserList addUserListMember(long listId, long userId) throws TwitterException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -1556,11 +1493,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createAUserList(post(conf.getRestBaseURL() +
                 "lists/members/create.json", new HttpParameter[]{new HttpParameter("user_id", userId)
                 , new HttpParameter("owner_screen_name", ownerScreenName), new HttpParameter("slug", slug)}));
-    }
-
-    @Override
-    public UserList addUserListMember(long ownerId, String slug, long userId) throws TwitterException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**
@@ -1804,14 +1736,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      * {@inheritDoc}
      */
     @Override
-    public Trends getLocationTrends(int woeid) throws TwitterException {
-        return getPlaceTrends(woeid);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Trends getPlaceTrends(int woeid) throws TwitterException {
         return factory.createTrends(get(conf.getRestBaseURL()
                 + "trends/place.json?id=" + woeid));
@@ -1824,14 +1748,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Location> getAvailableTrends() throws TwitterException {
         return factory.createLocationList(get(conf.getRestBaseURL()
                 + "trends/available.json"));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResponseList<Location> getAvailableTrends(GeoLocation location) throws TwitterException {
-        return getClosestTrends(location);
     }
 
     /**

@@ -108,14 +108,6 @@ import java.util.List;
         return maxId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getRefreshUrl() {
-        return getRefreshURL();
-    }
-
     @Override
     public String getRefreshURL() {
         return refreshUrl;
@@ -191,7 +183,7 @@ import java.util.List;
         if (count != that.getCount()) return false;
         if (sinceId != that.getSinceId()) return false;
         if (!query.equals(that.getQuery())) return false;
-        if (refreshUrl != null ? !refreshUrl.equals(that.getRefreshUrl()) : that.getRefreshUrl() != null)
+        if (refreshUrl != null ? !refreshUrl.equals(that.getRefreshURL()) : that.getRefreshURL() != null)
             return false;
         if (tweets != null ? !tweets.equals(that.getTweets()) : that.getTweets() != null)
             return false;

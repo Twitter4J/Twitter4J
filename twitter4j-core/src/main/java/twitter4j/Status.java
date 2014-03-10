@@ -188,15 +188,6 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     boolean isPossiblySensitive();
 
     /**
-     * Returns the iso language code set by the Twitter API (best-effort). This field is available only with the search api.
-     * It is suggested to use {@link #getLang()}
-     *
-     * @return two-letter iso language code
-     * @deprecated use {@link #getLang()} instead
-     */
-    String getIsoLanguageCode();
-
-    /**
      * Returns the lang of the status text if available.
      *
      * @return two-letter iso language code

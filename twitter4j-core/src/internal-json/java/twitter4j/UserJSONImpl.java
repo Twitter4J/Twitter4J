@@ -18,8 +18,6 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -273,18 +271,6 @@ import java.util.Date;
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public URL getProfileImageUrlHttps() {
-        try {
-            return new URL(profileImageUrlHttps);
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
-
     @Override
     public String getProfileImageURLHttps() {
         return profileImageUrlHttps;
@@ -429,14 +415,6 @@ import java.util.Date;
     @Override
     public String getTimeZone() {
         return timeZone;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getProfileBackgroundImageUrl() {
-        return getProfileBackgroundImageURL();
     }
 
     /**

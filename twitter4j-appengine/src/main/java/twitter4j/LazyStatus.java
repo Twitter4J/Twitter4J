@@ -265,11 +265,6 @@ final class LazyStatus implements twitter4j.Status {
     }
 
     @Override
-    public String getIsoLanguageCode() {
-        return getTarget().getIsoLanguageCode();
-    }
-
-    @Override
     public String getLang() {
         return getTarget().getLang();
     }
