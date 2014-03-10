@@ -18,13 +18,13 @@ package twitter4j.auth;
 
 import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.JSONObject;
+import twitter4j.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-import static twitter4j.internal.json.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.z_T4JInternalParseUtil.getRawString;
 
 public class OAuth2Token implements java.io.Serializable {
     private static final long serialVersionUID = 358222644448390610L;

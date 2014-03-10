@@ -18,7 +18,7 @@ package twitter4j.auth;
 
 import twitter4j.TwitterException;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
+import twitter4j.z_T4JInternalStringUtil;
 
 import javax.crypto.spec.SecretKeySpec;
 

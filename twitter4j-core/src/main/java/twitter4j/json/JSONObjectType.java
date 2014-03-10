@@ -17,8 +17,8 @@
 package twitter4j.json;
 
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.json.JSONException;
-import twitter4j.internal.json.JSONObject;
+import twitter4j.JSONException;
+import twitter4j.JSONObject;
 
 /**
  * @author Dan Checkoway - dcheckoway at gmail.com

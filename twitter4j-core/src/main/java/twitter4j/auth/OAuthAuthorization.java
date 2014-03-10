@@ -23,7 +23,7 @@ import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpRequest;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
+import twitter4j.z_T4JInternalStringUtil;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

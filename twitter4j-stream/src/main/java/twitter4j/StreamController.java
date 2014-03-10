@@ -22,16 +22,11 @@ import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.JSONArray;
-import twitter4j.internal.json.JSONException;
-import twitter4j.internal.json.JSONObject;
-import twitter4j.internal.json.z_T4JInternalParseUtil;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
+import static twitter4j.z_T4JInternalParseUtil.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com

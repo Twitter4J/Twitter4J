@@ -17,7 +17,6 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.json.z_T4JInternalLazyFactory;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

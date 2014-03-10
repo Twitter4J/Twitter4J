@@ -19,10 +19,10 @@ package twitter4j.internal.http;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.json.JSONArray;
-import twitter4j.internal.json.JSONException;
-import twitter4j.internal.json.JSONObject;
-import twitter4j.internal.json.JSONTokener;
+import twitter4j.JSONArray;
+import twitter4j.JSONException;
+import twitter4j.JSONObject;
+import twitter4j.JSONTokener;
 
 import java.io.*;
 import java.util.List;
@@ -126,10 +126,10 @@ public abstract class HttpResponse {
     private JSONObject json = null;
 
     /**
-     * Returns the response body as twitter4j.internal.json.JSONObject.<br>
+     * Returns the response body as twitter4j.JSONObject.<br>
      * Disconnects the internal HttpURLConnection silently.
      *
-     * @return response body as twitter4j.internal.json.JSONObject
+     * @return response body as twitter4j.JSONObject
      * @throws TwitterException
      */
     public JSONObject asJSONObject() throws TwitterException {
@@ -170,10 +170,10 @@ public abstract class HttpResponse {
     private JSONArray jsonArray = null;
 
     /**
-     * Returns the response body as twitter4j.internal.json.JSONArray.<br>
+     * Returns the response body as twitter4j.JSONArray.<br>
      * Disconnects the internal HttpURLConnection silently.
      *
-     * @return response body as twitter4j.internal.json.JSONArray
+     * @return response body as twitter4j.JSONArray
      * @throws TwitterException
      */
     public JSONArray asJSONArray() throws TwitterException {

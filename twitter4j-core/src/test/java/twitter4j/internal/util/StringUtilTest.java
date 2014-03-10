@@ -17,7 +17,7 @@
 package twitter4j.internal.util;
 
 import junit.framework.TestCase;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
+import twitter4j.z_T4JInternalStringUtil;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

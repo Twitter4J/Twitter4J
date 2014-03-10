@@ -19,8 +19,6 @@ package twitter4j;
 import twitter4j.auth.*;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.*;
-import twitter4j.internal.json.z_T4JInternalFactory;
-import twitter4j.internal.json.z_T4JInternalJSONImplFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

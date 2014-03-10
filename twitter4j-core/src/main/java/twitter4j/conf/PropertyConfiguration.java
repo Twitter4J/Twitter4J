@@ -16,7 +16,7 @@
 
 package twitter4j.conf;
 
-import twitter4j.internal.util.z_T4JInternalStringUtil;
+import twitter4j.z_T4JInternalStringUtil;
 
 import java.io.*;
 import java.util.ArrayList;

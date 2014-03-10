@@ -22,8 +22,6 @@ import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpParameter;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.JSONException;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.*;
 import java.net.URLEncoder;

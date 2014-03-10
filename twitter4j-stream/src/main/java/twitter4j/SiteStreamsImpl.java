@@ -19,9 +19,6 @@ package twitter4j;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.async.Dispatcher;
 import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.z_T4JInternalParseUtil;
-import twitter4j.internal.json.JSONException;
-import twitter4j.internal.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -17,8 +17,8 @@
 package twitter4j.json;
 
 import twitter4j.*;
-import twitter4j.internal.json.JSONException;
-import twitter4j.internal.json.JSONObject;
+import twitter4j.JSONException;
+import twitter4j.JSONObject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -98,7 +98,7 @@ public final class DataObjectFactory {
 
             accountTotalsConstructor = (Constructor<AccountTotals>) Class.forName("twitter4j.internal.json.AccountTotalsJSONImpl").getDeclaredConstructor(JSONObject.class);
             accountTotalsConstructor.setAccessible(true);
-            oembedConstructor = (Constructor<OEmbed>) Class.forName("twitter4j.internal.json.OEmbedJSONImpl").getDeclaredConstructor(JSONObject.class);
+            oembedConstructor = (Constructor<OEmbed>) Class.forName("twitter4j.OEmbedJSONImpl").getDeclaredConstructor(JSONObject.class);
             oembedConstructor.setAccessible(true);
         } catch (NoSuchMethodException e) {
             throw new ExceptionInInitializerError(e);

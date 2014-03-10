@@ -21,7 +21,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import twitter4j.Version;
 import twitter4j.auth.RequestToken;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
+import twitter4j.z_T4JInternalStringUtil;
 
 import java.io.*;
 import java.util.Properties;

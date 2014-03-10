@@ -19,7 +19,7 @@ package twitter4j.internal.http;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
+import twitter4j.z_T4JInternalStringUtil;
 
 import java.io.*;
 import java.net.*;

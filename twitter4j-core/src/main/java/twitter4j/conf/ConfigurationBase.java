@@ -18,7 +18,7 @@ package twitter4j.conf;
 
 import twitter4j.Version;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
+import twitter4j.z_T4JInternalStringUtil;
 
 import java.io.ObjectStreamException;
 import java.lang.reflect.Field;

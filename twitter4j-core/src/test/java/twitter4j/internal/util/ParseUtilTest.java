@@ -18,7 +18,7 @@ package twitter4j.internal.util;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import twitter4j.internal.json.z_T4JInternalParseUtil;
+import twitter4j.z_T4JInternalParseUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;

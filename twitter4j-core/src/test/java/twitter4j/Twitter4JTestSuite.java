@@ -22,7 +22,6 @@ import junit.framework.TestSuite;
 import twitter4j.auth.ApplicationOnlyAuthTest;
 import twitter4j.auth.OAuthTest;
 import twitter4j.conf.ConfigurationTest;
-import twitter4j.internal.json.HTMLEntityTest;
 import twitter4j.util.TimeSpanConverterTest;
 
 /**

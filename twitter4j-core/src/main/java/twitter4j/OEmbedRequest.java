@@ -16,7 +16,6 @@
 package twitter4j;
 
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

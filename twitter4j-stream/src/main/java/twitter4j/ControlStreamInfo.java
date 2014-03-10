@@ -17,15 +17,11 @@
 
 package twitter4j;
 
-import twitter4j.internal.json.JSONArray;
-import twitter4j.internal.json.JSONException;
-import twitter4j.internal.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static twitter4j.internal.json.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.internal.json.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.z_T4JInternalParseUtil.getBoolean;
+import static twitter4j.z_T4JInternalParseUtil.getRawString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com
