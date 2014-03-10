@@ -320,7 +320,6 @@ public final class TwitterObjectFactory {
 
     /**
      * clear raw JSON forms associated with the current thread.<br>
-     * Currently this method is called indirectly by twitter4j.internal.util.TwitterObjectFactory, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
      *
      * @since Twitter4J 2.1.7
      */
@@ -330,7 +329,6 @@ public final class TwitterObjectFactory {
 
     /**
      * associate a raw JSON form to the current thread<br>
-     * Currently this method is called indirectly by twitter4j.internal.util.TwitterObjectFactory, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
      *
      * @since Twitter4J 2.1.7
      */

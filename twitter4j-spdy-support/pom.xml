@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.twitter4j</groupId>
@@ -96,7 +97,7 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>3.0.4</version>
+            <version>3.0.7-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
@@ -125,7 +126,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
                 <configuration combine.children="append">
-                    <argLine>-Xbootclasspath/p:${user.home}/.m2/repository/org/mortbay/jetty/npn/npn-boot/1.1.6.v20130911/npn-boot-1.1.6.v20130911.jar</argLine>
+                    <argLine>
+                        -Xbootclasspath/p:${user.home}/.m2/repository/org/mortbay/jetty/npn/npn-boot/1.1.6.v20130911/npn-boot-1.1.6.v20130911.jar
+                    </argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -183,9 +186,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <excludePackageNames>
-                                twitter4j.internal.*
-                            </excludePackageNames>
+                            <failOnError>false</failOnError>
                         </configuration>
                     </execution>
                 </executions>

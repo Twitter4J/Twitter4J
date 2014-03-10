@@ -21,9 +21,6 @@ import com.squareup.okhttp.OkHttpClient;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import twitter4j.internal.http.HttpRequest;
-import twitter4j.internal.http.RequestMethod;
-import twitter4j.internal.org.json.JSONException;
 
 import java.lang.reflect.Field;
 

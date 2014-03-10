@@ -18,12 +18,6 @@ package twitter4j;
 import com.squareup.okhttp.ConnectionPool;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
-import twitter4j.internal.http.HttpClientConfiguration;
-import twitter4j.internal.http.HttpRequest;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.http.HttpResponseCode;
-import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.IOException;
 import java.net.*;
@@ -34,7 +28,7 @@ import java.util.List;
  * @author Hiroaki Takeuchi - takke30 at gmail.com
  * @since Twitter4J 3.0.6
  */
-public class AlternativeHttpClientImpl extends twitter4j.internal.http.HttpClientImpl implements HttpResponseCode, java.io.Serializable {
+public class AlternativeHttpClientImpl extends HttpClientImpl implements HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(AlternativeHttpClientImpl.class);
 
     private static final int MAX_IDLE_CONNECTIONS = 5;
@@ -69,7 +63,7 @@ public class AlternativeHttpClientImpl extends twitter4j.internal.http.HttpClien
             if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
-                    logger.debug("Proxy AuthPassword: " + z_T4JInternalStringUtil.maskString(CONF.getHttpProxyPassword()));
+                    logger.debug("Proxy AuthPassword: " + CONF.getHttpProxyPassword().replaceAll(".", "*"));
                 }
                 Authenticator.setDefault(new Authenticator() {
                     @Override

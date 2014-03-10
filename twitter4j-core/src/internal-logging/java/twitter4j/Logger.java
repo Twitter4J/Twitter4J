@@ -57,7 +57,7 @@ public abstract class Logger {
         if (null == loggerFactory) {
             loggerFactory = getLoggerFactoryIfAvailable("org.apache.log4j.Logger", "twitter4j.Log4JLoggerFactory");
         }
-        // on Google App Engine, use java.twitter4j.internal.util.logging
+        // on Google App Engine, use java.twitter4j.JULogger
         if (null == loggerFactory) {
             loggerFactory = getLoggerFactoryIfAvailable("com.google.appengine.api.urlfetch.URLFetchService", "twitter4j.JULLoggerFactory");
         }

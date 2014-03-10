@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package twitter4j.internal.async;
+package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.Dispatcher;
-import twitter4j.DispatcherFactory;
 import twitter4j.conf.ConfigurationContext;
 
 import java.util.Map;

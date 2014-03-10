@@ -161,7 +161,7 @@
                 </executions>
             </plugin>
             <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
@@ -210,9 +210,6 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <excludePackageNames>
-                                twitter4j.internal.*
-                            </excludePackageNames>
                             <failOnError>false</failOnError>
                         </configuration>
                     </execution>
