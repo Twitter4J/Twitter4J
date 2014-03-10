@@ -4,8 +4,6 @@ import junit.framework.TestCase;
 import twitter4j.GeoLocation;
 import twitter4j.Status;
 import twitter4j.TwitterException;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 import twitter4j.json.DataObjectFactory;
 
 /**

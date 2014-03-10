@@ -17,8 +17,8 @@
 package twitter4j.json;
 
 import twitter4j.*;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.json.JSONException;
+import twitter4j.internal.json.JSONObject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -528,7 +528,7 @@ public final class DataObjectFactory {
 
     /**
      * clear raw JSON forms associated with the current thread.<br>
-     * Currently this method is called indirectly by twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
+     * Currently this method is called indirectly by twitter4j.internal.twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
      *
      * @since Twitter4J 2.1.7
      */
@@ -538,7 +538,7 @@ public final class DataObjectFactory {
 
     /**
      * associate a raw JSON form to the current thread<br>
-     * Currently this method is called indirectly by twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
+     * Currently this method is called indirectly by twitter4j.internal.twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
      *
      * @since Twitter4J 2.1.7
      */

@@ -20,8 +20,6 @@ package twitter4j.internal.json;
 
 import twitter4j.TwitterException;
 import twitter4j.URLEntity;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 import junit.framework.TestCase;
 
 public class UserJSONImplTest extends TestCase {

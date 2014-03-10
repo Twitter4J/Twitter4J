@@ -23,8 +23,8 @@ import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.http.HttpResponse;
 import twitter4j.internal.http.HttpResponseCode;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.json.JSONArray;
+import twitter4j.internal.json.JSONObject;
 
 import java.io.*;
 import java.util.*;

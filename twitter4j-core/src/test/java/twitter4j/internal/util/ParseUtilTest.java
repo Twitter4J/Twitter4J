@@ -16,6 +16,7 @@
 
 package twitter4j.internal.util;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 import twitter4j.internal.json.z_T4JInternalParseUtil;
 
@@ -40,17 +41,17 @@ public class ParseUtilTest extends TestCase {
     }
 
     public void testParseLongReturns101() {
-        assertEquals(101, z_T4JInternalParseUtil.getLong("100+"));
+        Assert.assertEquals(101, z_T4JInternalParseUtil.getLong("100+"));
     }
 
     public void testParseIntOverflow() {
-        assertEquals(-1, z_T4JInternalParseUtil.getInt("4294967295"));
+        Assert.assertEquals(-1, z_T4JInternalParseUtil.getInt("4294967295"));
     }
 
     public void testParseTrendDate() throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        assertEquals("2011-07-11"
+        Assert.assertEquals("2011-07-11"
                 , sdf.format(z_T4JInternalParseUtil.parseTrendsDate("2011-07-11T05:31:52Z")));
     }
 

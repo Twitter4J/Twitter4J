@@ -20,8 +20,8 @@ import twitter4j.TwitterException;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.json.JSONException;
+import twitter4j.internal.json.JSONObject;
 
 /**
  * @author withgod - noname at withgod.jp

@@ -25,9 +25,6 @@ import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.internal.http.HttpClientImpl;
 import twitter4j.internal.http.HttpClientWrapper;
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.*;

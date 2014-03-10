@@ -17,9 +17,9 @@
 
 package twitter4j;
 
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.json.JSONArray;
+import twitter4j.internal.json.JSONException;
+import twitter4j.internal.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Arrays;

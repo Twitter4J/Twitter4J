@@ -21,8 +21,8 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
 import twitter4j.internal.async.DispatcherFactory;
-import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.org.json.JSONTokener;
+import twitter4j.internal.json.JSONObject;
+import twitter4j.internal.json.JSONTokener;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;

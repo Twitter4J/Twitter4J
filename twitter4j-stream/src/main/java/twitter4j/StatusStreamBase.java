@@ -23,9 +23,9 @@ import twitter4j.internal.json.DataObjectFactoryUtil;
 import twitter4j.internal.json.z_T4JInternalFactory;
 import twitter4j.internal.json.z_T4JInternalJSONImplFactory;
 import twitter4j.internal.logging.Logger;
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.json.JSONArray;
+import twitter4j.internal.json.JSONException;
+import twitter4j.internal.json.JSONObject;
 import twitter4j.json.JSONObjectType;
 
 import java.io.BufferedReader;

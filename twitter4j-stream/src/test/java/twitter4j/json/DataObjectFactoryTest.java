@@ -3,7 +3,7 @@ package twitter4j.json;
 import junit.framework.TestCase;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.json.JSONObject;
 
 /**
  * Unit test for DataObjectFactory

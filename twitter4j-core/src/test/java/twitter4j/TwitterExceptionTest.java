@@ -17,7 +17,7 @@
 package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.json.JSONObject;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

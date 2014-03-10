@@ -17,8 +17,8 @@ package twitter4j.internal.http;
 
 import twitter4j.TwitterException;
 import twitter4j.TwitterRuntimeException;
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.json.JSONArray;
+import twitter4j.internal.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;

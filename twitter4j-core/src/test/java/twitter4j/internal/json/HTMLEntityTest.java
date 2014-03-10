@@ -21,7 +21,6 @@ import twitter4j.HashtagEntity;
 import twitter4j.MediaEntity;
 import twitter4j.URLEntity;
 import twitter4j.UserMentionEntity;
-import twitter4j.internal.org.json.JSONObject;
 
 public class HTMLEntityTest extends TestCase {
     public HTMLEntityTest(String name) {
