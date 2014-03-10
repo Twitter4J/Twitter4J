@@ -189,7 +189,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setUserStreamBaseURL(DEFAULT_USER_STREAM_BASE_URL);
         setSiteStreamBaseURL(DEFAULT_SITE_STREAM_BASE_URL);
 
-        setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
+        setDispatcherImpl("twitter4j.DispatcherImpl");
         setLoggerFactory(null);
 
         setUserStreamRepliesAllEnabled(false);
