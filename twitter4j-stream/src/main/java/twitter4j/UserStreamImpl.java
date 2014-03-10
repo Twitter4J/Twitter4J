@@ -17,8 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.http.HttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +42,7 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream {
     @Override
     protected void onSender(JSONObject json, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onDirectMessage(factory.createDirectMessage(json));
+            ((UserStreamListener) listener).onDirectMessage(new DirectMessageJSONImpl(json));
         }
     }
 

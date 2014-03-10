@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.*;
-
 import javax.annotation.Generated;
 
 
@@ -34,11 +32,11 @@ import javax.annotation.Generated;
         date = "2011-07-13"
 )
 final class LazyRelationship implements twitter4j.Relationship {
-    private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private HttpResponse res;
+    private TwitterObjectFactory factory;
     private Relationship target = null;
 
-    LazyRelationship(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyRelationship(HttpResponse res, TwitterObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

@@ -20,14 +20,12 @@ package twitter4j;
 import twitter4j.api.*;
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpResponse;
 
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;
 
-import static twitter4j.internal.http.HttpParameter.getParameterArray;
+import static twitter4j.HttpParameter.getParameterArray;
 
 /**
  * A java representation of the <a href="https://dev.twitter.com/docs/api">Twitter REST API</a><br>
@@ -154,10 +152,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getUserTimeline(String screenName, Paging paging)
             throws TwitterException {
         return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/user_timeline.json",
+                        + "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)
                         , INCLUDE_MY_RETWEET}
-                        , paging.asPostParameterArray())));
+                        , paging.asPostParameterArray())
+        ));
     }
 
     /**
@@ -167,10 +166,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getUserTimeline(long userId, Paging paging)
             throws TwitterException {
         return factory.createStatusList(get(conf.getRestBaseURL()
-                + "statuses/user_timeline.json",
+                        + "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)
                         , INCLUDE_MY_RETWEET}
-                        , paging.asPostParameterArray())));
+                        , paging.asPostParameterArray())
+        ));
     }
 
     /**
@@ -205,9 +205,10 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getUserTimeline(Paging paging) throws
             TwitterException {
         return factory.createStatusList(get(conf.getRestBaseURL() +
-                "statuses/user_timeline.json",
+                        "statuses/user_timeline.json",
                 mergeParameters(new HttpParameter[]{INCLUDE_MY_RETWEET}
-                        , paging.asPostParameterArray())));
+                        , paging.asPostParameterArray())
+        ));
     }
 
     /* Tweets Resources */
@@ -235,7 +236,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public IDs getRetweeterIds(long statusId, int count, long cursor) throws TwitterException {
         return factory.createIDs(get(conf.getRestBaseURL() + "statuses/retweeters/ids.json?id=" + statusId
-                + "&cursor="+cursor+"&count="+count));
+                + "&cursor=" + cursor + "&count=" + count));
     }
 
     /**
@@ -536,7 +537,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                         new HttpParameter("user_id", userId),
                         new HttpParameter("device", enableDeviceNotification),
                         new HttpParameter("retweets", retweets)
-                })));
+                }
+        )));
     }
 
     /**
@@ -550,7 +552,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                         new HttpParameter("screen_name", screenName),
                         new HttpParameter("device", enableDeviceNotification),
                         new HttpParameter("retweets", retweets)
-                }));
+                }
+        ));
     }
 
     /**
@@ -732,8 +735,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         addParameterToList(colors, "profile_sidebar_border_color"
                 , profileSidebarBorderColor);
         return factory.createUser(post(conf.getRestBaseURL() +
-                "account/update_profile_colors.json",
-                colors.toArray(new HttpParameter[colors.size()])));
+                        "account/update_profile_colors.json",
+                colors.toArray(new HttpParameter[colors.size()])
+        ));
     }
 
     private void addParameterToList(List<HttpParameter> colors,
@@ -1033,7 +1037,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getFavorites(long userId, Paging paging) throws TwitterException {
         return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)}
-                        , paging.asPostParameterArray())));
+                        , paging.asPostParameterArray())
+        ));
     }
 
     /**
@@ -1043,7 +1048,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<Status> getFavorites(String screenName, Paging paging) throws TwitterException {
         return factory.createStatusList(get(conf.getRestBaseURL() + "favorites/list.json",
                 mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)}
-                        , paging.asPostParameterArray())));
+                        , paging.asPostParameterArray())
+        ));
     }
 
     /**
@@ -1119,8 +1125,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public UserList destroyUserListMember(long listId, long userId) throws TwitterException {
         return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/destroy.json",
-                new HttpParameter[]{new HttpParameter("list_id", listId), new HttpParameter("user_id", userId)}));
+                        "lists/members/destroy.json",
+                new HttpParameter[]{new HttpParameter("list_id", listId), new HttpParameter("user_id", userId)}
+        ));
     }
 
     @Override
@@ -1143,11 +1150,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public UserList destroyUserListMember(long listId, String screenName) throws TwitterException {
-      return factory.createAUserList(post(conf.getRestBaseURL() +
-          "lists/members/destroy.json", new HttpParameter[]{new HttpParameter("list_id", listId), 
-        new HttpParameter("screen_name", screenName)}));
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/destroy.json", new HttpParameter[]{new HttpParameter("list_id", listId),
+                new HttpParameter("screen_name", screenName)}));
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -1169,43 +1176,43 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public UserList destroyUserListMembers(long listId, String[] screenNames) throws TwitterException {
-      return factory.createAUserList(post(conf.getRestBaseURL() +
-          "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("list_id", listId), 
-        new HttpParameter("screen_name",  z_T4JInternalStringUtil.join(screenNames))}));
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("list_id", listId),
+                new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public UserList destroyUserListMembers(long listId, long[] userIds) throws TwitterException {
-      return factory.createAUserList(post(conf.getRestBaseURL() +
-          "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("list_id", listId), 
-        new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("list_id", listId),
+                new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public UserList destroyUserListMembers(String ownerScreenName, String slug, String[] screenNames) throws TwitterException {
-      return factory.createAUserList(post(conf.getRestBaseURL() +
-          "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName),
-        new HttpParameter("slug", slug),
-        new HttpParameter("screen_name",  z_T4JInternalStringUtil.join(screenNames))}));
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName),
+                new HttpParameter("slug", slug),
+                new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public UserList destroyUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException {
-      return factory.createAUserList(post(conf.getRestBaseURL() +
-          "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName),
-        new HttpParameter("slug", slug),
-        new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
+        return factory.createAUserList(post(conf.getRestBaseURL() +
+                "lists/members/destroy_all.json", new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName),
+                new HttpParameter("slug", slug),
+                new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -1373,7 +1380,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public UserList createUserListMembers(long listId, long[] userIds) throws TwitterException {
         return factory.createAUserList(post(conf.getRestBaseURL() + "lists/members/create_all.json",
                 new HttpParameter[]{new HttpParameter("list_id", listId), new HttpParameter("user_id"
-                        , z_T4JInternalStringUtil.join(userIds))}));
+                        , z_T4JInternalStringUtil.join(userIds))}
+        ));
     }
 
     @Override
@@ -1388,7 +1396,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public UserList createUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException {
         return factory.createAUserList(post(conf.getRestBaseURL() + "lists/members/create_all.json",
                 new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)
-                        , new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
+                        , new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}
+        ));
     }
 
     /**
@@ -1399,7 +1408,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                                           long[] userIds) throws TwitterException {
         return factory.createAUserList(post(conf.getRestBaseURL() + "lists/members/create_all.json",
                 new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName), new HttpParameter("slug", slug)
-                        , new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}));
+                        , new HttpParameter("user_id", z_T4JInternalStringUtil.join(userIds))}
+        ));
     }
 
     @Override
@@ -1413,10 +1423,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public UserList createUserListMembers(long listId, String[] screenNames) throws TwitterException {
         return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/create_all.json",
+                        "lists/members/create_all.json",
                 new HttpParameter[]{
                         new HttpParameter("list_id", listId),
-                        new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
+                        new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}
+        ));
     }
 
     @Override
@@ -1430,9 +1441,10 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public UserList createUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException {
         return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/create_all.json",
+                        "lists/members/create_all.json",
                 new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)
-                        , new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
+                        , new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}
+        ));
     }
 
     /**
@@ -1442,9 +1454,10 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public UserList createUserListMembers(String ownerScreenName, String slug,
                                           String[] screenNames) throws TwitterException {
         return factory.createAUserList(post(conf.getRestBaseURL() +
-                "lists/members/create_all.json",
+                        "lists/members/create_all.json",
                 new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName), new HttpParameter("slug", slug)
-                        , new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}));
+                        , new HttpParameter("screen_name", z_T4JInternalStringUtil.join(screenNames))}
+        ));
     }
 
     @Override
@@ -1566,7 +1579,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public UserList destroyUserList(long ownerId, String slug) throws TwitterException {
         return factory.createAUserList(post(conf.getRestBaseURL() + "lists/destroy.json",
                 new HttpParameter[]{new HttpParameter("owner_id", ownerId)
-                        , new HttpParameter("slug", slug)}));
+                        , new HttpParameter("slug", slug)}
+        ));
     }
 
     /**
@@ -1577,7 +1591,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             throws TwitterException {
         return factory.createAUserList(post(conf.getRestBaseURL() + "lists/destroy.json",
                 new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName)
-                        , new HttpParameter("slug", slug)}));
+                        , new HttpParameter("slug", slug)}
+        ));
     }
 
     /**
@@ -1825,10 +1840,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public ResponseList<Location> getClosestTrends(GeoLocation location) throws TwitterException {
         return factory.createLocationList(get(conf.getRestBaseURL()
-                + "trends/closest.json",
+                        + "trends/closest.json",
                 new HttpParameter[]{new HttpParameter("lat", location.getLatitude())
                         , new HttpParameter("long", location.getLongitude())
-                }));
+                }
+        ));
     }
 
     /* Spam Reporting Resources */

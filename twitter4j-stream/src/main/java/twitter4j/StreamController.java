@@ -19,9 +19,6 @@ package twitter4j;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.AuthorizationFactory;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpClientWrapper;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpResponse;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -101,7 +98,8 @@ public class StreamController {
         ensureControlURISet();
         HttpResponse res = HTTP.post(controlURI + "/friends/ids.json",
                 new HttpParameter[]{new HttpParameter("user_id", userId),
-                        new HttpParameter("cursor", cursor)}, AUTH);
+                        new HttpParameter("cursor", cursor)}, AUTH
+        );
         return new FriendsIDs(res);
     }
 

@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.*;
-
 import javax.annotation.Generated;
 import java.util.Map;
 
@@ -30,11 +28,11 @@ import java.util.Map;
         date = "2011-07-13"
 )
 final class LazyTwitterAPIConfiguration implements twitter4j.TwitterAPIConfiguration {
-    private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private HttpResponse res;
+    private TwitterObjectFactory factory;
     private TwitterAPIConfiguration target = null;
 
-    LazyTwitterAPIConfiguration(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyTwitterAPIConfiguration(HttpResponse res, TwitterObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

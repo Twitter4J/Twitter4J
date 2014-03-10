@@ -17,7 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
 
 import java.util.Arrays;
 
@@ -84,7 +83,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
                 JSONObject boundingBoxJSON = json.getJSONObject("bounding_box");
                 boundingBoxType = z_T4JInternalParseUtil.getRawString("type", boundingBoxJSON);
                 JSONArray array = boundingBoxJSON.getJSONArray("coordinates");
-                boundingBoxCoordinates = z_T4JInternalJSONImplFactory.coordinatesAsGeoLocationArray(array);
+                boundingBoxCoordinates = JSONImplFactory.coordinatesAsGeoLocationArray(array);
             } else {
                 boundingBoxType = null;
                 boundingBoxCoordinates = null;
@@ -98,7 +97,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
                     geometryCoordinates = new GeoLocation[1][1];
                     geometryCoordinates[0][0] = new GeoLocation(array.getDouble(0), array.getDouble(1));
                 } else if (geometryType.equals("Polygon")) {
-                    geometryCoordinates = z_T4JInternalJSONImplFactory.coordinatesAsGeoLocationArray(array);
+                    geometryCoordinates = JSONImplFactory.coordinatesAsGeoLocationArray(array);
                 } else {
                     // MultiPolygon currently unsupported.
                     geometryType = null;

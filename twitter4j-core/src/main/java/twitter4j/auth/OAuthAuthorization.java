@@ -16,14 +16,8 @@
 
 package twitter4j.auth;
 
-import twitter4j.TwitterException;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.BASE64Encoder;
-import twitter4j.internal.http.HttpClientWrapper;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpRequest;
-import twitter4j.internal.logging.Logger;
-import twitter4j.z_T4JInternalStringUtil;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -254,11 +248,13 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
                         signatureBaseParams.add(
                                 new HttpParameter(URLDecoder.decode(split[0],
                                         "UTF-8"), URLDecoder.decode(split[1],
-                                        "UTF-8")));
+                                        "UTF-8"))
+                        );
                     } else {
                         signatureBaseParams.add(
                                 new HttpParameter(URLDecoder.decode(split[0],
-                                        "UTF-8"), ""));
+                                        "UTF-8"), "")
+                        );
                     }
                 }
             } catch (UnsupportedEncodingException ignore) {

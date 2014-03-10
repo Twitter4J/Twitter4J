@@ -17,7 +17,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
 import twitter4j.json.DataObjectFactory;
 
 import java.text.SimpleDateFormat;

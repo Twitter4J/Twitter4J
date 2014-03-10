@@ -18,16 +18,13 @@ package twitter4j;
 
 import twitter4j.auth.*;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static twitter4j.internal.http.HttpResponseCode.ENHANCE_YOUR_CLAIM;
-import static twitter4j.internal.http.HttpResponseCode.SERVICE_UNAVAILABLE;
-import static twitter4j.internal.http.HttpResponseCode.TOO_MANY_REQUESTS;
+import static twitter4j.HttpResponseCode.*;
 
 /**
  * Base class of Twitter / AsyncTwitter / TwitterStream supports OAuth.
@@ -44,7 +41,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     protected transient HttpClientWrapper http;
     private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
 
-    protected z_T4JInternalFactory factory;
+    protected TwitterObjectFactory factory;
 
     protected Authorization auth;
     private static final long serialVersionUID = -3812176145960812140L;
@@ -90,7 +87,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     protected void setFactory() {
-        factory = new z_T4JInternalJSONImplFactory(conf);
+        factory = new JSONImplFactory(conf);
     }
 
     /**
@@ -135,7 +132,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
 
     protected User fillInIDAndScreenName() throws TwitterException {
         ensureAuthorizationEnabled();
-        User user = factory.createUser(http.get(conf.getRestBaseURL() + "account/verify_credentials.json", auth));
+        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json", auth), conf);
         this.screenName = user.getScreenName();
         this.id = user.getId();
         return user;
@@ -160,7 +157,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
                 rateLimitStatus = te.getRateLimitStatus();
                 statusCode = te.getStatusCode();
             } else {
-                rateLimitStatus = z_T4JInternalJSONImplFactory.createRateLimitStatusFromResponseHeader(res);
+                rateLimitStatus = JSONImplFactory.createRateLimitStatusFromResponseHeader(res);
                 statusCode = res.getStatusCode();
             }
             if (rateLimitStatus != null) {
@@ -409,7 +406,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     @Override
-    public synchronized  OAuth2Token getOAuth2Token() throws TwitterException {
+    public synchronized OAuth2Token getOAuth2Token() throws TwitterException {
         return getOAuth2().getOAuth2Token();
     }
 

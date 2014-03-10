@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpResponse;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;

@@ -17,9 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.logging.Logger;
 import twitter4j.json.JSONObjectType;
 
 import java.io.BufferedReader;
@@ -40,7 +37,7 @@ abstract class StatusStreamBase implements StatusStream {
     private HttpResponse response;
     protected final Dispatcher dispatcher;
     protected final Configuration CONF;
-    protected z_T4JInternalFactory factory;
+    protected TwitterObjectFactory factory;
 
     /*package*/
 
@@ -49,7 +46,7 @@ abstract class StatusStreamBase implements StatusStream {
         this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
         this.dispatcher = dispatcher;
         this.CONF = conf;
-        this.factory = new z_T4JInternalJSONImplFactory(conf);
+        this.factory = new JSONImplFactory(conf);
     }
     /*package*/
 
@@ -305,7 +302,8 @@ abstract class StatusStreamBase implements StatusStream {
     }
 
     protected Status asStatus(JSONObject json) throws TwitterException {
-        Status status = factory.createStatus(json);
+        Status status = new StatusJSONImpl(json);
+        ;
         if (CONF.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.registerJSONObject(status, json);
         }
@@ -313,12 +311,7 @@ abstract class StatusStreamBase implements StatusStream {
     }
 
     protected DirectMessage asDirectMessage(JSONObject json) throws TwitterException {
-        DirectMessage directMessage;
-        try {
-            directMessage = factory.createDirectMessage(json.getJSONObject("direct_message"));
-        } catch (JSONException e) {
-            throw new TwitterException(e);
-        }
+        DirectMessage directMessage = new DirectMessageJSONImpl(json);
         if (CONF.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.registerJSONObject(directMessage, json);
         }
@@ -340,7 +333,7 @@ abstract class StatusStreamBase implements StatusStream {
     }
 
     protected User asUser(JSONObject json) throws TwitterException {
-        User user = factory.createUser(json);
+        User user = new UserJSONImpl(json);
         if (CONF.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.registerJSONObject(user, json);
         }
@@ -348,7 +341,7 @@ abstract class StatusStreamBase implements StatusStream {
     }
 
     protected UserList asUserList(JSONObject json) throws TwitterException {
-        UserList userList = factory.createAUserList(json);
+        UserList userList = new UserListJSONImpl(json);
         if (CONF.isJSONStoreEnabled()) {
             DataObjectFactoryUtil.registerJSONObject(userList, json);
         }

@@ -17,6 +17,8 @@
 package twitter4j.internal.async;
 
 import junit.framework.TestCase;
+import twitter4j.Dispatcher;
+import twitter4j.DispatcherFactory;
 import twitter4j.conf.ConfigurationContext;
 
 import java.util.Map;

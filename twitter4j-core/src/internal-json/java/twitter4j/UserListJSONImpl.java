@@ -17,7 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -244,7 +243,7 @@ import java.net.URISyntaxException;
 
     @Override
     public int hashCode() {
-        return (int)id;
+        return (int) id;
     }
 
     @Override

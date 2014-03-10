@@ -20,11 +20,11 @@ sed -i "" "s/extends .*{$/implements twitter4j.$1 {/g" $TARGET
 sed -i "" "s/NOW/$NOW/g" $TARGET
 
 sed -i "" 's/{$/{\
-    private twitter4j.internal.http.HttpResponse res;\
+    private twitter4j.HttpResponse res;\
     private z_T4JInternalFactory factory;\
     private XXX target = null;\
 \
-    LazyXXX(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {\
+    LazyXXX(twitter4j.HttpResponse res, z_T4JInternalFactory factory) {\
         this.res = res;\
         this.factory = factory;\
     }\

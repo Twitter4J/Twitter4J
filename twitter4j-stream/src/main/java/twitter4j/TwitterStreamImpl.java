@@ -17,12 +17,6 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.async.DispatcherFactory;
-import twitter4j.internal.http.HttpClientWrapper;
-import twitter4j.internal.http.HttpClientWrapperConfiguration;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.logging.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static twitter4j.internal.http.HttpResponseCode.FORBIDDEN;
-import static twitter4j.internal.http.HttpResponseCode.NOT_ACCEPTABLE;
+import static twitter4j.HttpResponseCode.FORBIDDEN;
+import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
 
 /**
  * A java representation of the <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods</a><br>
@@ -278,7 +272,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
                         , new HttpParameter("follow", z_T4JInternalStringUtil.join(follow))
-                        , stallWarningsParam}, auth).asStream();
+                        , stallWarningsParam}, auth
+        ).asStream();
     }
 
     /**

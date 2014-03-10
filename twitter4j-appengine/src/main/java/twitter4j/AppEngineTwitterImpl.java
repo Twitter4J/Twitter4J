@@ -31,7 +31,7 @@ class AppEngineTwitterImpl extends TwitterImpl {
 
     @Override
     protected void setFactory() {
-        factory = new z_T4JInternalLazyFactory(conf);
+        factory = new LazyJSONImplFactory(conf);
     }
 
 }

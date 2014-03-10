@@ -17,13 +17,11 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.logging.Logger;
 
 import java.util.Arrays;
 import java.util.Date;
 
-import static twitter4j.z_T4JInternalParseUtil.*;
+import static twitter4j.z_T4JInternalParseUtil.getDate;
 
 /**
  * A data class representing one single status of a user.
@@ -110,7 +108,7 @@ import static twitter4j.z_T4JInternalParseUtil.*;
             if (!json.isNull("user")) {
                 user = new UserJSONImpl(json.getJSONObject("user"));
             }
-            geoLocation = z_T4JInternalJSONImplFactory.createGeoLocation(json);
+            geoLocation = JSONImplFactory.createGeoLocation(json);
             if (!json.isNull("place")) {
                 place = new PlaceJSONImpl(json.getJSONObject("place"));
             }
@@ -198,16 +196,16 @@ import static twitter4j.z_T4JInternalParseUtil.*;
             }
 
             if (!json.isNull("scopes")) {
-            	JSONObject scopesJson = json.getJSONObject("scopes");
-            	 if (!scopesJson.isNull("place_ids")) {
-            		 JSONArray placeIdsArray = scopesJson.getJSONArray("place_ids");
-            		 int len = placeIdsArray.length();
-            		 String[] placeIds = new String[len];
-            		 for (int i = 0; i < len; i++) {
-            			 placeIds[i] = placeIdsArray.getString(i);
-            		 }
-            		 scopes = new ScopesImpl(placeIds);
-            	 }
+                JSONObject scopesJson = json.getJSONObject("scopes");
+                if (!scopesJson.isNull("place_ids")) {
+                    JSONArray placeIdsArray = scopesJson.getJSONArray("place_ids");
+                    int len = placeIdsArray.length();
+                    String[] placeIds = new String[len];
+                    for (int i = 0; i < len; i++) {
+                        placeIds[i] = placeIdsArray.getString(i);
+                    }
+                    scopes = new ScopesImpl(placeIds);
+                }
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -440,12 +438,12 @@ import static twitter4j.z_T4JInternalParseUtil.*;
     public String getIsoLanguageCode() {
         return isoLanguageCode;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public Scopes getScopes() {
-    	return scopes;
+        return scopes;
     }
 
     /**

@@ -17,8 +17,6 @@
 package twitter4j.json;
 
 import twitter4j.*;
-import twitter4j.JSONException;
-import twitter4j.JSONObject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -54,49 +52,49 @@ public final class DataObjectFactory {
 
     static {
         try {
-            statusConstructor = (Constructor<Status>) Class.forName("twitter4j.internal.json.StatusJSONImpl").getDeclaredConstructor(JSONObject.class);
+            statusConstructor = (Constructor<Status>) Class.forName("twitter4j.StatusJSONImpl").getDeclaredConstructor(JSONObject.class);
             statusConstructor.setAccessible(true);
 
-            userConstructor = (Constructor<User>) Class.forName("twitter4j.internal.json.UserJSONImpl").getDeclaredConstructor(JSONObject.class);
+            userConstructor = (Constructor<User>) Class.forName("twitter4j.UserJSONImpl").getDeclaredConstructor(JSONObject.class);
             userConstructor.setAccessible(true);
 
-            relationshipConstructor = (Constructor<Relationship>) Class.forName("twitter4j.internal.json.RelationshipJSONImpl").getDeclaredConstructor(JSONObject.class);
+            relationshipConstructor = (Constructor<Relationship>) Class.forName("twitter4j.RelationshipJSONImpl").getDeclaredConstructor(JSONObject.class);
             relationshipConstructor.setAccessible(true);
 
-            placeConstructor = (Constructor<Place>) Class.forName("twitter4j.internal.json.PlaceJSONImpl").getDeclaredConstructor(JSONObject.class);
+            placeConstructor = (Constructor<Place>) Class.forName("twitter4j.PlaceJSONImpl").getDeclaredConstructor(JSONObject.class);
             placeConstructor.setAccessible(true);
 
-            savedSearchConstructor = (Constructor<SavedSearch>) Class.forName("twitter4j.internal.json.SavedSearchJSONImpl").getDeclaredConstructor(JSONObject.class);
+            savedSearchConstructor = (Constructor<SavedSearch>) Class.forName("twitter4j.SavedSearchJSONImpl").getDeclaredConstructor(JSONObject.class);
             savedSearchConstructor.setAccessible(true);
 
-            trendConstructor = (Constructor<Trend>) Class.forName("twitter4j.internal.json.TrendJSONImpl").getDeclaredConstructor(JSONObject.class);
+            trendConstructor = (Constructor<Trend>) Class.forName("twitter4j.TrendJSONImpl").getDeclaredConstructor(JSONObject.class);
             trendConstructor.setAccessible(true);
 
-            trendsConstructor = (Constructor<Trends>) Class.forName("twitter4j.internal.json.TrendsJSONImpl").getDeclaredConstructor(String.class);
+            trendsConstructor = (Constructor<Trends>) Class.forName("twitter4j.TrendsJSONImpl").getDeclaredConstructor(String.class);
             trendsConstructor.setAccessible(true);
 
-            IDsConstructor = (Constructor<IDs>) Class.forName("twitter4j.internal.json.IDsJSONImpl").getDeclaredConstructor(String.class);
+            IDsConstructor = (Constructor<IDs>) Class.forName("twitter4j.IDsJSONImpl").getDeclaredConstructor(String.class);
             IDsConstructor.setAccessible(true);
 
-            rateLimitStatusConstructor = Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl").getDeclaredMethod("createRateLimitStatuses", JSONObject.class);
+            rateLimitStatusConstructor = Class.forName("twitter4j.RateLimitStatusJSONImpl").getDeclaredMethod("createRateLimitStatuses", JSONObject.class);
             rateLimitStatusConstructor.setAccessible(true);
 
-            categoryConstructor = (Constructor<Category>) Class.forName("twitter4j.internal.json.CategoryJSONImpl").getDeclaredConstructor(JSONObject.class);
+            categoryConstructor = (Constructor<Category>) Class.forName("twitter4j.CategoryJSONImpl").getDeclaredConstructor(JSONObject.class);
             categoryConstructor.setAccessible(true);
 
-            directMessageConstructor = (Constructor<DirectMessage>) Class.forName("twitter4j.internal.json.DirectMessageJSONImpl").getDeclaredConstructor(JSONObject.class);
+            directMessageConstructor = (Constructor<DirectMessage>) Class.forName("twitter4j.DirectMessageJSONImpl").getDeclaredConstructor(JSONObject.class);
             directMessageConstructor.setAccessible(true);
 
-            locationConstructor = (Constructor<Location>) Class.forName("twitter4j.internal.json.LocationJSONImpl").getDeclaredConstructor(JSONObject.class);
+            locationConstructor = (Constructor<Location>) Class.forName("twitter4j.LocationJSONImpl").getDeclaredConstructor(JSONObject.class);
             locationConstructor.setAccessible(true);
 
-            userListConstructor = (Constructor<UserList>) Class.forName("twitter4j.internal.json.UserListJSONImpl").getDeclaredConstructor(JSONObject.class);
+            userListConstructor = (Constructor<UserList>) Class.forName("twitter4j.UserListJSONImpl").getDeclaredConstructor(JSONObject.class);
             userListConstructor.setAccessible(true);
 
             statusDeletionNoticeConstructor = (Constructor<StatusDeletionNotice>) Class.forName("twitter4j.StatusDeletionNoticeImpl").getDeclaredConstructor(JSONObject.class);
             statusDeletionNoticeConstructor.setAccessible(true);
 
-            accountTotalsConstructor = (Constructor<AccountTotals>) Class.forName("twitter4j.internal.json.AccountTotalsJSONImpl").getDeclaredConstructor(JSONObject.class);
+            accountTotalsConstructor = (Constructor<AccountTotals>) Class.forName("twitter4j.AccountTotalsJSONImpl").getDeclaredConstructor(JSONObject.class);
             accountTotalsConstructor.setAccessible(true);
             oembedConstructor = (Constructor<OEmbed>) Class.forName("twitter4j.OEmbedJSONImpl").getDeclaredConstructor(JSONObject.class);
             oembedConstructor.setAccessible(true);
@@ -346,7 +344,7 @@ public final class DataObjectFactory {
     public static Map<String, RateLimitStatus> createRateLimitStatus(String rawJSON) throws TwitterException {
         try {
             JSONObject json = new JSONObject(rawJSON);
-            return (Map<String, RateLimitStatus>) rateLimitStatusConstructor.invoke(Class.forName("twitter4j.internal.json.RateLimitStatusJSONImpl"), json);
+            return (Map<String, RateLimitStatus>) rateLimitStatusConstructor.invoke(Class.forName("twitter4j.RateLimitStatusJSONImpl"), json);
         } catch (ClassNotFoundException e) {
             throw new TwitterException(e);
         } catch (IllegalAccessException e) {
@@ -528,7 +526,7 @@ public final class DataObjectFactory {
 
     /**
      * clear raw JSON forms associated with the current thread.<br>
-     * Currently this method is called indirectly by twitter4j.internal.twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
+     * Currently this method is called indirectly by twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
      *
      * @since Twitter4J 2.1.7
      */
@@ -538,7 +536,7 @@ public final class DataObjectFactory {
 
     /**
      * associate a raw JSON form to the current thread<br>
-     * Currently this method is called indirectly by twitter4j.internal.twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
+     * Currently this method is called indirectly by twitter4j.internal.util.DataObjectFactoryUtil, and should be called directly once *JSONImpl classes are migrated to twitter4j.json.* package.
      *
      * @since Twitter4J 2.1.7
      */

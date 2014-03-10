@@ -16,13 +16,10 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import static twitter4j.z_T4JInternalParseUtil.getInt;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

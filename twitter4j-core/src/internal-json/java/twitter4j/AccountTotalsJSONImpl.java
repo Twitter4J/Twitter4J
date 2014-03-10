@@ -17,9 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
-
-import static twitter4j.z_T4JInternalParseUtil.getInt;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

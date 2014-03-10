@@ -16,9 +16,9 @@
 
 package twitter4j.conf;
 
+import twitter4j.HttpClientConfiguration;
+import twitter4j.HttpClientWrapperConfiguration;
 import twitter4j.auth.AuthorizationConfiguration;
-import twitter4j.internal.http.HttpClientConfiguration;
-import twitter4j.internal.http.HttpClientWrapperConfiguration;
 
 import java.util.Map;
 import java.util.Properties;
@@ -110,14 +110,14 @@ public interface Configuration extends HttpClientConfiguration
 
     String getSiteStreamBaseURL();
 
-	boolean isIncludeMyRetweetEnabled();
+    boolean isIncludeMyRetweetEnabled();
 
     boolean isJSONStoreEnabled();
 
     boolean isMBeanEnabled();
 
     boolean isUserStreamRepliesAllEnabled();
-    
+
     boolean isUserStreamWithFollowingsEnabled();
 
     boolean isStallWarningsEnabled();
@@ -139,6 +139,6 @@ public interface Configuration extends HttpClientConfiguration
     boolean isIncludeRTsEnabled();
 
     boolean isIncludeEntitiesEnabled();
-    
+
     boolean isTrimUserEnabled();
 }

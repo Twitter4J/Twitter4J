@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */
-public class DataObjectFactoryUtil {
+class DataObjectFactoryUtil {
     private DataObjectFactoryUtil() {
         throw new AssertionError("not intended to be instantiated.");
     }

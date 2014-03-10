@@ -16,10 +16,10 @@
 
 package twitter4j.media;
 
+import twitter4j.HttpParameter;
 import twitter4j.TwitterException;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpParameter;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com

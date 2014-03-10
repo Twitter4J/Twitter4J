@@ -16,8 +16,8 @@
 
 package twitter4j.auth;
 
+import twitter4j.HttpResponse;
 import twitter4j.TwitterException;
-import twitter4j.internal.http.HttpResponse;
 
 /**
  * Representing authorized Access Token which is passed to the service provider in order to access protected resources.<br>

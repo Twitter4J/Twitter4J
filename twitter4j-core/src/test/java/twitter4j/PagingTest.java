@@ -17,7 +17,6 @@
 package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.internal.http.HttpParameter;
 
 public class PagingTest extends TestCase {
 

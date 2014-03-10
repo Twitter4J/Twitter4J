@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.*;
-
 import java.util.List;
 
 /**
@@ -28,12 +26,12 @@ import java.util.List;
  */
 final class LazyQueryResult implements twitter4j.QueryResult {
     private static final long serialVersionUID = 1469029015622811726L;
-    private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private HttpResponse res;
+    private TwitterObjectFactory factory;
     private QueryResult target = null;
     private Query query;
 
-    LazyQueryResult(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory, Query query) {
+    LazyQueryResult(HttpResponse res, TwitterObjectFactory factory, Query query) {
         this.res = res;
         this.factory = factory;
         this.query = query;

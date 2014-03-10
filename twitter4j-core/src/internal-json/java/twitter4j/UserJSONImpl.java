@@ -17,7 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -99,23 +98,23 @@ import java.util.Date;
             name = z_T4JInternalParseUtil.getRawString("name", json);
             screenName = z_T4JInternalParseUtil.getRawString("screen_name", json);
             location = z_T4JInternalParseUtil.getRawString("location", json);
-            
+
             // descriptionUrlEntities <=> entities/descriptions/urls[]
             descriptionURLEntities = getURLEntitiesFromJSON(json, "description");
             descriptionURLEntities = descriptionURLEntities == null ? new URLEntity[0] : descriptionURLEntities;
-            
+
             // urlEntity <=> entities/url/urls[]
             URLEntity[] urlEntities = getURLEntitiesFromJSON(json, "url");
             if (urlEntities != null && urlEntities.length > 0) {
                 urlEntity = urlEntities[0];
             }
-            
+
             description = z_T4JInternalParseUtil.getRawString("description", json);
             if (description != null) {
-                description = HTMLEntity.unescapeAndSlideEntityIncdices(description, 
+                description = HTMLEntity.unescapeAndSlideEntityIncdices(description,
                         null, descriptionURLEntities, null, null);
             }
-            
+
             isContributorsEnabled = z_T4JInternalParseUtil.getBoolean("contributors_enabled", json);
             profileImageUrl = z_T4JInternalParseUtil.getRawString("profile_image_url", json);
             profileImageUrlHttps = z_T4JInternalParseUtil.getRawString("profile_image_url_https", json);
@@ -154,12 +153,12 @@ import java.util.Date;
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
     }
-    
+
     /**
      * Get URL Entities from JSON Object.
      * returns URLEntity array by entities/[category]/urls/url[]
-     * 
-     * @param json user json object
+     *
+     * @param json     user json object
      * @param category entities category. e.g. "description" or "url"
      * @return URLEntity array by entities/[category]/urls/url[]
      * @throws JSONException
@@ -285,6 +284,7 @@ import java.util.Date;
             return null;
         }
     }
+
     @Override
     public String getProfileImageURLHttps() {
         return profileImageUrlHttps;
@@ -460,7 +460,7 @@ import java.util.Date;
      */
     @Override
     public String getProfileBannerURL() {
-        return profileBannerImageUrl != null ? profileBannerImageUrl+"/web" : null;
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/web" : null;
     }
 
     @Override
@@ -559,7 +559,7 @@ import java.util.Date;
     public URLEntity[] getDescriptionURLEntities() {
         return descriptionURLEntities;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -571,7 +571,7 @@ import java.util.Date;
         }
         return urlEntity;
     }
-    
+
     /*package*/
     static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
         try {

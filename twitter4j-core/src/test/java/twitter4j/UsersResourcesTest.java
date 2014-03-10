@@ -15,7 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.File;

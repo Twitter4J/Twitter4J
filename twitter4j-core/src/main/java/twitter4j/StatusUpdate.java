@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;

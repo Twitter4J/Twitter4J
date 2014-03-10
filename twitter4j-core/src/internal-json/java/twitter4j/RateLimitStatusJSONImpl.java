@@ -17,12 +17,11 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
 
-import java.util.*;
-
-import static twitter4j.z_T4JInternalParseUtil.getDate;
-import static twitter4j.z_T4JInternalParseUtil.getInt;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A data class representing Twitter REST API's rate limit status
@@ -37,7 +36,8 @@ import static twitter4j.z_T4JInternalParseUtil.getInt;
     private int limit;
     private int resetTimeInSeconds;
     private int secondsUntilReset;
-    static Map<String,RateLimitStatus> createRateLimitStatuses(HttpResponse res, Configuration conf) throws TwitterException {
+
+    static Map<String, RateLimitStatus> createRateLimitStatuses(HttpResponse res, Configuration conf) throws TwitterException {
         JSONObject json = res.asJSONObject();
         Map<String, RateLimitStatus> map = createRateLimitStatuses(json);
         if (conf.isJSONStoreEnabled()) {
@@ -47,7 +47,7 @@ import static twitter4j.z_T4JInternalParseUtil.getInt;
         return map;
     }
 
-    static Map<String,RateLimitStatus> createRateLimitStatuses(JSONObject json) throws TwitterException {
+    static Map<String, RateLimitStatus> createRateLimitStatuses(JSONObject json) throws TwitterException {
         Map<String, RateLimitStatus> map = new HashMap<String, RateLimitStatus>();
         try {
             JSONObject resources = json.getJSONObject("resources");

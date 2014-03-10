@@ -16,7 +16,6 @@
 package twitter4j;
 
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.internal.logging.Logger;
 import twitter4j.management.APIStatistics;
 import twitter4j.management.APIStatisticsMBean;
 import twitter4j.management.APIStatisticsOpenMBean;

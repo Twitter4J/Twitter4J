@@ -16,9 +16,7 @@
 
 package twitter4j;
 
-import twitter4j.*;
 import javax.annotation.Generated;
-
 import java.util.Date;
 
 /**
@@ -32,11 +30,11 @@ import java.util.Date;
         date = "2012-11-29"
 )
 final class LazyDirectMessage implements twitter4j.DirectMessage {
-    private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private HttpResponse res;
+    private TwitterObjectFactory factory;
     private DirectMessage target = null;
 
-    LazyDirectMessage(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyDirectMessage(HttpResponse res, TwitterObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }
@@ -92,11 +90,9 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
     }
 
 
-
     public User getSender() {
         return getTarget().getSender();
     }
-
 
 
     public User getRecipient() {
@@ -111,26 +107,26 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
     public int getAccessLevel() {
         return getTarget().getAccessLevel();
     }
-    
+
     @Override
-	public UserMentionEntity[] getUserMentionEntities() {
-		return getTarget().getUserMentionEntities();
-	}
+    public UserMentionEntity[] getUserMentionEntities() {
+        return getTarget().getUserMentionEntities();
+    }
 
-	@Override
-	public URLEntity[] getURLEntities() {
-		return getTarget().getURLEntities();
-	}
+    @Override
+    public URLEntity[] getURLEntities() {
+        return getTarget().getURLEntities();
+    }
 
-	@Override
-	public HashtagEntity[] getHashtagEntities() {
-		return getTarget().getHashtagEntities();
-	}
+    @Override
+    public HashtagEntity[] getHashtagEntities() {
+        return getTarget().getHashtagEntities();
+    }
 
-	@Override
-	public MediaEntity[] getMediaEntities() {
-		return getTarget().getMediaEntities();
-	}
+    @Override
+    public MediaEntity[] getMediaEntities() {
+        return getTarget().getMediaEntities();
+    }
 
     @Override
     public SymbolEntity[] getSymbolEntities() {

@@ -17,8 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.http.HttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +42,7 @@ class StatusStreamImpl extends StatusStreamBase {
     protected String line;
 
     protected static final RawStreamListener[] EMPTY = new RawStreamListener[0];
+
     @Override
     public void next(StatusListener listener) throws TwitterException {
         handleNextElement(new StatusListener[]{listener}, EMPTY);

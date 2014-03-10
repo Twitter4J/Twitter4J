@@ -16,9 +16,8 @@
 
 package twitter4j.auth;
 
-import twitter4j.TwitterException;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

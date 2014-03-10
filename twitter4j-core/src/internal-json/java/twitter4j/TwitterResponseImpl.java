@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpResponse;
-
 
 /**
  * Super interface of Twitter Response data interfaces which indicates that rate limit status is available.

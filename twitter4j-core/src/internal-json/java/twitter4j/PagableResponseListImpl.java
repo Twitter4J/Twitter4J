@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpResponse;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3

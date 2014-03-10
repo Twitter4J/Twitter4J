@@ -16,7 +16,6 @@
 package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.internal.http.HttpResponse;
 
 import java.io.IOException;
 import java.util.List;

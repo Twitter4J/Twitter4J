@@ -17,7 +17,7 @@
 package twitter4j.http;
 
 import junit.framework.TestCase;
-import twitter4j.internal.http.HttpParameter;
+import twitter4j.HttpParameter;
 
 import java.io.File;
 

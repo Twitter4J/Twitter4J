@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -423,7 +421,7 @@ public final class Query implements java.io.Serializable {
         }
     }
 
-    /*package*/ String nextPage(){
+    /*package*/ String nextPage() {
         return nextPageQuery;
     }
 

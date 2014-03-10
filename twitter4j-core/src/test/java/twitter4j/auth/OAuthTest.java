@@ -21,7 +21,6 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
-import twitter4j.internal.http.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

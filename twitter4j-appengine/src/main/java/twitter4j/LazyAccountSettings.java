@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.*;
-
 import javax.annotation.Generated;
 
 /**
@@ -30,11 +28,11 @@ import javax.annotation.Generated;
         date = "2011-07-13"
 )
 final class LazyAccountSettings implements twitter4j.AccountSettings {
-    private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private HttpResponse res;
+    private TwitterObjectFactory factory;
     private AccountSettings target = null;
 
-    LazyAccountSettings(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyAccountSettings(HttpResponse res, TwitterObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

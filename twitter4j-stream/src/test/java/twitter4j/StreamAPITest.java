@@ -17,9 +17,7 @@
 package twitter4j;
 
 import twitter4j.auth.AccessToken;
-import twitter4j.auth.AuthorizationFactory;
 import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
@@ -69,7 +67,8 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     List<String> received = new ArrayList<String>();
     Object lock = new Object();
-    public void testRawStreamListener() throws Exception{
+
+    public void testRawStreamListener() throws Exception {
         twitterStream.addListener(new RawStreamListener() {
             @Override
             public void onMessage(String rawString) {
@@ -89,10 +88,11 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         }
         assertTrue(received.size() > 0);
     }
+
     public void testNoListener() throws Exception {
         TwitterStream twitterStream;
         twitterStream = new TwitterStreamFactory().getInstance();
-        twitterStream.setOAuthConsumer("dummy","dummy");
+        twitterStream.setOAuthConsumer("dummy", "dummy");
         twitterStream.setOAuthAccessToken(new AccessToken("dummy", "dummy"));
         try {
             twitterStream.sample();

@@ -17,15 +17,12 @@
 
 package twitter4j;
 
-import twitter4j.TwitterException;
 import twitter4j.api.HelpResources;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.async.DispatcherFactory;
 
 import java.io.File;
 import java.io.InputStream;
@@ -3226,15 +3223,15 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
         return twitter.getOAuthAccessToken(screenName, password);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public synchronized  OAuth2Token getOAuth2Token() throws TwitterException {
+    public synchronized OAuth2Token getOAuth2Token() throws TwitterException {
         return twitter.getOAuth2Token();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -3242,7 +3239,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     public void setOAuth2Token(OAuth2Token oauth2Token) {
         twitter.setOAuth2Token(oauth2Token);
     }
-    
+
     /**
      * {@inheritDoc}
      */

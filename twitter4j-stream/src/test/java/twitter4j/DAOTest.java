@@ -22,8 +22,6 @@ import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.internal.http.HttpClientImpl;
-import twitter4j.internal.http.HttpClientWrapper;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.*;
@@ -619,7 +617,8 @@ public class DAOTest extends TwitterTestBase {
     public void testPlaceAsJSON() throws Exception {
         List<Place> places = PlaceJSONImpl.createPlaceList(
                 getJSONObjectFromClassPath("/dao/reverse-geocode.json")
-                        .getJSONObject("result").getJSONArray("places"), null, conf);
+                        .getJSONObject("result").getJSONArray("places"), null, conf
+        );
         Place place = places.get(0);
         Assert.assertEquals("SoMa", place.getName());
         Assert.assertEquals("US", place.getCountryCode());

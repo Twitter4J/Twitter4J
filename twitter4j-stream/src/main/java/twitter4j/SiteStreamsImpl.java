@@ -17,8 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.http.HttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,6 +89,7 @@ class SiteStreamsImpl extends StatusStreamBase {
             listener.onMessage(rawString);
         }
     }
+
     @Override
     protected void onStatus(final JSONObject json, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {

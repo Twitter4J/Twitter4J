@@ -17,7 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
 
 /**
  * A data class that has detailed information about a relationship between two users

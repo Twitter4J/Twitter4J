@@ -15,13 +15,12 @@
  */
 package twitter4j;
 
-import twitter4j.*;
 import javax.annotation.Generated;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 3.0.2
  * @see <a href="http://oembed.com">oEmded</a>
+ * @since Twitter4J 3.0.2
  */
 @Generated(
         value = "generate-lazy-objects.sh",
@@ -29,11 +28,11 @@ import javax.annotation.Generated;
         date = "2012-11-29"
 )
 final class LazyOEmbed implements twitter4j.OEmbed {
-    private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private HttpResponse res;
+    private TwitterObjectFactory factory;
     private OEmbed target = null;
 
-    LazyOEmbed(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyOEmbed(HttpResponse res, TwitterObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }
@@ -51,6 +50,7 @@ final class LazyOEmbed implements twitter4j.OEmbed {
 
     /**
      * The HTML required to display the resource. The HTML should have no padding or margins. Consumers may wish to load the HTML in an off-domain iframe to avoid XSS vulnerabilities. The markup should be valid XHTML 1.0 Basic.
+     *
      * @return The HTML required to display the resource.
      */
     public String getHtml() {
@@ -60,6 +60,7 @@ final class LazyOEmbed implements twitter4j.OEmbed {
 
     /**
      * The name of the author/owner of the resource.
+     *
      * @return The name of the author/owner of the resource.
      */
     public String getAuthorName() {
@@ -70,6 +71,7 @@ final class LazyOEmbed implements twitter4j.OEmbed {
     /**
      * The url of the resource provider.<br>
      * The source URL of the image. Consumers should be able to insert this URL into an &lt;img&gt; element. Only HTTP and HTTPS URLs are valid.
+     *
      * @return The url of the resource provider.
      */
     public String getURL() {
@@ -79,6 +81,7 @@ final class LazyOEmbed implements twitter4j.OEmbed {
 
     /**
      * The oEmbed version number.
+     *
      * @return The oEmbed version number.
      */
     public String getVersion() {
@@ -87,6 +90,7 @@ final class LazyOEmbed implements twitter4j.OEmbed {
 
     /**
      * The suggested cache lifetime for this resource, in seconds. Consumers may choose to use this value or not.
+     *
      * @return The suggested cache lifetime for this resource, in seconds. Consumers may choose to use this value or not.
      */
     public long getCacheAge() {
@@ -96,6 +100,7 @@ final class LazyOEmbed implements twitter4j.OEmbed {
 
     /**
      * A URL for the author/owner of the resource.
+     *
      * @return A URL for the author/owner of the resource.
      */
     public String getAuthorURL() {
@@ -105,6 +110,7 @@ final class LazyOEmbed implements twitter4j.OEmbed {
 
     /**
      * The width in pixels of the image specified in the url parameter.
+     *
      * @return The width in pixels of the image specified in the url parameter.
      */
     public int getWidth() {

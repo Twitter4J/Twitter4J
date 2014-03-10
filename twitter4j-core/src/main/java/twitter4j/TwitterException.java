@@ -16,9 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.http.HttpResponseCode;
-
 import java.util.List;
 
 import static twitter4j.z_T4JInternalParseUtil.getInt;
@@ -129,7 +126,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         if (null == response) {
             return null;
         }
-        return z_T4JInternalJSONImplFactory.createRateLimitStatusFromResponseHeader(response);
+        return JSONImplFactory.createRateLimitStatusFromResponseHeader(response);
     }
 
     /**

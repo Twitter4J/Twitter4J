@@ -16,12 +16,12 @@
 
 package twitter4j.media;
 
+import twitter4j.HttpParameter;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpParameter;
 
 /**
  * @author Rémy Rakic - remy.rakic at gmail.com

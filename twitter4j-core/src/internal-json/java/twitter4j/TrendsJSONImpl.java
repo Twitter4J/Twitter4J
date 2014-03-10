@@ -17,14 +17,11 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpResponse;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
-
-import static twitter4j.z_T4JInternalParseUtil.getDate;
 
 /**
  * A data class representing Trends.

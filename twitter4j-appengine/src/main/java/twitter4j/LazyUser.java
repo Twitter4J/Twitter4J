@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import twitter4j.*;
+import twitter4j.conf.Configuration;
 
 import javax.annotation.Generated;
 import java.net.URL;
@@ -33,19 +33,19 @@ import java.util.Date;
         date = "2011-07-13"
 )
 final class LazyUser implements twitter4j.User {
-    private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private HttpResponse res;
+    private Configuration conf;
     private User target = null;
 
-    LazyUser(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyUser(HttpResponse res, TwitterObjectFactory factory) {
         this.res = res;
-        this.factory = factory;
+        this.conf = conf;
     }
 
     private User getTarget() {
         if (target == null) {
             try {
-                target = factory.createUser(res);
+                target = new UserJSONImpl(res, conf);
             } catch (TwitterException e) {
                 throw new TwitterRuntimeException(e);
             }
@@ -101,29 +101,29 @@ final class LazyUser implements twitter4j.User {
     public String getDescription() {
         return getTarget().getDescription();
     }
-    
+
     /**
      * Returns URL entities for user description.
-     * 
+     *
      * @return URL entities for user description
      * @since Twitter4J 3.0.3
      */
-	@Override
-	public URLEntity[] getDescriptionURLEntities() {
-		return getTarget().getDescriptionURLEntities();
-	}
-	
+    @Override
+    public URLEntity[] getDescriptionURLEntities() {
+        return getTarget().getDescriptionURLEntities();
+    }
+
     /**
      * Returns URL entity for user's URL.
-     * 
+     *
      * @return URL entity for user's URL.
      * @since Twitter4J 3.0.3
      */
-	@Override
-	public URLEntity getURLEntity() {
-		return getTarget().getURLEntity();
-	}
-	
+    @Override
+    public URLEntity getURLEntity() {
+        return getTarget().getURLEntity();
+    }
+
     /**
      * Tests if the user is enabling contributors
      *

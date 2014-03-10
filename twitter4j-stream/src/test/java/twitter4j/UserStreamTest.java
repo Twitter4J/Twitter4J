@@ -17,7 +17,6 @@
 package twitter4j;
 
 import junit.framework.Assert;
-import twitter4j.internal.async.DispatcherFactory;
 import twitter4j.json.DataObjectFactory;
 
 import java.io.InputStream;
@@ -410,10 +409,10 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         notifyResponse();
     }
 
-    public void testUserStreamWithFollowing(){
-    	TwitterStream twitterStream = new TwitterStreamFactory(conf1).getInstance();
+    public void testUserStreamWithFollowing() {
+        TwitterStream twitterStream = new TwitterStreamFactory(conf1).getInstance();
         twitterStream.addListener(this);
         twitterStream.user();
     }
-    
+
 }

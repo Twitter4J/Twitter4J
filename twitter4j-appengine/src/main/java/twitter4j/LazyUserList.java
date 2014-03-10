@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.*;
-
 import javax.annotation.Generated;
 import java.net.URI;
 
@@ -32,11 +30,11 @@ import java.net.URI;
         date = "2011-07-13"
 )
 final class LazyUserList implements twitter4j.UserList {
-    private twitter4j.internal.http.HttpResponse res;
-    private z_T4JInternalFactory factory;
+    private HttpResponse res;
+    private TwitterObjectFactory factory;
     private UserList target = null;
 
-    LazyUserList(twitter4j.internal.http.HttpResponse res, z_T4JInternalFactory factory) {
+    LazyUserList(HttpResponse res, TwitterObjectFactory factory) {
         this.res = res;
         this.factory = factory;
     }

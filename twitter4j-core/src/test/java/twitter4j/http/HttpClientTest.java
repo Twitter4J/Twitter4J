@@ -16,9 +16,9 @@
 
 package twitter4j.http;
 
+import twitter4j.HttpClient;
+import twitter4j.HttpClientImpl;
 import twitter4j.TwitterTestBase;
-import twitter4j.internal.http.HttpClient;
-import twitter4j.internal.http.HttpClientImpl;
 
 /**
  * Test case for HttpCient
