@@ -137,21 +137,36 @@
                 <version>2.3.2</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/internal-async/java</source>
+                                <source>src/internal-http/java</source>
+                                <source>src/jmx/java</source>
+                                <source>src/internal-json/java</source>
+                                <source>src/internal-logging/java</source>
+                                <source>src/internal-util/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <source>6</source>
                     <target>6</target>
-                    <includes>
-                        <include>src/internal-async/java/**/*.java</include>
-                        <include>src/internal-http/java/**/*.java</include>
-                        <include>src/jmx/java/**/*.java</include>
-                        <include>src/internal-json/java/**/*.java</include>
-                        <include>src/internal-logging/java/**/*.java</include>
-                        <include>src/internal-util/java/**/*.java</include>
-                        <include>src/internal-twitter4j.internal.util/java/**/*.java</include>
-                    </includes>
                 </configuration>
                 <version>2.5.1</version>
             </plugin>
