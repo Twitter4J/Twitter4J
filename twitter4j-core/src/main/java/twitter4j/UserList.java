@@ -29,7 +29,7 @@ public interface UserList extends Comparable<UserList>, TwitterResponse, java.io
      *
      * @return the id of the list
      */
-    int getId();
+    long getId();
 
     /**
      * Returns the name of the list

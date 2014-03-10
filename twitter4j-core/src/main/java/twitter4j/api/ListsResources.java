@@ -27,7 +27,7 @@ public interface ListsResources {
      * <br>This method calls https://api.twitter.com/1.1/lists.json
      *
      * @param listOwnerScreenName The screen name of the list owner
-as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+    as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
      * @return the list of lists
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/list">GET lists/list | Twitter Developers</a>
@@ -61,7 +61,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    ResponseList<Status> getUserListStatuses(int listId, Paging paging)
+    ResponseList<Status> getUserListStatuses(long listId, Paging paging)
             throws TwitterException;
 
     /**
@@ -105,7 +105,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy">POST lists/members/destroy | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
-    UserList destroyUserListMember(int listId, long userId) throws TwitterException;
+    UserList destroyUserListMember(long listId, long userId) throws TwitterException;
 
     /**
      * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -118,8 +118,8 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy">POST lists/members/destroy | Twitter Developers</a>
      * @since Twitter4J 3.0.6
      */
-    UserList destroyUserListMember(int listId, String screenName) throws TwitterException;
-    
+    UserList destroyUserListMember(long listId, String screenName) throws TwitterException;
+
     /**
      * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy_all.json
@@ -131,7 +131,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy_all">POST lists/members/destroy_all | Twitter Developers</a>
      * @since Twitter4J 3.0.6
      */
-    UserList destroyUserListMembers(int listId, String[] screenNames) throws TwitterException;
+    UserList destroyUserListMembers(long listId, String[] screenNames) throws TwitterException;
 
     /**
      * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -144,7 +144,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/destroy_all">POST lists/members/destroy_all | Twitter Developers</a>
      * @since Twitter4J 3.0.6
      */
-    UserList destroyUserListMembers(int listId, long[] userIds) throws TwitterException;
+    UserList destroyUserListMembers(long listId, long[] userIds) throws TwitterException;
 
     /**
      * Removes the specified members from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -173,11 +173,11 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @since Twitter4J 3.0.6
      */
     UserList destroyUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException;
-    
+
     /**
-     * @deprecated use {@link #destroyUserList(int)} instead
+     * @deprecated use {@link #destroyUserList(long)} instead
      */
-    UserList deleteUserListMember(int listId, long userId) throws TwitterException;
+    UserList deleteUserListMember(long listId, long userId) throws TwitterException;
 
     /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -194,7 +194,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList destroyUserListMember(long ownerId, String slug, long userId) throws TwitterException;
 
     /**
-     * @deprecated use {@link #destroyUserListMember(long, String, long)} List(int)} instead
+     * @deprecated use {@link #destroyUserListMember(long, String, long)} instead
      */
     UserList deleteUserListMember(long ownerId, String slug, long userId) throws TwitterException;
 
@@ -298,7 +298,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    PagableResponseList<User> getUserListSubscribers(int listId, long cursor) throws TwitterException;
+    PagableResponseList<User> getUserListSubscribers(long listId, long cursor) throws TwitterException;
 
     /**
      * Returns the subscribers of the specified list.
@@ -338,7 +338,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/subscribers/create">POST lists/subscribers/create | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    UserList createUserListSubscription(int listId) throws TwitterException;
+    UserList createUserListSubscription(long listId) throws TwitterException;
 
     /**
      * Make the authenticated user follow the specified list.
@@ -378,7 +378,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers/show">GET lists/subscribers/show | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    User showUserListSubscription(int listId, long userId) throws TwitterException;
+    User showUserListSubscription(long listId, long userId) throws TwitterException;
 
     /**
      * Check if the specified user is a subscriber of the specified list.
@@ -420,7 +420,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/subscribers/destroy">POST lists/subscribers/destroy | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    UserList destroyUserListSubscription(int listId) throws TwitterException;
+    UserList destroyUserListSubscription(long listId) throws TwitterException;
 
     /**
      * Unsubscribes the authenticated user form the specified list.
@@ -458,12 +458,12 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    UserList createUserListMembers(int listId, long[] userIds) throws TwitterException;
+    UserList createUserListMembers(long listId, long[] userIds) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, long[])} instead
+     * @deprecated use {@link #createUserListMembers(long, long[])} instead
      */
-    UserList addUserListMembers(int listId, long[] userIds) throws TwitterException;
+    UserList addUserListMembers(long listId, long[] userIds) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -479,7 +479,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList createUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, long[])} instead
+     * @deprecated use {@link #createUserListMembers(long, long[])} instead
      */
     UserList addUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
 
@@ -506,12 +506,12 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
-    UserList createUserListMembers(int listId, String[] screenNames) throws TwitterException;
+    UserList createUserListMembers(long listId, String[] screenNames) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, String[])} instead
+     * @deprecated use {@link #createUserListMembers(long, String[])} instead
      */
-    UserList addUserListMembers(int listId, String[] screenNames) throws TwitterException;
+    UserList addUserListMembers(long listId, String[] screenNames) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -526,7 +526,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
     UserList createUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMembers(int, String[])} instead
+     * @deprecated use {@link #createUserListMembers(long, String[])} instead
      */
     UserList addUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
 
@@ -554,7 +554,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members/show">GET lists/members/show | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    User showUserListMembership(int listId, long userId) throws TwitterException;
+    User showUserListMembership(long listId, long userId) throws TwitterException;
 
     /**
      * Check if a user is a member of the specified list.<br>
@@ -597,7 +597,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    PagableResponseList<User> getUserListMembers(int listId, long cursor)
+    PagableResponseList<User> getUserListMembers(long listId, long cursor)
             throws TwitterException;
 
     /**
@@ -641,12 +641,12 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create">POST lists/members/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
-    UserList createUserListMember(int listId, long userId) throws TwitterException;
+    UserList createUserListMember(long listId, long userId) throws TwitterException;
 
     /**
-     * @deprecated use {@link #createUserListMember(int, long)}} instead
+     * @deprecated use {@link #createUserListMember(long, long)}} instead
      */
-    UserList addUserListMember(int listId, long userId) throws TwitterException;
+    UserList addUserListMember(long listId, long userId) throws TwitterException;
 
     /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
@@ -691,7 +691,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/destroy">POST lists/destroy | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
-    UserList destroyUserList(int listId) throws TwitterException;
+    UserList destroyUserList(long listId) throws TwitterException;
 
     /**
      * Deletes the specified list. Must be owned by the authenticated user.
@@ -732,7 +732,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
-    UserList updateUserList(int listId, String newListName, boolean isPublicList, String newDescription)
+    UserList updateUserList(long listId, String newListName, boolean isPublicList, String newDescription)
             throws TwitterException;
 
     /**
@@ -794,7 +794,7 @@ as returned to in the response body's next_cursor and previous_cursor attributes
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/show">https://dev.twitter.com/docs/api/1.1/get/lists/show | Twitter Developers</a>
      * @since Twitter4J 2.2.3
      */
-    UserList showUserList(int listId) throws TwitterException;
+    UserList showUserList(long listId) throws TwitterException;
 
     /**
      * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.

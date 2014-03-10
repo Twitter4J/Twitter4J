@@ -35,7 +35,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
  */
 /*package*/ class UserListJSONImpl extends TwitterResponseImpl implements UserList, java.io.Serializable {
 
-    private int id;
+    private long id;
     private String name;
     private String fullName;
     private String slug;
@@ -66,7 +66,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
     }
 
     private void init(JSONObject json) throws TwitterException {
-        id = getInt("id", json);
+        id = getLong("id", json);
         name = getRawString("name", json);
         fullName = getRawString("full_name", json);
         slug = getRawString("slug", json);
@@ -88,14 +88,20 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
     @Override
     public int compareTo(UserList that) {
-        return this.id - that.getId();
+        long delta = this.id - that.getId();
+        if (delta < Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        } else if (delta > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return (int) delta;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -244,7 +250,7 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.*;
 
     @Override
     public int hashCode() {
-        return id;
+        return (int)id;
     }
 
     @Override
