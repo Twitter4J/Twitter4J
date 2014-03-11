@@ -28,24 +28,33 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class HttpClientWrapper implements java.io.Serializable {
-    private final HttpClientWrapperConfiguration wrapperConf;
+    private final HttpClientConfiguration wrapperConf;
     private HttpClient http;
 
     private final Map<String, String> requestHeaders;
     private static final long serialVersionUID = -6511977105603119379L;
     private HttpResponseListener httpResponseListener;
 
-    public HttpClientWrapper(HttpClientWrapperConfiguration wrapperConf) {
+    public HttpClientWrapper(HttpClientConfiguration wrapperConf) {
         this.wrapperConf = wrapperConf;
-        requestHeaders = wrapperConf.getRequestHeaders();
         http = HttpClientFactory.getInstance(wrapperConf);
+        requestHeaders = new HashMap<String, String>();
+        requestHeaders.put("X-Twitter-Client-Version", Version.getVersion());
+        requestHeaders.put("X-Twitter-Client-URL", "http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
+        requestHeaders.put("X-Twitter-Client", "Twitter4J");
+        requestHeaders.put("User-Agent", "twitter4j http://twitter4j.org/ /" + Version.getVersion());
+        if (wrapperConf.isGZIPEnabled()) {
+            requestHeaders.put("Accept-Encoding", "gzip");
+        }
+    }
+
+    public void addDefaultRequestHeader(String name, String value) {
+        requestHeaders.put(name, value);
     }
 
     // never used with this project. Just for handiness for those using this class.
     public HttpClientWrapper() {
-        this.wrapperConf = ConfigurationContext.getInstance();
-        requestHeaders = wrapperConf.getRequestHeaders();
-        http = HttpClientFactory.getInstance(wrapperConf);
+        this(ConfigurationContext.getInstance());
     }
 
     public void shutdown() {

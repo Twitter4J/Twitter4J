@@ -17,32 +17,23 @@
 package twitter4j.conf;
 
 import twitter4j.HttpClientConfiguration;
-import twitter4j.HttpClientWrapperConfiguration;
 import twitter4j.auth.AuthorizationConfiguration;
 
-import java.util.Map;
 import java.util.Properties;
-
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface Configuration extends HttpClientConfiguration
-        , HttpClientWrapperConfiguration
-        , AuthorizationConfiguration
-        , java.io.Serializable {
+        , AuthorizationConfiguration, java.io.Serializable {
 
     boolean isDebugEnabled();
 
     boolean isApplicationOnlyAuthEnabled();
 
-    String getUserAgent();
-
     String getUser();
 
     String getPassword();
-
-    Map<String, String> getRequestHeaders();
 
     // methods for HttpClientConfiguration
 
@@ -77,10 +68,6 @@ public interface Configuration extends HttpClientConfiguration
     String getOAuth2TokenType();
 
     String getOAuth2AccessToken();
-
-    String getClientVersion();
-
-    String getClientURL();
 
     String getRestBaseURL();
 

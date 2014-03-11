@@ -21,9 +21,7 @@ import twitter4j.conf.Configuration;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static twitter4j.HttpResponseCode.FORBIDDEN;
 import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
@@ -50,6 +48,11 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     TwitterStreamImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
         http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
+        // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
+        // and this will reduce the shutdown latency of streaming api connection
+        // see also - http://jira.twitter4j.org/browse/TFJ-556
+        http.addDefaultRequestHeader("Connection", "close");
+
         stallWarningsGetParam = "stall_warnings=" + (conf.isStallWarningsEnabled() ? "true" : "false");
         stallWarningsParam = new HttpParameter("stall_warnings", conf.isStallWarningsEnabled());
     }
@@ -726,7 +729,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 }
 
-class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguration {
+class StreamingReadTimeoutConfiguration implements HttpClientConfiguration {
     Configuration nestedConf;
 
     StreamingReadTimeoutConfiguration(Configuration httpConf) {
@@ -772,16 +775,6 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
     @Override
     public int getHttpRetryIntervalSeconds() {
         return nestedConf.getHttpRetryIntervalSeconds();
-    }
-
-    @Override
-    public Map<String, String> getRequestHeaders() {
-        // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
-        // and this will reduce the shutdown latency of streaming api connection
-        // see also - http://jira.twitter4j.org/browse/TFJ-556
-        Map<String, String> headers = new HashMap<String, String>(nestedConf.getRequestHeaders());
-        headers.put("Connection", "close");
-        return headers;
     }
 
     @Override

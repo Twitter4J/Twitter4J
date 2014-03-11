@@ -17,9 +17,7 @@
 
 package twitter4j.conf;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
-import twitter4j.Version;
 import twitter4j.auth.RequestToken;
 
 import java.io.*;
@@ -89,47 +87,6 @@ public class ConfigurationTest extends TestCase {
         conf.setPassword(test);
         assertEquals(test, conf.getPassword());
         System.getProperties().remove("twitter4j.password");
-
-        System.getProperties().remove("twitter4j.clientVersion");
-        conf = new PropertyConfiguration();
-        Assert.assertEquals(Version.getVersion(), conf.getClientVersion());
-
-        conf.setClientVersion(test);
-        assertEquals(test, conf.getClientVersion());
-        System.setProperty("twitter4j.clientVersion", override);
-        conf = new PropertyConfiguration();
-        assertEquals(override, conf.getClientVersion());
-        conf.setClientVersion(test);
-        assertEquals(test, conf.getClientVersion());
-        System.getProperties().remove("twitter4j.clientVersion");
-
-
-        System.getProperties().remove("twitter4j.clientURL");
-        conf = new PropertyConfiguration();
-        assertEquals("http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml", conf.getClientURL());
-
-        conf.setClientURL(test);
-        assertEquals(test, conf.getClientURL());
-        System.setProperty("twitter4j.clientURL", override);
-        conf = new PropertyConfiguration();
-        assertEquals(override, conf.getClientURL());
-        conf.setClientURL(test);
-        assertEquals(test, conf.getClientURL());
-        System.getProperties().remove("twitter4j.clientURL");
-
-
-        System.getProperties().remove("twitter4j.http.userAgent");
-        conf = new PropertyConfiguration();
-        assertEquals("twitter4j http://twitter4j.org/ /" + Version.getVersion(), conf.getUserAgent());
-
-        conf.setUserAgent(test);
-        assertEquals(test, conf.getUserAgent());
-        System.setProperty("twitter4j.http.userAgent", override);
-        conf = new PropertyConfiguration();
-        assertEquals(override, conf.getUserAgent());
-        conf.setUserAgent(test);
-        assertEquals(test, conf.getUserAgent());
-        System.getProperties().remove("twitter4j.http.userAgent");
 
         System.getProperties().remove("twitter4j.http.proxyHost");
         conf = new PropertyConfiguration();

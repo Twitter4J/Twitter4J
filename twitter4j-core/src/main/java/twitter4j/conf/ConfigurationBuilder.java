@@ -228,18 +228,6 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder setClientVersion(String clientVersion) {
-        checkNotBuilt();
-        configurationBean.setClientVersion(clientVersion);
-        return this;
-    }
-
-    public ConfigurationBuilder setClientURL(String clientURL) {
-        checkNotBuilt();
-        configurationBean.setClientURL(clientURL);
-        return this;
-    }
-
     public ConfigurationBuilder setDispatcherImpl(String dispatcherImpl) {
         checkNotBuilt();
         configurationBean.setDispatcherImpl(dispatcherImpl);

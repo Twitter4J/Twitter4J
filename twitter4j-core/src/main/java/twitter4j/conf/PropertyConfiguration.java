@@ -28,7 +28,6 @@ import java.util.Set;
 public final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
 
     public static final String DEBUG = "debug";
-    public static final String HTTP_USER_AGENT = "http.userAgent";
     public static final String USER = "user";
     public static final String PASSWORD = "password";
 
@@ -83,9 +82,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
     public static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
 
-    // hidden portion
-    public static final String CLIENT_VERSION = "clientVersion";
-    public static final String CLIENT_URL = "clientURL";
     private static final long serialVersionUID = 6458764415636588373L;
 
     public PropertyConfiguration(InputStream is) {
@@ -299,15 +295,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, ASYNC_DISPATCHER_IMPL)) {
             setDispatcherImpl(getString(props, prefix, ASYNC_DISPATCHER_IMPL));
-        }
-        if (notNull(props, prefix, CLIENT_VERSION)) {
-            setClientVersion(getString(props, prefix, CLIENT_VERSION));
-        }
-        if (notNull(props, prefix, CLIENT_URL)) {
-            setClientURL(getString(props, prefix, CLIENT_URL));
-        }
-        if (notNull(props, prefix, HTTP_USER_AGENT)) {
-            setUserAgent(getString(props, prefix, HTTP_USER_AGENT));
         }
 
         if (notNull(props, prefix, OAUTH_REQUEST_TOKEN_URL)) {

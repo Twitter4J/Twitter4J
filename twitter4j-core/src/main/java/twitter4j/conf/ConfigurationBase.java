@@ -17,11 +17,12 @@
 package twitter4j.conf;
 
 import twitter4j.Logger;
-import twitter4j.Version;
 
 import java.io.ObjectStreamException;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Configuration base class with default settings.
@@ -85,16 +86,11 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String mediaProvider = "TWITTER";
     private String mediaProviderAPIKey = null;
     private Properties mediaProviderParameters = null;
-    // hidden portion
-    private String clientVersion = Version.getVersion();
-    private String clientURL = "http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml";
-    private String userAgent = "twitter4j http://twitter4j.org/ /" + Version.getVersion();
 
     private static final long serialVersionUID = -6610497517837844232L;
 
 
     protected ConfigurationBase() {
-        initRequestHeaders();
     }
 
     public void dumpConfiguration() {
@@ -122,16 +118,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setDebug(boolean debug) {
         this.debug = debug;
-    }
-
-    @Override
-    public final String getUserAgent() {
-        return this.userAgent;
-    }
-
-    protected final void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
-        initRequestHeaders();
     }
 
     @Override
@@ -163,32 +149,11 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setGZIPEnabled(boolean gzipEnabled) {
         this.gzipEnabled = gzipEnabled;
-        initRequestHeaders();
     }
 
     @Override
     public boolean isGZIPEnabled() {
         return gzipEnabled;
-    }
-
-    // method for HttpRequestFactoryConfiguration
-    Map<String, String> requestHeaders;
-
-    private void initRequestHeaders() {
-        requestHeaders = new HashMap<String, String>();
-        requestHeaders.put("X-Twitter-Client-Version", getClientVersion());
-        requestHeaders.put("X-Twitter-Client-URL", getClientURL());
-        requestHeaders.put("X-Twitter-Client", "Twitter4J");
-
-        requestHeaders.put("User-Agent", getUserAgent());
-        if (gzipEnabled) {
-            requestHeaders.put("Accept-Encoding", "gzip");
-        }
-    }
-
-    @Override
-    public Map<String, String> getRequestHeaders() {
-        return requestHeaders;
     }
 
     // methods for HttpClientConfiguration
@@ -347,26 +312,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setContributingTo(long contributingTo) {
         this.contributingTo = contributingTo;
-    }
-
-    @Override
-    public final String getClientVersion() {
-        return clientVersion;
-    }
-
-    protected final void setClientVersion(String clientVersion) {
-        this.clientVersion = clientVersion;
-        initRequestHeaders();
-    }
-
-    @Override
-    public final String getClientURL() {
-        return clientURL;
-    }
-
-    protected final void setClientURL(String clientURL) {
-        this.clientURL = clientURL;
-        initRequestHeaders();
     }
 
     @Override
@@ -615,9 +560,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
         if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled) return false;
         if (userStreamWithFollowingsEnabled != that.userStreamWithFollowingsEnabled) return false;
-        if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null) return false;
-        if (clientVersion != null ? !clientVersion.equals(that.clientVersion) : that.clientVersion != null)
-            return false;
         if (dispatcherImpl != null ? !dispatcherImpl.equals(that.dispatcherImpl) : that.dispatcherImpl != null)
             return false;
         if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
@@ -659,15 +601,12 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (oAuthRequestTokenURL != null ? !oAuthRequestTokenURL.equals(that.oAuthRequestTokenURL) : that.oAuthRequestTokenURL != null)
             return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (requestHeaders != null ? !requestHeaders.equals(that.requestHeaders) : that.requestHeaders != null)
-            return false;
         if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null) return false;
         if (siteStreamBaseURL != null ? !siteStreamBaseURL.equals(that.siteStreamBaseURL) : that.siteStreamBaseURL != null)
             return false;
         if (streamBaseURL != null ? !streamBaseURL.equals(that.streamBaseURL) : that.streamBaseURL != null)
             return false;
         if (user != null ? !user.equals(that.user) : that.user != null) return false;
-        if (userAgent != null ? !userAgent.equals(that.userAgent) : that.userAgent != null) return false;
         if (userStreamBaseURL != null ? !userStreamBaseURL.equals(that.userStreamBaseURL) : that.userStreamBaseURL != null)
             return false;
 
@@ -677,7 +616,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     @Override
     public int hashCode() {
         int result = (debug ? 1 : 0);
-        result = 31 * result + (userAgent != null ? userAgent.hashCode() : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (prettyDebug ? 1 : 0);
@@ -722,9 +660,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
         result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
         result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
-        result = 31 * result + (clientVersion != null ? clientVersion.hashCode() : 0);
-        result = 31 * result + (clientURL != null ? clientURL.hashCode() : 0);
-        result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
         return result;
     }
 
@@ -732,7 +667,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     public String toString() {
         return "ConfigurationBase{" +
                 "debug=" + debug +
-                ", userAgent='" + userAgent + '\'' +
                 ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
                 ", prettyDebug=" + prettyDebug +
@@ -777,9 +711,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", mediaProvider='" + mediaProvider + '\'' +
                 ", mediaProviderAPIKey='" + mediaProviderAPIKey + '\'' +
                 ", mediaProviderParameters=" + mediaProviderParameters +
-                ", clientVersion='" + clientVersion + '\'' +
-                ", clientURL='" + clientURL + '\'' +
-                ", requestHeaders=" + requestHeaders +
                 '}';
     }
 
