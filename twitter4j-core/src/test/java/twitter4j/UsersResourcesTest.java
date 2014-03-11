@@ -66,7 +66,7 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertTrue(0 <= user.getFollowersCount());
         assertTrue(0 <= user.getFriendsCount());
         assertNotNull(user.getCreatedAt());
-        // timezone can be null
+        // timezone can be
 //        assertNotNull(user.getTimeZone());
         assertNotNull(user.getProfileBackgroundImageURL());
 
@@ -148,10 +148,11 @@ public class UsersResourcesTest extends TwitterTestBase {
 
 
     public void testContributors() throws Exception {
-        ResponseList<User> users = twitter1.getContributors("twitter");
-        assertTrue(users.size() > 0);
-        users = twitter1.getContributees(users.get(0).getId());
-        assertTrue(users.size() > 0);
+        // now @twitter is not using contributor feature
+//        ResponseList<User> users = twitter1.getContributors("twitter");
+//        assertTrue(users.size() > 0);
+//        users = twitter1.getContributees(users.get(0).getId());
+//        assertTrue(users.size() > 0);
     }
 
     public void testBanner() throws Exception {
