@@ -32,7 +32,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String USER = "user";
     public static final String PASSWORD = "password";
 
-    public static final String HTTP_USE_SSL = "http.useSSL";
     public static final String HTTP_PRETTY_DEBUG = "http.prettyDebug";
     public static final String HTTP_GZIP = "http.gzip";
     public static final String HTTP_PROXY_HOST = "http.proxyHost";
@@ -48,9 +47,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     public static final String HTTP_RETRY_COUNT = "http.retryCount";
     public static final String HTTP_RETRY_INTERVAL_SECS = "http.retryIntervalSecs";
-
-    public static final String HTTP_MAX_TOTAL_CONNECTIONS = "http.maxTotalConnections";
-    public static final String HTTP_DEFAULT_MAX_PER_ROUTE = "http.defaultMaxPerRoute";
 
     public static final String OAUTH_CONSUMER_KEY = "oauth.consumerKey";
     public static final String OAUTH_CONSUMER_SECRET = "oauth.consumerSecret";
@@ -242,9 +238,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, PASSWORD)) {
             setPassword(getString(props, prefix, PASSWORD));
         }
-        if (notNull(props, prefix, HTTP_USE_SSL)) {
-            setUseSSL(getBoolean(props, prefix, HTTP_USE_SSL));
-        }
         if (notNull(props, prefix, HTTP_PRETTY_DEBUG)) {
             setPrettyDebugEnabled(getBoolean(props, prefix, HTTP_PRETTY_DEBUG));
         }
@@ -281,12 +274,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, HTTP_RETRY_INTERVAL_SECS)) {
             setHttpRetryIntervalSeconds(getIntProperty(props, prefix, HTTP_RETRY_INTERVAL_SECS));
-        }
-        if (notNull(props, prefix, HTTP_MAX_TOTAL_CONNECTIONS)) {
-            setHttpMaxTotalConnections(getIntProperty(props, prefix, HTTP_MAX_TOTAL_CONNECTIONS));
-        }
-        if (notNull(props, prefix, HTTP_DEFAULT_MAX_PER_ROUTE)) {
-            setHttpDefaultMaxPerRoute(getIntProperty(props, prefix, HTTP_DEFAULT_MAX_PER_ROUTE));
         }
         if (notNull(props, prefix, OAUTH_CONSUMER_KEY)) {
             setOAuthConsumerKey(getString(props, prefix, OAUTH_CONSUMER_KEY));

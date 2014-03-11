@@ -68,10 +68,6 @@ public interface Configuration extends HttpClientConfiguration
 
     int getHttpRetryIntervalSeconds();
 
-    int getHttpMaxTotalConnections();
-
-    int getHttpDefaultMaxPerRoute();
-
     // oauth related setter/getters
 
     String getOAuthConsumerKey();

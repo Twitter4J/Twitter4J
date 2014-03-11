@@ -30,12 +30,6 @@ public final class ConfigurationBuilder {
 
     private ConfigurationBase configurationBean = new PropertyConfiguration();
 
-    public ConfigurationBuilder setUseSSL(boolean useSSL) {
-        checkNotBuilt();
-        configurationBean.setUseSSL(useSSL);
-        return this;
-    }
-
     public ConfigurationBuilder setPrettyDebugEnabled(boolean prettyDebugEnabled) {
         checkNotBuilt();
         configurationBean.setPrettyDebugEnabled(prettyDebugEnabled);
@@ -117,19 +111,6 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder setHttpRetryCount(int httpRetryCount) {
         checkNotBuilt();
         configurationBean.setHttpRetryCount(httpRetryCount);
-        return this;
-    }
-
-
-    public ConfigurationBuilder setHttpMaxTotalConnections(int httpMaxConnections) {
-        checkNotBuilt();
-        configurationBean.setHttpMaxTotalConnections(httpMaxConnections);
-        return this;
-    }
-
-    public ConfigurationBuilder setHttpDefaultMaxPerRoute(int httpDefaultMaxPerRoute) {
-        checkNotBuilt();
-        configurationBean.setHttpDefaultMaxPerRoute(httpDefaultMaxPerRoute);
         return this;
     }
 
@@ -306,7 +287,7 @@ public final class ConfigurationBuilder {
         configurationBean.setUserStreamRepliesAllEnabled(enabled);
         return this;
     }
-    
+
     public ConfigurationBuilder setUserStreamWithFollowingsEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setUserStreamWithFollowingsEnabled(enabled);

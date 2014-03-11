@@ -368,7 +368,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     public void testAppOnlyAuthWithBuildingConf1() throws Exception {
         // setup
         ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setUseSSL(true);
         builder.setApplicationOnlyAuthEnabled(true);
         final AsyncTwitter twitter = new AsyncTwitterFactory(builder.build()).getInstance();
 
@@ -377,29 +376,27 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         OAuth2Token token = twitter.getOAuth2Token();
         assertEquals("bearer", token.getTokenType());
 
-		twitter.addListener(this);
+        twitter.addListener(this);
         testRateLimitStatus();
     }
-    
+
     public void testAppOnlyAuthAsyncWithBuildingConf1() throws Exception {
         // setup
         ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setUseSSL(true);
         builder.setApplicationOnlyAuthEnabled(true);
         final AsyncTwitter twitter = new AsyncTwitterFactory(builder.build()).getInstance();
 
         // exercise & verify
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-		twitter.addListener(this);
+        twitter.addListener(this);
         twitter.getOAuth2TokenAsync();
         waitForResponse();
         testRateLimitStatus();
     }
-    
+
     public void testAppOnlyAuthWithBuildingConf2() throws Exception {
         // setup
-    	ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setUseSSL(true);
+        ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setApplicationOnlyAuthEnabled(true);
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         final AsyncTwitter twitter = new AsyncTwitterFactory(builder.build()).getInstance();
@@ -407,40 +404,39 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         // exercise & verify
         OAuth2Token token = twitter.getOAuth2Token();
         assertEquals("bearer", token.getTokenType());
-        
+
         TwitterListener listener = new TwitterAdapter() {
 
-			@Override
-			public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
-				super.gotRateLimitStatus(rateLimitStatus);
-				RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
-		        assertNotNull(searchTweetsRateLimit);
-		        assertEquals(searchTweetsRateLimit.getLimit(), 450);
-	            notifyResponse();
-			}
+            @Override
+            public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
+                super.gotRateLimitStatus(rateLimitStatus);
+                RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
+                assertNotNull(searchTweetsRateLimit);
+                assertEquals(searchTweetsRateLimit.getLimit(), 450);
+                notifyResponse();
+            }
 
 
-			@Override
-			public void onException(TwitterException ex, TwitterMethod method) {
-				assertEquals(403, ex.getStatusCode());
-	            assertEquals(220, ex.getErrorCode());
-	            assertEquals("Your credentials do not allow access to this resource", ex.getErrorMessage());
-	            notifyResponse();
-			}
+            @Override
+            public void onException(TwitterException ex, TwitterMethod method) {
+                assertEquals(403, ex.getStatusCode());
+                assertEquals(220, ex.getErrorCode());
+                assertEquals("Your credentials do not allow access to this resource", ex.getErrorMessage());
+                notifyResponse();
+            }
 
-			
-		};
-		twitter.addListener(listener);
+
+        };
+        twitter.addListener(listener);
         twitter.getRateLimitStatus("search");
         waitForResponse();
-        
+
     }
-    
-    
+
+
     public void testAppOnlyAuthAsyncWithBuildingConf2() throws Exception {
         // setup
-    	ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setUseSSL(true);
+        ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setApplicationOnlyAuthEnabled(true);
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         final AsyncTwitter twitter = new AsyncTwitterFactory(builder.build()).getInstance();
@@ -449,36 +445,36 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         twitter.addListener(this);
         twitter.getOAuth2TokenAsync();
         waitForResponse();
-        
+
         TwitterListener listener = new TwitterAdapter() {
 
-			@Override
-			public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
-				super.gotRateLimitStatus(rateLimitStatus);
-				RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
-		        assertNotNull(searchTweetsRateLimit);
-		        assertEquals(searchTweetsRateLimit.getLimit(), 450);
-	            notifyResponse();
-			}
+            @Override
+            public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
+                super.gotRateLimitStatus(rateLimitStatus);
+                RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
+                assertNotNull(searchTweetsRateLimit);
+                assertEquals(searchTweetsRateLimit.getLimit(), 450);
+                notifyResponse();
+            }
 
 
-			@Override
-			public void onException(TwitterException ex, TwitterMethod method) {
-				assertEquals(403, ex.getStatusCode());
-	            assertEquals(220, ex.getErrorCode());
-	            assertEquals("Your credentials do not allow access to this resource", ex.getErrorMessage());
-	            notifyResponse();
-			}
+            @Override
+            public void onException(TwitterException ex, TwitterMethod method) {
+                assertEquals(403, ex.getStatusCode());
+                assertEquals(220, ex.getErrorCode());
+                assertEquals("Your credentials do not allow access to this resource", ex.getErrorMessage());
+                notifyResponse();
+            }
 
-			
-		};
-		twitter.addListener(listener);
+
+        };
+        twitter.addListener(listener);
         twitter.getRateLimitStatus("search");
         waitForResponse();
-        
+
     }
-    
-    
+
+
     private ResponseList<Status> statuses = null;
     private ResponseList<User> users = null;
     private ResponseList<DirectMessage> messages = null;
@@ -1092,13 +1088,13 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     @Override
     public void gotOAuthAccessToken(AccessToken token) {
     }
-    
-	@Override
-	public void gotOAuth2Token(OAuth2Token token) {
-		System.out.println("[gotOAuth2Token] token:" + token.getAccessToken() + " type:" + token.getTokenType());
+
+    @Override
+    public void gotOAuth2Token(OAuth2Token token) {
+        System.out.println("[gotOAuth2Token] token:" + token.getAccessToken() + " type:" + token.getTokenType());
         assertEquals("bearer", token.getTokenType());
         notifyResponse();
-	}
+    }
 
     private synchronized void notifyResponse() {
         this.notify();

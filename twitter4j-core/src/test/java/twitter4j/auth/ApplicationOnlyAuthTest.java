@@ -38,7 +38,6 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
     protected void setUp() throws Exception {
         super.setUp();
         builder = new ConfigurationBuilder();
-        builder.setUseSSL(true);
         builder.setApplicationOnlyAuthEnabled(true);
     }
 
@@ -91,7 +90,6 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
         // exercise & verify
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setUseSSL(true);
         cb.setApplicationOnlyAuthEnabled(true);
 
         Twitter twitter = new TwitterFactory(cb.build()).getInstance();
@@ -112,7 +110,6 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
         // exercise & verify
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setUseSSL(true);
         cb.setApplicationOnlyAuthEnabled(true);
         cb.setOAuthConsumerKey(browserConsumerKey);
         cb.setOAuthConsumerSecret(browserConsumerSecret);
@@ -157,7 +154,6 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
     public void testRequiringSSL() {
         // setup
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setUseSSL(false);
         cb.setOAuth2TokenURL("https://api.twitter.com/oauth2/token");
         cb.setApplicationOnlyAuthEnabled(true);
 

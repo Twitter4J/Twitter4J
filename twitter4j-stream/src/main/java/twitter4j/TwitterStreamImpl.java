@@ -20,7 +20,10 @@ import twitter4j.conf.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static twitter4j.HttpResponseCode.FORBIDDEN;
 import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
@@ -769,16 +772,6 @@ class StreamingReadTimeoutConfiguration implements HttpClientWrapperConfiguratio
     @Override
     public int getHttpRetryIntervalSeconds() {
         return nestedConf.getHttpRetryIntervalSeconds();
-    }
-
-    @Override
-    public int getHttpMaxTotalConnections() {
-        return nestedConf.getHttpMaxTotalConnections();
-    }
-
-    @Override
-    public int getHttpDefaultMaxPerRoute() {
-        return nestedConf.getHttpDefaultMaxPerRoute();
     }
 
     @Override

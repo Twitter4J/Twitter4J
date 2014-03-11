@@ -33,7 +33,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String userAgent;
     private String user;
     private String password;
-    private boolean useSSL;
     private boolean prettyDebug;
     private boolean gzipEnabled;
     private String httpProxyHost;
@@ -46,8 +45,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private int httpStreamingReadTimeout;
     private int httpRetryCount;
     private int httpRetryIntervalSeconds;
-    private int maxTotalConnections;
-    private int defaultMaxPerRoute;
     private String oAuthConsumerKey;
     private String oAuthConsumerSecret;
     private String oAuthAccessToken;
@@ -148,7 +145,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setDebug(false);
         setUser(null);
         setPassword(null);
-        setUseSSL(true);
         setPrettyDebugEnabled(false);
         setGZIPEnabled(true);
         setHttpProxyHost(null);
@@ -160,8 +156,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         setHttpStreamingReadTimeout(40 * 1000);
         setHttpRetryCount(0);
         setHttpRetryIntervalSeconds(5);
-        setHttpMaxTotalConnections(20);
-        setHttpDefaultMaxPerRoute(2);
         setOAuthConsumerKey(null);
         setOAuthConsumerSecret(null);
         setOAuthAccessToken(null);
@@ -291,11 +285,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return prettyDebug;
     }
 
-    protected final void setUseSSL(boolean useSSL) {
-        this.useSSL = useSSL;
-        fixRestBaseURL();
-    }
-
     protected final void setPrettyDebugEnabled(boolean prettyDebug) {
         this.prettyDebug = prettyDebug;
     }
@@ -417,24 +406,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpRetryIntervalSeconds = retryIntervalSeconds;
     }
 
-    @Override
-    public final int getHttpMaxTotalConnections() {
-        return maxTotalConnections;
-    }
-
-    protected final void setHttpMaxTotalConnections(int maxTotalConnections) {
-        this.maxTotalConnections = maxTotalConnections;
-    }
-
-    @Override
-    public final int getHttpDefaultMaxPerRoute() {
-        return defaultMaxPerRoute;
-    }
-
-    protected final void setHttpDefaultMaxPerRoute(int defaultMaxPerRoute) {
-        this.defaultMaxPerRoute = defaultMaxPerRoute;
-    }
-
     // oauth related setter/getters
 
     @Override
@@ -444,7 +415,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthConsumerKey(String oAuthConsumerKey) {
         this.oAuthConsumerKey = oAuthConsumerKey;
-        fixRestBaseURL();
     }
 
     @Override
@@ -454,7 +424,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthConsumerSecret(String oAuthConsumerSecret) {
         this.oAuthConsumerSecret = oAuthConsumerSecret;
-        fixRestBaseURL();
     }
 
     @Override
@@ -538,25 +507,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setRestBaseURL(String restBaseURL) {
         this.restBaseURL = restBaseURL;
-        fixRestBaseURL();
-    }
-
-    private void fixRestBaseURL() {
-        if (DEFAULT_REST_BASE_URL.equals(fixURL(false, restBaseURL))) {
-            this.restBaseURL = fixURL(useSSL, restBaseURL);
-        }
-        if (DEFAULT_OAUTH_ACCESS_TOKEN_URL.equals(fixURL(false, oAuthAccessTokenURL))) {
-            this.oAuthAccessTokenURL = fixURL(useSSL, oAuthAccessTokenURL);
-        }
-        if (DEFAULT_OAUTH_AUTHENTICATION_URL.equals(fixURL(false, oAuthAuthenticationURL))) {
-            this.oAuthAuthenticationURL = fixURL(useSSL, oAuthAuthenticationURL);
-        }
-        if (DEFAULT_OAUTH_AUTHORIZATION_URL.equals(fixURL(false, oAuthAuthorizationURL))) {
-            this.oAuthAuthorizationURL = fixURL(useSSL, oAuthAuthorizationURL);
-        }
-        if (DEFAULT_OAUTH_REQUEST_TOKEN_URL.equals(fixURL(false, oAuthRequestTokenURL))) {
-            this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
-        }
     }
 
     @Override
@@ -593,7 +543,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
         this.oAuthRequestTokenURL = oAuthRequestTokenURL;
-        fixRestBaseURL();
     }
 
     @Override
@@ -603,7 +552,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
         this.oAuthAuthorizationURL = oAuthAuthorizationURL;
-        fixRestBaseURL();
     }
 
     @Override
@@ -613,7 +561,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
         this.oAuthAccessTokenURL = oAuthAccessTokenURL;
-        fixRestBaseURL();
     }
 
     @Override
@@ -623,7 +570,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
         this.oAuthAuthenticationURL = oAuthAuthenticationURL;
-        fixRestBaseURL();
     }
 
     @Override
@@ -633,7 +579,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuth2TokenURL(String oAuth2TokenURL) {
         this.oAuth2TokenURL = oAuth2TokenURL;
-        fixRestBaseURL();
     }
 
     @Override
@@ -643,7 +588,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuth2InvalidateTokenURL(String oAuth2InvalidateTokenURL) {
         this.oAuth2InvalidateTokenURL = oAuth2InvalidateTokenURL;
-        fixRestBaseURL();
     }
 
     @Override
@@ -806,7 +750,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (asyncNumThreads != that.asyncNumThreads) return false;
         if (contributingTo != that.contributingTo) return false;
         if (debug != that.debug) return false;
-        if (defaultMaxPerRoute != that.defaultMaxPerRoute) return false;
         if (gzipEnabled != that.gzipEnabled) return false;
         if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
         if (httpProxyPort != that.httpProxyPort) return false;
@@ -819,12 +762,10 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (trimUserEnabled != that.trimUserEnabled) return false;
         if (includeRTsEnabled != that.includeRTsEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
-        if (maxTotalConnections != that.maxTotalConnections) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
         if (prettyDebug != that.prettyDebug) return false;
         if (stallWarningsEnabled != that.stallWarningsEnabled) return false;
         if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
-        if (useSSL != that.useSSL) return false;
         if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled) return false;
         if (userStreamWithFollowingsEnabled != that.userStreamWithFollowingsEnabled) return false;
         if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null) return false;
@@ -892,7 +833,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (userAgent != null ? userAgent.hashCode() : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (useSSL ? 1 : 0);
         result = 31 * result + (prettyDebug ? 1 : 0);
         result = 31 * result + (gzipEnabled ? 1 : 0);
         result = 31 * result + (httpProxyHost != null ? httpProxyHost.hashCode() : 0);
@@ -904,8 +844,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + httpStreamingReadTimeout;
         result = 31 * result + httpRetryCount;
         result = 31 * result + httpRetryIntervalSeconds;
-        result = 31 * result + maxTotalConnections;
-        result = 31 * result + defaultMaxPerRoute;
         result = 31 * result + (oAuthConsumerKey != null ? oAuthConsumerKey.hashCode() : 0);
         result = 31 * result + (oAuthConsumerSecret != null ? oAuthConsumerSecret.hashCode() : 0);
         result = 31 * result + (oAuthAccessToken != null ? oAuthAccessToken.hashCode() : 0);
@@ -954,7 +892,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", userAgent='" + userAgent + '\'' +
                 ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
-                ", useSSL=" + useSSL +
                 ", prettyDebug=" + prettyDebug +
                 ", gzipEnabled=" + gzipEnabled +
                 ", httpProxyHost='" + httpProxyHost + '\'' +
@@ -966,8 +903,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", httpStreamingReadTimeout=" + httpStreamingReadTimeout +
                 ", httpRetryCount=" + httpRetryCount +
                 ", httpRetryIntervalSeconds=" + httpRetryIntervalSeconds +
-                ", maxTotalConnections=" + maxTotalConnections +
-                ", defaultMaxPerRoute=" + defaultMaxPerRoute +
                 ", oAuthConsumerKey='" + oAuthConsumerKey + '\'' +
                 ", oAuthConsumerSecret='" + oAuthConsumerSecret + '\'' +
                 ", oAuthAccessToken='" + oAuthAccessToken + '\'' +

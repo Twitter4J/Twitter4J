@@ -323,25 +323,6 @@ public class ConfigurationTest extends TestCase {
         assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         builder = new ConfigurationBuilder();
-        builder.setUseSSL(true);
-        conf = builder.build();
-        assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
-
-        builder = new ConfigurationBuilder();
-        builder.setUseSSL(false);
-        conf = builder.build();
-        assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getUserStreamBaseURL().indexOf("https://"));
-
-        builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey("key");
         builder.setOAuthConsumerSecret("secret");
         conf = builder.build();

@@ -37,10 +37,6 @@ public interface HttpClientConfiguration {
 
     int getHttpRetryIntervalSeconds();
 
-    int getHttpMaxTotalConnections();
-
-    int getHttpDefaultMaxPerRoute();
-
     boolean isPrettyDebugEnabled();
 
     boolean isGZIPEnabled();
