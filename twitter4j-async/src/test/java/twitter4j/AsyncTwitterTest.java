@@ -352,8 +352,10 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         waitForResponse();
         //now befriending with non-existing user returns 404
         //http://groups.google.com/group/twitter-development-talk/browse_thread/thread/bd2a912b181bc39f
-        assertEquals(404, te.getStatusCode());
-        assertEquals(34, te.getErrorCode());
+        //assertEquals(404, te.getStatusCode());
+        // now it returns 403
+        assertEquals(403, te.getStatusCode());
+        assertEquals(108, te.getErrorCode());
 
     }
 
