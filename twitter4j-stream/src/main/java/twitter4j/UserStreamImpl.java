@@ -25,7 +25,7 @@ import java.io.InputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-class UserStreamImpl extends StatusStreamImpl implements UserStream {
+final class UserStreamImpl extends StatusStreamImpl implements UserStream {
     /*package*/ UserStreamImpl(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
         super(dispatcher, stream, conf);
     }

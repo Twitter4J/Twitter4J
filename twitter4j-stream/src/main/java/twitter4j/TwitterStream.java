@@ -34,58 +34,27 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @param listener listener to add
      * @since Twitter4J 2.1.8
      */
-    void addListener(StatusListener listener);
+    void addListener(StreamListener listener);
 
     /**
      * @param listener listener to remove
      * @since Twitter4J 3.1.0
      */
-    void removeListener(StatusListener listener);
+    void removeListener(StreamListener listener);
 
     /**
      * clear status listeners
      *
      * @since Twitter4J 3.1.0
      */
-    void clearStatusListeners();
+    void clearListeners();
 
     /**
-     * @param listener listener to add
-     * @since Twitter4J 2.1.8
-     */
-    void addListener(SiteStreamsListener listener);
-
-    /**
-     * @param listener listener to remove
-     * @since Twitter4J 3.1.0
-     */
-    void removeListener(SiteStreamsListener listener);
-
-    /**
-     * clear site streams listeners
+     * replace existing listener
      *
      * @since Twitter4J 3.1.0
      */
-    void clearSiteStreamsListeners();
-
-    /**
-     * @param listener listener to add
-     * @since Twitter4J 3.0.2
-     */
-    void addListener(RawStreamListener listener);
-
-    /**
-     * @param listener listener to remove
-     * @since Twitter4J 3.1.0
-     */
-    void removeListener(RawStreamListener listener);
-
-    /**
-     * clear raw stream listeners
-     *
-     * @since Twitter4J 3.1.0
-     */
-    void clearRawStreamListeners();
+    void replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded);
 
     /**
      * Starts listening on all public statuses. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the firehose. If your service warrants access to it, we'll contact you.

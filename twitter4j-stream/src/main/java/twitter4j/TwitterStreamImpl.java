@@ -60,7 +60,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     public void firehose(final int count) {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
-        startHandler(new TwitterStreamConsumer(streamListeners, rawStreamListeners) {
+        startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
                 return getFirehoseStream(count);
@@ -90,7 +90,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     public void links(final int count) {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
-        startHandler(new TwitterStreamConsumer(streamListeners, rawStreamListeners) {
+        startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
                 return getLinksStream(count);
@@ -131,7 +131,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     public void retweet() {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
-        startHandler(new TwitterStreamConsumer(streamListeners, rawStreamListeners) {
+        startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
                 return getRetweetStream();
@@ -165,7 +165,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     public void sample() {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
-        startHandler(new TwitterStreamConsumer(streamListeners, rawStreamListeners) {
+        startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
                 return getSampleStream();
@@ -205,24 +205,13 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     @Override
     public void user(final String[] track) {
         ensureAuthorizationEnabled();
-        ensureUserStreamListenerIsSet();
-        startHandler(new TwitterStreamConsumer(streamListeners, rawStreamListeners) {
+        ensureStatusStreamListenerIsSet();
+        startHandler(new TwitterStreamConsumer(Mode.user) {
             @Override
             public StatusStream getStream() throws TwitterException {
                 return getUserStream(track);
             }
         });
-    }
-
-    /**
-     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
-     *
-     * @return UserStream
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
-     */
-    UserStream getUserStream() throws TwitterException {
-        return getUserStream(null);
     }
 
     /**
@@ -264,7 +253,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureOAuthEnabled();
         ensureSiteStreamsListenerIsSet();
         final StreamController cs = new StreamController(http, auth);
-        startHandler(new TwitterStreamConsumer(siteStreamsListeners, rawStreamListeners) {
+        startHandler(new TwitterStreamConsumer(Mode.site) {
             @Override
             public StatusStream getStream() throws TwitterException {
                 try {
@@ -310,7 +299,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     public void filter(final FilterQuery query) {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
-        startHandler(new TwitterStreamConsumer(streamListeners, rawStreamListeners) {
+        startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
                 return getFilterStream(query);
@@ -348,26 +337,13 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
      */
 
     private void ensureStatusStreamListenerIsSet() {
-        if (streamListeners.length == 0 && rawStreamListeners.length == 0) {
+        if (streamListeners.size() == 0) {
             throw new IllegalStateException("StatusListener is not set.");
         }
     }
 
-    private void ensureUserStreamListenerIsSet() {
-        boolean found = false;
-        for (StreamListener listener : streamListeners) {
-            if (listener instanceof UserStreamListener) {
-                found = true;
-                break;
-            }
-        }
-        if (!found && rawStreamListeners.length == 0) {
-            throw new IllegalStateException("UserStreamListener is not set.");
-        }
-    }
-
     private void ensureSiteStreamsListenerIsSet() {
-        if (siteStreamsListeners.length == 0 && rawStreamListeners.length == 0) {
+        if (getSiteStreamsListeners().length == 0 && getRawStreamListeners().length == 0) {
             throw new IllegalStateException("SiteStreamsListener is not set.");
         }
     }
@@ -417,99 +393,80 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         this.lifeCycleListeners.add(listener);
     }
 
-    private StreamListener[] streamListeners = new StreamListener[0];
+    private final ArrayList<StreamListener> streamListeners = new ArrayList<StreamListener>(0);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addListener(StatusListener listener) {
-        ArrayList<StreamListener> newListeners = new ArrayList<StreamListener>(streamListeners.length);
-        Collections.addAll(newListeners, streamListeners);
-        newListeners.add(listener);
-        streamListeners = newListeners.toArray(new StreamListener[newListeners.size()]);
+    public synchronized void addListener(StreamListener listener) {
+        streamListeners.add(listener);
+        updateListeners();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void removeListener(StatusListener listener) {
-        ArrayList<StreamListener> newListeners = new ArrayList<StreamListener>(streamListeners.length);
-        Collections.addAll(newListeners, streamListeners);
-        newListeners.remove(listener);
-        streamListeners = newListeners.toArray(new StreamListener[newListeners.size()]);
+    public synchronized void removeListener(StreamListener listener) {
+        streamListeners.remove(listener);
+        updateListeners();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void clearStatusListeners() {
-        streamListeners = new StreamListener[0];
-    }
-
-    private SiteStreamsListener[] siteStreamsListeners = new SiteStreamsListener[0];
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addListener(SiteStreamsListener listener) {
-        ArrayList<SiteStreamsListener> newListeners = new ArrayList<SiteStreamsListener>(siteStreamsListeners.length);
-        Collections.addAll(newListeners, siteStreamsListeners);
-        newListeners.add(listener);
-        streamListeners = newListeners.toArray(new StreamListener[newListeners.size()]);
+    public synchronized void clearListeners() {
+        streamListeners.clear();
+        updateListeners();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void removeListener(SiteStreamsListener listener) {
-        ArrayList<SiteStreamsListener> newListeners = new ArrayList<SiteStreamsListener>(siteStreamsListeners.length);
-        Collections.addAll(newListeners, siteStreamsListeners);
-        newListeners.remove(listener);
-        siteStreamsListeners = newListeners.toArray(new SiteStreamsListener[newListeners.size()]);
+    public synchronized void replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded) {
+        streamListeners.remove(toBeRemoved);
+        streamListeners.add(toBeAdded);
+        updateListeners();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clearSiteStreamsListeners() {
-        siteStreamsListeners = new SiteStreamsListener[0];
+    private synchronized void updateListeners() {
+        if (handler != null) {
+            handler.updateListeners();
+            ;
+        }
     }
 
-    private RawStreamListener[] rawStreamListeners = new RawStreamListener[0];
-
-    /**
-     * {@inheritDoc}
-     */
-    public void addListener(RawStreamListener listener) {
-        ArrayList<RawStreamListener> newListeners = new ArrayList<RawStreamListener>(rawStreamListeners.length);
-        Collections.addAll(newListeners, rawStreamListeners);
-        newListeners.add(listener);
-        rawStreamListeners = newListeners.toArray(new RawStreamListener[newListeners.size()]);
+    private RawStreamListener[] getRawStreamListeners() {
+        ArrayList<RawStreamListener> rawStreamListeners = new ArrayList<RawStreamListener>();
+        for (StreamListener streamListener : streamListeners) {
+            if (streamListener instanceof RawStreamListener) {
+                rawStreamListeners.add((RawStreamListener) streamListener);
+            }
+        }
+        return rawStreamListeners.toArray(new RawStreamListener[rawStreamListeners.size()]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeListener(RawStreamListener listener) {
-        ArrayList<RawStreamListener> newListeners = new ArrayList<RawStreamListener>(rawStreamListeners.length);
-        Collections.addAll(newListeners, rawStreamListeners);
-        newListeners.remove(listener);
-        rawStreamListeners = newListeners.toArray(new RawStreamListener[newListeners.size()]);
+    private SiteStreamsListener[] getSiteStreamsListeners() {
+        ArrayList<SiteStreamsListener> siteStreamsListeners = new ArrayList<SiteStreamsListener>();
+        for (StreamListener streamListener : streamListeners) {
+            if (streamListener instanceof SiteStreamsListener) {
+                siteStreamsListeners.add((SiteStreamsListener) streamListener);
+            }
+        }
+        return siteStreamsListeners.toArray(new SiteStreamsListener[siteStreamsListeners.size()]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clearRawStreamListeners() {
-        rawStreamListeners = new RawStreamListener[0];
+    private StatusListener[] getStatusListeners() {
+        ArrayList<StatusListener> statusListeners = new ArrayList<StatusListener>();
+        for (StreamListener streamListener : streamListeners) {
+            if (streamListener instanceof StatusListener) {
+                statusListeners.add((StatusListener) streamListener);
+            }
+        }
+        return statusListeners.toArray(new StatusListener[statusListeners.size()]);
     }
 
     /*
@@ -528,18 +485,35 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     static int count = 0;
 
+    enum Mode {
+        user, status, site
+    }
+
     abstract class TwitterStreamConsumer extends Thread {
         private StatusStreamBase stream = null;
         private final String NAME = "Twitter Stream consumer-" + (++count);
         private volatile boolean closed = false;
-        private final StreamListener[] streamListeners;
-        private final RawStreamListener[] rawStreamListeners;
+        private StreamListener[] streamListeners;
+        private RawStreamListener[] rawStreamListeners;
+        private Mode mode;
 
-        TwitterStreamConsumer(StreamListener[] streamListeners, RawStreamListener[] rawStreamListeners) {
+        TwitterStreamConsumer(Mode mode) {
             super();
+            this.mode = mode;
+            updateListeners();
             setName(NAME + "[initializing]");
-            this.streamListeners = streamListeners;
-            this.rawStreamListeners = rawStreamListeners;
+        }
+
+        void updateListeners() {
+            switch (mode) {
+                case site:
+                    this.streamListeners = getSiteStreamsListeners();
+                    break;
+                default:
+                    this.streamListeners = getStatusListeners();
+                    break;
+            }
+            this.rawStreamListeners = getRawStreamListeners();
         }
 
         @Override
@@ -577,10 +551,12 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                                 stream.onException(e, this.streamListeners, this.rawStreamListeners);
                                 throw e;
                             } catch (Exception e) {
-                                logger.info(e.getMessage());
-                                stream.onException(e, this.streamListeners, this.rawStreamListeners);
-                                closed = true;
-                                break;
+                                if (!(e instanceof NullPointerException) && !e.getMessage().equals("Inflater has been closed")) {
+                                    logger.info(e.getMessage());
+                                    stream.onException(e, this.streamListeners, this.rawStreamListeners);
+                                    closed = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -678,18 +654,15 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
         public synchronized void close() {
             setStatus("[Disposing thread]");
-            try {
-                if (stream != null) {
-                    try {
-                        stream.close();
-                    } catch (IOException ignore) {
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        logger.warn(e.getMessage());
-                    }
+            if (stream != null) {
+                try {
+                    closed = true;
+                    stream.close();
+                } catch (IOException ignore) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.warn(e.getMessage());
                 }
-            } finally {
-                closed = true;
             }
         }
 
@@ -715,10 +688,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         if (http != null ? !http.equals(that.http) : that.http != null) return false;
         if (lifeCycleListeners != null ? !lifeCycleListeners.equals(that.lifeCycleListeners) : that.lifeCycleListeners != null)
             return false;
-        if (rawStreamListeners != null ? !rawStreamListeners.equals(that.rawStreamListeners) : that.rawStreamListeners != null)
-            return false;
-        if (siteStreamsListeners != null ? !siteStreamsListeners.equals(that.siteStreamsListeners) : that.siteStreamsListeners != null)
-            return false;
         if (stallWarningsGetParam != null ? !stallWarningsGetParam.equals(that.stallWarningsGetParam) : that.stallWarningsGetParam != null)
             return false;
         if (stallWarningsParam != null ? !stallWarningsParam.equals(that.stallWarningsParam) : that.stallWarningsParam != null)
@@ -738,8 +707,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         result = 31 * result + (stallWarningsGetParam != null ? stallWarningsGetParam.hashCode() : 0);
         result = 31 * result + (stallWarningsParam != null ? stallWarningsParam.hashCode() : 0);
         result = 31 * result + (streamListeners != null ? streamListeners.hashCode() : 0);
-        result = 31 * result + (siteStreamsListeners != null ? siteStreamsListeners.hashCode() : 0);
-        result = 31 * result + (rawStreamListeners != null ? rawStreamListeners.hashCode() : 0);
         return result;
     }
 
@@ -752,8 +719,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 ", stallWarningsGetParam='" + stallWarningsGetParam + '\'' +
                 ", stallWarningsParam=" + stallWarningsParam +
                 ", streamListeners=" + streamListeners +
-                ", siteStreamsListeners=" + siteStreamsListeners +
-                ", rawStreamListeners=" + rawStreamListeners +
                 '}';
     }
 }

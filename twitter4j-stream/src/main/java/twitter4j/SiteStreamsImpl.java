@@ -25,7 +25,7 @@ import java.io.InputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-class SiteStreamsImpl extends StatusStreamBase {
+final class SiteStreamsImpl extends StatusStreamBase {
 
     private final StreamController cs;
 

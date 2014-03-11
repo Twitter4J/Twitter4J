@@ -302,7 +302,7 @@ abstract class StatusStreamBase implements StatusStream {
 
     protected Status asStatus(JSONObject json) throws TwitterException {
         Status status = new StatusJSONImpl(json);
-        ;
+
         if (CONF.isJSONStoreEnabled()) {
             TwitterObjectFactory.registerJSONObject(status, json);
         }
