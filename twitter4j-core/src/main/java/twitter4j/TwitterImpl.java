@@ -1903,10 +1903,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     private HttpResponse get(String url) throws TwitterException {
         ensureAuthorizationEnabled();
-        if (url.contains("?")) {
-            url = url + "&" + IMPLICIT_PARAMS_STR;
-        } else {
-            url = url + "?" + IMPLICIT_PARAMS_STR;
+        if (IMPLICIT_PARAMS_STR.length() > 0) {
+            if (url.contains("?")) {
+                url = url + "&" + IMPLICIT_PARAMS_STR;
+            } else {
+                url = url + "?" + IMPLICIT_PARAMS_STR;
+            }
         }
         if (!conf.isMBeanEnabled()) {
             return http.get(url, auth);
