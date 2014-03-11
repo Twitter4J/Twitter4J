@@ -109,8 +109,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertTrue(20 < statuses.size());
 
         IDs retweeters = twitter1.getRetweeterIds(18594701629l, -1);
-        assertEquals(121079659l, retweeters.getIDs()[0]);
-        assertTrue(50 < statuses.size());
+        assertTrue(0 < retweeters.getIDs().length);
     }
 
     private void assertIsRetweet(List<Status> statuses) {
