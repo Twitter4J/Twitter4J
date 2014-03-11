@@ -69,8 +69,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private long contributingTo = -1L;
 
-    private boolean includeRTsEnabled = true;
-    private boolean includeEntitiesEnabled = true;
     private boolean includeMyRetweetEnabled = true;
     private boolean trimUserEnabled = false;
 
@@ -114,12 +112,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 } catch (IllegalAccessException ignore) {
                 }
             }
-        }
-        if (!includeRTsEnabled) {
-            log.warn("includeRTsEnabled is set to false. This configuration may not take effect after May 14th, 2012. https://dev.twitter.com/blog/api-housekeeping");
-        }
-        if (!includeEntitiesEnabled) {
-            log.warn("includeEntitiesEnabled is set to false. This configuration may not take effect after May 14th, 2012. https://dev.twitter.com/blog/api-housekeeping");
         }
     }
 
@@ -481,26 +473,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return loggerFactory;
     }
 
-    @Override
-    public boolean isIncludeRTsEnabled() {
-        return includeRTsEnabled;
-    }
-
-    @Override
-    public boolean isIncludeEntitiesEnabled() {
-        return includeEntitiesEnabled;
-    }
-
     protected final void setLoggerFactory(String loggerImpl) {
         this.loggerFactory = loggerImpl;
-    }
-
-    protected final void setIncludeRTsEnbled(boolean enabled) {
-        this.includeRTsEnabled = enabled;
-    }
-
-    protected final void setIncludeEntitiesEnbled(boolean enabled) {
-        this.includeEntitiesEnabled = enabled;
     }
 
     public boolean isIncludeMyRetweetEnabled() {
@@ -632,10 +606,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (httpRetryCount != that.httpRetryCount) return false;
         if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
-        if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
         if (includeMyRetweetEnabled != that.includeMyRetweetEnabled) return false;
         if (trimUserEnabled != that.trimUserEnabled) return false;
-        if (includeRTsEnabled != that.includeRTsEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
         if (prettyDebug != that.prettyDebug) return false;
@@ -739,8 +711,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (loggerFactory != null ? loggerFactory.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
         result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
-        result = 31 * result + (includeRTsEnabled ? 1 : 0);
-        result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
         result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
         result = 31 * result + (trimUserEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
@@ -796,8 +766,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", loggerFactory='" + loggerFactory + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
                 ", contributingTo=" + contributingTo +
-                ", includeRTsEnabled=" + includeRTsEnabled +
-                ", includeEntitiesEnabled=" + includeEntitiesEnabled +
                 ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
                 ", trimUserEnabled=" + trimUserEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +

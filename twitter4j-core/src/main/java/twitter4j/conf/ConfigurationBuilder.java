@@ -246,18 +246,6 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder setIncludeRTsEnabled(boolean enabled) {
-        checkNotBuilt();
-        configurationBean.setIncludeRTsEnbled(enabled);
-        return this;
-    }
-
-    public ConfigurationBuilder setIncludeEntitiesEnabled(boolean enabled) {
-        checkNotBuilt();
-        configurationBean.setIncludeEntitiesEnbled(enabled);
-        return this;
-    }
-
     public ConfigurationBuilder setTrimUserEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setTrimUserEnabled(enabled);

@@ -50,16 +50,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         HttpParameter[] implicitParams = implicitParamsMap.get(conf);
         String implicitParamsStr = implicitParamsStrMap.get(conf);
         if (implicitParams == null) {
-            String includeEntities = conf.isIncludeEntitiesEnabled() ? "1" : "0";
-            String includeRTs = conf.isIncludeRTsEnabled() ? "1" : "0";
             boolean contributorsEnabled = conf.getContributingTo() != -1L;
-            implicitParamsStr = "include_entities=" + includeEntities + "&include_rts=" + includeRTs
-                    + (contributorsEnabled ? "&contributingto=" + conf.getContributingTo() : "");
+            implicitParamsStr = contributorsEnabled ? "&contributingto=" + conf.getContributingTo() : "";
             implicitParamsStrMap.put(conf, implicitParamsStr);
 
-            List<HttpParameter> params = new ArrayList<HttpParameter>(4);
-            params.add(new HttpParameter("include_entities", includeEntities));
-            params.add(new HttpParameter("include_rts", includeRTs));
+            List<HttpParameter> params = new ArrayList<HttpParameter>(2);
             if (contributorsEnabled) {
                 params.add(new HttpParameter("contributingto", conf.getContributingTo()));
             }

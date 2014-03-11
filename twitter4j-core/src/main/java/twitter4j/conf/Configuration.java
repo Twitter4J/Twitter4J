@@ -128,9 +128,5 @@ public interface Configuration extends HttpClientConfiguration
 
     String getLoggerFactory();
 
-    boolean isIncludeRTsEnabled();
-
-    boolean isIncludeEntitiesEnabled();
-
     boolean isTrimUserEnabled();
 }

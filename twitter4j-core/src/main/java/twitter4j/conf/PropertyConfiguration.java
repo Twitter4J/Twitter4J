@@ -70,8 +70,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String ASYNC_NUM_THREADS = "async.numThreads";
     public static final String CONTRIBUTING_TO = "contributingTo";
     public static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
-    public static final String INCLUDE_RTS = "includeRTs";
-    public static final String INCLUDE_ENTITIES = "includeEntities";
     public static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
     public static final String LOGGER_FACTORY = "loggerFactory";
     public static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
@@ -348,12 +346,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, SITE_STREAM_BASE_URL)) {
             setSiteStreamBaseURL(getString(props, prefix, SITE_STREAM_BASE_URL));
-        }
-        if (notNull(props, prefix, INCLUDE_RTS)) {
-            setIncludeRTsEnbled(getBoolean(props, prefix, INCLUDE_RTS));
-        }
-        if (notNull(props, prefix, INCLUDE_ENTITIES)) {
-            setIncludeEntitiesEnbled(getBoolean(props, prefix, INCLUDE_ENTITIES));
         }
         if (notNull(props, prefix, INCLUDE_MY_RETWEET)) {
             setIncludeMyRetweetEnabled(getBoolean(props, prefix, INCLUDE_MY_RETWEET));
