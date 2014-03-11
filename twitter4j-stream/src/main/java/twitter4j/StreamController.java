@@ -40,7 +40,7 @@ public class StreamController {
     }
 
     /*package*/ StreamController(Configuration conf) {
-        HTTP = new HttpClientWrapper(conf);
+        HTTP = new HttpClientWrapper(conf.getHttpClientConfiguration());
         AUTH = AuthorizationFactory.getInstance(conf);
     }
 

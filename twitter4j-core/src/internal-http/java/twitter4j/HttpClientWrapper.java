@@ -54,7 +54,7 @@ public final class HttpClientWrapper implements java.io.Serializable {
 
     // never used with this project. Just for handiness for those using this class.
     public HttpClientWrapper() {
-        this(ConfigurationContext.getInstance());
+        this(ConfigurationContext.getInstance().getHttpClientConfiguration());
     }
 
     public void shutdown() {

@@ -24,8 +24,7 @@ import java.util.Properties;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface Configuration extends HttpClientConfiguration
-        , AuthorizationConfiguration, java.io.Serializable {
+public interface Configuration extends AuthorizationConfiguration, java.io.Serializable {
 
     boolean isDebugEnabled();
 
@@ -36,24 +35,9 @@ public interface Configuration extends HttpClientConfiguration
     String getPassword();
 
     // methods for HttpClientConfiguration
-
-    String getHttpProxyHost();
-
-    String getHttpProxyUser();
-
-    String getHttpProxyPassword();
-
-    int getHttpProxyPort();
-
-    int getHttpConnectionTimeout();
-
-    int getHttpReadTimeout();
+    HttpClientConfiguration getHttpClientConfiguration();
 
     int getHttpStreamingReadTimeout();
-
-    int getHttpRetryCount();
-
-    int getHttpRetryIntervalSeconds();
 
     // oauth related setter/getters
 

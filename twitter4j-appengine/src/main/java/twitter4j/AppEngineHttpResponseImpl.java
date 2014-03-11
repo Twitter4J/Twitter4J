@@ -36,7 +36,7 @@ final class AppEngineHttpResponseImpl extends HttpResponse implements HttpRespon
     private static Logger logger = Logger.getLogger(AppEngineHttpResponseImpl.class);
 
     AppEngineHttpResponseImpl(Future<HTTPResponse> futureResponse) {
-        super(ConfigurationContext.getInstance());
+        super(ConfigurationContext.getInstance().getHttpClientConfiguration());
         this.future = futureResponse;
     }
 

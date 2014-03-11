@@ -738,27 +738,27 @@ class StreamingReadTimeoutConfiguration implements HttpClientConfiguration {
 
     @Override
     public String getHttpProxyHost() {
-        return nestedConf.getHttpProxyHost();
+        return nestedConf.getHttpClientConfiguration().getHttpProxyHost();
     }
 
     @Override
     public int getHttpProxyPort() {
-        return nestedConf.getHttpProxyPort();
+        return nestedConf.getHttpClientConfiguration().getHttpProxyPort();
     }
 
     @Override
     public String getHttpProxyUser() {
-        return nestedConf.getHttpProxyUser();
+        return nestedConf.getHttpClientConfiguration().getHttpProxyUser();
     }
 
     @Override
     public String getHttpProxyPassword() {
-        return nestedConf.getHttpProxyPassword();
+        return nestedConf.getHttpClientConfiguration().getHttpProxyPassword();
     }
 
     @Override
     public int getHttpConnectionTimeout() {
-        return nestedConf.getHttpConnectionTimeout();
+        return nestedConf.getHttpClientConfiguration().getHttpConnectionTimeout();
     }
 
     @Override
@@ -769,21 +769,21 @@ class StreamingReadTimeoutConfiguration implements HttpClientConfiguration {
 
     @Override
     public int getHttpRetryCount() {
-        return nestedConf.getHttpRetryCount();
+        return nestedConf.getHttpClientConfiguration().getHttpRetryCount();
     }
 
     @Override
     public int getHttpRetryIntervalSeconds() {
-        return nestedConf.getHttpRetryIntervalSeconds();
+        return nestedConf.getHttpClientConfiguration().getHttpRetryIntervalSeconds();
     }
 
     @Override
     public boolean isPrettyDebugEnabled() {
-        return nestedConf.isPrettyDebugEnabled();
+        return nestedConf.getHttpClientConfiguration().isPrettyDebugEnabled();
     }
 
     @Override
     public boolean isGZIPEnabled() {
-        return nestedConf.isGZIPEnabled();
+        return nestedConf.getHttpClientConfiguration().isGZIPEnabled();
     }
 }

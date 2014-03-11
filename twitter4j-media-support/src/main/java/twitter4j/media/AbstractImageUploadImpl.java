@@ -50,7 +50,7 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
     AbstractImageUploadImpl(Configuration conf, OAuthAuthorization oauth) {
         this.oauth = oauth;
         this.conf = conf;
-        client = new HttpClientWrapper(conf);
+        client = new HttpClientWrapper(conf.getHttpClientConfiguration());
     }
 
     public AbstractImageUploadImpl(Configuration conf, String apiKey, OAuthAuthorization oauth) {

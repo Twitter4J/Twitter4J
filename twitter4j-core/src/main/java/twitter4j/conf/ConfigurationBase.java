@@ -16,6 +16,7 @@
 
 package twitter4j.conf;
 
+import twitter4j.HttpClientConfiguration;
 import twitter4j.Logger;
 
 import java.io.ObjectStreamException;
@@ -33,14 +34,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private boolean debug = false;
     private String user = null;
     private String password = null;
-    private boolean prettyDebug = false;
-    private boolean gzipEnabled = true;
-    private String httpProxyHost = null;
-    private String httpProxyUser = null;
-    private String httpProxyPassword = null;
-    private int httpProxyPort = -1;
-    private int httpConnectionTimeout = 20000;
-    private int httpReadTimeout = 120000;
+    private HttpClientConfiguration httpConf;
+
     private int httpStreamingReadTimeout = 40 * 1000;
     private int httpRetryCount = 0;
     private int httpRetryIntervalSeconds = 5;
@@ -91,7 +86,138 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
 
     protected ConfigurationBase() {
+        httpConf = new MyHttpClientConfiguration(null // proxy host
+                , null // proxy user
+                , null // proxy password
+                , -1 // proxy port
+                , 20000 // connection timeout
+                , 120000 // read timeout
+                , false // pretty debug
+                , true // gzip enabled
+        );
     }
+
+    class MyHttpClientConfiguration implements HttpClientConfiguration {
+        private String httpProxyHost = null;
+        private String httpProxyUser = null;
+        private String httpProxyPassword = null;
+        private int httpProxyPort = -1;
+        private int httpConnectionTimeout = 20000;
+        private int httpReadTimeout = 120000;
+        private boolean prettyDebug = false;
+        private boolean gzipEnabled = true;
+
+        MyHttpClientConfiguration(String httpProxyHost, String httpProxyUser, String httpProxyPassword, int httpProxyPort, int httpConnectionTimeout, int httpReadTimeout, boolean prettyDebug, boolean gzipEnabled) {
+            this.httpProxyHost = httpProxyHost;
+            this.httpProxyUser = httpProxyUser;
+            this.httpProxyPassword = httpProxyPassword;
+            this.httpProxyPort = httpProxyPort;
+            this.httpConnectionTimeout = httpConnectionTimeout;
+            this.httpReadTimeout = httpReadTimeout;
+            this.prettyDebug = prettyDebug;
+            this.gzipEnabled = gzipEnabled;
+        }
+
+        @Override
+        public String getHttpProxyHost() {
+            return httpProxyHost;
+        }
+
+        @Override
+        public int getHttpProxyPort() {
+            return httpProxyPort;
+        }
+
+        @Override
+        public String getHttpProxyUser() {
+            return httpProxyUser;
+        }
+
+        @Override
+        public String getHttpProxyPassword() {
+            return httpProxyPassword;
+        }
+
+        @Override
+        public int getHttpConnectionTimeout() {
+            return httpConnectionTimeout;
+        }
+
+        @Override
+        public int getHttpReadTimeout() {
+            return httpReadTimeout;
+        }
+
+        @Override
+        public int getHttpRetryCount() {
+            return httpRetryCount;
+        }
+
+        @Override
+        public int getHttpRetryIntervalSeconds() {
+            return httpRetryIntervalSeconds;
+        }
+
+        @Override
+        public boolean isPrettyDebugEnabled() {
+            return prettyDebug;
+        }
+
+        @Override
+        public boolean isGZIPEnabled() {
+            return gzipEnabled;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            MyHttpClientConfiguration that = (MyHttpClientConfiguration) o;
+
+            if (gzipEnabled != that.gzipEnabled) return false;
+            if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
+            if (httpProxyPort != that.httpProxyPort) return false;
+            if (httpReadTimeout != that.httpReadTimeout) return false;
+            if (prettyDebug != that.prettyDebug) return false;
+            if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
+                return false;
+            if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
+                return false;
+            if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
+                return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = httpProxyHost != null ? httpProxyHost.hashCode() : 0;
+            result = 31 * result + (httpProxyUser != null ? httpProxyUser.hashCode() : 0);
+            result = 31 * result + (httpProxyPassword != null ? httpProxyPassword.hashCode() : 0);
+            result = 31 * result + httpProxyPort;
+            result = 31 * result + httpConnectionTimeout;
+            result = 31 * result + httpReadTimeout;
+            result = 31 * result + (prettyDebug ? 1 : 0);
+            result = 31 * result + (gzipEnabled ? 1 : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "MyHttpClientConfiguration{" +
+                    "httpProxyHost='" + httpProxyHost + '\'' +
+                    ", httpProxyUser='" + httpProxyUser + '\'' +
+                    ", httpProxyPassword='" + httpProxyPassword + '\'' +
+                    ", httpProxyPort=" + httpProxyPort +
+                    ", httpConnectionTimeout=" + httpConnectionTimeout +
+                    ", httpReadTimeout=" + httpReadTimeout +
+                    ", prettyDebug=" + prettyDebug +
+                    ", gzipEnabled=" + gzipEnabled +
+                    '}';
+        }
+    }
+
 
     public void dumpConfiguration() {
         Logger log = Logger.getLogger(ConfigurationBase.class);
@@ -134,82 +260,111 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return password;
     }
 
+    @Override
+    public HttpClientConfiguration getHttpClientConfiguration() {
+        return httpConf;
+    }
+
     protected final void setPassword(String password) {
         this.password = password;
     }
 
-    @Override
-    public boolean isPrettyDebugEnabled() {
-        return prettyDebug;
-    }
-
     protected final void setPrettyDebugEnabled(boolean prettyDebug) {
-        this.prettyDebug = prettyDebug;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , prettyDebug
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setGZIPEnabled(boolean gzipEnabled) {
-        this.gzipEnabled = gzipEnabled;
-    }
-
-    @Override
-    public boolean isGZIPEnabled() {
-        return gzipEnabled;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , gzipEnabled
+        );
     }
 
     // methods for HttpClientConfiguration
 
-    @Override
-    public final String getHttpProxyHost() {
-        return httpProxyHost;
-    }
-
     protected final void setHttpProxyHost(String proxyHost) {
-        this.httpProxyHost = proxyHost;
-    }
-
-    @Override
-    public final String getHttpProxyUser() {
-        return httpProxyUser;
+        httpConf = new MyHttpClientConfiguration(proxyHost
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpProxyUser(String proxyUser) {
-        this.httpProxyUser = proxyUser;
-    }
-
-    @Override
-    public final String getHttpProxyPassword() {
-        return httpProxyPassword;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , proxyUser
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpProxyPassword(String proxyPassword) {
-        this.httpProxyPassword = proxyPassword;
-    }
-
-    @Override
-    public final int getHttpProxyPort() {
-        return httpProxyPort;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , proxyPassword
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpProxyPort(int proxyPort) {
-        this.httpProxyPort = proxyPort;
-    }
-
-    @Override
-    public final int getHttpConnectionTimeout() {
-        return httpConnectionTimeout;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , proxyPort
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpConnectionTimeout(int connectionTimeout) {
-        this.httpConnectionTimeout = connectionTimeout;
-    }
-
-    @Override
-    public final int getHttpReadTimeout() {
-        return httpReadTimeout;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , connectionTimeout
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpReadTimeout(int readTimeout) {
-        this.httpReadTimeout = readTimeout;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , readTimeout
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     @Override
@@ -221,19 +376,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpStreamingReadTimeout = httpStreamingReadTimeout;
     }
 
-
-    @Override
-    public final int getHttpRetryCount() {
-        return httpRetryCount;
-    }
-
     protected final void setHttpRetryCount(int retryCount) {
         this.httpRetryCount = retryCount;
-    }
-
-    @Override
-    public final int getHttpRetryIntervalSeconds() {
-        return httpRetryIntervalSeconds;
     }
 
     protected final void setHttpRetryIntervalSeconds(int retryIntervalSeconds) {
@@ -541,33 +685,23 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         ConfigurationBase that = (ConfigurationBase) o;
 
+        if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
         if (asyncNumThreads != that.asyncNumThreads) return false;
         if (contributingTo != that.contributingTo) return false;
         if (debug != that.debug) return false;
-        if (gzipEnabled != that.gzipEnabled) return false;
-        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
-        if (httpProxyPort != that.httpProxyPort) return false;
-        if (httpReadTimeout != that.httpReadTimeout) return false;
         if (httpRetryCount != that.httpRetryCount) return false;
         if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
         if (includeMyRetweetEnabled != that.includeMyRetweetEnabled) return false;
-        if (trimUserEnabled != that.trimUserEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
-        if (prettyDebug != that.prettyDebug) return false;
         if (stallWarningsEnabled != that.stallWarningsEnabled) return false;
-        if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
+        if (trimUserEnabled != that.trimUserEnabled) return false;
         if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled) return false;
         if (userStreamWithFollowingsEnabled != that.userStreamWithFollowingsEnabled) return false;
         if (dispatcherImpl != null ? !dispatcherImpl.equals(that.dispatcherImpl) : that.dispatcherImpl != null)
             return false;
-        if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
-            return false;
-        if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
-            return false;
-        if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
-            return false;
+        if (httpConf != null ? !httpConf.equals(that.httpConf) : that.httpConf != null) return false;
         if (loggerFactory != null ? !loggerFactory.equals(that.loggerFactory) : that.loggerFactory != null)
             return false;
         if (mediaProvider != null ? !mediaProvider.equals(that.mediaProvider) : that.mediaProvider != null)
@@ -576,23 +710,23 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (mediaProviderParameters != null ? !mediaProviderParameters.equals(that.mediaProviderParameters) : that.mediaProviderParameters != null)
             return false;
-        if (oAuthAccessToken != null ? !oAuthAccessToken.equals(that.oAuthAccessToken) : that.oAuthAccessToken != null)
+        if (oAuth2AccessToken != null ? !oAuth2AccessToken.equals(that.oAuth2AccessToken) : that.oAuth2AccessToken != null)
             return false;
-        if (oAuthAccessTokenSecret != null ? !oAuthAccessTokenSecret.equals(that.oAuthAccessTokenSecret) : that.oAuthAccessTokenSecret != null)
+        if (oAuth2InvalidateTokenURL != null ? !oAuth2InvalidateTokenURL.equals(that.oAuth2InvalidateTokenURL) : that.oAuth2InvalidateTokenURL != null)
             return false;
         if (oAuth2TokenType != null ? !oAuth2TokenType.equals(that.oAuth2TokenType) : that.oAuth2TokenType != null)
             return false;
-        if (oAuth2AccessToken != null ? !oAuth2AccessToken.equals(that.oAuth2AccessToken) : that.oAuth2AccessToken != null)
+        if (oAuth2TokenURL != null ? !oAuth2TokenURL.equals(that.oAuth2TokenURL) : that.oAuth2TokenURL != null)
+            return false;
+        if (oAuthAccessToken != null ? !oAuthAccessToken.equals(that.oAuthAccessToken) : that.oAuthAccessToken != null)
+            return false;
+        if (oAuthAccessTokenSecret != null ? !oAuthAccessTokenSecret.equals(that.oAuthAccessTokenSecret) : that.oAuthAccessTokenSecret != null)
             return false;
         if (oAuthAccessTokenURL != null ? !oAuthAccessTokenURL.equals(that.oAuthAccessTokenURL) : that.oAuthAccessTokenURL != null)
             return false;
         if (oAuthAuthenticationURL != null ? !oAuthAuthenticationURL.equals(that.oAuthAuthenticationURL) : that.oAuthAuthenticationURL != null)
             return false;
         if (oAuthAuthorizationURL != null ? !oAuthAuthorizationURL.equals(that.oAuthAuthorizationURL) : that.oAuthAuthorizationURL != null)
-            return false;
-        if (oAuth2TokenURL != null ? !oAuth2TokenURL.equals(that.oAuth2TokenURL) : that.oAuth2TokenURL != null)
-            return false;
-        if (oAuth2InvalidateTokenURL != null ? !oAuth2InvalidateTokenURL.equals(that.oAuth2InvalidateTokenURL) : that.oAuth2InvalidateTokenURL != null)
             return false;
         if (oAuthConsumerKey != null ? !oAuthConsumerKey.equals(that.oAuthConsumerKey) : that.oAuthConsumerKey != null)
             return false;
@@ -618,14 +752,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         int result = (debug ? 1 : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (prettyDebug ? 1 : 0);
-        result = 31 * result + (gzipEnabled ? 1 : 0);
-        result = 31 * result + (httpProxyHost != null ? httpProxyHost.hashCode() : 0);
-        result = 31 * result + (httpProxyUser != null ? httpProxyUser.hashCode() : 0);
-        result = 31 * result + (httpProxyPassword != null ? httpProxyPassword.hashCode() : 0);
-        result = 31 * result + httpProxyPort;
-        result = 31 * result + httpConnectionTimeout;
-        result = 31 * result + httpReadTimeout;
+        result = 31 * result + (httpConf != null ? httpConf.hashCode() : 0);
         result = 31 * result + httpStreamingReadTimeout;
         result = 31 * result + httpRetryCount;
         result = 31 * result + httpRetryIntervalSeconds;
@@ -646,8 +773,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
         result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
         result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
-        result = 31 * result + (loggerFactory != null ? loggerFactory.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
+        result = 31 * result + (loggerFactory != null ? loggerFactory.hashCode() : 0);
         result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
         result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
         result = 31 * result + (trimUserEnabled ? 1 : 0);
@@ -669,14 +796,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 "debug=" + debug +
                 ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
-                ", prettyDebug=" + prettyDebug +
-                ", gzipEnabled=" + gzipEnabled +
-                ", httpProxyHost='" + httpProxyHost + '\'' +
-                ", httpProxyUser='" + httpProxyUser + '\'' +
-                ", httpProxyPassword='" + httpProxyPassword + '\'' +
-                ", httpProxyPort=" + httpProxyPort +
-                ", httpConnectionTimeout=" + httpConnectionTimeout +
-                ", httpReadTimeout=" + httpReadTimeout +
+                ", httpConf=" + httpConf +
                 ", httpStreamingReadTimeout=" + httpStreamingReadTimeout +
                 ", httpRetryCount=" + httpRetryCount +
                 ", httpRetryIntervalSeconds=" + httpRetryIntervalSeconds +
@@ -697,8 +817,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
                 ", siteStreamBaseURL='" + siteStreamBaseURL + '\'' +
                 ", dispatcherImpl='" + dispatcherImpl + '\'' +
-                ", loggerFactory='" + loggerFactory + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
+                ", loggerFactory='" + loggerFactory + '\'' +
                 ", contributingTo=" + contributingTo +
                 ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
                 ", trimUserEnabled=" + trimUserEnabled +

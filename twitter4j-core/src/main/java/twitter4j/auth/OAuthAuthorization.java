@@ -53,7 +53,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      */
     public OAuthAuthorization(Configuration conf) {
         this.conf = conf;
-        http = new HttpClientWrapper(conf);
+        http = new HttpClientWrapper(conf.getHttpClientConfiguration());
         setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
         if (conf.getOAuthAccessToken() != null && conf.getOAuthAccessTokenSecret() != null) {
             setOAuthAccessToken(new AccessToken(conf.getOAuthAccessToken(), conf.getOAuthAccessTokenSecret()));
