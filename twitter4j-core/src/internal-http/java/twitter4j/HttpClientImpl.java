@@ -34,10 +34,16 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
     private static final long serialVersionUID = -8819171414069621503L;
 
     static {
-        if (ConfigurationContext.getInstance().isDalvik()) {
+        // detecting dalvik (Android platform)
+        try {
+            // dalvik.system.VMRuntime class should be existing on Android platform.
+            // @see http://developer.android.com/reference/dalvik/system/VMRuntime.html
+            Class.forName("dalvik.system.VMRuntime");
+            // detected Dalvik VM
             // quick and dirty workaround for TFJ-296
             // it must be an Android/Dalvik/Harmony side issue!!!!
             System.setProperty("http.keepAlive", "false");
+        } catch (ClassNotFoundException ignore) {
         }
     }
 

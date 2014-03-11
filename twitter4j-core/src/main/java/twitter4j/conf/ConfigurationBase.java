@@ -29,186 +29,74 @@ import java.util.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class ConfigurationBase implements Configuration, java.io.Serializable {
-    private boolean debug;
-    private String userAgent;
-    private String user;
-    private String password;
-    private boolean prettyDebug;
-    private boolean gzipEnabled;
-    private String httpProxyHost;
-    private String httpProxyUser;
-    private String httpProxyPassword;
-    private int httpProxyPort;
-    private int httpConnectionTimeout;
-    private int httpReadTimeout;
+    private boolean debug = false;
+    private String user = null;
+    private String password = null;
+    private boolean prettyDebug = false;
+    private boolean gzipEnabled = true;
+    private String httpProxyHost = null;
+    private String httpProxyUser = null;
+    private String httpProxyPassword = null;
+    private int httpProxyPort = -1;
+    private int httpConnectionTimeout = 20000;
+    private int httpReadTimeout = 120000;
+    private int httpStreamingReadTimeout = 40 * 1000;
+    private int httpRetryCount = 0;
+    private int httpRetryIntervalSeconds = 5;
 
-    private int httpStreamingReadTimeout;
-    private int httpRetryCount;
-    private int httpRetryIntervalSeconds;
-    private String oAuthConsumerKey;
-    private String oAuthConsumerSecret;
-    private String oAuthAccessToken;
-    private String oAuthAccessTokenSecret;
+    private String oAuthConsumerKey = null;
+    private String oAuthConsumerSecret = null;
+    private String oAuthAccessToken = null;
+    private String oAuthAccessTokenSecret = null;
     private String oAuth2TokenType;
     private String oAuth2AccessToken;
+    private String oAuthRequestTokenURL = "https://api.twitter.com/oauth/request_token";
+    private String oAuthAuthorizationURL = "https://api.twitter.com/oauth/authorize";
+    private String oAuthAccessTokenURL = "https://api.twitter.com/oauth/access_token";
+    private String oAuthAuthenticationURL = "https://api.twitter.com/oauth/authenticate";
+    private String oAuth2TokenURL = "https://api.twitter.com/oauth2/token";
+    private String oAuth2InvalidateTokenURL = "https://api.twitter.com/oauth2/invalidate_token";
 
-    private String oAuthRequestTokenURL;
-    private String oAuthAuthorizationURL;
-    private String oAuthAccessTokenURL;
-    private String oAuthAuthenticationURL;
-    private String oAuth2TokenURL;
-    private String oAuth2InvalidateTokenURL;
+    private String restBaseURL = "https://api.twitter.com/1.1/";
+    private String streamBaseURL = "https://stream.twitter.com/1.1/";
+    private String userStreamBaseURL = "https://userstream.twitter.com/1.1/";
+    private String siteStreamBaseURL = "https://sitestream.twitter.com/1.1/";
 
-    private String restBaseURL;
-    private String streamBaseURL;
-    private String userStreamBaseURL;
-    private String siteStreamBaseURL;
+    private String dispatcherImpl = "twitter4j.DispatcherImpl";
+    private int asyncNumThreads = 1;
 
-    private String dispatcherImpl;
-    private String loggerFactory;
+    private String loggerFactory = null;
 
-    private int asyncNumThreads;
+    private long contributingTo = -1L;
 
-    private long contributingTo;
     private boolean includeRTsEnabled = true;
-
     private boolean includeEntitiesEnabled = true;
-
     private boolean includeMyRetweetEnabled = true;
-
     private boolean trimUserEnabled = false;
 
-    private boolean jsonStoreEnabled;
+    private boolean jsonStoreEnabled = false;
 
-    private boolean mbeanEnabled;
+    private boolean mbeanEnabled = false;
 
-    private boolean userStreamRepliesAllEnabled;
-
-    private boolean userStreamWithFollowingsEnabled;
-
-    private boolean stallWarningsEnabled;
+    private boolean userStreamRepliesAllEnabled = false;
+    private boolean userStreamWithFollowingsEnabled = true;
+    private boolean stallWarningsEnabled = true;
 
     private boolean applicationOnlyAuthEnabled = false;
 
-    private String mediaProvider;
-
-    private String mediaProviderAPIKey;
-
-    private Properties mediaProviderParameters;
+    private String mediaProvider = "TWITTER";
+    private String mediaProviderAPIKey = null;
+    private Properties mediaProviderParameters = null;
     // hidden portion
-    private String clientVersion;
-    private String clientURL;
+    private String clientVersion = Version.getVersion();
+    private String clientURL = "http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml";
+    private String userAgent = "twitter4j http://twitter4j.org/ /" + Version.getVersion();
 
-    public static final String DALVIK = "twitter4j.dalvik";
-    public static final String GAE = "twitter4j.gae";
-
-    private static final String DEFAULT_OAUTH_REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
-    private static final String DEFAULT_OAUTH_AUTHORIZATION_URL = "https://api.twitter.com/oauth/authorize";
-    private static final String DEFAULT_OAUTH_ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
-    private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "https://api.twitter.com/oauth/authenticate";
-    private static final String DEFAULT_OAUTH2_TOKEN_URL = "https://api.twitter.com/oauth2/token";
-    private static final String DEFAULT_OAUTH2_INVALIDATE_TOKEN_URL = "https://api.twitter.com/oauth2/invalidate_token";
-
-    private static final String DEFAULT_REST_BASE_URL = "https://api.twitter.com/1.1/";
-    private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1.1/";
-    private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/1.1/";
-    private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com/1.1/";
-
-    private boolean IS_DALVIK;
-    private boolean IS_GAE;
     private static final long serialVersionUID = -6610497517837844232L;
 
-    static String dalvikDetected;
-    static String gaeDetected;
-
-    static {
-        // detecting dalvik (Android platform)
-        try {
-            // dalvik.system.VMRuntime class should be existing on Android platform.
-            // @see http://developer.android.com/reference/dalvik/system/VMRuntime.html
-            Class.forName("dalvik.system.VMRuntime");
-            dalvikDetected = "true";
-        } catch (ClassNotFoundException cnfe) {
-            dalvikDetected = "false";
-        }
-
-        // detecting Google App Engine
-        try {
-            Class.forName("com.google.appengine.api.urlfetch.URLFetchService");
-            gaeDetected = "true";
-        } catch (ClassNotFoundException cnfe) {
-            gaeDetected = "false";
-        }
-    }
 
     protected ConfigurationBase() {
-        setDebug(false);
-        setUser(null);
-        setPassword(null);
-        setPrettyDebugEnabled(false);
-        setGZIPEnabled(true);
-        setHttpProxyHost(null);
-        setHttpProxyUser(null);
-        setHttpProxyPassword(null);
-        setHttpProxyPort(-1);
-        setHttpConnectionTimeout(20000);
-        setHttpReadTimeout(120000);
-        setHttpStreamingReadTimeout(40 * 1000);
-        setHttpRetryCount(0);
-        setHttpRetryIntervalSeconds(5);
-        setOAuthConsumerKey(null);
-        setOAuthConsumerSecret(null);
-        setOAuthAccessToken(null);
-        setOAuthAccessTokenSecret(null);
-        setAsyncNumThreads(1);
-        setContributingTo(-1L);
-        setClientVersion(Version.getVersion());
-        setClientURL("http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
-        setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
-
-        setJSONStoreEnabled(false);
-
-        setMBeanEnabled(false);
-
-        setOAuthRequestTokenURL(DEFAULT_OAUTH_REQUEST_TOKEN_URL);
-        setOAuthAuthorizationURL(DEFAULT_OAUTH_AUTHORIZATION_URL);
-        setOAuthAccessTokenURL(DEFAULT_OAUTH_ACCESS_TOKEN_URL);
-        setOAuthAuthenticationURL(DEFAULT_OAUTH_AUTHENTICATION_URL);
-        setOAuth2TokenURL(DEFAULT_OAUTH2_TOKEN_URL);
-        setOAuth2InvalidateTokenURL(DEFAULT_OAUTH2_INVALIDATE_TOKEN_URL);
-
-        setRestBaseURL(DEFAULT_REST_BASE_URL);
-        setStreamBaseURL(DEFAULT_STREAM_BASE_URL);
-        setUserStreamBaseURL(DEFAULT_USER_STREAM_BASE_URL);
-        setSiteStreamBaseURL(DEFAULT_SITE_STREAM_BASE_URL);
-
-        setDispatcherImpl("twitter4j.DispatcherImpl");
-        setLoggerFactory(null);
-
-        setUserStreamRepliesAllEnabled(false);
-        setUserStreamWithFollowingsEnabled(true);
-        setStallWarningsEnabled(true);
-        String isDalvik;
-        try {
-            isDalvik = System.getProperty(DALVIK, dalvikDetected);
-        } catch (SecurityException ignore) {
-            // Unsigned applets are not allowed to access System properties
-            isDalvik = dalvikDetected;
-        }
-        IS_DALVIK = Boolean.valueOf(isDalvik);
-
-        String isGAE;
-        try {
-            isGAE = System.getProperty(GAE, gaeDetected);
-        } catch (SecurityException ignore) {
-            // Unsigned applets are not allowed to access System properties
-            isGAE = gaeDetected;
-        }
-        IS_GAE = Boolean.valueOf(isGAE);
-
-        setMediaProvider("TWITTER");
-        setMediaProviderAPIKey(null);
-        setMediaProviderParameters(null);
+        initRequestHeaders();
     }
 
     public void dumpConfiguration() {
@@ -233,14 +121,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (!includeEntitiesEnabled) {
             log.warn("includeEntitiesEnabled is set to false. This configuration may not take effect after May 14th, 2012. https://dev.twitter.com/blog/api-housekeeping");
         }
-    }
-
-    public final boolean isDalvik() {
-        return IS_DALVIK;
-    }
-
-    public boolean isGAE() {
-        return IS_GAE;
     }
 
     @Override
@@ -311,9 +191,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         requestHeaders.put("User-Agent", getUserAgent());
         if (gzipEnabled) {
             requestHeaders.put("Accept-Encoding", "gzip");
-        }
-        if (IS_DALVIK) {
-            requestHeaders.put("Connection", "close");
         }
     }
 
@@ -745,8 +622,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         ConfigurationBase that = (ConfigurationBase) o;
 
-        if (IS_DALVIK != that.IS_DALVIK) return false;
-        if (IS_GAE != that.IS_GAE) return false;
         if (asyncNumThreads != that.asyncNumThreads) return false;
         if (contributingTo != that.contributingTo) return false;
         if (debug != that.debug) return false;
@@ -879,8 +754,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
         result = 31 * result + (clientVersion != null ? clientVersion.hashCode() : 0);
         result = 31 * result + (clientURL != null ? clientURL.hashCode() : 0);
-        result = 31 * result + (IS_DALVIK ? 1 : 0);
-        result = 31 * result + (IS_GAE ? 1 : 0);
         result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
         return result;
     }
@@ -938,8 +811,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", mediaProviderParameters=" + mediaProviderParameters +
                 ", clientVersion='" + clientVersion + '\'' +
                 ", clientURL='" + clientURL + '\'' +
-                ", IS_DALVIK=" + IS_DALVIK +
-                ", IS_GAE=" + IS_GAE +
                 ", requestHeaders=" + requestHeaders +
                 '}';
     }

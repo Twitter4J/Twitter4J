@@ -15,7 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.conf.ConfigurationContext;
 import twitter4j.management.APIStatistics;
 import twitter4j.management.APIStatisticsMBean;
 import twitter4j.management.APIStatisticsOpenMBean;
@@ -46,32 +45,12 @@ public class TwitterAPIMonitor {
 
 
     static {
-        boolean isJDK14orEarlier = false;
-        try {
-            String versionStr = System.getProperty("java.specification.version");
-            if (versionStr != null) {
-                isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
-            }
-            if (ConfigurationContext.getInstance().isDalvik()) {
-                // quick and dirty workaround for TFJ-296
-                // it must be an Android/Dalvik/Harmony side issue!!!!
-                System.setProperty("http.keepAlive", "false");
-            }
-        } catch (SecurityException ignore) {
-            // Unsigned applets are not allowed to access System properties
-            isJDK14orEarlier = true;
-        }
         try {
 
             MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-            if (isJDK14orEarlier) {
-                ObjectName oName = new ObjectName("twitter4j.mbean:type=APIStatistics");
-                mbs.registerMBean(STATISTICS, oName);
-            } else {
-                ObjectName oName = new ObjectName("twitter4j.mbean:type=APIStatisticsOpenMBean");
-                APIStatisticsOpenMBean openMBean = new APIStatisticsOpenMBean(STATISTICS);
-                mbs.registerMBean(openMBean, oName);
-            }
+            ObjectName oName = new ObjectName("twitter4j.mbean:type=APIStatisticsOpenMBean");
+            APIStatisticsOpenMBean openMBean = new APIStatisticsOpenMBean(STATISTICS);
+            mbs.registerMBean(openMBean, oName);
         } catch (InstanceAlreadyExistsException e) {
             e.printStackTrace();
             logger.error(e.getMessage());

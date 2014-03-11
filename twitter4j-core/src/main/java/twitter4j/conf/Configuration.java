@@ -32,10 +32,6 @@ public interface Configuration extends HttpClientConfiguration
         , AuthorizationConfiguration
         , java.io.Serializable {
 
-    boolean isDalvik();
-
-    boolean isGAE();
-
     boolean isDebugEnabled();
 
     boolean isApplicationOnlyAuthEnabled();

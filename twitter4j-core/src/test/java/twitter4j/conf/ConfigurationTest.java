@@ -197,9 +197,6 @@ public class ConfigurationTest extends TestCase {
         assertEquals(10, conf.getHttpReadTimeout());
         System.getProperties().remove("twitter4j.http.readTimeout");
 
-        assertFalse(conf.isDalvik());
-
-
         writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=1234");
         conf = new PropertyConfiguration();
         assertEquals(1234, conf.getHttpReadTimeout());

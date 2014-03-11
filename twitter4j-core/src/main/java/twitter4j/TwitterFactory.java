@@ -41,9 +41,19 @@ public final class TwitterFactory implements java.io.Serializable {
     private static final long serialVersionUID = 5193900138477709155L;
     private final Configuration conf;
 
+
     static {
+        // detecting Google App Engine
+        boolean gaeDetected;
+        try {
+            Class.forName("com.google.appengine.api.urlfetch.URLFetchService");
+            gaeDetected = true;
+        } catch (ClassNotFoundException cnfe) {
+            gaeDetected = false;
+        }
+
         String className = null;
-        if (ConfigurationContext.getInstance().isGAE()) {
+        if (gaeDetected) {
             final String APP_ENGINE_TWITTER_IMPL = "twitter4j.AppEngineTwitterImpl";
             try {
                 Class.forName(APP_ENGINE_TWITTER_IMPL);
