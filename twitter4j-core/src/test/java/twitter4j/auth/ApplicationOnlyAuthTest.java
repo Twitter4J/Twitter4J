@@ -151,24 +151,6 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         }
     }
 
-    public void testRequiringSSL() {
-        // setup
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setOAuth2TokenURL("https://api.twitter.com/oauth2/token");
-        cb.setApplicationOnlyAuthEnabled(true);
-
-        Twitter twitter = new TwitterFactory(cb.build()).getInstance();
-
-        // exercise & verify
-        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        try {
-            twitter.getOAuth2Token();
-            fail("should throw TwitterException");
-
-        } catch (TwitterException ignore) {
-        }
-    }
-
     public void testAuthWithPropertyFile() throws Exception {
         String filename = "./twitter4j.properties";
 
