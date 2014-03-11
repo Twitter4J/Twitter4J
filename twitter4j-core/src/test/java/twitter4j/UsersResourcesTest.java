@@ -199,7 +199,7 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertEquals("00FFFF", eu.getProfileLinkColor());
         assertEquals("00FF00", eu.getProfileSidebarFillColor());
         assertEquals("FF00FF", eu.getProfileSidebarBorderColor());
-        assertTrue(eu.isProfileUseBackgroundImage());
+        assertFalse(eu.isProfileUseBackgroundImage());
         assertFalse(eu.isShowAllInlineMedia());
         assertTrue(0 <= eu.getListedCount());
         eu = twitter1.updateProfileColors("87bc44", "9ae4e8", "000000", "0000ff", "e0ff92");
