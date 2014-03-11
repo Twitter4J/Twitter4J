@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import junit.framework.Assert;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
@@ -49,37 +48,37 @@ public class DAOTest extends TwitterTestBase {
 
         // empty User list
         List<User> users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
-        Assert.assertTrue(users.size() == 0);
+        assertTrue(users.size() == 0);
         assertDeserializedFormIsEqual(users);
 
         // empty Status list
         List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
-        Assert.assertTrue(statuses.size() == 0);
+        assertTrue(statuses.size() == 0);
         assertDeserializedFormIsEqual(statuses);
 
         // empty DirectMessages list
         List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
-        Assert.assertTrue(directMessages.size() == 0);
+        assertTrue(directMessages.size() == 0);
         assertDeserializedFormIsEqual(directMessages);
 
         // empty Trends list
         List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("http://twitter4j.org/en/testcases/trends/daily-empty.json"), conf.isJSONStoreEnabled());
-        Assert.assertTrue(trends.size() == 0);
+        assertTrue(trends.size() == 0);
         assertDeserializedFormIsEqual(trends);
     }
 
     public void testLocation() throws Exception {
         JSONArray array = getJSONArrayFromClassPath("/dao/trends-available.json");
         ResponseList<Location> locations = LocationJSONImpl.createLocationList(array, conf.isJSONStoreEnabled());
-        Assert.assertEquals(23, locations.size());
+        assertEquals(23, locations.size());
         Location location = locations.get(0);
-        Assert.assertEquals("GB", location.getCountryCode());
-        Assert.assertEquals("United Kingdom", location.getCountryName());
-        Assert.assertEquals("United Kingdom", location.getName());
-        Assert.assertEquals(12, location.getPlaceCode());
-        Assert.assertEquals("Country", location.getPlaceName());
-        Assert.assertEquals("http://where.yahooapis.com/v1/place/23424975", location.getURL());
-        Assert.assertEquals(23424975, location.getWoeid());
+        assertEquals("GB", location.getCountryCode());
+        assertEquals("United Kingdom", location.getCountryName());
+        assertEquals("United Kingdom", location.getName());
+        assertEquals(12, location.getPlaceCode());
+        assertEquals("Country", location.getPlaceName());
+        assertEquals("http://where.yahooapis.com/v1/place/23424975", location.getURL());
+        assertEquals(23424975, location.getWoeid());
 
     }
 
@@ -106,7 +105,6 @@ public class DAOTest extends TwitterTestBase {
             TwitterObjectFactory.createCategory(str);
             fail("should fail");
         } catch (TwitterException expected) {
-            expected.printStackTrace();
         } catch (Error notExpected) {
             fail("failed" + notExpected.getMessage());
         }
@@ -173,7 +171,7 @@ public class DAOTest extends TwitterTestBase {
         };
         url = "https://api.twitter.com/1.1/users/suggestions.json";
         List categories = CategoryJSONImpl.createCategoriesList(validateJSONArraySchema(url, schema), null, conf);
-        Assert.assertEquals(20, categories.size());
+        assertEquals(20, categories.size());
 
         schema = new String[]{
                 "slug",
@@ -262,17 +260,17 @@ public class DAOTest extends TwitterTestBase {
         };
         url = "https://api.twitter.com/1.1/twit4j2/lists/9499823.json";
         UserList userList = new UserListJSONImpl(validateJSONObjectSchema(url, schema));
-        Assert.assertEquals("", userList.getDescription());
-        Assert.assertEquals("@twit4j2/test", userList.getFullName());
-        Assert.assertEquals(9499823, userList.getId());
-        Assert.assertTrue(1 < userList.getMemberCount());
-        Assert.assertEquals("test", userList.getName());
-        Assert.assertEquals("test", userList.getSlug());
-        Assert.assertEquals(0, userList.getSubscriberCount());
-        Assert.assertEquals("/twit4j2/test", userList.getURI().toString());
-        Assert.assertNotNull(userList.getUser());
-        Assert.assertTrue(userList.isPublic());
-        Assert.assertFalse(userList.isFollowing());
+        assertEquals("", userList.getDescription());
+        assertEquals("@twit4j2/test", userList.getFullName());
+        assertEquals(9499823, userList.getId());
+        assertTrue(1 < userList.getMemberCount());
+        assertEquals("test", userList.getName());
+        assertEquals("test", userList.getSlug());
+        assertEquals(0, userList.getSubscriberCount());
+        assertEquals("/twit4j2/test", userList.getURI().toString());
+        assertNotNull(userList.getUser());
+        assertTrue(userList.isPublic());
+        assertFalse(userList.isFollowing());
 
 
         schema = new String[]{
@@ -393,7 +391,7 @@ public class DAOTest extends TwitterTestBase {
                 if (obj instanceof JSONObject || obj instanceof JSONArray) {
                     String[] children = schemaMap.get(name);
                     if (null == children) {
-                        Assert.fail(elementName + ":" + name + " is not supposed to have any child but has:" + obj);
+                        fail(elementName + ":" + name + " is not supposed to have any child but has:" + obj);
                     } else if (!children[0].equals("*")) {
                         validateJSONSchema(obj, children);
                     }
@@ -404,7 +402,7 @@ public class DAOTest extends TwitterTestBase {
                 }
             }
             if (!found) {
-                Assert.fail("unknown element:[" + name + "] in " + json);
+                fail("unknown element:[" + name + "] in " + json);
             }
         }
         return json;
@@ -420,7 +418,7 @@ public class DAOTest extends TwitterTestBase {
         } else if (json instanceof JSONObject) {
             validateJSONObjectSchema((JSONObject) json, knownNames);
         } else {
-            Assert.fail("expecting either JSONArray or JSONObject here. Passed:" + json.getClass().getName());
+            fail("expecting either JSONArray or JSONObject here. Passed:" + json.getClass().getName());
         }
     }
 
@@ -519,47 +517,47 @@ public class DAOTest extends TwitterTestBase {
         HttpClientWrapper http = new HttpClientWrapper();
         JSONObject json = getJSONObjectFromClassPath("/dao/user.json");
         User user = new UserJSONImpl(json);
-        Assert.assertTrue(user.isGeoEnabled());
-        Assert.assertFalse(user.isVerified());
-        Assert.assertEquals(id1.screenName, user.getName());
-        Assert.assertEquals(id1.screenName, user.getScreenName());
-        Assert.assertNotNull(user.getLocation());
-        Assert.assertNotNull(user.getDescription());
-        Assert.assertNotNull(user.getProfileImageURL());
-        Assert.assertNotNull(user.getURL());
-        Assert.assertFalse(user.isProtected());
+        assertTrue(user.isGeoEnabled());
+        assertFalse(user.isVerified());
+        assertEquals(id1.screenName, user.getName());
+        assertEquals(id1.screenName, user.getScreenName());
+        assertNotNull(user.getLocation());
+        assertNotNull(user.getDescription());
+        assertNotNull(user.getProfileImageURL());
+        assertNotNull(user.getURL());
+        assertFalse(user.isProtected());
 
-        Assert.assertTrue(0 <= user.getFavouritesCount());
-        Assert.assertTrue(0 <= user.getFollowersCount());
-        Assert.assertTrue(0 <= user.getFriendsCount());
-        Assert.assertNotNull(user.getCreatedAt());
-        Assert.assertNotNull(user.getTimeZone());
-        Assert.assertNotNull(user.getProfileBackgroundImageURL());
+        assertTrue(0 <= user.getFavouritesCount());
+        assertTrue(0 <= user.getFollowersCount());
+        assertTrue(0 <= user.getFriendsCount());
+        assertNotNull(user.getCreatedAt());
+        assertNotNull(user.getTimeZone());
+        assertNotNull(user.getProfileBackgroundImageURL());
 
-        Assert.assertTrue(0 <= user.getStatusesCount());
-        Assert.assertNotNull(user.getProfileBackgroundColor());
-        Assert.assertNotNull(user.getProfileTextColor());
-        Assert.assertNotNull(user.getProfileLinkColor());
-        Assert.assertNotNull(user.getProfileSidebarBorderColor());
-        Assert.assertNotNull(user.getProfileSidebarFillColor());
-        Assert.assertNotNull(user.getProfileTextColor());
+        assertTrue(0 <= user.getStatusesCount());
+        assertNotNull(user.getProfileBackgroundColor());
+        assertNotNull(user.getProfileTextColor());
+        assertNotNull(user.getProfileLinkColor());
+        assertNotNull(user.getProfileSidebarBorderColor());
+        assertNotNull(user.getProfileSidebarFillColor());
+        assertNotNull(user.getProfileTextColor());
 
-        Assert.assertTrue(1 < user.getFollowersCount());
-        Assert.assertNotNull(user.getStatus().getCreatedAt());
-        Assert.assertNotNull(user.getStatus().getText());
-        Assert.assertNotNull(user.getStatus().getSource());
-        Assert.assertFalse(user.getStatus().isFavorited());
-        Assert.assertEquals(-1, user.getStatus().getInReplyToStatusId());
-        Assert.assertEquals(-1, user.getStatus().getInReplyToUserId());
-        Assert.assertFalse(user.getStatus().isFavorited());
-        Assert.assertNull(user.getStatus().getInReplyToScreenName());
+        assertTrue(1 < user.getFollowersCount());
+        assertNotNull(user.getStatus().getCreatedAt());
+        assertNotNull(user.getStatus().getText());
+        assertNotNull(user.getStatus().getSource());
+        assertFalse(user.getStatus().isFavorited());
+        assertEquals(-1, user.getStatus().getInReplyToStatusId());
+        assertEquals(-1, user.getStatus().getInReplyToUserId());
+        assertFalse(user.getStatus().isFavorited());
+        assertNull(user.getStatus().getInReplyToScreenName());
         assertDeserializedFormIsEqual(user);
-        Assert.assertTrue(0 <= user.getListedCount());
+        assertTrue(0 <= user.getListedCount());
         List<User> users;
 
         // User list
         users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/followers/T4J_hudson.json"), conf);
-        Assert.assertTrue(users.size() > 0);
+        assertTrue(users.size() > 0);
         assertDeserializedFormIsEqual(users);
     }
 
@@ -572,16 +570,16 @@ public class DAOTest extends TwitterTestBase {
         HttpClientImpl http = new HttpClientImpl();
         List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/public_timeline.json"), conf);
         Status status = statuses.get(0);
-        Assert.assertEquals(new Date(1259041785000l), status.getCreatedAt());
-        Assert.assertEquals(6000554383l, status.getId());
-        Assert.assertEquals("G_Shock22", status.getInReplyToScreenName());
-        Assert.assertEquals(6000444309l, status.getInReplyToStatusId());
-        Assert.assertEquals(20159829, status.getInReplyToUserId());
-        Assert.assertNull(status.getGeoLocation());
-        Assert.assertEquals("web", status.getSource());
-        Assert.assertEquals("@G_Shock22 I smelled a roast session coming when yu said that shyt about @2koolNicia lol....", status.getText());
-        Assert.assertEquals(23459577, status.getUser().getId());
-        Assert.assertFalse(status.isRetweet());
+        assertEquals(new Date(1259041785000l), status.getCreatedAt());
+        assertEquals(6000554383l, status.getId());
+        assertEquals("G_Shock22", status.getInReplyToScreenName());
+        assertEquals(6000444309l, status.getInReplyToStatusId());
+        assertEquals(20159829, status.getInReplyToUserId());
+        assertNull(status.getGeoLocation());
+        assertEquals("web", status.getSource());
+        assertEquals("@G_Shock22 I smelled a roast session coming when yu said that shyt about @2koolNicia lol....", status.getText());
+        assertEquals(23459577, status.getUser().getId());
+        assertFalse(status.isRetweet());
         assertDeserializedFormIsEqual(statuses);
     }
 
@@ -589,16 +587,16 @@ public class DAOTest extends TwitterTestBase {
         // single Status
         HttpClientImpl http = new HttpClientImpl();
         Status status = new StatusJSONImpl(http.get("http://twitter4j.org/en/testcases/statuses/retweet/6010814202.json"), conf);
-        Assert.assertEquals(new Date(1259078050000l), status.getCreatedAt());
-        Assert.assertEquals(6011259778l, status.getId());
-        Assert.assertEquals(null, status.getInReplyToScreenName());
-        Assert.assertEquals(-1l, status.getInReplyToStatusId());
-        Assert.assertEquals(-1, status.getInReplyToUserId());
-        Assert.assertNull(status.getGeoLocation());
-        Assert.assertEquals("<a href=\"http://apiwiki.twitter.com/\" rel=\"nofollow\">API</a>", status.getSource());
-        Assert.assertEquals("RT @yusukey: この前取材受けた奴 -> 次世代のシステム環境を見据えたアプリケーションサーバー製品の選択 ITpro: http://special.nikkeibp.co.jp/ts/article/0iaa/104388/", status.getText());
-        Assert.assertEquals(6358482, status.getUser().getId());
-        Assert.assertTrue(status.isRetweet());
+        assertEquals(new Date(1259078050000l), status.getCreatedAt());
+        assertEquals(6011259778l, status.getId());
+        assertEquals(null, status.getInReplyToScreenName());
+        assertEquals(-1l, status.getInReplyToStatusId());
+        assertEquals(-1, status.getInReplyToUserId());
+        assertNull(status.getGeoLocation());
+        assertEquals("<a href=\"http://apiwiki.twitter.com/\" rel=\"nofollow\">API</a>", status.getSource());
+        assertEquals("RT @yusukey: この前取材受けた奴 -> 次世代のシステム環境を見据えたアプリケーションサーバー製品の選択 ITpro: http://special.nikkeibp.co.jp/ts/article/0iaa/104388/", status.getText());
+        assertEquals(6358482, status.getUser().getId());
+        assertTrue(status.isRetweet());
         assertDeserializedFormIsEqual(status);
 
     }
@@ -606,10 +604,10 @@ public class DAOTest extends TwitterTestBase {
     public void testCategoryAsJSON() throws Exception {
         List<Category> categories = CategoryJSONImpl.createCategoriesList(
                 getJSONArrayFromClassPath("/dao/suggestions.json"), null, conf);
-        Assert.assertEquals(20, categories.size());
-        Assert.assertEquals("art-design", categories.get(0).getSlug());
-        Assert.assertEquals("Art & Design", categories.get(0).getName());
-        Assert.assertTrue(0 < categories.get(0).getSize());
+        assertEquals(20, categories.size());
+        assertEquals("art-design", categories.get(0).getSlug());
+        assertEquals("Art & Design", categories.get(0).getName());
+        assertTrue(0 < categories.get(0).getSize());
 
     }
 
@@ -619,83 +617,83 @@ public class DAOTest extends TwitterTestBase {
                         .getJSONObject("result").getJSONArray("places"), null, conf
         );
         Place place = places.get(0);
-        Assert.assertEquals("SoMa", place.getName());
-        Assert.assertEquals("US", place.getCountryCode());
-        Assert.assertEquals("2b6ff8c22edd9576", place.getId());
-        Assert.assertEquals("", place.getCountry());
-        Assert.assertEquals("neighborhood", place.getPlaceType());
-        Assert.assertEquals("https://api.twitter.com/1/geo/id/2b6ff8c22edd9576.json", place.getURL());
-        Assert.assertEquals("SoMa, San Francisco", place.getFullName());
-        Assert.assertEquals("Polygon", place.getBoundingBoxType());
+        assertEquals("SoMa", place.getName());
+        assertEquals("US", place.getCountryCode());
+        assertEquals("2b6ff8c22edd9576", place.getId());
+        assertEquals("", place.getCountry());
+        assertEquals("neighborhood", place.getPlaceType());
+        assertEquals("https://api.twitter.com/1/geo/id/2b6ff8c22edd9576.json", place.getURL());
+        assertEquals("SoMa, San Francisco", place.getFullName());
+        assertEquals("Polygon", place.getBoundingBoxType());
         GeoLocation[][] boundingBox = place.getBoundingBoxCoordinates();
-        Assert.assertEquals(1, boundingBox.length);
-        Assert.assertEquals(4, boundingBox[0].length);
-        Assert.assertEquals(37.76893497, boundingBox[0][0].getLatitude());
-        Assert.assertEquals(-122.42284884, boundingBox[0][0].getLongitude());
-        Assert.assertEquals(37.76893497, boundingBox[0][1].getLatitude());
-        Assert.assertEquals(-122.3964, boundingBox[0][1].getLongitude());
-        Assert.assertEquals(37.78752897, boundingBox[0][2].getLatitude());
-        Assert.assertEquals(-122.3964, boundingBox[0][2].getLongitude());
-        Assert.assertEquals(37.78752897, boundingBox[0][3].getLatitude());
-        Assert.assertEquals(-122.42284884, boundingBox[0][3].getLongitude());
-        Assert.assertNull(place.getGeometryType());
-        Assert.assertNull(place.getGeometryCoordinates());
+        assertEquals(1, boundingBox.length);
+        assertEquals(4, boundingBox[0].length);
+        assertEquals(37.76893497, boundingBox[0][0].getLatitude());
+        assertEquals(-122.42284884, boundingBox[0][0].getLongitude());
+        assertEquals(37.76893497, boundingBox[0][1].getLatitude());
+        assertEquals(-122.3964, boundingBox[0][1].getLongitude());
+        assertEquals(37.78752897, boundingBox[0][2].getLatitude());
+        assertEquals(-122.3964, boundingBox[0][2].getLongitude());
+        assertEquals(37.78752897, boundingBox[0][3].getLatitude());
+        assertEquals(-122.42284884, boundingBox[0][3].getLongitude());
+        assertNull(place.getGeometryType());
+        assertNull(place.getGeometryCoordinates());
 
         Place[] containedWithinArray = place.getContainedWithIn();
-        Assert.assertEquals(1, containedWithinArray.length);
+        assertEquals(1, containedWithinArray.length);
         Place containedWithin = containedWithinArray[0];
-        Assert.assertNull(containedWithin.getContainedWithIn());
-        Assert.assertEquals("San Francisco", containedWithin.getName());
-        Assert.assertEquals("US", containedWithin.getCountryCode());
-        Assert.assertEquals("5a110d312052166f", containedWithin.getId());
-        Assert.assertEquals("", containedWithin.getCountry());
-        Assert.assertEquals("city", containedWithin.getPlaceType());
-        Assert.assertEquals("https://api.twitter.com/1/geo/id/5a110d312052166f.json", containedWithin.getURL());
-        Assert.assertEquals("San Francisco", containedWithin.getFullName());
+        assertNull(containedWithin.getContainedWithIn());
+        assertEquals("San Francisco", containedWithin.getName());
+        assertEquals("US", containedWithin.getCountryCode());
+        assertEquals("5a110d312052166f", containedWithin.getId());
+        assertEquals("", containedWithin.getCountry());
+        assertEquals("city", containedWithin.getPlaceType());
+        assertEquals("https://api.twitter.com/1/geo/id/5a110d312052166f.json", containedWithin.getURL());
+        assertEquals("San Francisco", containedWithin.getFullName());
         boundingBox = containedWithin.getBoundingBoxCoordinates();
-        Assert.assertEquals("Polygon", place.getBoundingBoxType());
-        Assert.assertEquals(1, boundingBox.length);
-        Assert.assertEquals(4, boundingBox[0].length);
-        Assert.assertEquals(37.70813196, boundingBox[0][0].getLatitude());
-        Assert.assertEquals(-122.51368188, boundingBox[0][0].getLongitude());
-        Assert.assertEquals(37.70813196, boundingBox[0][1].getLatitude());
-        Assert.assertEquals(-122.35845384, boundingBox[0][1].getLongitude());
-        Assert.assertEquals(37.83245301, boundingBox[0][2].getLatitude());
-        Assert.assertEquals(-122.35845384, boundingBox[0][2].getLongitude());
-        Assert.assertEquals(37.83245301, boundingBox[0][3].getLatitude());
-        Assert.assertEquals(-122.51368188, boundingBox[0][3].getLongitude());
+        assertEquals("Polygon", place.getBoundingBoxType());
+        assertEquals(1, boundingBox.length);
+        assertEquals(4, boundingBox[0].length);
+        assertEquals(37.70813196, boundingBox[0][0].getLatitude());
+        assertEquals(-122.51368188, boundingBox[0][0].getLongitude());
+        assertEquals(37.70813196, boundingBox[0][1].getLatitude());
+        assertEquals(-122.35845384, boundingBox[0][1].getLongitude());
+        assertEquals(37.83245301, boundingBox[0][2].getLatitude());
+        assertEquals(-122.35845384, boundingBox[0][2].getLongitude());
+        assertEquals(37.83245301, boundingBox[0][3].getLatitude());
+        assertEquals(-122.51368188, boundingBox[0][3].getLongitude());
 
-        Assert.assertNull(place.getGeometryType());
-        Assert.assertNull(place.getGeometryCoordinates());
+        assertNull(place.getGeometryType());
+        assertNull(place.getGeometryCoordinates());
 
         place = new PlaceJSONImpl(getJSONObjectFromClassPath("/dao/5a110d312052166f.json"), null);
-        Assert.assertNotNull(place.getGeometryType());
-        Assert.assertNotNull(place.getGeometryCoordinates());
+        assertNotNull(place.getGeometryType());
+        assertNotNull(place.getGeometryCoordinates());
 
         // Test that a geo object with geometry type "Point" works.
         place = new PlaceJSONImpl(getJSONObjectFromClassPath("/dao/3c6797665e2d42eb.json"), null);
-        Assert.assertEquals(place.getGeometryType(), "Point");
-        Assert.assertNotNull(place.getGeometryCoordinates());
+        assertEquals(place.getGeometryType(), "Point");
+        assertNotNull(place.getGeometryCoordinates());
 
         place = new PlaceJSONImpl(getJSONObjectFromClassPath("/dao/c3f37afa9efcf94b.json"), null);
         // MultiPolygon is not supported by twitter4j yet, so we set geometryType to null
-        Assert.assertNull(place.getGeometryType());
-        Assert.assertNull(place.getGeometryCoordinates());
+        assertNull(place.getGeometryType());
+        assertNull(place.getGeometryCoordinates());
     }
 
     public void testDirectMessagesAsJSON() throws Exception {
         HttpClientImpl http = new HttpClientImpl();
         List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/direct_messages.json"), conf);
         DirectMessage dm = directMessages.get(0);
-        Assert.assertEquals(new java.util.Date(1248177356000l), dm.getCreatedAt());
-        Assert.assertEquals(6358482, dm.getRecipient().getId());
-        Assert.assertEquals(246928323, dm.getId());
-        Assert.assertEquals(6358482, dm.getRecipientId());
-        Assert.assertEquals("twit4j", dm.getRecipientScreenName());
-        Assert.assertEquals(6377362, dm.getSender().getId());
-        Assert.assertEquals(6377362, dm.getSenderId());
-        Assert.assertEquals("twit4j2", dm.getSenderScreenName());
-        Assert.assertEquals("Tue Jul 21 20:55:39 KST 2009:directmessage test", dm.getText());
+        assertEquals(new java.util.Date(1248177356000l), dm.getCreatedAt());
+        assertEquals(6358482, dm.getRecipient().getId());
+        assertEquals(246928323, dm.getId());
+        assertEquals(6358482, dm.getRecipientId());
+        assertEquals("twit4j", dm.getRecipientScreenName());
+        assertEquals(6377362, dm.getSender().getId());
+        assertEquals(6377362, dm.getSenderId());
+        assertEquals("twit4j2", dm.getSenderScreenName());
+        assertEquals("Tue Jul 21 20:55:39 KST 2009:directmessage test", dm.getText());
         assertDeserializedFormIsEqual(directMessages);
     }
 
@@ -719,7 +717,7 @@ public class DAOTest extends TwitterTestBase {
         Object that = ois.readObject();
         byteInputStream.close();
         ois.close();
-        Assert.assertEquals(obj, that);
+        assertEquals(obj, that);
         return that;
     }
 
@@ -731,13 +729,13 @@ public class DAOTest extends TwitterTestBase {
      */
     public static Object assertDeserializedFormIsSingleton(Object obj) throws Exception {
         Object that = assertDeserializedFormIsEqual(obj);
-        Assert.assertTrue(obj == that);
+        assertTrue(obj == that);
         return that;
     }
 
     public void testStatusJSONImplSupportsMoreThan100RetweetedStatus() throws Exception {
         UserJSONImpl user = new UserJSONImpl(new JSONObject(getStringFromClassPath("/dao/24696018620.json")));
-        Assert.assertNotNull(user.getStatus());
-        Assert.assertNotNull(user.getStatus().getRetweetCount());
+        assertNotNull(user.getStatus());
+        assertNotNull(user.getStatus().getRetweetCount());
     }
 }

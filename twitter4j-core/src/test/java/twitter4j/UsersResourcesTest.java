@@ -66,7 +66,8 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertTrue(0 <= user.getFollowersCount());
         assertTrue(0 <= user.getFriendsCount());
         assertNotNull(user.getCreatedAt());
-        assertNotNull(user.getTimeZone());
+        // timezone can be null
+//        assertNotNull(user.getTimeZone());
         assertNotNull(user.getProfileBackgroundImageURL());
 
         assertTrue(0 <= user.getStatusesCount());
