@@ -268,6 +268,6 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         PagableResponseList<User> t4jfollowers1 = twitter1.getFollowersList("t4j_news", -1L, 10);
         PagableResponseList<User> t4jfollowers12 = twitter1.getFollowersList(72297675L, -1L, 10);
         assertEquals(t4jfollowers1, t4jfollowers12);
-        assertTrue(t4jfollowers.size() <= 10);
+        assertTrue(t4jfollowers.size() > 0);
     }
 }
