@@ -132,7 +132,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
             assertNotNull(TwitterObjectFactory.getRawJSON(user));
             assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
         } catch (TwitterException te) {
-            //ensure destory id1 before the actual test
+            //ensure destroy id1 before the actual test
         }
 
         try {
@@ -162,7 +162,9 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         } catch (TwitterException te) {
             //now befriending with non-existing user returns 404
             //http://groups.google.com/group/twitter-development-talk/browse_thread/thread/bd2a912b181bc39f
-            assertEquals(404, te.getStatusCode());
+//            assertEquals(404, te.getStatusCode());
+            // and now it returns 403 again
+            assertEquals(403, te.getStatusCode());
         }
 
     }
