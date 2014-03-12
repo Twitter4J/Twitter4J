@@ -37,7 +37,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase {
     }
 
     @Override
-    public HttpResponse request(HttpRequest req) throws TwitterException {
+    public HttpResponse handleRequest(HttpRequest req) throws TwitterException {
         HTTPRequest request;
         try {
             request = new HTTPRequest(new URL(req.getURL())

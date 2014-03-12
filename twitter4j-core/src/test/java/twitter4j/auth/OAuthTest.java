@@ -33,7 +33,6 @@ import java.util.*;
  */
 public class OAuthTest extends TwitterTestBase {
 
-
     public OAuthTest(String name) {
         super(name);
     }
@@ -73,14 +72,14 @@ public class OAuthTest extends TwitterTestBase {
     public void testDesktopClient() throws Exception {
         RequestToken rt;
         Twitter twitter = new TwitterFactory().getInstance();
-        HttpClientImpl http;
+        HttpClient http;
         HttpResponse response;
         String resStr;
         String authorizeURL;
         HttpParameter[] params;
         AccessToken at;
         String cookie;
-        http = new HttpClientImpl();
+        http = HttpClientFactory.getInstance();
 
         // desktop client - requiring pin
         Twitter unauthenticated = new TwitterFactory().getInstance();
@@ -149,14 +148,14 @@ public class OAuthTest extends TwitterTestBase {
     public void testSigninWithTwitter() throws Exception {
         RequestToken rt;
         Twitter twitter = new TwitterFactory().getInstance();
-        HttpClientImpl http;
+        HttpClient http;
         HttpResponse response;
         String resStr;
         String authorizeURL;
         HttpParameter[] params;
         AccessToken at;
         String cookie;
-        http = new HttpClientImpl();
+        http = HttpClientFactory.getInstance();
 
         // browser client - not requiring pin
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
@@ -192,14 +191,14 @@ public class OAuthTest extends TwitterTestBase {
     public void testBrowserClient() throws Exception {
         RequestToken rt;
         Twitter twitter = new TwitterFactory().getInstance();
-        HttpClientImpl http;
+        HttpClient http;
         HttpResponse response;
         String resStr;
         String authorizeURL;
         HttpParameter[] params;
         AccessToken at;
         String cookie;
-        http = new HttpClientImpl();
+        http = HttpClientFactory.getInstance();
 
         // browser client - not requiring pin
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
@@ -231,21 +230,20 @@ public class OAuthTest extends TwitterTestBase {
 
     public void testBrowserClientWithCustomCallback() throws Exception {
         RequestToken rt;
-        Twitter twitter = new TwitterFactory().getInstance();
-        HttpClientImpl http;
+        Twitter twitter;
+        HttpClient http;
         HttpResponse response;
         String resStr;
         String authorizeURL;
         HttpParameter[] params;
         AccessToken at;
         String cookie;
-        http = new HttpClientImpl();
 
         // browser client - not requiring pin / overriding callback url
         twitter = new TwitterFactory().getInstance();
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         rt = twitter.getOAuthRequestToken("http://yusuke.homeip.net/twitter4j/custom_callback");
-        http = new HttpClientImpl();
+        http = HttpClientFactory.getInstance();
 
         System.out.println("AuthorizationURL: " + rt.getAuthorizationURL());
         response = http.get(rt.getAuthorizationURL());

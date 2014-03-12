@@ -52,13 +52,13 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertNotNull(user.getOriginalProfileImageURLHttps());
 
         assertNotNull(user.getProfileBannerURL());
-        HttpClientWrapper wrapper = HttpClientWrapper.getInstance(conf1.getHttpClientConfiguration());
-        wrapper.head(user.getProfileBannerURL());
-        wrapper.head(user.getProfileBannerRetinaURL());
-        wrapper.head(user.getProfileBannerIPadURL());
-        wrapper.head(user.getProfileBannerIPadRetinaURL());
-        wrapper.head(user.getProfileBannerMobileURL());
-        wrapper.head(user.getProfileBannerMobileRetinaURL());
+        HttpClient http = HttpClientFactory.getInstance(conf1.getHttpClientConfiguration());
+        http.head(user.getProfileBannerURL());
+        http.head(user.getProfileBannerRetinaURL());
+        http.head(user.getProfileBannerIPadURL());
+        http.head(user.getProfileBannerIPadRetinaURL());
+        http.head(user.getProfileBannerMobileURL());
+        http.head(user.getProfileBannerMobileRetinaURL());
         assertNotNull(user.getURL());
         assertFalse(user.isProtected());
 

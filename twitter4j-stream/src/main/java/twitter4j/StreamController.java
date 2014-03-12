@@ -31,16 +31,16 @@ import static twitter4j.ParseUtil.*;
  */
 public class StreamController {
     private String controlURI = null;
-    private final HttpClientWrapper HTTP;
+    private final HttpClient http;
     private final Authorization AUTH;
 
-    /*package*/ StreamController(HttpClientWrapper http, Authorization auth) {
-        HTTP = http;
+    /*package*/ StreamController(HttpClient http, Authorization auth) {
+        this.http = http;
         AUTH = auth;
     }
 
     /*package*/ StreamController(Configuration conf) {
-        HTTP = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
+        this.http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
         AUTH = AuthorizationFactory.getInstance(conf);
     }
 
@@ -71,7 +71,7 @@ public class StreamController {
 
     public ControlStreamInfo getInfo() throws TwitterException {
         ensureControlURISet();
-        HttpResponse res = HTTP.get(controlURI + "/info.json", AUTH);
+        HttpResponse res = http.get(controlURI + "/info.json", AUTH);
         return new ControlStreamInfo(this, res.asJSONObject());
     }
 
@@ -79,7 +79,7 @@ public class StreamController {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
                 StringUtil.join(userIds));
-        HttpResponse res = HTTP.post(controlURI + "/add_user.json",
+        HttpResponse res = http.post(controlURI + "/add_user.json",
                 new HttpParameter[]{param}, AUTH);
         return res.asString();
     }
@@ -88,7 +88,7 @@ public class StreamController {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
                 StringUtil.join(userIds));
-        HttpResponse res = HTTP.post(controlURI + "/remove_user.json",
+        HttpResponse res = http.post(controlURI + "/remove_user.json",
                 new HttpParameter[]{param}, AUTH);
         return res.asString();
     }
@@ -96,7 +96,7 @@ public class StreamController {
 
     public FriendsIDs getFriendsIDs(long userId, long cursor) throws TwitterException {
         ensureControlURISet();
-        HttpResponse res = HTTP.post(controlURI + "/friends/ids.json",
+        HttpResponse res = http.post(controlURI + "/friends/ids.json",
                 new HttpParameter[]{new HttpParameter("user_id", userId),
                         new HttpParameter("cursor", cursor)}, AUTH
         );

@@ -16,12 +16,68 @@
 
 package twitter4j;
 
+import twitter4j.auth.Authorization;
+
+import java.util.Map;
+
 /**
  * A utility class to handle HTTP request/response.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-interface HttpClient {
+public interface HttpClient {
+    void setHttpResponseListener(HttpResponseListener listener);
+
+    void addDefaultRequestHeader(String name, String value);
 
     HttpResponse request(HttpRequest req) throws TwitterException;
+
+    HttpResponse get(String url, HttpParameter[] parameters
+            , Authorization authorization) throws TwitterException;
+
+    HttpResponse get(String url, HttpParameter[] parameters) throws TwitterException;
+
+    HttpResponse get(String url, Authorization authorization) throws TwitterException;
+
+    HttpResponse get(String url) throws TwitterException;
+
+    HttpResponse post(String url, HttpParameter[] parameters
+            , Authorization authorization) throws TwitterException;
+
+    HttpResponse post(String url, HttpParameter[] parameters) throws TwitterException;
+
+    HttpResponse post(String url, HttpParameter[] parameters, Map<String, String> requestHeaders) throws TwitterException;
+
+    HttpResponse post(String url, Authorization authorization) throws TwitterException;
+
+    HttpResponse post(String url) throws TwitterException;
+
+    HttpResponse delete(String url, HttpParameter[] parameters
+            , Authorization authorization) throws TwitterException;
+
+    HttpResponse delete(String url, HttpParameter[] parameters) throws TwitterException;
+
+    HttpResponse delete(String url,
+                        Authorization authorization) throws TwitterException;
+
+    HttpResponse delete(String url) throws TwitterException;
+
+    HttpResponse head(String url, HttpParameter[] parameters
+            , Authorization authorization) throws TwitterException;
+
+    HttpResponse head(String url, HttpParameter[] parameters) throws TwitterException;
+
+    HttpResponse head(String url
+            , Authorization authorization) throws TwitterException;
+
+    HttpResponse head(String url) throws TwitterException;
+
+    HttpResponse put(String url, HttpParameter[] parameters
+            , Authorization authorization) throws TwitterException;
+
+    HttpResponse put(String url, HttpParameter[] parameters) throws TwitterException;
+
+    HttpResponse put(String url, Authorization authorization) throws TwitterException;
+
+    HttpResponse put(String url) throws TwitterException;
 }
