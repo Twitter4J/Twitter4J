@@ -25,6 +25,7 @@ import java.util.Arrays;
  * @since Twitter4J 2.1.1
  */
 final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.Serializable {
+    private static final long serialVersionUID = -6368276880878829754L;
     private String name;
     private String streetAddress;
     private String countryCode;
@@ -38,7 +39,6 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
     private String geometryType;
     private GeoLocation[][] geometryCoordinates;
     private Place[] containedWithIn;
-    private static final long serialVersionUID = -2873364341474633812L;
 
     /*package*/ PlaceJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);

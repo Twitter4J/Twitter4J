@@ -20,6 +20,8 @@ package twitter4j;
  * @since Twitter4J 2.2.4
  */
 abstract class LazyPagableResponseList<T extends TwitterResponse> extends LazyResponseList<T> implements PagableResponseList<T> {
+    private static final long serialVersionUID = -3478264948215362741L;
+
     public boolean hasPrevious() {
         return ((PagableResponseList) getTarget()).hasPrevious();
     }

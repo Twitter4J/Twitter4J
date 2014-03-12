@@ -20,7 +20,7 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 abstract class EntityIndex implements Comparable<EntityIndex>, java.io.Serializable {
-    private static final long serialVersionUID = 3864336402689899384L;
+    private static final long serialVersionUID = 3757474748266170719L;
     private int start = -1;
     private int end = -1;
 

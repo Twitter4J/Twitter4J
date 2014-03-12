@@ -28,7 +28,7 @@ import java.util.List;
  */
 /*package*/ final class QueryResultJSONImpl extends TwitterResponseImpl implements QueryResult, java.io.Serializable {
 
-    private static final long serialVersionUID = -6781654399437121238L;
+    private static final long serialVersionUID = -5359566235429947156L;
     private long sinceId;
     private long maxId;
     private String refreshUrl;

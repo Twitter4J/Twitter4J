@@ -28,12 +28,12 @@ import java.util.Date;
  */
 /*package*/ final class SavedSearchJSONImpl extends TwitterResponseImpl implements SavedSearch {
 
+    private static final long serialVersionUID = 846086437256360810L;
     private Date createdAt;
     private String query;
     private int position;
     private String name;
     private int id;
-    private static final long serialVersionUID = 3083819860391598212L;
 
     /*package*/ SavedSearchJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);

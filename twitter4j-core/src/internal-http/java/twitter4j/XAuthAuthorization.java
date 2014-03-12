@@ -24,11 +24,11 @@ import twitter4j.auth.BasicAuthorization;
  * @since Twitter4J 2.1.3
  */
 public class XAuthAuthorization implements Authorization, java.io.Serializable {
+    private static final long serialVersionUID = -7260372598870697494L;
     private BasicAuthorization basic;
 
     private String consumerKey;
     private String consumerSecret;
-    private static final long serialVersionUID = -6082451214083464902L;
 
     public XAuthAuthorization(BasicAuthorization basic) {
         this.basic = basic;

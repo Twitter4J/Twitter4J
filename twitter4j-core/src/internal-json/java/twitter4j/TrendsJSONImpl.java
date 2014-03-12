@@ -30,11 +30,11 @@ import java.util.Iterator;
  * @since Twitter4J 2.0.2
  */
 /*package*/ final class TrendsJSONImpl extends TwitterResponseImpl implements Trends, java.io.Serializable {
+    private static final long serialVersionUID = 2054973282133379835L;
     private Date asOf;
     private Date trendAt;
     private Trend[] trends;
     private Location location;
-    private static final long serialVersionUID = -7151479143843312309L;
 
     @Override
     public int compareTo(Trends that) {

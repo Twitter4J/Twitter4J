@@ -27,6 +27,7 @@ import java.util.Date;
  */
 /*package*/ final class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
 
+    private static final long serialVersionUID = -5448266606847617015L;
     private long id;
     private String name;
     private String screenName;
@@ -66,7 +67,6 @@ import java.util.Date;
     private boolean translator;
     private int listedCount;
     private boolean isFollowRequestSent;
-    private static final long serialVersionUID = -6345893237975349030L;
 
     /*package*/UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);

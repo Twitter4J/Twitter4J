@@ -28,11 +28,11 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class HttpParameter implements Comparable, java.io.Serializable {
+    private static final long serialVersionUID = 4046908449190454692L;
     private String name = null;
     private String value = null;
     private File file = null;
     private InputStream fileBody = null;
-    private static final long serialVersionUID = -8708108746980739212L;
 
     public HttpParameter(String name, String value) {
         this.name = name;

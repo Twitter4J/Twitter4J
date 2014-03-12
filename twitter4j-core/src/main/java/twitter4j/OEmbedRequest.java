@@ -25,7 +25,7 @@ import java.util.List;
  * @since Twitter4J 3.0.2
  */
 public final class OEmbedRequest implements Serializable {
-    private static final long serialVersionUID = -4330607167106242987L;
+    private static final long serialVersionUID = 7454130135274547901L;
     private final long statusId;
     private final String url;
     private int maxWidth;

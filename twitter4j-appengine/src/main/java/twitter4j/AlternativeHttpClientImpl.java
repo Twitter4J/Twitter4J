@@ -29,8 +29,8 @@ import static twitter4j.RequestMethod.POST;
  * @since Twitter4J 2.2.4
  */
 public class AlternativeHttpClientImpl extends HttpClientBase {
+    private static final long serialVersionUID = 4559427508443601046L;
     private static Logger logger = Logger.getLogger(AlternativeHttpClientImpl.class);
-    private static final long serialVersionUID = -6969046478967208236L;
 
     public AlternativeHttpClientImpl(HttpClientConfiguration conf) {
         super(conf);

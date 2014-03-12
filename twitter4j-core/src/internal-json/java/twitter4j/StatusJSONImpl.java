@@ -30,7 +30,7 @@ import static twitter4j.ParseUtil.getDate;
  */
 /*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(StatusJSONImpl.class);
-    private static final long serialVersionUID = 7548618898682727465L;
+    private static final long serialVersionUID = -6461195536943679985L;
 
     private Date createdAt;
     private long id;

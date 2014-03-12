@@ -22,6 +22,7 @@ import twitter4j.conf.Configuration;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class LocationJSONImpl implements Location {
+    private static final long serialVersionUID = -1312752311160422264L;
     private final int woeid;
     private final String countryName;
     private final String countryCode;
@@ -29,7 +30,6 @@ import twitter4j.conf.Configuration;
     private final int placeCode;
     private final String name;
     private final String url;
-    private static final long serialVersionUID = 7095092358530897222L;
 
     /*package*/ LocationJSONImpl(JSONObject location) throws TwitterException {
         try {

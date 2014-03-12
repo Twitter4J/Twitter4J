@@ -32,13 +32,13 @@ import java.util.*;
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
 public class OAuthAuthorization implements Authorization, java.io.Serializable, OAuthSupport {
+    private static final long serialVersionUID = -886869424811858868L;
     private final Configuration conf;
     private transient static HttpClient http;
 
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
     private static final Logger logger = Logger.getLogger(OAuthAuthorization.class);
-    private static final long serialVersionUID = -4368426677157998618L;
     private String consumerKey = "";
     private String consumerSecret;
 

@@ -21,11 +21,11 @@ package twitter4j;
  * @since Twitter4J 2.1.3
  */
 final class ExceptionDiagnosis implements java.io.Serializable {
+    private static final long serialVersionUID = 8501009773274399369L;
     int stackLineHash;
     int lineNumberHash;
     String hexString = "";
     Throwable th;
-    private static final long serialVersionUID = 453958937114285988L;
 
     ExceptionDiagnosis(Throwable th) {
         this(th, new String[]{});

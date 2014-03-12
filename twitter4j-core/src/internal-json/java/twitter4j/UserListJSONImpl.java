@@ -28,6 +28,7 @@ import java.net.URISyntaxException;
  */
 /*package*/ class UserListJSONImpl extends TwitterResponseImpl implements UserList, java.io.Serializable {
 
+    private static final long serialVersionUID = 449418980060197008L;
     private long id;
     private String name;
     private String fullName;
@@ -39,7 +40,6 @@ import java.net.URISyntaxException;
     private boolean mode;
     private User user;
     private boolean following;
-    private static final long serialVersionUID = -6345893237975349030L;
 
     /*package*/ UserListJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);

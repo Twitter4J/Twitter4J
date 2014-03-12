@@ -32,7 +32,7 @@ import twitter4j.conf.ConfigurationContext;
  * @since Twitter4J 2.1.0
  */
 public final class TwitterStreamFactory implements java.io.Serializable {
-    private static final long serialVersionUID = 8146074704915782233L;
+    private static final long serialVersionUID = -5181136070759074681L;
     private final Configuration conf;
     private static final TwitterStream SINGLETON;
 

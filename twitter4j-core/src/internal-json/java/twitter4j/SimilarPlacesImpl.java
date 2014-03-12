@@ -23,7 +23,7 @@ import twitter4j.conf.Configuration;
  * @since Twitter4J 2.1.7
  */
 public class SimilarPlacesImpl extends ResponseListImpl<Place> implements SimilarPlaces {
-    private static final long serialVersionUID = -7897806745732767803L;
+    private static final long serialVersionUID = -3728080255534483125L;
     private final String token;
 
     SimilarPlacesImpl(ResponseList<Place> places, HttpResponse res, String token) {

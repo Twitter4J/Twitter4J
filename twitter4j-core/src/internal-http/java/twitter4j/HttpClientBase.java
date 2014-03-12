@@ -10,7 +10,7 @@ import java.util.Map;
 
 public abstract class HttpClientBase implements HttpClient, Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientBase.class);
-    private static final long serialVersionUID = 6944924907755685265L;
+    private static final long serialVersionUID = -8016974810651763053L;
     protected final HttpClientConfiguration CONF;
 
     private final Map<String, String> requestHeaders;

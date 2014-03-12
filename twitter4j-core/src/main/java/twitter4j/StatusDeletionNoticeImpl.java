@@ -24,9 +24,9 @@ package twitter4j;
  */
 class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializable {
 
+    private static final long serialVersionUID = 9144204870473786368L;
     private long statusId;
     private long userId;
-    private static final long serialVersionUID = 1723338404242596062L;
 
     /*package*/ StatusDeletionNoticeImpl(JSONObject status) {
         this.statusId = ParseUtil.getLong("id", status);

@@ -23,7 +23,7 @@ import twitter4j.conf.Configuration;
  * @since Twitter4J 2.1.9
  */
 class FriendshipJSONImpl implements Friendship {
-    private static final long serialVersionUID = 7724410837770709741L;
+    private static final long serialVersionUID = 6847273186993125826L;
     private final long id;
     private final String name;
     private final String screenName;

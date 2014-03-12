@@ -29,11 +29,11 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class Paging implements java.io.Serializable {
+    private static final long serialVersionUID = -7226113618341047983L;
     private int page = -1;
     private int count = -1;
     private long sinceId = -1;
     private long maxId = -1;
-    private static final long serialVersionUID = -3285857427993796670L;
 
     // since only
     static char[] S = new char[]{'s'};

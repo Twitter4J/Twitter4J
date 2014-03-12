@@ -27,8 +27,8 @@ import java.net.URLEncoder;
  * @see <a href="https://dev.twitter.com/docs/auth/application-only-auth">Application-only authentication</a>
  */
 public class OAuth2Authorization implements Authorization, java.io.Serializable, OAuth2Support {
-    private static final long serialVersionUID = 4274784415515174129L;
 
+    private static final long serialVersionUID = -2895232598422218647L;
     private final Configuration conf;
 
     private HttpClient http;

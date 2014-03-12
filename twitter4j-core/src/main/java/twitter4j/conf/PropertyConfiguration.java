@@ -81,8 +81,8 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String MEDIA_PROVIDER = "media.provider";
     public static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
     public static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
+    private static final long serialVersionUID = -7262615247923693252L;
 
-    private static final long serialVersionUID = 6458764415636588373L;
 
     public PropertyConfiguration(InputStream is) {
         super();

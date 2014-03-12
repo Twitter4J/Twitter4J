@@ -31,7 +31,7 @@ import java.util.Map;
  */
 /*package*/ final class RateLimitStatusJSONImpl implements RateLimitStatus, java.io.Serializable {
 
-    private static final long serialVersionUID = 1625565652687304084L;
+    private static final long serialVersionUID = 7790337632915862445L;
     private int remaining;
     private int limit;
     private int resetTimeInSeconds;

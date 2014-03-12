@@ -26,8 +26,8 @@ import java.io.ObjectStreamException;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class NullAuthorization implements Authorization, java.io.Serializable {
+    private static final long serialVersionUID = -7704668493278727510L;
     private static NullAuthorization SINGLETON = new NullAuthorization();
-    private static final long serialVersionUID = -8748173338942663960L;
 
     private NullAuthorization() {
 

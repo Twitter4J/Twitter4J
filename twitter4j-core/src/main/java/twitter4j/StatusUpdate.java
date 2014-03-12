@@ -27,6 +27,7 @@ import java.util.List;
  */
 public final class StatusUpdate implements java.io.Serializable {
 
+    private static final long serialVersionUID = 7422094739799350035L;
     private String status;
     private long inReplyToStatusId = -1L;
     private GeoLocation location = null;
@@ -36,7 +37,6 @@ public final class StatusUpdate implements java.io.Serializable {
     private String mediaName;
     private transient InputStream mediaBody;
     private File mediaFile;
-    private static final long serialVersionUID = -3595502688477609916L;
 
     public StatusUpdate(String status) {
         this.status = status;

@@ -7,7 +7,7 @@ package twitter4j;
  * @version 2010-12-24
  */
 public class JSONException extends Exception {
-    private static final long serialVersionUID = 0;
+    private static final long serialVersionUID = -4144585377907783745L;
     private Throwable cause;
 
     /**

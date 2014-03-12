@@ -104,7 +104,7 @@ public class StreamController {
     }
 
     public final class FriendsIDs implements CursorSupport, Serializable {
-        private static final long serialVersionUID = -6282978710522199102L;
+        private static final long serialVersionUID = -7393320878760329794L;
         private long[] ids;
         private long previousCursor = -1;
         private long nextCursor = -1;
@@ -210,7 +210,7 @@ public class StreamController {
     }
 
     public final class User implements Serializable {
-        private static final long serialVersionUID = -2925833063500478073L;
+        private static final long serialVersionUID = -8741743249755418730L;
         private long id;
         private String name;
         private boolean dm;

@@ -34,6 +34,7 @@ public class AlternativeHttpClientImpl extends HttpClientImpl implements HttpRes
     private static final int MAX_IDLE_CONNECTIONS = 5;
 
     private static final long KEEP_ALIVE_DURATION_MS = 300;
+    private static final long serialVersionUID = 7922808738393566124L;
 
     public static boolean sPreferSpdy = true;
 

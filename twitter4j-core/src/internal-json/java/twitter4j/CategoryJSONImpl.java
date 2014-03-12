@@ -24,10 +24,10 @@ import twitter4j.conf.Configuration;
  */
 final class CategoryJSONImpl implements Category, java.io.Serializable {
 
+    private static final long serialVersionUID = 3811335888122469876L;
     private String name;
     private String slug;
     private int size;
-    private static final long serialVersionUID = -6703617743623288566L;
 
     CategoryJSONImpl(JSONObject json) throws JSONException {
         init(json);

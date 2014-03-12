@@ -27,10 +27,10 @@ import java.util.Arrays;
  */
 /*package*/ final class IDsJSONImpl extends TwitterResponseImpl implements IDs {
 
+    private static final long serialVersionUID = 6999637496007165672L;
     private long[] ids;
     private long previousCursor = -1;
     private long nextCursor = -1;
-    private static final long serialVersionUID = -6585026560164704953L;
 
     /*package*/ IDsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);

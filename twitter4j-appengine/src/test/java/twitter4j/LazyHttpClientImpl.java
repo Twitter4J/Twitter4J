@@ -26,6 +26,7 @@ import java.util.Map;
  * @since Twitter4J 2.2.4
  */
 public class LazyHttpClientImpl extends HttpClientImpl {
+    private static final long serialVersionUID = 7325894890960046422L;
     HttpClient client;
 
     public LazyHttpClientImpl(HttpClientConfiguration conf) {

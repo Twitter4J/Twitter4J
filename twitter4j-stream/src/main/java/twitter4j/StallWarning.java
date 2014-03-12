@@ -26,7 +26,7 @@ import static twitter4j.ParseUtil.getRawString;
  * @since Twitter4J 3.0.0
  */
 public final class StallWarning implements Serializable {
-    private static final long serialVersionUID = 7387184309206228363L;
+    private static final long serialVersionUID = -4294628635422470314L;
     private final String code;
     private final String message;
     private final int percentFull;

@@ -31,7 +31,6 @@ import java.util.Map;
 class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
 
-    private static final long serialVersionUID = -8819171414069621503L;
 
     static {
         // detecting dalvik (Android platform)
@@ -46,6 +45,8 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         } catch (ClassNotFoundException ignore) {
         }
     }
+
+    private static final long serialVersionUID = -403500272719330534L;
 
     public HttpClientImpl() {
         super(ConfigurationContext.getInstance().getHttpClientConfiguration());

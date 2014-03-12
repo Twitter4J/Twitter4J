@@ -27,8 +27,8 @@ import java.net.URLEncoder;
 
 
 public class OAuth2Token implements java.io.Serializable {
-    private static final long serialVersionUID = 358222644448390610L;
 
+    private static final long serialVersionUID = -8985359441959903216L;
     private String tokenType;
 
     private String accessToken;

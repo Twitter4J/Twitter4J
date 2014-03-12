@@ -23,7 +23,7 @@ import twitter4j.conf.Configuration;
  * @since Twitter4J 2.1.9
  */
 class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSettings, java.io.Serializable {
-    private static final long serialVersionUID = 7983363611306383416L;
+    private static final long serialVersionUID = 603189815663175766L;
     private final boolean SLEEP_TIME_ENABLED;
     private final String SLEEP_START_TIME;
     private final String SLEEP_END_TIME;

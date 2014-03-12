@@ -25,7 +25,7 @@ import java.util.List;
  * @since Twitter4J 2.2.4
  */
 final class LazyQueryResult implements twitter4j.QueryResult {
-    private static final long serialVersionUID = 1469029015622811726L;
+    private static final long serialVersionUID = 2570528566436339617L;
     private HttpResponse res;
     private ObjectFactory factory;
     private QueryResult target = null;

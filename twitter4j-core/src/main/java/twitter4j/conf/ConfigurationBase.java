@@ -32,6 +32,7 @@ import java.util.Properties;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class ConfigurationBase implements Configuration, java.io.Serializable {
+    private static final long serialVersionUID = 6175546394599249696L;
     private boolean debug = false;
     private String user = null;
     private String password = null;
@@ -83,8 +84,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String mediaProviderAPIKey = null;
     private Properties mediaProviderParameters = null;
 
-    private static final long serialVersionUID = -6610497517837844232L;
-
 
     protected ConfigurationBase() {
         httpConf = new MyHttpClientConfiguration(null // proxy host
@@ -99,6 +98,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     class MyHttpClientConfiguration implements HttpClientConfiguration, Serializable {
+        private static final long serialVersionUID = 8226866124868861058L;
         private String httpProxyHost = null;
         private String httpProxyUser = null;
         private String httpProxyPassword = null;

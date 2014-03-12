@@ -33,6 +33,7 @@ import static twitter4j.HttpResponseCode.*;
  */
 abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAuthSupport, OAuth2Support, HttpResponseListener {
     private static final String WWW_DETAILS = "See http://twitter4j.org/en/configuration.html for details";
+    private static final long serialVersionUID = -7824361938865528554L;
 
     protected Configuration conf;
     protected transient String screenName = null;
@@ -44,7 +45,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     protected ObjectFactory factory;
 
     protected Authorization auth;
-    private static final long serialVersionUID = -3812176145960812140L;
 
     /*package*/ TwitterBaseImpl(Configuration conf, Authorization auth) {
         this.conf = conf;

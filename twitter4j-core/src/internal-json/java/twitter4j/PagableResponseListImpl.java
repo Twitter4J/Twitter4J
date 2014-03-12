@@ -21,9 +21,9 @@ package twitter4j;
  * @since Twitter4J 2.1.3
  */
 class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResponseList {
+    private static final long serialVersionUID = -8603601553967559275L;
     private final long previousCursor;
     private final long nextCursor;
-    private static final long serialVersionUID = 1531950333538983361L;
 
     PagableResponseListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
         super(rateLimitStatus, accessLevel);

@@ -24,7 +24,7 @@ import twitter4j.conf.Configuration;
  */
 class AccountTotalsJSONImpl extends TwitterResponseImpl implements AccountTotals, java.io.Serializable {
 
-    private static final long serialVersionUID = -2291419345865627123L;
+    private static final long serialVersionUID = 4199733699237229892L;
     private final int updates;
     private final int followers;
     private final int favorites;

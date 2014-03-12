@@ -24,7 +24,7 @@ import java.util.Arrays;
  * @since Twitter4J 2.1.2
  */
 public final class FilterQuery implements java.io.Serializable {
-    private static final long serialVersionUID = 430966623248982833L;
+    private static final long serialVersionUID = -142808200594318258L;
     private int count;
     private long[] follow;
     private String[] track;

@@ -23,7 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 abstract class OAuthToken implements java.io.Serializable {
 
-    private static final long serialVersionUID = 3891133932519746686L;
+    private static final long serialVersionUID = -7841506492508140600L;
     private String token;
     private String tokenSecret;
 

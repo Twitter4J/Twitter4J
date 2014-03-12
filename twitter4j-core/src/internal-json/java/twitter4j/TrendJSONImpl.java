@@ -23,10 +23,10 @@ package twitter4j;
  * @since Twitter4J 2.0.2
  */
 /*package*/ final class TrendJSONImpl implements Trend, java.io.Serializable {
+    private static final long serialVersionUID = -4353426776065521132L;
     private String name;
     private String url = null;
     private String query = null;
-    private static final long serialVersionUID = 1925956704460743946L;
 
     /*package*/ TrendJSONImpl(JSONObject json, boolean storeJSON) {
         this.name = ParseUtil.getRawString("name", json);

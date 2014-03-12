@@ -23,7 +23,7 @@ import java.util.Map;
  * @since Twitter4J 2.2.3
  */
 public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
-    private static final long serialVersionUID = 224487082931268487L;
+    private static final long serialVersionUID = 3609683338035442290L;
     private long id;
     private String url;
     private String mediaURL;
@@ -158,7 +158,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     }
 
     static class Size implements MediaEntity.Size {
-        private static final long serialVersionUID = 8681853416159361581L;
+        private static final long serialVersionUID = -2515842281909325169L;
         int width;
         int height;
         int resize;

@@ -25,6 +25,7 @@ import java.util.ListIterator;
  * @since Twitter4J 2.2.4
  */
 abstract class LazyResponseList<T> implements ResponseList<T> {
+    private static final long serialVersionUID = -1928006011908397874L;
     ResponseList<T> target = null;
 
     LazyResponseList() {

@@ -25,13 +25,13 @@ import java.util.List;
  */
 public final class GeoQuery implements java.io.Serializable {
 
+    private static final long serialVersionUID = 5434503339001056634L;
     private GeoLocation location;
     private String query = null;
     private String ip = null;
     private String accuracy = null;
     private String granularity = null;
     private int maxResults = -1;
-    private static final long serialVersionUID = 927081526936169802L;
 
     /**
      * Creates a GeoQuery with the specified location

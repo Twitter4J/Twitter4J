@@ -24,7 +24,7 @@ package twitter4j;
  */
 /* package */ final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 
-    private static final long serialVersionUID = -8948472760821379376L;
+    private static final long serialVersionUID = 7333552738058031524L;
     private String url;
     private String expandedURL;
     private String displayURL;
@@ -59,7 +59,7 @@ package twitter4j;
                 // sets expandedURL to url if expanded_url is null
                 // http://jira.twitter4j.org/browse/TFJ-704
                 this.expandedURL = json.getString("expanded_url");
-            }else{
+            } else {
                 this.expandedURL = url;
             }
 
@@ -67,7 +67,7 @@ package twitter4j;
                 // sets displayURL to url if expanded_url is null
                 // http://jira.twitter4j.org/browse/TFJ-704
                 this.displayURL = json.getString("display_url");
-            }else{
+            } else {
                 this.displayURL = url;
             }
         } catch (JSONException jsone) {

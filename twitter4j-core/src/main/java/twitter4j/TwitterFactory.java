@@ -38,7 +38,7 @@ public final class TwitterFactory implements java.io.Serializable {
     /*AsyncTwitterFactory and TWitterStream will access this field*/
     static final Authorization DEFAULT_AUTHORIZATION = AuthorizationFactory.getInstance(ConfigurationContext.getInstance());
     private static final Twitter SINGLETON;
-    private static final long serialVersionUID = 5193900138477709155L;
+    private static final long serialVersionUID = -563983536986910054L;
     private final Configuration conf;
 
 

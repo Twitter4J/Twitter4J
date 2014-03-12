@@ -43,7 +43,7 @@ import static twitter4j.TwitterMethod.*;
  * @see {@link twitter4j.TwitterListener}
  */
 class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
-    private static final long serialVersionUID = -2008667933225051907L;
+    private static final long serialVersionUID = 6491978434917152443L;
     private final Twitter twitter;
     private final List<TwitterListener> listeners = new ArrayList<TwitterListener>();
 

@@ -27,9 +27,9 @@ import static twitter4j.ParseUtil.getInt;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class TwitterException extends Exception implements TwitterResponse, HttpResponseCode {
+    private static final long serialVersionUID = 6006561839051121336L;
     private int statusCode = -1;
     private int errorCode = -1;
-    private static final long serialVersionUID = -2623309261327598087L;
     private ExceptionDiagnosis exceptionDiagnosis = null;
     private HttpResponse response;
     private String errorMessage = null;

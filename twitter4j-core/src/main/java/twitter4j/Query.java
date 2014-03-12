@@ -29,6 +29,7 @@ import java.util.List;
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  */
 public final class Query implements java.io.Serializable {
+    private static final long serialVersionUID = 7196404519192910019L;
     private String query = null;
     private String lang = null;
     private String locale = null;
@@ -39,7 +40,6 @@ public final class Query implements java.io.Serializable {
     private String geocode = null;
     private String until = null;
     private ResultType resultType = null;
-    private static final long serialVersionUID = -8108425822233599808L;
     private String nextPageQuery = null;
 
     public Query() {
@@ -408,7 +408,7 @@ public final class Query implements java.io.Serializable {
         appendParameter("since_id", sinceId, params);
         appendParameter("geocode", geocode, params);
         appendParameter("until", until, params);
-        if(resultType != null){
+        if (resultType != null) {
             params.add(new HttpParameter("result_type", resultType.name()));
         }
         params.add(WITH_TWITTER_USER_ID);

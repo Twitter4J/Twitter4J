@@ -22,6 +22,7 @@ package twitter4j;
  * @since Twitter4J 2.1.7
  */
 final class LazySimilarPlaces extends LazyResponseList<Place> implements SimilarPlaces {
+    private static final long serialVersionUID = 8243780300298227789L;
     private HttpResponse res;
     private ObjectFactory factory;
 

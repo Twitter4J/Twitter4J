@@ -23,7 +23,7 @@ package twitter4j;
  * @since Twitter4J 2.1.9
  */
 /*package*/ class UserMentionEntityJSONImpl extends EntityIndex implements UserMentionEntity {
-    private static final long serialVersionUID = 6580431141350059702L;
+    private static final long serialVersionUID = 6060510953676673013L;
     private String name;
     private String screenName;
     private long id;

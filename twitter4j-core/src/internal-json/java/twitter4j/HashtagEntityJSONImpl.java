@@ -23,7 +23,7 @@ package twitter4j;
  * @since Twitter4J 2.1.9
  */
 /*package*/ class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity, SymbolEntity {
-    private static final long serialVersionUID = 4068992372784813200L;
+    private static final long serialVersionUID = -5317828991902848906L;
     private String text;
 
 

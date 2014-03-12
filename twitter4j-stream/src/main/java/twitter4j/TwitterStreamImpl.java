@@ -34,7 +34,7 @@ import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
  * @since Twitter4J 2.0.4
  */
 class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
-    private static final long serialVersionUID = 5529611191443189901L;
+    private static final long serialVersionUID = 5621090317737561048L;
     private final HttpClient http;
     private static final Logger logger = Logger.getLogger(TwitterStreamImpl.class);
 

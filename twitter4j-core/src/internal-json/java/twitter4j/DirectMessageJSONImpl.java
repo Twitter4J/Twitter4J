@@ -27,7 +27,7 @@ import java.util.Date;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class DirectMessageJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
-    private static final long serialVersionUID = -7104233663827757577L;
+    private static final long serialVersionUID = 7092906238192790921L;
     private long id;
     private String text;
     private long senderId;

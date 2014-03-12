@@ -26,7 +26,7 @@ import java.util.Map;
  * @since Twitter4J 2.2.3
  */
 class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements TwitterAPIConfiguration {
-    private static final long serialVersionUID = 5786291660087491465L;
+    private static final long serialVersionUID = -3588904550808591686L;
     private int photoSizeLimit;
     private int shortURLLength;
     private int shortURLLengthHttps;

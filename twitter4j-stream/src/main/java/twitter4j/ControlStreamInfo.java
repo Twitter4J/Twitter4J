@@ -28,7 +28,7 @@ import static twitter4j.ParseUtil.getRawString;
  * @since Twitter4J 2.2.6
  */
 public final class ControlStreamInfo implements Serializable {
-    private static final long serialVersionUID = -6761659771734942177L;
+    private static final long serialVersionUID = 5182091913786509723L;
     private final StreamController.User[] users;
     private final boolean includeFollowingsActivity;
     private final boolean includeUserChanges;
