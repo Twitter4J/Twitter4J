@@ -28,6 +28,9 @@ public final class TwitterObjectFactory {
      * @since Twitter4J 2.1.7
      */
     public static String getRawJSON(Object obj) {
+        if (!registeredAtleastOnce) {
+            throw new IllegalStateException("Apparently jsonStoreEnabled is not set to true.");
+        }
         Object json = rawJsonMap.get().get(obj);
         if (json instanceof String) {
             return (String) json;
@@ -286,7 +289,7 @@ public final class TwitterObjectFactory {
      *
      * @param rawJSON raw JSON form as String
      * @return the respective constructed object, or the JSONObject in the
-     * case where we cannot determine the object type.
+     * case where we cannot determine the object type.78
      * @throws TwitterException when provided string is not a valid JSON string.
      * @since Twitter4J 2.1.9
      */
@@ -327,12 +330,14 @@ public final class TwitterObjectFactory {
         rawJsonMap.get().clear();
     }
 
+    private static boolean registeredAtleastOnce = false;
     /**
      * associate a raw JSON form to the current thread<br>
      *
      * @since Twitter4J 2.1.7
      */
     static <T> T registerJSONObject(T key, Object json) {
+        registeredAtleastOnce = true;
         rawJsonMap.get().put(key, json);
         return key;
     }
