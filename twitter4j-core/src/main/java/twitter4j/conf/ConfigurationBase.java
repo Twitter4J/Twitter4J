@@ -20,6 +20,7 @@ import twitter4j.HttpClientConfiguration;
 import twitter4j.Logger;
 
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +98,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         );
     }
 
-    class MyHttpClientConfiguration implements HttpClientConfiguration {
+    class MyHttpClientConfiguration implements HttpClientConfiguration, Serializable {
         private String httpProxyHost = null;
         private String httpProxyUser = null;
         private String httpProxyPassword = null;
