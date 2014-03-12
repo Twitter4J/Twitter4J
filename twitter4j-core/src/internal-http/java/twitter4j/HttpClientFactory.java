@@ -18,13 +18,12 @@ package twitter4j;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-public final class HttpClientFactory {
+final class HttpClientFactory {
     private static final Constructor HTTP_CLIENT_CONSTRUCTOR;
     private static final String HTTP_CLIENT_IMPLEMENTATION = "twitter4j.http.httpClient";
 
@@ -58,22 +57,15 @@ public final class HttpClientFactory {
         }
     }
 
-    private static HashMap<HttpClientConfiguration, HttpClient> confClientMap = new HashMap<HttpClientConfiguration, HttpClient>();
-
     public static HttpClient getInstance(HttpClientConfiguration conf) {
-        HttpClient client = confClientMap.get(conf);
-        if (client == null) {
-            try {
-                client = (HttpClient) HTTP_CLIENT_CONSTRUCTOR.newInstance(conf);
-                confClientMap.put(conf, client);
-            } catch (InstantiationException e) {
-                throw new AssertionError(e);
-            } catch (IllegalAccessException e) {
-                throw new AssertionError(e);
-            } catch (InvocationTargetException e) {
-                throw new AssertionError(e);
-            }
+        try {
+            return (HttpClient) HTTP_CLIENT_CONSTRUCTOR.newInstance(conf);
+        } catch (InstantiationException e) {
+            throw new AssertionError(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new AssertionError(e);
         }
-        return client;
     }
 }

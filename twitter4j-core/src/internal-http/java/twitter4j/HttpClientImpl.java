@@ -48,7 +48,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
     }
 
     public HttpClientImpl() {
-        super(ConfigurationContext.getInstance());
+        super(ConfigurationContext.getInstance().getHttpClientConfiguration());
     }
 
     public HttpClientImpl(HttpClientConfiguration conf) {

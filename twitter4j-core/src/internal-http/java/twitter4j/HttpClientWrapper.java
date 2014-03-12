@@ -17,7 +17,6 @@
 package twitter4j;
 
 import twitter4j.auth.Authorization;
-import twitter4j.conf.ConfigurationContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,36 +28,38 @@ import java.util.Map;
  */
 public final class HttpClientWrapper implements java.io.Serializable {
     private final HttpClientConfiguration wrapperConf;
-    private HttpClient http;
+    private final HttpClient http;
 
     private final Map<String, String> requestHeaders;
     private static final long serialVersionUID = -6511977105603119379L;
     private HttpResponseListener httpResponseListener;
 
-    public HttpClientWrapper(HttpClientConfiguration wrapperConf) {
-        this.wrapperConf = wrapperConf;
-        http = HttpClientFactory.getInstance(wrapperConf);
+    private HttpClientWrapper(HttpClientConfiguration conf) {
+        this.wrapperConf = conf;
+        http = HttpClientFactory.getInstance(conf);
         requestHeaders = new HashMap<String, String>();
         requestHeaders.put("X-Twitter-Client-Version", Version.getVersion());
         requestHeaders.put("X-Twitter-Client-URL", "http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
         requestHeaders.put("X-Twitter-Client", "Twitter4J");
         requestHeaders.put("User-Agent", "twitter4j http://twitter4j.org/ /" + Version.getVersion());
-        if (wrapperConf.isGZIPEnabled()) {
+        if (conf.isGZIPEnabled()) {
             requestHeaders.put("Accept-Encoding", "gzip");
         }
     }
 
+    private final static HashMap<HttpClientConfiguration, HttpClientWrapper> confClientMap = new HashMap<HttpClientConfiguration, HttpClientWrapper>();
+
+    public static HttpClientWrapper getInstance(HttpClientConfiguration conf) {
+        HttpClientWrapper client = confClientMap.get(conf);
+        if (client == null) {
+            client = new HttpClientWrapper(conf);
+            confClientMap.put(conf, client);
+        }
+        return client;
+    }
+
     public void addDefaultRequestHeader(String name, String value) {
         requestHeaders.put(name, value);
-    }
-
-    // never used with this project. Just for handiness for those using this class.
-    public HttpClientWrapper() {
-        this(ConfigurationContext.getInstance());
-    }
-
-    public void shutdown() {
-        http.shutdown();
     }
 
     private HttpResponse request(HttpRequest req) throws TwitterException {
@@ -202,7 +203,7 @@ public final class HttpClientWrapper implements java.io.Serializable {
     @Override
     public String toString() {
         return "HttpClientWrapper{" +
-                "wrapperConf=" + wrapperConf +
+                "conf=" + wrapperConf +
                 ", http=" + http +
                 ", requestHeaders=" + requestHeaders +
                 ", httpResponseListener=" + httpResponseListener +

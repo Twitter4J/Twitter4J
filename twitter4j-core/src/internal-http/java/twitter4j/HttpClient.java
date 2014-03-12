@@ -21,9 +21,7 @@ package twitter4j;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface HttpClient {
+interface HttpClient {
 
     HttpResponse request(HttpRequest req) throws TwitterException;
-
-    void shutdown();
 }

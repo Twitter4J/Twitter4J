@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.http;
-
-import twitter4j.HttpClient;
-import twitter4j.HttpClientImpl;
-import twitter4j.TwitterTestBase;
+package twitter4j;
 
 /**
  * Test case for HttpCient

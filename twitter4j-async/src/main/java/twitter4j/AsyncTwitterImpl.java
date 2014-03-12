@@ -3058,14 +3058,12 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
      */
     @Override
     public void shutdown() {
-        super.shutdown();
         synchronized (AsyncTwitterImpl.class) {
             if (dispatcher != null) {
                 dispatcher.shutdown();
                 dispatcher = null;
             }
         }
-        twitter.shutdown();
     }
 
     private Dispatcher getDispatcher() {

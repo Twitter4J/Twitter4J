@@ -52,7 +52,7 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertNotNull(user.getOriginalProfileImageURLHttps());
 
         assertNotNull(user.getProfileBannerURL());
-        HttpClientWrapper wrapper = new HttpClientWrapper();
+        HttpClientWrapper wrapper = HttpClientWrapper.getInstance(conf1.getHttpClientConfiguration());
         wrapper.head(user.getProfileBannerURL());
         wrapper.head(user.getProfileBannerRetinaURL());
         wrapper.head(user.getProfileBannerIPadURL());

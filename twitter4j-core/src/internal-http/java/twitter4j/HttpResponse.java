@@ -32,7 +32,7 @@ public abstract class HttpResponse {
     protected final HttpClientConfiguration CONF;
 
     HttpResponse() {
-        this.CONF = ConfigurationContext.getInstance();
+        this.CONF = ConfigurationContext.getInstance().getHttpClientConfiguration();
     }
 
     public HttpResponse(HttpClientConfiguration conf) {

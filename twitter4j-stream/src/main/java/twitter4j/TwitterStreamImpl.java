@@ -47,7 +47,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     /*package*/
     TwitterStreamImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
-        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
+        http = HttpClientWrapper.getInstance(new StreamingReadTimeoutConfiguration(conf));
         // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
         // and this will reduce the shutdown latency of streaming api connection
         // see also - http://jira.twitter4j.org/browse/TFJ-556
@@ -379,7 +379,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
      */
     @Override
     public synchronized void shutdown() {
-        super.shutdown();
         cleanUp();
         synchronized (TwitterStreamImpl.class) {
             if (0 == numberOfHandlers) {
@@ -738,27 +737,27 @@ class StreamingReadTimeoutConfiguration implements HttpClientConfiguration {
 
     @Override
     public String getHttpProxyHost() {
-        return nestedConf.getHttpProxyHost();
+        return nestedConf.getHttpClientConfiguration().getHttpProxyHost();
     }
 
     @Override
     public int getHttpProxyPort() {
-        return nestedConf.getHttpProxyPort();
+        return nestedConf.getHttpClientConfiguration().getHttpProxyPort();
     }
 
     @Override
     public String getHttpProxyUser() {
-        return nestedConf.getHttpProxyUser();
+        return nestedConf.getHttpClientConfiguration().getHttpProxyUser();
     }
 
     @Override
     public String getHttpProxyPassword() {
-        return nestedConf.getHttpProxyPassword();
+        return nestedConf.getHttpClientConfiguration().getHttpProxyPassword();
     }
 
     @Override
     public int getHttpConnectionTimeout() {
-        return nestedConf.getHttpConnectionTimeout();
+        return nestedConf.getHttpClientConfiguration().getHttpConnectionTimeout();
     }
 
     @Override
@@ -769,21 +768,21 @@ class StreamingReadTimeoutConfiguration implements HttpClientConfiguration {
 
     @Override
     public int getHttpRetryCount() {
-        return nestedConf.getHttpRetryCount();
+        return nestedConf.getHttpClientConfiguration().getHttpRetryCount();
     }
 
     @Override
     public int getHttpRetryIntervalSeconds() {
-        return nestedConf.getHttpRetryIntervalSeconds();
+        return nestedConf.getHttpClientConfiguration().getHttpRetryIntervalSeconds();
     }
 
     @Override
     public boolean isPrettyDebugEnabled() {
-        return nestedConf.isPrettyDebugEnabled();
+        return nestedConf.getHttpClientConfiguration().isPrettyDebugEnabled();
     }
 
     @Override
     public boolean isGZIPEnabled() {
-        return nestedConf.isGZIPEnabled();
+        return nestedConf.getHttpClientConfiguration().isGZIPEnabled();
     }
 }

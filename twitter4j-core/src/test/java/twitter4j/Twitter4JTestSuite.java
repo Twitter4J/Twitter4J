@@ -41,7 +41,7 @@ public class Twitter4JTestSuite extends TestCase {
         suite.addTestSuite(ConfigurationTest.class);
         suite.addTestSuite(twitter4j.http.BASE64EncoderTest.class);
         suite.addTestSuite(HTMLEntityTest.class);
-        suite.addTestSuite(twitter4j.http.HttpClientTest.class);
+        suite.addTestSuite(HttpClientTest.class);
         suite.addTestSuite(OAuthTest.class);
         suite.addTestSuite(twitter4j.http.PostParameterTest.class);
         suite.addTestSuite(twitter4j.util.CharacterUtilTest.class);
