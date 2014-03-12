@@ -81,7 +81,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
                 this.auth = NullAuthorization.getInstance();
             }
         }
-        http = new HttpClientWrapper(conf.getHttpClientConfiguration());
+        http = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
         http.setHttpResponseListener(this);
         setFactory();
     }
@@ -197,14 +197,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         return this.conf;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void shutdown() {
-        if (http != null) http.shutdown();
-    }
-
     protected final void ensureAuthorizationEnabled() {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(
@@ -243,7 +235,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         conf = (Configuration) stream.readObject();
         auth = (Authorization) stream.readObject();
         rateLimitStatusListeners = (List<RateLimitStatusListener>) stream.readObject();
-        http = new HttpClientWrapper(conf.getHttpClientConfiguration());
+        http = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
         http.setHttpResponseListener(this);
         setFactory();
     }

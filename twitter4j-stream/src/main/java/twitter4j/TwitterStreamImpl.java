@@ -47,7 +47,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     /*package*/
     TwitterStreamImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
-        http = new HttpClientWrapper(new StreamingReadTimeoutConfiguration(conf));
+        http = HttpClientWrapper.getInstance(new StreamingReadTimeoutConfiguration(conf));
         // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
         // and this will reduce the shutdown latency of streaming api connection
         // see also - http://jira.twitter4j.org/browse/TFJ-556
@@ -379,7 +379,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
      */
     @Override
     public synchronized void shutdown() {
-        super.shutdown();
         cleanUp();
         synchronized (TwitterStreamImpl.class) {
             if (0 == numberOfHandlers) {

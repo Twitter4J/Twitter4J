@@ -52,4 +52,11 @@ public interface AsyncTwitter extends java.io.Serializable,
      * @param listener TwitterListener
      */
     void addListener(TwitterListener listener);
+
+    /**
+     * Shuts down internal dispatcher thread shared across all AsyncTwitter instances.<br>
+     *
+     * @since Twitter4J 2.1.9
+     */
+    void shutdown();
 }

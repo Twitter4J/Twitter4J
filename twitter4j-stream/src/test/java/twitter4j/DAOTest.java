@@ -451,7 +451,7 @@ public class DAOTest extends TwitterTestBase {
     }
 
     private static JSONObject getJSONObjectFromPostURL(String url, Configuration conf) throws Exception {
-        HttpClientWrapper http = new HttpClientWrapper(conf.getHttpClientConfiguration());
+        HttpClientWrapper http = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
         return http.post(url).asJSONObject();
     }
 
@@ -463,7 +463,7 @@ public class DAOTest extends TwitterTestBase {
     }
 
     private JSONObject getJSONObjectFromGetURL(String url, Configuration conf) throws Exception {
-        HttpClientWrapper http = new HttpClientWrapper(conf.getHttpClientConfiguration());
+        HttpClientWrapper http = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
         return http.get(url, getOAuthOuthorization(conf)).asJSONObject();
     }
 
@@ -476,7 +476,7 @@ public class DAOTest extends TwitterTestBase {
 
 
     private JSONArray getJSONArrayFromGetURL(String url, Configuration conf) throws Exception {
-        HttpClientWrapper http = new HttpClientWrapper(conf.getHttpClientConfiguration());
+        HttpClientWrapper http = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
         return http.get(url, getOAuthOuthorization(conf)).asJSONArray();
     }
 
@@ -516,7 +516,7 @@ public class DAOTest extends TwitterTestBase {
 
     public void testUserAsJSON() throws Exception {
         // single User
-        HttpClientWrapper http = new HttpClientWrapper();
+        HttpClientWrapper http = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
         JSONObject json = getJSONObjectFromClassPath("/dao/user.json");
         User user = new UserJSONImpl(json);
         Assert.assertTrue(user.isGeoEnabled());

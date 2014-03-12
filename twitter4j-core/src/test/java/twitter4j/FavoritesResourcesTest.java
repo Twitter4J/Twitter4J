@@ -52,7 +52,7 @@ public class FavoritesResourcesTest extends TwitterTestBase {
         try {
             twitter2.destroyFavorite(status.getId());
         } catch (TwitterException te) {
-            // sometimes destorying favorite fails with 404
+            // sometimes destroying favorite fails with 404
             assertEquals(404, te.getStatusCode());
         }
     }

@@ -13,10 +13,6 @@ public abstract class HttpClientBase implements HttpClient, Serializable {
         this.CONF = conf;
     }
 
-    @Override
-    public void shutdown() {
-    }
-
     protected boolean isProxyConfigured() {
         return CONF.getHttpProxyHost() != null && !CONF.getHttpProxyHost().equals("");
     }
