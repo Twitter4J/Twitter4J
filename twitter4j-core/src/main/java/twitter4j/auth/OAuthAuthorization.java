@@ -113,7 +113,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         if (xAuthAccessType != null) {
             params.add(new HttpParameter("x_auth_access_type", xAuthAccessType));
         }
-        oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[params.size()]), this), this);
+        oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[params.size()]), this, null), this);
         return (RequestToken) oauthToken;
     }
 
@@ -126,7 +126,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         if (oauthToken instanceof AccessToken) {
             return (AccessToken) oauthToken;
         }
-        oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), this));
+        oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), null, this, null));
         return (AccessToken) oauthToken;
     }
 
@@ -137,7 +137,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         ensureTokenIsAvailable();
         oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL()
-                , new HttpParameter[]{new HttpParameter("oauth_verifier", oauthVerifier)}, this));
+                , new HttpParameter[]{new HttpParameter("oauth_verifier", oauthVerifier)}, this, null));
         return (AccessToken) oauthToken;
     }
 
@@ -175,7 +175,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
                     new HttpParameter("x_auth_username", screenName),
                     new HttpParameter("x_auth_password", password),
                     new HttpParameter("x_auth_mode", "client_auth")
-            }, this));
+            }, this, null));
             return (AccessToken) oauthToken;
         } catch (TwitterException te) {
             throw new TwitterException("The screen name / password combination seems to be invalid.", te, te.getStatusCode());

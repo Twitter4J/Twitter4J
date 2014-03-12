@@ -82,7 +82,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
             }
         }
         http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
-        http.setHttpResponseListener(this);
         setFactory();
     }
 
@@ -132,7 +131,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
 
     protected User fillInIDAndScreenName() throws TwitterException {
         ensureAuthorizationEnabled();
-        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json", auth), conf);
+        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json", null, auth, this), conf);
         this.screenName = user.getScreenName();
         this.id = user.getId();
         return user;
@@ -236,7 +235,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         auth = (Authorization) stream.readObject();
         rateLimitStatusListeners = (List<RateLimitStatusListener>) stream.readObject();
         http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
-        http.setHttpResponseListener(this);
         setFactory();
     }
 

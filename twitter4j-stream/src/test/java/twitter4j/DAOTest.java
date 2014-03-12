@@ -462,7 +462,7 @@ public class DAOTest extends TwitterTestBase {
 
     private JSONObject getJSONObjectFromGetURL(String url, Configuration conf) throws Exception {
         HttpClient http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
-        return http.get(url, getOAuthOuthorization(conf)).asJSONObject();
+        return http.get(url, null, getOAuthOuthorization(conf), null).asJSONObject();
     }
 
     private JSONArray getJSONArrayFromGetURL(String url) throws Exception {
@@ -475,7 +475,7 @@ public class DAOTest extends TwitterTestBase {
 
     private JSONArray getJSONArrayFromGetURL(String url, Configuration conf) throws Exception {
         HttpClient http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
-        return http.get(url, getOAuthOuthorization(conf)).asJSONArray();
+        return http.get(url, null, getOAuthOuthorization(conf), null).asJSONArray();
     }
 
     private OAuthAuthorization getOAuthOuthorization(Configuration conf) {

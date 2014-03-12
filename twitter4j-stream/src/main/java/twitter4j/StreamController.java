@@ -71,7 +71,7 @@ public class StreamController {
 
     public ControlStreamInfo getInfo() throws TwitterException {
         ensureControlURISet();
-        HttpResponse res = http.get(controlURI + "/info.json", AUTH);
+        HttpResponse res = http.get(controlURI + "/info.json", null, AUTH, null);
         return new ControlStreamInfo(this, res.asJSONObject());
     }
 
@@ -80,7 +80,7 @@ public class StreamController {
         HttpParameter param = new HttpParameter("user_id",
                 StringUtil.join(userIds));
         HttpResponse res = http.post(controlURI + "/add_user.json",
-                new HttpParameter[]{param}, AUTH);
+                new HttpParameter[]{param}, AUTH, null);
         return res.asString();
     }
 
@@ -89,7 +89,7 @@ public class StreamController {
         HttpParameter param = new HttpParameter("user_id",
                 StringUtil.join(userIds));
         HttpResponse res = http.post(controlURI + "/remove_user.json",
-                new HttpParameter[]{param}, AUTH);
+                new HttpParameter[]{param}, AUTH, null);
         return res.asString();
     }
 
@@ -98,7 +98,7 @@ public class StreamController {
         ensureControlURISet();
         HttpResponse res = http.post(controlURI + "/friends/ids.json",
                 new HttpParameter[]{new HttpParameter("user_id", userId),
-                        new HttpParameter("cursor", cursor)}, AUTH
+                        new HttpParameter("cursor", cursor)}, AUTH, null
         );
         return new FriendsIDs(res);
     }

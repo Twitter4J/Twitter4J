@@ -107,7 +107,9 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
             this.postParameter = appendHttpParameters(this.postParameter, this.appendParameter);
         }
 
-        httpResponse = client.post(uploadUrl, postParameter, headers);
+        Map<String, String> newHeaders = new HashMap<String, String>(client.getRequestHeaders());
+        newHeaders.putAll(headers);
+        httpResponse = client.request(new HttpRequest(RequestMethod.POST, uploadUrl, postParameter, null, headers), null);
 
         String mediaUrl = postUpload();
         logger.debug("uploaded url [" + mediaUrl + "]");

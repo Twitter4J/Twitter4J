@@ -75,9 +75,15 @@ public class TweetsResourcesTest extends TwitterTestBase {
         // http://jira.twitter4j.org/browse/TFJ-715
         // current_user_retweet contains only id
         Status retweeted = twitter2.retweetStatus(status.getId());
-        List<Status> statuses = twitter2.getHomeTimeline();
         assertTrue(retweeted.getText().endsWith(status.getText()));
+//        System.out.println("retweeted:"+retweeted.getId());
+        List<Status> statuses = twitter2.getHomeTimeline();
+//        for (Status statuse : statuses) {
+//            System.out.println("id------:"+statuse.getId()+":"+statuse.getCurrentUserRetweetId());
+//        }
+//
         assertTrue(-1L != statuses.get(0).getCurrentUserRetweetId());
+
 
         Status status2 = twitter2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
         assertNotNull(TwitterObjectFactory.getRawJSON(status2));
