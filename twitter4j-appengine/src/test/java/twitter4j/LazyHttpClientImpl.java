@@ -25,19 +25,18 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class LazyHttpClientImpl implements HttpClient {
+public class LazyHttpClientImpl extends HttpClientImpl {
     HttpClient client;
 
     public LazyHttpClientImpl(HttpClientConfiguration conf) {
         client = new AlternativeHttpClientImpl(conf);
     }
 
-    public HttpResponse request(HttpRequest req) throws TwitterException {
+    @Override
+    public HttpResponse handleRequest(HttpRequest req) throws TwitterException {
         return new LazyHttpResponseImpl(client, req);
     }
 
-    public void shutdown() {
-    }
 }
 
 class LazyHttpResponseImpl extends HttpResponse {

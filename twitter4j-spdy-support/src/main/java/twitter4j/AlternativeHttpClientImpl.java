@@ -99,8 +99,8 @@ public class AlternativeHttpClientImpl extends HttpClientImpl implements HttpRes
     }
 
     @Override
-    public HttpResponse request(HttpRequest req) throws TwitterException {
-        HttpResponse res = super.request(req);
+    public HttpResponse handleRequest(HttpRequest req) throws TwitterException {
+        HttpResponse res = super.handleRequest(req);
 
         if (res != null) {
             lastRequestProtocol = res.getResponseHeader("OkHttp-Selected-Protocol");

@@ -38,7 +38,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     protected transient String screenName = null;
     protected transient long id = 0;
 
-    protected transient HttpClientWrapper http;
+    protected transient HttpClient http;
     private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
 
     protected ObjectFactory factory;
@@ -81,7 +81,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
                 this.auth = NullAuthorization.getInstance();
             }
         }
-        http = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
+        http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
         http.setHttpResponseListener(this);
         setFactory();
     }
@@ -235,7 +235,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         conf = (Configuration) stream.readObject();
         auth = (Authorization) stream.readObject();
         rateLimitStatusListeners = (List<RateLimitStatusListener>) stream.readObject();
-        http = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
+        http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
         http.setHttpResponseListener(this);
         setFactory();
     }

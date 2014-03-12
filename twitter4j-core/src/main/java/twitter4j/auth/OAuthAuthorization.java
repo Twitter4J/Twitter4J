@@ -33,7 +33,7 @@ import java.util.*;
  */
 public class OAuthAuthorization implements Authorization, java.io.Serializable, OAuthSupport {
     private final Configuration conf;
-    private transient static HttpClientWrapper http;
+    private transient static HttpClient http;
 
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
@@ -53,7 +53,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      */
     public OAuthAuthorization(Configuration conf) {
         this.conf = conf;
-        http = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
+        http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
         setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
         if (conf.getOAuthAccessToken() != null && conf.getOAuthAccessTokenSecret() != null) {
             setOAuthAccessToken(new AccessToken(conf.getOAuthAccessToken(), conf.getOAuthAccessTokenSecret()));

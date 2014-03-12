@@ -35,7 +35,7 @@ import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
  */
 class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private static final long serialVersionUID = 5529611191443189901L;
-    private final HttpClientWrapper http;
+    private final HttpClient http;
     private static final Logger logger = Logger.getLogger(TwitterStreamImpl.class);
 
     private List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<ConnectionLifeCycleListener>(0);
@@ -47,7 +47,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     /*package*/
     TwitterStreamImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
-        http = HttpClientWrapper.getInstance(new StreamingReadTimeoutConfiguration(conf));
+        http = HttpClientFactory.getInstance(new StreamingReadTimeoutConfiguration(conf));
         // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
         // and this will reduce the shutdown latency of streaming api connection
         // see also - http://jira.twitter4j.org/browse/TFJ-556

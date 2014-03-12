@@ -33,7 +33,7 @@ import java.util.*;
 abstract class AbstractImageUploadImpl implements ImageUpload {
     public static final String TWITTER_VERIFY_CREDENTIALS_JSON_V1_1 = "https://api.twitter.com/1.1/account/verify_credentials.json";
 
-    private HttpClientWrapper client;
+    private HttpClient client;
 
     protected Configuration conf = null;
     protected String apiKey = null;
@@ -50,7 +50,7 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
     AbstractImageUploadImpl(Configuration conf, OAuthAuthorization oauth) {
         this.oauth = oauth;
         this.conf = conf;
-        client = HttpClientWrapper.getInstance(conf.getHttpClientConfiguration());
+        client = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
     }
 
     public AbstractImageUploadImpl(Configuration conf, String apiKey, OAuthAuthorization oauth) {

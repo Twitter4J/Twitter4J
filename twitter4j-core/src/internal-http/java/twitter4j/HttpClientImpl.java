@@ -28,7 +28,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
+class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
 
     private static final long serialVersionUID = -8819171414069621503L;
@@ -75,7 +75,7 @@ public class HttpClientImpl extends HttpClientBase implements HttpResponseCode, 
     }
 
     @Override
-    public HttpResponse request(HttpRequest req) throws TwitterException {
+    public HttpResponse handleRequest(HttpRequest req) throws TwitterException {
         int retriedCount;
         int retry = CONF.getHttpRetryCount() + 1;
         HttpResponse res = null;
