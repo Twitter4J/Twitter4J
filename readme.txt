@@ -12,6 +12,7 @@ twitter4j-examples - examples
 twitter4j-media-support - media API support
 twitter4j-async - Async API support : depending on twitter4j-core
 twitter4j-stream - Streaming API support : depending on twitter4j-core and twitter4j-async
+twitter4j-spdy - SPDY / HTTP2.0 support : adds SPDY / HTTP2.0 support, boosts Twitter4J performance, reduce packets, save the earth
 
 Contributors
 ------------
