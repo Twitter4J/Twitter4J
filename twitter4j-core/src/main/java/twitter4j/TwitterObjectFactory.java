@@ -289,7 +289,7 @@ public final class TwitterObjectFactory {
      *
      * @param rawJSON raw JSON form as String
      * @return the respective constructed object, or the JSONObject in the
-     * case where we cannot determine the object type.78
+     * case where we cannot determine the object type.
      * @throws TwitterException when provided string is not a valid JSON string.
      * @since Twitter4J 2.1.9
      */
