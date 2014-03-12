@@ -89,6 +89,13 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     String getOriginalProfileImageURLHttps();
 
     /**
+     * Tests if the user has not uploaded their own avatar
+     *
+     * @return if the user has not uploaded their own avatar
+     */
+    boolean isDefaultProfileImage();
+
+    /**
      * Returns the url of the user
      *
      * @return the url of the user
@@ -130,6 +137,13 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     String getProfileSidebarBorderColor();
 
     boolean isProfileUseBackgroundImage();
+
+    /**
+     * Tests if the user has not altered the theme or background
+     *
+     * @return if the user has not altered the theme or background
+     */
+    boolean isDefaultProfile();
 
     boolean isShowAllInlineMedia();
 

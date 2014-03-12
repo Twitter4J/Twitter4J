@@ -182,6 +182,10 @@ final class LazyUser implements twitter4j.User {
         return getTarget().getOriginalProfileImageURLHttps();
     }
 
+    @Override
+    public boolean isDefaultProfileImage() {
+        return getTarget().isDefaultProfileImage();
+    }
 
     /**
      * Returns the url of the user
@@ -252,6 +256,11 @@ final class LazyUser implements twitter4j.User {
     @Override
     public boolean isProfileUseBackgroundImage() {
         return getTarget().isProfileUseBackgroundImage();
+    }
+
+    @Override
+    public boolean isDefaultProfile() {
+        return getTarget().isDefaultProfile();
     }
 
     @Override
