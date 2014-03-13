@@ -100,4 +100,6 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
     String getLoggerFactory();
 
     boolean isTrimUserEnabled();
+
+    boolean isDaemonEnabled();
 }

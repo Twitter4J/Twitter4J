@@ -222,6 +222,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setDaemonEnabled(boolean daemonEnabled) {
+        checkNotBuilt();
+        configurationBean.setDaemonEnabled(daemonEnabled);
+        return this;
+    }
+
     public ConfigurationBuilder setContributingTo(long contributingTo) {
         checkNotBuilt();
         configurationBean.setContributingTo(contributingTo);

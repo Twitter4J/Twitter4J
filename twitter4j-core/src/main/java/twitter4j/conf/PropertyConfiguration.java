@@ -67,6 +67,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     public static final String SITE_STREAM_BASE_URL = "siteStreamBaseURL";
 
     public static final String ASYNC_NUM_THREADS = "async.numThreads";
+    public static final String ASYNC_DAEMON_ENABLED = "async.daemonEnabled";
     public static final String CONTRIBUTING_TO = "contributingTo";
     public static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
     public static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
@@ -289,6 +290,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, ASYNC_NUM_THREADS)) {
             setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_NUM_THREADS));
+        }
+        if (notNull(props, prefix, ASYNC_DAEMON_ENABLED)) {
+            setDaemonEnabled(getBoolean(props, prefix, ASYNC_DAEMON_ENABLED));
         }
         if (notNull(props, prefix, CONTRIBUTING_TO)) {
             setContributingTo(getLongProperty(props, prefix, CONTRIBUTING_TO));

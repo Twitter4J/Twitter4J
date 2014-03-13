@@ -17,106 +17,45 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
 final class DispatcherImpl implements Dispatcher {
-    private ExecuteThread[] threads;
-    private final List<Runnable> q = new LinkedList<Runnable>();
+    private final ExecutorService executorService;
 
-    public DispatcherImpl(Configuration conf) {
-        threads = new ExecuteThread[conf.getAsyncNumThreads()];
-        for (int i = 0; i < threads.length; i++) {
-            threads[i] = new ExecuteThread("Twitter4J Async Dispatcher", this, i);
-            threads[i].setDaemon(true);
-            threads[i].start();
-        }
+    public DispatcherImpl(final Configuration conf) {
+        executorService = Executors.newFixedThreadPool(conf.getAsyncNumThreads(),
+                new ThreadFactory() {
+                    int count = 0;
+
+                    @Override
+                    public Thread newThread(Runnable r) {
+                        Thread thread = new Thread(r);
+                        thread.setName(String.format("Twitter4J Async Dispatcher[%d]", count++));
+                        thread.setDaemon(conf.isDaemonEnabled());
+                        return thread;
+                    }
+                }
+        );
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
-                if (active) {
-                    shutdown();
-                }
+                executorService.shutdown();
             }
         });
     }
 
     @Override
     public synchronized void invokeLater(Runnable task) {
-        synchronized (q) {
-            q.add(task);
-        }
-        synchronized (ticket) {
-            ticket.notify();
-        }
+        executorService.execute(task);
     }
-
-    final Object ticket = new Object();
-
-    public Runnable poll() {
-        while (active) {
-            synchronized (q) {
-                if (q.size() > 0) {
-                    Runnable task = q.remove(0);
-                    if (task != null) {
-                        return task;
-                    }
-                }
-            }
-            synchronized (ticket) {
-                try {
-                    ticket.wait();
-                } catch (InterruptedException ignore) {
-                }
-            }
-        }
-        return null;
-    }
-
-    private boolean active = true;
 
     @Override
     public synchronized void shutdown() {
-        if (active) {
-            active = false;
-            for (ExecuteThread thread : threads) {
-                thread.shutdown();
-            }
-            synchronized (ticket) {
-                ticket.notifyAll();
-            }
-        }
-    }
-}
-
-class ExecuteThread extends Thread {
-    private static Logger logger = Logger.getLogger(ExecuteThread.class);
-    DispatcherImpl q;
-
-    ExecuteThread(String name, DispatcherImpl q, int index) {
-        super(name + "[" + index + "]");
-        this.q = q;
-    }
-
-    public void shutdown() {
-        alive = false;
-    }
-
-    private boolean alive = true;
-
-    public void run() {
-        while (alive) {
-            Runnable task = q.poll();
-            if (task != null) {
-                try {
-                    task.run();
-                } catch (Exception ex) {
-                    logger.error("Got an exception while running a task:", ex);
-                }
-            }
-        }
+        executorService.shutdown();
     }
 }

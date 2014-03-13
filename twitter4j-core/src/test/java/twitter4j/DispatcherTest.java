@@ -43,36 +43,26 @@ public class DispatcherTest extends TestCase {
     public int count;
 
     public void testInvokeLater() throws Exception {
-        boolean isJDK14orEarlier = false;
-        String versionStr = System.getProperty("java.specification.version");
-        if (versionStr != null) {
-            isJDK14orEarlier = 1.5d > Double.parseDouble(versionStr);
-        }
-        // this test runs only on JDK1.5 or later since Thread.getAllStackTraces() is available from JDK1.5
         String name = "Twitter4J Async Dispatcher";
-        int threadcount = countThread(name);
+        int threadCount = ConfigurationContext.getInstance().getAsyncNumThreads();
         dispatcher = new DispatcherFactory(ConfigurationContext.getInstance()).getInstance();
         count = 0;
         dispatcher.invokeLater(new IncrementTask());
         dispatcher.invokeLater(new IncrementTask());
         dispatcher.invokeLater(new IncrementTask());
         Thread.sleep(300);
-        if (!isJDK14orEarlier) {
-            assertTrue((threadcount + 1) == countThread(name));
-        }
+        assertEquals(threadCount  , countThread(name));
         assertEquals(3, count);
         dispatcher.shutdown();
         Thread.sleep(1000);
-        if (!isJDK14orEarlier) {
-            assertTrue(threadcount == countThread(name));
-        }
+        assertEquals(0, countThread(name));
     }
 
     private int countThread(String name) {
         int count = 0;
         Map<Thread, StackTraceElement[]> allThreads = Thread.getAllStackTraces();
         for (Thread thread : allThreads.keySet()) {
-            if (-1 != thread.getName().indexOf(name)) {
+            if (thread.getName().contains(name)) {
                 count++;
             }
         }

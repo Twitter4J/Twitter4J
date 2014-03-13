@@ -83,6 +83,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String mediaProvider = "TWITTER";
     private String mediaProviderAPIKey = null;
     private Properties mediaProviderParameters = null;
+    private boolean daemonEnabled = true;
 
 
     protected ConfigurationBase() {
@@ -577,6 +578,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     public boolean isTrimUserEnabled() {
         return this.trimUserEnabled;
+    }
+
+    @Override
+    public boolean isDaemonEnabled() {
+        return daemonEnabled;
+    }
+
+    protected void setDaemonEnabled(boolean daemonEnabled) {
+        this.daemonEnabled = daemonEnabled;
     }
 
     public void setTrimUserEnabled(boolean enabled) {
