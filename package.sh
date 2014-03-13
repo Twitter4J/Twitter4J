@@ -5,35 +5,66 @@ export DEPLOY=$2
 
 #export HASH=`git log|head -n 1|sed "s/^commit //g"`
 packageZip(){
-rm twitter4j-core/src/test/resources/test.properties
-rm twitter4j-core/src/test/resources/xauth-test.properties
-rm twitter4j-media-support/src/test/resources/twitter4j.properties
-rm twitter4j-async/src/test/resources/test.properties
-rm twitter4j-stream/src/test/resources/test.properties
-rm twitter4j-stream/src/test/resources/sitestream-test.properties
-rm twitter4j-appengine/src/test/resources/twitter4j.properties
+
+DIR=twitter4j-$LATEST_VERSION
+mkdir $DIR
+mkdir $DIR/twitter4j-core
+cp -r twitter4j-core/src $DIR/twitter4j-core/
+cp twitter4j-core/pom.xml $DIR/twitter4j-core/
+rm $DIR/twitter4j-core/src/test/resources/test.properties
+rm $DIR/twitter4j-core/src/test/resources/xauth-test.properties
+
+mkdir $DIR/twitter4j-examples
+cp -r twitter4j-examples/src $DIR/twitter4j-examples/
+cp twitter4j-examples/pom.xml $DIR/twitter4j-examples/
+cp -r twitter4j-examples/bin $DIR/
+
+mkdir $DIR/twitter4j-media-support
+cp -r twitter4j-media-support/src $DIR/twitter4j-media-support/
+cp twitter4j-media-support/pom.xml $DIR/twitter4j-media-support/
+rm $dir/twitter4j-media-support/src/test/resources/twitter4j.properties
+
+mkdir $DIR/twitter4j-async
+cp -r twitter4j-async/src $DIR/twitter4j-async/
+cp twitter4j-async/pom.xml $DIR/twitter4j-async/
+rm $DIR/twitter4j-async/src/test/resources/test.properties
+
+mkdir $DIR/twitter4j-stream
+cp -r twitter4j-stream/src $DIR/twitter4j-stream/
+cp twitter4j-stream/pom.xml $DIR/twitter4j-stream/
+
+mkdir $DIR/twitter4j-appengine
+cp -r twitter4j-appengine/src $DIR/twitter4j-appengine/
+cp twitter4j-appengine/pom.xml $DIR/twitter4j-appengine/
+
+mkdir $DIR/twitter4j-spdy-support
+cp -r twitter4j-spdy-support/src $DIR/twitter4j-spdy-support/
+cp twitter4j-spdy-support/pom.xml $DIR/twitter4j-spdy-support/
+
+cp pom.xml $DIR/pom.xml
+cp LICENSE.txt $DIR/
+cp readme.txt $DIR/
+cp -r powered-by-badge $DIR/
 
 echo hash=$HASH
 #embedding commit hash into version string
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-core/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-appengine/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-examples/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-media-support/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-async/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-stream/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" twitter4j-spdy-support/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-core/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-appengine/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-examples/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-media-support/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-async/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-stream/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-spdy-support/pom.xml
 
-sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-core/src/main/java/twitter4j/Version.java
-sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-media-support/src/main/java/twitter4j/media/Version.java
-sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-async/src/main/java/twitter4j/VersionAsync.java
-sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-appengine/src/main/java/twitter4j/VersionAppEngine.java
-sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-stream/src/main/java/twitter4j/VersionStream.java
-sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" twitter4j-spdy-support/src/main/java/twitter4j/VersionSPDY.java
+sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-core/src/main/java/twitter4j/Version.java
+sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-media-support/src/main/java/twitter4j/media/Version.java
+sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-async/src/main/java/twitter4j/VersionAsync.java
+sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-appengine/src/main/java/twitter4j/VersionAppEngine.java
+sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-stream/src/main/java/twitter4j/VersionStream.java
+sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-spdy-support/src/main/java/twitter4j/VersionSPDY.java
 
-rm -Rf .git
-rm -Rf target
-
+cd $DIR
 if [ -n "$DEPLOY" ];
  then
 # deploy
@@ -57,95 +88,69 @@ if [ -n "$DEPLOY" ];
   cd ..
 fi
 
-DIR=twitter4j-$LATEST_VERSION
-mkdir $DIR
-mkdir $DIR/twitter4j-core
-cp -r twitter4j-core/src $DIR/twitter4j-core/
-cp twitter4j-core/pom.xml $DIR/twitter4j-core/
+mkdir twitter4j-core/javadoc/
+unzip twitter4j-core/target/twitter4j-core-$LATEST_VERSION-javadoc.jar -d twitter4j-core/javadoc/
+# mv twitter4j-core/target/twitter4j-core-$LATEST_VERSION-javadoc.jar twitter4j-core/
+# mv twitter4j-core/target/twitter4j-core-$LATEST_VERSION-sources.jar twitter4j-core/
 
-mkdir $DIR/twitter4j-examples
-cp -r twitter4j-examples/src $DIR/twitter4j-examples/
-cp twitter4j-examples/pom.xml $DIR/twitter4j-examples/
-cp -r twitter4j-examples/bin $DIR/
+mkdir twitter4j-media-support/javadoc/
+unzip twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-javadoc.jar -d twitter4j-media-support/javadoc/
+# mv twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-javadoc.jar twitter4j-media-support/
+# mv twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-sources.jar twitter4j-media-support/
 
-mkdir $DIR/twitter4j-media-support
-cp -r twitter4j-media-support/src $DIR/twitter4j-media-support/
-cp twitter4j-media-support/pom.xml $DIR/twitter4j-media-support/
+mkdir twitter4j-examples/javadoc/
+unzip twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-javadoc.jar -d twitter4j-examples/javadoc/
+# mv twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-javadoc.jar twitter4j-examples/
+# mv twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-sources.jar twitter4j-examples/
 
-mkdir $DIR/twitter4j-async
-cp -r twitter4j-async/src $DIR/twitter4j-async/
-cp twitter4j-async/pom.xml $DIR/twitter4j-async/
+mkdir twitter4j-async/javadoc/
+unzip twitter4j-async/target/twitter4j-async-$LATEST_VERSION-javadoc.jar -d twitter4j-async/javadoc/
+# mv twitter4j-async/target/twitter4j-async-$LATEST_VERSION-javadoc.jar twitter4j-async/
+# mv twitter4j-async/target/twitter4j-async-$LATEST_VERSION-sources.jar twitter4j-async/
 
-mkdir $DIR/twitter4j-stream
-cp -r twitter4j-stream/src $DIR/twitter4j-stream/
-cp twitter4j-stream/pom.xml $DIR/twitter4j-stream/
+mkdir twitter4j-stream/javadoc/
+unzip twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-javadoc.jar -d twitter4j-stream/javadoc/
+# mv twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-javadoc.jar twitter4j-stream/
+# mv twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-sources.jar twitter4j-stream/
+rm twitter4j-stream/src/test/resources/test.properties
+rm twitter4j-stream/src/test/resources/sitestream-test.properties
 
-mkdir $DIR/twitter4j-appengine
-cp -r twitter4j-appengine/src $DIR/twitter4j-appengine/
-cp twitter4j-appengine/pom.xml $DIR/twitter4j-appengine/
+mkdir twitter4j-appengine/javadoc/
+unzip twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar -d twitter4j-appengine/javadoc/
+# mv twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar twitter4j-appengine/
+# mv twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-sources.jar twitter4j-appengine/
+mv twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION.jar twitter4j-appengine/
+rm twitter4j-appengine/src/test/resources/twitter4j.properties
 
-mkdir $DIR/twitter4j-spdy-support
-cp -r twitter4j-spdy-support/src $DIR/twitter4j-spdy-support/
-cp twitter4j-spdy-support/pom.xml $DIR/twitter4j-spdy-support/
+mkdir twitter4j-spdy-support/javadoc/
+unzip twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar -d twitter4j-spdy-support/javadoc/
+# mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar twitter4j-spdy-support/
+# mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-sources.jar twitter4j-spdy-support/
+mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION.jar twitter4j-spdy-support/
 
-cp pom.xml $DIR/pom.xml
-cp LICENSE.txt $DIR/
-cp readme.txt $DIR/
-cp -r powered-by-badge $DIR/
+mkdir lib
+cp ../readme-libs.txt lib
+mv twitter4j-core/target/twitter4j-core-$LATEST_VERSION.jar lib
+mv twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION.jar lib
+mv twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION.jar lib
+mv twitter4j-async/target/twitter4j-async-$LATEST_VERSION.jar lib
+mv twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION.jar lib
 
-mkdir $DIR/twitter4j-core/javadoc/
-unzip twitter4j-core/target/twitter4j-core-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-core/javadoc/
-cp twitter4j-core/target/twitter4j-core-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-core/
-cp twitter4j-core/target/twitter4j-core-$LATEST_VERSION-sources.jar -d $DIR/twitter4j-core/
+rm -Rf twitter4j-core/target
+rm -Rf twitter4j-media-support/target
+rm -Rf twitter4j-async/target
+rm -Rf twitter4j-examples/target
+rm -Rf twitter4j-stream/target
+rm -Rf twitter4j-appengine/target
+rm -Rf twitter4j-spdy-support/target
 
-mkdir $DIR/twitter4j-media-support/javadoc/
-unzip twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-media-support/javadoc/
-cp twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-media-support/
-cp twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-sources.jar -d $DIR/twitter4j-media-support/
-
-mkdir $DIR/twitter4j-examples/javadoc/
-unzip twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-examples/javadoc/
-cp twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-examples/
-cp twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-sources.jar -d $DIR/twitter4j-examples/
-
-mkdir $DIR/twitter4j-async/javadoc/
-unzip twitter4j-async/target/twitter4j-async-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-async/javadoc/
-cp twitter4j-async/target/twitter4j-async-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-async/
-cp twitter4j-async/target/twitter4j-async-$LATEST_VERSION-sources.jar -d $DIR/twitter4j-async/
-
-mkdir $DIR/twitter4j-stream/javadoc/
-unzip twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-stream/javadoc/
-cp twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-stream/
-cp twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-sources.jar -d $DIR/twitter4j-stream/
-
-mkdir $DIR/twitter4j-appengine/javadoc/
-unzip twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-appengine/javadoc/
-cp twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-appengine/
-cp twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-sources.jar -d $DIR/twitter4j-appengine/
-cp twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION.jar -d $DIR/twitter4j-appengine/
-
-mkdir $DIR/twitter4j-spdy-support/javadoc/
-unzip twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-spdy-support/javadoc/
-cp twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar -d $DIR/twitter4j-spdy-support/
-cp twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-sources.jar -d $DIR/twitter4j-spdy-support/
-cp twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION.jar -d $DIR/twitter4j-spdy-support/
-
-mkdir $DIR/lib
-cp readme-libs.txt $DIR/lib
-cp twitter4j-core/target/twitter4j-core-$LATEST_VERSION.jar $DIR/lib
-cp twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION.jar $DIR/lib
-cp twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION.jar $DIR/lib
-cp twitter4j-async/target/twitter4j-async-$LATEST_VERSION.jar $DIR/lib
-cp twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION.jar $DIR/lib
-
-cd $DIR/
 find . -name ".svn" -print -exec rm -rf {} ";"
 find . -name ".DS_Store" -print -exec rm -r {} ";"
 find . -name ._* -exec rm -r {} ";"
 rm ../twitter4j-$LATEST_VERSION.zip
-zip -r ../../twitter4j-$LATEST_VERSION.zip .
+zip -r ../twitter4j-$LATEST_VERSION.zip .
+cd ..
 }
 
 packageZip
-cd /tmp
-rm -Rf t4jbuild/
+rm -Rf twitter4j-$LATEST_VERSION
