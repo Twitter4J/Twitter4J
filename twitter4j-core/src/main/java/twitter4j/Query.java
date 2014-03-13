@@ -284,8 +284,12 @@ public final class Query implements java.io.Serializable {
         return geocode;
     }
 
-    public static final String MILES = "mi";
-    public static final String KILOMETERS = "km";
+    public static final Unit MILES = Unit.mi;
+    public static final Unit KILOMETERS = Unit.km;
+
+    public enum Unit {
+        mi, km
+    }
 
     /**
      * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
@@ -293,6 +297,20 @@ public final class Query implements java.io.Serializable {
      * @param location geo location
      * @param radius   radius
      * @param unit     Query.MILES or Query.KILOMETERS
+     * @since Twitter4J 4.0.1
+     */
+    public void setGeoCode(GeoLocation location, double radius
+            , Unit unit) {
+        this.geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit.name();
+    }
+
+    /**
+     * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
+     *
+     * @param location geo location
+     * @param radius   radius
+     * @param unit     Query.MILES or Query.KILOMETERS
+     * @deprecated use {@link #setGeoCode(GeoLocation, double, twitter4j.Query.Unit)} instead
      */
     public void setGeoCode(GeoLocation location, double radius
             , String unit) {
@@ -359,7 +377,7 @@ public final class Query implements java.io.Serializable {
      */
     public final static ResultType RECENT = ResultType.recent;
 
-    private enum ResultType {
+    public enum ResultType {
         popular, mixed, recent
     }
 
