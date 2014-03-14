@@ -98,8 +98,8 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             props.load(is);
             is.close();
             Configuration yusukeyConf = new PropertyConfiguration(props, "/yusukey");
-            Configuration twit4jConf = new PropertyConfiguration(props, "/twit4j");
-            Configuration twit4j2Conf = new PropertyConfiguration(props, "/twit4j2");
+            Configuration twit4jConf = new PropertyConfiguration(props, "/id1");
+            Configuration twit4j2Conf = new PropertyConfiguration(props, "/id2");
             TwitterStream twitterStream = new TwitterStreamFactory(yusukeyConf).getInstance();
             twitterStream.addListener(this);
             Twitter twit4j = new TwitterFactory(twit4jConf).getInstance();
