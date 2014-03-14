@@ -48,7 +48,7 @@ final class UserStreamImpl extends StatusStreamImpl implements UserStream {
 
     @Override
     protected void onDirectMessage(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
-        DirectMessage directMessage = asDirectMessage(json);
+        DirectMessage directMessage = asDirectMessage(json.getJSONObject("direct_message"));
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onDirectMessage(directMessage);
         }
