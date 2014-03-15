@@ -41,10 +41,11 @@ public class SavedSearchesResourcesTest extends TwitterTestBase {
         for (SavedSearch savedSearch : list) {
             twitter1.destroySavedSearch(savedSearch.getId());
         }
-        SavedSearch ss1 = twitter1.createSavedSearch("my search");
+        String listName = String.valueOf(System.currentTimeMillis());
+        SavedSearch ss1 = twitter1.createSavedSearch(listName);
         assertNotNull(TwitterObjectFactory.getRawJSON(ss1));
         assertEquals(ss1, TwitterObjectFactory.createSavedSearch(TwitterObjectFactory.getRawJSON(ss1)));
-        assertEquals("my search", ss1.getQuery());
+        assertEquals(listName, ss1.getQuery());
         assertEquals(-1, ss1.getPosition());
         list = twitter1.getSavedSearches();
         assertNotNull(TwitterObjectFactory.getRawJSON(list));
