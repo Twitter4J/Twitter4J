@@ -310,11 +310,16 @@ abstract class StatusStreamBase implements StatusStream {
     }
 
     protected DirectMessage asDirectMessage(JSONObject json) throws TwitterException {
-        DirectMessage directMessage = new DirectMessageJSONImpl(json);
-        if (CONF.isJSONStoreEnabled()) {
-            TwitterObjectFactory.registerJSONObject(directMessage, json);
+        try {
+            JSONObject dmJSON = json.getJSONObject("direct_message");
+            DirectMessage directMessage = new DirectMessageJSONImpl(dmJSON);
+            if (CONF.isJSONStoreEnabled()) {
+                TwitterObjectFactory.registerJSONObject(directMessage, dmJSON);
+            }
+            return directMessage;
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
         }
-        return directMessage;
     }
 
     protected long[] asFriendList(JSONObject json) throws TwitterException {

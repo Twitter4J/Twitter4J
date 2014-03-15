@@ -38,6 +38,10 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     }
 
     @Override
+    public void onUnfollow(User source, User unfollowedUser) {
+    }
+
+    @Override
     public void onUnfavorite(User source, User target, Status unfavoritedStatus) {
     }
 

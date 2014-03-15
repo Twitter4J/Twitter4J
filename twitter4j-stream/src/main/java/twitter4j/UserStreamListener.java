@@ -53,6 +53,13 @@ public interface UserStreamListener extends StatusListener {
     void onFollow(User source, User followedUser);
 
     /**
+     * @param source
+     * @param unfollowedUser
+     * @since Twitter4J 4.0.1
+     */
+    void onUnfollow(User source, User unfollowedUser);
+
+    /**
      * @param directMessage
      * @since Twitter4J 2.1.3
      */

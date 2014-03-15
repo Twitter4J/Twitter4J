@@ -101,6 +101,13 @@ public final class PrintUserStream {
         }
 
         @Override
+        public void onUnfollow(User source, User followedUser) {
+            System.out.println("onFollow source:@"
+                    + source.getScreenName() + " target:@"
+                    + followedUser.getScreenName());
+        }
+
+        @Override
         public void onDirectMessage(DirectMessage directMessage) {
             System.out.println("onDirectMessage text:"
                     + directMessage.getText());
