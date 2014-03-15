@@ -519,8 +519,8 @@ public class DAOTest extends TwitterTestBase {
         User user = new UserJSONImpl(json);
         assertTrue(user.isGeoEnabled());
         assertFalse(user.isVerified());
-        assertEquals(id1.screenName, user.getName());
-        assertEquals(id1.screenName, user.getScreenName());
+        assertNotNull(id1.screenName, user.getName());
+        assertNotNull(id1.screenName, user.getScreenName());
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());
         assertNotNull(user.getProfileImageURL());
