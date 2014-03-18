@@ -238,22 +238,33 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(2, friendshipList.size());
 
 
+        String twitterapi = "twitterapi";
+        long twitterapiID = 6253282L;
         try {
-            twitter1.createFriendship(id3.id);
+            if (!twitter1.showFriendship(id1.id, twitterapiID).isSourceFollowingTarget()) {
+                twitter1.createFriendship(twitterapi);
+            }
         } catch (TwitterException ignore) {
-
+        }
+        String twitterdev = "TwitterDev";
+        long twitterDevID = 2244994945L;
+        try {
+            if (!twitter1.showFriendship(id1.id, twitterDevID).isSourceFollowingTarget()) {
+                // following an account enables retweet notification forcibly. follow him only when not following
+                twitter1.createFriendship(twitterdev);
+            }
+        } catch (TwitterException ignore) {
         }
 
-        Relationship updatedRelationship = twitter1.updateFriendship(id3.id, false, false);
-        assertEquals(id3.screenName, updatedRelationship.getTargetUserScreenName());
-        assertFalse(updatedRelationship.isSourceNotificationsEnabled());
-        assertFalse(updatedRelationship.isSourceWantRetweets());
+        Relationship updatedRelationship = twitter1.updateFriendship(twitterapi, true, true);
+        assertEquals(twitterapi, updatedRelationship.getTargetUserScreenName());
+        assertTrue(updatedRelationship.isSourceNotificationsEnabled());
+        assertTrue(updatedRelationship.isSourceWantRetweets());
 
-        Relationship relationship = twitter1.updateFriendship(id3.screenName, true, true);
-        assertEquals(id3.screenName, relationship.getTargetUserScreenName());
-
-        // it takes several minutes to take effect. disabling notification for the later tests
-        twitter1.updateFriendship(id3.id, false, false);
+        Relationship relationship = twitter1.updateFriendship(twitterdev, false, false);
+        assertEquals(twitterdev, relationship.getTargetUserScreenName());
+        assertFalse(relationship.isSourceNotificationsEnabled());
+        assertFalse(relationship.isSourceWantRetweets());
     }
 
     public void testLookupFriendships() throws Exception {

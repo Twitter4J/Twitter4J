@@ -76,14 +76,15 @@ public class TweetsResourcesTest extends TwitterTestBase {
         // current_user_retweet contains only id
         Status retweeted = twitter2.retweetStatus(status.getId());
         assertTrue(retweeted.getText().endsWith(status.getText()));
-        Thread.sleep(1000); // takes some time to get retweeted id included
-//        System.out.println("retweeted:"+retweeted.getId());
         List<Status> statuses = twitter2.getHomeTimeline();
-//        for (Status statuse : statuses) {
-//            System.out.println("id------:"+statuse.getId()+":"+statuse.getCurrentUserRetweetId());
-//        }
-//
-        assertTrue(-1L != statuses.get(0).getCurrentUserRetweetId());
+        boolean myRetweetFound = false;
+        for (Status s : statuses) {
+            if (s.getCurrentUserRetweetId() != -1L) {
+                myRetweetFound = true;
+                break;
+            }
+        }
+        assertTrue("myRetweet", myRetweetFound);
 
 
         Status status2 = twitter2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
