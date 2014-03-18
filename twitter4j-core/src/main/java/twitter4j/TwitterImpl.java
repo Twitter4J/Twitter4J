@@ -50,20 +50,30 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         HttpParameter[] implicitParams = implicitParamsMap.get(conf);
         String implicitParamsStr = implicitParamsStrMap.get(conf);
         if (implicitParams == null) {
-            boolean contributorsEnabled = conf.getContributingTo() != -1L;
-            implicitParamsStr = contributorsEnabled ? "&contributingto=" + conf.getContributingTo() : "";
-            implicitParamsStrMap.put(conf, implicitParamsStr);
-
-            List<HttpParameter> params = new ArrayList<HttpParameter>(2);
-            if (contributorsEnabled) {
-                params.add(new HttpParameter("contributingto", conf.getContributingTo()));
-            }
-            if (conf.isTrimUserEnabled()) {
-                params.add(new HttpParameter("trim_user", "1"));
-            }
-            implicitParams = params.toArray(new HttpParameter[params.size()]);
-            implicitParamsMap.put(conf, implicitParams);
+            implicitParamsStr = conf.isIncludeEntitiesEnabled() ? "include_entities=" + true : "";
         }
+        boolean contributorsEnabled = conf.getContributingTo() != -1L;
+        if (contributorsEnabled) {
+            if (!"".equals(implicitParamsStr)) {
+                implicitParamsStr += "?";
+            }
+            implicitParamsStr += "contributingto=" + conf.getContributingTo();
+        }
+        implicitParamsStrMap.put(conf, implicitParamsStr);
+
+        List<HttpParameter> params = new ArrayList<HttpParameter>(2);
+        if (conf.isIncludeEntitiesEnabled()) {
+            params.add(new HttpParameter("include_entities", "true"));
+        }
+        if (contributorsEnabled) {
+            params.add(new HttpParameter("contributingto", conf.getContributingTo()));
+        }
+        if (conf.isTrimUserEnabled()) {
+            params.add(new HttpParameter("trim_user", "1"));
+        }
+        implicitParams = params.toArray(new HttpParameter[params.size()]);
+        implicitParamsMap.put(conf, implicitParams);
+
         IMPLICIT_PARAMS = implicitParams;
         IMPLICIT_PARAMS_STR = implicitParamsStr;
     }
@@ -943,7 +953,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException {
-        HttpResponse res = null;
+        HttpResponse res;
         try {
             res = get(conf.getRestBaseURL() + "users/suggestions/" + URLEncoder.encode(categorySlug, "UTF-8") + ".json");
         } catch (UnsupportedEncodingException e) {
@@ -965,7 +975,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
      */
     @Override
     public ResponseList<User> getMemberSuggestions(String categorySlug) throws TwitterException {
-        HttpResponse res = null;
+        HttpResponse res;
         try {
             res = get(conf.getRestBaseURL() + "users/suggestions/" + URLEncoder.encode(categorySlug, "UTF-8") + "/members.json");
         } catch (UnsupportedEncodingException e) {

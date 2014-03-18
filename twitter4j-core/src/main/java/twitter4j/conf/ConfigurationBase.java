@@ -68,6 +68,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private long contributingTo = -1L;
 
     private boolean includeMyRetweetEnabled = true;
+    private boolean includeEntitiesEnabled = true;
     private boolean trimUserEnabled = false;
 
     private boolean jsonStoreEnabled = false;
@@ -564,6 +565,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return loggerFactory;
     }
 
+    @Override
+    public boolean isIncludeEntitiesEnabled() {
+        return includeEntitiesEnabled;
+    }
+
+    protected void setIncludeEntitiesEnabled(boolean includeEntitiesEnabled) {
+        this.includeEntitiesEnabled = includeEntitiesEnabled;
+    }
+
     protected final void setLoggerFactory(String loggerImpl) {
         this.loggerFactory = loggerImpl;
     }
@@ -699,10 +709,12 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
         if (asyncNumThreads != that.asyncNumThreads) return false;
         if (contributingTo != that.contributingTo) return false;
+        if (daemonEnabled != that.daemonEnabled) return false;
         if (debug != that.debug) return false;
         if (httpRetryCount != that.httpRetryCount) return false;
         if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
+        if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
         if (includeMyRetweetEnabled != that.includeMyRetweetEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
@@ -788,6 +800,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (loggerFactory != null ? loggerFactory.hashCode() : 0);
         result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
         result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
+        result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
         result = 31 * result + (trimUserEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
         result = 31 * result + (mbeanEnabled ? 1 : 0);
@@ -798,6 +811,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
         result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
         result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
+        result = 31 * result + (daemonEnabled ? 1 : 0);
         return result;
     }
 
@@ -832,6 +846,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", loggerFactory='" + loggerFactory + '\'' +
                 ", contributingTo=" + contributingTo +
                 ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
+                ", includeEntitiesEnabled=" + includeEntitiesEnabled +
                 ", trimUserEnabled=" + trimUserEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
@@ -842,6 +857,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", mediaProvider='" + mediaProvider + '\'' +
                 ", mediaProviderAPIKey='" + mediaProviderAPIKey + '\'' +
                 ", mediaProviderParameters=" + mediaProviderParameters +
+                ", daemonEnabled=" + daemonEnabled +
                 '}';
     }
 

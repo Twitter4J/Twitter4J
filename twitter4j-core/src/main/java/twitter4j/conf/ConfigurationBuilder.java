@@ -252,6 +252,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setIncludeEntitiesEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setIncludeEntitiesEnabled(enabled);
+        return this;
+    }
+
     public ConfigurationBuilder setJSONStoreEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setJSONStoreEnabled(enabled);
