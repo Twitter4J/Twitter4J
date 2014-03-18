@@ -193,6 +193,18 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertTrue(rel1r.isTargetFollowedBySource());
         assertFalse(rel1r.canSourceDm());
 
+
+        try {
+            twitterAPIBestFriend1.createFriendship(bestFriend2.id);
+        } catch (TwitterException ignore) {
+
+        }
+
+        try {
+            twitterAPIBestFriend2.createFriendship(bestFriend1.id);
+        } catch (TwitterException ignore) {
+
+        }
         //  2) best_friend1 is following and followed by best_friend2
         Relationship rel2 = twitter1.showFriendship(bestFriend1.screenName, bestFriend2.screenName);
         assertNull(TwitterObjectFactory.getRawJSON(rel1));
@@ -225,13 +237,23 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         friendshipList = twitter1.lookupFriendships(new long[]{id2.id, id3.id});
         assertEquals(2, friendshipList.size());
 
-        Relationship relationship = twitter1.updateFriendship(id3.screenName, true, true);
-        assertEquals(id3.screenName, relationship.getTargetUserScreenName());
+
+        try {
+            twitter1.createFriendship(id3.id);
+        } catch (TwitterException ignore) {
+
+        }
 
         Relationship updatedRelationship = twitter1.updateFriendship(id3.id, false, false);
         assertEquals(id3.screenName, updatedRelationship.getTargetUserScreenName());
         assertFalse(updatedRelationship.isSourceNotificationsEnabled());
         assertFalse(updatedRelationship.isSourceWantRetweets());
+
+        Relationship relationship = twitter1.updateFriendship(id3.screenName, true, true);
+        assertEquals(id3.screenName, relationship.getTargetUserScreenName());
+
+        // it takes several minutes to take effect. disabling notification for the later tests
+        twitter1.updateFriendship(id3.id, false, false);
     }
 
     public void testLookupFriendships() throws Exception {
