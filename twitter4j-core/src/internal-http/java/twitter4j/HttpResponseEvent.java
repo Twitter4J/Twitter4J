@@ -22,11 +22,11 @@ package twitter4j;
  */
 public final class HttpResponseEvent {
 
-    private HttpRequest request;
+    private final HttpRequest request;
 
-    private HttpResponse response;
+    private final HttpResponse response;
 
-    private TwitterException twitterException;
+    private final TwitterException twitterException;
 
     HttpResponseEvent(HttpRequest request, HttpResponse response, TwitterException te) {
         this.request = request;

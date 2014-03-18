@@ -28,7 +28,7 @@ import java.util.List;
 public final class StatusUpdate implements java.io.Serializable {
 
     private static final long serialVersionUID = 7422094739799350035L;
-    private String status;
+    private final String status;
     private long inReplyToStatusId = -1L;
     private GeoLocation location = null;
     private String placeId = null;

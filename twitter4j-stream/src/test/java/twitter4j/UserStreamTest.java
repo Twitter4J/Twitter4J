@@ -35,18 +35,10 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     private User source;
     private User target;
 
-    Exception ex;
+    private Exception ex;
 
     public void testUserStreamEventTypes() throws Exception {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-event-testcase.json");
@@ -220,7 +212,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         assertEquals(urlEntity.getURL(), urlEntity.getExpandedURL());
     }
 
-    List<Object[]> received = new ArrayList<Object[]>(3);
+    private final List<Object[]> received = new ArrayList<Object[]>(3);
 
     private synchronized void notifyResponse() {
         this.notify();

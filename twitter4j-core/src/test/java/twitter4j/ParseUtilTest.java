@@ -31,14 +31,6 @@ public class ParseUtilTest extends TestCase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testParseLongReturns101() {
         Assert.assertEquals(101, ParseUtil.getLong("100+"));
     }

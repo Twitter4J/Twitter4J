@@ -24,14 +24,6 @@ public class PagingTest extends TestCase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testPaging() throws Exception {
         java.util.List<HttpParameter> params;
         Paging paging = new Paging();

@@ -75,7 +75,7 @@ final class SiteStreamsImpl extends StatusStreamBase {
         return line.substring(userIdEnd + 11, line.length() - 1);
     }
 
-    private static ThreadLocal<Long> forUser =
+    private static final ThreadLocal<Long> forUser =
             new ThreadLocal<Long>() {
                 @Override
                 protected Long initialValue() {

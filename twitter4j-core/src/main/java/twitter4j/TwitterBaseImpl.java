@@ -35,16 +35,16 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     private static final String WWW_DETAILS = "See http://twitter4j.org/en/configuration.html for details";
     private static final long serialVersionUID = -7824361938865528554L;
 
-    protected Configuration conf;
-    protected transient String screenName = null;
-    protected transient long id = 0;
+    Configuration conf;
+    private transient String screenName = null;
+    private transient long id = 0;
 
-    protected transient HttpClient http;
+    transient HttpClient http;
     private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
 
-    protected ObjectFactory factory;
+    ObjectFactory factory;
 
-    protected Authorization auth;
+    Authorization auth;
 
     /*package*/ TwitterBaseImpl(Configuration conf, Authorization auth) {
         this.conf = conf;
@@ -85,7 +85,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         setFactory();
     }
 
-    protected void setFactory() {
+    void setFactory() {
         factory = new JSONImplFactory(conf);
     }
 
@@ -129,7 +129,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         return id;
     }
 
-    protected User fillInIDAndScreenName() throws TwitterException {
+    User fillInIDAndScreenName() throws TwitterException {
         ensureAuthorizationEnabled();
         User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json", null, auth, this), conf);
         this.screenName = user.getScreenName();
@@ -196,14 +196,14 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         return this.conf;
     }
 
-    protected final void ensureAuthorizationEnabled() {
+    final void ensureAuthorizationEnabled() {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(
                     "Authentication credentials are missing. " + WWW_DETAILS);
         }
     }
 
-    protected final void ensureOAuthEnabled() {
+    final void ensureOAuthEnabled() {
         if (!(auth instanceof OAuthAuthorization)) {
             throw new IllegalStateException(
                     "OAuth required. Authentication credentials are missing. " + WWW_DETAILS);

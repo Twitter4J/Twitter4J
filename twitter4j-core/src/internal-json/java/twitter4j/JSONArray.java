@@ -85,7 +85,7 @@ public class JSONArray {
     /**
      * The arrayList where the JSONArray's properties are kept.
      */
-    private ArrayList myArrayList;
+    private final ArrayList myArrayList;
 
 
     /**
@@ -381,7 +381,7 @@ public class JSONArray {
      *
      * @param index The index must be between 0 and length() - 1.
      * @return An object value, or null if there is no
-     *         object at that index.
+     * object at that index.
      */
     public Object opt(int index) {
         return (index < 0 || index >= length()) ?
@@ -598,7 +598,7 @@ public class JSONArray {
      * Warning: This method assumes that the data structure is acyclical.
      *
      * @return a printable, displayable, transmittable
-     *         representation of the array.
+     * representation of the array.
      */
     public String toString() {
         try {
@@ -616,9 +616,9 @@ public class JSONArray {
      * @param indentFactor The number of spaces to add to each level of
      *                     indentation.
      * @return a printable, displayable, transmittable
-     *         representation of the object, beginning
-     *         with <code>[</code>&nbsp;<small>(left bracket)</small> and ending
-     *         with <code>]</code>&nbsp;<small>(right bracket)</small>.
+     * representation of the object, beginning
+     * with <code>[</code>&nbsp;<small>(left bracket)</small> and ending
+     * with <code>]</code>&nbsp;<small>(right bracket)</small>.
      * @throws JSONException
      */
     public String toString(int indentFactor) throws JSONException {
@@ -634,7 +634,7 @@ public class JSONArray {
      *                     indentation.
      * @param indent       The indention of the top level.
      * @return a printable, displayable, transmittable
-     *         representation of the array.
+     * representation of the array.
      * @throws JSONException
      */
     String toString(int indentFactor, int indent) throws JSONException {

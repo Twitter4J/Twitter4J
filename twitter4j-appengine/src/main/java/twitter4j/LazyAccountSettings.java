@@ -28,8 +28,8 @@ import javax.annotation.Generated;
         date = "2011-07-13"
 )
 final class LazyAccountSettings implements twitter4j.AccountSettings {
-    private HttpResponse res;
-    private ObjectFactory factory;
+    private final HttpResponse res;
+    private final ObjectFactory factory;
     private AccountSettings target = null;
 
     LazyAccountSettings(HttpResponse res, ObjectFactory factory) {

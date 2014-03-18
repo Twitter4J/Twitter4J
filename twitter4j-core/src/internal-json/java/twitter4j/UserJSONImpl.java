@@ -575,8 +575,6 @@ import java.util.Date;
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 
@@ -608,8 +606,6 @@ import java.util.Date;
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 

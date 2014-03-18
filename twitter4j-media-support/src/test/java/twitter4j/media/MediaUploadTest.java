@@ -37,8 +37,8 @@ public class MediaUploadTest extends TestCase {
 
     }
 
-    private String fileName = "t4j.jpeg";
-    private String message = "Twitter4J image upload test" + new Date().toString();
+    private final String fileName = "t4j.jpeg";
+    private final String message = "Twitter4J image upload test" + new Date().toString();
 
     @Override
     protected void setUp() throws Exception {

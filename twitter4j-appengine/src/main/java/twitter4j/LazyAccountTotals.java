@@ -28,8 +28,8 @@ import javax.annotation.Generated;
         date = "2011-07-13"
 )
 final class LazyAccountTotals implements twitter4j.AccountTotals {
-    private HttpResponse res;
-    private ObjectFactory factory;
+    private final HttpResponse res;
+    private final ObjectFactory factory;
     private AccountTotals target = null;
 
     LazyAccountTotals(HttpResponse res, ObjectFactory factory) {

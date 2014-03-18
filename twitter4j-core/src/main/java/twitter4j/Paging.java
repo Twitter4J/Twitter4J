@@ -36,9 +36,9 @@ public final class Paging implements java.io.Serializable {
     private long maxId = -1;
 
     // since only
-    static char[] S = new char[]{'s'};
+    static final char[] S = new char[]{'s'};
     // since, max_id, count, page
-    static char[] SMCP = new char[]{'s', 'm', 'c', 'p'};
+    static final char[] SMCP = new char[]{'s', 'm', 'c', 'p'};
 
     static final String COUNT = "count";
     // somewhat GET list statuses requires "per_page" instead of "count"
@@ -49,7 +49,7 @@ public final class Paging implements java.io.Serializable {
         return asPostParameterList(SMCP, COUNT);
     }
 
-    private static HttpParameter[] NULL_PARAMETER_ARRAY = new HttpParameter[0];
+    private static final HttpParameter[] NULL_PARAMETER_ARRAY = new HttpParameter[0];
 
     /*package*/ HttpParameter[] asPostParameterArray() {
         List<HttpParameter> list = asPostParameterList(SMCP, COUNT);
@@ -64,7 +64,7 @@ public final class Paging implements java.io.Serializable {
     }
 
 
-    private static List<HttpParameter> NULL_PARAMETER_LIST = new ArrayList<HttpParameter>(0);
+    private static final List<HttpParameter> NULL_PARAMETER_LIST = new ArrayList<HttpParameter>(0);
 
     /**
      * Converts the pagination parameters into a List of PostParameter.<br>

@@ -30,14 +30,6 @@ public class PostParameterTest extends TestCase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testBooleanParameter() throws Exception {
         assertEquals("true", new HttpParameter("test", true).getValue());
         assertEquals("false", new HttpParameter("test", false).getValue());

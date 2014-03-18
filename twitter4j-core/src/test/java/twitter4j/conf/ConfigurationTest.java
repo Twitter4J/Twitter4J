@@ -33,14 +33,6 @@ public class ConfigurationTest extends TestCase {
     }
 
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testGetInstance() throws Exception {
         Configuration conf = ConfigurationContext.getInstance();
         assertNotNull(conf);

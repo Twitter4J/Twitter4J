@@ -27,10 +27,10 @@ import twitter4j.HttpRequest;
 public class BasicAuthorization implements Authorization, java.io.Serializable {
 
     private static final long serialVersionUID = 7420629998989177351L;
-    private String userId;
+    private final String userId;
 
-    private String password;
-    private String basic;
+    private final String password;
+    private final String basic;
 
     public BasicAuthorization(String userId, String password) {
         this.userId = userId;

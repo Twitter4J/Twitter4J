@@ -36,14 +36,6 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testStallWarnings() throws Exception {
         InputStream is = SiteStreamsTest.class.getResourceAsStream("/stallwarning.json");
         StallWarning stallWarning = new StallWarning(new JSONObject(new JSONTokener(is)));
@@ -263,7 +255,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         }
     }
 
-    List<Object[]> received = new ArrayList<Object[]>(3);
+    final List<Object[]> received = new ArrayList<Object[]>(3);
 
     private synchronized void notifyResponse() {
         this.notifyAll();

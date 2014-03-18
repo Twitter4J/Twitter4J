@@ -24,8 +24,8 @@ package twitter4j;
 public class GeoLocation implements java.io.Serializable {
 
     private static final long serialVersionUID = 6353721071298376949L;
-    protected double latitude;
-    protected double longitude;
+    private double latitude;
+    private double longitude;
 
     /**
      * Creates a GeoLocation instance

@@ -26,12 +26,12 @@ import java.util.ListIterator;
  */
 abstract class LazyResponseList<T> implements ResponseList<T> {
     private static final long serialVersionUID = -1928006011908397874L;
-    ResponseList<T> target = null;
+    private ResponseList<T> target = null;
 
     LazyResponseList() {
     }
 
-    protected ResponseList<T> getTarget() {
+    ResponseList<T> getTarget() {
         if (target == null) {
             try {
                 target = createActualResponseList();

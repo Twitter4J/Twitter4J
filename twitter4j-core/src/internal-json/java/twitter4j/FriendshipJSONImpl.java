@@ -73,8 +73,6 @@ class FriendshipJSONImpl implements Friendship {
             return friendshipList;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 

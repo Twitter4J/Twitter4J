@@ -39,10 +39,6 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         this.deletionNotice = null;
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testToString() throws Exception {
         new TwitterStreamFactory().getInstance().toString();
     }
@@ -56,7 +52,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         assertEquals(2, map.size());
     }
 
-    List<String> received = new ArrayList<String>();
+    final List<String> received = new ArrayList<String>();
     final Object lock = new Object();
 
     public void testRawStreamListener() throws Exception {
@@ -90,27 +86,27 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         try {
             twitterStream.sample();
             fail("expecting IllegalStateException");
-        } catch (IllegalStateException expected) {
+        } catch (IllegalStateException ignored) {
         }
         try {
             twitterStream.filter(new FilterQuery().track(new String[]{"twitter"}));
             fail("expecting IllegalStateException");
-        } catch (IllegalStateException expected) {
+        } catch (IllegalStateException ignored) {
         }
         try {
             twitterStream.user();
             fail("expecting IllegalStateException");
-        } catch (IllegalStateException expected) {
+        } catch (IllegalStateException ignored) {
         }
         try {
             twitterStream.firehose(0);
             fail("expecting IllegalStateException");
-        } catch (IllegalStateException expected) {
+        } catch (IllegalStateException ignored) {
         }
         try {
             twitterStream.retweet();
             fail("expecting IllegalStateException");
-        } catch (IllegalStateException expected) {
+        } catch (IllegalStateException ignored) {
         }
 
         twitterStream.addListener(new RawStreamListener() {
@@ -155,14 +151,14 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
             stream.next(this);
             waitForNotification();
             fail("expecting TwitterException");
-        } catch (TwitterException te) {
+        } catch (TwitterException ignored) {
 
         }
         try {
             stream.next(this);
             waitForNotification();
             fail("expecting IllegalStateException");
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException ignored) {
 
         }
         is.close();
@@ -220,7 +216,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         assertFalse(onCleanUpCalled);
 
         assertNotNull(status.getText());
-        assertTrue("web".equals(status.getSource()) || -1 != status.getSource().indexOf("<a href=\""));
+        assertTrue("web".equals(status.getSource()) || status.getSource().contains("<a href=\""));
         this.ex = null;
         twitterStream1.filter(new FilterQuery(0, null).track(new String[]{"twitter4j java", "ipad"}));
         waitForStatus();
@@ -281,15 +277,15 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
             twitterStream3 = new TwitterStreamFactory().getInstance();
             StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFirehoseStream(0);
             fail();
-        } catch (IllegalStateException ise) {
-        } catch (TwitterException te) {
+        } catch (IllegalStateException ignored) {
+        } catch (TwitterException ignored) {
 
         }
         try {
             twitterStream3 = new TwitterStreamFactory().getInstance();
             StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFilterStream(new FilterQuery(new long[]{6358482}));
             fail();
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException ignored) {
         } catch (TwitterException te) {
             // User not in required role
             assertEquals(403, te.getStatusCode());

@@ -27,61 +27,61 @@ import java.util.Set;
  */
 public final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
 
-    public static final String DEBUG = "debug";
-    public static final String USER = "user";
-    public static final String PASSWORD = "password";
+    private static final String DEBUG = "debug";
+    private static final String USER = "user";
+    private static final String PASSWORD = "password";
 
-    public static final String HTTP_PRETTY_DEBUG = "http.prettyDebug";
-    public static final String HTTP_GZIP = "http.gzip";
-    public static final String HTTP_PROXY_HOST = "http.proxyHost";
-    public static final String HTTP_PROXY_HOST_FALLBACK = "http.proxyHost";
-    public static final String HTTP_PROXY_USER = "http.proxyUser";
-    public static final String HTTP_PROXY_PASSWORD = "http.proxyPassword";
-    public static final String HTTP_PROXY_PORT = "http.proxyPort";
-    public static final String HTTP_PROXY_PORT_FALLBACK = "http.proxyPort";
-    public static final String HTTP_CONNECTION_TIMEOUT = "http.connectionTimeout";
-    public static final String HTTP_READ_TIMEOUT = "http.readTimeout";
+    private static final String HTTP_PRETTY_DEBUG = "http.prettyDebug";
+    private static final String HTTP_GZIP = "http.gzip";
+    private static final String HTTP_PROXY_HOST = "http.proxyHost";
+    private static final String HTTP_PROXY_HOST_FALLBACK = "http.proxyHost";
+    private static final String HTTP_PROXY_USER = "http.proxyUser";
+    private static final String HTTP_PROXY_PASSWORD = "http.proxyPassword";
+    private static final String HTTP_PROXY_PORT = "http.proxyPort";
+    private static final String HTTP_PROXY_PORT_FALLBACK = "http.proxyPort";
+    private static final String HTTP_CONNECTION_TIMEOUT = "http.connectionTimeout";
+    private static final String HTTP_READ_TIMEOUT = "http.readTimeout";
 
-    public static final String HTTP_STREAMING_READ_TIMEOUT = "http.streamingReadTimeout";
+    private static final String HTTP_STREAMING_READ_TIMEOUT = "http.streamingReadTimeout";
 
-    public static final String HTTP_RETRY_COUNT = "http.retryCount";
-    public static final String HTTP_RETRY_INTERVAL_SECS = "http.retryIntervalSecs";
+    private static final String HTTP_RETRY_COUNT = "http.retryCount";
+    private static final String HTTP_RETRY_INTERVAL_SECS = "http.retryIntervalSecs";
 
-    public static final String OAUTH_CONSUMER_KEY = "oauth.consumerKey";
-    public static final String OAUTH_CONSUMER_SECRET = "oauth.consumerSecret";
-    public static final String OAUTH_ACCESS_TOKEN = "oauth.accessToken";
-    public static final String OAUTH_ACCESS_TOKEN_SECRET = "oauth.accessTokenSecret";
-    public static final String OAUTH2_TOKEN_TYPE = "oauth2.tokenType";
-    public static final String OAUTH2_ACCESS_TOKEN = "oauth2.accessToken";
+    private static final String OAUTH_CONSUMER_KEY = "oauth.consumerKey";
+    private static final String OAUTH_CONSUMER_SECRET = "oauth.consumerSecret";
+    private static final String OAUTH_ACCESS_TOKEN = "oauth.accessToken";
+    private static final String OAUTH_ACCESS_TOKEN_SECRET = "oauth.accessTokenSecret";
+    private static final String OAUTH2_TOKEN_TYPE = "oauth2.tokenType";
+    private static final String OAUTH2_ACCESS_TOKEN = "oauth2.accessToken";
 
-    public static final String OAUTH_REQUEST_TOKEN_URL = "oauth.requestTokenURL";
-    public static final String OAUTH_AUTHORIZATION_URL = "oauth.authorizationURL";
-    public static final String OAUTH_ACCESS_TOKEN_URL = "oauth.accessTokenURL";
-    public static final String OAUTH_AUTHENTICATION_URL = "oauth.authenticationURL";
-    public static final String OAUTH2_TOKEN_URL = "oauth2.tokenURL";
-    public static final String OAUTH2_INVALIDATE_TOKEN_URL = "oauth2.invalidateTokenURL";
+    private static final String OAUTH_REQUEST_TOKEN_URL = "oauth.requestTokenURL";
+    private static final String OAUTH_AUTHORIZATION_URL = "oauth.authorizationURL";
+    private static final String OAUTH_ACCESS_TOKEN_URL = "oauth.accessTokenURL";
+    private static final String OAUTH_AUTHENTICATION_URL = "oauth.authenticationURL";
+    private static final String OAUTH2_TOKEN_URL = "oauth2.tokenURL";
+    private static final String OAUTH2_INVALIDATE_TOKEN_URL = "oauth2.invalidateTokenURL";
 
-    public static final String REST_BASE_URL = "restBaseURL";
-    public static final String STREAM_BASE_URL = "streamBaseURL";
-    public static final String USER_STREAM_BASE_URL = "userStreamBaseURL";
-    public static final String SITE_STREAM_BASE_URL = "siteStreamBaseURL";
+    private static final String REST_BASE_URL = "restBaseURL";
+    private static final String STREAM_BASE_URL = "streamBaseURL";
+    private static final String USER_STREAM_BASE_URL = "userStreamBaseURL";
+    private static final String SITE_STREAM_BASE_URL = "siteStreamBaseURL";
 
-    public static final String ASYNC_NUM_THREADS = "async.numThreads";
-    public static final String ASYNC_DAEMON_ENABLED = "async.daemonEnabled";
-    public static final String CONTRIBUTING_TO = "contributingTo";
-    public static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
-    public static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
-    public static final String LOGGER_FACTORY = "loggerFactory";
-    public static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
-    public static final String MBEAN_ENABLED = "mbeanEnabled";
-    public static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
-    public static final String STREAM_USER_WITH_FOLLOWINGS = "stream.user.withFollowings";
-    public static final String STREAM_STALL_WARNINGS_ENABLED = "stream.enableStallWarnings";
-    public static final String APPLICATION_ONLY_AUTH_ENABLED = "enableApplicationOnlyAuth";
+    private static final String ASYNC_NUM_THREADS = "async.numThreads";
+    private static final String ASYNC_DAEMON_ENABLED = "async.daemonEnabled";
+    private static final String CONTRIBUTING_TO = "contributingTo";
+    private static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
+    private static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
+    private static final String LOGGER_FACTORY = "loggerFactory";
+    private static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
+    private static final String MBEAN_ENABLED = "mbeanEnabled";
+    private static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
+    private static final String STREAM_USER_WITH_FOLLOWINGS = "stream.user.withFollowings";
+    private static final String STREAM_STALL_WARNINGS_ENABLED = "stream.enableStallWarnings";
+    private static final String APPLICATION_ONLY_AUTH_ENABLED = "enableApplicationOnlyAuth";
 
-    public static final String MEDIA_PROVIDER = "media.provider";
-    public static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
-    public static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
+    private static final String MEDIA_PROVIDER = "media.provider";
+    private static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
+    private static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
     private static final long serialVersionUID = -7262615247923693252L;
 
 
@@ -380,12 +380,12 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         cacheInstance();
     }
 
-    protected boolean getBoolean(Properties props, String prefix, String name) {
+    boolean getBoolean(Properties props, String prefix, String name) {
         String value = props.getProperty(prefix + name);
         return Boolean.valueOf(value);
     }
 
-    protected int getIntProperty(Properties props, String prefix, String name) {
+    int getIntProperty(Properties props, String prefix, String name) {
         String value = props.getProperty(prefix + name);
         try {
             return Integer.parseInt(value);
@@ -394,7 +394,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
     }
 
-    protected long getLongProperty(Properties props, String prefix, String name) {
+    long getLongProperty(Properties props, String prefix, String name) {
         String value = props.getProperty(prefix + name);
         try {
             return Long.parseLong(value);
@@ -403,7 +403,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
     }
 
-    protected String getString(Properties props, String prefix, String name) {
+    String getString(Properties props, String prefix, String name) {
         return props.getProperty(prefix + name);
     }
 

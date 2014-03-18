@@ -41,7 +41,7 @@ public class JSONTokener {
     private int index;
     private int line;
     private char previous;
-    private Reader reader;
+    private final Reader reader;
     private boolean usePrevious;
 
 
@@ -322,7 +322,6 @@ public class JSONTokener {
         }
         return JSONObject.stringToValue(string);
     }
-
 
 
     /**

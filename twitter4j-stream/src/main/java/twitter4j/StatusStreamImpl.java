@@ -39,9 +39,9 @@ class StatusStreamImpl extends StatusStreamBase {
         super(dispatcher, response, conf);
     }
 
-    protected String line;
+    String line;
 
-    protected static final RawStreamListener[] EMPTY = new RawStreamListener[0];
+    static final RawStreamListener[] EMPTY = new RawStreamListener[0];
 
     @Override
     public void next(StatusListener listener) throws TwitterException {

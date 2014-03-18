@@ -34,10 +34,8 @@ public final class ControlStreamInfo implements Serializable {
     private final boolean includeUserChanges;
     private final String replies;
     private final String with;
-    private transient final StreamController controller;
 
     /*package*/ ControlStreamInfo(StreamController controller, JSONObject json) throws TwitterException {
-        this.controller = controller;
         try {
             JSONObject info = json.getJSONObject("info");
             includeFollowingsActivity = getBoolean("include_followings_activity", info);
@@ -47,7 +45,7 @@ public final class ControlStreamInfo implements Serializable {
             JSONArray usersJSON = info.getJSONArray("users");
             users = new StreamController.User[usersJSON.length()];
             for (int i = 0; i < usersJSON.length(); i++) {
-                users[i] = this.controller.createUser(usersJSON.getJSONObject(i));
+                users[i] = controller.createUser(usersJSON.getJSONObject(i));
             }
 
         } catch (JSONException e) {

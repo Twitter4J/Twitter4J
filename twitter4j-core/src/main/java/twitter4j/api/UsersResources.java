@@ -20,7 +20,6 @@ import twitter4j.*;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Map;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com

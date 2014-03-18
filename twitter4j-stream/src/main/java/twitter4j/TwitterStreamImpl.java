@@ -38,11 +38,11 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private final HttpClient http;
     private static final Logger logger = Logger.getLogger(TwitterStreamImpl.class);
 
-    private List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<ConnectionLifeCycleListener>(0);
+    private final List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<ConnectionLifeCycleListener>(0);
     private TwitterStreamConsumer handler = null;
 
-    private String stallWarningsGetParam;
-    private HttpParameter stallWarningsParam;
+    private final String stallWarningsGetParam;
+    private final HttpParameter stallWarningsParam;
 
     /*package*/
     TwitterStreamImpl(Configuration conf, Authorization auth) {
@@ -440,7 +440,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private synchronized void updateListeners() {
         if (handler != null) {
             handler.updateListeners();
-            ;
         }
     }
 
@@ -488,7 +487,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     private static final int NO_WAIT = 0;
 
-    static int count = 0;
+    private static int count = 0;
 
     enum Mode {
         user, status, site
@@ -500,7 +499,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         private volatile boolean closed = false;
         private StreamListener[] streamListeners;
         private RawStreamListener[] rawStreamListeners;
-        private Mode mode;
+        private final Mode mode;
 
         TwitterStreamConsumer(Mode mode) {
             super();
@@ -729,7 +728,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 }
 
 class StreamingReadTimeoutConfiguration implements HttpClientConfiguration {
-    Configuration nestedConf;
+    final Configuration nestedConf;
 
     StreamingReadTimeoutConfiguration(Configuration httpConf) {
         this.nestedConf = httpConf;

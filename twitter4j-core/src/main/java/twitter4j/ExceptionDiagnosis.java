@@ -22,10 +22,10 @@ package twitter4j;
  */
 final class ExceptionDiagnosis implements java.io.Serializable {
     private static final long serialVersionUID = 8501009773274399369L;
-    int stackLineHash;
-    int lineNumberHash;
-    String hexString = "";
-    Throwable th;
+    private int stackLineHash;
+    private int lineNumberHash;
+    private String hexString = "";
+    private final Throwable th;
 
     ExceptionDiagnosis(Throwable th) {
         this(th, new String[]{});

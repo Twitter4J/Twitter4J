@@ -56,7 +56,7 @@ class ImgLyUpload extends AbstractImageUploadImpl {
     @Override
     protected void preUpload() throws TwitterException {
         uploadUrl = "http://img.ly/api/2/upload.json";
-        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_JSON_V1_1);
+        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader();
 
         headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON_V1_1);
         headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);

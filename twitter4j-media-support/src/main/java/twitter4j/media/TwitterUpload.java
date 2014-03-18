@@ -31,7 +31,7 @@ import java.io.InputStream;
  * @since Twitter4J 2.2.5
  */
 class TwitterUpload implements ImageUpload {
-    private Twitter twitter;
+    private final Twitter twitter;
 
     public TwitterUpload(Configuration conf, OAuthAuthorization oauth) {
         twitter = new TwitterFactory(conf).getInstance(oauth);

@@ -52,7 +52,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         super(ConfigurationContext.getInstance().getHttpClientConfiguration());
     }
 
-    public HttpClientImpl(HttpClientConfiguration conf) {
+    HttpClientImpl(HttpClientConfiguration conf) {
         super(conf);
     }
 
@@ -219,7 +219,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         }
     }
 
-    protected HttpURLConnection getConnection(String url) throws IOException {
+    HttpURLConnection getConnection(String url) throws IOException {
         HttpURLConnection con;
         if (isProxyConfigured()) {
             if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {

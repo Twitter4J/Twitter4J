@@ -3208,8 +3208,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
 
 
     abstract class AsyncTask implements Runnable {
-        List<TwitterListener> listeners;
-        TwitterMethod method;
+        final List<TwitterListener> listeners;
+        final TwitterMethod method;
 
         AsyncTask(TwitterMethod method, List<TwitterListener> listeners) {
             this.method = method;

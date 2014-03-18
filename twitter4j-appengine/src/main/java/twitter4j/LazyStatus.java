@@ -30,8 +30,8 @@ import java.util.Date;
         date = "2011-07-13"
 )
 final class LazyStatus implements twitter4j.Status {
-    private HttpResponse res;
-    private ObjectFactory factory;
+    private final HttpResponse res;
+    private final ObjectFactory factory;
     private Status target = null;
 
     LazyStatus(HttpResponse res, ObjectFactory factory) {

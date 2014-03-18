@@ -28,8 +28,8 @@ import javax.annotation.Generated;
         date = "2012-11-29"
 )
 final class LazyOEmbed implements twitter4j.OEmbed {
-    private HttpResponse res;
-    private ObjectFactory factory;
+    private final HttpResponse res;
+    private final ObjectFactory factory;
     private OEmbed target = null;
 
     LazyOEmbed(HttpResponse res, ObjectFactory factory) {

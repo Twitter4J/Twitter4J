@@ -17,7 +17,6 @@ package twitter4j.management;
 
 import javax.management.*;
 import javax.management.openmbean.*;
-import java.util.Iterator;
 
 /**
  * Dynamic version of APIStatisticsMBean that wraps an APIStatisticsOpenMBean.
@@ -117,9 +116,7 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
     public synchronized TabularDataSupport getStatistics() {
         TabularDataSupport apiStatisticsTable = new TabularDataSupport(API_STATISTICS_TYPE);
 
-        Iterator<? extends InvocationStatistics> itr = API_STATISTICS.getInvocationStatistics().iterator();
-        while (itr.hasNext()) {
-            InvocationStatistics methodStats = itr.next();
+        for (InvocationStatistics methodStats : API_STATISTICS.getInvocationStatistics()) {
             Object[] itemValues = {methodStats.getName(),
                     methodStats.getCallCount(),
                     methodStats.getErrorCount(),
@@ -166,10 +163,10 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
         AttributeList resultList = new AttributeList();
         if (attributeNames.length == 0)
             return resultList;
-        for (int i = 0; i < attributeNames.length; i++) {
+        for (String attributeName : attributeNames) {
             try {
-                Object value = getAttribute(attributeNames[i]);
-                resultList.add(new Attribute(attributeNames[i], value));
+                Object value = getAttribute(attributeName);
+                resultList.add(new Attribute(attributeName, value));
             } catch (Exception e) {
                 e.printStackTrace();
             }

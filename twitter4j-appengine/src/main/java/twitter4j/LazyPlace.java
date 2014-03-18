@@ -12,8 +12,8 @@ import javax.annotation.Generated;
         date = "2011-07-13"
 )
 final class LazyPlace implements twitter4j.Place {
-    private HttpResponse res;
-    private ObjectFactory factory;
+    private final HttpResponse res;
+    private final ObjectFactory factory;
     private Place target = null;
 
     LazyPlace(HttpResponse res, ObjectFactory factory) {

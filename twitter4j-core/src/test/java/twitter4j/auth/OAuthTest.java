@@ -98,7 +98,7 @@ public class OAuthTest extends TwitterTestBase {
             twitter.getOAuthRequestToken();
         } catch (TwitterException te) {
             fail("expecting IllegalStateException as access token is already available.");
-        } catch (IllegalStateException expected) {
+        } catch (IllegalStateException ignored) {
         }
 
 

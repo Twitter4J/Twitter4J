@@ -126,7 +126,7 @@ public class JSONObject {
     /**
      * The map where the JSONObject's properties are kept.
      */
-    private Map map;
+    private final Map map;
 
 
     /**
@@ -158,9 +158,9 @@ public class JSONObject {
      */
     public JSONObject(JSONObject jo, String[] names) {
         this();
-        for (int i = 0; i < names.length; i += 1) {
+        for (String name : names) {
             try {
-                putOnce(names[i], jo.opt(names[i]));
+                putOnce(name, jo.opt(name));
             } catch (Exception ignore) {
             }
         }
@@ -235,9 +235,8 @@ public class JSONObject {
     public JSONObject(Map map) {
         this.map = new HashMap();
         if (map != null) {
-            Iterator i = map.entrySet().iterator();
-            while (i.hasNext()) {
-                Map.Entry e = (Map.Entry) i.next();
+            for (Object o : map.entrySet()) {
+                Map.Entry e = (Map.Entry) o;
                 Object value = e.getValue();
                 if (value != null) {
                     this.map.put(e.getKey(), wrap(value));
@@ -287,8 +286,7 @@ public class JSONObject {
     public JSONObject(Object object, String names[]) {
         this();
         Class c = object.getClass();
-        for (int i = 0; i < names.length; i += 1) {
-            String name = names[i];
+        for (String name : names) {
             try {
                 putOpt(name, c.getField(name).get(object));
             } catch (Exception ignore) {
@@ -620,9 +618,9 @@ public class JSONObject {
 
         Method[] methods = (includeSuperClass) ?
                 klass.getMethods() : klass.getDeclaredMethods();
-        for (int i = 0; i < methods.length; i += 1) {
+        for (Method method1 : methods) {
             try {
-                Method method = methods[i];
+                Method method = method1;
                 if (Modifier.isPublic(method.getModifiers())) {
                     String name = method.getName();
                     String key = "";

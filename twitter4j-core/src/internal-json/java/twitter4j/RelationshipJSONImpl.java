@@ -95,8 +95,6 @@ import twitter4j.conf.Configuration;
             return relationships;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 

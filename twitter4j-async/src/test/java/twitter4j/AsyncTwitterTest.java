@@ -133,7 +133,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         Status status = twitter1.getHomeTimeline().get(0);
         try {
             twitter2.destroyFavorite(status.getId());
-        } catch (TwitterException te) {
+        } catch (TwitterException ignored) {
         }
         async2.createFavorite(status.getId());
         waitForResponse();

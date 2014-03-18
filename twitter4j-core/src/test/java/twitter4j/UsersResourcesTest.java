@@ -28,10 +28,6 @@ public class UsersResourcesTest extends TwitterTestBase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     protected void tearDown() throws Exception {
         super.tearDown();
     }
@@ -147,14 +143,6 @@ public class UsersResourcesTest extends TwitterTestBase {
     }
 
 
-    public void testContributors() throws Exception {
-        // now @twitter is not using contributor feature
-//        ResponseList<User> users = twitter1.getContributors("twitter");
-//        assertTrue(users.size() > 0);
-//        users = twitter1.getContributees(users.get(0).getId());
-//        assertTrue(users.size() > 0);
-    }
-
     public void testBanner() throws Exception {
         twitter1.updateProfileBanner(getRandomlyChosenFile(banners));
         User user = twitter1.verifyCredentials();
@@ -254,7 +242,7 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
     }
 
-    static final String[] profileImages = {"src/test/resources/t4j-reverse.jpeg",
+    private static final String[] profileImages = {"src/test/resources/t4j-reverse.jpeg",
             "src/test/resources/t4j-reverse.png",
             "src/test/resources/t4j-reverse.gif",
             "src/test/resources/t4j.jpeg",
@@ -262,7 +250,7 @@ public class UsersResourcesTest extends TwitterTestBase {
             "src/test/resources/t4j.gif",
     };
 
-    static final String[] banners = {
+    private static final String[] banners = {
             // gif format fails with {"errors":[{"message":"Image error: is not an accepted format","code":211}]}
 //            "src/test/resources/t4j-banner.gif",
             "src/test/resources/t4j-banner.jpeg",

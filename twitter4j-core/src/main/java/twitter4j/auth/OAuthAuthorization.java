@@ -265,7 +265,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
 
     }
 
-    private static Random RAND = new Random();
+    private static final Random RAND = new Random();
 
     /**
      * @return generated authorization header
@@ -373,12 +373,12 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return normalizeRequestParameters(toParamList(params));
     }
 
-    static String normalizeRequestParameters(List<HttpParameter> params) {
+    private static String normalizeRequestParameters(List<HttpParameter> params) {
         Collections.sort(params);
         return encodeParameters(params);
     }
 
-    static List<HttpParameter> toParamList(HttpParameter[] params) {
+    private static List<HttpParameter> toParamList(HttpParameter[] params) {
         List<HttpParameter> paramList = new ArrayList<HttpParameter>(params.length);
         paramList.addAll(Arrays.asList(params));
         return paramList;

@@ -51,7 +51,7 @@ public final class PrintSiteStreams {
         twitterStream.site(true, followArray);
     }
 
-    static SiteStreamsListener listener = new SiteStreamsListener() {
+    private static final SiteStreamsListener listener = new SiteStreamsListener() {
         @Override
         public void onStatus(long forUser, Status status) {
             System.out.println("onStatus for_user:" + forUser + " @" + status.getUser().getScreenName() + " - " + status.getText());

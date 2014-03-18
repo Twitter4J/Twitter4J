@@ -29,18 +29,10 @@ import java.util.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class DAOTest extends TwitterTestBase {
-    Configuration conf = ConfigurationContext.getInstance();
+    private final Configuration conf = ConfigurationContext.getInstance();
 
     public DAOTest(String name) {
         super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
     }
 
     public void testEmptyJSON() throws Exception {
@@ -88,14 +80,14 @@ public class DAOTest extends TwitterTestBase {
         try {
             TwitterObjectFactory.createStatus(str);
             fail("should fail");
-        } catch (TwitterException expected) {
+        } catch (TwitterException ignored) {
         } catch (Error notExpected) {
             fail("failed" + notExpected.getMessage());
         }
         try {
             TwitterObjectFactory.createStatus(str);
             fail("should fail");
-        } catch (TwitterException expected) {
+        } catch (TwitterException ignored) {
         } catch (Error notExpected) {
             fail("failed" + notExpected.getMessage());
         }
@@ -104,14 +96,14 @@ public class DAOTest extends TwitterTestBase {
         try {
             TwitterObjectFactory.createCategory(str);
             fail("should fail");
-        } catch (TwitterException expected) {
+        } catch (TwitterException ignored) {
         } catch (Error notExpected) {
             fail("failed" + notExpected.getMessage());
         }
         try {
             TwitterObjectFactory.createCategory(str);
             fail("should fail");
-        } catch (TwitterException expected) {
+        } catch (TwitterException ignored) {
         } catch (Error notExpected) {
             fail("failed" + notExpected.getMessage());
         }
@@ -561,10 +553,6 @@ public class DAOTest extends TwitterTestBase {
         assertDeserializedFormIsEqual(users);
     }
 
-    public void testUserListAsJSON() throws Exception {
-
-    }
-
     public void testStatusAsJSON() throws Exception {
         // single Status
         HttpClientImpl http = new HttpClientImpl();
@@ -666,16 +654,16 @@ public class DAOTest extends TwitterTestBase {
         assertNull(place.getGeometryType());
         assertNull(place.getGeometryCoordinates());
 
-        place = new PlaceJSONImpl(getJSONObjectFromClassPath("/dao/5a110d312052166f.json"), null);
+        place = new PlaceJSONImpl(getJSONObjectFromClassPath("/dao/5a110d312052166f.json"));
         assertNotNull(place.getGeometryType());
         assertNotNull(place.getGeometryCoordinates());
 
         // Test that a geo object with geometry type "Point" works.
-        place = new PlaceJSONImpl(getJSONObjectFromClassPath("/dao/3c6797665e2d42eb.json"), null);
+        place = new PlaceJSONImpl(getJSONObjectFromClassPath("/dao/3c6797665e2d42eb.json"));
         assertEquals(place.getGeometryType(), "Point");
         assertNotNull(place.getGeometryCoordinates());
 
-        place = new PlaceJSONImpl(getJSONObjectFromClassPath("/dao/c3f37afa9efcf94b.json"), null);
+        place = new PlaceJSONImpl(getJSONObjectFromClassPath("/dao/c3f37afa9efcf94b.json"));
         // MultiPolygon is not supported by twitter4j yet, so we set geometryType to null
         assertNull(place.getGeometryType());
         assertNull(place.getGeometryCoordinates());
@@ -707,7 +695,7 @@ public class DAOTest extends TwitterTestBase {
      * @return the deserialized object
      * @throws Exception in the case the object is not (de)serializable
      */
-    public static Object assertDeserializedFormIsEqual(Object obj) throws Exception {
+    private static Object assertDeserializedFormIsEqual(Object obj) throws Exception {
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
         oos.writeObject(obj);
@@ -727,7 +715,7 @@ public class DAOTest extends TwitterTestBase {
      * @return the deserialized object
      * @throws Exception in the case the object is not (de)serializable
      */
-    public static Object assertDeserializedFormIsSingleton(Object obj) throws Exception {
+    private static Object assertDeserializedFormIsSingleton(Object obj) throws Exception {
         Object that = assertDeserializedFormIsEqual(obj);
         assertTrue(obj == that);
         return that;

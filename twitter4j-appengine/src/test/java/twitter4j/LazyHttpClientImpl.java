@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class LazyHttpClientImpl extends HttpClientImpl {
     private static final long serialVersionUID = 7325894890960046422L;
-    HttpClient client;
+    private final HttpClient client;
 
     public LazyHttpClientImpl(HttpClientConfiguration conf) {
         client = new AlternativeHttpClientImpl(conf);

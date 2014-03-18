@@ -31,8 +31,8 @@ import java.util.Date;
         date = "2011-07-13"
 )
 final class LazySavedSearch implements twitter4j.SavedSearch {
-    private HttpResponse res;
-    private ObjectFactory factory;
+    private final HttpResponse res;
+    private final ObjectFactory factory;
     private SavedSearch target = null;
 
     LazySavedSearch(HttpResponse res, ObjectFactory factory) {

@@ -24,11 +24,11 @@ import javax.crypto.spec.SecretKeySpec;
 abstract class OAuthToken implements java.io.Serializable {
 
     private static final long serialVersionUID = -7841506492508140600L;
-    private String token;
-    private String tokenSecret;
+    private final String token;
+    private final String tokenSecret;
 
     private transient SecretKeySpec secretKeySpec;
-    String[] responseStr = null;
+    private String[] responseStr = null;
 
     public OAuthToken(String token, String tokenSecret) {
         this.token = token;

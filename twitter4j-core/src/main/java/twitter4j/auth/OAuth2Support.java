@@ -35,7 +35,7 @@ public interface OAuth2Support {
     /**
      * Obtains an OAuth 2 Bearer token.
      *
-     * @return
+     * @return OAuth 2 Bearer token
      * @throws TwitterException      when Twitter service or network is unavailable, or connecting non-SSL endpoints.
      * @throws IllegalStateException when Bearer token is already available, or OAuth consumer is not available.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth2/token">POST oauth2/token | Twitter Developers</a>

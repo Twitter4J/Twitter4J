@@ -35,7 +35,7 @@ public final class AsyncUpdate {
      * @throws InterruptedException
      */
 
-    static final Object LOCK = new Object();
+    private static final Object LOCK = new Object();
 
     public static void main(String[] args) throws InterruptedException {
         if (args.length < 1) {

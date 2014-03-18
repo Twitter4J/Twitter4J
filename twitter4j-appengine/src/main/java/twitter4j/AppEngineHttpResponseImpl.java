@@ -30,7 +30,7 @@ import java.util.zip.GZIPInputStream;
  * @since Twitter4J 2.2.4
  */
 final class AppEngineHttpResponseImpl extends HttpResponse implements HttpResponseCode {
-    private Future<HTTPResponse> future;
+    private final Future<HTTPResponse> future;
     private boolean responseGot;
     private Map<String, String> headers;
     private static Logger logger = Logger.getLogger(AppEngineHttpResponseImpl.class);

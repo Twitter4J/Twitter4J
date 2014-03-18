@@ -23,7 +23,7 @@ package twitter4j.management;
  * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
  */
 public class InvocationStatisticsCalculator implements InvocationStatistics {
-    private String name;
+    private final String name;
     private long[] times;
     private int index;
     private long callCount;

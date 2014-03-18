@@ -207,8 +207,6 @@ import java.net.URISyntaxException;
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 
@@ -236,8 +234,6 @@ import java.net.URISyntaxException;
             return users;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 

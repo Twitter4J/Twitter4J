@@ -35,7 +35,7 @@ public final class PrintUserStream {
         twitterStream.user();
     }
 
-    static UserStreamListener listener = new UserStreamListener() {
+    private static final UserStreamListener listener = new UserStreamListener() {
         @Override
         public void onStatus(Status status) {
             System.out.println("onStatus @" + status.getUser().getScreenName() + " - " + status.getText());

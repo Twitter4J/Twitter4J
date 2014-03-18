@@ -79,8 +79,6 @@ import twitter4j.conf.Configuration;
             return locations;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 

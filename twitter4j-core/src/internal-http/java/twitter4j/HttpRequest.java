@@ -37,7 +37,7 @@ public final class HttpRequest implements java.io.Serializable {
 
     private final Authorization authorization;
 
-    private Map<String, String> requestHeaders;
+    private final Map<String, String> requestHeaders;
 
 
     private static final HttpParameter[] NULL_PARAMETERS = new HttpParameter[0];

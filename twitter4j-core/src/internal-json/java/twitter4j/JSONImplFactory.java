@@ -27,7 +27,7 @@ import java.util.Map;
  */
 class JSONImplFactory implements ObjectFactory {
     private static final long serialVersionUID = -1853541456182663343L;
-    private Configuration conf;
+    private final Configuration conf;
 
     public JSONImplFactory(Configuration conf) {
         this.conf = conf;

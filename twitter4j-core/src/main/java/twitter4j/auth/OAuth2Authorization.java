@@ -31,7 +31,7 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
     private static final long serialVersionUID = -2895232598422218647L;
     private final Configuration conf;
 
-    private HttpClient http;
+    private final HttpClient http;
 
     private String consumerKey;
 

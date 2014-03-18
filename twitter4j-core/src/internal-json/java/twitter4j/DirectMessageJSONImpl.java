@@ -266,8 +266,6 @@ import java.util.Date;
             return directMessages;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 

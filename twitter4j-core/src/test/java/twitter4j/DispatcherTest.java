@@ -31,16 +31,12 @@ public class DispatcherTest extends TestCase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     protected void tearDown() throws Exception {
         super.tearDown();
         dispatcher = null;
     }
 
-    public int count;
+    private int count;
 
     public void testInvokeLater() throws Exception {
         String name = "Twitter4J Async Dispatcher";
@@ -51,7 +47,7 @@ public class DispatcherTest extends TestCase {
         dispatcher.invokeLater(new IncrementTask());
         dispatcher.invokeLater(new IncrementTask());
         Thread.sleep(300);
-        assertEquals(threadCount  , countThread(name));
+        assertEquals(threadCount, countThread(name));
         assertEquals(3, count);
         dispatcher.shutdown();
         Thread.sleep(1000);
@@ -69,7 +65,7 @@ public class DispatcherTest extends TestCase {
         return count;
     }
 
-    class IncrementTask implements Runnable {
+    private class IncrementTask implements Runnable {
         public void run() {
             System.out.println("executed");
             count++;

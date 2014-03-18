@@ -26,9 +26,9 @@ public class TimeSpanConverterTest extends TestCase {
         super(name);
     }
 
-    int second = 1000;
-    int minute = second * 60;
-    int hour = minute * 60;
+    final int second = 1000;
+    final int minute = second * 60;
+    final int hour = minute * 60;
 
     TimeSpanConverter converter;
 

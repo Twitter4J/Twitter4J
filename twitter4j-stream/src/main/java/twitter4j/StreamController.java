@@ -33,6 +33,7 @@ public class StreamController {
     private String controlURI = null;
     private final HttpClient http;
     private final Authorization AUTH;
+    private static final Logger logger = Logger.getLogger(StreamController.class);
 
     /*package*/ StreamController(HttpClient http, Authorization auth) {
         this.http = http;
@@ -51,7 +52,7 @@ public class StreamController {
         }
     }
 
-    Object lock = new Object();
+    private final Object lock = new Object();
 
     String getControlURI() {
         return controlURI;
@@ -60,11 +61,9 @@ public class StreamController {
     void ensureControlURISet() throws TwitterException {
         synchronized (lock) {
             try {
-                while (controlURI == null) {
-                    lock.wait(30000);
-                    throw new TwitterException("timed out for control uri to be ready");
-                }
-            } catch (InterruptedException e) {
+                lock.wait(30000);
+                throw new TwitterException("timed out for control uri to be ready");
+            } catch (InterruptedException ignored) {
             }
         }
     }
@@ -197,7 +196,7 @@ public class StreamController {
         @Override
         public String toString() {
             return "FriendsIDs{" +
-                    "ids=" + ids +
+                    "ids=" + Arrays.toString(ids) +
                     ", previousCursor=" + previousCursor +
                     ", nextCursor=" + nextCursor +
                     ", user=" + user +
@@ -211,9 +210,9 @@ public class StreamController {
 
     public final class User implements Serializable {
         private static final long serialVersionUID = -8741743249755418730L;
-        private long id;
-        private String name;
-        private boolean dm;
+        private final long id;
+        private final String name;
+        private final boolean dm;
 
         /*package*/ User(JSONObject json) {
             id = getLong("id", json);

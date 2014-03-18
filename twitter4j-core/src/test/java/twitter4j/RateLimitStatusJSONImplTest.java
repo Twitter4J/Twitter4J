@@ -29,14 +29,6 @@ public class RateLimitStatusJSONImplTest extends TestCase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testGetResetTimeInSeconds() throws Exception {
         RateLimitStatus status = RateLimitStatusJSONImpl.createFromResponseHeader(new MockHttpResponse());
 //        System.out.println(status.getResetTimeInSeconds());

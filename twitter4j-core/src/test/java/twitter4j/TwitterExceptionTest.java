@@ -27,14 +27,6 @@ public class TwitterExceptionTest extends TestCase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testException() throws Exception {
         TwitterException te1, te2, te3;
         te1 = new TwitterException("test");

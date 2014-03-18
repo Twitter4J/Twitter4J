@@ -25,9 +25,9 @@ import java.lang.reflect.InvocationTargetException;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-public final class DispatcherFactory {
-    private String dispatcherImpl;
-    private Configuration conf;
+final class DispatcherFactory {
+    private final String dispatcherImpl;
+    private final Configuration conf;
 
     public DispatcherFactory(Configuration conf) {
         dispatcherImpl = conf.getDispatcherImpl();

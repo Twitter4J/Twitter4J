@@ -29,7 +29,7 @@ import java.io.File;
  * @author Rémy Rakic - remy.rakic at gmail.com
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class YFrogImageUpload {
+final class YFrogImageUpload {
     /**
      * Usage: java twitter4j.examples.media.YFrogImageUpload [image file path] [message]
      *

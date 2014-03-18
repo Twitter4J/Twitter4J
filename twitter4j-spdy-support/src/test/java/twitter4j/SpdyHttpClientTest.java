@@ -49,10 +49,6 @@ public class SpdyHttpClientTest extends TestCase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     protected void tearDown() {
     }
 

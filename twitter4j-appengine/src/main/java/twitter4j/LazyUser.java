@@ -32,7 +32,7 @@ import java.util.Date;
         date = "2011-07-13"
 )
 final class LazyUser implements twitter4j.User {
-    private HttpResponse res;
+    private final HttpResponse res;
     private Configuration conf;
     private User target = null;
 

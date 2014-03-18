@@ -21,7 +21,6 @@ import twitter4j.ResponseList;
 import twitter4j.TwitterAPIConfiguration;
 import twitter4j.TwitterException;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -92,7 +91,7 @@ public interface HelpResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/application/rate_limit_status">GET application/rate_limit_status</a>
      * @since Twitter4J 3.0.0
      */
-    Map<String ,RateLimitStatus> getRateLimitStatus() throws TwitterException;
+    Map<String, RateLimitStatus> getRateLimitStatus() throws TwitterException;
 
     /**
      * Returns the current rate limits for methods belonging to the specified resource families.<br>
@@ -109,5 +108,5 @@ public interface HelpResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/application/rate_limit_status">GET application/rate_limit_status</a>
      * @since Twitter4J 3.0.0
      */
-    Map<String ,RateLimitStatus> getRateLimitStatus(String... resources) throws TwitterException;
+    Map<String, RateLimitStatus> getRateLimitStatus(String... resources) throws TwitterException;
 }

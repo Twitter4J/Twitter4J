@@ -32,8 +32,8 @@ import java.util.Date;
         date = "2011-07-13"
 )
 final class LazyTrends implements twitter4j.Trends {
-    private HttpResponse res;
-    private ObjectFactory factory;
+    private final HttpResponse res;
+    private final ObjectFactory factory;
     private Trends target = null;
 
     LazyTrends(HttpResponse res, ObjectFactory factory) {

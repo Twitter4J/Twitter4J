@@ -225,7 +225,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         return exceptionDiagnosis;
     }
 
-    boolean nested = false;
+    private boolean nested = false;
 
     void setNested() {
         nested = true;

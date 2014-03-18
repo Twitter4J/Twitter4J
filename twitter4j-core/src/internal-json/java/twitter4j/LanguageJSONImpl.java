@@ -86,8 +86,6 @@ public class LanguageJSONImpl implements HelpResources.Language {
             return languages;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
-        } catch (TwitterException te) {
-            throw te;
         }
     }
 }
