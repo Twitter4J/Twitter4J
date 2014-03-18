@@ -38,6 +38,7 @@ import java.util.Date;
     private boolean isContributorsEnabled;
     private String profileImageUrl;
     private String profileImageUrlHttps;
+    private boolean isDefaultProfileImage;
     private String url;
     private boolean isProtected;
     private int followersCount;
@@ -50,6 +51,7 @@ import java.util.Date;
     private String profileSidebarFillColor;
     private String profileSidebarBorderColor;
     private boolean profileUseBackgroundImage;
+    private boolean isDefaultProfile;
     private boolean showAllInlineMedia;
     private int friendsCount;
     private Date createdAt;
@@ -116,6 +118,7 @@ import java.util.Date;
             isContributorsEnabled = ParseUtil.getBoolean("contributors_enabled", json);
             profileImageUrl = ParseUtil.getRawString("profile_image_url", json);
             profileImageUrlHttps = ParseUtil.getRawString("profile_image_url_https", json);
+            isDefaultProfileImage = ParseUtil.getBoolean("default_profile_image", json);
             url = ParseUtil.getRawString("url", json);
             isProtected = ParseUtil.getBoolean("protected", json);
             isGeoEnabled = ParseUtil.getBoolean("geo_enabled", json);
@@ -129,6 +132,7 @@ import java.util.Date;
             profileSidebarFillColor = ParseUtil.getRawString("profile_sidebar_fill_color", json);
             profileSidebarBorderColor = ParseUtil.getRawString("profile_sidebar_border_color", json);
             profileUseBackgroundImage = ParseUtil.getBoolean("profile_use_background_image", json);
+            isDefaultProfile = ParseUtil.getBoolean("default_profile", json);
             showAllInlineMedia = ParseUtil.getBoolean("show_all_inline_media", json);
             friendsCount = ParseUtil.getInt("friends_count", json);
             createdAt = ParseUtil.getDate("created_at", json, "EEE MMM dd HH:mm:ss z yyyy");
@@ -291,6 +295,11 @@ import java.util.Date;
         return toResizedURL(profileImageUrlHttps, "");
     }
 
+    @Override
+    public boolean isDefaultProfileImage() {
+        return isDefaultProfileImage;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -358,6 +367,11 @@ import java.util.Date;
     @Override
     public boolean isProfileUseBackgroundImage() {
         return profileUseBackgroundImage;
+    }
+
+    @Override
+    public boolean isDefaultProfile() {
+        return isDefaultProfile;
     }
 
     /**
@@ -636,6 +650,7 @@ import java.util.Date;
                 ", isContributorsEnabled=" + isContributorsEnabled +
                 ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", profileImageUrlHttps='" + profileImageUrlHttps + '\'' +
+                ", isDefaultProfileImage=" + isDefaultProfileImage +
                 ", url='" + url + '\'' +
                 ", isProtected=" + isProtected +
                 ", followersCount=" + followersCount +
@@ -646,6 +661,7 @@ import java.util.Date;
                 ", profileSidebarFillColor='" + profileSidebarFillColor + '\'' +
                 ", profileSidebarBorderColor='" + profileSidebarBorderColor + '\'' +
                 ", profileUseBackgroundImage=" + profileUseBackgroundImage +
+                ", isDefaultProfile=" + isDefaultProfile +
                 ", showAllInlineMedia=" + showAllInlineMedia +
                 ", friendsCount=" + friendsCount +
                 ", createdAt=" + createdAt +
