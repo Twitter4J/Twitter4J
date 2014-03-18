@@ -19,7 +19,10 @@ package twitter4j;
 import twitter4j.auth.AccessToken;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class StreamAPITest extends TwitterTestBase implements StatusListener, ConnectionLifeCycleListener {
     private long userId;
@@ -166,7 +169,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     public void testSample() throws Exception {
-        TwitterStream twitterStream2 = new TwitterStreamFactory(conf1).getInstance();
+        TwitterStream twitterStream2 = new TwitterStreamFactory(conf3).getInstance();
         twitterStream2.addListener(this);
         twitterStream2.sample();
         waitForStatus();
@@ -190,7 +193,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     public void testShutdownAndRestart() throws Exception {
-        TwitterStream twitterStream3 = new TwitterStreamFactory(conf1).getInstance();
+        TwitterStream twitterStream3 = new TwitterStreamFactory(conf3).getInstance();
         twitterStream3.addListener(this);
         twitterStream3.sample();
         waitForStatus();
@@ -203,7 +206,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     public void testFilterTrackPush() throws Exception {
-        TwitterStream twitterStream1 = new TwitterStreamFactory(conf1).getInstance();
+        TwitterStream twitterStream1 = new TwitterStreamFactory(conf2).getInstance();
         twitterStream1.addListener(this);
         twitterStream1.addConnectionLifeCycleListener(this);
         assertFalse(onConnectCalled);
@@ -236,7 +239,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         this.ex = null;
 
         FilterQuery query = new FilterQuery(0, null, new String[]{"http", "#", "@"});
-        TwitterStream twitterStream2 = new TwitterStreamFactory(conf1).getInstance();
+        TwitterStream twitterStream2 = new TwitterStreamFactory(conf2).getInstance();
         twitterStream2.addListener(this);
         twitterStream2.filter(query);
 
@@ -273,7 +276,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     public void testUnAuthorizedStreamMethods() throws Exception {
         TwitterStream twitterStream3 = null;
         try {
-            twitterStream3 = new TwitterStreamFactory(conf1).getInstance();
+            twitterStream3 = new TwitterStreamFactory(conf2).getInstance();
             twitterStream3.addListener(this);
             twitterStream3 = new TwitterStreamFactory().getInstance();
             StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFirehoseStream(0);
