@@ -17,6 +17,7 @@
 package twitter4j;
 
 import java.net.URI;
+import java.util.Date;
 
 /**
  * A data interface representing Basic list information element
@@ -100,4 +101,10 @@ public interface UserList extends Comparable<UserList>, TwitterResponse, java.io
      * @return if the authenticated user is following the list
      */
     boolean isFollowing();
+
+    /**
+     * @return the date created the list
+     * @since Twitter4J 4.0.1
+     */
+    Date getCreatedAt();
 }

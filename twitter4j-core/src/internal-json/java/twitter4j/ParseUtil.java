@@ -105,7 +105,7 @@ final class ParseUtil {
         SimpleDateFormat sdf = simpleDateFormats.poll();
         if (null == sdf) {
             sdf = new SimpleDateFormat(format, Locale.US);
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            sdf.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
         }
         try {
             return sdf.parse(dateString);

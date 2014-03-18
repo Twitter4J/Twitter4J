@@ -52,7 +52,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         super(ConfigurationContext.getInstance().getHttpClientConfiguration());
     }
 
-    HttpClientImpl(HttpClientConfiguration conf) {
+    public HttpClientImpl(HttpClientConfiguration conf) {
         super(conf);
     }
 

@@ -18,6 +18,7 @@ package twitter4j;
 
 import javax.annotation.Generated;
 import java.net.URI;
+import java.util.Date;
 
 /**
  * A data class representing Basic list information element
@@ -157,6 +158,11 @@ final class LazyUserList implements twitter4j.UserList {
      */
     public boolean isFollowing() {
         return getTarget().isFollowing();
+    }
+
+    @Override
+    public Date getCreatedAt() {
+        return getTarget().getCreatedAt();
     }
 
     public RateLimitStatus getRateLimitStatus() {

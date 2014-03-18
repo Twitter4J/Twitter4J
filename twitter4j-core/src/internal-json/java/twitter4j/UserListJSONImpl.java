@@ -20,6 +20,7 @@ import twitter4j.conf.Configuration;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 /**
  * A data class representing Basic list information element
@@ -40,6 +41,7 @@ import java.net.URISyntaxException;
     private boolean mode;
     private User user;
     private boolean following;
+    private Date createdAt;
 
     /*package*/ UserListJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -69,6 +71,7 @@ import java.net.URISyntaxException;
         uri = ParseUtil.getRawString("uri", json);
         mode = "public".equals(ParseUtil.getRawString("mode", json));
         following = ParseUtil.getBoolean("following", json);
+        createdAt = ParseUtil.getDate("created_at", json);
 
         try {
             if (!json.isNull("user")) {
@@ -172,6 +175,14 @@ import java.net.URISyntaxException;
     @Override
     public boolean isFollowing() {
         return following;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     /**

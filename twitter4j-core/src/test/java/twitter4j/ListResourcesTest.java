@@ -418,6 +418,15 @@ public class ListResourcesTest extends TwitterTestBase {
         );
     }
 
+    public void testUserListsOwnerships() throws Exception {
+        PagableResponseList<UserList> lists;
+        lists = twitter1.getUserListsOwnerships("yusuke", 3, -1);
+        assertTrue(lists.size() > 0);
+        lists = twitter1.getUserListsOwnerships(4933401L, 3, -1);
+        assertTrue(lists.size() > 0);
+        assertNotNull(lists.get(0).getCreatedAt());
+    }
+
     private UserList prepareListTest() throws Exception {
         ResponseList<UserList> userLists;
         userLists = twitter1.getUserLists(id1.screenName);
