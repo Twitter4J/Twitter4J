@@ -25,14 +25,13 @@ final class ExceptionDiagnosis implements java.io.Serializable {
     private int stackLineHash;
     private int lineNumberHash;
     private String hexString = "";
-    private final Throwable th;
 
     ExceptionDiagnosis(Throwable th) {
         this(th, new String[]{});
     }
 
     ExceptionDiagnosis(Throwable th, String[] inclusionFilter) {
-        this.th = th;
+        Throwable th1 = th;
 
         StackTraceElement[] stackTrace = th.getStackTrace();
         stackLineHash = 0;
