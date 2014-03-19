@@ -48,7 +48,6 @@ import static twitter4j.ParseUtil.getDate;
     // this field should be int in theory, but left as long for the serialized form compatibility - TFJ-790
     private long retweetCount;
     private boolean isPossiblySensitive;
-    private String isoLanguageCode;
     private String lang;
 
     private long[] contributorsIDs;
@@ -174,13 +173,6 @@ import static twitter4j.ParseUtil.getDate;
                 }
             }
 
-            if (!json.isNull("metadata")) {
-                JSONObject metadata = json.getJSONObject("metadata");
-                if (!metadata.isNull("iso_language_code")) {
-                    isoLanguageCode = ParseUtil.getUnescapedString("iso_language_code", metadata);
-
-                }
-            }
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
@@ -422,7 +414,6 @@ import static twitter4j.ParseUtil.getDate;
                 ", place=" + place +
                 ", retweetCount=" + retweetCount +
                 ", isPossiblySensitive=" + isPossiblySensitive +
-                ", isoLanguageCode='" + isoLanguageCode + '\'' +
                 ", lang='" + lang + '\'' +
                 ", contributorsIDs=" + Arrays.toString(contributorsIDs) +
                 ", retweetedStatus=" + retweetedStatus +
