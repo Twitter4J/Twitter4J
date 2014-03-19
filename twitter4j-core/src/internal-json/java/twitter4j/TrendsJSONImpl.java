@@ -153,33 +153,21 @@ import java.util.Iterator;
         return trends;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Trend[] getTrends() {
         return this.trends;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Location getLocation() {
         return location;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Date getAsOf() {
         return asOf;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Date getTrendAt() {
         return trendAt;

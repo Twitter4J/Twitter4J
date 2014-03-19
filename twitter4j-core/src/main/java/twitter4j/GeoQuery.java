@@ -36,7 +36,7 @@ public final class GeoQuery implements java.io.Serializable {
     /**
      * Creates a GeoQuery with the specified location
      *
-     * @param location
+     * @param location geo location
      */
     public GeoQuery(GeoLocation location) {
         this.location = location;

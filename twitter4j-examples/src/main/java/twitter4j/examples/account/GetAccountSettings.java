@@ -27,7 +27,7 @@ public final class GetAccountSettings {
     /**
      * Usage: java twitter4j.examples.account.GetAccountSettings
      *
-     * @param args
+     * @param args arguments doesn't take effect with this example
      */
     public static void main(String[] args) {
         try {

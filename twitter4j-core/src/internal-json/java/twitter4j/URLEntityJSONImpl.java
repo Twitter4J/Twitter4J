@@ -75,49 +75,31 @@ package twitter4j;
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getText() {
         return url;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getURL() {
         return url;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getExpandedURL() {
         return expandedURL;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDisplayURL() {
         return displayURL;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getStart() {
         return super.getStart();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getEnd() {
         return super.getEnd();

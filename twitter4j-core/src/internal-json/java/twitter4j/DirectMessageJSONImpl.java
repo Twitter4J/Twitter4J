@@ -127,57 +127,36 @@ import java.util.Date;
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getText() {
         return text;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getSenderId() {
         return senderId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getRecipientId() {
         return recipientId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getSenderScreenName() {
         return senderScreenName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getRecipientScreenName() {
         return recipientScreenName;
@@ -185,9 +164,6 @@ import java.util.Date;
 
     private User sender;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public User getSender() {
         return sender;
@@ -195,49 +171,31 @@ import java.util.Date;
 
     private User recipient;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public User getRecipient() {
         return recipient;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UserMentionEntity[] getUserMentionEntities() {
         return userMentionEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public URLEntity[] getURLEntities() {
         return urlEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public HashtagEntity[] getHashtagEntities() {
         return hashtagEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MediaEntity[] getMediaEntities() {
         return mediaEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public SymbolEntity[] getSymbolEntities() {
         return symbolEntities;

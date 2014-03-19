@@ -186,57 +186,36 @@ import java.util.Date;
         return (int) (this.id - that.getId());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getScreenName() {
         return screenName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLocation() {
         return location;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription() {
         return description;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isContributorsEnabled() {
         return isContributorsEnabled;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getProfileImageURL() {
         return profileImageUrl;
@@ -291,33 +270,21 @@ import java.util.Date;
         return toResizedURL(profileImageUrlHttps, "");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getURL() {
         return url;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isProtected() {
         return isProtected;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFollowersCount() {
         return followersCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getProfileBackgroundColor() {
         return profileBackgroundColor;
@@ -328,114 +295,72 @@ import java.util.Date;
         return profileTextColor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getProfileLinkColor() {
         return profileLinkColor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getProfileSidebarFillColor() {
         return profileSidebarFillColor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getProfileSidebarBorderColor() {
         return profileSidebarBorderColor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isProfileUseBackgroundImage() {
         return profileUseBackgroundImage;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isShowAllInlineMedia() {
         return showAllInlineMedia;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFriendsCount() {
         return friendsCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Status getStatus() {
         return status;
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFavouritesCount() {
         return favouritesCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getUtcOffset() {
         return utcOffset;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTimeZone() {
         return timeZone;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getProfileBackgroundImageURL() {
         return profileBackgroundImageUrl;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getProfileBackgroundImageUrlHttps() {
         return profileBackgroundImageUrlHttps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getProfileBannerURL() {
         return profileBannerImageUrl != null ? profileBannerImageUrl + "/web" : null;
@@ -466,81 +391,51 @@ import java.util.Date;
         return profileBannerImageUrl != null ? profileBannerImageUrl + "/mobile_retina" : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isProfileBackgroundTiled() {
         return profileBackgroundTiled;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLang() {
         return lang;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getStatusesCount() {
         return statusesCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isGeoEnabled() {
         return isGeoEnabled;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isVerified() {
         return isVerified;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isTranslator() {
         return translator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getListedCount() {
         return listedCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isFollowRequestSent() {
         return isFollowRequestSent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public URLEntity[] getDescriptionURLEntities() {
         return descriptionURLEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public URLEntity getURLEntity() {
         if (urlEntity == null) {

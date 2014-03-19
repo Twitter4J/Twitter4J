@@ -71,9 +71,6 @@ public class HttpResponseImpl extends HttpResponse {
         return con.getHeaderFields();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void disconnect() {
         con.disconnect();

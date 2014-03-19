@@ -26,7 +26,7 @@ public class PrintLinksStream {
     /**
      * Main entry of this application.
      *
-     * @param args
+     * @param args arguments doesn't take effect with this example
      */
     public static void main(String[] args) throws TwitterException {
         TwitterStream twitterStream = new TwitterStreamFactory().getInstance();

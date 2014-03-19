@@ -47,7 +47,7 @@ public final class HttpRequest implements java.io.Serializable {
      * @param url            the request to request
      * @param parameters     parameters
      * @param authorization  Authentication implementation. Currently BasicAuthentication, OAuthAuthentication and NullAuthentication are supported.
-     * @param requestHeaders
+     * @param requestHeaders request headers
      */
     public HttpRequest(RequestMethod method, String url, HttpParameter[] parameters
             , Authorization authorization, Map<String, String> requestHeaders) {

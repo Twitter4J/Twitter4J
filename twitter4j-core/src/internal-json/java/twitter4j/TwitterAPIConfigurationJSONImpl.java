@@ -74,57 +74,36 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPhotoSizeLimit() {
         return photoSizeLimit;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getShortURLLength() {
         return shortURLLength;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getShortURLLengthHttps() {
         return shortURLLengthHttps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getCharactersReservedPerMedia() {
         return charactersReservedPerMedia;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<Integer, MediaEntity.Size> getPhotoSizes() {
         return photoSizes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String[] getNonUsernamePaths() {
         return nonUsernamePaths;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxMediaPerUpload() {
         return maxMediaPerUpload;

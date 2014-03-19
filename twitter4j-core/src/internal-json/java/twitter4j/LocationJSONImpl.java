@@ -82,57 +82,36 @@ import twitter4j.conf.Configuration;
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWoeid() {
         return woeid;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getCountryName() {
         return countryName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getCountryCode() {
         return countryCode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getPlaceName() {
         return placeName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPlaceCode() {
         return placeCode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getURL() {
         return url;

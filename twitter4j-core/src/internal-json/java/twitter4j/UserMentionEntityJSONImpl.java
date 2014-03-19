@@ -65,49 +65,31 @@ package twitter4j;
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getText() {
         return screenName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getScreenName() {
         return screenName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getStart() {
         return super.getStart();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getEnd() {
         return super.getEnd();

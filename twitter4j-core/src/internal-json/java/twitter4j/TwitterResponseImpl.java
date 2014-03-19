@@ -40,17 +40,11 @@ package twitter4j;
         accessLevel = ParseUtil.toAccessLevel(res);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RateLimitStatus getRateLimitStatus() {
         return rateLimitStatus;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getAccessLevel() {
         return accessLevel;

@@ -93,65 +93,41 @@ import java.util.Date;
         return (int) delta;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFullName() {
         return fullName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getSlug() {
         return slug;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription() {
         return description;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getSubscriberCount() {
         return subscriberCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMemberCount() {
         return memberCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public URI getURI() {
         try {
@@ -161,33 +137,21 @@ import java.util.Date;
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPublic() {
         return mode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isFollowing() {
         return following;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public User getUser() {
         return user;

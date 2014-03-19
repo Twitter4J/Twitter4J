@@ -41,25 +41,16 @@ package twitter4j;
         this(json, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getURL() {
         return url;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getQuery() {
         return query;

@@ -40,27 +40,18 @@ final class AppEngineHttpResponseImpl extends HttpResponse implements HttpRespon
         this.future = futureResponse;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getStatusCode() {
         ensureResponseEvaluated();
         return statusCode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getResponseHeader(String name) {
         ensureResponseEvaluated();
         return headers.get(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<String, List<String>> getResponseHeaderFields() {
         ensureResponseEvaluated();
@@ -71,54 +62,36 @@ final class AppEngineHttpResponseImpl extends HttpResponse implements HttpRespon
         return ret;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public InputStream asStream() {
         ensureResponseEvaluated();
         return super.asStream();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String asString() throws TwitterException {
         ensureResponseEvaluated();
         return super.asString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final JSONObject asJSONObject() throws TwitterException {
         ensureResponseEvaluated();
         return super.asJSONObject();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final JSONArray asJSONArray() throws TwitterException {
         ensureResponseEvaluated();
         return super.asJSONArray();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final Reader asReader() {
         ensureResponseEvaluated();
         return super.asReader();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void disconnect() throws IOException {
         if (!future.isDone() && !future.isCancelled()) {

@@ -58,25 +58,16 @@ package twitter4j;
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getText() {
         return text;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getStart() {
         return super.getStart();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getEnd() {
         return super.getEnd();

@@ -72,57 +72,36 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getMediaURL() {
         return mediaURL;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getMediaURLHttps() {
         return mediaURLHttps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getText() {
         return url;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getURL() {
         return url;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDisplayURL() {
         return displayURL;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getExpandedURL() {
         return expandedURL;
@@ -133,25 +112,16 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
         return sizes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getType() {
         return type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getStart() {
         return super.getStart();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getEnd() {
         return super.getEnd();

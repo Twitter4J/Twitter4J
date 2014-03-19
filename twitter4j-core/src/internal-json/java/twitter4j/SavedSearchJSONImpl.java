@@ -90,41 +90,26 @@ import java.util.Date;
         return this.id - that.getId();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getQuery() {
         return query;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPosition() {
         return position;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getName() {
         return name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getId() {
         return id;

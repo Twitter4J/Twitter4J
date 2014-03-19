@@ -78,41 +78,26 @@ import java.util.Arrays;
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long[] getIDs() {
         return ids;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean hasPrevious() {
         return 0 != previousCursor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getPreviousCursor() {
         return previousCursor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean hasNext() {
         return 0 != nextCursor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getNextCursor() {
         return nextCursor;

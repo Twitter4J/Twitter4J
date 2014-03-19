@@ -133,30 +133,18 @@ public class StreamController {
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public boolean hasPrevious() {
             return 0 != previousCursor;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public long getPreviousCursor() {
             return previousCursor;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public boolean hasNext() {
             return 0 != nextCursor;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         public long getNextCursor() {
             return nextCursor;
         }

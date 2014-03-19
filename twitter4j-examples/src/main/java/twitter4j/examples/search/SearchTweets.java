@@ -28,7 +28,7 @@ public class SearchTweets {
     /**
      * Usage: java twitter4j.examples.search.SearchTweets [query]
      *
-     * @param args
+     * @param args search query
      */
     public static void main(String[] args) {
         if (args.length < 1) {

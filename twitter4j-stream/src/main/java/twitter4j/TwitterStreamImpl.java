@@ -59,9 +59,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     /* Streaming API */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void firehose(final int count) {
         ensureAuthorizationEnabled();
@@ -89,9 +86,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return getCountStream("statuses/firehose.json", count);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void links(final int count) {
         ensureAuthorizationEnabled();
@@ -130,9 +124,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void retweet() {
         ensureAuthorizationEnabled();
@@ -164,9 +155,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void sample() {
         ensureAuthorizationEnabled();
@@ -198,16 +186,10 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void user() {
         user(null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void user(final String[] track) {
         ensureAuthorizationEnabled();
@@ -251,9 +233,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StreamController site(final boolean withFollowings, final long[] follow) {
         ensureOAuthEnabled();
@@ -298,9 +277,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ).asStream();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void filter(final FilterQuery query) {
         ensureAuthorizationEnabled();
@@ -363,9 +339,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         numberOfHandlers++;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void cleanUp() {
         if (handler != null) {
@@ -374,9 +347,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void shutdown() {
         cleanUp();
@@ -390,9 +360,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addConnectionLifeCycleListener(ConnectionLifeCycleListener listener) {
         this.lifeCycleListeners.add(listener);
@@ -400,36 +367,24 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     private final ArrayList<StreamListener> streamListeners = new ArrayList<StreamListener>(0);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void addListener(StreamListener listener) {
         streamListeners.add(listener);
         updateListeners();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void removeListener(StreamListener listener) {
         streamListeners.remove(listener);
         updateListeners();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void clearListeners() {
         streamListeners.clear();
         updateListeners();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded) {
         streamListeners.remove(toBeRemoved);

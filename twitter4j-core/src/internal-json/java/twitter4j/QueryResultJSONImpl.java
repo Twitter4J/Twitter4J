@@ -72,17 +72,11 @@ import java.util.List;
         tweets = new ArrayList<Status>(0);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getSinceId() {
         return sinceId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getMaxId() {
         return maxId;
@@ -93,41 +87,26 @@ import java.util.List;
         return refreshUrl;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getCount() {
         return count;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public double getCompletedIn() {
         return completedIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getQuery() {
         return query;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Status> getTweets() {
         return tweets;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Query nextQuery() {
         if (nextResults == null) {
@@ -136,9 +115,6 @@ import java.util.List;
         return Query.createWithNextPageQuery(nextResults);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean hasNext() {
         return nextResults != null;

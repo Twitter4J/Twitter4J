@@ -22,9 +22,6 @@ package twitter4j;
  */
 final class CommonsLoggingLoggerFactory extends LoggerFactory {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Logger getLogger(Class clazz) {
         return new CommonsLoggingLogger(org.apache.commons.logging.LogFactory.getLog(clazz));

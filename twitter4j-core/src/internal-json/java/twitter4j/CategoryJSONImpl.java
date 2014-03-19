@@ -78,7 +78,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
     }
 
     /**
-     * @return
+     * @return number of categories
      * @since Twitter4J 2.1.9
      */
     @Override

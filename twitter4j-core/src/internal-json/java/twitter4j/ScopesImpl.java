@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.Scopes;
-
 /**
  * A data interface representing targeting scopes applied to a status.
  *
@@ -25,18 +23,15 @@ import twitter4j.Scopes;
  */
 public class ScopesImpl implements Scopes {
 
-	private final String[] placeIds;
-	
-	public ScopesImpl(final String[] placeIds) {
-		this.placeIds = placeIds;
-	}
-	
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public String[] getPlaceIds() {
-		return placeIds;
-	}
+    private final String[] placeIds;
+
+    public ScopesImpl(final String[] placeIds) {
+        this.placeIds = placeIds;
+    }
+
+    @Override
+    public String[] getPlaceIds() {
+        return placeIds;
+    }
 
 }

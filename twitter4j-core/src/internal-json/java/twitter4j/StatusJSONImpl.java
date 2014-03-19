@@ -223,225 +223,141 @@ import static twitter4j.ParseUtil.getDate;
         return (int) delta;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Date getCreatedAt() {
         return this.createdAt;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getId() {
         return this.id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getText() {
         return this.text;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getSource() {
         return this.source;
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isTruncated() {
         return isTruncated;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getInReplyToStatusId() {
         return inReplyToStatusId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getInReplyToUserId() {
         return inReplyToUserId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getInReplyToScreenName() {
         return inReplyToScreenName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public GeoLocation getGeoLocation() {
         return geoLocation;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Place getPlace() {
         return place;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long[] getContributors() {
         return contributorsIDs;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isFavorited() {
         return isFavorited;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isRetweeted() {
         return isRetweeted;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFavoriteCount() {
         return favoriteCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public User getUser() {
         return user;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isRetweet() {
         return retweetedStatus != null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Status getRetweetedStatus() {
         return retweetedStatus;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getRetweetCount() {
         return (int) retweetCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isRetweetedByMe() {
         return currentUserRetweetId != -1L;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getCurrentUserRetweetId() {
         return currentUserRetweetId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPossiblySensitive() {
         return isPossiblySensitive;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UserMentionEntity[] getUserMentionEntities() {
         return userMentionEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public URLEntity[] getURLEntities() {
         return urlEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public HashtagEntity[] getHashtagEntities() {
         return hashtagEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MediaEntity[] getMediaEntities() {
         return mediaEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public SymbolEntity[] getSymbolEntities() {
         return symbolEntities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Scopes getScopes() {
         return scopes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public String getLang() {
         return lang;
     }

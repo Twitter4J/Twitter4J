@@ -116,33 +116,21 @@ import java.util.Map;
         return new RateLimitStatusJSONImpl(limit, remainingHits, resetTimeInSeconds);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getRemaining() {
         return remaining;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getLimit() {
         return limit;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getResetTimeInSeconds() {
         return resetTimeInSeconds;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getSecondsUntilReset() {
         return secondsUntilReset;

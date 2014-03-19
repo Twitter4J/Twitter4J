@@ -21,90 +21,54 @@ package twitter4j;
  * @since Twitter4J 2.1.4
  */
 final class NullLogger extends Logger {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isDebugEnabled() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isInfoEnabled() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isWarnEnabled() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isErrorEnabled() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void debug(String message) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void debug(String message, String message2) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void info(String message) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void info(String message, String message2) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void warn(String message) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void warn(String message, String message2) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(String message) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void error(String message, Throwable th) {
     }

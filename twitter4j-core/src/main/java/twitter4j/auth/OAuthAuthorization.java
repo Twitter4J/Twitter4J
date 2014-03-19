@@ -82,25 +82,16 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
 
     // implementation for OAuthSupport interface
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RequestToken getOAuthRequestToken() throws TwitterException {
         return getOAuthRequestToken(null, null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RequestToken getOAuthRequestToken(String callbackURL) throws TwitterException {
         return getOAuthRequestToken(callbackURL, null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RequestToken getOAuthRequestToken(String callbackURL, String xAuthAccessType) throws TwitterException {
         if (oauthToken instanceof AccessToken) {
@@ -117,9 +108,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return (RequestToken) oauthToken;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AccessToken getOAuthAccessToken() throws TwitterException {
         ensureTokenIsAvailable();
@@ -130,9 +118,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return (AccessToken) oauthToken;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         ensureTokenIsAvailable();
@@ -141,27 +126,18 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return (AccessToken) oauthToken;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
         this.oauthToken = requestToken;
         return getOAuthAccessToken();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
         this.oauthToken = requestToken;
         return getOAuthAccessToken(oauthVerifier);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
         try {
@@ -182,9 +158,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setOAuthAccessToken(AccessToken accessToken) {
         this.oauthToken = accessToken;

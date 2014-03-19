@@ -99,97 +99,61 @@ import twitter4j.conf.Configuration;
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getSourceUserId() {
         return sourceUserId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getTargetUserId() {
         return targetUserId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isSourceBlockingTarget() {
         return sourceBlockingTarget;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getSourceUserScreenName() {
         return sourceUserScreenName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTargetUserScreenName() {
         return targetUserScreenName;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isSourceFollowingTarget() {
         return sourceFollowingTarget;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isTargetFollowingSource() {
         return sourceFollowedByTarget;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isSourceFollowedByTarget() {
         return sourceFollowedByTarget;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isTargetFollowedBySource() {
         return sourceFollowingTarget;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canSourceDm() {
         return sourceCanDm;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isSourceNotificationsEnabled() {
         return sourceNotificationsEnabled;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isSourceWantRetweets() {
         return wantRetweets;

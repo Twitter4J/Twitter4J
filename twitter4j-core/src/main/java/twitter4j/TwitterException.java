@@ -62,9 +62,6 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         this.statusCode = statusCode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getMessage() {
         StringBuilder value = new StringBuilder();
@@ -116,11 +113,6 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         return value;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @since Twitter4J 2.1.2
-     */
     @Override
     public RateLimitStatus getRateLimitStatus() {
         if (null == response) {
@@ -129,9 +121,6 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         return JSONImplFactory.createRateLimitStatusFromResponseHeader(response);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getAccessLevel() {
         return ParseUtil.toAccessLevel(response);

@@ -37,33 +37,21 @@ class PagableResponseListImpl<T> extends ResponseListImpl implements PagableResp
         this.nextCursor = ParseUtil.getLong("next_cursor", json);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean hasPrevious() {
         return 0 != previousCursor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getPreviousCursor() {
         return previousCursor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean hasNext() {
         return 0 != nextCursor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long getNextCursor() {
         return nextCursor;

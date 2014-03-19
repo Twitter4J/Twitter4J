@@ -60,7 +60,6 @@ public abstract class HttpResponse {
      * Disconnects the internal HttpURLConnection silently.
      *
      * @return response body stream
-     * @throws TwitterException
      * @see #disconnect()
      */
     public InputStream asStream() {
