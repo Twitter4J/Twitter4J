@@ -21,7 +21,7 @@ package twitter4j;
  * @since Twitter4J 3.0.6
  */
 public final class VersionSPDY {
-    private static final String VERSION = "4.0.1";
+    private static final String VERSION = "4.0.2-SNAPSHOT";
     private static final String TITLE = "Twitter4J SPDY Support";
 
     private VersionSPDY() {
