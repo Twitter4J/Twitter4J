@@ -123,7 +123,6 @@ public enum TwitterMethod {
     SIMILAR_PLACES,
     REVERSE_GEO_CODE,
     GEO_DETAILS,
-    CREATE_PLACE,
 
     /* Trends Resources */
     PLACE_TRENDS,

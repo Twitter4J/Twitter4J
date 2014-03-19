@@ -1029,12 +1029,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     @Override
-    public void createdPlace(Place place) {
-        this.place = place;
-        notifyResponse();
-    }
-
-    @Override
     public void gotPlaceTrends(Trends trends) {
         this.trends = trends;
         notifyResponse();

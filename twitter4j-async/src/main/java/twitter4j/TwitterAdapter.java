@@ -348,10 +348,6 @@ public class TwitterAdapter implements TwitterListener {
     public void gotSimilarPlaces(SimilarPlaces places) {
     }
 
-    @Override
-    public void createdPlace(Place place) {
-    }
-
     /* Trends Resources */
     @Override
     public void gotPlaceTrends(Trends trends) {
@@ -380,10 +376,10 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     /* OAuth2 Resources */
-	@Override
-	public void gotOAuth2Token(OAuth2Token token) {
-	}
-    
+    @Override
+    public void gotOAuth2Token(OAuth2Token token) {
+    }
+
     /* Help Resources */
     @Override
     public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
@@ -404,10 +400,10 @@ public class TwitterAdapter implements TwitterListener {
     @Override
     public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
     }
+
     @Override
     public void onException(TwitterException te, TwitterMethod method) {
     }
-
 
 
 }

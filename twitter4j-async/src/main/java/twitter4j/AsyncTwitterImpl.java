@@ -2258,23 +2258,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    @Override
-    public void createPlace(final String name, final String containedWithin, final String token
-            , final GeoLocation location, final String streetAddress) {
-        getDispatcher().invokeLater(new AsyncTask(CREATE_PLACE, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                Place place = twitter.createPlace(name, containedWithin, token, location, streetAddress);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.createdPlace(place);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
     /* Trends Resources */
 
     @Override

@@ -195,8 +195,6 @@ public interface TwitterListener {
 
     void gotSimilarPlaces(SimilarPlaces places);
 
-    void createdPlace(Place place);
-
     /* Trends Resources */
     void gotPlaceTrends(Trends trends);
 
@@ -211,7 +209,7 @@ public interface TwitterListener {
     void gotOAuthRequestToken(RequestToken token);
 
     void gotOAuthAccessToken(AccessToken token);
-    
+
     /* OAuth2 Resources */
     void gotOAuth2Token(OAuth2Token token);
 

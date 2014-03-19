@@ -1257,21 +1257,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 + "geo/similar_places.json", params.toArray(new HttpParameter[params.size()])));
     }
 
-    @Override
-    public Place createPlace(String name, String containedWithin, String token, GeoLocation location, String streetAddress) throws TwitterException {
-        List<HttpParameter> params = new ArrayList<HttpParameter>(3);
-        params.add(new HttpParameter("name", name));
-        params.add(new HttpParameter("contained_within", containedWithin));
-        params.add(new HttpParameter("token", token));
-        params.add(new HttpParameter("lat", location.getLatitude()));
-        params.add(new HttpParameter("long", location.getLongitude()));
-        if (streetAddress != null) {
-            params.add(new HttpParameter("attribute:street_address", streetAddress));
-        }
-        return factory.createPlace(post(conf.getRestBaseURL() + "geo/place.json"
-                , params.toArray(new HttpParameter[params.size()])));
-    }
-
     /* Trends Resources */
 
     @Override
