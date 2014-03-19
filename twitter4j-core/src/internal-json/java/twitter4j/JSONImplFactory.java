@@ -246,11 +246,6 @@ class JSONImplFactory implements ObjectFactory {
     }
 
     @Override
-    public SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException {
-        return SimilarPlacesImpl.createSimilarPlaces(res, conf);
-    }
-
-    @Override
     public TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException {
         return new TwitterAPIConfigurationJSONImpl(res, conf);
     }

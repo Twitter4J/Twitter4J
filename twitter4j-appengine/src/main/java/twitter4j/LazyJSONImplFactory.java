@@ -251,10 +251,6 @@ class LazyJSONImplFactory implements ObjectFactory {
         return new LazyOEmbed(res, factory);
     }
 
-    public SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException {
-        return new LazySimilarPlaces(res, factory);
-    }
-
     public TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException {
         return new LazyTwitterAPIConfiguration(res, factory);
     }

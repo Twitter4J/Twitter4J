@@ -193,7 +193,7 @@ public interface TwitterListener {
 
     void searchedPlaces(ResponseList<Place> places);
 
-    void gotSimilarPlaces(SimilarPlaces places);
+    void gotSimilarPlaces(ResponseList<Place> places);
 
     /* Trends Resources */
     void gotPlaceTrends(Trends trends);

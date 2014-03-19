@@ -1011,7 +1011,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     @Override
-    public void gotSimilarPlaces(SimilarPlaces places) {
+    public void gotSimilarPlaces(ResponseList<Place> places) {
         this.places = places;
         notifyResponse();
     }

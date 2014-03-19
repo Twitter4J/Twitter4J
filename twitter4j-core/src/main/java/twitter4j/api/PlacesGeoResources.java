@@ -77,6 +77,6 @@ public interface PlacesGeoResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 2.1.7
      */
-    SimilarPlaces getSimilarPlaces(GeoLocation location, String name, String containedWithin, String streetAddress) throws TwitterException;
+    ResponseList<Place> getSimilarPlaces(GeoLocation location, String name, String containedWithin, String streetAddress) throws TwitterException;
 
 }

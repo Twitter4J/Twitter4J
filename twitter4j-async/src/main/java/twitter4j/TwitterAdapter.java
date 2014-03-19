@@ -345,7 +345,7 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void gotSimilarPlaces(SimilarPlaces places) {
+    public void gotSimilarPlaces(ResponseList<Place> places) {
     }
 
     /* Trends Resources */

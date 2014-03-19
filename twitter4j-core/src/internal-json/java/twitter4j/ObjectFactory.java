@@ -83,8 +83,6 @@ interface ObjectFactory extends java.io.Serializable {
 
     ResponseList<Place> createPlaceList(HttpResponse res) throws TwitterException;
 
-    SimilarPlaces createSimilarPlaces(HttpResponse res) throws TwitterException;
-
     TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException;
 
     ResponseList<HelpResources.Language> createLanguageList(HttpResponse res) throws TwitterException;

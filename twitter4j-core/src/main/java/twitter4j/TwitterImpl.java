@@ -1242,7 +1242,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public SimilarPlaces getSimilarPlaces(GeoLocation location, String name, String containedWithin, String streetAddress) throws TwitterException {
+    public ResponseList<Place> getSimilarPlaces(GeoLocation location, String name, String containedWithin, String streetAddress) throws TwitterException {
         List<HttpParameter> params = new ArrayList<HttpParameter>(3);
         params.add(new HttpParameter("lat", location.getLatitude()));
         params.add(new HttpParameter("long", location.getLongitude()));
@@ -1253,7 +1253,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         if (streetAddress != null) {
             params.add(new HttpParameter("attribute:street_address", streetAddress));
         }
-        return factory.createSimilarPlaces(get(conf.getRestBaseURL()
+        return factory.createPlaceList(get(conf.getRestBaseURL()
                 + "geo/similar_places.json", params.toArray(new HttpParameter[params.size()])));
     }
 

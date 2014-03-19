@@ -2247,7 +2247,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(SIMILAR_PLACES, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                SimilarPlaces similarPlaces = twitter.getSimilarPlaces(location, name, containedWithin, streetAddress);
+                ResponseList<Place> similarPlaces = twitter.getSimilarPlaces(location, name, containedWithin, streetAddress);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotSimilarPlaces(similarPlaces);

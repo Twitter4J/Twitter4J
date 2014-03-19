@@ -73,7 +73,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     }
 
     /**
-     * #{inheritDoc}
+     * @{inheritDoc}
      */
     @Override
     public boolean isEnabled() {
