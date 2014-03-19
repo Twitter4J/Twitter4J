@@ -90,41 +90,41 @@ fi
 
 mkdir twitter4j-core/javadoc/
 unzip twitter4j-core/target/twitter4j-core-$LATEST_VERSION-javadoc.jar -d twitter4j-core/javadoc/
-# mv twitter4j-core/target/twitter4j-core-$LATEST_VERSION-javadoc.jar twitter4j-core/
+mv twitter4j-core/target/twitter4j-core-$LATEST_VERSION-javadoc.jar twitter4j-core/
 # mv twitter4j-core/target/twitter4j-core-$LATEST_VERSION-sources.jar twitter4j-core/
 
 mkdir twitter4j-media-support/javadoc/
 unzip twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-javadoc.jar -d twitter4j-media-support/javadoc/
-# mv twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-javadoc.jar twitter4j-media-support/
+mv twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-javadoc.jar twitter4j-media-support/
 # mv twitter4j-media-support/target/twitter4j-media-support-$LATEST_VERSION-sources.jar twitter4j-media-support/
 
 mkdir twitter4j-examples/javadoc/
 unzip twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-javadoc.jar -d twitter4j-examples/javadoc/
-# mv twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-javadoc.jar twitter4j-examples/
+mv twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-javadoc.jar twitter4j-examples/
 # mv twitter4j-examples/target/twitter4j-examples-$LATEST_VERSION-sources.jar twitter4j-examples/
 
 mkdir twitter4j-async/javadoc/
 unzip twitter4j-async/target/twitter4j-async-$LATEST_VERSION-javadoc.jar -d twitter4j-async/javadoc/
-# mv twitter4j-async/target/twitter4j-async-$LATEST_VERSION-javadoc.jar twitter4j-async/
+mv twitter4j-async/target/twitter4j-async-$LATEST_VERSION-javadoc.jar twitter4j-async/
 # mv twitter4j-async/target/twitter4j-async-$LATEST_VERSION-sources.jar twitter4j-async/
 
 mkdir twitter4j-stream/javadoc/
 unzip twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-javadoc.jar -d twitter4j-stream/javadoc/
-# mv twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-javadoc.jar twitter4j-stream/
+mv twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-javadoc.jar twitter4j-stream/
 # mv twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-sources.jar twitter4j-stream/
 rm twitter4j-stream/src/test/resources/test.properties
 rm twitter4j-stream/src/test/resources/sitestream-test.properties
 
 mkdir twitter4j-appengine/javadoc/
 unzip twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar -d twitter4j-appengine/javadoc/
-# mv twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar twitter4j-appengine/
+mv twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar twitter4j-appengine/
 # mv twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-sources.jar twitter4j-appengine/
 mv twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION.jar twitter4j-appengine/
 rm twitter4j-appengine/src/test/resources/twitter4j.properties
 
 mkdir twitter4j-spdy-support/javadoc/
 unzip twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar -d twitter4j-spdy-support/javadoc/
-# mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar twitter4j-spdy-support/
+mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar twitter4j-spdy-support/
 # mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-sources.jar twitter4j-spdy-support/
 mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION.jar twitter4j-spdy-support/
 
