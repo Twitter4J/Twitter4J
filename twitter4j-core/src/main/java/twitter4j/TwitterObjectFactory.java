@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 3.1.0
+ * @since Twitter4J 4.0.0
  */
 public final class TwitterObjectFactory {
     private TwitterObjectFactory() {

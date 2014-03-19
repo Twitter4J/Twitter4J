@@ -38,21 +38,21 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
 
     /**
      * @param listener listener to remove
-     * @since Twitter4J 3.1.0
+     * @since Twitter4J 4.0.0
      */
     void removeListener(StreamListener listener);
 
     /**
      * clear status listeners
      *
-     * @since Twitter4J 3.1.0
+     * @since Twitter4J 4.0.0
      */
     void clearListeners();
 
     /**
      * replace existing listener
      *
-     * @since Twitter4J 3.1.0
+     * @since Twitter4J 4.0.0
      */
     void replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded);
 
