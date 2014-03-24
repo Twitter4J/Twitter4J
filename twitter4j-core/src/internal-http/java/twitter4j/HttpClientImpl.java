@@ -37,8 +37,8 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         // quick and dirty workaround for TFJ-296
         // @see http://stackoverflow.com/questions/1440957/
         try {
-            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.FROYO
-            if (Class.forName("android.os.Build$VERSION").getField("SDK_INT").getInt(null) < 8) {
+            // Integer.parseInt(Build.VERSION.SDK) < Build.VERSION_CODES.FROYO
+            if (Integer.parseInt((String) Class.forName("android.os.Build$VERSION").getField("SDK").get(null)) < 8) {
                 System.setProperty("http.keepAlive", "false");
             }
         } catch (Exception ignore) {
