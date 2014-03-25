@@ -33,16 +33,15 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
 
 
     static {
-        // detecting dalvik (Android platform)
+        // disable keepAlive (Android 2.1 or earlier)
+        // quick and dirty workaround for TFJ-296
+        // @see http://stackoverflow.com/questions/1440957/
         try {
-            // dalvik.system.VMRuntime class should be existing on Android platform.
-            // @see http://developer.android.com/reference/dalvik/system/VMRuntime.html
-            Class.forName("dalvik.system.VMRuntime");
-            // detected Dalvik VM
-            // quick and dirty workaround for TFJ-296
-            // it must be an Android/Dalvik/Harmony side issue!!!!
-            System.setProperty("http.keepAlive", "false");
-        } catch (ClassNotFoundException ignore) {
+            // Integer.parseInt(Build.VERSION.SDK) < Build.VERSION_CODES.FROYO
+            if (Integer.parseInt((String) Class.forName("android.os.Build$VERSION").getField("SDK").get(null)) < 8) {
+                System.setProperty("http.keepAlive", "false");
+            }
+        } catch (Exception ignore) {
         }
     }
 
