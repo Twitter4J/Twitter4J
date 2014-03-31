@@ -44,6 +44,9 @@ class StatusStreamImpl extends StatusStreamBase {
     static final RawStreamListener[] EMPTY = new RawStreamListener[0];
 
     @Override
+    protected void onClose(){}
+
+    @Override
     public void next(StatusListener listener) throws TwitterException {
         handleNextElement(new StatusListener[]{listener}, EMPTY);
     }
