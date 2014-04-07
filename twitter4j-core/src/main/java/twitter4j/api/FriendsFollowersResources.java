@@ -330,7 +330,6 @@ public interface FriendsFollowersResources {
      * @return list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
-     * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getFriendsList(long userId, long cursor, int count) throws TwitterException;
 
@@ -359,7 +358,6 @@ public interface FriendsFollowersResources {
      * @return list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
-     * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getFriendsList(String screenName, long cursor, int count) throws TwitterException;
 
