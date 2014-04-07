@@ -24,6 +24,11 @@ package twitter4j;
 public class ScopesImpl implements Scopes {
 
     private final String[] placeIds;
+    
+    /* Only for serialization purposes. */
+    /*package*/ ScopesImplJSONImpl() {
+
+    }
 
     public ScopesImpl(final String[] placeIds) {
         this.placeIds = placeIds;
