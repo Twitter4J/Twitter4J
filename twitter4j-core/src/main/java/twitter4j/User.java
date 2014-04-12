@@ -133,6 +133,11 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     boolean isShowAllInlineMedia();
 
+    /**
+     * Returns the number of users the user follows (AKA "followings")
+     *
+     * @return the number of users the user follows
+     */
     int getFriendsCount();
 
     Date getCreatedAt();
