@@ -289,14 +289,43 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(t4jfriends, t4jfriends2);
         assertTrue(t4jfriends.size() > 0);
 
+        PagableResponseList<User> t4jfriends1 = twitter1.getFriendsList("t4j_news", -1L, 3);
+        PagableResponseList<User> t4jfriends12 = twitter1.getFriendsList(72297675L, -1L, 3);
+        assertEquals(t4jfriends1, t4jfriends12);
+        assertTrue(t4jfriends1.size() > 0);
+        assertTrue(t4jfriends1.size() <= 3);
+
         PagableResponseList<User> t4jfollowers = twitter1.getFollowersList("t4j_news", -1L);
         PagableResponseList<User> t4jfollowers2 = twitter1.getFollowersList(72297675L, -1L);
         assertEquals(t4jfollowers, t4jfollowers2);
         assertTrue(t4jfollowers.size() > 0);
 
-        PagableResponseList<User> t4jfollowers1 = twitter1.getFollowersList("t4j_news", -1L, 10);
-        PagableResponseList<User> t4jfollowers12 = twitter1.getFollowersList(72297675L, -1L, 10);
+        PagableResponseList<User> t4jfollowers1 = twitter1.getFollowersList("t4j_news", -1L, 3);
+        PagableResponseList<User> t4jfollowers12 = twitter1.getFollowersList(72297675L, -1L, 3);
         assertEquals(t4jfollowers1, t4jfollowers12);
+        assertTrue(t4jfollowers1.size() > 0);
+        assertTrue(t4jfollowers1.size() <= 3);
+    }
+
+    public void testFriendsFollowersListWithSkipStatusIncludeUserEntities() throws Exception {
+        PagableResponseList<User> t4jfriends = twitter1.getFriendsList("t4j_news", -1L, 3, true, false);
+        PagableResponseList<User> t4jfriends2 = twitter1.getFriendsList(72297675L, -1L, 3, true, false);
+        assertEquals(t4jfriends, t4jfriends2);
+        assertTrue(t4jfriends.size() > 0);
+        assertTrue(t4jfriends.size() <= 3);
+        for (User user : t4jfriends) {
+            assertNull(user.getStatus());
+            assertEquals(0, user.getDescriptionURLEntities().length);
+        }
+
+        PagableResponseList<User> t4jfollowers = twitter1.getFollowersList("t4j_news", -1L, 3, true, false);
+        PagableResponseList<User> t4jfollowers2 = twitter1.getFollowersList(72297675L, -1L, 3, true, false);
+        assertEquals(t4jfollowers, t4jfollowers2);
         assertTrue(t4jfollowers.size() > 0);
+        assertTrue(t4jfollowers.size() <= 3);
+        for (User user : t4jfollowers) {
+            assertNull(user.getStatus());
+            assertEquals(0, user.getDescriptionURLEntities().length);
+        }
     }
 }
