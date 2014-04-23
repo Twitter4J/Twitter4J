@@ -57,8 +57,11 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
             throw new IllegalStateException("OAuth 2 Bearer Token is already available.");
         }
 
-        HttpParameter[] params = new HttpParameter[1];
+        HttpParameter[] params = new HttpParameter[conf.getOAuth2Scope() == null ? 1 : 2];
         params[0] = new HttpParameter("grant_type", "client_credentials");
+        if (conf.getOAuth2Scope() != null) {
+            params[1] = new HttpParameter("scope", conf.getOAuth2Scope());
+        }
 
         HttpResponse res = http.post(conf.getOAuth2TokenURL(), params, this, null);
         if (res.getStatusCode() != 200) {

@@ -53,6 +53,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String OAUTH_ACCESS_TOKEN_SECRET = "oauth.accessTokenSecret";
     private static final String OAUTH2_TOKEN_TYPE = "oauth2.tokenType";
     private static final String OAUTH2_ACCESS_TOKEN = "oauth2.accessToken";
+    private static final String OAUTH2_SCOPE = "oauth2.scope";
 
     private static final String OAUTH_REQUEST_TOKEN_URL = "oauth.requestTokenURL";
     private static final String OAUTH_AUTHORIZATION_URL = "oauth.authorizationURL";
@@ -84,6 +85,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
     private static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
     private static final long serialVersionUID = -7262615247923693252L;
+    private String OAuth2Scope;
 
 
     public PropertyConfiguration(InputStream is) {
@@ -289,6 +291,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, OAUTH2_ACCESS_TOKEN)) {
             setOAuth2AccessToken(getString(props, prefix, OAUTH2_ACCESS_TOKEN));
         }
+        if (notNull(props, prefix, OAUTH2_SCOPE)) {
+            setOAuth2Scope(getString(props, prefix, OAUTH2_SCOPE));
+        }
         if (notNull(props, prefix, ASYNC_NUM_THREADS)) {
             setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_NUM_THREADS));
         }
@@ -415,4 +420,5 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     protected Object readResolve() throws ObjectStreamException {
         return super.readResolve();
     }
+
 }

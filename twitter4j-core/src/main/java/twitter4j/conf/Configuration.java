@@ -53,6 +53,8 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     String getOAuth2AccessToken();
 
+    String getOAuth2Scope();
+
     String getRestBaseURL();
 
     String getStreamBaseURL();
