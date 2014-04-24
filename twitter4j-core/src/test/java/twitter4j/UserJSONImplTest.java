@@ -44,8 +44,9 @@ public class UserJSONImplTest extends TestCase {
         assertEquals(39, descriptionUrlEntities[1].getStart());
         assertEquals(59, descriptionUrlEntities[1].getEnd());
         assertEquals("http://t.co/dRuJ7wCm", user.getDescription().substring(descriptionUrlEntities[1].getStart(), descriptionUrlEntities[1].getEnd()));
-        
+
         assertEquals("<test> url: http://t.co/UcHD19ZC url2: http://t.co/dRuJ7wCm subaccount: @gjmp10 hashtag: #test", user.getDescription());
+        assertEquals(user.hasDefaultProfileImage(), false);
     }
     
     public void testGetDescriptionURLEntities2() throws JSONException, TwitterException {

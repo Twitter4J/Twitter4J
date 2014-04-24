@@ -67,6 +67,7 @@ import java.util.Date;
     private boolean translator;
     private int listedCount;
     private boolean isFollowRequestSent;
+    private boolean usesDefaultProfileImage;
 
     /*package*/UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -147,6 +148,7 @@ import java.util.Date;
                 JSONObject statusJSON = json.getJSONObject("status");
                 status = new StatusJSONImpl(statusJSON);
             }
+            usesDefaultProfileImage = ParseUtil.getBoolean("default_profile_image", json);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
@@ -443,6 +445,10 @@ import java.util.Date;
             urlEntity = new URLEntityJSONImpl(0, plainURL.length(), plainURL, plainURL, plainURL);
         }
         return urlEntity;
+    }
+    @Override
+    public boolean hasDefaultProfileImage() {
+        return usesDefaultProfileImage;
     }
 
     /*package*/

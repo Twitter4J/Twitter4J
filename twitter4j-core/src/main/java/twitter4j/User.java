@@ -241,5 +241,12 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     URLEntity getURLEntity();
 
+    /**
+     * Returns whether or not the profile is using a default_profile_image
+     *
+     * @return The value in default_profile_image under GET users/show
+     */
+    boolean hasDefaultProfileImage();
+
 
 }
