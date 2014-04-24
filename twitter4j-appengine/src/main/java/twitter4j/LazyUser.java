@@ -426,4 +426,8 @@ final class LazyUser implements twitter4j.User {
                 "target=" + getTarget() +
                 "}";
     }
+    @Override
+    public boolean hasDefaultProfileImage() {
+        return getTarget().hasDefaultProfileImage();
+    }
 }
