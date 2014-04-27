@@ -137,4 +137,17 @@ public interface TweetsResources {
      * @since Twitter4J 3.0.2
      */
     OEmbed getOEmbed(OEmbedRequest req) throws TwitterException;
+
+    /**
+     * Returns fully-hydrated tweet objects for up to 100 tweets per request, as specified by comma-separated values passed to the id parameter.
+     * This method is especially useful to get the details (hydrate) a collection of Tweet IDs.
+     * <br>This method calls https://api.twitter.com/1.1/statuses/lookup.json
+     *
+     * @param ids array of the ids to lookup
+     * @return list of the tweets
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/lookup">GET statuses/lookup</a>
+     * @since Twitter4J 4.0.x TODO
+     */
+    ResponseList<Status> lookup(long[] ids) throws TwitterException;
 }

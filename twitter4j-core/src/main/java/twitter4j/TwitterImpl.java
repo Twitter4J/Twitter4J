@@ -216,6 +216,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 + "statuses/oembed.json", req.asHttpParameterArray()));
     }
 
+    @Override
+    public ResponseList<Status> lookup(long[] ids) throws TwitterException {
+        return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/lookup.json?id=" + StringUtil.join(ids)));
+    }
+
     /* Search Resources */
 
     @Override
