@@ -185,6 +185,7 @@ abstract class StatusStreamBase implements StatusStream {
             }
             boolean isUnexpectedException = streamAlive;
             streamAlive = false;
+            onClose();
             if (isUnexpectedException) {
                 throw new TwitterException("Stream closed.", ioe);
             }
@@ -291,6 +292,8 @@ abstract class StatusStreamBase implements StatusStream {
         logger.warn("Unhandled event: ", e.getMessage());
     }
 
+    protected abstract void onClose();
+
     public void close() throws IOException {
         streamAlive = false;
         is.close();
@@ -298,6 +301,7 @@ abstract class StatusStreamBase implements StatusStream {
         if (response != null) {
             response.disconnect();
         }
+        onClose();
     }
 
     Status asStatus(JSONObject json) throws TwitterException {
