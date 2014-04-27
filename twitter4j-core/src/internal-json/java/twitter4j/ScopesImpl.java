@@ -26,7 +26,7 @@ public class ScopesImpl implements Scopes {
     private final String[] placeIds;
     
     /* Only for serialization purposes. */
-    /*package*/ ScopesImplJSONImpl() {
+    /*package*/ ScopesImpl() {
         this.placeIds = new String[0];
     }
 
