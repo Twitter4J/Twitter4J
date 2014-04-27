@@ -90,6 +90,7 @@ Talal Ahmed <talal at venexel.ca>
 Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
 Tomasz Nurkiewicz @tnurkiewicz
 Tomohisa Igarashi <tm.igarashi at gmail.com>
+Tyler MacLeod
 Will Glozer <will at glozer.net> @ar3te
 William Morgan <william at twitter.com> @wm
 withgod <noname at withgod.jp> @withgod
