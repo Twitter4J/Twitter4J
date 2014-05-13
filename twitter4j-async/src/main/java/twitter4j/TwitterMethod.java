@@ -34,6 +34,7 @@ public enum TwitterMethod {
     UPDATE_STATUS,
     RETWEET_STATUS,
     OEMBED,
+    LOOKUP,
 
     /* Search Resources */
     SEARCH,

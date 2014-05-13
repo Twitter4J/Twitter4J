@@ -74,6 +74,10 @@ public class TwitterAdapter implements TwitterListener {
     public void gotOEmbed(OEmbed oembed) {
     }
 
+    @Override
+    public void lookedup(ResponseList<Status> statuses) {
+    }
+
     /* Search Resources */
     @Override
     public void searched(QueryResult queryResult) {
