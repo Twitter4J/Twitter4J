@@ -197,6 +197,12 @@ import java.util.Date;
     }
 
     @Override
+    public MediaEntity[] getExtendedMediaEntities() {
+        // extended-entities is not supported in direct messages
+        return null;
+    }
+
+    @Override
     public SymbolEntity[] getSymbolEntities() {
         return symbolEntities;
     }
