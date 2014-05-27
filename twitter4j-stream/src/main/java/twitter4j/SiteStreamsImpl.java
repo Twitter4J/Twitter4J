@@ -75,6 +75,11 @@ final class SiteStreamsImpl extends StatusStreamBase {
         return line.substring(userIdEnd + 11, line.length() - 1);
     }
 
+    @Override
+    protected void onClose() {
+        cs.setControlURI(null);
+    }
+
     private static final ThreadLocal<Long> forUser =
             new ThreadLocal<Long>() {
                 @Override

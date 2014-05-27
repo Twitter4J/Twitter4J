@@ -48,6 +48,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String oAuthAccessTokenSecret = null;
     private String oAuth2TokenType;
     private String oAuth2AccessToken;
+    private String oAuth2Scope;
     private String oAuthRequestTokenURL = "https://api.twitter.com/oauth/request_token";
     private String oAuthAuthorizationURL = "https://api.twitter.com/oauth/authorize";
     private String oAuthAccessTokenURL = "https://api.twitter.com/oauth/access_token";
@@ -440,8 +441,17 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         return oAuth2AccessToken;
     }
 
+    @Override
+    public String getOAuth2Scope() {
+        return oAuth2Scope;
+    }
+
     protected final void setOAuth2AccessToken(String oAuth2AccessToken) {
         this.oAuth2AccessToken = oAuth2AccessToken;
+    }
+
+    protected final void setOAuth2Scope(String oAuth2Scope) {
+        this.oAuth2Scope = oAuth2Scope;
     }
 
     @Override
@@ -751,6 +761,8 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (oAuth2TokenURL != null ? !oAuth2TokenURL.equals(that.oAuth2TokenURL) : that.oAuth2TokenURL != null)
             return false;
+        if (oAuth2Scope != null ? !oAuth2Scope.equals(that.oAuth2Scope) : that.oAuth2Scope != null)
+            return false;
         if (oAuthAccessToken != null ? !oAuthAccessToken.equals(that.oAuthAccessToken) : that.oAuthAccessToken != null)
             return false;
         if (oAuthAccessTokenSecret != null ? !oAuthAccessTokenSecret.equals(that.oAuthAccessTokenSecret) : that.oAuthAccessTokenSecret != null)
@@ -796,6 +808,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (oAuthAccessTokenSecret != null ? oAuthAccessTokenSecret.hashCode() : 0);
         result = 31 * result + (oAuth2TokenType != null ? oAuth2TokenType.hashCode() : 0);
         result = 31 * result + (oAuth2AccessToken != null ? oAuth2AccessToken.hashCode() : 0);
+        result = 31 * result + (oAuth2Scope != null ? oAuth2Scope.hashCode() : 0);
         result = 31 * result + (oAuthRequestTokenURL != null ? oAuthRequestTokenURL.hashCode() : 0);
         result = 31 * result + (oAuthAuthorizationURL != null ? oAuthAuthorizationURL.hashCode() : 0);
         result = 31 * result + (oAuthAccessTokenURL != null ? oAuthAccessTokenURL.hashCode() : 0);
@@ -843,6 +856,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", oAuthAccessTokenSecret='" + oAuthAccessTokenSecret + '\'' +
                 ", oAuth2TokenType='" + oAuth2TokenType + '\'' +
                 ", oAuth2AccessToken='" + oAuth2AccessToken + '\'' +
+                ", oAuth2Scope='" + oAuth2Scope + '\'' +
                 ", oAuthRequestTokenURL='" + oAuthRequestTokenURL + '\'' +
                 ", oAuthAuthorizationURL='" + oAuthAuthorizationURL + '\'' +
                 ", oAuthAccessTokenURL='" + oAuthAccessTokenURL + '\'' +

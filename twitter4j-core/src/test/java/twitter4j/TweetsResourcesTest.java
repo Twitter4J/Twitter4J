@@ -139,6 +139,18 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
     }
 
+    public void testLookup() throws TwitterException {
+        // from "Example Result" of https://dev.twitter.com/docs/api/1.1/get/statuses/lookup
+        ResponseList<Status> statuses = twitter1.lookup(new long[]{20L, 432656548536401920L});
+
+        assertEquals(2, statuses.size());
+        Status first = statuses.get(0);
+        assertEquals("just setting up my twttr", first.getText());
+
+        Status second = statuses.get(1);
+        assertEquals("POST statuses/update. Great way to start. https://t.co/9S8YO69xzf (disclaimer, this was not posted via the API).", second.getText());
+    }
+
     public void testEntities() throws Exception {
         Status status = twitter2.showStatus(332341548203261953L);
         SymbolEntity[] symbolEntities = status.getSymbolEntities();

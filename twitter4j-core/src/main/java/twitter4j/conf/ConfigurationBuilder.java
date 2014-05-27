@@ -156,6 +156,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setOAuth2Scope(String oAuth2Scope) {
+        checkNotBuilt();
+        configurationBean.setOAuth2Scope(oAuth2Scope);
+        return this;
+    }
+
     public ConfigurationBuilder setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
         checkNotBuilt();
         configurationBean.setOAuthRequestTokenURL(oAuthRequestTokenURL);

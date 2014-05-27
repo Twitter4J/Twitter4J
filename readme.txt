@@ -53,6 +53,7 @@ Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
 Jason Webb <bigjasonwebb at gmail.com> @BigJasonWebb
 Jeff Buchbinder @jbuchbinder
 Jenny Loomis <jenny at rockmelt.com>
+Joe Sondow @JoeSondow
 John Corwin <jcorwin at twitter.com> @johnxorz
 John Sirois <jsirois at twitter.com> @johnsirois
 Julien Letrouit <julien.letrouit at gmail.com> @jletroui
@@ -72,6 +73,7 @@ Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
 Norbert Bartels <n.bartels at phpmonkeys.de>
 Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
+Pierre Lanvin <pierre.lanvin@gmail.com> @planvin
 Perry Sakkaris <psakkaris at gmail.com>
 Rajesh Koilpillai <rajesh.koilpillai at gmail.com> @rajeshkp
 Roberto Estrada <robestradac at gmail.com>
@@ -79,6 +81,7 @@ Roy Reshef <royreshef at gmail.com> @tsipo
 Rui Silva
 Sam Pullara <sam at sampullara.com> @sampullara
 Sdk0815 <developer at terumode.net> @Sdk0815
+Shane Gibson <shane.a.gibson at gmail.com> @shaneagibson
 Simone Aiello <aiello.simone103 at gmail.com> @saiello103
 Steve Lhomme <slhomme at matroska.org> @robux4
 Steven Liu <steven at twitter.com> @steven
@@ -88,6 +91,7 @@ Talal Ahmed <talal at venexel.ca>
 Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
 Tomasz Nurkiewicz @tnurkiewicz
 Tomohisa Igarashi <tm.igarashi at gmail.com>
+Tyler MacLeod
 Will Glozer <will at glozer.net> @ar3te
 William Morgan <william at twitter.com> @wm
 withgod <noname at withgod.jp> @withgod
