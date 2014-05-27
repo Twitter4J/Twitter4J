@@ -55,6 +55,8 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     String getRestBaseURL();
 
+    String getUploadBaseURL();
+
     String getStreamBaseURL();
 
     String getOAuthRequestTokenURL();

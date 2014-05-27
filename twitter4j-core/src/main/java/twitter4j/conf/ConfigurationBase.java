@@ -59,6 +59,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String streamBaseURL = "https://stream.twitter.com/1.1/";
     private String userStreamBaseURL = "https://userstream.twitter.com/1.1/";
     private String siteStreamBaseURL = "https://sitestream.twitter.com/1.1/";
+    private String uploadBaseURL = "https://upload.twitter.com/1.1/";
 
     private String dispatcherImpl = "twitter4j.DispatcherImpl";
     private int asyncNumThreads = 1;
@@ -471,6 +472,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
+    public String getUploadBaseURL() {
+        return uploadBaseURL;
+    }
+
+    protected final void setUploadBaseURL(String uploadBaseURL) {
+        this.uploadBaseURL = uploadBaseURL;
+    }
+
+    @Override
     public String getStreamBaseURL() {
         return streamBaseURL;
     }
@@ -759,6 +769,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null) return false;
+        if (uploadBaseURL != null ? !uploadBaseURL.equals(that.uploadBaseURL) : that.uploadBaseURL != null) return false;
         if (siteStreamBaseURL != null ? !siteStreamBaseURL.equals(that.siteStreamBaseURL) : that.siteStreamBaseURL != null)
             return false;
         if (streamBaseURL != null ? !streamBaseURL.equals(that.streamBaseURL) : that.streamBaseURL != null)
@@ -792,6 +803,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (oAuth2TokenURL != null ? oAuth2TokenURL.hashCode() : 0);
         result = 31 * result + (oAuth2InvalidateTokenURL != null ? oAuth2InvalidateTokenURL.hashCode() : 0);
         result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
+        result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
         result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
         result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
         result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
@@ -838,6 +850,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", oAuth2TokenURL='" + oAuth2TokenURL + '\'' +
                 ", oAuth2InvalidateTokenURL='" + oAuth2InvalidateTokenURL + '\'' +
                 ", restBaseURL='" + restBaseURL + '\'' +
+                ", uploadBaseURL='" + uploadBaseURL + '\'' +
                 ", streamBaseURL='" + streamBaseURL + '\'' +
                 ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
                 ", siteStreamBaseURL='" + siteStreamBaseURL + '\'' +

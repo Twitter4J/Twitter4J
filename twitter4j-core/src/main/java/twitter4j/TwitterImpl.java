@@ -216,6 +216,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 + "statuses/oembed.json", req.asHttpParameterArray()));
     }
 
+    @Override
+    public UploadedMedia uploadMedia(File image) throws TwitterException {
+        checkFileValidity(image);
+        return new UploadedMedia(post(conf.getUploadBaseURL() + "media/upload.json"
+                , new HttpParameter[]{new HttpParameter("media", image)}).asJSONObject());
+    }
+
     /* Search Resources */
 
     @Override
@@ -1530,4 +1537,5 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 "INCLUDE_MY_RETWEET=" + INCLUDE_MY_RETWEET +
                 '}';
     }
+
 }

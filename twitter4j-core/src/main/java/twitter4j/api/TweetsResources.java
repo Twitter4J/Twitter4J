@@ -16,6 +16,8 @@
 
 package twitter4j.api;
 
+import java.io.File;
+
 import twitter4j.*;
 
 /**
@@ -137,4 +139,17 @@ public interface TweetsResources {
      * @since Twitter4J 3.0.2
      */
     OEmbed getOEmbed(OEmbedRequest req) throws TwitterException;
+
+    /**
+     * Uploads media image
+     * <br>This method calls https://api.twitter.com/1.1/media/upload.json
+     *
+     * @param latestStatus the latest status to be updated.
+     * @return upload result
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/update">POST statuses/update | Twitter Developers</a>
+     * @since Twitter4J 4.x.x
+     */
+    UploadedMedia uploadMedia(File mediaFile) throws TwitterException;
+
 }
