@@ -346,6 +346,10 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createIDs(get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor));
     }
 
+    public IDs getNoRetweetsFriendships() throws TwitterException {
+        return factory.createIDs(get(conf.getRestBaseURL() + "friendships/no_retweets/ids.json"));
+    }
+
     @Override
     public User createFriendship(long userId) throws TwitterException {
         return factory.createUser(post(conf.getRestBaseURL() + "friendships/create.json?user_id=" + userId));
