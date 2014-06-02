@@ -292,4 +292,27 @@ public class UsersResourcesTest extends TwitterTestBase {
         ids = twitter1.getBlocksIDs(-1);
         assertTrue(ids.getIDs().length > 0);
     }
+
+    public void testMuteMethods() throws Exception {
+        User user1 = twitter2.createMute(id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user1));
+        assertEquals(user1, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user1)));
+        User user2 = twitter2.destroyMute(id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user2));
+        assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+        PagableResponseList<User> users = twitter1.getMutesList();
+        assertNotNull(TwitterObjectFactory.getRawJSON(users));
+        assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
+        assertEquals(1, users.size());
+        assertEquals(39771963, users.get(0).getId());
+
+        IDs ids = twitter1.getMutesIDs();
+        assertNull(TwitterObjectFactory.getRawJSON(users));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
+        assertEquals(1, ids.getIDs().length);
+        assertEquals(39771963, ids.getIDs()[0]);
+
+        ids = twitter1.getMutesIDs(-1);
+        assertTrue(ids.getIDs().length > 0);
+    }
 }

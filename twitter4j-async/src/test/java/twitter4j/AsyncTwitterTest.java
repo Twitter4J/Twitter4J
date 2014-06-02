@@ -295,6 +295,26 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertEquals(39771963, ids.getIDs()[0]);
     }
 
+    public void testMute() throws Exception {
+        async2.createMute(id1.screenName);
+        waitForResponse();
+        async2.destroyMute(id1.screenName);
+        waitForResponse();
+
+        async1.getMutesList();
+        waitForResponse();
+        assertEquals(1, users.size());
+        assertEquals(39771963, users.get(0).getId());
+        async1.getMutesList(-1L);
+        waitForResponse();
+        assertEquals(1, users.size());
+        assertEquals(39771963, users.get(0).getId());
+        async1.getMutesIDs();
+        waitForResponse();
+        assertEquals(1, ids.getIDs().length);
+        assertEquals(39771963, ids.getIDs()[0]);
+    }
+
     public void testUpdate() throws Exception {
         String date = new java.util.Date().toString() + "test";
         async1.updateStatus(date);
@@ -968,6 +988,31 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     @Override
     public void gotBlockIDs(IDs blockingUsersIDs) {
         this.ids = blockingUsersIDs;
+        notifyResponse();
+    }
+
+    /*Mute Methods*/
+    @Override
+    public void createdMute(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
+    @Override
+    public void destroyedMute(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
+    @Override
+    public void gotMutesList(ResponseList<User> mutingUsers) {
+        this.users = mutingUsers;
+        notifyResponse();
+    }
+
+    @Override
+    public void gotMuteIDs(IDs mutingUsersIDs) {
+        this.ids = mutingUsersIDs;
         notifyResponse();
     }
 

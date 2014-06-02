@@ -35,6 +35,7 @@ import twitter4j.conf.Configuration;
     private final boolean sourceFollowingTarget;
     private final boolean sourceFollowedByTarget;
     private final boolean sourceCanDm;
+    private final boolean sourceMutingTarget;
     private final long sourceUserId;
     private final String sourceUserScreenName;
     private boolean wantRetweets;
@@ -65,6 +66,7 @@ import twitter4j.conf.Configuration;
             sourceFollowingTarget = ParseUtil.getBoolean("following", sourceJson);
             sourceFollowedByTarget = ParseUtil.getBoolean("followed_by", sourceJson);
             sourceCanDm = ParseUtil.getBoolean("can_dm", sourceJson);
+            sourceMutingTarget = ParseUtil.getBoolean("muting", sourceJson);
             sourceNotificationsEnabled = ParseUtil.getBoolean("notifications_enabled", sourceJson);
             wantRetweets = ParseUtil.getBoolean("want_retweets", sourceJson);
         } catch (JSONException jsone) {
@@ -150,6 +152,11 @@ import twitter4j.conf.Configuration;
     }
 
     @Override
+    public boolean isSourceMutingTarget() {
+        return sourceMutingTarget;
+    }
+
+    @Override
     public boolean isSourceNotificationsEnabled() {
         return sourceNotificationsEnabled;
     }
@@ -200,6 +207,7 @@ import twitter4j.conf.Configuration;
                 ", sourceFollowingTarget=" + sourceFollowingTarget +
                 ", sourceFollowedByTarget=" + sourceFollowedByTarget +
                 ", sourceCanDm=" + sourceCanDm +
+                ", sourceMutingTarget=" + sourceMutingTarget +
                 ", sourceNotificationsEnabled=" + sourceNotificationsEnabled +
                 '}';
     }

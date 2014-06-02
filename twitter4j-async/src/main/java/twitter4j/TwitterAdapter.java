@@ -219,6 +219,22 @@ public class TwitterAdapter implements TwitterListener {
     public void updatedProfileBanner() {
     }
 
+    @Override
+    public void gotMutesList(ResponseList<User> blockingUsers) {
+    }
+
+    @Override
+    public void gotMuteIDs(IDs blockingUsersIDs) {
+    }
+
+    @Override
+    public void createdMute(User user) {
+    }
+
+    @Override
+    public void destroyedMute(User user) {
+    }
+
     /* Suggested Users Resources */
     @Override
     public void gotUserSuggestions(ResponseList<User> users) {

@@ -128,6 +128,14 @@ public interface TwitterListener {
 
     void updatedProfileBanner();
 
+    void gotMutesList(ResponseList<User> blockingUsers);
+
+    void gotMuteIDs(IDs blockingUsersIDs);
+
+    void createdMute(User user);
+
+    void destroyedMute(User user);
+
     /* Suggested Users Resources */
     void gotUserSuggestions(ResponseList<User> users);
 

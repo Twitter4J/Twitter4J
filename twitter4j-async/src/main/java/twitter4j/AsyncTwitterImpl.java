@@ -1178,6 +1178,134 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
+    public void getMutesList() {
+        getDispatcher().invokeLater(new AsyncTask(MUTE_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<User> users = twitter.getMutesList();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotMutesList(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getMutesList(final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(MUTE_LIST, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                ResponseList<User> users = twitter.getMutesList(cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotMutesList(users);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getMutesIDs() {
+        getDispatcher().invokeLater(new AsyncTask(MUTE_LIST_IDS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                IDs ids = twitter.getMutesIDs();
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotMuteIDs(ids);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getMutesIDs(final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(MUTE_LIST_IDS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                IDs ids = twitter.getMutesIDs(cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotMuteIDs(ids);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void createMute(final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_MUTE, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                User user = twitter.createMute(userId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.createdMute(user);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void createMute(final String screenName) {
+        getDispatcher().invokeLater(new AsyncTask(CREATE_MUTE, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                User user = twitter.createMute(screenName);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.createdMute(user);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void destroyMute(final long userId) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY_MUTE, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                User user = twitter.destroyMute(userId);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.destroyedMute(user);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void destroyMute(final String screenName) {
+        getDispatcher().invokeLater(new AsyncTask(DESTROY_MUTE, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                User user = twitter.destroyMute(screenName);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.destroyedMute(user);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void lookupUsers(final long[] ids) {
         getDispatcher().invokeLater(new AsyncTask(LOOKUP_USERS, listeners) {
             @Override

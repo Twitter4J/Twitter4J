@@ -665,6 +665,48 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
+    public PagableResponseList<User> getMutesList() throws
+            TwitterException {
+        return getMutesList(-1L);
+    }
+
+    @Override
+    public PagableResponseList<User> getMutesList(long cursor) throws
+            TwitterException {
+        return factory.createPagableUserList(get(conf.getRestBaseURL() + "mutes/users/list.json?cursor=" + cursor));
+    }
+
+    @Override
+    public IDs getMutesIDs() throws TwitterException {
+        return getMutesIDs(-1L);
+    }
+
+    @Override
+    public IDs getMutesIDs(long cursor) throws TwitterException {
+        return factory.createIDs(get(conf.getRestBaseURL() + "mutes/users/ids.json?cursor=" + cursor));
+    }
+
+    @Override
+    public User createMute(long userId) throws TwitterException {
+        return factory.createUser(post(conf.getRestBaseURL() + "mutes/users/create.json?user_id=" + userId));
+    }
+
+    @Override
+    public User createMute(String screenName) throws TwitterException {
+        return factory.createUser(post(conf.getRestBaseURL() + "mutes/users/create.json?screen_name=" + screenName));
+    }
+
+    @Override
+    public User destroyMute(long userId) throws TwitterException {
+        return factory.createUser(post(conf.getRestBaseURL() + "mutes/users/destroy.json?user_id=" + userId));
+    }
+
+    @Override
+    public User destroyMute(String screenName) throws TwitterException {
+        return factory.createUser(post(conf.getRestBaseURL() + "mutes/users/destroy.json?screen_name=" + screenName));
+    }
+
+    @Override
     public ResponseList<User> lookupUsers(long[] ids) throws TwitterException {
         return factory.createUserList(get(conf.getRestBaseURL() + "users/lookup.json"
                 , new HttpParameter[]{new HttpParameter("user_id", StringUtil.join(ids))}));

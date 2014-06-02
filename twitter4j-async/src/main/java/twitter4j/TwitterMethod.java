@@ -71,6 +71,10 @@ public enum TwitterMethod {
     BLOCK_LIST_IDS,
     CREATE_BLOCK,
     DESTROY_BLOCK,
+    MUTE_LIST,
+    MUTE_LIST_IDS,
+    CREATE_MUTE,
+    DESTROY_MUTE,
 
     SHOW_USER,
     LOOKUP_USERS,
