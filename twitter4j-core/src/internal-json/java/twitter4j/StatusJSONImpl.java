@@ -57,6 +57,7 @@ import static twitter4j.ParseUtil.getDate;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
+    private MediaEntity[] extendedMediaEntities;
     private SymbolEntity[] symbolEntities;
     private long currentUserRetweetId = -1L;
     private Scopes scopes;
@@ -172,12 +173,24 @@ import static twitter4j.ParseUtil.getDate;
                     }
                 }
             }
+            if (!json.isNull("extended_entities")) {
+                JSONObject extendedEntities = json.getJSONObject("extended_entities");
+                if (!extendedEntities.isNull("media")) {
+                    JSONArray mediaArray = extendedEntities.getJSONArray("media");
+                    final int len = mediaArray.length();
+                    extendedMediaEntities = new MediaEntity[len];
+                    for (int i = 0; i < len; i++) {
+                        extendedMediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
+                    }
+                }
+            }
 
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
             symbolEntities = symbolEntities == null ? new SymbolEntity[0] : symbolEntities;
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
+            extendedMediaEntities = extendedMediaEntities == null ? new MediaEntity[0] : extendedMediaEntities;
             text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
                     urlEntities, hashtagEntities, mediaEntities);
             if (!json.isNull("current_user_retweet")) {
@@ -339,6 +352,11 @@ import static twitter4j.ParseUtil.getDate;
     @Override
     public MediaEntity[] getMediaEntities() {
         return mediaEntities;
+    }
+
+    @Override
+    public MediaEntity[] getExtendedMediaEntities() {
+        return extendedMediaEntities;
     }
 
     @Override

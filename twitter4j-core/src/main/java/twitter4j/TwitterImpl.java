@@ -221,6 +221,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createStatusList(get(conf.getRestBaseURL() + "statuses/lookup.json?id=" + StringUtil.join(ids)));
     }
 
+    @Override
+    public UploadedMedia uploadMedia(File image) throws TwitterException {
+        checkFileValidity(image);
+        return new UploadedMedia(post(conf.getUploadBaseURL() + "media/upload.json"
+                , new HttpParameter[]{new HttpParameter("media", image)}).asJSONObject());
+    }
+
     /* Search Resources */
 
     @Override
