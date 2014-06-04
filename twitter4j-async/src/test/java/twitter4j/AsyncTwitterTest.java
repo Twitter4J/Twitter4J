@@ -301,15 +301,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async2.destroyMute(id1.screenName);
         waitForResponse();
 
-        async1.getMutesList();
-        waitForResponse();
-        assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
         async1.getMutesList(-1L);
         waitForResponse();
         assertEquals(1, users.size());
         assertEquals(39771963, users.get(0).getId());
-        async1.getMutesIDs();
+        async1.getMutesIDs(-1L);
         waitForResponse();
         assertEquals(1, ids.getIDs().length);
         assertEquals(39771963, ids.getIDs()[0]);

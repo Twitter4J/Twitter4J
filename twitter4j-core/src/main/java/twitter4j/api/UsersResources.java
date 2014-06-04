@@ -258,17 +258,6 @@ public interface UsersResources {
      * Returns a list of user objects that the authenticating user is muting.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/list
      *
-     * @return a list of user objects that the authenticating user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/list">GET mutes/users/list | Twitter Developers</a>
-     * @since Twitter4J 4.0.2
-     */
-    PagableResponseList<User> getMutesList() throws TwitterException;
-
-    /**
-     * Returns a list of user objects that the authenticating user is muting.
-     * <br>This method calls https://api.twitter.com/1.1/mutes/users/list
-     *
      * @param cursor Causes the list of muted users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
      * @return a list of user objects that the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
@@ -276,17 +265,6 @@ public interface UsersResources {
      * @since Twitter4J 4.0.2
      */
     PagableResponseList<User> getMutesList(long cursor) throws TwitterException;
-
-    /**
-     * Returns an array of numeric user ids the authenticating user is muting.
-     * <br>This method calls https://api.twitter.com/1.1/mutes/users/ids
-     *
-     * @return Returns an array of numeric user ids the authenticating user is muting.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/ids">GET blocks/ids | Twitter Developers</a>
-     * @since Twitter4J 4.0.2
-     */
-    IDs getMutesIDs() throws TwitterException;
 
     /**
      * Returns an array of numeric user ids the authenticating user is muting.

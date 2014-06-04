@@ -153,6 +153,11 @@ final class LazyRelationship implements twitter4j.Relationship {
         return getTarget().canSourceDm();
     }
 
+    @Override
+    public boolean isSourceMutingTarget() {
+        return getTarget().isSourceMutingTarget();
+    }
+
 
     /**
      * Checks if the source user has enabled notifications for updates of the target user

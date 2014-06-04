@@ -300,19 +300,17 @@ public class UsersResourcesTest extends TwitterTestBase {
         User user2 = twitter2.destroyMute(id1.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(user2));
         assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
-        PagableResponseList<User> users = twitter1.getMutesList();
+        PagableResponseList<User> users = twitter1.getMutesList(-1L);
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
         assertEquals(1, users.size());
         assertEquals(39771963, users.get(0).getId());
 
-        IDs ids = twitter1.getMutesIDs();
+        IDs ids = twitter1.getMutesIDs(-1L);
         assertNull(TwitterObjectFactory.getRawJSON(users));
         assertNotNull(TwitterObjectFactory.getRawJSON(ids));
         assertEquals(1, ids.getIDs().length);
         assertEquals(39771963, ids.getIDs()[0]);
 
-        ids = twitter1.getMutesIDs(-1);
-        assertTrue(ids.getIDs().length > 0);
     }
 }

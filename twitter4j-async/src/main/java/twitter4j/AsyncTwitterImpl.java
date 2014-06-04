@@ -348,7 +348,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(RETWEET_STATUS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-            	ResponseList<Status> statuses = twitter.lookup(ids);
+                ResponseList<Status> statuses = twitter.lookup(ids);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.lookedup(statuses);
@@ -1194,22 +1194,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void getMutesList() {
-        getDispatcher().invokeLater(new AsyncTask(MUTE_LIST, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<User> users = twitter.getMutesList();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotMutesList(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
     public void getMutesList(final long cursor) {
         getDispatcher().invokeLater(new AsyncTask(MUTE_LIST, listeners) {
             @Override
@@ -1218,22 +1202,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotMutesList(users);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void getMutesIDs() {
-        getDispatcher().invokeLater(new AsyncTask(MUTE_LIST_IDS, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                IDs ids = twitter.getMutesIDs();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotMuteIDs(ids);
                     } catch (Exception ignore) {
                     }
                 }

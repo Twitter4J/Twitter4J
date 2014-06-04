@@ -664,21 +664,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createUser(post(conf.getRestBaseURL() + "blocks/destroy.json?screen_name=" + screen_name));
     }
 
-    @Override
-    public PagableResponseList<User> getMutesList() throws
-            TwitterException {
-        return getMutesList(-1L);
-    }
 
     @Override
     public PagableResponseList<User> getMutesList(long cursor) throws
             TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "mutes/users/list.json?cursor=" + cursor));
-    }
-
-    @Override
-    public IDs getMutesIDs() throws TwitterException {
-        return getMutesIDs(-1L);
     }
 
     @Override
