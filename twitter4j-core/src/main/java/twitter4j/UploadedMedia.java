@@ -19,7 +19,7 @@ package twitter4j;
  * Represents result of "/1.1/media/upload.json"
  * 
  * @author Hiroaki TAKEUCHI - takke30 at gmail.com
- * @since Twitter4J 4.x.x TODO
+ * @since Twitter4J 4.0.2
  */
 public final class UploadedMedia implements java.io.Serializable {
 

@@ -16,9 +16,9 @@
 
 package twitter4j.api;
 
-import java.io.File;
-
 import twitter4j.*;
+
+import java.io.File;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
@@ -155,15 +155,15 @@ public interface TweetsResources {
     ResponseList<Status> lookup(long[] ids) throws TwitterException;
 
     /**
-     * Uploads media image
-     * TODO update this description
+     * Uploads media image to be attached via {@link #updateStatus(twitter4j.StatusUpdate)}
      * <br>This method calls https://api.twitter.com/1.1/media/upload.json
      *
-     * @param latestStatus the latest status to be updated.
+     * @param mediaFile the latest status to be updated.
      * @return upload result
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/update">POST statuses/update | Twitter Developers</a>
-     * @since Twitter4J 4.x.x TODO
+     * @see <a href="https://dev.twitter.com/docs/api/multiple-media-extended-entities">Multiple Media Entities in Statuses</a>
+     * @since Twitter4J 4.0.2
      */
     UploadedMedia uploadMedia(File mediaFile) throws TwitterException;
 

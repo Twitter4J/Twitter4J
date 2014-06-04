@@ -124,7 +124,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
-     * @since Twitter4J 4.x.x TODO
+     * @since Twitter4J 4.0.2
      */
     public void setMediaIds(long[] mediaIds) {
         this.mediaIds = mediaIds;

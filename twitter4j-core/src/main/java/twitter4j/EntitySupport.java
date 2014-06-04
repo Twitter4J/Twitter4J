@@ -55,7 +55,7 @@ public interface EntitySupport {
      * Returns an array of ExtendedMediaEntities if media of extended_entities are available in the tweet. This method will an empty array if no extended-medias were mentioned.
      * @see <a href="https://dev.twitter.com/docs/api/multiple-media-extended-entities">Multiple Media Entities in Statuses</a>
      * @return an array of ExtendedMediaEntities.
-     * @since Twitter4J 4.x.x TODO
+     * @since Twitter4J 4.0.2
      */
     MediaEntity[] getExtendedMediaEntities();
 

@@ -673,7 +673,7 @@ public interface ListsResources {
      * @param newDescription What you'd like to change the list description to.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     UserList updateUserList(long listId, String newListName, boolean isPublicList, String newDescription)
@@ -690,7 +690,7 @@ public interface ListsResources {
      * @param newDescription What you'd like to change the list description to.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     UserList updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription)
@@ -707,7 +707,7 @@ public interface ListsResources {
      * @param newDescription  What you'd like to change the list description to.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
     UserList updateUserList(String ownerScreenName, String slug, String newListName, boolean isPublicList, String newDescription)
@@ -722,7 +722,7 @@ public interface ListsResources {
      * @param description  The description of the list you are creating. Optional.
      * @return the list that was created
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable, or the authenticated user already has 20 lists(TwitterException.getStatusCode() == 403).
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/create ">POST lists/create | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/create">POST lists/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     UserList createUserList(String listName, boolean isPublicList, String description)
