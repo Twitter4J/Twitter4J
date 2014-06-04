@@ -31,6 +31,7 @@ import twitter4j.conf.Configuration;
     private final long targetUserId;
     private final String targetUserScreenName;
     private final boolean sourceBlockingTarget;
+    private final boolean sourceMutingTarget;
     private final boolean sourceNotificationsEnabled;
     private final boolean sourceFollowingTarget;
     private final boolean sourceFollowedByTarget;
@@ -63,6 +64,7 @@ import twitter4j.conf.Configuration;
             sourceUserScreenName = ParseUtil.getUnescapedString("screen_name", sourceJson);
             targetUserScreenName = ParseUtil.getUnescapedString("screen_name", targetJson);
             sourceBlockingTarget = ParseUtil.getBoolean("blocking", sourceJson);
+            sourceMutingTarget = ParseUtil.getBoolean("muting",sourceJson);
             sourceFollowingTarget = ParseUtil.getBoolean("following", sourceJson);
             sourceFollowedByTarget = ParseUtil.getBoolean("followed_by", sourceJson);
             sourceCanDm = ParseUtil.getBoolean("can_dm", sourceJson);
@@ -114,6 +116,11 @@ import twitter4j.conf.Configuration;
     @Override
     public boolean isSourceBlockingTarget() {
         return sourceBlockingTarget;
+    }
+    
+    @Override
+    public boolean isSourceMutingTarget() {
+    	return sourceMutingTarget;
     }
 
     @Override
