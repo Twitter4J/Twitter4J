@@ -613,9 +613,9 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
         public synchronized void close() {
             setStatus("[Disposing thread]");
+            closed = true;
             if (stream != null) {
                 try {
-                    closed = true;
                     stream.close();
                 } catch (IOException ignore) {
                 } catch (Exception e) {
