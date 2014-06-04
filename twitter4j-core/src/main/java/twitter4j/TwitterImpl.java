@@ -309,11 +309,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 "&cursor=" + cursor));
     }
 
-	@Override
-	public IDs getFriendsIDs(long userId, long cursor, int count) throws TwitterException {
-		return factory.createIDs(get(conf.getRestBaseURL() + "friends/ids.json?user_id=" + userId +
-				"&cursor=" + cursor + "&count=" + count));
-	}
+    @Override
+    public IDs getFriendsIDs(long userId, long cursor, int count) throws TwitterException {
+        return factory.createIDs(get(conf.getRestBaseURL() + "friends/ids.json?user_id=" + userId +
+                "&cursor=" + cursor + "&count=" + count));
+    }
 
     @Override
     public IDs getFriendsIDs(String screenName, long cursor) throws TwitterException {
@@ -321,11 +321,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 + "&cursor=" + cursor));
     }
 
-	@Override
-	public IDs getFriendsIDs(String screenName, long cursor, int count) throws TwitterException {
-		return factory.createIDs(get(conf.getRestBaseURL() + "friends/ids.json?screen_name=" + screenName
-				+ "&cursor=" + cursor + "&count=" + count));
-	}
+    @Override
+    public IDs getFriendsIDs(String screenName, long cursor, int count) throws TwitterException {
+        return factory.createIDs(get(conf.getRestBaseURL() + "friends/ids.json?screen_name=" + screenName
+                + "&cursor=" + cursor + "&count=" + count));
+    }
 
     @Override
     public IDs getFollowersIDs(long cursor) throws TwitterException {
@@ -338,11 +338,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 + "&cursor=" + cursor));
     }
 
-	@Override
-	public IDs getFollowersIDs(long userId, long cursor, int count) throws TwitterException {
-		return factory.createIDs(get(conf.getRestBaseURL() + "followers/ids.json?user_id=" + userId
-				+ "&cursor=" + cursor + "&count=" + count));
-	}
+    @Override
+    public IDs getFollowersIDs(long userId, long cursor, int count) throws TwitterException {
+        return factory.createIDs(get(conf.getRestBaseURL() + "followers/ids.json?user_id=" + userId
+                + "&cursor=" + cursor + "&count=" + count));
+    }
 
     @Override
     public IDs getFollowersIDs(String screenName, long cursor) throws TwitterException {
@@ -350,11 +350,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 + screenName + "&cursor=" + cursor));
     }
 
-	@Override
-	public IDs getFollowersIDs(String screenName, long cursor, int count) throws TwitterException {
-		return factory.createIDs(get(conf.getRestBaseURL() + "followers/ids.json?screen_name="
-				+ screenName + "&cursor=" + cursor + "&count=" + count));
-	}
+    @Override
+    public IDs getFollowersIDs(String screenName, long cursor, int count) throws TwitterException {
+        return factory.createIDs(get(conf.getRestBaseURL() + "followers/ids.json?screen_name="
+                + screenName + "&cursor=" + cursor + "&count=" + count));
+    }
 
     @Override
     public ResponseList<Friendship> lookupFriendships(long[] ids) throws TwitterException {
