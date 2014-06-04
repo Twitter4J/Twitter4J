@@ -53,6 +53,8 @@ public interface TwitterListener {
 
     void gotOEmbed(OEmbed oembed);
 
+    void lookedup(ResponseList<Status> statuses);
+
     /* Search Resources */
     void searched(QueryResult queryResult);
 

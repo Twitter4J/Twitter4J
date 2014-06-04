@@ -95,4 +95,15 @@ public interface TweetsResourcesAsync {
      * @since Twitter4J 3.0.2
      */
     void getOEmbed(OEmbedRequest req);
+
+    /**
+     * Returns fully-hydrated tweet objects for up to 100 tweets per request, as specified by comma-separated values passed to the id parameter.
+     * This method is especially useful to get the details (hydrate) a collection of Tweet IDs.
+     * <br>This method calls https://api.twitter.com/1.1/statuses/lookup.json
+     *
+     * @param ids array of the ids to lookup
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/lookup">GET statuses/lookup</a>
+     * @since Twitter4J 4.0.x TODO
+     */
+    void lookup(long[] ids);
 }
