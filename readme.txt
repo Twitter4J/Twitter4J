@@ -62,6 +62,7 @@ Komiya Atsushi <komiya.atsushi at gmail.com> @komiya_atsushi
 Ludovico Fischer @ludovicofischer
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 matsumo <matsumo at ce.ns0.it> @sardinej
+Matteo Villa @mttvll
 Max Penet <m at qbits.cc> @mpenet
 Mike Champion <mike at graysky.org> @graysky
 Mocel <docel77 at gmail.com> @Mocel
