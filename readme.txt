@@ -97,3 +97,4 @@ Will Glozer <will at glozer.net> @ar3te
 William Morgan <william at twitter.com> @wm
 withgod <noname at withgod.jp> @withgod
 Yusuke Yamamoto <yusuke at mac.com> @yusuke
+Yuto Uehara <mumei.himazin at gmail.com> @mumei_himazin
