@@ -99,6 +99,13 @@ public interface Relationship extends TwitterResponse, java.io.Serializable {
     boolean canSourceDm();
 
     /**
+     * Checks if target user is being muted by source user.<br>
+     *
+     * @return true if target user is being muted by source user
+     */
+    boolean isSourceMutingTarget();
+
+    /**
      * Checks if the source user has enabled notifications for updates of the target user
      *
      * @return true if source user enabled notifications for target user
