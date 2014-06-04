@@ -537,7 +537,7 @@ public interface FriendsFollowersResources {
      * @return list of followers
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
-     * @since Twitter4J 4.0.x
+     * @since Twitter4J 4.0.2
      */
     PagableResponseList<User> getFollowersList(long userId, long cursor, int count,
                                                boolean skipStatus, boolean includeUserEntities) throws TwitterException;
@@ -555,7 +555,7 @@ public interface FriendsFollowersResources {
      * @return list of followers
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
-     * @since Twitter4J 4.0.x
+     * @since Twitter4J 4.0.2
      */
     PagableResponseList<User> getFollowersList(String screenName, long cursor, int count,
                                                boolean skipStatus, boolean includeUserEntities) throws TwitterException;
