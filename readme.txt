@@ -91,6 +91,7 @@ Rémy Rakic <remy.rakic at gmail.com> @lqd
 Talal Ahmed <talal at venexel.ca>
 Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
 Tomasz Nurkiewicz @tnurkiewicz
+Tomoaki Iwasaki <multicolorworld.shinku at gmail.com> @MulticolorWorld
 Tomohisa Igarashi <tm.igarashi at gmail.com>
 Tyler MacLeod
 Will Glozer <will at glozer.net> @ar3te
