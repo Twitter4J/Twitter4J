@@ -47,6 +47,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     TwitterImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
         INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", conf.isIncludeMyRetweetEnabled());
+        synchronized(TwitterImpl.class) {
         HttpParameter[] implicitParams = implicitParamsMap.get(conf);
         String implicitParamsStr = implicitParamsStrMap.get(conf);
         if (implicitParams == null) {
@@ -76,6 +77,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
         IMPLICIT_PARAMS = implicitParams;
         IMPLICIT_PARAMS_STR = implicitParamsStr;
+        }
     }
 
     /* Timelines Resources */
