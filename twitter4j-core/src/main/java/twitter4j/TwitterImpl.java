@@ -200,7 +200,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public Status updateStatus(StatusUpdate status) throws TwitterException {
-        String url = conf.getRestBaseURL() + (status.isWithMedia() ?
+        String url = conf.getRestBaseURL() + (status.isForUpdateWithMedia() ?
                 "statuses/update_with_media.json" : "statuses/update.json");
         return factory.createStatus(post(url, status.asHttpParameterArray()));
     }

@@ -130,8 +130,8 @@ public final class StatusUpdate implements java.io.Serializable {
         this.mediaIds = mediaIds;
     }
 
-    /*package*/ boolean isWithMedia() {
-        return mediaFile != null || mediaName != null || mediaIds != null;
+    /*package*/ boolean isForUpdateWithMedia() {
+        return mediaFile != null || mediaName != null;
     }
 
     /**
