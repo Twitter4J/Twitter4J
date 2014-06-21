@@ -23,19 +23,19 @@ abstract class LazyPagableResponseList<T extends TwitterResponse> extends LazyRe
     private static final long serialVersionUID = -3478264948215362741L;
 
     public boolean hasPrevious() {
-        return ((PagableResponseList) getTarget()).hasPrevious();
+        return ((PagableResponseList<T>) getTarget()).hasPrevious();
     }
 
     public long getPreviousCursor() {
-        return ((PagableResponseList) getTarget()).getPreviousCursor();
+        return ((PagableResponseList<T>) getTarget()).getPreviousCursor();
     }
 
     public boolean hasNext() {
-        return ((PagableResponseList) getTarget()).hasNext();
+        return ((PagableResponseList<T>) getTarget()).hasNext();
     }
 
     public long getNextCursor() {
-        return ((PagableResponseList) getTarget()).getNextCursor();
+        return ((PagableResponseList<T>) getTarget()).getNextCursor();
     }
 
 }
