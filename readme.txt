@@ -75,6 +75,7 @@ Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
 Norbert Bartels <n.bartels at phpmonkeys.de>
 Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
+Niv Singer <niv at innerlogics.com> @nivs
 Pierre Lanvin <pierre.lanvin@gmail.com> @planvin
 Perry Sakkaris <psakkaris at gmail.com>
 Rajesh Koilpillai <rajesh.koilpillai at gmail.com> @rajeshkp
