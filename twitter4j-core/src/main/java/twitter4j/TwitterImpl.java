@@ -23,7 +23,11 @@ import twitter4j.conf.Configuration;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static twitter4j.HttpParameter.getParameterArray;
 
@@ -40,16 +44,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private final HttpParameter[] IMPLICIT_PARAMS;
     private final HttpParameter INCLUDE_MY_RETWEET;
 
-    private static final Map<Configuration, HttpParameter[]> implicitParamsMap = new HashMap<Configuration, HttpParameter[]>();
-    private static final Map<Configuration, String> implicitParamsStrMap = new HashMap<Configuration, String>();
+    private static final ConcurrentHashMap<Configuration, HttpParameter[]> implicitParamsMap = new ConcurrentHashMap<Configuration, HttpParameter[]>();
+    private static final ConcurrentHashMap<Configuration, String> implicitParamsStrMap = new ConcurrentHashMap<Configuration, String>();
 
     /*package*/
     TwitterImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
         INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", conf.isIncludeMyRetweetEnabled());
-        HttpParameter[] implicitParams = implicitParamsMap.get(conf);
-        if (implicitParams != null) {
-            this.IMPLICIT_PARAMS = implicitParams;
+        if (implicitParamsMap.containsKey(conf)) {
+            this.IMPLICIT_PARAMS = implicitParamsMap.get(conf);
             this.IMPLICIT_PARAMS_STR = implicitParamsStrMap.get(conf);
         } else {
             String implicitParamsStr = conf.isIncludeEntitiesEnabled() ? "include_entities=" + true : "";
@@ -71,13 +74,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             if (conf.isTrimUserEnabled()) {
                 params.add(new HttpParameter("trim_user", "1"));
             }
-            implicitParams = params.toArray(new HttpParameter[params.size()]);
+            HttpParameter[] implicitParams = params.toArray(new HttpParameter[params.size()]);
 
-            // put operation is not thread safe http://issue.twitter4j.org/youtrack/issue/TFJ-853
-            synchronized (TwitterImpl.class) {
-                implicitParamsStrMap.put(conf, implicitParamsStr);
-                implicitParamsMap.put(conf, implicitParams);
-            }
+            // implicitParamsMap.containsKey() is evaluated in the above if clause.
+            // thus implicitParamsStrMap needs to be initialized first
+            implicitParamsStrMap.putIfAbsent(conf, implicitParamsStr);
+            implicitParamsMap.putIfAbsent(conf, implicitParams);
 
             this.IMPLICIT_PARAMS = implicitParams;
             this.IMPLICIT_PARAMS_STR = implicitParamsStr;
