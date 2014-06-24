@@ -60,6 +60,7 @@ John Sirois <jsirois at twitter.com> @johnsirois
 Julien Letrouit <julien.letrouit at gmail.com> @jletroui
 Keiichi Hirano <hirano.kei1 at gmail.com> @haushinka2dx
 Komiya Atsushi <komiya.atsushi at gmail.com> @komiya_atsushi
+Linker Lin <linker.lin at live.com>
 Ludovico Fischer @ludovicofischer
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 matsumo <matsumo at ce.ns0.it> @sardinej
