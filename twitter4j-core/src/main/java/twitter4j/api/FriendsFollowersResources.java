@@ -25,6 +25,16 @@ import twitter4j.*;
 public interface FriendsFollowersResources {
 
     /**
+     * Returns a collection of user IDs that the currently authenticated user does not want to receive retweets from.
+     * <br>This method calls https://api.twitter.com/1.1/friendships/no_retweets/ids.json
+     * @return a collection of numeric IDs that the currently authenticated user does not want to receive retweets from.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friendships/no_retweets/ids">GET friendships/no_retweets/ids | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    IDs getNoRetweetsFriendships() throws TwitterException;
+
+    /**
      * Returns an array of numeric IDs for every user the authenticating user is following.
      * <br>This method calls https://api.twitter.com/1.1/friends/ids.json
      *
@@ -226,15 +236,6 @@ public interface FriendsFollowersResources {
      * @since Twitter4J 2.1.2
      */
     IDs getOutgoingFriendships(long cursor) throws TwitterException;
-
-    /**
-     * Returns a collection of user IDs that the currently authenticated user does not want to receive retweets from.
-     * <br>This method calls https://api.twitter.com/1.1/friendships/no_retweets/ids.json
-     * @return a collection of numeric IDs that the currently authenticated user does not want to receive retweets from.
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friendships/no_retweets/ids">GET friendships/no_retweets/ids | Twitter Developers</a>
-     */
-    IDs getNoRetweetsFriendships() throws TwitterException;
 
     /**
      * Allows the authenticating users to follow the user specified in the ID parameter.<br>

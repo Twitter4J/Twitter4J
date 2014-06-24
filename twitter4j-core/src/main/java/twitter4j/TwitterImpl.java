@@ -307,6 +307,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     /* Friends & Followers Resources */
 
     @Override
+    public IDs getNoRetweetsFriendships() throws TwitterException {
+        return factory.createIDs(get(conf.getRestBaseURL() + "friendships/no_retweets/ids.json"));
+    }
+
+    @Override
     public IDs getFriendsIDs(long cursor) throws TwitterException {
         return factory.createIDs(get(conf.getRestBaseURL() + "friends/ids.json?cursor=" + cursor));
     }
@@ -383,10 +388,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public IDs getOutgoingFriendships(long cursor) throws TwitterException {
         return factory.createIDs(get(conf.getRestBaseURL() + "friendships/outgoing.json?cursor=" + cursor));
-    }
-
-    public IDs getNoRetweetsFriendships() throws TwitterException {
-        return factory.createIDs(get(conf.getRestBaseURL() + "friendships/no_retweets/ids.json"));
     }
 
     @Override
