@@ -313,49 +313,20 @@ public class ListResourcesTest extends TwitterTestBase {
 
         users = twitter1.getUserListSubscribers(twitter1.getId(), userList.getSlug(), -1);
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
-        assertEquals(0, users.size());
-//        try {
         twitter2.createUserListSubscription(userList.getId());
-//        } catch (TwitterException te) {
-//            workarounding issue 1300
-//            http://code.google.com/p/twitter-api/issues/detail?id=1300
-//            assertEquals(404, te.getStatusCode());
-//        }
-        // expected subscribers: id2
-        try {
-            twitter3.createUserListSubscription(userList.getId());
-        } catch (TwitterException te) {
-            // workarounding issue 1300
-            assertEquals(404, te.getStatusCode());
-        }
-        // expected subscribers: id2 and id4
-        try {
-            twitter2.destroyUserListSubscription(userList.getId());
-        } catch (TwitterException te) {
-            // workarounding issue 1300
-            assertEquals(404, te.getStatusCode());
-        }
-        // expected subscribers: id4
+        twitter2.destroyUserListSubscription(userList.getId());
         users = twitter1.getUserListSubscribers(userList.getId(), -1);
-//        assertEquals(1, users.size()); //only id4 should be subscribing the userList
         assertTrue(0 <= users.size()); // workarounding issue 1300
         User user;
-        try {
-            user = twitter1.showUserListSubscription(userList.getId(), id3.id);
-            assertNotNull(TwitterObjectFactory.getRawJSON(user));
-            assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
-            assertEquals(id3.id, user.getId());
-        } catch (TwitterException te) {
-            // workarounding issue 1300
-            assertEquals(404, te.getStatusCode());
-        }
-
+        user = twitter1.showUserListSubscription(userList.getId(), id3.id);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user));
+        assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
+        assertEquals(id3.id, user.getId());
         userLists = twitter1.getUserListSubscriptions(id3.screenName, -1l);
         assertNotNull(userLists);
         if (userLists.size() > 0) {
             assertEquals(userLists.get(0), TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userLists.get(0))));
         }
-//        assertEquals(1, userLists.size()); workarounding issue 1300
 
         try {
             user = twitter1.showUserListSubscription(userList.getId(), id2.id);
@@ -431,10 +402,23 @@ public class ListResourcesTest extends TwitterTestBase {
         ResponseList<UserList> userLists;
         userLists = twitter1.getUserLists(id1.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(userLists));
+        UserList list = null;
         for (UserList alist : userLists) {
-            twitter1.destroyUserList(twitter1.getId(), alist.getSlug());
+            if (alist.getSlug().equals("testpoint1")) {
+                list = alist;
+            } else {
+                UserList deletedLiet = twitter1.destroyUserList(twitter1.getId(), alist.getSlug());
+                assertNotNull(TwitterObjectFactory.getRawJSON(deletedLiet));
+                assertEquals(deletedLiet, TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(deletedLiet)));
+                assertNotNull(deletedLiet);
+
+            }
+
         }
-        return twitter1.createUserList("testpoint1", true, "description1");
+        if (list == null) {
+            list = twitter1.createUserList("testpoint1", true, "description1");
+        }
+        return list;
     }
 
 }
