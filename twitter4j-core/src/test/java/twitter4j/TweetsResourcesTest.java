@@ -49,7 +49,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertEquals(status2, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status2)));
 
         status2 = twitter1.showStatus(999383469l);
-        assertEquals("et", status2.getLang());
+        assertEquals("und", status2.getLang());
         assertNotNull(TwitterObjectFactory.getRawJSON(status2));
         assertEquals(status2, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status2)));
         assertEquals("01010100 01110010 01101001 01110101 01101101 01110000 01101000       <3", status2.getText());
