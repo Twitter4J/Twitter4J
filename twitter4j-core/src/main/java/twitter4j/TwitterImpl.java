@@ -47,36 +47,40 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     TwitterImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
         INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", conf.isIncludeMyRetweetEnabled());
-        synchronized(TwitterImpl.class) {
         HttpParameter[] implicitParams = implicitParamsMap.get(conf);
-        String implicitParamsStr = implicitParamsStrMap.get(conf);
-        if (implicitParams == null) {
-            implicitParamsStr = conf.isIncludeEntitiesEnabled() ? "include_entities=" + true : "";
-        }
-        boolean contributorsEnabled = conf.getContributingTo() != -1L;
-        if (contributorsEnabled) {
-            if (!"".equals(implicitParamsStr)) {
-                implicitParamsStr += "?";
+        if (implicitParams != null) {
+            this.IMPLICIT_PARAMS = implicitParams;
+            this.IMPLICIT_PARAMS_STR = implicitParamsStrMap.get(conf);
+        } else {
+            String implicitParamsStr = conf.isIncludeEntitiesEnabled() ? "include_entities=" + true : "";
+            boolean contributorsEnabled = conf.getContributingTo() != -1L;
+            if (contributorsEnabled) {
+                if (!"".equals(implicitParamsStr)) {
+                    implicitParamsStr += "?";
+                }
+                implicitParamsStr += "contributingto=" + conf.getContributingTo();
             }
-            implicitParamsStr += "contributingto=" + conf.getContributingTo();
-        }
-        implicitParamsStrMap.put(conf, implicitParamsStr);
 
-        List<HttpParameter> params = new ArrayList<HttpParameter>(2);
-        if (conf.isIncludeEntitiesEnabled()) {
-            params.add(new HttpParameter("include_entities", "true"));
-        }
-        if (contributorsEnabled) {
-            params.add(new HttpParameter("contributingto", conf.getContributingTo()));
-        }
-        if (conf.isTrimUserEnabled()) {
-            params.add(new HttpParameter("trim_user", "1"));
-        }
-        implicitParams = params.toArray(new HttpParameter[params.size()]);
-        implicitParamsMap.put(conf, implicitParams);
+            List<HttpParameter> params = new ArrayList<HttpParameter>(3);
+            if (conf.isIncludeEntitiesEnabled()) {
+                params.add(new HttpParameter("include_entities", "true"));
+            }
+            if (contributorsEnabled) {
+                params.add(new HttpParameter("contributingto", conf.getContributingTo()));
+            }
+            if (conf.isTrimUserEnabled()) {
+                params.add(new HttpParameter("trim_user", "1"));
+            }
+            implicitParams = params.toArray(new HttpParameter[params.size()]);
 
-        IMPLICIT_PARAMS = implicitParams;
-        IMPLICIT_PARAMS_STR = implicitParamsStr;
+            // put operation is not thread safe http://issue.twitter4j.org/youtrack/issue/TFJ-853
+            synchronized (TwitterImpl.class) {
+                implicitParamsStrMap.put(conf, implicitParamsStr);
+                implicitParamsMap.put(conf, implicitParams);
+            }
+
+            this.IMPLICIT_PARAMS = implicitParams;
+            this.IMPLICIT_PARAMS_STR = implicitParamsStr;
         }
     }
 
