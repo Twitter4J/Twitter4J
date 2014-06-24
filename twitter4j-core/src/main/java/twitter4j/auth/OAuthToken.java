@@ -31,6 +31,10 @@ abstract class OAuthToken implements java.io.Serializable {
     private String[] responseStr = null;
 
     public OAuthToken(String token, String tokenSecret) {
+        if(token == null)
+            throw new IllegalArgumentException("Token can't be null");
+        if(tokenSecret == null)
+            throw new IllegalArgumentException("TokenSecret can't be null");            
         this.token = token;
         this.tokenSecret = tokenSecret;
     }
