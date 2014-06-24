@@ -24,6 +24,8 @@ import java.util.Date;
  * @since Twitter4J 2.2.4
  */
 public class UsersResourcesTest extends TwitterTestBase {
+    private long twit4jblockID = 39771963L;
+
     public UsersResourcesTest(String name) {
         super(name);
     }
@@ -281,13 +283,13 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
         assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
+        assertEquals(twit4jblockID, users.get(0).getId());
 
         IDs ids = twitter1.getBlocksIDs();
         assertNull(TwitterObjectFactory.getRawJSON(users));
         assertNotNull(TwitterObjectFactory.getRawJSON(ids));
         assertEquals(1, ids.getIDs().length);
-        assertEquals(39771963, ids.getIDs()[0]);
+        assertEquals(twit4jblockID, ids.getIDs()[0]);
 
         ids = twitter1.getBlocksIDs(-1);
         assertTrue(ids.getIDs().length > 0);
@@ -300,17 +302,19 @@ public class UsersResourcesTest extends TwitterTestBase {
         User user2 = twitter2.destroyMute(id1.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(user2));
         assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+
+        twitter1.createMute(twit4jblockID);
         PagableResponseList<User> users = twitter1.getMutesList(-1L);
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
         assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
+        assertEquals(twit4jblockID, users.get(0).getId());
 
         IDs ids = twitter1.getMutesIDs(-1L);
         assertNull(TwitterObjectFactory.getRawJSON(users));
         assertNotNull(TwitterObjectFactory.getRawJSON(ids));
         assertEquals(1, ids.getIDs().length);
-        assertEquals(39771963, ids.getIDs()[0]);
+        assertEquals(twit4jblockID, ids.getIDs()[0]);
 
     }
 }

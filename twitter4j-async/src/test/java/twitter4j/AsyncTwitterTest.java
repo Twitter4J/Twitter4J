@@ -51,6 +51,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private ResponseList<SavedSearch> savedSearches;
     private OEmbed oembed;
 
+    private long twit4jblockID = 39771963L;
     public AsyncTwitterTest(String name) {
         super(name);
     }
@@ -284,15 +285,15 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.getBlocksList();
         waitForResponse();
         assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
+        assertEquals(twit4jblockID, users.get(0).getId());
         async1.getBlocksList(-1L);
         waitForResponse();
         assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
+        assertEquals(twit4jblockID, users.get(0).getId());
         async1.getBlocksIDs();
         waitForResponse();
         assertEquals(1, ids.getIDs().length);
-        assertEquals(39771963, ids.getIDs()[0]);
+        assertEquals(twit4jblockID, ids.getIDs()[0]);
     }
 
     public void testMute() throws Exception {
@@ -304,11 +305,11 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.getMutesList(-1L);
         waitForResponse();
         assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
+        assertEquals(twit4jblockID, users.get(0).getId());
         async1.getMutesIDs(-1L);
         waitForResponse();
         assertEquals(1, ids.getIDs().length);
-        assertEquals(39771963, ids.getIDs()[0]);
+        assertEquals(twit4jblockID, ids.getIDs()[0]);
     }
 
     public void testUpdate() throws Exception {
