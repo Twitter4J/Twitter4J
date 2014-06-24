@@ -64,6 +64,7 @@ Linker Lin <linker.lin at live.com>
 Ludovico Fischer @ludovicofischer
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 matsumo <matsumo at ce.ns0.it> @sardinej
+Matteo Nicoletti <matteo at kaosmos.it> @kaosmos
 Matteo Villa @mttvll
 Max Penet <m at qbits.cc> @mpenet
 Mike Champion <mike at graysky.org> @graysky
