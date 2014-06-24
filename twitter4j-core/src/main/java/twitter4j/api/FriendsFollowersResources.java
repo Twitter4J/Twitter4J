@@ -228,6 +228,15 @@ public interface FriendsFollowersResources {
     IDs getOutgoingFriendships(long cursor) throws TwitterException;
 
     /**
+     * Returns a collection of user IDs that the currently authenticated user does not want to receive retweets from.
+     * <br>This method calls https://api.twitter.com/1.1/friendships/no_retweets/ids.json
+     * @return a collection of numeric IDs that the currently authenticated user does not want to receive retweets from.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friendships/no_retweets/ids">GET friendships/no_retweets/ids | Twitter Developers</a>
+     */
+    IDs getNoRetweetsFriendships() throws TwitterException;
+
+    /**
      * Allows the authenticating users to follow the user specified in the ID parameter.<br>
      * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user an HTTP 403 will be returned.
      * <br>This method calls https://api.twitter.com/1.1/friendships/create/[id].json
