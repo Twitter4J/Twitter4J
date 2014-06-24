@@ -90,7 +90,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
                 JSONArray array = geometryJSON.getJSONArray("coordinates");
                 if (geometryType.equals("Point")) {
                     geometryCoordinates = new GeoLocation[1][1];
-                    geometryCoordinates[0][0] = new GeoLocation(array.getDouble(0), array.getDouble(1));
+                    geometryCoordinates[0][0] = new GeoLocation(array.getDouble(1), array.getDouble(0));
                 } else if (geometryType.equals("Polygon")) {
                     geometryCoordinates = JSONImplFactory.coordinatesAsGeoLocationArray(array);
                 } else {
