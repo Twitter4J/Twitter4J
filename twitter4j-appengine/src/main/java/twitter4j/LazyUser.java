@@ -405,6 +405,10 @@ final class LazyUser implements twitter4j.User {
         return getTarget().isFollowRequestSent();
     }
 
+    public String[] getWithheldInCountries() {
+        return getTarget().getWithheldInCountries();
+    }
+
     public RateLimitStatus getRateLimitStatus() {
         return getTarget().getRateLimitStatus();
     }
