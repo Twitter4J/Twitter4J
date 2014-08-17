@@ -132,6 +132,20 @@ public interface SiteStreamsListener extends StreamListener {
 
     /**
      * @param forUser     the user id to whom sent the event
+     * @param suspendedUser suspended user
+     * @since Twitter4J 4.0.3
+     */
+    void onUserSuspension(long forUser, User suspendedUser);
+
+    /**
+     * @param forUser     the user id to whom sent the event
+     * @param deletedUser deleted user
+     * @since Twitter4J 4.0.3
+     */
+    void onUserDeletion(long forUser, User deletedUser);
+
+    /**
+     * @param forUser     the user id to whom sent the event
      * @param source      the user user blocked
      * @param blockedUser the user got blocked
      */
