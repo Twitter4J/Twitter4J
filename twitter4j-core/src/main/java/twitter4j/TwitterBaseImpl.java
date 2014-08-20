@@ -268,6 +268,11 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         return getOAuth().getOAuthRequestToken(callbackUrl, xAuthAccessType);
     }
 
+    @Override
+    public RequestToken getOAuthRequestToken(String callbackUrl, String xAuthAccessType, String xAuthMode) throws TwitterException {
+        return getOAuth().getOAuthRequestToken(callbackUrl, xAuthAccessType, xAuthMode);
+    }
+
     /**
      * {@inheritDoc}
      * Basic authenticated instance of this class will try acquiring an AccessToken using xAuth.<br>
