@@ -30,6 +30,7 @@ Blake Barnes <blake.barnes at gmail.com>
 Borja Fernández @BorjaL
 Bruno Torres Goyanna <bgoyanna at gmail.com> @bgoyanna
 Chris Nix
+Chris Romary
 Ciaran Jessup <ciaranj at gmail.com> @ciaran_j
 Cole Wen <wennnnke at gmail.com> @Pigwen
 Dan Checkoway <dcheckoway at gmail.com>
