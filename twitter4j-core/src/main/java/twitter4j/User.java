@@ -260,5 +260,12 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     URLEntity getURLEntity();
 
+    /**
+     *  Returns the list of country codes where the user is withheld
+     *
+     *  @return list of country codes where the tweet is withheld - null if not withheld
+     *  @since Twitter4j 4.0.3
+     */
+    String[] getWithheldInCountries();
 
 }

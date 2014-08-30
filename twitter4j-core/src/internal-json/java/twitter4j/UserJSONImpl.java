@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -69,6 +70,7 @@ import java.util.Date;
     private boolean translator;
     private int listedCount;
     private boolean isFollowRequestSent;
+    private String[] withheldInCountries;
 
     /*package*/UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -150,6 +152,14 @@ import java.util.Date;
             if (!json.isNull("status")) {
                 JSONObject statusJSON = json.getJSONObject("status");
                 status = new StatusJSONImpl(statusJSON);
+            }
+            if (!json.isNull("withheld_in_countries")) {
+                JSONArray withheld_in_countries = json.getJSONArray("withheld_in_countries");
+                int length = withheld_in_countries.length();
+                withheldInCountries = new String[length];
+                for (int i = 0 ; i < length; i ++) {
+                    withheldInCountries[i] = withheld_in_countries.getString(i);
+                }
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
@@ -465,6 +475,11 @@ import java.util.Date;
         return urlEntity;
     }
 
+    @Override
+    public String[] getWithheldInCountries() {
+        return withheldInCountries;
+    }
+
     /*package*/
     static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -579,6 +594,7 @@ import java.util.Date;
                 ", translator=" + translator +
                 ", listedCount=" + listedCount +
                 ", isFollowRequestSent=" + isFollowRequestSent +
+                ", withheldInCountries=" + Arrays.toString(withheldInCountries) +
                 '}';
     }
 

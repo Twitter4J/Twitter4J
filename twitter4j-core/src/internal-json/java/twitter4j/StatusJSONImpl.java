@@ -62,6 +62,7 @@ import static twitter4j.ParseUtil.getDate;
     private long currentUserRetweetId = -1L;
     private Scopes scopes;
     private User user = null;
+    private String[] withheldInCountries = null;
 
     /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -210,6 +211,14 @@ import static twitter4j.ParseUtil.getDate;
                         placeIds[i] = placeIdsArray.getString(i);
                     }
                     scopes = new ScopesImpl(placeIds);
+                }
+            }
+            if (!json.isNull("withheld_in_countries")){
+                JSONArray withheld_in_countries = json.getJSONArray("withheld_in_countries");
+                int length = withheld_in_countries.length();
+                withheldInCountries = new String[length];
+                for (int i = 0 ; i < length; i ++) {
+                    withheldInCountries[i] = withheld_in_countries.getString(i);
                 }
             }
         } catch (JSONException jsone) {
@@ -368,6 +377,11 @@ import static twitter4j.ParseUtil.getDate;
         return scopes;
     }
 
+    @Override
+    public String[] getWithheldInCountries() {
+        return withheldInCountries;
+    }
+
     public String getLang() {
         return lang;
     }
@@ -442,6 +456,7 @@ import static twitter4j.ParseUtil.getDate;
                 ", symbolEntities=" + Arrays.toString(symbolEntities) +
                 ", currentUserRetweetId=" + currentUserRetweetId +
                 ", user=" + user +
+                ", withHeldInCountries=" + Arrays.toString(withheldInCountries)+
                 '}';
     }
 }
