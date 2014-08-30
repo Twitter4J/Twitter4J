@@ -59,7 +59,7 @@ John Corwin <jcorwin at twitter.com> @johnxorz
 John Sirois <jsirois at twitter.com> @johnsirois
 Julien Letrouit <julien.letrouit at gmail.com> @jletroui
 Keiichi Hirano <hirano.kei1 at gmail.com> @haushinka2dx
-Kenji Yoshida <6b656e6a69 at gmail.com> @xuwei-k
+Kenji Yoshida <6b656e6a69 at gmail.com> @xuwei_k
 Komiya Atsushi <komiya.atsushi at gmail.com> @komiya_atsushi
 Linker Lin <linker.lin at live.com>
 Ludovico Fischer @ludovicofischer
