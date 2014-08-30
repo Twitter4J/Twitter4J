@@ -172,13 +172,13 @@ public final class PrintUserStream {
         }
 
         @Override
-        public void onUserDeletion(User deletedUser) {
-            System.out.println("onUserDeletion user:@" + deletedUser.getScreenName());
+        public void onUserDeletion(long deletedUser) {
+            System.out.println("onUserDeletion user:@" + deletedUser);
         }
 
         @Override
-        public void onUserSuspension(User suspendedUser) {
-            System.out.println("onUserSuspension user:@" + suspendedUser.getScreenName());
+        public void onUserSuspension(long suspendedUser) {
+            System.out.println("onUserSuspension user:@" + suspendedUser);
         }
 
         @Override

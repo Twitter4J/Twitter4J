@@ -82,11 +82,11 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     }
 
     @Override
-    public void onUserSuspension(User suspendedUser) {
+    public void onUserSuspension(long suspendedUser) {
     }
 
     @Override
-    public void onUserDeletion(User deletedUser) {
+    public void onUserDeletion(long deletedUser) {
     }
 
     @Override

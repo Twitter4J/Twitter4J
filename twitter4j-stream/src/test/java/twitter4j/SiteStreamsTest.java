@@ -378,14 +378,14 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
     }
 
     @Override
-    public void onUserDeletion(long forUser, User deletedUser) {
+    public void onUserDeletion(long forUser, long deletedUser) {
         received.add(new Object[]{"user_delete", forUser, deletedUser});
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(deletedUser));
         notifyResponse();
     }
 
     @Override
-    public void onUserSuspension(long forUser, User suspendedUser) {
+    public void onUserSuspension(long forUser, long suspendedUser) {
         received.add(new Object[]{"user_suspend", forUser, suspendedUser});
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(suspendedUser));
         notifyResponse();
