@@ -154,16 +154,16 @@ final class UserStreamImpl extends StatusStreamImpl implements UserStream {
     }
 
     @Override
-    protected void onUserSuspension(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
+    protected void onUserSuspension(long target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onUserSuspension(asUser(source));
+            ((UserStreamListener) listener).onUserSuspension(target);
         }
     }
 
     @Override
-    protected void onUserDeletion(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
+    protected void onUserDeletion(long target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onUserDeletion(asUser(source));
+            ((UserStreamListener) listener).onUserDeletion(target);
         }
     }
 

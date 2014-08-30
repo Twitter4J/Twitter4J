@@ -125,16 +125,16 @@ public interface UserStreamListener extends StatusListener {
     void onUserProfileUpdate(User updatedUser);
 
     /**
-     * @param suspendedUser suspended user
+     * @param suspendedUser suspended user id
      * @since Twitter4J 4.0.3
      */
-    void onUserSuspension(User suspendedUser);
+    void onUserSuspension(long suspendedUser);
 
     /**
-     * @param deletedUser deleted user
+     * @param deletedUser deleted user id
      * @since Twitter4J 4.0.3
      */
-    void onUserDeletion(User deletedUser);
+    void onUserDeletion(long deletedUser);
 
     /**
      * @param source      source user of the event

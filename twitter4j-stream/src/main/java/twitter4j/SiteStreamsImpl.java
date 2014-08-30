@@ -225,16 +225,16 @@ final class SiteStreamsImpl extends StatusStreamBase {
     }
 
     @Override
-    protected void onUserSuspension(final JSONObject source, final JSONObject target, StreamListener[] listeners) throws TwitterException {
+    protected void onUserSuspension(final long target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((SiteStreamsListener) listener).onUserSuspension(forUser.get(), asUser(source));
+            ((SiteStreamsListener) listener).onUserSuspension(forUser.get(), target);
         }
     }
 
     @Override
-    protected void onUserDeletion(final JSONObject source, final JSONObject target, StreamListener[] listeners) throws TwitterException {
+    protected void onUserDeletion(final long target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((SiteStreamsListener) listener).onUserDeletion(forUser.get(), asUser(source));
+            ((SiteStreamsListener) listener).onUserDeletion(forUser.get(), target);
         }
     }
 
