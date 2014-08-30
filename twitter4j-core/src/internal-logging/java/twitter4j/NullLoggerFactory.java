@@ -24,7 +24,7 @@ final class NullLoggerFactory extends LoggerFactory {
     private static final Logger SINGLETON = new NullLogger();
 
     @Override
-    public Logger getLogger(Class clazz) {
+    public Logger getLogger(Class<?> clazz) {
         return SINGLETON;
     }
 }

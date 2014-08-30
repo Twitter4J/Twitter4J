@@ -20,7 +20,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -184,9 +183,8 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     private void normalize(Properties props) {
-        Set keys = props.keySet();
         ArrayList<String> toBeNormalized = new ArrayList<String>(10);
-        for (Object key : keys) {
+        for (Object key : props.keySet()) {
             String keyStr = (String) key;
             if (-1 != (keyStr.indexOf("twitter4j."))) {
                 toBeNormalized.add(keyStr);

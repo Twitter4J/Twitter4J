@@ -28,5 +28,5 @@ public abstract class LoggerFactory {
      * @param clazz class
      * @return a logger instance
      */
-    public abstract Logger getLogger(Class clazz);
+    public abstract Logger getLogger(Class<?> clazz);
 }
