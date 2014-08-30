@@ -42,8 +42,6 @@ public final class JSONObjectType {
         USER_LIST_UPDATED,
         USER_LIST_DESTROYED,
         USER_UPDATE,
-        USER_DELETE,
-        USER_SUSPEND,
         BLOCK,
         UNBLOCK,
         DISCONNECTION,
@@ -113,10 +111,6 @@ public final class JSONObjectType {
                     }
                 } else if ("user_update".equals(event)) {
                     return Type.USER_UPDATE;
-                } else if ("user_delete".equals(event)) {
-                    return Type.USER_DELETE;
-                } else if ("user_suspend".equals(event)) {
-                    return Type.USER_SUSPEND;
                 } else if ("block".equals(event)) {
                     return Type.BLOCK;
                 } else if ("unblock".equals(event)) {

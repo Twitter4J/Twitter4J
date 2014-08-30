@@ -75,14 +75,6 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     }
 
     @Override
-    public void onUserSuspension(long forUser, User suspendedUser) {
-    }
-
-    @Override
-    public void onUserDeletion(long forUser, User deletedUser) {
-    }
-
-    @Override
     public void onBlock(long forUser, User source, User blockedUser) {
     }
 

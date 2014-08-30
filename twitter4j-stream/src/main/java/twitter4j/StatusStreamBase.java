@@ -157,12 +157,6 @@ abstract class StatusStreamBase implements StatusStream {
                                     case USER_UPDATE:
                                         onUserUpdate(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
                                         break;
-                                    case USER_DELETE:
-                                        onUserDeletion(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
-                                        break;
-                                    case USER_SUSPEND:
-                                        onUserSuspension(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
-                                        break;
                                     case BLOCK:
                                         onBlock(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
                                         break;
@@ -280,14 +274,6 @@ abstract class StatusStreamBase implements StatusStream {
 
     void onUserUpdate(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onUserUpdate");
-    }
-
-    void onUserDeletion(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
-        logger.warn("Unhandled event: onUserDeletion");
-    }
-
-    void onUserSuspension(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
-        logger.warn("Unhandled event: onUserSuspension");
     }
 
     void onBlock(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {

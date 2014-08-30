@@ -172,16 +172,6 @@ public final class PrintUserStream {
         }
 
         @Override
-        public void onUserDeletion(User deletedUser) {
-            System.out.println("onUserDeletion user:@" + deletedUser.getScreenName());
-        }
-
-        @Override
-        public void onUserSuspension(User suspendedUser) {
-            System.out.println("onUserSuspension user:@" + suspendedUser.getScreenName());
-        }
-
-        @Override
         public void onBlock(User source, User blockedUser) {
             System.out.println("onBlock source:@" + source.getScreenName()
                     + " target:@" + blockedUser.getScreenName());

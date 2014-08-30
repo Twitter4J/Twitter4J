@@ -394,22 +394,6 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     @Override
-    public void onUserDeletion(User deletedUser) {
-        System.out.println("onUserDeletion");
-        received.add(new Object[]{"user_delete", deletedUser});
-        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(deletedUser));
-        notifyResponse();
-    }
-
-    @Override
-    public void onUserSuspension(User suspendedUser) {
-        System.out.println("onUserSuspension");
-        received.add(new Object[]{"user_suspend", suspendedUser});
-        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(suspendedUser));
-        notifyResponse();
-    }
-
-    @Override
     public void onBlock(User source, User blockedUser) {
         System.out.println("onBlock");
         received.add(new Object[]{CREATE_BLOCK, source, blockedUser});
