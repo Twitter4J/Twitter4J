@@ -107,6 +107,7 @@ public final class FilterQuery implements java.io.Serializable {
         this.count = count;
         this.follow = follow;
         this.track = track;
+        this.locations = locations;
         this.language = language;
     }
 
