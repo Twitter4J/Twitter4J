@@ -125,6 +125,18 @@ public interface UserStreamListener extends StatusListener {
     void onUserProfileUpdate(User updatedUser);
 
     /**
+     * @param suspendedUser suspended user
+     * @since Twitter4J 4.0.3
+     */
+    void onUserSuspension(User suspendedUser);
+
+    /**
+     * @param deletedUser deleted user
+     * @since Twitter4J 4.0.3
+     */
+    void onUserDeletion(User deletedUser);
+
+    /**
      * @param source      source user of the event
      * @param blockedUser the user blocked
      * @since Twitter4J 2.1.3
