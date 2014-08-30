@@ -96,6 +96,7 @@ Q.P.Liu <qpliu at yahoo.com>
 Rémy Rakic <remy.rakic at gmail.com> @lqd
 Talal Ahmed <talal at venexel.ca>
 Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
+Takatoshi Murakami
 Tomasz Nurkiewicz @tnurkiewicz
 Tomoaki Iwasaki <multicolorworld.shinku at gmail.com> @MulticolorWorld
 Tomohisa Igarashi <tm.igarashi at gmail.com>
