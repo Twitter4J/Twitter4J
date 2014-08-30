@@ -265,7 +265,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return TwitterStreamImpl.dispatcher;
     }
 
-    private static transient Dispatcher dispatcher;
+    private static transient volatile Dispatcher dispatcher;
 
     InputStream getSiteStream(boolean withFollowings, long[] follow) throws TwitterException {
         ensureOAuthEnabled();

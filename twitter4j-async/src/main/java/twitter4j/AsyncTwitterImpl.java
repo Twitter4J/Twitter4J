@@ -2681,7 +2681,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    private static transient Dispatcher dispatcher;
+    private static transient volatile Dispatcher dispatcher;
 
     @Override
     public void shutdown() {
