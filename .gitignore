@@ -32,3 +32,4 @@ atlassian-ide-plugin.xml
 *.ipr
 *.iws
 .idea/*
+/bin
