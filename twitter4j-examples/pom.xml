@@ -3,7 +3,7 @@
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-examples</artifactId>
-    <version>4.0.3-SNAPSHOT</version>
+    <version>4.0.3-fkfork-1</version>
     <packaging>jar</packaging>
     <name>twitter4j-examples</name>
     <description>A Java library for the Twitter API</description>
