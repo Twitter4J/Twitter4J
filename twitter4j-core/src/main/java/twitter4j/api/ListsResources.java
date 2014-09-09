@@ -95,6 +95,21 @@ public interface ListsResources {
             throws TwitterException;
 
     /**
+     * Show tweet timeline for members of the specified list.
+     * <br>https://api.twitter.com/1.1/lists/statuses.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param paging          controls pagination. Supports since_id, max_id, count and page parameters.
+     * @param includeRts     specifies whether retweets should be included
+     * @return list of statuses for members of the specified list
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/statuses">GET lists/statuses | Twitter Developers</a>
+     * @since Twitter4J 3.0.2 fkfork-1
+     */
+    ResponseList<Status> getUserListStatuses(String ownerScreenName, String slug,
+                                             Paging paging, boolean includeRts) throws TwitterException;
+    /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/destroy.json
      *
