@@ -96,7 +96,7 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>4.0.3-SNAPSHOT</version>
+            <version>4.0.3-fkfork-1</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
