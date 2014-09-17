@@ -88,7 +88,7 @@ import static twitter4j.ParseUtil.getDate;
     }
 
     /* Only for serialization purposes. */
-    /*package*/ StatusJSONImpl() {
+    public StatusJSONImpl() {
 
     }
 
