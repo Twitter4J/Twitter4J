@@ -43,19 +43,14 @@ public class OkHttpResponse extends HttpResponse {
 		if(is!=null && "gzip".equals(response.header("Content-Encoding"))){
 			is = new StreamingGZIPInputStream(is);
 		}
+
+		statusCode = response.code();
 	}
 
 	/*package*/ OkHttpResponse(String content) {
 		super();
 		this.responseAsString = content;
 	}
-
-
-	@Override
-	public int getStatusCode() {
-		return response.code();
-	}
-
 
 	@Override
 	public String getResponseHeader(String name) {
