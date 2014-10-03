@@ -66,6 +66,7 @@ public class OkHttpResponse extends HttpResponse {
 
 	@Override
 	public void disconnect() throws IOException {
+		response.body().close();
 	}
 
 
