@@ -22,6 +22,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 	private static final int KEEP_ALIVE_DURATION_MS = 300;
 
 	private static final MediaType TEXT = MediaType.parse("text/plain; charset=utf-8");
+	private static final MediaType FORM_URL_ENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
 	private OkHttpClient okHttpClient;
 
@@ -140,11 +141,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 			}
 			return multipartBuilder.build();
 		}else {//application/x-www-form-urlencoded
-			FormEncodingBuilder formEncodingBuilder =new FormEncodingBuilder();
-			for(HttpParameter parameter:req.getParameters()){
-				formEncodingBuilder.add(parameter.getName(),parameter.getValue());
-			}
-			return formEncodingBuilder.build();
+			return RequestBody.create(FORM_URL_ENCODED,HttpParameter.encodeParameters(req.getParameters()).getBytes("UTF-8"));
 		}
 	}
 
