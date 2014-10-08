@@ -9,6 +9,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Yuuto Uehara
@@ -211,6 +212,13 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 					logger.debug("Opening proxied connection(" + CONF.getHttpProxyHost() + ":" + CONF.getHttpProxyPort() + ")");
 				}
 				okHttpClient.setProxy(proxy);
+			}
+
+			if (CONF.getHttpConnectionTimeout() > 0) {
+				okHttpClient.setConnectTimeout(CONF.getHttpConnectionTimeout(), TimeUnit.MILLISECONDS);
+			}
+			if (CONF.getHttpReadTimeout() > 0) {
+				okHttpClient.setReadTimeout(CONF.getHttpReadTimeout(),TimeUnit.MILLISECONDS);
 			}
 		}
 	}
