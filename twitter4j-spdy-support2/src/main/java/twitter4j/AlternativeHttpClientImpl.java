@@ -186,6 +186,8 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 
 			okHttpClient.setConnectionPool(new ConnectionPool(MAX_CONNECTIONS,KEEP_ALIVE_DURATION_MS));
 
+			okHttpClient.setFollowSslRedirects(false);
+
 			if (isProxyConfigured()) {
 				if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
 					if (logger.isDebugEnabled()) {
