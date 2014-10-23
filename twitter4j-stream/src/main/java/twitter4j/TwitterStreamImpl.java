@@ -504,6 +504,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                                 stream.next(this.streamListeners, this.rawStreamListeners);
                             } catch (IllegalStateException ise) {
                                 logger.warn(ise.getMessage());
+                                closed = true;
                                 break;
                             } catch (TwitterException e) {
                                 logger.info(e.getMessage());
