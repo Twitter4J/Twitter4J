@@ -15,9 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +25,7 @@ import java.util.List;
  * @since Twitter4J 3.0.2
  */
 public final class OEmbedRequest implements Serializable {
-    private static final long serialVersionUID = -4330607167106242987L;
+    private static final long serialVersionUID = 7454130135274547901L;
     private final long statusId;
     private final String url;
     private int maxWidth;
@@ -124,7 +121,7 @@ public final class OEmbedRequest implements Serializable {
         params.add(new HttpParameter("omit_script", omitScript));
         params.add(new HttpParameter("align", align.name().toLowerCase()));
         if (related.length > 0) {
-            appendParameter("related", z_T4JInternalStringUtil.join(related), params);
+            appendParameter("related", StringUtil.join(related), params);
         }
         appendParameter("lang", lang, params);
         HttpParameter[] paramArray = new HttpParameter[params.size()];

@@ -25,8 +25,18 @@ import twitter4j.*;
 public interface FriendsFollowersResources {
 
     /**
+     * Returns a collection of user IDs that the currently authenticated user does not want to receive retweets from.
+     * <br>This method calls https://api.twitter.com/1.1/friendships/no_retweets/ids.json
+     * @return a collection of numeric IDs that the currently authenticated user does not want to receive retweets from.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friendships/no_retweets/ids">GET friendships/no_retweets/ids | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    IDs getNoRetweetsFriendships() throws TwitterException;
+
+    /**
      * Returns an array of numeric IDs for every user the authenticating user is following.
-     * <br>This method calls http://api.twitter.com/1.1/friends/ids.json
+     * <br>This method calls https://api.twitter.com/1.1/friends/ids.json
      *
      * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
      *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
@@ -39,7 +49,7 @@ public interface FriendsFollowersResources {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
-     * <br>This method calls http://api.twitter.com/1.1/friends/ids.json
+     * <br>This method calls https://api.twitter.com/1.1/friends/ids.json
      *
      * @param userId Specifies the ID of the user for whom to return the friends list.
      * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
@@ -55,6 +65,23 @@ public interface FriendsFollowersResources {
      * Returns an array of numeric IDs for every user the specified user is following.
      * <br>This method calls http://api.twitter.com/1.1/friends/ids.json
      *
+     * @param userId Specifies the ID of the user for whom to return the friends list.
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
+     * @param count  Specifies the number of IDs attempt retrieval of, up to a maximum of 5,000 per distinct request. The value of count is best thought of as a limit to the number of results to return.<br/>
+     *               When using the count parameter with this method, it is wise to use a consistent count value across all requests to the same user's collection.<br/>
+     *               Usage of this parameter is encouraged in environments where all 5,000 IDs constitutes too large of a response.
+     * @return an array of numeric IDs for every user the specified user is following
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/ids">GET friends/ids | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    IDs getFriendsIDs(long userId, long cursor,int count) throws TwitterException;
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     * <br>This method calls https://api.twitter.com/1.1/friends/ids.json
+     *
      * @param screenName Specifies the screen name of the user for whom to return the friends list.
      * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
      *                   To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
@@ -66,8 +93,25 @@ public interface FriendsFollowersResources {
     IDs getFriendsIDs(String screenName, long cursor) throws TwitterException;
 
     /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     * <br>This method calls http://api.twitter.com/1.1/friends/ids.json
+     *
+     * @param screenName Specifies the screen name of the user for whom to return the friends list.
+     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     *                   To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
+     * @param count      Specifies the number of IDs attempt retrieval of, up to a maximum of 5,000 per distinct request. The value of count is best thought of as a limit to the number of results to return.<br/>
+     *                   When using the count parameter with this method, it is wise to use a consistent count value across all requests to the same user's collection.<br/>
+     *                   Usage of this parameter is encouraged in environments where all 5,000 IDs constitutes too large of a response.
+     * @return an array of numeric IDs for every user the specified user is following
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/ids">GET friends/ids | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    IDs getFriendsIDs(String screenName, long cursor,int count) throws TwitterException;
+
+    /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
-     * <br>This method calls http://api.twitter.com/1.1/followers/ids.json
+     * <br>This method calls https://api.twitter.com/1.1/followers/ids.json
      *
      * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
      *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
@@ -80,7 +124,7 @@ public interface FriendsFollowersResources {
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
-     * <br>This method calls http://api.twitter.com/1.1/followers/ids.json
+     * <br>This method calls https://api.twitter.com/1.1/followers/ids.json
      *
      * @param userId Specifies the ID of the user for whom to return the followers list.
      * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
@@ -96,6 +140,23 @@ public interface FriendsFollowersResources {
      * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>This method calls http://api.twitter.com/1.1/followers/ids.json
      *
+     * @param userId Specifies the ID of the user for whom to return the followers list.
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
+     * @param count  Specifies the number of IDs attempt retrieval of, up to a maximum of 5,000 per distinct request. <br/>
+     *               The value of count is best thought of as a limit to the number of results to return. <br/>
+     *               When using the count parameter with this method, it is wise to use a consistent count value across all requests to the same user's collection. Usage of this parameter is encouraged in environments where all 5,000 IDs constitutes too large of a response.
+     * @return The ID or screen_name of the user to retrieve the friends ID list for.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/ids">GET followers/ids | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    IDs getFollowersIDs(long userId, long cursor, int count) throws TwitterException;
+
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>This method calls https://api.twitter.com/1.1/followers/ids.json
+     *
      * @param screenName Specifies the screen name of the user for whom to return the followers list.
      * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
      *                   To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
@@ -106,11 +167,28 @@ public interface FriendsFollowersResources {
      */
     IDs getFollowersIDs(String screenName, long cursor) throws TwitterException;
 
+    /**
+     * Returns an array of numeric IDs for every user the specified user is followed by.
+     * <br>This method calls http://api.twitter.com/1.1/followers/ids.json
+     *
+     * @param screenName Specifies the screen name of the user for whom to return the followers list.
+     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br/>
+     *                   To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
+     * @param count      Specifies the number of IDs attempt retrieval of, up to a maximum of 5,000 per distinct request. <br/>
+     *                   The value of count is best thought of as a limit to the number of results to return. <br/>
+     *                   When using the count parameter with this method, it is wise to use a consistent count value across all requests to the same user's collection. Usage of this parameter is encouraged in environments where all 5,000 IDs constitutes too large of a response.
+     * @return The ID or screen_name of the user to retrieve the friends ID list for.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/ids">GET followers/ids | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    IDs getFollowersIDs(String screenName, long cursor,int count) throws TwitterException;
+
 
     /**
      * Returns the relationship of the authenticating user to the specified users.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/lookup.json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/lookup.json
      *
      * @param ids array of the ids to lookup
      * @return list of Relationships
@@ -124,7 +202,7 @@ public interface FriendsFollowersResources {
     /**
      * Returns the relationship of the authenticating user to the specified users.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/lookup.json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/lookup.json
      *
      * @param screenNames array of the screen names to lookup
      * @return list of Relationships
@@ -137,7 +215,7 @@ public interface FriendsFollowersResources {
 
     /**
      * Returns an array of numeric IDs for every user who has a pending request to follow the authenticating user.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/incoming.json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/incoming.json
      *
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
      * @return an array of numeric IDs for every user who has a pending request to follow the authenticating user.
@@ -149,7 +227,7 @@ public interface FriendsFollowersResources {
 
     /**
      * Returns an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/outgoing.json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/outgoing.json
      *
      * @param cursor Breaks the results into pages. A single page contains 5000 identifiers. Provide a value of -1 to begin paging.
      * @return an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
@@ -162,7 +240,7 @@ public interface FriendsFollowersResources {
     /**
      * Allows the authenticating users to follow the user specified in the ID parameter.<br>
      * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user an HTTP 403 will be returned.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/create/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/create/[id].json
      *
      * @param userId the ID of the user to be befriended
      * @return the befriended user
@@ -176,7 +254,7 @@ public interface FriendsFollowersResources {
     /**
      * Allows the authenticating users to follow the user specified in the ID parameter.<br>
      * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user an HTTP 403 will be returned.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/create/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/create/[id].json
      *
      * @param screenName the screen name of the user to be befriended
      * @return the befriended user
@@ -190,7 +268,7 @@ public interface FriendsFollowersResources {
     /**
      * Allows the authenticating users to follow the user specified in the ID parameter.<br>
      * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user an HTTP 403 will be returned.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/create/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/create/[id].json
      *
      * @param userId the ID of the user to be befriended
      * @param follow Enable notifications for the target user in addition to becoming friends.
@@ -205,7 +283,7 @@ public interface FriendsFollowersResources {
     /**
      * Allows the authenticating users to follow the user specified in the ID parameter.<br>
      * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user an HTTP 403 will be returned.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/create/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/create/[id].json
      *
      * @param screenName the screen name of the user to be befriended
      * @param follow     Enable notifications for the target user in addition to becoming friends.
@@ -220,7 +298,7 @@ public interface FriendsFollowersResources {
     /**
      * Allows the authenticating users to unfollow the user specified in the ID parameter.<br>
      * Returns the unfollowed user in the requested format when successful. Returns a string describing the failure condition when unsuccessful.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/destroy/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/destroy/[id].json
      *
      * @param userId the ID of the user for whom to request a list of friends
      * @return User
@@ -234,7 +312,7 @@ public interface FriendsFollowersResources {
     /**
      * Allows the authenticating users to unfollow the user specified in the ID parameter.<br>
      * Returns the unfollowed user in the requested format when successful. Returns a string describing the failure condition when unsuccessful.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/destroy/[id].json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/destroy/[id].json
      *
      * @param screenName the screen name of the user for whom to request a list of friends
      * @return User
@@ -248,7 +326,7 @@ public interface FriendsFollowersResources {
     /**
      * Allows you to enable or disable retweets and device notifications from the specified user.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/update.json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/update.json
      *
      * @param userId                   user id to update
      * @param enableDeviceNotification set true to enable device notification
@@ -264,7 +342,7 @@ public interface FriendsFollowersResources {
     /**
      * Allows you to enable or disable retweets and device notifications from the specified user.
      * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/update.json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/update.json
      *
      * @param screenName               screen name to update
      * @param enableDeviceNotification set true to enable device notification
@@ -279,7 +357,7 @@ public interface FriendsFollowersResources {
 
     /**
      * Returns detailed information about the relationship between two users.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/show.json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/show.json
      *
      * @param sourceId the ID of the source user
      * @param targetId the ID of the target user
@@ -293,7 +371,7 @@ public interface FriendsFollowersResources {
 
     /**
      * Returns detailed information about the relationship between two users.
-     * <br>This method calls http://api.twitter.com/1.1/friendships/show.json
+     * <br>This method calls https://api.twitter.com/1.1/friendships/show.json
      *
      * @param sourceScreenName the screen name of the source user
      * @param targetScreenName the screen name of the target user
@@ -308,7 +386,7 @@ public interface FriendsFollowersResources {
     /**
      * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
      * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
-     * <br>This method calls http://api.twitter.com/1.1/friends/list.json
+     * <br>This method calls https://api.twitter.com/1.1/friends/list.json
      *
      * @param userId The ID of the user for whom to return results for.
      * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
@@ -322,7 +400,21 @@ public interface FriendsFollowersResources {
     /**
      * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
      * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
-     * <br>This method calls http://api.twitter.com/1.1/friends/list.json
+     * <br>This method calls https://api.twitter.com/1.1/friends/list.json
+     *
+     * @param userId The ID of the user for whom to return results for.
+     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @return list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
+     */
+    PagableResponseList<User> getFriendsList(long userId, long cursor, int count) throws TwitterException;
+
+    /**
+     * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls https://api.twitter.com/1.1/friends/list.json
      *
      * @param screenName The screen name of the user for whom to return results for.
      * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
@@ -334,9 +426,60 @@ public interface FriendsFollowersResources {
     PagableResponseList<User> getFriendsList(String screenName, long cursor) throws TwitterException;
 
     /**
+     * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls https://api.twitter.com/1.1/friends/list.json
+     *
+     * @param screenName The screen name of the user for whom to return results for.
+     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @return list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    PagableResponseList<User> getFriendsList(String screenName, long cursor, int count) throws TwitterException;
+
+    /**
+     * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls https://api.twitter.com/1.1/friends/list.json
+     *
+     * @param userId The ID of the user for whom to return results for.
+     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @param skipStatus When set to either true, statuses will not be included in the returned user objects.
+     * @param includeUserEntities The user object entities node will be disincluded when set to false.
+     * @return list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    PagableResponseList<User> getFriendsList(long userId, long cursor, int count,
+                                             boolean skipStatus, boolean includeUserEntities) throws TwitterException;
+
+    /**
+     * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls https://api.twitter.com/1.1/friends/list.json
+     *
+     * @param screenName          The screen name of the user for whom to return results for.
+     * @param cursor              Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count               The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @param skipStatus          When set to either true, statuses will not be included in the returned user objects.
+     * @param includeUserEntities The user object entities node will be disincluded when set to false.
+     * @return list of friends
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    PagableResponseList<User> getFriendsList(String screenName, long cursor, int count,
+                                             boolean skipStatus, boolean includeUserEntities) throws TwitterException;
+
+    /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
      * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
-     * <br>This method calls http://api.twitter.com/1.1/friends/list.json
+     * <br>This method calls https://api.twitter.com/1.1/followers/list.json
      *
      * @param userId The ID of the user for whom to return results for.
      * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
@@ -350,7 +493,7 @@ public interface FriendsFollowersResources {
     /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
      * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
-     * <br>This method calls http://api.twitter.com/1.1/friends/list.json
+     * <br>This method calls https://api.twitter.com/1.1/followers/list.json
      *
      * @param screenName The screen name of the user for whom to return results for.
      * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
@@ -360,4 +503,70 @@ public interface FriendsFollowersResources {
      * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getFollowersList(String screenName, long cursor) throws TwitterException;
+
+    /**
+     * Returns a cursored collection of user objects for users following the specified user.<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls https://api.twitter.com/1.1/followers/list.json
+     *
+     * @param userId The ID of the user for whom to return results for.
+     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @return list of followers
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
+     * @since Twitter4J 3.0.6
+     */
+    PagableResponseList<User> getFollowersList(long userId, long cursor, int count) throws TwitterException;
+
+    /**
+     * Returns a cursored collection of user objects for users following the specified user.<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls https://api.twitter.com/1.1/followers/list.json
+     *
+     * @param screenName The screen name of the user for whom to return results for.
+     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @return list of followers
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
+     * @since Twitter4J 3.0.6
+     */
+    PagableResponseList<User> getFollowersList(String screenName, long cursor, int count) throws TwitterException;
+
+    /**
+     * Returns a cursored collection of user objects for users following the specified user.<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls https://api.twitter.com/1.1/followers/list.json
+     *
+     * @param userId              The ID of the user for whom to return results for.
+     * @param cursor              Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count               The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @param skipStatus          When set to either true, statuses will not be included in the returned user objects.
+     * @param includeUserEntities The user object entities node will be disincluded when set to false.
+     * @return list of followers
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    PagableResponseList<User> getFollowersList(long userId, long cursor, int count,
+                                               boolean skipStatus, boolean includeUserEntities) throws TwitterException;
+
+    /**
+     * Returns a cursored collection of user objects for users following the specified user.<br>
+     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
+     * <br>This method calls https://api.twitter.com/1.1/followers/list.json
+     *
+     * @param screenName          The screen name of the user for whom to return results for.
+     * @param cursor              Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count               The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @param skipStatus          When set to either true, statuses will not be included in the returned user objects.
+     * @param includeUserEntities The user object entities node will be disincluded when set to false.
+     * @return list of followers
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    PagableResponseList<User> getFollowersList(String screenName, long cursor, int count,
+                                               boolean skipStatus, boolean includeUserEntities) throws TwitterException;
 }

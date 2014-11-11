@@ -26,8 +26,5 @@ import java.util.List;
  */
 public interface ResponseList<T> extends TwitterResponse, List<T> {
 
-    /**
-     * {@inheritDoc}
-     */
     public RateLimitStatus getRateLimitStatus();
 }

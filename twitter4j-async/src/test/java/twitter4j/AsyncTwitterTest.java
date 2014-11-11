@@ -18,12 +18,15 @@ package twitter4j;
 
 import twitter4j.api.HelpResources;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -48,6 +51,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     private ResponseList<SavedSearch> savedSearches;
     private OEmbed oembed;
 
+    private long twit4jblockID = 39771963L;
     public AsyncTwitterTest(String name) {
         super(name);
     }
@@ -130,7 +134,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         Status status = twitter1.getHomeTimeline().get(0);
         try {
             twitter2.destroyFavorite(status.getId());
-        } catch (TwitterException te) {
+        } catch (TwitterException ignored) {
         }
         async2.createFavorite(status.getId());
         waitForResponse();
@@ -254,7 +258,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertEquals("FF00FF", user.getProfileBackgroundColor());
         assertEquals("FF0000", user.getProfileTextColor());
         assertEquals("FF00FF", user.getProfileLinkColor());
-        assertEquals("000FFF", user.getProfileSidebarFillColor());
+        assertEquals("00FFFF", user.getProfileSidebarFillColor());
         assertEquals("00FF00", user.getProfileSidebarBorderColor());
         async1.updateProfileColors("9ae4e8", "000000", "0000ff", "e0ff92", "87bc44");
         waitForResponse();
@@ -281,15 +285,31 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.getBlocksList();
         waitForResponse();
         assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
+        assertEquals(twit4jblockID, users.get(0).getId());
         async1.getBlocksList(-1L);
         waitForResponse();
         assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
+        assertEquals(twit4jblockID, users.get(0).getId());
         async1.getBlocksIDs();
         waitForResponse();
         assertEquals(1, ids.getIDs().length);
-        assertEquals(39771963, ids.getIDs()[0]);
+        assertEquals(twit4jblockID, ids.getIDs()[0]);
+    }
+
+    public void testMute() throws Exception {
+        async2.createMute(id1.screenName);
+        waitForResponse();
+        async2.destroyMute(id1.screenName);
+        waitForResponse();
+
+        async1.getMutesList(-1L);
+        waitForResponse();
+        assertEquals(1, users.size());
+        assertEquals(twit4jblockID, users.get(0).getId());
+        async1.getMutesIDs(-1L);
+        waitForResponse();
+        assertEquals(1, ids.getIDs().length);
+        assertEquals(twit4jblockID, ids.getIDs()[0]);
     }
 
     public void testUpdate() throws Exception {
@@ -349,8 +369,10 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         waitForResponse();
         //now befriending with non-existing user returns 404
         //http://groups.google.com/group/twitter-development-talk/browse_thread/thread/bd2a912b181bc39f
-        assertEquals(404, te.getStatusCode());
-        assertEquals(34, te.getErrorCode());
+        //assertEquals(404, te.getStatusCode());
+        // now it returns 403
+        assertEquals(403, te.getStatusCode());
+        assertEquals(108, te.getErrorCode());
 
     }
 
@@ -361,6 +383,122 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertTrue(1 < status.getLimit());
         assertTrue(1 < status.getRemaining());
     }
+
+    public void testAppOnlyAuthWithBuildingConf1() throws Exception {
+        // setup
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
+        final AsyncTwitter twitter = new AsyncTwitterFactory(builder.build()).getInstance();
+
+        // exercise & verify
+        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        OAuth2Token token = twitter.getOAuth2Token();
+        assertEquals("bearer", token.getTokenType());
+
+        twitter.addListener(this);
+        testRateLimitStatus();
+    }
+
+    public void testAppOnlyAuthAsyncWithBuildingConf1() throws Exception {
+        // setup
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
+        final AsyncTwitter twitter = new AsyncTwitterFactory(builder.build()).getInstance();
+
+        // exercise & verify
+        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        twitter.addListener(this);
+        twitter.getOAuth2TokenAsync();
+        waitForResponse();
+        testRateLimitStatus();
+    }
+
+    public void testAppOnlyAuthWithBuildingConf2() throws Exception {
+        // setup
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
+        builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
+        final AsyncTwitter twitter = new AsyncTwitterFactory(builder.build()).getInstance();
+
+        // exercise & verify
+        OAuth2Token token = twitter.getOAuth2Token();
+        assertEquals("bearer", token.getTokenType());
+
+        TwitterListener listener = new TwitterAdapter() {
+
+            @Override
+            public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
+                super.gotRateLimitStatus(rateLimitStatus);
+                RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
+                assertNotNull(searchTweetsRateLimit);
+                assertEquals(searchTweetsRateLimit.getLimit(), 450);
+                notifyResponse();
+            }
+
+
+            @Override
+            public void onException(TwitterException ex, TwitterMethod method) {
+                assertEquals(403, ex.getStatusCode());
+                assertEquals(220, ex.getErrorCode());
+                assertEquals("Your credentials do not allow access to this resource", ex.getErrorMessage());
+                notifyResponse();
+            }
+
+
+        };
+        twitter.addListener(listener);
+        twitter.getRateLimitStatus("search");
+        waitForResponse();
+
+    }
+
+
+    public void testAppOnlyAuthAsyncWithBuildingConf2() throws Exception {
+        // setup
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
+        builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
+        final AsyncTwitter twitter = new AsyncTwitterFactory(builder.build()).getInstance();
+
+        // exercise & verify
+        twitter.addListener(this);
+        twitter.getOAuth2TokenAsync();
+        waitForResponse();
+
+        TwitterListener listener = new TwitterAdapter() {
+
+            @Override
+            public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
+                super.gotRateLimitStatus(rateLimitStatus);
+                RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
+                assertNotNull(searchTweetsRateLimit);
+                assertEquals(searchTweetsRateLimit.getLimit(), 450);
+                notifyResponse();
+            }
+
+
+            @Override
+            public void onException(TwitterException ex, TwitterMethod method) {
+                assertEquals(403, ex.getStatusCode());
+                assertEquals(220, ex.getErrorCode());
+                assertEquals("Your credentials do not allow access to this resource", ex.getErrorMessage());
+                notifyResponse();
+            }
+
+
+        };
+        twitter.addListener(listener);
+        twitter.getRateLimitStatus("search");
+        waitForResponse();
+
+    }
+
+    public void testLookup() throws TwitterException {
+        async1.lookup(new long[] {20L, 432656548536401920L});
+        waitForResponse();
+        assertEquals(2, statuses.size());
+    }
+
 
     private ResponseList<Status> statuses = null;
     private ResponseList<User> users = null;
@@ -409,6 +547,12 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     @Override
     public void gotMentions(ResponseList<Status> statuses) {
+        this.statuses = statuses;
+        notifyResponse();
+    }
+
+    @Override
+    public void lookedup(ResponseList<Status> statuses) {
         this.statuses = statuses;
         notifyResponse();
     }
@@ -856,6 +1000,31 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         notifyResponse();
     }
 
+    /*Mute Methods*/
+    @Override
+    public void createdMute(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
+    @Override
+    public void destroyedMute(User user) {
+        this.user = user;
+        notifyResponse();
+    }
+
+    @Override
+    public void gotMutesList(ResponseList<User> mutingUsers) {
+        this.users = mutingUsers;
+        notifyResponse();
+    }
+
+    @Override
+    public void gotMuteIDs(IDs mutingUsersIDs) {
+        this.ids = mutingUsersIDs;
+        notifyResponse();
+    }
+
     /*Spam Reporting Methods*/
 
     @Override
@@ -896,7 +1065,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     @Override
-    public void gotSimilarPlaces(SimilarPlaces places) {
+    public void gotSimilarPlaces(ResponseList<Place> places) {
         this.places = places;
         notifyResponse();
     }
@@ -909,12 +1078,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     @Override
     public void gotGeoDetails(Place place) {
-        this.place = place;
-        notifyResponse();
-    }
-
-    @Override
-    public void createdPlace(Place place) {
         this.place = place;
         notifyResponse();
     }
@@ -976,6 +1139,13 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     public void gotOAuthAccessToken(AccessToken token) {
     }
 
+    @Override
+    public void gotOAuth2Token(OAuth2Token token) {
+        System.out.println("[gotOAuth2Token] token:" + token.getAccessToken() + " type:" + token.getTokenType());
+        assertEquals("bearer", token.getTokenType());
+        notifyResponse();
+    }
+
     private synchronized void notifyResponse() {
         this.notify();
     }
@@ -1024,4 +1194,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         }
         return file;
     }
+
+
 }

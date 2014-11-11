@@ -17,11 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.json.z_T4JInternalParseUtil;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +25,7 @@ import java.io.InputStream;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-class SiteStreamsImpl extends StatusStreamBase {
+final class SiteStreamsImpl extends StatusStreamBase {
 
     private final StreamController cs;
 
@@ -80,7 +75,12 @@ class SiteStreamsImpl extends StatusStreamBase {
         return line.substring(userIdEnd + 11, line.length() - 1);
     }
 
-    private static ThreadLocal<Long> forUser =
+    @Override
+    protected void onClose() {
+        cs.setControlURI(null);
+    }
+
+    private static final ThreadLocal<Long> forUser =
             new ThreadLocal<Long>() {
                 @Override
                 protected Long initialValue() {
@@ -94,6 +94,7 @@ class SiteStreamsImpl extends StatusStreamBase {
             listener.onMessage(rawString);
         }
     }
+
     @Override
     protected void onStatus(final JSONObject json, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
@@ -111,8 +112,8 @@ class SiteStreamsImpl extends StatusStreamBase {
         } else {
             JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
             for (StreamListener listener : listeners) {
-                ((SiteStreamsListener) listener).onDeletionNotice(forUser.get(), z_T4JInternalParseUtil.getInt("id", directMessage)
-                        , z_T4JInternalParseUtil.getLong("user_id", directMessage));
+                ((SiteStreamsListener) listener).onDeletionNotice(forUser.get(), ParseUtil.getInt("id", directMessage)
+                        , ParseUtil.getLong("user_id", directMessage));
             }
         }
     }
@@ -220,6 +221,20 @@ class SiteStreamsImpl extends StatusStreamBase {
     protected void onUserUpdate(final JSONObject source, final JSONObject target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((SiteStreamsListener) listener).onUserProfileUpdate(forUser.get(), asUser(source));
+        }
+    }
+
+    @Override
+    protected void onUserSuspension(final long target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onUserSuspension(forUser.get(), target);
+        }
+    }
+
+    @Override
+    protected void onUserDeletion(final long target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onUserDeletion(forUser.get(), target);
         }
     }
 

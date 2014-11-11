@@ -71,7 +71,6 @@ public class AuthorizationTest extends TwitterTestBase {
 
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setApplicationOnlyAuthEnabled(true);
-        cb.setUseSSL(true);
 
         Twitter twitter = new TwitterFactory(cb.build()).getInstance();
         twitter.setOAuthConsumer(consumerKey, consumerSecret);

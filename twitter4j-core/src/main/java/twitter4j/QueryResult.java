@@ -28,11 +28,6 @@ public interface QueryResult extends TwitterResponse, java.io.Serializable {
 
     long getMaxId();
 
-    /**
-     * @deprecated use {@link #getRefreshURL()} instead
-     */
-    String getRefreshUrl();
-
     String getRefreshURL();
 
     int getCount();

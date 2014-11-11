@@ -24,8 +24,8 @@ package twitter4j.conf;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class ConfigurationContext {
-    public static final String DEFAULT_CONFIGURATION_FACTORY = "twitter4j.conf.PropertyConfigurationFactory";
-    public static final String CONFIGURATION_IMPL = "twitter4j.configurationFactory";
+    private static final String DEFAULT_CONFIGURATION_FACTORY = "twitter4j.conf.PropertyConfigurationFactory";
+    private static final String CONFIGURATION_IMPL = "twitter4j.configurationFactory";
     private static final ConfigurationFactory factory;
 
     static {

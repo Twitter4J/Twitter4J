@@ -30,12 +30,8 @@ import static twitter4j.TwitterMethod.UPDATE_STATUS;
 public final class AsyncUpdate {
     /**
      * Main entry for this application.
-     *
-     * @param args String[] TwitterID TwitterPassword StatusString
-     * @throws InterruptedException
      */
-
-    static final Object LOCK = new Object();
+    private static final Object LOCK = new Object();
 
     public static void main(String[] args) throws InterruptedException {
         if (args.length < 1) {

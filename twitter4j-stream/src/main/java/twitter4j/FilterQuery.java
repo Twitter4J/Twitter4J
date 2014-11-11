@@ -16,9 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -27,7 +24,7 @@ import java.util.Arrays;
  * @since Twitter4J 2.1.2
  */
 public final class FilterQuery implements java.io.Serializable {
-    private static final long serialVersionUID = 430966623248982833L;
+    private static final long serialVersionUID = -142808200594318258L;
     private int count;
     private long[] follow;
     private String[] track;
@@ -110,6 +107,7 @@ public final class FilterQuery implements java.io.Serializable {
         this.count = count;
         this.follow = follow;
         this.track = track;
+        this.locations = locations;
         this.language = language;
     }
 
@@ -175,11 +173,11 @@ public final class FilterQuery implements java.io.Serializable {
         params.add(new HttpParameter("count", count));
         if (follow != null && follow.length > 0) {
             params.add(new HttpParameter("follow"
-                    , z_T4JInternalStringUtil.join(follow)));
+                    , StringUtil.join(follow)));
         }
         if (track != null && track.length > 0) {
             params.add(new HttpParameter("track"
-                    , z_T4JInternalStringUtil.join(track)));
+                    , StringUtil.join(track)));
         }
         if (locations != null && locations.length > 0) {
             params.add(new HttpParameter("locations"
@@ -187,7 +185,7 @@ public final class FilterQuery implements java.io.Serializable {
         }
         if (language != null && language.length > 0) {
             params.add(new HttpParameter("language"
-                    , z_T4JInternalStringUtil.join(language)));
+                    , StringUtil.join(language)));
         }
         params.add(stallWarningsParam);
         HttpParameter[] paramArray = new HttpParameter[params.size()];

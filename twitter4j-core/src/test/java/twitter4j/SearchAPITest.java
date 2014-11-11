@@ -17,9 +17,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.json.DataObjectFactory;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -28,10 +25,6 @@ public class SearchAPITest extends TwitterTestBase {
 
     public SearchAPITest(String name) {
         super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
     }
 
     protected void tearDown() throws Exception {
@@ -74,7 +67,7 @@ public class SearchAPITest extends TwitterTestBase {
 
         List<Status> tweets = queryResult.getTweets();
         assertTrue(1 <= tweets.size());
-        assertEquals(tweets.get(0), DataObjectFactory.createStatus(DataObjectFactory.getRawJSON(tweets.get(0))));
+        assertEquals(tweets.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(tweets.get(0))));
         assertNotNull(tweets.get(0).getText());
         assertNotNull(tweets.get(0).getCreatedAt());
         assertNotNull("user", tweets.get(0).getUser());
@@ -119,7 +112,7 @@ public class SearchAPITest extends TwitterTestBase {
     }
 
     public void testEasyPaging() throws Exception {
-        Query query = new Query("from:twit4j doesnothit");
+        Query query = new Query("from:twit4j doesnothit").resultType(Query.POPULAR);
         QueryResult result = twitter1.search(query);
         assertFalse(result.hasNext());
 

@@ -188,9 +188,26 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     boolean isPossiblySensitive();
 
     /**
-     * Returns the iso language code set by the Twitter API (best-effort).
+     * Returns the lang of the status text if available.
      *
      * @return two-letter iso language code
+     * @since Twitter4J 3.0.6
      */
-    String getIsoLanguageCode();
+    String getLang();
+
+    /**
+     * Returns the targeting scopes applied to a status.
+     *
+     * @return the targeting scopes applied to a status.
+     * @since Twitter4J 3.0.6
+     */
+    Scopes getScopes();
+
+    /**
+     *  Returns the list of country codes where the tweet is withheld
+     *
+     *  @return list of country codes where the tweet is withheld - null if not withheld
+     *  @since Twitter4j 4.0.3
+     */
+    String[] getWithheldInCountries();
 }

@@ -3,7 +3,7 @@
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-async</artifactId>
-    <version>3.0.6-SNAPSHOT</version>
+    <version>4.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>twitter4j-async</name>
     <description>A Java library for the Twitter API</description>
@@ -36,8 +36,8 @@
         </developer>
     </developers>
     <issueManagement>
-        <system>Jira</system>
-        <url>http://twitter4j.org/jira/browse/TFJ</url>
+        <system>YouTrack</system>
+        <url>http://issue.twitter4j.org/youtrack/issues?q=project%3A+Twitter4J</url>
     </issueManagement>
     <distributionManagement>
         <repository>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>3.0.6-SNAPSHOT</version>
+            <version>4.0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -118,8 +118,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>6</source>
-                    <target>6</target>
+                    <source>5</source>
+                    <target>5</target>
                 </configuration>
                 <version>2.5.1</version>
             </plugin>
@@ -165,6 +165,7 @@
                         <configuration>
                             <excludePackageNames>
                             </excludePackageNames>
+                            <failOnError>false</failOnError>
                         </configuration>
                     </execution>
                 </executions>

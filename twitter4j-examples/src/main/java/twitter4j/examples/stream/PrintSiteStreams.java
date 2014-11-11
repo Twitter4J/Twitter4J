@@ -51,7 +51,7 @@ public final class PrintSiteStreams {
         twitterStream.site(true, followArray);
     }
 
-    static SiteStreamsListener listener = new SiteStreamsListener() {
+    private static final SiteStreamsListener listener = new SiteStreamsListener() {
         @Override
         public void onStatus(long forUser, Status status) {
             System.out.println("onStatus for_user:" + forUser + " @" + status.getUser().getScreenName() + " - " + status.getText());
@@ -173,6 +173,18 @@ public final class PrintSiteStreams {
         public void onUserProfileUpdate(long forUser, User updatedUser) {
             System.out.println("onUserProfileUpdated for_user:" + forUser
                     + " user:@" + updatedUser.getScreenName());
+        }
+
+        @Override
+        public void onUserDeletion(long forUser, long deletedUser) {
+            System.out.println("onUserDeletion for_user:" + forUser
+                    + " user:@");
+        }
+
+        @Override
+        public void onUserSuspension(long forUser, long suspendedUser) {
+            System.out.println("onUserSuspension for_user:" + forUser
+                    + " user:@" + suspendedUser);
         }
 
         @Override

@@ -34,6 +34,7 @@ public enum TwitterMethod {
     UPDATE_STATUS,
     RETWEET_STATUS,
     OEMBED,
+    LOOKUP,
 
     /* Search Resources */
     SEARCH,
@@ -71,6 +72,10 @@ public enum TwitterMethod {
     BLOCK_LIST_IDS,
     CREATE_BLOCK,
     DESTROY_BLOCK,
+    MUTE_LIST,
+    MUTE_LIST_IDS,
+    CREATE_MUTE,
+    DESTROY_MUTE,
 
     SHOW_USER,
     LOOKUP_USERS,
@@ -123,7 +128,6 @@ public enum TwitterMethod {
     SIMILAR_PLACES,
     REVERSE_GEO_CODE,
     GEO_DETAILS,
-    CREATE_PLACE,
 
     /* Trends Resources */
     PLACE_TRENDS,

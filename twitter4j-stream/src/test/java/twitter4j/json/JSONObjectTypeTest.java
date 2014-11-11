@@ -1,7 +1,8 @@
 package twitter4j.json;
 
 import junit.framework.TestCase;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.JSONObject;
+import twitter4j.JSONObjectType;
 
 /**
  * Unit test for JSONObjectType

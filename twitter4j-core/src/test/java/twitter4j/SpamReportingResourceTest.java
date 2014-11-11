@@ -24,21 +24,8 @@ public class SpamReportingResourceTest extends TwitterTestBase {
         super(name);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     protected void tearDown() throws Exception {
         super.tearDown();
     }
 
-    /* Spam Reporting Methods */
-    public void testReportSpammerSavedSearches() throws Exception {
-        // Not sure they're accepting multiple spam reports for the same user.
-        // Do we really need to test this method? How?
-        //String reportUserId = "_xxxx_xxxxxx_";
-        //long   reportUserLongId = 0x0;
-        //assertNotNull(twitter2.reportSpam(reportUserId));
-        //assertNotNull(twitter2.reportSpam(reportUserLongId));
-    }
 }

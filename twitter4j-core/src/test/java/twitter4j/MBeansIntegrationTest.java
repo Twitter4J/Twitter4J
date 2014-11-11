@@ -27,11 +27,6 @@ public class MBeansIntegrationTest extends TwitterTestBase {
         super(name);
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     public void testMonitoringIntegration() throws Exception {
         // monitoring is turned on with mbeanEnabled=true
         TwitterAPIMonitor monitor = TwitterAPIMonitor.getInstance();

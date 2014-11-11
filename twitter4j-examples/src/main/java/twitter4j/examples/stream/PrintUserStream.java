@@ -35,7 +35,7 @@ public final class PrintUserStream {
         twitterStream.user();
     }
 
-    static UserStreamListener listener = new UserStreamListener() {
+    private static final UserStreamListener listener = new UserStreamListener() {
         @Override
         public void onStatus(Status status) {
             System.out.println("onStatus @" + status.getUser().getScreenName() + " - " + status.getText());
@@ -95,6 +95,13 @@ public final class PrintUserStream {
 
         @Override
         public void onFollow(User source, User followedUser) {
+            System.out.println("onFollow source:@"
+                    + source.getScreenName() + " target:@"
+                    + followedUser.getScreenName());
+        }
+
+        @Override
+        public void onUnfollow(User source, User followedUser) {
             System.out.println("onFollow source:@"
                     + source.getScreenName() + " target:@"
                     + followedUser.getScreenName());
@@ -162,6 +169,16 @@ public final class PrintUserStream {
         @Override
         public void onUserProfileUpdate(User updatedUser) {
             System.out.println("onUserProfileUpdated user:@" + updatedUser.getScreenName());
+        }
+
+        @Override
+        public void onUserDeletion(long deletedUser) {
+            System.out.println("onUserDeletion user:@" + deletedUser);
+        }
+
+        @Override
+        public void onUserSuspension(long suspendedUser) {
+            System.out.println("onUserSuspension user:@" + suspendedUser);
         }
 
         @Override

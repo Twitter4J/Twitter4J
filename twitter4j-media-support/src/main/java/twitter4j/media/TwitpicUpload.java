@@ -16,12 +16,12 @@
 
 package twitter4j.media;
 
+import twitter4j.HttpParameter;
+import twitter4j.JSONException;
+import twitter4j.JSONObject;
 import twitter4j.TwitterException;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 
 /**
  * @author Rémy Rakic - remy.rakic at gmail.com
@@ -58,7 +58,7 @@ class TwitpicUpload extends AbstractImageUploadImpl {
     @Override
     protected void preUpload() throws TwitterException {
         uploadUrl = "https://twitpic.com/api/2/upload.json";
-        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_JSON_V1_1);
+        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader();
 
         headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON_V1_1);
         headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);

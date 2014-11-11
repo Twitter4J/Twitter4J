@@ -17,7 +17,6 @@
 package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.internal.org.json.JSONObject;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -26,14 +25,6 @@ import twitter4j.internal.org.json.JSONObject;
 public class TwitterExceptionTest extends TestCase {
     public TwitterExceptionTest(String name) {
         super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
     }
 
     public void testException() throws Exception {

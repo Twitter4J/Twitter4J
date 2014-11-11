@@ -3,7 +3,7 @@
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-core</artifactId>
-    <version>3.0.6-SNAPSHOT</version>
+    <version>4.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>twitter4j-core</name>
     <description>A Java library for the Twitter API</description>
@@ -36,8 +36,8 @@
         </developer>
     </developers>
     <issueManagement>
-        <system>Jira</system>
-        <url>http://twitter4j.org/jira/browse/TFJ</url>
+        <system>YouTrack</system>
+        <url>http://issue.twitter4j.org/youtrack/issues?q=project%3A+Twitter4J</url>
     </issueManagement>
     <distributionManagement>
         <repository>
@@ -136,12 +136,36 @@
                 <version>2.3.2</version>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/internal-async/java</source>
+                                <source>src/internal-http/java</source>
+                                <source>src/jmx/java</source>
+                                <source>src/internal-json/java</source>
+                                <source>src/internal-logging/java</source>
+                                <source>src/internal-util/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>6</source>
-                    <target>6</target>
+                    <source>5</source>
+                    <target>5</target>
                 </configuration>
                 <version>2.5.1</version>
             </plugin>
@@ -185,9 +209,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <excludePackageNames>
-                                twitter4j.internal.*
-                            </excludePackageNames>
+                            <failOnError>false</failOnError>
                         </configuration>
                     </execution>
                 </executions>

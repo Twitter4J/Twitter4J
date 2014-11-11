@@ -17,20 +17,15 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-class UserStreamImpl extends StatusStreamImpl implements UserStream {
+final class UserStreamImpl extends StatusStreamImpl implements UserStream {
     /*package*/ UserStreamImpl(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
         super(dispatcher, stream, conf);
     }
@@ -47,7 +42,7 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream {
     @Override
     protected void onSender(JSONObject json, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onDirectMessage(factory.createDirectMessage(json));
+            ((UserStreamListener) listener).onDirectMessage(new DirectMessageJSONImpl(json));
         }
     }
 
@@ -91,6 +86,13 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream {
     protected void onFollow(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onFollow(asUser(source), asUser(target));
+        }
+    }
+
+    @Override
+    protected void onUnfollow(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onUnfollow(asUser(source), asUser(target));
         }
     }
 
@@ -148,6 +150,20 @@ class UserStreamImpl extends StatusStreamImpl implements UserStream {
     protected void onUserUpdate(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onUserProfileUpdate(asUser(source));
+        }
+    }
+
+    @Override
+    protected void onUserSuspension(long target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onUserSuspension(target);
+        }
+    }
+
+    @Override
+    protected void onUserDeletion(long target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onUserDeletion(target);
         }
     }
 
