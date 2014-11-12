@@ -19,7 +19,9 @@ package twitter4j;
 import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -277,5 +279,46 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
             }
         }
         return buf.toString();
+    }
+
+    /**
+     * @param value string to be decoded. The natural opposite of encode() above.
+     * @return encoded string
+     * @see <a href="http://wiki.oauth.net/TestCases">OAuth / TestCases</a>
+     * @see <a href="http://groups.google.com/group/oauth/browse_thread/thread/a8398d0521f4ae3d/9d79b698ab217df2?hl=en&lnk=gst&q=space+encoding#9d79b698ab217df2">Space encoding - OAuth | Google Groups</a>
+     * @see <a href="http://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax - 2.1. Percent-Encoding</a>
+     */
+    public static String decode(String value) {
+        value = value.replace("%2A", "*");
+        value = value.replace("%2a", "*");
+        value = value.replace("%20", " ");
+        
+        String decoded=null;
+        try {
+            decoded = URLDecoder.decode(value, "UTF-8");
+        }
+        catch(UnsupportedEncodingException ignore) {
+        }
+        
+        return decoded;
+    }
+
+    /**
+     * Parses a query string without the leading "?"
+     * 
+     * @param queryParameters a query parameter string, like a=hello&b=world
+     */
+    public static List<HttpParameter> decodeParameters(String queryParameters) {
+        List<HttpParameter> result=new ArrayList<HttpParameter>();
+        for (String pair : queryParameters.split("&")) {
+            String[] parts=pair.split("=", 2);
+            if(parts.length == 2) {
+                String name=decode(parts[0]);
+                String value=decode(parts[1]);
+                if(!name.equals("") && !value.equals(""))
+                    result.add(new HttpParameter(name, value));
+            }
+        }
+        return result;
     }
 }
