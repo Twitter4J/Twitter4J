@@ -75,8 +75,6 @@ public final class Query implements java.io.Serializable {
                 query.setMaxId(Long.parseLong(params.get("max_id")));
             if(params.containsKey("count"))
                 query.setCount(Integer.parseInt(params.get("count")));
-            if(params.containsKey("since_id"))
-                query.setSinceId(Long.parseLong(params.get("since_id")));
             if(params.containsKey("geocode")) {
                 String[] parts=params.get("geocode").split(",");
                 double latitude=Double.parseDouble(parts[0]);
