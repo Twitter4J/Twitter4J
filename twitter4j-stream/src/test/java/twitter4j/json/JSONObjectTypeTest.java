@@ -1,7 +1,8 @@
 package twitter4j.json;
 
 import junit.framework.TestCase;
-import twitter4j.internal.org.json.JSONObject;
+import twitter4j.JSONObject;
+import twitter4j.JSONObjectType;
 
 /**
  * Unit test for JSONObjectType
@@ -24,34 +25,36 @@ public class JSONObjectTypeTest extends TestCase {
         JSONObject json;
 
         json = new JSONObject(statusJsonText);
-        if (JSONObjectType.determine(json) != JSONObjectType.STATUS) {
+        if (JSONObjectType.determine(json) != JSONObjectType.Type.STATUS) {
             throw new Exception("JSONObjectType.determine failed for STATUS");
         }
-        System.out.println("STATUS passed");
 
         json = new JSONObject(deleteJsonText);
-        if (JSONObjectType.determine(json) != JSONObjectType.DELETE) {
+        if (JSONObjectType.determine(json) != JSONObjectType.Type.DELETE) {
             throw new Exception("JSONObjectType.determine failed for DELETE");
         }
-        System.out.println("DELETE passed");
 
         json = new JSONObject(scrubGeoJsonText);
-        if (JSONObjectType.determine(json) != JSONObjectType.SCRUB_GEO) {
+        if (JSONObjectType.determine(json) != JSONObjectType.Type.SCRUB_GEO) {
             throw new Exception("JSONObjectType.determine failed for SCRUB_GEO");
         }
-        System.out.println("SCRUB_GEO passed");
 
         json = new JSONObject(limitJsonText);
-        if (JSONObjectType.determine(json) != JSONObjectType.LIMIT) {
+        if (JSONObjectType.determine(json) != JSONObjectType.Type.LIMIT) {
             throw new Exception("JSONObjectType.determine failed for LIMIT");
         }
-        System.out.println("LIMIT passed");
 
         json = new JSONObject(randomJsonText);
-        if (JSONObjectType.determine(json) != null) {
+        if (JSONObjectType.determine(json) != JSONObjectType.Type.UNKNOWN) {
             throw new Exception("JSONObjectType.determine failed for random");
         }
-        System.out.println("Random passed");
+
+        String disconnectionNotice = "{\"disconnect\":{\"code\":3,\"stream_name\":\"yusuke-sitestream6139-yusuke\",\"reason\":\"control request for yusuke-sitestream6139 106.171.17.29 /1.1/site.json sitestream\"}}";
+        json = new JSONObject(disconnectionNotice);
+        if (JSONObjectType.determine(json) != JSONObjectType.Type.DISCONNECTION) {
+            throw new Exception("JSONObjectType.determine failed for random");
+        }
+
     }
 }
 

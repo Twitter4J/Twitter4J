@@ -17,20 +17,11 @@
 package twitter4j;
 
 import junit.framework.TestCase;
-import twitter4j.internal.http.HttpParameter;
 
 public class PagingTest extends TestCase {
 
     public PagingTest(String name) {
         super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
     }
 
     public void testPaging() throws Exception {

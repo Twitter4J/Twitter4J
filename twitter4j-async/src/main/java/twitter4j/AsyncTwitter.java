@@ -16,6 +16,9 @@
 package twitter4j;
 
 import twitter4j.api.*;
+import twitter4j.auth.AsyncOAuth2Support;
+import twitter4j.auth.AsyncOAuthSupport;
+import twitter4j.auth.OAuth2Support;
 import twitter4j.auth.OAuthSupport;
 
 /**
@@ -24,29 +27,24 @@ import twitter4j.auth.OAuthSupport;
  */
 public interface AsyncTwitter extends java.io.Serializable,
         OAuthSupport,
+        OAuth2Support,
+        AsyncOAuthSupport,
+        AsyncOAuth2Support,
         TwitterBase,
-        SearchMethodsAsync,
-        TrendsMethodsAsync,
-        TimelineMethodsAsync,
-        StatusMethodsAsync,
-        UserMethodsAsync,
-        ListMethodsAsync,
-        ListMembersMethodsAsync,
-        ListSubscribersMethodsAsync,
-        DirectMessageMethodsAsync,
-        FriendshipMethodsAsync,
-        FriendsFollowersMethodsAsync,
-        AccountMethodsAsync,
-        FavoriteMethodsAsync,
-        NotificationMethodsAsync,
-        BlockMethodsAsync,
-        SpamReportingMethodsAsync,
-        SavedSearchesMethodsAsync,
-        LocalTrendsMethodsAsync,
-        GeoMethodsAsync,
-        LegalResourcesAsync,
-        NewTwitterMethodsAsync,
-        HelpMethodsAsync {
+        TimelinesResourcesAsync,
+        TweetsResourcesAsync,
+        SearchResourceAsync,
+        DirectMessagesResourcesAsync,
+        FriendsFollowersResourcesAsync,
+        UsersResourcesAsync,
+        SuggestedUsersResourcesAsync,
+        FavoritesResourcesAsync,
+        ListsResourcesAsync,
+        SavedSearchesResourcesAsync,
+        PlacesGeoResourcesAsync,
+        TrendsResourcesAsync,
+        SpamReportingResourceAsync,
+        HelpResourcesAsync {
 
     /**
      * Adds twitter listener
@@ -54,4 +52,11 @@ public interface AsyncTwitter extends java.io.Serializable,
      * @param listener TwitterListener
      */
     void addListener(TwitterListener listener);
+
+    /**
+     * Shuts down internal dispatcher thread shared across all AsyncTwitter instances.<br>
+     *
+     * @since Twitter4J 2.1.9
+     */
+    void shutdown();
 }

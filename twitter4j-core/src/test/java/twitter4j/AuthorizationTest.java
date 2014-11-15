@@ -18,7 +18,9 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.auth.NullAuthorization;
+import twitter4j.auth.OAuth2Authorization;
 import twitter4j.auth.OAuthAuthorization;
+import twitter4j.conf.ConfigurationBuilder;
 
 
 /**
@@ -61,5 +63,24 @@ public class AuthorizationTest extends TwitterTestBase {
 
         Authorization auth = twitter.getAuthorization();
         assertTrue(auth instanceof OAuthAuthorization);
+    }
+
+    public void testOAuth2Instance() throws Exception {
+        String consumerSecret = p.getProperty("browser.oauth.consumerSecret");
+        String consumerKey = p.getProperty("browser.oauth.consumerSecret");
+
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setApplicationOnlyAuthEnabled(true);
+
+        Twitter twitter = new TwitterFactory(cb.build()).getInstance();
+        twitter.setOAuthConsumer(consumerKey, consumerSecret);
+        try {
+            twitter.setOAuthConsumer(consumerSecret, consumerKey);
+            fail("should throw IllegalStateException");
+        } catch (IllegalStateException ignore) {
+        }
+
+        Authorization auth = twitter.getAuthorization();
+        assertTrue(auth instanceof OAuth2Authorization);
     }
 }

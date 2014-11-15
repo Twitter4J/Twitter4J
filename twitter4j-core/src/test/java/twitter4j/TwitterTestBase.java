@@ -18,7 +18,6 @@ package twitter4j;
 
 import junit.framework.TestCase;
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.PropertyConfiguration;
 
 import java.io.InputStream;
@@ -30,9 +29,9 @@ public class TwitterTestBase extends TestCase {
     }
 
     protected Twitter twitter1, twitter2, twitter3,
-            unauthenticated, twitterAPIBestFriend1, twitterAPIBestFriend2,
-            rwPrivateMessage;
-    protected Properties p = new Properties();
+            twitterAPIBestFriend1, twitterAPIBestFriend2,
+            rwPrivateMessage, readonly;
+    protected final Properties p = new Properties();
 
     protected String numberId, numberPass, followsOneWay;
     protected int numberIdId;
@@ -40,11 +39,11 @@ public class TwitterTestBase extends TestCase {
     protected Configuration conf1, conf2, conf3;
 
     protected class TestUserInfo {
-        public String screenName;
-        public String password;
-        public long id;
-        public String accessToken;
-        public String accessTokenSecret;
+        public final String screenName;
+        public final String password;
+        public final long id;
+        public final String accessToken;
+        public final String accessTokenSecret;
 
         TestUserInfo(String screenName) {
             this.screenName = p.getProperty(screenName + ".user");
@@ -98,9 +97,13 @@ public class TwitterTestBase extends TestCase {
 
         twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
 
-        unauthenticated = new TwitterFactory(new ConfigurationBuilder().setJSONStoreEnabled(true).build()).getInstance();
-
         followsOneWay = p.getProperty("followsOneWay");
+
+        readonly = new TwitterFactory(new PropertyConfiguration(p, "/readonly")).getInstance();
+    }
+
+    public void testDummy() {
+        // just to suppress warning
     }
 
     protected void tearDown() throws Exception {

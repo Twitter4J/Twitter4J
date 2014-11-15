@@ -21,6 +21,8 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
+import java.util.Map;
+
 /**
  * Gets rate limit status.
  *
@@ -35,12 +37,15 @@ public final class GetRateLimitStatus {
     public static void main(String[] args) {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            RateLimitStatus rateLimitStatus = twitter.getRateLimitStatus();
-            System.out.println("HourlyLimit: " + rateLimitStatus.getHourlyLimit());
-            System.out.println("RemainingHits: " + rateLimitStatus.getRemainingHits());
-            System.out.println("ResetTime: " + rateLimitStatus.getResetTime());
-            System.out.println("ResetTimeInSeconds: " + rateLimitStatus.getResetTimeInSeconds());
-            System.out.println("SecondsUntilReset: " + rateLimitStatus.getSecondsUntilReset());
+            Map<String ,RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus();
+            for (String endpoint : rateLimitStatus.keySet()) {
+                RateLimitStatus status = rateLimitStatus.get(endpoint);
+                System.out.println("Endpoint: " + endpoint);
+                System.out.println(" Limit: " + status.getLimit());
+                System.out.println(" Remaining: " + status.getRemaining());
+                System.out.println(" ResetTimeInSeconds: " + status.getResetTimeInSeconds());
+                System.out.println(" SecondsUntilReset: " + status.getSecondsUntilReset());
+            }
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

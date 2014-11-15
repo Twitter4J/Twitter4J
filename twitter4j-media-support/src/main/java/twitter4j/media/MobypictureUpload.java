@@ -16,12 +16,12 @@
 
 package twitter4j.media;
 
+import twitter4j.HttpParameter;
+import twitter4j.JSONException;
+import twitter4j.JSONObject;
 import twitter4j.TwitterException;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 
 /**
  * @author withgod - noname at withgod.jp
@@ -57,9 +57,9 @@ class MobypictureUpload extends AbstractImageUploadImpl {
     @Override
     protected void preUpload() throws TwitterException {
         uploadUrl = "https://api.mobypicture.com/2.0/upload.json";
-        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader(TWITTER_VERIFY_CREDENTIALS_JSON);
+        String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader();
 
-        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON);
+        headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON_V1_1);
         headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
 
         if (null == apiKey) {

@@ -15,30 +15,23 @@
  */
 package twitter4j;
 
-import junit.framework.TestCase;
-import twitter4j.conf.ConfigurationBuilder;
-
 /**
  * Integration tests for APIStatistics ensuring that the integration logic
  * in Twitter (API client) works.
  *
  * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
  */
-public class MBeansIntegrationTest extends TestCase {
-    private Twitter twitter;
+public class MBeansIntegrationTest extends TwitterTestBase {
 
-    @Override
-    protected void setUp()
-            throws Exception {
-        super.setUp();
-        twitter = new TwitterFactory(new ConfigurationBuilder().setMBeanEnabled(true).build()).getInstance();
+    public MBeansIntegrationTest(String name) {
+        super(name);
     }
 
     public void testMonitoringIntegration() throws Exception {
         // monitoring is turned on with mbeanEnabled=true
         TwitterAPIMonitor monitor = TwitterAPIMonitor.getInstance();
-        assertEquals(0, monitor.getStatistics().getCallCount());
-        twitter.getDailyTrends();
-        assertEquals(1, monitor.getStatistics().getCallCount());
+        long count = monitor.getStatistics().getCallCount();
+        twitter1.getHomeTimeline();
+        assertEquals(count + 1, monitor.getStatistics().getCallCount());
     }
 }

@@ -22,7 +22,7 @@ import java.io.IOException;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-public interface StatusStream extends StreamImplementation {
+interface StatusStream {
 
     /**
      * Reads next status from this stream.

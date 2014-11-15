@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j</artifactId>
-    <version>2.2.7-SNAPSHOT</version>
+    <version>4.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>twitter4j</name>
     <description>A Java library for the Twitter API</description>
@@ -35,8 +35,8 @@
         </developer>
     </developers>
     <issueManagement>
-        <system>Jira</system>
-        <url>http://twitter4j.org/jira/browse/TFJ</url>
+        <system>YouTrack</system>
+        <url>http://issue.twitter4j.org/youtrack/issues?q=project%3A+Twitter4J</url>
     </issueManagement>
     <mailingLists>
         <mailingList>
@@ -76,7 +76,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.0-alpha-4</version>
+                        <version>1.4</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -96,8 +96,8 @@
         <module>twitter4j-core</module>
         <module>twitter4j-examples</module>
         <module>twitter4j-appengine</module>
+        <module>twitter4j-spdy-support</module>
         <module>twitter4j-stream</module>
-        <module>twitter4j-httpclient-support</module>
         <module>twitter4j-media-support</module>
     </modules>
 </project>

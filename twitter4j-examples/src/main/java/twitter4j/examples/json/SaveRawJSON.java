@@ -16,17 +16,9 @@
 
 package twitter4j.examples.json;
 
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.json.DataObjectFactory;
+import twitter4j.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -47,7 +39,7 @@ public final class SaveRawJSON {
             new File("statuses").mkdir();
             List<Status> statuses = twitter.getHomeTimeline();
             for (Status status : statuses) {
-                String rawJSON = DataObjectFactory.getRawJSON(status);
+                String rawJSON = TwitterObjectFactory.getRawJSON(status);
                 String fileName = "statuses/" + status.getId() + ".json";
                 storeJSON(rawJSON, fileName);
                 System.out.println(fileName + " - " + status.getText());

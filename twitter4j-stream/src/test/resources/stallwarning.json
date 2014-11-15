@@ -1,0 +1,1 @@
+{"warning":{"code":"FALLING_BEHIND","message":"Your connection is falling behind and messages are being queued for delivery to you. Your queue is now over 60% full. You will be disconnected when the queue is full.","percent_full": 60}}

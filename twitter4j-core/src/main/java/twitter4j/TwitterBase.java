@@ -75,9 +75,4 @@ public interface TwitterBase {
      * @since Twitter4J 2.1.8
      */
     Configuration getConfiguration();
-
-    /**
-     * Shuts down this instance and releases allocated resources.
-     */
-    void shutdown();
 }

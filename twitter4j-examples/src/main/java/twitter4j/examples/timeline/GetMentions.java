@@ -16,11 +16,7 @@
 
 package twitter4j.examples.timeline;
 
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
+import twitter4j.*;
 
 import java.util.List;
 
@@ -39,7 +35,7 @@ public class GetMentions {
         Twitter twitter = new TwitterFactory().getInstance();
         try {
             User user = twitter.verifyCredentials();
-            List<Status> statuses = twitter.getMentions();
+            List<Status> statuses = twitter.getMentionsTimeline();
             System.out.println("Showing @" + user.getScreenName() + "'s mentions.");
             for (Status status : statuses) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());

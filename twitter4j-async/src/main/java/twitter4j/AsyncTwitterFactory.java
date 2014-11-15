@@ -33,8 +33,8 @@ import twitter4j.conf.ConfigurationContext;
  * @since Twitter4J 2.1.0
  */
 public final class AsyncTwitterFactory implements java.io.Serializable {
+    private static final long serialVersionUID = 1394946919393640158L;
     private final Configuration conf;
-    private static final long serialVersionUID = -2565686715640816219L;
     private static final AsyncTwitter SINGLETON;
 
     static {
@@ -106,6 +106,16 @@ public final class AsyncTwitterFactory implements java.io.Serializable {
      */
     public AsyncTwitter getInstance(Authorization auth) {
         return new AsyncTwitterImpl(conf, auth);
+    }
+
+    /**
+     * a kind of copy factory method constructs an AsyncTwitter from Twitter instance
+     *
+     * @param twitter Twitter instance
+     * @return an instance
+     */
+    public AsyncTwitter getInstance(Twitter twitter) {
+        return new AsyncTwitterImpl(twitter.getConfiguration(), twitter.getAuthorization());
     }
 
     /**

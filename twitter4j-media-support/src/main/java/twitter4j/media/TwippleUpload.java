@@ -16,10 +16,10 @@
 
 package twitter4j.media;
 
+import twitter4j.HttpParameter;
 import twitter4j.TwitterException;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpParameter;
 
 /**
  * @author withgod - noname at withgod.jp
@@ -39,11 +39,11 @@ class TwippleUpload extends AbstractImageUploadImpl {
         }
 
         String response = httpResponse.asString();
-        if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
+        if (response.contains("<rsp stat=\"fail\">")) {
             String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
             throw new TwitterException("Twipple image upload failed with this error message: " + error, httpResponse);
         }
-        if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
+        if (response.contains("<rsp stat=\"ok\">")) {
             return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
         }
 
@@ -53,7 +53,7 @@ class TwippleUpload extends AbstractImageUploadImpl {
     @Override
     protected void preUpload() throws TwitterException {
         uploadUrl = "http://p.twipple.jp/api/upload";
-        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML);
+        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_JSON_V1_1);
 
         this.postParameter = new HttpParameter[]{
                 new HttpParameter("verify_url", signedVerifyCredentialsURL),

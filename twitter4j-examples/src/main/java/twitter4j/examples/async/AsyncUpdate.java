@@ -16,12 +16,9 @@
 
 package twitter4j.examples.async;
 
-import twitter4j.AsyncTwitter;
-import twitter4j.AsyncTwitterFactory;
-import twitter4j.Status;
-import twitter4j.TwitterAdapter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterMethod;
+import twitter4j.*;
+
+import static twitter4j.TwitterMethod.UPDATE_STATUS;
 
 /**
  * <p>This is a code example of Twitter4J async API.<br>
@@ -33,12 +30,8 @@ import twitter4j.TwitterMethod;
 public final class AsyncUpdate {
     /**
      * Main entry for this application.
-     *
-     * @param args String[] TwitterID TwitterPassword StatusString
-     * @throws InterruptedException
      */
-
-    static final Object LOCK = new Object();
+    private static final Object LOCK = new Object();
 
     public static void main(String[] args) throws InterruptedException {
         if (args.length < 1) {

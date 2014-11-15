@@ -16,12 +16,12 @@
 
 package twitter4j.media;
 
+import twitter4j.HttpParameter;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpParameter;
 
 /**
  * @author Rémy Rakic - remy.rakic at gmail.com
@@ -43,11 +43,11 @@ class YFrogUpload extends AbstractImageUploadImpl {
         }
 
         String response = httpResponse.asString();
-        if (-1 != response.indexOf("<rsp stat=\"fail\">")) {
+        if (response.contains("<rsp stat=\"fail\">")) {
             String error = response.substring(response.indexOf("msg") + 5, response.lastIndexOf("\""));
             throw new TwitterException("YFrog image upload failed with this error message: " + error, httpResponse);
         }
-        if (-1 != response.indexOf("<rsp stat=\"ok\">")) {
+        if (response.contains("<rsp stat=\"ok\">")) {
             return response.substring(response.indexOf("<mediaurl>") + "<mediaurl>".length(), response.indexOf("</mediaurl>"));
         }
 
@@ -56,8 +56,8 @@ class YFrogUpload extends AbstractImageUploadImpl {
 
     @Override
     protected void preUpload() throws TwitterException {
-        uploadUrl = "https://yfrog.com/api/upload";
-        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL(TWITTER_VERIFY_CREDENTIALS_XML);
+        uploadUrl = "https://yfrog.com/api/xauth_upload";
+        String signedVerifyCredentialsURL = generateVerifyCredentialsAuthorizationURL("https://api.twitter.com/1.1/account/verify_credentials.xml");
         Twitter tw = new TwitterFactory().getInstance(this.oauth);
 
         HttpParameter[] params = {

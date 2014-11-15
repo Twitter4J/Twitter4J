@@ -18,14 +18,9 @@ package twitter4j.examples.json;
 
 import twitter4j.Status;
 import twitter4j.TwitterException;
-import twitter4j.json.DataObjectFactory;
+import twitter4j.TwitterObjectFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * Example application that load raw JSON forms from statuses/ directory and dump status texts.
@@ -47,7 +42,7 @@ public final class LoadRawJSON {
             });
             for (File file : files) {
                 String rawJSON = readFirstLine(file);
-                Status status = DataObjectFactory.createStatus(rawJSON);
+                Status status = TwitterObjectFactory.createStatus(rawJSON);
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             }
             System.exit(0);

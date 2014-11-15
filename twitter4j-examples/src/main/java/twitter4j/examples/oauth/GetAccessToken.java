@@ -23,14 +23,7 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
@@ -100,6 +93,7 @@ public class GetAccessToken {
                 System.out.println(requestToken.getAuthorizationURL());
                 try {
                     Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
+                } catch (UnsupportedOperationException ignore) {
                 } catch (IOException ignore) {
                 } catch (URISyntaxException e) {
                     throw new AssertionError(e);

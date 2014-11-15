@@ -16,11 +16,7 @@
 
 package twitter4j.examples.account;
 
-import twitter4j.AccountSettings;
-import twitter4j.Location;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 
 /**
  * Gets account settings.
@@ -31,7 +27,7 @@ public final class GetAccountSettings {
     /**
      * Usage: java twitter4j.examples.account.GetAccountSettings
      *
-     * @param args
+     * @param args arguments doesn't take effect with this example
      */
     public static void main(String[] args) {
         try {
@@ -41,6 +37,7 @@ public final class GetAccountSettings {
             System.out.println("Sleep end time: " + settings.getSleepEndTime());
             System.out.println("Sleep start time: " + settings.getSleepStartTime());
             System.out.println("Geo enabled: " + settings.isGeoEnabled());
+            System.out.println("Screen name: " + settings.getScreenName());
             System.out.println("Listing trend locations:");
             Location[] locations = settings.getTrendLocations();
             for (Location location : locations) {

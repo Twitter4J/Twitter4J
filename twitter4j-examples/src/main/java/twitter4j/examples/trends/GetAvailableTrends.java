@@ -16,12 +16,7 @@
 
 package twitter4j.examples.trends;
 
-import twitter4j.GeoLocation;
-import twitter4j.Location;
-import twitter4j.ResponseList;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 
 /**
  * Shows the locations that Twitter has trending topic information for.
@@ -30,7 +25,7 @@ import twitter4j.TwitterFactory;
  */
 public final class GetAvailableTrends {
     /**
-     * Usage: java twitter4j.examples.trends.GetAvailableTrends [latitude longitude]
+     * Usage: java twitter4j.examples.trends.GetAvailableTrends
      *
      * @param args message
      */
@@ -38,12 +33,7 @@ public final class GetAvailableTrends {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             ResponseList<Location> locations;
-            if (args.length >= 2) {
-                locations = twitter.getAvailableTrends(new GeoLocation(Double.parseDouble(args[0])
-                        , Double.parseDouble(args[1])));
-            } else {
-                locations = twitter.getAvailableTrends();
-            }
+            locations = twitter.getAvailableTrends();
             System.out.println("Showing available trends");
             for (Location location : locations) {
                 System.out.println(location.getName() + " (woeid:" + location.getWoeid() + ")");

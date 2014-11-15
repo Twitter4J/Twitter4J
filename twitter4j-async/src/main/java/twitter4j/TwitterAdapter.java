@@ -17,7 +17,12 @@
 
 package twitter4j;
 
-import twitter4j.api.HelpMethods;
+import twitter4j.api.HelpResources;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuth2Token;
+import twitter4j.auth.RequestToken;
+
+import java.util.Map;
 
 /**
  * A handy adapter of TwitterListener.
@@ -27,550 +32,398 @@ import twitter4j.api.HelpMethods;
  * @see twitter4j.TwitterListener
  */
 public class TwitterAdapter implements TwitterListener {
-    public TwitterAdapter() {
-    }
-
-    /*Search API Methods*/
-    public void searched(QueryResult result) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    public void gotCurrentTrends(Trends trends) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    public void gotDailyTrends(ResponseList<Trends> trendsList) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    public void gotWeeklyTrends(ResponseList<Trends> trendsList) {
-    }
-
-    /*Timeline Methods*/
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    public void gotHomeTimeline(ResponseList<Status> statuses) {
-    }
-
-    public void gotUserTimeline(ResponseList<Status> statuses) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
+    /* Timelines Resources */
+    @Override
     public void gotMentions(ResponseList<Status> statuses) {
     }
 
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    public void gotRetweetedByMe(ResponseList<Status> statuses) {
+    @Override
+    public void gotHomeTimeline(ResponseList<Status> statuses) {
     }
 
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    public void gotRetweetedToMe(ResponseList<Status> statuses) {
+    @Override
+    public void gotUserTimeline(ResponseList<Status> statuses) {
     }
 
-    /**
-     * @since Twitter4J 2.0.10
-     */
+    @Override
     public void gotRetweetsOfMe(ResponseList<Status> statuses) {
     }
 
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    public void gotRetweetedByUser(ResponseList<Status> statuses) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    public void gotRetweetedToUser(ResponseList<Status> statuses) {
-    }
-
-    /*Status Methods*/
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    public void gotShowStatus(Status statuses) {
-    }
-
-    public void updatedStatus(Status statuses) {
-    }
-
-    public void destroyedStatus(Status destroyedStatus) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    public void retweetedStatus(Status retweetedStatus) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
+    /* Tweets Resources */
+    @Override
     public void gotRetweets(ResponseList<Status> retweets) {
     }
 
-    /**
-     * @since Twitter4J 2.1.3
-     */
-    public void gotRetweetedBy(ResponseList<User> users) {
-
+    @Override
+    public void gotShowStatus(Status status) {
     }
 
-    /**
-     * @since Twitter4J 2.1.3
-     */
-    public void gotRetweetedByIDs(IDs ids) {
-
+    @Override
+    public void destroyedStatus(Status destroyedStatus) {
     }
 
-    /*User Methods*/
-    public void gotUserDetail(User user) {
+    @Override
+    public void updatedStatus(Status status) {
     }
 
-    /**
-     * @since Twitter4J 2.1.1
-     */
-    public void lookedupUsers(ResponseList<User> users) {
+    @Override
+    public void retweetedStatus(Status retweetedStatus) {
     }
 
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void searchedUser(ResponseList<User> userList) {
+    @Override
+    public void gotOEmbed(OEmbed oembed) {
     }
 
-    /**
-     * @since Twitter4J 2.1.1
-     */
-    public void gotSuggestedUserCategories(ResponseList<Category> categories) {
+    @Override
+    public void lookedup(ResponseList<Status> statuses) {
     }
 
-    /**
-     * @since Twitter4J 2.1.1
-     */
-    public void gotUserSuggestions(ResponseList<User> users) {
+    /* Search Resources */
+    @Override
+    public void searched(QueryResult queryResult) {
     }
 
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    public void gotMemberSuggestions(ResponseList<User> users) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    public void gotProfileImage(ProfileImage image) {
-    }
-
-    /*List Methods*/
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void createdUserList(UserList userList) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void updatedUserList(UserList userList) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void gotUserLists(PagableResponseList<UserList> userLists) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void gotShowUserList(UserList userList) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void destroyedUserList(UserList userList) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void gotUserListStatuses(ResponseList<Status> statuses) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    public void gotAllUserLists(ResponseList<UserList> lists) {
-    }
-
-    /*List Members Methods*/
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void gotUserListMembers(PagableResponseList<User> users) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void addedUserListMember(UserList userList) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    public void addedUserListMembers(UserList userList) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void deletedUserListMember(UserList userList) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void checkedUserListMembership(User user) {
-    }
-
-    /*List Subscribers Methods*/
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void gotUserListSubscribers(PagableResponseList<User> users) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void subscribedUserList(UserList userList) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void unsubscribedUserList(UserList userList) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void checkedUserListSubscription(User user) {
-    }
-
-    /*Direct Message Methods*/
+    /* Direct Messages Resources */
+    @Override
     public void gotDirectMessages(ResponseList<DirectMessage> messages) {
     }
 
+    @Override
     public void gotSentDirectMessages(ResponseList<DirectMessage> messages) {
     }
 
-    public void sentDirectMessage(DirectMessage message) {
+    @Override
+    public void gotDirectMessage(DirectMessage message) {
     }
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
+    @Override
     public void destroyedDirectMessage(DirectMessage message) {
     }
 
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    public void gotDirectMessage(DirectMessage message) {
-    }
-    /*Friendship Methods*/
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    public void createdFriendship(User user) {
+    @Override
+    public void sentDirectMessage(DirectMessage message) {
     }
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    public void destroyedFriendship(User user) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    public void gotExistsFriendship(boolean exists) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void gotShowFriendship(Relationship relationship) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.2
-     */
-    public void gotIncomingFriendships(IDs ids) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.2
-     */
-    public void gotOutgoingFriendships(IDs ids) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    public void lookedUpFriendships(ResponseList<Friendship> friendships) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    public void updatedFriendship(Relationship relationship) {
-    }
-
-    /**
-     * @since
-     */
-    public void gotNoRetweetIds(IDs ids) {
-    }
-
-    /*Social Graph Methods*/
+    /* Friends & Followers Resources */
+    @Override
     public void gotFriendsIDs(IDs ids) {
     }
 
+    @Override
     public void gotFollowersIDs(IDs ids) {
     }
 
-    /*Account Methods*/
-
-    public void verifiedCredentials(User user) {
+    @Override
+    public void lookedUpFriendships(ResponseList<Friendship> friendships) {
     }
 
-    public void gotRateLimitStatus(RateLimitStatus status) {
+    @Override
+    public void gotIncomingFriendships(IDs ids) {
     }
 
-    public void updatedProfileColors(User user) {
+    @Override
+    public void gotOutgoingFriendships(IDs ids) {
     }
 
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    public void gotAccountTotals(AccountTotals totals) {
+    @Override
+    public void createdFriendship(User user) {
     }
 
-    /**
-     * @since Twitter4J 2.1.9
-     */
+    @Override
+    public void destroyedFriendship(User user) {
+    }
+
+    @Override
+    public void updatedFriendship(Relationship relationship) {
+    }
+
+    @Override
+    public void gotShowFriendship(Relationship relationship) {
+    }
+
+    @Override
+    public void gotFriendsList(PagableResponseList<User> users) {
+    }
+
+    @Override
+    public void gotFollowersList(PagableResponseList<User> users) {
+    }
+
+    /* Users Resources */
+    @Override
     public void gotAccountSettings(AccountSettings settings) {
     }
 
-    /**
-     * @param settings account settings
-     * @since Twitter4J 2.2.4
-     */
+    @Override
+    public void verifiedCredentials(User user) {
+    }
+
+    @Override
     public void updatedAccountSettings(AccountSettings settings) {
     }
 
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void updatedProfileImage(User user) {
-    }
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    public void updatedProfileBackgroundImage(User user) {
-    }
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
+    // updatedDeliveryDevice
+    @Override
     public void updatedProfile(User user) {
     }
 
-    /*Favorite Methods*/
-    public void gotFavorites(ResponseList<Status> statuses) {
+    @Override
+    public void updatedProfileBackgroundImage(User user) {
     }
 
-    public void createdFavorite(Status status) {
+    @Override
+    public void updatedProfileColors(User user) {
     }
 
-    public void destroyedFavorite(Status status) {
+    @Override
+    public void updatedProfileImage(User user) {
     }
 
-    /*Notification Methods*/
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    public void enabledNotification(User user) {
+    @Override
+    public void gotBlocksList(ResponseList<User> blockingUsers) {
     }
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    public void disabledNotification(User user) {
+    @Override
+    public void gotBlockIDs(IDs blockingUsersIDs) {
     }
-    /*Block Methods*/
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
+    @Override
     public void createdBlock(User user) {
     }
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
+    @Override
     public void destroyedBlock(User user) {
     }
 
-    /**
-     * @since Twitter4J 2.0.4
-     */
-    public void gotExistsBlock(boolean blockExists) {
+    @Override
+    public void lookedupUsers(ResponseList<User> users) {
     }
 
-    /**
-     * @since Twitter4J 2.0.4
-     */
-    public void gotBlockingUsers(ResponseList<User> blockingUsers) {
+    @Override
+    public void gotUserDetail(User user) {
     }
 
-    /**
-     * @since Twitter4J 2.0.4
-     */
-    public void gotBlockingUsersIDs(IDs blockingUsersIDs) {
+    @Override
+    public void searchedUser(ResponseList<User> userList) {
     }
 
-    /*Spam Reporting Methods*/
-
-    public void reportedSpam(User reportedSpammer) {
+    @Override
+    public void gotContributees(ResponseList<User> users) {
     }
 
-
-    /*Saved Searches Methods*/
-    //getSavedSearches()
-    //showSavedSearch()
-    //createSavedSearch()
-    //destroySavedSearch()
-
-    /*Local Trends Methods*/
-
-    /**
-     * @param locations the locations
-     * @since Twitter4J 2.1.1
-     */
-    public void gotAvailableTrends(ResponseList<Location> locations) {
+    @Override
+    public void gotContributors(ResponseList<User> users) {
     }
 
-    /**
-     * @param trends trends
-     * @since Twitter4J 2.1.1
-     */
-    public void gotLocationTrends(Trends trends) {
+    @Override
+    public void removedProfileBanner() {
     }
 
-    /*Geo Methods*/
-
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    public void searchedPlaces(ResponseList<Place> places) {
+    @Override
+    public void updatedProfileBanner() {
     }
 
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    public void gotSimilarPlaces(SimilarPlaces places) {
+    @Override
+    public void gotMutesList(ResponseList<User> blockingUsers) {
     }
 
-    public void gotReverseGeoCode(ResponseList<Place> places) {
+    @Override
+    public void gotMuteIDs(IDs blockingUsersIDs) {
     }
 
+    @Override
+    public void createdMute(User user) {
+    }
+
+    @Override
+    public void destroyedMute(User user) {
+    }
+
+    /* Suggested Users Resources */
+    @Override
+    public void gotUserSuggestions(ResponseList<User> users) {
+    }
+
+    @Override
+    public void gotSuggestedUserCategories(ResponseList<Category> category) {
+    }
+
+    @Override
+    public void gotMemberSuggestions(ResponseList<User> users) {
+    }
+
+    /* Favorites Resources */
+    @Override
+    public void gotFavorites(ResponseList<Status> statuses) {
+    }
+
+    @Override
+    public void createdFavorite(Status status) {
+    }
+
+    @Override
+    public void destroyedFavorite(Status status) {
+    }
+
+    /* Lists Resources */
+    @Override
+    public void gotUserLists(ResponseList<UserList> userLists) {
+    }
+
+    @Override
+    public void gotUserListStatuses(ResponseList<Status> statuses) {
+    }
+
+    @Override
+    public void destroyedUserListMember(UserList userList) {
+    }
+
+    @Override
+    public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
+    }
+
+    @Override
+    public void gotUserListSubscribers(PagableResponseList<User> users) {
+    }
+
+    @Override
+    public void subscribedUserList(UserList userList) {
+    }
+
+    @Override
+    public void checkedUserListSubscription(User user) {
+    }
+
+    @Override
+    public void unsubscribedUserList(UserList userList) {
+    }
+
+    @Override
+    public void createdUserListMembers(UserList userList) {
+    }
+
+    @Override
+    public void checkedUserListMembership(User users) {
+    }
+
+    @Override
+    public void createdUserListMember(UserList userList) {
+    }
+
+    @Override
+    public void destroyedUserList(UserList userList) {
+    }
+
+    @Override
+    public void updatedUserList(UserList userList) {
+    }
+
+    @Override
+    public void createdUserList(UserList userList) {
+    }
+
+    @Override
+    public void gotShowUserList(UserList userList) {
+    }
+
+    @Override
+    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {
+    }
+
+    @Override
+    public void gotUserListMembers(PagableResponseList<User> users) {
+    }
+
+    /* Saved Searches Resources */
+    @Override
+    public void gotSavedSearches(ResponseList<SavedSearch> savedSearches) {
+    }
+
+    @Override
+    public void gotSavedSearch(SavedSearch savedSearch) {
+    }
+
+    @Override
+    public void createdSavedSearch(SavedSearch savedSearch) {
+    }
+
+    @Override
+    public void destroyedSavedSearch(SavedSearch savedSearch) {
+    }
+
+    /* Places & Geo Resources */
+    @Override
     public void gotGeoDetails(Place place) {
     }
 
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    public void createdPlace(Place place) {
+    @Override
+    public void gotReverseGeoCode(ResponseList<Place> places) {
     }
 
-    /* Legal Resources*/
-
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    public void gotTermsOfService(String tof) {
-
+    @Override
+    public void searchedPlaces(ResponseList<Place> places) {
     }
 
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    public void gotPrivacyPolicy(String privacyPolicy) {
-
+    @Override
+    public void gotSimilarPlaces(ResponseList<Place> places) {
     }
 
-    /* #newtwitter Methods */
-
-    /**
-     *
-     */
-    public void gotRelatedResults(RelatedResults relatedResults) {
+    /* Trends Resources */
+    @Override
+    public void gotPlaceTrends(Trends trends) {
     }
 
-    /*Help Methods*/
-    public void tested(boolean test) {
+    @Override
+    public void gotAvailableTrends(ResponseList<Location> locations) {
     }
 
+    @Override
+    public void gotClosestTrends(ResponseList<Location> locations) {
+    }
+
+    /* Spam Reporting Resources */
+    @Override
+    public void reportedSpam(User reportedSpammer) {
+    }
+
+    /* OAuth Resources */
+    @Override
+    public void gotOAuthRequestToken(RequestToken token) {
+    }
+
+    @Override
+    public void gotOAuthAccessToken(AccessToken token) {
+    }
+
+    /* OAuth2 Resources */
+    @Override
+    public void gotOAuth2Token(OAuth2Token token) {
+    }
+
+    /* Help Resources */
+    @Override
     public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
     }
 
-    public void gotLanguages(ResponseList<HelpMethods.Language> languages) {
+    @Override
+    public void gotLanguages(ResponseList<HelpResources.Language> languages) {
     }
 
-    /**
-     * @param ex     TwitterException
-     * @param method
-     */
-    public void onException(TwitterException ex, TwitterMethod method) {
+    @Override
+    public void gotPrivacyPolicy(String privacyPolicy) {
     }
+
+    @Override
+    public void gotTermsOfService(String tof) {
+    }
+
+    @Override
+    public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
+    }
+
+    @Override
+    public void onException(TwitterException te, TwitterMethod method) {
+    }
+
+
 }

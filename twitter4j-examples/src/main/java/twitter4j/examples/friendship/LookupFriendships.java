@@ -16,11 +16,7 @@
 
 package twitter4j.examples.friendship;
 
-import twitter4j.Friendship;
-import twitter4j.ResponseList;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 
 /**
  * Looks up friendships.

@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,27 +29,27 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class Paging implements java.io.Serializable {
+    private static final long serialVersionUID = -7226113618341047983L;
     private int page = -1;
     private int count = -1;
     private long sinceId = -1;
     private long maxId = -1;
-    private static final long serialVersionUID = -3285857427993796670L;
 
     // since only
-    static char[] S = new char[]{'s'};
+    static final char[] S = new char[]{'s'};
     // since, max_id, count, page
-    static char[] SMCP = new char[]{'s', 'm', 'c', 'p'};
+    static final char[] SMCP = new char[]{'s', 'm', 'c', 'p'};
 
     static final String COUNT = "count";
     // somewhat GET list statuses requires "per_page" instead of "count"
-    // @see <a href="https://dev.twitter.com/docs/api/1/get/:user/lists/:id/statuses">GET :user/lists/:id/statuses | Twitter Developers</a>
+    // @see <a href="https://dev.twitter.com/docs/api/1.1/get/:user/lists/:id/statuses">GET :user/lists/:id/statuses | Twitter Developers</a>
     static final String PER_PAGE = "per_page";
 
     /*package*/ List<HttpParameter> asPostParameterList() {
         return asPostParameterList(SMCP, COUNT);
     }
 
-    private static HttpParameter[] NULL_PARAMETER_ARRAY = new HttpParameter[0];
+    private static final HttpParameter[] NULL_PARAMETER_ARRAY = new HttpParameter[0];
 
     /*package*/ HttpParameter[] asPostParameterArray() {
         List<HttpParameter> list = asPostParameterList(SMCP, COUNT);
@@ -66,7 +64,7 @@ public final class Paging implements java.io.Serializable {
     }
 
 
-    private static List<HttpParameter> NULL_PARAMETER_LIST = new ArrayList<HttpParameter>(0);
+    private static final List<HttpParameter> NULL_PARAMETER_LIST = new ArrayList<HttpParameter>(0);
 
     /**
      * Converts the pagination parameters into a List of PostParameter.<br>

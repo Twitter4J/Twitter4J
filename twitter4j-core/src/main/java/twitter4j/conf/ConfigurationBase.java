@@ -16,13 +16,15 @@
 
 package twitter4j.conf;
 
-import twitter4j.Version;
-import twitter4j.internal.logging.Logger;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
+import twitter4j.HttpClientConfiguration;
+import twitter4j.Logger;
 
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Configuration base class with default settings.
@@ -30,186 +32,199 @@ import java.util.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class ConfigurationBase implements Configuration, java.io.Serializable {
-    private boolean debug;
-    private String userAgent;
-    private String user;
-    private String password;
-    private boolean useSSL;
-    private boolean prettyDebug;
-    private boolean gzipEnabled;
-    private String httpProxyHost;
-    private String httpProxyUser;
-    private String httpProxyPassword;
-    private int httpProxyPort;
-    private int httpConnectionTimeout;
-    private int httpReadTimeout;
+    private static final long serialVersionUID = 6175546394599249696L;
+    private boolean debug = false;
+    private String user = null;
+    private String password = null;
+    private HttpClientConfiguration httpConf;
 
-    private int httpStreamingReadTimeout;
-    private int httpRetryCount;
-    private int httpRetryIntervalSeconds;
-    private int maxTotalConnections;
-    private int defaultMaxPerRoute;
-    private String oAuthConsumerKey;
-    private String oAuthConsumerSecret;
-    private String oAuthAccessToken;
-    private String oAuthAccessTokenSecret;
+    private int httpStreamingReadTimeout = 40 * 1000;
+    private int httpRetryCount = 0;
+    private int httpRetryIntervalSeconds = 5;
 
-    private String oAuthRequestTokenURL;
-    private String oAuthAuthorizationURL;
-    private String oAuthAccessTokenURL;
-    private String oAuthAuthenticationURL;
+    private String oAuthConsumerKey = null;
+    private String oAuthConsumerSecret = null;
+    private String oAuthAccessToken = null;
+    private String oAuthAccessTokenSecret = null;
+    private String oAuth2TokenType;
+    private String oAuth2AccessToken;
+    private String oAuth2Scope;
+    private String oAuthRequestTokenURL = "https://api.twitter.com/oauth/request_token";
+    private String oAuthAuthorizationURL = "https://api.twitter.com/oauth/authorize";
+    private String oAuthAccessTokenURL = "https://api.twitter.com/oauth/access_token";
+    private String oAuthAuthenticationURL = "https://api.twitter.com/oauth/authenticate";
+    private String oAuth2TokenURL = "https://api.twitter.com/oauth2/token";
+    private String oAuth2InvalidateTokenURL = "https://api.twitter.com/oauth2/invalidate_token";
 
-    private String restBaseURL;
-    private String searchBaseURL;
-    private String streamBaseURL;
-    private String userStreamBaseURL;
-    private String siteStreamBaseURL;
-    private String uploadBaseURL;
+    private String restBaseURL = "https://api.twitter.com/1.1/";
+    private String streamBaseURL = "https://stream.twitter.com/1.1/";
+    private String userStreamBaseURL = "https://userstream.twitter.com/1.1/";
+    private String siteStreamBaseURL = "https://sitestream.twitter.com/1.1/";
+    private String uploadBaseURL = "https://upload.twitter.com/1.1/";
 
-    private String dispatcherImpl;
+    private String dispatcherImpl = "twitter4j.DispatcherImpl";
+    private int asyncNumThreads = 1;
 
-    private int asyncNumThreads;
+    private String loggerFactory = null;
 
-    private boolean includeRTsEnabled;
+    private long contributingTo = -1L;
 
-    private boolean includeEntitiesEnabled;
+    private boolean includeMyRetweetEnabled = true;
+    private boolean includeEntitiesEnabled = true;
+    private boolean trimUserEnabled = false;
 
-    private boolean jsonStoreEnabled;
+    private boolean jsonStoreEnabled = false;
 
-    private boolean mbeanEnabled;
+    private boolean mbeanEnabled = false;
 
-    private boolean userStreamRepliesAllEnabled;
+    private boolean userStreamRepliesAllEnabled = false;
+    private boolean userStreamWithFollowingsEnabled = true;
+    private boolean stallWarningsEnabled = true;
 
-    private String mediaProvider;
+    private boolean applicationOnlyAuthEnabled = false;
 
-    private String mediaProviderAPIKey;
+    private String mediaProvider = "TWITTER";
+    private String mediaProviderAPIKey = null;
+    private Properties mediaProviderParameters = null;
+    private boolean daemonEnabled = true;
 
-    private Properties mediaProviderParameters;
-    // hidden portion
-    private String clientVersion;
-    private String clientURL;
-
-    public static final String DALVIK = "twitter4j.dalvik";
-    public static final String GAE = "twitter4j.gae";
-
-    private static final String DEFAULT_OAUTH_REQUEST_TOKEN_URL = "http://api.twitter.com/oauth/request_token";
-    private static final String DEFAULT_OAUTH_AUTHORIZATION_URL = "http://api.twitter.com/oauth/authorize";
-    private static final String DEFAULT_OAUTH_ACCESS_TOKEN_URL = "http://api.twitter.com/oauth/access_token";
-    private static final String DEFAULT_OAUTH_AUTHENTICATION_URL = "http://api.twitter.com/oauth/authenticate";
-
-    private static final String DEFAULT_REST_BASE_URL = "http://api.twitter.com/1/";
-    private static final String DEFAULT_SEARCH_BASE_URL = "http://search.twitter.com/";
-    private static final String DEFAULT_STREAM_BASE_URL = "https://stream.twitter.com/1/";
-    private static final String DEFAULT_USER_STREAM_BASE_URL = "https://userstream.twitter.com/2/";
-    private static final String DEFAULT_SITE_STREAM_BASE_URL = "https://sitestream.twitter.com";
-    private static final String DEFAULT_UPLOAD_BASE_URL = "http://upload.twitter.com/1/";
-
-    private boolean IS_DALVIK;
-    private boolean IS_GAE;
-    private static final long serialVersionUID = -6610497517837844232L;
-
-    static String dalvikDetected;
-    static String gaeDetected;
-
-    static {
-        // detecting dalvik (Android platform)
-        try {
-            // dalvik.system.VMRuntime class should be existing on Android platform.
-            // @see http://developer.android.com/reference/dalvik/system/VMRuntime.html
-            Class.forName("dalvik.system.VMRuntime");
-            dalvikDetected = "true";
-        } catch (ClassNotFoundException cnfe) {
-            dalvikDetected = "false";
-        }
-
-        // detecting Google App Engine
-        try {
-            Class.forName("com.google.appengine.api.urlfetch.URLFetchService");
-            gaeDetected = "true";
-        } catch (ClassNotFoundException cnfe) {
-            gaeDetected = "false";
-        }
-    }
 
     protected ConfigurationBase() {
-        setDebug(false);
-        setUser(null);
-        setPassword(null);
-        setUseSSL(false);
-        setPrettyDebugEnabled(false);
-        setGZIPEnabled(true);
-        setHttpProxyHost(null);
-        setHttpProxyUser(null);
-        setHttpProxyPassword(null);
-        setHttpProxyPort(-1);
-        setHttpConnectionTimeout(20000);
-        setHttpReadTimeout(120000);
-        setHttpStreamingReadTimeout(40 * 1000);
-        setHttpRetryCount(0);
-        setHttpRetryIntervalSeconds(5);
-        setHttpMaxTotalConnections(20);
-        setHttpDefaultMaxPerRoute(2);
-        setOAuthConsumerKey(null);
-        setOAuthConsumerSecret(null);
-        setOAuthAccessToken(null);
-        setOAuthAccessTokenSecret(null);
-        setAsyncNumThreads(1);
-        setClientVersion(Version.getVersion());
-        setClientURL("http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
-        setUserAgent("twitter4j http://twitter4j.org/ /" + Version.getVersion());
-
-        setIncludeRTsEnbled(true);
-
-        setIncludeEntitiesEnbled(true);
-
-        setJSONStoreEnabled(false);
-
-        setMBeanEnabled(false);
-
-        setOAuthRequestTokenURL(DEFAULT_OAUTH_REQUEST_TOKEN_URL);
-        setOAuthAuthorizationURL(DEFAULT_OAUTH_AUTHORIZATION_URL);
-        setOAuthAccessTokenURL(DEFAULT_OAUTH_ACCESS_TOKEN_URL);
-        setOAuthAuthenticationURL(DEFAULT_OAUTH_AUTHENTICATION_URL);
-
-        setRestBaseURL(DEFAULT_REST_BASE_URL);
-        // search api tends to fail with SSL as of 12/31/2009
-        // setSearchBaseURL(fixURL(useSSL, "http://search.twitter.com/"));
-        setSearchBaseURL(DEFAULT_SEARCH_BASE_URL);
-        // streaming api doesn't support SSL as of 12/30/2009
-        // setStreamBaseURL(fixURL(useSSL, "http://stream.twitter.com/1/"));
-        setStreamBaseURL(DEFAULT_STREAM_BASE_URL);
-        setUserStreamBaseURL(DEFAULT_USER_STREAM_BASE_URL);
-        setSiteStreamBaseURL(DEFAULT_SITE_STREAM_BASE_URL);
-        setUploadBaseURL(DEFAULT_UPLOAD_BASE_URL);
-
-        setDispatcherImpl("twitter4j.internal.async.DispatcherImpl");
-
-        setIncludeRTsEnbled(true);
-        setUserStreamRepliesAllEnabled(false);
-        String isDalvik;
-        try {
-            isDalvik = System.getProperty(DALVIK, dalvikDetected);
-        } catch (SecurityException ignore) {
-            // Unsigned applets are not allowed to access System properties
-            isDalvik = dalvikDetected;
-        }
-        IS_DALVIK = Boolean.valueOf(isDalvik);
-
-        String isGAE;
-        try {
-            isGAE = System.getProperty(GAE, gaeDetected);
-        } catch (SecurityException ignore) {
-            // Unsigned applets are not allowed to access System properties
-            isGAE = gaeDetected;
-        }
-        IS_GAE = Boolean.valueOf(isGAE);
-
-        setMediaProvider("TWITTER");
-        setMediaProviderAPIKey(null);
-        setMediaProviderParameters(null);
+        httpConf = new MyHttpClientConfiguration(null // proxy host
+                , null // proxy user
+                , null // proxy password
+                , -1 // proxy port
+                , 20000 // connection timeout
+                , 120000 // read timeout
+                , false // pretty debug
+                , true // gzip enabled
+        );
     }
 
-    public void dumpConfiguration(){
+    class MyHttpClientConfiguration implements HttpClientConfiguration, Serializable {
+        private static final long serialVersionUID = 8226866124868861058L;
+        private String httpProxyHost = null;
+        private String httpProxyUser = null;
+        private String httpProxyPassword = null;
+        private int httpProxyPort = -1;
+        private int httpConnectionTimeout = 20000;
+        private int httpReadTimeout = 120000;
+        private boolean prettyDebug = false;
+        private boolean gzipEnabled = true;
+
+        MyHttpClientConfiguration(String httpProxyHost, String httpProxyUser, String httpProxyPassword, int httpProxyPort, int httpConnectionTimeout, int httpReadTimeout, boolean prettyDebug, boolean gzipEnabled) {
+            this.httpProxyHost = httpProxyHost;
+            this.httpProxyUser = httpProxyUser;
+            this.httpProxyPassword = httpProxyPassword;
+            this.httpProxyPort = httpProxyPort;
+            this.httpConnectionTimeout = httpConnectionTimeout;
+            this.httpReadTimeout = httpReadTimeout;
+            this.prettyDebug = prettyDebug;
+            this.gzipEnabled = gzipEnabled;
+        }
+
+        @Override
+        public String getHttpProxyHost() {
+            return httpProxyHost;
+        }
+
+        @Override
+        public int getHttpProxyPort() {
+            return httpProxyPort;
+        }
+
+        @Override
+        public String getHttpProxyUser() {
+            return httpProxyUser;
+        }
+
+        @Override
+        public String getHttpProxyPassword() {
+            return httpProxyPassword;
+        }
+
+        @Override
+        public int getHttpConnectionTimeout() {
+            return httpConnectionTimeout;
+        }
+
+        @Override
+        public int getHttpReadTimeout() {
+            return httpReadTimeout;
+        }
+
+        @Override
+        public int getHttpRetryCount() {
+            return httpRetryCount;
+        }
+
+        @Override
+        public int getHttpRetryIntervalSeconds() {
+            return httpRetryIntervalSeconds;
+        }
+
+        @Override
+        public boolean isPrettyDebugEnabled() {
+            return prettyDebug;
+        }
+
+        @Override
+        public boolean isGZIPEnabled() {
+            return gzipEnabled;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            MyHttpClientConfiguration that = (MyHttpClientConfiguration) o;
+
+            if (gzipEnabled != that.gzipEnabled) return false;
+            if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
+            if (httpProxyPort != that.httpProxyPort) return false;
+            if (httpReadTimeout != that.httpReadTimeout) return false;
+            if (prettyDebug != that.prettyDebug) return false;
+            if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
+                return false;
+            if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
+                return false;
+            if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
+                return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = httpProxyHost != null ? httpProxyHost.hashCode() : 0;
+            result = 31 * result + (httpProxyUser != null ? httpProxyUser.hashCode() : 0);
+            result = 31 * result + (httpProxyPassword != null ? httpProxyPassword.hashCode() : 0);
+            result = 31 * result + httpProxyPort;
+            result = 31 * result + httpConnectionTimeout;
+            result = 31 * result + httpReadTimeout;
+            result = 31 * result + (prettyDebug ? 1 : 0);
+            result = 31 * result + (gzipEnabled ? 1 : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "MyHttpClientConfiguration{" +
+                    "httpProxyHost='" + httpProxyHost + '\'' +
+                    ", httpProxyUser='" + httpProxyUser + '\'' +
+                    ", httpProxyPassword='" + httpProxyPassword + '\'' +
+                    ", httpProxyPort=" + httpProxyPort +
+                    ", httpConnectionTimeout=" + httpConnectionTimeout +
+                    ", httpReadTimeout=" + httpReadTimeout +
+                    ", prettyDebug=" + prettyDebug +
+                    ", gzipEnabled=" + gzipEnabled +
+                    '}';
+        }
+    }
+
+
+    public void dumpConfiguration() {
         Logger log = Logger.getLogger(ConfigurationBase.class);
         if (debug) {
             Field[] fields = ConfigurationBase.class.getDeclaredFields();
@@ -218,29 +233,16 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                     Object value = field.get(this);
                     String strValue = String.valueOf(value);
                     if (value != null && field.getName().matches("oAuthConsumerSecret|oAuthAccessTokenSecret|password")) {
-                        strValue = z_T4JInternalStringUtil.maskString(String.valueOf(value));
+                        strValue = String.valueOf(value).replaceAll(".", "*");
                     }
                     log.debug(field.getName() + ": " + strValue);
                 } catch (IllegalAccessException ignore) {
                 }
             }
         }
-        if(!includeRTsEnabled){
-            log.warn("includeRTsEnabled is set to false. This configuration may not take effect after May 14th, 2012. https://dev.twitter.com/blog/api-housekeeping");
-        }
-        if(!includeEntitiesEnabled){
-            log.warn("includeEntitiesEnabled is set to false. This configuration may not take effect after May 14th, 2012. https://dev.twitter.com/blog/api-housekeeping");
-        }
     }
 
-    public final boolean isDalvik() {
-        return IS_DALVIK;
-    }
-
-    public boolean isGAE() {
-        return IS_GAE;
-    }
-
+    @Override
     public final boolean isDebugEnabled() {
         return debug;
     }
@@ -249,15 +251,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.debug = debug;
     }
 
-    public final String getUserAgent() {
-        return this.userAgent;
-    }
-
-    protected final void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
-        initRequestHeaders();
-    }
-
+    @Override
     public final String getUser() {
         return user;
     }
@@ -266,108 +260,119 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.user = user;
     }
 
+    @Override
     public final String getPassword() {
         return password;
+    }
+
+    @Override
+    public HttpClientConfiguration getHttpClientConfiguration() {
+        return httpConf;
     }
 
     protected final void setPassword(String password) {
         this.password = password;
     }
 
-    public boolean isPrettyDebugEnabled() {
-        return prettyDebug;
-    }
-
-    protected final void setUseSSL(boolean useSSL) {
-        this.useSSL = useSSL;
-        fixRestBaseURL();
-    }
-
     protected final void setPrettyDebugEnabled(boolean prettyDebug) {
-        this.prettyDebug = prettyDebug;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , prettyDebug
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setGZIPEnabled(boolean gzipEnabled) {
-        this.gzipEnabled = gzipEnabled;
-        initRequestHeaders();
-    }
-
-    public boolean isGZIPEnabled() {
-        return gzipEnabled;
-    }
-
-    // method for HttpRequestFactoryConfiguration
-    Map<String, String> requestHeaders;
-
-    private void initRequestHeaders() {
-        requestHeaders = new HashMap<String, String>();
-        requestHeaders.put("X-Twitter-Client-Version", getClientVersion());
-        requestHeaders.put("X-Twitter-Client-URL", getClientURL());
-        requestHeaders.put("X-Twitter-Client", "Twitter4J");
-
-        requestHeaders.put("User-Agent", getUserAgent());
-        if (gzipEnabled) {
-            requestHeaders.put("Accept-Encoding", "gzip");
-        }
-        if (IS_DALVIK) {
-            requestHeaders.put("Connection", "close");
-        }
-    }
-
-    public Map<String, String> getRequestHeaders() {
-        return requestHeaders;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , gzipEnabled
+        );
     }
 
     // methods for HttpClientConfiguration
 
-    public final String getHttpProxyHost() {
-        return httpProxyHost;
-    }
-
     protected final void setHttpProxyHost(String proxyHost) {
-        this.httpProxyHost = proxyHost;
-    }
-
-    public final String getHttpProxyUser() {
-        return httpProxyUser;
+        httpConf = new MyHttpClientConfiguration(proxyHost
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpProxyUser(String proxyUser) {
-        this.httpProxyUser = proxyUser;
-    }
-
-    public final String getHttpProxyPassword() {
-        return httpProxyPassword;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , proxyUser
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpProxyPassword(String proxyPassword) {
-        this.httpProxyPassword = proxyPassword;
-    }
-
-    public final int getHttpProxyPort() {
-        return httpProxyPort;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , proxyPassword
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpProxyPort(int proxyPort) {
-        this.httpProxyPort = proxyPort;
-    }
-
-    public final int getHttpConnectionTimeout() {
-        return httpConnectionTimeout;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , proxyPort
+                , httpConf.getHttpConnectionTimeout()
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpConnectionTimeout(int connectionTimeout) {
-        this.httpConnectionTimeout = connectionTimeout;
-    }
-
-    public final int getHttpReadTimeout() {
-        return httpReadTimeout;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , connectionTimeout
+                , httpConf.getHttpReadTimeout()
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
     protected final void setHttpReadTimeout(int readTimeout) {
-        this.httpReadTimeout = readTimeout;
+        httpConf = new MyHttpClientConfiguration(httpConf.getHttpProxyHost()
+                , httpConf.getHttpProxyUser()
+                , httpConf.getHttpProxyPassword()
+                , httpConf.getHttpProxyPort()
+                , httpConf.getHttpConnectionTimeout()
+                , readTimeout
+                , httpConf.isPrettyDebugEnabled()
+                , httpConf.isGZIPEnabled()
+        );
     }
 
+    @Override
     public int getHttpStreamingReadTimeout() {
         return httpStreamingReadTimeout;
     }
@@ -376,59 +381,35 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.httpStreamingReadTimeout = httpStreamingReadTimeout;
     }
 
-
-    public final int getHttpRetryCount() {
-        return httpRetryCount;
-    }
-
     protected final void setHttpRetryCount(int retryCount) {
         this.httpRetryCount = retryCount;
-    }
-
-    public final int getHttpRetryIntervalSeconds() {
-        return httpRetryIntervalSeconds;
     }
 
     protected final void setHttpRetryIntervalSeconds(int retryIntervalSeconds) {
         this.httpRetryIntervalSeconds = retryIntervalSeconds;
     }
 
-    public final int getHttpMaxTotalConnections() {
-        return maxTotalConnections;
-    }
-
-    protected final void setHttpMaxTotalConnections(int maxTotalConnections) {
-        this.maxTotalConnections = maxTotalConnections;
-    }
-
-    public final int getHttpDefaultMaxPerRoute() {
-        return defaultMaxPerRoute;
-    }
-
-    protected final void setHttpDefaultMaxPerRoute(int defaultMaxPerRoute) {
-        this.defaultMaxPerRoute = defaultMaxPerRoute;
-    }
-
     // oauth related setter/getters
 
+    @Override
     public final String getOAuthConsumerKey() {
         return oAuthConsumerKey;
     }
 
     protected final void setOAuthConsumerKey(String oAuthConsumerKey) {
         this.oAuthConsumerKey = oAuthConsumerKey;
-        fixRestBaseURL();
     }
 
+    @Override
     public final String getOAuthConsumerSecret() {
         return oAuthConsumerSecret;
     }
 
     protected final void setOAuthConsumerSecret(String oAuthConsumerSecret) {
         this.oAuthConsumerSecret = oAuthConsumerSecret;
-        fixRestBaseURL();
     }
 
+    @Override
     public String getOAuthAccessToken() {
         return oAuthAccessToken;
     }
@@ -437,6 +418,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.oAuthAccessToken = oAuthAccessToken;
     }
 
+    @Override
     public String getOAuthAccessTokenSecret() {
         return oAuthAccessTokenSecret;
     }
@@ -445,6 +427,34 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
     }
 
+    @Override
+    public String getOAuth2TokenType() {
+        return oAuth2TokenType;
+    }
+
+    protected final void setOAuth2TokenType(String oAuth2TokenType) {
+        this.oAuth2TokenType = oAuth2TokenType;
+    }
+
+    @Override
+    public String getOAuth2AccessToken() {
+        return oAuth2AccessToken;
+    }
+
+    @Override
+    public String getOAuth2Scope() {
+        return oAuth2Scope;
+    }
+
+    protected final void setOAuth2AccessToken(String oAuth2AccessToken) {
+        this.oAuth2AccessToken = oAuth2AccessToken;
+    }
+
+    protected final void setOAuth2Scope(String oAuth2Scope) {
+        this.oAuth2Scope = oAuth2Scope;
+    }
+
+    @Override
     public final int getAsyncNumThreads() {
         return asyncNumThreads;
     }
@@ -453,62 +463,34 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.asyncNumThreads = asyncNumThreads;
     }
 
-    public final String getClientVersion() {
-        return clientVersion;
+    @Override
+    public final long getContributingTo() {
+        return contributingTo;
     }
 
-    protected final void setClientVersion(String clientVersion) {
-        this.clientVersion = clientVersion;
-        initRequestHeaders();
+    protected final void setContributingTo(long contributingTo) {
+        this.contributingTo = contributingTo;
     }
 
-    public final String getClientURL() {
-        return clientURL;
-    }
-
-    protected final void setClientURL(String clientURL) {
-        this.clientURL = clientURL;
-        initRequestHeaders();
-    }
-
+    @Override
     public String getRestBaseURL() {
         return restBaseURL;
     }
 
     protected final void setRestBaseURL(String restBaseURL) {
         this.restBaseURL = restBaseURL;
-        fixRestBaseURL();
     }
 
-    private void fixRestBaseURL() {
-        if (DEFAULT_REST_BASE_URL.equals(fixURL(false, restBaseURL))) {
-            this.restBaseURL = fixURL(useSSL, restBaseURL);
-        }
-        if (DEFAULT_OAUTH_ACCESS_TOKEN_URL.equals(fixURL(false, oAuthAccessTokenURL))) {
-            this.oAuthAccessTokenURL = fixURL(useSSL, oAuthAccessTokenURL);
-        }
-        if (DEFAULT_OAUTH_AUTHENTICATION_URL.equals(fixURL(false, oAuthAuthenticationURL))) {
-            this.oAuthAuthenticationURL = fixURL(useSSL, oAuthAuthenticationURL);
-        }
-        if (DEFAULT_OAUTH_AUTHORIZATION_URL.equals(fixURL(false, oAuthAuthorizationURL))) {
-            this.oAuthAuthorizationURL = fixURL(useSSL, oAuthAuthorizationURL);
-        }
-        if (DEFAULT_OAUTH_REQUEST_TOKEN_URL.equals(fixURL(false, oAuthRequestTokenURL))) {
-            this.oAuthRequestTokenURL = fixURL(useSSL, oAuthRequestTokenURL);
-        }
-        if (DEFAULT_SEARCH_BASE_URL.equals(fixURL(false, searchBaseURL))) {
-            this.searchBaseURL = fixURL(useSSL, searchBaseURL);
-        }
+    @Override
+    public String getUploadBaseURL() {
+        return uploadBaseURL;
     }
 
-    public String getSearchBaseURL() {
-        return searchBaseURL;
+    protected final void setUploadBaseURL(String uploadBaseURL) {
+        this.uploadBaseURL = uploadBaseURL;
     }
 
-    protected final void setSearchBaseURL(String searchBaseURL) {
-        this.searchBaseURL = searchBaseURL;
-    }
-
+    @Override
     public String getStreamBaseURL() {
         return streamBaseURL;
     }
@@ -517,6 +499,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.streamBaseURL = streamBaseURL;
     }
 
+    @Override
     public String getUserStreamBaseURL() {
         return userStreamBaseURL;
     }
@@ -525,6 +508,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.userStreamBaseURL = siteStreamBaseURL;
     }
 
+    @Override
     public String getSiteStreamBaseURL() {
         return siteStreamBaseURL;
     }
@@ -533,57 +517,61 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.siteStreamBaseURL = siteStreamBaseURL;
     }
 
-    public String getUploadBaseURL() {
-        return uploadBaseURL;
-    }
-
-    protected final void setUploadBaseURL(String uploadBaseURL) {
-        this.uploadBaseURL = uploadBaseURL;
-        fixUploadBaseURL();
-    }
-
-    private void fixUploadBaseURL() {
-        if (DEFAULT_UPLOAD_BASE_URL.equals(fixURL(false, this.uploadBaseURL))) {
-            this.uploadBaseURL = fixURL(useSSL, this.uploadBaseURL);
-        }
-    }
-
+    @Override
     public String getOAuthRequestTokenURL() {
         return oAuthRequestTokenURL;
     }
 
     protected final void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
         this.oAuthRequestTokenURL = oAuthRequestTokenURL;
-        fixRestBaseURL();
     }
 
+    @Override
     public String getOAuthAuthorizationURL() {
         return oAuthAuthorizationURL;
     }
 
     protected final void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
         this.oAuthAuthorizationURL = oAuthAuthorizationURL;
-        fixRestBaseURL();
     }
 
+    @Override
     public String getOAuthAccessTokenURL() {
         return oAuthAccessTokenURL;
     }
 
     protected final void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
         this.oAuthAccessTokenURL = oAuthAccessTokenURL;
-        fixRestBaseURL();
     }
 
+    @Override
     public String getOAuthAuthenticationURL() {
         return oAuthAuthenticationURL;
     }
 
     protected final void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
         this.oAuthAuthenticationURL = oAuthAuthenticationURL;
-        fixRestBaseURL();
     }
 
+    @Override
+    public String getOAuth2TokenURL() {
+        return oAuth2TokenURL;
+    }
+
+    protected final void setOAuth2TokenURL(String oAuth2TokenURL) {
+        this.oAuth2TokenURL = oAuth2TokenURL;
+    }
+
+    @Override
+    public String getOAuth2InvalidateTokenURL() {
+        return oAuth2InvalidateTokenURL;
+    }
+
+    protected final void setOAuth2InvalidateTokenURL(String oAuth2InvalidateTokenURL) {
+        this.oAuth2InvalidateTokenURL = oAuth2InvalidateTokenURL;
+    }
+
+    @Override
     public String getDispatcherImpl() {
         return dispatcherImpl;
     }
@@ -592,20 +580,47 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.dispatcherImpl = dispatcherImpl;
     }
 
-    public boolean isIncludeRTsEnabled() {
-        return this.includeRTsEnabled;
+    @Override
+    public String getLoggerFactory() {
+        return loggerFactory;
     }
 
-    protected final void setIncludeRTsEnbled(boolean enabled) {
-        this.includeRTsEnabled = enabled;
-    }
-
+    @Override
     public boolean isIncludeEntitiesEnabled() {
-        return this.includeEntitiesEnabled;
+        return includeEntitiesEnabled;
     }
 
-    protected final void setIncludeEntitiesEnbled(boolean enabled) {
-        this.includeEntitiesEnabled = enabled;
+    protected void setIncludeEntitiesEnabled(boolean includeEntitiesEnabled) {
+        this.includeEntitiesEnabled = includeEntitiesEnabled;
+    }
+
+    protected final void setLoggerFactory(String loggerImpl) {
+        this.loggerFactory = loggerImpl;
+    }
+
+    public boolean isIncludeMyRetweetEnabled() {
+        return this.includeMyRetweetEnabled;
+    }
+
+    public void setIncludeMyRetweetEnabled(boolean enabled) {
+        this.includeMyRetweetEnabled = enabled;
+    }
+
+    public boolean isTrimUserEnabled() {
+        return this.trimUserEnabled;
+    }
+
+    @Override
+    public boolean isDaemonEnabled() {
+        return daemonEnabled;
+    }
+
+    protected void setDaemonEnabled(boolean daemonEnabled) {
+        this.daemonEnabled = daemonEnabled;
+    }
+
+    public void setTrimUserEnabled(boolean enabled) {
+        this.trimUserEnabled = enabled;
     }
 
     public boolean isJSONStoreEnabled() {
@@ -616,6 +631,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.jsonStoreEnabled = enabled;
     }
 
+    @Override
     public boolean isMBeanEnabled() {
         return this.mbeanEnabled;
     }
@@ -624,14 +640,43 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.mbeanEnabled = enabled;
     }
 
+    @Override
     public boolean isUserStreamRepliesAllEnabled() {
         return this.userStreamRepliesAllEnabled;
+    }
+
+    @Override
+    public boolean isUserStreamWithFollowingsEnabled() {
+        return this.userStreamWithFollowingsEnabled;
     }
 
     protected final void setUserStreamRepliesAllEnabled(boolean enabled) {
         this.userStreamRepliesAllEnabled = enabled;
     }
 
+    protected final void setUserStreamWithFollowingsEnabled(boolean enabled) {
+        this.userStreamWithFollowingsEnabled = enabled;
+    }
+
+    @Override
+    public boolean isStallWarningsEnabled() {
+        return stallWarningsEnabled;
+    }
+
+    protected final void setStallWarningsEnabled(boolean stallWarningsEnabled) {
+        this.stallWarningsEnabled = stallWarningsEnabled;
+    }
+
+    @Override
+    public boolean isApplicationOnlyAuthEnabled() {
+        return applicationOnlyAuthEnabled;
+    }
+
+    protected final void setApplicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
+        this.applicationOnlyAuthEnabled = applicationOnlyAuthEnabled;
+    }
+
+    @Override
     public String getMediaProvider() {
         return this.mediaProvider;
     }
@@ -640,6 +685,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.mediaProvider = mediaProvider;
     }
 
+    @Override
     public String getMediaProviderAPIKey() {
         return this.mediaProviderAPIKey;
     }
@@ -648,6 +694,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.mediaProviderAPIKey = mediaProviderAPIKey;
     }
 
+    @Override
     public Properties getMediaProviderParameters() {
         return this.mediaProviderParameters;
     }
@@ -673,102 +720,48 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int result = (debug ? 1 : 0);
-        result = 31 * result + (userAgent != null ? userAgent.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (useSSL ? 1 : 0);
-        result = 31 * result + (prettyDebug ? 1 : 0);
-        result = 31 * result + (gzipEnabled ? 1 : 0);
-        result = 31 * result + (httpProxyHost != null ? httpProxyHost.hashCode() : 0);
-        result = 31 * result + (httpProxyUser != null ? httpProxyUser.hashCode() : 0);
-        result = 31 * result + (httpProxyPassword != null ? httpProxyPassword.hashCode() : 0);
-        result = 31 * result + httpProxyPort;
-        result = 31 * result + httpConnectionTimeout;
-        result = 31 * result + httpReadTimeout;
-        result = 31 * result + httpStreamingReadTimeout;
-        result = 31 * result + httpRetryCount;
-        result = 31 * result + httpRetryIntervalSeconds;
-        result = 31 * result + maxTotalConnections;
-        result = 31 * result + defaultMaxPerRoute;
-        result = 31 * result + (oAuthConsumerKey != null ? oAuthConsumerKey.hashCode() : 0);
-        result = 31 * result + (oAuthConsumerSecret != null ? oAuthConsumerSecret.hashCode() : 0);
-        result = 31 * result + (oAuthAccessToken != null ? oAuthAccessToken.hashCode() : 0);
-        result = 31 * result + (oAuthAccessTokenSecret != null ? oAuthAccessTokenSecret.hashCode() : 0);
-        result = 31 * result + (oAuthRequestTokenURL != null ? oAuthRequestTokenURL.hashCode() : 0);
-        result = 31 * result + (oAuthAuthorizationURL != null ? oAuthAuthorizationURL.hashCode() : 0);
-        result = 31 * result + (oAuthAccessTokenURL != null ? oAuthAccessTokenURL.hashCode() : 0);
-        result = 31 * result + (oAuthAuthenticationURL != null ? oAuthAuthenticationURL.hashCode() : 0);
-        result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
-        result = 31 * result + (searchBaseURL != null ? searchBaseURL.hashCode() : 0);
-        result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
-        result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
-        result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
-        result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
-        result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
-        result = 31 * result + asyncNumThreads;
-        result = 31 * result + (includeRTsEnabled ? 1 : 0);
-        result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
-        result = 31 * result + (jsonStoreEnabled ? 1 : 0);
-        result = 31 * result + (mbeanEnabled ? 1 : 0);
-        result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
-        result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
-        result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
-        result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
-        result = 31 * result + (clientVersion != null ? clientVersion.hashCode() : 0);
-        result = 31 * result + (clientURL != null ? clientURL.hashCode() : 0);
-        result = 31 * result + (IS_DALVIK ? 1 : 0);
-        result = 31 * result + (IS_GAE ? 1 : 0);
-        result = 31 * result + (requestHeaders != null ? requestHeaders.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ConfigurationBase)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ConfigurationBase that = (ConfigurationBase) o;
 
+        if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
         if (asyncNumThreads != that.asyncNumThreads) return false;
+        if (contributingTo != that.contributingTo) return false;
+        if (daemonEnabled != that.daemonEnabled) return false;
         if (debug != that.debug) return false;
-        if (defaultMaxPerRoute != that.defaultMaxPerRoute) return false;
-        if (gzipEnabled != that.gzipEnabled) return false;
-        if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
-        if (httpProxyPort != that.httpProxyPort) return false;
-        if (httpReadTimeout != that.httpReadTimeout) return false;
         if (httpRetryCount != that.httpRetryCount) return false;
-        if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds)
-            return false;
-        if (httpStreamingReadTimeout != that.httpStreamingReadTimeout)
-            return false;
+        if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
+        if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
         if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
-        if (includeRTsEnabled != that.includeRTsEnabled) return false;
+        if (includeMyRetweetEnabled != that.includeMyRetweetEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
-        if (maxTotalConnections != that.maxTotalConnections) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
-        if (prettyDebug != that.prettyDebug) return false;
-        if (useSSL != that.useSSL) return false;
-        if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled)
-            return false;
-        if (clientURL != null ? !clientURL.equals(that.clientURL) : that.clientURL != null)
-            return false;
-        if (clientVersion != null ? !clientVersion.equals(that.clientVersion) : that.clientVersion != null)
-            return false;
+        if (stallWarningsEnabled != that.stallWarningsEnabled) return false;
+        if (trimUserEnabled != that.trimUserEnabled) return false;
+        if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled) return false;
+        if (userStreamWithFollowingsEnabled != that.userStreamWithFollowingsEnabled) return false;
         if (dispatcherImpl != null ? !dispatcherImpl.equals(that.dispatcherImpl) : that.dispatcherImpl != null)
             return false;
-        if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
-            return false;
-        if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
-            return false;
-        if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
+        if (httpConf != null ? !httpConf.equals(that.httpConf) : that.httpConf != null) return false;
+        if (loggerFactory != null ? !loggerFactory.equals(that.loggerFactory) : that.loggerFactory != null)
             return false;
         if (mediaProvider != null ? !mediaProvider.equals(that.mediaProvider) : that.mediaProvider != null)
             return false;
         if (mediaProviderAPIKey != null ? !mediaProviderAPIKey.equals(that.mediaProviderAPIKey) : that.mediaProviderAPIKey != null)
             return false;
         if (mediaProviderParameters != null ? !mediaProviderParameters.equals(that.mediaProviderParameters) : that.mediaProviderParameters != null)
+            return false;
+        if (oAuth2AccessToken != null ? !oAuth2AccessToken.equals(that.oAuth2AccessToken) : that.oAuth2AccessToken != null)
+            return false;
+        if (oAuth2InvalidateTokenURL != null ? !oAuth2InvalidateTokenURL.equals(that.oAuth2InvalidateTokenURL) : that.oAuth2InvalidateTokenURL != null)
+            return false;
+        if (oAuth2TokenType != null ? !oAuth2TokenType.equals(that.oAuth2TokenType) : that.oAuth2TokenType != null)
+            return false;
+        if (oAuth2TokenURL != null ? !oAuth2TokenURL.equals(that.oAuth2TokenURL) : that.oAuth2TokenURL != null)
+            return false;
+        if (oAuth2Scope != null ? !oAuth2Scope.equals(that.oAuth2Scope) : that.oAuth2Scope != null)
             return false;
         if (oAuthAccessToken != null ? !oAuthAccessToken.equals(that.oAuthAccessToken) : that.oAuthAccessToken != null)
             return false;
@@ -786,79 +779,112 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (oAuthRequestTokenURL != null ? !oAuthRequestTokenURL.equals(that.oAuthRequestTokenURL) : that.oAuthRequestTokenURL != null)
             return false;
-        if (password != null ? !password.equals(that.password) : that.password != null)
-            return false;
-        if (requestHeaders != null ? !requestHeaders.equals(that.requestHeaders) : that.requestHeaders != null)
-            return false;
-        if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null)
-            return false;
-        if (searchBaseURL != null ? !searchBaseURL.equals(that.searchBaseURL) : that.searchBaseURL != null)
-            return false;
+        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null) return false;
+        if (uploadBaseURL != null ? !uploadBaseURL.equals(that.uploadBaseURL) : that.uploadBaseURL != null) return false;
         if (siteStreamBaseURL != null ? !siteStreamBaseURL.equals(that.siteStreamBaseURL) : that.siteStreamBaseURL != null)
             return false;
         if (streamBaseURL != null ? !streamBaseURL.equals(that.streamBaseURL) : that.streamBaseURL != null)
             return false;
-        if (uploadBaseURL != null ? !uploadBaseURL.equals(that.uploadBaseURL) : that.uploadBaseURL != null)
-            return false;
-        if (user != null ? !user.equals(that.user) : that.user != null)
-            return false;
-        if (userAgent != null ? !userAgent.equals(that.userAgent) : that.userAgent != null)
-            return false;
+        if (user != null ? !user.equals(that.user) : that.user != null) return false;
         if (userStreamBaseURL != null ? !userStreamBaseURL.equals(that.userStreamBaseURL) : that.userStreamBaseURL != null)
             return false;
 
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        int result = (debug ? 1 : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (httpConf != null ? httpConf.hashCode() : 0);
+        result = 31 * result + httpStreamingReadTimeout;
+        result = 31 * result + httpRetryCount;
+        result = 31 * result + httpRetryIntervalSeconds;
+        result = 31 * result + (oAuthConsumerKey != null ? oAuthConsumerKey.hashCode() : 0);
+        result = 31 * result + (oAuthConsumerSecret != null ? oAuthConsumerSecret.hashCode() : 0);
+        result = 31 * result + (oAuthAccessToken != null ? oAuthAccessToken.hashCode() : 0);
+        result = 31 * result + (oAuthAccessTokenSecret != null ? oAuthAccessTokenSecret.hashCode() : 0);
+        result = 31 * result + (oAuth2TokenType != null ? oAuth2TokenType.hashCode() : 0);
+        result = 31 * result + (oAuth2AccessToken != null ? oAuth2AccessToken.hashCode() : 0);
+        result = 31 * result + (oAuth2Scope != null ? oAuth2Scope.hashCode() : 0);
+        result = 31 * result + (oAuthRequestTokenURL != null ? oAuthRequestTokenURL.hashCode() : 0);
+        result = 31 * result + (oAuthAuthorizationURL != null ? oAuthAuthorizationURL.hashCode() : 0);
+        result = 31 * result + (oAuthAccessTokenURL != null ? oAuthAccessTokenURL.hashCode() : 0);
+        result = 31 * result + (oAuthAuthenticationURL != null ? oAuthAuthenticationURL.hashCode() : 0);
+        result = 31 * result + (oAuth2TokenURL != null ? oAuth2TokenURL.hashCode() : 0);
+        result = 31 * result + (oAuth2InvalidateTokenURL != null ? oAuth2InvalidateTokenURL.hashCode() : 0);
+        result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
+        result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
+        result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
+        result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
+        result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
+        result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
+        result = 31 * result + asyncNumThreads;
+        result = 31 * result + (loggerFactory != null ? loggerFactory.hashCode() : 0);
+        result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
+        result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
+        result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
+        result = 31 * result + (trimUserEnabled ? 1 : 0);
+        result = 31 * result + (jsonStoreEnabled ? 1 : 0);
+        result = 31 * result + (mbeanEnabled ? 1 : 0);
+        result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
+        result = 31 * result + (userStreamWithFollowingsEnabled ? 1 : 0);
+        result = 31 * result + (stallWarningsEnabled ? 1 : 0);
+        result = 31 * result + (applicationOnlyAuthEnabled ? 1 : 0);
+        result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
+        result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
+        result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
+        result = 31 * result + (daemonEnabled ? 1 : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "ConfigurationBase{" +
                 "debug=" + debug +
-                ", userAgent='" + userAgent + '\'' +
                 ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
-                ", useSSL=" + useSSL +
-                ", prettyDebug=" + prettyDebug +
-                ", gzipEnabled=" + gzipEnabled +
-                ", httpProxyHost='" + httpProxyHost + '\'' +
-                ", httpProxyUser='" + httpProxyUser + '\'' +
-                ", httpProxyPassword='" + httpProxyPassword + '\'' +
-                ", httpProxyPort=" + httpProxyPort +
-                ", httpConnectionTimeout=" + httpConnectionTimeout +
-                ", httpReadTimeout=" + httpReadTimeout +
+                ", httpConf=" + httpConf +
                 ", httpStreamingReadTimeout=" + httpStreamingReadTimeout +
                 ", httpRetryCount=" + httpRetryCount +
                 ", httpRetryIntervalSeconds=" + httpRetryIntervalSeconds +
-                ", maxTotalConnections=" + maxTotalConnections +
-                ", defaultMaxPerRoute=" + defaultMaxPerRoute +
                 ", oAuthConsumerKey='" + oAuthConsumerKey + '\'' +
                 ", oAuthConsumerSecret='" + oAuthConsumerSecret + '\'' +
                 ", oAuthAccessToken='" + oAuthAccessToken + '\'' +
                 ", oAuthAccessTokenSecret='" + oAuthAccessTokenSecret + '\'' +
+                ", oAuth2TokenType='" + oAuth2TokenType + '\'' +
+                ", oAuth2AccessToken='" + oAuth2AccessToken + '\'' +
+                ", oAuth2Scope='" + oAuth2Scope + '\'' +
                 ", oAuthRequestTokenURL='" + oAuthRequestTokenURL + '\'' +
                 ", oAuthAuthorizationURL='" + oAuthAuthorizationURL + '\'' +
                 ", oAuthAccessTokenURL='" + oAuthAccessTokenURL + '\'' +
                 ", oAuthAuthenticationURL='" + oAuthAuthenticationURL + '\'' +
+                ", oAuth2TokenURL='" + oAuth2TokenURL + '\'' +
+                ", oAuth2InvalidateTokenURL='" + oAuth2InvalidateTokenURL + '\'' +
                 ", restBaseURL='" + restBaseURL + '\'' +
-                ", searchBaseURL='" + searchBaseURL + '\'' +
+                ", uploadBaseURL='" + uploadBaseURL + '\'' +
                 ", streamBaseURL='" + streamBaseURL + '\'' +
                 ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
                 ", siteStreamBaseURL='" + siteStreamBaseURL + '\'' +
-                ", uploadBaseURL='" + uploadBaseURL + '\'' +
                 ", dispatcherImpl='" + dispatcherImpl + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
-                ", includeRTsEnabled=" + includeRTsEnabled +
+                ", loggerFactory='" + loggerFactory + '\'' +
+                ", contributingTo=" + contributingTo +
+                ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
+                ", trimUserEnabled=" + trimUserEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
                 ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +
+                ", userStreamWithFollowingsEnabled=" + userStreamWithFollowingsEnabled +
+                ", stallWarningsEnabled=" + stallWarningsEnabled +
+                ", applicationOnlyAuthEnabled=" + applicationOnlyAuthEnabled +
                 ", mediaProvider='" + mediaProvider + '\'' +
                 ", mediaProviderAPIKey='" + mediaProviderAPIKey + '\'' +
                 ", mediaProviderParameters=" + mediaProviderParameters +
-                ", clientVersion='" + clientVersion + '\'' +
-                ", clientURL='" + clientURL + '\'' +
-                ", IS_DALVIK=" + IS_DALVIK +
-                ", IS_GAE=" + IS_GAE +
-                ", requestHeaders=" + requestHeaders +
+                ", daemonEnabled=" + daemonEnabled +
                 '}';
     }
 

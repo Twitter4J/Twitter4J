@@ -16,82 +16,76 @@
 
 package twitter4j.conf;
 
-import twitter4j.internal.util.z_T4JInternalStringUtil;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectStreamException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
 
-    public static final String DEBUG = "debug";
-    public static final String HTTP_USER_AGENT = "http.userAgent";
-    public static final String USER = "user";
-    public static final String PASSWORD = "password";
+    private static final String DEBUG = "debug";
+    private static final String USER = "user";
+    private static final String PASSWORD = "password";
 
-    public static final String HTTP_USE_SSL = "http.useSSL";
-    public static final String HTTP_PRETTY_DEBUG = "http.prettyDebug";
-    public static final String HTTP_GZIP = "http.gzip";
-    public static final String HTTP_PROXY_HOST = "http.proxyHost";
-    public static final String HTTP_PROXY_HOST_FALLBACK = "http.proxyHost";
-    public static final String HTTP_PROXY_USER = "http.proxyUser";
-    public static final String HTTP_PROXY_PASSWORD = "http.proxyPassword";
-    public static final String HTTP_PROXY_PORT = "http.proxyPort";
-    public static final String HTTP_PROXY_PORT_FALLBACK = "http.proxyPort";
-    public static final String HTTP_CONNECTION_TIMEOUT = "http.connectionTimeout";
-    public static final String HTTP_READ_TIMEOUT = "http.readTimeout";
+    private static final String HTTP_PRETTY_DEBUG = "http.prettyDebug";
+    private static final String HTTP_GZIP = "http.gzip";
+    private static final String HTTP_PROXY_HOST = "http.proxyHost";
+    private static final String HTTP_PROXY_HOST_FALLBACK = "http.proxyHost";
+    private static final String HTTP_PROXY_USER = "http.proxyUser";
+    private static final String HTTP_PROXY_PASSWORD = "http.proxyPassword";
+    private static final String HTTP_PROXY_PORT = "http.proxyPort";
+    private static final String HTTP_PROXY_PORT_FALLBACK = "http.proxyPort";
+    private static final String HTTP_CONNECTION_TIMEOUT = "http.connectionTimeout";
+    private static final String HTTP_READ_TIMEOUT = "http.readTimeout";
 
-    public static final String HTTP_STREAMING_READ_TIMEOUT = "http.streamingReadTimeout";
+    private static final String HTTP_STREAMING_READ_TIMEOUT = "http.streamingReadTimeout";
 
-    public static final String HTTP_RETRY_COUNT = "http.retryCount";
-    public static final String HTTP_RETRY_INTERVAL_SECS = "http.retryIntervalSecs";
+    private static final String HTTP_RETRY_COUNT = "http.retryCount";
+    private static final String HTTP_RETRY_INTERVAL_SECS = "http.retryIntervalSecs";
 
-    public static final String HTTP_MAX_TOTAL_CONNECTIONS = "http.maxTotalConnections";
-    public static final String HTTP_DEFAULT_MAX_PER_ROUTE = "http.defaultMaxPerRoute";
+    private static final String OAUTH_CONSUMER_KEY = "oauth.consumerKey";
+    private static final String OAUTH_CONSUMER_SECRET = "oauth.consumerSecret";
+    private static final String OAUTH_ACCESS_TOKEN = "oauth.accessToken";
+    private static final String OAUTH_ACCESS_TOKEN_SECRET = "oauth.accessTokenSecret";
+    private static final String OAUTH2_TOKEN_TYPE = "oauth2.tokenType";
+    private static final String OAUTH2_ACCESS_TOKEN = "oauth2.accessToken";
+    private static final String OAUTH2_SCOPE = "oauth2.scope";
 
-    public static final String OAUTH_CONSUMER_KEY = "oauth.consumerKey";
-    public static final String OAUTH_CONSUMER_SECRET = "oauth.consumerSecret";
-    public static final String OAUTH_ACCESS_TOKEN = "oauth.accessToken";
-    public static final String OAUTH_ACCESS_TOKEN_SECRET = "oauth.accessTokenSecret";
+    private static final String OAUTH_REQUEST_TOKEN_URL = "oauth.requestTokenURL";
+    private static final String OAUTH_AUTHORIZATION_URL = "oauth.authorizationURL";
+    private static final String OAUTH_ACCESS_TOKEN_URL = "oauth.accessTokenURL";
+    private static final String OAUTH_AUTHENTICATION_URL = "oauth.authenticationURL";
+    private static final String OAUTH2_TOKEN_URL = "oauth2.tokenURL";
+    private static final String OAUTH2_INVALIDATE_TOKEN_URL = "oauth2.invalidateTokenURL";
 
+    private static final String REST_BASE_URL = "restBaseURL";
+    private static final String STREAM_BASE_URL = "streamBaseURL";
+    private static final String USER_STREAM_BASE_URL = "userStreamBaseURL";
+    private static final String SITE_STREAM_BASE_URL = "siteStreamBaseURL";
 
-    public static final String OAUTH_REQUEST_TOKEN_URL = "oauth.requestTokenURL";
-    public static final String OAUTH_AUTHORIZATION_URL = "oauth.authorizationURL";
-    public static final String OAUTH_ACCESS_TOKEN_URL = "oauth.accessTokenURL";
-    public static final String OAUTH_AUTHENTICATION_URL = "oauth.authenticationURL";
+    private static final String ASYNC_NUM_THREADS = "async.numThreads";
+    private static final String ASYNC_DAEMON_ENABLED = "async.daemonEnabled";
+    private static final String CONTRIBUTING_TO = "contributingTo";
+    private static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
+    private static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
+    private static final String INCLUDE_ENTITIES = "includeEntities";
+    private static final String LOGGER_FACTORY = "loggerFactory";
+    private static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
+    private static final String MBEAN_ENABLED = "mbeanEnabled";
+    private static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
+    private static final String STREAM_USER_WITH_FOLLOWINGS = "stream.user.withFollowings";
+    private static final String STREAM_STALL_WARNINGS_ENABLED = "stream.enableStallWarnings";
+    private static final String APPLICATION_ONLY_AUTH_ENABLED = "enableApplicationOnlyAuth";
 
-    public static final String REST_BASE_URL = "restBaseURL";
-    public static final String SEARCH_BASE_URL = "searchBaseURL";
-    public static final String STREAM_BASE_URL = "streamBaseURL";
-    public static final String USER_STREAM_BASE_URL = "userStreamBaseURL";
-    public static final String SITE_STREAM_BASE_URL = "siteStreamBaseURL";
-    public static final String UPLOAD_BASE_URL = "uploadBaseURL";
+    private static final String MEDIA_PROVIDER = "media.provider";
+    private static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
+    private static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
+    private static final long serialVersionUID = -7262615247923693252L;
+    private String OAuth2Scope;
 
-    public static final String ASYNC_NUM_THREADS = "async.numThreads";
-    public static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
-    public static final String INCLUDE_RTS = "includeRTs";
-    public static final String INCLUDE_ENTITIES = "includeEntities";
-    public static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
-    public static final String MBEAN_ENABLED = "mbeanEnabled";
-    public static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
-
-    public static final String MEDIA_PROVIDER = "media.provider";
-    public static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
-    public static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
-
-    // hidden portion
-    public static final String CLIENT_VERSION = "clientVersion";
-    public static final String CLIENT_URL = "clientURL";
-    private static final long serialVersionUID = 6458764415636588373L;
 
     public PropertyConfiguration(InputStream is) {
         super();
@@ -115,6 +109,13 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         // load from system properties
         try {
             props = (Properties) System.getProperties().clone();
+            try {
+                Map<String, String> envMap = System.getenv();
+                for (String key : envMap.keySet()) {
+                    props.setProperty(key, envMap.get(key));
+                }
+            } catch (SecurityException ignore) {
+            }
             normalize(props);
         } catch (SecurityException ignore) {
             // Unsigned applets are not allowed to access System properties
@@ -182,9 +183,8 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     private void normalize(Properties props) {
-        Set keys = props.keySet();
         ArrayList<String> toBeNormalized = new ArrayList<String>(10);
-        for (Object key : keys) {
+        for (Object key : props.keySet()) {
             String keyStr = (String) key;
             if (-1 != (keyStr.indexOf("twitter4j."))) {
                 toBeNormalized.add(keyStr);
@@ -209,7 +209,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
      */
     private void setFieldsWithTreePath(Properties props, String treePath) {
         setFieldsWithPrefix(props, "");
-        String[] splitArray = z_T4JInternalStringUtil.split(treePath, "/");
+        String[] splitArray = treePath.split("/");
         String prefix = null;
         for (String split : splitArray) {
             if (!"".equals(split)) {
@@ -233,9 +233,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, PASSWORD)) {
             setPassword(getString(props, prefix, PASSWORD));
-        }
-        if (notNull(props, prefix, HTTP_USE_SSL)) {
-            setUseSSL(getBoolean(props, prefix, HTTP_USE_SSL));
         }
         if (notNull(props, prefix, HTTP_PRETTY_DEBUG)) {
             setPrettyDebugEnabled(getBoolean(props, prefix, HTTP_PRETTY_DEBUG));
@@ -274,12 +271,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, HTTP_RETRY_INTERVAL_SECS)) {
             setHttpRetryIntervalSeconds(getIntProperty(props, prefix, HTTP_RETRY_INTERVAL_SECS));
         }
-        if (notNull(props, prefix, HTTP_MAX_TOTAL_CONNECTIONS)) {
-            setHttpMaxTotalConnections(getIntProperty(props, prefix, HTTP_MAX_TOTAL_CONNECTIONS));
-        }
-        if (notNull(props, prefix, HTTP_DEFAULT_MAX_PER_ROUTE)) {
-            setHttpDefaultMaxPerRoute(getIntProperty(props, prefix, HTTP_DEFAULT_MAX_PER_ROUTE));
-        }
         if (notNull(props, prefix, OAUTH_CONSUMER_KEY)) {
             setOAuthConsumerKey(getString(props, prefix, OAUTH_CONSUMER_KEY));
         }
@@ -292,20 +283,26 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, OAUTH_ACCESS_TOKEN_SECRET)) {
             setOAuthAccessTokenSecret(getString(props, prefix, OAUTH_ACCESS_TOKEN_SECRET));
         }
+        if (notNull(props, prefix, OAUTH2_TOKEN_TYPE)) {
+            setOAuth2TokenType(getString(props, prefix, OAUTH2_TOKEN_TYPE));
+        }
+        if (notNull(props, prefix, OAUTH2_ACCESS_TOKEN)) {
+            setOAuth2AccessToken(getString(props, prefix, OAUTH2_ACCESS_TOKEN));
+        }
+        if (notNull(props, prefix, OAUTH2_SCOPE)) {
+            setOAuth2Scope(getString(props, prefix, OAUTH2_SCOPE));
+        }
         if (notNull(props, prefix, ASYNC_NUM_THREADS)) {
             setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_NUM_THREADS));
         }
+        if (notNull(props, prefix, ASYNC_DAEMON_ENABLED)) {
+            setDaemonEnabled(getBoolean(props, prefix, ASYNC_DAEMON_ENABLED));
+        }
+        if (notNull(props, prefix, CONTRIBUTING_TO)) {
+            setContributingTo(getLongProperty(props, prefix, CONTRIBUTING_TO));
+        }
         if (notNull(props, prefix, ASYNC_DISPATCHER_IMPL)) {
             setDispatcherImpl(getString(props, prefix, ASYNC_DISPATCHER_IMPL));
-        }
-        if (notNull(props, prefix, CLIENT_VERSION)) {
-            setClientVersion(getString(props, prefix, CLIENT_VERSION));
-        }
-        if (notNull(props, prefix, CLIENT_URL)) {
-            setClientURL(getString(props, prefix, CLIENT_URL));
-        }
-        if (notNull(props, prefix, HTTP_USER_AGENT)) {
-            setUserAgent(getString(props, prefix, HTTP_USER_AGENT));
         }
 
         if (notNull(props, prefix, OAUTH_REQUEST_TOKEN_URL)) {
@@ -324,12 +321,16 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             setOAuthAuthenticationURL(getString(props, prefix, OAUTH_AUTHENTICATION_URL));
         }
 
-        if (notNull(props, prefix, REST_BASE_URL)) {
-            setRestBaseURL(getString(props, prefix, REST_BASE_URL));
+        if (notNull(props, prefix, OAUTH2_TOKEN_URL)) {
+            setOAuth2TokenURL(getString(props, prefix, OAUTH2_TOKEN_URL));
         }
 
-        if (notNull(props, prefix, SEARCH_BASE_URL)) {
-            setSearchBaseURL(getString(props, prefix, SEARCH_BASE_URL));
+        if (notNull(props, prefix, OAUTH2_INVALIDATE_TOKEN_URL)) {
+            setOAuth2InvalidateTokenURL(getString(props, prefix, OAUTH2_INVALIDATE_TOKEN_URL));
+        }
+
+        if (notNull(props, prefix, REST_BASE_URL)) {
+            setRestBaseURL(getString(props, prefix, REST_BASE_URL));
         }
 
         if (notNull(props, prefix, STREAM_BASE_URL)) {
@@ -341,14 +342,14 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, SITE_STREAM_BASE_URL)) {
             setSiteStreamBaseURL(getString(props, prefix, SITE_STREAM_BASE_URL));
         }
-        if (notNull(props, prefix, UPLOAD_BASE_URL)) {
-            setUploadBaseURL(getString(props, prefix, UPLOAD_BASE_URL));
-        }
-        if (notNull(props, prefix, INCLUDE_RTS)) {
-            setIncludeRTsEnbled(getBoolean(props, prefix, INCLUDE_RTS));
+        if (notNull(props, prefix, INCLUDE_MY_RETWEET)) {
+            setIncludeMyRetweetEnabled(getBoolean(props, prefix, INCLUDE_MY_RETWEET));
         }
         if (notNull(props, prefix, INCLUDE_ENTITIES)) {
-            setIncludeEntitiesEnbled(getBoolean(props, prefix, INCLUDE_ENTITIES));
+            setIncludeEntitiesEnabled(getBoolean(props, prefix, INCLUDE_ENTITIES));
+        }
+        if (notNull(props, prefix, LOGGER_FACTORY)) {
+            setLoggerFactory(getString(props, prefix, LOGGER_FACTORY));
         }
         if (notNull(props, prefix, JSON_STORE_ENABLED)) {
             setJSONStoreEnabled(getBoolean(props, prefix, JSON_STORE_ENABLED));
@@ -359,6 +360,15 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, STREAM_USER_REPLIES_ALL)) {
             setUserStreamRepliesAllEnabled(getBoolean(props, prefix, STREAM_USER_REPLIES_ALL));
         }
+        if (notNull(props, prefix, STREAM_USER_WITH_FOLLOWINGS)) {
+            setUserStreamWithFollowingsEnabled(getBoolean(props, prefix, STREAM_USER_WITH_FOLLOWINGS));
+        }
+        if (notNull(props, prefix, STREAM_STALL_WARNINGS_ENABLED)) {
+            setStallWarningsEnabled(getBoolean(props, prefix, STREAM_STALL_WARNINGS_ENABLED));
+        }
+        if (notNull(props, prefix, APPLICATION_ONLY_AUTH_ENABLED)) {
+            setApplicationOnlyAuthEnabled(getBoolean(props, prefix, APPLICATION_ONLY_AUTH_ENABLED));
+        }
         if (notNull(props, prefix, MEDIA_PROVIDER)) {
             setMediaProvider(getString(props, prefix, MEDIA_PROVIDER));
         }
@@ -366,10 +376,10 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
             setMediaProviderAPIKey(getString(props, prefix, MEDIA_PROVIDER_API_KEY));
         }
         if (notNull(props, prefix, MEDIA_PROVIDER_PARAMETERS)) {
-            String[] propsAry = z_T4JInternalStringUtil.split(getString(props, prefix, MEDIA_PROVIDER_PARAMETERS), "&");
+            String[] propsAry = getString(props, prefix, MEDIA_PROVIDER_PARAMETERS).split("&");
             Properties p = new Properties();
             for (String str : propsAry) {
-                String[] parameter = z_T4JInternalStringUtil.split(str, "=");
+                String[] parameter = str.split("=");
                 p.setProperty(parameter[0], parameter[1]);
             }
             setMediaProviderParameters(p);
@@ -377,12 +387,12 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         cacheInstance();
     }
 
-    protected boolean getBoolean(Properties props, String prefix, String name) {
+    boolean getBoolean(Properties props, String prefix, String name) {
         String value = props.getProperty(prefix + name);
         return Boolean.valueOf(value);
     }
 
-    protected int getIntProperty(Properties props, String prefix, String name) {
+    int getIntProperty(Properties props, String prefix, String name) {
         String value = props.getProperty(prefix + name);
         try {
             return Integer.parseInt(value);
@@ -391,7 +401,16 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
     }
 
-    protected String getString(Properties props, String prefix, String name) {
+    long getLongProperty(Properties props, String prefix, String name) {
+        String value = props.getProperty(prefix + name);
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException nfe) {
+            return -1L;
+        }
+    }
+
+    String getString(Properties props, String prefix, String name) {
         return props.getProperty(prefix + name);
     }
 
@@ -399,4 +418,5 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     protected Object readResolve() throws ObjectStreamException {
         return super.readResolve();
     }
+
 }

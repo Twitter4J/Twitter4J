@@ -16,11 +16,7 @@
 
 package twitter4j.examples.list;
 
-import twitter4j.PagableResponseList;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.UserList;
+import twitter4j.*;
 
 /**
  * List the lists of the specified user.
@@ -40,15 +36,11 @@ public final class GetUserLists {
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            long cursor = -1;
-            PagableResponseList<UserList> lists;
-            do {
-                lists = twitter.getUserLists(args[0], cursor);
-                for (UserList list : lists) {
-                    System.out.println("id:" + list.getId() + ", name:" + list.getName() + ", description:"
-                            + list.getDescription() + ", slug:" + list.getSlug() + "");
-                }
-            } while ((cursor = lists.getNextCursor()) != 0);
+            ResponseList<UserList> lists = twitter.getUserLists(args[0]);
+            for (UserList list : lists) {
+                System.out.println("id:" + list.getId() + ", name:" + list.getName() + ", description:"
+                        + list.getDescription() + ", slug:" + list.getSlug() + "");
+            }
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

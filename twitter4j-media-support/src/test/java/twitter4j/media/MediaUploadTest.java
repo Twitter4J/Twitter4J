@@ -24,6 +24,7 @@ import twitter4j.conf.ConfigurationBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Date;
 
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
@@ -36,8 +37,8 @@ public class MediaUploadTest extends TestCase {
 
     }
 
-    private String fileName = "t4j.jpeg";
-    private String message = "Twitter4J image upload test";
+    private final String fileName = "t4j.jpeg";
+    private final String message = "Twitter4J image upload test" + new Date().toString();
 
     @Override
     protected void setUp() throws Exception {
@@ -51,25 +52,17 @@ public class MediaUploadTest extends TestCase {
     public void testProviders() throws Exception {
         Configuration conf;
         ImageUploadFactory factory;
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITTER.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITTER.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.PLIXI.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITPIC.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITGOO.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.YFROG.name()).build();
         factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITPIC.getName()).build();
-        factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.YFROG.getName()).build();
-        factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.MOBYPICTURE.getName()).build();
-        factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPL.getName()).build();
-        factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.POSTEROUS.getName()).build();
+        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.MOBYPICTURE.name()).build();
         factory = new ImageUploadFactory(conf);
     }
 
@@ -122,35 +115,11 @@ public class MediaUploadTest extends TestCase {
         }
     }
 
-    public void testPlixiUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("b30d6580-46ce-49a1-b469-31777a326938"));
-            ImageUpload upload = factory.getInstance(MediaProvider.PLIXI);
-            String url = upload.upload(fileName, is, message);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
     public void testImgLyUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
             ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
             ImageUpload upload = factory.getInstance(MediaProvider.IMG_LY);
-            String url = upload.upload(fileName, is, message);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testTwitgooUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
-            ImageUpload upload = factory.getInstance(MediaProvider.TWITGOO);
             String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {
@@ -175,30 +144,6 @@ public class MediaUploadTest extends TestCase {
         try {
             ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("IOUxMoqc8Snms9nU"));
             ImageUpload upload = factory.getInstance(MediaProvider.MOBYPICTURE);
-            String url = upload.upload(fileName, is);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testTwiplUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("56fd1892dcf34c14beb7e2eecfc65c81"));
-            ImageUpload upload = factory.getInstance(MediaProvider.TWIPL);
-            String url = upload.upload(fileName, is);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testPosterousUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
-            ImageUpload upload = factory.getInstance(MediaProvider.POSTEROUS);
             String url = upload.upload(fileName, is);
             assertTrue(url.length() > 0);
         } finally {

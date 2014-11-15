@@ -17,201 +17,136 @@
 
 package twitter4j;
 
-import java.io.ObjectStreamException;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class TwitterMethod implements java.io.Serializable {
-    String name;
-    private static final long serialVersionUID = 5776633408291563058L;
+public enum TwitterMethod {
+    /* Timelines Resources */
+    MENTIONS_TIMELINE,
+    USER_TIMELINE,
+    HOME_TIMELINE,
+    RETWEETS_OF_ME,
 
-    private TwitterMethod() {
-        throw new AssertionError();
-    }
+    /* Tweets Resources */
+    RETWEETS,
+    SHOW_STATUS,
+    DESTROY_STATUS,
+    UPDATE_STATUS,
+    RETWEET_STATUS,
+    OEMBED,
+    LOOKUP,
 
-    private TwitterMethod(String name) {
-        this.name = name;
-        instances.put(name, this);
-    }
+    /* Search Resources */
+    SEARCH,
 
-    private static final Map<String, TwitterMethod> instances = new HashMap<String, TwitterMethod>();
+    /* Direct Messages Resources */
+    DIRECT_MESSAGES,
+    SENT_DIRECT_MESSAGES,
+    DIRECT_MESSAGE,
+    DESTROY_DIRECT_MESSAGE,
+    SEND_DIRECT_MESSAGE,
 
-    public final String name() {
-        return name;
-    }
+    /* Friends & Followers Resources */
+    FRIENDS_IDS,
+    FOLLOWERS_IDS,
+    LOOKUP_FRIENDSHIPS,
+    INCOMING_FRIENDSHIPS,
+    OUTGOING_FRIENDSHIPS,
+    CREATE_FRIENDSHIP,
+    DESTROY_FRIENDSHIP,
+    UPDATE_FRIENDSHIP,
+    SHOW_FRIENDSHIP,
+    FRIENDS_LIST,
+    FOLLOWERS_LIST,
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TwitterMethod)) return false;
+    /* Users Resources */
+    ACCOUNT_SETTINGS,
+    VERIFY_CREDENTIALS,
+    UPDATE_ACCOUNT_SETTINGS,
+    // UPDATE_DELIVERY_DEVICE
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_BACKGROUND_IMAGE,
+    UPDATE_PROFILE_COLORS,
+    UPDATE_PROFILE_IMAGE,
+    BLOCK_LIST,
+    BLOCK_LIST_IDS,
+    CREATE_BLOCK,
+    DESTROY_BLOCK,
+    MUTE_LIST,
+    MUTE_LIST_IDS,
+    CREATE_MUTE,
+    DESTROY_MUTE,
 
-        TwitterMethod that = (TwitterMethod) o;
+    SHOW_USER,
+    LOOKUP_USERS,
+    SEARCH_USERS,
 
-        if (!name.equals(that.name)) return false;
+    CONTRIBUTORS,
+    CONTRIBUTEEES,
+    REMOVE_PROFILE_BANNER,
+    UPDATE_PROFILE_BANNER,
 
-        return true;
-    }
+    RATE_LIMIT_STATUS,
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+    /* Suggested Users Resources */
+    USER_SUGGESTIONS,
+    SUGGESTED_USER_CATEGORIES,
+    MEMBER_SUGGESTIONS,
 
-    @Override
-    public String toString() {
-        return "Method{" +
-                "name='" + name + '\'' +
-                '}';
-    }
+    /* Favorites Resources */
+    FAVORITES,
+    DESTROY_FAVORITE,
+    CREATE_FAVORITE,
 
-    private static TwitterMethod getInstance(String name) {
-        return instances.get(name);
-    }
+    /* Lists Resources */
+    USER_LISTS,
+    USER_LIST_STATUSES,
+    DESTROY_LIST_MEMBER,
+    USER_LIST_MEMBERSHIPS,
+    LIST_SUBSCRIBERS,
+    SUBSCRIBE_LIST,
+    CHECK_LIST_SUBSCRIPTION,
+    UNSUBSCRIBE_LIST,
+    CREATE_LIST_MEMBERS,
+    CHECK_LIST_MEMBERSHIP,
+    LIST_MEMBERS,
+    CREATE_LIST_MEMBER,
+    DESTROY_USER_LIST,
+    UPDATE_USER_LIST,
+    CREATE_USER_LIST,
+    SHOW_USER_LIST,
+    USER_LIST_SUBSCRIPTIONS,
 
-    // assures equality after deserialization
-    private Object readResolve() throws ObjectStreamException {
-        return getInstance(name);
-    }
+    /* Saved Searches Resources */
+    SAVED_SEARCHES,
+    SAVED_SEARCH,
+    CREATE_SAVED_SEARCH,
+    DESTROY_SAVED_SEARCH,
 
-    /*Search API Methods*/
-    public static final TwitterMethod SEARCH = getInstance("SEARCH");
+    /* Places & Geo Resources */
+    SEARCH_PLACES,
+    SIMILAR_PLACES,
+    REVERSE_GEO_CODE,
+    GEO_DETAILS,
 
-    public static final TwitterMethod DAILY_TRENDS = new TwitterMethod("DAILY_TRENDS");
-    public static final TwitterMethod WEEKLY_TRENDS = new TwitterMethod("WEEKLY_TRENDS");
+    /* Trends Resources */
+    PLACE_TRENDS,
+    AVAILABLE_TRENDS,
+    CLOSEST_TRENDS,
 
-    /*Timeline Methods*/
-    public static final TwitterMethod HOME_TIMELINE = new TwitterMethod("HOME_TIMELINE");
-    public static final TwitterMethod USER_TIMELINE = new TwitterMethod("USER_TIMELINE");
-    public static final TwitterMethod MENTIONS = new TwitterMethod("MENTIONS");
-    public static final TwitterMethod RETWEETED_BY_ME = new TwitterMethod("RETWEETED_BY_ME");
-    public static final TwitterMethod RETWEETED_TO_ME = new TwitterMethod("RETWEETED_TO_ME");
-    public static final TwitterMethod RETWEETS_OF_ME = new TwitterMethod("RETWEETS_OF_ME");
-    public static final TwitterMethod RETWEETED_BY_USER = new TwitterMethod("RETWEETED_BY_USER");
-    public static final TwitterMethod RETWEETED_TO_USER = new TwitterMethod("RETWEETED_TO_USER");
+    /* Spam Reporting Resources */
+    REPORT_SPAM,
 
-    /*Status Methods*/
-    public static final TwitterMethod SHOW_STATUS = new TwitterMethod("SHOW_STATUS");
-    public static final TwitterMethod UPDATE_STATUS = new TwitterMethod("UPDATE_STATUS");
-    public static final TwitterMethod DESTROY_STATUS = new TwitterMethod("DESTROY_STATUS");
-    public static final TwitterMethod RETWEET_STATUS = new TwitterMethod("RETWEET_STATUS");
-    public static final TwitterMethod RETWEETS = new TwitterMethod("RETWEETS");
-    public static final TwitterMethod RETWEETED_BY = new TwitterMethod("RETWEETED_BY");
-    public static final TwitterMethod RETWEETED_BY_IDS = new TwitterMethod("RETWEETED_BY_IDS");
+    /* OAuth Resources */
+    OAUTH_REQUEST_TOKEN,
+    OAUTH_ACCESS_TOKEN,
 
-    /*User Methods*/
-    public static final TwitterMethod SHOW_USER = new TwitterMethod("SHOW_USER");
-    public static final TwitterMethod LOOKUP_USERS = new TwitterMethod("LOOKUP_USERS");
-    public static final TwitterMethod SEARCH_USERS = new TwitterMethod("SEARCH_USERS");
-    public static final TwitterMethod SUGGESTED_USER_CATEGORIES = new TwitterMethod("SUGGESTED_USER_CATEGORIES");
-    public static final TwitterMethod PROFILE_IMAGE = new TwitterMethod("PROFILE_IMAGE");
-    public static final TwitterMethod USER_SUGGESTIONS = new TwitterMethod("USER_SUGGESTIONS");
-    public static final TwitterMethod MEMBER_SUGGESTIONS = new TwitterMethod("MEMBER_SUGGESTIONS");
+    /* Help Resources */
+    TERMS_OF_SERVICE,
+    CONFIGURATION,
+    LANGUAGES,
+    PRIVACY_POLICY,
 
-    /*List Methods*/
-    public static final TwitterMethod CREATE_USER_LIST = new TwitterMethod("CREATE_USER_LIST");
-    public static final TwitterMethod UPDATE_USER_LIST = new TwitterMethod("UPDATE_USER_LIST");
-    public static final TwitterMethod USER_LISTS = new TwitterMethod("USER_LISTS");
-    public static final TwitterMethod SHOW_USER_LIST = new TwitterMethod("SHOW_USER_LIST");
-    public static final TwitterMethod DESTROY_USER_LIST = new TwitterMethod("DELETE_USER_LIST");
-    public static final TwitterMethod USER_LIST_STATUSES = new TwitterMethod("USER_LIST_STATUSES");
-    public static final TwitterMethod USER_LIST_MEMBERSHIPS = new TwitterMethod("USER_LIST_MEMBERSHIPS");
-    public static final TwitterMethod USER_LIST_SUBSCRIPTIONS = new TwitterMethod("USER_LIST_SUBSCRIPTIONS");
-    public static final TwitterMethod ALL_USER_LISTS = new TwitterMethod("ALL_USER_LISTS");
-
-    /*List Members Methods*/
-    public static final TwitterMethod LIST_MEMBERS = new TwitterMethod("LIST_MEMBERS");
-    public static final TwitterMethod ADD_LIST_MEMBER = new TwitterMethod("ADD_LIST_MEMBER");
-    public static final TwitterMethod ADD_LIST_MEMBERS = new TwitterMethod("ADD_LIST_MEMBERS");
-    public static final TwitterMethod DELETE_LIST_MEMBER = new TwitterMethod("DELETE_LIST_MEMBER");
-    public static final TwitterMethod CHECK_LIST_MEMBERSHIP = new TwitterMethod("CHECK_LIST_MEMBERSHIP");
-
-    /*List Subscribers Methods*/
-    public static final TwitterMethod LIST_SUBSCRIBERS = new TwitterMethod("LIST_SUBSCRIBERS");
-    public static final TwitterMethod SUBSCRIBE_LIST = new TwitterMethod("SUBSCRIBE_LIST");
-    public static final TwitterMethod UNSUBSCRIBE_LIST = new TwitterMethod("UNSUBSCRIBE_LIST");
-    public static final TwitterMethod CHECK_LIST_SUBSCRIPTION = new TwitterMethod("CHECK_LIST_SUBSCRIPTION");
-
-    /*Direct Message Methods*/
-    public static final TwitterMethod DIRECT_MESSAGES = new TwitterMethod("DIRECT_MESSAGES");
-    public static final TwitterMethod SENT_DIRECT_MESSAGES = new TwitterMethod("SENT_DIRECT_MESSAGES");
-    public static final TwitterMethod SEND_DIRECT_MESSAGE = new TwitterMethod("SEND_DIRECT_MESSAGE");
-    public static final TwitterMethod DESTROY_DIRECT_MESSAGE = new TwitterMethod("DESTROY_DIRECT_MESSAGE");
-    public static final TwitterMethod DIRECT_MESSAGE = new TwitterMethod("DIRECT_MESSAGE");
-
-    /*Friendship Methods*/
-    public static final TwitterMethod CREATE_FRIENDSHIP = new TwitterMethod("CREATE_FRIENDSHIP");
-    public static final TwitterMethod DESTROY_FRIENDSHIP = new TwitterMethod("DESTROY_FRIENDSHIP");
-    public static final TwitterMethod EXISTS_FRIENDSHIP = new TwitterMethod("EXISTS_FRIENDSHIP");
-    public static final TwitterMethod SHOW_FRIENDSHIP = new TwitterMethod("SHOW_FRIENDSHIP");
-    public static final TwitterMethod INCOMING_FRIENDSHIPS = new TwitterMethod("INCOMING_FRIENDSHIPS");
-    public static final TwitterMethod OUTGOING_FRIENDSHIPS = new TwitterMethod("OUTGOING_FRIENDSHIPS");
-    public static final TwitterMethod LOOKUP_FRIENDSHIPS = new TwitterMethod("LOOKUP_FRIENDSHIPS");
-    public static final TwitterMethod UPDATE_FRIENDSHIP = new TwitterMethod("UPDATE_FRIENDSHIP");
-    public static final TwitterMethod NO_RETWEET_IDS = new TwitterMethod("NO_RETWEET_IDS");
-
-    /*Social Graph Methods*/
-    public static final TwitterMethod FRIENDS_IDS = new TwitterMethod("FRIENDS_IDS");
-    public static final TwitterMethod FOLLOWERS_IDS = new TwitterMethod("FOLLOWERS_IDS");
-
-    /*Account Methods*/
-    public static final TwitterMethod VERIFY_CREDENTIALS = new TwitterMethod("VERIFY_CREDENTIALS");
-    public static final TwitterMethod RATE_LIMIT_STATUS = new TwitterMethod("RATE_LIMIT_STATUS");
-    public static final TwitterMethod UPDATE_PROFILE_COLORS = new TwitterMethod("UPDATE_PROFILE_COLORS");
-    public static final TwitterMethod UPDATE_PROFILE_IMAGE = new TwitterMethod("UPDATE_PROFILE_IMAGE");
-    public static final TwitterMethod UPDATE_PROFILE_BACKGROUND_IMAGE = new TwitterMethod("UPDATE_PROFILE_BACKGROUND_IMAGE");
-    public static final TwitterMethod UPDATE_PROFILE = new TwitterMethod("UPDATE_PROFILE");
-    public static final TwitterMethod ACCOUNT_TOTALS = new TwitterMethod("ACCOUNT_TOTALS");
-    public static final TwitterMethod ACCOUNT_SETTINGS = new TwitterMethod("ACCOUNT_SETTINGS");
-    public static final TwitterMethod UPDATE_ACCOUNT_SETTINGS = new TwitterMethod("UPDATE_ACCOUNT_SETTINGS");
-
-    /*Favorite Methods*/
-    public static final TwitterMethod FAVORITES = new TwitterMethod("FAVORITES");
-    public static final TwitterMethod CREATE_FAVORITE = new TwitterMethod("CREATE_FAVORITE");
-    public static final TwitterMethod DESTROY_FAVORITE = new TwitterMethod("DESTROY_FAVORITE");
-
-    /*Notification Methods*/
-    public static final TwitterMethod ENABLE_NOTIFICATION = new TwitterMethod("ENABLE_NOTIFICATION");
-    public static final TwitterMethod DISABLE_NOTIFICATION = new TwitterMethod("DISABLE_NOTIFICATION");
-
-    /*Block Methods*/
-    public static final TwitterMethod CREATE_BLOCK = new TwitterMethod("CREATE_BLOCK");
-    public static final TwitterMethod DESTROY_BLOCK = new TwitterMethod("DESTROY_BLOCK");
-    public static final TwitterMethod EXISTS_BLOCK = new TwitterMethod("EXISTS_BLOCK");
-    public static final TwitterMethod BLOCKING_USERS = new TwitterMethod("BLOCKING_USERS");
-    public static final TwitterMethod BLOCKING_USERS_IDS = new TwitterMethod("BLOCKING_USERS_IDS");
-
-    /*Spam Reporting Methods*/
-    public static final TwitterMethod REPORT_SPAM = new TwitterMethod("REPORT_SPAM");
-
-    /*Saved Searches Methods*/
-    //getSavedSearches()
-    //showSavedSearch()
-    //createSavedSearch()
-    //destroySavedSearch()
-
-    /*Local Trends Methods*/
-    public static final TwitterMethod AVAILABLE_TRENDS = new TwitterMethod("AVAILABLE_TRENDS");
-    public static final TwitterMethod LOCATION_TRENDS = new TwitterMethod("LOCATION_TRENDS");
-
-    /*Geo Methods*/
-    public static final TwitterMethod SEARCH_PLACES = new TwitterMethod("SEARCH_PLACES");
-    public static final TwitterMethod SIMILAR_PLACES = new TwitterMethod("SIMILAR_PLACES");
-    public static final TwitterMethod REVERSE_GEO_CODE = new TwitterMethod("REVERSE_GEO_CODE");
-    public static final TwitterMethod GEO_DETAILS = new TwitterMethod("GEO_DETAILS");
-    public static final TwitterMethod CREATE_PLACE = new TwitterMethod("CREATE_PLACE");
-
-    /* Legal Resources */
-    public static final TwitterMethod TERMS_OF_SERVICE = new TwitterMethod("TERMS_OF_SERVICE");
-    public static final TwitterMethod PRIVACY_POLICY = new TwitterMethod("PRIVACY_POLICY");
-
-    /* #newtwitter Methods */
-    public static final TwitterMethod RELATED_RESULTS = new TwitterMethod("RELATED_RESULTS");
-
-    /*Help Methods*/
-    public static final TwitterMethod TEST = new TwitterMethod("TEST");
-    public static final TwitterMethod CONFIGURATION = new TwitterMethod("CONFIGURATION");
-    public static final TwitterMethod LANGUAGES = new TwitterMethod("LANGUAGES");
+    /* Undocumented Resources */
+    RELATED_RESULTS,
 }

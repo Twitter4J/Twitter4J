@@ -16,12 +16,7 @@
 
 package twitter4j.examples.geo;
 
-import twitter4j.GeoLocation;
-import twitter4j.Place;
-import twitter4j.SimilarPlaces;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 
 /**
  * Locates places near the given coordinates which are similar in name.
@@ -47,8 +42,7 @@ public final class GetSimilarPlaces {
             if (args.length >= 4) {
                 containedWithin = args[3];
             }
-            SimilarPlaces places = twitter.getSimilarPlaces(location, name, containedWithin, null);
-            System.out.println("token: " + places.getToken());
+            ResponseList<Place> places = twitter.getSimilarPlaces(location, name, containedWithin, null);
             if (places.size() == 0) {
                 System.out.println("No location associated with the specified condition");
             } else {

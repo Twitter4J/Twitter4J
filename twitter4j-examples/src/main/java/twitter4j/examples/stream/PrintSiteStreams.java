@@ -16,15 +16,7 @@
 
 package twitter4j.examples.stream;
 
-import twitter4j.DirectMessage;
-import twitter4j.SiteStreamsListener;
-import twitter4j.Status;
-import twitter4j.StatusDeletionNotice;
-import twitter4j.TwitterException;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
-import twitter4j.User;
-import twitter4j.UserList;
+import twitter4j.*;
 
 /**
  * <p>This is a code example of Twitter4J Streaming API - Site Streams support.<br>
@@ -59,16 +51,19 @@ public final class PrintSiteStreams {
         twitterStream.site(true, followArray);
     }
 
-    static SiteStreamsListener listener = new SiteStreamsListener() {
+    private static final SiteStreamsListener listener = new SiteStreamsListener() {
+        @Override
         public void onStatus(long forUser, Status status) {
             System.out.println("onStatus for_user:" + forUser + " @" + status.getUser().getScreenName() + " - " + status.getText());
         }
 
+        @Override
         public void onDeletionNotice(long forUser, StatusDeletionNotice statusDeletionNotice) {
             System.out.println("Got a status deletion notice for_user:"
                     + forUser + " id:" + statusDeletionNotice.getStatusId());
         }
 
+        @Override
         public void onFriendList(long forUser, long[] friendIds) {
             System.out.print("onFriendList for_user:" + forUser);
             for (long friendId : friendIds) {
@@ -77,6 +72,7 @@ public final class PrintSiteStreams {
             System.out.println();
         }
 
+        @Override
         public void onFavorite(long forUser, User source, User target, Status favoritedStatus) {
             System.out.println("onFavorite for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
@@ -85,6 +81,7 @@ public final class PrintSiteStreams {
                     + favoritedStatus.getText());
         }
 
+        @Override
         public void onUnfavorite(long forUser, User source, User target, Status unfavoritedStatus) {
             System.out.println("onUnFavorite for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
@@ -93,28 +90,33 @@ public final class PrintSiteStreams {
                     + " - " + unfavoritedStatus.getText());
         }
 
+        @Override
         public void onFollow(long forUser, User source, User followedUser) {
             System.out.println("onFollow for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
                     + followedUser.getScreenName());
         }
 
+        @Override
         public void onUnfollow(long forUser, User source, User followedUser) {
             System.out.println("onUnfollow for_user:" + forUser + " source:@"
                     + source.getScreenName() + " target:@"
                     + followedUser.getScreenName());
         }
 
+        @Override
         public void onDirectMessage(long forUser, DirectMessage directMessage) {
             System.out.println("onDirectMessage for_user:" + forUser + " text:"
                     + directMessage.getText());
         }
 
+        @Override
         public void onDeletionNotice(long forUser, long directMessageId, long userId) {
             System.out.println("Got a direct message deletion notice for_user:"
                     + forUser + " id:" + directMessageId);
         }
 
+        @Override
         public void onUserListMemberAddition(long forUser, User addedMember, User listOwner, UserList list) {
             System.out.println("onUserListMemberAddition for_user:" + forUser
                     + " member:@" + addedMember.getScreenName()
@@ -122,6 +124,7 @@ public final class PrintSiteStreams {
                     + " list:" + list.getName());
         }
 
+        @Override
         public void onUserListMemberDeletion(long forUser, User deletedMember, User listOwner, UserList list) {
             System.out.println("onUserListMemberDeletion for_user:" + forUser
                     + " member:@" + deletedMember.getScreenName()
@@ -129,6 +132,7 @@ public final class PrintSiteStreams {
                     + " list:" + list.getName());
         }
 
+        @Override
         public void onUserListSubscription(long forUser, User subscriber, User listOwner, UserList list) {
             System.out.println("onUserListSubscribed for_user:" + forUser
                     + " subscriber:@" + subscriber.getScreenName()
@@ -136,6 +140,7 @@ public final class PrintSiteStreams {
                     + " list:" + list.getName());
         }
 
+        @Override
         public void onUserListUnsubscription(long forUser, User subscriber, User listOwner, UserList list) {
             System.out.println("onUserListUnsubscribed for_user:" + forUser
                     + " subscriber:@" + subscriber.getScreenName()
@@ -143,41 +148,65 @@ public final class PrintSiteStreams {
                     + " list:" + list.getName());
         }
 
+        @Override
         public void onUserListCreation(long forUser, User listOwner, UserList list) {
             System.out.println("onUserListCreated for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
+        @Override
         public void onUserListUpdate(long forUser, User listOwner, UserList list) {
             System.out.println("onUserListUpdated for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
+        @Override
         public void onUserListDeletion(long forUser, User listOwner, UserList list) {
             System.out.println("onUserListDestroyed for_user:" + forUser
                     + " listOwner:@" + listOwner.getScreenName()
                     + " list:" + list.getName());
         }
 
+        @Override
         public void onUserProfileUpdate(long forUser, User updatedUser) {
             System.out.println("onUserProfileUpdated for_user:" + forUser
                     + " user:@" + updatedUser.getScreenName());
         }
 
+        @Override
+        public void onUserDeletion(long forUser, long deletedUser) {
+            System.out.println("onUserDeletion for_user:" + forUser
+                    + " user:@");
+        }
+
+        @Override
+        public void onUserSuspension(long forUser, long suspendedUser) {
+            System.out.println("onUserSuspension for_user:" + forUser
+                    + " user:@" + suspendedUser);
+        }
+
+        @Override
         public void onBlock(long forUser, User source, User blockedUser) {
             System.out.println("onBlock for_user:" + forUser
                     + " source:@" + source.getScreenName()
                     + " target:@" + blockedUser.getScreenName());
         }
 
+        @Override
         public void onUnblock(long forUser, User source, User unblockedUser) {
             System.out.println("onUnblock for_user:" + forUser
                     + " source:@" + source.getScreenName()
                     + " target:@" + unblockedUser.getScreenName());
         }
 
+        @Override
+        public void onDisconnectionNotice(String line) {
+            System.out.println("onDisconnectionNotice:" + line);
+        }
+
+        @Override
         public void onException(Exception ex) {
             ex.printStackTrace();
             System.out.println("onException:" + ex.getMessage());
