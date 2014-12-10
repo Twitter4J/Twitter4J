@@ -130,7 +130,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
 
     /**
      * Return the user associated with the status.<br>
-     * This can be null if the instance if from User.getStatus().
+     * This can be null if the instance is from User.getStatus().
      *
      * @return the user
      */
