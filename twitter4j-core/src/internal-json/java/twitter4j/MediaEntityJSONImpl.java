@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,11 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     private String displayURL;
     private Map<Integer, MediaEntity.Size> sizes;
     private String type;
+    private int videoAspectRatioWidth;
+    private int videoAspectRatioHeight;
+    private long videoDurationMillis;
+    private Variant[] videoVariants;
+
 
     MediaEntityJSONImpl(JSONObject json) throws TwitterException {
         try {
@@ -56,6 +62,27 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
             if (!json.isNull("type")) {
                 this.type = json.getString("type");
             }
+
+            if (json.has("video_info")) {
+                JSONObject videoInfo = json.getJSONObject("video_info");
+                JSONArray aspectRatio = videoInfo.getJSONArray("aspect_ratio");
+                this.videoAspectRatioWidth = aspectRatio.getInt(0);
+                this.videoAspectRatioHeight = aspectRatio.getInt(1);
+
+                // not in animated_gif
+                if (!videoInfo.isNull("duration_millis")) {
+                    this.videoDurationMillis = videoInfo.getLong("duration_millis");
+                }
+
+                JSONArray variants = videoInfo.getJSONArray("variants");
+                this.videoVariants = new Variant[variants.length()];
+                for (int i=0; i<variants.length(); i++) {
+                    this.videoVariants[i] = new Variant(variants.getJSONObject(i));
+                }
+            } else {
+                this.videoVariants = new Variant[0];
+            }
+
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -127,6 +154,26 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
         return super.getEnd();
     }
 
+    @Override
+    public int getVideoAspectRatioWidth() {
+        return videoAspectRatioWidth;
+    }
+
+    @Override
+    public int getVideoAspectRatioHeight() {
+        return videoAspectRatioHeight;
+    }
+
+    @Override
+    public long getVideoDurationMillis() {
+        return videoDurationMillis;
+    }
+
+    @Override
+    public MediaEntity.Variant[] getVideoVariants() {
+        return videoVariants;
+    }
+
     static class Size implements MediaEntity.Size {
         private static final long serialVersionUID = -2515842281909325169L;
         int width;
@@ -186,6 +233,69 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
         }
     }
 
+    static class Variant implements MediaEntity.Variant {
+        private static final long serialVersionUID = 1027236588556797980L;
+        int bitrate;
+        String contentType;
+        String url;
+
+        Variant(JSONObject json) throws JSONException {
+            bitrate = json.has("bitrate") ? json.getInt("bitrate") : 0;
+            contentType = json.getString("content_type");
+            url =json.getString("url");
+        }
+
+        /* For serialization purposes only. */
+        /* package */ Variant() {
+        }
+
+        @Override
+        public int getBitrate() {
+            return bitrate;
+        }
+
+        @Override
+        public String getContentType() {
+            return contentType;
+        }
+
+        @Override
+        public String getUrl() {
+            return url;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Variant)) return false;
+
+            Variant variant = (Variant) o;
+
+            if (bitrate != variant.bitrate) return false;
+            if (!contentType.equals(variant.contentType)) return false;
+            if (!url.equals(variant.url)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = bitrate;
+            result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
+            result = 31 * result + (url != null ? url.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Variant{" +
+                    "bitrate=" + bitrate +
+                    ", contentType=" + contentType +
+                    ", url=" + url +
+                    '}';
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -214,6 +324,10 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
                 ", displayURL='" + displayURL + '\'' +
                 ", sizes=" + sizes +
                 ", type=" + type +
+                ", videoAspectRatioWidth=" + videoAspectRatioWidth +
+                ", videoAspectRatioHeight=" + videoAspectRatioHeight +
+                ", videoDurationMillis=" + videoDurationMillis +
+                ", videoVariants=" + Arrays.toString(videoVariants) +
                 '}';
     }
 }

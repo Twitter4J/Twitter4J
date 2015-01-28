@@ -66,10 +66,26 @@ public interface MediaEntity extends URLEntity {
     }
 
     /**
-     * Returns the media type ("photo").
+     * Returns the media type ("photo", "video", "animated_gif").
      *
-     * @return the media type ("photo").
+     * @return the media type ("photo", "video", "animated_gif").
      */
     String getType();
 
+    int getVideoAspectRatioWidth();
+
+    int getVideoAspectRatioHeight();
+
+    long getVideoDurationMillis();
+
+    interface Variant extends java.io.Serializable {
+
+        int getBitrate();
+
+        String getContentType();
+
+        String getUrl();
+    }
+
+    Variant[] getVideoVariants();
 }
