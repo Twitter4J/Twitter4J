@@ -78,8 +78,8 @@ public final class TimeSpanConverter implements Serializable {
         } else if ("es".equals(language)) {
             formats[NOW] = new MessageFormat("Ahora");
             formats[N_SECONDS_AGO] = new MessageFormat("hace {0} segundos");
-            formats[A_MINUTE_AGO] = new MessageFormat("hace 1 munito");
-            formats[N_MINUTES_AGO] = new MessageFormat("hace {0} munitos");
+            formats[A_MINUTE_AGO] = new MessageFormat("hace 1 minuto");
+            formats[N_MINUTES_AGO] = new MessageFormat("hace {0} minutos");
             formats[AN_HOUR_AGO] = new MessageFormat("hace 1 hora");
             formats[N_HOURS_AGO] = new MessageFormat("hace {0} horas");
             dateMonth = new SimpleDateFormat("d MMM", locale);
