@@ -57,7 +57,7 @@ public interface EntitySupport {
      * @return an array of ExtendedMediaEntities.
      * @since Twitter4J 4.0.2
      */
-    MediaEntity[] getExtendedMediaEntities();
+    ExtendedMediaEntity[] getExtendedMediaEntities();
 
     /**
      * Returns an array of SymbolEntities if medias are available in the tweet. This method will an empty array if no symbols were mentioned.

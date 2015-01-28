@@ -14,7 +14,7 @@ public class MediaEntityJSONImplTest extends TestCase {
 
         //when
         JSONObject json = new JSONObject(rawJson);
-        MediaEntityJSONImpl mediaEntity = new MediaEntityJSONImpl(json.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0));
+        ExtendedMediaEntityJSONImpl mediaEntity = new ExtendedMediaEntityJSONImpl(json.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0));
 
         //then
         assertEquals(560070131976392705L, mediaEntity.getId());
@@ -27,7 +27,7 @@ public class MediaEntityJSONImplTest extends TestCase {
 
         assertEquals(30033, mediaEntity.getVideoDurationMillis());
 
-        MediaEntity.Variant[] variants = mediaEntity.getVideoVariants();
+        ExtendedMediaEntity.Variant[] variants = mediaEntity.getVideoVariants();
         assertEquals(5, variants.length);
 
         assertEquals(2176000, variants[0].getBitrate());
@@ -50,7 +50,7 @@ public class MediaEntityJSONImplTest extends TestCase {
 
         //when
         JSONObject json = new JSONObject(rawJson);
-        MediaEntityJSONImpl mediaEntity = new MediaEntityJSONImpl(json.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0));
+        ExtendedMediaEntityJSONImpl mediaEntity = new ExtendedMediaEntityJSONImpl(json.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0));
 
         //then
         assertEquals(100, mediaEntity.getId());
@@ -64,7 +64,7 @@ public class MediaEntityJSONImplTest extends TestCase {
         // duration_millis is not appeared in animated_gif
         assertEquals(0, mediaEntity.getVideoDurationMillis());
 
-        MediaEntity.Variant[] variants = mediaEntity.getVideoVariants();
+        ExtendedMediaEntity.Variant[] variants = mediaEntity.getVideoVariants();
         assertEquals(2, variants.length);
 
         assertEquals(123, variants[0].getBitrate());
