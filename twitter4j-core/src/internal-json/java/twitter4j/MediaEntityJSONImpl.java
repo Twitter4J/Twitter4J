@@ -132,6 +132,11 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
         int width;
         int height;
         int resize;
+        
+        /* For serialization purposes only. */
+		/* package */
+		Size() {
+		}
 
         Size(JSONObject json) throws JSONException {
             width = json.getInt("w");
