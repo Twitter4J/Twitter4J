@@ -424,7 +424,7 @@ public interface ListsResources {
     UserList destroyUserListSubscription(String ownerScreenName, String slug) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param listId  The id of the list.
@@ -436,7 +436,7 @@ public interface ListsResources {
     UserList createUserListMembers(long listId, long[] userIds) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
@@ -449,7 +449,7 @@ public interface ListsResources {
     UserList createUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
@@ -462,7 +462,7 @@ public interface ListsResources {
     UserList createUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param listId      The id of the list.
@@ -473,7 +473,7 @@ public interface ListsResources {
     UserList createUserListMembers(long listId, String[] screenNames) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerId     The user ID of the user who owns the list being requested by a slug.
@@ -485,7 +485,7 @@ public interface ListsResources {
     UserList createUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
@@ -585,7 +585,7 @@ public interface ListsResources {
             throws TwitterException;
 
     /**
-     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
+     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
      * @param listId The id of the list.
@@ -598,7 +598,7 @@ public interface ListsResources {
     UserList createUserListMember(long listId, long userId) throws TwitterException;
 
     /**
-     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
+     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
@@ -612,7 +612,7 @@ public interface ListsResources {
     UserList createUserListMember(long ownerId, String slug, long userId) throws TwitterException;
 
     /**
-     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
+     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
