@@ -95,6 +95,17 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
     void sample();
 
     /**
+     * Starts listening on random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
+     *
+     * Only samples Tweets written in the given language.
+     *
+     * @see twitter4j.StatusStream
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
+     * @since Twitter4J 2.0.10
+     */
+    void sample(final String language);
+
+    /**
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
      *
      * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
