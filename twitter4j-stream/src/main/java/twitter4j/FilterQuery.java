@@ -30,6 +30,7 @@ public final class FilterQuery implements java.io.Serializable {
     private String[] track;
     private double[][] locations;
     private String[] language;
+    private String filterLevel;
 
     /**
      * Creates a new FilterQuery
@@ -40,6 +41,7 @@ public final class FilterQuery implements java.io.Serializable {
         this.track = null;
         this.locations = null;
         this.language = null;
+        this.filterLevel = null;
     }
 
     /**
@@ -166,6 +168,17 @@ public final class FilterQuery implements java.io.Serializable {
         return this;
     }
 
+    /**
+     * The filter level limits what tweets appear in the stream to those with
+     * a minimum filter_level attribute value.
+     *
+     * @param filterLevel one of either none, low, or medium.
+     */
+    public FilterQuery filterLevel(String filterLevel) {
+        this.filterLevel = filterLevel;
+        return this;
+    }
+
 
     /*package*/ HttpParameter[] asHttpParameterArray(HttpParameter stallWarningsParam) {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
@@ -186,6 +199,10 @@ public final class FilterQuery implements java.io.Serializable {
         if (language != null && language.length > 0) {
             params.add(new HttpParameter("language"
                     , StringUtil.join(language)));
+        }
+        if (filterLevel != null && language.length > 0) {
+            params.add(new HttpParameter("filter_level"
+                    , StringUtil.join(filterLevel)))
         }
         params.add(stallWarningsParam);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
@@ -216,6 +233,7 @@ public final class FilterQuery implements java.io.Serializable {
         if (!Arrays.equals(follow, that.follow)) return false;
         if (!Arrays.equals(track, that.track)) return false;
         if (!Arrays.equals(language, that.language)) return false;
+        if (!String.equals(filterLevel, that.filterLevel)) return false;
 
         return true;
     }
@@ -226,6 +244,7 @@ public final class FilterQuery implements java.io.Serializable {
         result = 31 * result + (follow != null ? Arrays.hashCode(follow) : 0);
         result = 31 * result + (track != null ? Arrays.hashCode(track) : 0);
         result = 31 * result + (language != null ? Arrays.hashCode(language) : 0);
+        result = 31 * result + (filterLevel != null ? filterLevel.hashCode : 0)
         return result;
     }
 
@@ -237,6 +256,7 @@ public final class FilterQuery implements java.io.Serializable {
                 ", track=" + (track == null ? null : Arrays.asList(track)) +
                 ", locations=" + (locations == null ? null : Arrays.asList(locations)) +
                 ", language=" + (language == null ? null : Arrays.asList(language)) +
+                ", filter_level=" + filterLevel +
                 '}';
     }
 }
