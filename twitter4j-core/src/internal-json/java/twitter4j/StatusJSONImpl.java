@@ -57,7 +57,7 @@ import static twitter4j.ParseUtil.getDate;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
-    private MediaEntity[] extendedMediaEntities;
+    private ExtendedMediaEntity[] extendedMediaEntities;
     private SymbolEntity[] symbolEntities;
     private long currentUserRetweetId = -1L;
     private Scopes scopes;
@@ -179,9 +179,9 @@ import static twitter4j.ParseUtil.getDate;
                 if (!extendedEntities.isNull("media")) {
                     JSONArray mediaArray = extendedEntities.getJSONArray("media");
                     final int len = mediaArray.length();
-                    extendedMediaEntities = new MediaEntity[len];
+                    extendedMediaEntities = new ExtendedMediaEntity[len];
                     for (int i = 0; i < len; i++) {
-                        extendedMediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
+                        extendedMediaEntities[i] = new ExtendedMediaEntityJSONImpl(mediaArray.getJSONObject(i));
                     }
                 }
             }
@@ -191,7 +191,7 @@ import static twitter4j.ParseUtil.getDate;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
             symbolEntities = symbolEntities == null ? new SymbolEntity[0] : symbolEntities;
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
-            extendedMediaEntities = extendedMediaEntities == null ? new MediaEntity[0] : extendedMediaEntities;
+            extendedMediaEntities = extendedMediaEntities == null ? new ExtendedMediaEntity[0] : extendedMediaEntities;
             text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
                     urlEntities, hashtagEntities, mediaEntities);
             if (!json.isNull("current_user_retweet")) {
@@ -364,7 +364,7 @@ import static twitter4j.ParseUtil.getDate;
     }
 
     @Override
-    public MediaEntity[] getExtendedMediaEntities() {
+    public ExtendedMediaEntity[] getExtendedMediaEntities() {
         return extendedMediaEntities;
     }
 

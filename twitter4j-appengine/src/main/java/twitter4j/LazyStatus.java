@@ -318,7 +318,7 @@ final class LazyStatus implements twitter4j.Status {
     }
     
     @Override
-    public MediaEntity[] getExtendedMediaEntities() {
+    public ExtendedMediaEntity[] getExtendedMediaEntities() {
         return getTarget().getExtendedMediaEntities();
     }
 

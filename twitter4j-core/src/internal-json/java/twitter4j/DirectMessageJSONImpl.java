@@ -39,7 +39,7 @@ import java.util.Date;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
-    private MediaEntity[] extendedMediaEntities;
+    private ExtendedMediaEntity[] extendedMediaEntities;
     private SymbolEntity[] symbolEntities;
 
 
@@ -121,7 +121,7 @@ import java.util.Date;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
             symbolEntities = symbolEntities == null ? new SymbolEntity[0] : symbolEntities;
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
-            extendedMediaEntities = extendedMediaEntities == null ? new MediaEntity[0] : extendedMediaEntities;
+            extendedMediaEntities = extendedMediaEntities == null ? new ExtendedMediaEntity[0] : extendedMediaEntities;
             text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
                     urlEntities, hashtagEntities, mediaEntities);
         } catch (JSONException jsone) {
@@ -199,7 +199,7 @@ import java.util.Date;
     }
 
     @Override
-    public MediaEntity[] getExtendedMediaEntities() {
+    public ExtendedMediaEntity[] getExtendedMediaEntities() {
         return extendedMediaEntities;
     }
 
