@@ -84,16 +84,21 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
 
     @Override
     public RequestToken getOAuthRequestToken() throws TwitterException {
-        return getOAuthRequestToken(null, null);
+        return getOAuthRequestToken(null, null, null);
     }
 
     @Override
     public RequestToken getOAuthRequestToken(String callbackURL) throws TwitterException {
-        return getOAuthRequestToken(callbackURL, null);
+        return getOAuthRequestToken(callbackURL, null, null);
     }
 
     @Override
     public RequestToken getOAuthRequestToken(String callbackURL, String xAuthAccessType) throws TwitterException {
+        return getOAuthRequestToken(callbackURL, xAuthAccessType, null);
+    }
+
+    @Override
+    public RequestToken getOAuthRequestToken(String callbackURL, String xAuthAccessType, String xAuthMode) throws TwitterException {
         if (oauthToken instanceof AccessToken) {
             throw new IllegalStateException("Access token already available.");
         }
@@ -103,6 +108,9 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         }
         if (xAuthAccessType != null) {
             params.add(new HttpParameter("x_auth_access_type", xAuthAccessType));
+        }
+        if (xAuthMode != null) {
+            params.add(new HttpParameter("x_auth_mode", xAuthMode));
         }
         oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[params.size()]), this, null), this);
         return (RequestToken) oauthToken;
