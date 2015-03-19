@@ -16,6 +16,7 @@
 package twitter4j;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -101,6 +102,24 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
         assertTrue(status.getText().startsWith(date));
         assertEquals(1, status.getMediaEntities().length);
+    }
+    
+    public void testUploadMediaByFile() throws Exception {
+
+        UploadedMedia media = twitter1.uploadMedia(getRandomlyChosenFile());
+
+        assertNotNull(media.getMediaId());
+        assertNotNull(media.getSize());
+    }
+
+    public void testUploadMediaByStream() throws Exception {
+
+        File randomFile = getRandomlyChosenFile();
+        FileInputStream fis = new FileInputStream(randomFile);
+        UploadedMedia media2 = twitter1.uploadMedia(randomFile.getName(), fis);
+
+        assertNotNull(media2.getMediaId());
+        assertNotNull(media2.getSize());
     }
 
     public void testRetweetMethods() throws Exception {

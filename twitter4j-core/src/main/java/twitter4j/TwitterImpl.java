@@ -236,6 +236,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , new HttpParameter[]{new HttpParameter("media", image)}).asJSONObject());
     }
 
+    @Override
+    public UploadedMedia uploadMedia(String fileName, InputStream image) throws TwitterException {
+        return new UploadedMedia(post(conf.getUploadBaseURL() + "media/upload.json"
+                , new HttpParameter[]{new HttpParameter("media", fileName, image)}).asJSONObject());
+    }
+
     /* Search Resources */
 
     @Override
