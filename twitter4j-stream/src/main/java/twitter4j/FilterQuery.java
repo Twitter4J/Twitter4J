@@ -201,8 +201,7 @@ public final class FilterQuery implements java.io.Serializable {
                     , StringUtil.join(language)));
         }
         if (filterLevel != null && language.length > 0) {
-            params.add(new HttpParameter("filter_level"
-                    , StringUtil.join(filterLevel)))
+            params.add(new HttpParameter("filter_level", filterLevel));
         }
         params.add(stallWarningsParam);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
@@ -233,7 +232,8 @@ public final class FilterQuery implements java.io.Serializable {
         if (!Arrays.equals(follow, that.follow)) return false;
         if (!Arrays.equals(track, that.track)) return false;
         if (!Arrays.equals(language, that.language)) return false;
-        if (!String.equals(filterLevel, that.filterLevel)) return false;
+        if (!(filterLevel == null ? that.filterLevel == null :
+            filterLevel.equals(that.filterLevel))) return false;
 
         return true;
     }
@@ -244,7 +244,7 @@ public final class FilterQuery implements java.io.Serializable {
         result = 31 * result + (follow != null ? Arrays.hashCode(follow) : 0);
         result = 31 * result + (track != null ? Arrays.hashCode(track) : 0);
         result = 31 * result + (language != null ? Arrays.hashCode(language) : 0);
-        result = 31 * result + (filterLevel != null ? filterLevel.hashCode : 0)
+        result = 31 * result + (filterLevel != null ? filterLevel.hashCode() : 0);
         return result;
     }
 
