@@ -81,6 +81,7 @@ Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
 Niv Singer <niv at innerlogics.com> @nivs
 Pierre Lanvin <pierre.lanvin@gmail.com> @planvin
+Pieter Meiresone @_MPieter
 Perry Sakkaris <psakkaris at gmail.com>
 Rajesh Koilpillai <rajesh.koilpillai at gmail.com> @rajeshkp
 Roberto Estrada <robestradac at gmail.com>
