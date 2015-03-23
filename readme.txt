@@ -106,6 +106,7 @@ Tomohisa Igarashi <tm.igarashi at gmail.com>
 Tyler MacLeod
 Will Glozer <will at glozer.net> @ar3te
 William Morgan <william at twitter.com> @wm
+William O'Hanley <william at wohanley.com> @wohanley
 William Vanderhoef <william.vanderhoef at gmail.com> @thePoofy
 withgod <noname at withgod.jp> @withgod
 Yusuke Yamamoto <yusuke at mac.com> @yusuke
