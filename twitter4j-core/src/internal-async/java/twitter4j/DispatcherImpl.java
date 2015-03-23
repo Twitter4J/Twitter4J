@@ -20,6 +20,7 @@ import twitter4j.conf.Configuration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -27,6 +28,8 @@ import java.util.concurrent.ThreadFactory;
  */
 final class DispatcherImpl implements Dispatcher {
     private final ExecutorService executorService;
+    private static final Logger logger = Logger.getLogger(DispatcherImpl.class);
+    private static final long SHUTDOWN_TIME = 5000;
 
     public DispatcherImpl(final Configuration conf) {
         executorService = Executors.newFixedThreadPool(conf.getAsyncNumThreads(),
@@ -57,5 +60,12 @@ final class DispatcherImpl implements Dispatcher {
     @Override
     public synchronized void shutdown() {
         executorService.shutdown();
+        try {
+        	if (!executorService.awaitTermination(SHUTDOWN_TIME, TimeUnit.MILLISECONDS)) {
+        		executorService.shutdownNow();
+        	}
+        } catch (InterruptedException e) {
+        	logger.warn(e.getMessage());
+        }
     }
 }
