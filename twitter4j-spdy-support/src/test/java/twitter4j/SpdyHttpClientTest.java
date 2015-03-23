@@ -64,7 +64,7 @@ public class SpdyHttpClientTest extends TestCase {
         ConnectionPool p = client.getConnectionPool();
         assertEquals(1, p.getConnectionCount());
         assertEquals(0, p.getHttpConnectionCount());
-        assertEquals(1, p.getSpdyConnectionCount());
+        assertEquals(1, p.getMultiplexedConnectionCount());
 
         assertEquals("HTTP-draft-09/2.0", http.getLastRequestProtocol());
     }
@@ -83,7 +83,7 @@ public class SpdyHttpClientTest extends TestCase {
         ConnectionPool p = client.getConnectionPool();
         assertEquals(1, p.getConnectionCount());
         assertEquals(0, p.getHttpConnectionCount());
-        assertEquals(1, p.getSpdyConnectionCount());
+        assertEquals(1, p.getMultiplexedConnectionCount());
 
         assertEquals("spdy/3.1", http.getLastRequestProtocol());
     }
@@ -102,7 +102,7 @@ public class SpdyHttpClientTest extends TestCase {
         ConnectionPool p = client.getConnectionPool();
         assertEquals(1, p.getConnectionCount());
         assertEquals(0, p.getHttpConnectionCount());
-        assertEquals(1, p.getSpdyConnectionCount());
+        assertEquals(1, p.getMultiplexedConnectionCount());
 
         assertEquals("HTTP-draft-09/2.0", http.getLastRequestProtocol());
     }
