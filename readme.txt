@@ -79,6 +79,7 @@ Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
 Norbert Bartels <n.bartels at phpmonkeys.de>
 Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
+Nils Haldenwang @nilshaldenwang
 Niv Singer <niv at innerlogics.com> @nivs
 Pierre Lanvin <pierre.lanvin@gmail.com> @planvin
 Pieter Meiresone @_MPieter
