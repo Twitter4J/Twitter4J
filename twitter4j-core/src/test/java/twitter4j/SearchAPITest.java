@@ -18,8 +18,11 @@
 package twitter4j;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SearchAPITest extends TwitterTestBase {
 
@@ -121,6 +124,40 @@ public class SearchAPITest extends TwitterTestBase {
             result = twitter1.search(query);
             // do something
         } while ((query = result.nextQuery()) != null);
+    }
+
+    public void testEasyPaging2() throws Exception {
+        int count=0;
+        
+        Calendar now=Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH, 1);
+        String until=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH);
+        
+        Set<Long> maxids=new HashSet<Long>();
+
+        // Don't test since_id here -- it gets clobbered by since
+        // Don't test locale here -- only JP is valid
+        // #tbt is "throwback thursday" -- a fabulously popular hashtag
+        Query query=new Query("#tbt")
+            .lang("en")
+            .geoCode(new GeoLocation(40.7903, -73.9597), 10, "mi")
+            .resultType(Query.ResultType.recent)
+            .since("2014-1-1")
+            .until(until);
+        do {
+            QueryResult qr=twitter1.search(query);
+            count = count+1;
+            query = qr.nextQuery();
+            assertNotNull(query);
+            assertEquals("en", query.getLang());
+            assertTrue(query.getGeocode().endsWith(",10.0mi"));
+            assertEquals(Query.ResultType.recent, query.getResultType());
+            assertTrue("max id not set", query.getMaxId()!=-1L);
+            assertFalse("max id seen before", maxids.contains(query.getMaxId()));
+            maxids.add(query.getMaxId());
+        } while (count < 3);
+        
+        assertTrue("not enough pages for #tbt in test", count >= 3);
     }
 
 }
