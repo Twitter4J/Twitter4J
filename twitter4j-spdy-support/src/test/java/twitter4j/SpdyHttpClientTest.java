@@ -56,7 +56,7 @@ public class SpdyHttpClientTest extends TestCase {
         AlternativeHttpClientImpl http = callOembed();
 
         // check HTTP/2.0
-        Field f = http.getClass().getDeclaredField("client");
+        Field f = http.getClass().getDeclaredField("okHttpClient");
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
         assertNotNull("ensure that OkHttpClient is used", client);
@@ -66,7 +66,7 @@ public class SpdyHttpClientTest extends TestCase {
         assertEquals(0, p.getHttpConnectionCount());
         assertEquals(1, p.getMultiplexedConnectionCount());
 
-        assertEquals("HTTP-draft-09/2.0", http.getLastRequestProtocol());
+        assertEquals("h2", http.getLastRequestProtocol());
     }
 
     public void testSpdy() throws Exception {
@@ -75,7 +75,7 @@ public class SpdyHttpClientTest extends TestCase {
         AlternativeHttpClientImpl http = callOembed();
 
         // check SPDY
-        Field f = http.getClass().getDeclaredField("client");
+        Field f = http.getClass().getDeclaredField("okHttpClient");
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
         assertNotNull("ensure that OkHttpClient is used", client);
@@ -94,7 +94,7 @@ public class SpdyHttpClientTest extends TestCase {
         AlternativeHttpClientImpl http = callOembed();
 
         // check HTTP/2.0
-        Field f = http.getClass().getDeclaredField("client");
+        Field f = http.getClass().getDeclaredField("okHttpClient");
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
         assertNotNull("ensure that OkHttpClient is used", client);
@@ -104,7 +104,7 @@ public class SpdyHttpClientTest extends TestCase {
         assertEquals(0, p.getHttpConnectionCount());
         assertEquals(1, p.getMultiplexedConnectionCount());
 
-        assertEquals("HTTP-draft-09/2.0", http.getLastRequestProtocol());
+        assertEquals("h2", http.getLastRequestProtocol());
     }
 
     public void testNoSpdy() throws Exception {
@@ -114,10 +114,16 @@ public class SpdyHttpClientTest extends TestCase {
         AlternativeHttpClientImpl http = callOembed();
 
         // check not SPDY
-        Field f = http.getClass().getDeclaredField("client");
+        Field f = http.getClass().getDeclaredField("okHttpClient");
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
-        assertNull(client);     // OkHttpClient was NOT used
+
+        ConnectionPool p = client.getConnectionPool();
+        assertEquals(1, p.getConnectionCount());
+        assertEquals(1, p.getHttpConnectionCount());
+        assertEquals(0, p.getMultiplexedConnectionCount());
+
+        assertEquals("http/1.1", http.getLastRequestProtocol());
     }
 
     private AlternativeHttpClientImpl callOembed() throws TwitterException, JSONException {
