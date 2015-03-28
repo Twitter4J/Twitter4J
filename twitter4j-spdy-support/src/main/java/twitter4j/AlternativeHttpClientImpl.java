@@ -45,8 +45,8 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 	private OkHttpClient okHttpClient;
 
 	//for test
-	static boolean sPreferSpdy = true;
-	static boolean sPreferHttp2 = true;
+	public static boolean sPreferSpdy = true;
+	public static boolean sPreferHttp2 = true;
 	private String lastRequestProtocol = null;
 
 	public AlternativeHttpClientImpl(){
