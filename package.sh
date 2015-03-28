@@ -22,7 +22,7 @@ cp -r twitter4j-examples/bin $DIR/
 mkdir $DIR/twitter4j-media-support
 cp -r twitter4j-media-support/src $DIR/twitter4j-media-support/
 cp twitter4j-media-support/pom.xml $DIR/twitter4j-media-support/
-rm $dir/twitter4j-media-support/src/test/resources/twitter4j.properties
+rm $DIR/twitter4j-media-support/src/test/resources/twitter4j.properties
 
 mkdir $DIR/twitter4j-async
 cp -r twitter4j-async/src $DIR/twitter4j-async/
@@ -40,6 +40,7 @@ cp twitter4j-appengine/pom.xml $DIR/twitter4j-appengine/
 mkdir $DIR/twitter4j-http2-support
 cp -r twitter4j-http2-support/src $DIR/twitter4j-http2-support/
 cp twitter4j-http2-support/pom.xml $DIR/twitter4j-http2-support/
+rm $DIR/twitter4j-http2-support/src/test/resources/test.properties
 
 cp pom.xml $DIR/pom.xml
 cp LICENSE.txt $DIR/
