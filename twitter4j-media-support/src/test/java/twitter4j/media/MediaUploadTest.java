@@ -51,43 +51,28 @@ public class MediaUploadTest extends TestCase {
 
     public void testProviders() throws Exception {
         Configuration conf;
-        ImageUploadFactory factory;
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITTER.name()).build();
-        factory = new ImageUploadFactory(conf);
+        new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.name()).build();
-        factory = new ImageUploadFactory(conf);
+        new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.name()).build();
-        factory = new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITPIC.name()).build();
-        factory = new ImageUploadFactory(conf);
+        new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.YFROG.name()).build();
-        factory = new ImageUploadFactory(conf);
+        new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.MOBYPICTURE.name()).build();
-        factory = new ImageUploadFactory(conf);
+        new ImageUploadFactory(conf);
     }
 
     public void testNonexistingFileUpload() throws Exception {
 
         ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
-        ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
+        ImageUpload upload = factory.getInstance(MediaProvider.IMG_LY);
         try {
-            String url = upload.upload(new File("foobar"));
+            upload.upload(new File("foobar"));
         } catch (TwitterException te) {
             if (!(te.getCause() instanceof FileNotFoundException)) {
                 fail("expecting FileNotFoundException");
             }
-        }
-    }
-
-    public void testTwitPicOAuthUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
-            ImageUpload upload = factory.getInstance(MediaProvider.TWITPIC);
-            String url = upload.upload(fileName, is, message);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
         }
     }
 
