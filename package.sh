@@ -62,7 +62,7 @@ sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-media-s
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-async/src/main/java/twitter4j/VersionAsync.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-appengine/src/main/java/twitter4j/VersionAppEngine.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-stream/src/main/java/twitter4j/VersionStream.java
-sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-http2-support/src/main/java/twitter4j/VersionSPDY.java
+sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-http2-support/src/main/java/twitter4j/VersionHTTP2.java
 
 cd $DIR
 if [ -n "$DEPLOY" ];
