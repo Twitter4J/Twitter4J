@@ -19,8 +19,8 @@ twitter4j-media-support/src/test/resources/twitter4j.properties
 twitter4j-httpclient-support/src/test/resources/twitter4j.properties
 twitter4j-examples/src/main/resources/twitter4j.properties
 twitter4j-examples/target/*
-twitter4j-spdy-support/target/*
-twitter4j-spdy-support/src/test/resources/test.properties
+twitter4j-http2-support/target/*
+twitter4j-http2-support/src/test/resources/test.properties
 .DS_Store
 ~$*
 .classpath

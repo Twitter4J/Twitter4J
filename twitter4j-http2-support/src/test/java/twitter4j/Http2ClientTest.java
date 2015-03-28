@@ -30,22 +30,22 @@ import java.lang.reflect.Field;
  * @author Hiroaki Takeuchi - takke30 at gmail.com
  * @since Twitter4J 3.0.6
  */
-public class SpdyHttpClientTest extends TestCase {
+public class Http2ClientTest extends TestCase {
 
     // specify running order
     public static Test suite() {
 
         TestSuite suite = new TestSuite();
 
-        suite.addTest(new SpdyHttpClientTest("testNoPreferOption"));    // must be called first
-        suite.addTest(new SpdyHttpClientTest("testHttp2"));
-        suite.addTest(new SpdyHttpClientTest("testSpdy"));
-        suite.addTest(new SpdyHttpClientTest("testNoSpdy"));
+        suite.addTest(new Http2ClientTest("testNoPreferOption"));    // must be called first
+        suite.addTest(new Http2ClientTest("testHttp2"));
+        suite.addTest(new Http2ClientTest("testSpdy"));
+        suite.addTest(new Http2ClientTest("testNoSpdy"));
 
         return suite;
     }
 
-    public SpdyHttpClientTest(String name) {
+    public Http2ClientTest(String name) {
         super(name);
     }
 

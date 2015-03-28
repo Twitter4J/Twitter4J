@@ -37,9 +37,9 @@ mkdir $DIR/twitter4j-appengine
 cp -r twitter4j-appengine/src $DIR/twitter4j-appengine/
 cp twitter4j-appengine/pom.xml $DIR/twitter4j-appengine/
 
-mkdir $DIR/twitter4j-spdy-support
-cp -r twitter4j-spdy-support/src $DIR/twitter4j-spdy-support/
-cp twitter4j-spdy-support/pom.xml $DIR/twitter4j-spdy-support/
+mkdir $DIR/twitter4j-http2-support
+cp -r twitter4j-http2-support/src $DIR/twitter4j-http2-support/
+cp twitter4j-http2-support/pom.xml $DIR/twitter4j-http2-support/
 
 cp pom.xml $DIR/pom.xml
 cp LICENSE.txt $DIR/
@@ -55,14 +55,14 @@ sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/ma
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-media-support/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-async/pom.xml
 sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-stream/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-spdy-support/pom.xml
+sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-http2-support/pom.xml
 
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-core/src/main/java/twitter4j/Version.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-media-support/src/main/java/twitter4j/media/Version.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-async/src/main/java/twitter4j/VersionAsync.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-appengine/src/main/java/twitter4j/VersionAppEngine.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-stream/src/main/java/twitter4j/VersionStream.java
-sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-spdy-support/src/main/java/twitter4j/VersionSPDY.java
+sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-http2-support/src/main/java/twitter4j/VersionSPDY.java
 
 cd $DIR
 if [ -n "$DEPLOY" ];
@@ -83,7 +83,7 @@ if [ -n "$DEPLOY" ];
   mvn clean package -Dmaven.test.skip=true
   cd ../twitter4j-appengine
   mvn clean package -Dmaven.test.skip=true
-  cd ../twitter4j-spdy-support
+  cd ../twitter4j-http2-support
   mvn clean package -Dmaven.test.skip=true
   cd ..
 fi
@@ -122,11 +122,11 @@ mv twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar tw
 mv twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION.jar twitter4j-appengine/
 rm twitter4j-appengine/src/test/resources/twitter4j.properties
 
-mkdir twitter4j-spdy-support/javadoc/
-unzip twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar -d twitter4j-spdy-support/javadoc/
-mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-javadoc.jar twitter4j-spdy-support/
-# mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION-sources.jar twitter4j-spdy-support/
-mv twitter4j-spdy-support/target/twitter4j-spdy-support-$LATEST_VERSION.jar twitter4j-spdy-support/
+mkdir twitter4j-http2-support/javadoc/
+unzip twitter4j-http2-support/target/twitter4j-http2-support-$LATEST_VERSION-javadoc.jar -d twitter4j-http2-support/javadoc/
+mv twitter4j-http2-support/target/twitter4j-http2-support-$LATEST_VERSION-javadoc.jar twitter4j-http2-support/
+# mv twitter4j-http2-support/target/twitter4j-http2-support-$LATEST_VERSION-sources.jar twitter4j-http2-support/
+mv twitter4j-http2-support/target/twitter4j-http2-support-$LATEST_VERSION.jar twitter4j-http2-support/
 
 mkdir lib
 cp ../readme-libs.txt lib
@@ -142,7 +142,7 @@ rm -Rf twitter4j-async/target
 rm -Rf twitter4j-examples/target
 rm -Rf twitter4j-stream/target
 rm -Rf twitter4j-appengine/target
-rm -Rf twitter4j-spdy-support/target
+rm -Rf twitter4j-http2-support/target
 
 find . -name ".svn" -print -exec rm -rf {} ";"
 find . -name ".DS_Store" -print -exec rm -r {} ";"
