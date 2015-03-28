@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * @author Hiroaki Takeuchi - takke30 at gmail.com
  * @author Yuuto Uehara - muemi.himazin at gmail.com
  * @since Twitter4J 3.0.6
  */
