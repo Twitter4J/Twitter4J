@@ -407,6 +407,30 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
+    public synchronized TwitterStream onStatus(StatusConsumer action) {
+        streamListeners.add(new StatusAdapter() {
+            @Override
+            public void onStatus(Status status) {
+                action.onStatus(status);
+            }
+        });
+        updateListeners();
+        return this;
+    }
+
+    @Override
+    public synchronized TwitterStream onException(ExceptionConsumer action) {
+        streamListeners.add(new StatusAdapter() {
+            @Override
+            public void onException(Exception ex) {
+                action.onException(ex);
+            }
+        });
+        updateListeners();
+        return this;
+    }
+
+    @Override
     public synchronized void removeListener(StreamListener listener) {
         streamListeners.remove(listener);
         updateListeners();

@@ -37,6 +37,18 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
     void addListener(StreamListener listener);
 
     /**
+     * @param action action when receiving Status
+     * @since Twitter4J 4.0.4
+     */
+    TwitterStream onStatus(StatusConsumer action);
+
+    /**
+     * @param action action when receiving TwitterException
+     * @since Twitter4J 4.0.4
+     */
+    TwitterStream onException(ExceptionConsumer action);
+
+    /**
      * @param listener listener to remove
      * @since Twitter4J 4.0.0
      */
