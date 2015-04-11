@@ -137,6 +137,34 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     @Override
+    public void onRateLimitStatus(RateLimitConsumer action) {
+        rateLimitStatusListeners.add(new RateLimitStatusListener() {
+            @Override
+            public void onRateLimitStatus(RateLimitStatusEvent event) {
+                action.onRateLimitStatusEvent(event);
+            }
+
+            @Override
+            public void onRateLimitReached(RateLimitStatusEvent event) {
+            }
+        });
+    }
+
+    @Override
+    public void onRateLimitReached(RateLimitConsumer action) {
+        rateLimitStatusListeners.add(new RateLimitStatusListener() {
+            @Override
+            public void onRateLimitStatus(RateLimitStatusEvent event) {
+            }
+
+            @Override
+            public void onRateLimitReached(RateLimitStatusEvent event) {
+                action.onRateLimitStatusEvent(event);
+            }
+        });
+    }
+
+    @Override
     public void httpResponseReceived(HttpResponseEvent event) {
         if (rateLimitStatusListeners.size() != 0) {
             HttpResponse res = event.getResponse();
@@ -184,14 +212,14 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     final void ensureAuthorizationEnabled() {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(
-                    "Authentication credentials are missing. " + WWW_DETAILS);
+                "Authentication credentials are missing. " + WWW_DETAILS);
         }
     }
 
     final void ensureOAuthEnabled() {
         if (!(auth instanceof OAuthAuthorization)) {
             throw new IllegalStateException(
-                    "OAuth required. Authentication credentials are missing. " + WWW_DETAILS);
+                "OAuth required. Authentication credentials are missing. " + WWW_DETAILS);
         }
     }
 
@@ -212,7 +240,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     private void readObject(ObjectInputStream stream)
-            throws IOException, ClassNotFoundException {
+        throws IOException, ClassNotFoundException {
         // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/input.html#2971
         stream.readFields();
 
@@ -347,7 +375,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     private OAuthSupport getOAuth() {
         if (!(auth instanceof OAuthSupport)) {
             throw new IllegalStateException(
-                    "OAuth consumer key/secret combination not supplied");
+                "OAuth consumer key/secret combination not supplied");
         }
         return (OAuthSupport) auth;
     }
@@ -370,7 +398,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     private OAuth2Support getOAuth2() {
         if (!(auth instanceof OAuth2Support)) {
             throw new IllegalStateException(
-                    "OAuth consumer key/secret combination not supplied");
+                "OAuth consumer key/secret combination not supplied");
         }
         return (OAuth2Support) auth;
     }
@@ -405,10 +433,10 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     @Override
     public String toString() {
         return "TwitterBase{" +
-                "conf=" + conf +
-                ", http=" + http +
-                ", rateLimitStatusListeners=" + rateLimitStatusListeners +
-                ", auth=" + auth +
-                '}';
+            "conf=" + conf +
+            ", http=" + http +
+            ", rateLimitStatusListeners=" + rateLimitStatusListeners +
+            ", auth=" + auth +
+            '}';
     }
 }
