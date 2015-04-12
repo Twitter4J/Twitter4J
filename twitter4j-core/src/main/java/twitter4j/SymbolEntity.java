@@ -27,6 +27,7 @@ public interface SymbolEntity extends TweetEntity, Serializable {
      *
      * @return the index of the start character of the symbol
      */
+    @Override
     int getStart();
 
     /**
@@ -34,5 +35,6 @@ public interface SymbolEntity extends TweetEntity, Serializable {
      *
      * @return the index of the end character of the symbol
      */
+    @Override
     int getEnd();
 }

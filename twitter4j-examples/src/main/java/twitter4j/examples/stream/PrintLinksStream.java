@@ -56,6 +56,7 @@ public class PrintLinksStream {
                 System.out.println("Got stall warning:" + warning);
             }
 
+            @Override
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }

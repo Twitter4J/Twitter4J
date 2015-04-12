@@ -163,5 +163,6 @@ public interface SiteStreamsListener extends StreamListener {
      */
     void onDisconnectionNotice(String line);
 
+    @Override
     void onException(Exception ex);
 }

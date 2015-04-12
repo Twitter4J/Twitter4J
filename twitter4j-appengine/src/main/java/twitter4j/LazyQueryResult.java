@@ -48,11 +48,13 @@ final class LazyQueryResult implements twitter4j.QueryResult {
         return target;
     }
 
+    @Override
     public long getSinceId() {
         return getTarget().getSinceId();
     }
 
 
+    @Override
     public long getMaxId() {
         return getTarget().getMaxId();
     }
@@ -67,20 +69,24 @@ final class LazyQueryResult implements twitter4j.QueryResult {
         return getTarget().getRefreshURL();
     }
 
+    @Override
     public int getCount() {
         return getTarget().getCount();
     }
 
 
+    @Override
     public double getCompletedIn() {
         return getTarget().getCompletedIn();
     }
 
+    @Override
     public String getQuery() {
         return getTarget().getQuery();
     }
 
 
+    @Override
     public List<Status> getTweets() {
         return getTarget().getTweets();
     }

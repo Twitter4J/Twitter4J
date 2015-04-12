@@ -64,6 +64,7 @@ public class APIStatistics implements APIStatisticsMBean {
         return METHOD_STATS_MAP.values();
     }
 
+    @Override
     public synchronized void reset() {
         API_STATS_CALCULATOR.reset();
         METHOD_STATS_MAP.clear();
@@ -73,22 +74,27 @@ public class APIStatistics implements APIStatisticsMBean {
      * APIStatisticsMBean implementation
      */
 
+    @Override
     public String getName() {
         return API_STATS_CALCULATOR.getName();
     }
 
+    @Override
     public long getCallCount() {
         return API_STATS_CALCULATOR.getCallCount();
     }
 
+    @Override
     public long getErrorCount() {
         return API_STATS_CALCULATOR.getErrorCount();
     }
 
+    @Override
     public long getTotalTime() {
         return API_STATS_CALCULATOR.getTotalTime();
     }
 
+    @Override
     public long getAverageTime() {
         return API_STATS_CALCULATOR.getAverageTime();
     }

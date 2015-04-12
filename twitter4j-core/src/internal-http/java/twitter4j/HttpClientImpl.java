@@ -66,6 +66,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         return client;
     }
 
+    @Override
     public HttpResponse get(String url) throws TwitterException {
         return request(new HttpRequest(RequestMethod.GET, url, null, null, null));
     }

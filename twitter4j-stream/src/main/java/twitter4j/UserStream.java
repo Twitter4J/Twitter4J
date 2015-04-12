@@ -32,5 +32,6 @@ interface UserStream extends StatusStream {
      */
     void next(UserStreamListener listener) throws TwitterException;
 
+    @Override
     void close() throws IOException;
 }

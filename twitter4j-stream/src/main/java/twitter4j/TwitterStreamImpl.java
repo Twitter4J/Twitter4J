@@ -220,6 +220,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
+    @Override
     public void user() {
         user(null);
     }

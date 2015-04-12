@@ -138,18 +138,22 @@ public class StreamController {
             }
         }
 
+        @Override
         public boolean hasPrevious() {
             return 0 != previousCursor;
         }
 
+        @Override
         public long getPreviousCursor() {
             return previousCursor;
         }
 
+        @Override
         public boolean hasNext() {
             return 0 != nextCursor;
         }
 
+        @Override
         public long getNextCursor() {
             return nextCursor;
         }

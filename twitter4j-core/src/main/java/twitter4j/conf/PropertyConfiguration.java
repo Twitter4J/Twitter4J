@@ -415,6 +415,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     // assures equality after deserialization
+    @Override
     protected Object readResolve() throws ObjectStreamException {
         return super.readResolve();
     }

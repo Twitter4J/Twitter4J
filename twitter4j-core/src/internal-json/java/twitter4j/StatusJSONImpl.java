@@ -373,6 +373,7 @@ import static twitter4j.ParseUtil.getDate;
         return symbolEntities;
     }
 
+    @Override
     public Scopes getScopes() {
         return scopes;
     }
@@ -382,6 +383,7 @@ import static twitter4j.ParseUtil.getDate;
         return withheldInCountries;
     }
 
+    @Override
     public String getLang() {
         return lang;
     }

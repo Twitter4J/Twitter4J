@@ -36,18 +36,22 @@ public abstract class HttpClientBase implements HttpClient, Serializable {
         logger.debug(outStr);
     }
 
+    @Override
     public Map<String, String> getRequestHeaders() {
         return requestHeaders;
     }
 
+    @Override
     public void addDefaultRequestHeader(String name, String value) {
         requestHeaders.put(name, value);
     }
 
+    @Override
     public final HttpResponse request(HttpRequest req) throws TwitterException {
         return handleRequest(req);
     }
 
+    @Override
     public final HttpResponse request(HttpRequest req, HttpResponseListener listener) throws TwitterException {
         try {
             HttpResponse res = handleRequest(req);

@@ -37,10 +37,12 @@ public class NullAuthorization implements Authorization, java.io.Serializable {
         return SINGLETON;
     }
 
+    @Override
     public String getAuthorizationHeader(HttpRequest req) {
         return null;
     }
 
+    @Override
     public boolean isEnabled() {
         return false;
     }

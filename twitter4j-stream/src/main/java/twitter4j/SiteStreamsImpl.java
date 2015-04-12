@@ -39,6 +39,7 @@ final class SiteStreamsImpl extends StatusStreamBase {
         this.cs = cs;
     }
 
+    @Override
     protected String parseLine(String line) {
         if ("".equals(line) || null == line) {
             return line;

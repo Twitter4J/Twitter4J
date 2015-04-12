@@ -56,6 +56,7 @@ class StatusStreamImpl extends StatusStreamBase {
         handleNextElement(listeners, rawStreamListeners);
     }
 
+    @Override
     protected String parseLine(String line) {
         this.line = line;
         return line;

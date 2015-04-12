@@ -53,6 +53,7 @@ public class BasicAuthorization implements Authorization, java.io.Serializable {
         return null;
     }
 
+    @Override
     public String getAuthorizationHeader(HttpRequest req) {
         return basic;
     }
@@ -60,6 +61,7 @@ public class BasicAuthorization implements Authorization, java.io.Serializable {
     /**
      * #{inheritDoc}
      */
+    @Override
     public boolean isEnabled() {
         return true;
     }

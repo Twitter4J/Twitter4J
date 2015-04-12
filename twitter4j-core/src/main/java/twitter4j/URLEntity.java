@@ -59,6 +59,7 @@ public interface URLEntity extends TweetEntity, java.io.Serializable {
      *
      * @return the index of the start character of the URL mentioned in the tweet
      */
+    @Override
     int getStart();
 
     /**
@@ -66,5 +67,6 @@ public interface URLEntity extends TweetEntity, java.io.Serializable {
      *
      * @return the index of the end character of the URL mentioned in the tweet
      */
+    @Override
     int getEnd();
 }

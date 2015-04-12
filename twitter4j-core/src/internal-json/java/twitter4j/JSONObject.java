@@ -97,6 +97,7 @@ public class JSONObject {
          *
          * @return NULL.
          */
+        @Override
         protected final Object clone() {
             return this;
         }

@@ -78,6 +78,7 @@ abstract class StatusStreamBase implements StatusStream {
                 throw new IOException("the end of the stream has been reached");
             }
             dispatcher.invokeLater(new StreamEvent(line) {
+                @Override
                 public void run() {
                     try {
                         if (rawStreamListeners.length > 0) {
@@ -308,6 +309,7 @@ abstract class StatusStreamBase implements StatusStream {
 
     protected abstract void onClose();
 
+    @Override
     public void close() throws IOException {
         streamAlive = false;
         is.close();
@@ -370,6 +372,7 @@ abstract class StatusStreamBase implements StatusStream {
         return userList;
     }
 
+    @Override
     public abstract void next(StatusListener listener) throws TwitterException;
 
     public abstract void next(StreamListener[] listeners, RawStreamListener[] rawStreamListeners) throws TwitterException;

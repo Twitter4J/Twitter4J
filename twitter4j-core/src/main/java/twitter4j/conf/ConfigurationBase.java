@@ -598,6 +598,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.loggerFactory = loggerImpl;
     }
 
+    @Override
     public boolean isIncludeMyRetweetEnabled() {
         return this.includeMyRetweetEnabled;
     }
@@ -606,6 +607,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.includeMyRetweetEnabled = enabled;
     }
 
+    @Override
     public boolean isTrimUserEnabled() {
         return this.trimUserEnabled;
     }
@@ -623,6 +625,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.trimUserEnabled = enabled;
     }
 
+    @Override
     public boolean isJSONStoreEnabled() {
         return this.jsonStoreEnabled;
     }

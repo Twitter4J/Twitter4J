@@ -201,8 +201,10 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    @Override
     public void getRetweetsOfMe() {
         getDispatcher().invokeLater(new AsyncTask(RETWEETS_OF_ME, listeners) {
+            @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 ResponseList<Status> statuses = twitter.getRetweetsOfMe();
                 for (TwitterListener listener : listeners) {
@@ -215,8 +217,10 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    @Override
     public void getRetweetsOfMe(final Paging paging) {
         getDispatcher().invokeLater(new AsyncTask(RETWEETS_OF_ME, listeners) {
+            @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 ResponseList<Status> statuses = twitter.getRetweetsOfMe(paging);
                 for (TwitterListener listener : listeners) {
@@ -2375,6 +2379,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     @Override
     public void getPlaceTrends(final int woeid) {
         getDispatcher().invokeLater(new AsyncTask(PLACE_TRENDS, listeners) {
+            @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 Trends trends = twitter.getPlaceTrends(woeid);
                 for (TwitterListener listener : listeners) {
@@ -2772,6 +2777,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         twitter.setOAuthAccessToken(accessToken);
     }
 
+    @Override
     public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
         return twitter.getOAuthAccessToken(screenName, password);
     }

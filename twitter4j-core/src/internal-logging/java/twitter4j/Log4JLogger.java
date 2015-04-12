@@ -57,6 +57,7 @@ final class Log4JLogger extends Logger {
         debug(message + message2);
     }
 
+    @Override
     public void info(String message) {
         LOGGER.info(message);
     }
