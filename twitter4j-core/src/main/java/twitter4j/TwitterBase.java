@@ -17,6 +17,7 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
+import twitter4j.util.function.Consumer;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -67,7 +68,7 @@ public interface TwitterBase {
      * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
      * @since Twitter4J 4.0.4
      */
-    void onRateLimitStatus(RateLimitConsumer action);
+    void onRateLimitStatus(Consumer<RateLimitStatusEvent> action);
 
     /**
      * Registers a RateLimitStatusListener for account associated rate limits
@@ -76,7 +77,7 @@ public interface TwitterBase {
      * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
      * @since Twitter4J 4.0.4
      */
-    void onRateLimitReached(RateLimitConsumer action);
+    void onRateLimitReached(Consumer<RateLimitStatusEvent> action);
 
     /**
      * Returns the authorization scheme for this instance.<br>

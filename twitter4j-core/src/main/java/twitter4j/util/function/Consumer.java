@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package twitter4j;
+package twitter4j.util.function;
+
 
 /**
- * Functional interface for handling Status
+ * Functional interface for handling TwitterExceptions
  * @since Twitter4J 4.0.4
  */
-public interface StatusConsumer {
-    void onStatus(Status status);
+public interface Consumer<T> {
+    void accept(T t);
 }

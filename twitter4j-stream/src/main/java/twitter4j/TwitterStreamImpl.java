@@ -17,6 +17,7 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
+import twitter4j.util.function.Consumer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -407,11 +408,11 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public synchronized TwitterStream onStatus(StatusConsumer action) {
+    public synchronized TwitterStream onStatus(Consumer<Status> action) {
         streamListeners.add(new StatusAdapter() {
             @Override
             public void onStatus(Status status) {
-                action.onStatus(status);
+                action.accept(status);
             }
         });
         updateListeners();
@@ -419,11 +420,11 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public synchronized TwitterStream onException(ExceptionConsumer action) {
+    public synchronized TwitterStream onException(Consumer<Exception> action) {
         streamListeners.add(new StatusAdapter() {
             @Override
             public void onException(Exception ex) {
-                action.onException(ex);
+                action.accept(ex);
             }
         });
         updateListeners();

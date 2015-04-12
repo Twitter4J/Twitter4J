@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.auth.*;
 import twitter4j.conf.Configuration;
+import twitter4j.util.function.Consumer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -137,11 +138,11 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     @Override
-    public void onRateLimitStatus(RateLimitConsumer action) {
+    public void onRateLimitStatus(Consumer<RateLimitStatusEvent> action) {
         rateLimitStatusListeners.add(new RateLimitStatusListener() {
             @Override
             public void onRateLimitStatus(RateLimitStatusEvent event) {
-                action.onRateLimitStatusEvent(event);
+                action.accept(event);
             }
 
             @Override
@@ -151,7 +152,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     @Override
-    public void onRateLimitReached(RateLimitConsumer action) {
+    public void onRateLimitReached(Consumer<RateLimitStatusEvent> action) {
         rateLimitStatusListeners.add(new RateLimitStatusListener() {
             @Override
             public void onRateLimitStatus(RateLimitStatusEvent event) {
@@ -159,7 +160,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
 
             @Override
             public void onRateLimitReached(RateLimitStatusEvent event) {
-                action.onRateLimitStatusEvent(event);
+                action.accept(event);
             }
         });
     }
