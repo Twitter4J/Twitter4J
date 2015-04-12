@@ -33,7 +33,7 @@
                 <role>architect</role>
                 <role>developer</role>
             </roles>
-            <timezone>-9</timezone>
+            <timezone>9</timezone>
         </developer>
     </developers>
     <issueManagement>
