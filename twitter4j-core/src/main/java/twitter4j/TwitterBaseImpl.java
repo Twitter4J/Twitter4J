@@ -138,7 +138,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     @Override
-    public void onRateLimitStatus(Consumer<RateLimitStatusEvent> action) {
+    public void onRateLimitStatus(final Consumer<RateLimitStatusEvent> action) {
         rateLimitStatusListeners.add(new RateLimitStatusListener() {
             @Override
             public void onRateLimitStatus(RateLimitStatusEvent event) {
@@ -152,7 +152,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     @Override
-    public void onRateLimitReached(Consumer<RateLimitStatusEvent> action) {
+    public void onRateLimitReached(final Consumer<RateLimitStatusEvent> action) {
         rateLimitStatusListeners.add(new RateLimitStatusListener() {
             @Override
             public void onRateLimitStatus(RateLimitStatusEvent event) {

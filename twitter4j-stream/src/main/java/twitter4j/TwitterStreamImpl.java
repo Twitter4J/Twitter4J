@@ -415,7 +415,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public synchronized TwitterStream onStatus(Consumer<Status> action) {
+    public synchronized TwitterStream onStatus(final Consumer<Status> action) {
         streamListeners.add(new StatusAdapter() {
             @Override
             public void onStatus(Status status) {
@@ -427,7 +427,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public synchronized TwitterStream onException(Consumer<Exception> action) {
+    public synchronized TwitterStream onException(final Consumer<Exception> action) {
         streamListeners.add(new StatusAdapter() {
             @Override
             public void onException(Exception ex) {
