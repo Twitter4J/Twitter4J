@@ -147,12 +147,12 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 			for(HttpParameter parameter:req.getParameters()){
 				if(parameter.isFile()) {
 					multipartBuilder.addPart(
-							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName()),
+							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName()+"\""),
 							RequestBody.create(MediaType.parse(parameter.getContentType()),parameter.getFile())
 					);
 				}else {
 					multipartBuilder.addPart(
-							Headers.of("Content-Disposition","form-data; name=" + parameter.getName()),
+							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName()+"\""),
 							RequestBody.create(TEXT,parameter.getValue().getBytes("UTF-8"))
 					);
 				}
