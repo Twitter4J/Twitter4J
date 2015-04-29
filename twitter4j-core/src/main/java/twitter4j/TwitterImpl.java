@@ -899,7 +899,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public ResponseList<UserList> getUserLists(String listOwnerScreenName) throws TwitterException {
-        return factory.createUserListList(get(conf.getRestBaseURL() + "lists/list.json?screen_name=" + listOwnerScreenName));
+        return getUserLists(listOwnerScreenName, false);
     }
     
     @Override
@@ -909,7 +909,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public ResponseList<UserList> getUserLists(long listOwnerUserId) throws TwitterException {
-        return factory.createUserListList(get(conf.getRestBaseURL() + "lists/list.json?user_id=" + listOwnerUserId));
+        return getUserLists(listOwnerUserId, false);
     }
     
     @Override
