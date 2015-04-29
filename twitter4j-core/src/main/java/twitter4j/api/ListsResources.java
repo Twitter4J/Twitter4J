@@ -781,6 +781,20 @@ public interface ListsResources {
             throws TwitterException;
 
     /**
+     * List the lists the specified user follows.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
+     *
+     * @param listOwnerId The id of the list owner
+     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListSubscriptions(long listOwnerId, long cursor)
+            throws TwitterException;
+
+    /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
      * <br>This method calls https://api.twitter.com/1.1/lists/ownerships.json
      *

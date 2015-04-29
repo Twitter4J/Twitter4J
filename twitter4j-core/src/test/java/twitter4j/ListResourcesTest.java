@@ -149,6 +149,14 @@ public class ListResourcesTest extends TwitterTestBase {
         }
         assertNotNull(userLists);
         assertEquals(0, userLists.size());
+
+        userLists = twitter1.getUserListSubscriptions(id1.id, -1l);
+        assertNotNull(TwitterObjectFactory.getRawJSON(userLists));
+        if (userLists.size() > 0) {
+            assertEquals(userLists.get(0), TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userLists.get(0))));
+        }
+        assertNotNull(userLists);
+        assertEquals(0, userLists.size());
     }
 
     public void testRemoveListMembers() throws Exception {
@@ -323,6 +331,11 @@ public class ListResourcesTest extends TwitterTestBase {
         assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
         assertEquals(id3.id, user.getId());
         userLists = twitter1.getUserListSubscriptions(id3.screenName, -1l);
+        assertNotNull(userLists);
+        if (userLists.size() > 0) {
+            assertEquals(userLists.get(0), TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userLists.get(0))));
+        }
+        userLists = twitter1.getUserListSubscriptions(id3.id, -1l);
         assertNotNull(userLists);
         if (userLists.size() > 0) {
             assertEquals(userLists.get(0), TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userLists.get(0))));

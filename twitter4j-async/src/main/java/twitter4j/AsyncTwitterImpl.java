@@ -2239,6 +2239,21 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    @Override
+    public void getUserListSubscriptions(final long listOwnerId, final long cursor) {
+        getDispatcher().invokeLater(new AsyncTask(USER_LIST_SUBSCRIPTIONS, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                PagableResponseList<UserList> lists = twitter.getUserListSubscriptions(listOwnerId, cursor);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotUserListSubscriptions(lists);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
 
 
     /* Saved Searches Resources */
