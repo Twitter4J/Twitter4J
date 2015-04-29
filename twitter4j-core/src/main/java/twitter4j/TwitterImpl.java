@@ -995,31 +995,55 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public PagableResponseList<UserList> getUserListMemberships(long cursor) throws TwitterException {
-        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/memberships.json?cursor=" + cursor));
-
+        return getUserListMemberships(20, cursor);
+    }
+    
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(int count, long cursor) throws TwitterException {
+        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/memberships.json?cursor=" + cursor + "&count=" + count));
     }
 
     @Override
     public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
         return getUserListMemberships(listMemberScreenName, cursor, false);
     }
+    
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor) throws TwitterException {
+        return getUserListMemberships(listMemberScreenName, count, cursor, false);
+    }
 
     @Override
     public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor) throws TwitterException {
         return getUserListMemberships(listMemberId, cursor, false);
     }
+    
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor) throws TwitterException {
+        return getUserListMemberships(listMemberId, count, cursor, false);
+    }
 
     @Override
     public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists) throws TwitterException {
+        return getUserListMemberships(listMemberId, 20, cursor, filterToOwnedLists);
+    }
+    
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor, boolean filterToOwnedLists) throws TwitterException {
         return factory.createPagableUserListList(get(conf.getRestBaseURL()
-                + "lists/memberships.json?user_id=" + listMemberId + "&cursor=" + cursor + "&filter_to_owned_lists="
+                + "lists/memberships.json?user_id=" + listMemberId + "&count=" + count + "&cursor=" + cursor + "&filter_to_owned_lists="
                 + filterToOwnedLists));
     }
 
     @Override
     public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists) throws TwitterException {
+        return getUserListMemberships(listMemberScreenName, 20, cursor, filterToOwnedLists);
+    }
+    
+    @Override
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor, boolean filterToOwnedLists) throws TwitterException {
         return factory.createPagableUserListList(get(conf.getRestBaseURL()
-                + "lists/memberships.json?screen_name=" + listMemberScreenName + "&cursor=" + cursor
+                + "lists/memberships.json?screen_name=" + listMemberScreenName + "&count=" + count + "&cursor=" + cursor
                 + "&filter_to_owned_lists=" + filterToOwnedLists));
     }
 
