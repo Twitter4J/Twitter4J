@@ -1388,6 +1388,10 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/subscriptions.json?screen_name="
                 + listOwnerScreenName + "&cursor=" + cursor));
     }
+    
+    public PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, long cursor) throws TwitterException {
+      return getUserListsOwnerships(listOwnerScreenName, 20, cursor);
+    }
 
     @Override
     public PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, int count, long cursor) throws TwitterException {
@@ -1397,6 +1401,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                         , new HttpParameter("cursor", cursor)
                 }
         ));
+    }
+    
+    @Override
+    public PagableResponseList<UserList> getUserListsOwnerships(long listOwnerId, long cursor) throws TwitterException {
+      return getUserListsOwnerships(listOwnerId, 20, cursor);
     }
 
     @Override

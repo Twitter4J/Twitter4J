@@ -1080,6 +1080,19 @@ public interface ListsResources {
      * <br>This method calls https://api.twitter.com/1.1/lists/ownerships.json
      *
      * @param listOwnerScreenName The screen name of the list owner
+     * @param cursor              Breaks the results into pages. Provide a value of -1 to begin paging. Provide values as returned in the response body's next_cursor and previous_cursor attributes to page back and forth in the list. It is recommended to always use cursors when the method supports them. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors</a> to navigate collections for more information.
+     * @return lists owned by the specified Twitter user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, long cursor)
+            throws TwitterException;
+    
+    /**
+     * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
+     * <br>This method calls https://api.twitter.com/1.1/lists/ownerships.json
+     *
+     * @param listOwnerScreenName The screen name of the list owner
      * @param count               The amount of results to return per page. Defaults to 20. No more than 1000 results will ever be returned in a single page.
      * @param cursor              Breaks the results into pages. Provide a value of -1 to begin paging. Provide values as returned in the response body's next_cursor and previous_cursor attributes to page back and forth in the list. It is recommended to always use cursors when the method supports them. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors</a> to navigate collections for more information.
      * @return lists owned by the specified Twitter user
@@ -1089,6 +1102,19 @@ public interface ListsResources {
     PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, int count, long cursor)
             throws TwitterException;
 
+    /**
+     * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
+     * <br>This method calls https://api.twitter.com/1.1/lists/ownerships.json
+     *
+     * @param listOwnerId The id of the list owner
+     * @param cursor      Breaks the results into pages. Provide a value of -1 to begin paging. Provide values as returned in the response body's next_cursor and previous_cursor attributes to page back and forth in the list. It is recommended to always use cursors when the method supports them. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors</a> to navigate collections for more information.
+     * @return lists owned by the specified Twitter user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListsOwnerships(long listOwnerId, long cursor)
+            throws TwitterException;
+    
     /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
      * <br>This method calls https://api.twitter.com/1.1/lists/ownerships.json
