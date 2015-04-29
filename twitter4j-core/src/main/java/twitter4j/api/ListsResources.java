@@ -35,6 +35,21 @@ public interface ListsResources {
      */
     ResponseList<UserList> getUserLists(String listOwnerScreenName)
             throws TwitterException;
+    
+    /**
+     * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
+     * <br>This method calls https://api.twitter.com/1.1/lists.json
+     *
+     * @param listOwnerScreenName The screen name of the list owner
+     *                            as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param reverse Set this to true if you would like owned lists to be returned first
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/list">GET lists/list | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    ResponseList<UserList> getUserLists(String listOwnerScreenName, boolean reverse)
+            throws TwitterException;
 
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
@@ -48,7 +63,20 @@ public interface ListsResources {
      */
     ResponseList<UserList> getUserLists(long listOwnerUserId)
             throws TwitterException;
-
+    
+    /**
+     * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
+     * <br>This method calls https://api.twitter.com/1.1/lists.json
+     *
+     * @param listOwnerUserId The id of the list owner
+     * @param reverse Set this to true if you would like owned lists to be returned first
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/list">GET lists/list | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    ResponseList<UserList> getUserLists(long listOwnerUserId, boolean reverse)
+            throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.

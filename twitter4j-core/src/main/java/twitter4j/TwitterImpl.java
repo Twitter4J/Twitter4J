@@ -901,10 +901,20 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public ResponseList<UserList> getUserLists(String listOwnerScreenName) throws TwitterException {
         return factory.createUserListList(get(conf.getRestBaseURL() + "lists/list.json?screen_name=" + listOwnerScreenName));
     }
+    
+    @Override
+    public ResponseList<UserList> getUserLists(String listOwnerScreenName, boolean reverse) throws TwitterException {
+        return factory.createUserListList(get(conf.getRestBaseURL() + "lists/list.json?screen_name=" + listOwnerScreenName + "&reverse=" + reverse));
+    }
 
     @Override
     public ResponseList<UserList> getUserLists(long listOwnerUserId) throws TwitterException {
         return factory.createUserListList(get(conf.getRestBaseURL() + "lists/list.json?user_id=" + listOwnerUserId));
+    }
+    
+    @Override
+    public ResponseList<UserList> getUserLists(long listOwnerUserId, boolean reverse) throws TwitterException {
+        return factory.createUserListList(get(conf.getRestBaseURL() + "lists/list.json?user_id=" + listOwnerUserId + "&reverse=" + reverse));
     }
 
     @Override
