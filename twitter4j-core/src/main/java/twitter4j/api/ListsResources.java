@@ -403,13 +403,13 @@ public interface ListsResources {
      * @param listId The id of the list
      * @param count Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
      * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @param skip_status When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @param skipStatus When set to either true, t or 1 statuses will not be included in the returned user objects.
      * @return the members of the specified list.
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
      * @since Twitter4J 4.0.4
      */
-    PagableResponseList<User> getUserListSubscribers(long listId, int count, long cursor, boolean skip_status) throws TwitterException;
+    PagableResponseList<User> getUserListSubscribers(long listId, int count, long cursor, boolean skipStatus) throws TwitterException;
 
     /**
      * Returns the subscribers of the specified list.
@@ -448,13 +448,13 @@ public interface ListsResources {
      * @param slug    slug of the list
      * @param count Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
      * @param cursor  Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @param skip_status When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @param skipStatus When set to either true, t or 1 statuses will not be included in the returned user objects.
      * @return the members of the specified list.
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
      * @since Twitter4J 4.0.4
      */
-    PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, int count, long cursor, boolean skip_status) throws TwitterException;
+    PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, int count, long cursor, boolean skipStatus) throws TwitterException;
     
     /**
      * Returns the subscribers of the specified list.
@@ -493,13 +493,13 @@ public interface ListsResources {
      * @param slug            slug of the list
      * @param count Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
      * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @param skip_status     When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @param skipStatus     When set to either true, t or 1 statuses will not be included in the returned user objects.
      * @return the members of the specified list.
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
      * @since Twitter4J 4.0.4
      */
-    PagableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, int count, long cursor, boolean skip_status) throws TwitterException;
+    PagableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, int count, long cursor, boolean skipStatus) throws TwitterException;
 
     /**
      * Make the authenticated user follow the specified list.
@@ -774,13 +774,13 @@ public interface ListsResources {
      * @param listId The id of the list
      * @param count  Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
      * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @param skip_status When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @param skipStatus When set to either true, t or 1 statuses will not be included in the returned user objects.
      * @return the members of the specified list.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
      * @since Twitter4J 4.0.4
      */
-    PagableResponseList<User> getUserListMembers(long listId, int count, long cursor, boolean skip_status)
+    PagableResponseList<User> getUserListMembers(long listId, int count, long cursor, boolean skipStatus)
             throws TwitterException;
 
     /**
@@ -822,13 +822,13 @@ public interface ListsResources {
      * @param slug    slug of the list
      * @param count   Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
      * @param cursor  Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @param skip_status When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @param skipStatus When set to either true, t or 1 statuses will not be included in the returned user objects.
      * @return the members of the specified list.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
      * @since Twitter4J 4.0.4
      */
-    PagableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor, boolean skip_status)
+    PagableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor, boolean skipStatus)
             throws TwitterException;
 
     /**
@@ -870,13 +870,13 @@ public interface ListsResources {
      * @param slug            slug of the list
      * @param count           Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
      * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @param skip_status     When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @param skipStatus     When set to either true, t or 1 statuses will not be included in the returned user objects.
      * @return the members of the specified list.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
      * @since Twitter4J 4.0.4
      */
-    PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, int count, long cursor, boolean skip_status)
+    PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, int count, long cursor, boolean skipStatus)
             throws TwitterException;
 
     /**
