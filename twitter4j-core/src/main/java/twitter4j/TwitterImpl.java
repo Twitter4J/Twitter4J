@@ -1422,9 +1422,33 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor) throws TwitterException {
-        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/subscriptions.json?screen_name="
-                + listOwnerScreenName + "&cursor=" + cursor));
+    public PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, long cursor) throws TwitterException {
+        return getUserListSubscriptions(listSubscriberScreenName, 20, cursor);
+    }
+    
+    @Override
+    public PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, int count, long cursor) throws TwitterException {
+        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/subscriptions.json",
+                new HttpParameter[]{new HttpParameter("screen_name", listSubscriberScreenName)
+                        , new HttpParameter("count", count)
+                        , new HttpParameter("cursor", cursor)
+                }
+        ));
+    }
+    
+    @Override
+    public PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, long cursor) throws TwitterException {
+        return getUserListSubscriptions(listSubscriberId, 20, cursor);
+    }
+    
+    @Override
+    public PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, int count, long cursor) throws TwitterException {
+        return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/subscriptions.json",
+                new HttpParameter[]{new HttpParameter("user_id", listSubscriberId)
+                        , new HttpParameter("count", count)
+                        , new HttpParameter("cursor", cursor)
+                }
+        ));
     }
     
     public PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, long cursor) throws TwitterException {

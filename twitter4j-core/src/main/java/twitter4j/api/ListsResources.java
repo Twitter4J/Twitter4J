@@ -1065,14 +1065,58 @@ public interface ListsResources {
      * List the lists the specified user follows.
      * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
      *
-     * @param listOwnerScreenName The screen name of the list owner
+     * @param listSubscriberScreenName The screen name of the list subscriber
      * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @return the list of lists
+     * @return the list of lists the specified user is subscribed to
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
-    PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor)
+    PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, long cursor)
+            throws TwitterException;
+    
+    /**
+     * List the lists the specified user follows.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
+     *
+     * @param listSubscriberScreenName The screen name of the list subscriber
+     * @param count               The amount of results to return per page. Defaults to 20. No more than 1000 results will ever be returned in a single page.
+     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists the specified user is subscribed to
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, int count, long cursor)
+            throws TwitterException;
+    
+    /**
+     * List the lists the specified user follows.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
+     *
+     * @param listSubscriberId    The ID of the list subscriber
+     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists the specified user is subscribed to
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, long cursor)
+            throws TwitterException;
+    
+    /**
+     * List the lists the specified user follows.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
+     *
+     * @param listOwnerScreenName The ID of the list subscriber
+     * @param count               The amount of results to return per page. Defaults to 20. No more than 1000 results will ever be returned in a single page.
+     * @param cursor              Breaks the results into pages. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists the specified user is subscribed to
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, int count, long cursor)
             throws TwitterException;
 
     /**
