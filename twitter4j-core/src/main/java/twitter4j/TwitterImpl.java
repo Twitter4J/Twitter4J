@@ -712,8 +712,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public User destroyBlock(String screen_name) throws TwitterException {
-        return factory.createUser(post(conf.getRestBaseURL() + "blocks/destroy.json?screen_name=" + screen_name));
+    public User destroyBlock(String screenName) throws TwitterException {
+        return factory.createUser(post(conf.getRestBaseURL() + "blocks/destroy.json?screen_name=" + screenName));
     }
 
 
