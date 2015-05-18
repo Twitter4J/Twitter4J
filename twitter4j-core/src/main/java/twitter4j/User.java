@@ -46,9 +46,9 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     String getScreenName();
 
     /**
-     * Returns true if it's following the logged in user
+     * Returns true if the authenticated user is following this user
      *
-     * @return the following of the user
+     * @return true if the authenticated user is following this user
      */
     boolean isFollowing();
 
