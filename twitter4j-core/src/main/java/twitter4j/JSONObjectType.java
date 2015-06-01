@@ -47,6 +47,7 @@ public final class JSONObjectType {
         BLOCK,
         UNBLOCK,
         DISCONNECTION,
+        RETWEETED_RETWEET,
         UNKNOWN
     }
 
@@ -121,6 +122,8 @@ public final class JSONObjectType {
                     return Type.BLOCK;
                 } else if ("unblock".equals(event)) {
                     return Type.UNBLOCK;
+                } else if("retweeted_retweet".equals(event)){
+                    return Type.RETWEETED_RETWEET;
                 }
             } catch (JSONException jsone) {
                 try {

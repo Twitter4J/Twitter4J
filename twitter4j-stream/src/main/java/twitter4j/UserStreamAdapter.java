@@ -98,6 +98,11 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     }
 
     @Override
+    public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+
+    }
+
+    @Override
     public void onException(Exception ex) {
     }
 }

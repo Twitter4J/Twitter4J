@@ -149,4 +149,13 @@ public interface UserStreamListener extends StatusListener {
      * @since Twitter4J 2.1.3
      */
     void onUnblock(User source, User unblockedUser);
+
+
+    /**
+     * @param source          source user of the event
+     * @param target          target user of the event
+     * @param retweetedStatus retweetedStatus  the user unblocked
+     * @since Twitter4J 4.0.x
+     */
+    void onRetweetedRetweet(User source,User target, Status retweetedStatus);
 }
