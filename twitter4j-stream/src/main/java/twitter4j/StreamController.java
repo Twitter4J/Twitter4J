@@ -46,7 +46,7 @@ public class StreamController {
     }
 
     void setControlURI(String controlURI) {
-        this.controlURI = controlURI.replace("/1.1//1.1/", "/1.1/");
+        this.controlURI = (controlURI!=null) ?controlURI.replace("/1.1//1.1/", "/1.1/") : null;
         synchronized (lock) {
             lock.notifyAll();
         }
