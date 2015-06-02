@@ -261,6 +261,13 @@ final class SiteStreamsImpl extends StatusStreamBase {
     }
 
     @Override
+    void onFavoritedRetweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onFavoritedRetweet(asUser(source), asUser(target), asStatus(targetObject));
+        }
+    }
+
+    @Override
     public void onException(final Exception ex, StreamListener[] listeners) {
         for (StreamListener listener : listeners) {
             listener.onException(ex);
