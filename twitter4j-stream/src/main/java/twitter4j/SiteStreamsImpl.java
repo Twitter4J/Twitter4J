@@ -256,7 +256,7 @@ final class SiteStreamsImpl extends StatusStreamBase {
     @Override
     void onRetweetedRetweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
-            ((UserStreamListener) listener).onRetweetedRetweet(asUser(source), asUser(target), asStatus(targetObject));
+            ((SiteStreamsListener) listener).onRetweetedRetweet(asUser(source), asUser(target), asStatus(targetObject));
         }
     }
 
