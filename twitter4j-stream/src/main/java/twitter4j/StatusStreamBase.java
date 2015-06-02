@@ -170,6 +170,9 @@ abstract class StatusStreamBase implements StatusStream {
                                     case UNBLOCK:
                                         onUnblock(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
                                         break;
+                                    case RETWEETED_RETWEET:
+                                        onRetweetedRetweet(json.getJSONObject("source"),json.getJSONObject("target"),json.getJSONObject("target_object"),listeners);
+                                        break;
                                     case DISCONNECTION:
                                         onDisconnectionNotice(line, listeners);
                                         break;
@@ -297,6 +300,10 @@ abstract class StatusStreamBase implements StatusStream {
 
     void onUnblock(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onUnblock");
+    }
+
+    void onRetweetedRetweet(JSONObject source, JSONObject target, JSONObject targetObject,StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onRetweetedRetweet");
     }
 
     void onDisconnectionNotice(String line, StreamListener[] listeners) {

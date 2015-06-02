@@ -181,4 +181,10 @@ final class UserStreamImpl extends StatusStreamImpl implements UserStream {
         }
     }
 
+    @Override
+    void onRetweetedRetweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onRetweetedRetweet(asUser(source), asUser(target), asStatus(targetObject));
+        }
+    }
 }

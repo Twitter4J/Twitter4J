@@ -194,6 +194,14 @@ public final class PrintUserStream {
         }
 
         @Override
+        public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+            System.out.println("onRetweetedRetweet source:@" + source.getScreenName()
+                    + " target:@" + target.getScreenName()
+                    + retweetedStatus.getUser().getScreenName()
+                    + " - " + retweetedStatus.getText());
+        }
+
+        @Override
         public void onException(Exception ex) {
             ex.printStackTrace();
             System.out.println("onException:" + ex.getMessage());
