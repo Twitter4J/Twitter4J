@@ -428,10 +428,19 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     @Override
     public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
         System.out.println("onRetweetedRetweet");
-        received.add(new Object[]{RETWEETED_RETWEET, source, target, retweetedStatus});
+        received.add(new Object[]{"retweeted_retweet", source, target, retweetedStatus});
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(retweetedStatus));
+        notifyResponse();
+    }
+
+    @Override
+    public void onFavoritedRetweet(User source, User target, Status favoritedStatus) {
+        received.add(new Object[]{"favorited_retweet", source, target, favoritedStatus});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(favoritedStatus));
         notifyResponse();
     }
 
