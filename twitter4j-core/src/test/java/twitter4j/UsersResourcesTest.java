@@ -108,12 +108,12 @@ public class UsersResourcesTest extends TwitterTestBase {
     }
 
     public void testLookupUsers() throws TwitterException {
-        ResponseList<User> users = twitter1.lookupUsers(new String[]{id1.screenName, id2.screenName});
+        ResponseList<User> users = twitter1.lookupUsers(id1.screenName, id2.screenName);
         assertEquals(2, users.size());
         assertContains(users, id1);
         assertContains(users, id2);
 
-        users = twitter1.lookupUsers(new long[]{id1.id, id2.id});
+        users = twitter1.lookupUsers(id1.id, id2.id);
         assertEquals(2, users.size());
         assertContains(users, id1);
         assertContains(users, id2);

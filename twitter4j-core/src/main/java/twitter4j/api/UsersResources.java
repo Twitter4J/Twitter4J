@@ -336,7 +336,7 @@ public interface UsersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/lookup">GET users/lookup | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
-    ResponseList<User> lookupUsers(long[] ids) throws TwitterException;
+    ResponseList<User> lookupUsers(long... ids) throws TwitterException;
 
     /**
      * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
@@ -348,7 +348,7 @@ public interface UsersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/lookup">GET users/lookup | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
-    ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException;
+    ResponseList<User> lookupUsers(String... screenNames) throws TwitterException;
 
     /**
      * Returns extended information of a given user, specified by ID or screen name as per the required id parameter. The author's most recent status will be returned inline.

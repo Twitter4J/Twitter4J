@@ -749,13 +749,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public ResponseList<User> lookupUsers(long[] ids) throws TwitterException {
+    public ResponseList<User> lookupUsers(long... ids) throws TwitterException {
         return factory.createUserList(get(conf.getRestBaseURL() + "users/lookup.json"
                 , new HttpParameter[]{new HttpParameter("user_id", StringUtil.join(ids))}));
     }
 
     @Override
-    public ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException {
+    public ResponseList<User> lookupUsers(String... screenNames) throws TwitterException {
         return factory.createUserList(get(conf.getRestBaseURL() + "users/lookup.json"
                 , new HttpParameter[]{new HttpParameter("screen_name", StringUtil.join(screenNames))}));
     }

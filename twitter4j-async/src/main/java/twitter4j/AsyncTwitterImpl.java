@@ -1294,7 +1294,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void lookupUsers(final long[] ids) {
+    public void lookupUsers(final long... ids) {
         getDispatcher().invokeLater(new AsyncTask(LOOKUP_USERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1310,7 +1310,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void lookupUsers(final String[] screenNames) {
+    public void lookupUsers(final String... screenNames) {
         getDispatcher().invokeLater(new AsyncTask(LOOKUP_USERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
