@@ -79,7 +79,7 @@ public class StreamController {
         return new ControlStreamInfo(this, res.asJSONObject());
     }
 
-    public String addUsers(long[] userIds) throws TwitterException {
+    public String addUsers(long... userIds) throws TwitterException {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
                 StringUtil.join(userIds));
@@ -88,7 +88,7 @@ public class StreamController {
         return res.asString();
     }
 
-    public String removeUsers(long[] userIds) throws TwitterException {
+    public String removeUsers(long... userIds) throws TwitterException {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
                 StringUtil.join(userIds));

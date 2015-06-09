@@ -494,7 +494,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
     }
 
     public void testLookup() throws TwitterException {
-        async1.lookup(new long[] {20L, 432656548536401920L});
+        async1.lookup(20L, 432656548536401920L);
         waitForResponse();
         assertEquals(2, statuses.size());
     }

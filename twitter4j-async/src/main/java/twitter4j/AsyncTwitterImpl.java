@@ -348,7 +348,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void lookup(final long[] ids) {
+    public void lookup(final long... ids) {
         getDispatcher().invokeLater(new AsyncTask(RETWEET_STATUS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1951,7 +1951,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
 
 
     @Override
-    public void createUserListMembers(final long listId, final long[] userIds) {
+    public void createUserListMembers(final long listId, final long... userIds) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1967,7 +1967,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void createUserListMembers(final long ownerId, final String slug, final long[] userIds) {
+    public void createUserListMembers(final long ownerId, final String slug, final long... userIds) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1983,7 +1983,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void createUserListMembers(final long listId, final String[] screenNames) {
+    public void createUserListMembers(final long listId, final String... screenNames) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1999,7 +1999,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void createUserListMembers(final long ownerId, final String slug, final String[] screenNames) {
+    public void createUserListMembers(final long ownerId, final String slug, final String... screenNames) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {

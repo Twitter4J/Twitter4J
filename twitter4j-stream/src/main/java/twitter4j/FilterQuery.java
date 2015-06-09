@@ -58,6 +58,18 @@ public final class FilterQuery implements java.io.Serializable {
     /**
      * Creates a new FilterQuery
      *
+     * @param track Specifies keywords to track.
+     * @since Twitter4J 4.0.4
+     */
+    public FilterQuery(String... track) {
+        this();
+        this.count = 0;
+        this.track = track;
+    }
+
+    /**
+     * Creates a new FilterQuery
+     *
      * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @param follow Specifies the users, by ID, to receive public tweets from.
      */

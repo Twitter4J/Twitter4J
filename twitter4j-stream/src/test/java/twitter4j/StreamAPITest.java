@@ -283,7 +283,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         }
         try {
             twitterStream3 = new TwitterStreamFactory().getInstance();
-            StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFilterStream(new FilterQuery(new long[]{6358482}));
+            StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFilterStream(new FilterQuery(6358482L));
             fail();
         } catch (IllegalStateException ignored) {
         } catch (TwitterException te) {

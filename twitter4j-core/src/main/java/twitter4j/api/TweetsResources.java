@@ -153,7 +153,7 @@ public interface TweetsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/lookup">GET statuses/lookup</a>
      * @since Twitter4J 4.0.2
      */
-    ResponseList<Status> lookup(long[] ids) throws TwitterException;
+    ResponseList<Status> lookup(long... ids) throws TwitterException;
 
     /**
      * Uploads media image to be attached via {@link #updateStatus(twitter4j.StatusUpdate)}

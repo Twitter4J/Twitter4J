@@ -245,7 +245,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
-    void createUserListMembers(long listId, long[] userIds);
+    void createUserListMembers(long listId, long... userIds);
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -257,7 +257,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    void createUserListMembers(long ownerId, String slug, long[] userIds);
+    void createUserListMembers(long ownerId, String slug, long... userIds);
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -268,7 +268,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
-    void createUserListMembers(long listId, String[] screenNames);
+    void createUserListMembers(long listId, String... screenNames);
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -280,7 +280,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    void createUserListMembers(long ownerId, String slug, String[] screenNames);
+    void createUserListMembers(long ownerId, String slug, String... screenNames);
 
     /**
      * Check if a user is a member of the specified list.<br>

@@ -160,7 +160,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
     public void testLookup() throws TwitterException {
         // from "Example Result" of https://dev.twitter.com/docs/api/1.1/get/statuses/lookup
-        ResponseList<Status> statuses = twitter1.lookup(new long[]{20L, 432656548536401920L});
+        ResponseList<Status> statuses = twitter1.lookup(20L, 432656548536401920L);
 
         assertEquals(2, statuses.size());
         Status first = statuses.get(0);

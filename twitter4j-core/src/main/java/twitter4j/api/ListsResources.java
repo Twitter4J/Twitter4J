@@ -433,7 +433,7 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    UserList createUserListMembers(long listId, long[] userIds) throws TwitterException;
+    UserList createUserListMembers(long listId, long... userIds) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -446,7 +446,7 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    UserList createUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
+    UserList createUserListMembers(long ownerId, String slug, long... userIds) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -459,7 +459,7 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
-    UserList createUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException;
+    UserList createUserListMembers(String ownerScreenName, String slug, long... userIds) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -470,7 +470,7 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
-    UserList createUserListMembers(long listId, String[] screenNames) throws TwitterException;
+    UserList createUserListMembers(long listId, String... screenNames) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -482,7 +482,7 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    UserList createUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
+    UserList createUserListMembers(long ownerId, String slug, String... screenNames) throws TwitterException;
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -494,7 +494,7 @@ public interface ListsResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
-    UserList createUserListMembers(String ownerScreenName, String slug, String[] screenNames) throws TwitterException;
+    UserList createUserListMembers(String ownerScreenName, String slug, String... screenNames) throws TwitterException;
 
     /**
      * Check if a user is a member of the specified list.<br>

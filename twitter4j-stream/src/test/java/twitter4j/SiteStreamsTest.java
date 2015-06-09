@@ -122,7 +122,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             ControlStreamInfo info = cs.getInfo();
             assertEquals(2, info.getUsers().length);
 
-            cs.addUsers(new long[]{6358482L});
+            cs.addUsers(6358482L);
 
             waitForStatus("new User");
 
@@ -131,7 +131,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             StreamController.FriendsIDs ids = cs.getFriendsIDs(4933401L, -1);
             assertTrue(ids.getIds().length > 100);
             assertEquals("yusuke", ids.getUser().getName());
-            cs.removeUsers(new long[]{4933401L});
+            cs.removeUsers(4933401L);
             waitForStatus("remove user");
 
             Status status = twit4j2.updateStatus("@twit4j " + new Date());

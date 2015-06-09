@@ -105,5 +105,5 @@ public interface TweetsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/lookup">GET statuses/lookup</a>
      * @since Twitter4J 4.0.2
      */
-    void lookup(long[] ids);
+    void lookup(long... ids);
 }
