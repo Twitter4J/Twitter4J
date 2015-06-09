@@ -574,7 +574,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                                 stream.onException(e, this.streamListeners, this.rawStreamListeners);
                                 throw e;
                             } catch (Exception e) {
-                                if (!(e instanceof NullPointerException) && !e.getMessage().equals("Inflater has been closed")) {
+                                if (!(e instanceof NullPointerException) && !"Inflater has been closed".equals(e.getMessage())) {
                                     logger.info(e.getMessage());
                                     stream.onException(e, this.streamListeners, this.rawStreamListeners);
                                     closed = true;
