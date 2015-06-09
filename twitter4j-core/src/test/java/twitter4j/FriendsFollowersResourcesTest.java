@@ -279,7 +279,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(rel1, rel3);
         assertFalse(rel1.equals(rel2));
 
-        ResponseList<Friendship> friendshipList = twitter1.lookupFriendships(new String[]{"barakobama", id2.screenName, id3.screenName});
+        ResponseList<Friendship> friendshipList = twitter1.lookupFriendships("barakobama", id2.screenName, id3.screenName);
 
         assertEquals(3, friendshipList.size());
         assertEquals("barakobama", friendshipList.get(0).getScreenName());
@@ -288,7 +288,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(id3.screenName, friendshipList.get(2).getScreenName());
         assertTrue(friendshipList.get(2).isFollowing());
         assertTrue(friendshipList.get(2).isFollowedBy());
-        friendshipList = twitter1.lookupFriendships(new long[]{id2.id, id3.id});
+        friendshipList = twitter1.lookupFriendships(id2.id, id3.id);
         assertEquals(2, friendshipList.size());
 
 

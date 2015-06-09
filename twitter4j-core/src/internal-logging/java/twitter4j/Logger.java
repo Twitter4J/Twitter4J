@@ -68,7 +68,7 @@ public abstract class Logger {
         LOGGER_FACTORY = loggerFactory;
 
         try {
-            Method method = conf.getClass().getMethod("dumpConfiguration", new Class[]{});
+            Method method = conf.getClass().getMethod("dumpConfiguration");
             method.setAccessible(true);
             method.invoke(conf);
         } catch (IllegalAccessException ignore) {

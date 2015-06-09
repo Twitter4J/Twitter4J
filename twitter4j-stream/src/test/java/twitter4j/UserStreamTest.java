@@ -90,7 +90,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 
         //twit4j: id1.id
         //twit4j2: 6377362
-        twitterStream.user(new String[]{"BAh7CToPY3JlYXR"});
+        twitterStream.user("BAh7CToPY3JlYXR");
         //expecting onFriendList for twit4j and twit4j2
         waitForStatus("friend list", "onfriendlist");
 
