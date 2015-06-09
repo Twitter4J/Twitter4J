@@ -613,7 +613,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
 
 
     @Override
-    public void lookupFriendships(final long[] ids) {
+    public void lookupFriendships(final long... ids) {
         getDispatcher().invokeLater(new AsyncTask(LOOKUP_FRIENDSHIPS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -629,7 +629,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void lookupFriendships(final String[] screenNames) {
+    public void lookupFriendships(final String... screenNames) {
         getDispatcher().invokeLater(new AsyncTask(LOOKUP_FRIENDSHIPS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {

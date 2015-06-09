@@ -49,7 +49,7 @@ public final class FilterQuery implements java.io.Serializable {
      *
      * @param follow Specifies the users, by ID, to receive public tweets from.
      */
-    public FilterQuery(long[] follow) {
+    public FilterQuery(long... follow) {
         this();
         this.count = 0;
         this.follow = follow;
@@ -61,7 +61,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @param follow Specifies the users, by ID, to receive public tweets from.
      */
-    public FilterQuery(int count, long[] follow) {
+    public FilterQuery(int count, long... follow) {
         this();
         this.count = count;
         this.follow = follow;
@@ -130,7 +130,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param follow Specifies the users, by ID, to receive public tweets from.
      * @return this instance
      */
-    public FilterQuery follow(long[] follow) {
+    public FilterQuery follow(long... follow) {
         this.follow = follow;
         return this;
     }
@@ -141,7 +141,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param track Specifies keywords to track.
      * @return this instance
      */
-    public FilterQuery track(String[] track) {
+    public FilterQuery track(String... track) {
         this.track = track;
         return this;
     }
@@ -152,7 +152,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param locations Specifies the locations to track. 2D array
      * @return this instance
      */
-    public FilterQuery locations(double[][] locations) {
+    public FilterQuery locations(double[]... locations) {
         this.locations = locations;
         return this;
     }
@@ -163,7 +163,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param language Specifies languages to track.
      * @return this instance
      */
-    public FilterQuery language(String[] language) {
+    public FilterQuery language(String... language) {
         this.language = language;
         return this;
     }

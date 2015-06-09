@@ -378,12 +378,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public ResponseList<Friendship> lookupFriendships(long[] ids) throws TwitterException {
+    public ResponseList<Friendship> lookupFriendships(long... ids) throws TwitterException {
         return factory.createFriendshipList(get(conf.getRestBaseURL() + "friendships/lookup.json?user_id=" + StringUtil.join(ids)));
     }
 
     @Override
-    public ResponseList<Friendship> lookupFriendships(String[] screenNames) throws TwitterException {
+    public ResponseList<Friendship> lookupFriendships(String... screenNames) throws TwitterException {
         return factory.createFriendshipList(get(conf.getRestBaseURL()
                 + "friendships/lookup.json?screen_name=" + StringUtil.join(screenNames)));
     }

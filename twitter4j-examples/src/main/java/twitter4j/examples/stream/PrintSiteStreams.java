@@ -202,6 +202,22 @@ public final class PrintSiteStreams {
         }
 
         @Override
+        public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+            System.out.println("onRetweetedRetweeted source:" + source.getScreenName()
+                    + " target:@" + target.getScreenName()
+                    + " retweetedStatus:@" + retweetedStatus.getUser().getScreenName() + " - "
+                    + retweetedStatus.getText());
+        }
+
+        @Override
+        public void onFavoritedRetweet(User source, User target, Status favoritedStatus) {
+            System.out.println("onFavoritedRetweet source:" + source.getScreenName()
+                    + " target:@" + target.getScreenName()
+                    + " favoritedStatus:@" + favoritedStatus.getUser().getScreenName() + " - "
+                    + favoritedStatus.getText());
+        }
+
+        @Override
         public void onDisconnectionNotice(String line) {
             System.out.println("onDisconnectionNotice:" + line);
         }

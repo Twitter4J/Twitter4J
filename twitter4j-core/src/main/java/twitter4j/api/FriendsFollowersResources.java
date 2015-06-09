@@ -196,7 +196,7 @@ public interface FriendsFollowersResources {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    ResponseList<Friendship> lookupFriendships(long[] ids)
+    ResponseList<Friendship> lookupFriendships(long... ids)
             throws TwitterException;
 
     /**
@@ -210,7 +210,7 @@ public interface FriendsFollowersResources {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    ResponseList<Friendship> lookupFriendships(String[] screenNames)
+    ResponseList<Friendship> lookupFriendships(String... screenNames)
             throws TwitterException;
 
     /**

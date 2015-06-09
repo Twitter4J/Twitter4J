@@ -93,7 +93,7 @@ public interface FriendsFollowersResourcesAsync {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    void lookupFriendships(long[] ids);
+    void lookupFriendships(long... ids);
 
     /**
      * Returns the relationship of the authenticating user to the specified users.
@@ -104,7 +104,7 @@ public interface FriendsFollowersResourcesAsync {
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
      */
-    void lookupFriendships(String[] screenNames);
+    void lookupFriendships(String... screenNames);
 
     /**
      * Returns an array of numeric IDs for every user who has a pending request to follow the authenticating user.

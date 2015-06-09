@@ -134,7 +134,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
      * @since Twitter4J 2.1.9
      */
-    void user(final String[] track);
+    void user(final String... track);
 
 
     /**
@@ -148,7 +148,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @see <a href="https://dev.twitter.com/docs/streaming-api/site-streams">Site Streams | Twitter Developers</a>
      * @since Twitter4J 2.1.8
      */
-    StreamController site(final boolean withFollowings, final long[] follow);
+    StreamController site(final boolean withFollowings, final long... follow);
 
     /**
      * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
@@ -160,6 +160,14 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @since Twitter4J 2.1.2
      */
     void filter(final FilterQuery query);
+
+    /**
+     * Start consuming public statuses that match the filter predicate. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
+     * The default access level allows up to 200 track keywords.
+     *
+     * @since Twitter4J 4.0.4
+     */
+    void filter(final String... track);
 
     /**
      * shutdown internal stream consuming thread
