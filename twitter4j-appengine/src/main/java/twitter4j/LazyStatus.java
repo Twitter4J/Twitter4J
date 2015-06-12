@@ -332,6 +332,16 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getWithheldInCountries();
     }
 
+    @Override
+    public long getQuotedStatusId() {
+        return getTarget().getQuotedStatusId();
+    }
+
+    @Override
+    public Status getQuotedStatus() {
+        return getTarget().getQuotedStatus();
+    }
+
     public RateLimitStatus getRateLimitStatus() {
         return getTarget().getRateLimitStatus();
     }
