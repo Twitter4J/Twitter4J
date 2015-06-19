@@ -210,4 +210,21 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      *  @since Twitter4j 4.0.3
      */
     String[] getWithheldInCountries();
+
+    /**
+     * Returns the Tweet ID of the quoted Tweet
+     *
+     * @return the Tweet ID of the quoted Tweet
+     * @since Twitter4J 4.0.x
+     */
+    long getQuotedStatusId();
+
+    /**
+     * Returns the Tweet object of the original Tweet that was quoted.
+     *
+     * @return the quoted Tweet object
+     * @since Twitter4J 4.0.x
+     */
+    Status getQuotedStatus();
+
 }

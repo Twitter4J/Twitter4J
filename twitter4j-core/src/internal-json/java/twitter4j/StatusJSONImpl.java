@@ -63,6 +63,8 @@ import static twitter4j.ParseUtil.getDate;
     private Scopes scopes;
     private User user = null;
     private String[] withheldInCountries = null;
+    private Status quotedStatus;
+    private long quotedStatusId = -1L;
 
     /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -184,6 +186,13 @@ import static twitter4j.ParseUtil.getDate;
                         extendedMediaEntities[i] = new ExtendedMediaEntityJSONImpl(mediaArray.getJSONObject(i));
                     }
                 }
+            }
+
+            if (!json.isNull("quoted_status")) {
+                quotedStatus = new StatusJSONImpl(json.getJSONObject("quoted_status"));
+            }
+            if (!json.isNull("quoted_status_id")) {
+                quotedStatusId = ParseUtil.getLong("quoted_status_id", json);
             }
 
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
@@ -381,6 +390,16 @@ import static twitter4j.ParseUtil.getDate;
     @Override
     public String[] getWithheldInCountries() {
         return withheldInCountries;
+    }
+
+    @Override
+    public long getQuotedStatusId() {
+        return quotedStatusId;
+    }
+
+    @Override
+    public Status getQuotedStatus() {
+        return quotedStatus;
     }
 
     @Override
