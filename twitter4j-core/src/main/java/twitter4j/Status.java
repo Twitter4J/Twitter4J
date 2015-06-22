@@ -218,7 +218,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * Returns the Tweet ID of the quoted Tweet
      *
      * @return the Tweet ID of the quoted Tweet
-     * @since Twitter4J 4.0.x
+     * @since Twitter4J 4.0.4
      */
     long getQuotedStatusId();
 
@@ -226,7 +226,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * Returns the Tweet object of the original Tweet that was quoted.
      *
      * @return the quoted Tweet object
-     * @since Twitter4J 4.0.x
+     * @since Twitter4J 4.0.4
      */
     Status getQuotedStatus();
 }

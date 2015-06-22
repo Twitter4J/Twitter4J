@@ -106,6 +106,10 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     }
 
     @Override
+    public void onQuotedTweet(User source, User target, Status quotingTweet) {
+    }
+
+    @Override
     public void onException(Exception ex) {
     }
 }

@@ -108,5 +108,4 @@ public class StatusJSONImplTest extends TestCase {
         assertEquals("FR", withheldInCountries[0]);
     }
 
-
 }

@@ -176,6 +176,8 @@ abstract class StatusStreamBase implements StatusStream {
                                     case FAVORITED_RETWEET:
                                         onFavoritedRetweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
                                         break;
+                                    case QUOTED_TWEET:
+                                        onQuotedTweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
                                     case DISCONNECTION:
                                         onDisconnectionNotice(line, listeners);
                                         break;
@@ -310,6 +312,10 @@ abstract class StatusStreamBase implements StatusStream {
     }
     void onFavoritedRetweet(JSONObject source, JSONObject target, JSONObject targetObject,StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onFavoritedRetweet");
+    }
+
+    void onQuotedTweet(JSONObject source, JSONObject target, JSONObject targetObject,StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onQuotedTweet");
     }
 
     void onDisconnectionNotice(String line, StreamListener[] listeners) {

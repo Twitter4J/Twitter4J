@@ -156,7 +156,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         waitForStatus("deletedUserListMember", DESTROY_LIST_MEMBER);
 
         twitter2.destroyUserListSubscription(list.getId());
-        waitForStatus("destroiedUserListSubscription", UNSUBSCRIBE_LIST);
+        waitForStatus("destroyedUserListSubscription", UNSUBSCRIBE_LIST);
 
         twitter1.destroyUserList(list.getId());
         waitForStatus("destroyedUserList", DESTROY_USER_LIST);
@@ -441,6 +441,15 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(favoritedStatus));
+        notifyResponse();
+    }
+
+    @Override
+    public void onQuotedTweet(User source, User target, Status quotedStatus) {
+        received.add(new Object[]{"quoted_tweet", source, target, quotedStatus});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(quotedStatus));
         notifyResponse();
     }
 
