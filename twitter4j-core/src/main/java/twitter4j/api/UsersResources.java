@@ -82,7 +82,7 @@ public interface UsersResources {
      * @since Twitter4J 2.1.8
      */
     User updateProfile(String name, String url, String location, String description)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the authenticating user's profile background image.
@@ -98,7 +98,7 @@ public interface UsersResources {
      * @since Twitter4J 2.1.0
      */
     User updateProfileBackgroundImage(File image, boolean tile)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the authenticating user's profile background image.
@@ -114,7 +114,7 @@ public interface UsersResources {
      * @since Twitter4J 2.1.11
      */
     User updateProfileBackgroundImage(InputStream image, boolean tile)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexidecimal value, and may be either three or six characters (ex: #fff or #ffffff).
@@ -131,7 +131,7 @@ public interface UsersResources {
      * @since Twitter4J 2.0.0
      */
     User updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the authenticating user's profile image.
@@ -199,6 +199,7 @@ public interface UsersResources {
      * Returns an array of numeric user ids the authenticating user is blocking.
      * <br>This method calls https://api.twitter.com/1.1/blocks/ids
      *
+     * @param cursor cursor
      * @return Returns an array of numeric user ids the authenticating user is blocking.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/ids">GET blocks/ids | Twitter Developers</a>
@@ -436,15 +437,16 @@ public interface UsersResources {
      *
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/remove_profile_banner">POST account/remove_profile_banner | Twitter Developers</a>
      * @since Twitter4J 3.0.0
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     void removeProfileBanner() throws TwitterException;
 
     /**
-     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an <5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
+     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an &lt;5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
      * Profile banner images are processed asynchronously. The profile_banner_url and its variant sizes will not necessary be available directly after upload.<br>
      * <br>This method calls https://api.twitter.com/1.1/account/update_profile_banner.json
      *
-     * @param image For best results, upload an <5MB image that is exactly 1252px by 626px.
+     * @param image For best results, upload an &lt;5MB image that is exactly 1252px by 626px.
      * @throws TwitterException when Twitter service or network is unavailable,
      *                          or when the specified file is not found (FileNotFoundException will be nested),
      *                          or when the specified file object in not representing a file (IOException will be nested)
@@ -458,7 +460,7 @@ public interface UsersResources {
      * Profile banner images are processed asynchronously. The profile_banner_url and its variant sizes will not necessary be available directly after upload.<br>
      * <br>This method calls https://api.twitter.com/1.1/account/update_profile_banner.json
      *
-     * @param image For best results, upload an <5MB image that is exactly 1252px by 626px.
+     * @param image For best results, upload an &lt;5MB image that is exactly 1252px by 626px.
      * @throws TwitterException when Twitter service or network is unavailable,
      *                          or when the specified file is not found (FileNotFoundException will be nested),
      *                          or when the specified file object in not representing a file (IOException will be nested)

@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Container for all InvocationStatisticsCalculators in a given API (like Twitter)
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public class APIStatistics implements APIStatisticsMBean {
     private final InvocationStatisticsCalculator API_STATS_CALCULATOR;
@@ -39,8 +39,9 @@ public class APIStatistics implements APIStatisticsMBean {
     }
 
     /**
-     * @param method the method invoked
-     * @param time   the method execution time
+     * @param method   the method invoked
+     * @param time     the method execution time
+     * @param success success
      */
     public synchronized void methodCalled(String method, long time, boolean success) {
         getMethodStatistics(method).increment(time, success);

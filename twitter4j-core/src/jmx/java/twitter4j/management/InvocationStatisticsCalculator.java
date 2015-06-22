@@ -20,7 +20,7 @@ package twitter4j.management;
 /**
  * Object that collects/aggregates statistics for the invocation of a given method.
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public class InvocationStatisticsCalculator implements InvocationStatistics {
     private final String name;

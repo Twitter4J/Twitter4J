@@ -16,7 +16,7 @@
 package twitter4j.management;
 
 /**
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public interface InvocationStatistics {
     public String getName();

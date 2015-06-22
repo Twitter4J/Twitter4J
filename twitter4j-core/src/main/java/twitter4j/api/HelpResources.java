@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public interface HelpResources {
     /**
-     * Returns the current configuration used by Twitter including twitter.com slugs which are not usernames, maximum photo resolutions, and t.co URL lengths.</br>
+     * Returns the current configuration used by Twitter including twitter.com slugs which are not usernames, maximum photo resolutions, and t.co URL lengths.<br>
      * It is recommended applications request this endpoint when they are loaded, but no more than once a day.
      *
      * @return configuration
@@ -104,6 +104,7 @@ public interface HelpResources {
      * <br>This method calls https://api.twitter.com/1.1/application/rate_limit_status.json
      *
      * @return the rate limit statuses
+     * @param resources resources
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/application/rate_limit_status">GET application/rate_limit_status</a>
      * @since Twitter4J 3.0.0

@@ -168,31 +168,37 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner URL
      */
     String getProfileBannerURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner retina URL
      */
     String getProfileBannerRetinaURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner iPad URL
      */
     String getProfileBannerIPadURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner iPad retina URL
      */
     String getProfileBannerIPadRetinaURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner mobile URL
      */
     String getProfileBannerMobileURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner mobile retina URL
      */
     String getProfileBannerMobileRetinaURL();
 

@@ -27,7 +27,7 @@ import java.lang.management.ManagementFactory;
  * fire up JConsole to see the mbeans in action. Be sure to start the VM with
  * the following system property enabled: -Dcom.sun.management.jmxremote
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public class MBeanServerRunner {
     public static void main(String[] args) throws Exception {

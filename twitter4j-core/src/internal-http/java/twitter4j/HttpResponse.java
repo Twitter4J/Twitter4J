@@ -56,7 +56,7 @@ public abstract class HttpResponse {
      * Returns the response stream.<br>
      * This method cannot be called after calling asString() or asDcoument()<br>
      * It is suggested to call disconnect() after consuming the stream.
-     * <p/>
+     * <p>
      * Disconnects the internal HttpURLConnection silently.
      *
      * @return response body stream
@@ -74,7 +74,7 @@ public abstract class HttpResponse {
      * Disconnects the internal HttpURLConnection silently.
      *
      * @return response body
-     * @throws TwitterException
+     * @throws TwitterException when there is any network issue upon response body consumption
      */
     public String asString() throws TwitterException {
         if (null == responseAsString) {
@@ -123,7 +123,7 @@ public abstract class HttpResponse {
      * Disconnects the internal HttpURLConnection silently.
      *
      * @return response body as twitter4j.JSONObject
-     * @throws TwitterException
+     * @throws TwitterException when the response body is not in JSON Object format
      */
     public JSONObject asJSONObject() throws TwitterException {
         if (json == null) {
@@ -139,7 +139,7 @@ public abstract class HttpResponse {
                     logger.debug(json.toString(1));
                 } else {
                     logger.debug(responseAsString != null ? responseAsString :
-                            json.toString());
+                        json.toString());
                 }
             } catch (JSONException jsone) {
                 if (responseAsString == null) {
@@ -167,7 +167,7 @@ public abstract class HttpResponse {
      * Disconnects the internal HttpURLConnection silently.
      *
      * @return response body as twitter4j.JSONArray
-     * @throws TwitterException
+     * @throws TwitterException when the response body is not in JSON Array format
      */
     public JSONArray asJSONArray() throws TwitterException {
         if (jsonArray == null) {
@@ -183,7 +183,7 @@ public abstract class HttpResponse {
                     logger.debug(jsonArray.toString(1));
                 } else {
                     logger.debug(responseAsString != null ? responseAsString :
-                            jsonArray.toString());
+                        jsonArray.toString());
                 }
             } catch (JSONException jsone) {
                 if (logger.isDebugEnabled()) {
@@ -224,10 +224,10 @@ public abstract class HttpResponse {
     @Override
     public String toString() {
         return "HttpResponse{" +
-                "statusCode=" + statusCode +
-                ", responseAsString='" + responseAsString + '\'' +
-                ", is=" + is +
-                ", streamConsumed=" + streamConsumed +
-                '}';
+            "statusCode=" + statusCode +
+            ", responseAsString='" + responseAsString + '\'' +
+            ", is=" + is +
+            ", streamConsumed=" + streamConsumed +
+            '}';
     }
 }

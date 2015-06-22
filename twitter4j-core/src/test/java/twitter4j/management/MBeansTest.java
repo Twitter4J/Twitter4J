@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Unit tests for APIStatistics, MBeans
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public class MBeansTest extends TestCase {
     public MBeansTest(String name) {

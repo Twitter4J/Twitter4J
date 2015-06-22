@@ -22,7 +22,7 @@ import javax.management.openmbean.*;
  * Dynamic version of APIStatisticsMBean that wraps an APIStatisticsOpenMBean.
  * Provides a tabular view of method stats. This MBean can only run on JDK 1.5+
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  * @since Twitter4J 2.2.1
  */
 public class APIStatisticsOpenMBean implements DynamicMBean {

@@ -103,11 +103,10 @@ import java.util.Date;
 
             // descriptionUrlEntities <=> entities/descriptions/urls[]
             descriptionURLEntities = getURLEntitiesFromJSON(json, "description");
-            descriptionURLEntities = descriptionURLEntities == null ? new URLEntity[0] : descriptionURLEntities;
 
             // urlEntity <=> entities/url/urls[]
             URLEntity[] urlEntities = getURLEntitiesFromJSON(json, "url");
-            if (urlEntities != null && urlEntities.length > 0) {
+            if (urlEntities.length > 0) {
                 urlEntity = urlEntities[0];
             }
 
@@ -192,7 +191,7 @@ import java.util.Date;
                 }
             }
         }
-        return null;
+        return new URLEntity[0];
     }
 
     @Override

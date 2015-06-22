@@ -22,7 +22,7 @@ package twitter4j.api;
 
 /**
  * Not yet supported.
- * <p/>
+ * <p>
  * http://yusuke.homeip.net/jira/browse/TFJ-223
  */
 public interface SpamReportingResourceAsync {

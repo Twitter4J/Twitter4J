@@ -56,9 +56,9 @@ public final class GeoQuery implements java.io.Serializable {
     }
 
     /**
-     * Gets and Sets the query to filter Place results from geo/search
+     * Gets the query to filter Place results from geo/search
+     * @return the query
      */
-
     public String getQuery() {
         return query;
     }

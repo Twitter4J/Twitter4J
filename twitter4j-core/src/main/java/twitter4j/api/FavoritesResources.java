@@ -29,7 +29,7 @@ public interface FavoritesResources {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      * <br>This method calls https://api.twitter.com/1.1/favorites.json
      *
-     * @return List<Status>
+     * @return {@link twitter4j.ResponseList<twitter4j.Status>}
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
@@ -41,7 +41,7 @@ public interface FavoritesResources {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      *
      * @param userId the id of the user for whom to request a list of favorite statuses
-     * @return ResponseList<Status>
+     * @return {@link twitter4j.ResponseList<twitter4j.Status>}
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 3.0.0
@@ -53,7 +53,7 @@ public interface FavoritesResources {
      * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
      *
      * @param screenName the screen name of the user for whom to request a list of favorite statuses
-     * @return ResponseList<Status>
+     * @return {@link twitter4j.ResponseList<twitter4j.Status>}
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.0.1
@@ -66,7 +66,7 @@ public interface FavoritesResources {
      * <br>This method calls https://api.twitter.com/1.1/favorites.json
      *
      * @param paging controls pagination. Supports sinceId and page parameters.
-     * @return ResponseList<Status>
+     * @return {@link twitter4j.ResponseList<twitter4j.Status>}
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.2.5
@@ -80,7 +80,7 @@ public interface FavoritesResources {
      *
      * @param userId the id of the user for whom to request a list of favorite statuses
      * @param paging controls pagination. Supports sinceId and page parameters.
-     * @return ResponseList<Status>
+     * @return {@link twitter4j.ResponseList<twitter4j.Status>}
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 3.0.0
@@ -94,7 +94,7 @@ public interface FavoritesResources {
      *
      * @param screenName     the screen name of the user for whom to request a list of favorite statuses
      * @param paging controls pagination. Supports sinceId and page parameters.
-     * @return ResponseList<Status>
+     * @return {@link twitter4j.ResponseList<twitter4j.Status>}
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/favorites">GET favorites | Twitter Developers</a>
      * @since Twitter4J 2.2.5
@@ -107,7 +107,7 @@ public interface FavoritesResources {
      * <br>This method calls https://api.twitter.com/1.1/favorites/create/[id].json
      *
      * @param id the ID of the status to favorite
-     * @return Status
+     * @return {@link Status}
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/favorites/create/:id">POST favorites/create/:id | Twitter Developers</a>
      */
@@ -119,7 +119,7 @@ public interface FavoritesResources {
      * <br>This method calls https://api.twitter.com/1.1/favorites/destroy/[id].json
      *
      * @param id the ID of the status to un-favorite
-     * @return Status
+     * @return {@link Status}
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/favorites/destroy/:id">POST favorites/destroy/:id | Twitter Developers</a>
      */

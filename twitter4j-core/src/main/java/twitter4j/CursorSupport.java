@@ -27,21 +27,25 @@ public interface CursorSupport {
 
     /**
      * @since Twitter4J 2.0.10
+     * @return has previous page
      */
     boolean hasPrevious();
 
     /**
      * @since Twitter4J 2.0.10
+     * @return previous cursor
      */
     long getPreviousCursor();
 
     /**
      * @since Twitter4J 2.0.10
+     * @return has next
      */
     boolean hasNext();
 
     /**
      * @since Twitter4J 2.0.10
+     * @return next cursor
      */
     long getNextCursor();
 }

@@ -36,7 +36,7 @@ public interface DirectMessagesResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
      */
     ResponseList<DirectMessage> getDirectMessages()
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns a list of the direct messages sent to the authenticating user.
@@ -48,7 +48,7 @@ public interface DirectMessagesResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
      */
     ResponseList<DirectMessage> getDirectMessages(Paging paging)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns a list of the direct messages sent by the authenticating user.
@@ -59,7 +59,7 @@ public interface DirectMessagesResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
      */
     ResponseList<DirectMessage> getSentDirectMessages()
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns a list of the direct messages sent by the authenticating user.
@@ -72,7 +72,7 @@ public interface DirectMessagesResources {
      * @since Twitter4J 2.0.1
      */
     ResponseList<DirectMessage> getSentDirectMessages(Paging paging)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns a single direct message, specified by an id parameter.
@@ -98,7 +98,7 @@ public interface DirectMessagesResources {
      * @since Twitter4J 2.0.1
      */
     DirectMessage destroyDirectMessage(long id)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
@@ -113,7 +113,7 @@ public interface DirectMessagesResources {
      * @since Twitter4j 2.1.0
      */
     DirectMessage sendDirectMessage(long userId, String text)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
@@ -127,16 +127,17 @@ public interface DirectMessagesResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
      */
     DirectMessage sendDirectMessage(String screenName, String text)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns a stream of the image included in direct messages.
      *
+     * @param url image url
      * @return InputStream
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/discussions/24255">Access media shared in direct messages | Twitter Developers</a>
      * @since Twitter4J 3.0.6
      */
     InputStream getDMImageAsStream(String url)
-            throws TwitterException;
+        throws TwitterException;
 }

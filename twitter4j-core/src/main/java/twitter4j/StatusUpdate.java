@@ -101,6 +101,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param file media file
      * @since Twitter4J 2.2.5
      */
     public void setMedia(File file) {
@@ -108,6 +109,8 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param file media file
+     * @return this instance
      * @since Twitter4J 2.2.5
      */
     public StatusUpdate media(File file) {
@@ -116,6 +119,8 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param name name
+     * @param body media body as stream
      * @since Twitter4J 2.2.5
      */
     public void setMedia(String name, InputStream body) {
@@ -124,6 +129,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param mediaIds media ids
      * @since Twitter4J 4.0.2
      */
     public void setMediaIds(long[] mediaIds) {
@@ -135,6 +141,9 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param name media name
+     * @param body media body
+     * @return this instance
      * @since Twitter4J 2.2.5
      */
     public StatusUpdate media(String name, InputStream body) {
@@ -143,6 +152,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param possiblySensitive possibly sensitive
      * @since Twitter4J 2.2.5
      */
     public void setPossiblySensitive(boolean possiblySensitive) {
@@ -150,6 +160,8 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param possiblySensitive possibly sensitive
+     * @return this instance
      * @since Twitter4J 2.2.5
      */
     public StatusUpdate possiblySensitive(boolean possiblySensitive) {
@@ -158,6 +170,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @return possibly sensitive
      * @since Twitter4J 2.2.5
      */
     public boolean isPossiblySensitive() {
@@ -245,16 +258,16 @@ public final class StatusUpdate implements java.io.Serializable {
     @Override
     public String toString() {
         return "StatusUpdate{" +
-                "status='" + status + '\'' +
-                ", inReplyToStatusId=" + inReplyToStatusId +
-                ", location=" + location +
-                ", placeId='" + placeId + '\'' +
-                ", displayCoordinates=" + displayCoordinates +
-                ", possiblySensitive=" + possiblySensitive +
-                ", mediaName='" + mediaName + '\'' +
-                ", mediaBody=" + mediaBody +
-                ", mediaFile=" + mediaFile +
-                ", mediaIds=" + mediaIds +
-                '}';
+            "status='" + status + '\'' +
+            ", inReplyToStatusId=" + inReplyToStatusId +
+            ", location=" + location +
+            ", placeId='" + placeId + '\'' +
+            ", displayCoordinates=" + displayCoordinates +
+            ", possiblySensitive=" + possiblySensitive +
+            ", mediaName='" + mediaName + '\'' +
+            ", mediaBody=" + mediaBody +
+            ", mediaFile=" + mediaFile +
+            ", mediaIds=" + mediaIds +
+            '}';
     }
 }

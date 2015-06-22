@@ -64,6 +64,8 @@ public class JSONTokener {
 
     /**
      * Construct a JSONTokener from an InputStream.
+     * @param inputStream input stream
+     * @throws JSONException when failed to construct
      */
     public JSONTokener(InputStream inputStream) throws JSONException {
         this(new InputStreamReader(inputStream));
@@ -84,6 +86,7 @@ public class JSONTokener {
      * Back up one character. This provides a sort of lookahead capability,
      * so that you can test for a digit or letter before attempting to parse
      * the next number or identifier.
+     * @throws JSONException when tried to back two steps
      */
     public void back() throws JSONException {
         if (usePrevious || index <= 0) {
@@ -106,6 +109,7 @@ public class JSONTokener {
      * can consume.
      *
      * @return true if not yet at the end of the source.
+     * @throws JSONException when failed to determine
      */
     public boolean more() throws JSONException {
         next();
@@ -121,6 +125,7 @@ public class JSONTokener {
      * Get the next character in the source string.
      *
      * @return The next character, or 0 if past the end of the source string.
+     * @throws JSONException when failed to read the next character from the reader
      */
     public char next() throws JSONException {
         int c;
@@ -203,7 +208,7 @@ public class JSONTokener {
      * Get the next char in the string, skipping whitespace.
      *
      * @return A character, or 0 if there are no more characters.
-     * @throws JSONException
+     * @throws JSONException when failed to read the content from the reader
      */
     public char nextClean() throws JSONException {
         for (; ; ) {

@@ -305,8 +305,9 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
 
     /**
      * Parses a query string without the leading "?"
-     * 
-     * @param queryParameters a query parameter string, like a=hello&b=world
+     *
+     * @param queryParameters a query parameter string, like a=hello&amp;b=world
+     * @return decoded parameters
      */
     public static List<HttpParameter> decodeParameters(String queryParameters) {
         List<HttpParameter> result=new ArrayList<HttpParameter>();

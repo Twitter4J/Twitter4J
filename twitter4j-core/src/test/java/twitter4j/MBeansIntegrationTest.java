@@ -19,7 +19,7 @@ package twitter4j;
  * Integration tests for APIStatistics ensuring that the integration logic
  * in Twitter (API client) works.
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public class MBeansIntegrationTest extends TwitterTestBase {
 

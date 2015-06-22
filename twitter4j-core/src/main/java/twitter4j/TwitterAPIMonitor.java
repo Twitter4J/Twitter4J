@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * We could avoid using a singleton here if Twitter objects were instantiated
  * from a factory.
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  * @since Twitter4J 2.2.1
  */
 public class TwitterAPIMonitor {

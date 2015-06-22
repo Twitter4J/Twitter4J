@@ -34,7 +34,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     ResponseList<UserList> getUserLists(String listOwnerScreenName)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
@@ -47,7 +47,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     ResponseList<UserList> getUserLists(long listOwnerUserId)
-            throws TwitterException;
+        throws TwitterException;
 
 
     /**
@@ -62,7 +62,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     ResponseList<Status> getUserListStatuses(long listId, Paging paging)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.
@@ -77,7 +77,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     ResponseList<Status> getUserListStatuses(long ownerId, String slug, Paging paging)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.
@@ -92,7 +92,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.2
      */
     ResponseList<Status> getUserListStatuses(String ownerScreenName, String slug, Paging paging)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -200,7 +200,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long cursor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -214,7 +214,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -228,7 +228,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -244,7 +244,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -260,7 +260,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns the subscribers of the specified list.
@@ -429,6 +429,7 @@ public interface ListsResources {
      *
      * @param listId  The id of the list.
      * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
@@ -442,6 +443,7 @@ public interface ListsResources {
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
      * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
@@ -455,6 +457,7 @@ public interface ListsResources {
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
      * @param slug            slug of the list
      * @param userIds         The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.2
@@ -469,6 +472,7 @@ public interface ListsResources {
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
+     * @return the list
      */
     UserList createUserListMembers(long listId, String... screenNames) throws TwitterException;
 
@@ -481,6 +485,7 @@ public interface ListsResources {
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
+     * @return the list
      */
     UserList createUserListMembers(long ownerId, String slug, String... screenNames) throws TwitterException;
 
@@ -493,6 +498,7 @@ public interface ListsResources {
      * @param screenNames     The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.2
+     * @return the list
      */
     UserList createUserListMembers(String ownerScreenName, String slug, String... screenNames) throws TwitterException;
 
@@ -552,7 +558,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     PagableResponseList<User> getUserListMembers(long listId, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -567,7 +573,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     PagableResponseList<User> getUserListMembers(long ownerId, String slug, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -582,7 +588,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members.
@@ -677,7 +683,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     UserList updateUserList(long listId, String newListName, boolean isPublicList, String newDescription)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the specified list.
@@ -694,7 +700,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     UserList updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the specified list.
@@ -711,7 +717,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.2
      */
     UserList updateUserList(String ownerScreenName, String slug, String newListName, boolean isPublicList, String newDescription)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Creates a new list for the authenticated user. Accounts are limited to 20 lists.
@@ -726,7 +732,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     UserList createUserList(String listName, boolean isPublicList, String description)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
@@ -778,7 +784,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
@@ -792,7 +798,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.1
      */
     PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, int count, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
@@ -806,5 +812,5 @@ public interface ListsResources {
      * @since Twitter4J 4.0.1
      */
     PagableResponseList<UserList> getUserListsOwnerships(long listOwnerId, int count, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 }

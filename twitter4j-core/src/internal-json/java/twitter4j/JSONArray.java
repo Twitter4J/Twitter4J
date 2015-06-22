@@ -40,20 +40,20 @@ import java.util.Map;
  * {@code}Boolean{/code}, {@code}JSONArray{/code}, {@code}JSONObject{/code},
  * {@code}Number{/code}, {@code}String{/code}, or the
  * {@code}JSONObject.NULL object{/code}.
- * <p/>
+ * <p>
  * The constructor can convert a JSON text into a Java object. The
  * {@code}toString{/code} method converts to JSON text.
- * <p/>
+ * <p>
  * A {@code}get{/code} method returns a value if one can be found, and throws an
  * exception if one cannot be found. An {@code}opt{/code} method returns a
  * default value instead of throwing an exception, and so is useful for
  * obtaining optional values.
- * <p/>
+ * <p>
  * The generic {@code}get(){/code} and {@code}opt(){/code} methods return an
  * object which you can cast or query for type. There are also typed
  * {@code}get{/code} and {@code}opt{/code} methods that do type checking and type
  * coercion for you.
- * <p/>
+ * <p>
  * The texts produced by the {@code}toString{/code} methods strictly conform to
  * JSON syntax rules. The constructors are more forgiving in the texts they will
  * accept:
@@ -165,6 +165,7 @@ public class JSONArray {
     /**
      * Construct a JSONArray from an array
      *
+     * @param array array
      * @throws JSONException If not an array.
      */
     public JSONArray(Object array) throws JSONException {
@@ -594,7 +595,7 @@ public class JSONArray {
      * unnecessary whitespace is added. If it is not possible to produce a
      * syntactically correct JSON text then null will be returned instead. This
      * could occur if the array contains an invalid number.
-     * <p/>
+     * <p>
      * Warning: This method assumes that the data structure is acyclical.
      *
      * @return a printable, displayable, transmittable
@@ -619,7 +620,7 @@ public class JSONArray {
      * representation of the object, beginning
      * with {@code}[{/code}&nbsp;<small>(left bracket)</small> and ending
      * with {@code}]{/code}&nbsp;<small>(right bracket)</small>.
-     * @throws JSONException
+     * @throws JSONException when failed to stringify
      */
     public String toString(int indentFactor) throws JSONException {
         return toString(indentFactor, 0);
@@ -635,7 +636,7 @@ public class JSONArray {
      * @param indent       The indention of the top level.
      * @return a printable, displayable, transmittable
      * representation of the array.
-     * @throws JSONException
+     * @throws JSONException when failed to stringify
      */
     String toString(int indentFactor, int indent) throws JSONException {
         int len = length();
@@ -673,11 +674,12 @@ public class JSONArray {
     /**
      * Write the contents of the JSONArray as JSON text to a writer.
      * For compactness, no whitespace is added.
-     * <p/>
+     * <p>
      * Warning: This method assumes that the data structure is acyclical.
      *
+     * @param writer writer
      * @return The writer.
-     * @throws JSONException
+     * @throws JSONException when failed to write the content
      */
     public Writer write(Writer writer) throws JSONException {
         try {

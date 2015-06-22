@@ -47,17 +47,17 @@ import java.util.*;
  * exception if one cannot be found. An {@code}opt{/code} method returns a
  * default value instead of throwing an exception, and so is useful for
  * obtaining optional values.
- * <p/>
+ * <p>
  * The generic {@code}get(){/code} and {@code}opt(){/code} methods return an
  * object, which you can cast or query for type. There are also typed
  * {@code}get{/code} and {@code}opt{/code} methods that do type checking and type
  * coercion for you. The opt methods differ from the get methods in that they
  * do not throw. Instead, they return a specified value, such as null.
- * <p/>
+ * <p>
  * The {@code}put{/code} methods add or replace values in an object. For example,
  * <pre>myString = new JSONObject().put("JSON", "Hello, World!").toString();</pre>
  * produces the string {@code}{"JSON": "Hello, World"}{/code}.
- * <p/>
+ * <p>
  * The texts produced by the {@code}toString{/code} methods strictly conform to
  * the JSON syntax rules.
  * The constructors are more forgiving in the texts they will accept:
@@ -72,7 +72,7 @@ import java.util.*;
  * {@code}{ } [ ] / \ : , = ; #{/code} and if they do not look like numbers
  * and if they are not the reserved words {@code}true{/code},
  * {@code}false{/code}, or {@code}null{/code}.</li>
- * <li>Keys can be followed by {@code}={/code} or {@code}=>{/code} as well as
+ * <li>Keys can be followed by {@code}={/code} or {@code}=&gt;{/code} as well as
  * by {@code}:{/code}.</li>
  * <li>Values can be followed by {@code};{/code} <small>(semicolon)</small> as
  * well as by {@code},{/code} <small>(comma)</small>.</li>
@@ -251,11 +251,11 @@ public class JSONObject {
      * with {@code}"get"{/code} or {@code}"is"{/code} followed by an uppercase letter,
      * the method is invoked, and a key and the value returned from the getter method
      * are put into the new JSONObject.
-     * <p/>
+     * <p>
      * The key is formed by removing the {@code}"get"{/code} or {@code}"is"{/code} prefix.
      * If the second remaining character is not upper case, then the first
      * character is converted to lower case.
-     * <p/>
+     * <p>
      * For example, if an object has a method named {@code}"getName"{/code}, and
      * if the result of calling {@code}object.getName(){/code} is {@code}"Larry Fine"{/code},
      * then the JSONObject will contain {@code}"name": "Larry Fine"{/code}.
@@ -666,16 +666,6 @@ public class JSONObject {
         return this;
     }
 
-
-    /**
-     * Put a key/value pair in the JSONObject, where the value will be a
-     * JSONArray which is produced from a Collection.
-     *
-     * @param key   A key string.
-     * @param value A Collection value.
-     * @return this.
-     * @throws JSONException
-     */
     public JSONObject put(String key, Collection value) throws JSONException {
         put(key, new JSONArray(value));
         return this;
@@ -731,7 +721,7 @@ public class JSONObject {
      * @param key   A key string.
      * @param value A Map value.
      * @return this.
-     * @throws JSONException
+     * @throws JSONException when failed to put value
      */
     public JSONObject put(String key, Map value) throws JSONException {
         put(key, new JSONObject(value));
@@ -807,7 +797,7 @@ public class JSONObject {
 
     /**
      * Produce a string in double quotes with backslash sequences in all the
-     * right places. A backslash will be inserted within </, producing <\/,
+     * right places. A backslash will be inserted within &lt;/, producing &lt;\/,
      * allowing JSON text to be delivered in HTML. In JSON text, a string
      * cannot contain a control character or an unescaped quote or backslash.
      *
@@ -976,7 +966,7 @@ public class JSONObject {
      * Make a JSON text of this JSONObject. For compactness, no whitespace
      * is added. If this would not result in a syntactically correct JSON text,
      * then null will be returned instead.
-     * <p/>
+     * <p>
      * Warning: This method assumes that the data structure is acyclical.
      *
      * @return a printable, displayable, portable, transmittable
@@ -1008,7 +998,7 @@ public class JSONObject {
 
     /**
      * Make a prettyprinted JSON text of this JSONObject.
-     * <p/>
+     * <p>
      * Warning: This method assumes that the data structure is acyclical.
      *
      * @param indentFactor The number of spaces to add to each level of
@@ -1026,7 +1016,7 @@ public class JSONObject {
 
     /**
      * Make a prettyprinted JSON text of this JSONObject.
-     * <p/>
+     * <p>
      * Warning: This method assumes that the data structure is acyclical.
      *
      * @param indentFactor The number of spaces to add to each level of
@@ -1093,8 +1083,7 @@ public class JSONObject {
      * will be called. If the value is a MAP, then a JSONObject will be made
      * from it and its toJSONString method will be called. Otherwise, the
      * value's toString method will be called, and the result will be quoted.
-     * <p/>
-     * <p/>
+     * <p>
      * Warning: This method assumes that the data structure is acyclical.
      *
      * @param value The value to be serialized.
@@ -1130,7 +1119,7 @@ public class JSONObject {
 
     /**
      * Make a prettyprinted JSON text of an object value.
-     * <p/>
+     * <p>
      * Warning: This method assumes that the data structure is acyclical.
      *
      * @param value        The value to be serialized.
@@ -1223,15 +1212,6 @@ public class JSONObject {
     }
 
 
-    /**
-     * Write the contents of the JSONObject as JSON text to a writer.
-     * For compactness, no whitespace is added.
-     * <p/>
-     * Warning: This method assumes that the data structure is acyclical.
-     *
-     * @return The writer.
-     * @throws JSONException
-     */
     public Writer write(Writer writer) throws JSONException {
         try {
             boolean commanate = false;
