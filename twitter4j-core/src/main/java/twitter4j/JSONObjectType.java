@@ -49,6 +49,7 @@ public final class JSONObjectType {
         DISCONNECTION,
         RETWEETED_RETWEET,
         FAVORITED_RETWEET,
+        QUOTED_TWEET,
         UNKNOWN
     }
 
@@ -127,7 +128,10 @@ public final class JSONObjectType {
                     return Type.RETWEETED_RETWEET;
                 } else if("favorited_retweet".equals(event)){
                     return Type.FAVORITED_RETWEET;
+                } else if("quoted_tweet".equals(event)){
+                    return Type.QUOTED_TWEET;
                 }
+
             } catch (JSONException jsone) {
                 try {
                     logger.warn("Failed to get event element: ", json.toString(2));
