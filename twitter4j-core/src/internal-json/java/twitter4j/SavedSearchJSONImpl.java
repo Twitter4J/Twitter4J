@@ -28,7 +28,7 @@ import java.util.Date;
  */
 /*package*/ final class SavedSearchJSONImpl extends TwitterResponseImpl implements SavedSearch {
 
-    private static final long serialVersionUID = 846086437256360810L;
+    private static final long serialVersionUID = -2281949861485441692L;
     private Date createdAt;
     private String query;
     private int position;
