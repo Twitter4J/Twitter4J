@@ -71,7 +71,7 @@ final class LazySavedSearch implements twitter4j.SavedSearch {
     }
 
 
-    public int getId() {
+    public long getId() {
         return getTarget().getId();
     }
 

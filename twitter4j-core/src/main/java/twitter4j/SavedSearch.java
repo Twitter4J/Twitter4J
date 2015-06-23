@@ -33,6 +33,6 @@ public interface SavedSearch extends Comparable<SavedSearch>, TwitterResponse, j
 
     String getName();
 
-    int getId();
+    long getId();
 
 }

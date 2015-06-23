@@ -1543,7 +1543,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public SavedSearch showSavedSearch(int id) throws TwitterException {
+    public SavedSearch showSavedSearch(long id) throws TwitterException {
         return factory.createSavedSearch(get(conf.getRestBaseURL() + "saved_searches/show/" + id
                 + ".json"));
     }
@@ -1555,7 +1555,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public SavedSearch destroySavedSearch(int id) throws TwitterException {
+    public SavedSearch destroySavedSearch(long id) throws TwitterException {
         return factory.createSavedSearch(post(conf.getRestBaseURL()
                 + "saved_searches/destroy/" + id + ".json"));
     }

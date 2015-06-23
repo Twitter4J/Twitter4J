@@ -45,7 +45,7 @@ public interface SavedSearchesResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/saved_searches/show/:id">GET saved_searches/show/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.8
      */
-    SavedSearch showSavedSearch(int id) throws TwitterException;
+    SavedSearch showSavedSearch(long id) throws TwitterException;
 
     /**
      * Creates a saved search for the authenticated user.
@@ -70,6 +70,6 @@ public interface SavedSearchesResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/saved_searches/destroy/:id">POST saved_searches/destroy/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.8
      */
-    SavedSearch destroySavedSearch(int id)
+    SavedSearch destroySavedSearch(long id)
             throws TwitterException;
 }
