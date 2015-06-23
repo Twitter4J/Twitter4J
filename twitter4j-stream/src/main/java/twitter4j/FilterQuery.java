@@ -185,6 +185,7 @@ public final class FilterQuery implements java.io.Serializable {
      * a minimum filter_level attribute value.
      *
      * @param filterLevel one of either none, low, or medium.
+     * @return this instance
      */
     public FilterQuery filterLevel(String filterLevel) {
         this.filterLevel = filterLevel;
@@ -197,22 +198,18 @@ public final class FilterQuery implements java.io.Serializable {
 
         params.add(new HttpParameter("count", count));
         if (follow != null && follow.length > 0) {
-            params.add(new HttpParameter("follow"
-                    , StringUtil.join(follow)));
+            params.add(new HttpParameter("follow", StringUtil.join(follow)));
         }
         if (track != null && track.length > 0) {
-            params.add(new HttpParameter("track"
-                    , StringUtil.join(track)));
+            params.add(new HttpParameter("track", StringUtil.join(track)));
         }
         if (locations != null && locations.length > 0) {
-            params.add(new HttpParameter("locations"
-                    , toLocationsString(locations)));
+            params.add(new HttpParameter("locations", toLocationsString(locations)));
         }
         if (language != null && language.length > 0) {
-            params.add(new HttpParameter("language"
-                    , StringUtil.join(language)));
+            params.add(new HttpParameter("language", StringUtil.join(language)));
         }
-        if (filterLevel != null && language.length > 0) {
+        if (filterLevel != null) {
             params.add(new HttpParameter("filter_level", filterLevel));
         }
         params.add(stallWarningsParam);
@@ -263,12 +260,12 @@ public final class FilterQuery implements java.io.Serializable {
     @Override
     public String toString() {
         return "FilterQuery{" +
-                "count=" + count +
-                ", follow=" + Arrays.toString(follow) +
-                ", track=" + (track == null ? null : Arrays.asList(track)) +
-                ", locations=" + (locations == null ? null : Arrays.asList(locations)) +
-                ", language=" + (language == null ? null : Arrays.asList(language)) +
-                ", filter_level=" + filterLevel +
-                '}';
+            "count=" + count +
+            ", follow=" + Arrays.toString(follow) +
+            ", track=" + (track == null ? null : Arrays.asList(track)) +
+            ", locations=" + (locations == null ? null : Arrays.asList(locations)) +
+            ", language=" + (language == null ? null : Arrays.asList(language)) +
+            ", filter_level=" + filterLevel +
+            '}';
     }
 }

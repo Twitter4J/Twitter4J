@@ -27,8 +27,6 @@ import java.util.Map;
  * A listener for receiving asynchronous responses from Twitter Async APIs.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see {@link twitter4j.AsyncTwitter}
- * @see {@link twitter4j.TwitterAdapter}
  */
 public interface TwitterListener {
     /* Timelines Resources */

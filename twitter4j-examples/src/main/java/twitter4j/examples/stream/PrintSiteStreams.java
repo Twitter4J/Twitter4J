@@ -30,7 +30,7 @@ public final class PrintSiteStreams {
      * Main entry of this application.
      *
      * @param args follow(comma separated user ids) track(comma separated filter terms)
-     * @throws twitter4j.TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
         if (args.length < 1) {

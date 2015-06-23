@@ -42,6 +42,7 @@ public class ImageUploadFactory {
 
     /**
      * Creates an ImageUploadFactory with the specified configuration
+     * @param conf configuration to be associated
      */
     public ImageUploadFactory(Configuration conf) {
         String mediaProvider = conf.getMediaProvider().toLowerCase();

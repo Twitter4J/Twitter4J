@@ -655,7 +655,7 @@ public interface ListsResources {
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
      * @param slug            slug of the list
      * @param userIds         The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
-     * @return
+     * @return the list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.2
@@ -697,6 +697,7 @@ public interface ListsResources {
      * @param slug            slug of the list
      * @param screenNames     The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
      * @return the list
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */

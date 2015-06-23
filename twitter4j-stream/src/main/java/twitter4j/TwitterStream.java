@@ -39,12 +39,14 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
 
     /**
      * @param action action when receiving Status
+     * @return this instance
      * @since Twitter4J 4.0.4
      */
     TwitterStream onStatus(Consumer<Status> action);
 
     /**
      * @param action action when receiving TwitterException
+     * @return this instance
      * @since Twitter4J 4.0.4
      */
     TwitterStream onException(Consumer<Exception> action);
@@ -65,6 +67,8 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
     /**
      * replace existing listener
      *
+     * @param toBeRemoved listener to be removed
+     * @param toBeAdded   listener to be added
      * @since Twitter4J 4.0.0
      */
     void replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded);
@@ -109,9 +113,10 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
 
     /**
      * Starts listening on random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
-     *
+     * <p>
      * Only samples Tweets written in the given language.
      *
+     * @param language language to be sampled
      * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
@@ -145,6 +150,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      *
      * @param withFollowings whether to receive status updates from people following
      * @param follow         an array of users to include in the stream
+     * @return controller to control the site stream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/site-streams">Site Streams | Twitter Developers</a>
      * @since Twitter4J 2.1.8
      */
@@ -165,6 +171,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * Start consuming public statuses that match the filter predicate. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
      * The default access level allows up to 200 track keywords.
      *
+     * @param track words to be filtered
      * @since Twitter4J 4.0.4
      */
     void filter(final String... track);

@@ -56,5 +56,5 @@ public interface TrendsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/trends/closest">GET trends/closest | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
-    void getClosestTrends(GeoLocation location) throws TwitterException;
+    void getClosestTrends(GeoLocation location);
 }

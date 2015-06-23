@@ -176,6 +176,7 @@ public interface SiteStreamsListener extends StreamListener {
 
     /**
      * callback method for {@link StreamController#removeUsers(long[])}
+     * @param line notice
      */
     void onDisconnectionNotice(String line);
 

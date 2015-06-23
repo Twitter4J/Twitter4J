@@ -158,6 +158,7 @@ public interface UsersResourcesAsync {
      * Returns an array of numeric user ids the authenticating user is blocking.
      * <br>This method calls https://api.twitter.com/1.1/blocks/blocking/ids
      *
+     * @param cursor cursor
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/ids">GET blocks/ids | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
@@ -358,22 +359,22 @@ public interface UsersResourcesAsync {
     void removeProfileBanner();
 
     /**
-     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an <5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
+     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an &lt;5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
      * Profile banner images are processed asynchronously. The profile_banner_url and its variant sizes will not necessary be available directly after upload.<br>
      * <br>This method calls https://api.twitter.com/1.1/account/update_profile_banner.json
      *
-     * @param image For best results, upload an <5MB image that is exactly 1252px by 626px.
+     * @param image For best results, upload an &lt;5MB image that is exactly 1252px by 626px.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_banner">POST account/update_profile_banner | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     void updateProfileBanner(File image);
 
     /**
-     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an <5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
+     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an &lt;5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
      * Profile banner images are processed asynchronously. The profile_banner_url and its variant sizes will not necessary be available directly after upload.<br>
      * <br>This method calls https://api.twitter.com/1.1/account/update_profile_banner.json
      *
-     * @param image For best results, upload an <5MB image that is exactly 1252px by 626px.
+     * @param image For best results, upload an &lt;5MB image that is exactly 1252px by 626px.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_banner">POST account/update_profile_banner | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */

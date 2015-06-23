@@ -22,7 +22,7 @@ package twitter4j.api;
 public interface HelpResourcesAsync {
 
     /**
-     * Returns the current configuration used by Twitter including twitter.com slugs which are not usernames, maximum photo resolutions, and t.co URL lengths.</br>
+     * Returns the current configuration used by Twitter including twitter.com slugs which are not usernames, maximum photo resolutions, and t.co URL lengths.<br>
      * It is recommended applications request this endpoint when they are loaded, but no more than once a day.
      *
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/help/configuration">GET help/configuration | Twitter Developers</a>
@@ -81,6 +81,7 @@ public interface HelpResourcesAsync {
      *
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/application/rate_limit_status">GET application/rate_limit_status</a>
      * @since Twitter4J 3.0.0
+     * @param resources resources
      */
     void getRateLimitStatus(String... resources);
 }

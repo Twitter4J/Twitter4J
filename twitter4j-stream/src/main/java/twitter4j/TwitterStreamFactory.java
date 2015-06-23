@@ -99,6 +99,7 @@ public final class TwitterStreamFactory implements java.io.Serializable {
     /**
      * Returns a instance.
      *
+     * @param auth authorization object to be associated
      * @return an instance
      */
     public TwitterStream getInstance(Authorization auth) {
