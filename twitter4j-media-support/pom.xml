@@ -18,10 +18,11 @@
     </licenses>
     <scm>
         <url>https://github.com/yusuke/twitter4j</url>
-        <connection>scm:git:git@github.com:yusuke/twitter4j.git</connection>
-        <developerConnection>scm:git:git@github.com:yusuke/twitter4j.git
+        <connection>scm:git:git://github.com/yusuke/twitter4j.git</connection>
+        <developerConnection>scm:gigit://github.com/yusuke/twitter4j.gitit
         </developerConnection>
-    </scm>
+
+  </scm>
     <developers>
         <developer>
             <id>yusuke</id>
