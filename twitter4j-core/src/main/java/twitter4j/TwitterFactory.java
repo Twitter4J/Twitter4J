@@ -33,7 +33,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
-public final class TwitterFactory implements java.io.Serializable {
+public class TwitterFactory implements java.io.Serializable {
     private static final Constructor<Twitter> TWITTER_CONSTRUCTOR;
     /*AsyncTwitterFactory and TWitterStream will access this field*/
     static final Authorization DEFAULT_AUTHORIZATION = AuthorizationFactory.getInstance(ConfigurationContext.getInstance());
