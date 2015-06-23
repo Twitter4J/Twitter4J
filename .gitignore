@@ -1,5 +1,5 @@
 statuses/*
-target/*
+target
 /twitter4j.properties
 twitter4j-core/src/test/resources/xauth-test.properties
 twitter4j-core/src/test/resources/sitestream-test.properties

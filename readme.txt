@@ -49,6 +49,7 @@ Hiroaki Takeuchi <takke30 at gmail.com> @takke
 Hiroki Takemoto <pompopo at gmail.com> @pompopo
 Hiroshi Sugimori <mamamadata at gmail.com> @ham1975
 Hitoshi Kunimatsu <hkhumanoid at gmail.com>
+Igor Brigadir <igor.brigadir at insight-centre.org> @igorbrigadir
 JJ Kelley <jjthemachine at gmail.com> @jjthemachine
 Jacob Elder <jacob.elder@gmail.com> @jelder
 Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
