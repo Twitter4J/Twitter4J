@@ -49,14 +49,14 @@ cp -r powered-by-badge $DIR/
 
 echo hash=$HASH
 #embedding commit hash into version string
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-core/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-appengine/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-examples/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-media-support/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-async/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-stream/pom.xml
-sed -i '' "s/<url>http:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-http2-support/pom.xml
+sed -i '' "s/<url>https:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/pom.xml
+sed -i '' "s/<url>https:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-core/pom.xml
+sed -i '' "s/<url>https:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-appengine/pom.xml
+sed -i '' "s/<url>https:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-examples/pom.xml
+sed -i '' "s/<url>https:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-media-support/pom.xml
+sed -i '' "s/<url>https:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-async/pom.xml
+sed -i '' "s/<url>https:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-stream/pom.xml
+sed -i '' "s/<url>https:\/\/oss.sonatype.org\/service\/local\/staging\/deploy\/maven2\//<url>file:\/Users\/yusuke\/maven2\//g" $DIR/twitter4j-http2-support/pom.xml
 
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-core/src/main/java/twitter4j/Version.java
 sed -i '' "s/-SNAPSHOT\";/-SNAPSHOT\(build: $HASH\)\";/g" $DIR/twitter4j-media-support/src/main/java/twitter4j/media/Version.java
