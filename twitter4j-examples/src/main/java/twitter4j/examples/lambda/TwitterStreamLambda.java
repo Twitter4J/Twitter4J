@@ -16,15 +16,39 @@
 
 package twitter4j.examples.lambda;
 
-import twitter4j.*;
+import twitter4j.FilterQuery;
+import twitter4j.Status;
+import twitter4j.StatusAdapter;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
 
 /**
- * example code to explain lambda expression for handling rate limits
+ * example code to explain lambda expression. Prints tweets containing twitter4j or #twitter4j.
  */
 public class TwitterStreamLambda {
     public static void main(String... args) {
+        // Twitter4j 4.0.4+
         TwitterStreamFactory.getSingleton()
-            .onStatus(e -> System.out.println(e.getText()))
-            .sample();
+                .onStatus(e -> System.out.println(String.format("@%s %s", e.getUser().getScreenName(), e.getText())))
+                .onException(e -> e.printStackTrace())
+                .filter("twitter4j", "#twitter4j");
+
+    }
+
+    public static void oldTraditionalDullBoringImplementation(String... dummy){
+        // Twitter4J 4.0.3 or earlier
+        TwitterStream stream = TwitterStreamFactory.getSingleton();
+        stream.addListener(new StatusAdapter() {
+            @Override
+            public void onStatus(Status status) {
+                String.format("@%s %s", status.getUser().getScreenName(), status.getText());
+            }
+
+            @Override
+            public void onException(Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+        stream.filter(new FilterQuery(new String[]{"twitter4j", "#twitter4j"}));
     }
 }
