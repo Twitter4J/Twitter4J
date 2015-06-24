@@ -45,6 +45,7 @@ Gabriel Zanetti @pupi1985
 George Ludwig <georgeludwig at gmail.com> @georgeludwig
 Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
 Hemant Kumar <hemant.singh13 at gmail.com> @hemantsingh1309
+Hendy Irawan <hendy@hendyirawan.com>
 Hiroaki Takeuchi <takke30 at gmail.com> @takke
 Hiroki Takemoto <pompopo at gmail.com> @pompopo
 Hiroshi Sugimori <mamamadata at gmail.com> @ham1975
