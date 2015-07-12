@@ -115,5 +115,6 @@ William Morgan <william at twitter.com> @wm
 William O'Hanley <william at wohanley.com> @wohanley
 William Vanderhoef <william.vanderhoef at gmail.com> @thePoofy
 withgod <noname at withgod.jp> @withgod
+Yuichiro Kawano <tresener.yu1ro at gmail.com> @tresener_yu1ro
 Yusuke Yamamoto <yusuke at mac.com> @yusuke
 Yuto Uehara <mumei.himazin at gmail.com> @mumei_himazin
