@@ -95,6 +95,7 @@ Rui Silva
 Sam Pullara <sam at sampullara.com> @sampullara
 Sdk0815 <developer at terumode.net> @Sdk0815
 Shane Gibson <shane.a.gibson at gmail.com> @shaneagibson
+Shintaro Watanabe <shintaro.watanabe1226@gmail.com> @shin_taro_1226
 Simone Aiello <aiello.simone103 at gmail.com> @saiello103
 Steve Lhomme <slhomme at matroska.org> @robux4
 Steven Liu <steven at twitter.com> @steven
