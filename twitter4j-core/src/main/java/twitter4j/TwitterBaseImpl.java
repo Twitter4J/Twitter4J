@@ -33,7 +33,7 @@ import static twitter4j.HttpResponseCode.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAuthSupport, OAuth2Support, HttpResponseListener {
-    private static final String WWW_DETAILS = "See http://twitter4j.org/en/configuration.html for details";
+    private static final String WWW_DETAILS = "See http://twitter4j.org/en/configuration.html for details. See and register at http://apps.twitter.com/";
     private static final long serialVersionUID = -7824361938865528554L;
 
     Configuration conf;
