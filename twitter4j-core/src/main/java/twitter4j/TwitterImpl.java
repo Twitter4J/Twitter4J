@@ -577,6 +577,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public User verifyCredentials() throws TwitterException {
         return super.fillInIDAndScreenName();
     }
+    
+    @Override
+    public User verifyCredentials(HttpParameter[] parameters) throws TwitterException {
+        return super.fillInIDAndScreenName(parameters);
+    }
 
     @Override
     public AccountSettings updateAccountSettings(Integer trend_locationWoeid,

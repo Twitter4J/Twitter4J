@@ -47,6 +47,7 @@ public interface UsersResources {
      * @since Twitter4J 2.0.0
      */
     User verifyCredentials() throws TwitterException;
+    User verifyCredentials(HttpParameter[] parameters) throws TwitterException;
 
     /**
      * Updates the current trend, geo, language, timezone and sleep time information for the authenticating user.
