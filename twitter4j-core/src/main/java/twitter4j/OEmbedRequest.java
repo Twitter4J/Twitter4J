@@ -35,6 +35,8 @@ public final class OEmbedRequest implements Serializable {
     private Align align = Align.NONE;
     private String[] related = {};
     private String lang;
+    private WidgetType widgetType = WidgetType.NONE;
+    private boolean hideTweet = false;
 
     public OEmbedRequest(long statusId, String url) {
         this.statusId = statusId;
@@ -104,10 +106,34 @@ public final class OEmbedRequest implements Serializable {
         return this;
     }
 
+    public void setWidgetType(WidgetType widgetType) {
+        this.widgetType = widgetType;
+    }
+
+    public OEmbedRequest widgetType(WidgetType widgetType) {
+        this.widgetType = widgetType;
+        return this;
+    }
+
+    public void setHideTweet(boolean hideTweet) {
+        this.hideTweet = hideTweet;
+    }
+
+    public OEmbedRequest hideTweet(boolean hideTweet) {
+        this.hideTweet = hideTweet;
+        return this;
+    }
+
+
     public enum Align {
         LEFT,
         CENTER,
         RIGHT,
+        NONE
+    }
+
+    public enum WidgetType {
+        VIDEO,
         NONE
     }
 
@@ -124,6 +150,11 @@ public final class OEmbedRequest implements Serializable {
             appendParameter("related", StringUtil.join(related), params);
         }
         appendParameter("lang", lang, params);
+        if(widgetType != WidgetType.NONE) {
+            params.add(new HttpParameter("widget_type", widgetType.name().toLowerCase()));
+            params.add(new HttpParameter("hide_tweet", hideTweet));
+        }
+
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
@@ -156,6 +187,8 @@ public final class OEmbedRequest implements Serializable {
         if (lang != null ? !lang.equals(that.lang) : that.lang != null) return false;
         if (!Arrays.equals(related, that.related)) return false;
         if (url != null ? !url.equals(that.url) : that.url != null) return false;
+        if (widgetType != that.widgetType) return false;
+        if (hideTweet != that.hideTweet) return false;
 
         return true;
     }
@@ -171,6 +204,8 @@ public final class OEmbedRequest implements Serializable {
         result = 31 * result + (align != null ? align.hashCode() : 0);
         result = 31 * result + (related != null ? Arrays.hashCode(related) : 0);
         result = 31 * result + (lang != null ? lang.hashCode() : 0);
+        result = 31 * result + (widgetType != null ? widgetType.hashCode() : 0);
+        result = 31 * result + (hideTweet ? 1 : 0);
         return result;
     }
 
@@ -186,6 +221,8 @@ public final class OEmbedRequest implements Serializable {
                 ", align=" + align +
                 ", related=" + (related == null ? null : Arrays.asList(related)) +
                 ", lang='" + lang + '\'' +
+                ", widgetType=" + widgetType +
+                ", hideTweet=" + hideTweet +
                 '}';
     }
 }
