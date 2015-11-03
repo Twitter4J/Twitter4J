@@ -581,7 +581,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public AccountSettings updateAccountSettings(Integer trend_locationWoeid,
                                                  Boolean sleep_timeEnabled, String start_sleepTime,
-                                                 String end_sleepTime, String time_zone, String lang)
+                                                 String end_sleepTime, String time_zone, String lang,
+                                                 String allowDmsFrom)
             throws TwitterException {
         List<HttpParameter> profile = new ArrayList<HttpParameter>(6);
         if (trend_locationWoeid != null) {
@@ -601,6 +602,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         }
         if (lang != null) {
             profile.add(new HttpParameter("lang", lang));
+        }
+        if (allowDmsFrom != null) {
+            profile.add(new HttpParameter("allow_dms_from", allowDmsFrom));
         }
         return factory.createAccountSettings(post(conf.getRestBaseURL() + "account/settings.json"
                 , profile.toArray(new HttpParameter[profile.size()])));

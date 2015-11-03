@@ -59,12 +59,13 @@ public interface UsersResources {
      * @param endSleepTime       Optional. The hour that sleep time should end if it is enabled.
      * @param timeZone           Optional. The timezone dates and times should be displayed in for the user.
      * @param lang               Optional. The language which Twitter should render in for this user. (two letter ISO 639-1)
+     * @param allowDmsFrom       Optional. "all" for anyone, "followers" for friends only
      * @return the current trend, geo and sleep time information for the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/settings">POST account/settings | Twitter Developers</a>
      * @since Twitter4J 2.2.4
      */
-    AccountSettings updateAccountSettings(Integer trendLocationWoeid, Boolean sleepTimeEnabled, String startSleepTime, String endSleepTime, String timeZone, String lang) throws TwitterException;
+    AccountSettings updateAccountSettings(Integer trendLocationWoeid, Boolean sleepTimeEnabled, String startSleepTime, String endSleepTime, String timeZone, String lang, String allowDmsFrom) throws TwitterException;
 
     // update delivery device
 
