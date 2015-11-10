@@ -84,6 +84,14 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
         return upload();
     }
 
+    public String upload(File image, StatusUpdate forAttachment) throws TwitterException {
+        return upload(image, forAttachment.getStatus());
+    }
+
+    public String upload(String imageFileName, InputStream imageBody, StatusUpdate forAttachment) throws TwitterException {
+        return upload(imageFileName, imageBody, forAttachment.getStatus());
+    }
+
     private String upload() throws TwitterException {
         if (conf.getMediaProviderParameters() != null) {
             Set set = conf.getMediaProviderParameters().keySet();

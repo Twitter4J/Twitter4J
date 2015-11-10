@@ -38,23 +38,33 @@ class TwitterUpload implements ImageUpload {
     }
 
     @Override
+    public String upload(File image, StatusUpdate update) throws TwitterException {
+        return twitter.updateStatus(update.media(image)).getText();
+    }
+
+    @Override
     public String upload(File image, String message) throws TwitterException {
-        return twitter.updateStatus(new StatusUpdate(message).media(image)).getText();
+        return upload(image, new StatusUpdate(message));
     }
 
     @Override
     public String upload(File image) throws TwitterException {
-        return twitter.updateStatus(new StatusUpdate("").media(image)).getText();
+        return upload(image, new StatusUpdate(""));
+    }
+
+    @Override
+    public String upload(String imageFileName, InputStream imageBody, StatusUpdate message) throws TwitterException {
+        return twitter.updateStatus(message.media(imageFileName, imageBody)).getText();
     }
 
     @Override
     public String upload(String imageFileName, InputStream imageBody) throws TwitterException {
-        return twitter.updateStatus(new StatusUpdate("").media(imageFileName, imageBody)).getText();
+        return upload(imageFileName, imageBody, new StatusUpdate(""));
     }
 
     @Override
     public String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException {
-        return twitter.updateStatus(new StatusUpdate(message).media(imageFileName, imageBody)).getText();
+        return upload(imageFileName, imageBody, new StatusUpdate(message));
     }
 
     @Override
