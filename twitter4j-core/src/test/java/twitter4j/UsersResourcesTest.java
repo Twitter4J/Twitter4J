@@ -215,7 +215,7 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertTrue(0 < locations.length);
 
         AccountSettings intermSettings = twitter1.updateAccountSettings(1 /* GLOBAL */, true,
-                "23", "08", "Helsinki", "it", "all");
+                "23", "08", "Helsinki", "it");
         assertTrue(intermSettings.isSleepTimeEnabled());
         assertEquals(intermSettings.getSleepStartTime(), "23");
         assertEquals(intermSettings.getSleepEndTime(), "8");
@@ -226,15 +226,13 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertEquals("Helsinki", intermSettings.getTimeZone().getName());
         Location[] intermLocations = intermSettings.getTrendLocations();
         assertTrue(0 < intermLocations.length);
-        assertEquals("all", intermSettings.getAllowDmsFrom());
 
         AccountSettings lastSettings = twitter1.updateAccountSettings(settings.getTrendLocations()[0].getWoeid(), settings.isSleepTimeEnabled(),
-                settings.getSleepStartTime(), settings.getSleepStartTime(), settings.getTimeZone().getName(), settings.getLanguage(), settings.getAllowDmsFrom());
+                settings.getSleepStartTime(), settings.getSleepStartTime(), settings.getTimeZone().getName(), settings.getLanguage());
         assertEquals(settings.getLanguage(), lastSettings.getLanguage());
         assertEquals(settings.isSleepTimeEnabled(), lastSettings.isSleepTimeEnabled());
         assertEquals(settings.getTimeZone().getName(), lastSettings.getTimeZone().getName());
         assertEquals(settings.getSleepEndTime(), lastSettings.getSleepEndTime());
-        assertEquals(settings.getAllowDmsFrom(), lastSettings.getAllowDmsFrom());
     }
 
     public void testAccountProfileImageUpdates() throws Exception {
