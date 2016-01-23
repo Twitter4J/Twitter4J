@@ -20,6 +20,7 @@ import java.util.Date;
 
 /**
  * A data interface representing one single status of a user.
+ * (e.g. https://dev.twitter.com/rest/reference/get/statuses/show/%3Aid)
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -36,21 +37,21 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     /**
      * Returns the id of the status
      *
-     * @return the id
+     * @return the id (e.g. 210462857140252672)
      */
     long getId();
 
     /**
      * Returns the text of the status
      *
-     * @return the text
+     * @return the text (e.g. Along with our new #Twitterbird, we've also updated our Display Guidelines: https://t.co/Ed4omjYs  ^JC)
      */
     String getText();
 
     /**
      * Returns the source
      *
-     * @return the source
+     * @return the source (e.g. &lt;a href="http://twitter.com" rel="nofollow"&gt;Twitter Web Client&lt;/a&gt;)
      * @since Twitter4J 1.0.4
      */
     String getSource();
@@ -193,7 +194,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     /**
      * Returns the lang of the status text if available.
      *
-     * @return two-letter iso language code
+     * @return two-letter iso language code (e.g. en)
      * @since Twitter4J 3.0.6
      */
     String getLang();
