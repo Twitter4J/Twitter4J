@@ -244,6 +244,67 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , new HttpParameter[]{new HttpParameter("media", fileName, image)}).asJSONObject());
     }
 
+    @Override
+    public UploadedMedia uploadMediaChunked(File mediaFile) throws TwitterException {
+        String url = conf.getUploadBaseURL() + "media/upload.json";
+        try{
+            JSONObject initResponse = post(url,
+                    new HttpParameter("command","INIT"),
+                    new HttpParameter("media_type","video/mp4"),
+                    new HttpParameter("total_bytes",mediaFile.length())).asJSONObject();
+
+            final long mediaId = initResponse.getLong("media_id");
+            final long uploadLimit = 5000000;
+
+            int segment = (int) Math.ceil((double)mediaFile.length()/(double)uploadLimit);
+            for(int i=0;i<segment;i++){
+                InputStream is=null;
+                try {
+                    FileInputStream fis = new FileInputStream(mediaFile);
+                    if(fis.skip(uploadLimit * i)<0)throw new TwitterException("InputStream can't skip.");
+                    is = new FilterInputStream(fis) {
+                        private long left = uploadLimit;
+                        @Override
+                        public int available() throws IOException {
+                            return (int) Math.min(in.available(), left);
+                        }
+
+                        @Override
+                        public int read() throws IOException {
+                            if (left == 0) return -1;
+                            int result = in.read();
+                            if (result != -1) --left;
+                            return result;
+                        }
+
+                        @Override
+                        public int read(byte[] b, int off, int len) throws IOException {
+                            if (left == 0) return -1;
+                            int result = in.read(b, off, (int) Math.min(len, left));
+                            if (result != -1) left -= result;
+                            return result;
+                        }
+                    };
+                    post(url,
+                            new HttpParameter("command", "APPEND"),
+                            new HttpParameter("media_id", mediaId),
+                            new HttpParameter("segment_index", i),
+                            new HttpParameter("media", mediaFile.getPath(), is)
+                    );
+                }finally {
+                    if(is!=null){
+                        is.close();
+                    }
+                }
+            }
+            return new UploadedMedia( post(url,new HttpParameter("command", "FINALIZE"), new HttpParameter("media_id", mediaId) ).asJSONObject());
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }catch (IOException e){
+            throw new TwitterException(e.getMessage(), e);
+        }
+    }
+
     /* Search Resources */
 
     @Override
