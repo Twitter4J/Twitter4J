@@ -45,6 +45,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 	private static final int MAX_CONNECTIONS = 5;
 	private static final int KEEP_ALIVE_DURATION_MS = 300;
 
+	private static final MediaType TEXT = MediaType.parse("text/plain; charset=utf-8");
 	private static final MediaType FORM_URL_ENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
 	private OkHttpClient okHttpClient;
@@ -158,7 +159,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 				}else {
 					multipartBodyBuilder.addPart(
 							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName()+"\""),
-							RequestBody.create(MediaType.parse(parameter.getContentType()), parameter.getFile())
+							RequestBody.create(TEXT, parameter.getValue().getBytes("UTF-8"))
 					);
 				}
 			}
