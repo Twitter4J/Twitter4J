@@ -20,7 +20,7 @@ import twitter4j.conf.ConfigurationContext;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -60,7 +60,7 @@ public final class HttpClientFactory {
         }
     }
 
-    private final static HashMap<HttpClientConfiguration, HttpClient> confClientMap = new HashMap<HttpClientConfiguration, HttpClient>();
+    private final static ConcurrentHashMap<HttpClientConfiguration, HttpClient> confClientMap = new ConcurrentHashMap<HttpClientConfiguration, HttpClient>();
 
     public static HttpClient getInstance() {
         return getInstance(ConfigurationContext.getInstance().getHttpClientConfiguration());
