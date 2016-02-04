@@ -113,6 +113,8 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     boolean isIncludeEntitiesEnabled();
 
+    boolean isIncludeEmailEnabled();
+
     boolean isTrimUserEnabled();
 
     boolean isDaemonEnabled();

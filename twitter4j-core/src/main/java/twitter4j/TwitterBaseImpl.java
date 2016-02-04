@@ -126,7 +126,13 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
 
     User fillInIDAndScreenName() throws TwitterException {
         ensureAuthorizationEnabled();
-        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json", null, auth, this), conf);
+
+        HttpParameter[] parameters = null;
+        if (conf.isIncludeEmailEnabled()) {
+            parameters = new HttpParameter[] { new HttpParameter("include_email", true) };
+        }
+
+        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json", parameters, auth, this), conf);
         this.screenName = user.getScreenName();
         this.id = user.getId();
         return user;
