@@ -152,10 +152,17 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 			MultipartBody.Builder multipartBodyBuilder =new MultipartBody.Builder(boundary).setType(MultipartBody.FORM);
 			for(HttpParameter parameter:req.getParameters()){
 				if(parameter.isFile()) {
-					multipartBodyBuilder.addPart(
-							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName()+"\""),
-							createInputStreamRequestBody(MediaType.parse(parameter.getContentType()), parameter.getFileBody())
-					);
+					if(parameter.hasFileBody()) {
+						multipartBodyBuilder.addPart(
+								Headers.of("Content-Disposition", "form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName() + "\""),
+								createInputStreamRequestBody(MediaType.parse(parameter.getContentType()), parameter.getFileBody())
+						);
+					}else {
+						multipartBodyBuilder.addPart(
+								Headers.of("Content-Disposition", "form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName() + "\""),
+								RequestBody.create(MediaType.parse(parameter.getContentType()),parameter.getFile())
+						);
+					}
 				}else {
 					multipartBodyBuilder.addPart(
 							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName()+"\""),
