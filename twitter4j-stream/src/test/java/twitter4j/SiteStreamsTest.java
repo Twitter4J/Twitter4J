@@ -424,6 +424,15 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
     }
 
     @Override
+    public void onQuotedTweet(User source, User target, Status quotedStatus) {
+        received.add(new Object[]{"quoted_tweet", source, target, quotedStatus});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(quotedStatus));
+        notifyResponse();
+    }
+        
+    @Override
     public void onDisconnectionNotice(String screenName) {
         received.add(new Object[]{"Disconnect"});
         notifyResponse();
