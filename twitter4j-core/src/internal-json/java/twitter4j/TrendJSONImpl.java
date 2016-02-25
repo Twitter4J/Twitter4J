@@ -27,7 +27,7 @@ package twitter4j;
     private final String name;
     private String url = null;
     private String query = null;
-    private int tweetVolume = 0;
+    private int tweetVolume = -1;
 
     /*package*/ TrendJSONImpl(JSONObject json, boolean storeJSON) {
         this.name = ParseUtil.getRawString("name", json);
