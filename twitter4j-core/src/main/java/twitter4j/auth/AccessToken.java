@@ -16,8 +16,8 @@
 
 package twitter4j.auth;
 
+import twitter4j.HttpResponse;
 import twitter4j.TwitterException;
-import twitter4j.internal.http.HttpResponse;
 
 /**
  * Representing authorized Access Token which is passed to the service provider in order to access protected resources.<br>
@@ -26,7 +26,7 @@ import twitter4j.internal.http.HttpResponse;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class AccessToken extends OAuthToken implements java.io.Serializable {
-    private static final long serialVersionUID = -8344528374458826291L;
+    private static final long serialVersionUID = 2470022129505774772L;
     private String screenName;
     private long userId = -1L;
 

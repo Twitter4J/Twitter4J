@@ -23,13 +23,12 @@ import javax.management.MBeanInfo;
 import javax.management.openmbean.CompositeData;
 import javax.management.openmbean.TabularData;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Unit tests for APIStatistics, MBeans
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public class MBeansTest extends TestCase {
     public MBeansTest(String name) {
@@ -195,10 +194,7 @@ public class MBeansTest extends TestCase {
                                   long avgTime) {
         InvocationStatistics methodStats = null;
 
-        Iterator<? extends InvocationStatistics> itr = apiStats.getInvocationStatistics().iterator();
-        while (itr.hasNext()) {
-            InvocationStatistics s = itr.next();
-
+        for (InvocationStatistics s : apiStats.getInvocationStatistics()) {
             if (s.getName().equals(methodName)) {
                 methodStats = s;
                 break;

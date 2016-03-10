@@ -16,10 +16,10 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A data class represents search query.<br>
@@ -31,6 +31,7 @@ import java.util.List;
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  */
 public final class Query implements java.io.Serializable {
+    private static final long serialVersionUID = 7196404519192910019L;
     private String query = null;
     private String lang = null;
     private String locale = null;
@@ -40,8 +41,7 @@ public final class Query implements java.io.Serializable {
     private long sinceId = -1;
     private String geocode = null;
     private String until = null;
-    private String resultType = null;
-    private static final long serialVersionUID = -8108425822233599808L;
+    private ResultType resultType = null;
     private String nextPageQuery = null;
 
     public Query() {
@@ -50,13 +50,56 @@ public final class Query implements java.io.Serializable {
     public Query(String query) {
         this.query = query;
     }
-
-    // edit with caution!!!
-    // this method is referenced by twitter4j.internal.json.QueryResultJSONImpl using reflection API in order to make this method invisible to library users
-    // you must run twitter4j.SearchAPITest#testEasyPaging to ensure you're doing right to make any changes to this method
-    private static Query createWithNextPageQuery(String nextPageQuery) {
+    
+    /* package */ static Query createWithNextPageQuery(String nextPageQuery) {
         Query query = new Query();
         query.nextPageQuery = nextPageQuery;
+        
+        if(nextPageQuery != null) {
+            String nextPageParameters=nextPageQuery.substring(1, nextPageQuery.length());
+            
+            Map<String,String> params=new LinkedHashMap<String,String>();
+            for(HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
+                // Yes, we'll overwrite duplicate parameters, but we should not
+                // get duplicate parameters from this endpoint.
+                params.put(param.getName(), param.getValue());
+            }
+            
+            if(params.containsKey("q"))
+                query.setQuery(params.get("q"));
+            if(params.containsKey("lang"))
+                query.setLang(params.get("lang"));
+            if(params.containsKey("locale"))
+                query.setLocale(params.get("locale"));
+            if(params.containsKey("max_id"))
+                query.setMaxId(Long.parseLong(params.get("max_id")));
+            if(params.containsKey("count"))
+                query.setCount(Integer.parseInt(params.get("count")));
+            if(params.containsKey("geocode")) {
+                String[] parts=params.get("geocode").split(",");
+                double latitude=Double.parseDouble(parts[0]);
+                double longitude=Double.parseDouble(parts[1]);
+                
+                double radius=0.0;
+                Query.Unit unit=null;
+                String radiusstr=parts[2];
+                for(Query.Unit value : Query.Unit.values())
+                    if(radiusstr.endsWith(value.name())) {
+                        radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length()-2));
+                        unit   = value;
+                        break;
+                    }
+                if(unit == null)
+                    throw new IllegalArgumentException("unrecognized geocode radius: "+radiusstr);
+                
+                query.setGeoCode(new GeoLocation(latitude, longitude), radius, unit);
+            }
+            if(params.containsKey("result_type"))
+                query.setResultType(Query.ResultType.valueOf(params.get("result_type")));
+            
+            // We don't pull out since, until -- they get pushed into the query
+        }
+        
         return query;
     }
 
@@ -289,8 +332,12 @@ public final class Query implements java.io.Serializable {
         return geocode;
     }
 
-    public static final String MILES = "mi";
-    public static final String KILOMETERS = "km";
+    public static final Unit MILES = Unit.mi;
+    public static final Unit KILOMETERS = Unit.km;
+
+    public enum Unit {
+        mi, km
+    }
 
     /**
      * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
@@ -298,6 +345,20 @@ public final class Query implements java.io.Serializable {
      * @param location geo location
      * @param radius   radius
      * @param unit     Query.MILES or Query.KILOMETERS
+     * @since Twitter4J 4.0.1
+     */
+    public void setGeoCode(GeoLocation location, double radius
+            , Unit unit) {
+        this.geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit.name();
+    }
+
+    /**
+     * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
+     *
+     * @param location geo location
+     * @param radius   radius
+     * @param unit     Query.MILES or Query.KILOMETERS
+     * @deprecated use {@link #setGeoCode(GeoLocation, double, twitter4j.Query.Unit)} instead
      */
     public void setGeoCode(GeoLocation location, double radius
             , String unit) {
@@ -353,12 +414,20 @@ public final class Query implements java.io.Serializable {
 
     /**
      * mixed: Include both popular and real time results in the response.
-     * recent: return only the most recent results in the response
+     */
+    public final static ResultType MIXED = ResultType.mixed;
+    /**
      * popular: return only the most popular results in the response.
      */
-    public final static String MIXED = "mixed";
-    public final static String POPULAR = "popular";
-    public final static String RECENT = "recent";
+    public final static ResultType POPULAR = ResultType.popular;
+    /**
+     * recent: return only the most recent results in the response
+     */
+    public final static ResultType RECENT = ResultType.recent;
+
+    public enum ResultType {
+        popular, mixed, recent
+    }
 
     /**
      * Returns resultType
@@ -366,7 +435,7 @@ public final class Query implements java.io.Serializable {
      * @return the resultType
      * @since Twitter4J 2.1.3
      */
-    public String getResultType() {
+    public ResultType getResultType() {
         return resultType;
     }
 
@@ -376,7 +445,7 @@ public final class Query implements java.io.Serializable {
      * @param resultType Query.MIXED or Query.POPULAR or Query.RECENT
      * @since Twitter4J 2.1.3
      */
-    public void setResultType(String resultType) {
+    public void setResultType(ResultType resultType) {
         this.resultType = resultType;
     }
 
@@ -387,12 +456,12 @@ public final class Query implements java.io.Serializable {
      * @return the instance
      * @since Twitter4J 2.1.3
      */
-    public Query resultType(String resultType) {
+    public Query resultType(ResultType resultType) {
         setResultType(resultType);
         return this;
     }
 
-    private static HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
+    private static final HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>(12);
@@ -405,7 +474,9 @@ public final class Query implements java.io.Serializable {
         appendParameter("since_id", sinceId, params);
         appendParameter("geocode", geocode, params);
         appendParameter("until", until, params);
-        appendParameter("result_type", resultType, params);
+        if (resultType != null) {
+            params.add(new HttpParameter("result_type", resultType.name()));
+        }
         params.add(WITH_TWITTER_USER_ID);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
@@ -423,7 +494,7 @@ public final class Query implements java.io.Serializable {
         }
     }
 
-    /*package*/ String nextPage(){
+    /*package*/ String nextPage() {
         return nextPageQuery;
     }
 

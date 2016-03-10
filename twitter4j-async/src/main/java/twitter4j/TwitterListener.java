@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.api.HelpResources;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
 
 import java.util.Map;
@@ -26,8 +27,6 @@ import java.util.Map;
  * A listener for receiving asynchronous responses from Twitter Async APIs.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see {@link twitter4j.AsyncTwitter}
- * @see {@link twitter4j.TwitterAdapter}
  */
 public interface TwitterListener {
     /* Timelines Resources */
@@ -51,6 +50,8 @@ public interface TwitterListener {
     void retweetedStatus(Status retweetedStatus);
 
     void gotOEmbed(OEmbed oembed);
+
+    void lookedup(ResponseList<Status> statuses);
 
     /* Search Resources */
     void searched(QueryResult queryResult);
@@ -127,6 +128,14 @@ public interface TwitterListener {
 
     void updatedProfileBanner();
 
+    void gotMutesList(ResponseList<User> blockingUsers);
+
+    void gotMuteIDs(IDs blockingUsersIDs);
+
+    void createdMute(User user);
+
+    void destroyedMute(User user);
+
     /* Suggested Users Resources */
     void gotUserSuggestions(ResponseList<User> users);
 
@@ -192,9 +201,7 @@ public interface TwitterListener {
 
     void searchedPlaces(ResponseList<Place> places);
 
-    void gotSimilarPlaces(SimilarPlaces places);
-
-    void createdPlace(Place place);
+    void gotSimilarPlaces(ResponseList<Place> places);
 
     /* Trends Resources */
     void gotPlaceTrends(Trends trends);
@@ -210,6 +217,9 @@ public interface TwitterListener {
     void gotOAuthRequestToken(RequestToken token);
 
     void gotOAuthAccessToken(AccessToken token);
+
+    /* OAuth2 Resources */
+    void gotOAuth2Token(OAuth2Token token);
 
     /* Help Resources */
     void gotAPIConfiguration(TwitterAPIConfiguration conf);

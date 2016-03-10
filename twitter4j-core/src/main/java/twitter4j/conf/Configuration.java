@@ -16,81 +16,56 @@
 
 package twitter4j.conf;
 
+import twitter4j.HttpClientConfiguration;
 import twitter4j.auth.AuthorizationConfiguration;
-import twitter4j.internal.http.HttpClientConfiguration;
-import twitter4j.internal.http.HttpClientWrapperConfiguration;
 
-import java.util.Map;
 import java.util.Properties;
-
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public interface Configuration extends HttpClientConfiguration
-        , HttpClientWrapperConfiguration
-        , AuthorizationConfiguration
-        , java.io.Serializable {
-
-    boolean isDalvik();
-
-    boolean isGAE();
+public interface Configuration extends AuthorizationConfiguration, java.io.Serializable {
 
     boolean isDebugEnabled();
 
     boolean isApplicationOnlyAuthEnabled();
 
-    String getUserAgent();
-
+    @Override
     String getUser();
 
+    @Override
     String getPassword();
 
-    Map<String, String> getRequestHeaders();
-
     // methods for HttpClientConfiguration
-
-    String getHttpProxyHost();
-
-    String getHttpProxyUser();
-
-    String getHttpProxyPassword();
-
-    int getHttpProxyPort();
-
-    int getHttpConnectionTimeout();
-
-    int getHttpReadTimeout();
+    HttpClientConfiguration getHttpClientConfiguration();
 
     int getHttpStreamingReadTimeout();
 
-    int getHttpRetryCount();
-
-    int getHttpRetryIntervalSeconds();
-
-    int getHttpMaxTotalConnections();
-
-    int getHttpDefaultMaxPerRoute();
-
     // oauth related setter/getters
 
+    @Override
     String getOAuthConsumerKey();
 
+    @Override
     String getOAuthConsumerSecret();
 
+    @Override
     String getOAuthAccessToken();
 
+    @Override
     String getOAuthAccessTokenSecret();
 
+    @Override
     String getOAuth2TokenType();
 
+    @Override
     String getOAuth2AccessToken();
 
-    String getClientVersion();
-
-    String getClientURL();
+    String getOAuth2Scope();
 
     String getRestBaseURL();
+
+    String getUploadBaseURL();
 
     String getStreamBaseURL();
 
@@ -110,13 +85,15 @@ public interface Configuration extends HttpClientConfiguration
 
     String getSiteStreamBaseURL();
 
-	boolean isIncludeMyRetweetEnabled();
+    boolean isIncludeMyRetweetEnabled();
 
     boolean isJSONStoreEnabled();
 
     boolean isMBeanEnabled();
 
     boolean isUserStreamRepliesAllEnabled();
+
+    boolean isUserStreamWithFollowingsEnabled();
 
     boolean isStallWarningsEnabled();
 
@@ -134,9 +111,9 @@ public interface Configuration extends HttpClientConfiguration
 
     String getLoggerFactory();
 
-    boolean isIncludeRTsEnabled();
-
     boolean isIncludeEntitiesEnabled();
-    
+
     boolean isTrimUserEnabled();
+
+    boolean isDaemonEnabled();
 }

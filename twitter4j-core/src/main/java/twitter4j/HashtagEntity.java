@@ -28,6 +28,7 @@ public interface HashtagEntity extends TweetEntity, java.io.Serializable {
      *
      * @return the text of the hashtag
      */
+    @Override
     String getText();
 
     /**
@@ -35,6 +36,7 @@ public interface HashtagEntity extends TweetEntity, java.io.Serializable {
      *
      * @return the index of the start character of the hashtag
      */
+    @Override
     int getStart();
 
     /**
@@ -42,5 +44,6 @@ public interface HashtagEntity extends TweetEntity, java.io.Serializable {
      *
      * @return the index of the end character of the hashtag
      */
+    @Override
     int getEnd();
 }

@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j</artifactId>
-    <version>3.0.4-SNAPSHOT</version>
+    <version>4.0.5-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>twitter4j</name>
     <description>A Java library for the Twitter API</description>
@@ -19,7 +19,8 @@
         <connection>scm:git:git://github.com/yusuke/twitter4j.git</connection>
         <developerConnection>scm:git:git://github.com/yusuke/twitter4j.git
         </developerConnection>
-    </scm>
+
+  </scm>
     <developers>
         <developer>
             <id>yusuke</id>
@@ -31,12 +32,12 @@
                 <role>architect</role>
                 <role>developer</role>
             </roles>
-            <timezone>-9</timezone>
+            <timezone>9</timezone>
         </developer>
     </developers>
     <issueManagement>
-        <system>Jira</system>
-        <url>http://twitter4j.org/jira/browse/TFJ</url>
+        <system>YouTrack</system>
+        <url>http://issue.twitter4j.org/youtrack/issues?q=project%3A+Twitter4J</url>
     </issueManagement>
     <mailingLists>
         <mailingList>
@@ -52,7 +53,7 @@
             <id>sonatype-nexus-staging</id>
             <name>Nexus Release Repository</name>
             <uniqueVersion>false</uniqueVersion>
-            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
             </url>
         </repository>
         <snapshotRepository>
@@ -96,6 +97,7 @@
         <module>twitter4j-core</module>
         <module>twitter4j-examples</module>
         <module>twitter4j-appengine</module>
+        <module>twitter4j-http2-support</module>
         <module>twitter4j-stream</module>
         <module>twitter4j-media-support</module>
     </modules>

@@ -26,7 +26,7 @@ import twitter4j.TwitterException;
 public interface SavedSearchesResources {
     /**
      * Returns the authenticated user's saved search queries.
-     * <br>This method calls http://api.twitter.com/1.1/saved_searches.json
+     * <br>This method calls https://api.twitter.com/1.1/saved_searches.json
      *
      * @return Returns an array of numeric user ids the authenticating user is blocking.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -37,7 +37,7 @@ public interface SavedSearchesResources {
 
     /**
      * Retrieve the data for a saved search owned by the authenticating user specified by the given id.
-     * <br>This method calls http://api.twitter.com/1.1/saved_searches/show/:id.json
+     * <br>This method calls https://api.twitter.com/1.1/saved_searches/show/:id.json
      *
      * @param id The id of the saved search to be retrieved.
      * @return the data for a saved search
@@ -45,11 +45,11 @@ public interface SavedSearchesResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/saved_searches/show/:id">GET saved_searches/show/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.8
      */
-    SavedSearch showSavedSearch(int id) throws TwitterException;
+    SavedSearch showSavedSearch(long id) throws TwitterException;
 
     /**
      * Creates a saved search for the authenticated user.
-     * <br>This method calls http://api.twitter.com/1.1/saved_searches/saved_searches/create.json
+     * <br>This method calls https://api.twitter.com/1.1/saved_searches/saved_searches/create.json
      *
      * @param query the query string
      * @return the data for a created saved search
@@ -62,7 +62,7 @@ public interface SavedSearchesResources {
 
     /**
      * Destroys a saved search for the authenticated user. The search specified by id must be owned by the authenticating user.
-     * <br>This method calls http://api.twitter.com/1.1/saved_searches/destroy/id.json
+     * <br>This method calls https://api.twitter.com/1.1/saved_searches/destroy/id.json
      *
      * @param id The id of the saved search to be deleted.
      * @return the data for a destroyed saved search
@@ -70,6 +70,6 @@ public interface SavedSearchesResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/saved_searches/destroy/:id">POST saved_searches/destroy/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.8
      */
-    SavedSearch destroySavedSearch(int id)
+    SavedSearch destroySavedSearch(long id)
             throws TwitterException;
 }

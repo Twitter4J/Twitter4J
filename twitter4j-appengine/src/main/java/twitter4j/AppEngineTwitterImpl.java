@@ -17,13 +17,13 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.json.z_T4JInternalLazyFactory;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
 class AppEngineTwitterImpl extends TwitterImpl {
+
     private static final long serialVersionUID = -2740925801854937207L;
 
     AppEngineTwitterImpl(Configuration conf, Authorization auth) {
@@ -32,7 +32,7 @@ class AppEngineTwitterImpl extends TwitterImpl {
 
     @Override
     protected void setFactory() {
-        factory = new z_T4JInternalLazyFactory(conf);
+        factory = new LazyJSONImplFactory(conf);
     }
 
 }

@@ -26,11 +26,6 @@ package twitter4j;
 public interface Trend extends java.io.Serializable {
     String getName();
 
-    /**
-     * @deprecated use {@link #getURL()} instead
-     */
-    String getUrl();
-
     String getURL();
 
     String getQuery();

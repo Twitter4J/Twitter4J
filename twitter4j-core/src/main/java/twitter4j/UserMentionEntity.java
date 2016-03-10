@@ -59,6 +59,7 @@ public interface UserMentionEntity extends TweetEntity, Serializable {
      *
      * @return the index of the start character of the user mention
      */
+    @Override
     int getStart();
 
     /**
@@ -66,5 +67,6 @@ public interface UserMentionEntity extends TweetEntity, Serializable {
      *
      * @return the index of the end character of the user mention
      */
+    @Override
     int getEnd();
 }

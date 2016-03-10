@@ -54,6 +54,21 @@ public interface AsyncOAuthSupport {
      */
     void getOAuthRequestTokenAsync(String callbackURL, String xAuthAccessType);
 
+
+    /**
+     * Retrieves a request token
+     *
+     * @param callbackURL     callback URL
+     * @param xAuthAccessType Overrides the access level an application requests to a users account. Supported values are read or write. This parameter is intended to allow a developer to register a read/write application but also request read only access when appropriate.
+     * @param xAuthMode       Set to reverse_auth to obtain a special request token to be used in the reverse auth process.
+     * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void getOAuthRequestTokenAsync(String callbackURL, String xAuthAccessType, String xAuthMode);
+
+
     /**
      * Returns an access token associated with this instance.<br>
      * If no access token is associated with this instance, this will retrieve a new access token.

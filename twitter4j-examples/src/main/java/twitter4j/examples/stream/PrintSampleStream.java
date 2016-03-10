@@ -29,7 +29,8 @@ public final class PrintSampleStream {
     /**
      * Main entry of this application.
      *
-     * @param args
+     * @param args arguments doesn't take effect with this example
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
         TwitterStream twitterStream = new TwitterStreamFactory().getInstance();

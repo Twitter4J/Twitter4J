@@ -19,6 +19,7 @@ package twitter4j;
 
 import twitter4j.api.HelpResources;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
 
 import java.util.Map;
@@ -71,6 +72,10 @@ public class TwitterAdapter implements TwitterListener {
 
     @Override
     public void gotOEmbed(OEmbed oembed) {
+    }
+
+    @Override
+    public void lookedup(ResponseList<Status> statuses) {
     }
 
     /* Search Resources */
@@ -218,6 +223,22 @@ public class TwitterAdapter implements TwitterListener {
     public void updatedProfileBanner() {
     }
 
+    @Override
+    public void gotMutesList(ResponseList<User> blockingUsers) {
+    }
+
+    @Override
+    public void gotMuteIDs(IDs blockingUsersIDs) {
+    }
+
+    @Override
+    public void createdMute(User user) {
+    }
+
+    @Override
+    public void destroyedMute(User user) {
+    }
+
     /* Suggested Users Resources */
     @Override
     public void gotUserSuggestions(ResponseList<User> users) {
@@ -344,11 +365,7 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void gotSimilarPlaces(SimilarPlaces places) {
-    }
-
-    @Override
-    public void createdPlace(Place place) {
+    public void gotSimilarPlaces(ResponseList<Place> places) {
     }
 
     /* Trends Resources */
@@ -378,6 +395,11 @@ public class TwitterAdapter implements TwitterListener {
     public void gotOAuthAccessToken(AccessToken token) {
     }
 
+    /* OAuth2 Resources */
+    @Override
+    public void gotOAuth2Token(OAuth2Token token) {
+    }
+
     /* Help Resources */
     @Override
     public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
@@ -402,5 +424,6 @@ public class TwitterAdapter implements TwitterListener {
     @Override
     public void onException(TwitterException te, TwitterMethod method) {
     }
+
 
 }

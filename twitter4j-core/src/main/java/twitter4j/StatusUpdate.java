@@ -16,11 +16,10 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,7 +28,8 @@ import java.util.List;
  */
 public final class StatusUpdate implements java.io.Serializable {
 
-    private String status;
+    private static final long serialVersionUID = 7422094739799350035L;
+    private final String status;
     private long inReplyToStatusId = -1L;
     private GeoLocation location = null;
     private String placeId = null;
@@ -38,7 +38,7 @@ public final class StatusUpdate implements java.io.Serializable {
     private String mediaName;
     private transient InputStream mediaBody;
     private File mediaFile;
-    private static final long serialVersionUID = -3595502688477609916L;
+    private long[] mediaIds;
 
     public StatusUpdate(String status) {
         this.status = status;
@@ -101,6 +101,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param file media file
      * @since Twitter4J 2.2.5
      */
     public void setMedia(File file) {
@@ -108,6 +109,8 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param file media file
+     * @return this instance
      * @since Twitter4J 2.2.5
      */
     public StatusUpdate media(File file) {
@@ -116,6 +119,8 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param name name
+     * @param body media body as stream
      * @since Twitter4J 2.2.5
      */
     public void setMedia(String name, InputStream body) {
@@ -123,11 +128,22 @@ public final class StatusUpdate implements java.io.Serializable {
         this.mediaBody = body;
     }
 
-    /*package*/ boolean isWithMedia() {
+    /**
+     * @param mediaIds media ids
+     * @since Twitter4J 4.0.2
+     */
+    public void setMediaIds(long[] mediaIds) {
+        this.mediaIds = mediaIds;
+    }
+
+    /*package*/ boolean isForUpdateWithMedia() {
         return mediaFile != null || mediaName != null;
     }
 
     /**
+     * @param name media name
+     * @param body media body
+     * @return this instance
      * @since Twitter4J 2.2.5
      */
     public StatusUpdate media(String name, InputStream body) {
@@ -136,6 +152,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param possiblySensitive possibly sensitive
      * @since Twitter4J 2.2.5
      */
     public void setPossiblySensitive(boolean possiblySensitive) {
@@ -143,6 +160,8 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param possiblySensitive possibly sensitive
+     * @return this instance
      * @since Twitter4J 2.2.5
      */
     public StatusUpdate possiblySensitive(boolean possiblySensitive) {
@@ -151,6 +170,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @return possibly sensitive
      * @since Twitter4J 2.2.5
      */
     public boolean isPossiblySensitive() {
@@ -178,6 +198,8 @@ public final class StatusUpdate implements java.io.Serializable {
         } else if (mediaName != null && mediaBody != null) {
             params.add(new HttpParameter("media[]", mediaName, mediaBody));
             params.add(new HttpParameter("possibly_sensitive", possiblySensitive));
+        } else if (mediaIds != null && mediaIds.length >= 1) {
+            params.add(new HttpParameter("media_ids", StringUtil.join(mediaIds)));
         }
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
@@ -211,6 +233,7 @@ public final class StatusUpdate implements java.io.Serializable {
         if (mediaBody != null ? !mediaBody.equals(that.mediaBody) : that.mediaBody != null) return false;
         if (mediaFile != null ? !mediaFile.equals(that.mediaFile) : that.mediaFile != null) return false;
         if (mediaName != null ? !mediaName.equals(that.mediaName) : that.mediaName != null) return false;
+        if (mediaIds != null ? !Arrays.equals(mediaIds, that.mediaIds) : that.mediaIds != null) return false;
         if (placeId != null ? !placeId.equals(that.placeId) : that.placeId != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
 
@@ -228,21 +251,23 @@ public final class StatusUpdate implements java.io.Serializable {
         result = 31 * result + (mediaName != null ? mediaName.hashCode() : 0);
         result = 31 * result + (mediaBody != null ? mediaBody.hashCode() : 0);
         result = 31 * result + (mediaFile != null ? mediaFile.hashCode() : 0);
+        result = 31 * result + (mediaIds != null ? StringUtil.join(mediaIds).hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "StatusUpdate{" +
-                "status='" + status + '\'' +
-                ", inReplyToStatusId=" + inReplyToStatusId +
-                ", location=" + location +
-                ", placeId='" + placeId + '\'' +
-                ", displayCoordinates=" + displayCoordinates +
-                ", possiblySensitive=" + possiblySensitive +
-                ", mediaName='" + mediaName + '\'' +
-                ", mediaBody=" + mediaBody +
-                ", mediaFile=" + mediaFile +
-                '}';
+            "status='" + status + '\'' +
+            ", inReplyToStatusId=" + inReplyToStatusId +
+            ", location=" + location +
+            ", placeId='" + placeId + '\'' +
+            ", displayCoordinates=" + displayCoordinates +
+            ", possiblySensitive=" + possiblySensitive +
+            ", mediaName='" + mediaName + '\'' +
+            ", mediaBody=" + mediaBody +
+            ", mediaFile=" + mediaFile +
+            ", mediaIds=" + mediaIds +
+            '}';
     }
 }

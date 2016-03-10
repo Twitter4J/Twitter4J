@@ -30,7 +30,7 @@ public final class PrintSiteStreams {
      * Main entry of this application.
      *
      * @param args follow(comma separated user ids) track(comma separated filter terms)
-     * @throws twitter4j.TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
         if (args.length < 1) {
@@ -51,7 +51,7 @@ public final class PrintSiteStreams {
         twitterStream.site(true, followArray);
     }
 
-    static SiteStreamsListener listener = new SiteStreamsListener() {
+    private static final SiteStreamsListener listener = new SiteStreamsListener() {
         @Override
         public void onStatus(long forUser, Status status) {
             System.out.println("onStatus for_user:" + forUser + " @" + status.getUser().getScreenName() + " - " + status.getText());
@@ -176,6 +176,18 @@ public final class PrintSiteStreams {
         }
 
         @Override
+        public void onUserDeletion(long forUser, long deletedUser) {
+            System.out.println("onUserDeletion for_user:" + forUser
+                    + " user:@");
+        }
+
+        @Override
+        public void onUserSuspension(long forUser, long suspendedUser) {
+            System.out.println("onUserSuspension for_user:" + forUser
+                    + " user:@" + suspendedUser);
+        }
+
+        @Override
         public void onBlock(long forUser, User source, User blockedUser) {
             System.out.println("onBlock for_user:" + forUser
                     + " source:@" + source.getScreenName()
@@ -187,6 +199,22 @@ public final class PrintSiteStreams {
             System.out.println("onUnblock for_user:" + forUser
                     + " source:@" + source.getScreenName()
                     + " target:@" + unblockedUser.getScreenName());
+        }
+
+        @Override
+        public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+            System.out.println("onRetweetedRetweeted source:" + source.getScreenName()
+                    + " target:@" + target.getScreenName()
+                    + " retweetedStatus:@" + retweetedStatus.getUser().getScreenName() + " - "
+                    + retweetedStatus.getText());
+        }
+
+        @Override
+        public void onFavoritedRetweet(User source, User target, Status favoritedStatus) {
+            System.out.println("onFavoritedRetweet source:" + source.getScreenName()
+                    + " target:@" + target.getScreenName()
+                    + " favoritedStatus:@" + favoritedStatus.getUser().getScreenName() + " - "
+                    + favoritedStatus.getText());
         }
 
         @Override

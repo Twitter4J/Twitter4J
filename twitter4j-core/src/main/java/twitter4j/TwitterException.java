@@ -16,16 +16,9 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.http.HttpResponseCode;
-import twitter4j.internal.json.z_T4JInternalJSONImplFactory;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.json.z_T4JInternalParseUtil;
-
 import java.util.List;
 
-import static twitter4j.internal.json.z_T4JInternalParseUtil.getInt;
+import static twitter4j.ParseUtil.getInt;
 
 /**
  * An exception class that will be thrown when TwitterAPI calls are failed.<br>
@@ -34,9 +27,9 @@ import static twitter4j.internal.json.z_T4JInternalParseUtil.getInt;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class TwitterException extends Exception implements TwitterResponse, HttpResponseCode {
+    private static final long serialVersionUID = 6006561839051121336L;
     private int statusCode = -1;
     private int errorCode = -1;
-    private static final long serialVersionUID = -2623309261327598087L;
     private ExceptionDiagnosis exceptionDiagnosis = null;
     private HttpResponse response;
     private String errorMessage = null;
@@ -69,9 +62,6 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         this.statusCode = statusCode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getMessage() {
         StringBuilder value = new StringBuilder();
@@ -123,25 +113,17 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         return value;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @since Twitter4J 2.1.2
-     */
     @Override
     public RateLimitStatus getRateLimitStatus() {
         if (null == response) {
             return null;
         }
-        return z_T4JInternalJSONImplFactory.createRateLimitStatusFromResponseHeader(response);
+        return JSONImplFactory.createRateLimitStatusFromResponseHeader(response);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getAccessLevel() {
-        return z_T4JInternalParseUtil.toAccessLevel(response);
+        return ParseUtil.toAccessLevel(response);
     }
 
     /**
@@ -232,7 +214,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         return exceptionDiagnosis;
     }
 
-    boolean nested = false;
+    private boolean nested = false;
 
     void setNested() {
         nested = true;

@@ -17,11 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.internal.async.Dispatcher;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.json.z_T4JInternalParseUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,9 +39,13 @@ class StatusStreamImpl extends StatusStreamBase {
         super(dispatcher, response, conf);
     }
 
-    protected String line;
+    String line;
 
-    protected static final RawStreamListener[] EMPTY = new RawStreamListener[0];
+    static final RawStreamListener[] EMPTY = new RawStreamListener[0];
+
+    @Override
+    protected void onClose(){}
+
     @Override
     public void next(StatusListener listener) throws TwitterException {
         handleNextElement(new StatusListener[]{listener}, EMPTY);
@@ -57,6 +56,7 @@ class StatusStreamImpl extends StatusStreamBase {
         handleNextElement(listeners, rawStreamListeners);
     }
 
+    @Override
     protected String parseLine(String line) {
         this.line = line;
         return line;
@@ -84,8 +84,8 @@ class StatusStreamImpl extends StatusStreamBase {
                 ((StatusListener) listener).onDeletionNotice(new StatusDeletionNoticeImpl(deletionNotice.getJSONObject("status")));
             } else {
                 JSONObject directMessage = deletionNotice.getJSONObject("direct_message");
-                ((UserStreamListener) listener).onDeletionNotice(z_T4JInternalParseUtil.getLong("id", directMessage)
-                        , z_T4JInternalParseUtil.getLong("user_id", directMessage));
+                ((UserStreamListener) listener).onDeletionNotice(ParseUtil.getLong("id", directMessage)
+                        , ParseUtil.getLong("user_id", directMessage));
             }
         }
     }
@@ -93,7 +93,7 @@ class StatusStreamImpl extends StatusStreamBase {
     @Override
     protected void onLimit(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
-            ((StatusListener) listener).onTrackLimitationNotice(z_T4JInternalParseUtil.getInt("track", json.getJSONObject("limit")));
+            ((StatusListener) listener).onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
         }
     }
 
@@ -108,8 +108,8 @@ class StatusStreamImpl extends StatusStreamBase {
     protected void onScrubGeo(JSONObject json, StreamListener[] listeners) throws TwitterException, JSONException {
         JSONObject scrubGeo = json.getJSONObject("scrub_geo");
         for (StreamListener listener : listeners) {
-            ((StatusListener) listener).onScrubGeo(z_T4JInternalParseUtil.getLong("user_id", scrubGeo)
-                    , z_T4JInternalParseUtil.getLong("up_to_status_id", scrubGeo));
+            ((StatusListener) listener).onScrubGeo(ParseUtil.getLong("user_id", scrubGeo)
+                    , ParseUtil.getLong("up_to_status_id", scrubGeo));
         }
 
     }
