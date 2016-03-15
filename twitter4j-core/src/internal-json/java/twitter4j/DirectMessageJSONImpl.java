@@ -112,7 +112,13 @@ import java.util.Date;
                     len = mediaArray.length();
                     mediaEntities = new MediaEntity[len];
                     for (int i = 0; i < len; i++) {
-                        mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
+
+                        final JSONObject mediaJson = mediaArray.getJSONObject(i);
+                        if (mediaJson.has("video_info")) {
+                            mediaEntities[i] = new ExtendedMediaEntityJSONImpl(mediaJson);
+                        } else {
+                            mediaEntities[i] = new MediaEntityJSONImpl(mediaJson);
+                        }
                     }
                 }
             }
