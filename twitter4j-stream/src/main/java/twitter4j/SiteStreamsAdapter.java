@@ -103,6 +103,16 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
    }
 
     @Override
+    public void onMute(User source, User target) {
+
+    }
+
+    @Override
+    public void onUnmute(User source, User target) {
+
+    }
+
+    @Override
     public void onDisconnectionNotice(String screenName) {
     }
 

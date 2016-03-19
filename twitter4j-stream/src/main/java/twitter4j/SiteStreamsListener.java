@@ -182,9 +182,9 @@ public interface SiteStreamsListener extends StreamListener {
 
     @Override
     void onException(Exception ex);
-    
-    
-     /**
+
+
+    /**
      * @param source          source user of the event
      * @param target          target user of the event
      * @param quotingTweet    status favorited retweet
@@ -192,5 +192,19 @@ public interface SiteStreamsListener extends StreamListener {
      */
    void onQuotedTweet(User source, User target, Status quotingTweet);
 
+    /**
+     * @param source          source user of the event
+     * @param target          target user of the event
+     * @since Twitter4J 4.0.x
+     */
 
+    void onMute(long forUser, User source, User target);
+
+    /**
+     * @param source          source user of the event
+     * @param target          target user of the event
+     * @since Twitter4J 4.0.x
+     */
+
+    void onUnmute(long forUser, User source, User target);
 }

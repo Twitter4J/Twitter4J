@@ -431,7 +431,23 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(quotedStatus));
         notifyResponse();
     }
-        
+
+    @Override
+    public void onMute(User source, User target) {
+        received.add(new Object[]{"mute", source, target});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        notifyResponse();
+    }
+
+    @Override
+    public void onUnmute(User source, User target) {
+        received.add(new Object[]{"unmute", source, target});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        notifyResponse();
+    }
+
     @Override
     public void onDisconnectionNotice(String screenName) {
         received.add(new Object[]{"Disconnect"});

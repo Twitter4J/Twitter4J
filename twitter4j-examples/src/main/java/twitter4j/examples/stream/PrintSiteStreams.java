@@ -227,5 +227,30 @@ public final class PrintSiteStreams {
             ex.printStackTrace();
             System.out.println("onException:" + ex.getMessage());
         }
+
+        @Override
+        public void onQuotedTweet(User source, User target, Status quotingTweet) {
+            System.out.println("onQuotedTweet: source: " +source.getScreenName()
+                    + " target:@" + target.getScreenName()
+                    + " quotedStatus:@" +quotingTweet.getUser().getScreenName() + " - "
+                    + quotingTweet.getText()
+            );
+        }
+
+        @Override
+        public void onMute(long forUser, User source, User target) {
+            System.out.println("onMute: for_user: " + forUser
+                    + " source:@" + source.getScreenName()
+                    + " target:@" + target.getScreenName()
+            );
+        }
+
+        @Override
+        public void onUnmute(long forUser, User source, User target) {
+            System.out.println("onUnmute: for_user: " + forUser
+                    + " source:@" + source.getScreenName()
+                    + " target:@" + target.getScreenName()
+            );
+        }
     };
 }
