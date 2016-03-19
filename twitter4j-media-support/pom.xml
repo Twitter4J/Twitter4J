@@ -3,7 +3,7 @@
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-media-support</artifactId>
-    <version>4.0.5-SNAPSHOT</version>
+    <version>4.0.5</version>
     <packaging>jar</packaging>
     <name>twitter4j-media-support</name>
     <description>Twitter4J optional component adds multimedia support
@@ -42,19 +42,11 @@
         <url>http://issue.twitter4j.org/youtrack/issues?q=project%3A+Twitter4J</url>
     </issueManagement>
     <distributionManagement>
-        <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Nexus Release Repository</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
-            </url>
-        </repository>
-        <snapshotRepository>
-            <id>org.twitter4j</id>
-            <name>twitter4j.org Repository</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>file:${user.home}/maven2/</url>
-        </snapshotRepository>
+	<repository>
+	    <id>bintray-eliasisrael-maven</id>
+	    <name>eliasisrael-maven</name>
+	    <url>https://api.bintray.com/maven/eliasisrael/maven/org.twitter4j:twitter4j/;publish=1</url>
+	</repository>
     </distributionManagement>
     <profiles>
         <profile>
@@ -98,7 +90,7 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>4.0.5-SNAPSHOT</version>
+            <version>4.0.5</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
