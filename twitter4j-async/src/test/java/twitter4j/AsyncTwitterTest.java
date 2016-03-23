@@ -76,7 +76,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         messages = null;
         status = null;
         user = null;
-        user = null;
         message = null;
         te = null;
     }
