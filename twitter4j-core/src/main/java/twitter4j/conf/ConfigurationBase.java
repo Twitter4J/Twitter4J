@@ -72,6 +72,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private boolean includeMyRetweetEnabled = true;
     private boolean includeEntitiesEnabled = true;
     private boolean trimUserEnabled = false;
+    private boolean includeExtAltTextEnabled = false;
 
     private boolean jsonStoreEnabled = false;
 
@@ -87,7 +88,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String mediaProviderAPIKey = null;
     private Properties mediaProviderParameters = null;
     private boolean daemonEnabled = true;
-
 
     protected ConfigurationBase() {
         httpConf = new MyHttpClientConfiguration(null // proxy host
@@ -613,6 +613,11 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
+    public boolean isIncludeExtAltTextEnabled() {
+        return this.includeExtAltTextEnabled;
+    }
+
+    @Override
     public boolean isDaemonEnabled() {
         return daemonEnabled;
     }
@@ -623,6 +628,10 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     public void setTrimUserEnabled(boolean enabled) {
         this.trimUserEnabled = enabled;
+    }
+
+    public void setIncludeExtAltTextEnabled(boolean enabled) {
+        this.includeExtAltTextEnabled = enabled;
     }
 
     @Override
@@ -743,6 +752,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (mbeanEnabled != that.mbeanEnabled) return false;
         if (stallWarningsEnabled != that.stallWarningsEnabled) return false;
         if (trimUserEnabled != that.trimUserEnabled) return false;
+        if (includeExtAltTextEnabled != that.includeExtAltTextEnabled) return false;
         if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled) return false;
         if (userStreamWithFollowingsEnabled != that.userStreamWithFollowingsEnabled) return false;
         if (dispatcherImpl != null ? !dispatcherImpl.equals(that.dispatcherImpl) : that.dispatcherImpl != null)
@@ -830,6 +840,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
         result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
         result = 31 * result + (trimUserEnabled ? 1 : 0);
+        result = 31 * result + (includeExtAltTextEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
         result = 31 * result + (mbeanEnabled ? 1 : 0);
         result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
@@ -878,6 +889,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
                 ", trimUserEnabled=" + trimUserEnabled +
+                ", includeExtAltTextEnabled=" + includeExtAltTextEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
                 ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +
