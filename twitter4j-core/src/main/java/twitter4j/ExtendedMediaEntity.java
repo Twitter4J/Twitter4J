@@ -37,4 +37,6 @@ public interface ExtendedMediaEntity extends MediaEntity {
     }
 
     Variant[] getVideoVariants();
+
+    String getExtAltText();
 }
