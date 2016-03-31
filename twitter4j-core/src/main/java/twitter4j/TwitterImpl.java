@@ -1812,39 +1812,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     private HttpResponse post(String url) throws TwitterException {
-        ensureAuthorizationEnabled();
-        if (!conf.isMBeanEnabled()) {
-            return http.post(url, IMPLICIT_PARAMS, auth, this);
-        } else {
-            // intercept HTTP call for monitoring purposes
-            HttpResponse response = null;
-            long start = System.currentTimeMillis();
-            try {
-                response = http.post(url, IMPLICIT_PARAMS, auth, this);
-            } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
-            }
-            return response;
-        }
+        return postWithoutImplicitParams(url, IMPLICIT_PARAMS);
     }
 
     private HttpResponse post(String url, HttpParameter... params) throws TwitterException {
-        ensureAuthorizationEnabled();
-        if (!conf.isMBeanEnabled()) {
-            return http.post(url, mergeImplicitParams(params), auth, this);
-        } else {
-            // intercept HTTP call for monitoring purposes
-            HttpResponse response = null;
-            long start = System.currentTimeMillis();
-            try {
-                response = http.post(url, mergeImplicitParams(params), auth, this);
-            } finally {
-                long elapsedTime = System.currentTimeMillis() - start;
-                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
-            }
-            return response;
-        }
+        return postWithoutImplicitParams(url, mergeImplicitParams(params));
     }
 
     private HttpResponse postWithoutImplicitParams(String url, HttpParameter... params) throws TwitterException {
