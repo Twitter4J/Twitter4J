@@ -378,7 +378,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     public static String encodeParameters(List<HttpParameter> httpParams, String splitter, boolean quot) {
         StringBuilder buf = new StringBuilder();
         for (HttpParameter param : httpParams) {
-            if (!param.isFile()) {
+            if (!param.isFile() && !param.isJson()) {
                 if (buf.length() != 0) {
                     if (quot) {
                         buf.append("\"");
