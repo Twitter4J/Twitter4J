@@ -247,6 +247,19 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , new HttpParameter("media", fileName, image)).asJSONObject());
     }
 
+    @Override
+    public int createMediaMetadata(long mediaId, String altText) throws TwitterException {
+        try {
+            String json = new JSONObject().put("media_id", ""+mediaId)
+                    .put("alt_text", new JSONObject().put("text", altText))
+                    .toString();
+            return postWithoutImplicitParams(conf.getUploadBaseURL() + "media/metadata/create.json"
+                    , new HttpParameter[]{new HttpParameter(json)}).getStatusCode();
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+    }
+
     /* Search Resources */
 
     @Override
@@ -1816,6 +1829,24 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             long start = System.currentTimeMillis();
             try {
                 response = http.post(url, mergeImplicitParams(params), auth, this);
+            } finally {
+                long elapsedTime = System.currentTimeMillis() - start;
+                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
+            }
+            return response;
+        }
+    }
+
+    private HttpResponse postWithoutImplicitParams(String url, HttpParameter... params) throws TwitterException {
+        ensureAuthorizationEnabled();
+        if (!conf.isMBeanEnabled()) {
+            return http.post(url, params, auth, this);
+        } else {
+            // intercept HTTP call for monitoring purposes
+            HttpResponse response = null;
+            long start = System.currentTimeMillis();
+            try {
+                response = http.post(url, params, auth, this);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));

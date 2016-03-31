@@ -126,8 +126,11 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                             write(out, "\r\n");
 
                         } else {
-                            con.setRequestProperty("Content-Type",
-                                    "application/x-www-form-urlencoded");
+                            if (HttpParameter.containsJson(req.getParameters())) {
+                                con.setRequestProperty("Content-Type", "application/json");
+                            } else {
+                                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                            }
                             String postParam = HttpParameter.encodeParameters(req.getParameters());
                             logger.debug("Post Params: ", postParam);
                             byte[] bytes = postParam.getBytes("UTF-8");
