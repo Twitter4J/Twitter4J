@@ -148,7 +148,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
         assertNotNull(oembed.getHtml());
         assertEquals("Jason Costa", oembed.getAuthorName());
-        assertEquals("https://twitter.com/jasoncosta/statuses/240192632003911681", oembed.getURL());
+        assertEquals("https://twitter.com/jasoncosta/status/240192632003911681", oembed.getURL());
         assertEquals("1.0", oembed.getVersion());
         assertEquals(3153600000L, oembed.getCacheAge());
         assertEquals("https://twitter.com/jasoncosta", oembed.getAuthorURL());
