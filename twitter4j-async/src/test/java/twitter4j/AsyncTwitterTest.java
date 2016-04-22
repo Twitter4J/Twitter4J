@@ -225,48 +225,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.updateProfile(oldName, oldURL, oldLocation, oldDescription);
         waitForResponse();
 
-        async1.updateProfileColors("f00", "f0f", "0ff", "0f0", "f0f");
-        waitForResponse();
-        assertEquals("FF0000", user.getProfileBackgroundColor());
-        assertEquals("FF00FF", user.getProfileTextColor());
-        assertEquals("00FFFF", user.getProfileLinkColor());
-        assertEquals("00FF00", user.getProfileSidebarFillColor());
-        assertEquals("FF00FF", user.getProfileSidebarBorderColor());
-        async1.updateProfileColors("f0f", "f00", "f0f", "0ff", "0f0");
-        waitForResponse();
-        assertEquals("FF00FF", user.getProfileBackgroundColor());
-        assertEquals("FF0000", user.getProfileTextColor());
-        assertEquals("FF00FF", user.getProfileLinkColor());
-        assertEquals("00FFFF", user.getProfileSidebarFillColor());
-        assertEquals("00FF00", user.getProfileSidebarBorderColor());
-        async1.updateProfileColors("87bc44", "9ae4e8", "000000", "0000ff", "e0ff92");
-        waitForResponse();
-        assertEquals("87BC44", user.getProfileBackgroundColor());
-        assertEquals("9AE4E8", user.getProfileTextColor());
-        assertEquals("000000", user.getProfileLinkColor());
-        assertEquals("0000FF", user.getProfileSidebarFillColor());
-        assertEquals("E0FF92", user.getProfileSidebarBorderColor());
-        async1.updateProfileColors("f0f", null, "f0f", null, "0f0");
-        waitForResponse();
-        assertEquals("FF00FF", user.getProfileBackgroundColor());
-        assertEquals("9AE4E8", user.getProfileTextColor());
-        assertEquals("FF00FF", user.getProfileLinkColor());
-        assertEquals("0000FF", user.getProfileSidebarFillColor());
-        assertEquals("00FF00", user.getProfileSidebarBorderColor());
-        async1.updateProfileColors(null, "f00", null, "0ff", null);
-        waitForResponse();
-        assertEquals("FF00FF", user.getProfileBackgroundColor());
-        assertEquals("FF0000", user.getProfileTextColor());
-        assertEquals("FF00FF", user.getProfileLinkColor());
-        assertEquals("00FFFF", user.getProfileSidebarFillColor());
-        assertEquals("00FF00", user.getProfileSidebarBorderColor());
-        async1.updateProfileColors("9ae4e8", "000000", "0000ff", "e0ff92", "87bc44");
-        waitForResponse();
-        assertEquals("9AE4E8", user.getProfileBackgroundColor());
-        assertEquals("000000", user.getProfileTextColor());
-        assertEquals("0000FF", user.getProfileLinkColor());
-        assertEquals("E0FF92", user.getProfileSidebarFillColor());
-        assertEquals("87BC44", user.getProfileSidebarBorderColor());
     }
 
     public void testShow() throws Exception {

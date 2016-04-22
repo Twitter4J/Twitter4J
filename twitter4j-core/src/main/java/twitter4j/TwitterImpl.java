@@ -642,21 +642,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             String profileSidebarFillColor,
             String profileSidebarBorderColor)
             throws TwitterException {
-        List<HttpParameter> colors = new ArrayList<HttpParameter>(6);
-        addParameterToList(colors, "profile_background_color"
-                , profileBackgroundColor);
-        addParameterToList(colors, "profile_text_color"
-                , profileTextColor);
-        addParameterToList(colors, "profile_link_color"
-                , profileLinkColor);
-        addParameterToList(colors, "profile_sidebar_fill_color"
-                , profileSidebarFillColor);
-        addParameterToList(colors, "profile_sidebar_border_color"
-                , profileSidebarBorderColor);
-        return factory.createUser(post(conf.getRestBaseURL() +
-                        "account/update_profile_colors.json",
-                colors.toArray(new HttpParameter[colors.size()])
-        ));
+        throw new UnsupportedOperationException("this API is no longer supported. https://twittercommunity.com/t/deprecation-of-account-update-profile-colors/28692");
     }
 
     private void addParameterToList(List<HttpParameter> colors,
