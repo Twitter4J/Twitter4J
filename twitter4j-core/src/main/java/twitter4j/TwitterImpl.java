@@ -238,13 +238,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public UploadedMedia uploadMedia(File image) throws TwitterException {
         checkFileValidity(image);
         return new UploadedMedia(post(conf.getUploadBaseURL() + "media/upload.json"
-                , new HttpParameter[]{new HttpParameter("media", image)}).asJSONObject());
+                , new HttpParameter("media", image)).asJSONObject());
     }
 
     @Override
     public UploadedMedia uploadMedia(String fileName, InputStream image) throws TwitterException {
         return new UploadedMedia(post(conf.getUploadBaseURL() + "media/upload.json"
-                , new HttpParameter[]{new HttpParameter("media", fileName, image)}).asJSONObject());
+                , new HttpParameter("media", fileName, image)).asJSONObject());
     }
 
     /* Search Resources */
@@ -578,14 +578,10 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public User verifyCredentials() throws TwitterException {
-        return super.fillInIDAndScreenName();
+        return super.fillInIDAndScreenName(
+                new HttpParameter[]{new HttpParameter("include_email", conf.isIncludeEmailEnabled())});
     }
     
-    @Override
-    public User verifyCredentials(HttpParameter[] parameters) throws TwitterException {
-        return super.fillInIDAndScreenName(parameters);
-    }
-
     @Override
     public AccountSettings updateAccountSettings(Integer trend_locationWoeid,
                                                  Boolean sleep_timeEnabled, String start_sleepTime,

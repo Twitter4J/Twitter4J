@@ -72,6 +72,8 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
     private static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
     private static final String INCLUDE_ENTITIES = "includeEntities";
+    private static final String INCLUDE_EMAIL = "includeEmail";
+    private static final String INCLUDE_EXT_ALT_TEXT = "includeExtAltText";
     private static final String LOGGER_FACTORY = "loggerFactory";
     private static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
     private static final String MBEAN_ENABLED = "mbeanEnabled";
@@ -347,6 +349,12 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, INCLUDE_ENTITIES)) {
             setIncludeEntitiesEnabled(getBoolean(props, prefix, INCLUDE_ENTITIES));
+        }
+        if (notNull(props, prefix, INCLUDE_EMAIL)) {
+            setIncludeEmailEnabled(getBoolean(props, prefix, INCLUDE_EMAIL));
+        }
+        if (notNull(props, prefix, INCLUDE_EXT_ALT_TEXT)) {
+            setIncludeExtAltTextEnabled(getBoolean(props, prefix, INCLUDE_EXT_ALT_TEXT));
         }
         if (notNull(props, prefix, LOGGER_FACTORY)) {
             setLoggerFactory(getString(props, prefix, LOGGER_FACTORY));

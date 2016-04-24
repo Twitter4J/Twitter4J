@@ -73,6 +73,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private boolean includeEntitiesEnabled = true;
     private boolean trimUserEnabled = false;
     private boolean includeExtAltTextEnabled = true;
+    private boolean includeEmailEnabled = false;
 
     private boolean jsonStoreEnabled = false;
 
@@ -624,6 +625,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected void setDaemonEnabled(boolean daemonEnabled) {
         this.daemonEnabled = daemonEnabled;
+    }
+
+    @Override
+    public boolean isIncludeEmailEnabled() {
+        return includeEmailEnabled;
+    }
+
+    protected void setIncludeEmailEnabled(boolean includeEmailEnabled) {
+        this.includeEmailEnabled = includeEmailEnabled;
     }
 
     public void setTrimUserEnabled(boolean enabled) {

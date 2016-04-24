@@ -118,4 +118,6 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
     boolean isIncludeExtAltTextEnabled();
 
     boolean isDaemonEnabled();
+
+    boolean isIncludeEmailEnabled();
 }
