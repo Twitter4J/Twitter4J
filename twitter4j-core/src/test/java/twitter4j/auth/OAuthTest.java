@@ -301,7 +301,7 @@ public class OAuthTest extends TwitterTestBase {
             fail("expecting TwitterException");
         } catch (TwitterException te) {
             // id1 doesn't have access to xAuth
-            assertEquals(401, te.getStatusCode());
+            assertEquals(403, te.getStatusCode());
         }
         InputStream is = OAuthTest.class.getResourceAsStream("/xauth-test.properties");
         if (null == is) {
