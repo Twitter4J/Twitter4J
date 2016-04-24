@@ -44,6 +44,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     private final String stallWarningsGetParam;
     private final HttpParameter stallWarningsParam;
+    
+    private String streamName = "";
 
     /*package*/
     TwitterStreamImpl(Configuration conf, Authorization auth) {
@@ -56,6 +58,10 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
         stallWarningsGetParam = "stall_warnings=" + (conf.isStallWarningsEnabled() ? "true" : "false");
         stallWarningsParam = new HttpParameter("stall_warnings", conf.isStallWarningsEnabled());
+    }
+    
+    public void setStreamName(String streamName){
+    	this.streamName = streamName;
     }
 
     /* Streaming API */
@@ -561,8 +567,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                         }
                         // connection established successfully
                         timeToSleep = NO_WAIT;
-                        logger.info("Receiving status stream.");
-                        setStatus("[Receiving stream]");
+                        logger.info("Receiving status stream."+streamName);
+                        setStatus("[Receiving stream]"+streamName);
                         while (!closed) {
                             try {
                                 stream.next(this.streamListeners, this.rawStreamListeners);

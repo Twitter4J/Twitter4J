@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import twitter4j.TwitterStreamImpl.TwitterStreamConsumer;
 import twitter4j.auth.OAuthSupport;
 import twitter4j.util.function.Consumer;
 
@@ -189,4 +190,11 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @since Twitter4J 2.1.9
      */
     void shutdown();
+    
+    /**
+     * Set the stream name
+     * 
+     * @param streamName
+     */
+    public void setStreamName(String streamName);
 }
