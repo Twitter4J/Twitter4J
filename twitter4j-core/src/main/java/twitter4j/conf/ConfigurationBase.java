@@ -757,6 +757,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
         if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
+        if (includeEmailEnabled != that.includeEmailEnabled) return false;
         if (includeMyRetweetEnabled != that.includeMyRetweetEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
@@ -849,6 +850,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
         result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
         result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
+        result = 31 * result + (includeEmailEnabled ? 1 : 0);
         result = 31 * result + (trimUserEnabled ? 1 : 0);
         result = 31 * result + (includeExtAltTextEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
@@ -898,6 +900,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", contributingTo=" + contributingTo +
                 ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
+                ", includeEmailEnabled=" + includeEmailEnabled +
                 ", trimUserEnabled=" + trimUserEnabled +
                 ", includeExtAltTextEnabled=" + includeExtAltTextEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
