@@ -16,9 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.z_T4JInternalParseUtil;
-
 /**
  * StatusDeletionNotice implementation. This class is NOT intended to be extended but left non-final for the ease of mock testing.
  *
@@ -27,13 +24,13 @@ import twitter4j.internal.util.z_T4JInternalParseUtil;
  */
 class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializable {
 
-    private long statusId;
-    private long userId;
-    private static final long serialVersionUID = 1723338404242596062L;
+    private static final long serialVersionUID = 9144204870473786368L;
+    private final long statusId;
+    private final long userId;
 
     /*package*/ StatusDeletionNoticeImpl(JSONObject status) {
-        this.statusId = z_T4JInternalParseUtil.getLong("id", status);
-        this.userId = z_T4JInternalParseUtil.getLong("user_id", status);
+        this.statusId = ParseUtil.getLong("id", status);
+        this.userId = ParseUtil.getLong("user_id", status);
     }
 
     @Override

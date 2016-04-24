@@ -16,7 +16,7 @@
 
 package twitter4j.auth;
 
-import twitter4j.internal.http.HttpRequest;
+import twitter4j.HttpRequest;
 
 import java.io.ObjectStreamException;
 
@@ -26,8 +26,8 @@ import java.io.ObjectStreamException;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class NullAuthorization implements Authorization, java.io.Serializable {
-    private static NullAuthorization SINGLETON = new NullAuthorization();
-    private static final long serialVersionUID = -8748173338942663960L;
+    private static final long serialVersionUID = -7704668493278727510L;
+    private static final NullAuthorization SINGLETON = new NullAuthorization();
 
     private NullAuthorization() {
 
@@ -37,10 +37,12 @@ public class NullAuthorization implements Authorization, java.io.Serializable {
         return SINGLETON;
     }
 
+    @Override
     public String getAuthorizationHeader(HttpRequest req) {
         return null;
     }
 
+    @Override
     public boolean isEnabled() {
         return false;
     }

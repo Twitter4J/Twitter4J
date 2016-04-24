@@ -21,7 +21,7 @@ package twitter4j;
  */
 public interface EntitySupport {
     /**
-     * Returns an array of user mentions in the tweet, or null if no users were mentioned.
+     * Returns an array of user mentions in the tweet. This method will an empty array if no users were mentioned in the tweet.
      *
      * @return An array of user mention entities in the tweet.
      * @since Twitter4J 2.1.9
@@ -29,7 +29,7 @@ public interface EntitySupport {
     UserMentionEntity[] getUserMentionEntities();
 
     /**
-     * Returns an array if URLEntity mentioned in the tweet, or null if no URLs were mentioned.
+     * Returns an array if URLEntity mentioned in the tweet. This method will an empty array if no url were mentioned in the tweet.
      *
      * @return An array of URLEntity mentioned in the tweet.
      * @since Twitter4J 2.1.9
@@ -37,7 +37,7 @@ public interface EntitySupport {
     URLEntity[] getURLEntities();
 
     /**
-     * Returns an array if hashtag mentioned in the tweet, or null if no hashtag were mentioned.
+     * Returns an array if hashtag mentioned in the tweet.  This method will an empty array if no hashtags were mentioned in the tweet.
      *
      * @return An array of Hashtag mentioned in the tweet.
      * @since Twitter4J 2.1.9
@@ -45,10 +45,25 @@ public interface EntitySupport {
     HashtagEntity[] getHashtagEntities();
 
     /**
-     * Returns an array of MediaEntities if medias are available in the tweet, or null if no media is included in the tweet.
-     *
+     * Returns an array of MediaEntities if medias are available in the tweet. This method will an empty array if no medias were mentioned.
      * @return an array of MediaEntities.
      * @since Twitter4J 2.2.3
      */
     MediaEntity[] getMediaEntities();
+
+    /**
+     * Returns an array of ExtendedMediaEntities if media of extended_entities are available in the tweet. This method will an empty array if no extended-medias were mentioned.
+     * @see <a href="https://dev.twitter.com/docs/api/multiple-media-extended-entities">Multiple Media Entities in Statuses</a>
+     * @return an array of ExtendedMediaEntities.
+     * @since Twitter4J 4.0.2
+     */
+    ExtendedMediaEntity[] getExtendedMediaEntities();
+
+    /**
+     * Returns an array of SymbolEntities if medias are available in the tweet. This method will an empty array if no symbols were mentioned.
+     *
+     * @return an array of SymbolEntities.
+     * @since Twitter4J 3.0.4
+     */
+    SymbolEntity[] getSymbolEntities();
 }

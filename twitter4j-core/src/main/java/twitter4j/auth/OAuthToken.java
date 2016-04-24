@@ -16,22 +16,25 @@
 
 package twitter4j.auth;
 
+import twitter4j.HttpResponse;
 import twitter4j.TwitterException;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import javax.crypto.spec.SecretKeySpec;
 
 abstract class OAuthToken implements java.io.Serializable {
 
-    private static final long serialVersionUID = 3891133932519746686L;
-    private String token;
-    private String tokenSecret;
+    private static final long serialVersionUID = -7841506492508140600L;
+    private final String token;
+    private final String tokenSecret;
 
     private transient SecretKeySpec secretKeySpec;
-    String[] responseStr = null;
+    private String[] responseStr = null;
 
     public OAuthToken(String token, String tokenSecret) {
+        if(token == null)
+            throw new IllegalArgumentException("Token can't be null");
+        if(tokenSecret == null)
+            throw new IllegalArgumentException("TokenSecret can't be null");            
         this.token = token;
         this.tokenSecret = tokenSecret;
     }
@@ -41,7 +44,7 @@ abstract class OAuthToken implements java.io.Serializable {
     }
 
     OAuthToken(String string) {
-        responseStr = z_T4JInternalStringUtil.split(string, "&");
+        responseStr = string.split("&");
         tokenSecret = getParameter("oauth_token_secret");
         token = getParameter("oauth_token");
     }
@@ -66,7 +69,7 @@ abstract class OAuthToken implements java.io.Serializable {
         String value = null;
         for (String str : responseStr) {
             if (str.startsWith(parameter + '=')) {
-                value = z_T4JInternalStringUtil.split(str, "=")[1].trim();
+                value = str.split("=")[1].trim();
                 break;
             }
         }

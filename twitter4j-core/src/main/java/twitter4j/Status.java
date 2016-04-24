@@ -20,11 +20,12 @@ import java.util.Date;
 
 /**
  * A data interface representing one single status of a user.
+ * (e.g. https://dev.twitter.com/rest/reference/get/statuses/show/%3Aid)
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface Status extends Comparable<Status>, TwitterResponse,
-        EntitySupport, Twt, java.io.Serializable {
+        EntitySupport, java.io.Serializable {
     /**
      * Return the created_at
      *
@@ -36,21 +37,21 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     /**
      * Returns the id of the status
      *
-     * @return the id
+     * @return the id (e.g. 210462857140252672)
      */
     long getId();
 
     /**
      * Returns the text of the status
      *
-     * @return the text
+     * @return the text (e.g. Along with our new #Twitterbird, we've also updated our Display Guidelines: https://t.co/Ed4omjYs  ^JC)
      */
     String getText();
 
     /**
      * Returns the source
      *
-     * @return the source
+     * @return the source (e.g. &lt;a href="http://twitter.com" rel="nofollow"&gt;Twitter Web Client&lt;/a&gt;)
      * @since Twitter4J 1.0.4
      */
     String getSource();
@@ -113,8 +114,24 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     boolean isFavorited();
 
     /**
+     * Test if the status is retweeted
+     *
+     * @return true if retweeted
+     * @since Twitter4J 3.0.4
+     */
+    boolean isRetweeted();
+
+    /**
+     * Indicates approximately how many times this Tweet has been "favorited" by Twitter users.
+     *
+     * @return the favorite count
+     * @since Twitter4J 3.0.4
+     */
+    int getFavoriteCount();
+
+    /**
      * Return the user associated with the status.<br>
-     * This can be null if the instance if from User.getStatus().
+     * This can be null if the instance is from User.getStatus().
      *
      * @return the user
      */
@@ -122,11 +139,13 @@ public interface Status extends Comparable<Status>, TwitterResponse,
 
     /**
      * @since Twitter4J 2.0.10
+     * @return if the status is retweet or not
      */
     boolean isRetweet();
 
     /**
      * @since Twitter4J 2.1.0
+     * @return retweeted status
      */
     Status getRetweetedStatus();
 
@@ -134,6 +153,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * Returns an array of contributors, or null if no contributor is associated with this status.
      *
      * @since Twitter4J 2.2.3
+     * @return contributors
      */
     long[] getContributors();
 
@@ -143,7 +163,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      *
      * @return the retweet count.
      */
-    long getRetweetCount();
+    int getRetweetCount();
 
     /**
      * Returns true if the authenticating user has retweeted this tweet, or false when the tweet was
@@ -155,10 +175,59 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     boolean isRetweetedByMe();
 
     /**
-     * Returns the annotations, or null if no annotations are associated with this status.
+     * Returns the authenticating user's retweet's id of this tweet, or -1L when the tweet was created
+     * before this feature was enabled.
      *
-     * @since Twitter4J 2.1.4
-     * @deprecated Annotations is not available for now. <a href="http://groups.google.com/group/twitter-development-talk/browse_thread/thread/4d5ff2ec4d2ce4a7">Annotations - Twitter Development Talk | Google Groups</a>
+     * @return the authenticating user's retweet's id of this tweet
+     * @since Twitter4J 3.0.1
      */
-    Annotations getAnnotations();
+    long getCurrentUserRetweetId();
+
+    /**
+     * Returns true if the status contains a link that is identified as sensitive.
+     *
+     * @return whether the status contains sensitive links
+     * @since Twitter4J 3.0.0
+     */
+    boolean isPossiblySensitive();
+
+    /**
+     * Returns the lang of the status text if available.
+     *
+     * @return two-letter iso language code (e.g. en)
+     * @since Twitter4J 3.0.6
+     */
+    String getLang();
+
+    /**
+     * Returns the targeting scopes applied to a status.
+     *
+     * @return the targeting scopes applied to a status.
+     * @since Twitter4J 3.0.6
+     */
+    Scopes getScopes();
+
+    /**
+     *  Returns the list of country codes where the tweet is withheld
+     *
+     *  @return list of country codes where the tweet is withheld - null if not withheld
+     *  @since Twitter4j 4.0.3
+     */
+    String[] getWithheldInCountries();
+
+    /**
+     * Returns the Tweet ID of the quoted Tweet
+     *
+     * @return the Tweet ID of the quoted Tweet
+     * @since Twitter4J 4.0.4
+     */
+    long getQuotedStatusId();
+
+    /**
+     * Returns the Tweet object of the original Tweet that was quoted.
+     *
+     * @return the quoted Tweet object
+     * @since Twitter4J 4.0.4
+     */
+    Status getQuotedStatus();
 }

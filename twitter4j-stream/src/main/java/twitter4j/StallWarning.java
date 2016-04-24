@@ -16,20 +16,17 @@
  */
 package twitter4j;
 
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
-
 import java.io.Serializable;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getInt;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.ParseUtil.getInt;
+import static twitter4j.ParseUtil.getRawString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com
  * @since Twitter4J 3.0.0
  */
 public final class StallWarning implements Serializable {
-    private static final long serialVersionUID = 7387184309206228363L;
+    private static final long serialVersionUID = -4294628635422470314L;
     private final String code;
     private final String message;
     private final int percentFull;

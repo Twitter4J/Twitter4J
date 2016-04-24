@@ -21,7 +21,6 @@ import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
 import twitter4j.conf.PropertyConfiguration;
-import twitter4j.internal.http.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,7 +32,6 @@ import java.util.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class OAuthTest extends TwitterTestBase {
-
 
     public OAuthTest(String name) {
         super(name);
@@ -72,21 +70,13 @@ public class OAuthTest extends TwitterTestBase {
     }
 
     public void testDesktopClient() throws Exception {
-        RequestToken rt;
         Twitter twitter = new TwitterFactory().getInstance();
-        HttpClientImpl http;
-        HttpResponse response;
-        String resStr;
-        String authorizeURL;
-        HttpParameter[] params;
-        AccessToken at;
-        String cookie;
-        http = new HttpClientImpl();
 
         // desktop client - requiring pin
         Twitter unauthenticated = new TwitterFactory().getInstance();
         unauthenticated.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        rt = unauthenticated.getOAuthRequestToken();
+        RequestToken rt = unauthenticated.getOAuthRequestToken();
+        //noinspection ResultOfMethodCallIgnored
         rt.hashCode();
         // trying to get an access token without permitting the request token.
         try {
@@ -102,41 +92,23 @@ public class OAuthTest extends TwitterTestBase {
             twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret());
             fail();
         } catch (TwitterException te) {
-            assertEquals(401, te.getStatusCode());
+            assertEquals(403, te.getStatusCode());
         }
-        Map<String, String> props = new HashMap<String, String>();
-        response = http.get(rt.getAuthorizationURL());
-        cookie = response.getResponseHeader("Set-Cookie");
-//        http.setRequestHeader("Cookie", cookie);
-        props.put("Cookie", cookie);
-        resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
-        params = new HttpParameter[4];
-        params[0] = new HttpParameter("authenticity_token"
-                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
-        params[1] = new HttpParameter("oauth_token",
-                catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new HttpParameter("session[username_or_email]", numberId);
-        params[3] = new HttpParameter("session[password]", numberPass);
-        response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
-        resStr = response.asString();
-        String pin = catchPattern(resStr, "<kbd aria-labelledby=\"code-desc\"><code>", "</code></kbd>");
-        at = twitter.getOAuthAccessToken(rt, pin);
+        AccessToken at = getAccessToken(twitter, rt.getAuthorizationURL(), rt, numberId, numberPass, true);
         try {
             twitter.getOAuthRequestToken();
         } catch (TwitterException te) {
             fail("expecting IllegalStateException as access token is already available.");
-        } catch (IllegalStateException expected) {
+        } catch (IllegalStateException ignored) {
         }
 
 
         assertEquals(at.getScreenName(), numberId);
-        assertEquals(at.getUserId(), 96154916);
+        assertEquals(at.getUserId(), numberIdId);
         AccessToken at1 = twitter.getOAuthAccessToken();
         assertEquals(at, at1);
         TwitterResponse res = twitter.getLanguages();
         assertEquals(TwitterResponse.READ, res.getAccessLevel());
-
     }
 
     public void testIllegalStatus() throws Exception {
@@ -148,125 +120,60 @@ public class OAuthTest extends TwitterTestBase {
     }
 
     public void testSigninWithTwitter() throws Exception {
-        RequestToken rt;
         Twitter twitter = new TwitterFactory().getInstance();
-        HttpClientImpl http;
-        HttpResponse response;
-        String resStr;
-        String authorizeURL;
-        HttpParameter[] params;
-        AccessToken at;
-        String cookie;
-        http = new HttpClientImpl();
-
         // browser client - not requiring pin
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        rt = twitter.getOAuthRequestToken();
+        RequestToken rt = twitter.getOAuthRequestToken("http://twitter4j.org/");
 
-        Map<String, String> props = new HashMap<String, String>();
-        response = http.get(rt.getAuthenticationURL());
-        cookie = response.getResponseHeader("Set-Cookie");
-//        http.setRequestHeader("Cookie", cookie);
-        props.put("Cookie", cookie);
+        AccessToken at = getAccessToken(twitter, rt.getAuthenticationURL(), rt, id1.screenName, id1.password, false);
 
-        resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
-        params = new HttpParameter[4];
-        params[0] = new HttpParameter("authenticity_token"
-                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
-        params[1] = new HttpParameter("oauth_token",
-                catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
-        params[3] = new HttpParameter("session[password]", id1.password);
-        response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
-
-//        response = http.post(authorizeURL, params);
-        at = twitter.getOAuthAccessToken(rt);
         assertEquals(at.getScreenName(), id1.screenName);
-        assertEquals(at.getUserId(), 6358482);
+        assertEquals(at.getUserId(), id1.id);
 
     }
 
     public void testBrowserClient() throws Exception {
-        RequestToken rt;
         Twitter twitter = new TwitterFactory().getInstance();
-        HttpClientImpl http;
-        HttpResponse response;
-        String resStr;
-        String authorizeURL;
-        HttpParameter[] params;
-        AccessToken at;
-        String cookie;
-        http = new HttpClientImpl();
 
         // browser client - not requiring pin
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        rt = twitter.getOAuthRequestToken();
+        RequestToken rt = twitter.getOAuthRequestToken("http://twitter4j.org/");
 
-        response = http.get(rt.getAuthorizationURL());
-        Map<String, String> props = new HashMap<String, String>();
-        cookie = response.getResponseHeader("Set-Cookie");
-        props.put("Cookie", cookie);
-        resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
-        params = new HttpParameter[4];
-        params[0] = new HttpParameter("authenticity_token"
-                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
-        params[1] = new HttpParameter("oauth_token",
-                catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
-        params[3] = new HttpParameter("session[password]", id1.password);
-        response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
-        at = twitter.getOAuthAccessToken(rt);
+        AccessToken at = getAccessToken(twitter, rt.getAuthorizationURL(), rt, id1.screenName, id1.password, false);
         assertEquals(at.getScreenName(), id1.screenName);
-        assertEquals(at.getUserId(), 6358482);
-
-
+        assertEquals(at.getUserId(), id1.id);
     }
 
-    public void testBrowserClientWithCustomCallback() throws Exception {
-        RequestToken rt;
-        Twitter twitter = new TwitterFactory().getInstance();
-        HttpClientImpl http;
-        HttpResponse response;
-        String resStr;
-        String authorizeURL;
-        HttpParameter[] params;
-        AccessToken at;
-        String cookie;
-        http = new HttpClientImpl();
-
-        // browser client - not requiring pin / overriding callback url
-        twitter = new TwitterFactory().getInstance();
-        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        rt = twitter.getOAuthRequestToken("http://yusuke.homeip.net/twitter4j/custom_callback");
-        http = new HttpClientImpl();
-
-        System.out.println("AuthorizationURL: " + rt.getAuthorizationURL());
-        response = http.get(rt.getAuthorizationURL());
+    private AccessToken getAccessToken(Twitter twitter, String url, RequestToken rt, String screenName, String password, boolean pinRequired) throws TwitterException {
         Map<String, String> props = new HashMap<String, String>();
-        cookie = response.getResponseHeader("Set-Cookie");
-//        http.setRequestHeader("Cookie", cookie);
-        props.put("Cookie", cookie);
-        resStr = response.asString();
-        authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
-        params = new HttpParameter[4];
+        HttpClient http = HttpClientFactory.getInstance();
+
+        HttpResponse response = http.get(url);
+        List<String> cookies = response.getResponseHeaderFields().get("set-cookie");
+        for (String cookie : cookies) {
+            props.put("Cookie", cookie);
+        }
+        String resStr = response.asString();
+        String authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
+        HttpParameter[] params = new HttpParameter[4];
         params[0] = new HttpParameter("authenticity_token"
-                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\" />"));
+                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\">"));
         params[1] = new HttpParameter("oauth_token",
-                catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\" />"));
-        params[2] = new HttpParameter("session[username_or_email]", id1.screenName);
-        params[3] = new HttpParameter("session[password]", id1.password);
+                catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\">"));
+        params[2] = new HttpParameter("session[username_or_email]", screenName);
+        params[3] = new HttpParameter("session[password]", password);
         response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
-//        response = http.post(authorizeURL, params);
         resStr = response.asString();
-        String oauthVerifier = catchPattern(resStr, "&oauth_verifier=", "\">");
+        if (pinRequired) {
+            String pin = catchPattern(resStr, "<kbd aria-labelledby=\"code-desc\"><code>", "</code></kbd>");
+            return twitter.getOAuthAccessToken(rt, pin);
 
-        at = twitter.getOAuthAccessToken(rt, oauthVerifier);
-        assertEquals(at.getScreenName(), id1.screenName);
-        assertEquals(at.getUserId(), 6358482);
+        } else {
+            String oauthVerifier = catchPattern(resStr, "&oauth_verifier=", "\">");
+            return twitter.getOAuthAccessToken(rt, oauthVerifier);
+
+        }
     }
-
 
     private static String catchPattern(String body, String before, String after) {
         int beforeIndex = body.indexOf(before);
@@ -394,7 +301,7 @@ public class OAuthTest extends TwitterTestBase {
             fail("expecting TwitterException");
         } catch (TwitterException te) {
             // id1 doesn't have access to xAuth
-            assertEquals(401, te.getStatusCode());
+            assertEquals(403, te.getStatusCode());
         }
         InputStream is = OAuthTest.class.getResourceAsStream("/xauth-test.properties");
         if (null == is) {
@@ -404,7 +311,7 @@ public class OAuthTest extends TwitterTestBase {
             props.load(is);
             Configuration conf = new PropertyConfiguration(props);
             twitter = new TwitterFactory(conf).getInstance();
-            AccessToken at = twitter.getOAuthAccessToken(id1.screenName, id1.password);
+            twitter.getOAuthAccessToken(id1.screenName, id1.password);
             twitter.updateStatus(new Date() + ": xAuth test.");
 
             twitter = new TwitterFactory().getInstance();

@@ -23,9 +23,9 @@ package twitter4j;
  */
 public class GeoLocation implements java.io.Serializable {
 
-    protected double latitude;
-    protected double longitude;
-    private static final long serialVersionUID = -4847567157651889935L;
+    private static final long serialVersionUID = 6353721071298376949L;
+    private double latitude;
+    private double longitude;
 
     /**
      * Creates a GeoLocation instance
@@ -78,9 +78,9 @@ public class GeoLocation implements java.io.Serializable {
     public int hashCode() {
         int result;
         long temp;
-        temp = latitude != +0.0d ? Double.doubleToLongBits(latitude) : 0L;
+        temp = Double.doubleToLongBits(latitude);
         result = (int) (temp ^ (temp >>> 32));
-        temp = longitude != +0.0d ? Double.doubleToLongBits(longitude) : 0L;
+        temp = Double.doubleToLongBits(longitude);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }

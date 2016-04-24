@@ -26,20 +26,6 @@ import java.util.List;
  */
 public interface ResponseList<T> extends TwitterResponse, List<T> {
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public RateLimitStatus getRateLimitStatus();
-
-    /**
-     * Returns the current feature-specific rate limit status if available.<br>
-     * This method is available in conjunction with Twitter#searchUsers()<br>
-     *
-     * @return current rate limit status
-     * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
-     * @see <a href="https://dev.twitter.com/docs/rate-limiting/faq">Rate Limiting FAQ | Twitter Developers</a>
-     * @since Twitter4J 2.1.2
-     */
-    public RateLimitStatus getFeatureSpecificRateLimitStatus();
-
 }

@@ -22,7 +22,7 @@ import java.io.IOException;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
-public interface UserStream extends StreamImplementation {
+interface UserStream extends StatusStream {
     /**
      * Reads next element from this stream.
      *
@@ -32,5 +32,6 @@ public interface UserStream extends StreamImplementation {
      */
     void next(UserStreamListener listener) throws TwitterException;
 
+    @Override
     void close() throws IOException;
 }

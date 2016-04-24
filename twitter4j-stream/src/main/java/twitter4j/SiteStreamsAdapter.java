@@ -75,11 +75,31 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     }
 
     @Override
+    public void onUserSuspension(long forUser, long suspendedUser) {
+    }
+
+    @Override
+    public void onUserDeletion(long forUser, long deletedUser) {
+    }
+
+    @Override
     public void onBlock(long forUser, User source, User blockedUser) {
     }
 
     @Override
     public void onUnblock(long forUser, User source, User unblockedUser) {
+    }
+
+    @Override
+    public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+    }
+
+    @Override
+    public void onFavoritedRetweet(User source, User target, Status favoritedStatus) {
+    }
+
+    @Override
+    public void onDisconnectionNotice(String screenName) {
     }
 
     @Override

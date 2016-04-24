@@ -16,13 +16,9 @@
 
 package twitter4j.media;
 
-import twitter4j.TwitterException;
+import twitter4j.*;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpClientWrapper;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.logging.Logger;
 
 import java.io.File;
 import java.io.InputStream;
@@ -35,30 +31,29 @@ import java.util.*;
  * @since Twitter4J 2.1.8
  */
 abstract class AbstractImageUploadImpl implements ImageUpload {
-    public static final String TWITTER_VERIFY_CREDENTIALS_JSON = "https://api.twitter.com/1/account/verify_credentials.json";
-    public static final String TWITTER_VERIFY_CREDENTIALS_XML = "https://api.twitter.com/1/account/verify_credentials.xml";
+    static final String TWITTER_VERIFY_CREDENTIALS_JSON_V1_1 = "https://api.twitter.com/1.1/account/verify_credentials.json";
 
-    private HttpClientWrapper client;
+    private HttpClient client;
 
-    protected Configuration conf = null;
+    private Configuration conf = null;
     protected String apiKey = null;
-    protected OAuthAuthorization oauth = null;
-    protected String uploadUrl = null;
-    protected HttpParameter[] postParameter = null;
-    protected HttpParameter[] appendParameter = null;
-    protected HttpParameter image = null;
-    protected HttpParameter message = null;
-    protected Map<String, String> headers = new HashMap<String, String>();
-    protected HttpResponse httpResponse = null;
-    protected static final Logger logger = Logger.getLogger(AbstractImageUploadImpl.class);
+    OAuthAuthorization oauth = null;
+    String uploadUrl = null;
+    HttpParameter[] postParameter = null;
+    private HttpParameter[] appendParameter = null;
+    HttpParameter image = null;
+    HttpParameter message = null;
+    final Map<String, String> headers = new HashMap<String, String>();
+    HttpResponse httpResponse = null;
+    private static final Logger logger = Logger.getLogger(AbstractImageUploadImpl.class);
 
     AbstractImageUploadImpl(Configuration conf, OAuthAuthorization oauth) {
         this.oauth = oauth;
         this.conf = conf;
-        client = new HttpClientWrapper(conf);
+        client = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
     }
 
-    public AbstractImageUploadImpl(Configuration conf, String apiKey, OAuthAuthorization oauth) {
+    AbstractImageUploadImpl(Configuration conf, String apiKey, OAuthAuthorization oauth) {
         this(conf, oauth);
         this.apiKey = apiKey;
     }
@@ -112,7 +107,9 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
             this.postParameter = appendHttpParameters(this.postParameter, this.appendParameter);
         }
 
-        httpResponse = client.post(uploadUrl, postParameter, headers);
+        Map<String, String> newHeaders = new HashMap<String, String>(client.getRequestHeaders());
+        newHeaders.putAll(headers);
+        httpResponse = client.request(new HttpRequest(RequestMethod.POST, uploadUrl, postParameter, null, headers), null);
 
         String mediaUrl = postUpload();
         logger.debug("uploaded url [" + mediaUrl + "]");
@@ -124,7 +121,7 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
 
     protected abstract String postUpload() throws TwitterException;
 
-    protected HttpParameter[] appendHttpParameters(HttpParameter[] src, HttpParameter[] dst) {
+    HttpParameter[] appendHttpParameters(HttpParameter[] src, HttpParameter[] dst) {
         int srcLen = src.length;
         int dstLen = dst.length;
         HttpParameter[] ret = new HttpParameter[srcLen + dstLen];
@@ -133,9 +130,9 @@ abstract class AbstractImageUploadImpl implements ImageUpload {
         return ret;
     }
 
-    protected String generateVerifyCredentialsAuthorizationHeader(String verifyCredentialsUrl) {
-        List<HttpParameter> oauthSignatureParams = oauth.generateOAuthSignatureHttpParams("GET", verifyCredentialsUrl);
-        return "OAuth realm=\"http://api.twitter.com/\"," + OAuthAuthorization.encodeParameters(oauthSignatureParams, ",", true);
+    String generateVerifyCredentialsAuthorizationHeader() {
+        List<HttpParameter> oauthSignatureParams = oauth.generateOAuthSignatureHttpParams("GET", AbstractImageUploadImpl.TWITTER_VERIFY_CREDENTIALS_JSON_V1_1);
+        return "OAuth realm=\"https://api.twitter.com/\"," + OAuthAuthorization.encodeParameters(oauthSignatureParams, ",", true);
     }
 
     protected String generateVerifyCredentialsAuthorizationURL(String verifyCredentialsUrl) {

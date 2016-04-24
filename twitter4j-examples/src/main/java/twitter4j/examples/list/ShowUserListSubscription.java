@@ -36,7 +36,7 @@ public final class ShowUserListSubscription {
         }
         try {
             Twitter twitter = new TwitterFactory().getInstance();
-            int listId = Integer.parseInt(args[0]);
+            long listId = Long.parseLong(args[0]);
             UserList list = twitter.showUserList(listId);
             long userId = Integer.parseInt(args[1]);
             User user = twitter.showUser(userId);

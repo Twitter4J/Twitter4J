@@ -22,11 +22,12 @@ import twitter4j.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */
-public class PrintLinksStream extends StatusAdapter {
+public class PrintLinksStream {
     /**
      * Main entry of this application.
      *
-     * @param args
+     * @param args arguments doesn't take effect with this example
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
         TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
@@ -56,6 +57,7 @@ public class PrintLinksStream extends StatusAdapter {
                 System.out.println("Got stall warning:" + warning);
             }
 
+            @Override
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }

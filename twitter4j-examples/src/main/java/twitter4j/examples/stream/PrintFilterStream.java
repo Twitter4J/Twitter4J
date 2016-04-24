@@ -33,7 +33,7 @@ public final class PrintFilterStream {
      * Main entry of this application.
      *
      * @param args follow(comma separated user ids) track(comma separated filter terms)
-     * @throws twitter4j.TwitterException
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
         if (args.length < 1) {
@@ -67,6 +67,7 @@ public final class PrintFilterStream {
                 System.out.println("Got stall warning:" + warning);
             }
 
+            @Override
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }

@@ -20,6 +20,7 @@ package twitter4j;
  * @since Twitter4J 2.2.4
  */
 public class TwitterRuntimeException extends RuntimeException {
+
     private static final long serialVersionUID = 4476620514268902834L;
 
     public TwitterRuntimeException(Throwable th) {

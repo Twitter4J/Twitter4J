@@ -47,10 +47,18 @@ public interface Relationship extends TwitterResponse, java.io.Serializable {
     boolean isSourceBlockingTarget();
 
     /**
+     * Returns id the source user is muting the target user
+     *
+     * @return if the source is muting the target
+     */
+    boolean isSourceMutingTarget();
+
+    /**
      * Returns the source user screen name
      *
      * @return returns the source user screen name
      */
+
     String getSourceUserScreenName();
 
     /**
@@ -91,10 +99,26 @@ public interface Relationship extends TwitterResponse, java.io.Serializable {
     boolean isTargetFollowedBySource();
 
     /**
+     * Checks if source user can send dm to target user
+     *
+     * @return true if source user can send dm to target user
+     * @since Twitter4J 3.0.5
+     */
+    boolean canSourceDm();
+
+    /**
      * Checks if the source user has enabled notifications for updates of the target user
      *
      * @return true if source user enabled notifications for target user
      */
     boolean isSourceNotificationsEnabled();
+
+    /**
+     * Checks if the retweets from the target user enabled
+     *
+     * @return true if the retweets from the target user enabled
+     * @since Twitter4J 3.0.3
+     */
+    boolean isSourceWantRetweets();
 
 }

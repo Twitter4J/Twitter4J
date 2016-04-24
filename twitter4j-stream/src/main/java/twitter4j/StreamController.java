@@ -19,19 +19,11 @@ package twitter4j;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.AuthorizationFactory;
 import twitter4j.conf.Configuration;
-import twitter4j.internal.http.HttpClientWrapper;
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.http.HttpResponse;
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.util.z_T4JInternalParseUtil;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
+import static twitter4j.ParseUtil.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com
@@ -39,27 +31,28 @@ import static twitter4j.internal.util.z_T4JInternalParseUtil.*;
  */
 public class StreamController {
     private String controlURI = null;
-    private final HttpClientWrapper HTTP;
+    private final HttpClient http;
     private final Authorization AUTH;
+    private static final Logger logger = Logger.getLogger(StreamController.class);
 
-    /*package*/ StreamController(HttpClientWrapper http, Authorization auth) {
-        HTTP = http;
+    /*package*/ StreamController(HttpClient http, Authorization auth) {
+        this.http = http;
         AUTH = auth;
     }
 
     /*package*/ StreamController(Configuration conf) {
-        HTTP = new HttpClientWrapper(conf);
+        this.http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
         AUTH = AuthorizationFactory.getInstance(conf);
     }
 
     void setControlURI(String controlURI) {
-        this.controlURI = controlURI;
+        this.controlURI = (controlURI!=null) ?controlURI.replace("/1.1//1.1/", "/1.1/") : null;
         synchronized (lock) {
             lock.notifyAll();
         }
     }
 
-    Object lock = new Object();
+    private final Object lock = new Object();
 
     String getControlURI() {
         return controlURI;
@@ -68,10 +61,13 @@ public class StreamController {
     void ensureControlURISet() throws TwitterException {
         synchronized (lock) {
             try {
+		int waits = 0;
                 while (controlURI == null) {
-                    lock.wait(30000);
-                    throw new TwitterException("timed out for control uri to be ready");
-                }
+                    lock.wait(1000);
+                    waits++;
+                    
+                    if (waits > 29) throw new TwitterException("timed out for control uri to be ready");
+                }           
             } catch (InterruptedException e) {
             }
         }
@@ -79,39 +75,40 @@ public class StreamController {
 
     public ControlStreamInfo getInfo() throws TwitterException {
         ensureControlURISet();
-        HttpResponse res = HTTP.get(controlURI + "/info.json", AUTH);
+        HttpResponse res = http.get(controlURI + "/info.json", null, AUTH, null);
         return new ControlStreamInfo(this, res.asJSONObject());
     }
 
-    public String addUsers(long[] userIds) throws TwitterException {
+    public String addUsers(long... userIds) throws TwitterException {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
-                z_T4JInternalStringUtil.join(userIds));
-        HttpResponse res = HTTP.post(controlURI + "/add_user.json",
-                new HttpParameter[]{param}, AUTH);
+                StringUtil.join(userIds));
+        HttpResponse res = http.post(controlURI + "/add_user.json",
+                new HttpParameter[]{param}, AUTH, null);
         return res.asString();
     }
 
-    public String removeUsers(long[] userIds) throws TwitterException {
+    public String removeUsers(long... userIds) throws TwitterException {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
-                z_T4JInternalStringUtil.join(userIds));
-        HttpResponse res = HTTP.post(controlURI + "/remove_user.json",
-                new HttpParameter[]{param}, AUTH);
+                StringUtil.join(userIds));
+        HttpResponse res = http.post(controlURI + "/remove_user.json",
+                new HttpParameter[]{param}, AUTH, null);
         return res.asString();
     }
 
 
     public FriendsIDs getFriendsIDs(long userId, long cursor) throws TwitterException {
         ensureControlURISet();
-        HttpResponse res = HTTP.post(controlURI + "/friends/ids.json",
+        HttpResponse res = http.post(controlURI + "/friends/ids.json",
                 new HttpParameter[]{new HttpParameter("user_id", userId),
-                        new HttpParameter("cursor", cursor)}, AUTH);
+                        new HttpParameter("cursor", cursor)}, AUTH, null
+        );
         return new FriendsIDs(res);
     }
 
     public final class FriendsIDs implements CursorSupport, Serializable {
-        private static final long serialVersionUID = -6282978710522199102L;
+        private static final long serialVersionUID = -7393320878760329794L;
         private long[] ids;
         private long previousCursor = -1;
         private long nextCursor = -1;
@@ -134,37 +131,29 @@ public class StreamController {
                     }
                 }
                 user = new User(follow.getJSONObject("user"));
-                previousCursor = z_T4JInternalParseUtil.getLong("previous_cursor", json);
-                nextCursor = z_T4JInternalParseUtil.getLong("next_cursor", json);
+                previousCursor = ParseUtil.getLong("previous_cursor", json);
+                nextCursor = ParseUtil.getLong("next_cursor", json);
             } catch (JSONException jsone) {
                 throw new TwitterException(jsone);
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
+        @Override
         public boolean hasPrevious() {
             return 0 != previousCursor;
         }
 
-        /**
-         * {@inheritDoc}
-         */
+        @Override
         public long getPreviousCursor() {
             return previousCursor;
         }
 
-        /**
-         * {@inheritDoc}
-         */
+        @Override
         public boolean hasNext() {
             return 0 != nextCursor;
         }
 
-        /**
-         * {@inheritDoc}
-         */
+        @Override
         public long getNextCursor() {
             return nextCursor;
         }
@@ -204,7 +193,7 @@ public class StreamController {
         @Override
         public String toString() {
             return "FriendsIDs{" +
-                    "ids=" + ids +
+                    "ids=" + Arrays.toString(ids) +
                     ", previousCursor=" + previousCursor +
                     ", nextCursor=" + nextCursor +
                     ", user=" + user +
@@ -217,10 +206,10 @@ public class StreamController {
     }
 
     public final class User implements Serializable {
-        private static final long serialVersionUID = -2925833063500478073L;
-        private long id;
-        private String name;
-        private boolean dm;
+        private static final long serialVersionUID = -8741743249755418730L;
+        private final long id;
+        private final String name;
+        private final boolean dm;
 
         /*package*/ User(JSONObject json) {
             id = getLong("id", json);

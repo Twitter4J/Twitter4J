@@ -19,7 +19,7 @@ package twitter4j;
  * Integration tests for APIStatistics ensuring that the integration logic
  * in Twitter (API client) works.
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public class MBeansIntegrationTest extends TwitterTestBase {
 
@@ -27,16 +27,11 @@ public class MBeansIntegrationTest extends TwitterTestBase {
         super(name);
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     public void testMonitoringIntegration() throws Exception {
         // monitoring is turned on with mbeanEnabled=true
         TwitterAPIMonitor monitor = TwitterAPIMonitor.getInstance();
-        assertEquals(0, monitor.getStatistics().getCallCount());
+        long count = monitor.getStatistics().getCallCount();
         twitter1.getHomeTimeline();
-        assertEquals(1, monitor.getStatistics().getCallCount());
+        assertEquals(count + 1, monitor.getStatistics().getCallCount());
     }
 }

@@ -16,10 +16,10 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A data class represents search query.<br>
@@ -31,18 +31,17 @@ import java.util.List;
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  */
 public final class Query implements java.io.Serializable {
+    private static final long serialVersionUID = 7196404519192910019L;
     private String query = null;
     private String lang = null;
     private String locale = null;
     private long maxId = -1l;
-    private int rpp = -1;
-    private int page = -1;
+    private int count = -1;
     private String since = null;
     private long sinceId = -1;
     private String geocode = null;
     private String until = null;
-    private String resultType = null;
-    private static final long serialVersionUID = -8108425822233599808L;
+    private ResultType resultType = null;
     private String nextPageQuery = null;
 
     public Query() {
@@ -51,13 +50,56 @@ public final class Query implements java.io.Serializable {
     public Query(String query) {
         this.query = query;
     }
-
-    // edit with caution!!!
-    // this method is referenced by twitter4j.internal.json.QueryResultJSONImpl using reflection API in order to make this method invisible to library users
-    // you must run twitter4j.SearchAPITest#testEasyPaging to ensure you're doing right to make any changes to this method
-    private static Query createWithNextPageQuery(String nextPageQuery) {
+    
+    /* package */ static Query createWithNextPageQuery(String nextPageQuery) {
         Query query = new Query();
         query.nextPageQuery = nextPageQuery;
+        
+        if(nextPageQuery != null) {
+            String nextPageParameters=nextPageQuery.substring(1, nextPageQuery.length());
+            
+            Map<String,String> params=new LinkedHashMap<String,String>();
+            for(HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
+                // Yes, we'll overwrite duplicate parameters, but we should not
+                // get duplicate parameters from this endpoint.
+                params.put(param.getName(), param.getValue());
+            }
+            
+            if(params.containsKey("q"))
+                query.setQuery(params.get("q"));
+            if(params.containsKey("lang"))
+                query.setLang(params.get("lang"));
+            if(params.containsKey("locale"))
+                query.setLocale(params.get("locale"));
+            if(params.containsKey("max_id"))
+                query.setMaxId(Long.parseLong(params.get("max_id")));
+            if(params.containsKey("count"))
+                query.setCount(Integer.parseInt(params.get("count")));
+            if(params.containsKey("geocode")) {
+                String[] parts=params.get("geocode").split(",");
+                double latitude=Double.parseDouble(parts[0]);
+                double longitude=Double.parseDouble(parts[1]);
+                
+                double radius=0.0;
+                Query.Unit unit=null;
+                String radiusstr=parts[2];
+                for(Query.Unit value : Query.Unit.values())
+                    if(radiusstr.endsWith(value.name())) {
+                        radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length()-2));
+                        unit   = value;
+                        break;
+                    }
+                if(unit == null)
+                    throw new IllegalArgumentException("unrecognized geocode radius: "+radiusstr);
+                
+                query.setGeoCode(new GeoLocation(latitude, longitude), radius, unit);
+            }
+            if(params.containsKey("result_type"))
+                query.setResultType(Query.ResultType.valueOf(params.get("result_type")));
+            
+            // We don't pull out since, until -- they get pushed into the query
+        }
+        
         return query;
     }
 
@@ -192,60 +234,30 @@ public final class Query implements java.io.Serializable {
     /**
      * Returns the number of tweets to return per page, up to a max of 100
      *
-     * @return rpp
+     * @return count
      */
-    public int getRpp() {
-        return rpp;
+    public int getCount() {
+        return count;
     }
 
     /**
      * sets the number of tweets to return per page, up to a max of 100
      *
-     * @param rpp the number of tweets to return per page
+     * @param count the number of tweets to return per page
      */
-    public void setRpp(int rpp) {
-        this.rpp = rpp;
+    public void setCount(int count) {
+        this.count = count;
     }
 
     /**
      * sets the number of tweets to return per page, up to a max of 100
      *
-     * @param rpp the number of tweets to return per page
+     * @param count the number of tweets to return per page
      * @return the instance
      * @since Twitter4J 2.1.0
      */
-    public Query rpp(int rpp) {
-        setRpp(rpp);
-        return this;
-    }
-
-    /**
-     * Returns the page number (starting at 1) to return, up to a max of roughly 1500 results
-     *
-     * @return the page number (starting at 1) to return
-     */
-    public int getPage() {
-        return page;
-    }
-
-    /**
-     * sets the page number (starting at 1) to return, up to a max of roughly 1500 results
-     *
-     * @param page the page number (starting at 1) to return
-     */
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    /**
-     * sets the page number (starting at 1) to return, up to a max of roughly 1500 results
-     *
-     * @param page the page number (starting at 1) to return
-     * @return the instance
-     * @since Twitter4J 2.1.0
-     */
-    public Query page(int page) {
-        setPage(page);
+    public Query count(int count) {
+        setCount(count);
         return this;
     }
 
@@ -320,8 +332,12 @@ public final class Query implements java.io.Serializable {
         return geocode;
     }
 
-    public static final String MILES = "mi";
-    public static final String KILOMETERS = "km";
+    public static final Unit MILES = Unit.mi;
+    public static final Unit KILOMETERS = Unit.km;
+
+    public enum Unit {
+        mi, km
+    }
 
     /**
      * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
@@ -329,6 +345,20 @@ public final class Query implements java.io.Serializable {
      * @param location geo location
      * @param radius   radius
      * @param unit     Query.MILES or Query.KILOMETERS
+     * @since Twitter4J 4.0.1
+     */
+    public void setGeoCode(GeoLocation location, double radius
+            , Unit unit) {
+        this.geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit.name();
+    }
+
+    /**
+     * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
+     *
+     * @param location geo location
+     * @param radius   radius
+     * @param unit     Query.MILES or Query.KILOMETERS
+     * @deprecated use {@link #setGeoCode(GeoLocation, double, twitter4j.Query.Unit)} instead
      */
     public void setGeoCode(GeoLocation location, double radius
             , String unit) {
@@ -384,12 +414,20 @@ public final class Query implements java.io.Serializable {
 
     /**
      * mixed: Include both popular and real time results in the response.
-     * recent: return only the most recent results in the response
+     */
+    public final static ResultType MIXED = ResultType.mixed;
+    /**
      * popular: return only the most popular results in the response.
      */
-    public final static String MIXED = "mixed";
-    public final static String POPULAR = "popular";
-    public final static String RECENT = "recent";
+    public final static ResultType POPULAR = ResultType.popular;
+    /**
+     * recent: return only the most recent results in the response
+     */
+    public final static ResultType RECENT = ResultType.recent;
+
+    public enum ResultType {
+        popular, mixed, recent
+    }
 
     /**
      * Returns resultType
@@ -397,7 +435,7 @@ public final class Query implements java.io.Serializable {
      * @return the resultType
      * @since Twitter4J 2.1.3
      */
-    public String getResultType() {
+    public ResultType getResultType() {
         return resultType;
     }
 
@@ -407,7 +445,7 @@ public final class Query implements java.io.Serializable {
      * @param resultType Query.MIXED or Query.POPULAR or Query.RECENT
      * @since Twitter4J 2.1.3
      */
-    public void setResultType(String resultType) {
+    public void setResultType(ResultType resultType) {
         this.resultType = resultType;
     }
 
@@ -418,12 +456,12 @@ public final class Query implements java.io.Serializable {
      * @return the instance
      * @since Twitter4J 2.1.3
      */
-    public Query resultType(String resultType) {
+    public Query resultType(ResultType resultType) {
         setResultType(resultType);
         return this;
     }
 
-    private static HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
+    private static final HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>(12);
@@ -431,13 +469,14 @@ public final class Query implements java.io.Serializable {
         appendParameter("lang", lang, params);
         appendParameter("locale", locale, params);
         appendParameter("max_id", maxId, params);
-        appendParameter("rpp", rpp, params);
-        appendParameter("page", page, params);
+        appendParameter("count", count, params);
         appendParameter("since", since, params);
         appendParameter("since_id", sinceId, params);
         appendParameter("geocode", geocode, params);
         appendParameter("until", until, params);
-        appendParameter("result_type", resultType, params);
+        if (resultType != null) {
+            params.add(new HttpParameter("result_type", resultType.name()));
+        }
         params.add(WITH_TWITTER_USER_ID);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
@@ -455,7 +494,7 @@ public final class Query implements java.io.Serializable {
         }
     }
 
-    /*package*/ String nextPage(){
+    /*package*/ String nextPage() {
         return nextPageQuery;
     }
 
@@ -467,8 +506,7 @@ public final class Query implements java.io.Serializable {
         Query query1 = (Query) o;
 
         if (maxId != query1.maxId) return false;
-        if (page != query1.page) return false;
-        if (rpp != query1.rpp) return false;
+        if (count != query1.count) return false;
         if (sinceId != query1.sinceId) return false;
         if (geocode != null ? !geocode.equals(query1.geocode) : query1.geocode != null) return false;
         if (lang != null ? !lang.equals(query1.lang) : query1.lang != null) return false;
@@ -489,8 +527,7 @@ public final class Query implements java.io.Serializable {
         result = 31 * result + (lang != null ? lang.hashCode() : 0);
         result = 31 * result + (locale != null ? locale.hashCode() : 0);
         result = 31 * result + (int) (maxId ^ (maxId >>> 32));
-        result = 31 * result + rpp;
-        result = 31 * result + page;
+        result = 31 * result + count;
         result = 31 * result + (since != null ? since.hashCode() : 0);
         result = 31 * result + (int) (sinceId ^ (sinceId >>> 32));
         result = 31 * result + (geocode != null ? geocode.hashCode() : 0);
@@ -507,8 +544,7 @@ public final class Query implements java.io.Serializable {
                 ", lang='" + lang + '\'' +
                 ", locale='" + locale + '\'' +
                 ", maxId=" + maxId +
-                ", rpp=" + rpp +
-                ", page=" + page +
+                ", count=" + count +
                 ", since='" + since + '\'' +
                 ", sinceId=" + sinceId +
                 ", geocode='" + geocode + '\'' +

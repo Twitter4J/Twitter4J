@@ -18,7 +18,7 @@ package twitter4j.examples.json;
 
 import twitter4j.Status;
 import twitter4j.TwitterException;
-import twitter4j.json.DataObjectFactory;
+import twitter4j.TwitterObjectFactory;
 
 import java.io.*;
 
@@ -36,13 +36,14 @@ public final class LoadRawJSON {
     public static void main(String[] args) {
         try {
             File[] files = new File("statuses").listFiles(new FilenameFilter() {
+                @Override
                 public boolean accept(File dir, String name) {
                     return name.endsWith(".json");
                 }
             });
             for (File file : files) {
                 String rawJSON = readFirstLine(file);
-                Status status = DataObjectFactory.createStatus(rawJSON);
+                Status status = TwitterObjectFactory.createStatus(rawJSON);
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             }
             System.exit(0);

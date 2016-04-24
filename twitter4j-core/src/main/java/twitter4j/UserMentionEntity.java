@@ -24,7 +24,15 @@ import java.io.Serializable;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-public interface UserMentionEntity extends Serializable {
+public interface UserMentionEntity extends TweetEntity, Serializable {
+    /**
+     * Returns the screen name mentioned in the status. This method implementation is to meet TweetEntity interface and the behavior is equivalent to {@link #getScreenName()}
+     *
+     * @return the screen name mentioned in the status
+     */
+    @Override
+    String getText();
+
     /**
      * Returns the name mentioned in the status.
      *
@@ -51,6 +59,7 @@ public interface UserMentionEntity extends Serializable {
      *
      * @return the index of the start character of the user mention
      */
+    @Override
     int getStart();
 
     /**
@@ -58,5 +67,6 @@ public interface UserMentionEntity extends Serializable {
      *
      * @return the index of the end character of the user mention
      */
+    @Override
     int getEnd();
 }

@@ -17,31 +17,25 @@
 
 package twitter4j;
 
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getBoolean;
-import static twitter4j.internal.util.z_T4JInternalParseUtil.getRawString;
+import static twitter4j.ParseUtil.getBoolean;
+import static twitter4j.ParseUtil.getRawString;
 
 /**
  * @author Yusuke Yamamoto - yusuke at twitter.com
  * @since Twitter4J 2.2.6
  */
 public final class ControlStreamInfo implements Serializable {
-    private static final long serialVersionUID = -6761659771734942177L;
+    private static final long serialVersionUID = 5182091913786509723L;
     private final StreamController.User[] users;
     private final boolean includeFollowingsActivity;
     private final boolean includeUserChanges;
     private final String replies;
     private final String with;
-    private transient final StreamController controller;
 
     /*package*/ ControlStreamInfo(StreamController controller, JSONObject json) throws TwitterException {
-        this.controller = controller;
         try {
             JSONObject info = json.getJSONObject("info");
             includeFollowingsActivity = getBoolean("include_followings_activity", info);
@@ -51,7 +45,7 @@ public final class ControlStreamInfo implements Serializable {
             JSONArray usersJSON = info.getJSONArray("users");
             users = new StreamController.User[usersJSON.length()];
             for (int i = 0; i < usersJSON.length(); i++) {
-                users[i] = this.controller.createUser(usersJSON.getJSONObject(i));
+                users[i] = controller.createUser(usersJSON.getJSONObject(i));
             }
 
         } catch (JSONException e) {

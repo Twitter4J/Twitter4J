@@ -19,6 +19,7 @@ package twitter4j;
 
 import twitter4j.api.HelpResources;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
 
 import java.util.Map;
@@ -31,32 +32,30 @@ import java.util.Map;
  * @see twitter4j.TwitterListener
  */
 public class TwitterAdapter implements TwitterListener {
-    public TwitterAdapter() {
-    }
-    /*Search API Methods*/
-    @Override
-    public void searched(QueryResult result) {
-    }
-    @Override
-    public void gotCurrentTrends(Trends trends) {
-    }
-    /*Timeline Methods*/
-    @Override
-    public void gotHomeTimeline(ResponseList<Status> statuses) {
-    }
-    @Override
-    public void gotUserTimeline(ResponseList<Status> statuses) {
-    }
+    /* Timelines Resources */
     @Override
     public void gotMentions(ResponseList<Status> statuses) {
     }
 
-    /*Status Methods*/
     @Override
-    public void gotShowStatus(Status statuses) {
+    public void gotHomeTimeline(ResponseList<Status> statuses) {
     }
+
     @Override
-    public void updatedStatus(Status statuses) {
+    public void gotUserTimeline(ResponseList<Status> statuses) {
+    }
+
+    @Override
+    public void gotRetweetsOfMe(ResponseList<Status> statuses) {
+    }
+
+    /* Tweets Resources */
+    @Override
+    public void gotRetweets(ResponseList<Status> retweets) {
+    }
+
+    @Override
+    public void gotShowStatus(Status status) {
     }
 
     @Override
@@ -64,122 +63,27 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
+    public void updatedStatus(Status status) {
+    }
+
+    @Override
     public void retweetedStatus(Status retweetedStatus) {
     }
 
     @Override
-    public void gotRetweets(ResponseList<Status> retweets) {
-    }
-
-
-    /*User Methods*/
-    @Override
-    public void gotUserDetail(User user) {
+    public void gotOEmbed(OEmbed oembed) {
     }
 
     @Override
-    public void lookedupUsers(ResponseList<User> users) {
+    public void lookedup(ResponseList<Status> statuses) {
     }
 
+    /* Search Resources */
     @Override
-    public void searchedUser(ResponseList<User> userList) {
+    public void searched(QueryResult queryResult) {
     }
 
-    @Override
-    public void gotSuggestedUserCategories(ResponseList<Category> categories) {
-    }
-
-    @Override
-    public void gotUserSuggestions(ResponseList<User> users) {
-    }
-
-    @Override
-    public void gotMemberSuggestions(ResponseList<User> users) {
-    }
-
-    @Override
-    public void gotContributors(ResponseList<User> users) {
-    }
-
-    @Override
-    public void gotContributees(ResponseList<User> users) {
-    }
-
-    /*List Methods*/
-
-    @Override
-    public void createdUserList(UserList userList) {
-    }
-
-    @Override
-    public void updatedUserList(UserList userList) {
-    }
-
-    @Override
-    public void gotUserLists(PagableResponseList<UserList> userLists) {
-    }
-
-    @Override
-    public void gotShowUserList(UserList userList) {
-    }
-
-    @Override
-    public void destroyedUserList(UserList userList) {
-    }
-
-    @Override
-    public void gotUserListStatuses(ResponseList<Status> statuses) {
-    }
-
-    @Override
-    public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
-    }
-
-    @Override
-    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {
-    }
-
-    /*List Members Methods*/
-
-    @Override
-    public void gotUserListMembers(PagableResponseList<User> users) {
-    }
-
-    @Override
-    public void addedUserListMember(UserList userList) {
-    }
-
-    @Override
-    public void addedUserListMembers(UserList userList) {
-    }
-
-    @Override
-    public void deletedUserListMember(UserList userList) {
-    }
-
-    @Override
-    public void checkedUserListMembership(User user) {
-    }
-
-    /*List Subscribers Methods*/
-
-    @Override
-    public void gotUserListSubscribers(PagableResponseList<User> users) {
-    }
-
-    @Override
-    public void subscribedUserList(UserList userList) {
-    }
-
-    @Override
-    public void unsubscribedUserList(UserList userList) {
-    }
-
-    @Override
-    public void checkedUserListSubscription(User user) {
-    }
-
-    /*Direct Message Methods*/
+    /* Direct Messages Resources */
     @Override
     public void gotDirectMessages(ResponseList<DirectMessage> messages) {
     }
@@ -189,7 +93,7 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void sentDirectMessage(DirectMessage message) {
+    public void gotDirectMessage(DirectMessage message) {
     }
 
     @Override
@@ -197,20 +101,20 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void gotDirectMessage(DirectMessage message) {
-    }
-    /*Friendship Methods*/
-
-    @Override
-    public void createdFriendship(User user) {
+    public void sentDirectMessage(DirectMessage message) {
     }
 
+    /* Friends & Followers Resources */
     @Override
-    public void destroyedFriendship(User user) {
+    public void gotFriendsIDs(IDs ids) {
     }
 
     @Override
-    public void gotShowFriendship(Relationship relationship) {
+    public void gotFollowersIDs(IDs ids) {
+    }
+
+    @Override
+    public void lookedUpFriendships(ResponseList<Friendship> friendships) {
     }
 
     @Override
@@ -222,47 +126,45 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void lookedUpFriendships(ResponseList<Friendship> friendships) {
+    public void createdFriendship(User user) {
+    }
+
+    @Override
+    public void destroyedFriendship(User user) {
     }
 
     @Override
     public void updatedFriendship(Relationship relationship) {
     }
 
-    /*Social Graph Methods*/
     @Override
-    public void gotFriendsIDs(IDs ids) {
+    public void gotShowFriendship(Relationship relationship) {
     }
 
     @Override
-    public void gotFollowersIDs(IDs ids) {
+    public void gotFriendsList(PagableResponseList<User> users) {
     }
 
-    /*Account Methods*/
+    @Override
+    public void gotFollowersList(PagableResponseList<User> users) {
+    }
+
+    /* Users Resources */
+    @Override
+    public void gotAccountSettings(AccountSettings settings) {
+    }
 
     @Override
     public void verifiedCredentials(User user) {
     }
 
     @Override
-    public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
-
-    }
-
-    @Override
-    public void updatedProfileColors(User user) {
-    }
-
-    @Override
-    public void gotAccountSettings(AccountSettings settings) {
-    }
-
-    @Override
     public void updatedAccountSettings(AccountSettings settings) {
     }
 
+    // updatedDeliveryDevice
     @Override
-    public void updatedProfileImage(User user) {
+    public void updatedProfile(User user) {
     }
 
     @Override
@@ -270,10 +172,87 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void updatedProfile(User user) {
+    public void updatedProfileColors(User user) {
     }
 
-    /*Favorite Methods*/
+    @Override
+    public void updatedProfileImage(User user) {
+    }
+
+    @Override
+    public void gotBlocksList(ResponseList<User> blockingUsers) {
+    }
+
+    @Override
+    public void gotBlockIDs(IDs blockingUsersIDs) {
+    }
+
+    @Override
+    public void createdBlock(User user) {
+    }
+
+    @Override
+    public void destroyedBlock(User user) {
+    }
+
+    @Override
+    public void lookedupUsers(ResponseList<User> users) {
+    }
+
+    @Override
+    public void gotUserDetail(User user) {
+    }
+
+    @Override
+    public void searchedUser(ResponseList<User> userList) {
+    }
+
+    @Override
+    public void gotContributees(ResponseList<User> users) {
+    }
+
+    @Override
+    public void gotContributors(ResponseList<User> users) {
+    }
+
+    @Override
+    public void removedProfileBanner() {
+    }
+
+    @Override
+    public void updatedProfileBanner() {
+    }
+
+    @Override
+    public void gotMutesList(ResponseList<User> blockingUsers) {
+    }
+
+    @Override
+    public void gotMuteIDs(IDs blockingUsersIDs) {
+    }
+
+    @Override
+    public void createdMute(User user) {
+    }
+
+    @Override
+    public void destroyedMute(User user) {
+    }
+
+    /* Suggested Users Resources */
+    @Override
+    public void gotUserSuggestions(ResponseList<User> users) {
+    }
+
+    @Override
+    public void gotSuggestedUserCategories(ResponseList<Category> category) {
+    }
+
+    @Override
+    public void gotMemberSuggestions(ResponseList<User> users) {
+    }
+
+    /* Favorites Resources */
     @Override
     public void gotFavorites(ResponseList<Status> statuses) {
     }
@@ -286,55 +265,95 @@ public class TwitterAdapter implements TwitterListener {
     public void destroyedFavorite(Status status) {
     }
 
-    /*Block Methods*/
-
+    /* Lists Resources */
     @Override
-    public void createdBlock(User user) {
+    public void gotUserLists(ResponseList<UserList> userLists) {
     }
 
     @Override
-    public void destroyedBlock(User user) {
+    public void gotUserListStatuses(ResponseList<Status> statuses) {
     }
 
     @Override
-    public void gotBlocksList(ResponseList<User> blockingUsers) {
+    public void destroyedUserListMember(UserList userList) {
     }
 
     @Override
-    public void gotBlockIDs(IDs blockingUsersIDs) {
-    }
-
-    /*Spam Reporting Methods*/
-
-    @Override
-    public void reportedSpam(User reportedSpammer) {
-    }
-
-
-    /*Saved Searches Methods*/
-    public void gotSavedSearches(ResponseList<SavedSearch> savedSearches){}
-    public void gotSavedSearch(SavedSearch savedSearch){}
-    public void createdSavedSearch(SavedSearch savedSearch){}
-    public void destroyedSavedSearch(SavedSearch savedSearch){}
-
-    /*Local Trends Methods*/
-
-    @Override
-    public void gotAvailableTrends(ResponseList<Location> locations) {
+    public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
     }
 
     @Override
-    public void gotLocationTrends(Trends trends) {
-    }
-
-    /*Geo Methods*/
-
-    @Override
-    public void searchedPlaces(ResponseList<Place> places) {
+    public void gotUserListSubscribers(PagableResponseList<User> users) {
     }
 
     @Override
-    public void gotSimilarPlaces(SimilarPlaces places) {
+    public void subscribedUserList(UserList userList) {
+    }
+
+    @Override
+    public void checkedUserListSubscription(User user) {
+    }
+
+    @Override
+    public void unsubscribedUserList(UserList userList) {
+    }
+
+    @Override
+    public void createdUserListMembers(UserList userList) {
+    }
+
+    @Override
+    public void checkedUserListMembership(User users) {
+    }
+
+    @Override
+    public void createdUserListMember(UserList userList) {
+    }
+
+    @Override
+    public void destroyedUserList(UserList userList) {
+    }
+
+    @Override
+    public void updatedUserList(UserList userList) {
+    }
+
+    @Override
+    public void createdUserList(UserList userList) {
+    }
+
+    @Override
+    public void gotShowUserList(UserList userList) {
+    }
+
+    @Override
+    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {
+    }
+
+    @Override
+    public void gotUserListMembers(PagableResponseList<User> users) {
+    }
+
+    /* Saved Searches Resources */
+    @Override
+    public void gotSavedSearches(ResponseList<SavedSearch> savedSearches) {
+    }
+
+    @Override
+    public void gotSavedSearch(SavedSearch savedSearch) {
+    }
+
+    @Override
+    public void createdSavedSearch(SavedSearch savedSearch) {
+    }
+
+    @Override
+    public void destroyedSavedSearch(SavedSearch savedSearch) {
+    }
+
+    /* Places & Geo Resources */
+    @Override
+    public void gotGeoDetails(Place place) {
     }
 
     @Override
@@ -342,45 +361,32 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void gotGeoDetails(Place place) {
+    public void searchedPlaces(ResponseList<Place> places) {
     }
 
     @Override
-    public void createdPlace(Place place) {
+    public void gotSimilarPlaces(ResponseList<Place> places) {
     }
 
-    /* Legal Resources*/
-
+    /* Trends Resources */
     @Override
-    public void gotTermsOfService(String tof) {
-
+    public void gotPlaceTrends(Trends trends) {
     }
 
     @Override
-    public void gotPrivacyPolicy(String privacyPolicy) {
-
-    }
-
-    /* #newtwitter Methods */
-
-    /**
-     *
-     */
-    @Override
-    public void gotRelatedResults(RelatedResults relatedResults) {
-    }
-
-    /*Help Methods*/
-    @Override
-    public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
+    public void gotAvailableTrends(ResponseList<Location> locations) {
     }
 
     @Override
-    public void gotLanguages(ResponseList<HelpResources.Language> languages) {
+    public void gotClosestTrends(ResponseList<Location> locations) {
     }
 
-    /* OAuth Methods*/
+    /* Spam Reporting Resources */
+    @Override
+    public void reportedSpam(User reportedSpammer) {
+    }
 
+    /* OAuth Resources */
     @Override
     public void gotOAuthRequestToken(RequestToken token) {
     }
@@ -389,11 +395,35 @@ public class TwitterAdapter implements TwitterListener {
     public void gotOAuthAccessToken(AccessToken token) {
     }
 
-    /**
-     * @param ex     TwitterException
-     * @param method
-     */
+    /* OAuth2 Resources */
     @Override
-    public void onException(TwitterException ex, TwitterMethod method) {
+    public void gotOAuth2Token(OAuth2Token token) {
     }
+
+    /* Help Resources */
+    @Override
+    public void gotAPIConfiguration(TwitterAPIConfiguration conf) {
+    }
+
+    @Override
+    public void gotLanguages(ResponseList<HelpResources.Language> languages) {
+    }
+
+    @Override
+    public void gotPrivacyPolicy(String privacyPolicy) {
+    }
+
+    @Override
+    public void gotTermsOfService(String tof) {
+    }
+
+    @Override
+    public void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus) {
+    }
+
+    @Override
+    public void onException(TwitterException te, TwitterMethod method) {
+    }
+
+
 }

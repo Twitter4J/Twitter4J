@@ -16,9 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -27,11 +24,13 @@ import java.util.Arrays;
  * @since Twitter4J 2.1.2
  */
 public final class FilterQuery implements java.io.Serializable {
-    private static final long serialVersionUID = 430966623248982833L;
+    private static final long serialVersionUID = -142808200594318258L;
     private int count;
     private long[] follow;
     private String[] track;
     private double[][] locations;
+    private String[] language;
+    private String filterLevel;
 
     /**
      * Creates a new FilterQuery
@@ -41,6 +40,8 @@ public final class FilterQuery implements java.io.Serializable {
         this.follow = null;
         this.track = null;
         this.locations = null;
+        this.language = null;
+        this.filterLevel = null;
     }
 
     /**
@@ -48,7 +49,7 @@ public final class FilterQuery implements java.io.Serializable {
      *
      * @param follow Specifies the users, by ID, to receive public tweets from.
      */
-    public FilterQuery(long[] follow) {
+    public FilterQuery(long... follow) {
         this();
         this.count = 0;
         this.follow = follow;
@@ -57,10 +58,22 @@ public final class FilterQuery implements java.io.Serializable {
     /**
      * Creates a new FilterQuery
      *
+     * @param track Specifies keywords to track.
+     * @since Twitter4J 4.0.4
+     */
+    public FilterQuery(String... track) {
+        this();
+        this.count = 0;
+        this.track = track;
+    }
+
+    /**
+     * Creates a new FilterQuery
+     *
      * @param count  Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @param follow Specifies the users, by ID, to receive public tweets from.
      */
-    public FilterQuery(int count, long[] follow) {
+    public FilterQuery(int count, long... follow) {
         this();
         this.count = count;
         this.follow = follow;
@@ -96,6 +109,23 @@ public final class FilterQuery implements java.io.Serializable {
     }
 
     /**
+     * Creates a new FilterQuery
+     *
+     * @param count     Indicates the number of previous statuses to stream before transitioning to the live stream.
+     * @param follow    Specifies the users, by ID, to receive public tweets from.
+     * @param track     Specifies keywords to track.
+     * @param locations Specifies the locations to track. 2D array
+     * @param language  Specifies the tweets language of the stream
+     */
+    public FilterQuery(int count, long[] follow, String[] track, double[][] locations, String[] language) {
+        this.count = count;
+        this.follow = follow;
+        this.track = track;
+        this.locations = locations;
+        this.language = language;
+    }
+
+    /**
      * Sets count
      *
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
@@ -112,7 +142,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param follow Specifies the users, by ID, to receive public tweets from.
      * @return this instance
      */
-    public FilterQuery follow(long[] follow) {
+    public FilterQuery follow(long... follow) {
         this.follow = follow;
         return this;
     }
@@ -123,7 +153,7 @@ public final class FilterQuery implements java.io.Serializable {
      * @param track Specifies keywords to track.
      * @return this instance
      */
-    public FilterQuery track(String[] track) {
+    public FilterQuery track(String... track) {
         this.track = track;
         return this;
     }
@@ -134,26 +164,53 @@ public final class FilterQuery implements java.io.Serializable {
      * @param locations Specifies the locations to track. 2D array
      * @return this instance
      */
-    public FilterQuery locations(double[][] locations) {
+    public FilterQuery locations(double[]... locations) {
         this.locations = locations;
         return this;
     }
+
+    /**
+     * Sets language
+     *
+     * @param language Specifies languages to track.
+     * @return this instance
+     */
+    public FilterQuery language(String... language) {
+        this.language = language;
+        return this;
+    }
+
+    /**
+     * The filter level limits what tweets appear in the stream to those with
+     * a minimum filter_level attribute value.
+     *
+     * @param filterLevel one of either none, low, or medium.
+     * @return this instance
+     */
+    public FilterQuery filterLevel(String filterLevel) {
+        this.filterLevel = filterLevel;
+        return this;
+    }
+
 
     /*package*/ HttpParameter[] asHttpParameterArray(HttpParameter stallWarningsParam) {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
 
         params.add(new HttpParameter("count", count));
         if (follow != null && follow.length > 0) {
-            params.add(new HttpParameter("follow"
-                    , z_T4JInternalStringUtil.join(follow)));
+            params.add(new HttpParameter("follow", StringUtil.join(follow)));
         }
         if (track != null && track.length > 0) {
-            params.add(new HttpParameter("track"
-                    , z_T4JInternalStringUtil.join(track)));
+            params.add(new HttpParameter("track", StringUtil.join(track)));
         }
         if (locations != null && locations.length > 0) {
-            params.add(new HttpParameter("locations"
-                    , toLocationsString(locations)));
+            params.add(new HttpParameter("locations", toLocationsString(locations)));
+        }
+        if (language != null && language.length > 0) {
+            params.add(new HttpParameter("language", StringUtil.join(language)));
+        }
+        if (filterLevel != null) {
+            params.add(new HttpParameter("filter_level", filterLevel));
         }
         params.add(stallWarningsParam);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
@@ -183,6 +240,9 @@ public final class FilterQuery implements java.io.Serializable {
         if (count != that.count) return false;
         if (!Arrays.equals(follow, that.follow)) return false;
         if (!Arrays.equals(track, that.track)) return false;
+        if (!Arrays.equals(language, that.language)) return false;
+        if (!(filterLevel == null ? that.filterLevel == null :
+            filterLevel.equals(that.filterLevel))) return false;
 
         return true;
     }
@@ -192,16 +252,20 @@ public final class FilterQuery implements java.io.Serializable {
         int result = count;
         result = 31 * result + (follow != null ? Arrays.hashCode(follow) : 0);
         result = 31 * result + (track != null ? Arrays.hashCode(track) : 0);
+        result = 31 * result + (language != null ? Arrays.hashCode(language) : 0);
+        result = 31 * result + (filterLevel != null ? filterLevel.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "FilterQuery{" +
-                "count=" + count +
-                ", follow=" + Arrays.toString(follow) +
-                ", track=" + (track == null ? null : Arrays.asList(track)) +
-                ", locations=" + (locations == null ? null : Arrays.asList(locations)) +
-                '}';
+            "count=" + count +
+            ", follow=" + Arrays.toString(follow) +
+            ", track=" + (track == null ? null : Arrays.asList(track)) +
+            ", locations=" + (locations == null ? null : Arrays.asList(locations)) +
+            ", language=" + (language == null ? null : Arrays.asList(language)) +
+            ", filter_level=" + filterLevel +
+            '}';
     }
 }

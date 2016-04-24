@@ -38,11 +38,11 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     }
 
     @Override
-    public void onUnfavorite(User source, User target, Status unfavoritedStatus) {
+    public void onUnfollow(User source, User unfollowedUser) {
     }
 
     @Override
-    public void onRetweet(User source, User target, Status retweetedStatus) {
+    public void onUnfavorite(User source, User target, Status unfavoritedStatus) {
     }
 
     @Override
@@ -82,11 +82,31 @@ public class UserStreamAdapter extends StatusAdapter implements UserStreamListen
     }
 
     @Override
+    public void onUserSuspension(long suspendedUser) {
+    }
+
+    @Override
+    public void onUserDeletion(long deletedUser) {
+    }
+
+    @Override
     public void onBlock(User source, User blockedUser) {
     }
 
     @Override
     public void onUnblock(User source, User unblockedUser) {
+    }
+
+    @Override
+    public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+    }
+
+    @Override
+    public void onFavoritedRetweet(User source, User target, Status favoritedStatus) {
+    }
+
+    @Override
+    public void onQuotedTweet(User source, User target, Status quotingTweet) {
     }
 
     @Override

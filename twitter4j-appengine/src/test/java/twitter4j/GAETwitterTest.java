@@ -32,10 +32,6 @@ public class GAETwitterTest extends TestCase {
         new LocalServiceTestHelper().setUp();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testGAETwitter() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
         assertTrue(twitter instanceof AppEngineTwitterImpl);

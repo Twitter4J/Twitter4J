@@ -35,4 +35,8 @@ public interface AuthorizationConfiguration {
     String getOAuthAccessToken();
 
     String getOAuthAccessTokenSecret();
+
+    String getOAuth2TokenType();
+
+    String getOAuth2AccessToken();
 }

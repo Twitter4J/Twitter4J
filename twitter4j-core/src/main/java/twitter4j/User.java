@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -38,6 +37,13 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return the name of the user
      */
     String getName();
+    
+    /**
+     * Returns the email of the user, if the app is whitelisted by Twitter
+     *
+     * @return the email of the user
+     */
+    String getEmail();
 
     /**
      * Returns the screen name of the user
@@ -73,21 +79,35 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      *
      * @return the profile image url of the user
      */
-    URL getProfileImageURL();
+    String getProfileImageURL();
+
+    String getBiggerProfileImageURL();
+
+    String getMiniProfileImageURL();
+
+    String getOriginalProfileImageURL();
+
+    String getProfileImageURLHttps();
+
+    String getBiggerProfileImageURLHttps();
+
+    String getMiniProfileImageURLHttps();
+
+    String getOriginalProfileImageURLHttps();
 
     /**
-     * Returns the profile image url of the user, served over SSL
+     * Tests if the user has not uploaded their own avatar
      *
-     * @return the profile image url of the user, served over SSL
+     * @return if the user has not uploaded their own avatar
      */
-    URL getProfileImageUrlHttps();
+    boolean isDefaultProfileImage();
 
     /**
      * Returns the url of the user
      *
      * @return the url of the user
      */
-    URL getURL();
+    String getURL();
 
     /**
      * Test if the user status is protected
@@ -125,8 +145,20 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     boolean isProfileUseBackgroundImage();
 
+    /**
+     * Tests if the user has not altered the theme or background
+     *
+     * @return if the user has not altered the theme or background
+     */
+    boolean isDefaultProfile();
+
     boolean isShowAllInlineMedia();
 
+    /**
+     * Returns the number of users the user follows (AKA "followings")
+     *
+     * @return the number of users the user follows
+     */
     int getFriendsCount();
 
     Date getCreatedAt();
@@ -137,9 +169,45 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     String getTimeZone();
 
-    String getProfileBackgroundImageUrl();
+    String getProfileBackgroundImageURL();
 
     String getProfileBackgroundImageUrlHttps();
+
+    /**
+     * @since Twitter4J 3.0.0
+     * @return profile banner URL
+     */
+    String getProfileBannerURL();
+
+    /**
+     * @since Twitter4J 3.0.0
+     * @return profile banner retina URL
+     */
+    String getProfileBannerRetinaURL();
+
+    /**
+     * @since Twitter4J 3.0.0
+     * @return profile banner iPad URL
+     */
+    String getProfileBannerIPadURL();
+
+    /**
+     * @since Twitter4J 3.0.0
+     * @return profile banner iPad retina URL
+     */
+    String getProfileBannerIPadRetinaURL();
+
+    /**
+     * @since Twitter4J 3.0.0
+     * @return profile banner mobile URL
+     */
+    String getProfileBannerMobileURL();
+
+    /**
+     * @since Twitter4J 3.0.0
+     * @return profile banner mobile retina URL
+     */
+    String getProfileBannerMobileRetinaURL();
 
     boolean isProfileBackgroundTiled();
 
@@ -188,4 +256,29 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @since Twitter4J 2.1.4
      */
     boolean isFollowRequestSent();
+
+    /**
+     * Returns URL entities for user description.
+     *
+     * @return URL entities for user description
+     * @since Twitter4J 3.0.3
+     */
+    URLEntity[] getDescriptionURLEntities();
+
+    /**
+     * Returns URL entity for user's URL.
+     *
+     * @return URL entity for user's URL.
+     * @since Twitter4J 3.0.3
+     */
+    URLEntity getURLEntity();
+
+    /**
+     *  Returns the list of country codes where the user is withheld
+     *
+     *  @return list of country codes where the tweet is withheld - null if not withheld
+     *  @since Twitter4j 4.0.3
+     */
+    String[] getWithheldInCountries();
+
 }

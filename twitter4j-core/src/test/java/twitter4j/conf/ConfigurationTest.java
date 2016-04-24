@@ -17,11 +17,8 @@
 
 package twitter4j.conf;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
-import twitter4j.Version;
 import twitter4j.auth.RequestToken;
-import twitter4j.internal.util.z_T4JInternalStringUtil;
 
 import java.io.*;
 import java.util.Properties;
@@ -36,14 +33,6 @@ public class ConfigurationTest extends TestCase {
     }
 
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testGetInstance() throws Exception {
         Configuration conf = ConfigurationContext.getInstance();
         assertNotNull(conf);
@@ -56,14 +45,6 @@ public class ConfigurationTest extends TestCase {
         assertEquals("https://www.bea.com", ConfigurationBase.fixURL(true, "https://www.bea.com"));
         assertNull(ConfigurationBase.fixURL(false, null));
         assertNull(ConfigurationBase.fixURL(true, null));
-    }
-
-    public void testSplit() throws Exception {
-        String original = "foo/bar";
-        String[] split = z_T4JInternalStringUtil.split(original, "/");
-        assertEquals("foo", split[0]);
-        assertEquals("bar", split[1]);
-        assertEquals(2, split.length);
     }
 
     public void testConfiguration() throws Exception {
@@ -99,122 +80,78 @@ public class ConfigurationTest extends TestCase {
         assertEquals(test, conf.getPassword());
         System.getProperties().remove("twitter4j.password");
 
-        System.getProperties().remove("twitter4j.clientVersion");
-        conf = new PropertyConfiguration();
-        Assert.assertEquals(Version.getVersion(), conf.getClientVersion());
-
-        conf.setClientVersion(test);
-        assertEquals(test, conf.getClientVersion());
-        System.setProperty("twitter4j.clientVersion", override);
-        conf = new PropertyConfiguration();
-        assertEquals(override, conf.getClientVersion());
-        conf.setClientVersion(test);
-        assertEquals(test, conf.getClientVersion());
-        System.getProperties().remove("twitter4j.clientVersion");
-
-
-        System.getProperties().remove("twitter4j.clientURL");
-        conf = new PropertyConfiguration();
-        assertEquals("http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml", conf.getClientURL());
-
-        conf.setClientURL(test);
-        assertEquals(test, conf.getClientURL());
-        System.setProperty("twitter4j.clientURL", override);
-        conf = new PropertyConfiguration();
-        assertEquals(override, conf.getClientURL());
-        conf.setClientURL(test);
-        assertEquals(test, conf.getClientURL());
-        System.getProperties().remove("twitter4j.clientURL");
-
-
-        System.getProperties().remove("twitter4j.http.userAgent");
-        conf = new PropertyConfiguration();
-        assertEquals("twitter4j http://twitter4j.org/ /" + Version.getVersion(), conf.getUserAgent());
-
-        conf.setUserAgent(test);
-        assertEquals(test, conf.getUserAgent());
-        System.setProperty("twitter4j.http.userAgent", override);
-        conf = new PropertyConfiguration();
-        assertEquals(override, conf.getUserAgent());
-        conf.setUserAgent(test);
-        assertEquals(test, conf.getUserAgent());
-        System.getProperties().remove("twitter4j.http.userAgent");
-
         System.getProperties().remove("twitter4j.http.proxyHost");
         conf = new PropertyConfiguration();
-        assertEquals(null, conf.getHttpProxyHost());
+        assertEquals(null, conf.getHttpClientConfiguration().getHttpProxyHost());
 
         System.setProperty("twitter4j.http.proxyHost", override);
         conf = new PropertyConfiguration();
-        assertEquals(override, conf.getHttpProxyHost());
+        assertEquals(override, conf.getHttpClientConfiguration().getHttpProxyHost());
         System.getProperties().remove("twitter4j.http.proxyHost");
 
         System.getProperties().remove("twitter4j.http.proxyPort");
         conf = new PropertyConfiguration();
-        assertEquals(-1, conf.getHttpProxyPort());
+        assertEquals(-1, conf.getHttpClientConfiguration().getHttpProxyPort());
 
         System.setProperty("twitter4j.http.proxyPort", "100");
         conf = new PropertyConfiguration();
-        assertEquals(100, conf.getHttpProxyPort());
+        assertEquals(100, conf.getHttpClientConfiguration().getHttpProxyPort());
         System.getProperties().remove("twitter4j.http.proxyPort");
 
 
         System.getProperties().remove("twitter4j.http.proxyUser");
         conf = new PropertyConfiguration();
-        assertEquals(null, conf.getHttpProxyUser());
+        assertEquals(null, conf.getHttpClientConfiguration().getHttpProxyUser());
 
         System.setProperty("twitter4j.http.proxyUser", override);
         conf = new PropertyConfiguration();
-        assertEquals(override, conf.getHttpProxyUser());
+        assertEquals(override, conf.getHttpClientConfiguration().getHttpProxyUser());
         System.getProperties().remove("twitter4j.http.proxyUser");
 
 
         System.getProperties().remove("twitter4j.http.proxyPassword");
         conf = new PropertyConfiguration();
-        assertEquals(null, conf.getHttpProxyPassword());
+        assertEquals(null, conf.getHttpClientConfiguration().getHttpProxyPassword());
 
         System.setProperty("twitter4j.http.proxyPassword", override);
         conf = new PropertyConfiguration();
-        assertEquals(override, conf.getHttpProxyPassword());
+        assertEquals(override, conf.getHttpClientConfiguration().getHttpProxyPassword());
         System.getProperties().remove("twitter4j.http.proxyPassword");
 
 
         System.getProperties().remove("twitter4j.http.connectionTimeout");
         conf = new PropertyConfiguration();
-        assertEquals(20000, conf.getHttpConnectionTimeout());
+        assertEquals(20000, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
 
         conf.setHttpConnectionTimeout(10);
-        assertEquals(10, conf.getHttpConnectionTimeout());
+        assertEquals(10, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
         System.setProperty("twitter4j.http.connectionTimeout", "100");
         conf = new PropertyConfiguration();
-        assertEquals(100, conf.getHttpConnectionTimeout());
+        assertEquals(100, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
         conf.setHttpConnectionTimeout(10);
-        assertEquals(10, conf.getHttpConnectionTimeout());
+        assertEquals(10, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
         System.getProperties().remove("twitter4j.http.connectionTimeout");
 
 
         System.getProperties().remove("twitter4j.http.readTimeout");
         conf = new PropertyConfiguration();
-        assertEquals(120000, conf.getHttpReadTimeout());
+        assertEquals(120000, conf.getHttpClientConfiguration().getHttpReadTimeout());
 
         conf.setHttpReadTimeout(10);
-        assertEquals(10, conf.getHttpReadTimeout());
+        assertEquals(10, conf.getHttpClientConfiguration().getHttpReadTimeout());
         System.setProperty("twitter4j.http.readTimeout", "100");
         conf = new PropertyConfiguration();
-        assertEquals(100, conf.getHttpReadTimeout());
+        assertEquals(100, conf.getHttpClientConfiguration().getHttpReadTimeout());
         conf.setHttpReadTimeout(10);
-        assertEquals(10, conf.getHttpReadTimeout());
+        assertEquals(10, conf.getHttpClientConfiguration().getHttpReadTimeout());
         System.getProperties().remove("twitter4j.http.readTimeout");
-
-        assertFalse(conf.isDalvik());
-
 
         writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=1234");
         conf = new PropertyConfiguration();
-        assertEquals(1234, conf.getHttpReadTimeout());
+        assertEquals(1234, conf.getHttpClientConfiguration().getHttpReadTimeout());
         writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=4321");
         conf = new PropertyConfiguration();
-        assertEquals(4321, conf.getHttpReadTimeout());
+        assertEquals(4321, conf.getHttpClientConfiguration().getHttpReadTimeout());
         deleteFile("./twitter4j.properties");
     }
 
@@ -242,7 +179,7 @@ public class ConfigurationTest extends TestCase {
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/");
         conf = new PropertyConfiguration("/");
         assertEquals("http://somewhere.com/", conf.getRestBaseURL());
-
+        deleteFile("./twitter4j.properties");
     }
 
     public void testTwitter4jPrefixOmittable() throws Exception {
@@ -277,12 +214,12 @@ public class ConfigurationTest extends TestCase {
 
         // configuration for two different countries and default
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/"
-                + "\n" + "http.useSSL=false"
-                + "\n" + "user=one"
-                + "\n" + "china.restBaseURL=http://somewhere.cn/"
-                + "\n" + "china.user=two"
-                + "\n" + "japan.restBaseURL=http://yusuke.homeip.net/"
-                + "\n" + "japan.user=three"
+                        + "\n" + "http.useSSL=false"
+                        + "\n" + "user=one"
+                        + "\n" + "china.restBaseURL=http://somewhere.cn/"
+                        + "\n" + "china.user=two"
+                        + "\n" + "japan.restBaseURL=http://yusuke.homeip.net/"
+                        + "\n" + "japan.user=three"
         );
         conf = new PropertyConfiguration();
         assertEquals("one", conf.getUser());
@@ -293,14 +230,14 @@ public class ConfigurationTest extends TestCase {
 
 
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/"
-                + "\n" + "http.useSSL=false"
-                + "\n" + "user=one"
-                + "\n" + "password=pasword-one"
-                + "\n" + "china.restBaseURL=http://somewhere.cn/"
-                + "\n" + "china.user1.user=two"
-                + "\n" + "china.user1.password=pasword-two"
-                + "\n" + "china.user2.user=three"
-                + "\n" + "china.user2.password=pasword-three"
+                        + "\n" + "http.useSSL=false"
+                        + "\n" + "user=one"
+                        + "\n" + "password=pasword-one"
+                        + "\n" + "china.restBaseURL=http://somewhere.cn/"
+                        + "\n" + "china.user1.user=two"
+                        + "\n" + "china.user1.password=pasword-two"
+                        + "\n" + "china.user2.user=three"
+                        + "\n" + "china.user2.password=pasword-three"
         );
         conf = new PropertyConfiguration();
         assertEquals("one", conf.getUser());
@@ -325,52 +262,29 @@ public class ConfigurationTest extends TestCase {
 
         assertEquals(conf, (Configuration) serializeDeserialize(conf));
 
-        assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
-
-        builder = new ConfigurationBuilder();
-        builder.setUseSSL(true);
-        conf = builder.build();
         assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
-        assertTrue(0 == conf.getSearchBaseURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
         assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         builder = new ConfigurationBuilder();
-        builder.setUseSSL(false);
-        conf = builder.build();
-        assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getUserStreamBaseURL().indexOf("https://"));
-
-        builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey("key");
         builder.setOAuthConsumerSecret("secret");
         conf = builder.build();
-        assertTrue(0 == conf.getRestBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getSearchBaseURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
+        assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         RequestToken rt = new RequestToken("key", "secret");
 
         // TFJ-328 RequestToken.getAuthenticationURL()/getAuthorizationURL() should return URLs starting with https:// for security reasons
-        assertTrue(0 == rt.getAuthenticationURL().indexOf("http://"));
-        assertTrue(0 == rt.getAuthorizationURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("http://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("http://"));
+        assertTrue(0 == rt.getAuthenticationURL().indexOf("https://"));
+        assertTrue(0 == rt.getAuthorizationURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
+        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         // disable SSL
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
@@ -400,6 +314,14 @@ public class ConfigurationTest extends TestCase {
         byteInputStream.close();
         ois.close();
         return that;
+    }
+
+    public void testEnvironmentVariableBasedConfiguration() throws Exception {
+        Configuration conf = ConfigurationContext.getInstance();
+        // perquisite: export twitter4j.debug=true
+//        assertTrue(conf.isDebugEnabled());
+        // perquisite: export twitter4j.debug=false
+//        assertFalse(conf.isDebugEnabled());
     }
 
     private void writeFile(String path, String content) throws IOException {

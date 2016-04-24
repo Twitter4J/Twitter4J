@@ -31,7 +31,7 @@ public final class TimeSpanConverter implements Serializable {
     private static final int ONE_HOUR_IN_SECONDS = 60 * 60;
     private static final int ONE_DAY_IN_SECONDS = 24 * ONE_HOUR_IN_SECONDS;
     private static final int ONE_MONTH_IN_SECONDS = 30 * ONE_DAY_IN_SECONDS;
-    private static final long serialVersionUID = 3557748591604361946L;
+    private static final long serialVersionUID = 8665013607650804076L;
     private final MessageFormat[] formats = new MessageFormat[6];
     private final SimpleDateFormat dateMonth;
     private final SimpleDateFormat dateMonthYear;
@@ -78,8 +78,8 @@ public final class TimeSpanConverter implements Serializable {
         } else if ("es".equals(language)) {
             formats[NOW] = new MessageFormat("Ahora");
             formats[N_SECONDS_AGO] = new MessageFormat("hace {0} segundos");
-            formats[A_MINUTE_AGO] = new MessageFormat("hace 1 munito");
-            formats[N_MINUTES_AGO] = new MessageFormat("hace {0} munitos");
+            formats[A_MINUTE_AGO] = new MessageFormat("hace 1 minuto");
+            formats[N_MINUTES_AGO] = new MessageFormat("hace {0} minutos");
             formats[AN_HOUR_AGO] = new MessageFormat("hace 1 hora");
             formats[N_HOURS_AGO] = new MessageFormat("hace {0} horas");
             dateMonth = new SimpleDateFormat("d MMM", locale);

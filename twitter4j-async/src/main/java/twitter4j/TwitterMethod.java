@@ -25,6 +25,8 @@ public enum TwitterMethod {
     MENTIONS_TIMELINE,
     USER_TIMELINE,
     HOME_TIMELINE,
+    RETWEETS_OF_ME,
+
 
     /* Tweets Resources */
     RETWEETS,
@@ -32,6 +34,8 @@ public enum TwitterMethod {
     DESTROY_STATUS,
     UPDATE_STATUS,
     RETWEET_STATUS,
+    OEMBED,
+    LOOKUP,
 
     /* Search Resources */
     SEARCH,
@@ -53,6 +57,8 @@ public enum TwitterMethod {
     DESTROY_FRIENDSHIP,
     UPDATE_FRIENDSHIP,
     SHOW_FRIENDSHIP,
+    FRIENDS_LIST,
+    FOLLOWERS_LIST,
 
     /* Users Resources */
     ACCOUNT_SETTINGS,
@@ -67,6 +73,10 @@ public enum TwitterMethod {
     BLOCK_LIST_IDS,
     CREATE_BLOCK,
     DESTROY_BLOCK,
+    MUTE_LIST,
+    MUTE_LIST_IDS,
+    CREATE_MUTE,
+    DESTROY_MUTE,
 
     SHOW_USER,
     LOOKUP_USERS,
@@ -74,6 +84,8 @@ public enum TwitterMethod {
 
     CONTRIBUTORS,
     CONTRIBUTEEES,
+    REMOVE_PROFILE_BANNER,
+    UPDATE_PROFILE_BANNER,
 
     RATE_LIMIT_STATUS,
 
@@ -90,16 +102,16 @@ public enum TwitterMethod {
     /* Lists Resources */
     USER_LISTS,
     USER_LIST_STATUSES,
-    DELETE_LIST_MEMBER,
+    DESTROY_LIST_MEMBER,
     USER_LIST_MEMBERSHIPS,
     LIST_SUBSCRIBERS,
     SUBSCRIBE_LIST,
     CHECK_LIST_SUBSCRIPTION,
     UNSUBSCRIBE_LIST,
-    ADD_LIST_MEMBERS,
+    CREATE_LIST_MEMBERS,
     CHECK_LIST_MEMBERSHIP,
     LIST_MEMBERS,
-    ADD_LIST_MEMBER,
+    CREATE_LIST_MEMBER,
     DESTROY_USER_LIST,
     UPDATE_USER_LIST,
     CREATE_USER_LIST,
@@ -112,56 +124,30 @@ public enum TwitterMethod {
     CREATE_SAVED_SEARCH,
     DESTROY_SAVED_SEARCH,
 
-    //getSavedSearches()
-    //showSavedSearch()
-    //createSavedSearch()
-    //destroySavedSearch()
-
     /* Places & Geo Resources */
-    /* Trends Resources */
-    /* Spam Reporting Resources */
-    /* OAuth Resources */
-    /* Help Resources */
-
-
-    /*User Methods*/
-    /*List Methods*/
-
-
-
-    /*Account Methods*/
-    /*Favorite Methods*/
-
-    /*Block Methods*/
-
-    /*Spam Reporting Methods*/
-    REPORT_SPAM,
-
-    /*Saved Searches Methods*/
-
-    /*Local Trends Methods*/
-    AVAILABLE_TRENDS,
-    LOCATION_TRENDS,
-
-    /*Geo Methods*/
     SEARCH_PLACES,
     SIMILAR_PLACES,
     REVERSE_GEO_CODE,
     GEO_DETAILS,
-    CREATE_PLACE,
 
-    /* Legal Resources */
+    /* Trends Resources */
+    PLACE_TRENDS,
+    AVAILABLE_TRENDS,
+    CLOSEST_TRENDS,
+
+    /* Spam Reporting Resources */
+    REPORT_SPAM,
+
+    /* OAuth Resources */
+    OAUTH_REQUEST_TOKEN,
+    OAUTH_ACCESS_TOKEN,
+
+    /* Help Resources */
     TERMS_OF_SERVICE,
-    PRIVACY_POLICY,
-
-    /* #newtwitter Methods */
-    RELATED_RESULTS,
-
-    /*Help Methods*/
     CONFIGURATION,
     LANGUAGES,
+    PRIVACY_POLICY,
 
-    /*OAuth Methods*/
-    OAUTH_REQUEST_TOKEN,
-    OAUTH_ACCESS_TOKEN
+    /* Undocumented Resources */
+    RELATED_RESULTS,
 }

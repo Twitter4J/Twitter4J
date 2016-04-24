@@ -17,7 +17,6 @@
 package twitter4j;
 
 import junit.framework.Assert;
-import twitter4j.json.DataObjectFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,10 +31,6 @@ public class TwitterTest extends TwitterTestBase {
 
     public TwitterTest(String name) {
         super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
     }
 
     protected void tearDown() throws Exception {
@@ -54,11 +49,15 @@ public class TwitterTest extends TwitterTestBase {
     //need to think of a way to test this, perhaps mocking out Twitter is the way to go
     public void testRateLimitStatus() throws Exception {
         Map<String, RateLimitStatus> rateLimitStatus = twitter1.getRateLimitStatus();
-        assertNotNull(DataObjectFactory.getRawJSON(rateLimitStatus));
-        assertEquals(rateLimitStatus, DataObjectFactory.createRateLimitStatus(DataObjectFactory.getRawJSON(rateLimitStatus)));
+        assertNotNull(TwitterObjectFactory.getRawJSON(rateLimitStatus));
+        assertEquals(rateLimitStatus, TwitterObjectFactory.createRateLimitStatus(TwitterObjectFactory.getRawJSON(rateLimitStatus)));
         RateLimitStatus status = rateLimitStatus.values().iterator().next();
         assertTrue(10 < status.getLimit());
         assertTrue(10 < status.getRemaining());
+        assertTrue(0 < status.getSecondsUntilReset());
+
+        rateLimitStatus = twitter1.getRateLimitStatus("block", "statuses");
+        assertTrue(rateLimitStatus.values().size() > 5);
 
         twitter1.addRateLimitStatusListener(new RateLimitStatusListener() {
             public void onRateLimitStatus(RateLimitStatusEvent event) {
@@ -89,11 +88,11 @@ public class TwitterTest extends TwitterTestBase {
         // the listener doesn't implement serializable and deserialized form should not be equal to the original object
         assertDeserializedFormIsNotEqual(twitter1);
 
-        twitter1.getMentions();
+        twitter1.getMentionsTimeline();
         assertTrue(accountLimitStatusAcquired);
         assertFalse(ipLimitStatusAcquired);
         RateLimitStatus previous = this.rateLimitStatus;
-        twitter1.getMentions();
+        twitter1.getMentionsTimeline();
         assertTrue(accountLimitStatusAcquired);
         assertFalse(ipLimitStatusAcquired);
         assertTrue(previous.getRemaining() > this.rateLimitStatus.getRemaining());
@@ -102,13 +101,6 @@ public class TwitterTest extends TwitterTestBase {
 
     public void testGetAccessLevel() throws Exception {
         TwitterResponse response;
-        try {
-            response = twitter1.getAccountSettings();
-            assertEquals(TwitterResponse.NONE, response.getAccessLevel());
-        } catch (TwitterException te) {
-            // the account is being rate limited
-            assertEquals(te.getStatusCode(), 400);
-        }
         response = twitter1.verifyCredentials();
         assertEquals(TwitterResponse.READ_WRITE, response.getAccessLevel());
         response = rwPrivateMessage.verifyCredentials();

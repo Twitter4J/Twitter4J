@@ -15,7 +15,6 @@
  */
 package twitter4j;
 
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -35,14 +34,14 @@ public interface MediaEntity extends URLEntity {
      *
      * @return the media URL
      */
-    URL getMediaURL();
+    String getMediaURL();
 
     /**
      * Returns the media secure URL.
      *
      * @return the media secure URL
      */
-    URL getMediaURLHttps();
+    String getMediaURLHttps();
 
     /**
      * Returns size variations of the media.
@@ -67,10 +66,9 @@ public interface MediaEntity extends URLEntity {
     }
 
     /**
-     * Returns the media type ("photo").
+     * Returns the media type ("photo", "video", "animated_gif").
      *
-     * @return the media type ("photo").
+     * @return the media type ("photo", "video", "animated_gif").
      */
     String getType();
-
 }

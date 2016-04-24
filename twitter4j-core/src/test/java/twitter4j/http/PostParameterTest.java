@@ -17,7 +17,7 @@
 package twitter4j.http;
 
 import junit.framework.TestCase;
-import twitter4j.internal.http.HttpParameter;
+import twitter4j.HttpParameter;
 
 import java.io.File;
 
@@ -28,14 +28,6 @@ public class PostParameterTest extends TestCase {
 
     public PostParameterTest(String name) {
         super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
     }
 
     public void testBooleanParameter() throws Exception {

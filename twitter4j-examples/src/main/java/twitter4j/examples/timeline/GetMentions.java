@@ -35,7 +35,7 @@ public class GetMentions {
         Twitter twitter = new TwitterFactory().getInstance();
         try {
             User user = twitter.verifyCredentials();
-            List<Status> statuses = twitter.getMentions();
+            List<Status> statuses = twitter.getMentionsTimeline();
             System.out.println("Showing @" + user.getScreenName() + "'s mentions.");
             for (Status status : statuses) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
