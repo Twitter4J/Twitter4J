@@ -129,4 +129,15 @@ public class Http2ClientTest extends TestCase {
 
         return http;
     }
+    
+    public void testUploadMediaFromStream() throws Exception {
+        Twitter twitter = TwitterFactory.getSingleton();
+        UploadedMedia media2 = twitter.uploadMedia("fromInputStream", 
+                Http2ClientTest.class.getResourceAsStream("/twitter4j.jpg"));
+
+        StatusUpdate update = new StatusUpdate("from input stream");
+        update.setMediaIds(media2.getMediaId());
+        Status status = twitter.updateStatus(update);
+        assertEquals("from input stream", status.getText());
+    }
 }
