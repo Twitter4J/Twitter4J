@@ -68,6 +68,8 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     private static final String ASYNC_NUM_THREADS = "async.numThreads";
     private static final String ASYNC_DAEMON_ENABLED = "async.daemonEnabled";
+    private static final String STREAM_THREAD_NAME = "streamThreadName";
+
     private static final String CONTRIBUTING_TO = "contributingTo";
     private static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
     private static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
@@ -86,9 +88,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
     private static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
     private static final long serialVersionUID = -7262615247923693252L;
-    private String OAuth2Scope;
 
 
+    @SuppressWarnings("unused")
     public PropertyConfiguration(InputStream is) {
         super();
         Properties props = new Properties();
@@ -300,6 +302,9 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, ASYNC_DAEMON_ENABLED)) {
             setDaemonEnabled(getBoolean(props, prefix, ASYNC_DAEMON_ENABLED));
         }
+        if (notNull(props, prefix, STREAM_THREAD_NAME)) {
+            setStreamThreadName(getString(props, prefix, STREAM_THREAD_NAME));
+        }
         if (notNull(props, prefix, CONTRIBUTING_TO)) {
             setContributingTo(getLongProperty(props, prefix, CONTRIBUTING_TO));
         }
@@ -395,12 +400,12 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         cacheInstance();
     }
 
-    boolean getBoolean(Properties props, String prefix, String name) {
+    private boolean getBoolean(Properties props, String prefix, String name) {
         String value = props.getProperty(prefix + name);
         return Boolean.valueOf(value);
     }
 
-    int getIntProperty(Properties props, String prefix, String name) {
+    private int getIntProperty(Properties props, String prefix, String name) {
         String value = props.getProperty(prefix + name);
         try {
             return Integer.parseInt(value);
@@ -409,7 +414,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
     }
 
-    long getLongProperty(Properties props, String prefix, String name) {
+    private long getLongProperty(Properties props, String prefix, String name) {
         String value = props.getProperty(prefix + name);
         try {
             return Long.parseLong(value);
@@ -418,7 +423,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
     }
 
-    String getString(Properties props, String prefix, String name) {
+    private String getString(Properties props, String prefix, String name) {
         return props.getProperty(prefix + name);
     }
 

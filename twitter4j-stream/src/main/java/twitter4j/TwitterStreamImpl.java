@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.format;
 import static twitter4j.HttpResponseCode.FORBIDDEN;
 import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
 
@@ -44,8 +45,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     private final String stallWarningsGetParam;
     private final HttpParameter stallWarningsParam;
-    
-    private String streamName = "";
 
     /*package*/
     TwitterStreamImpl(Configuration conf, Authorization auth) {
@@ -60,10 +59,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         stallWarningsParam = new HttpParameter("stall_warnings", conf.isStallWarningsEnabled());
     }
     
-    public void setStreamName(String streamName){
-    	this.streamName = streamName;
-    }
-
     /* Streaming API */
 
     @Override
@@ -520,7 +515,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     abstract class TwitterStreamConsumer extends Thread {
         private StatusStreamBase stream = null;
-        private final String NAME = "Twitter Stream consumer-" + (++count);
+        private final String NAME;
         private volatile boolean closed = false;
         private StreamListener[] streamListeners;
         private RawStreamListener[] rawStreamListeners;
@@ -529,6 +524,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         TwitterStreamConsumer(Mode mode) {
             super();
             this.mode = mode;
+            NAME = format("Twitter Stream consumer / %s [%s]", conf.getStreamThreadName(), ++count);
             updateListeners();
             setName(NAME + "[initializing]");
         }
@@ -567,8 +563,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                         }
                         // connection established successfully
                         timeToSleep = NO_WAIT;
-                        logger.info("Receiving status stream."+streamName);
-                        setStatus("[Receiving stream]"+streamName);
+                        logger.info("Receiving status stream.");
+                        setStatus("[Receiving stream]");
                         while (!closed) {
                             try {
                                 stream.next(this.streamListeners, this.rawStreamListeners);
