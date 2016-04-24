@@ -38,16 +38,15 @@ public class ListResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));
         assertEquals(userList, TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userList)));
         assertNotNull(userList);
-        assertEquals("testpoint1", userList.getName());
-//        assertEquals("@twit4j/testpoint1", userList.getFullName());
-        assertEquals("description1", userList.getDescription());
+        assertNotNull(userList.getName());
+        assertNotNull(userList.getDescription());
 
         userLists = twitter1.getUserLists(id1.screenName);
         assertEquals(userList, TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userList)));
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));
         assertFalse(userLists.size() == 0);
 
-        userLists = twitter1.getUserLists("@"+id1.screenName);
+        userLists = twitter1.getUserLists("@" + id1.screenName);
         assertEquals(userList, TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userList)));
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));
         assertFalse(userLists.size() == 0);
@@ -147,7 +146,7 @@ public class ListResourcesTest extends TwitterTestBase {
         assertEquals(userLists.get(0), TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userLists.get(0))));
         assertNotNull(userLists);
 
-        userLists = twitter1.getUserListMemberships("@"+id1.screenName, -1l);
+        userLists = twitter1.getUserListMemberships("@" + id1.screenName, -1l);
         assertNotNull(TwitterObjectFactory.getRawJSON(userLists));
         assertEquals(userLists.get(0), TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userLists.get(0))));
         assertNotNull(userLists);
@@ -160,7 +159,7 @@ public class ListResourcesTest extends TwitterTestBase {
         assertNotNull(userLists);
         assertEquals(0, userLists.size());
 
-        userLists = twitter1.getUserListSubscriptions("@"+id1.screenName, -1l);
+        userLists = twitter1.getUserListSubscriptions("@" + id1.screenName, -1l);
         assertNotNull(TwitterObjectFactory.getRawJSON(userLists));
         if (userLists.size() > 0) {
             assertEquals(userLists.get(0), TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userLists.get(0))));
@@ -216,7 +215,7 @@ public class ListResourcesTest extends TwitterTestBase {
         assertEquals(0, userList.getMemberCount());
 
         userList = twitter1.createUserListMembers(userList.getId(), screenNames);
-        userList = twitter1.destroyUserListMembers("@"+userList.getUser().getScreenName(), userList.getSlug(), screenNames);
+        userList = twitter1.destroyUserListMembers("@" + userList.getUser().getScreenName(), userList.getSlug(), screenNames);
         userList = twitter1.showUserList(userList.getId());
         assertEquals(0, userList.getMemberCount());
 
