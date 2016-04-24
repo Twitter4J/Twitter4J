@@ -116,7 +116,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
         File randomFile = getRandomlyChosenFile();
         FileInputStream fis = new FileInputStream(randomFile);
-        UploadedMedia media2 = twitter1.uploadMedia(randomFile.getName(), fis);
+        UploadedMedia media2 = twitter1.uploadMedia("fromInputStream", fis);
 
         assertNotNull(media2.getMediaId());
         assertNotNull(media2.getSize());
