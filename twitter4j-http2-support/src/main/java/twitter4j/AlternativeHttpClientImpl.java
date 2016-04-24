@@ -20,6 +20,8 @@ package twitter4j;
 import com.squareup.okhttp.*;
 import twitter4j.conf.ConfigurationContext;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.net.Authenticator;
@@ -146,10 +148,14 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 			MultipartBuilder multipartBuilder = new MultipartBuilder(boundary).type(MultipartBuilder.FORM);
 			for(HttpParameter parameter:req.getParameters()){
 				if(parameter.isFile()) {
+					MediaType mediaType = MediaType.parse(parameter.getContentType());
+					RequestBody requestBody = RequestBody.create(mediaType, parameter.getFile());
+					if (parameter.hasFileBody()) {
+						requestBody = RequestBody.create(mediaType, getBytesContent(parameter.getFileBody()));
+					}
 					multipartBuilder.addPart(
-							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName()+"\""),
-							RequestBody.create(MediaType.parse(parameter.getContentType()),parameter.getFile())
-					);
+							Headers.of("Content-Disposition", "form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName() + "\""),
+							requestBody);
 				}else {
 					multipartBuilder.addPart(
 							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName()+"\""),
@@ -161,6 +167,24 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 		}else {
 			return RequestBody.create(FORM_URL_ENCODED,HttpParameter.encodeParameters(req.getParameters()).getBytes("UTF-8"));
 		}
+	}
+
+	private byte[] getBytesContent(InputStream inputStream) {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		while(true) {
+			int len = 0;
+			try {
+				len = inputStream.read(buffer);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(len < 0) {
+				break;
+			}
+			os.write(buffer, 0, len);
+		}
+		return os.toByteArray();
 	}
 
 	private Headers getHeaders(HttpRequest req){
