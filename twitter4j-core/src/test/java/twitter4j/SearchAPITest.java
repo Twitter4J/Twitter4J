@@ -137,10 +137,9 @@ public class SearchAPITest extends TwitterTestBase {
 
         // Don't test since_id here -- it gets clobbered by since
         // Don't test locale here -- only JP is valid
-        // #tbt is "throwback thursday" -- a fabulously popular hashtag
-        Query query=new Query("#tbt")
-            .lang("en")
-            .geoCode(new GeoLocation(40.7903, -73.9597), 10, "mi")
+        Query query = new Query("starbucks")
+                .lang("en")
+                .geoCode(new GeoLocation(47.6097271,-122.3465704), 10, "mi")
             .resultType(Query.ResultType.recent)
             .since("2014-1-1")
             .until(until);
