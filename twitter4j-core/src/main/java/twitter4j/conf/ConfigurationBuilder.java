@@ -252,6 +252,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setIncludeExtAltTextEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setIncludeExtAltTextEnabled(enabled);
+        return this;
+    }
+
     public ConfigurationBuilder setIncludeMyRetweetEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeMyRetweetEnabled(enabled);
