@@ -270,6 +270,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setIncludeEmailEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setIncludeEmailEnabled(enabled);
+        return this;
+    }
+
     public ConfigurationBuilder setJSONStoreEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setJSONStoreEnabled(enabled);
