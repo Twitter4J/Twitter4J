@@ -15,8 +15,9 @@
  */
 package twitter4j;
 
-import javax.annotation.Generated;
 import java.util.Map;
+
+import javax.annotation.Generated;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -65,6 +66,11 @@ final class LazyTwitterAPIConfiguration implements twitter4j.TwitterAPIConfigura
 
     public int getCharactersReservedPerMedia() {
         return getTarget().getCharactersReservedPerMedia();
+    }
+
+    @Override
+    public int getDmTextCharacterLimit() {
+        return getTarget().getDmTextCharacterLimit();
     }
 
 
