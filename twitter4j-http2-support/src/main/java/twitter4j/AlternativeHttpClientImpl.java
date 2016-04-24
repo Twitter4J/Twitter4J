@@ -17,9 +17,14 @@
 
 package twitter4j;
 
-import com.squareup.okhttp.*;
+import okhttp3.*;
+import okhttp3.internal.Util;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Source;
 import twitter4j.conf.ConfigurationContext;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.net.Authenticator;
@@ -48,7 +53,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 	//for test
 	public static boolean sPreferSpdy = true;
 	public static boolean sPreferHttp2 = true;
-	private String lastRequestProtocol = null;
+	private Protocol lastRequestProtocol = null;
 
 	public AlternativeHttpClientImpl(){
 		super(ConfigurationContext.getInstance().getHttpClientConfiguration());
@@ -63,7 +68,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 	HttpResponse handleRequest(HttpRequest req) throws TwitterException {
 		prepareOkHttpClient();
 
-		HttpResponse res = null;
+		OkHttpResponse res = null;
 		Request.Builder requestBuilder = new Request.Builder();
 		requestBuilder.url(req.getURL()).headers(getHeaders(req));
 		switch (req.getMethod()){
@@ -90,10 +95,10 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 		for(retriedCount = 0; retriedCount < retry; retriedCount++){
 			int responseCode = -1;
 			try {
-				Response response = okHttpClient.newCall(request).execute();
-				lastRequestProtocol = response.header("OkHttp-Selected-Protocol");
-				res = new OkHttpResponse(response, CONF);
-				responseCode = response.code();
+ 				Call call = okHttpClient.newCall(request);
+				res = new OkHttpResponse(call,okHttpClient, CONF);
+				lastRequestProtocol = res.getProtocol();
+				responseCode = res.getStatusCode();
 
 				if(logger.isDebugEnabled()){
 					logger.debug("Response: ");
@@ -143,21 +148,29 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 	private RequestBody getRequestBody(HttpRequest req) throws UnsupportedEncodingException {
 		if(HttpParameter.containsFile(req.getParameters())){
 			final String boundary = "----Twitter4J-upload" + System.currentTimeMillis();
-			MultipartBuilder multipartBuilder = new MultipartBuilder(boundary).type(MultipartBuilder.FORM);
+
+			MultipartBody.Builder multipartBodyBuilder =new MultipartBody.Builder(boundary).setType(MultipartBody.FORM);
 			for(HttpParameter parameter:req.getParameters()){
 				if(parameter.isFile()) {
-					multipartBuilder.addPart(
-							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName()+"\""),
-							RequestBody.create(MediaType.parse(parameter.getContentType()),parameter.getFile())
-					);
+					if(parameter.hasFileBody()) {
+						multipartBodyBuilder.addPart(
+								Headers.of("Content-Disposition", "form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName() + "\""),
+								createInputStreamRequestBody(MediaType.parse(parameter.getContentType()), parameter.getFileBody())
+						);
+					}else {
+						multipartBodyBuilder.addPart(
+								Headers.of("Content-Disposition", "form-data; name=\"" + parameter.getName() + "\"; filename=\"" + parameter.getFile().getName() + "\""),
+								RequestBody.create(MediaType.parse(parameter.getContentType()),parameter.getFile())
+						);
+					}
 				}else {
-					multipartBuilder.addPart(
+					multipartBodyBuilder.addPart(
 							Headers.of("Content-Disposition","form-data; name=\"" + parameter.getName()+"\""),
-							RequestBody.create(TEXT,parameter.getValue().getBytes("UTF-8"))
+							RequestBody.create(TEXT, parameter.getValue().getBytes("UTF-8"))
 					);
 				}
 			}
-			return multipartBuilder.build();
+			return multipartBodyBuilder.build();
 		}else {
 			return RequestBody.create(FORM_URL_ENCODED,HttpParameter.encodeParameters(req.getParameters()).getBytes("UTF-8"));
 		}
@@ -186,25 +199,53 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 			}
 		}
 		return builder.build();
+	}
 
+	public static RequestBody createInputStreamRequestBody(final MediaType mediaType, final InputStream inputStream) {
+		return new RequestBody() {
+			@Override
+			public MediaType contentType() {
+				return mediaType;
+			}
+
+			@Override
+			public long contentLength() {
+				try {
+					return inputStream.available();
+				} catch (IOException e) {
+					return 0;
+				}
+			}
+
+			@Override
+			public void writeTo(BufferedSink sink) throws IOException {
+				Source source = null;
+				try {
+					source = Okio.source(inputStream);
+					sink.writeAll(source);
+				} finally {
+					Util.closeQuietly(source);
+				}
+			}
+		};
 	}
 
 	private void prepareOkHttpClient(){
 		if(okHttpClient == null){
-			okHttpClient = new OkHttpClient();
+			OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
 			//set protocols
 			List<Protocol> protocols = new ArrayList<Protocol>();
 			protocols.add(Protocol.HTTP_1_1);
 			if (sPreferHttp2)protocols.add(Protocol.HTTP_2);
 			if (sPreferSpdy)protocols.add(Protocol.SPDY_3);
-			okHttpClient.setProtocols(protocols);
+			builder.protocols(protocols);
 
 			//connectionPool setup
-			okHttpClient.setConnectionPool(new ConnectionPool(MAX_CONNECTIONS,KEEP_ALIVE_DURATION_MS));
+			builder.connectionPool(new ConnectionPool(MAX_CONNECTIONS,KEEP_ALIVE_DURATION_MS,TimeUnit.MILLISECONDS));
 
 			//redirect disable
-			okHttpClient.setFollowSslRedirects(false);
+			builder.followSslRedirects(false);
 
 			//for proxy
 			if (isProxyConfigured()) {
@@ -213,6 +254,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 						logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
 						logger.debug("Proxy AuthPassword: " + CONF.getHttpProxyPassword().replaceAll(".", "*"));
 					}
+
 					Authenticator.setDefault(new Authenticator() {
 						@Override
 						protected PasswordAuthentication
@@ -231,23 +273,25 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 				if (logger.isDebugEnabled()) {
 					logger.debug("Opening proxied connection(" + CONF.getHttpProxyHost() + ":" + CONF.getHttpProxyPort() + ")");
 				}
-				okHttpClient.setProxy(proxy);
+				builder.proxy(proxy);
 			}
 
 			//connection timeout
 			if (CONF.getHttpConnectionTimeout() > 0) {
-				okHttpClient.setConnectTimeout(CONF.getHttpConnectionTimeout(), TimeUnit.MILLISECONDS);
+				builder.connectTimeout(CONF.getHttpConnectionTimeout(), TimeUnit.MILLISECONDS);
 			}
 
 			//read timeout
 			if (CONF.getHttpReadTimeout() > 0) {
-				okHttpClient.setReadTimeout(CONF.getHttpReadTimeout(),TimeUnit.MILLISECONDS);
+				builder.readTimeout(CONF.getHttpReadTimeout(),TimeUnit.MILLISECONDS);
 			}
+
+			okHttpClient = builder.build();
 		}
 	}
 
 	//for test
-	public String getLastRequestProtocol() {
+	public Protocol getLastRequestProtocol() {
 		return lastRequestProtocol;
 	}
 
