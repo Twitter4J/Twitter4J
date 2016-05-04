@@ -221,7 +221,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     private void parseGetParameters(String url, List<HttpParameter> signatureBaseParams) {
         int queryStart = url.indexOf("?");
         if (-1 != queryStart) {
-            url.split("&");
             String[] queryStrs = url.substring(queryStart + 1).split("&");
             try {
                 for (String query : queryStrs) {
