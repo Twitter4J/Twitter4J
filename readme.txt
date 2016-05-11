@@ -39,6 +39,7 @@ Daniel Huckaby <handlerexploit at gmail.com> @HandlerExploit
 Denis Bardadym <bardadymchik at gmail.com> @bardadymchik
 Dong Wang <dong at twitter.com> @dongwang218
 Eli Israel <eli at meshfire.com> @eliasisrael
+Enrico Candino <enrico.candino at gmail.com> @enrichmann
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
 Gabriel Zanetti @pupi1985
