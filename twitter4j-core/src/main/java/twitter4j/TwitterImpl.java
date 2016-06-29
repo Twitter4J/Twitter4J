@@ -271,6 +271,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             int bytesRead;
             for (int i = 0; i < count; i++) {
                 videos[i] = File.createTempFile("video-chunk-", ".part" + i);
+                videos[i].deleteOnExit();
                 final OutputStream outputStream = new FileOutputStream(videos[i]);
                 for (int t = 0; t < totalReads; t++) {
                     bytesRead = inputStream.read(buffer, 0, buffer.length);
