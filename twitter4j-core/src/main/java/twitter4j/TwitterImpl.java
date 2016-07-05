@@ -250,7 +250,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public UploadedMedia uploadMediaChunked(File video) throws TwitterException, IOException {
+    public UploadedMedia uploadVideo(File video) throws TwitterException, IOException {
         if (video == null) throw new InvalidParameterException("video file can't be null");
         //verify file length
         if (!video.exists()) throw new InvalidParameterException("video file doesn't exists'");
@@ -261,32 +261,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         }
         //split file
         int count = (int) Math.ceil(size / (float) MAX_CHUNK_SIZE);
-        final File[] videos = new File[count];
-        if (count == 1) {
-            videos[0] = video;
-        } else {
-            final InputStream inputStream = new BufferedInputStream(new FileInputStream(video));
-            final byte [] buffer = new byte[8 * 1024];
-            final int totalReads = MAX_CHUNK_SIZE / buffer.length;
-            int bytesRead;
-            for (int i = 0; i < count; i++) {
-                videos[i] = File.createTempFile("video-chunk-", ".part" + i);
-                videos[i].deleteOnExit();
-                final OutputStream outputStream = new FileOutputStream(videos[i]);
-                for (int t = 0; t < totalReads; t++) {
-                    bytesRead = inputStream.read(buffer, 0, buffer.length);
-                    if (bytesRead > 0) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                }
-                outputStream.flush();
-                outputStream.close();
-            }
-            inputStream.close();
-        }
         UploadedMedia uploadedMedia = uploadMediaChunkedInit(size);
         for (int i = 0; i < count; i++) {
-            uploadMediaChunkedAppend(videos[i], uploadedMedia.getMediaId(), i);
+            LimitedFileInputStream limitedFileInputStream =
+                    new LimitedFileInputStream(video, i * MAX_CHUNK_SIZE, MAX_CHUNK_SIZE);
+            uploadMediaChunkedAppend(video.getAbsolutePath(), limitedFileInputStream, uploadedMedia.getMediaId(), i);
         }
         return uploadMediaChunkedFinalize(uploadedMedia.getMediaId());
     }
@@ -307,12 +286,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     // "command=APPEND&media_id=601413451156586496&segment_index=0" --file
     // /path/to/video.mp4 --file-field "media"
 
-    private HttpResponse uploadMediaChunkedAppend(File file, long mediaId, int segmentIndex) throws TwitterException {
+    private HttpResponse uploadMediaChunkedAppend(String filename, FileInputStream fileInputStream, long mediaId, int segmentIndex) throws TwitterException {
         return post(conf.getUploadBaseURL() + "media/upload.json",
                 new HttpParameter("command", CHUNKED_APPEND),
                 new HttpParameter("media_id", mediaId),
                 new HttpParameter("segment_index", segmentIndex),
-                new HttpParameter("media", file));
+                new HttpParameter("media", filename, fileInputStream));
     }
 
     // twurl -H upload.twitter.com "/1.1/media/upload.json" -d

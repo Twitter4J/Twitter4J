@@ -196,5 +196,5 @@ public interface TweetsResources {
      * @see <a href="https://dev.twitter.com/docs/api/multiple-media-extended-entities">Multiple Media Entities in Statuses</a>
      * @since Twitter4J 4.0.3
      */
-    UploadedMedia uploadMediaChunked(File video) throws TwitterException, IOException;
+    UploadedMedia uploadVideo(File video) throws TwitterException, IOException;
 }
