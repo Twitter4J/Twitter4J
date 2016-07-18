@@ -102,6 +102,24 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
         assertTrue(status.getText().startsWith(date));
         assertEquals(1, status.getMediaEntities().length);
+
+        // testing un-retweet
+        String dateStr3 = new java.util.Date().toString();
+        String date3 = dateStr3 + "test http://t.co/VEDROet @" + id2.screenName + " #twitter4jtest";
+        Status status3 = twitter1.updateStatus(date3);
+        // since updateStatus is already tested, just checking if the returned status is non-null
+        assertNotNull(TwitterObjectFactory.getRawJSON(status3));
+
+        Status retweetedStatus = twitter2.retweetStatus(status3.getId());
+        assertTrue(retweetedStatus.getText().endsWith(status3.getText()));
+
+        // testing un retweet
+        Status unRetweetedStatus = twitter2.unRetweetStatus(status3.getId());
+        assertTrue(unRetweetedStatus.getText().endsWith(status3.getText()));
+
+        // deleting the status
+        status3 = twitter1.destroyStatus(status3.getId());
+        assertNotNull(TwitterObjectFactory.getRawJSON(status3));
     }
     
     public void testUploadMediaByFile() throws Exception {
