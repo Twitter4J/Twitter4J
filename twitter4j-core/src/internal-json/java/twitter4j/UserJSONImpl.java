@@ -72,6 +72,7 @@ import java.util.Date;
     private int listedCount;
     private boolean isFollowRequestSent;
     private String[] withheldInCountries;
+    private boolean isFollowing;
 
     /*package*/UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -150,6 +151,7 @@ import java.util.Date;
             statusesCount = ParseUtil.getInt("statuses_count", json);
             listedCount = ParseUtil.getInt("listed_count", json);
             isFollowRequestSent = ParseUtil.getBoolean("follow_request_sent", json);
+            isFollowing = ParseUtil.getBoolean("following", json);
             if (!json.isNull("status")) {
                 JSONObject statusJSON = json.getJSONObject("status");
                 status = new StatusJSONImpl(statusJSON);
@@ -603,6 +605,11 @@ import java.util.Date;
                 ", isFollowRequestSent=" + isFollowRequestSent +
                 ", withheldInCountries=" + Arrays.toString(withheldInCountries) +
                 '}';
+    }
+
+    @Override
+    public boolean isFollowing() {
+        return isFollowing;
     }
 
 }
