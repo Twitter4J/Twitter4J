@@ -281,5 +281,9 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     String[] getWithheldInCountries();
 
+    /**
+     * Return true if the user is following you.
+     * @return boolean 
+     */
     boolean isFollowing();
 }
