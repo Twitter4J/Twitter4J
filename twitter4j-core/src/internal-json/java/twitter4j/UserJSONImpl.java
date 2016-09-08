@@ -607,6 +607,10 @@ import java.util.Date;
                 '}';
     }
 
+    /**
+     * Return true if the user is following you.
+     * @return boolean 
+     */
     @Override
     public boolean isFollowing() {
         return isFollowing;
