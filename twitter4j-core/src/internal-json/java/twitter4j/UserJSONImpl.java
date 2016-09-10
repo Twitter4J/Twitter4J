@@ -612,4 +612,9 @@ import java.util.Date;
         return isFollowing;
     }
 
+    @Override
+    public void setFollowing(boolean isFollowing) {
+         this.isFollowing = isFollowing;
+    }
+
 }

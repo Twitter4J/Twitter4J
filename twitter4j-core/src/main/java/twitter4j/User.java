@@ -286,4 +286,6 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return boolean 
      */
     boolean isFollowing();
+    
+    void setFollowing(boolean isFollowing);
 }
