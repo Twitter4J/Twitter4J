@@ -19,7 +19,7 @@
     <scm>
         <url>https://github.com/yusuke/twitter4j</url>
         <connection>scm:git:git://github.com/yusuke/twitter4j.git</connection>
-        <developerConnection>scm:gigit://github.com/yusuke/twitter4j.gitit
+        <developerConnection>scm:git://github.com/yusuke/twitter4j.git
         </developerConnection>
 
   </scm>
