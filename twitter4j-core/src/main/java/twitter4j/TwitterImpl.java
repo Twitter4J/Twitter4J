@@ -77,6 +77,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             if (conf.isIncludeExtAltTextEnabled()) {
                 params.add(new HttpParameter("include_ext_alt_text", "true"));
             }
+            if (conf.isTweetModeExtended()) {
+                params.add(new HttpParameter("tweet_mode", "extended"));
+            }
             HttpParameter[] implicitParams = params.toArray(new HttpParameter[params.size()]);
 
             // implicitParamsMap.containsKey() is evaluated in the above if clause.
