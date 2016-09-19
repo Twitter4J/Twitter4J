@@ -39,6 +39,7 @@ public final class StatusUpdate implements java.io.Serializable {
     private transient InputStream mediaBody;
     private File mediaFile;
     private long[] mediaIds;
+    private String attachmentUrl = null;
 
     public StatusUpdate(String status) {
         this.status = status;
@@ -136,6 +137,19 @@ public final class StatusUpdate implements java.io.Serializable {
         this.mediaIds = mediaIds;
     }
 
+    public String getAttachmentUrl() {
+        return attachmentUrl;
+    }
+
+    public void setAttachmentUrl(String attachmentUrl) {
+        this.attachmentUrl = attachmentUrl;
+    }
+
+    public StatusUpdate attachmentUrl(String attachmentUrl) {
+        setAttachmentUrl(attachmentUrl);
+        return this;
+    }
+
     /*package*/ boolean isForUpdateWithMedia() {
         return mediaFile != null || mediaName != null;
     }
@@ -201,6 +215,7 @@ public final class StatusUpdate implements java.io.Serializable {
         } else if (mediaIds != null && mediaIds.length >= 1) {
             params.add(new HttpParameter("media_ids", StringUtil.join(mediaIds)));
         }
+        appendParameter("attachment_url", attachmentUrl, params);
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
