@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Bundle-Vendor: Yusuke Yamamoto
+Main-Class: twitter4j.VersionAsync

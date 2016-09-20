@@ -1,39 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.homeip.yusuke</groupId>
+    <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j</artifactId>
-    <packaging>jar</packaging>
+    <version>4.0.5</version>
+    <packaging>pom</packaging>
     <name>twitter4j</name>
-    <version>2.0.11-SNAPSHOT</version>
-    <url>http://yusuke.homeip.net/twitter4j/</url>
+    <description>A Java library for the Twitter API</description>
+    <url>http://twitter4j.org/</url>
     <licenses>
         <license>
-            <name>BSD style</name>
-            <url>http://yusuke.homeip.net/twitter4j/en/LICENSE.txt</url>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <description>A Java library for the Twitter API</description>
-    <issueManagement>
-        <system>Jira</system>
-        <url>http://yusuke.homeip.net/jira/browse/TFJ</url>
-    </issueManagement>
     <scm>
-        <connection>scm:svn:http://yusuke.homeip.net/svn/twitter4j/</connection>
-        <url>
-            http://yusuke.homeip.net/fisheye/browse/svn/twitter4j
-        </url>
-    </scm>
-    <distributionManagement>
-        <repository>
-            <id>net.homeip.yusuke</id>
-            <name>Yusuke Repository</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>file:${user.home}/maven2/</url>
-        </repository>
-    </distributionManagement>
+        <url>https://github.com/yusuke/twitter4j</url>
+        <connection>scm:git:https://github.com/yusuke/twitter4j.git</connection>
+        <developerConnection>scm:git:https://github.com/yusuke/twitter4j.git
+        </developerConnection>
+
+    <tag>4.0.5</tag>
+  </scm>
+    <developers>
+        <developer>
+            <id>yusuke</id>
+            <name>Yusuke</name>
+            <email>yusuke@mac.com</email>
+            <url>http://samuraism.jp/</url>
+            <roles>
+                <role>lead</role>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>9</timezone>
+        </developer>
+    </developers>
+    <issueManagement>
+        <system>YouTrack</system>
+        <url>http://issue.twitter4j.org/youtrack/issues?q=project%3A+Twitter4J</url>
+    </issueManagement>
     <mailingLists>
         <mailingList>
             <name>Twitter4J</name>
@@ -42,101 +48,58 @@
             <post>twitter4j@googlegroups.com</post>
             <archive>http://groups.google.com/group/twitter4j</archive>
         </mailingList>
-        <mailingList>
-            <name>Twitter4J-J</name>
-            <subscribe>twitter4j-j-subscribe@googlegroups.com</subscribe>
-            <unsubscribe>twitter4j-j-unsubscribe@googlegroups.com</unsubscribe>
-            <post>twitter4j-j@googlegroups.com</post>
-            <archive>http://groups.google.com/group/twitter4j-j</archive>
-        </mailingList>
     </mailingLists>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>nlog4j</artifactId>
-            <version>1.2.25</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>rome</groupId>
-            <artifactId>rome</artifactId>
-            <version>0.9</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
-    <build>
-        <defaultGoal>install</defaultGoal>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <source>1.5</source>
-                    <target>jsr14</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-                        <manifest>
-                            <addDefaultSpecificationEntries>true
-                            </addDefaultSpecificationEntries>
-                            <addDefaultImplementationEntries>true
-                            </addDefaultImplementationEntries>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>javadoc-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <excludePackageNames>twitter4j.org.json
-                            </excludePackageNames>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <charset>UTF-8</charset>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <distributionManagement>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>org.twitter4j</id>
+            <name>twitter4j.org Repository</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>file:${user.home}/maven2/</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <modules>
+        <module>twitter4j-async</module>
+        <module>twitter4j-core</module>
+        <module>twitter4j-examples</module>
+        <module>twitter4j-appengine</module>
+        <module>twitter4j-http2-support</module>
+        <module>twitter4j-stream</module>
+        <module>twitter4j-media-support</module>
+    </modules>
 </project>

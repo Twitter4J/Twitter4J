@@ -1,0 +1,32 @@
+<configuration>
+    <appender name="LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>./twitter4j.log</File>
+        <Append>false</Append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>twitter4j.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+        <MinIndex>1</MinIndex>
+        <MaxIndex>10</MaxIndex>
+        <!--triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+          <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy-->
+        <ImmediateFlush>true</ImmediateFlush>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="STDOUT"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger %msg%n</pattern>
+        </layout>
+    </appender>
+    <root>
+        <level value="info"/>
+        <!--
+            <appender-ref ref="LOG" />
+        -->
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

@@ -1,0 +1,10 @@
+oauth.accessToken=
+oauth.accessTokenSecret=
+
+oauth.consumerKey=
+oauth.consumerSecret=
+
+media.provider=Twitpic
+media.providerParameters=foo=bar&fizz=bazz
+
+media.providerAPIKey=***twitpic api key***
