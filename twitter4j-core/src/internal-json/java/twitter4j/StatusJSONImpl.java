@@ -268,7 +268,6 @@ import static twitter4j.ParseUtil.getDate;
             displayTextRangeEnd = indicesArray.getInt(1);
 
             collectEntities(extendedTweet);
-            collectExtendedEntities(extendedTweet);
 
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
