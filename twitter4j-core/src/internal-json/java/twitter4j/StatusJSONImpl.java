@@ -59,7 +59,6 @@ import static twitter4j.ParseUtil.getDate;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
-    private ExtendedMediaEntity[] extendedMediaEntities;
     private SymbolEntity[] symbolEntities;
     private long currentUserRetweetId = -1L;
     private Scopes scopes;
@@ -132,7 +131,7 @@ import static twitter4j.ParseUtil.getDate;
             }
 
             collectEntities(json);
-            collectExtendedEntities(json);
+            mergeExtendedEntities(json);
             if (!json.isNull("quoted_status")) {
                 quotedStatus = new StatusJSONImpl(json.getJSONObject("quoted_status"));
             }
@@ -150,7 +149,6 @@ import static twitter4j.ParseUtil.getDate;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
             symbolEntities = symbolEntities == null ? new SymbolEntity[0] : symbolEntities;
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
-            extendedMediaEntities = extendedMediaEntities == null ? new ExtendedMediaEntity[0] : extendedMediaEntities;
             if (!json.isNull("text")) {
                 text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
                         urlEntities, hashtagEntities, mediaEntities);
@@ -247,15 +245,15 @@ import static twitter4j.ParseUtil.getDate;
         }
     }
 
-    private void collectExtendedEntities(JSONObject json) throws JSONException, TwitterException {
+    private void mergeExtendedEntities(JSONObject json) throws JSONException, TwitterException {
         if (!json.isNull("extended_entities")) {
             JSONObject extendedEntities = json.getJSONObject("extended_entities");
             if (!extendedEntities.isNull("media")) {
                 JSONArray mediaArray = extendedEntities.getJSONArray("media");
                 final int len = mediaArray.length();
-                extendedMediaEntities = new ExtendedMediaEntity[len];
+                mediaEntities = new MediaEntity[len];
                 for (int i = 0; i < len; i++) {
-                    extendedMediaEntities[i] = new ExtendedMediaEntityJSONImpl(mediaArray.getJSONObject(i));
+                    mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
                 }
             }
         }
@@ -274,7 +272,6 @@ import static twitter4j.ParseUtil.getDate;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
             symbolEntities = symbolEntities == null ? new SymbolEntity[0] : symbolEntities;
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
-            extendedMediaEntities = extendedMediaEntities == null ? new ExtendedMediaEntity[0] : extendedMediaEntities;
             text = HTMLEntity.unescapeAndSlideEntityIncdices(extendedTweet.getString("full_text"), userMentionEntities,
                     urlEntities, hashtagEntities, mediaEntities);
         } catch (JSONException jsone) {
@@ -427,11 +424,6 @@ import static twitter4j.ParseUtil.getDate;
     @Override
     public MediaEntity[] getMediaEntities() {
         return mediaEntities;
-    }
-
-    @Override
-    public ExtendedMediaEntity[] getExtendedMediaEntities() {
-        return extendedMediaEntities;
     }
 
     @Override

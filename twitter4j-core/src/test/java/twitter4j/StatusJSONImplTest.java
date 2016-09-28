@@ -79,7 +79,7 @@ public class StatusJSONImplTest extends TestCase {
         StatusJSONImpl status = new StatusJSONImpl(json);
 
         //then
-        assertEquals(4, status.getExtendedMediaEntities().length);
+        assertEquals(4, status.getMediaEntities().length);
     }
 
     public void testQuotedStatus() throws Exception {
@@ -139,7 +139,7 @@ public class StatusJSONImplTest extends TestCase {
         assertEquals(0, status.getSymbolEntities().length);
         assertEquals(1, status.getUserMentionEntities().length);
         assertEquals(1, status.getURLEntities().length);
-        assertEquals(0, status.getExtendedMediaEntities().length);
+        assertEquals(0, status.getMediaEntities().length);
     }
 
     public void testExtendedTweetCompatibilityModeStreaming_gif() throws Exception {
