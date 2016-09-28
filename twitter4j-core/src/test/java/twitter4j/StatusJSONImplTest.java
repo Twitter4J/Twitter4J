@@ -142,6 +142,33 @@ public class StatusJSONImplTest extends TestCase {
         assertEquals(0, status.getExtendedMediaEntities().length);
     }
 
+    public void testExtendedTweetCompatibilityModeStreaming_gif() throws Exception {
+
+        // https://gist.github.com/takke/230f1a293071676083b2db90554b9a91
+        String rawJson = "{\"coordinates\":null,\"in_reply_to_user_id_str\":null,\"source\":\"<a href=\\\"http:\\/\\/twitter.com\\\" rel=\\\"nofollow\\\">Twitter Web Client<\\/a>\",\"geo\":null,\"in_reply_to_user_id\":null,\"user\":{\"default_profile_image\":false,\"screen_name\":\"takke\",\"profile_link_color\":\"0084B4\",\"profile_background_color\":\"C0DEED\",\"is_translator\":false,\"url\":\"http:\\/\\/www.panecraft.net\",\"profile_background_image_url\":\"http:\\/\\/abs.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",\"statuses_count\":42218,\"profile_image_url_https\":\"https:\\/\\/pbs.twimg.com\\/profile_images\\/423153841505193984\\/yGKSJu78_normal.jpeg\",\"profile_text_color\":\"333333\",\"following\":null,\"profile_sidebar_border_color\":\"C0DEED\",\"verified\":false,\"id\":8379212,\"lang\":\"ja\",\"profile_background_tile\":false,\"listed_count\":133,\"id_str\":\"8379212\",\"profile_sidebar_fill_color\":\"DDEEF6\",\"profile_background_image_url_https\":\"https:\\/\\/abs.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",\"protected\":false,\"utc_offset\":32400,\"profile_use_background_image\":true,\"notifications\":null,\"profile_banner_url\":\"https:\\/\\/pbs.twimg.com\\/profile_banners\\/8379212\\/1390720101\",\"geo_enabled\":true,\"friends_count\":959,\"default_profile\":true,\"followers_count\":1603,\"profile_image_url\":\"http:\\/\\/pbs.twimg.com\\/profile_images\\/423153841505193984\\/yGKSJu78_normal.jpeg\",\"follow_request_sent\":null,\"contributors_enabled\":false,\"description\":\"TwitterクライアントTwitPane、FacebookブラウザTafView、mixiブラウザTkMixiViewer、英単語学習ソフト P-Study System 、MZ3\\/4 などを開発。「ちょっぴり使いやすい」アプリを日々開発しています。ペーンクラフト代表\",\"time_zone\":\"Tokyo\",\"location\":\"北海道\",\"name\":\"竹内裕昭\",\"created_at\":\"Thu Aug 23 10:06:53 +0000 2007\",\"favourites_count\":5592},\"in_reply_to_status_id_str\":null,\"timestamp_ms\":\"1475025189939\",\"favorite_count\":0,\"id\":780938364719542272,\"is_quote_status\":false,\"lang\":\"ja\",\"possibly_sensitive\":false,\"entities\":{\"urls\":[{\"indices\":[117,140],\"display_url\":\"twitter.com\\/i\\/web\\/status\\/7…\",\"expanded_url\":\"https:\\/\\/twitter.com\\/i\\/web\\/status\\/780938364719542272\",\"url\":\"https:\\/\\/t.co\\/3K9rqDsNmV\"}],\"hashtags\":[],\"user_mentions\":[],\"symbols\":[]},\"extended_tweet\":{\"entities\":{\"urls\":[],\"hashtags\":[],\"user_mentions\":[],\"media\":[{\"indices\":[141,164],\"id_str\":\"780938106451009538\",\"expanded_url\":\"https:\\/\\/twitter.com\\/takke\\/status\\/780938364719542272\\/photo\\/1\",\"media_url\":\"http:\\/\\/pbs.twimg.com\\/tweet_video_thumb\\/CtZzEfqUIAIvbOJ.jpg\",\"id\":780938106451009538,\"url\":\"https:\\/\\/t.co\\/8EVW3OeIeN\",\"display_url\":\"pic.twitter.com\\/8EVW3OeIeN\",\"media_url_https\":\"https:\\/\\/pbs.twimg.com\\/tweet_video_thumb\\/CtZzEfqUIAIvbOJ.jpg\",\"type\":\"animated_gif\",\"sizes\":{\"small\":{\"resize\":\"fit\",\"h\":212,\"w\":212},\"thumb\":{\"resize\":\"crop\",\"h\":150,\"w\":150},\"large\":{\"resize\":\"fit\",\"h\":212,\"w\":212},\"medium\":{\"resize\":\"fit\",\"h\":212,\"w\":212}},\"video_info\":{\"aspect_ratio\":[1,1],\"variants\":[{\"bitrate\":0,\"url\":\"https:\\/\\/pbs.twimg.com\\/tweet_video\\/CtZzEfqUIAIvbOJ.mp4\",\"content_type\":\"video\\/mp4\"}]}}],\"symbols\":[]},\"full_text\":\"StreamingのGIF動画のテスト、140文字超の場合：01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789 https:\\/\\/t.co\\/8EVW3OeIeN\",\"display_text_range\":[0,140]},\"id_str\":\"780938364719542272\",\"retweet_count\":0,\"favorited\":false,\"in_reply_to_status_id\":null,\"truncated\":true,\"contributors\":null,\"text\":\"StreamingのGIF動画のテスト、140文字超の場合：0123456789012345678901234567890123456789012345678901234567890123456789012345678901234… https:\\/\\/t.co\\/3K9rqDsNmV\",\"created_at\":\"Wed Sep 28 01:13:09 +0000 2016\",\"filter_level\":\"low\",\"place\":null,\"in_reply_to_screen_name\":null,\"retweeted\":false}";
+
+        JSONObject json = new JSONObject(rawJson);
+        StatusJSONImpl status = new StatusJSONImpl(json);
+
+        assertEquals(true, status.isTruncated());
+        assertEquals(164, status.getText().length());
+
+        assertEquals(0, status.getDisplayTextRangeStart());
+        assertEquals(140, status.getDisplayTextRangeEnd());
+
+        assertEquals(1, status.getMediaEntities().length);
+
+        MediaEntity mediaEntity = status.getMediaEntities()[0];
+        assertEquals("animated_gif", mediaEntity.getType());
+        assertEquals(1, mediaEntity.getVideoAspectRatioWidth());
+        assertEquals(1, mediaEntity.getVideoAspectRatioHeight());
+        assertEquals(0, mediaEntity.getVideoDurationMillis());
+        assertEquals(1, mediaEntity.getVideoVariants().length);
+        assertEquals(0, mediaEntity.getVideoVariants()[0].getBitrate());
+        assertEquals("https://pbs.twimg.com/tweet_video/CtZzEfqUIAIvbOJ.mp4", mediaEntity.getVideoVariants()[0].getUrl());
+        assertEquals("video/mp4", mediaEntity.getVideoVariants()[0].getContentType());
+    }
+
     public void testExtendedTweetExtendedMode() throws Exception {
 
         // http://qiita.com/takke/items/c80a687718fc65b0b5b9#extended-tweet-extended-mode
