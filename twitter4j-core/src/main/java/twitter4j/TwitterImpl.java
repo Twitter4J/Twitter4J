@@ -59,9 +59,16 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             boolean contributorsEnabled = conf.getContributingTo() != -1L;
             if (contributorsEnabled) {
                 if (!"".equals(implicitParamsStr)) {
-                    implicitParamsStr += "?";
+                    implicitParamsStr += "&";
                 }
                 implicitParamsStr += "contributingto=" + conf.getContributingTo();
+            }
+
+            if (conf.isTweetModeExtended()) {
+                if (!"".equals(implicitParamsStr)) {
+                    implicitParamsStr += "&";
+                }
+                implicitParamsStr += "tweet_mode=extended";
             }
 
             List<HttpParameter> params = new ArrayList<HttpParameter>(3);
