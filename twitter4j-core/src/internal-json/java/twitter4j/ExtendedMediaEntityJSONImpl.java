@@ -27,6 +27,7 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
     private int videoAspectRatioHeight;
     private long videoDurationMillis;
     private Variant[] videoVariants;
+    private String extAltText;
 
 
     ExtendedMediaEntityJSONImpl(JSONObject json) throws TwitterException {
@@ -54,6 +55,10 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
                 this.videoVariants = new Variant[0];
             }
 
+            if (json.has("ext_alt_text")) {
+                extAltText = json.getString("ext_alt_text");
+            }
+
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -77,6 +82,11 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
     @Override
     public long getVideoDurationMillis() {
         return videoDurationMillis;
+    }
+
+    @Override
+    public String getExtAltText() {
+        return extAltText;
     }
 
     @Override
@@ -178,6 +188,7 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
                 ", videoAspectRatioWidth=" + videoAspectRatioWidth +
                 ", videoAspectRatioHeight=" + videoAspectRatioHeight +
                 ", videoDurationMillis=" + videoDurationMillis +
+                ", extAltText=" + extAltText +
                 ", videoVariants=" + Arrays.toString(videoVariants) +
                 '}';
     }

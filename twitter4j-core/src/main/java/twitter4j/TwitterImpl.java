@@ -74,6 +74,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             if (conf.isTrimUserEnabled()) {
                 params.add(new HttpParameter("trim_user", "1"));
             }
+            if (conf.isIncludeExtAltTextEnabled()) {
+                params.add(new HttpParameter("include_ext_alt_text", "true"));
+            }
             HttpParameter[] implicitParams = params.toArray(new HttpParameter[params.size()]);
 
             // implicitParamsMap.containsKey() is evaluated in the above if clause.
@@ -235,13 +238,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     public UploadedMedia uploadMedia(File image) throws TwitterException {
         checkFileValidity(image);
         return new UploadedMedia(post(conf.getUploadBaseURL() + "media/upload.json"
-                , new HttpParameter[]{new HttpParameter("media", image)}).asJSONObject());
+                , new HttpParameter("media", image)).asJSONObject());
     }
 
     @Override
     public UploadedMedia uploadMedia(String fileName, InputStream image) throws TwitterException {
         return new UploadedMedia(post(conf.getUploadBaseURL() + "media/upload.json"
-                , new HttpParameter[]{new HttpParameter("media", fileName, image)}).asJSONObject());
+                , new HttpParameter("media", fileName, image)).asJSONObject());
     }
 
     /* Search Resources */
@@ -575,9 +578,10 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public User verifyCredentials() throws TwitterException {
-        return super.fillInIDAndScreenName();
+        return super.fillInIDAndScreenName(
+                new HttpParameter[]{new HttpParameter("include_email", conf.isIncludeEmailEnabled())});
     }
-
+    
     @Override
     public AccountSettings updateAccountSettings(Integer trend_locationWoeid,
                                                  Boolean sleep_timeEnabled, String start_sleepTime,
@@ -642,21 +646,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             String profileSidebarFillColor,
             String profileSidebarBorderColor)
             throws TwitterException {
-        List<HttpParameter> colors = new ArrayList<HttpParameter>(6);
-        addParameterToList(colors, "profile_background_color"
-                , profileBackgroundColor);
-        addParameterToList(colors, "profile_text_color"
-                , profileTextColor);
-        addParameterToList(colors, "profile_link_color"
-                , profileLinkColor);
-        addParameterToList(colors, "profile_sidebar_fill_color"
-                , profileSidebarFillColor);
-        addParameterToList(colors, "profile_sidebar_border_color"
-                , profileSidebarBorderColor);
-        return factory.createUser(post(conf.getRestBaseURL() +
-                        "account/update_profile_colors.json",
-                colors.toArray(new HttpParameter[colors.size()])
-        ));
+        throw new UnsupportedOperationException("this API is no longer supported. https://twittercommunity.com/t/deprecation-of-account-update-profile-colors/28692");
     }
 
     private void addParameterToList(List<HttpParameter> colors,

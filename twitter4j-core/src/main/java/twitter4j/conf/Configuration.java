@@ -115,5 +115,11 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     boolean isTrimUserEnabled();
 
+    boolean isIncludeExtAltTextEnabled();
+
     boolean isDaemonEnabled();
+
+    boolean isIncludeEmailEnabled();
+
+    String getStreamThreadName();
 }

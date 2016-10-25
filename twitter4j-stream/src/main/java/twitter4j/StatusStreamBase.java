@@ -178,6 +178,7 @@ abstract class StatusStreamBase implements StatusStream {
                                         break;
                                     case QUOTED_TWEET:
                                         onQuotedTweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
+                                        break;
                                     case DISCONNECTION:
                                         onDisconnectionNotice(line, listeners);
                                         break;

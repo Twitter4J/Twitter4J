@@ -252,6 +252,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setIncludeExtAltTextEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setIncludeExtAltTextEnabled(enabled);
+        return this;
+    }
+
     public ConfigurationBuilder setIncludeMyRetweetEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeMyRetweetEnabled(enabled);
@@ -261,6 +267,12 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder setIncludeEntitiesEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeEntitiesEnabled(enabled);
+        return this;
+    }
+
+    public ConfigurationBuilder setIncludeEmailEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setIncludeEmailEnabled(enabled);
         return this;
     }
 

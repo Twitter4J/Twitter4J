@@ -194,13 +194,6 @@ import static twitter4j.ParseUtil.getDate;
                 quotedStatusId = ParseUtil.getLong("quoted_status_id", json);
             }
 
-            if (!json.isNull("quoted_status")) {
-                quotedStatus = new StatusJSONImpl(json.getJSONObject("quoted_status"));
-            }
-            if (!json.isNull("quoted_status_id")) {
-                quotedStatusId = ParseUtil.getLong("quoted_status_id", json);
-            }
-
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;

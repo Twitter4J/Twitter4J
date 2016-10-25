@@ -3,7 +3,7 @@
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-examples</artifactId>
-    <version>4.0.5-SNAPSHOT</version>
+    <version>4.0.5</version>
     <packaging>jar</packaging>
     <name>twitter4j-examples</name>
     <description>A Java library for the Twitter API</description>
@@ -17,10 +17,11 @@
     </licenses>
     <scm>
         <url>https://github.com/yusuke/twitter4j</url>
-        <connection>scm:git:git://github.com/yusuke/twitter4j.git</connection>
-        <developerConnection>scm:gigit://github.com/yusuke/twitter4j.gitit
+        <connection>scm:git:https://github.com/yusuke/twitter4j.git</connection>
+        <developerConnection>scm:https://github.com/yusuke/twitter4j.git
         </developerConnection>
 
+    <tag>4.0.5</tag>
   </scm>
     <developers>
         <developer>
@@ -97,22 +98,22 @@
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>4.0.5-SNAPSHOT</version>
+            <version>4.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-async</artifactId>
-            <version>4.0.5-SNAPSHOT</version>
+            <version>4.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-stream</artifactId>
-            <version>4.0.5-SNAPSHOT</version>
+            <version>4.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-media-support</artifactId>
-            <version>4.0.5-SNAPSHOT</version>
+            <version>4.0.5</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

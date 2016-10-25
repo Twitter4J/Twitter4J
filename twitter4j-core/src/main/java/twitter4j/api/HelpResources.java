@@ -21,6 +21,7 @@ import twitter4j.ResponseList;
 import twitter4j.TwitterAPIConfiguration;
 import twitter4j.TwitterException;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -48,7 +49,7 @@ public interface HelpResources {
      */
     ResponseList<Language> getLanguages() throws TwitterException;
 
-    public interface Language {
+    public interface Language extends Serializable {
         String getName();
 
         String getCode();
