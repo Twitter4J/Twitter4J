@@ -51,6 +51,15 @@ public final class GeoQuery implements java.io.Serializable {
         this.ip = ip;
     }
 
+    /**
+     * Creates a GeoQuery with the specified query
+     *
+     * @param query Query string
+     */
+    public GeoQuery(String query) {
+        this.query = query;
+    }
+
     public GeoLocation getLocation() {
         return location;
     }
