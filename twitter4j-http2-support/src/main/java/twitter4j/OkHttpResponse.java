@@ -17,8 +17,8 @@
 
 package twitter4j;
 
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.Response;
+import okhttp3.*;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +31,8 @@ import java.util.Set;
  */
 public class OkHttpResponse extends HttpResponse {
 
+	private OkHttpClient okHttpClient;
+	private Call call;
 	private Response response;
 	private HashMap<String,List<String>> headerFields;
 
@@ -43,9 +45,11 @@ public class OkHttpResponse extends HttpResponse {
 	}
 
 	// for test purpose
-	public OkHttpResponse(Response response,HttpClientConfiguration conf) throws IOException {
+	public OkHttpResponse(Call call, OkHttpClient okHttpClient, HttpClientConfiguration conf) throws IOException {
 		super(conf);
-		this.response = response;
+		this.okHttpClient = okHttpClient;
+		this.call = call;
+		this.response = call.execute();
 
 		Headers headers = response.headers();
 		Set<String> names = headers.names();
@@ -68,6 +72,10 @@ public class OkHttpResponse extends HttpResponse {
 		this.responseAsString = content;
 	}
 
+	public Protocol getProtocol(){
+		return response.protocol();
+	}
+
 	@Override
 	public String getResponseHeader(String name) {
 		return this.response.header(name);
@@ -82,7 +90,7 @@ public class OkHttpResponse extends HttpResponse {
 
 	@Override
 	public void disconnect() throws IOException {
-		response.body().close();
+		call.cancel();
 	}
 
 

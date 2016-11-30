@@ -57,7 +57,7 @@ public class PlaceGeoResourcesTest extends TwitterTestBase {
             assertNotNull(TwitterObjectFactory.getRawJSON(place));
             assertEquals(place, TwitterObjectFactory.createPlace(TwitterObjectFactory.getRawJSON(place)));
             assertEquals("San Francisco, CA", place.getFullName());
-            assertEquals("California, USA", place.getContainedWithIn()[0].getFullName());
+            assertEquals("San Francisco-Oakland-San Jose CA", place.getContainedWithIn()[0].getFullName());
         } catch (TwitterException te) {
             // is being rate limited
             assertEquals(400, te.getStatusCode());

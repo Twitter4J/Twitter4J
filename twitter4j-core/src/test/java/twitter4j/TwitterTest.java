@@ -57,7 +57,7 @@ public class TwitterTest extends TwitterTestBase {
         assertTrue(0 < status.getSecondsUntilReset());
 
         rateLimitStatus = twitter1.getRateLimitStatus("block", "statuses");
-        assertTrue(rateLimitStatus.values().size() < 10);
+        assertTrue(rateLimitStatus.values().size() > 5);
 
         twitter1.addRateLimitStatusListener(new RateLimitStatusListener() {
             public void onRateLimitStatus(RateLimitStatusEvent event) {

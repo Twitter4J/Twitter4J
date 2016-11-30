@@ -129,6 +129,7 @@ public interface UsersResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_colors">POST account/update_profile_colors | Twitter Developers</a>
      * @since Twitter4J 2.0.0
+     * @deprecated Since Twitter4J 4.0.5
      */
     User updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor)
         throws TwitterException;

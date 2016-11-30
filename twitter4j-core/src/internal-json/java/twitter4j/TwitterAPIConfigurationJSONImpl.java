@@ -32,6 +32,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
     private int shortURLLengthHttps;
 
     private int charactersReservedPerMedia;
+    private int dmTextCharacterLimit;
     private Map<Integer, MediaEntity.Size> photoSizes;
     private String[] nonUsernamePaths;
     private int maxMediaPerUpload;
@@ -45,6 +46,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
             shortURLLength = ParseUtil.getInt("short_url_length", json);
             shortURLLengthHttps = ParseUtil.getInt("short_url_length_https", json);
             charactersReservedPerMedia = ParseUtil.getInt("characters_reserved_per_media", json);
+            dmTextCharacterLimit  = ParseUtil.getInt("dm_text_character_limit", json);
 
             JSONObject sizes = json.getJSONObject("photo_sizes");
             photoSizes = new HashMap<Integer, MediaEntity.Size>(4);
@@ -93,6 +95,11 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
     public int getCharactersReservedPerMedia() {
         return charactersReservedPerMedia;
     }
+    
+    @Override
+    public int getDmTextCharacterLimit() {
+        return dmTextCharacterLimit;
+    }
 
     @Override
     public Map<Integer, MediaEntity.Size> getPhotoSizes() {
@@ -118,6 +125,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
 
         if (charactersReservedPerMedia != that.charactersReservedPerMedia)
             return false;
+        if (dmTextCharacterLimit != that.dmTextCharacterLimit) return false;
         if (maxMediaPerUpload != that.maxMediaPerUpload) return false;
         if (photoSizeLimit != that.photoSizeLimit) return false;
         if (shortURLLength != that.shortURLLength) return false;
@@ -136,6 +144,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
         result = 31 * result + shortURLLength;
         result = 31 * result + shortURLLengthHttps;
         result = 31 * result + charactersReservedPerMedia;
+        result = 32 * result + dmTextCharacterLimit;
         result = 31 * result + (photoSizes != null ? photoSizes.hashCode() : 0);
         result = 31 * result + (nonUsernamePaths != null ? Arrays.hashCode(nonUsernamePaths) : 0);
         result = 31 * result + maxMediaPerUpload;
@@ -149,6 +158,7 @@ class TwitterAPIConfigurationJSONImpl extends TwitterResponseImpl implements Twi
                 ", shortURLLength=" + shortURLLength +
                 ", shortURLLengthHttps=" + shortURLLengthHttps +
                 ", charactersReservedPerMedia=" + charactersReservedPerMedia +
+                ", dmTextCharacterLimit=" + dmTextCharacterLimit +
                 ", photoSizes=" + photoSizes +
                 ", nonUsernamePaths=" + (nonUsernamePaths == null ? null : Arrays.asList(nonUsernamePaths)) +
                 ", maxMediaPerUpload=" + maxMediaPerUpload +
