@@ -85,8 +85,6 @@ public final class UploadedMedia implements java.io.Serializable {
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-        
-        
     }
 
     @Override
