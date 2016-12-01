@@ -26,8 +26,11 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.io.IOUtils;
 
 import static twitter4j.HttpParameter.getParameterArray;
 
@@ -40,6 +43,8 @@ import static twitter4j.HttpParameter.getParameterArray;
  */
 class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private static final long serialVersionUID = 9170943084096085770L;
+    private static final Logger logger = Logger.getLogger(TwitterBaseImpl.class);
+    
     private final String IMPLICIT_PARAMS_STR;
     private final HttpParameter[] IMPLICIT_PARAMS;
     private final HttpParameter INCLUDE_MY_RETWEET;
@@ -47,6 +52,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private final String CHUNKED_INIT = "INIT";
     private final String CHUNKED_APPEND = "APPEND";
     private final String CHUNKED_FINALIZE = "FINALIZE";
+    private final String CHUNKED_STATUS = "STATUS";
+    
+	private final int MB = 1024 * 1024; // 1 MByte
+	private final int MAX_VIDEO_SIZE = 512 * MB; // 512MB is a constraint  imposed by Twitter for video files
+	private final int CHUNK_SIZE = 2 * MB; // max chunk size
 
     private static final ConcurrentHashMap<Configuration, HttpParameter[]> implicitParamsMap = new ConcurrentHashMap<Configuration, HttpParameter[]>();
     private static final ConcurrentHashMap<Configuration, String> implicitParamsStrMap = new ConcurrentHashMap<Configuration, String>();
@@ -251,12 +261,46 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , new HttpParameter("media", fileName, image)).asJSONObject());
     }
 
-    @Override
-    public UploadedMedia uploadMediaChunked(String fileName, InputStream media, long size) throws TwitterException {
-		UploadedMedia uploadedMedia = uploadMediaChunkedInit(size);
-		uploadMediaChunkedAppend(fileName, media, uploadedMedia.getMediaId());
-		return uploadMediaChunkedFinalize(uploadedMedia.getMediaId());
-    }
+	@Override
+	public UploadedMedia uploadMediaChunked(String fileName, InputStream media) throws TwitterException {
+		//If the InputStream is remote, this is will download it into memory speeding up the chunked upload process 
+		byte[] dataBytes = null;
+		try {
+			dataBytes = IOUtils.toByteArray(media);
+			if (dataBytes.length > MAX_VIDEO_SIZE) {
+				throw new TwitterException(String.format(Locale.US,
+						"video file can't be longer than: %d MBytes",
+						MAX_VIDEO_SIZE / MB));
+			}
+		} catch (IOException ioe) {
+			throw new TwitterException("Failed to download the file.", ioe);
+		}
+		
+		try {
+
+			UploadedMedia uploadedMedia = uploadMediaChunkedInit(dataBytes.length);
+			//no need to close ByteArrayInputStream
+			ByteArrayInputStream dataInputStream = new ByteArrayInputStream(dataBytes);
+			
+			byte[] segmentData = new byte[CHUNK_SIZE];
+			int segmentIndex = 0;
+			int totalRead = 0;
+			int bytesRead = 0;
+			
+			while ((bytesRead = dataInputStream.read(segmentData)) > 0) {
+				totalRead = totalRead + bytesRead;
+				logger.debug("Chunked appened, segment index:" + segmentIndex + " bytes:" + totalRead + "/" + dataBytes.length );
+				//no need to close ByteArrayInputStream
+				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(segmentData, 0 ,bytesRead);
+				uploadMediaChunkedAppend(fileName, byteArrayInputStream, segmentIndex, uploadedMedia.getMediaId());
+				segmentData = new byte[CHUNK_SIZE];
+				segmentIndex++;
+			}
+			return uploadMediaChunkedFinalize(uploadedMedia.getMediaId());
+		} catch (Exception e) {
+			 throw new TwitterException(e);
+		}
+	}
     
 	// twurl -H upload.twitter.com "/1.1/media/upload.json" -d
 	// "command=INIT&media_type=video/mp4&total_bytes=4430752"
@@ -265,7 +309,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 		return new UploadedMedia(post(
 				conf.getUploadBaseURL() + "media/upload.json",
 				new HttpParameter[] { new HttpParameter("command", CHUNKED_INIT),
-						new HttpParameter("media_type", "video/mp4"), new HttpParameter("total_bytes", size) })
+						new HttpParameter("media_type", "video/mp4"), 
+						new HttpParameter("media_category", "tweet_video"),
+						new HttpParameter("total_bytes", size) })
 				.asJSONObject());
 	}
 
@@ -273,21 +319,62 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 	// "command=APPEND&media_id=601413451156586496&segment_index=0" --file
 	// /path/to/video.mp4 --file-field "media"
 
-    private void uploadMediaChunkedAppend(String fileName, InputStream media, long mediaId) throws TwitterException {
+    private void uploadMediaChunkedAppend(String fileName, InputStream media, int segmentIndex, long mediaId) throws TwitterException {
 		post(conf.getUploadBaseURL() + "media/upload.json", new HttpParameter[] {
 				new HttpParameter("command", CHUNKED_APPEND), new HttpParameter("media_id", mediaId),
-				new HttpParameter("segment_index", 0), new HttpParameter("media", fileName, media) });
+				new HttpParameter("segment_index", segmentIndex), new HttpParameter("media", fileName, media) });
 	}
 
 	// twurl -H upload.twitter.com "/1.1/media/upload.json" -d
 	// "command=FINALIZE&media_id=601413451156586496"
 
 	private UploadedMedia uploadMediaChunkedFinalize(long mediaId) throws TwitterException {
-		return new UploadedMedia(
-				post(
-						conf.getUploadBaseURL() + "media/upload.json",
-						new HttpParameter[] { new HttpParameter("command", CHUNKED_FINALIZE),
-								new HttpParameter("media_id", mediaId) }).asJSONObject());
+		int tries = 0;
+		int maxWait = 10;
+		UploadedMedia uploadedMedia = uploadMediaChunkedFinalize0(mediaId);
+		while (tries < maxWait) {
+			tries++;
+			String state = uploadedMedia.getProcessingState();
+			if (state.equals("failed")) {
+				throw new TwitterException("Failed to finalize the chuncked upload.");
+			}
+			if (state.equals("pending") || state.equals("in_progress")) {
+				int waitSec = uploadedMedia.getProcessingCheckAfterSecs();
+				logger.debug("Chunked finalize, wait for:" + waitSec + " sec");
+				try {
+					Thread.sleep(waitSec * 1000);
+				} catch (InterruptedException e) {
+					throw new TwitterException("Failed to finalize the chuncked upload.", e);
+				}
+			}
+			if (state.equals("succeeded")) {
+				return uploadedMedia;
+			}
+			uploadedMedia = uploadMediaChunkedStatus(mediaId);
+		} 
+		throw new TwitterException("Failed to finalize the chuncked upload, tried" + maxWait + "times.");
+	}
+	
+	private UploadedMedia uploadMediaChunkedFinalize0(long mediaId) throws TwitterException {
+		JSONObject json = post(
+				conf.getUploadBaseURL() + "media/upload.json",
+				new HttpParameter[] {
+						new HttpParameter("command", CHUNKED_FINALIZE),
+						new HttpParameter("media_id", mediaId) })
+				.asJSONObject();
+		logger.debug("Finalize response:" + json);
+		return new UploadedMedia(json);
+	}
+	
+	private UploadedMedia uploadMediaChunkedStatus(long mediaId) throws TwitterException {
+		JSONObject json = get(
+				conf.getUploadBaseURL() + "media/upload.json",
+				new HttpParameter[] {
+						new HttpParameter("command", CHUNKED_STATUS),
+						new HttpParameter("media_id", mediaId) })
+				.asJSONObject();
+		logger.debug("Status response:" + json);
+		return new UploadedMedia(json);
 	}
     
     /* Search Resources */
