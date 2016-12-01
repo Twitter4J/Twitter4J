@@ -37,6 +37,7 @@ Dan Checkoway <dcheckoway at gmail.com>
 Danaja Maldeniya <danajamkdt at gmail.com> @DanajaT
 Daniel Huckaby <handlerexploit at gmail.com> @HandlerExploit
 Denis Bardadym <bardadymchik at gmail.com> @bardadymchik
+Dimitry Kudryavtsev <dk8996 at gmail.com> @dk8996
 Dong Wang <dong at twitter.com> @dongwang218
 Eli Israel <eli at meshfire.com> @eliasisrael
 Eric Jensen <ej at twitter.com> @ej
@@ -118,3 +119,4 @@ withgod <noname at withgod.jp> @withgod
 Yuichiro Kawano <tresener.yu1ro at gmail.com> @tresener_yu1ro
 Yusuke Yamamoto <yusuke at mac.com> @yusuke
 Yuto Uehara <mumei.himazin at gmail.com> @mumei_himazin
+
