@@ -243,11 +243,11 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     }
 
     @Override
-    public ExtendedMediaEntity.Variant[] getVideoVariants() {
+    public MediaEntity.Variant[] getVideoVariants() {
         return videoVariants;
     }
 
-    static class Variant implements ExtendedMediaEntity.Variant {
+    static class Variant implements MediaEntity.Variant {
         private static final long serialVersionUID = 1027236588556797980L;
         int bitrate;
         String contentType;
