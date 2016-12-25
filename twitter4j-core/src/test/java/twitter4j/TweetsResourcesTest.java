@@ -122,6 +122,15 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertNotNull(media2.getSize());
     }
 
+    public void testUploadMediaChunked() throws Exception{
+        String file = "src/test/resources/t4j-movie.mp4";
+        File mp4File = new File(file);
+        if (!mp4File.exists())mp4File = new File("twitter4j-core/" + file);
+        UploadedMedia media = twitter1.uploadMediaChunked(mp4File);
+        assertNotNull(media.getMediaId());
+        assertNotNull(media.getSize());
+    }
+
     public void testRetweetMethods() throws Exception {
         List<Status> statuses;
 
