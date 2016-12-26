@@ -38,7 +38,7 @@ blocking.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/saved_searches/show/:id">GET saved_searches/show/:id | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    void showSavedSearch(int id);
+    void showSavedSearch(long id);
 
     /**
      * Creates a saved search for the authenticated user.
@@ -58,5 +58,5 @@ blocking.
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/saved_searches/destroy/:id">POST saved_searches/destroy/:id | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    void destroySavedSearch(int id);
+    void destroySavedSearch(long id);
 }

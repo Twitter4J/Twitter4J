@@ -2242,7 +2242,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void showSavedSearch(final int id) {
+    public void showSavedSearch(final long id) {
         getDispatcher().invokeLater(new AsyncTask(SAVED_SEARCH, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2274,7 +2274,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void destroySavedSearch(final int id) {
+    public void destroySavedSearch(final long id) {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_SAVED_SEARCH, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
