@@ -101,5 +101,6 @@
         <module>twitter4j-http2-support</module>
         <module>twitter4j-stream</module>
         <module>twitter4j-media-support</module>
-    </modules>
+		<module>twitter4j-spdy-support2</module>
+	</modules>
 </project>
