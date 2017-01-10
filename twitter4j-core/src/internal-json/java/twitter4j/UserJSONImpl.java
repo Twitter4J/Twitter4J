@@ -33,6 +33,7 @@ import java.util.Date;
     private String name;
     private String email;
     private String screenName;
+    private boolean following;
     private String location;
     private String description;
     private URLEntity[] descriptionURLEntities;
@@ -101,6 +102,7 @@ import java.util.Date;
             name = ParseUtil.getRawString("name", json);
             email = ParseUtil.getRawString("email", json);
             screenName = ParseUtil.getRawString("screen_name", json);
+            following = ParseUtil.getBoolean("following", json);
             location = ParseUtil.getRawString("location", json);
 
             // descriptionUrlEntities <=> entities/descriptions/urls[]
@@ -482,6 +484,9 @@ import java.util.Date;
     }
 
     @Override
+    public boolean isFollowing() { return following; }
+
+    @Override
     public String[] getWithheldInCountries() {
         return withheldInCountries;
     }
@@ -568,6 +573,7 @@ import java.util.Date;
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", screenName='" + screenName + '\'' +
+                ", following='" + following + '\'' +
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
                 ", isContributorsEnabled=" + isContributorsEnabled +
