@@ -33,7 +33,7 @@ public final class PrintSampleStream {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
-        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
+        
         StatusListener listener = new StatusListener() {
             @Override
             public void onStatus(Status status) {
@@ -65,6 +65,14 @@ public final class PrintSampleStream {
                 ex.printStackTrace();
             }
         };
+        
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true).setOAuthConsumerKey("[consumer key]")
+                .setOAuthConsumerSecret("[consumer secret]")
+                .setOAuthAccessToken("[access token]")
+                .setOAuthAccessTokenSecret("[access token secret]");
+
+        TwitterStream twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
         twitterStream.addListener(listener);
         twitterStream.sample();
     }
