@@ -193,8 +193,7 @@ public interface TweetsResources {
      * @see <a href="https://dev.twitter.com/rest/public/uploading-media#chunkedupload">Uploading Media | Twitter Developers</a>
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/update">POST statuses/update | Twitter Developers</a>
      * @see <a href="https://dev.twitter.com/docs/api/multiple-media-extended-entities">Multiple Media Entities in Statuses</a>
-     * @since Twitter4J 4.0.6
-     */
+    */
     UploadedMedia uploadMediaChunked(File mediaFile) throws TwitterException;
 
     /**
@@ -210,7 +209,6 @@ public interface TweetsResources {
      * @see <a href="https://dev.twitter.com/rest/public/uploading-media#chunkedupload">Uploading Media | Twitter Developers</a>
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/update">POST statuses/update | Twitter Developers</a>
      * @see <a href="https://dev.twitter.com/docs/api/multiple-media-extended-entities">Multiple Media Entities in Statuses</a>
-     * @since Twitter4J 4.0.6
-     */
+    */
     UploadedMedia uploadMediaChunked(String fileName, InputStream media, long mediaLength) throws TwitterException;
 }
