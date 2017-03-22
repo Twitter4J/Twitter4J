@@ -324,6 +324,18 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setChunkedUploadFinalizeTimeout(int value) {
+        checkNotBuilt();
+        configurationBean.setChunkedUploadFinalizeTimeout(value);
+        return this;
+    }
+
+    public ConfigurationBuilder setChunkedUploadSegmentSize(int value) {
+        checkNotBuilt();
+        configurationBean.setChunkedUploadSegmentSize(value);
+        return this;
+    }
+
     public Configuration build() {
         checkNotBuilt();
         configurationBean.cacheInstance();
