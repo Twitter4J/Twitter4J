@@ -71,6 +71,14 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getId();
     }
 
+    /**
+     * Returns the string version of the id
+     *
+     * @return the id
+     */
+    public String getIdString() {
+        return getTarget().getIdString();
+    }
 
     /**
      * Returns the text of the status
