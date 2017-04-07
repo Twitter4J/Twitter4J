@@ -34,6 +34,7 @@ import static twitter4j.ParseUtil.getDate;
 
     private Date createdAt;
     private long id;
+    private String idString;
     private String text;
     private int displayTextRangeStart = -1;
     private int displayTextRangeEnd = -1;
@@ -97,6 +98,7 @@ import static twitter4j.ParseUtil.getDate;
 
     private void init(JSONObject json) throws TwitterException {
         id = ParseUtil.getLong("id", json);
+        idString = ParseUtil.getRawString("id_str", json);
         source = ParseUtil.getUnescapedString("source", json);
         createdAt = getDate("created_at", json);
         isTruncated = ParseUtil.getBoolean("truncated", json);
@@ -298,6 +300,11 @@ import static twitter4j.ParseUtil.getDate;
     @Override
     public long getId() {
         return this.id;
+    }
+
+    @Override
+    public String getIdString() {
+        return this.idString;
     }
 
     @Override
@@ -503,6 +510,7 @@ import static twitter4j.ParseUtil.getDate;
         return "StatusJSONImpl{" +
                 "createdAt=" + createdAt +
                 ", id=" + id +
+                ", idString=" + idString +
                 ", text='" + text + '\'' +
                 ", source='" + source + '\'' +
                 ", isTruncated=" + isTruncated +
