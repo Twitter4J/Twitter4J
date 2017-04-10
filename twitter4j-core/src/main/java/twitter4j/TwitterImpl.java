@@ -309,6 +309,21 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
+    public DirectMessageEvent createMessage(MessageData messageData)
+            throws TwitterException {
+        try {
+            final JSONObject json = new JSONObject();
+            final JSONObject event = new JSONObject();
+            event.put("type", "message_create");
+            event.put("message_create", messageData.createMessageCreateJsonObject());
+            json.put("event", event);
+            return factory.createDirectMessageEvent(post(conf.getRestBaseURL() + "direct_messages/events/new.json", json));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    @Override
     public DirectMessage sendDirectMessage(long userId, String text)
         throws TwitterException {
         return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/new.json"
@@ -1826,6 +1841,24 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             long start = System.currentTimeMillis();
             try {
                 response = http.post(url, mergeImplicitParams(params), auth, this);
+            } finally {
+                long elapsedTime = System.currentTimeMillis() - start;
+                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
+            }
+            return response;
+        }
+    }
+
+    private HttpResponse post(String url, JSONObject json) throws TwitterException {
+        ensureAuthorizationEnabled();
+        if (!conf.isMBeanEnabled()) {
+            return http.post(url, new HttpParameter[]{new HttpParameter(json)}, auth, this);
+        } else {
+            // intercept HTTP call for monitoring purposes
+            HttpResponse response = null;
+            long start = System.currentTimeMillis();
+            try {
+                response = http.post(url, new HttpParameter[]{new HttpParameter(json)}, auth, this);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));

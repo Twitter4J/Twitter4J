@@ -17,6 +17,8 @@
 package twitter4j.api;
 
 import twitter4j.DirectMessage;
+import twitter4j.DirectMessageEvent;
+import twitter4j.MessageData;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
@@ -105,7 +107,21 @@ public interface DirectMessagesResources {
      * The text will be trimmed if the length of the text is exceeding 140 characters.
      * <br>This method calls https://api.twitter.com/1.1/direct_messages/new
      *
-     * @param userId the screen name of the user to whom send the direct message
+     * @param messageData The Message Data Object defining the content to deliver to the reciepient.
+     * @return DirectMessageEvent
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/rest/reference/post/direct_messages/events/new">POST direct_messages/events/new (message_create) — Twitter Developers</a>
+     * @since Twitter4j 4.0.7
+     */
+    DirectMessageEvent createMessage(MessageData messageData)
+            throws TwitterException;
+
+    /**
+     * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
+     * The text will be trimmed if the length of the text is exceeding 140 characters.
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/new
+     *
+     * @param userId the user id of the user to whom send the direct message
      * @param text   The text of your direct message.
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
