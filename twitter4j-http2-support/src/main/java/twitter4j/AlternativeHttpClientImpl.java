@@ -48,6 +48,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 
     private static final MediaType TEXT = MediaType.parse("text/plain; charset=utf-8");
     private static final MediaType FORM_URL_ENCODED = MediaType.parse("application/x-www-form-urlencoded");
+    private static final MediaType APPLICATION_JSON = MediaType.parse("application/json");
 
     private OkHttpClient okHttpClient;
 
@@ -172,6 +173,8 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
                 }
             }
             return multipartBodyBuilder.build();
+        } else if (HttpParameter.containsJson(req.getParameters())) {
+            return RequestBody.create(APPLICATION_JSON, req.getParameters()[0].getJsonObject().toString());
         } else {
             return RequestBody.create(FORM_URL_ENCODED, HttpParameter.encodeParameters(req.getParameters()).getBytes("UTF-8"));
         }
