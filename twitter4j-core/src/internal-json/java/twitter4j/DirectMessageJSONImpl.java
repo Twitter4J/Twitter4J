@@ -68,52 +68,11 @@ import java.util.Date;
             recipient = new UserJSONImpl(json.getJSONObject("recipient"));
             if (!json.isNull("entities")) {
                 JSONObject entities = json.getJSONObject("entities");
-                int len;
-                if (!entities.isNull("user_mentions")) {
-                    JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
-                    len = userMentionsArray.length();
-                    userMentionEntities = new UserMentionEntity[len];
-                    for (int i = 0; i < len; i++) {
-                        userMentionEntities[i] = new UserMentionEntityJSONImpl(userMentionsArray.getJSONObject(i));
-                    }
-
-                }
-                if (!entities.isNull("urls")) {
-                    JSONArray urlsArray = entities.getJSONArray("urls");
-                    len = urlsArray.length();
-                    urlEntities = new URLEntity[len];
-                    for (int i = 0; i < len; i++) {
-                        urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
-                    }
-                }
-
-                if (!entities.isNull("hashtags")) {
-                    JSONArray hashtagsArray = entities.getJSONArray("hashtags");
-                    len = hashtagsArray.length();
-                    hashtagEntities = new HashtagEntity[len];
-                    for (int i = 0; i < len; i++) {
-                        hashtagEntities[i] = new HashtagEntityJSONImpl(hashtagsArray.getJSONObject(i));
-                    }
-                }
-
-                if (!entities.isNull("symbols")) {
-                    JSONArray symbolsArray = entities.getJSONArray("symbols");
-                    len = symbolsArray.length();
-                    symbolEntities = new SymbolEntity[len];
-                    for (int i = 0; i < len; i++) {
-                        // HashtagEntityJSONImpl also implements SymbolEntities
-                        symbolEntities[i] = new HashtagEntityJSONImpl(symbolsArray.getJSONObject(i));
-                    }
-                }
-
-                if (!entities.isNull("media")) {
-                    JSONArray mediaArray = entities.getJSONArray("media");
-                    len = mediaArray.length();
-                    mediaEntities = new MediaEntity[len];
-                    for (int i = 0; i < len; i++) {
-                        mediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
-                    }
-                }
+                userMentionEntities = EntitiesParseUtil.getUserMentions(entities);
+                urlEntities = EntitiesParseUtil.getUrls(entities);
+                hashtagEntities = EntitiesParseUtil.getHashtags(entities);
+                symbolEntities = EntitiesParseUtil.getSymbols(entities);
+                mediaEntities = EntitiesParseUtil.getMedia(entities);
             }
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
             urlEntities = urlEntities == null ? new URLEntity[0] : urlEntities;
