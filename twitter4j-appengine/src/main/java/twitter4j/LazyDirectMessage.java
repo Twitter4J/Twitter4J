@@ -129,11 +129,6 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
     }
 
     @Override
-    public ExtendedMediaEntity[] getExtendedMediaEntities() {
-        return getTarget().getExtendedMediaEntities();
-    }
-
-    @Override
     public SymbolEntity[] getSymbolEntities() {
         return getTarget().getSymbolEntities();
     }
