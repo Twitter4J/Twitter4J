@@ -23,15 +23,20 @@ import java.util.Map;
  * @since Twitter4J 2.2.3
  */
 public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
-    private static final long serialVersionUID = 3609683338035442290L;
+    private static final long serialVersionUID = 1571961225214439778L;
     protected long id;
     protected String url;
-    protected String mediaURL;
-    protected String mediaURLHttps;
-    protected String expandedURL;
-    protected String displayURL;
-    protected Map<Integer, MediaEntity.Size> sizes;
+    private String mediaURL;
+    private String mediaURLHttps;
+    private String expandedURL;
+    private String displayURL;
+    private Map<Integer, MediaEntity.Size> sizes;
     protected String type;
+    private int videoAspectRatioWidth;
+    private int videoAspectRatioHeight;
+    private long videoDurationMillis;
+    private Variant[] videoVariants;
+    private String extAltText;
 
 
     MediaEntityJSONImpl(JSONObject json) throws TwitterException {
@@ -56,6 +61,30 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
             addMediaEntitySizeIfNotNull(this.sizes, sizes, MediaEntity.Size.THUMB, "thumb");
             if (!json.isNull("type")) {
                 this.type = json.getString("type");
+            }
+
+            if (json.has("video_info")) {
+                JSONObject videoInfo = json.getJSONObject("video_info");
+                JSONArray aspectRatio = videoInfo.getJSONArray("aspect_ratio");
+                this.videoAspectRatioWidth = aspectRatio.getInt(0);
+                this.videoAspectRatioHeight = aspectRatio.getInt(1);
+
+                // not in animated_gif
+                if (!videoInfo.isNull("duration_millis")) {
+                    this.videoDurationMillis = videoInfo.getLong("duration_millis");
+                }
+
+                JSONArray variants = videoInfo.getJSONArray("variants");
+                this.videoVariants = new Variant[variants.length()];
+                for (int i=0; i<variants.length(); i++) {
+                    this.videoVariants[i] = new Variant(variants.getJSONObject(i));
+                }
+            } else {
+                this.videoVariants = new Variant[0];
+            }
+
+            if (json.has("ext_alt_text")) {
+                extAltText = json.getString("ext_alt_text");
             }
 
         } catch (JSONException jsone) {
@@ -194,6 +223,94 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     }
 
     @Override
+    public int getVideoAspectRatioWidth() {
+        return videoAspectRatioWidth;
+    }
+
+    @Override
+    public int getVideoAspectRatioHeight() {
+        return videoAspectRatioHeight;
+    }
+
+    @Override
+    public long getVideoDurationMillis() {
+        return videoDurationMillis;
+    }
+
+    @Override
+    public String getExtAltText() {
+        return extAltText;
+    }
+
+    @Override
+    public MediaEntity.Variant[] getVideoVariants() {
+        return videoVariants;
+    }
+
+    static class Variant implements MediaEntity.Variant {
+        private static final long serialVersionUID = 1027236588556797980L;
+        int bitrate;
+        String contentType;
+        String url;
+
+        Variant(JSONObject json) throws JSONException {
+            bitrate = json.has("bitrate") ? json.getInt("bitrate") : 0;
+            contentType = json.getString("content_type");
+            url =json.getString("url");
+        }
+
+        /* For serialization purposes only. */
+        /* package */ Variant() {
+        }
+
+        @Override
+        public int getBitrate() {
+            return bitrate;
+        }
+
+        @Override
+        public String getContentType() {
+            return contentType;
+        }
+
+        @Override
+        public String getUrl() {
+            return url;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Variant)) return false;
+
+            Variant variant = (Variant) o;
+
+            if (bitrate != variant.bitrate) return false;
+            if (!contentType.equals(variant.contentType)) return false;
+            if (!url.equals(variant.url)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = bitrate;
+            result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
+            result = 31 * result + (url != null ? url.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Variant{" +
+                    "bitrate=" + bitrate +
+                    ", contentType=" + contentType +
+                    ", url=" + url +
+                    '}';
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof MediaEntityJSONImpl)) return false;
@@ -214,13 +331,18 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     public String toString() {
         return "MediaEntityJSONImpl{" +
                 "id=" + id +
-                ", url=" + url +
-                ", mediaURL=" + mediaURL +
-                ", mediaURLHttps=" + mediaURLHttps +
-                ", expandedURL=" + expandedURL +
+                ", url='" + url + '\'' +
+                ", mediaURL='" + mediaURL + '\'' +
+                ", mediaURLHttps='" + mediaURLHttps + '\'' +
+                ", expandedURL='" + expandedURL + '\'' +
                 ", displayURL='" + displayURL + '\'' +
                 ", sizes=" + sizes +
-                ", type=" + type +
+                ", type='" + type + '\'' +
+                ", videoAspectRatioWidth=" + videoAspectRatioWidth +
+                ", videoAspectRatioHeight=" + videoAspectRatioHeight +
+                ", videoDurationMillis=" + videoDurationMillis +
+                ", videoVariants=" + videoVariants.length +
+                ", extAltText='" + extAltText + '\'' +
                 '}';
     }
 }
