@@ -195,6 +195,8 @@ public final class StatusUpdate implements java.io.Serializable {
 	/*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("status", status, params);
+        appendParameter("auto_populate_reply_metadata", String.valueOf(autoPopulateReplyMetadata), params);
+
         if (-1 != inReplyToStatusId) {
             appendParameter("in_reply_to_status_id", inReplyToStatusId, params);
         }
@@ -206,9 +208,6 @@ public final class StatusUpdate implements java.io.Serializable {
         appendParameter("place_id", placeId, params);
         if (!displayCoordinates) {
             appendParameter("display_coordinates", "false", params);
-        }
-        if(!autoPopulateReplyMetadata){
-            appendParameter("auto_populate_reply_metadata", "false", params);
         }
         if (null != mediaFile) {
             params.add(new HttpParameter("media[]", mediaFile));
