@@ -39,6 +39,8 @@ public final class StatusUpdate implements java.io.Serializable {
     private transient InputStream mediaBody;
     private File mediaFile;
     private long[] mediaIds;
+    private boolean autoPopulateReplyMetadata = true ;
+
 
     public StatusUpdate(String status) {
         this.status = status;
@@ -176,8 +178,21 @@ public final class StatusUpdate implements java.io.Serializable {
     public boolean isPossiblySensitive() {
         return possiblySensitive;
     }
+    
+    
+    /**
+     * @return auto populate reply metadata
+     * @since Twitter4J 4.0.6
+     */
+   public boolean isAutoPopulateReplyMetadata() {
+		return autoPopulateReplyMetadata;
+	}
 
-    /*package*/ HttpParameter[] asHttpParameterArray() {
+	public void setAutoPopulateReplyMetadata(boolean autoPopulateReplyMetadata) {
+		this.autoPopulateReplyMetadata = autoPopulateReplyMetadata;
+	}
+
+	/*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("status", status, params);
         if (-1 != inReplyToStatusId) {
@@ -191,6 +206,9 @@ public final class StatusUpdate implements java.io.Serializable {
         appendParameter("place_id", placeId, params);
         if (!displayCoordinates) {
             appendParameter("display_coordinates", "false", params);
+        }
+        if(!autoPopulateReplyMetadata){
+            appendParameter("auto_populate_reply_metadata", "false", params);
         }
         if (null != mediaFile) {
             params.add(new HttpParameter("media[]", mediaFile));
