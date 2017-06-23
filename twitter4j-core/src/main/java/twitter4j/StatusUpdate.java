@@ -244,6 +244,7 @@ public final class StatusUpdate implements java.io.Serializable {
 
         StatusUpdate that = (StatusUpdate) o;
 
+        if (autoPopulateReplyMetadata != that.autoPopulateReplyMetadata) return false;
         if (displayCoordinates != that.displayCoordinates) return false;
         if (inReplyToStatusId != that.inReplyToStatusId) return false;
         if (possiblySensitive != that.possiblySensitive) return false;
@@ -270,6 +271,8 @@ public final class StatusUpdate implements java.io.Serializable {
         result = 31 * result + (mediaBody != null ? mediaBody.hashCode() : 0);
         result = 31 * result + (mediaFile != null ? mediaFile.hashCode() : 0);
         result = 31 * result + (mediaIds != null ? StringUtil.join(mediaIds).hashCode() : 0);
+        result = 31 * result + (autoPopulateReplyMetadata ? 1 : 0);
+
         return result;
     }
 
@@ -286,6 +289,7 @@ public final class StatusUpdate implements java.io.Serializable {
             ", mediaBody=" + mediaBody +
             ", mediaFile=" + mediaFile +
             ", mediaIds=" + mediaIds +
+            ",autoPopulateReplyMetadata="+autoPopulateReplyMetadata+
             '}';
     }
 }
