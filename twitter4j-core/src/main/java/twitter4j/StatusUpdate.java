@@ -39,6 +39,8 @@ public final class StatusUpdate implements java.io.Serializable {
     private transient InputStream mediaBody;
     private File mediaFile;
     private long[] mediaIds;
+    private boolean autoPopulateReplyMetadata = true ;
+
 
     public StatusUpdate(String status) {
         this.status = status;
@@ -176,10 +178,25 @@ public final class StatusUpdate implements java.io.Serializable {
     public boolean isPossiblySensitive() {
         return possiblySensitive;
     }
+    
+    
+    /**
+     * @return auto populate reply metadata
+     * @since Twitter4J 4.0.6
+     */
+   public boolean isAutoPopulateReplyMetadata() {
+		return autoPopulateReplyMetadata;
+	}
 
-    /*package*/ HttpParameter[] asHttpParameterArray() {
+	public void setAutoPopulateReplyMetadata(boolean autoPopulateReplyMetadata) {
+		this.autoPopulateReplyMetadata = autoPopulateReplyMetadata;
+	}
+
+	/*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
         appendParameter("status", status, params);
+        appendParameter("auto_populate_reply_metadata", String.valueOf(autoPopulateReplyMetadata), params);
+
         if (-1 != inReplyToStatusId) {
             appendParameter("in_reply_to_status_id", inReplyToStatusId, params);
         }
@@ -226,6 +243,7 @@ public final class StatusUpdate implements java.io.Serializable {
 
         StatusUpdate that = (StatusUpdate) o;
 
+        if (autoPopulateReplyMetadata != that.autoPopulateReplyMetadata) return false;
         if (displayCoordinates != that.displayCoordinates) return false;
         if (inReplyToStatusId != that.inReplyToStatusId) return false;
         if (possiblySensitive != that.possiblySensitive) return false;
@@ -252,6 +270,8 @@ public final class StatusUpdate implements java.io.Serializable {
         result = 31 * result + (mediaBody != null ? mediaBody.hashCode() : 0);
         result = 31 * result + (mediaFile != null ? mediaFile.hashCode() : 0);
         result = 31 * result + (mediaIds != null ? StringUtil.join(mediaIds).hashCode() : 0);
+        result = 31 * result + (autoPopulateReplyMetadata ? 1 : 0);
+
         return result;
     }
 
@@ -268,6 +288,7 @@ public final class StatusUpdate implements java.io.Serializable {
             ", mediaBody=" + mediaBody +
             ", mediaFile=" + mediaFile +
             ", mediaIds=" + mediaIds +
+            ",autoPopulateReplyMetadata="+autoPopulateReplyMetadata+
             '}';
     }
 }
