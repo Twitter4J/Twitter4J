@@ -161,8 +161,6 @@ public class HTMLEntityTest extends TestCase {
 	 * https://twitter.com/WHO/status/874656370829799424
 	 * 
 	 * @author Philip Hachey - philip dot hachey at gmail dot com
-	 * @throws JSONException
-	 * @throws TwitterException
 	 */
 	public void testUnescapeAndSlideEntityIncdicesWithSurrogateCodePoints() throws TwitterException, JSONException {
 		// SETUP
@@ -206,5 +204,60 @@ public class HTMLEntityTest extends TestCase {
 		assertEquals("#measles", actualText.substring(measlesHashtag.getStart(), measlesHashtag.getEnd()));
 		assertEquals("https://t.co/kJ5dcRR02G", actualText.substring(mediaEntity.getStart(), mediaEntity.getEnd()));
 		assertEquals(actualText.length(), mediaEntity.getEnd());
+	}
+
+	public void testUnescapeAndSlideEntityIncdicesAtBoundariesWithSurrogateCodePoints() throws Exception {
+		// SETUP
+		HashtagEntityJSONImpl test1 = new HashtagEntityJSONImpl(0, 4, "one");
+		HashtagEntityJSONImpl test2 = new HashtagEntityJSONImpl(21, 25, "two");
+		HashtagEntityJSONImpl test3 = new HashtagEntityJSONImpl(26, 32, "three");
+		HashtagEntityJSONImpl test4 = new HashtagEntityJSONImpl(38, 43, "four");
+		String rawJSON = "{\"text\":\"#one🇧&amp;🇻test &amp;#two #three&amp; #four&gt;\"}";
+		JSONObject json = new JSONObject(rawJSON);
+
+		// EXERCISE
+		String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), null, null,
+				new HashtagEntity[] { test1, test2, test3, test4 }, null);
+
+		// VERIFY
+		assertEquals("#one🇧&🇻test &#two #three& #four>", escaped);
+		assertEquals("#one", escaped.substring(test1.getStart(), test1.getEnd()));
+		assertEquals("#two", escaped.substring(test2.getStart(), test2.getEnd()));
+		assertEquals("#three", escaped.substring(test3.getStart(), test3.getEnd()));
+		assertEquals("#four", escaped.substring(test4.getStart(), test4.getEnd()));
+	}
+
+	public void testUnescapeAndSlideEntityIncdicesWithSurrogateCodePointsAtBoundaries() {
+
+		String expectedText = "🇧 & #Maldives🇻";
+		String textFromTwitterAPI = "🇧 &amp; #Maldives🇻";
+		HashtagEntityJSONImpl maldivesHashtag = new HashtagEntityJSONImpl(8, 17, "Maldives");
+		HashtagEntity[] hashtagEntities = { maldivesHashtag };
+
+		// EXERCISE
+		String actualText =
+				HTMLEntity.unescapeAndSlideEntityIncdices(textFromTwitterAPI, null, null, hashtagEntities, null);
+
+		// VERIFY
+		assertEquals(expectedText, actualText);
+		assertEquals("#Maldives", actualText.substring(maldivesHashtag.getStart(), maldivesHashtag.getEnd()));
+	}
+
+	public void testUnescapeAndSlideEntityIncdicesWithSurrogateCodePointsInEntities() {
+
+		String expectedText = "#🇧hutan& #Maldi🇻es";
+		String textFromTwitterAPI = "#🇧hutan&amp; #Maldi🇻es";
+		HashtagEntityJSONImpl bhutanHashtag = new HashtagEntityJSONImpl(0, 7, "🇧hutan");
+		HashtagEntityJSONImpl maldivesHashtag = new HashtagEntityJSONImpl(13, 22, "Maldi🇻es");
+		HashtagEntity[] hashtagEntities = { bhutanHashtag, maldivesHashtag };
+
+		// EXERCISE
+		String actualText =
+				HTMLEntity.unescapeAndSlideEntityIncdices(textFromTwitterAPI, null, null, hashtagEntities, null);
+
+		// VERIFY
+		assertEquals(expectedText, actualText);
+		assertEquals("#🇧hutan", actualText.substring(bhutanHashtag.getStart(), bhutanHashtag.getEnd()));
+		assertEquals("#Maldi🇻es", actualText.substring(maldivesHashtag.getStart(), maldivesHashtag.getEnd()));
 	}
 }
