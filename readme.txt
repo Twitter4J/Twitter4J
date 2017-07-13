@@ -84,6 +84,7 @@ Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
 Nils Haldenwang @nilshaldenwang
 Niv Singer <niv at innerlogics.com> @nivs
+Philip Hachey <philip dot hachey at gmail dot com> @krallus
 Pierre Lanvin <pierre.lanvin@gmail.com> @planvin
 Pieter Meiresone @_MPieter
 Perry Sakkaris <psakkaris at gmail.com>
