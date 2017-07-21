@@ -41,6 +41,7 @@ Eli Israel <eli at meshfire.com> @eliasisrael
 Enrico Candino <enrico.candino at gmail.com> @enrichmann
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
+Flavio Martins <flaviomartins at acm.org> @flaviomartins
 Fran Garcia <fgarciarico at gmail.com> @frangarcia
 Gabriel Zanetti @pupi1985
 George Ludwig <georgeludwig at gmail.com> @georgeludwig

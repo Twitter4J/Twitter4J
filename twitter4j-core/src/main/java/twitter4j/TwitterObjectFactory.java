@@ -299,13 +299,13 @@ public final class TwitterObjectFactory {
             JSONObjectType.Type jsonObjectType = JSONObjectType.determine(json);
             switch (jsonObjectType) {
                 case SENDER:
-                    return registerJSONObject(new DirectMessageJSONImpl(json.getJSONObject("direct_message")), json);
+                    return new DirectMessageJSONImpl(json.getJSONObject("direct_message"));
                 case STATUS:
-                    return registerJSONObject(new StatusJSONImpl(json), json);
+                    return new StatusJSONImpl(json);
                 case DIRECT_MESSAGE:
-                    return registerJSONObject(new DirectMessageJSONImpl(json.getJSONObject("direct_message")), json);
+                    return new DirectMessageJSONImpl(json.getJSONObject("direct_message"));
                 case DELETE:
-                    return registerJSONObject(new StatusDeletionNoticeImpl(json.getJSONObject("delete").getJSONObject("status")), json);
+                    return new StatusDeletionNoticeImpl(json.getJSONObject("delete").getJSONObject("status"));
                 case LIMIT:
                     // TODO: Perhaps there should be a TrackLimitationNotice object?
                     // The onTrackLimitationNotice method could take that as an arg.
