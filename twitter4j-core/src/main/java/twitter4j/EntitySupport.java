@@ -37,7 +37,7 @@ public interface EntitySupport {
     URLEntity[] getURLEntities();
 
     /**
-     * Returns an array if hashtag mentioned in the tweet.  This method will an empty array if no hashtags were mentioned in the tweet.
+     * Returns an array if hashtag mentioned in the tweet.  This method will return an empty array if no hashtags were mentioned in the tweet.
      *
      * @return An array of Hashtag mentioned in the tweet.
      * @since Twitter4J 2.1.9
