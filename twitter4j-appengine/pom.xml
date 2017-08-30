@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.twitter4j</groupId>
@@ -8,6 +9,7 @@
     <name>twitter4j-appengine</name>
     <description>A Java library for the Twitter API</description>
     <url>http://twitter4j.org/</url>
+
     <licenses>
         <license>
             <name>Apache License 2.0</name>
@@ -15,14 +17,16 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <scm>
         <url>https://github.com/yusuke/twitter4j</url>
         <connection>scm:git:https://github.com/yusuke/twitter4j.git</connection>
         <developerConnection>scm:https://github.com/yusuke/twitter4j.git
         </developerConnection>
 
-    <tag>4.0.6</tag>
-  </scm>
+        <tag>4.0.6</tag>
+    </scm>
+
     <developers>
         <developer>
             <id>yusuke</id>
@@ -37,10 +41,12 @@
             <timezone>9</timezone>
         </developer>
     </developers>
+
     <issueManagement>
         <system>YouTrack</system>
         <url>http://issue.twitter4j.org/youtrack/issues?q=project%3A+Twitter4J</url>
     </issueManagement>
+
     <distributionManagement>
         <repository>
             <id>sonatype-nexus-staging</id>
@@ -56,6 +62,7 @@
             <url>file:${user.home}/maven2/</url>
         </snapshotRepository>
     </distributionManagement>
+
     <profiles>
         <profile>
             <id>release-sign-artifacts</id>
@@ -70,7 +77,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.4</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -85,6 +92,7 @@
             </build>
         </profile>
     </profiles>
+
     <mailingLists>
         <mailingList>
             <name>Twitter4J</name>
@@ -94,37 +102,46 @@
             <archive>http://groups.google.com/group/twitter4j</archive>
         </mailingList>
     </mailingLists>
+
     <dependencies>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
             <version>4.0.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>jsr250-api</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.8.7</version>
+            <version>${google.app.engine.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-testing</artifactId>
-            <version>1.8.7</version>
+            <version>${google.app.engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-stubs</artifactId>
-            <version>1.8.7</version>
+            <version>${google.app.engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.2</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <defaultGoal>install</defaultGoal>
         <plugins>
@@ -136,12 +153,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>6</source>
-                    <target>6</target>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
-                <version>2.5.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -171,9 +188,10 @@
                         </goals>
                     </execution>
                 </executions>
-                <version>2.1.2</version>
+                <version>3.0.1</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <executions>
                     <execution>
@@ -191,7 +209,7 @@
                     <charset>UTF-8</charset>
                     <show>public</show>
                 </configuration>
-                <version>2.10.3</version>
+                <version>3.0.0-M1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -205,7 +223,7 @@
     </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8
-        </project.reporting.outputEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <google.app.engine.version>1.8.9</google.app.engine.version>
     </properties>
 </project>

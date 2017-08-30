@@ -90,7 +90,7 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("hace 3 minutos", System.currentTimeMillis() - minute * 3);
         assertTimeSpanString("hace 1 hora", System.currentTimeMillis() - hour);
         assertTimeSpanString("hace 3 horas", System.currentTimeMillis() - hour * 3);
-        assertTimeSpanString("18 dic 09", getSpecificLocalDateInMillis(2009, 11, 18));
+        assertTimeSpanString("18 dic. 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
     public void testEnglish() throws Exception {
@@ -124,7 +124,7 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("vor 3 Minuten", System.currentTimeMillis() - minute * 3);
         assertTimeSpanString("vor 1 Stunde", System.currentTimeMillis() - hour);
         assertTimeSpanString("vor 3 Stunden", System.currentTimeMillis() - hour * 3);
-        assertTimeSpanString("18 Dez 09", getSpecificLocalDateInMillis(2009, 11, 18));
+        assertTimeSpanString("18 Dez. 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
     public void testJapanese() throws Exception {
